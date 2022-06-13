@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block css %}
+    <style>
+        body {
+            background-image: url("{% static 'images/error-page-background.jpg' %}");
+            background-size: cover;
+            color: #fff;
+        }
+    </style>
+{% endblock css %}
+
+{% block title %}Page Not Found{% endblock title %}
+
+{% block content %}
+    <div id="block-404">
+        <h1>404</h1>
+        <p>
+            Seems you've hit a wall!<br />
+            Try going back to the <a href="{% url 'index' %}">Home page</a>.
+        </p>
+    </div>
+{% endblock %}

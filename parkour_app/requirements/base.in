@@ -1,0 +1,27 @@
+# Django
+Django==1.11.29
+django-authtools
+djangorestframework==3.11.2
+django-admin-list-filter-dropdown
+django-monthfield
+django_extensions==1.9.7
+
+
+# Database
+psycopg2-binary>=2.8,<2.9  # https://stackoverflow.com/a/68034786
+dj-database-url
+
+# Documentation
+Sphinx
+sphinx-autobuild
+sphinx-rtd-theme
+
+# Miscellaneous
+xlwt
+fpdf
+numpy
+pandas
+bioblend
+python-docx
+python-dateutil
+
