@@ -1,0 +1,14 @@
+http://parkour-test.ie-freiburg.mpg.de {
+    handle /static/* {
+        root * /parkour2
+        file_server
+    }
+    handle /media/* {
+        root * /parkour2
+        file_server
+    }
+    handle {
+       reverse_proxy parkour2-django:8000
+    }
+    log
+}

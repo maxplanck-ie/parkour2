@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load filters %}
+
+{% block title %}Parkour LIMS | Report{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'js/daterangepicker/daterangepicker.css' %}">
+
+<style>
+    #report {
+        margin: 50px auto 75px;
+        width: 50%;
+        min-width: 750px;
+    }
+
+    .daterange {
+        position: relative;
+    }
+
+    .daterange i {
+        position: absolute;
+        bottom: 10px;
+        right: 24px;
+        top: auto;
+        cursor: pointer;
+    }
+
+    table caption {
+        font-size: 1.3em;
+    }
+</style>
+{% endblock css %}
+
+{% block content %}
+<div id="report">
+    <div>
+    <div class="col-md-4 col-md-offset-4 daterange">
+        <input type="text" name="daterange" class="form-control"/>
+        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <caption>Total Counts</caption>
+        <thead>
+            <tr>
+                <th width="50%">Type</th>
+                <th width="50%">Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in total_counts %}
+                <tr>
+                    <td>{{ row.type }}</td>
+                    <td>{{ row.count }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <caption>Organization Counts</caption>
+        <thead>
+            <tr>
+                <th width="50%">Organization</th>
+                <th width="25%">Samples Submitted</th>
+                <th width="25%">Libraries Submitted</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in organization_counts %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.samples_count }}</td>
+                <td>{{ row.libraries_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <caption>Protocol Counts</caption>
+        <thead>
+            <tr>
+                <th width="50%">Protocol</th>
+                <th width="25%">Samples Submitted</th>
+                <th width="25%">Libraries Submitted</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in protocol_counts %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.samples_count }}</td>
+                <td>{{ row.libraries_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <caption>Principal Investigator Counts</caption>
+        <thead>
+            <tr>
+                <th width="50%">Principal Investigator</th>
+                <th width="25%">Samples Submitted</th>
+                <th width="25%">Libraries Submitted</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in pi_counts %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.samples_count }}</td>
+                <td>{{ row.libraries_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <caption>Device Counts</caption>
+        <thead>
+            <tr>
+                <th width="50%">Device</th>
+                <th width="25%">Libraries and Samples</th>
+                <th width="25%">Runs</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in sequencer_counts %}
+            <tr>
+                <td>{{ row.name }}</td>
+                <td>{{ row.items_count }}</td>
+                <td>{{ row.runs_count }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+        <caption>Libraries on Devices</caption>
+        <thead>
+            <tr>
+                <th>Principal Investigator</th>
+                {% for sequencer in sequencers_list %}
+                    <th>{{ sequencer }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for pi, counts in libraries_on_sequencers_count.items %}
+            <tr>
+                <td>{{ pi }}</td>
+                {% for sequencer in sequencers_list %}
+                    <td>{{ counts|get_count:sequencer }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <hr/>
+
+    <table class="table table-bordered table-hover">
+        <caption>Turnaround (all-time)</caption>
+        <thead>
+            <tr>
+                {% for column in turnaround.columns %}
+                <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in turnaround.rows %}
+            <tr>
+                {% for column in turnaround.columns %}
+                    <td>{{ row|get_value:column }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'js/jquery.query-object.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/daterangepicker/moment.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/daterangepicker/daterangepicker.js' %}"></script>
+
+<script type="text/javascript">
+    var $dateRangePicker = $('input[name="daterange"]');
+
+    $dateRangePicker.daterangepicker({
+        locale: {
+            format: 'DD.MM.YYYY',
+            separator: ' - ',
+            applyLabel: 'Apply',
+            cancelLabel: 'Cancel',
+            fromLabel: 'From',
+            toLabel: 'To',
+            customRangeLabel: 'Custom',
+            weekLabel: 'W',
+            daysOfWeek: [
+                'Su',
+                'Mo',
+                'Tu',
+                'We',
+                'Th',
+                'Fr',
+                'Sa'
+            ],
+            monthNames: [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ],
+            firstDay: 1
+        },
+        ranges: {
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    });
+
+    if ($.query.get('start') !== '') {
+        var startDate = moment($.query.get('start'), 'DD.MM.YYYY');
+        if (startDate.isValid()) {
+            $dateRangePicker.data('daterangepicker').setStartDate(startDate);
+        }
+    }
+
+    if ($.query.get('end') !== '') {
+        var endDate = moment($.query.get('end'), 'DD.MM.YYYY');
+        if (endDate.isValid()) {
+            $dateRangePicker.data('daterangepicker').setEndDate(endDate);
+        }
+    }
+
+    $dateRangePicker.on('apply.daterangepicker', function (event, picker) {
+        var start = picker.startDate.format('DD.MM.YYYY');
+        var end = picker.endDate.format('DD.MM.YYYY');
+        location.search = $.query.set('start', start).set('end', end).toString();
+    });
+</script>
+{% endblock %}

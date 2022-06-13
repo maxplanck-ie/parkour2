@@ -1,0 +1,74 @@
+[
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":1,
+      "fields":{
+         "name":"DNA (genomic)",
+         "type":"DNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":2,
+      "fields":{
+         "name":"DNA (fragmented, i.e. Input plus ChIP)",
+         "type":"DNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":3,
+      "fields":{
+         "name":"DNA (cDNA)",
+         "type":"DNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":4,
+      "fields":{
+         "name":"DNA (Amplicons)",
+         "type":"DNA",
+         "status":2
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":5,
+      "fields":{
+         "name":"RNA (total)",
+         "type":"RNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":6,
+      "fields":{
+         "name":"RNA (mRNA)",
+         "type":"RNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":7,
+      "fields":{
+         "name":"RNA (rRNA depleted)",
+         "type":"RNA",
+         "status":1
+      }
+   },
+   {
+      "model":"sample.nucleicacidtype",
+      "pk":8,
+      "fields":{
+         "name":"RNA (small RNA)",
+         "type":"RNA",
+         "status":1
+      }
+   }
+]

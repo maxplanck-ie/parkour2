@@ -1,0 +1,257 @@
+[
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 1,
+    "fields": {
+      "name": "Other - DNA Methods",
+      "type": "DNA",
+      "provider": "-",
+      "catalog": "-",
+      "explanation": "-",
+      "input_requirements": "-",
+      "typical_application": "-",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 2,
+    "fields": {
+      "name": "Other - RNA Methods",
+      "type": "RNA",
+      "provider": "-",
+      "catalog": "-",
+      "explanation": "-",
+      "input_requirements": "-",
+      "typical_application": "-",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 4,
+    "fields": {
+      "name": "NEBNext® Ultra™ II DNA Library Prep Kit for Illumina",
+      "type": "DNA",
+      "provider": "NEB",
+      "catalog": "E7645S/L",
+      "explanation": "enzymes and buffers ideal to convert a small amount of DNA input into indexed libraries",
+      "input_requirements": "500 - 1 µg of fragmented DNA",
+      "typical_application": "ChIP-Seq",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 5,
+    "fields": {
+      "name": "TruSeq® DNA PCR-Free Sample Preparation",
+      "type": "DNA",
+      "provider": "Illumina",
+      "catalog": "FC-121-3001",
+      "explanation": "covaris-assisted shearing of DNA to desired fragment size, ligation of indexed adaptors, no PCR",
+      "input_requirements": "1 µg high molecular weight genomic DANN",
+      "typical_application": "WGS",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 6,
+    "fields": {
+      "name": "Nextera® DNA Sample Preparation",
+      "type": "DNA",
+      "provider": "Illumina",
+      "catalog": "FC-121-1030",
+      "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
+      "input_requirements": "50 ng high molecular weight genomic DNA",
+      "typical_application": "ATAC-Seq",
+      "comments": "can be used for: large/complex Genome sequencing",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 7,
+    "fields": {
+      "name": "Nextera® XT DNA Sample Preparation",
+      "type": "DNA",
+      "provider": "Illumina",
+      "catalog": "FC-131-1024",
+      "explanation": "fragmentation and adaptor ligation in a single step (tagmentation), PCR to provide single- or dual-indexed libraries",
+      "input_requirements": "1 ng high molecular weight DNA",
+      "typical_application": "ATAC-Seq",
+      "comments": "can be used for: small Genome, Amplicons, Plasmide, ds-cDNA sequencing",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 8,
+    "fields": {
+      "name": "TruSeq® DNA Methylation Kit",
+      "type": "DNA",
+      "provider": "Illumina",
+      "catalog": "EGMK91324",
+      "explanation": "bisulfite conversion of input DNA, prep of indexed libraries",
+      "input_requirements": "50-100 ng high molecular weight genomic DNA",
+      "typical_application": "WGBS",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 9,
+    "fields": {
+      "name": "Custom protocol for amplicon preparation",
+      "type": "DNA",
+      "provider": "NA",
+      "catalog": "NA",
+      "explanation": "Amplicons provided by user, PCR is done by facility to produce indexed sequencing libraries",
+      "input_requirements": "NA",
+      "typical_application": "Amplicon-Seq",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 10,
+    "fields": {
+      "name": "TruSeq® Stranded mRNA",
+      "type": "RNA",
+      "provider": "Illumina",
+      "catalog": "RS-122-2101",
+      "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed library preparation",
+      "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
+      "typical_application": "stranded mRNA-Seq",
+      "comments": "previously isolated mRNA can also serve as starting material",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 11,
+    "fields": {
+      "name": "TruSeq® Stranded Total RNA (Gold)",
+      "type": "RNA",
+      "provider": "Illumina",
+      "catalog": "RS-122-2301",
+      "explanation": "removal of rRNA using biotinylated, target-specific oligos combined with magnetic Ribo-Zero rRNA removal beads. Gold: depletion of both cytoplasmic and mitochondrial rRNA, cDNA prep (random priming, dUTP incorporation for strand specificity), indexed",
+      "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
+      "typical_application": "stranded RNA-Seq",
+      "comments": "Oligos designed to target Mouse/Rat/Human, can be used for other organisms drosophila/zebrafish",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 12,
+    "fields": {
+      "name": "SMART-Seq v4 Ultra Low Input RNA",
+      "type": "RNA",
+      "provider": "Clontech Laboratories",
+      "catalog": "6348888",
+      "explanation": "double-stranded full length cDNA preparation (dT-priming), Conversion of cDNA into indexed libraries using i.e. Nextera DNA library preparation",
+      "input_requirements": "10 pg - 10 ng total RNA, RIN/RQN: 8",
+      "typical_application": "mRNA-Seq",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 13,
+    "fields": {
+      "name": "TruSeq® Small RNA Sample Prep",
+      "type": "RNA",
+      "provider": "ILLUMINA",
+      "catalog": "RS-200-0012",
+      "explanation": "ligation of adapters to small RNA molecules, first strand cDNA synthesis, PCR enrichment for indexed library preparation, purification with polyacryamid gelelectrophoresis",
+      "input_requirements": "1 µg total RNA, RIN/RQN: 8",
+      "typical_application": "small RNA-Seq",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 14,
+    "fields": {
+      "name": "NEBNext® Ultra™RNA Library Prep (mRNA)",
+      "type": "RNA",
+      "provider": "NEB",
+      "catalog": "E7530S/L",
+      "explanation": "mRNA enrichment with poly-T oligo attached magnetic beads, cDNA prep (random priming), indexed library prep",
+      "input_requirements": "10 ng - 1 µg total RNA, RIN/RQN: 8",
+      "typical_application": "mRNA-Seq",
+      "comments": "alternative to TruSeq stranded mRNA, lower RNA input, no strand specificity",
+      "status":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 15,
+    "fields": {
+      "name": "NEBNext® Ultra™RNA Library Prep (total RNA)",
+      "type": "RNA",
+      "provider": "NEB",
+      "catalog": "E7530S/L",
+      "explanation": "removal of rRNA using target-specific oligos combined with RNaseH and DNaseI digestion, cDNA prep (random priming), indexed library prep",
+      "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
+      "typical_application": "RNA-Seq",
+      "comments": "alternative to TruSeq stranded total RNA kit, alternate rRNA removal technology, no strand specificity",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 16,
+    "fields": {
+      "name": "Cel-Seq 2 for single cell RNA-Seq",
+      "type": "RNA",
+      "provider": "NA",
+      "catalog": "NA",
+      "explanation": "NA",
+      "input_requirements": "NA",
+      "typical_application": "NA",
+      "comments": "",
+      "status":1,
+      "obsolete":1
+    }
+  },
+  {
+    "model": "library_sample_shared.libraryprotocol",
+    "pk": 17,
+    "fields": {
+      "name": "Quality Control",
+      "type": "DNA",
+      "provider": "-",
+      "catalog": "-",
+      "explanation": "-",
+      "input_requirements": "-",
+      "typical_application": "-",
+      "comments": "Not a protocol. It's a special entry used for the Preparation Costs calculation for libraries.",
+      "status":1,
+      "obsolete":1
+    }
+  }
+]

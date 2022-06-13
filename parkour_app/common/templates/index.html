@@ -1,0 +1,22 @@
+
+{% extends 'base_ext.html' %}
+{% load staticfiles %}
+
+{% block title %}Parkour LIMS{% endblock %}
+
+{% block css %}
+    {#<link rel="stylesheet" href="{% static 'main-hub/build/production/MainHub/resources/MainHub-all.css' %}">#}
+    <link rel="stylesheet" href="{% static 'main-hub/build/development/MainHub/resources/MainHub-all.css' %}">
+{% endblock %}
+
+{% block extjs_app %}
+    {% if DEBUG %}
+        <script type="text/javascript" src="{% static 'main-hub/ext/build/ext-all-debug.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main-hub/app.js' %}"></script>
+    {% else %}
+        <script type="text/javascript" src="{% static 'main-hub/ext/build/ext-all.js' %}"></script>
+        <script type="text/javascript" src="{% static 'main-hub/app.js' %}"></script>
+{#        <script type="text/javascript" src="{% static 'main-hub/build/production/MainHub/app.js' %}"></script>#}
+    {% endif %}
+    <script type="text/javascript" src="{% static 'main-hub/ext/build/packages/charts/classic/charts.js' %}"></script>
+{% endblock %}

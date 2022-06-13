@@ -1,0 +1,44 @@
+{% load i18n %}{% autoescape off %}
+<p><i>Dear {{ full_name }},</i></p>
+
+<p>{{ message }}</p>
+
+{% if records %}
+<hr/>
+<p>The list of failed libraries/samples:</p>
+<table style="width:100%;">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td>Name</td>
+            <td>Barcode</td>
+            <td>Protocol</td>
+            <td>Facility Comment</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.name }}</td>
+                <td>{{ record.barcode }}</td>
+                <td>{{ record.library_protocol.name }}</td>
+                {% if record.comments_facility %}
+                    <td>{{ record.comments_facility }}</td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr/>
+{% endif %}
+
+<p>
+    <i>
+        --<br/>
+        Kind regards,<br/>
+        Deep Sequencing Team<br/>
+        <b>For discussion or sample submission see us daily between 11-12 am</b>
+    </i>
+</p>
+{% endautoescape %}

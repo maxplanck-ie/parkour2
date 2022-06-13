@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  parkour2-caddy:
+    image: caddy:latest
+    container_name: parkour2-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - parkour2_media:/parkour2/media
+      - parkour2_staticfiles:/parkour2/static
+
+volumes:
+  caddy_data:
+  caddy_config:
+  parkour2_media:
+    external: true
+  parkour2_staticfiles:
+    external: true
+
