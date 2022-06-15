@@ -26,10 +26,10 @@ repos:
     -   id: check-merge-conflict
         types: [python]
 
--   repo: https://github.com/pre-commit/mirrors-mypy
-    rev: 'v0.931'  #Locked, most probably py3.6 again
-    hooks:
-    -   id: mypy
+#-   repo: https://github.com/pre-commit/mirrors-mypy
+#    rev: 'v0.931'  #Locked, most probably py3.6 again
+#    hooks:
+#    -   id: mypy
 
 -   repo: https://github.com/psf/black
     rev: 22.3.0
@@ -58,20 +58,20 @@ repos:
 #    #     - flake8-black>=0.1.1
 #    #   language_version: python3
 
-#-   repo: https://github.com/pycqa/doc8
-#    rev: 0.11.2
-#    hooks:
-#    -   id: doc8
+-   repo: https://github.com/pycqa/doc8
+    rev: 0.11.2
+    hooks:
+    -   id: doc8
 
-#-   repo: https://github.com/pre-commit/pygrep-hooks
-#    rev: v1.9.0
-#    hooks:
-#    -   id: python-check-blanket-noqa
-#    -   id: python-check-mock-methods
-#    -   id: python-no-eval
-#    -   id: python-no-log-warn
-#    -   id: rst-backticks
-#    -   id: rst-directive-colons
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.9.0
+    hooks:
+    -   id: python-check-blanket-noqa
+    -   id: python-check-mock-methods
+    -   id: python-no-eval
+    -   id: python-no-log-warn
+    -   id: rst-backticks
+    -   id: rst-directive-colons
 
 #-   repo: https://github.com/adamchainz/django-upgrade
 #    rev: 1.7.0

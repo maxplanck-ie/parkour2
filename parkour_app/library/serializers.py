@@ -12,8 +12,8 @@ from library_sample_shared.serializers import LibrarySampleBaseSerializer
 from sample.serializers import SampleSerializer
 
 
-Library = apps.get_model('library', 'Library')
-Request = apps.get_model('request', 'Request')
+Library = apps.get_model("library", "Library")
+Request = apps.get_model("request", "Request")
 
 
 class LibrarySerializer(LibrarySampleBaseSerializer):
@@ -23,13 +23,20 @@ class LibrarySerializer(LibrarySampleBaseSerializer):
 
     class Meta(LibrarySampleBaseSerializer.Meta):
         model = Library
-        fields = LibrarySampleBaseSerializer.Meta.fields + \
-            ('pk', 'record_type', 'index_type', 'index_type_name',
-             'index_reads', 'index_i7', 'index_i5', 'mean_fragment_size',
-             'qpcr_result',)
+        fields = LibrarySampleBaseSerializer.Meta.fields + (
+            "pk",
+            "record_type",
+            "index_type",
+            "index_type_name",
+            "index_reads",
+            "index_i7",
+            "index_i5",
+            "mean_fragment_size",
+            "qpcr_result",
+        )
 
     def get_record_type(self, obj):
-        return 'Library'
+        return "Library"
 
     def get_index_type_name(self, obj):
         return obj.index_type.name
@@ -42,14 +49,20 @@ class RequestParentNodeSerializer(ModelSerializer):
 
     class Meta:
         model = Request
-        fields = ('id', 'name', 'total_records_count',
-                  'total_sequencing_depth', 'cls', 'leaf',)
+        fields = (
+            "id",
+            "name",
+            "total_records_count",
+            "total_sequencing_depth",
+            "cls",
+            "leaf",
+        )
 
     def get_id(self, obj):
         return obj.pk
 
     def get_cls(self, obj):
-        return 'parent-node-name'
+        return "parent-node-name"
 
     def get_leaf(self, obj):
         return False
@@ -59,7 +72,7 @@ class LibraryChildNodeSerializer(LibrarySerializer):
     leaf = SerializerMethodField()
 
     class Meta(LibrarySerializer.Meta):
-        fields = LibrarySerializer.Meta.fields + ('leaf',)
+        fields = LibrarySerializer.Meta.fields + ("leaf",)
 
     def get_request_id(self, obj):
         return None
@@ -75,7 +88,7 @@ class SampleChildNodeSerializer(SampleSerializer):
     leaf = SerializerMethodField()
 
     class Meta(SampleSerializer.Meta):
-        fields = SampleSerializer.Meta.fields + ('leaf',)
+        fields = SampleSerializer.Meta.fields + ("leaf",)
 
     def get_request_id(self, obj):
         return None
@@ -96,7 +109,13 @@ class RequestChildrenNodesSerializer(ModelSerializer):
 
     class Meta:
         model = Request
-        fields = ('id', 'request_id', 'request_name', 'libraries', 'samples',)
+        fields = (
+            "id",
+            "request_id",
+            "request_name",
+            "libraries",
+            "samples",
+        )
 
     def get_id(self, obj):
         # Each leaf node needs a unique id
@@ -112,16 +131,21 @@ class RequestChildrenNodesSerializer(ModelSerializer):
         data = super().to_representation(instance)
         result = []
 
-        for type in ['libraries', 'samples']:
-            result.extend(list(map(
-                lambda x: {**x, **{
-                    'id': data['id'] + x['pk'],
-                    'request_id': data['request_id'],
-                    'request_name': data['request_name']
-                }},
-                data.pop(type)
-            )))
+        for type in ["libraries", "samples"]:
+            result.extend(
+                list(
+                    map(
+                        lambda x: {
+                            **x,
+                            **{
+                                "id": data["id"] + x["pk"],
+                                "request_id": data["request_id"],
+                                "request_name": data["request_name"],
+                            },
+                        },
+                        data.pop(type),
+                    )
+                )
+            )
 
-        return {
-            'children': sorted(result, key=lambda x: x['barcode'][3:])
-        }
+        return {"children": sorted(result, key=lambda x: x["barcode"][3:])}

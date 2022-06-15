@@ -5,20 +5,20 @@ from library_sample_shared.models import GenericLibrarySample
 
 class Library(GenericLibrarySample):
     mean_fragment_size = models.PositiveIntegerField(
-        'Mean Fragment Size',
+        "Mean Fragment Size",
         null=True,
         blank=True,
     )
 
-    qpcr_result = models.FloatField('qPCR Result', null=True, blank=True)
+    qpcr_result = models.FloatField("qPCR Result", null=True, blank=True)
 
     # Quality Control
     qpcr_result_facility = models.FloatField(
-        'qPCR Result (facility)',
+        "qPCR Result (facility)",
         null=True,
         blank=True,
     )
 
     class Meta:
-        verbose_name = 'Library'
-        verbose_name_plural = 'Libraries'
+        verbose_name = "Library"
+        verbose_name_plural = "Libraries"

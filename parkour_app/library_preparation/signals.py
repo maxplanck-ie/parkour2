@@ -13,20 +13,20 @@ def update_samples(sender, instance, action, **kwargs):
     to True, update the barcode, and for each sample in the pool create a
     LibraryPreparation object.
     """
-    if action == 'post_add':
+    if action == "post_add":
         instance.samples.all().update(
             is_pooled=True,
             is_converted=True,
             barcode=Func(
-                F('barcode'),
-                Value('S'), Value('L'),
-                function='replace',
+                F("barcode"),
+                Value("S"),
+                Value("L"),
+                function="replace",
             ),
         )
 
         # TODO: maybe there is a better way to create multiple objects at once
         for sample in instance.samples.all():
-            obj, created = LibraryPreparation.objects.get_or_create(
-                sample=sample)
+            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
             if created:
                 obj.save()

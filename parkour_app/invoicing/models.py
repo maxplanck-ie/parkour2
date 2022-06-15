@@ -9,19 +9,19 @@ from flowcell.models import Sequencer
 
 
 class InvoicingReport(DateTimeMixin):
-    month = MonthField('Month', unique=True)
+    month = MonthField("Month", unique=True)
     report = models.FileField(
-        verbose_name='Report',
-        upload_to='invoicing/%Y/%m/',
+        verbose_name="Report",
+        upload_to="invoicing/%Y/%m/",
     )
 
     class Meta:
-        verbose_name = 'Invoicing Report'
-        verbose_name_plural = 'Invoicing Report'
-        ordering = ['-month']
+        verbose_name = "Invoicing Report"
+        verbose_name_plural = "Invoicing Report"
+        ordering = ["-month"]
 
     def __str__(self):
-        return f'{calendar.month_name[self.month.month]} {self.month.year}'
+        return f"{calendar.month_name[self.month.month]} {self.month.year}"
 
 
 class FixedCosts(models.Model):
@@ -29,47 +29,52 @@ class FixedCosts(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
-        verbose_name = 'Fixed Cost'
-        verbose_name_plural = 'Fixed Costs'
+        verbose_name = "Fixed Cost"
+        verbose_name_plural = "Fixed Costs"
 
     @property
     def price_amount(self):
-        return f'{self.price} €'
+        return f"{self.price} €"
 
     def __str__(self):
         return self.sequencer.name
 
 
 class LibraryPreparationCosts(models.Model):
-    library_protocol = models.ForeignKey(LibraryProtocol,unique=True,limit_choices_to={'obsolete':1})
-    #library_protocol = models.OneToOneField(LibraryProtocol)
+    library_protocol = models.ForeignKey(
+        LibraryProtocol, unique=True, limit_choices_to={"obsolete": 1}
+    )
+    # library_protocol = models.OneToOneField(LibraryProtocol)
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
-        verbose_name = 'Library Preparation Cost'
-        verbose_name_plural = 'Library Preparation Costs'
+        verbose_name = "Library Preparation Cost"
+        verbose_name_plural = "Library Preparation Costs"
 
     @property
     def price_amount(self):
-        return f'{self.price} €'
+        return f"{self.price} €"
 
     def __str__(self):
         return self.library_protocol.name
 
 
 class SequencingCosts(models.Model):
-    sequencer = models.ForeignKey(Sequencer,limit_choices_to={'obsolete':1})
-    read_length = models.ForeignKey(ReadLength, verbose_name='Read Length')
+    sequencer = models.ForeignKey(Sequencer, limit_choices_to={"obsolete": 1})
+    read_length = models.ForeignKey(ReadLength, verbose_name="Read Length")
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
-        verbose_name = 'Sequencing Cost'
-        verbose_name_plural = 'Sequencing Costs'
-        unique_together = ('sequencer', 'read_length',)
+        verbose_name = "Sequencing Cost"
+        verbose_name_plural = "Sequencing Costs"
+        unique_together = (
+            "sequencer",
+            "read_length",
+        )
 
     @property
     def price_amount(self):
-        return f'{self.price} €'
+        return f"{self.price} €"
 
     def __str__(self):
-        return f'{self.sequencer.name} {self.read_length.name}'
+        return f"{self.sequencer.name} {self.read_length.name}"

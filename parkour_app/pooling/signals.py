@@ -13,7 +13,7 @@ def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
     When a library is added to a pool, set its is_pooled to True, and
     for each library create a Pooling object.
     """
-    if action == 'post_add':
+    if action == "post_add":
         instance.libraries.all().update(is_pooled=True)
 
         # TODO: maybe there is a better way to create multiple objects at once

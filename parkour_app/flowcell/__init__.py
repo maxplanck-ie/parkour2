@@ -1,1 +1,1 @@
-default_app_config = 'flowcell.apps.FlowcellConfig'
+default_app_config = "flowcell.apps.FlowcellConfig"

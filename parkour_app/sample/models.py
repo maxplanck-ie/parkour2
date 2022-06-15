@@ -5,20 +5,20 @@ from library_sample_shared.models import GenericLibrarySample
 
 
 class NucleicAcidType(models.Model):
-    name = models.CharField('Name', max_length=100)
+    name = models.CharField("Name", max_length=100)
 
     type = models.CharField(
-        'Type',
+        "Type",
         max_length=3,
-        choices=(('DNA', 'DNA'), ('RNA', 'RNA')),
-        default='DNA',
+        choices=(("DNA", "DNA"), ("RNA", "RNA")),
+        default="DNA",
     )
 
-    status = models.PositiveIntegerField("Status",default=1)
+    status = models.PositiveIntegerField("Status", default=1)
 
     class Meta:
-        verbose_name = 'Nucleic Acid Type'
-        verbose_name_plural = 'Nucleic Acid Types'
+        verbose_name = "Nucleic Acid Type"
+        verbose_name_plural = "Nucleic Acid Types"
 
     def __str__(self):
         return self.name
@@ -27,29 +27,29 @@ class NucleicAcidType(models.Model):
 class Sample(GenericLibrarySample):
     nucleic_acid_type = models.ForeignKey(
         NucleicAcidType,
-        verbose_name='Nucleic Acid Type',
+        verbose_name="Nucleic Acid Type",
     )
 
     rna_quality = models.FloatField(
-        'RNA Quality',
+        "RNA Quality",
         validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
         null=True,
         blank=True,
     )
 
-    is_converted = models.BooleanField('Converted', default=False)
+    is_converted = models.BooleanField("Converted", default=False)
 
     # Quality Control
     rna_quality_facility = models.FloatField(
-        'RNA Quality (facility)',
+        "RNA Quality (facility)",
         validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
         null=True,
         blank=True,
     )
 
     class Meta:
-        verbose_name = 'Sample'
-        verbose_name_plural = 'Samples'
+        verbose_name = "Sample"
+        verbose_name_plural = "Samples"
 
     # def save(self, *args, **kwargs):
     #     # prev_obj = type(self).objects.get(pk=self.pk) if self.pk else None

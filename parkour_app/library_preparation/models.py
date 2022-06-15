@@ -5,67 +5,67 @@ from sample.models import Sample
 
 
 class LibraryPreparation(DateTimeMixin):
-    sample = models.OneToOneField(Sample, verbose_name='Sample')
+    sample = models.OneToOneField(Sample, verbose_name="Sample")
 
     starting_amount = models.FloatField(
-        'Starting Amount',
+        "Starting Amount",
         null=True,
         blank=True,
     )
 
     spike_in_description = models.TextField(
-        'Spike-in Description',
+        "Spike-in Description",
         null=True,
         blank=True,
     )
 
     spike_in_volume = models.FloatField(
-        'Spike-in Volume',
+        "Spike-in Volume",
         null=True,
         blank=True,
     )
 
     pcr_cycles = models.IntegerField(
-        'PCR Cycles',
+        "PCR Cycles",
         null=True,
         blank=True,
     )
 
     concentration_library = models.FloatField(
-        'Concentration Library',
+        "Concentration Library",
         null=True,
         blank=True,
     )
 
     mean_fragment_size = models.IntegerField(
-        'Mean Fragment Size',
+        "Mean Fragment Size",
         null=True,
         blank=True,
     )
 
     nM = models.FloatField(
-        'nM',
+        "nM",
         null=True,
         blank=True,
     )
 
     qpcr_result = models.FloatField(
-        'qPCR Result',
+        "qPCR Result",
         null=True,
         blank=True,
     )
 
     comments = models.TextField(
-        'Comments',
+        "Comments",
         null=True,
         blank=True,
     )
 
     class Meta:
-        verbose_name = 'Library Preparation'
-        verbose_name_plural = 'Library Preparation'
+        verbose_name = "Library Preparation"
+        verbose_name_plural = "Library Preparation"
 
     def __str__(self):
         # return '%s (Request: %s)' % (self.sample.name,
         #                              self.sample.request.get())
-        return '{} ({})'.format(self.sample.name, self.sample.barcode)
+        return f"{self.sample.name} ({self.sample.barcode})"

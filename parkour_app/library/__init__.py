@@ -1,1 +1,1 @@
-default_app_config = 'library.apps.LibraryConfig'
+default_app_config = "library.apps.LibraryConfig"

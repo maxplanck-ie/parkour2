@@ -8,12 +8,12 @@ def get_count(dictionary, key):
 
 @register.filter
 def get_value(dictionary, key):
-    return dictionary.get(key, '')
+    return dictionary.get(key, "")
 
 
 @register.filter
 def none(value):
-    return value if value is not None else ''
+    return value if value is not None else ""
 
 
 @register.filter

@@ -41,10 +41,10 @@ def create_flowcell(flowcell_id, sequencer):
 
 # Models
 
+
 class TestSequencerModel(BaseTestCase):
     def setUp(self):
-        self.sequencer = create_sequencer(
-            get_random_name(), lanes=1, lane_capacity=200)
+        self.sequencer = create_sequencer(get_random_name(), lanes=1, lane_capacity=200)
 
     def test_sequencer_name(self):
         self.assertTrue(isinstance(self.sequencer, Sequencer))
@@ -53,15 +53,14 @@ class TestSequencerModel(BaseTestCase):
 
 class TestLaneModel(BaseTestCase):
     def setUp(self):
-        self.user = self.create_user('test@test.io', 'foo-bar')
+        self.user = self.create_user("test@test.io", "foo-bar")
         pool = create_pool(self.user)
         self.lane = create_lane(get_random_name(len=6), pool)
 
     def test_lane_name(self):
         self.assertTrue(isinstance(self.lane, Lane))
         self.assertEqual(
-            self.lane.__str__(),
-            '{}: {}'.format(self.lane.name, self.lane.pool.name)
+            self.lane.__str__(), f"{self.lane.name}: {self.lane.pool.name}"
         )
 
     def test_increment_pool_loaded(self):
@@ -74,17 +73,16 @@ class TestLaneModel(BaseTestCase):
         self.assertEqual(pool1.loaded, 0)
         self.assertEqual(pool1.loaded, 0)
 
-        create_lane('Lane 1', pool1)
-        create_lane('Lane 2', pool2)
-        create_lane('Lane 3', pool2)
+        create_lane("Lane 1", pool1)
+        create_lane("Lane 2", pool2)
+        create_lane("Lane 3", pool2)
         self.assertEqual(pool1.loaded, 1)
         self.assertEqual(pool2.loaded, 2)
 
 
 class TestFlowcellModel(BaseTestCase):
     def setUp(self):
-        sequencer = create_sequencer(
-            get_random_name(), lanes=1)
+        sequencer = create_sequencer(get_random_name(), lanes=1)
         self.flowcell = create_flowcell(get_random_name(), sequencer)
 
     def test_lane_name(self):
@@ -94,30 +92,31 @@ class TestFlowcellModel(BaseTestCase):
 
 # Views
 
+
 class TestSequencer(BaseTestCase):
     def setUp(self):
         self.create_user()
         self.login()
 
     def test_sequencer_list(self):
-        """ Ensure get sequencer list behaves correctly. """
+        """Ensure get sequencer list behaves correctly."""
         sequencer = create_sequencer(get_random_name())
-        response = self.client.get(reverse('sequencers-list'))
+        response = self.client.get(reverse("sequencers-list"))
         self.assertEqual(response.status_code, 200)
         data = response.json()
-        sequencers = [x['name'] for x in data]
+        sequencers = [x["name"] for x in data]
         self.assertIn(sequencer.name, sequencers)
 
 
 class TestFlowcell(BaseTestCase):
-    """ Tests for flowcells. """
+    """Tests for flowcells."""
 
     def setUp(self):
         self.user = self.create_user()
 
     def test_pool_list(self):
-        """ Ensure get pool list behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure get pool list behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         # Case 1: pool is ready
         pool1 = create_pool(self.user)
@@ -140,28 +139,28 @@ class TestFlowcell(BaseTestCase):
         sample4 = create_sample(get_random_name(), status=-1)  # failed P QC
         pool3.samples.add(*[sample3.pk, sample4.pk])
 
-        response = self.client.get(reverse('flowcells-pool-list'))
+        response = self.client.get(reverse("flowcells-pool-list"))
         data = response.json()
 
         self.assertEqual(response.status_code, 200)
-        pools = [x['name'] for x in data]
+        pools = [x["name"] for x in data]
         self.assertIn(pool1.name, pools)
         self.assertIn(pool2.name, pools)
         self.assertNotIn(pool3.name, pools)
 
-        pool1_obj = [x for x in data if x['name'] == pool1.name][0]
-        pool2_obj = [x for x in data if x['name'] == pool2.name][0]
-        self.assertTrue(pool1_obj['ready'])
-        self.assertFalse(pool2_obj['ready'])
+        pool1_obj = [x for x in data if x["name"] == pool1.name][0]
+        pool2_obj = [x for x in data if x["name"] == pool2.name][0]
+        self.assertTrue(pool1_obj["ready"])
+        self.assertFalse(pool2_obj["ready"])
 
-        self.assertTrue(data[0]['read_length_name'], library1.read_length.name)
-        self.assertTrue(data[1]['read_length_name'], sample1.read_length.name)
-        self.assertTrue(data[0]['pool_size'], pool1.size.multiplier)
-        self.assertTrue(data[1]['pool_size'], pool2.size.multiplier)
+        self.assertTrue(data[0]["read_length_name"], library1.read_length.name)
+        self.assertTrue(data[1]["read_length_name"], sample1.read_length.name)
+        self.assertTrue(data[0]["pool_size"], pool1.size.multiplier)
+        self.assertTrue(data[1]["pool_size"], pool2.size.multiplier)
 
     def test_flowcell_list(self):
-        """ Ensure get flowcell list behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure get flowcell list behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library1 = create_library(get_random_name(), 4)
         library2 = create_library(get_random_name(), 4)
@@ -181,14 +180,14 @@ class TestFlowcell(BaseTestCase):
 
         lanes1 = []
         for i in range(2):
-            name = 'Lane {}'.format(i + 1)
+            name = f"Lane {i + 1}"
             lane = Lane(name=name, pool=pool1)
             lane.save()
             lanes1.append(lane.pk)
 
         lanes2 = []
         for i in range(2, 4):
-            name = 'Lane {}'.format(i + 1)
+            name = f"Lane {i + 1}"
             lane = Lane(name=name, pool=pool2, completed=True)
             lane.save()
             lanes2.append(lane.pk)
@@ -196,18 +195,18 @@ class TestFlowcell(BaseTestCase):
         flowcell.lanes.add(*lanes1)
         flowcell.lanes.add(*lanes2)
 
-        response = self.client.get(reverse('flowcells-list'))
+        response = self.client.get(reverse("flowcells-list"))
         data = response.json()
         self.assertEqual(response.status_code, 200)
-        lane_ids = [x['pk'] for x in data]
+        lane_ids = [x["pk"] for x in data]
         self.assertIn(lanes1[0], lane_ids)
         self.assertIn(lanes1[1], lane_ids)
         self.assertNotIn(lanes2[0], lane_ids)
         self.assertNotIn(lanes2[1], lane_ids)
 
     def test_create_flowcell(self):
-        """ Ensure create flowcell behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure create flowcell behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library1 = create_library(get_random_name(), 4)
         library2 = create_library(get_random_name(), 4)
@@ -225,27 +224,38 @@ class TestFlowcell(BaseTestCase):
         sequencer = create_sequencer(get_random_name())
         flowcell_id = get_random_name()
 
-        lanes1 = [{
-            'name': 'Lane {}'.format(i + 1),
-            'pool_id': pool1.pk,
-        } for i in range(4)]
+        lanes1 = [
+            {
+                "name": f"Lane {i + 1}",
+                "pool_id": pool1.pk,
+            }
+            for i in range(4)
+        ]
 
-        lanes2 = [{
-            'name': 'Lane {}'.format(i + 1),
-            'pool_id': pool2.pk,
-        } for i in range(4, 8)]
+        lanes2 = [
+            {
+                "name": f"Lane {i + 1}",
+                "pool_id": pool2.pk,
+            }
+            for i in range(4, 8)
+        ]
 
-        response = self.client.post(reverse('flowcells-list'), {
-            'data': json.dumps({
-                'flowcell_id': flowcell_id,
-                'sequencer': sequencer.pk,
-                'lanes': lanes1 + lanes2,
-            })
-        })
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": flowcell_id,
+                        "sequencer": sequencer.pk,
+                        "lanes": lanes1 + lanes2,
+                    }
+                )
+            },
+        )
         data = response.json()
         self.assertEqual(response.status_code, 201)
-        self.assertTrue(data['success'])
-        flowcells = Flowcell.objects.values_list('flowcell_id', flat=True)
+        self.assertTrue(data["success"])
+        flowcells = Flowcell.objects.values_list("flowcell_id", flat=True)
         self.assertIn(flowcell_id, flowcells)
 
         updated_library1 = library1.__class__.objects.get(pk=library1.pk)
@@ -258,57 +268,70 @@ class TestFlowcell(BaseTestCase):
         self.assertEqual(updated_sample2.status, 4)
 
     def test_create_flowcell_no_lanes(self):
-        """ Ensure error is thrown if no lanes are provided. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure error is thrown if no lanes are provided."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         sequencer = create_sequencer(get_random_name())
         flowcell_id = get_random_name()
 
-        response = self.client.post(reverse('flowcells-list'), {
-            'data': json.dumps({
-                'flowcell_id': flowcell_id,
-                'sequencer': sequencer.pk,
-                'lanes': [],
-            })
-        })
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": flowcell_id,
+                        "sequencer": sequencer.pk,
+                        "lanes": [],
+                    }
+                )
+            },
+        )
         data = response.json()
         self.assertEqual(response.status_code, 400)
-        self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'Invalid payload.')
-        self.assertIn('No lanes are provided.', data['errors']['lanes'])
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+        self.assertIn("No lanes are provided.", data["errors"]["lanes"])
 
     def test_create_flowcell_some_lanes_not_loaded(self):
-        """ Ensure error is thrown if not all lanes are loaded. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure error is thrown if not all lanes are loaded."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library = create_library(get_random_name(), 4)
         pool = create_pool(self.user)
         pool.libraries.add(library)
 
-        lanes = [{
-            'name': 'Lane {}'.format(i + 1),
-            'pool_id': pool.pk,
-        } for i in range(4)]
+        lanes = [
+            {
+                "name": f"Lane {i + 1}",
+                "pool_id": pool.pk,
+            }
+            for i in range(4)
+        ]
 
         sequencer = create_sequencer(get_random_name())
         flowcell_id = get_random_name()
 
-        response = self.client.post(reverse('flowcells-list'), {
-            'data': json.dumps({
-                'flowcell_id': flowcell_id,
-                'sequencer': sequencer.pk,
-                'lanes': lanes,
-            })
-        })
+        response = self.client.post(
+            reverse("flowcells-list"),
+            {
+                "data": json.dumps(
+                    {
+                        "flowcell_id": flowcell_id,
+                        "sequencer": sequencer.pk,
+                        "lanes": lanes,
+                    }
+                )
+            },
+        )
         data = response.json()
         self.assertEqual(response.status_code, 400)
-        self.assertFalse(data['success'])
-        self.assertEqual(data['message'], 'Invalid payload.')
-        self.assertIn('All lanes must be loaded.', data['errors']['lanes'])
+        self.assertFalse(data["success"])
+        self.assertEqual(data["message"], "Invalid payload.")
+        self.assertIn("All lanes must be loaded.", data["errors"]["lanes"])
 
     def test_update_lane(self):
-        """ Ensure update lanes behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure update lanes behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library = create_library(get_random_name(), 4)
         pool = create_pool(self.user)
@@ -322,20 +345,26 @@ class TestFlowcell(BaseTestCase):
 
         flowcell.lanes.add(lane)
 
-        response = self.client.post(reverse('flowcells-edit'), {
-            'data': json.dumps([{
-                'pk': lane.pk,
-                'loading_concentration': 1.0,
-            }])
-        })
+        response = self.client.post(
+            reverse("flowcells-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": lane.pk,
+                            "loading_concentration": 1.0,
+                        }
+                    ]
+                )
+            },
+        )
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.json()['success'])
-        self.assertEqual(
-            Lane.objects.get(pk=lane.pk).loading_concentration, 1.0)
+        self.assertTrue(response.json()["success"])
+        self.assertEqual(Lane.objects.get(pk=lane.pk).loading_concentration, 1.0)
 
     def test_update_lane_contains_invalid(self):
-        """ Ensure update lanes containing invalid lanes behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure update lanes containing invalid lanes behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library = create_library(get_random_name(), 4)
         pool = create_pool(self.user)
@@ -352,25 +381,32 @@ class TestFlowcell(BaseTestCase):
 
         flowcell.lanes.add(*[lane1.pk, lane2.pk])
 
-        response = self.client.post(reverse('flowcells-edit'), {
-            'data': json.dumps([{
-                'pk': lane1.pk,
-                'loading_concentration': 1.0,
-            }, {
-                'pk': lane2.pk,
-                'loading_concentration': 'blah',
-            }])
-        })
+        response = self.client.post(
+            reverse("flowcells-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": lane1.pk,
+                            "loading_concentration": 1.0,
+                        },
+                        {
+                            "pk": lane2.pk,
+                            "loading_concentration": "blah",
+                        },
+                    ]
+                )
+            },
+        )
         data = response.json()
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.json()['success'])
-        self.assertEqual(data['message'], 'Some records cannot be updated.')
-        self.assertEqual(
-            Lane.objects.get(pk=lane1.pk).loading_concentration, 1.0)
+        self.assertTrue(response.json()["success"])
+        self.assertEqual(data["message"], "Some records cannot be updated.")
+        self.assertEqual(Lane.objects.get(pk=lane1.pk).loading_concentration, 1.0)
 
     def test_quality_check_completed(self):
-        """ Ensure quality check has completed behaves correctly. """
-        self.client.login(email='test@test.io', password='foo-bar')
+        """Ensure quality check has completed behaves correctly."""
+        self.client.login(email="test@test.io", password="foo-bar")
 
         library = create_library(get_random_name(), 4)
         pool = create_pool(self.user)
@@ -384,23 +420,30 @@ class TestFlowcell(BaseTestCase):
 
         flowcell.lanes.add(lane)
 
-        response = self.client.post(reverse('flowcells-edit'), {
-            'data': json.dumps([{
-                'pk': lane.pk,
-                'quality_check': 'completed',
-            }])
-        })
+        response = self.client.post(
+            reverse("flowcells-edit"),
+            {
+                "data": json.dumps(
+                    [
+                        {
+                            "pk": lane.pk,
+                            "quality_check": "completed",
+                        }
+                    ]
+                )
+            },
+        )
 
         updated_lane = Lane.objects.get(pk=lane.pk)
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(response.json()['success'])
+        self.assertTrue(response.json()["success"])
         self.assertTrue(updated_lane.completed)
 
     def test_invalid_json(self):
-        """ Ensure error is thrown if the JSON object is empty. """
-        self.client.login(email='test@test.io', password='foo-bar')
-        response = self.client.post(reverse('flowcells-edit'), {})
+        """Ensure error is thrown if the JSON object is empty."""
+        self.client.login(email="test@test.io", password="foo-bar")
+        response = self.client.post(reverse("flowcells-edit"), {})
         data = response.json()
         self.assertEqual(response.status_code, 400)
-        self.assertFalse(data['success'])
-        self.assertIn('Invalid payload.', data['message'])
+        self.assertFalse(data["success"])
+        self.assertIn("Invalid payload.", data["message"])

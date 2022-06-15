@@ -4,8 +4,16 @@ from .models import LibraryPreparation
 
 @admin.register(LibraryPreparation)
 class LibraryPreparationAdmin(admin.ModelAdmin):
-    list_display = ('name', 'barcode', 'request', 'pool',)
-    search_fields = ('sample__name', 'sample__barcode',)
+    list_display = (
+        "name",
+        "barcode",
+        "request",
+        "pool",
+    )
+    search_fields = (
+        "sample__name",
+        "sample__barcode",
+    )
     list_select_related = True
 
     def name(self, obj):
