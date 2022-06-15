@@ -12,24 +12,24 @@ def timeit(func):
         start = time()
         result = func(*args)
         end = time()
-        print('{0}(): Execution time: {1:2f} s'.format(
-            func.__name__, end - start)
-        )
+        print(f"{func.__name__}(): Execution time: {end - start:2f} s")
         return result
+
     return wrapper
 
 
 def generate_barcode(record_type, counter):
-    barcode = datetime.now().strftime('%y') + record_type
-    barcode += '0' * (6 - len(counter)) + counter
+    barcode = datetime.now().strftime("%y") + record_type
+    barcode += "0" * (6 - len(counter)) + counter
     return barcode
 
 
 def get_random_name(len=10):
-    """ Generate a random string of a given length. """
-    return ''.join(random.SystemRandom().choice(
-        string.ascii_lowercase + string.digits
-    ) for _ in range(len))
+    """Generate a random string of a given length."""
+    return "".join(
+        random.SystemRandom().choice(string.ascii_lowercase + string.digits)
+        for _ in range(len)
+    )
 
 
 def print_sql_queries(func):
@@ -39,14 +39,18 @@ def print_sql_queries(func):
         finally:
             for i, query in enumerate(connection.queries):
                 sql = re.split(
-                    r'(SELECT|FROM|WHERE|GROUP BY|ORDER BY|INNER JOIN|LIMIT)',
-                    query['sql']
+                    r"(SELECT|FROM|WHERE|GROUP BY|ORDER BY|INNER JOIN|LIMIT)",
+                    query["sql"],
                 )
                 if not sql[0]:
                     sql = sql[1:]
-                sql = [(' ' if i % 2 else '') + x for i, x in enumerate(sql)]
-                print('\n### {} ({} seconds)\n\n{};\n'.format(
-                    i, query['time'], '\n'.join(sql)))
+                sql = [(" " if i % 2 else "") + x for i, x in enumerate(sql)]
+                print(
+                    "\n### {} ({} seconds)\n\n{};\n".format(
+                        i, query["time"], "\n".join(sql)
+                    )
+                )
+
     return wrapper
 
 
@@ -54,16 +58,14 @@ def get_date_range(start, end, format):
     now = datetime.now()
 
     try:
-        start = datetime.strptime(start, format) \
-            if type(start) is str else start
+        start = datetime.strptime(start, format) if type(start) is str else start
     except ValueError:
         start = now
     finally:
         start = start.replace(hour=0, minute=0)
 
     try:
-        end = datetime.strptime(end, format) \
-            if type(end) is str else end
+        end = datetime.strptime(end, format) if type(end) is str else end
     except ValueError:
         end = now
     finally:

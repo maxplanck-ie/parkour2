@@ -1,10 +1,10 @@
-LIBRARY_SELECT = '''
+LIBRARY_SELECT = """
 record.mean_fragment_size AS "Mean Fragment Size",
 record.qpcr_result AS "qPCR Result",
 record.qpcr_result_facility AS "qPCR Result (Facility)"
-'''
+"""
 
-SAMPLE_SELECT = '''
+SAMPLE_SELECT = """
 record.rna_quality AS "RNA Quality",
 record.rna_quality_facility AS "RNA Quality (Facility)",
 nat.name AS "Nucleic Acid Type",
@@ -15,16 +15,16 @@ lprep.concentration_library AS "Concentration Library",
 lprep.mean_fragment_size AS "Mean Fragment Size",
 lprep."nM" AS "nM",
 lprep.qpcr_result AS "qPCR Result"
-'''
+"""
 
-SAMPLE_JOINS = '''
+SAMPLE_JOINS = """
 LEFT JOIN sample_nucleicacidtype as nat
     ON record.nucleic_acid_type_id = nat.id
 LEFT JOIN library_preparation_librarypreparation as lprep
     ON record.id = lprep.sample_id
-'''
+"""
 
-QUERY = '''
+QUERY = """
 SELECT *
 FROM (
     SELECT record.id AS t1_id,
@@ -79,7 +79,7 @@ FROM (
         pooling.concentration_c1 AS "Concentration C1",
         p.name AS "Pool",
         concat(psize.multiplier, 'x', psize.size) AS "Pool Size",
-        
+
 
         /* Sample-specific fields */
         {select}
@@ -127,8 +127,8 @@ FROM (
 
     LEFT JOIN pooling_pooling as pooling
         ON record.id = pooling.{table_name}_id
-    
-    
+
+
 
     /* Sample-specific joins */
     {joins}
@@ -153,4 +153,4 @@ LEFT JOIN (
         ON f.sequencer_id = s.id
     GROUP BY record.id, f.create_time::date
 ) t2 ON t1_id = t2_id
-'''
+"""

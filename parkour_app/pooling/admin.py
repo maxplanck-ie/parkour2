@@ -4,9 +4,18 @@ from .models import Pooling
 
 @admin.register(Pooling)
 class PoolingAdmin(admin.ModelAdmin):
-    list_display = ('name', 'barcode', 'request', 'pool',)
-    search_fields = ('library__name', 'library__barcode', 'sample__name',
-                     'sample__barcode',)
+    list_display = (
+        "name",
+        "barcode",
+        "request",
+        "pool",
+    )
+    search_fields = (
+        "library__name",
+        "library__barcode",
+        "sample__name",
+        "sample__barcode",
+    )
     list_select_related = True
 
     def name(self, obj):

@@ -10,9 +10,9 @@ from rest_framework.serializers import (
 
 from .models import PoolSize
 
-Request = apps.get_model('request', 'Request')
-Library = apps.get_model('library', 'Library')
-Sample = apps.get_model('sample', 'Sample')
+Request = apps.get_model("request", "Request")
+Library = apps.get_model("library", "Library")
+Sample = apps.get_model("sample", "Sample")
 
 
 class PoolSizeSerializer(ModelSerializer):
@@ -20,17 +20,22 @@ class PoolSizeSerializer(ModelSerializer):
 
     class Meta:
         model = PoolSize
-        fields = ('id', 'name', 'multiplier', 'size',)
+        fields = (
+            "id",
+            "name",
+            "multiplier",
+            "size",
+        )
 
     def get_name(self, obj):
-        return f'{obj.multiplier}x{obj.size}'
+        return f"{obj.multiplier}x{obj.size}"
 
 
 class IndexGeneratorListSerializer(ListSerializer):
     def update(self, instance, validated_data):
         # Maps for id->instance and id->data item.
         object_mapping = {obj.pk: obj for obj in instance}
-        data_mapping = {item['pk']: item for item in validated_data}
+        data_mapping = {item["pk"]: item for item in validated_data}
 
         # Perform updates
         ret = []
@@ -49,24 +54,24 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
     class Meta:
         list_serializer_class = IndexGeneratorListSerializer
         fields = (
-            'pk',
-            'record_type',
-            'name',
-            'barcode',
-            'sequencing_depth',
-            'library_protocol_name',
-            'read_length',
-            'index_type',
-            'index_i7_id',
-            'index_i7',
-            'index_i5_id',
-            'index_i5',
+            "pk",
+            "record_type",
+            "name",
+            "barcode",
+            "sequencing_depth",
+            "library_protocol_name",
+            "read_length",
+            "index_type",
+            "index_i7_id",
+            "index_i7",
+            "index_i5_id",
+            "index_i5",
         )
         extra_kwargs = {
-            'name': {'required': False},
-            'barcode': {'required': False},
-            'sequencing_depth': {'required': False},
-            'read_length': {'required': False},
+            "name": {"required": False},
+            "barcode": {"required": False},
+            "sequencing_depth": {"required": False},
+            "read_length": {"required": False},
         }
 
     def get_record_type(self, obj):
@@ -81,16 +86,16 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
     def to_internal_value(self, data):
         internal_value = super().to_internal_value(data)
 
-        index_type = data.get('index_type', None)
+        index_type = data.get("index_type", None)
         if index_type:
-            if data['record_type'] == 'Sample':
-                internal_value.update({
-                    'index_type_id': index_type
-                })
+            if data["record_type"] == "Sample":
+                internal_value.update({"index_type_id": index_type})
             else:
-                raise ValidationError({
-                    'index_type': ['A sample is required.'],
-                })
+                raise ValidationError(
+                    {
+                        "index_type": ["A sample is required."],
+                    }
+                )
 
         return internal_value
 
@@ -113,7 +118,12 @@ class IndexGeneratorSerializer(ModelSerializer):
 
     class Meta:
         model = Request
-        fields = ('request', 'request_name', 'libraries', 'samples',)
+        fields = (
+            "request",
+            "request_name",
+            "libraries",
+            "samples",
+        )
 
     def get_request(self, obj):
         return obj.pk
@@ -125,16 +135,23 @@ class IndexGeneratorSerializer(ModelSerializer):
         data = super().to_representation(instance)
         result = []
 
-        if not any(data['libraries']) and not any(data['samples']):
+        if not any(data["libraries"]) and not any(data["samples"]):
             return []
 
-        for type in ['libraries', 'samples']:
-            result.extend(list(map(
-                lambda x: {**{
-                    'request': data['request'],
-                    'request_name': data['request_name'],
-                }, **x},
-                data.pop(type),
-            )))
+        for type in ["libraries", "samples"]:
+            result.extend(
+                list(
+                    map(
+                        lambda x: {
+                            **{
+                                "request": data["request"],
+                                "request_name": data["request_name"],
+                            },
+                            **x,
+                        },
+                        data.pop(type),
+                    )
+                )
+            )
 
         return result

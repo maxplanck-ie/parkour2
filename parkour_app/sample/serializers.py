@@ -9,10 +9,13 @@ from sample.models import NucleicAcidType, Sample
 
 
 class NucleicAcidTypeSerializer(ModelSerializer):
-
     class Meta:
         model = NucleicAcidType
-        fields = ('id', 'name', 'type',)
+        fields = (
+            "id",
+            "name",
+            "type",
+        )
 
 
 class SampleSerializer(LibrarySampleBaseSerializer):
@@ -22,12 +25,17 @@ class SampleSerializer(LibrarySampleBaseSerializer):
 
     class Meta(LibrarySampleBaseSerializer.Meta):
         model = Sample
-        fields = LibrarySampleBaseSerializer.Meta.fields + \
-            ('pk', 'record_type', 'is_converted', 'rna_quality',
-             'nucleic_acid_type', 'nucleic_acid_type_name',)
+        fields = LibrarySampleBaseSerializer.Meta.fields + (
+            "pk",
+            "record_type",
+            "is_converted",
+            "rna_quality",
+            "nucleic_acid_type",
+            "nucleic_acid_type_name",
+        )
 
     def get_record_type(self, obj):
-        return 'Sample'
+        return "Sample"
 
     def get_nucleic_acid_type_name(self, obj):
         return obj.nucleic_acid_type.name

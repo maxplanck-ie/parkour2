@@ -22,25 +22,27 @@ from .api import router
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('authtools.urls')),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^api/', include(router.urls)),
-    url(r'^api/usage/', include('usage.urls')),
-
-    url(r'', include('common.urls')),
-    url(r'', include('report.urls')),
+    url(r"^admin/", admin.site.urls),
+    url(r"^accounts/", include("authtools.urls")),
+    url(r"^api-auth/", include("rest_framework.urls", namespace="rest_framework")),
+    url(r"^api/", include(router.urls)),
+    url(r"^api/usage/", include("usage.urls")),
+    url(r"", include("common.urls")),
+    url(r"", include("report.urls")),
 ]
 
 if settings.DEBUG:
     # import debug_toolbar
 
     urlpatterns += [
-        url(r'^404/$', page_not_found, kwargs={'exception': Exception('Page not Found')}),
-        url(r'^500/$', server_error),
+        url(
+            r"^404/$", page_not_found, kwargs={"exception": Exception("Page not Found")}
+        ),
+        url(r"^500/$", server_error),
         # url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
 
     urlpatterns += static(
-        settings.MEDIA_URL, document_root=settings.MEDIA_ROOT,
+        settings.MEDIA_URL,
+        document_root=settings.MEDIA_ROOT,
     )

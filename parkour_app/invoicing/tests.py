@@ -51,16 +51,17 @@ def create_sequencing_cost(sequencer, read_length, price):
 
 # Models
 
+
 class TestInvoicingReport(BaseTestCase):
     def setUp(self):
         self.now = datetime.now()
         self.report = InvoicingReport(
             month=Month(self.now.year, self.now.month),
-            report=SimpleUploadedFile('file.txt', b'content'),
+            report=SimpleUploadedFile("file.txt", b"content"),
         )
 
     def test_name(self):
-        self.assertEqual(str(self.report), self.now.strftime('%B %Y'))
+        self.assertEqual(str(self.report), self.now.strftime("%B %Y"))
 
 
 class TestFixedCostsModel(BaseTestCase):
@@ -70,7 +71,7 @@ class TestFixedCostsModel(BaseTestCase):
 
     def test_name(self):
         self.assertEqual(str(self.cost), self.sequencer.name)
-        self.assertEqual(self.cost.price_amount, f'{self.cost.price} €')
+        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
 
 
 class TestLibraryPreparationCostsModel(BaseTestCase):
@@ -80,23 +81,24 @@ class TestLibraryPreparationCostsModel(BaseTestCase):
 
     def test_name(self):
         self.assertEqual(str(self.cost), self.library_protocol.name)
-        self.assertEqual(self.cost.price_amount, f'{self.cost.price} €')
+        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
 
 
 class TestSequencingCostsModel(BaseTestCase):
     def setUp(self):
         self.sequencer = create_sequencer(get_random_name())
         self.read_length = create_read_length(get_random_name())
-        self.cost = create_sequencing_cost(
-            self.sequencer, self.read_length, 10)
+        self.cost = create_sequencing_cost(self.sequencer, self.read_length, 10)
 
     def test_name(self):
         self.assertEqual(
-            str(self.cost), f'{self.sequencer.name} {self.read_length.name}')
-        self.assertEqual(self.cost.price_amount, f'{self.cost.price} €')
+            str(self.cost), f"{self.sequencer.name} {self.read_length.name}"
+        )
+        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
 
 
 # Views
+
 
 class TestFixedCostsViewSet(BaseAPITestCase):
     def setUp(self):
@@ -107,22 +109,24 @@ class TestFixedCostsViewSet(BaseAPITestCase):
         self.cost = create_fixed_cost(sequencer, 10)
 
     def test_costs_list(self):
-        """ Ensure get fixed costs list behaves correctly. """
-        response = self.client.get(reverse('fixed-costs-list'))
+        """Ensure get fixed costs list behaves correctly."""
+        response = self.client.get(reverse("fixed-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        costs = [x['name'] for x in response.data]
+        costs = [x["name"] for x in response.data]
         self.assertIn(str(self.cost), costs)
 
     def test_update_price(self):
-        """ Ensure update price behaves correctly. """
+        """Ensure update price behaves correctly."""
         response = self.client.put(
-            path=reverse('fixed-costs-detail', kwargs={'pk': self.cost.pk}),
-            data=json.dumps({
-                'id': self.cost.pk,
-                'price': 15,
-            }),
-            content_type='application/json',
+            path=reverse("fixed-costs-detail", kwargs={"pk": self.cost.pk}),
+            data=json.dumps(
+                {
+                    "id": self.cost.pk,
+                    "price": 15,
+                }
+            ),
+            content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -130,9 +134,9 @@ class TestFixedCostsViewSet(BaseAPITestCase):
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):
-        self.create_user('non-staff@test.io', 'test', False)
-        self.login('non-staff@test.io', 'test')
-        response = self.client.get(reverse('fixed-costs-list'))
+        self.create_user("non-staff@test.io", "test", False)
+        self.login("non-staff@test.io", "test")
+        response = self.client.get(reverse("fixed-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
@@ -145,23 +149,26 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
         self.cost = create_preparation_cost(library_protocol, 10)
 
     def test_costs_list(self):
-        """ Ensure get library preparation costs list behaves correctly. """
-        response = self.client.get(reverse('library-preparation-costs-list'))
+        """Ensure get library preparation costs list behaves correctly."""
+        response = self.client.get(reverse("library-preparation-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        costs = [x['name'] for x in response.data]
+        costs = [x["name"] for x in response.data]
         self.assertIn(str(self.cost), costs)
 
     def test_update_price(self):
-        """ Ensure update price behaves correctly. """
+        """Ensure update price behaves correctly."""
         response = self.client.put(
-            path=reverse('library-preparation-costs-detail',
-                         kwargs={'pk': self.cost.pk}),
-            data=json.dumps({
-                'id': self.cost.pk,
-                'price': 15,
-            }),
-            content_type='application/json',
+            path=reverse(
+                "library-preparation-costs-detail", kwargs={"pk": self.cost.pk}
+            ),
+            data=json.dumps(
+                {
+                    "id": self.cost.pk,
+                    "price": 15,
+                }
+            ),
+            content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -169,9 +176,9 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):
-        self.create_user('non-staff@test.io', 'test', False)
-        self.login('non-staff@test.io', 'test')
-        response = self.client.get(reverse('library-preparation-costs-list'))
+        self.create_user("non-staff@test.io", "test", False)
+        self.login("non-staff@test.io", "test")
+        response = self.client.get(reverse("library-preparation-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
@@ -185,23 +192,24 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
         self.cost = create_sequencing_cost(sequencer, read_length, 10)
 
     def test_costs_list(self):
-        """ Ensure get sequencing costs list behaves correctly. """
-        response = self.client.get(reverse('sequencing-costs-list'))
+        """Ensure get sequencing costs list behaves correctly."""
+        response = self.client.get(reverse("sequencing-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        costs = [x['name'] for x in response.data]
+        costs = [x["name"] for x in response.data]
         self.assertIn(str(self.cost), costs)
 
     def test_update_price(self):
-        """ Ensure update price behaves correctly. """
+        """Ensure update price behaves correctly."""
         response = self.client.put(
-            path=reverse('sequencing-costs-detail',
-                         kwargs={'pk': self.cost.pk}),
-            data=json.dumps({
-                'id': self.cost.pk,
-                'price': 15,
-            }),
-            content_type='application/json',
+            path=reverse("sequencing-costs-detail", kwargs={"pk": self.cost.pk}),
+            data=json.dumps(
+                {
+                    "id": self.cost.pk,
+                    "price": 15,
+                }
+            ),
+            content_type="application/json",
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -209,14 +217,14 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):
-        self.create_user('non-staff@test.io', 'test', False)
-        self.login('non-staff@test.io', 'test')
-        response = self.client.get(reverse('sequencing-costs-list'))
+        self.create_user("non-staff@test.io", "test", False)
+        self.login("non-staff@test.io", "test")
+        response = self.client.get(reverse("sequencing-costs-list"))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
 class TestInvoicingViewSet(BaseAPITestCase):
-    """ Tests for the main Invoicing ViewSet. """
+    """Tests for the main Invoicing ViewSet."""
 
     def setUp(self):
         self.create_user()
@@ -236,19 +244,24 @@ class TestInvoicingViewSet(BaseAPITestCase):
         flowcell2.create_time = datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell2.save()
 
-        response = self.client.get(reverse('invoicing-billing-periods'))
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, [
-            {'name': 'November 2017', 'value': [2017, 11], 'report_url': ''},
-            {'name': 'December 2017', 'value': [2017, 12], 'report_url': ''},
-        ])
-
-    def test_report_upload(self):
-        month = datetime.now().strftime('%Y-%m')
-        response = self.client.post(reverse('invoicing-upload'), {
-            'month': month,
-            'report': SimpleUploadedFile('file.txt', b'content'),
-        })
+        response = self.client.get(reverse("invoicing-billing-periods"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            InvoicingReport.objects.filter(month=month).count(), 1)
+            response.data,
+            [
+                {"name": "November 2017", "value": [2017, 11], "report_url": ""},
+                {"name": "December 2017", "value": [2017, 12], "report_url": ""},
+            ],
+        )
+
+    def test_report_upload(self):
+        month = datetime.now().strftime("%Y-%m")
+        response = self.client.post(
+            reverse("invoicing-upload"),
+            {
+                "month": month,
+                "report": SimpleUploadedFile("file.txt", b"content"),
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(InvoicingReport.objects.filter(month=month).count(), 1)

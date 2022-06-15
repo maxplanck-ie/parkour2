@@ -10,30 +10,30 @@ from sample.models import Sample
 
 
 def get_sentinel_user():
-    return get_user_model().objects.get_or_create(username='deleted')[0]
+    return get_user_model().objects.get_or_create(username="deleted")[0]
 
 
 class FileRequest(models.Model):
-    name = models.CharField('Name', max_length=200)
-    file = models.FileField(upload_to='request_files/%Y/%m/%d/')
+    name = models.CharField("Name", max_length=200)
+    file = models.FileField(upload_to="request_files/%Y/%m/%d/")
 
     def __str__(self):
         return self.name
 
 
 class Request(DateTimeMixin):
-    name = models.CharField('Name', max_length=100, blank=True)
+    name = models.CharField("Name", max_length=100, blank=True)
     description = models.TextField()
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        verbose_name='User',
+        verbose_name="User",
         on_delete=models.SET(get_sentinel_user),
     )
 
     cost_unit = models.ForeignKey(
         CostUnit,
-        verbose_name='Cost Unit',
+        verbose_name="Cost Unit",
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
@@ -41,36 +41,36 @@ class Request(DateTimeMixin):
 
     libraries = models.ManyToManyField(
         Library,
-        related_name='request',
+        related_name="request",
         blank=True,
     )
 
     samples = models.ManyToManyField(
         Sample,
-        related_name='request',
+        related_name="request",
         blank=True,
     )
 
     files = models.ManyToManyField(
         FileRequest,
-        related_name='request',
+        related_name="request",
         blank=True,
     )
 
     deep_seq_request = models.FileField(
-        verbose_name='Deep Sequencing Request',
-        upload_to='deep_sequencing_requests/%Y/%m/%d/',
+        verbose_name="Deep Sequencing Request",
+        upload_to="deep_sequencing_requests/%Y/%m/%d/",
         blank=True,
         null=True,
     )
 
     samples_submitted = models.BooleanField(
-        verbose_name='Samples Submitted',
+        verbose_name="Samples Submitted",
         default=False,
     )
 
     sequenced = models.BooleanField(
-        verbose_name='Sequenced',
+        verbose_name="Sequenced",
         default=False,
     )
 
@@ -83,7 +83,7 @@ class Request(DateTimeMixin):
 
     @property
     def total_sequencing_depth(self):
-        return sum([x.sequencing_depth for x in self.records])
+        return sum(x.sequencing_depth for x in self.records)
 
     @property
     def total_records_count(self):
@@ -99,9 +99,9 @@ class Request(DateTimeMixin):
 
         if created:
             # Set name after getting an id
-            self.name = f'{self.id}_{self.user.last_name}'
+            self.name = f"{self.id}_{self.user.last_name}"
             if self.user.pi:
-                self.name += '_' + self.user.pi.name
+                self.name += "_" + self.user.pi.name
             self.save()
 
     def delete(self, *args, **kwargs):

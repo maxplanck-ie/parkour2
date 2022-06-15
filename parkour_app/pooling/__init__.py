@@ -1,1 +1,1 @@
-default_app_config = 'pooling.apps.PoolingConfig'
+default_app_config = "pooling.apps.PoolingConfig"
