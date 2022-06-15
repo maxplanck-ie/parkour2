@@ -1,19 +1,63 @@
+SHELL := /bin/bash
 
-deploy:
+deploy: set-prod deploy-django deploy-ready
+
+down:
+	docker compose -f docker-compose.yml -f caddy.yml down
+
+clean: down
+	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
+
+set-prod:
+	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
+	sed -i '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
+
+deploy-django:
 	docker network create parkour2_default
 	docker compose build
 	docker compose up -d
-	docker compose -f caddy.yml up -d
+
+deploy-ready:
 	docker compose run parkour2-django python manage.py makemigrations
 	docker compose run parkour2-django python manage.py migrate
 	docker compose run parkour2-django python manage.py collectstatic --noinput
 
+## DevOps ##################################################################
+
+prod: set-prod deploy-full
+
+dev: set-dev deploy-full
+
+deploy-full:  deploy-django deploy-caddy deploy-ready loadBackup
+
+set-dev:
+	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
+	sed -i '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
+
+deploy-caddy:
+	docker compose -f caddy.yml up -d
 
 loadBackup:
-	docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump
+	[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump
 
+compile:
+	cd parkour_app/ && \
+	source ./env/bin/activate && \
+	pip-compile-multi
 
-clean:
-	docker compose -f docker-compose.yml -f caddy.yml down
-	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles 
+dev-setup:
+	cd parkour_app/ && \
+	env python3 -m venv env && \
+	source ./env/bin/activate && \
+	pip install \
+		pre-commit \
+		pip-compile-multi
+
+# Don't confuse this ^up^here^ with the app development environment (dev.in &
+# dev.txt), mind the 'hierarchical' difference. We're going to use
+# pip-compile-multi to manage parkour_app/requirements/*.txt files.
+
+
+# Last, but not least, please also note that there's pre-commit to keep a tidy
+# repo. And, git-lfs (e.g.  `.gitattributes`) to track `parkour_app/static/`.

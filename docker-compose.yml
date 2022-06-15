@@ -2,20 +2,19 @@ version: "3.5"
 
 services:
   parkour2-postgres:
+    restart: always
     image: postgres:latest
     container_name: parkour2-postgres
-    restart: always
     ports:
       - 5433:5432
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    env_file:
+      - ./parkour.env
     volumes:
       - pgdb:/var/lib/postgresql/data/
 
   parkour2-django:
-    container_name: parkour2-django
     restart: always
+    container_name: parkour2-django
     depends_on:
       - parkour2-postgres
     build:
@@ -27,9 +26,8 @@ services:
     volumes:
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
-    links:
-      - parkour2-postgres:postgres
-    command: /usr/local/bin/gunicorn wui.wsgi:application -w 2 -b :8000
+#   links:
+#     - parkour2-postgres:postgres
 
 volumes:
   pgdb:
