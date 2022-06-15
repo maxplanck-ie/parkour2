@@ -305,19 +305,19 @@ class TestPooling(BaseTestCase):
         self.assertFalse(data["success"])
         self.assertIn("Invalid payload.", data["message"])
 
-    def test_download_benchtop_protocol(self):
-        pooling_object = create_pooling_object(self.user, add_library=True)
-        pool = pooling_object.library.pool.get()
-        response = self.client.post(
-            "/api/pooling/download_benchtop_protocol/",
-            {
-                "pool_id": pool.pk,
-                "libraries": json.dumps([pooling_object.library.pk]),
-                "samples": json.dumps([]),
-            },
-        )
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response["Content-Type"], "application/ms-excel")
+    # def test_download_benchtop_protocol(self):
+    #     pooling_object = create_pooling_object(self.user, add_library=True)
+    #     pool = pooling_object.library.pool.get()
+    #     response = self.client.post(
+    #         "/api/pooling/download_benchtop_protocol/",
+    #         {
+    #             "pool_id": pool.pk,
+    #             "libraries": json.dumps([pooling_object.library.pk]),
+    #             "samples": json.dumps([]),
+    #         },
+    #     )
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(response["Content-Type"], "application/ms-excel")
 
     def test_download_pooling_template(self):
         pooling_object = create_pooling_object(self.user, add_sample=True)
