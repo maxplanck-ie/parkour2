@@ -1,0 +1,100 @@
+repos:
+-   repo: local
+    hooks:
+    -   id: set-prod-docker
+        name: set-prod-docker
+        entry: /usr/bin/env sed
+        language: script
+        files: 'Dockerfile'
+        args: [-i, '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/']
+    -   id: set-prod-env
+        name: set-prod-env
+        entry: /usr/bin/env sed
+        language: script
+        files: 'parkour.env'
+        args: [-i, '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/']
+
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1  #Locked to py 3.6
+    hooks:
+    -   id: trailing-whitespace
+        types: [python]
+    -   id: end-of-file-fixer
+        types: [python]
+    -   id: check-added-large-files
+        types: [python]
+    -   id: check-merge-conflict
+        types: [python]
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v0.931'  #Locked, most probably py3.6 again
+    hooks:
+    -   id: mypy
+
+-   repo: https://github.com/psf/black
+    rev: 22.3.0
+    hooks:
+    -   id: black
+        language_version: python3
+        entry: black --target-version=py36  # 3.6
+
+-   repo: https://github.com/asottile/blacken-docs
+    rev: v1.10.0
+    hooks:
+    -   id: blacken-docs
+        additional_dependencies: [black==21.4b2]
+
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v2.30.1  #Locked to py 3.6
+    hooks:
+    -   id: pyupgrade
+        args: [--py36-plus]  # 3.6
+
+#-   repo: https://gitlab.com/pycqa/flake8.git
+#    rev: 4.0.1
+#    hooks:
+#    -   id: flake8
+#    #   additional_dependencies:
+#    #     - flake8-black>=0.1.1
+#    #   language_version: python3
+
+#-   repo: https://github.com/pycqa/doc8
+#    rev: 0.11.2
+#    hooks:
+#    -   id: doc8
+
+#-   repo: https://github.com/pre-commit/pygrep-hooks
+#    rev: v1.9.0
+#    hooks:
+#    -   id: python-check-blanket-noqa
+#    -   id: python-check-mock-methods
+#    -   id: python-no-eval
+#    -   id: python-no-log-warn
+#    -   id: rst-backticks
+#    -   id: rst-directive-colons
+
+#-   repo: https://github.com/adamchainz/django-upgrade
+#    rev: 1.7.0
+#    hooks:
+#    -   id: django-upgrade
+#        args: [--target-version, "3.2"]
+
+#-   repo: https://github.com/pycqa/isort
+#    rev: 5.10.1
+#    hooks:
+#    -   id: isort
+
+## Static(s)
+#-   repo: https://github.com/pre-commit/mirrors-prettier
+#    rev: v2.6.2
+#    hooks:
+#    -   id: prettier
+#        types_or: [javascript, css]
+#-   repo: https://github.com/pre-commit/mirrors-eslint
+#    rev: v8.17.0
+#    hooks:
+#    -   id: eslint
+#        files: \.js?$
+#        types: [file]
+#        args:
+#        - --fix

@@ -23,3 +23,5 @@ volumes:
   parkour2_staticfiles:
     external: true
 
+# TODO: gunicorn recommends nginx, https://docs.gunicorn.org/en/latest/deploy.html#deploying-gunicorn
+# so, test it: https://github.com/rakyll/hey
