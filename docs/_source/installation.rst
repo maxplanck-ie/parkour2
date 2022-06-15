@@ -6,7 +6,8 @@ Installation
 Quick start
 ===========
 
-It is assumed you have a recent version of `Docker`_ running and the `docker-compose`_ tool installed.
+It is assumed you have a recent version of `Docker`_ running and the
+`docker-compose`_ tool installed.
 
 Clone the repository::
 
@@ -16,7 +17,7 @@ Clone the repository::
 Customize your environment variables as given in this template::
 
   parkour.env
-  
+
 Build the images and start the services::
 
   docker-compose up -d --build
