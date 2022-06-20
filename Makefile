@@ -8,10 +8,11 @@ down:
 clean: down
 	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
 	docker images -f "dangling=true" -q  # docker rmi
+	# rm -rf ./cache_pip
 
 set-prod:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
-	sed -i '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
+	sed -i '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 
 deploy-django: deploy-network deploy-containers
 
@@ -41,7 +42,7 @@ deploy-full:  deploy-django deploy-caddy deploy-ready load-backup
 
 set-dev:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
-	sed -i '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
+	sed -i '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 
 deploy-caddy:
 	docker compose -f caddy.yml up -d

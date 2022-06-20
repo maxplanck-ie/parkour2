@@ -1,3 +1,5 @@
 *.env
 *.pem
 *.sql
+cache_pip
+cache_pip/
