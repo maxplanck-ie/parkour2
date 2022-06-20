@@ -5,7 +5,9 @@ from sample.models import Sample
 
 
 class LibraryPreparation(DateTimeMixin):
-    sample = models.OneToOneField(Sample, verbose_name="Sample")
+    sample = models.OneToOneField(
+        Sample, verbose_name="Sample", on_delete=models.SET_NULL, null=True
+    )
 
     starting_amount = models.FloatField(
         "Starting Amount",

@@ -28,6 +28,8 @@ class Sample(GenericLibrarySample):
     nucleic_acid_type = models.ForeignKey(
         NucleicAcidType,
         verbose_name="Nucleic Acid Type",
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     rna_quality = models.FloatField(

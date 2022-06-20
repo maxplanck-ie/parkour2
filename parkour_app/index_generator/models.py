@@ -24,10 +24,20 @@ class PoolSize(models.Model):
         return f"{self.multiplier}x{self.size}"
 
 
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username="deleted")[0]
+
+
 class Pool(DateTimeMixin):
     name = models.CharField("Name", max_length=100, blank=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name="User")
-    size = models.ForeignKey(PoolSize, verbose_name="Size")
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        verbose_name="User",
+        on_delete=models.SET(get_sentinel_user),
+    )
+    size = models.ForeignKey(
+        PoolSize, verbose_name="Size", on_delete=models.SET_NULL, null=True
+    )
     loaded = models.PositiveSmallIntegerField("Loaded", default=0, blank=True)
     libraries = models.ManyToManyField(Library, related_name="pool", blank=True)
     samples = models.ManyToManyField(Sample, related_name="pool", blank=True)

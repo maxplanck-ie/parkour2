@@ -148,13 +148,18 @@ class IndexType(models.Model):
 
 
 class IndexPair(models.Model):
-    index_type = models.ForeignKey(IndexType, verbose_name="Index Type")
-    index1 = models.ForeignKey(IndexI7, verbose_name="Index 1")
+    index_type = models.ForeignKey(
+        IndexType, verbose_name="Index Type", on_delete=models.SET_NULL, null=True
+    )
+    index1 = models.ForeignKey(
+        IndexI7, verbose_name="Index 1", on_delete=models.SET_NULL, null=True
+    )
     index2 = models.ForeignKey(
         IndexI5,
         verbose_name="Index 2",
         null=True,
         blank=True,
+        on_delete=models.SET_NULL,
     )
 
     char_coord = models.CharField(
@@ -261,6 +266,12 @@ class LibraryType(models.Model):
         return self.name
 
 
+def get_removed_concentrationmethod():
+    return ConcentrationMethod.objects.get_or_create(
+        name="Removed Concentration Method"
+    )[0]
+
+
 class GenericLibrarySample(DateTimeMixin):
     name = models.CharField(
         "Name",
@@ -272,20 +283,27 @@ class GenericLibrarySample(DateTimeMixin):
     library_protocol = models.ForeignKey(
         LibraryProtocol,
         verbose_name="Library Protocol",
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     library_type = models.ForeignKey(
         LibraryType,
         verbose_name="Library Type",
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
-    organism = models.ForeignKey(Organism, verbose_name="Organism")
+    organism = models.ForeignKey(
+        Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
+    )
 
     concentration = models.FloatField("Concentration")
 
     concentration_method = models.ForeignKey(
         ConcentrationMethod,
         verbose_name="Concentration Method",
+        on_delete=models.SET(get_removed_concentrationmethod),
     )
 
     equal_representation_nucleotides = models.BooleanField(
@@ -296,6 +314,8 @@ class GenericLibrarySample(DateTimeMixin):
     read_length = models.ForeignKey(
         ReadLength,
         verbose_name="Read Length",
+        on_delete=models.SET_NULL,
+        null=True,
     )
 
     sequencing_depth = models.FloatField("Sequencing Depth")
@@ -311,6 +331,7 @@ class GenericLibrarySample(DateTimeMixin):
         verbose_name="Index Type",
         null=True,
         blank=True,
+        on_delete=models.SET_NULL,
     )
 
     index_reads = models.PositiveSmallIntegerField("Index Reads", default=0)
@@ -367,6 +388,7 @@ class GenericLibrarySample(DateTimeMixin):
         verbose_name="Concentration Method",
         null=True,
         blank=True,
+        on_delete=models.SET_NULL,
     )
 
     sample_volume_facility = models.PositiveIntegerField(

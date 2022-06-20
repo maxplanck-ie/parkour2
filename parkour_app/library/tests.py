@@ -3,7 +3,7 @@ from datetime import datetime
 
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name

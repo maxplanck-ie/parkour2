@@ -1,5 +1,7 @@
 from django.conf import settings
-from django.conf.urls import url
+
+# from django.conf.urls import url  ## quick fix until dj 2.x brings auth blah
+from django.urls import re_path as url
 from django.contrib.auth import views as auth_views
 
 from common import views

@@ -7,10 +7,16 @@ from sample.models import Sample
 
 class Pooling(DateTimeMixin):
     library = models.OneToOneField(
-        Library, verbose_name="Library", null=True, blank=True
+        Library,
+        verbose_name="Library",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
 
-    sample = models.OneToOneField(Sample, verbose_name="Sample", null=True, blank=True)
+    sample = models.OneToOneField(
+        Sample, verbose_name="Sample", null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     concentration_c1 = models.FloatField("Concentration C1", null=True, blank=True)
 
