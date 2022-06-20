@@ -7,20 +7,29 @@ down:
 
 clean: down
 	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
+	docker images -f "dangling=true" -q  # docker rmi
 
 set-prod:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
 	sed -i '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 
-deploy-django:
+deploy-django: deploy-network deploy-containers
+
+deploy-network:
 	docker network create parkour2_default
+
+deploy-containers:
 	docker compose build
 	docker compose up -d
 
-deploy-ready:
-	docker compose run parkour2-django python manage.py makemigrations
-	docker compose run parkour2-django python manage.py migrate
+deploy-ready: collect-static load-migrations
+
+collect-static:
 	docker compose run parkour2-django python manage.py collectstatic --noinput
+
+load-migrations:
+	docker compose run parkour2-django python manage.py makemigrations && \
+        docker compose run parkour2-django python manage.py migrate
 
 ## DevOps ##################################################################
 
@@ -28,7 +37,7 @@ prod: set-prod deploy-full
 
 dev: set-dev deploy-full
 
-deploy-full:  deploy-django deploy-caddy deploy-ready loadBackup
+deploy-full:  deploy-django deploy-caddy deploy-ready load-backup
 
 set-dev:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -37,9 +46,17 @@ set-dev:
 deploy-caddy:
 	docker compose -f caddy.yml up -d
 
-loadBackup:
+load-backup:
 	[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump
+
+reload:
+	docker container stop parkour2-django
+	$(MAKE) deploy-containers deploy-caddy load-migrations
+	docker compose logs -f
+
+test:
+	docker compose run parkour2-django python manage.py test
 
 compile:
 	cd parkour_app/ && \
