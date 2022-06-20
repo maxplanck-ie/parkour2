@@ -2,6 +2,14 @@ from django.db import models
 from authtools.models import AbstractEmailUser
 
 
+def get_deleted_org():
+    return Organization.objects.get_or_create(name="deleted ORG")[0]
+
+
+def get_deleted_pi():
+    return PrincipalInvestigator.objects.get_or_create(name="deleted PI")[0]
+
+
 class Organization(models.Model):
     name = models.CharField("Name", max_length=100)
 
@@ -11,7 +19,9 @@ class Organization(models.Model):
 
 class PrincipalInvestigator(models.Model):
     name = models.CharField("Name", max_length=100)
-    organization = models.ForeignKey(Organization)
+    organization = models.ForeignKey(
+        Organization, on_delete=models.SET(get_deleted_org)
+    )
 
     class Meta:
         verbose_name = "Principal Investigator"
@@ -27,6 +37,7 @@ class CostUnit(models.Model):
     pi = models.ForeignKey(
         PrincipalInvestigator,
         verbose_name="Principal Investigator",
+        on_delete=models.SET(get_deleted_pi),
     )
 
     class Meta:

@@ -18,7 +18,9 @@ class Sequencer(models.Model):
 
 class Lane(models.Model):
     name = models.CharField("Name", max_length=6)
-    pool = models.ForeignKey(Pool, verbose_name="Pool")
+    pool = models.ForeignKey(
+        Pool, verbose_name="Pool", on_delete=models.SET_NULL, null=True
+    )
     loading_concentration = models.FloatField(
         "Loading Concentration", blank=True, null=True
     )
@@ -41,7 +43,9 @@ class Lane(models.Model):
 
 class Flowcell(DateTimeMixin):
     flowcell_id = models.CharField("Flowcell ID", max_length=50, unique=True)
-    sequencer = models.ForeignKey(Sequencer, verbose_name="Sequencer")
+    sequencer = models.ForeignKey(
+        Sequencer, verbose_name="Sequencer", on_delete=models.SET_NULL, null=True
+    )
     lanes = models.ManyToManyField(Lane, related_name="flowcell", blank=True)
     requests = models.ManyToManyField(Request, related_name="flowcell", blank=True)
     matrix = JSONField("Flowcell Matrix", blank=True, null=True)

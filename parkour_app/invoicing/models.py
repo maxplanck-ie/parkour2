@@ -25,7 +25,7 @@ class InvoicingReport(DateTimeMixin):
 
 
 class FixedCosts(models.Model):
-    sequencer = models.OneToOneField(Sequencer)
+    sequencer = models.OneToOneField(Sequencer, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:
@@ -42,7 +42,11 @@ class FixedCosts(models.Model):
 
 class LibraryPreparationCosts(models.Model):
     library_protocol = models.ForeignKey(
-        LibraryProtocol, unique=True, limit_choices_to={"obsolete": 1}
+        LibraryProtocol,
+        unique=True,
+        limit_choices_to={"obsolete": 1},
+        on_delete=models.SET_NULL,
+        null=True,
     )
     # library_protocol = models.OneToOneField(LibraryProtocol)
     price = models.DecimalField(max_digits=8, decimal_places=2)
@@ -60,8 +64,15 @@ class LibraryPreparationCosts(models.Model):
 
 
 class SequencingCosts(models.Model):
-    sequencer = models.ForeignKey(Sequencer, limit_choices_to={"obsolete": 1})
-    read_length = models.ForeignKey(ReadLength, verbose_name="Read Length")
+    sequencer = models.ForeignKey(
+        Sequencer,
+        limit_choices_to={"obsolete": 1},
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+    read_length = models.ForeignKey(
+        ReadLength, verbose_name="Read Length", on_delete=models.SET_NULL, null=True
+    )
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
     class Meta:

@@ -1,6 +1,6 @@
 import json
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from common.utils import get_random_name
 from common.tests import BaseTestCase
