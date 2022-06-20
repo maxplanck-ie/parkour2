@@ -6,7 +6,7 @@ repos:
         entry: /usr/bin/env sed
         language: script
         files: 'Dockerfile'
-        args: [-i, '/^RUN pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/']
+        args: [-i, '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/']
     -   id: set-prod-env
         name: set-prod-env
         entry: /usr/bin/env sed
