@@ -54,7 +54,7 @@ load-backup:
 reload:
 	docker container stop parkour2-django
 	$(MAKE) deploy-containers deploy-caddy load-migrations
-	docker compose logs -f
+	docker compose logs
 
 test:
 	docker compose run parkour2-django python manage.py test
