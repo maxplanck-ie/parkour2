@@ -5,29 +5,29 @@ services:
     restart: always
     image: postgres:latest
     container_name: parkour2-postgres
-    ports:
-      - 5433:5432
     env_file:
       - ./parkour.env
     volumes:
       - pgdb:/var/lib/postgresql/data/
+    healthcheck:
+      test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 2s
+      retries: 10
 
   parkour2-django:
     restart: always
     container_name: parkour2-django
     depends_on:
-      - parkour2-postgres
+      parkour2-postgres:
+        condition: service_healthy
     build:
       dockerfile: ./Dockerfile
-    expose:
-      - 8000
     env_file:
       - ./parkour.env
     volumes:
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
-#   links:
-#     - parkour2-postgres:postgres
 
 volumes:
   pgdb:

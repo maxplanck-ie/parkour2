@@ -1,4 +1,4 @@
-http://parkour-test.ie-freiburg.mpg.de {
+http://127.0.0.1 {
     handle /static/* {
         root * /parkour2
         file_server

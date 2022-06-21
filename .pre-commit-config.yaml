@@ -13,12 +13,18 @@ repos:
         language: script
         files: 'parkour.env'
         args: [-i, '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/']
-    -   id: set-local-url
-        name: set-local-url
+    -   id: set-local-url-1
+        name: set-local-url-1
         entry: /usr/bin/env sed
         language: script
         files: 'Caddyfile'
         args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1 {/']
+    -   id: set-local-url-2
+        name: set-local-url-2
+        entry: /usr/bin/env sed
+        language: script
+        files: 'caddy.yml'
+        args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/Caddyfile\:/']
 
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.0.1  #Locked to py 3.6

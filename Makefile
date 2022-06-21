@@ -1,11 +1,8 @@
 SHELL := /bin/bash
 
-deploy: set-local set-prod deploy-full
+deploy: set-prod deploy-full
 
 deploy-full:  deploy-django deploy-caddy deploy-ready
-
-set-local:
-	sed -i '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1 {/' Caddyfile
 
 set-prod:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
@@ -55,7 +52,7 @@ load-backup:
 	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump
 
 reload:
-	docker container stop parkour2-django
+	docker compose stop
 	$(MAKE) deploy-containers deploy-caddy load-migrations
 	docker compose logs
 
