@@ -31,8 +31,6 @@ pynacl==1.5.0
     # via paramiko
 pyperclip==1.8.2
     # via -r requirements/dev.in
-sqlparse==0.4.2
-    # via django-debug-toolbar
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
