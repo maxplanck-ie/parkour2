@@ -1,14 +1,11 @@
 SHELL := /bin/bash
 
-deploy: set-prod deploy-django deploy-ready
+deploy: set-local set-prod deploy-full
 
-down:
-	docker compose -f docker-compose.yml -f caddy.yml down
+deploy-full:  deploy-django deploy-caddy deploy-ready
 
-clean: down
-	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
-	docker images -f "dangling=true" -q  # docker rmi
-	# rm -rf ./cache_pip
+set-local:
+	sed -i '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1 {/' Caddyfile
 
 set-prod:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
@@ -32,13 +29,19 @@ load-migrations:
 	docker compose run parkour2-django python manage.py makemigrations && \
         docker compose run parkour2-django python manage.py migrate
 
+down:
+	docker compose -f docker-compose.yml -f caddy.yml down
+
+clean: down
+	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
+	docker images -f "dangling=true" -q  # docker rmi
+	# rm -rf ./cache_pip
+
 ## DevOps ##################################################################
 
-prod: set-prod deploy-full
+prod: set-prod deploy-full load-backup
 
-dev: set-dev deploy-full
-
-deploy-full:  deploy-django deploy-caddy deploy-ready load-backup
+dev: set-dev deploy-full load-backup
 
 set-dev:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
