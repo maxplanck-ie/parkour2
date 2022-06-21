@@ -59,7 +59,7 @@ TIME_ZONE=Europe/Berlin
 ```
 
 Finally, run this command: `make`. Afterwards, you may access the application
-at: <http://127.0.0.1:8000>, run `docker compose logs -f` if you want to see
+at: <http://127.0.0.1/>, run `docker compose logs -f` if you want to see
 what's going on, and use `make clean` to stop all the composed services without
 saving any data (only the vanilla docker images remain).
 
