@@ -1,10 +1,10 @@
 # Django
 Django==2.2.28
 django-authtools
-djangorestframework==3.11.2
+djangorestframework
 django-admin-list-filter-dropdown
 django-monthfield
-django_extensions==1.9.7
+django_extensions
 
 
 # Database
