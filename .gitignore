@@ -1,5 +1,5 @@
 *.env
 *.pem
 *.sql
-cache_pip
-cache_pip/
+caddyfile.in.use
+ncdb.yml
