@@ -133,7 +133,7 @@ ADMINS = [
 ]
 
 
-AUTH_USER_MODEL = "common.User"
+AUTH_USER_MODEL = "common.User"  # authtools
 
 
 # Email config
