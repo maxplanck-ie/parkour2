@@ -37,7 +37,8 @@ Documentation and user manual can be viewed
 
 We're using [Docker](https://docs.docker.com/get-started/) with
 `docker-compose-plugin` (v2) in our `Makefile`. First, install these system
-requirements.
+requirements, and [download the latest
+version](https://github.com/adRn-s/parkour2/tags).
 
 In second place, before running this Django application, populate your own
 `parkour.env` file with the following configuration variables. This file sits
@@ -71,9 +72,7 @@ tasks are beyond the scope of this quickstart guide.
 
 ## Development
 
-The `Makefile` is a good place to start diving deeper. It has a sane set of
-rules to deploy with debugging, or not.
-
-We're in the process of updating the codebase to the upcoming Django 4.2 LTS
-version. On a much longer-term goal, there's the possibility of getting a whole
-new UX, dropping the old Ext JS dependency.
+The `Makefile` is a good place to start diving deeper...  We're in the process
+of updating the codebase to the upcoming Django 4.2 LTS version. On a much
+longer-term goal, there's the possibility of getting a whole new UX, dropping
+the old Ext JS dependency.
