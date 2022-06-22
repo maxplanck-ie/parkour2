@@ -1,6 +1,5 @@
 from django.conf import settings
 
-from django.urls import re_path as url
 from django.urls import include, path
 from django.contrib.auth import views as auth_views
 
@@ -8,10 +7,8 @@ from common import views
 
 
 urlpatterns = [
-    url(r"^$", views.index, name="index"),
-    url(
-        r"^get_navigation_tree/$", views.get_navigation_tree, name="get_navigation_tree"
-    ),
+    path("", views.index, name="index"),
+    path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),
     path(
         "login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"
     ),
