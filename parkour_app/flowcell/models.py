@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 
 from common.models import DateTimeMixin
 from request.models import Request
@@ -48,8 +47,8 @@ class Flowcell(DateTimeMixin):
     )
     lanes = models.ManyToManyField(Lane, related_name="flowcell", blank=True)
     requests = models.ManyToManyField(Request, related_name="flowcell", blank=True)
-    matrix = JSONField("Flowcell Matrix", blank=True, null=True)
-    sequences = JSONField("Sequences", blank=True, null=True)
+    matrix = models.JSONField("Flowcell Matrix", blank=True, null=True)
+    sequences = models.JSONField("Sequences", blank=True, null=True)
 
     def __str__(self):
         return self.flowcell_id
