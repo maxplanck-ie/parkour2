@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM python:3.8.13-slim
+FROM python:3.8.13
 WORKDIR /usr/src/app
 COPY ./parkour_app .
 RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt

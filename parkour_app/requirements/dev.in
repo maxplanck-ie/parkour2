@@ -1,7 +1,6 @@
 -r base.in
 
-django-debug-toolbar==1.11.1
-Fabric3
+django-debug-toolbar==3.0
 pyperclip
 coverage
 gunicorn
