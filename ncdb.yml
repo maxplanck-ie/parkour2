@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+  parkour2-nocodb:
+    image: nocodb/nocodb:latest
+    container_name: parkour2-nocodb
+    restart: always
+    volumes:
+      - ncdb_data:/usr/app/data
+    env_file:
+      - ./parkour.env
+    environment:
+      NC_DB: $$DATABASE_URL
+      NC_DISABLE_TELE: True
+      NC_MIN: "ok"
+      NC_BASEURL_INTERNAL: db-test.ie-freiburg.mpg.de
+
+volumes:
+  ncdb_data: {}
+
+networks:
+  default:
+      name: parkour2_default

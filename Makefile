@@ -31,14 +31,22 @@ down:
 
 clean: down
 	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles
-	docker images -f "dangling=true" -q  # docker rmi
-	# rm -rf ./cache_pip
 
 ## DevOps ##################################################################
 
-prod: set-prod deploy-full load-backup
+down-op:
+	docker compose -f docker-compose.yml -f caddy.yml -f ncdb.yml down
 
-dev: set-dev deploy-full load-backup
+clean-op: down-op
+	docker volume rm parkour2_caddy_config parkour2_caddy_data parkour2_pgdb parkour2_media parkour2_staticfiles parkour2_ncdb_data
+	docker images -f "dangling=true" -q  # docker rmi
+
+prod: set-caddy set-prod deploy-full load-backup deploy-ncdb
+
+dev: set-caddy set-dev deploy-full load-backup deploy-ncdb
+
+set-caddy:
+	sed -i "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
 
 set-dev:
 	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -46,6 +54,9 @@ set-dev:
 
 deploy-caddy:
 	docker compose -f caddy.yml up -d
+
+deploy-ncdb:
+	docker compose -f ncdb.yml up -d
 
 load-backup:
 	[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
