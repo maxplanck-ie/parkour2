@@ -214,4 +214,5 @@ class UserAdmin(NamedUserAdmin):
                 )
 
 
+# admin.site.unregister(User)
 admin.site.register(User, UserAdmin)

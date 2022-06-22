@@ -8,7 +8,7 @@ from .api import router
 
 urlpatterns = [
     url("admin/", admin.site.urls),
-    url("accounts/", include("authtools.urls")),
+    #   url("accounts/", include("authtools.urls")),
     url("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     url("api/", include(router.urls)),
     url("api/usage/", include("usage.urls")),
