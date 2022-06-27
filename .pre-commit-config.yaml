@@ -85,16 +85,17 @@ repos:
     -   id: rst-backticks
     -   id: rst-directive-colons
 
-#-   repo: https://github.com/adamchainz/django-upgrade
-#    rev: 1.7.0
-#    hooks:
-#    -   id: django-upgrade
-#        args: [--target-version, "3.2"]
+-   repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.7.0
+    hooks:
+    -   id: django-upgrade
+        args: [--target-version, "3.2"]
 
-#-   repo: https://github.com/pycqa/isort
-#    rev: 5.10.1
-#    hooks:
-#    -   id: isort
+-   repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+    -   id: isort
+        args: [--profile, "django"]
 
 ## Static(s)
 #-   repo: https://github.com/pre-commit/mirrors-prettier
