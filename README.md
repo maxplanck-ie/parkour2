@@ -31,36 +31,24 @@ Please note that the instance is reset every 12 hours!
 The **user manual** can be viewed at →
 [ReadTheDocs](https://parkour.readthedocs.io/) 📖.
 
-#### Deployment
+### Installation
 
-We're using [Docker](https://docs.docker.com/get-started/) with
-`docker-compose-plugin` (v2) in our `Makefile`. First, install these system
-requirements 🐳, and [download the latest
-version](https://github.com/adRn-s/parkour2/tags) zip file.
+To carry out the deployment (ideally, on a server) we're using
+[Docker](https://docs.docker.com/get-started/) with `docker-compose-plugin`
+(v2). To ease the task, common docker CLI commands are bundled as rules at our
+`Makefile`. First, install these system requirements 🐳, then download/ clone
+the latest version of this repo.
 
-In second place, after decopressing the code into a folder, populate your own
-`parkour.env` file with the following configuration variables. This file sits
-in the project root (e.g.  next to `caddy.yml`). You may copy, and edit:
-
-```
-SECRET_KEY=generate one with openssl
-DJANGO_SETTINGS_MODULE=wui.settings.prod
-ADMIN_NAME=admin
-ADMIN_EMAIL=your email
-EMAIL_HOST=mail.server.tld
-EMAIL_SUBJECT_PREFIX=[Parkour]
-SERVER_EMAIL=your email
-DATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres
-POSTGRES_USER=postgres
-POSTGRES_DB=postgres
-POSTGRES_PASSWORD=change_me__stay_safe
-TIME_ZONE=Europe/Berlin
-```
+In second place, after decompressing the code into a folder, rename
+`parkour.env.sample` file to `parkour.env` and edit its contents according to
+your liking.
 
 Finally, run this command: `make`. Afterwards, you may access the application
 at: <http://127.0.0.1/>, run `docker compose logs -f` if you want to see what's
-going on, and use `make clean` to stop all the composed services without saving
-any data (the docker images remain).
+going on.
+
+Use `make clean` to stop all the composed services without saving any data (the
+docker images remain).
 
 > In more real scenarios, you'll need to: preserve data between docker runs,
 > configure TLS certificates, add DNS records, secure database access, set a
