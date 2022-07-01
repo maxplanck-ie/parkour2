@@ -5,8 +5,8 @@ deploy: set-prod deploy-full
 deploy-full:  deploy-django deploy-caddy deploy-ready
 
 set-prod:
-	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
-	sed -i '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
+	sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
+	sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 
 deploy-django: deploy-network deploy-containers
 
@@ -46,11 +46,11 @@ prod: set-caddy set-prod deploy-full load-backup deploy-ncdb
 dev: set-caddy set-dev deploy-full load-backup deploy-ncdb
 
 set-caddy:
-	sed -i "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
+	sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
 
 set-dev:
-	sed -i '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
-	sed -i '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
+	sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
+	sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 
 deploy-caddy:
 	docker compose -f caddy.yml up -d
