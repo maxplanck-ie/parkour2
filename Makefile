@@ -82,7 +82,8 @@ dev-setup:
 	env python3 -m pip install --upgrade pip && \
 	pip install \
 		pre-commit \
-		pip-compile-multi
+		pip-compile-multi \
+		sphinx
 
 # Don't confuse this ^up^here^ with the app development environment (dev.in &
 # dev.txt), mind the 'hierarchical' difference. We're going to use
