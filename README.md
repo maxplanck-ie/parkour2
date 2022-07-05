@@ -33,11 +33,11 @@ The **user manual** can be viewed at →
 
 ### Installation
 
-To carry out the deployment (ideally, on a server) we're using
-[Docker](https://docs.docker.com/get-started/) with `docker-compose-plugin`
-(v2). To ease the task, common docker CLI commands are bundled as rules at our
-`Makefile`. First, install these system requirements 🐳, then download/ clone
-the latest version of this repo.
+To carry out the deployment (ideally, on a server) of this Django application,
+we're using [Docker](https://docs.docker.com/get-started/) with
+`docker-compose-plugin` (v2). To ease the task, common docker CLI commands
+are bundled as rules at our `Makefile`. First, install these system
+requirements 🐳, then download/ clone the latest version of this repo.
 
 In second place, after decompressing the code into a folder, rename
 `parkour.env.sample` file to `parkour.env` and edit its contents according to
@@ -45,10 +45,20 @@ your liking.
 
 Finally, run this command: `make`. Afterwards, you may access the application
 at: <http://127.0.0.1/>, run `docker compose logs -f` if you want to see what's
-going on.
+going on. To log into the application, you'll need to create an admin user with
+the following command:
+
+`$ docker compose run parkour2-django python manage.py createsuperuser`
+
+You'll be asked for an email address (there are no usernames) and a password.
+There isn't any confirmation emails.  Afterwards, you may access
+<http://127.0.0.1/admin> to start adding data: creating regular users, and the
+values to use within the application (_see the user manual for details_).
 
 Use `make clean` to stop all the composed services without saving any data (the
-docker images remain).
+docker images remain). The `Makefile` has rules for all sorts of common
+tasks, you should take a look there to dive deeper into working with Docker and
+Django.
 
 > In more real scenarios, you'll need to: preserve data between docker runs,
 > configure TLS certificates, add DNS records, secure database access, set a
