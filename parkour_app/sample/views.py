@@ -1,12 +1,11 @@
 import logging
 
-from rest_framework import viewsets
-
+from django.conf import settings
 from library_sample_shared.views import LibrarySampleBaseViewSet
+from rest_framework import viewsets
 
 from .models import NucleicAcidType
 from .serializers import NucleicAcidTypeSerializer, SampleSerializer
-from django.conf import settings
 
 logger = logging.getLogger("db")
 

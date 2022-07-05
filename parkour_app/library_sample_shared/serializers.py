@@ -1,18 +1,18 @@
 from rest_framework.serializers import (
-    ModelSerializer,
     ListSerializer,
+    ModelSerializer,
     SerializerMethodField,
 )
 
 from .models import (
-    Organism,
-    ReadLength,
+    ConcentrationMethod,
+    IndexI5,
+    IndexI7,
     IndexType,
     LibraryProtocol,
     LibraryType,
-    IndexI7,
-    IndexI5,
-    ConcentrationMethod,
+    Organism,
+    ReadLength,
 )
 
 

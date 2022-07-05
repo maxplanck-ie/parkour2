@@ -1,8 +1,8 @@
+import traceback
+
 from django.core import mail
 from django.utils.log import AdminEmailHandler
 from django.views.debug import ExceptionReporter, get_exception_reporter_filter
-
-import traceback
 
 
 class CustomAdminEmailHandler(AdminEmailHandler):

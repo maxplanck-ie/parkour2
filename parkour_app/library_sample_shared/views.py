@@ -1,35 +1,33 @@
 import json
 import logging
 
-from django.apps import apps
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-
 from common.views import StandardResultsSetPagination
+from django.apps import apps
+from django.conf import settings
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import (
     ConcentrationMethod,
+    IndexI5,
+    IndexI7,
+    IndexType,
     LibraryProtocol,
     LibraryType,
-    ReadLength,
-    IndexType,
     Organism,
-    IndexI7,
-    IndexI5,
+    ReadLength,
 )
-
 from .serializers import (
-    OrganismSerializer,
+    ConcentrationMethodSerializer,
+    IndexI5Serializer,
+    IndexI7Serializer,
     IndexTypeSerializer,
     LibraryProtocolSerializer,
     LibraryTypeSerializer,
-    IndexI7Serializer,
-    IndexI5Serializer,
+    OrganismSerializer,
     ReadLengthSerializer,
-    ConcentrationMethodSerializer,
 )
-from django.conf import settings
 
 Request = apps.get_model("request", "Request")
 

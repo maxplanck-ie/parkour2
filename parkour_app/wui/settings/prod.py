@@ -1,6 +1,5 @@
 from .base import *
 
-
 DEBUG = False
 
 LOGGING["loggers"] = {

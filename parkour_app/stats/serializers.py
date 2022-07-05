@@ -1,5 +1,4 @@
 from django.apps import apps
-
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 Flowcell = apps.get_model("flowcell", "Flowcell")

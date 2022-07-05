@@ -4,25 +4,22 @@ from collections import namedtuple
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
-
-from request.tests import create_request
-from library_sample_shared.tests import create_index_type as _create_index_type
+from library.models import Library
 from library.tests import create_library
+from library_sample_shared.models import (
+    IndexI5,
+    IndexI7,
+    IndexPair,
+    IndexType,
+    ReadLength,
+)
+from library_sample_shared.tests import create_index_type as _create_index_type
+from request.tests import create_request
+from sample.models import Sample
 from sample.tests import create_sample
 
-from library_sample_shared.models import (
-    ReadLength,
-    IndexType,
-    IndexI7,
-    IndexI5,
-    IndexPair,
-)
-from library.models import Library
-from sample.models import Sample
-
+from .index_generator import IndexGenerator, IndexRegistry
 from .models import Pool, PoolSize
-from .index_generator import IndexRegistry, IndexGenerator
-
 
 Index = namedtuple("Index", ["prefix", "number", "index"])
 

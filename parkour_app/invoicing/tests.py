@@ -1,24 +1,19 @@
 import json
-import pytz
 from datetime import datetime
 
-from django.urls import reverse
+import pytz
+from common.tests import BaseAPITestCase, BaseTestCase
+from common.utils import get_random_name
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.urls import reverse
+from flowcell.tests import create_flowcell, create_sequencer
+from library_sample_shared.tests import create_library_protocol, create_read_length
+from month import Month
 from rest_framework import status
 
-from month import Month
-
-from common.tests import BaseTestCase, BaseAPITestCase
-from common.utils import get_random_name
-from library_sample_shared.tests import (
-    create_read_length,
-    create_library_protocol,
-)
-from flowcell.tests import create_sequencer, create_flowcell
-
 from .models import (
-    InvoicingReport,
     FixedCosts,
+    InvoicingReport,
     LibraryPreparationCosts,
     SequencingCosts,
 )

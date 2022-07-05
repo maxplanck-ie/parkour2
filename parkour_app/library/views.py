@@ -2,16 +2,14 @@ import logging
 
 from django.apps import apps
 from django.db.models import Prefetch
-
+from library_sample_shared.views import LibrarySampleBaseViewSet
 from rest_framework import viewsets
 from rest_framework.response import Response
 
-from library_sample_shared.views import LibrarySampleBaseViewSet
-
 from .serializers import (
     LibrarySerializer,
-    RequestParentNodeSerializer,
     RequestChildrenNodesSerializer,
+    RequestParentNodeSerializer,
 )
 
 Request = apps.get_model("request", "Request")

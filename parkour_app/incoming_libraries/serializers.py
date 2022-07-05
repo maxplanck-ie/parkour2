@@ -1,11 +1,10 @@
 from django.apps import apps
-
 from rest_framework.serializers import (
-    ModelSerializer,
-    ListSerializer,
-    SerializerMethodField,
-    IntegerField,
     CharField,
+    IntegerField,
+    ListSerializer,
+    ModelSerializer,
+    SerializerMethodField,
 )
 
 Request = apps.get_model("request", "Request")

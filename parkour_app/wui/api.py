@@ -1,44 +1,41 @@
-from rest_framework import routers
-
 from common.views import CostUnitsViewSet
-from request.views import RequestViewSet
-from library_sample_shared.views import (
-    OrganismViewSet,
-    IndexTypeViewSet,
-    LibraryProtocolViewSet,
-    IndexViewSet,
-    LibraryTypeViewSet,
-    ReadLengthViewSet,
-    ConcentrationMethodViewSet,
-    LibraryProtocolInvoicingViewSet,
-    ReadLengthInvoicingViewSet,
+from flowcell.views import (
+    FlowcellAnalysisViewSet,
+    FlowcellViewSet,
+    PoolViewSet,
+    SequencerViewSet,
 )
-from library.views import LibrarySampleTree, LibraryViewSet
-from sample.views import NucleicAcidTypeViewSet, SampleViewSet
 from incoming_libraries.views import IncomingLibrariesViewSet
 from index_generator.views import (
-    PoolSizeViewSet,
-    IndexGeneratorViewSet,
     GeneratorIndexTypeViewSet,
-)
-from library_preparation.views import LibraryPreparationViewSet
-from pooling.views import PoolingViewSet
-from flowcell.views import (
-    SequencerViewSet,
-    PoolViewSet,
-    FlowcellViewSet,
-    FlowcellAnalysisViewSet,
+    IndexGeneratorViewSet,
+    PoolSizeViewSet,
 )
 from invoicing.views import (
-    InvoicingViewSet,
     FixedCostsViewSet,
+    InvoicingViewSet,
     LibraryPreparationCostsViewSet,
     SequencingCostsViewSet,
 )
-
-from stats.views import RunStatisticsViewSet, SequencesStatisticsViewSet
+from library.views import LibrarySampleTree, LibraryViewSet
+from library_preparation.views import LibraryPreparationViewSet
+from library_sample_shared.views import (
+    ConcentrationMethodViewSet,
+    IndexTypeViewSet,
+    IndexViewSet,
+    LibraryProtocolInvoicingViewSet,
+    LibraryProtocolViewSet,
+    LibraryTypeViewSet,
+    OrganismViewSet,
+    ReadLengthInvoicingViewSet,
+    ReadLengthViewSet,
+)
 from metadata_exporter.views import MetadataExporterViewSet
-
+from pooling.views import PoolingViewSet
+from request.views import RequestViewSet
+from rest_framework import routers
+from sample.views import NucleicAcidTypeViewSet, SampleViewSet
+from stats.views import RunStatisticsViewSet, SequencesStatisticsViewSet
 
 router = routers.DefaultRouter()
 

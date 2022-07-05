@@ -1,13 +1,13 @@
 import json
 
-from django.urls import reverse
-
-from common.utils import get_random_name
 from common.tests import BaseTestCase
+from common.utils import get_random_name
+from django.urls import reverse
+from index_generator.tests import create_pool
 from library.tests import create_library
 from sample.tests import create_sample
-from index_generator.tests import create_pool
-from .models import Sequencer, Lane, Flowcell
+
+from .models import Flowcell, Lane, Sequencer
 
 
 def create_sequencer(name, lanes=8, lane_capacity=200):

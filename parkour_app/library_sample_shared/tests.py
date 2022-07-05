@@ -1,22 +1,21 @@
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth import get_user_model
-
 from common.tests import BaseTestCase
 from common.utils import get_random_name
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
 
 from .models import (
-    Organism,
-    ConcentrationMethod,
-    ReadLength,
-    IndexType,
-    GenericIndex,
-    IndexI7,
-    IndexI5,
     BarcodeCounter,
+    ConcentrationMethod,
+    GenericIndex,
+    GenericLibrarySample,
+    IndexI5,
+    IndexI7,
+    IndexType,
     LibraryProtocol,
     LibraryType,
-    GenericLibrarySample,
+    Organism,
+    ReadLength,
 )
 
 User = get_user_model()

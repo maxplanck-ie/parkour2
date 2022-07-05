@@ -1,8 +1,7 @@
-from django.db import models
-
 from common.models import DateTimeMixin
-from request.models import Request
+from django.db import models
 from index_generator.models import Pool
+from request.models import Request
 
 
 class Sequencer(models.Model):

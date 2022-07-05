@@ -1,24 +1,20 @@
-import json
-import time
-import logging
 import itertools
+import json
+import logging
+import time
 
+from common.mixins import LibrarySampleMultiEditMixin
+from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
+from django.db.models import Prefetch, Q
 from django.http import HttpResponse
-from django.db.models import Q, Prefetch
-
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
-
-from xlwt import Workbook, XFStyle, Formula
-
-from common.views import CsrfExemptSessionAuthentication
-from common.mixins import LibrarySampleMultiEditMixin
+from rest_framework.response import Response
+from xlwt import Formula, Workbook, XFStyle
 
 from .models import Pooling
-
 from .serializers import (
     PoolingLibrarySerializer,
     PoolingSampleSerializer,

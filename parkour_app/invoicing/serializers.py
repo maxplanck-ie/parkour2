@@ -1,17 +1,17 @@
-import logging
+import datetime
 import itertools
+import logging
+from collections import Counter
 from decimal import Decimal
 from functools import reduce
-from collections import Counter
-import datetime
+from pprint import pprint
+
 from django.apps import apps
 from django.db.models import Prefetch
-
 from rest_framework.fields import empty
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
 from .models import FixedCosts, LibraryPreparationCosts, SequencingCosts
-from pprint import pprint
 
 Request = apps.get_model("request", "Request")
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")

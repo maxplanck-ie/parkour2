@@ -1,10 +1,7 @@
-from django.conf import settings
-
-from django.urls import include, path
-from django.contrib.auth import views as auth_views
-
 from common import views
-
+from django.conf import settings
+from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
 urlpatterns = [
     path("", views.index, name="index"),

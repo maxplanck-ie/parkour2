@@ -1,18 +1,17 @@
+from collections import Counter, OrderedDict
 from datetime import datetime
-from collections import OrderedDict, Counter
-
-from django.apps import apps
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.db import connection
-from django.db.models import Prefetch
-from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
 
 import numpy as np
+from django.apps import apps
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
+from django.db import connection
+from django.db.models import Prefetch
+from django.http import JsonResponse
+from django.shortcuts import render
 from pandas import DataFrame
 
-from .sql import QUERY, LIBRARY_SELECT, SAMPLE_SELECT, SAMPLE_JOINS
+from .sql import LIBRARY_SELECT, QUERY, SAMPLE_JOINS, SAMPLE_SELECT
 
 Organization = apps.get_model("common", "Organization")
 PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")

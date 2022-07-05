@@ -1,15 +1,13 @@
 import json
 
-from django.apps import apps
-
-from common.utils import get_random_name
 from common.tests import BaseTestCase
-
-from request.tests import create_request
-from library.tests import create_library
-from sample.tests import create_sample
-from index_generator.tests import create_pool
+from common.utils import get_random_name
+from django.apps import apps
 from flowcell.tests import create_flowcell, create_sequencer
+from index_generator.tests import create_pool
+from library.tests import create_library
+from request.tests import create_request
+from sample.tests import create_sample
 
 Flowcell = apps.get_model("flowcell", "Flowcell")
 Lane = apps.get_model("flowcell", "Lane")

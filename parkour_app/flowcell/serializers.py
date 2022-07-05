@@ -1,18 +1,18 @@
 import itertools
 from pprint import pprint
+
 from django.apps import apps
 from django.db.models import Q
-
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import (
-    ModelSerializer,
-    ListSerializer,
-    SerializerMethodField,
-    IntegerField,
     CharField,
+    IntegerField,
+    ListSerializer,
+    ModelSerializer,
+    SerializerMethodField,
 )
 
-from .models import Sequencer, Flowcell, Lane
+from .models import Flowcell, Lane, Sequencer
 
 Request = apps.get_model("request", "Request")
 Library = apps.get_model("library", "Library")

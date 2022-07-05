@@ -1,8 +1,8 @@
-import re
-import random
-import string
 import itertools
-from collections import namedtuple, OrderedDict, defaultdict, Counter
+import random
+import re
+import string
+from collections import Counter, OrderedDict, defaultdict, namedtuple
 
 from django.apps import apps
 

@@ -1,8 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import NucleicAcidType, Sample
-from django.conf import settings
 
 
 def mark_as_obsolete(modeladmin, request, queryset):

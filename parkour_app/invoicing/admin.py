@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 from .models import (
-    InvoicingReport,
     FixedCosts,
+    InvoicingReport,
     LibraryPreparationCosts,
     SequencingCosts,
 )

@@ -2,7 +2,7 @@ from django.conf import settings
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
-from .models import Request, FileRequest
+from .models import FileRequest, Request
 
 
 class RequestSerializer(ModelSerializer):
