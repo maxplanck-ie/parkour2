@@ -1,6 +1,6 @@
-from django.contrib import admin
-from flowcell.models import Sequencer, Flowcell
 from django.conf import settings
+from django.contrib import admin
+from flowcell.models import Flowcell, Sequencer
 
 
 class LaneInline(admin.TabularInline):

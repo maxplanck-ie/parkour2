@@ -1,35 +1,32 @@
 import csv
+import datetime
+import itertools
 import json
 import logging
 import unicodedata
-import itertools
-import datetime
 
+from common.mixins import MultiEditMixin
+from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
-from django.db.models import Prefetch, Q, F
+from django.conf import settings
+from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-
 from rest_framework import viewsets
-from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
-
+from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
 
-from common.views import CsrfExemptSessionAuthentication
-from common.mixins import MultiEditMixin
-
-from .models import Sequencer, Lane, Flowcell
+from .models import Flowcell, Lane, Sequencer
 from .serializers import (
-    SequencerSerializer,
-    FlowcellSerializer,
     FlowcellListSerializer,
+    FlowcellSerializer,
     LaneSerializer,
-    PoolListSerializer,
     PoolInfoSerializer,
+    PoolListSerializer,
+    SequencerSerializer,
 )
-from django.conf import settings
 
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")
 IndexI7 = apps.get_model("library_sample_shared", "IndexI7")

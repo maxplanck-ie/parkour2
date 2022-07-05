@@ -1,9 +1,8 @@
 import itertools
 
-from django.db import models
-from django.conf import settings
-
 from common.models import DateTimeMixin
+from django.conf import settings
+from django.db import models
 from library.models import Library
 from sample.models import Sample
 

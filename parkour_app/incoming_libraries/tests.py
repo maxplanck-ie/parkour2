@@ -1,14 +1,12 @@
 import json
 
-from django.urls import reverse
-
 from common.tests import BaseTestCase
-from request.models import Request
+from django.urls import reverse
 from library.models import Library
-from sample.models import Sample
 from library.tests import create_library
+from request.models import Request
+from sample.models import Sample
 from sample.tests import create_sample
-
 
 # Views
 

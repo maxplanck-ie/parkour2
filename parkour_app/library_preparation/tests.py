@@ -1,12 +1,12 @@
 import json
 
-from django.urls import reverse
-
 from common.tests import BaseTestCase
 from common.utils import get_random_name
-from sample.tests import create_sample
-from request.models import Request
+from django.urls import reverse
 from index_generator.tests import create_pool
+from request.models import Request
+from sample.tests import create_sample
+
 from .models import LibraryPreparation
 
 

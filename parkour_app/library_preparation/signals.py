@@ -1,8 +1,8 @@
 from django.db.models import F, Func, Value
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
-
 from index_generator.models import Pool
+
 from .models import LibraryPreparation
 
 

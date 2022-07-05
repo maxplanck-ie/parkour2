@@ -1,22 +1,20 @@
 import json
 from datetime import datetime
 
-from django.test import TestCase
-from django.urls import reverse
-from django.contrib.auth import get_user_model
-
 from common.tests import BaseTestCase
 from common.utils import get_random_name
-
-from request.models import Request
+from django.contrib.auth import get_user_model
+from django.test import TestCase
+from django.urls import reverse
 from library_sample_shared.models import (
-    Organism,
+    BarcodeCounter,
     ConcentrationMethod,
-    ReadLength,
     LibraryProtocol,
     LibraryType,
-    BarcodeCounter,
+    Organism,
+    ReadLength,
 )
+from request.models import Request
 
 from .models import NucleicAcidType, Sample
 

@@ -1,14 +1,13 @@
-from django.contrib import admin
+from authtools.admin import NamedUserAdmin
+from authtools.forms import UserCreationForm
+from common.models import CostUnit, Organization, PrincipalInvestigator
 from django import forms
 from django.conf import settings
+from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.crypto import get_random_string
-from authtools.admin import NamedUserAdmin
-from authtools.forms import UserCreationForm
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
-
-from common.models import PrincipalInvestigator, Organization, CostUnit
 
 User = get_user_model()
 
@@ -194,7 +193,7 @@ class UserAdmin(NamedUserAdmin):
         ):
             # Django's PasswordResetForm won't let us reset an unusable
             # password. We set it above super() so we don't have to save twice.
-            obj.set_password(get_random_string())
+            obj.set_password(get_random_string(length=12))
             reset_password = True
         else:
             reset_password = False

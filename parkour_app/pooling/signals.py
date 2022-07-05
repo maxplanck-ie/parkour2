@@ -1,9 +1,9 @@
 from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
-
-from sample.models import Sample
 from index_generator.models import Pool
 from library_preparation.models import LibraryPreparation
+from sample.models import Sample
+
 from .models import Pooling
 
 

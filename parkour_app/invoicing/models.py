@@ -1,11 +1,10 @@
 import calendar
 
-from django.db import models
-from month.models import MonthField
-
 from common.models import DateTimeMixin
-from library_sample_shared.models import LibraryProtocol, ReadLength
+from django.db import models
 from flowcell.models import Sequencer
+from library_sample_shared.models import LibraryProtocol, ReadLength
+from month.models import MonthField
 
 
 class InvoicingReport(DateTimeMixin):

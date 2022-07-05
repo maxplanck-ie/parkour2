@@ -1,11 +1,10 @@
 from django.apps import apps
-
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import (
-    ModelSerializer,
-    ListSerializer,
-    SerializerMethodField,
     IntegerField,
+    ListSerializer,
+    ModelSerializer,
+    SerializerMethodField,
 )
 
 from .models import PoolSize

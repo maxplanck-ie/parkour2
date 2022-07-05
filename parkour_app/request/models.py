@@ -1,10 +1,9 @@
 import itertools
 
-from django.db import models
+from common.models import CostUnit, DateTimeMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
-
-from common.models import DateTimeMixin, CostUnit
+from django.db import models
 from library.models import Library
 from sample.models import Sample
 

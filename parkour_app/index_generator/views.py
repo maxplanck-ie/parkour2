@@ -1,27 +1,25 @@
+import itertools
 import json
 import logging
-import itertools
-
-from django.apps import apps
-from django.db.models import Prefetch, Q
-
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
 
 from common.mixins import LibrarySampleMultiEditMixin
+from django.apps import apps
+from django.conf import settings
+from django.db.models import Prefetch, Q
+from library_sample_shared.serializers import IndexTypeSerializer
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
 
-from .models import Pool, PoolSize
 from .index_generator import IndexGenerator
+from .models import Pool, PoolSize
 from .serializers import (
-    PoolSizeSerializer,
-    IndexGeneratorSerializer,
     IndexGeneratorLibrarySerializer,
     IndexGeneratorSampleSerializer,
+    IndexGeneratorSerializer,
+    PoolSizeSerializer,
 )
-from library_sample_shared.serializers import IndexTypeSerializer
-from django.conf import settings
 
 Request = apps.get_model("request", "Request")
 IndexI7 = apps.get_model("library_sample_shared", "IndexI7")

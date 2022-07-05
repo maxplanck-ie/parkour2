@@ -1,12 +1,12 @@
 import json
 
-from common.utils import get_random_name
 from common.tests import BaseTestCase
+from common.utils import get_random_name
+from index_generator.tests import create_pool
 from library.tests import create_library
+from request.models import Request
 from sample.tests import create_sample
 
-from request.models import Request
-from index_generator.tests import create_pool
 from .models import Pooling
 
 

@@ -1,16 +1,13 @@
 import random
 
 from django.apps import apps
-
+from library_sample_shared.serializers import LibrarySampleBaseSerializer
 from rest_framework.serializers import (
+    IntegerField,
     ModelSerializer,
     SerializerMethodField,
-    IntegerField,
 )
-
-from library_sample_shared.serializers import LibrarySampleBaseSerializer
 from sample.serializers import SampleSerializer
-
 
 Library = apps.get_model("library", "Library")
 Request = apps.get_model("request", "Request")

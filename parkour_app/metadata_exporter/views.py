@@ -1,23 +1,20 @@
-import os
-import io
 import csv
+import io
 import json
+import os
 from zipfile import ZipFile
 
-from django.apps import apps
-from django.http import HttpResponse
-from django.db.models import Prefetch
-from django.shortcuts import get_object_or_404
-
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-
 from bioblend.galaxy import GalaxyInstance
-
 from common.views import CsrfExemptSessionAuthentication
-from .serializers import MetadataSerializer
+from django.apps import apps
+from django.db.models import Prefetch
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
+from .serializers import MetadataSerializer
 
 Request = apps.get_model("request", "Request")
 Library = apps.get_model("library", "Library")

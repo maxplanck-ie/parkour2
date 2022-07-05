@@ -1,8 +1,8 @@
+import random
 import re
 import string
-import random
-from time import time
 from datetime import datetime
+from time import time
 
 from django.db import connection
 

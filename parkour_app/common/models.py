@@ -1,5 +1,5 @@
-from django.db import models
 from authtools.models import AbstractEmailUser
+from django.db import models
 
 
 def get_deleted_org():

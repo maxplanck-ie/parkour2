@@ -1,15 +1,14 @@
-import logging
 import itertools
-
-from django.apps import apps
-from django.db.models import Prefetch
-
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser
+import logging
 
 from common.mixins import LibrarySampleMultiEditMixin
-from .serializers import RequestSerializer, LibrarySerializer, SampleSerializer
+from django.apps import apps
+from django.db.models import Prefetch
+from rest_framework import viewsets
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+
+from .serializers import LibrarySerializer, RequestSerializer, SampleSerializer
 
 Request = apps.get_model("request", "Request")
 Library = apps.get_model("library", "Library")

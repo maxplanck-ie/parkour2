@@ -1,18 +1,17 @@
 import json
 import tempfile
 
+from common.models import Organization, PrincipalInvestigator
+from common.tests import BaseTestCase
+from common.utils import get_random_name
 from django.contrib.auth import get_user_model
 
 # from django.core.files.base import ContentFile
 from django.test import TestCase
-
-from common.models import Organization, PrincipalInvestigator
-from common.tests import BaseTestCase
-from common.utils import get_random_name
-
-from .models import Request, FileRequest
 from library.tests import create_library
 from sample.tests import create_sample
+
+from .models import FileRequest, Request
 
 User = get_user_model()
 

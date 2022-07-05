@@ -1,7 +1,5 @@
 from django.apps import apps
-
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
-
 
 Request = apps.get_model("request", "Request")
 Library = apps.get_model("library", "Library")

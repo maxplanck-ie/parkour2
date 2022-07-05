@@ -1,20 +1,20 @@
-from django.conf.urls import url
+from django.urls import re_path
 
 from . import views
 
 urlpatterns = [
-    url("records/", views.RecordsUsage.as_view(), name="records-usage"),
-    url(
+    re_path("records/", views.RecordsUsage.as_view(), name="records-usage"),
+    re_path(
         "organizations/",
         views.OrganizationsUsage.as_view(),
         name="organizations-usage",
     ),
-    url(
+    re_path(
         "principal_investigators/",
         views.PrincipalInvestigatorsUsage.as_view(),
         name="principal-investigators--usage",
     ),
-    url(
+    re_path(
         "library_types/",
         views.LibraryTypesUsage.as_view(),
         name="library-types-usage",

@@ -1,5 +1,4 @@
 from django.db import models
-
 from library_sample_shared.models import GenericLibrarySample
 
 

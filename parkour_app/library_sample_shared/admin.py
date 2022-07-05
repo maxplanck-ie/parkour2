@@ -1,20 +1,20 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import resolve
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
+from .forms import IndexTypeForm
 from .models import (
-    Organism,
     ConcentrationMethod,
-    ReadLength,
-    IndexType,
-    IndexI7,
     IndexI5,
+    IndexI7,
+    IndexPair,
+    IndexType,
     LibraryProtocol,
     LibraryType,
-    IndexPair,
+    Organism,
+    ReadLength,
 )
-from .forms import IndexTypeForm
-from django.conf import settings
 
 
 @admin.register(Organism)

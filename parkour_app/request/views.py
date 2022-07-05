@@ -1,34 +1,29 @@
+import itertools
 import json
 import logging
-import itertools
+import os
 from unicodedata import normalize
 
+from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
 from django.apps import apps
-from django.http import HttpResponse, JsonResponse, Http404
 from django.conf import settings
-from django.db.models import Prefetch
-from django.core.mail import send_mail
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.db.models import Prefetch
+from django.http import Http404, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
-
-from rest_framework import viewsets, filters
+from docx import Document
+from docx.enum.text import WD_BREAK
+from docx.shared import Cm, Pt
+from fpdf import FPDF, HTMLMixin
+from rest_framework import filters, viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
 
-from fpdf import FPDF, HTMLMixin
-from docx import Document
-from docx.shared import Pt, Cm
-from docx.enum.text import WD_BREAK
-
-from common.views import (
-    CsrfExemptSessionAuthentication,
-    StandardResultsSetPagination,
-)
-from .models import Request, FileRequest
-from .serializers import RequestSerializer, RequestFileSerializer
-import os
+from .models import FileRequest, Request
+from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()
 Library = apps.get_model("library", "Library")

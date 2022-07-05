@@ -1,36 +1,33 @@
-import datetime
 import calendar
-import numpy as np
-from dateutil.relativedelta import relativedelta
+import datetime
 
+import numpy as np
+from common.views import CsrfExemptSessionAuthentication
+from dateutil.relativedelta import relativedelta
 from django.apps import apps
 from django.conf import settings
+from django.db import transaction
+from django.db.models import Min, Prefetch, Q
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Q, Prefetch, Min
-
+from month import Month
 from rest_framework import mixins, viewsets
-from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
-
-from month import Month
+from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
 
-from common.views import CsrfExemptSessionAuthentication
-
 from .models import (
-    InvoicingReport,
     FixedCosts,
+    InvoicingReport,
     LibraryPreparationCosts,
     SequencingCosts,
 )
 from .serializers import (
-    InvoicingSerializer,
     FixedCostsSerializer,
+    InvoicingSerializer,
     LibraryPreparationCostsSerializer,
     SequencingCostsSerializer,
 )
-from django.db import transaction
 
 Request = apps.get_model("request", "Request")
 ReadLength = apps.get_model("library_sample_shared", "ReadLength")

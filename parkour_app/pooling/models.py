@@ -1,6 +1,5 @@
-from django.db import models
-
 from common.models import DateTimeMixin
+from django.db import models
 from library.models import Library
 from sample.models import Sample
 

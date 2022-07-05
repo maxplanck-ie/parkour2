@@ -1,21 +1,18 @@
-import json
 import itertools
+import json
 from datetime import datetime
-
-from django.apps import apps
-from django.http import HttpResponse
-from django.db.models import Q, Prefetch
-from django.shortcuts import get_object_or_404
-
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
-
-from xlwt import Workbook, XFStyle
 
 from common.utils import get_date_range
 from common.views import CsrfExemptSessionAuthentication
+from django.apps import apps
+from django.db.models import Prefetch, Q
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
+from rest_framework.response import Response
+from xlwt import Workbook, XFStyle
 
 from .serializers import RunsSerializer, SequencesSerializer
 
