@@ -6,6 +6,7 @@ djangorestframework
 django-admin-list-filter-dropdown
 django-monthfield
 django_extensions
+gunicorn
 
 
 # Database
