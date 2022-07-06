@@ -62,7 +62,7 @@ load-backup:
 	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
 
 test:
-	@docker compose run parkour2-django python manage.py test
+	@docker compose run parkour2-django python -Wa manage.py test
 
 compile:
 	@cd parkour_app/ && \
