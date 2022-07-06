@@ -13,7 +13,7 @@ class MultiEditMixin:
     def edit(self, request):
         """Update multiple objects."""
 
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             post_data = request.data.get("data", [])
         else:
             post_data = json.loads(request.data.get("data", "[]"))
@@ -84,7 +84,7 @@ class LibrarySampleMultiEditMixin:
     @action(methods=["post"], detail=False)
     def edit(self, request):
         """Update multiple libraries or samples."""
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             post_data = request.data.get("data", [])
         else:
             post_data = json.loads(request.data.get("data", "[]"))
