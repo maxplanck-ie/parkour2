@@ -1,5 +1,5 @@
 # Django
-Django==3.1.14
+Django==3.2.14
 git+https://github.com/sensus261/django-authtools#egg=django-authtools
 # django-use-email-as-username
 djangorestframework
