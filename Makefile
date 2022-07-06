@@ -37,6 +37,9 @@ clean: down
 	@docker volume rm $$(docker volume ls -f dangling=true -q) > /dev/null
 	@echo docker rmi $$(docker images -f "dangling=true" -q) > /dev/null
 
+prune: clean
+	@docker system prune -a -f --volumes
+
 prod: set-prod deploy-django deploy-nginx deploy-ready
 
 dev: set-dev set-caddy deploy-full load-backup deploy-ncdb
@@ -59,25 +62,29 @@ deploy-ncdb:
 
 load-backup:
 	@[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
-	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
+		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
 
 test:
 	@docker compose run parkour2-django python -Wa manage.py test
 
+shell:
+	@echo "Spawning bpython shell plus (only for dev deployments)..."
+	@docker compose run parkour2-django python manage.py shell_plus --bpython
+
 compile:
 	@cd parkour_app/ && \
-	source ./env/bin/activate && \
-	pip-compile-multi
+		source ./env/bin/activate && \
+		pip-compile-multi
 
 dev-setup:
 	@cd parkour_app/ && \
-	env python3 -m venv env && \
-	source ./env/bin/activate && \
-	env python3 -m pip install --upgrade pip && \
-	pip install \
-		pre-commit \
-		pip-compile-multi \
-		sphinx
+		env python3 -m venv env && \
+		source ./env/bin/activate && \
+		env python3 -m pip install --upgrade pip && \
+		pip install \
+			pre-commit \
+			pip-compile-multi \
+			sphinx
 
 # Don't confuse this ^up^here^ with the app development environment (dev.in &
 # dev.txt), mind the 'hierarchical' difference. We're going to use
