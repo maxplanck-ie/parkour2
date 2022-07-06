@@ -2,11 +2,11 @@ version: "3.5"
 
 services:
   parkour2-postgres:
-    restart: always
-    image: postgres:latest
     container_name: parkour2-postgres
+    image: postgres:latest
     env_file:
       - ./parkour.env
+    restart: always
     volumes:
       - pgdb:/var/lib/postgresql/data/
     healthcheck:
@@ -16,18 +16,18 @@ services:
       retries: 10
 
   parkour2-django:
-    restart: always
     container_name: parkour2-django
-    depends_on:
-      parkour2-postgres:
-        condition: service_healthy
     build:
       dockerfile: ./Dockerfile
     env_file:
       - ./parkour.env
+    restart: always
     volumes:
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
+    depends_on:
+      parkour2-postgres:
+        condition: service_healthy
 
 volumes:
   pgdb:
@@ -36,4 +36,4 @@ volumes:
 
 networks:
   default:
-      name: parkour2_default
+    name: parkour2_default
