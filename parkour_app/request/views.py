@@ -879,7 +879,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     def _get_post_data(self, request):
         post_data = {}
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             post_data = request.data.get("data", {})
             if isinstance(post_data, str):
                 post_data = json.loads(post_data)

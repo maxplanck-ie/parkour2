@@ -148,7 +148,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def create(self, request):
         """Add a flowcell."""
 
-        if request.is_ajax():
+        if request.headers.get("x-requested-with") == "XMLHttpRequest":
             post_data = request.data.get("data", [])
             if isinstance(post_data, str):
                 post_data = json.loads(post_data)
