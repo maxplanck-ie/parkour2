@@ -3,4 +3,5 @@
 django-debug-toolbar==3.0
 pyperclip
 coverage
-gunicorn
+ipdb
+bpython
