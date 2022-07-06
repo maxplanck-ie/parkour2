@@ -37,7 +37,6 @@ clean: down
 	@docker volume rm $$(docker volume ls -f dangling=true -q) > /dev/null
 	@echo docker rmi $$(docker images -f "dangling=true" -q) > /dev/null
 
-# TODO: prod could load demo pgsql db
 prod: set-prod deploy-django deploy-nginx deploy-ready
 
 dev: set-dev set-caddy deploy-full load-backup deploy-ncdb
@@ -61,10 +60,6 @@ deploy-ncdb:
 load-backup:
 	@[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 	docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
-
-# reload-dev: stop
-# 	$(MAKE) deploy-containers deploy-caddy load-migrations
-# 	docker compose logs
 
 test:
 	@docker compose run parkour2-django python manage.py test
