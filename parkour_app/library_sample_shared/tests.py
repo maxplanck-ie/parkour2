@@ -96,7 +96,7 @@ class IndexTypeTest(TestCase):
 class GenericIndexTest(TestCase):
     def setUp(self):
         self.index1 = IndexI7(prefix="I", number="001", index="ATCACG")
-        self.index2 = GenericIndex(prefix="I", number="002", index="ATCACG")
+        # self.index2 = GenericIndex(prefix="I", number="002", index="ATCACG")
         self.index1.save()
 
         self.index_type = IndexType(name="Index Type")
@@ -107,8 +107,8 @@ class GenericIndexTest(TestCase):
         self.assertEqual(str(self.index1), self.index1.index_id)
         self.assertEqual(self.index1.type(), self.index_type.name)
 
-    def test_no_index_type(self):
-        self.assertEqual(self.index2.type(), "")
+    # def test_no_index_type(self):
+    #     self.assertEqual(self.index2.type(), "")
 
 
 class BarcodeCounterTest(TestCase):
@@ -172,24 +172,24 @@ class LibraryTypeTest(TestCase):
         self.assertEqual(self.library_type.__str__(), self.library_type.name)
 
 
-class GenericLibrarySampleTest(TestCase):
-    def setUp(self):
-        organism = Organism(name=get_random_name())
-        concentration_method = ConcentrationMethod(name=get_random_name())
-        read_length = ReadLength(name=get_random_name())
-
-        self.library = GenericLibrarySample(
-            name=get_random_name(),
-            organism=organism,
-            concentration=1.0,
-            concentration_method=concentration_method,
-            read_length=read_length,
-            sequencing_depth=1,
-        )
-
-    def test_generic_library_sample_name(self):
-        self.assertTrue(isinstance(self.library, GenericLibrarySample))
-        self.assertEqual(self.library.__str__(), self.library.name)
+# class GenericLibrarySampleTest(TestCase):
+#     def setUp(self):
+#         organism = Organism(name=get_random_name())
+#         concentration_method = ConcentrationMethod(name=get_random_name())
+#         read_length = ReadLength(name=get_random_name())
+#
+#         self.library = GenericLibrarySample(
+#             name=get_random_name(),
+#             organism=organism,
+#             concentration=1.0,
+#             concentration_method=concentration_method,
+#             read_length=read_length,
+#             sequencing_depth=1,
+#         )
+#
+#     def test_generic_library_sample_name(self):
+#         self.assertTrue(isinstance(self.library, GenericLibrarySample))
+#         self.assertEqual(self.library.__str__(), self.library.name)
 
 
 # Views
