@@ -10,6 +10,13 @@ sequencing users, laboratory personnel, and data managers will benefit from
 using Parkour LIMS as a central laboratory and quality management platform:
 _quickly jump to that information you need!_ 🤸🏻‍♀️
 
+#### Citation
+
+> E Anatskiy, D P Ryan, B A Grüning, L Arrigoni, T Manke, U Bönisch; "Parkour
+> LIMS: high-quality sample preparation in next generation sequencing";
+> Bioinformatics, Volume 35, Issue 8, 15 April 2019, Pages 1422–1424;
+> <https://doi.org/10.1093/bioinformatics/bty820>
+
 #### Demo
 
 A demonstration instance is available at
