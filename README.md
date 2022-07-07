@@ -33,21 +33,31 @@ The **user manual** can be viewed at →
 
 ### Installation
 
-> To carry out the deployment (ideally, on a server) of this Django application,
-> we're using [Docker](https://docs.docker.com/get-started/) with
-> `docker-compose-plugin` (v2).
->
-> To ease the task, common docker CLI commands are bundled as rules at our
-> `Makefile`. Please feel free to look into it.
+To carry out the deployment (ideally, on a server) of this Django application,
+we're using [Docker](https://docs.docker.com/get-started/) with
+`docker-compose-plugin` (v2).
 
-1. Install the system requirements 🐳, then download/ clone the latest version of this repo.
-1. Rename `parkour.env.sample` file to `parkour.env` and edit its contents accordingly.
-1. Run this command: `make`. Then, you may access the application at: <http://127.0.0.1/>.
-1. Create an admin user with the following command: `docker compose run parkour2-django python manage.py createsuperuser`.
-1. Access <http://127.0.0.1/admin> and start adding your data (_see the user manual for details_).
+1. Install the system requirements 🐳, then download/ clone the latest version
+   of this repo.
+1. Rename `parkour.env.sample` file to `parkour.env` and edit its contents
+   accordingly. For demo purposes, you can leave this as it is for the time
+   being.
+1. Run this command: `make`. Then, you may access the application at:
+   <http://127.0.0.1/>. To log-in, you'll need to set users and passwords...
+1. Optionally, you may load the database from our demo instance (as you would
+   load any backup) with this "2 in 1" command: `docker cp demo.dump.sql
+   parkour2-postgres:/tmp/pg.dump && docker exec -it parkour2-postgres pg_restore
+   -d postgres -U postgres -c -1 /tmp/pg.dump`. This will also bring both the
+   `parkour-staff` and `parkour-admin` users, as with any other data loaded in
+   your database: it's up to you to keep (or remove) it.
+1. Create one or more admin user(s) with the following command: `docker compose
+   run parkour2-django python manage.py createsuperuser`.
+1. Access <http://127.0.0.1/admin> and edit the data needed to get going (_see
+   the user manual for details_).
 
-To uninstall, use `make clean` (the docker images remain).
-
-> Please note that in a real scenario, you'll need to: preserve data
-> between docker runs, configure TLS certificates, add DNS records,
-> secure database access, set a back-up policy, a mailserver, etc.
+To ease further _DevOps_ tasks, common docker commands are bundled as rules at
+the `Makefile`. To uninstall, use `make clean` (the docker images remain). You
+may use `make dev` to deploy an (insecure) development installation, and `make
+prod` for production (Please note: in a real scenario, you'll need to: preserve
+data between docker runs, configure TLS certificates, add DNS records, set a
+back-up policy, probably provision a mailserver, etcetera.)
