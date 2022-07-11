@@ -1,6 +1,6 @@
 -r base.in
 
-django-debug-toolbar==3.0
+django-debug-toolbar
 pyperclip
 coverage
 ipdb
