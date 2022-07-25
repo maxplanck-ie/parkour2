@@ -96,12 +96,13 @@ class Request(DateTimeMixin):
         created = self.pk is None
         super().save(*args, **kwargs)
 
-        if created:
-            # Set name after getting an id
-            self.name = f"{self.id}_{self.user.last_name}"
-            if self.user.pi:
-                self.name += "_" + self.user.pi.name
-            self.save()
+        # Do NOT programatically set a request's name, let the user enter it
+        # if created:
+        #     # Set name after getting an id
+        #     self.name = f"{self.id}_{self.user.last_name}"
+        #     if self.user.pi:
+        #         self.name += "_" + self.user.pi.name
+        #     self.save()
 
     def delete(self, *args, **kwargs):
         # Delete all libraries and samples

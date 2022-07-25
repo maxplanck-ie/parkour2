@@ -17,7 +17,7 @@ User = get_user_model()
 
 
 def create_request(user, save=True):
-    request = Request(user=user, description=get_random_name())
+    request = Request(user=user, name=get_random_name(), description=get_random_name())
     if save:
         request.save()
     return request
@@ -49,14 +49,15 @@ class TestRequestModel(TestCase):
     def test_create_request(self):
         request = create_request(self.user)
         self.assertEqual(str(request), request.name)
-        self.assertEqual(
-            request.name,
-            "{}_{}_{}".format(
-                request.pk,
-                self.user.last_name,
-                self.user.pi.name,
-            ),
-        )
+        # Drop this assertion because a user has to enter their own request's name
+        # self.assertEqual(
+        #     request.name,
+        #     "{}_{}_{}".format(
+        #         request.pk,
+        #         self.user.last_name,
+        #         self.user.pi.name,
+        #     ),
+        # )
 
     def test_delete_request(self):
         """
