@@ -1,3 +1,13 @@
+ci:
+    autofix_commit_msg: |
+        [pre-commit] fixes from hooks
+    autofix_prs: true
+    autoupdate_branch: 'develop'
+    autoupdate_commit_msg: 'pre-commit.ci autoupdate'
+    autoupdate_schedule: quarterly
+    skip: []
+    submodules: false
+
 repos:
 -   repo: local
     hooks:

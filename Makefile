@@ -61,7 +61,7 @@ deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
 load-backup:
-	@[[ -e latest.dump.sql ]]; docker cp ./latest.dump.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
+	@[[ -e latest.sqldump ]]; docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
 
 test:
