@@ -60,11 +60,18 @@ deploy-nginx:
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
-load-backup:
-	@[[ -e latest.sqldump ]]; docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
+load-media:
+	@[[ -d media_dumps ]] && \
+		find $$PWD/media_dumps/latest/ -maxdepth 1 -type d | \
+			xargs -P 0 -I _ docker cp _ parkour2-django:/usr/src/app/media/
+
+load-backup: load-media
+	@[[ -f latest.sqldump ]] && \
+		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
 
-test:
+test: clean prod
+	@echo "Testing on a 'clean' production deployment..."
 	@docker compose run parkour2-django python -Wa manage.py test
 
 shell:
