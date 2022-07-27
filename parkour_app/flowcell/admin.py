@@ -52,7 +52,7 @@ class LaneInline(admin.TabularInline):
     completed.short_description = "Completed"
     completed.boolean = True
 
-    def has_add_permission(self, request):
+    def has_add_permission(self, request, obj=None):
         return False
 
 
