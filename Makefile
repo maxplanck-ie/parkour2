@@ -8,6 +8,10 @@ deploy-full:  deploy-django deploy-caddy deploy-ready
 set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
+	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 600/' Dockerfile
+	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
+			-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
+
 
 deploy-django: deploy-network deploy-containers
 
@@ -33,23 +37,32 @@ stop:
 down:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down
 
-clean: down
-	@docker volume rm $$(docker volume ls -f dangling=true -q) > /dev/null
-	@echo docker rmi $$(docker images -f "dangling=true" -q) > /dev/null
+clean: set-prod unset-caddy
+	@echo "Not Run:"
+	@echo "docker volume rm $$(docker volume ls -f dangling=true -q) > /dev/null"
+	@echo "docker rmi $$(docker images -f "dangling=true" -q) > /dev/null"
 
 prune: clean
 	@docker system prune -a -f --volumes
 
 prod: set-prod deploy-django deploy-nginx deploy-ready
 
-dev: set-dev set-caddy deploy-full load-backup deploy-ncdb
+dev: set-dev set-caddy deploy-full load-media load-backup
+
+pk7: set-dev deploy-django deploy-nginx deploy-ready load-media load-backup
 
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
+	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 36000/' Dockerfile
+	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
+			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
+
+unset-caddy:
+	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/Caddyfile\:/" caddy.yml
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -63,12 +76,12 @@ deploy-ncdb:
 load-media:
 	@[[ -d media_dumps ]] && \
 		find $$PWD/media_dumps/latest/ -maxdepth 1 -type d | \
-			xargs -P 0 -I _ docker cp _ parkour2-django:/usr/src/app/media/
+			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
 
-load-backup: load-media
+load-backup:
 	@[[ -f latest.sqldump ]] && \
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
-		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -c -1 /tmp/parkour-postgres.dump > /dev/null
+		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
 
 test: clean prod
 	@echo "Testing on a 'clean' production deployment..."
