@@ -38,9 +38,8 @@ down:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down
 
 clean: set-prod unset-caddy
-	@echo "Not Run:"
-	@echo "docker volume rm $$(docker volume ls -f dangling=true -q) > /dev/null"
-	@echo "docker rmi $$(docker images -f "dangling=true" -q) > /dev/null"
+	@echo "Cleaning Not Run: docker volume rm \$$(docker volume ls -f dangling=true -q) > /dev/null"
+	@echo "Cleaning Not Run: docker rmi \$$(docker images -f dangling=true -q) > /dev/null"
 
 prune: clean
 	@docker system prune -a -f --volumes
