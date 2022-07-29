@@ -360,7 +360,6 @@ class RequestViewSet(viewsets.ModelViewSet):
         authentication_classes=[CsrfExemptSessionAuthentication],
     )
     def upload_files(self, request):
-        # breakpoint()
         file_ids = []
 
         if not any(request.FILES):
