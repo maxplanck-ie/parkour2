@@ -89,7 +89,7 @@ test: clean prod
 
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
-	@docker compose run parkour2-django python manage.py shell_plus --bpython
+	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
 compile:
 	@cd parkour_app/ && \
