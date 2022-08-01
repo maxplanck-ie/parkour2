@@ -1,5 +1,6 @@
 # syntax = docker/dockerfile:experimental
 FROM python:3.8.13
+ENV PYTHONBREAKPOINT ipdb.set_trace
 ENV PYTHONUNBUFFERED 1
 WORKDIR /usr/src/app
 COPY ./parkour_app .
