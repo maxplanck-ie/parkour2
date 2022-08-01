@@ -41,7 +41,7 @@ clean: set-prod unset-caddy
 	@echo "Cleaning Not Run: docker volume rm \$$(docker volume ls -f dangling=true -q) > /dev/null"
 	@echo "Cleaning Not Run: docker rmi \$$(docker images -f dangling=true -q) > /dev/null"
 
-prune: clean
+prune:
 	@docker system prune -a -f --volumes
 
 prod: set-prod deploy-django deploy-nginx deploy-ready
@@ -53,7 +53,7 @@ pk7: set-dev deploy-django deploy-nginx deploy-ready load-media load-backup
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
-	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 36000/' Dockerfile
+	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 3600/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 
