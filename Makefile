@@ -35,20 +35,19 @@ stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml stop
 
 down:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down --volumes
 
 clean: set-prod unset-caddy
-	@echo "Cleaning Not Run: docker volume rm \$$(docker volume ls -f dangling=true -q) > /dev/null"
-	@echo "Cleaning Not Run: docker rmi \$$(docker images -f dangling=true -q) > /dev/null"
+	@echo "Config reset OK. Cleaning? Try: make prune"
 
 prune:
 	@docker system prune -a -f --volumes
 
 prod: set-prod deploy-django deploy-nginx deploy-ready
 
-dev: set-dev set-caddy deploy-full load-media load-backup
+dev0: set-dev set-caddy deploy-full load-media load-backup
 
-pk7: set-dev deploy-django deploy-nginx deploy-ready load-media load-backup
+dev: set-dev deploy-django deploy-nginx deploy-ready load-media load-backup load-migrations
 
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -82,13 +81,20 @@ load-backup:
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
 
-test: clean prod
+test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
 	@docker compose run parkour2-django python -Wa manage.py test
 
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
+
+reload-nginx:
+	@docker exec -it parkour2-nginx nginx -s reload
+
+reload-django:
+	@find $$PWD/parkour_app/ -maxdepth 1 -type d -mtime -3 | \
+		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
 
 compile:
 	@cd parkour_app/ && \
