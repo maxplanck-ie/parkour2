@@ -14,6 +14,8 @@ services:
       - caddy_config:/config
       - parkour2_media:/parkour2/media
       - parkour2_staticfiles:/parkour2/static
+      # ./cert.pem:/etc/ssl/cert.pem:ro
+      # ./key.pem:/etc/ssl/key.pem:ro
 
 volumes:
   caddy_data:

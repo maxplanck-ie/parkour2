@@ -30,6 +30,9 @@ ALLOWED_HOSTS = ["*"]
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 
+# Fix FileUpload
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
 
 # Application definition
 
