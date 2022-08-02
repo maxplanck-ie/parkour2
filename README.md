@@ -63,8 +63,8 @@ your database: it's up to you to keep (or remove) it.
    the user manual for details_).
 
 To ease further _DevOps_ tasks, common docker commands are bundled as rules at
-the `Makefile`. To uninstall, use `make clean` (the docker images remain). You
-may use `make dev` to deploy an (insecure) development installation, and `make
-prod` for production (Please note: in a real scenario, you'll need to: preserve
-data between docker runs, configure TLS certificates, add DNS records, set a
-back-up policy, probably provision a mailserver, etcetera.)
+the `Makefile`. To stop the containers, use `make down`. You may use `make dev`
+to deploy an (insecure) development installation, and `make prod` for
+production (Please note: in a real scenario, you'll need to: preserve data
+between docker runs, configure TLS certificates, add DNS records, set a back-up
+policy, probably provision a mailserver, etcetera.)

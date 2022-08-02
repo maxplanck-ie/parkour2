@@ -182,7 +182,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             # TODO: find a way to hide requests
             # queryset = [x for x in queryset if x.statuses.count(6) == 0]
             # queryset = [x for x in queryset if x.statuses.count(5)==0]
-            print("staff")
+            pass
         else:
             queryset = queryset.filter(user=self.request.user)
 
