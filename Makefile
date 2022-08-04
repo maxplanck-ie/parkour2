@@ -45,9 +45,9 @@ prune:
 
 prod: set-prod deploy-django deploy-nginx deploy-ready
 
-dev0: set-dev set-caddy deploy-full load-media load-backup
+dev0: set-dev set-caddy deploy-full load-backup
 
-dev: set-dev deploy-django deploy-nginx deploy-ready load-media load-backup load-migrations
+dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations
 
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -72,14 +72,25 @@ deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
 load-media:
-	@[[ -d media_dumps ]] && \
-		find $$PWD/media_dumps/latest/ -maxdepth 1 -type d | \
+	@[[ -d media_dump ]] && \
+		find $$PWD/media_dump/ -maxdepth 1 -type d | \
 			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
 
-load-backup:
+load-postgres:
 	@[[ -f latest.sqldump ]] && \
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
+
+load-backup: load-media load-postgres
+
+backup: save-media save-postgres
+
+save-media:
+	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
+
+save-postgres:
+	@docker exec parkour2-postgres pg_dump -d postgres -U postgres -f /tmp/postgres_dump -b -c -C --if-exists --inserts && \
+		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
