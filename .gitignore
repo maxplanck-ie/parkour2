@@ -1,4 +1,5 @@
 *.env
 *.pem
 *.sqldump
+*_dump/
 *_dumps/
