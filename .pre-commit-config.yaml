@@ -65,6 +65,8 @@ repos:
 #    hooks:
 #    -   id: mypy
 
+# https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md#pre-commit
+
 -   repo: https://github.com/psf/black
     rev: 22.3.0
     hooks:
