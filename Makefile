@@ -88,8 +88,9 @@ backup: save-media save-postgres
 save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
+#docker exec parkour2-postgres pg_dump -d postgres -U postgres -f /tmp/postgres_dump -b -c -C --if-exists --inserts
 save-postgres:
-	@docker exec parkour2-postgres pg_dump -d postgres -U postgres -f /tmp/postgres_dump -b -c -C --if-exists --inserts && \
+	@docker exec -it parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
 test: down clean prod
