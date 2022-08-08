@@ -43,7 +43,7 @@ clean: set-prod unset-caddy
 prune:
 	@docker system prune -a -f --volumes
 
-prod: set-prod deploy-django deploy-nginx deploy-ready
+prod: set-prod deploy-django deploy-nginx deploy-ready deploy-rsnapshot
 
 dev0: set-dev set-caddy deploy-full load-backup
 
@@ -92,6 +92,9 @@ save-media:
 save-postgres:
 	@docker exec -it parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
+
+deploy-rsnapshot:
+	@docker compose -f rsnapshot.yml up -d
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."

@@ -3,3 +3,4 @@
 *.sqldump
 *_dump/
 *_dumps/
+rsnapshot/
