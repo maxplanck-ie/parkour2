@@ -9,6 +9,7 @@ set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/"--reload", //' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
 			-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
 
@@ -52,7 +53,7 @@ dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
-	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "3600"/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 
