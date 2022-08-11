@@ -6,4 +6,4 @@ RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
 EXPOSE 8000
 ENV PYTHONBREAKPOINT ipdb.set_trace
 ENV PYTHONUNBUFFERED 1
-CMD ["gunicorn", "wui.wsgi:application", "-t", "3600", "-w", "2", "-b", ":8000"]
+CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "2", "-b", ":8000"]
