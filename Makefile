@@ -8,7 +8,8 @@ deploy-full:  deploy-django deploy-caddy deploy-ready
 set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
-	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 600/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/"--reload", //' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
 			-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
 
@@ -32,10 +33,10 @@ load-migrations:
 	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml stop
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
 down:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down --volumes
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down --volumes
 
 clean: set-prod unset-caddy
 	@echo "Config reset OK. Cleaning? Try: make prune"
@@ -43,7 +44,7 @@ clean: set-prod unset-caddy
 prune:
 	@docker system prune -a -f --volumes
 
-prod: set-prod deploy-django deploy-nginx deploy-ready
+prod: set-prod deploy-django deploy-nginx deploy-ready deploy-rsnapshot
 
 dev0: set-dev set-caddy deploy-full load-backup
 
@@ -52,7 +53,7 @@ dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations
 set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
-	@sed -E -i -e '/^CMD gunicorn/s/-t [0-9]+/-t 3600/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 
@@ -89,8 +90,13 @@ save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:
-	@docker exec parkour2-postgres pg_dump -d postgres -U postgres -f /tmp/postgres_dump -b -c -C --if-exists --inserts && \
+	@docker exec -it parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
+
+deploy-rsnapshot:
+	@docker compose -f rsnapshot.yml up -d && \
+		sleep 1m && \
+		docker exec -it parkour2-rsnapshot rsnapshot daily
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
