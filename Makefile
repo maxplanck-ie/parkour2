@@ -33,10 +33,10 @@ load-migrations:
 	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml stop
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
 down:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f ncdb.yml down --volumes
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down --volumes
 
 clean: set-prod unset-caddy
 	@echo "Config reset OK. Cleaning? Try: make prune"
