@@ -1,0 +1,11 @@
+# min   hour    day     month   weekday command
+*/15    *       *       *       *       run-parts /etc/periodic/15min
+0       *       *       *       *       run-parts /etc/periodic/hourly
+0       2       *       *       *       run-parts /etc/periodic/daily
+0       3       *       *       6       run-parts /etc/periodic/weekly
+0       5       1       *       *       run-parts /etc/periodic/monthly
+# https://github.com/rsnapshot/rsnapshot/blob/master/README.md#configuration
+00 00 * * *     /usr/local/bin/rsnapshot daily
+00 23 * * 6     /usr/local/bin/rsnapshot weekly
+00 22 1 * *     /usr/local/bin/rsnapshot monthly
+00 01 1 1 *     /usr/local/bin/rsnapshot yearly

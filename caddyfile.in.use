@@ -1,4 +1,6 @@
 http://parkour-test.ie-freiburg.mpg.de {
+#parkour-test.ie-freiburg.mpg.de {
+#	tls /etc/ssl/cert.pem /etc/ssl/key.pem
 	handle /static/* {
 		root * /parkour2
 		file_server
@@ -19,4 +21,3 @@ http://db-test.ie-freiburg.mpg.de {
 	}
 	log
 }
-
