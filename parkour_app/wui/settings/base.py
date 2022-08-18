@@ -30,6 +30,9 @@ ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 
+# Fix FileUpload
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
 
 # Application definition
 

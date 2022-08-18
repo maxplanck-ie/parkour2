@@ -14,7 +14,7 @@ blessings==1.7
     # via curtsies
 bpython==0.22.1
     # via -r requirements/dev.in
-coverage==6.4.2
+coverage==6.4.1
     # via -r requirements/dev.in
 curtsies==0.3.10
     # via bpython

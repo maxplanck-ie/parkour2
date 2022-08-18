@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, re_path
+from django.urls import include, path, re_path
 from django.views.defaults import page_not_found, server_error
 
 from .api import router
@@ -20,14 +20,5 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-        re_path(
-            "404/", page_not_found, kwargs={"exception": Exception("Page not Found")}
-        ),
-        re_path("500/", server_error),
-        re_path("__debug__/", include(debug_toolbar.urls)),
+        path("__debug__/", include("debug_toolbar.urls")),
     ]
-
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT,
-    )
