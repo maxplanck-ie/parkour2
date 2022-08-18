@@ -25,7 +25,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 # Allow all host headers
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "usage",
     "stats",
     "metadata_exporter",
+    'mozilla_django_oidc',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,12 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'mozilla_django_oidc.middleware.SessionRefresh',
+]
+
+AUTHENTICATION_BACKENDS = [
+    'common.oidc.ParkourOIDCAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_URLCONF = "wui.urls"
@@ -236,3 +243,17 @@ SETUP_ADMIN_PASSWORD = os.environ.get("SETUP_ADMIN_PASSWORD", None)
 # OBSOLETE/NON-OBSOLETE STATUS
 NON_OBSOLETE = 1
 OBSOLETE = 2
+
+# OIDC
+OIDC_RP_CLIENT_ID = os.environ["OIDC_RP_CLIENT_ID"]
+OIDC_RP_CLIENT_SECRET = os.environ["OIDC_RP_CLIENT_SECRET"]
+OIDC_RP_SIGN_ALGO = os.environ["OIDC_RP_SIGN_ALGO"]
+OIDC_OP_JWKS_ENDPOINT = os.environ["OIDC_OP_JWKS_ENDPOINT"]
+OIDC_OP_AUTHORIZATION_ENDPOINT = os.environ["OIDC_OP_AUTHORIZATION_ENDPOINT"]
+OIDC_OP_TOKEN_ENDPOINT = os.environ["OIDC_OP_TOKEN_ENDPOINT"]
+OIDC_OP_USER_ENDPOINT = os.environ["OIDC_OP_USER_ENDPOINT"]
+OIDC_ALLOWED_GROUPS = os.environ["OIDC_ALLOWED_GROUPS"].split(',')
+OIDC_RP_SCOPES = 'openid email name groups'
+OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 86400 # 24 h
+OIDC_STAFF_GROUPS= os.environ["OIDC_STAFF_GROUPS"].split(',')
+OIDC_BIOINFO_GROUPS= os.environ["OIDC_BIOINFO_GROUPS"].split(',')

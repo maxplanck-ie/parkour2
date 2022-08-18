@@ -14,7 +14,7 @@ blessings==1.7
     # via curtsies
 bpython==0.22.1
     # via -r requirements/dev.in
-coverage==6.4.1
+coverage==6.4.2
     # via -r requirements/dev.in
 curtsies==0.3.10
     # via bpython
@@ -28,7 +28,7 @@ decorator==5.1.1
     #   ipython
 django-debug-toolbar==3.5.0
     # via -r requirements/dev.in
-executing==0.8.3
+executing==0.9.1
     # via stack-data
 greenlet==1.1.2
     # via bpython

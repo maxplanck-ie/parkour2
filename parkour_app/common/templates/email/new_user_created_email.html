@@ -1,0 +1,20 @@
+{% load i18n %}{% autoescape off %}
+<p><i>Dear all,</i></p>
+
+<p>
+<div>A new user was automatically created via OpenID authentication.</div>
+<br>
+<div>First name: {{user.first_name}}</div>
+<div>Last name: {{user.last_name}}</div>
+<div>Email address: {{user.email}}</div>
+<br>
+<div>You can check this user's profile <a href="{{user_admin_change_url}}">here</a>.</div>
+</p>
+<p>
+    <i>
+        --<br />
+        Kind regards,<br />
+        Parkour<br />
+    </i>
+</p>
+{% endautoescape %}

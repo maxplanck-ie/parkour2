@@ -49,10 +49,36 @@ class CostUnit(models.Model):
         return f"{self.name} ({self.pi.organization.name}: {self.pi.name})"
 
 
+class OIDCGroup (models.Model):
+    name = models.CharField("Name", max_length=200, unique=True)
+    pi = models.ForeignKey(
+        PrincipalInvestigator,
+        verbose_name="Principal Investigator",
+        on_delete=models.SET(get_deleted_pi),
+    )
+
+    class Meta:
+        verbose_name = "OpenID Group"
+        verbose_name_plural = "OpenID Groups"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        
+        # Force group names to lower case
+        self.name = self.name.strip().lower()
+
+        super(OIDCGroup, self).save(force_insert, force_update, using, update_fields)
+
+
 class User(AbstractEmailUser):
     first_name = models.CharField("First name", max_length=50)
     last_name = models.CharField("Last name", max_length=50)
     phone = models.CharField("Phone", max_length=50, null=True, blank=True)
+    oidc_id = models.CharField("OIDC ID", max_length=255, null=True, unique=True, default=None, blank=True)
+    is_bioinformatician = models.BooleanField('Is bioinformatician?', default=False)
 
     organization = models.ForeignKey(
         Organization,

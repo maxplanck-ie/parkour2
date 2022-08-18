@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from .models import CostUnit, Organization, PrincipalInvestigator
+from .models import CostUnit, Organization, PrincipalInvestigator, OIDCGroup
 
 User = get_user_model()
 
@@ -79,6 +79,22 @@ class CostUnitTest(TestCase):
             self.cost_unit.__str__(),
             "%s (%s: %s)"
             % (self.cost_unit.name, self.pi.organization.name, self.pi.name),
+        )
+
+
+class OIDCGroupTest(TestCase):
+    def setUp(self):
+        self.org = Organization(name="Apple")
+        self.pi = PrincipalInvestigator(name="Tim Cook", organization=self.org)
+        self.oidc_group = OIDCGroup(name="some_group", pi=self.pi)
+
+    def test_oidc_group_name(self):
+        self.assertTrue(isinstance(self.org, Organization))
+        self.assertTrue(isinstance(self.pi, PrincipalInvestigator))
+        self.assertTrue(isinstance(self.oidc_group, OIDCGroup))
+        self.assertEqual(
+            self.oidc_group.__str__(),
+            self.oidc_group.name,
         )
 
 

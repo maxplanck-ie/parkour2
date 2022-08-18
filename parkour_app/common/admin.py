@@ -1,6 +1,6 @@
 from authtools.admin import NamedUserAdmin
-from authtools.forms import UserCreationForm
-from common.models import CostUnit, Organization, PrincipalInvestigator
+from authtools.forms import UserCreationForm, UserChangeForm
+from common.models import CostUnit, Organization, PrincipalInvestigator, OIDCGroup
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -17,6 +17,11 @@ class CostUnitInline(admin.TabularInline):
     extra = 1
 
 
+class OIDCGroupInline(admin.TabularInline):
+    model = OIDCGroup
+    extra = 1
+
+
 @admin.register(PrincipalInvestigator)
 class PrincipalInvestigatorAdmin(admin.ModelAdmin):
     list_display = (
@@ -28,7 +33,7 @@ class PrincipalInvestigatorAdmin(admin.ModelAdmin):
         "organization__name",
     )
     list_filter = ("organization",)
-    inlines = [CostUnitInline]
+    inlines = [CostUnitInline, OIDCGroupInline]
 
 
 @admin.register(Organization)
@@ -53,7 +58,34 @@ class CostUnitAdmin(admin.ModelAdmin):
     )
 
 
-class UserCreationForm(UserCreationForm):
+@admin.register(OIDCGroup)
+class OIDCGroupAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "pi",
+    )
+    search_fields = (
+        "name",
+        "pi__name",
+        "pi__organization__name",
+    )
+    list_filter = (
+        ("pi", RelatedDropdownFilter),
+        ("pi__organization", RelatedDropdownFilter),
+    )
+
+
+class CheckUserEmailExtension:
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+
+        if email:
+            if 'imb.de' in email:
+                raise forms.ValidationError("Use the full email extension imb-mainz.de, not just imb.de")
+        return email
+
+
+class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
     """
     A UserCreationForm with optional password inputs.
     """
@@ -75,7 +107,12 @@ class UserCreationForm(UserCreationForm):
         return password2
 
 
+class UserChangeForm(UserChangeForm, CheckUserEmailExtension):
+    pass
+
+
 class UserAdmin(NamedUserAdmin):
+    form = UserChangeForm
     add_form = UserCreationForm
     add_fieldsets = (
         (
@@ -112,6 +149,7 @@ class UserAdmin(NamedUserAdmin):
         "pi",
         "cost_units",
         "is_staff",
+        'is_bioinformatician'
     )
 
     search_fields = (
@@ -169,6 +207,7 @@ class UserAdmin(NamedUserAdmin):
                 "fields": (
                     "is_active",
                     "is_staff",
+                    "is_bioinformatician",
                     "is_superuser",
                     "groups",
                     "user_permissions",
