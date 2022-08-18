@@ -44,7 +44,8 @@ clean: set-prod unset-caddy
 prune:
 	@docker system prune -a -f --volumes
 
-prod: set-prod deploy-django deploy-nginx deploy-ready deploy-rsnapshot
+prod: set-prod deploy-django deploy-nginx deploy-ready
+	@echo "Consider: make deploy-rsnapshot"
 
 dev0: set-dev set-caddy deploy-full load-backup
 
