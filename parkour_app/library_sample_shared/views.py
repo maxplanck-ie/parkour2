@@ -122,7 +122,7 @@ class IndexViewSet(viewsets.ViewSet):
     def _get_sorted_indices(self, model_class, serializer_model_class):
         queryset = self._get_index_queryset(model_class)
         serializer = serializer_model_class(queryset, many=True)
-        return sorted(serializer.data, key=lambda x: (x["prefix"], int(x["number"])))
+        return sorted(serializer.data, key=lambda x: x["index_id"])
 
     def _get_index_queryset(self, model_class):
         queryset = model_class.objects.all()
