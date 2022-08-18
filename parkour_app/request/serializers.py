@@ -7,6 +7,7 @@ from .models import FileRequest, Request
 
 class RequestSerializer(ModelSerializer):
     user_full_name = SerializerMethodField()
+    pi = SerializerMethodField()
     restrict_permissions = SerializerMethodField()
     deep_seq_request_name = SerializerMethodField()
     deep_seq_request_path = SerializerMethodField()
@@ -21,6 +22,7 @@ class RequestSerializer(ModelSerializer):
             "name",
             "user",
             "user_full_name",
+            "pi",
             "create_time",
             "cost_unit",
             "description",
@@ -36,6 +38,9 @@ class RequestSerializer(ModelSerializer):
 
     def get_user_full_name(self, obj):
         return obj.user.full_name
+    
+    def get_pi(self, obj):
+        return str(obj.user.pi)
 
     def get_number_of_samples(self, obj):
         return len(obj.statuses)
