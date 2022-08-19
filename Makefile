@@ -51,7 +51,7 @@ dev0: set-dev set-caddy deploy-full load-backup
 
 dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations
 
-set-dev:
+set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
