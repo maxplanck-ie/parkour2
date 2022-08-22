@@ -1,5 +1,4 @@
 from collections import Counter, OrderedDict
-from datetime import datetime
 
 import numpy as np
 from django.apps import apps
@@ -9,6 +8,7 @@ from django.db import connection
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 from pandas import DataFrame
 
 from .sql import LIBRARY_SELECT, QUERY, SAMPLE_JOINS, SAMPLE_SELECT
@@ -348,7 +348,7 @@ class Report:
 def report(request):
     data = {}
 
-    now = datetime.now()
+    now = timezone.now()
     start = request.GET.get("start", now)
     end = request.GET.get("end", now)
 
