@@ -127,7 +127,9 @@ dev-setup:
 		pip install \
 			pre-commit \
 			pip-compile-multi \
-			sphinx
+			sphinx \
+			sphinx-autobuild \
+			sphinx-rtd-theme
 
 # Don't confuse this ^up^here^ with the app development environment (dev.in &
 # dev.txt), mind the 'hierarchical' difference. We're going to use

@@ -12,11 +12,6 @@ gunicorn
 psycopg2-binary>=2.8,<2.9  # https://stackoverflow.com/a/68034786
 dj-database-url
 
-# Documentation
-Sphinx
-sphinx-autobuild
-sphinx-rtd-theme
-
 # Miscellaneous
 xlwt
 fpdf
