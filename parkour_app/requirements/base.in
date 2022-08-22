@@ -1,7 +1,6 @@
 # Django
 Django~=3.2
-git+https://github.com/sensus261/django-authtools#egg=django-authtools
-# django-use-email-as-username
+django-authtools
 djangorestframework
 django-admin-list-filter-dropdown
 django-monthfield
