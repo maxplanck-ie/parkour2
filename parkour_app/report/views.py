@@ -391,7 +391,7 @@ def report(request):
     data["libraries_on_sequencers_count"] = report.get_pi_sequencer_counts()
 
     # Count days
-    data["turnaround"] = report.get_turnaround()
+    # data["turnaround"] = report.get_turnaround()
 
     return render(request, "report.html", data)
 
