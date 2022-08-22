@@ -3,6 +3,7 @@ from datetime import datetime
 
 from django.apps import apps
 from django.db.models import Prefetch
+from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,7 +15,7 @@ Sample = apps.get_model("sample", "Sample")
 
 
 def get_date_range(request, format):
-    now = datetime.now()
+    now = timezone.now()
     start = request.query_params.get("start", now)
     end = request.query_params.get("end", now)
 
