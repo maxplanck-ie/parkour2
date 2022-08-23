@@ -154,9 +154,10 @@ class RequestViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = (
         "name",
-        "description",
-        "user__first_name",
         "user__last_name",
+        "cost_unit__name",
+        "user__pi__name",
+        "user__organization__name"
     )
 
     def get_queryset(self, showAll=False):
