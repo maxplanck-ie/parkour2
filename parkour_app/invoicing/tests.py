@@ -1,5 +1,4 @@
 import json
-from datetime import datetime
 
 import pytz
 from common.tests import BaseAPITestCase, BaseTestCase
@@ -233,11 +232,11 @@ class TestInvoicingViewSet(BaseAPITestCase):
         sequencer = create_sequencer(get_random_name())
 
         flowcell1 = create_flowcell(get_random_name(), sequencer)
-        flowcell1.create_time = datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        flowcell1.create_time = timezone.datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell1.save()
 
         flowcell2 = create_flowcell(get_random_name(), sequencer)
-        flowcell2.create_time = datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        flowcell2.create_time = timezone.datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell2.save()
 
         response = self.client.get(reverse("invoicing-billing-periods"))

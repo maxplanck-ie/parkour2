@@ -1,7 +1,6 @@
 import calendar
-import datetime
 
-import numpy as np
+import pandas as pd
 from common.views import CsrfExemptSessionAuthentication
 from dateutil.relativedelta import relativedelta
 from django.apps import apps
@@ -9,6 +8,7 @@ from django.conf import settings
 from django.db import transaction
 from django.db.models import Min, Prefetch, Q
 from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 from month import Month
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
@@ -43,14 +43,14 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = InvoicingSerializer
 
     def get_serializer_context(self):
-        today = datetime.date.today()
+        today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
         ctx = {"curr_month": month, "curr_year": year, "today": today}
         return ctx
 
     def get_queryset(self):
-        today = datetime.date.today()
+        today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
 
@@ -103,7 +103,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     def list(self, request):
         queryset = self.filter_queryset(self.get_queryset())
 
-        today = datetime.date.today()
+        today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
         ctx = {"curr_month": month, "curr_year": year, "today": today}
@@ -123,7 +123,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         end_date = flowcells.last().create_time
         end_date = end_date + relativedelta(months=1)
 
-        dates = np.arange(start_date, end_date, dtype="datetime64[M]").tolist()
+        dates = pd.date_range(start_date, end_date, inclusive="left", freq="M")
         for dt in dates:
             try:
                 report = InvoicingReport.objects.get(month=dt.strftime("%Y-%m"))
@@ -174,7 +174,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     @action(methods=["get"], detail=False)
     def download(self, request):
         """Download Invoicing Report."""
-        today = datetime.date.today()
+        today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = int(self.request.query_params.get("month", today.month))
 

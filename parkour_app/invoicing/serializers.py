@@ -1,4 +1,3 @@
-import datetime
 import itertools
 import logging
 from collections import Counter
@@ -8,6 +7,7 @@ from pprint import pprint
 
 from django.apps import apps
 from django.db.models import Prefetch
+from django.utils import timezone
 from rest_framework.fields import empty
 from rest_framework.serializers import ModelSerializer, SerializerMethodField
 
@@ -237,11 +237,11 @@ class InvoicingSerializer(ModelSerializer):
 
         mindt = min(d["flowcell_create_time"] for d in flowcells)
 
-        # min_date = trunc_datetime(datetime.datetime(minYear, minMonth, 1))
-        min_date = trunc_datetime(datetime.datetime(mindt.year, mindt.month, 1))
+        # min_date = trunc_datetime(timezone.datetime(minYear, minMonth, 1))
+        min_date = trunc_datetime(timezone.datetime(mindt.year, mindt.month, 1))
 
         curr_date = trunc_datetime(
-            datetime.datetime(self.context["curr_year"], self.context["curr_month"], 1)
+            timezone.datetime(self.context["curr_year"], self.context["curr_month"], 1)
         )
 
         num_libraries = obj.libraries.count()
@@ -252,7 +252,7 @@ class InvoicingSerializer(ModelSerializer):
             libcount = 0
 
             # for flowcell in flowcells:
-            #    flowcell_dt = trunc_datetime(datetime.datetime(flowcell['flowcell_create_year'],flowcell['flowcell_create_month'],1))
+            #    flowcell_dt = trunc_datetime(timezone.datetime(flowcell['flowcell_create_year'],flowcell['flowcell_create_month'],1))
             #    #if flowcell['flowcell_create_month'] == minMonth and flowcell['flowcell_create_year'] == minYear:
             #    if flowcell_dt == minDt:
             #        for pool in flowcell['pools']:
@@ -317,14 +317,14 @@ class InvoicingSerializer(ModelSerializer):
         """
 
         curr_date = trunc_datetime(
-            datetime.datetime(self.context["curr_year"], self.context["curr_month"], 1)
+            timezone.datetime(self.context["curr_year"], self.context["curr_month"], 1)
         )
 
         # Calculate Fixed Costs
         costs = 0
         for flowcell in percentage:
             dt = flowcell["flowcell_create_time"]
-            dt = trunc_datetime(datetime.datetime(dt.year, dt.month, 1))
+            dt = trunc_datetime(timezone.datetime(dt.year, dt.month, 1))
             # if flowcell['flowcell_create_month'] == int(self.context['curr_month']) and flowcell['flowcell_create_year'] == int(self.context['curr_year']):
             if dt == curr_date:
 
@@ -339,7 +339,7 @@ class InvoicingSerializer(ModelSerializer):
         costs = 0
         for flowcell in percentage:
             dt = flowcell["flowcell_create_time"]
-            dt = trunc_datetime(datetime.datetime(dt.year, dt.month, 1))
+            dt = trunc_datetime(timezone.datetime(dt.year, dt.month, 1))
             # if flowcell['flowcell_create_month'] == self.context['curr_month'] and flowcell['flowcell_create_year'] == self.context['curr_year']:
             if dt == curr_date:
                 for pool in flowcell["pools"]:
