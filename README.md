@@ -1,5 +1,7 @@
 # Parkour
 
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maxplanck-ie/parkour2/main.svg)](https://results.pre-commit.ci/latest/github/maxplanck-ie/parkour2/main) ![dj-tests status](https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg)
+
 ![Parkour](./readme.png)
 
 Parkour is a Laboratory Information Management System (LIMS) software package
@@ -16,55 +18,3 @@ _quickly jump to that information you need!_ 🤸🏻‍♀️
 > LIMS: high-quality sample preparation in next generation sequencing";
 > Bioinformatics, Volume 35, Issue 8, 15 April 2019, Pages 1422–1424;
 > <https://doi.org/10.1093/bioinformatics/bty820>
-
-#### Demo
-
-A demonstration instance is available at
-[http://parkour-demo.ie-freiburg.mpg.de](http://parkour-demo.ie-freiburg.mpg.de).
-The following accounts are available on that instance:
-
- - A typical "staff" account with the username
-   "parkour-staff@parkour-demo.ie-freiburg.mpg.de" and password
-"parkour-staff".
- - A typical "admin" account with the username
-   "parkour-admin@parkour-demo.ie-freiburg.mpg.de" and password
-"parkour-admin".
-
-Please note that the instance is reset every 12 hours!
-
-
-## Documentation
-
-The **user manual** can be viewed at →
-[ReadTheDocs](https://parkour.readthedocs.io/) 📖.
-
-### Installation
-
-To carry out the deployment (ideally, on a server) of this Django application,
-we're using [Docker](https://docs.docker.com/get-started/) with
-`docker-compose-plugin` (v2).
-
-1. Install the system requirements 🐳, then download/ clone the latest version
-   of this repo.
-1. Copy `parkour.env.sample` file to `parkour.env` and edit its contents
-   accordingly. For the time being, and demo purposes, you can leave this as it
-   is.
-1. Run this command: `make`. Then, you may access the application at:
-   <http://127.0.0.1/>. To log-in, you'll need to set users and passwords...
-1. Optionally, you may load the database from our demo instance (as you would
-   load any backup) with this "2 in 1" command: `docker cp demo.dump.sql
-parkour2-postgres:/tmp/pg.dump && docker exec -it parkour2-postgres pg_restore
--d postgres -U postgres -c -1 /tmp/pg.dump`. This will also bring both the
-`parkour-staff` and `parkour-admin` users, as with any other data loaded in
-your database: it's up to you to keep (or remove) it.
-1. Create one or more admin user(s) with the following command: `docker compose
-   run parkour2-django python manage.py createsuperuser`.
-1. Access <http://127.0.0.1/admin> and edit the data needed to get going (_see
-   the user manual for details_).
-
-To ease further _DevOps_ tasks, common docker commands are bundled as rules at
-the `Makefile`. To stop the containers, use `make down`. You may use `make dev`
-to deploy an (insecure) development installation, and `make prod` for
-production (Please note: in a real scenario, you'll need to: preserve data
-between docker runs, configure TLS certificates, add DNS records, set a back-up
-policy, probably provision a mailserver, etcetera.)
