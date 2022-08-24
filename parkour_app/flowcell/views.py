@@ -1,5 +1,4 @@
 import csv
-import datetime
 import itertools
 import json
 import logging
@@ -12,6 +11,7 @@ from django.conf import settings
 from django.db.models import F, Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -132,7 +132,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        today = datetime.date.today()
+        today = timezone.datetime.today()
         year = request.query_params.get("year", today.year)
         month = request.query_params.get("month", today.month)
 

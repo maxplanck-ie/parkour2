@@ -1,6 +1,5 @@
 import itertools
 import json
-from datetime import datetime
 
 from common.utils import get_date_range
 from common.views import CsrfExemptSessionAuthentication
@@ -8,6 +7,7 @@ from django.apps import apps
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -104,7 +104,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
     def list(self, request):
-        now = datetime.now()
+        now = timezone.now()
         start = request.query_params.get("start", now)
         end = request.query_params.get("end", now)
         start, end = get_date_range(start, end, "%Y-%m-%dT%H:%M:%S")
@@ -262,7 +262,7 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         return queryset
 
     def list(self, request):
-        now = datetime.now()
+        now = timezone.now()
         start = request.query_params.get("start", now)
         end = request.query_params.get("end", now)
         start, end = get_date_range(start, end, "%Y-%m-%dT%H:%M:%S")
