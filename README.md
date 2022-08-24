@@ -18,3 +18,8 @@ _quickly jump to that information you need!_ 🤸🏻‍♀️
 > LIMS: high-quality sample preparation in next generation sequencing";
 > Bioinformatics, Volume 35, Issue 8, 15 April 2019, Pages 1422–1424;
 > <https://doi.org/10.1093/bioinformatics/bty820>
+
+#### Installation
+
+Instructions are available at our
+[documentation](https://github.com/maxplanck-ie/parkour2/wiki/Installation#steps).
