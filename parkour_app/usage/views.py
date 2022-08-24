@@ -1,5 +1,4 @@
 from collections import Counter
-from datetime import datetime
 
 from django.apps import apps
 from django.db.models import Prefetch
@@ -20,14 +19,16 @@ def get_date_range(request, format):
     end = request.query_params.get("end", now)
 
     try:
-        start = datetime.strptime(start, format) if type(start) is str else start
+        start = (
+            timezone.datetime.strptime(start, format) if type(start) is str else start
+        )
     except ValueError:
         start = now
     finally:
         start = start.replace(hour=0, minute=0)
 
     try:
-        end = datetime.strptime(end, format) if type(end) is str else end
+        end = timezone.datetime.strptime(end, format) if type(end) is str else end
     except ValueError:
         end = now
     finally:

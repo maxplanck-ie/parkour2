@@ -1,7 +1,6 @@
 import random
 import re
 import string
-from datetime import datetime
 from time import time
 
 from django.db import connection
@@ -59,14 +58,16 @@ def get_date_range(start, end, format):
     now = timezone.now()
 
     try:
-        start = datetime.strptime(start, format) if type(start) is str else start
+        start = (
+            timezone.datetime.strptime(start, format) if type(start) is str else start
+        )
     except ValueError:
         start = now
     finally:
         start = start.replace(hour=0, minute=0)
 
     try:
-        end = datetime.strptime(end, format) if type(end) is str else end
+        end = timezone.datetime.strptime(end, format) if type(end) is str else end
     except ValueError:
         end = now
     finally:
