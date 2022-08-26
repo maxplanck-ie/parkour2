@@ -101,7 +101,8 @@ deploy-rsnapshot:
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
-	@docker compose run parkour2-django python -Wa manage.py test
+	@docker compose run parkour2-django python manage.py validate_templates && \
+		docker compose run parkour2-django python -Wa manage.py test
 
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
