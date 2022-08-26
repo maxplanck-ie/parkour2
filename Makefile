@@ -115,6 +115,15 @@ reload-django:
 	@find $$PWD/parkour_app/ -maxdepth 1 -type d -mtime -3 | \
 		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
 
+graph_models:
+	@docker exec -it parkour2-django sh -c \
+	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pygraphviz" && \
+		docker exec -it parkour2-django python manage.py graph_models -a -g -o /tmp/parkour.png && \
+		docker cp parkour2-django:/tmp/parkour.png models.png
+
+show_urls:
+	@docker exec -it parkour2-django python manage.py show_urls
+
 compile:
 	@cd parkour_app/ && \
 		source ./env/bin/activate && \
