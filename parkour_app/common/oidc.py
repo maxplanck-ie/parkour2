@@ -1,12 +1,12 @@
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from django.contrib.auth.models import Group
 from django.conf import settings
-from common.models import User
+from common.models import PrincipalInvestigator
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.template.loader import render_to_string
+from common.models import CostUnit, Organization
 
-from .models import PrincipalInvestigator
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
 
@@ -53,7 +53,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         user_admin_change_url = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("admin:common_user_change", args=(user.id,))}'
         
         # Recipient list, all lab managers plus tUhe site admin
-        recipients = User.objects.filter(is_active=True, is_staff=True, groups__name='staff').values_list('email', flat=True)
+        recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='staff').values_list('email', flat=True)
 
         send_mail(
                 subject="[Parkour] A new user was automatically created via OpenID authentication",
@@ -102,13 +102,17 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
             # For regular users, try to assign a PI, organization and cost centers based on
             # their OIDC groups
             try:
-                pi = PrincipalInvestigator.objects.filter(oidcgroup__name__in=user_groups).distinct().get()
+                pis = PrincipalInvestigator.objects.filter(oidcgroup__name__in=user_groups).distinct()
             except:
-                pi = None
-            if pi:
-                user.pi = pi
-                user.organization = pi.organization
-                user.cost_unit.add(*list(pi.costunit_set.all()))
+                pis = None
+            if pis:
+                user.pi.add(*list(pis))
+                user.cost_unit.add(*list(CostUnit.objects.filter(pi__in=pis).distinct()))
+                try:
+                    organization = Organization.objects.filter(id__in=pis.values_list('organization__id', flat=True)).distinct().get()
+                    user.organization = organization
+                except:
+                    pass
 
         user.save()
 

@@ -1,4 +1,4 @@
-from common.views import CostUnitsViewSet
+from common.views import CostUnitsViewSet, PrincipalInvestigatorViewSet
 from flowcell.views import (
     FlowcellAnalysisViewSet,
     FlowcellViewSet,
@@ -41,6 +41,7 @@ router = routers.DefaultRouter()
 
 router.register(r"requests", RequestViewSet, basename="request")
 router.register(r"cost_units", CostUnitsViewSet, basename="cost-units")
+router.register(r"principal_investigators", PrincipalInvestigatorViewSet, basename="principal_investigators")
 router.register(r"organisms", OrganismViewSet, basename="organism")
 router.register(r"read_lengths", ReadLengthViewSet, basename="read-length")
 router.register(

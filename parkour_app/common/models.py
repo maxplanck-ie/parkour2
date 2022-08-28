@@ -1,3 +1,4 @@
+from pyexpat import model
 from authtools.models import AbstractEmailUser
 from django.db import models
 
@@ -22,6 +23,7 @@ class PrincipalInvestigator(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.SET(get_deleted_org)
     )
+    parent_user = models.OneToOneField('User', on_delete=models.PROTECT, default=None, null=True)
 
     class Meta:
         verbose_name = "Principal Investigator"
@@ -88,11 +90,9 @@ class User(AbstractEmailUser):
         blank=True,
     )
 
-    pi = models.ForeignKey(
+    pi = models.ManyToManyField(
         PrincipalInvestigator,
         verbose_name="Principal Investigator",
-        on_delete=models.SET_NULL,
-        null=True,
         blank=True,
     )
 

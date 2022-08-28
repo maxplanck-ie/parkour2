@@ -27,11 +27,13 @@ class PrincipalInvestigatorAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "organization",
+        'parent_user',
     )
     search_fields = (
         "name",
         "organization__name",
     )
+    autocomplete_fields = ['parent_user']
     list_filter = ("organization",)
     inlines = [CostUnitInline, OIDCGroupInline]
 
@@ -146,7 +148,7 @@ class UserAdmin(NamedUserAdmin):
         "email",
         "phone",
         "organization",
-        "pi",
+        "pis",
         "cost_units",
         "is_staff",
         'is_bioinformatician'
@@ -165,15 +167,18 @@ class UserAdmin(NamedUserAdmin):
     list_filter = (
         "is_staff",
         "organization",
-        ("pi", RelatedDropdownFilter),
     )
     list_display_links = (
         "first_name",
         "last_name",
         "email",
     )
-    filter_horizontal = (
+    autocomplete_fields = (
+        "pi",
         "cost_unit",
+    )
+    filter_horizontal = (
+
         "groups",
         "user_permissions",
     )
@@ -225,6 +230,10 @@ class UserAdmin(NamedUserAdmin):
     def cost_units(self, obj):
         cost_units = obj.cost_unit.all().values_list("name", flat=True)
         return ", ".join(sorted(cost_units))
+
+    def pis(self, obj):
+        pis = obj.pi.all().values_list("name", flat=True)
+        return ", ".join(sorted(pis))
 
     def save_model(self, request, obj, form, change):
         if not change and (

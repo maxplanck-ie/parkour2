@@ -9,8 +9,8 @@ from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 
-from .models import CostUnit
-from .serializers import CostUnitSerializer
+from .models import CostUnit, PrincipalInvestigator
+from .serializers import CostUnitSerializer, PrincipalInvestigatorSerializer
 
 User = get_user_model()
 
@@ -131,6 +131,23 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
             user = get_object_or_404(User, id=user_id)
             cost_units = user.cost_unit.values_list("pk", flat=True)
             queryset = queryset.filter(pk__in=cost_units)
+        except Exception:
+            pass
+        return queryset
+
+
+class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of Principal Investigators."""
+
+    serializer_class = PrincipalInvestigatorSerializer
+
+    def get_queryset(self):
+        queryset = PrincipalInvestigator.objects.order_by("name")
+        user_id = self.request.query_params.get("user_id", None)
+        try:
+            user = get_object_or_404(User, id=user_id)
+            pi_ids = user.pi.all().values_list('id', flat=True)
+            queryset = queryset.filter(pk__in=pi_ids)
         except Exception:
             pass
         return queryset

@@ -7,7 +7,7 @@ from .models import FileRequest, Request
 
 class RequestSerializer(ModelSerializer):
     user_full_name = SerializerMethodField()
-    pi = SerializerMethodField()
+    pi_name = SerializerMethodField()
     cost_unit_name = SerializerMethodField()
     restrict_permissions = SerializerMethodField()
     deep_seq_request_name = SerializerMethodField()
@@ -24,6 +24,7 @@ class RequestSerializer(ModelSerializer):
             "user",
             "user_full_name",
             "pi",
+            "pi_name",
             "create_time",
             "cost_unit",
             "cost_unit_name",
@@ -40,9 +41,9 @@ class RequestSerializer(ModelSerializer):
 
     def get_user_full_name(self, obj):
         return obj.user.full_name
-    
-    def get_pi(self, obj):
-        return str(obj.user.pi)
+
+    def get_pi_name(self, obj):
+        return str(obj.pi)
 
     def get_cost_unit_name(self, obj):
         return obj.cost_unit.name if obj.cost_unit else 'None'

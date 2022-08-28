@@ -1,6 +1,6 @@
 import itertools
 
-from common.models import CostUnit, DateTimeMixin
+from common.models import CostUnit, PrincipalInvestigator, DateTimeMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -28,6 +28,14 @@ class Request(DateTimeMixin):
         settings.AUTH_USER_MODEL,
         verbose_name="User",
         on_delete=models.SET(get_sentinel_user),
+    )
+
+    pi = models.ForeignKey(
+        PrincipalInvestigator,
+        verbose_name="PI",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     cost_unit = models.ForeignKey(
