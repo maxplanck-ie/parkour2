@@ -43,8 +43,8 @@ class TestRequestModel(TestCase):
             email="foo@bar.io",
             password="foo-foo",
             organization=self.org,
-            pi=self.pi,
         )
+        self.user.pi.add(self.pi)
 
     def test_create_request(self):
         request = create_request(self.user)
@@ -163,7 +163,7 @@ class TestRequests(BaseTestCase):
 
         requests = [x["name"] for x in response.json()["results"]]
         self.assertIn(request1.name, requests)
-        self.assertIn(request2.name, requests)
+        self.assertNotIn(request2.name, requests)
         self.assertNotIn(request3.name, requests)
 
     def test_single_request(self):
