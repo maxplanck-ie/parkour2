@@ -1,6 +1,6 @@
 from django.conf import settings
 from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 
 from .models import FileRequest, Request
 
@@ -15,6 +15,7 @@ class RequestSerializer(ModelSerializer):
     completed = SerializerMethodField()
     files = SerializerMethodField()
     number_of_samples = SerializerMethodField()
+    description = CharField(allow_blank=True)
 
     class Meta:
         model = Request
