@@ -2,9 +2,9 @@ name: Django CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [$default-branch]
 
 jobs:
   build:
@@ -26,30 +26,30 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-    - uses: actions/checkout@v3
-#   - name: Set up Tmux session for debugging purposes
-#     if: ${{ failure() }}
-#     uses: mxschmitt/action-tmate@v3
-#     with:
-#       limit-access-to-actor: true
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r parkour_app/requirements/prod.txt
-    - name: Run Tests
-      run: |
-        python parkour_app/manage.py test parkour_app
-      env:
-        DJANGO_SETTINGS_MODULE: wui.settings.prod
-        DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-        SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        TIME_ZONE: Europe/Berlin
-        ADMIN_NAME: adr1an
-        EMAIL_HOST: mail.server.tld
-        EMAIL_SUBJECT_PREFIX: Parkour2_-_
-        ADMIN_EMAIL: your_inbox@email.tld
-        SERVER_EMAIL: info@server.tld
+      - uses: nschloe/action-cached-lfs-checkout@v1
+      #   - name: Set up Tmux session for debugging purposes
+      #     if: ${{ failure() }}
+      #     uses: mxschmitt/action-tmate@v3
+      #     with:
+      #       limit-access-to-actor: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r parkour_app/requirements/prod.txt
+      - name: Run Tests
+        run: |
+          python parkour_app/manage.py test parkour_app
+        env:
+          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          TIME_ZONE: Europe/Berlin
+          ADMIN_NAME: adr1an
+          EMAIL_HOST: mail.server.tld
+          EMAIL_SUBJECT_PREFIX: Parkour2_-_
+          ADMIN_EMAIL: your_inbox@email.tld
+          SERVER_EMAIL: info@server.tld
