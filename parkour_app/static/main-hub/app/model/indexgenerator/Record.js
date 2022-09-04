@@ -1,3 +1,62 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:99d7d7d45a6b4e201999360c2f2b1d27763de4f9ff6fdeb55b84825a2a8c2147
-size 930
+Ext.define('MainHub.model.indexgenerator.Record', {
+  extend: 'MainHub.model.Base',
+
+  fields: [
+    {
+      name: 'pk',
+      type: 'int'
+    },
+    {
+      name: 'name',
+      type: 'string'
+    },
+    {
+      name: 'barcode',
+      type: 'string'
+    },
+    {
+      name: 'record_type',
+      type: 'string'
+    },
+    {
+      name: 'request',
+      type: 'int'
+    },
+    {
+      name: 'request_name',
+      type: 'string'
+    },
+    {
+      name: 'sequencing_depth',
+      type: 'float'
+    },
+    {
+      name: 'library_protocol_name',
+      type: 'string'
+    },
+    {
+      name: 'index_i7',
+      type: 'string'
+    },
+    {
+      name: 'index_i5',
+      type: 'string'
+    },
+    {
+      name: 'index_i7_id',
+      type: 'string'
+    },
+    {
+      name: 'index_i5_id',
+      type: 'string'
+    },
+    {
+      name: 'index_type',
+      type: 'int'
+    },
+    {
+      name: 'read_length',
+      type: 'int'
+    }
+  ]
+});

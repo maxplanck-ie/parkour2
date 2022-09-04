@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a1797c2f70eff0c1548187bcd6a8b0d67768f724516f2594419d8a272e9251c2
-size 554
+Ext.define('MainHub.store.requests.PrincipalInvestigators', {
+  extend: 'Ext.data.Store',
+  storeId: 'PrincipalInvestigators',
+
+  requires: [
+    'MainHub.model.requests.PrincipalInvestigator'
+  ],
+
+  model: 'MainHub.model.requests.PrincipalInvestigator',
+
+  proxy: {
+    url: 'api/principal_investigators/',
+    type: 'ajax',
+    timeout: 1000000,
+    pageParam: false,  // to remove param "page"
+    startParam: false, // to remove param "start"
+    limitParam: false, // to remove param "limit"
+    noCache: false     // to remove param "_dc"
+  }
+});

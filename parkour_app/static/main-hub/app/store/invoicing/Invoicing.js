@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e90b9ad9379933eab3e7dee2357ccf7c4ab15263cecb7e6ac2b65baa18b2303e
-size 524
+Ext.define('MainHub.store.invoicing.Invoicing', {
+  extend: 'Ext.data.Store',
+  storeId: 'Invoicing',
+
+  requires: [
+    'MainHub.model.invoicing.Request'
+  ],
+
+  model: 'MainHub.model.invoicing.Request',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/invoicing/',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false      // to remove param "_dc"
+  },
+
+  getId: function () {
+    return 'Invoicing';
+  }
+});

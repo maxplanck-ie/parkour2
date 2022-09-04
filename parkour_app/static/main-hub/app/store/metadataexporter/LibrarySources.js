@@ -1,3 +1,41 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:035585409ea5b9e97bce893637854bd45aa67b0b05c884734d30bed12c7a0668
-size 581
+Ext.define('MainHub.store.metadataexporter.LibrarySources', {
+  extend: 'Ext.data.Store',
+  storeId: 'ENALibrarySources',
+
+  fields: [
+    {
+      name: 'name',
+      type: 'string'
+    }
+  ],
+
+  data: [
+    {
+      name: 'genomic'
+    },
+    {
+      name: 'genomic single cell'
+    },
+    {
+      name: 'transcriptomic'
+    },
+    {
+      name: 'transcriptomic single cell'
+    },
+    {
+      name: 'metagenomic'
+    },
+    {
+      name: 'metatranscriptomic'
+    },
+    {
+      name: 'synthetic'
+    },
+    {
+      name: 'viral rna'
+    },
+    {
+      name: 'other'
+    }
+  ]
+});

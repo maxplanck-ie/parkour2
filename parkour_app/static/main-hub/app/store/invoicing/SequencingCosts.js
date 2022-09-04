@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1eecfea165954626b8e494f9119f4ccafd2e652abd31813c23b224896195a3c0
-size 673
+Ext.define('MainHub.store.invoicing.SequencingCosts', {
+  extend: 'Ext.data.Store',
+  storeId: 'SequencingCosts',
+
+  requires: [
+    'MainHub.model.invoicing.SequencingCost'
+  ],
+
+  model: 'MainHub.model.invoicing.SequencingCost',
+
+  sorters: [{
+    property: 'name',
+    direction: 'ASC'
+  }],
+
+  proxy: {
+    type: 'ajax',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false,     // to remove param "_dc",
+    actionMethods: {
+      read: 'GET',
+      update: 'PUT'
+    },
+    api: {
+      read: 'api/sequencing_costs/',
+      update: ''
+    }
+  }
+});

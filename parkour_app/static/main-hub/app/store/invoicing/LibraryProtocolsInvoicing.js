@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ef5da5ef9fbc05f8a4a2ddff7dabea91f0c4fc68a0ebfdaad81e191772e2682d
-size 754
+Ext.define('MainHub.store.invoicing.LibraryProtocolsInvoicing', {
+    extend: 'Ext.data.Store',
+    storeId: 'libraryprotocolinvoicingStore',
+
+    requires: [
+        'MainHub.model.libraries.LibraryProtocol'
+    ],
+
+    model: 'MainHub.model.libraries.LibraryProtocol',
+
+    proxy: {
+        type: 'ajax',
+        url: 'api/library_protocols_invoicing/',
+        timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    },
+
+    autoLoad: true
+});

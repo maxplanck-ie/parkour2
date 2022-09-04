@@ -1,3 +1,67 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4f5507cf72834e08502aa4f8390b1fe6809e23db6995605ce9e355336f81ff4e
-size 1029
+Ext.define('MainHub.model.requests.Request', {
+  extend: 'MainHub.model.Base',
+
+  fields: [
+    {
+      type: 'int',
+      name: 'id'
+    },
+    {
+      type: 'string',
+      name: 'name'
+    },
+    {
+      type: 'int',
+      name: 'user'
+    },
+    {
+      type: 'string',
+      name: 'user_full_name'
+    },
+    {
+      type: 'int',
+      name: 'cost_unit',
+      allowNull: true
+    },
+    {
+      type: 'auto',
+      name: 'cost_units'
+    },
+    {
+      type: 'date',
+      name: 'create_time'
+    },
+    {
+      type: 'string',
+      name: 'description'
+    },
+    {
+      type: 'bool',
+      name: 'restrict_permissions'
+    },
+    {
+      type: 'bool',
+      name: 'completed'
+    },
+    {
+      type: 'string',
+      name: 'deep_seq_request_name'
+    },
+    {
+      type: 'string',
+      name: 'deep_seq_request_path'
+    },
+    {
+      type: 'float',
+      name: 'total_sequencing_depth'
+    },
+    {
+      type: 'auto',
+      name: 'files'
+    },
+    {
+      type: 'int',
+      name: 'number_of_samples'
+    }
+  ]
+});

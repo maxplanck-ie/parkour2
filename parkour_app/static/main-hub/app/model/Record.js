@@ -1,3 +1,50 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8d2668bae1d1e32c6c213f81aa67dec5529f3300a7f5c1a8f4f583bc237d0306
-size 1073
+Ext.define('MainHub.model.Record', {
+    extend: 'MainHub.model.Base',
+
+    fields: [
+        {
+            name: 'pk',
+            type: 'int'
+        },
+        {
+            name: 'name',
+            type: 'string'
+        },
+        {
+            name: 'record_type',
+            type: 'string'
+        },
+        {
+            name: 'status',
+            type: 'int',
+            allowNull: true
+        },
+        {
+            name: 'barcode',
+            type: 'string'
+        },
+        {
+            name: 'is_converted',
+            type: 'bool',
+            defaultValue: false
+        },
+        {
+            name: 'selected',
+            type: 'bool',
+            defaultValue: false
+        }
+    ],
+
+    getRecordType: function() {
+        var type = this.get('record_type');
+        if (type === 'Sample' && this.get('is_converted')) {
+            type = 'Library';
+        }
+        return type;
+    },
+
+    getBarcode: function() {
+        var barcode = this.get('barcode');
+        return this.get('is_converted') ? barcode + '*' : barcode;
+    }
+});

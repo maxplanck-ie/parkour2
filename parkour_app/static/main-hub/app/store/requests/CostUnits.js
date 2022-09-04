@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7feef6bb76a3ed44a936ec1574311f74fb7af0424833f72d3509cf62a3a54fee
-size 489
+Ext.define('MainHub.store.requests.CostUnits', {
+  extend: 'Ext.data.Store',
+  storeId: 'CostUnits',
+
+  requires: [
+    'MainHub.model.requests.CostUnit'
+  ],
+
+  model: 'MainHub.model.requests.CostUnit',
+
+  proxy: {
+    url: 'api/cost_units/',
+    type: 'ajax',
+    timeout: 1000000,
+    pageParam: false,  // to remove param "page"
+    startParam: false, // to remove param "start"
+    limitParam: false, // to remove param "limit"
+    noCache: false     // to remove param "_dc"
+  }
+});

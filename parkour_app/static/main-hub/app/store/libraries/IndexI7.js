@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2be957ffaece8236c2cf1e0f421770d7a137ad63b80af2751dd9d7b9bdf22d88
-size 661
+Ext.define('MainHub.store.libraries.IndexI7', {
+    extend: 'Ext.data.Store',
+    storeId: 'indexI7Store',
+
+    requires: [
+        'MainHub.model.libraries.Index'
+    ],
+
+    model: 'MainHub.model.libraries.Index',
+
+    proxy: {
+        type: 'ajax',
+        url: 'api/indices/i7/',
+        timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    }
+});

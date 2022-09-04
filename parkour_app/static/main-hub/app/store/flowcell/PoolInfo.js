@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b694e796073f98970413607988c95624043267729a2c56fe96e0935739cb730e
-size 471
+Ext.define('MainHub.store.flowcell.PoolInfo', {
+  extend: 'Ext.data.Store',
+  storeId: 'PoolInfo',
+
+  requires: [
+    'MainHub.model.flowcell.PoolInfo'
+  ],
+
+  model: 'MainHub.model.flowcell.PoolInfo',
+
+  groupField: 'request_name',
+
+  proxy: {
+    type: 'ajax',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false     // to remove param "_dc"
+  }
+});

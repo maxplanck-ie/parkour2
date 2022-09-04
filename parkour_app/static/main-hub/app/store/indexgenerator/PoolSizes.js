@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4e5858162f7fe97511e77264b37f8eb37df9a0d727e299d6190e045e4e24f681
-size 685
+Ext.define('MainHub.store.indexgenerator.PoolSizes', {
+  extend: 'Ext.data.Store',
+  storeId: 'PoolSizes',
+
+  requires: [
+    'MainHub.model.indexgenerator.PoolSize'
+  ],
+
+  model: 'MainHub.model.indexgenerator.PoolSize',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/pool_sizes/',
+    timeout: 1000000,
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false,     // to remove param "_dc",
+    reader: {
+      type: 'json',
+      rootProperty: 'data',
+      successProperty: 'success'
+    }
+  },
+
+  autoLoad: true,
+
+  getId: function () {
+    return 'PoolSizes';
+  }
+});

@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5a6c45c630621804adb6c52ef727dd42cf40555936132369646ca4799de0ce3a
-size 597
+Ext.define('MainHub.store.statistics.RunStatistics', {
+  extend: 'Ext.data.Store',
+  storeId: 'RunStatistics',
+
+  requires: [
+    'MainHub.model.statistics.RunStatistics'
+  ],
+
+  model: 'MainHub.model.statistics.RunStatistics',
+
+  groupField: 'pk',
+  groupDir: 'DESC',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/run_statistics/',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false     // to remove param "_dc",
+  },
+
+  getId: function () {
+    return 'RunStatistics';
+  }
+});
