@@ -1,18 +1,13 @@
-# Django
 Django~=3.2
 django-authtools
 djangorestframework
 django-admin-list-filter-dropdown
 django-monthfield
-django_extensions
+django-extensions
+django-import-export
 gunicorn
-
-
-# Database
 psycopg2-binary>=2.8,<2.9  # https://stackoverflow.com/a/68034786
 dj-database-url
-
-# Miscellaneous
 xlwt
 fpdf
 numpy
