@@ -1,10 +1,10 @@
 import random
 import re
 import string
-from datetime import datetime
 from time import time
 
 from django.db import connection
+from django.utils import timezone
 
 
 def timeit(func):
@@ -19,7 +19,7 @@ def timeit(func):
 
 
 def generate_barcode(record_type, counter):
-    barcode = datetime.now().strftime("%y") + record_type
+    barcode = timezone.now().strftime("%y") + record_type
     barcode += "0" * (6 - len(counter)) + counter
     return barcode
 
@@ -55,17 +55,19 @@ def print_sql_queries(func):
 
 
 def get_date_range(start, end, format):
-    now = datetime.now()
+    now = timezone.now()
 
     try:
-        start = datetime.strptime(start, format) if type(start) is str else start
+        start = (
+            timezone.datetime.strptime(start, format) if type(start) is str else start
+        )
     except ValueError:
         start = now
     finally:
         start = start.replace(hour=0, minute=0)
 
     try:
-        end = datetime.strptime(end, format) if type(end) is str else end
+        end = timezone.datetime.strptime(end, format) if type(end) is str else end
     except ValueError:
         end = now
     finally:

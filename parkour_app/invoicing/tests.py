@@ -1,11 +1,11 @@
 import json
-from datetime import datetime
 
 import pytz
 from common.tests import BaseAPITestCase, BaseTestCase
 from common.utils import get_random_name
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
+from django.utils import timezone
 from flowcell.tests import create_flowcell, create_sequencer
 from library_sample_shared.tests import create_library_protocol, create_read_length
 from month import Month
@@ -49,7 +49,7 @@ def create_sequencing_cost(sequencer, read_length, price):
 
 class TestInvoicingReport(BaseTestCase):
     def setUp(self):
-        self.now = datetime.now()
+        self.now = timezone.now()
         self.report = InvoicingReport(
             month=Month(self.now.year, self.now.month),
             report=SimpleUploadedFile("file.txt", b"content"),
@@ -232,11 +232,11 @@ class TestInvoicingViewSet(BaseAPITestCase):
         sequencer = create_sequencer(get_random_name())
 
         flowcell1 = create_flowcell(get_random_name(), sequencer)
-        flowcell1.create_time = datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        flowcell1.create_time = timezone.datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell1.save()
 
         flowcell2 = create_flowcell(get_random_name(), sequencer)
-        flowcell2.create_time = datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        flowcell2.create_time = timezone.datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell2.save()
 
         response = self.client.get(reverse("invoicing-billing-periods"))
@@ -250,7 +250,7 @@ class TestInvoicingViewSet(BaseAPITestCase):
         )
 
     def test_report_upload(self):
-        month = datetime.now().strftime("%Y-%m")
+        month = timezone.now().strftime("%Y-%m")
         response = self.client.post(
             reverse("invoicing-upload"),
             {

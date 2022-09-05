@@ -1,9 +1,8 @@
-from datetime import datetime
-
 from common.models import DateTimeMixin
 from django.conf import settings
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
+from django.utils import timezone
 
 AlphaValidator = RegexValidator(
     r"^[A-Z]$", "Only capital alpha characters are allowed."
@@ -187,12 +186,12 @@ class IndexPair(models.Model):
 
 
 class BarcodeCounter(models.Model):
-    year = models.PositiveSmallIntegerField(default=datetime.now().year, unique=True)
+    year = models.PositiveSmallIntegerField(default=timezone.now().year, unique=True)
 
     last_id = models.PositiveSmallIntegerField(default=0)
 
     @classmethod
-    def load(cls, year=datetime.now().year):
+    def load(cls, year=timezone.now().year):
         obj, created = cls.objects.get_or_create(year=year)
         return obj
 
@@ -424,7 +423,7 @@ class GenericLibrarySample(DateTimeMixin):
         counter.save()
 
         record_type = self.__class__.__name__[0]
-        barcode = datetime.now().strftime("%y") + record_type
+        barcode = timezone.now().strftime("%y") + record_type
         barcode += "0" * (6 - len(str(counter))) + str(counter)
 
         self.barcode = barcode

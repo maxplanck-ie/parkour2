@@ -1,11 +1,11 @@
 import json
-from datetime import datetime
 
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 from library_sample_shared.models import (
     BarcodeCounter,
     ConcentrationMethod,
@@ -91,7 +91,7 @@ class TestSampleModel(TestCase):
         new_counter = BarcodeCounter.load().last_id
         self.assertEqual(new_counter, prev_counter + 1)
 
-        barcode = datetime.now().strftime("%y") + "S"
+        barcode = timezone.now().strftime("%y") + "S"
         barcode += "0" * (6 - len(str(new_counter))) + str(new_counter)
 
         updated_sample = Sample.objects.get(pk=self.sample.pk)
