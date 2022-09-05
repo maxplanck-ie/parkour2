@@ -10,11 +10,11 @@ asttokens==2.0.8
     # via stack-data
 backcall==0.2.0
     # via ipython
-blessings==1.7
+blessed==1.19.1
     # via curtsies
-bpython==0.22.1
-    # via -r requirements/dev.in
-curtsies==0.3.10
+bpython==0.23
+    # via -r parkour_app/requirements/dev.in
+curtsies==0.4.0
     # via bpython
 cwcwidth==0.1.7
     # via
@@ -25,13 +25,13 @@ decorator==5.1.1
     #   ipdb
     #   ipython
 django-debug-toolbar==3.6.0
-    # via -r requirements/dev.in
-executing==0.10.0
+    # via -r parkour_app/requirements/dev.in
+executing==1.0.0
     # via stack-data
-greenlet==1.1.2
+greenlet==1.1.3
     # via bpython
 ipdb==0.13.9
-    # via -r requirements/dev.in
+    # via -r parkour_app/requirements/dev.in
 ipython==8.4.0
     # via ipdb
 jedi==0.18.1
@@ -44,7 +44,7 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-prompt-toolkit==3.0.30
+prompt-toolkit==3.0.31
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -56,7 +56,7 @@ pygments==2.13.0
     #   ipython
 pyxdg==0.28
     # via bpython
-stack-data==0.4.0
+stack-data==0.5.0
     # via ipython
 toml==0.10.2
     # via ipdb
@@ -64,10 +64,10 @@ traitlets==5.3.0
     # via
     #   ipython
     #   matplotlib-inline
-typing-extensions==4.3.0
-    # via bpython
 wcwidth==0.2.5
-    # via prompt-toolkit
+    # via
+    #   blessed
+    #   prompt-toolkit
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

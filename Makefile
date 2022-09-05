@@ -3,6 +3,10 @@ SHELL := /bin/bash
 
 deploy: set-prod deploy-full
 
+help:
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+	@echo "" && echo 'Please note: this is just a list of the most common available routines, for details see the source Makefile.'
+
 deploy-full:  deploy-django deploy-caddy deploy-ready
 
 set-prod:
@@ -35,21 +39,21 @@ load-migrations:
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
-down:
+down:  ## Turn off running instance
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down --volumes
 
-clean: set-prod unset-caddy
+clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@echo "Config reset OK. Cleaning? Try: make prune"
 
-prune:
+prune:  ## USE WITH CAUTION. Remove every docker container, image and volume. Including those unrelated to parkour!
 	@docker system prune -a -f --volumes
 
-prod: set-prod deploy-django deploy-nginx deploy-ready
+prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
 dev0: set-dev set-caddy deploy-full load-backup
 
-dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations
+dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres snapshots
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -73,12 +77,18 @@ deploy-nginx:
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
-load-media:
+convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sqldump (will overwrite if there's one already)
+	@docker compose -f convert-backup.yml up -d && \
+		docker exec -it parkour2-convert-backup pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
+        docker cp parkour2-convert-backup:/tmp/postgres_dump latest.sqldump && \
+		docker compose -f convert-backup.yml down
+
+load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
 		find $$PWD/media_dump/ -maxdepth 1 -type d | \
 			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
 
-load-postgres:
+load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 	@[[ -f latest.sqldump ]] && \
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
@@ -87,10 +97,10 @@ load-backup: load-media load-postgres
 
 backup: save-media save-postgres
 
-save-media:
+save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
-save-postgres:
+save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec -it parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
@@ -101,7 +111,8 @@ deploy-rsnapshot:
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
-	@docker compose run parkour2-django python -Wa manage.py test
+	@docker compose run parkour2-django python manage.py validate_templates && \
+		docker compose run parkour2-django python -Wa manage.py test
 
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
@@ -114,27 +125,35 @@ reload-django:
 	@find $$PWD/parkour_app/ -maxdepth 1 -type d -mtime -3 | \
 		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
 
-compile:
-	@cd parkour_app/ && \
-		source ./env/bin/activate && \
-		pip-compile-multi
+graph_models:
+	@docker exec -it parkour2-django sh -c \
+	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pygraphviz" && \
+		docker exec -it parkour2-django python manage.py graph_models -a -g -o /tmp/parkour.png && \
+		docker cp parkour2-django:/tmp/parkour.png models.png
 
-dev-setup:
-	@cd parkour_app/ && \
-		env python3 -m venv env && \
+show_urls:
+	@docker exec -it parkour2-django python manage.py show_urls
+
+compile:  ## Render parkour_app/requirements/*.in to TXT
+	@source ./env/bin/activate && \
+		pip-compile-multi -d parkour_app/requirements/ && \
+		deactivate
+
+dev-setup: ## Create virtualenv with development tools (e.g. pip compiler)
+	@env python3 -m venv env && \
 		source ./env/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
 		pip install \
 			pre-commit \
-			pip-compile-multi \
-			sphinx \
-			sphinx-autobuild \
-			sphinx-rtd-theme
+			pip-compile-multi
 
-# Don't confuse this ^up^here^ with the app development environment (dev.in &
-# dev.txt), mind the 'hierarchical' difference. We're going to use
+## TODO: ReadTheDocs (DEPRECATION)> sphinx sphinx-autobuild sphinx-rtd-theme
+
+
+# Don't confuse 'dev-setup' with the app environment (dev.in & dev.txt) to run
+# it in 'dev' mode, mind the 'hierarchical' difference. We're going to use
 # pip-compile-multi to manage parkour_app/requirements/*.txt files.
-#
-#
+
+
 # Last, but not least, please also note that there's pre-commit to keep a tidy
 # repo. And, git-lfs (e.g.  `.gitattributes`) to track `parkour_app/static/`.
