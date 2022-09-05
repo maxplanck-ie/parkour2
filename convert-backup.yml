@@ -1,0 +1,20 @@
+version: "3.5"
+
+services:
+  parkour2-convert-backup:
+    container_name: parkour2-convert-backup
+    image: postgres:latest
+    env_file:
+      - ./parkour.env
+    restart: always
+    volumes:
+      - ./rsnapshot/backups/daily.0/localhost/data/parkour2_pgdb/:/var/lib/postgresql/data/
+    healthcheck:
+      test: pg_isready -U "$$POSTGRES_USER" -d "$$POSTGRES_DB"
+      interval: 10s
+      timeout: 2s
+      retries: 10
+
+networks:
+  default:
+    name: parkour2_convert_backup
