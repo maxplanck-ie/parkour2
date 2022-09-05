@@ -77,6 +77,12 @@ deploy-nginx:
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
+convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sqldump (will overwrite if there's one already)
+	@docker compose -f convert-backup.yml up -d && \
+		docker exec -it parkour2-convert-backup pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
+        docker cp parkour2-convert-backup:/tmp/postgres_dump latest.sqldump && \
+		docker compose -f convert-backup.yml down
+
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
 		find $$PWD/media_dump/ -maxdepth 1 -type d | \
