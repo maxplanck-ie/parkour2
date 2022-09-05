@@ -2,6 +2,8 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import resolve
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
+from import_export import fields, resources
+from import_export.admin import ImportExportModelAdmin
 
 from .forms import IndexTypeForm
 from .models import (
@@ -154,10 +156,21 @@ class IndexPairAdmin(admin.ModelAdmin):
         return super().render_change_form(request, context, args, kwargs)
 
 
-@admin.register(IndexI7, IndexI5)
-class IndexAdmin(admin.ModelAdmin):
-    # list_display = ('index_id', 'index', 'type',)
-    # search_fields = ('index_id', 'index', 'index_type__name',)
+class IndexI5Resource(resources.ModelResource):
+    class Meta:
+        model = IndexI5
+        skip_unchanged = True
+        fields = (
+            "id",
+            "prefix",
+            "number",
+            "index",
+            "index_type__name",
+        )
+
+
+@admin.register(IndexI5)
+class IndexI5Admin(ImportExportModelAdmin):
     list_display = (
         "idx_id",
         "index",
@@ -168,6 +181,42 @@ class IndexAdmin(admin.ModelAdmin):
         "index_type__name",
     )
     list_filter = (("index_type", RelatedDropdownFilter),)
+
+    resource_class = IndexI5Resource
+
+    def idx_id(sef, obj):
+        return obj.prefix + obj.number
+
+    idx_id.short_description = "Index ID"
+
+
+class IndexI7Resource(resources.ModelResource):
+    class Meta:
+        model = IndexI7
+        skip_unchanged = True
+        fields = (
+            "id",
+            "prefix",
+            "number",
+            "index",
+            "index_type__name",
+        )
+
+
+@admin.register(IndexI7)
+class IndexI7Admin(ImportExportModelAdmin):
+    list_display = (
+        "idx_id",
+        "index",
+        "type",
+    )
+    search_fields = (
+        "index",
+        "index_type__name",
+    )
+    list_filter = (("index_type", RelatedDropdownFilter),)
+
+    resource_class = IndexI7Resource
 
     def idx_id(sef, obj):
         return obj.prefix + obj.number

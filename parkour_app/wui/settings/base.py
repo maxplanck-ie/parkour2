@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_admin_listfilter_dropdown",
     "django_extensions",
+    "import_export",
     "common",
     "library_sample_shared",
     "library",
