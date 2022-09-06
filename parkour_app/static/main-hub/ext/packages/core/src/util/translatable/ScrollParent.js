@@ -1,3 +1,40 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d9540578e997df069777bbfb064e29cfbb220b27d20779fe5cd7de11385d598b
-size 838
+/**
+ * @private
+ *
+ * Translates the element by setting the scroll position of its parent node.
+ */
+Ext.define('Ext.util.translatable.ScrollParent', {
+    extend: 'Ext.util.translatable.Dom',
+
+    isScrollParent: true,
+
+    applyElement: function(element) {
+        var el = Ext.get(element);
+
+        if (el) {
+            this.parent = el.parent();
+        }
+
+        return el;
+    },
+
+    doTranslate: function(x, y) {
+        var parent = this.parent;
+
+        parent.setScrollLeft(Math.round(-x));
+        parent.setScrollTop(Math.round(-y));
+
+        this.callParent([x, y]);
+    },
+
+    getPosition: function() {
+        var me = this,
+            position = me.position,
+            parent = me.parent;
+
+        position.x = parent.getScrollLeft();
+        position.y = parent.getScrollTop();
+
+        return position;
+    }
+});

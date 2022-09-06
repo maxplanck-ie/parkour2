@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:22ac0c8316fc1fe216f902bf04e9c7d8f7233b3e67fd017630ed2d834267e1a4
-size 835
+/**
+ * Creates a border on an element.
+ * If any of the parameters is specified as a list, or if any parameter is null,
+ * border-style, border-width, and border-color will be specified as separate properties,
+ * otherwise all will be collapsed into a single "border" property.
+ *
+ * @param {number/list} $width
+ * The border-width
+ *
+ * @param {string/list} $style
+ * The border-style
+ *
+ * @param {color/list} $color
+ * The border-color
+ * 
+ * @member Global_CSS
+ * @private
+ */
+@mixin border($width: null, $style: null, $color: null) {
+    @if $width != null and $style != null and $color != null and
+            length($width) == 1 and length($style) == 1 and length($color) == 1 {
+        border: $width $style $color;
+    } @else {
+        border-width: $width;
+        border-style: $style;
+        border-color: $color;
+    }
+}

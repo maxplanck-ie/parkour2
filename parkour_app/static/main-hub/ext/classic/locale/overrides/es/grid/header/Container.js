@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7ab259edc180cc579dd534068eb74bceae2d5f492d5890024e0bf42927751b6f
-size 224
+Ext.define("Ext.locale.es.grid.header.Container", {
+    override: "Ext.grid.header.Container",
+    sortAscText: "Ordenar en forma ascendente",
+    sortDescText: "Ordenar en forma descendente",
+    columnsText: "Columnas"
+});

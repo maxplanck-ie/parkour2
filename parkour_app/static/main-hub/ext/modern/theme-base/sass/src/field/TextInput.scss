@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a612b4f1f1a3f543bf8358e98a2d3213c259fa07febf4ad8174a3bf74041cbff
-size 575
+.#{$prefix}textinput {
+    overflow: hidden;
+    @include st-box;
+
+    .#{$prefix}input-body-el {
+        position: relative;
+        @include st-box-flex(1);
+        @include st-box;
+    }
+
+    .#{$prefix}input-el {
+        @include st-box-flex(1);
+        &::-ms-clear {
+            display: none;
+        }
+
+        width: 10em;
+    }
+
+    .#{$prefix}mask-el {
+        cursor: pointer;
+    }
+
+    .#{$prefix}before-el,
+    .#{$prefix}after-el {
+        @include st-box;
+    }
+}
+
+.#{$prefix}textfield.#{$prefix}widthed {
+    .#{$prefix}input-el {
+        width: 0;
+    }
+}

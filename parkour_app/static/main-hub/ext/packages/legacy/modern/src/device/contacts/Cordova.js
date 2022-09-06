@@ -1,3 +1,33 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6cc276a552f7e62aec9e088f58b35415d252eea61d0ebf3db7ad0988af8e88e5
-size 897
+/**
+ * @private
+ */
+Ext.define('Ext.device.contacts.Cordova', {
+    alternateClassName: 'Ext.device.contacts.PhoneGap',
+    extend: 'Ext.device.contacts.Abstract',
+
+    getContacts: function (config) {
+        if (!config) {
+            Ext.Logger.warn('Ext.device.Contacts#getContacts: You must specify a `config` object.');
+            return false;
+        }
+
+        if (!config.success) {
+            Ext.Logger.warn('Ext.device.Contacts#getContacts: You must specify a `success` method.');
+            return false;
+        }
+
+        if (!config.fields) {
+            config.fields = ["*"];
+        }
+
+        if (!Ext.isArray(config.fields)) {
+            config.fields = [config.fields];
+        }
+
+        if (Ext.isEmpty(config.multiple)) {
+            config.multiple = true;
+        }
+
+        navigator.contacts.find(config.fields, config.success, config.failure, config);
+    }
+});

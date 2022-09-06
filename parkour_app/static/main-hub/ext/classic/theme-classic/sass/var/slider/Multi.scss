@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:70ed4463fefe68f7c29409bb6532e53b526213b2ce3e3612e674aa3a845c9aa3
-size 262
+/** @class Ext.slider.Multi */
+//
+
+$horizontal-slider-thumb-width: dynamic(14px);
+$vertical-slider-thumb-height: dynamic(14px);
+
+$slider-outline-width-focus: dynamic(1px);
+$slider-outline-style-focus: dynamic(dotted);
+$slider-outline-color-focus: dynamic(#333);

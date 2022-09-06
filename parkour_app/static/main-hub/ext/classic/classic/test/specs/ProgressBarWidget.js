@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4a4847e277f13ea4637807e793e6d820c64fdba1bec7f0e85361a33ff35d22a8
-size 764
+describe("Ext.ProgressBarWidget", function() {
+
+    var c;
+
+    function makeProgress(config) {
+        c = new Ext.ProgressBarWidget(Ext.apply({
+            renderTo: Ext.getBody(),
+            width: 100
+        }, config));
+    }
+
+    afterEach(function() {
+        c = Ext.destroy(c);
+    });
+
+    describe("setValue", function() {
+        it("should cast undefined to 0", function() {
+            makeProgress({
+                value: 50
+            });
+            c.setValue(undefined);
+            expect(c.getValue()).toBe(0);
+        });
+
+        it("should cast null to 0", function() {
+            makeProgress({
+                value: 50
+            });
+            c.setValue(null);
+            expect(c.getValue()).toBe(0);
+        });
+    }); 
+
+});

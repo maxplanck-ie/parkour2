@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fe1319beb29ae7a517c4ae8df4513aa555a7239d6a1efd380f12fc69706f454c
-size 323
+$picker-item-color: dynamic($neutral-dark-color);
+$picker-item-selected-color: dynamic($color);
+$picker-item-selected-font-weight: dynamic(null);
+$picker-bar-border-width: dynamic(1px);
+$picker-bar-border-style: dynamic(solid);
+$picker-bar-border-color: dynamic($neutral-color);
+$picker-bar-background-color: dynamic(null);

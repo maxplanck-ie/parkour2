@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fda566fbdf79208549c792fa1726233efc4e495b898fd572e96a4c6b52cec31f
-size 337
+$accordion-header-color: dynamic($color);
+$accordion-header-font-weight: dynamic($font-weight);
+$accordion-header-background-color: dynamic($neutral-highlight-color);
+$accordion-header-over-background-color: dynamic($neutral-light-color);
+$accordion-header-padding: dynamic(12px 10px);
+$accordion-tool-glyph-color: dynamic($base-color);

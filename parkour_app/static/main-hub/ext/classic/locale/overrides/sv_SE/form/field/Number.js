@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:513e92aba523e85cf9f1fb4bf14fdccd42f1505a6ccb5d0425480e52069f3454
-size 274
+Ext.define("Ext.locale.sv_SE.form.field.Number", {
+    override: "Ext.form.field.Number",
+    minText: "Minsta tillåtna värde för detta fält är {0}",
+    maxText: "Största tillåtna värde för detta fält är {0}",
+    nanText: "{0} är inte ett tillåtet nummer"
+});

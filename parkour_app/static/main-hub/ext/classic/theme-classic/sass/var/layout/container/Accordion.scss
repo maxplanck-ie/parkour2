@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8924a1ec38cede2e437277e873dd09ba4a35c26ac9b8b3ce326c03f1d6aa26e0
-size 337
+/** @class Ext.layout.container.Accordion */
+//
+
+$accordion-header-background-color: dynamic(adjust-color($base-color, $saturation: 13%, $lightness: 7%));
+$accordion-header-padding: dynamic(4px 5px 5px 5px);
+$accordion-header-border-color: dynamic($panel-header-inner-border-color $panel-header-border-color $panel-header-border-color);

@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7d663ec05389cdbdbdeb5b1179423ecacb0dac496a89d839268c813c5e63e1ad
-size 318
+$itemheader-background-color: dynamic($neutral-highlight-color);
+$itemheader-border-width: dynamic(null);
+$itemheader-border-style: dynamic(null);
+$itemheader-border-color: dynamic(null);
+$itemheader-color: dynamic($color);
+$itemheader-padding: dynamic(.1429em .714em);
+$itemheader-padding-big: dynamic(.25em .9375em);

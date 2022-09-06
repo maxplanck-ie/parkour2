@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5fa3fb709689f5a3a0a0e26cdc46c2b67b5e6f9ecd96fe68753665ebd5e6fd19
-size 214
+/** @class Ext.grid.plugin.RowExpander */
+//
+
+$row-expander-height: dynamic(9px);
+$row-expander-width: dynamic(9px);
+$row-expander-cell-spacing-before: dynamic(7px);
+$row-expander-cell-spacing-after: dynamic(7px);

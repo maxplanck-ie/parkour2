@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:70e60be9e398195dcbb776dee3f76d8365e9fc9f327e149f23a7fa1e0ba3e5c5
-size 844
+{
+    "name": "theme-device-base",
+    "type": "theme",
+    "extend": "theme-base",
+
+    "framework": "ext",
+    "toolkit": "modern",
+    "requires": [
+        "font-pictos"
+    ],
+
+    "creator": "Sencha",
+    "summary": "Internal base theme for device-specific themes",
+    "detailedDescription": "This theme contains a set of CSS rules use by the device themes. Users should not extend this theme directly.",
+
+    "version": "6.2.0.981",
+    "compatVersion": "6.0.0",
+    "format": "1",
+
+    "output": "${workspace.subpkg.prefix}/${package.name}",
+    "local": true,
+
+    "sass": {
+        "namespace": "Ext",
+
+        "etc": "${package.dir}/sass/etc/all.scss",
+
+        "var": "${package.dir}/sass/var",
+
+        "src": "${package.dir}/sass/src"
+    },
+
+    "classpath": "${package.dir}/src",
+
+    "overrides": "${package.dir}/overrides"
+}

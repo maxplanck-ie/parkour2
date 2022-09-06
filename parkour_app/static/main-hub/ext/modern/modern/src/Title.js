@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:66a4e1ea5ec062e7b35ecbf5f338c8ca7b30b86aa6fa7fd2e141b7083603aa58
-size 543
+/**
+ * {@link Ext.Title} is used for the {@link Ext.Toolbar#title} configuration in the {@link Ext.Toolbar} component.
+ * @private
+ */
+Ext.define('Ext.Title', {
+    extend: 'Ext.Component',
+    xtype: 'title',
+
+    config: {
+        /**
+         * @cfg
+         * @inheritdoc
+         */
+        baseCls: Ext.baseCSSPrefix + 'title',
+
+        /**
+         * @cfg {String} title The title text
+         */
+        title: ''
+    },
+
+    /**
+     * @private
+     */
+    updateTitle: function(newTitle) {
+        this.setHtml(newTitle);
+    }
+});

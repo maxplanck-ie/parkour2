@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:af7ee1084644c17dd1f86c6ae9c3dd7018b1faf0dabca56d482198c6c8b5808d
-size 242
+/**
+ * A color mixing function that gracefully handles nulls
+ * @private
+ */
+@function ext-mix($color1, $color2, $weight) {
+    @if $color1 == null or $color2 == null {
+        @return null;
+    }
+    @return mix($color1, $color2, $weight);
+}

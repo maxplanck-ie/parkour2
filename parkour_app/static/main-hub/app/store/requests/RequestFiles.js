@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7b67956c44b479c499eb838b0dba9334c4112967f238a51751d2434c5a4476b1
-size 648
+Ext.define('MainHub.store.requests.RequestFiles', {
+    extend: 'Ext.data.Store',
+    storeId: 'requestFilesStore',
+
+    requires: [
+        'MainHub.model.requests.RequestFile'
+    ],
+
+    model: 'MainHub.model.requests.RequestFile',
+
+    proxy: {
+        type: 'ajax',
+        timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    }
+});

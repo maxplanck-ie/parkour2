@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b906436e085e602c9e73f2e538ddf6c12b0bb92e90e78fd36e8be0a72849afcc
-size 308
+@mixin carousel-light-ui {
+  @include sencha-carousel-indicator-ui(
+  $ui-label: 'light',
+  $color: rgba(#fff, .15),
+  $active-color: rgba(#fff, .8)
+  )
+}
+
+@mixin carousel-dark-ui {
+  @include sencha-carousel-indicator-ui(
+  $ui-label: 'dark',
+  $color: rgba(#000, .3),
+  $active-color: rgba(#000, .8)
+  );
+}

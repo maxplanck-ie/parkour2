@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:94976f4b10a46832e8de911cc56847d3743560ffe1c5e22c21da727bbcb9c938
-size 344
+/**
+ * @deprecated
+ * Ext.ux.RowExpander has been promoted to the core framework. Use
+ * {@link Ext.grid.plugin.RowExpander} instead.  Ext.ux.RowExpander is now just an empty
+ * stub that extends Ext.grid.plugin.RowExpander for backward compatibility reasons.
+ */
+Ext.define('Ext.ux.RowExpander', {
+    extend: 'Ext.grid.plugin.RowExpander'
+});

@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ca751d0962e1918753bd0d92918078dd161b158c7d3f46401747d33f9bed7f96
-size 369
+/**
+ * @class Ext.field.Radio
+ */
+
+.x-radiofield .x-mask-el {
+    &:before {
+        @include border-radius(32px);
+    }
+
+    .x-input-el:checked ~ .x-mask-el:after {
+        position: absolute;
+        content: '';
+        top: 8px;
+        right: 8px;
+        width: 16px;
+        height: 16px;
+        background: #000;
+        @include border-radius(22px);
+    }
+}

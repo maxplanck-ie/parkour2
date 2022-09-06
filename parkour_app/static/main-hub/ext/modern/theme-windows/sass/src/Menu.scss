@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8f852cd22531d02588bafb550de196c53beaa7bea2db0cea0d03e1d5cfb48ee8
-size 200
+.x-menu {
+    width: 190px;
+    padding: 10px;
+    background: $background-color;
+
+    .x-button {
+        margin-bottom: 10px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

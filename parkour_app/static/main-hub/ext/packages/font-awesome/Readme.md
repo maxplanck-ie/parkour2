@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ccc6e34dc5e4096db46f291062e5ca55c497e4b263296d199373587820aca6f6
-size 298
+# font-awesome
+
+This package bundles Font Awesome for use by Sencha Cmd applications and packages.
+To use this package, simply require it from `app.json`:
+
+    "requires": [
+        "font-awesome"
+    ]
+
+See the Font Awesome [web page](http://fortawesome.github.io/Font-Awesome/) for
+more details.

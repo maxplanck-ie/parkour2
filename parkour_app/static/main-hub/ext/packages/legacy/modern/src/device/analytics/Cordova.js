@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2284f93238ad038966d3e847594d748286af7496c9cd5df67f5b05f9719aa07e
-size 610
+/**
+ * @private
+ */
+Ext.define('Ext.device.analytics.Cordova', {
+    extend: 'Ext.device.analytics.Abstract',
+
+    trackEvent: function(config) {
+        if (!this.getAccountID()) {
+            return;
+        }
+
+        window.plugins.googleAnalyticsPlugin.trackEvent(
+            config.category,
+            config.action,
+            config.label,
+            config.value,
+            config.nonInteraction
+        );
+    },
+
+    trackPageview: function(page) {
+        if (!this.getAccountID()) {
+            return;
+        }
+
+        window.plugins.googleAnalyticsPlugin.trackPageview(page);
+    }
+});

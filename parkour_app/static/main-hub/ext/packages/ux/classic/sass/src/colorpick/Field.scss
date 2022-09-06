@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bf18f4139278863f4248e9d4f249ded38894000946fc23117700197c9663722d
-size 522
+.#{$prefix}colorpicker-field {
+
+    .#{$prefix}form-item-body {
+        position: relative;
+    }
+
+    input {
+        padding-left: 26px;
+    }
+}
+
+.#{$prefix}colorpicker-field-swatch {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    left: 4px;
+    background-image: theme-background-image('colorpick/checkerboard', 'png');
+
+    // vertically center
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+}
+
+.#{$prefix}colorpicker-field-swatch-inner {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}

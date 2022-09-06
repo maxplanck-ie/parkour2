@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:335d4b3524c1f154bb1a81222300709f0e6bf8e9a3ef835b5b3ae078314922d5
-size 416
+.x-toolbar .x-segmentedbutton, .x-segmentedbutton {
+	.x-button {
+		margin: 0 !important;
+		border: 1px solid $ios7-blue;
+		border-right: 0;
+		@include border-radius(0);
+
+		&.x-button-pressed {
+			background-color: #157efb;
+			.x-button-label {
+				color: #fff;
+			}
+		}
+	}
+
+	.x-first {
+		@include border-left-radius(6px);
+	}
+
+	.x-last {
+		@include border-right-radius(6px);
+		border-right: 1px solid $ios7-blue;
+	}
+}

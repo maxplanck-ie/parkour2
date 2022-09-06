@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cd990d7f573314d34fcfe91ff66c79a6ed789b6ef4777ce373995d990b29e338
-size 307
+$btn-group-border-color: dynamic($panel-light-border-color);
+$btn-group-framed-border-width: dynamic(1px);
+$btn-group-framed-border-radius: dynamic(2px);
+$btn-group-header-font-size: dynamic(round($font-size * 1.1));
+$btn-group-header-padding: dynamic(8px 8px 7px);
+$btn-group-border-spacing: dynamic(6px);

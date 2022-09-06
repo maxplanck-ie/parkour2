@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0666ead576b9e6df1df01d1190bd710c1d4fb39ec9033e487379799768df84ff
-size 408
+.#{$prefix}grid-cell-row-numberer {
+    @if not is-null($grid-header-background-gradient) {
+        @include background-gradient($grid-header-background-color, $grid-header-background-gradient);
+    }
+    @if is-null($grid-header-background-gradient) {
+        background-color: $grid-header-background-color;
+    }
+}
+
+.#{$prefix}grid-cell-inner-row-numberer {
+    padding: $grid-row-numberer-cell-padding;
+}

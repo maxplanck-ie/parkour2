@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:defaa8cbf467e21f77365627175f555952c557532a145d3433dda62cf5bd754d
-size 605
+Ext.define('Ext.view.TagKeyNav', {
+    extend: 'Ext.view.BoundListKeyNav',
+    
+    alias: 'view.navigation.tagfield',
+    
+    onKeySpace: function(e) {
+        var me = this,
+            field = me.view.pickerField;
+        
+        if (field.isExpanded && field.inputEl.dom.value === '') {
+            field.preventKeyUpEvent = true;
+            
+            me.navigateOnSpace = true;
+            
+            me.callParent([e]);
+            
+            e.stopEvent();
+            
+            return false;
+        }
+        
+        // Allow propagating to the field
+        return true;
+    }
+});

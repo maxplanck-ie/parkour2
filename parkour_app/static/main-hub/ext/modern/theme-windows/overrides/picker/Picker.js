@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5b0d1d74e39c24316b504bc18ab8f26eca01fa618b4246f791d15d729f206051
-size 544
+Ext.define('Ext.theme.windows.picker.Picker', {
+    override: 'Ext.picker.Picker',
+
+    config: {
+        height: '100%',
+        toolbarPosition: 'bottom',
+        toolbar: {
+            xtype: 'toolbar',
+            layout: {
+                type: 'hbox',
+                pack: 'center'
+            }
+        },
+        doneButton: {
+            iconCls: 'check2',
+            ui: 'round',
+            text: ''
+        },
+        cancelButton: {
+            iconCls: 'delete',
+            ui: 'round',
+            text: ''
+        }
+    }
+});

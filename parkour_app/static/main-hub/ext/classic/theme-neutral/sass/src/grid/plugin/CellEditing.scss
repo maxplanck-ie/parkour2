@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fa0011accde28157de2b5643313b81fc0ea2c6bda72f2ab8b01e9552f94e31c3
-size 288
+@if $include-ext-tree-panel {
+    .#{$prefix}tree-cell-editor {
+        .#{$prefix}form-text {
+            $horizontal-padding: $tree-icon-spacing - $form-field-border-width; 
+            padding-left: $horizontal-padding;
+            padding-right: $horizontal-padding;
+        }
+    }
+}

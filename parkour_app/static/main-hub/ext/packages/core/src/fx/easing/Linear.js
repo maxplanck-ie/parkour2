@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0950bbeb822cbcc6d86d2cf947ffe689b054e14f6dc3fa6b9bfb0a5d58337a4c
-size 775
+/**
+ * @private
+ */
+Ext.define('Ext.fx.easing.Linear', {
+
+    extend: 'Ext.fx.easing.Abstract',
+
+    alias: 'easing.linear',
+
+    config: {
+        duration: 0,
+        endValue: 0
+    },
+
+    updateStartValue: function(startValue) {
+        this.distance = this.getEndValue() - startValue;
+    },
+
+    updateEndValue: function(endValue) {
+        this.distance = endValue - this.getStartValue();
+    },
+
+    getValue: function() {
+        var deltaTime = Ext.Date.now() - this.getStartTime(),
+            duration = this.getDuration();
+
+        if (deltaTime > duration) {
+            this.isEnded = true;
+            return this.getEndValue();
+        }
+        else {
+            return this.getStartValue() + ((deltaTime / duration) * this.distance);
+        }
+    }
+});

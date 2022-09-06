@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7972c7dbb45722f741bc91c782a92e5c2bf885637d93a5e00def3da53cefc802
-size 94
+.#{$prefix}rowheader {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+}

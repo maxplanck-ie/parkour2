@@ -1,3 +1,48 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:546660e27cf17743f8af39afc9aedcc5a20806f49bc695e5daa272eeed822d61
-size 1126
+/**
+ * @private
+ */
+Ext.define('Ext.behavior.Translatable', {
+
+    extend: 'Ext.behavior.Behavior',
+
+    requires: [
+        'Ext.util.Translatable'
+    ],
+
+    setConfig: function(config) {
+        var translatable = this.translatable,
+            component = this.component;
+
+        if (config) {
+            if (!translatable) {
+                this.translatable = translatable = new Ext.util.Translatable(config);
+                translatable.setElement(component.renderElement);
+                translatable.on('destroy', 'onTranslatableDestroy', this);
+            }
+            else if (Ext.isObject(config)) {
+                translatable.setConfig(config);
+            }
+        }
+        else if (translatable) {
+            translatable.destroy();
+        }
+
+        return this;
+    },
+
+    getTranslatable: function() {
+        return this.translatable;
+    },
+
+    onTranslatableDestroy: function() {
+        delete this.translatable;
+    },
+
+    onComponentDestroy: function() {
+        var translatable = this.translatable;
+
+        if (translatable) {
+            translatable.destroy();
+        }
+    }
+});

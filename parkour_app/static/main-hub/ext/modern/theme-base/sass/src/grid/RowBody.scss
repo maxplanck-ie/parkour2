@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bb3248896d502d14959334008674fd8206613b47d4452d95e1773e3af3a38e86
-size 176
+.#{$prefix}rowbody {
+    @include st-box;
+
+    .#{$prefix}grid:not(.#{$prefix}has-rowexpander) & {
+        .#{$prefix}spacer-el {
+            display: none;
+        }
+    }
+}
+

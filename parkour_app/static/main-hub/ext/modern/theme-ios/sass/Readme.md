@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:671f5568788d89cb29b8591992fc6b986ca0fb9ad668764fe90b05495b84f815
-size 164
+# theme-ios/sass
+
+This folder contains SASS files of various kinds, organized in sub-folders:
+
+    theme-ios/sass/etc
+    theme-ios/sass/src
+    theme-ios/sass/var

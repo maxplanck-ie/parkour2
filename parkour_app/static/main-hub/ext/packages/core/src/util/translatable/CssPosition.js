@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b92c1d45b8b7d1fc9123f4699021d9a60652af1a5f6c8e8101b25e435e3b8c5b
-size 630
+/**
+ * @class Ext.util.translatable.CssPosition
+ * @private
+ */
+
+Ext.define('Ext.util.translatable.CssPosition', {
+    extend: 'Ext.util.translatable.Dom',
+
+    doTranslate: function(x, y) {
+        var domStyle = this.getElement().dom.style;
+
+        if (typeof x == 'number') {
+            domStyle.left = x + 'px';
+        }
+
+        if (typeof y == 'number') {
+            domStyle.top = y + 'px';
+        }
+
+        this.callParent([x, y]);
+    },
+
+    destroy: function() {
+        var domStyle = this.getElement().dom.style;
+
+        domStyle.left = null;
+        domStyle.top = null;
+
+        this.callParent();
+    }
+});

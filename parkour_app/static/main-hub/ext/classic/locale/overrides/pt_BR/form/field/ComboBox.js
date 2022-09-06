@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:49349df10edaa028e96ee9dfd65f3e2d5b5cb7390a78d1c854e6dee1e84aad47
-size 261
+Ext.define("Ext.locale.pt_BR.form.field.ComboBox", {
+    override: "Ext.form.field.ComboBox",
+    valueNotFoundText: undefined
+}, function() {
+    Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
+        loadingText: "Carregando..."
+    });
+});

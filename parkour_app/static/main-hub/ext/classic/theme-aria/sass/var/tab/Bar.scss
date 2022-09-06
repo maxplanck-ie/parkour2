@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:462acafd2fb61173c264ad9c9b3f7080584391097175341cc265d2f1477503f0
-size 227
+$tabbar-strip-background-color: dynamic($orange);
+$tabbar-scroller-opacity: dynamic(1);
+$tabbar-scroller-opacity-over: dynamic(.8);
+$tabbar-scroller-opacity-pressed: dynamic(.6);
+$tabbar-scroller-opacity-disabled: dynamic(.3);

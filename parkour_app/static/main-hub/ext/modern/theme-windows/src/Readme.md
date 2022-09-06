@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:39fbcc956a977ff305c7790e698fe28009f7f6dc57476221194c2c15900ba257
-size 130
+# theme-windows/src
+
+This folder contains source code that will automatically be added to the classpath when
+the package is used.

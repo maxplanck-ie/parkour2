@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:40e20a55d98ee492cf45092458eafcbc3ebc94eaad760d8bf491bc4e1cd3fc5f
-size 359
+$progress-border-color: dynamic(#18181a);
+$progress-focus-border-color: dynamic(#fff);
+$progress-focus-border-style: dynamic(dashed);
+$progress-focus-border-width: dynamic(2px);
+$progress-background-color: dynamic(#232d38);
+$progress-text-front-color: dynamic(#000);
+$progress-text-back-color: dynamic(#fff);
+$progress-bar-background-color: dynamic($orange);

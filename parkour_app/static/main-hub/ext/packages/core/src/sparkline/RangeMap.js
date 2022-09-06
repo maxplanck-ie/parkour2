@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a5c2c74871407fc49d127a5f70b3e86e85b816e669671b2cbd7f156ff916c341
-size 1134
+/**
+ * Base class for Range Map
+ */
+Ext.define('Ext.sparkline.RangeMap', {
+    constructor: function (map) {
+        var key,
+            range,
+            rangelist = [];
+
+        for (key in map) {
+            if (map.hasOwnProperty(key) && typeof key === 'string' && key.indexOf(':') > -1) {
+                range = key.split(':');
+                range[0] = range[0].length === 0 ? -Infinity : parseFloat(range[0]);
+                range[1] = range[1].length === 0 ? Infinity : parseFloat(range[1]);
+                range[2] = map[key];
+                rangelist.push(range);
+            }
+        }
+        this.map = map;
+        this.rangelist = rangelist || false;
+    },
+
+    get: function (value) {
+        var rangelist = this.rangelist,
+            i, range, result;
+
+        if ((result = this.map[value]) !== undefined) {
+            return result;
+        }
+        if (rangelist) {
+            for (i = rangelist.length; i--;) {
+                range = rangelist[i];
+                if (range[0] <= value && range[1] >= value) {
+                    return range[2];
+                }
+            }
+        }
+    }
+});

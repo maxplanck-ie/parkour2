@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c379ea93b2d9a97d684b210b9b53fdcff10846e0654594bb1823c1491a10a729
-size 377
+$trigger-width: dynamic(24px);
+$trigger-width-big: dynamic(36px);
+$trigger-icon-color: dynamic($highlight-color);
+$trigger-hovered-icon-color: dynamic($disabled-color);
+$trigger-pressed-icon-color: dynamic($base-pressed-color);
+$trigger-icon-size: dynamic(px-to-em(20px, 13px));
+$trigger-icon-size-big: dynamic(px-to-em(30px, 16px));
+$trigger-icon: dynamic('arrow_drop_down');

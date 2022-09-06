@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:23eb71c42364ac6d05de17d67855b0f6768816f3c4c8337077cc9c1de96d9932
-size 485
+/**
+ * @class Ext.field.Select
+ */
+
+.x-selectfield-overlay {
+    .x-list-item-label {
+        height: 2.6em;
+    }
+
+    .x-listitem.x-selected {
+        .x-list-label {
+            margin-right: 2.6em;
+            @include font-icon($selectfield-selected-item-icon, $pseudo: after, $style-pseudo: true);
+            &:after {
+                color: $selectfield-selected-item-icon-color;
+                position: absolute;
+                right: .6em;
+            }
+        }
+    }
+}

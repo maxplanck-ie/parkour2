@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ad3e0b7fc873e6e3471896c56dfe704084316b6a829be1f358c3c158b5369c58
-size 493
+$carousel-indicator-size: dynamic(10px);
+$carousel-indicator-spacing: dynamic(3px);
+$carousel-indicator-border-radius: dynamic(50%);
+$carousel-indicator-active-size: dynamic(16px);
+
+@mixin carousel-light-ui {
+  @include sencha-carousel-indicator-ui(
+  $ui-label: 'light',
+  $color: $reverse-disabled-color,
+  $active-color: $base-color
+  )
+}
+
+@mixin carousel-dark-ui {
+  @include sencha-carousel-indicator-ui(
+  $ui-label: 'dark',
+  $color: $disabled-color,
+  $active-color: $base-color
+  );
+}

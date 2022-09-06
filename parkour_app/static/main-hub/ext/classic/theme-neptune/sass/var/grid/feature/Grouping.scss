@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f091e5624ed0c1a8454fbc76085fab236450523e58b536bc785e7d8b836c345d
-size 379
+/** @class Ext.grid.feature.Grouping */
+//
+
+$grid-grouped-title-color: dynamic(#666);
+$grid-grouped-header-border-width: dynamic(0 0 1px 0);
+$grid-grouped-header-border-color: dynamic($grid-header-border-color);
+$grid-grouped-header-padding: dynamic(7px 4px);
+$grid-grouped-icon-padding: dynamic(0 0 0 17px);
+$grid-grouped-header-background-color: dynamic($neutral-light-color);

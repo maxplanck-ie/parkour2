@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cc7cf24046f96a2cc7d091c69e1c47a6dcff0604685ee901025e6b0681b8ce95
-size 602
+Ext.define('MainHub.view.usage.ChartBase', {
+  extend: 'Ext.Panel',
+
+  cls: 'shadow',
+
+  height: 400,
+  ui: 'light',
+  layout: 'fit',
+
+  // headerPosition: 'bottom',
+
+  defaults: {
+    width: '100%'
+  },
+
+  tools: [{
+    type: 'print',
+    handler: function () {
+      var panel = this.up('panel');
+      var polar = panel.down('polar');
+      var cartesian = panel.down('cartesian');
+
+      if (polar) {
+        polar.download({
+          filename: panel.title
+        });
+      }
+
+      if (cartesian) {
+        cartesian.download({
+          filename: panel.title
+        });
+      }
+    }
+  }]
+});

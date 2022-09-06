@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1607eb8974e8dadc40a64f0aa0addee5b2f222b8cf1d270ae0a812d9e45e72ef
-size 655
+Ext.define('MainHub.store.indexgenerator.GeneratorIndexTypes', {
+  extend: 'Ext.data.Store',
+  storeId: 'GeneratorIndexTypes',
+
+  requires: [
+    'MainHub.model.libraries.IndexType'
+  ],
+
+  model: 'MainHub.model.libraries.IndexType',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/generator_index_types/',
+    timeout: 1000000,
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false,     // to remove param "_dc",
+    reader: {
+      type: 'json',
+      rootProperty: 'data',
+      successProperty: 'success'
+    }
+  },
+
+  autoLoad: true
+});

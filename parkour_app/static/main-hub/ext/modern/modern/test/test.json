@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6acae21c20dcf9cda32ff3a713940cf9b3172c5ae37e55edf8d66ce8a5704700
-size 882
+{
+    "mount": "${workspace.dir}",
+    "pages": {
+        "strict": "index.html"
+    },
+    "scripts": [
+        "../../.sencha/test/jasmine.js",
+        "../../.sencha/test/Ext.cmd.api.adapter.js",
+        "../resources/init.js",
+        "../../../packages/core/test/resources/helpers.js"
+    ],
+    "specs": {
+        "src": [
+            "../../../../packages/core/test/specs",
+            ".",
+            "../../../../packages/charts/test/specs",
+            "../../../../packages/charts/test/specs-modern",
+            "../../../../packages/ux/test/specs",
+            "../../../../packages/ux/test/modern/specs",
+            "../../../../../packages/pivot/test/specs",
+            "../../../../../packages/pivot/test/modern/specs",
+            "../../../../../packages/exporter/test/specs",
+            "../../../../../packages/exporter/test/modern/specs"
+        ]
+    } 
+}

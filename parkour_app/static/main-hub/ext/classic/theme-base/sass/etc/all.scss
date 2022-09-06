@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3ce0974fb42e375b027335e1d17d9a5f37bcdeb245e1dd90076b2d4ba6ff7d44
-size 288
+$ext-version: '6.2.0.981' !default;  // Updated automatically by the build script.
+$ext-trial: false !default; // Updated automatically by the build script.
+$ext-beta: false !default; // Updated automatically by the build script.
+@import 'compass';
+@import 'functions';
+@import 'mixins';

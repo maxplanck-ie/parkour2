@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2bbbd10d96cd504211e8f4f9294a71a16080986ff5253a91bce2c1474fe19ae2
-size 269
+$tip-border-radius: dynamic(2px);
+$tip-body-color: dynamic($light-color);
+$tip-background-color: dynamic(mix(#000, $neutral-dark-color, 20%));
+$tip-border-color: dynamic($neutral-dark-color);
+$tip-body-padding: dynamic(6px 8px);
+$tip-tool-color: dynamic($light-color);

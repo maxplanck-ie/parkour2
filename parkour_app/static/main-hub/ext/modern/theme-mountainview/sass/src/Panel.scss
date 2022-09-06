@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c2f6089d3fe5eb2e565c622be493f69b07bfe06405c2a4122c48aa42e5777493
-size 446
+/**
+ * @class Ext.Panel
+ */
+
+.x-panel.x-floating,
+.x-msgbox {
+	padding: 0;
+    background: $background-color;
+}
+
+.x-panel.x-floating .x-panel-inner,
+.x-panel.x-floating > .x-body,
+.x-msgbox .x-panel-inner,
+.x-msgbox > .x-body {
+    background: $background-color;
+}
+
+.x-panel.x-floating > .x-dock.x-sized,
+.x-form.x-floating > .x-dock.x-sized {
+    margin: 0;
+}
+
+
+.x-panel.x-floating > * > .x-dock-body {
+    background-color: $background-color;
+}

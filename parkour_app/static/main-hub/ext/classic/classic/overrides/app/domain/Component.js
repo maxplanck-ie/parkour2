@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bdd126b46f09774abddd300823050978cdc0805ff2b7437338f80da81a505916
-size 377
+Ext.define('Ext.overrides.app.domain.Component', {
+    override: 'Ext.app.domain.Component',
+    requires: [
+        'Ext.Component'
+    ]
+}, function(ComponentDomain) {
+    // The core Component domain monitors events on the Ext.Widget class
+    // in Ext Components are not widgets so we need to monitor Ext.Component as well.
+    ComponentDomain.monitor(Ext.Component);
+});

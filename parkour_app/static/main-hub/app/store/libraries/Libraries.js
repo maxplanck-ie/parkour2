@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d3904b4d3b1606afaf74707ab04945fa360bd37b07a8baa79b95192908dbd792
-size 468
+Ext.define('MainHub.store.libraries.Libraries', {
+    extend: 'Ext.data.TreeStore',
+    storeId: 'librariesStore',
+
+    requires: [
+        'MainHub.model.libraries.Library'
+    ],
+
+    model: 'MainHub.model.libraries.Library',
+
+    proxy: {
+        type: 'ajax',
+        url: '/api/libraries_and_samples/',
+        noCache: false,     //to remove param "_dc",
+        reader: 'json',
+        extraParams:{
+        showAll: 'True'
+    }
+    },
+
+    lazyFill: true
+});

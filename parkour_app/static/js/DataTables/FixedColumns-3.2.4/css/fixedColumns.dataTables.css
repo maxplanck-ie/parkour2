@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aebac71a26f37bdb3125da66ebeec8f8c4fa5ddc287e0172649b4a4420bff4e3
-size 367
+table.DTFC_Cloned thead,
+table.DTFC_Cloned tfoot {
+  background-color: white;
+}
+
+div.DTFC_Blocker {
+  background-color: white;
+}
+
+div.DTFC_LeftWrapper table.dataTable,
+div.DTFC_RightWrapper table.dataTable {
+  margin-bottom: 0;
+  z-index: 2;
+}
+div.DTFC_LeftWrapper table.dataTable.no-footer,
+div.DTFC_RightWrapper table.dataTable.no-footer {
+  border-bottom: none;
+}

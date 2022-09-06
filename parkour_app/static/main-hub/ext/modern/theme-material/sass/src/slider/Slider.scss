@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b27504c654e9e566f80c5eaae9f7ba7b225a53a056221ca21aa729df699c4b35
-size 239
+.#{$prefix}slider {
+    .#{$prefix}thumb {
+        transition: transform .15s ease-out;
+
+        &:active {
+            @include scale(1.5);
+        }
+
+        &.#{$prefix}disabled:active {
+            @include scale(1);
+        }
+    }
+}

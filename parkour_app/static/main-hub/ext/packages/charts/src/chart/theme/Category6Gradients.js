@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5cba0f9fff1c48e73240741e66e76eea8d76cc1697f8937d5a16e48512051132
-size 392
+Ext.define('Ext.chart.theme.Category6Gradients', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.category6-gradients',
+        'chart.theme.Category6:gradients'
+    ],
+    config: {
+        colors: ['#44dce1', '#0b2592', '#996e05', '#7fb325', '#b821a1'],
+        gradients: {
+            type: 'linear',
+            degrees: 90
+        }
+    }
+});

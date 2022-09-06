@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d6b30577896161848b07652397929aa1e15264a4bd037e038e16742c47432092
-size 141
+Ext.define("Ext.locale.es.form.field.Base", {
+    override: "Ext.form.field.Base",
+    invalidText: "El valor en este campo es inválido"
+});

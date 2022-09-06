@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9f38ec0a7fdeaa8a9def6e0179a0c5ed4a8cc19e7598e03ed198ec314d6d2ee2
-size 653
+/**
+ * @private
+ */
+Ext.define('Ext.util.TranslatableList', {
+    extend: 'Ext.util.translatable.Abstract',
+
+    config: {
+        items: []
+    },
+
+    applyItems: function(items) {
+        return Ext.Array.from(items);
+    },
+
+    doTranslate: function(x, y) {
+        var items = this.getItems(),
+            offset = 0,
+            i, ln, item, translateY;
+
+        for (i = 0, ln = items.length; i < ln; i++) {
+            item = items[i];
+
+            if (item && !item._list_hidden) {
+                translateY = y + offset;
+                offset += item.$height;
+                item.translate(0, translateY);
+            }
+        }
+    }
+});

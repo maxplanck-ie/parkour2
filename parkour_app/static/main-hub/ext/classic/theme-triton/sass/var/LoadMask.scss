@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb714a6c9ab58323d8de8349160bd6cc9c1acd5df0488f07ae6bbd487b38a774
-size 400
+$loadmask-opacity: dynamic(0.5);
+$loadmask-background-color: dynamic($neutral-color);
+$loadmask-page-opacity: dynamic(0.75);
+$loadmask-page-background-color: dynamic(#000);
+$loadmask-msg-background-color: dynamic($neutral-color);
+$loadmask-msg-inner-color: dynamic($color);
+$loadmask-msg-padding: dynamic(10px);
+$loadmask-msg-border-radius: dynamic(0);
+$loadmask-msg-text-padding: dynamic(25px 0 0);

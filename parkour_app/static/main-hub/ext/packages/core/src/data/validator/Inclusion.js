@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f70d09385d00343425650767e66ad8851559dcd5a066dbd3639e6661d50cb1ad
-size 723
+/**
+ * Validates that the value exists in a {@link #list} of values.
+ */
+Ext.define('Ext.data.validator.Inclusion', {
+    extend: 'Ext.data.validator.List',
+    alias: 'data.validator.inclusion',
+    
+    type: 'inclusion',
+    config: {
+        /**
+         * @cfg {String} message
+         * The error message to return when the passed value does not exist
+         * in the specified {@link #list}.
+         */
+        message: 'Is not in the list of acceptable values'
+    },
+    
+    //<debug>
+    constructor: function() {
+        this.callParent(arguments);
+        if (!this.getList()) {
+            Ext.raise('validator.Inclusion requires a list');
+        }    
+    },
+    //</debug>
+    
+    inclusion: true
+});

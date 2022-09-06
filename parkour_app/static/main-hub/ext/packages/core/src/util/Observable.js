@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f920683481252caaa1a19902668c64e5109b4b47071595b6ef6d0c0760f2285b
-size 1065
+/**
+ * A Ext.mixin.Observable subclass that is provided for backward compatibility.
+ * Applications should avoid using this class, and use Ext.mixin.Observable instead.
+ */
+Ext.define('Ext.util.Observable', {
+    extend: 'Ext.mixin.Observable',
+
+    // The constructor of Ext.util.Observable instances processes the config object by
+    // calling Ext.apply(this, config); instead of this.initConfig(config);
+    $applyConfigs: true
+}, function(Observable) {
+    var Super = Ext.mixin.Observable;
+
+    /**
+     * @method releaseCapture
+     * @static
+     * @inheritdoc Ext.mixin.Observable#releaseCapture
+     */
+    Observable.releaseCapture = Super.releaseCapture;
+
+    /**
+     * @method capture
+     * @static
+     * @inheritdoc Ext.mixin.Observable#capture
+     */
+    Observable.capture = Super.capture;
+
+    /**
+     * @private
+     */
+    Observable.captureArgs = Super.captureArgs;
+
+    /**
+     * @method observe
+     * @static
+     * @inheritdoc Ext.mixin.Observable#observe
+     */
+    Observable.observe = Observable.observeClass = Super.observe;
+});

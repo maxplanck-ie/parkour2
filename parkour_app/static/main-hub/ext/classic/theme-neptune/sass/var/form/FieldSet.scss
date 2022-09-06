@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5d5a24a6ed25bc77155ba4bee8dff2cd7e42f2d36a6815513b6c39477c76a1b0
-size 504
+/** @class Ext.form.FieldSet */
+//
+
+$fieldset-header-line-height: dynamic(16px);
+$fieldset-collapse-tool-size: dynamic(15px);
+$fieldset-collapse-tool-margin: dynamic(2px 4px 0 0);
+$fieldset-border-color: dynamic($neutral-dark-color);
+$fieldset-header-color: dynamic($color);
+
+$fieldset-collapse-tool-background-image: dynamic('fieldset/collapse-tool');
+
+$fieldset-collapse-tool-opacity: dynamic(.8);
+$fieldset-collapse-tool-opacity-over: dynamic(.9);
+$fieldset-collapse-tool-opacity-pressed: dynamic(1);

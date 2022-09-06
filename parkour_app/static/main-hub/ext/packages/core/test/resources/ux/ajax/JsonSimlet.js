@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2f6fca72c9f3a8126581c7e7eba3ea9f326343d90ee343f59b69010cb44773ff
-size 834
+/**
+ * JSON Simlet.
+ */
+Ext.define('Ext.ux.ajax.JsonSimlet', {
+    extend: 'Ext.ux.ajax.DataSimlet',
+    alias: 'simlet.json',
+
+    doGet: function (ctx) {
+        var me = this,
+            data = me.getData(ctx),
+            page = me.getPage(ctx, data),
+            reader = ctx.xhr.options.proxy && ctx.xhr.options.proxy.getReader(),
+            ret = me.callParent(arguments), // pick up status/statusText
+            response = {};
+
+        if (reader && reader.getRoot()) {
+            response[reader.getRoot()] = page;
+            response[reader.getTotalProperty()] = data.length;
+        } else {
+            response = page;
+        }
+
+        if (ctx.groupSpec) {
+            response.summaryData = me.getSummary(ctx, data, page);
+        }
+
+        ret.responseText = Ext.encode(response);
+        return ret;
+    }
+});

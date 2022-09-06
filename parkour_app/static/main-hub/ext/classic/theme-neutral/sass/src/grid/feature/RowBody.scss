@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a4d59abfb4a06b144b6753debc461b350f84b6294a9b2d8ba20e0ff91659428d
-size 404
+.#{$prefix}grid-rowbody {
+    font: $grid-row-body-font;
+    padding: $grid-row-body-padding;
+
+    @if $grid-no-row-lines-show-focus-border {
+        .#{$prefix}grid-no-row-lines .#{$prefix}grid-row-focused & {
+            padding-top: top($grid-row-body-padding) + $grid-row-cell-border-width;
+            padding-bottom: bottom($grid-row-body-padding) - $grid-row-cell-border-width;
+        }
+    }
+}
+

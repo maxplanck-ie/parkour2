@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9b89bfec957c2e25a87b7fcddd01623e5b09729c6fa1a95259e637696dff3e65
-size 766
+$menu-top-border-width: dynamic(null null 1px null);
+$menu-top-border-style: dynamic(null null solid null);
+$menu-top-border-color: dynamic(null null $sheet-border-color null);
+$menu-right-border-width: dynamic(null null null 1px);
+$menu-right-border-style: dynamic(null null null solid);
+$menu-right-border-color: dynamic(null null null $sheet-border-color);
+$menu-bottom-border-width: dynamic(1px null null null);
+$menu-bottom-border-style: dynamic(solid null null null);
+$menu-bottom-border-color: dynamic($sheet-border-color null null null);
+$menu-left-border-width: dynamic(null 1px null null);
+$menu-left-border-style: dynamic(null solid null null);
+$menu-left-border-color: dynamic(null $sheet-border-color null null);
+
+$menu-padding: dynamic($sheet-padding);

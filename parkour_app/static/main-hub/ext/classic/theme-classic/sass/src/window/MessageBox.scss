@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8c131ee01a11cdcec11013f59b50d74babbff0c416fec4c6d7ec008edd057b9b
-size 210
+// The framework no longer uses this rule, but it is left here for compatibility reasons.
+.#{$prefix}message-box .#{$prefix}msg-box-wait {
+    background-image: theme-background-image('shared/blue-loading');
+}

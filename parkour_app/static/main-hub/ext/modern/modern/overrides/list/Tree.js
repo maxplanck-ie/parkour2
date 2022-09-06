@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:88ebd95c12003bfb5a763efe93a5a7660e50c3f81bfd6924b4d17e253bd8ab78
-size 469
+/**
+ * @class Ext.list.Tree
+ */
+Ext.define('Ext.overrides.list.Tree', {
+    override: 'Ext.list.Tree',
+
+    constructor: function(config) {
+        var me = this,
+            el;
+
+        me.callParent([config]);
+        el = me.element;
+        if (el.isPainted()) {
+            me.syncIconSize();
+        } else {
+            el.on({
+                scope: me,
+                painted: me.syncIconSize,
+                single: true
+            });
+        }
+    }
+});

@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:68638d6329bbc4dfe5f627921004f8441a48681fcdac3dbccbe26fd0a9ff6c8c
-size 483
+Ext.define('MainHub.components.MonthPicker', {
+  extend: 'Ext.form.field.Date',
+  alias: 'widget.parkourmonthpicker',
+
+  noDayPicker: true,
+
+  fieldLabel: 'Select Month',
+  format: 'F Y',
+  submitFormat: 'm/d/Y',
+  value: new Date(),
+  startDay: 1,
+
+  initComponent: function () {
+    this.callParent(arguments);
+
+    this.on('boxready', function (df, e) {
+      var dp = df.getPicker();
+      dp.on('show', function () {
+        dp.showMonthPicker(false);
+      });
+    });
+  }
+});

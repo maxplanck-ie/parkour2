@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:87ede0df2bf6f3674e17097a01bbbd137a0e01fdbb62f342b19368ed8ecc79d0
-size 360
+/**
+ * This class contains utility methods for dealing with TSV (Tab Separated Values) as
+ * specified in <a href="http://tools.ietf.org/html/rfc4180">RFC 4180</a>.
+ *
+ * For details see `{@link Ext.util.DelimitedValue}`.
+ *
+ * @since 5.1.0
+ */
+Ext.define('Ext.util.TSV', {
+    extend: 'Ext.util.DelimitedValue',
+
+    singleton: true,
+
+    delimiter: '\t'
+});

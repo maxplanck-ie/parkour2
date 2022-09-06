@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:80629f11fe534aa8346807cf2ab8890742c4ebed66527cd2752943cda91276ac
-size 289
+/**
+ * The store type used for legend items.
+ */
+Ext.define('Ext.chart.legend.store.Store', {
+    extend: 'Ext.data.Store',
+    requires: ['Ext.chart.legend.store.Item'],
+    model: 'Ext.chart.legend.store.Item',
+    isLegendStore: true,
+
+    config: {
+        autoDestroy: true
+    }
+});

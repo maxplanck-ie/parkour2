@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aaca69387b452b17aa443eddf88b3389b95ce9168270764c6e3acf24c0fad953
-size 369
+/**
+ * @class Ext.sparkline.Shape
+ * @private
+ */
+Ext.define('Ext.sparkline.Shape', {
+    constructor: function (target, id, type, args) {
+        var me = this;
+        
+        me.target = target;
+        me.id = id;
+        me.type = type;
+        me.args = args;
+    },
+    append: function () {
+        this.target.appendShape(this);
+        return this;
+    }
+});

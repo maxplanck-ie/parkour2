@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8f1baa4c2cd341b933cee8429a8ddeabd5fb4db56655813fb07dcd83f52cd44f
-size 244
+.#{$prefix}accordion-hd {
+    @include single-box-shadow($accordion-header-background-color, 0, 0, 0, 0, true);
+}
+.#{$prefix}accordion-hd-sibling-expanded {
+    @include single-box-shadow($panel-header-inner-border-color, 0, 1px, 0, 0, true);
+}

@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9b90c269b8926747d04b122e155a383ddb090baf5d15cb879df75bff637b77f0
-size 610
+div.DTFC_LeftHeadWrapper table,
+div.DTFC_LeftBodyWrapper table,
+div.DTFC_LeftFootWrapper table {
+  border-right-width: 0;
+}
+
+div.DTFC_RightHeadWrapper table,
+div.DTFC_RightBodyWrapper table,
+div.DTFC_RightFootWrapper table {
+  border-left-width: 0;
+}
+
+div.DTFC_LeftHeadWrapper table,
+div.DTFC_RightHeadWrapper table {
+  margin-bottom: 0 !important;
+}
+
+div.DTFC_LeftBodyWrapper table,
+div.DTFC_RightBodyWrapper table {
+  border-top: none;
+  margin: 0 !important;
+}
+
+div.DTFC_LeftFootWrapper table,
+div.DTFC_RightFootWrapper table {
+  margin-top: 0 !important;
+}
+
+div.DTFC_Blocker {
+  background-color: white;
+}

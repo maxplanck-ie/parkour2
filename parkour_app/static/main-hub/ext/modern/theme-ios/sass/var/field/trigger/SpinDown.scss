@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bbd0a4d7ec4aa060db38dd3a469ea1113ba57013092812147507657b1ccaa8bc
-size 237
+$spindowntrigger-icon: dynamic($ios-arrow-down iOS);
+$spindowntrigger-icon-big: dynamic($ios-spinner-minus iOS);
+
+$spindowntrigger-icon-size: dynamic(px-to-em(12px, 14px));
+$spindowntrigger-icon-font-size: dynamic(px-to-em(16px, 16px));
