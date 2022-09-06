@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1e8eb0ec0d5cc01a22882c168429ae103dfeab5b11349b949c487be57857e561
-size 156
+/**
+ * @class Ext.picker.Picker
+ */
+
+/**
+ * @var {measurement} $picker-row-height
+ * The height of each picker item.
+ */
+$picker-row-height: dynamic(80px);

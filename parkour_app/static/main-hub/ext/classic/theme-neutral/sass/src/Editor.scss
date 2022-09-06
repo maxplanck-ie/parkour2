@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:94baf392b8cf311917c672632125f7c7567939ff7c7fe0d26f6710cf2aef136f
-size 106
+// No padding when inside an Editor
+.#{$prefix}editor .#{$prefix}form-item-body {
+    padding-bottom: 0;
+}

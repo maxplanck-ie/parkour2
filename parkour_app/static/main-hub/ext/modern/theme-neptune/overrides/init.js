@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0ff59f9aff6c00a6581ef964881dbbfe5950f8b417b235420a9b8c3b59e8e732
-size 165
+Ext.namespace('Ext.theme.is').Neptune = true;
+Ext.theme.name = 'Neptune';
+
+Ext.theme.getDocCls = function() {
+    return Ext.platformTags.desktop ? '' : 'x-big';
+};

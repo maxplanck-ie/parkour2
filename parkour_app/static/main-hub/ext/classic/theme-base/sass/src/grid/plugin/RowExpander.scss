@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1e20addb32f78cec6f7be7ec1d0e9bdf1003e8d19072bd2bc498b6ee6d8d502d
-size 413
+.#{$prefix}grid-row-expander {
+    font-size: 0;
+    line-height: 0;
+    text-align: center;
+}
+
+.#{$prefix}grid-row-expander:focus {
+    outline: $grid-row-cell-focus-border-width $grid-row-cell-focus-border-style $grid-row-cell-focus-border-color;
+}
+
+.#{$prefix}grid-hide-row-expander-spacer .#{$prefix}grid-row-expander-spacer {
+    display: none;
+}
+
+.#{$prefix}grid-row-expander-spacer {
+    border: 0 none;
+}

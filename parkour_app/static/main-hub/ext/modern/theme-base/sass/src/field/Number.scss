@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1441d1b000c154228d88d88c50754a640db595766d83355b860ffbf499bfb9b1
-size 567
+.#{$prefix}numberfield {
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    // Firefox shows the spinner buttons on input[type=number] elements and this rule hides them
+    input {
+        -moz-appearance:textfield;
+    }
+
+    // EXTJS-21260 - Firefox validates input[type=number] fields and this rule hides the red border on the input field
+    // The other solution is to have a "novalidate" attribute on the form element
+    input:invalid {
+        box-shadow: none;
+    }
+}

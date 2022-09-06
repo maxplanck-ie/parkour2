@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aaa64d809ff413017796cf30b8e37be84943d5e93e667540aef35f2445d5b5fe
-size 182
+// changing the msg text below will affect the LoadMask
+Ext.define("Ext.locale.pt_BR.view.AbstractView", {
+    override: "Ext.view.AbstractView",
+    loadingText: "Carregando..."
+});

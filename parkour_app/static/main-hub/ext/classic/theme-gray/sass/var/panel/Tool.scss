@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:129945de6f92d93a38c8788d7449080439a974d1c4fa3880dbfba0ad251cf58d
-size 166
+/** @class Ext.panel.Tool */
+//
+
+$tool-size: dynamic(15px);
+$tool-glyph-color: dynamic(adjust-color($base-color, $hue: 0deg, $saturation: 7.644%, $lightness: -25%));

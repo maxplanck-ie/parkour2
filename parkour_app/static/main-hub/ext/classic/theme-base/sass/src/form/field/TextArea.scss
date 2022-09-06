@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:db5bb85fe8ae373c33760a2356681f7c4f7e24ba53a3b8ea4a7af06a70d5d554
-size 236
+.#{$prefix}form-textarea {
+    overflow: auto;
+    resize: none; //Disable browser resizable textarea
+
+    // override min-height set by extjs-text-field mixin
+    div.#{$prefix}form-text-grow & {
+        min-height: inherit;
+    }
+}
+
+

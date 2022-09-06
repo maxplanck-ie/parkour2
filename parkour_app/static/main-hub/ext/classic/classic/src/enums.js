@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:84c3af53b7e8975a3424eebde1ecf0b69c092f9575d40a1243947d69cdae2292
-size 372
+//
+// Definitions of enums referenced in documentation.
+//
+
+/**
+ * @enum [Ext.enums.Layout=layout.*]
+ * Enumeration of all layout types.
+ */
+
+/**
+ * @enum [Ext.enums.Widget=widget.*]
+ * Enumeration of all xtypes.
+ */
+
+/**
+ * @enum [Ext.enums.Plugin=plugin.*]
+ * Enumeration of all ptypes.
+ */
+
+/**
+ * @enum [Ext.enums.Feature=feature.*]
+ * Enumeration of all ftypes.
+ */
+

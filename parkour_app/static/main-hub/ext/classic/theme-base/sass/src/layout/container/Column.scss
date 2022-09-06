@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:050d52408d2b3b8345f89fe9898a79e20a93e156dc7684bc43ce5d08881fdcdc
-size 130
+.#{$prefix}column {
+    float: left;
+}
+
+@if $include-rtl {
+    .#{$prefix}rtl > .#{$prefix}column {
+        float: right;
+    }
+}

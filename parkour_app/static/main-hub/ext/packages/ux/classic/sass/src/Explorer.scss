@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:282dc99fe134c6abf3d3899b200e35e9e88be6b80adf720896c04bc40945fb6a
-size 398
+.#{$prefix}explorer-view {
+    background-color: #fff;
+}
+
+.#{$prefix}explorer-item {
+    float: left;
+}
+
+.#{$prefix}explorer-item-text {
+    text-align: center;
+}
+
+.#{$prefix}explorer-node-icon {
+    height: 100px;
+    width: 100px;
+    background: theme-background-image('explorer/node', 'png');
+}
+
+.#{$prefix}explorer-leaf-icon {
+    background: theme-background-image('explorer/leaf', 'png');
+}

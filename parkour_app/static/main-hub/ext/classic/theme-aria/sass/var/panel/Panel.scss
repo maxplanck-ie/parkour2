@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:42db8a49a2d6286fd5bbe4a4294280d330f1dac88c36097ee403073dd5666654
-size 279
+$panel-header-background-color: dynamic(#3a4155);
+$panel-header-color: dynamic(#fff);
+$panel-body-background-color: dynamic(#232d38);
+$panel-body-color: dynamic(#fff);
+$panel-border-color: dynamic($panel-header-background-color);
+$panel-frame-background-color: dynamic(#3f4757);

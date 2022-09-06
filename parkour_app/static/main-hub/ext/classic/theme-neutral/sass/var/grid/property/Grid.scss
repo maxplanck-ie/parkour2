@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7c1c2aa57a2745232fcf7c281b5cf84b289e9cb7182c1cfbe5845ce0bb7fb7b6
-size 557
+/**
+ * @class Ext.grid.property.Grid
+ */
+
+/**
+ * @var {string}
+ * The background-image of property grid cells
+ */
+$grid-property-cell-background-image: dynamic('none');
+
+/**
+ * @var {string}
+ * The background-position of property grid cells
+ */
+$grid-property-cell-background-position: dynamic('none');
+
+/**
+ * @var {number/string}
+ * The padding to add before the text of property grid cells to make room for the
+ * background-image. Only applies if $grid-property-cell-background-image is not null
+ */
+$grid-property-cell-before-padding: dynamic('none');

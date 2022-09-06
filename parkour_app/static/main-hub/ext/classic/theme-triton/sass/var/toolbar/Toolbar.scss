@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a615c3aadfb723e6d12750e35a4f4a9d29364e804b42bf5e866012b6186d712d
-size 255
+$toolbar-footer-background-color: dynamic($neutral-highlight-color);
+$toolbar-tool-glyph-color: dynamic($neutral-dark-color);
+$toolbar-scroller-width: dynamic(24px);
+$toolbar-scroller-height: dynamic(24px);
+$toolbar-border-color: dynamic($neutral-color);

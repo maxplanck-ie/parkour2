@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7c43fdb78bdf395bfe2fa6b63dcb111900efa6480105a6a315175c5e6a74ecb2
-size 129
+.x-carousel-indicator span {
+	@include border-radius(5px);
+
+	&.x-carousel-indicator-active {
+		background-color: $ios7-blue;
+	}
+}

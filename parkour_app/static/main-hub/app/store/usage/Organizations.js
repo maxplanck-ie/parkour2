@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8719fa024f8bbc15d46652d424ea5a7d87ba9ea4cdcb1bfce53c07bff6a83e39
-size 573
+Ext.define('MainHub.store.usage.Organizations', {
+  extend: 'Ext.data.Store',
+  storeId: 'UsageOrganizations',
+
+  requires: [
+    'MainHub.model.usage.ChartPolar'
+  ],
+
+  model: 'MainHub.model.usage.ChartPolar',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/usage/organizations/',
+    timeout: 1000000,
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false      // to remove param "_dc",
+  },
+
+  getId: function () {
+    return 'UsageOrganizations';
+  }
+});

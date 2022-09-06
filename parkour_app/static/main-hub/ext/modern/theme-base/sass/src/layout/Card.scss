@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:28633d141209a67a182aaf10927e39444ef4601abd861438b23061afe3010824
-size 372
+/**
+ * @class Ext.layout.Card
+ */
+
+.x-layout-card {
+    position: relative;
+    overflow: hidden;
+}
+
+.x-layout-card-perspective {
+    -webkit-perspective: 1000px;
+    -ms-perspective: 1000px;
+    perspective: 1000px;
+}
+
+.x-layout-card-item-container {
+    @include absolute-fit;
+}
+
+.x-layout-card-item {
+    @include absolute-position;
+    position: absolute !important;
+}

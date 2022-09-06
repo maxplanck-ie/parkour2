@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:46b63f14a21ee99d1a582135ba9e1dfcff4f00f930588094f062b3a97f87e606
-size 781
+Ext.define('Ext.theme.triton.menu.Item', {
+    override: 'Ext.menu.Item',
+    
+    compatibility: Ext.isIE8,
+    
+    onFocus: function(e) {
+        this.callParent([e]);
+        this.repaintIcons();
+    },
+    
+    onFocusLeave: function(e) {
+        this.callParent([e]);
+        this.repaintIcons();
+    },
+    
+    privates: {
+        repaintIcons: function() {
+            var iconEl = this.iconEl,
+                arrowEl = this.arrowEl,
+                checkEl = this.checkEl;
+            
+            if (iconEl) {
+                iconEl.syncRepaint();
+            }
+            
+            if (arrowEl) {
+                arrowEl.syncRepaint();
+            }
+            
+            if (checkEl) {
+                checkEl.syncRepaint();
+            }
+        }
+    }
+});

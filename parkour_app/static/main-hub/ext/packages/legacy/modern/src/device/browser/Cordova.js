@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e8026a7db9a6406c3333155ee947dd7486fede490796b0eec96e89fb6ace566f
-size 449
+/**
+ * @private
+ */
+Ext.define('Ext.device.browser.Cordova', {
+    extend: 'Ext.device.browser.Abstract',
+    
+    open: function(config) {
+        if (!this._window) {
+            this._window = Ext.create('Ext.device.browser.Window');
+        }
+
+        this._window.open(config);
+
+        return this._window;
+    },
+    
+    close: function() {
+        if (!this._window) {
+            return;
+        }
+
+        this._window.close();
+    }
+});

@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:09de34332e152e2672262e0b2fb69ed90a76849b4db1fa4605a12de38f86535e
-size 194
+# theme-aria/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:29d63efb38c96ce2924f4b6ce498cb19112b3f4e6ba05ca5cf1cea42d5587bdc
-size 347
+/**
+ * A simple header component for grouped grids.  Grid row headers are created automatically
+ * by {@link Ext.grid.Grid Grids} and should not be directly instantiated.
+ */
+Ext.define('Ext.grid.RowHeader', {
+    extend: 'Ext.dataview.ItemHeader',
+    xtype: 'rowheader',
+    classCls: Ext.baseCSSPrefix + 'rowheader',
+
+    manageWidth: false
+});

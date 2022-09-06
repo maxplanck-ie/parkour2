@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9ff618a26d8dda3ced011ebb33c83b8c9febd9935df0a362e4a9222df715e478
-size 165
+@if $enable-font-icons {
+    // remove default trigger pseudo element
+    .#{$prefix}form-trigger.#{$prefix}form-trigger-cmp:before {
+        content: none;
+    }
+}

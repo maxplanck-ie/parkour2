@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dd8f35bd59d5964730f5a3fe8414836caac7257d6a9b0c515f926686eb9b0e90
-size 185
+// Summary Rows do not get expanders
+.#{$prefix}summaryrow {
+    position: relative !important;
+
+    .#{$prefix}expandercell .#{$prefix}inner-el:before {
+        display: none
+    }
+
+}

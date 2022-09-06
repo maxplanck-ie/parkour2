@@ -1,3 +1,55 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f6d7e9d269c03231d0fd86344aaf0a986584a4dca420f647884fb07f2a1774b9
-size 1241
+{
+    /**
+     * The namespace of this package.
+     *
+     * As a general rule, all classes that belong to this package should be under this namespace
+     * if multiple namespaces are part of this package, set this to "".
+     */
+    "namespace": "Ext",
+
+    "name": "theme-triton",
+    "type": "theme",
+    "extend": "theme-neptune",
+
+    "framework": "ext",
+    "toolkit": "modern",
+    //"requires": [
+    //    ...
+    //],
+
+    "creator": "Sencha",
+    "summary": "Ext JS Modern Triton Theme",
+    "detailedDescription": "The Triton theme provides a flat simple look and feel, and uses font icons in place of background images.",
+
+    "version": "6.2.0.981",
+    "compatVersion": "6.0.0",
+    "format": "1",
+
+    "output": "${workspace.subpkg.prefix}/${package.name}",
+    "local": true,
+
+    "sass": {
+        "namespace": "Ext",
+
+        "etc": "${package.dir}/sass/etc/all.scss",
+
+        "var": "${package.dir}/sass/var",
+
+        "src": "${package.dir}/sass/src"
+    },
+
+    "classpath": "${package.dir}/src",
+
+    "overrides": "${package.dir}/overrides",
+
+    "resource": {
+        "paths": ""
+    },
+
+    "resources": [
+        {
+            "path": "${package.dir}/resources",
+            "output": "shared"
+        }
+    ]
+}

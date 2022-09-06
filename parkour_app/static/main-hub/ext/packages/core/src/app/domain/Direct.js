@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7b7e4db67049a10694982c68f1d48d3b29c5897cd254da9ec7e695535678ca7d
-size 591
+/**
+ * This class implements the Ext Direct event domain. All classes extending from
+ * {@link Ext.direct.Provider} are included in this domain. The selectors are simply provider
+ * id's or the wildcard "*" to match any provider.
+ *
+ * @private
+ */
+Ext.define('Ext.app.domain.Direct', {
+    extend: 'Ext.app.EventDomain',
+    singleton: true,
+    
+    requires: [
+        'Ext.direct.Provider'
+    ],
+    
+    type: 'direct',
+    idProperty: 'id',
+    
+    constructor: function() {
+        var me = this;
+        
+        me.callParent();
+        me.monitor(Ext.direct.Provider);
+    }
+});

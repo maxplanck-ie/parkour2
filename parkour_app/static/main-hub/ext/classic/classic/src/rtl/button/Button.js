@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7709af6e1b27a851a9c40cb3e3547c4cd302daedbbc91f32a3ec9b50f396a52d
-size 498
+Ext.define('Ext.rtl.button.Button', {
+    override: 'Ext.button.Button',
+
+    getTriggerRegion: function() {
+        var me = this,
+            region = me._triggerRegion;
+
+        if (!Ext.rootInheritedState.rtl !== !this.getInherited().rtl && // jshint ignore:line
+                me.arrowAlign === 'right') {
+            region.begin = 0;
+            region.end = me.btnEl.getX() - me.el.getX();
+        } else {
+            region = me.callParent();
+        }
+
+        return region;
+    }
+});

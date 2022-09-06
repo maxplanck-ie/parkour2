@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:05d03321060c8dd8691009f6789704809c9e7e87ee85c20da57c7daf917c065b
-size 469
+div.DTS {
+  display: block !important;
+}
+div.DTS tbody th,
+div.DTS tbody td {
+  white-space: nowrap;
+}
+div.DTS div.DTS_Loading {
+  z-index: 1;
+}
+div.DTS div.dataTables_scrollBody {
+  background: repeating-linear-gradient(45deg, #edeeff, #edeeff 10px, white 10px, white 20px);
+}
+div.DTS div.dataTables_scrollBody table {
+  z-index: 2;
+}
+div.DTS div.dataTables_paginate,
+div.DTS div.dataTables_length {
+  display: none;
+}
+
+div.DTS tbody tr {
+  background-color: white;
+}

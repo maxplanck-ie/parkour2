@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3df684318c9448d90f5ea4d2e8d9cde59cdd5edfc1003d8d09c3f4351bd65242
-size 351
+Ext.define("Ext.locale.it.grid.feature.Grouping", {
+    override: "Ext.grid.feature.Grouping",
+
+    groupByText: 'Raggruppa per questo campo',
+    showGroupsText: 'Mostra nei gruppi', 
+    expandTip: 'Clicca per espandere. Con il tasto CTRL riduce tutti gli altri',
+    collapseTip: 'Clicca per ridurre. Con il tasto CTRL espande tutti gli altri'
+});

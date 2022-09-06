@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dd5128d33c2e801e3011e90f96d2550b238470696186d140e20d1afb5ee7a5af
-size 718
+/**
+ * Validates that the value does not exist in a {@link #list} of values.
+ */
+Ext.define('Ext.data.validator.Exclusion', {
+    extend: 'Ext.data.validator.List',
+    alias: 'data.validator.exclusion',
+    
+    type: 'exclusion',
+    config: {
+        /**
+         * @cfg {String} message
+         * The error message to return when the passed value exists in the
+         * specified {@link #list}.
+         */
+        message: 'Is a value that has been excluded'
+    },
+    
+    //<debug>
+    constructor: function() {
+        this.callParent(arguments);
+        if (!this.getList()) {
+            Ext.raise('validator.Exclusion requires a list');
+        }    
+    },
+    //</debug>
+    
+    inclusion: false
+});

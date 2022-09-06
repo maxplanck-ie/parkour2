@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bf7c3ea5201640f58448d5d6616c9ffcca85ea5e539eafdbd5725979c729360b
-size 616
+var helpers = require('./helpers.js');
+
+function verifyConfig(config, rules) {
+    if (!helpers.isObject(config)) {
+        return null;
+    }
+    var result = {};
+    for (var name in config) {
+        var rule = rules[name];
+        if (rule && (
+            ( typeof rule === 'function' && rule(config[name]) ) ||
+            ( rule instanceof RegExp && typeof config[name] === 'string' && config[name].match(rule) ) ||
+            ( typeof config[name] === rule )
+        )) {
+            result[name] = config[name];
+        }
+    }
+    return result;
+}
+
+
+module.exports = {
+    verifyConfig: verifyConfig
+};
+
+

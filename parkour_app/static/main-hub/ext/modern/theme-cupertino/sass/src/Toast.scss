@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bfcbd1c605c72edf762c412cc79190131b01c86a81c0591a3b4e884ffb8848e1
-size 317
+/**
+ * @class Ext.Toast
+ */
+
+.x-toast {
+    @include border-radius(7px);
+	padding: 0px;
+	margin: 0px;
+	max-width: 19em;
+	border: 1px;
+    background-color: #fff;
+    border-color: #dbdbe0;
+
+    .x-toast-text {
+        padding: 2em;
+        color: $ios7-blue;
+        font-size: .9em;
+        font-weight: 400;
+    }
+}

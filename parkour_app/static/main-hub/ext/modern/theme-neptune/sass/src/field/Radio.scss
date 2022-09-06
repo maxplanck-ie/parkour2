@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:608cfdcab2dda8cf75bf1c3a02ffab308cc1a10f27fed4ac978091ebc343a257
-size 650
+@include radiofield-ui(
+    $checkbox-size: $radiofield-checkbox-size,
+    $checkbox-size-big: $radiofield-checkbox-size-big,
+    $checkbox-font-size: $radiofield-checkbox-font-size,
+    $checkbox-font-size-big: $radiofield-checkbox-font-size-big,
+    $checkbox-margin: $radiofield-checkbox-margin,
+    $checkbox-margin-big: $radiofield-checkbox-margin-big,
+    $checkbox-icon: $radiofield-checkbox-icon,
+    $checked-checkbox-icon: $radiofield-checked-checkbox-icon,
+    $checkbox-color: $radiofield-checkbox-color,
+    $checked-checkbox-color: $radiofield-checked-checkbox-color,
+    $disabled-checkbox-color: $radiofield-disabled-checkbox-color
+);

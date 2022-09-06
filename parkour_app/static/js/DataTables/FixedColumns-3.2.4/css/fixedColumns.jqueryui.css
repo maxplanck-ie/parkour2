@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eb04569b9cf529e953d211675aaf5ee4630105ba708c312be61884facb21c30f
-size 266
+div.DTFC_LeftWrapper table.dataTable,
+div.DTFC_RightWrapper table.dataTable {
+  z-index: 2;
+}
+div.DTFC_LeftWrapper table.dataTable.no-footer,
+div.DTFC_RightWrapper table.dataTable.no-footer {
+  border-bottom: none;
+}
+
+div.DTFC_Blocker {
+  background-color: white;
+}

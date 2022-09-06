@@ -1,3 +1,62 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ef57400b4d0c37880fdd9c7a307e1f54e2d3237c803a3b3d4a1b51f601cdfe9b
-size 1398
+.#{$prefix}fieldset {
+    display: block; /* preserve margins in IE */
+    position: relative;
+    overflow: hidden;
+}
+
+.#{$prefix}fieldset-header {
+    overflow: hidden; // fixes a webkit bug where legend elements that have floated children are not displayed
+
+    .#{$prefix}form-item,
+    .#{$prefix}tool {
+        float: left;
+    }
+    
+    .#{$prefix}fieldset-header-text {
+        float: left;
+    }
+
+    .#{$prefix}form-cb-wrap {
+        font-size: 0;
+        line-height: 0;
+        min-height: 0;
+        height: auto; // override form-cb-wrap's height from neutral theme
+    }
+
+    .#{$prefix}form-cb {
+        margin: 0; // override the default checkbox margin
+        // Checkboxes are now absolutely positioned so reset the positioning (see EXTJSIV-10302).
+        position: static;
+        // Need to reset display to have dimensions applied
+        display: inherit;
+    }
+}
+
+.#{$prefix}fieldset-body {
+    overflow: hidden;
+}
+
+.#{$prefix}fieldset-collapsed {
+    padding-bottom: 0 !important;
+
+    > .#{$prefix}fieldset-body {
+        display: none;
+    }
+}
+
+.#{$prefix}fieldset-header-text-collapsible {
+    cursor: pointer;
+}
+
+@if $include-rtl {
+    .#{$prefix}rtl.#{$prefix}fieldset-header {
+        .#{$prefix}form-item,
+        .#{$prefix}tool {
+            float: right;
+        }
+        
+        .#{$prefix}fieldset-header-text {
+            float: right;
+        }
+    }
+}

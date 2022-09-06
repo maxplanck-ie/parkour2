@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bd4bc9bb4e12f215a081fc0ab7bd3b959d7e697349c2c07d6e34fb1a3f759a3e
-size 765
+Ext.define('MainHub.view.statistics.RunStatisticsController', {
+  extend: 'MainHub.components.BaseGridController',
+  alias: 'controller.run-statistics',
+
+  config: {
+    control: {
+      '#': {
+        activate: 'activateView'
+      },
+      'daterangepicker': {
+        select: 'setRange'
+      }
+    }
+  },
+
+  activateView: function (view) {
+    var dateRange = view.down('daterangepicker');
+    dateRange.fireEvent('select', dateRange, dateRange.getPickerValue());
+  },
+
+  setRange: function (drp, value) {
+    var grid = drp.up('grid');
+
+    grid.getStore().reload({
+      params: {
+        start: value.startDateObj,
+        end: value.endDateObj
+      },
+      callback: function () {
+        grid.getView().features[0].collapseAll();
+      }
+    });
+  }
+});

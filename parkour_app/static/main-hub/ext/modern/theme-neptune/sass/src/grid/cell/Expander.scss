@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:36ac1ae6b024338f4a5f5795216dbf5701e97d94312eecac744c95c09c30a7b2
-size 447
+@include expandercell-ui(
+    $padding: $expandercell-padding,
+    $padding-big: $expandercell-padding-big,
+    $icon-size: $expandercell-icon-size,
+    $icon-size-big: $expandercell-icon-size-big,
+    $icon-font-size: $expandercell-icon-font-size,
+    $icon-font-size-big: $expandercell-icon-font-size-big,
+    $expand-icon: $expandercell-expand-icon,
+    $collapse-icon: $expandercell-collapse-icon,
+    $icon-color: $expandercell-icon-color
+);

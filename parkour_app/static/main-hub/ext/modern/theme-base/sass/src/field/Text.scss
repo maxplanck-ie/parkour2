@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:da91ab32f4d1f69f9ea503c5ac4929a3ccd7ce159a43c1350f565048ba333585
-size 650
+.#{$prefix}textfield {
+    .#{$prefix}input-el {
+        background-color: inherit;
+    }
+}
+
+.#{$prefix}textfield.#{$prefix}label-align-placeholder .#{$prefix}label-el {
+    position: relative;
+    opacity: 0;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.#{$prefix}textfield.#{$prefix}text-align-left .#{$prefix}input-el {
+     text-align: left;
+}
+
+.#{$prefix}textfield.#{$prefix}text-align-center .#{$prefix}input-el {
+    text-align: center;
+}
+.#{$prefix}textfield.#{$prefix}text-align-right .#{$prefix}input-el {
+    text-align: right;
+}
+
+.#{$prefix}ie .#{$prefix}field.#{$prefix}textfield {
+    .#{$prefix}mask-el {
+        z-index: -1;
+    }
+}

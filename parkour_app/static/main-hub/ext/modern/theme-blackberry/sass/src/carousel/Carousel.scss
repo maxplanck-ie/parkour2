@@ -1,3 +1,52 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dbd595952383ce3dcbce163f9e51b9aebf24f914c6aa5e00e1dc5cc583f55c73
-size 1092
+/**
+ * @class Ext.carousel.Indicator
+ */
+
+.x-carousel-indicator-dark {
+    span {
+        background-color: #999;
+    }
+
+    .x-carousel-indicator-active {
+        background-color: #777 !important;
+    }
+}
+
+
+
+///**
+// * @var {measurement} $carousel-indicator-size Size (width/height) of carousel indicator dots.
+// */
+//$carousel-indicator-size: .5em !default;
+
+///**
+// * @var {measurement} $carousel-indicator-spacing
+// * Amount of space between carousel indicator dots.
+// */
+//$carousel-indicator-spacing: .2em !default;
+
+///**
+// * @var {measurement} $carousel-track-size Size of the track the carousel indicator dots are in.
+// */
+//$carousel-track-size: 1.5em !default;
+
+///**
+// * @class Ext.carousel.Carousel
+// */
+//.x-carousel-indicator {
+//  span {
+//    width: $carousel-indicator-size;
+//    height: $carousel-indicator-size;
+//    margin: $carousel-indicator-spacing;
+//  }
+//}
+
+//.x-carousel-indicator-light span,
+//.x-carousel-indicator-dark span {
+//  background-color: $inactive-color;
+
+//  &.x-carousel-indicator-active {
+//    background-color: $base-color;
+//  }
+//}
+

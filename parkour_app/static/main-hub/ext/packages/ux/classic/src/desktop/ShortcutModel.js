@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2b4593864eeccb38d46561022f6d1089dcbc8402c8bd320dc70d373bd2021db8
-size 497
+/*!
+ * Ext JS Library
+ * Copyright(c) 2006-2014 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+
+/**
+ * @class Ext.ux.desktop.ShortcutModel
+ * @extends Ext.data.Model
+ * This model defines the minimal set of fields for desktop shortcuts.
+ */
+Ext.define('Ext.ux.desktop.ShortcutModel', {
+    extend: 'Ext.data.Model',
+    fields: [{
+        name: 'name',
+        convert: Ext.String.createVarName
+    }, {
+        name: 'iconCls'
+    }, {
+        name: 'module'
+    }]
+});

@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0a2a25030735730369db41ce1fc98a688cda3380a3441547f8599ee3de2b386b
-size 337
+Ext.define('Ext.chart.theme.GreenGradients', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.green-gradients',
+        'chart.theme.Green:gradients'
+    ],
+    config: {
+        baseColor: '#b1da5a',
+        gradients: {
+            type: 'linear',
+            degrees: 90
+        }
+    }
+});

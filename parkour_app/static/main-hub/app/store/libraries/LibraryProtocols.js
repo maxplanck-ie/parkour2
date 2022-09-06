@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3baaa98a64fa2b1d7e20baf4bda2381ca7b3f60e1e72b6925704f339a076d38d
-size 727
+Ext.define('MainHub.store.libraries.LibraryProtocols', {
+    extend: 'Ext.data.Store',
+    storeId: 'libraryProtocolsStore',
+
+    requires: [
+        'MainHub.model.libraries.LibraryProtocol'
+    ],
+
+    model: 'MainHub.model.libraries.LibraryProtocol',
+
+    proxy: {
+        type: 'ajax',
+        url: 'api/library_protocols/',
+        timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    },
+
+    autoLoad: true
+});

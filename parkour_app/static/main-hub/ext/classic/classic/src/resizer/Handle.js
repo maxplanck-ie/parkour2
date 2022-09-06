@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:41cfd204f26ae86fc5a43c23aceb905ff401eadb6100bf3bf2a277eff7efe97a
-size 663
+/**
+ * Provides a handle for 9-point resizing of Elements or Components.
+ */
+Ext.define('Ext.resizer.Handle', {
+    extend: 'Ext.Component',
+    handleCls: '',
+    baseHandleCls: Ext.baseCSSPrefix + 'resizable-handle',
+    // Ext.resizer.Resizer.prototype.possiblePositions define the regions
+    // which will be passed in as a region configuration.
+    region: '',
+    
+    ariaRole: 'presentation',
+
+    beforeRender: function() {
+        var me = this;
+
+        me.callParent();
+
+        me.protoEl.unselectable();
+
+        me.addCls(
+            me.baseHandleCls,
+            me.baseHandleCls + '-' + me.region,
+            me.handleCls
+        );
+    }
+});

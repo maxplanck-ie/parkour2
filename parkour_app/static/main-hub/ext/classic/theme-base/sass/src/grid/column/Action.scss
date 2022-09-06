@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8279e09c48d55c66dfe6c3cc5bf0e59a97f3882abfa57a6c4f925330875997ed
-size 298
+.#{$prefix}grid-cell-inner-action-col {
+    line-height: 0;
+    font-size: 0;
+
+    :focus {
+        outline: $grid-row-cell-focus-border-width $grid-row-cell-focus-border-style $grid-row-cell-focus-border-color;
+    }
+}
+
+.#{$prefix}action-col-icon {
+    display: inline-block;
+    line-height: 1;
+}

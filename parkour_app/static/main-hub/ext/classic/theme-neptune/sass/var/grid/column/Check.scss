@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:34207bf166dadecffc9005e2c449f8e00450635f7684bfaa046de845f6c1e1a3
-size 239
+// Check column header width is hardcoded, so we fudge padding as well
+$grid-checkcolumn-cell-padding:
+    max(ceil(($grid-row-height - $form-checkbox-size) / 2), 0)
+    6px
+    max(floor(($grid-row-height - $form-checkbox-size) / 2), 0);

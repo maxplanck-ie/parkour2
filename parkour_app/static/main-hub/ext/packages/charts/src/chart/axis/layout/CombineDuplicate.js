@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:90eda6c1287b6c8dfd38d0e601c9a9b55b88028f621ef77592675342d1997b61
-size 592
+/**
+ * @class Ext.chart.axis.layout.CombineDuplicate
+ * @extends Ext.chart.axis.layout.Discrete
+ * 
+ * Discrete processor that combines duplicate data points.
+ */
+Ext.define('Ext.chart.axis.layout.CombineDuplicate', {
+    extend: 'Ext.chart.axis.layout.Discrete',
+    alias: 'axisLayout.combineDuplicate',
+
+    getCoordFor: function (value, field, idx, items) {
+        if (!(value in this.labelMap)) {
+            var result = this.labelMap[value] = this.labels.length;
+            this.labels.push(value);
+            return result;
+        }
+        return this.labelMap[value];
+    }
+
+});

@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a51bde4ba5d3745a431ef21bd7f875c5c1ef9a67eb7ee375071c6cfbe54879f1
-size 312
+/**
+ * @class Ext.Media
+ */
+
+.x-video {
+    height: 100%;
+    width: 100%;
+    background-color: #000;
+}
+
+.x-video > * {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+.x-video-ghost {
+    -webkit-background-size: 100% auto;
+    background: #000 center center no-repeat;
+}
+
+audio {
+	width: 100%;
+}

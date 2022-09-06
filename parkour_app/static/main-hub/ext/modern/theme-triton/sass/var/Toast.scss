@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8f829e51390e2f153b32f9e0af177759c39ed441f3436b1bbe4b720afe024c77
-size 107
+$toast-color: dynamic($light-color);
+$toast-background-color: dynamic(mix(#000, $neutral-dark-color, 20%));

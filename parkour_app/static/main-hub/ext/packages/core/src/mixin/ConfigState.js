@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7fde075f95caec857a2433802613999d8ed4388bb6f3e0f194e7129c261d6800
-size 794
+/**
+ * @private
+ */
+Ext.define('Ext.mixin.ConfigState', {
+    extend: 'Ext.Mixin',
+
+    mixinConfig: {
+        id: 'configstate'
+    },
+
+    alternateStateConfig: '',
+
+    toggleConfigState: function(isAlternate) {
+        var me = this,
+            state = me.capturedConfigState,
+            cfg = me.getConfig(me.alternateStateConfig),
+            key;
+
+        if (!cfg) {
+            return;
+        }
+
+        if (isAlternate) {
+            state = {};
+            for (key in cfg) {
+                state[key] = me.getConfig(key);
+            }
+            me.capturedConfigState = state;
+            me.setConfig(cfg);
+            // Capture
+        } else if (!me.isConfiguring && state) {
+            me.setConfig(state);
+            delete me.capturedConfigState;
+        }
+    }
+});

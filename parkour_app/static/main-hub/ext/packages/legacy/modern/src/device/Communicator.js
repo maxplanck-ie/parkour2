@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7b956439085ef0f8979e700d9e8e94e82451d9e1736b0d721a9a78e079061564
-size 387
+/**
+ * @private
+ */
+Ext.define('Ext.device.Communicator', {
+    requires: [
+        'Ext.device.communicator.Default',
+        'Ext.device.communicator.Android'
+    ],
+
+    singleton: true,
+
+    constructor: function() {
+        if (Ext.os.is.Android) {
+            return new Ext.device.communicator.Android();
+        }
+
+        return new Ext.device.communicator.Default();
+    }
+});

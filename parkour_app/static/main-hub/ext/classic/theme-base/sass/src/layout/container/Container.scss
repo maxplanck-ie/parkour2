@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:15dda484b7675ac9a379b0d9f4fff88399919eabb2630c8718d810ec6ebdc11b
-size 327
+// Container layout is responsible for including the x-box-item class because it is is
+// shared by Box, Border, and Accordion layouts.
+.#{$prefix}box-item {
+    position:absolute !important;
+    left:0;
+    top:0;
+}
+
+@if $include-rtl {
+    .#{$prefix}rtl > .#{$prefix}box-item {
+        right: 0;
+        left: auto;
+    }
+}
+

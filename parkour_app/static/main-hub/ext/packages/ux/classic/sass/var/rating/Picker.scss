@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:66fa8256faa5397ce3ee902e0cdae870ca923530e1948db6a2d6e487e6886933
-size 429
+//$rating-picker-color: dynamic(rgb(96, 169, 23));
+//$rating-picker-color: dynamic(#FFE850);
+$rating-picker-color: dynamic(#ccc);
+
+$rating-picker-hover-color: dynamic($rating-picker-color);
+
+//$rating-picker-selected-color: dynamic(inherit);
+$rating-picker-selected-color: dynamic(#FFE850);
+
+$rating-picker-selected-hover-color: dynamic(inherit);
+
+$rating-picker-opacity: dynamic(0.8);
+
+$rating-picker-hover-opacity: dynamic(1);

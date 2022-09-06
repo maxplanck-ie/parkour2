@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:68ff8e98a340d45d0f4bd5b455c7505c680c00e6f00666235c23f6d9942847ad
-size 139
+/**
+ * @class Ext.SegmentedButton
+ */
+
+.x-segmentedbutton .x-button {
+    margin: 0;
+
+    &:not(.x-first) {
+        border-left: 0;
+    }
+}

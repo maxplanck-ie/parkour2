@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3ce6c578d72090d4086da7f6f524184daca2f1bf52c1126e37515e91296a3a61
-size 111
+.x-placeholderlabel {
+    &.x-focused {
+        .x-label-el {
+            color: $ios7-blue;
+        }
+    }
+}

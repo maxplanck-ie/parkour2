@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:956de8125aae9c39e6fb3874c0ce2222231adc6b633082fd722caa5c5790b2cf
-size 483
+/**
+ * @class Ext.Panel
+ */
+
+.x-panel,
+.x-msgbox {
+    position: relative;
+
+    // Override base Container's overflow setting.
+    // This allows a Panel's anchor element to be visible.
+    overflow: visible;
+}
+
+.x-panel.x-floating,
+.x-msgbox {
+    .x-panel-inner,
+    > .x-body {
+        z-index: 1;
+    }
+}
+
+.x-panel.x-floating > .x-dock,
+.x-msgbox > .x-dock {
+    z-index: 1;
+}
+
+.x-anchor, .x-anchor:after {
+    position: absolute;
+    height: 0;
+    width: 0;
+    content: "";
+}

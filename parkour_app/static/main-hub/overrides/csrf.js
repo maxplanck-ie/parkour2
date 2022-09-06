@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:86273659490a8f5fe700c04e44f1c30a07c8f76c3f65a9448e2d344006573f56
-size 466
+Ext.onReady(function() {
+    Ext.Ajax.on('beforerequest', function (conn, options) {
+        if (!(/^http:.*/.test(options.url) || /^https:.*/.test(options.url))) {
+            if (typeof(options.headers) == "undefined") {
+                options.headers = {'X-CSRFToken': Ext.util.Cookies.get('csrftoken')};
+            } else {
+                $.extend(options.headers, {'X-CSRFToken': Ext.util.Cookies.get('csrftoken')});
+            }
+        }
+    }, this);
+});

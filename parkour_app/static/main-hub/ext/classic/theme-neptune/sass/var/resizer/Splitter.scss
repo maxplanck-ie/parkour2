@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b84009f881dce8d80a1691f9e107cf29175e72503fabd6ec4233e6047c4ca4cd
-size 276
+/** @class Ext.resizer.Splitter */
+//
+
+$splitter-size: dynamic(8px);
+$collapse-tool-size: dynamic(48px);
+
+$splitter-focus-outline-color: dynamic(#fff);
+$splitter-focus-outline-width: dynamic(1px);
+$splitter-focus-outline-offset: dynamic(-($splitter-focus-outline-width + 1));

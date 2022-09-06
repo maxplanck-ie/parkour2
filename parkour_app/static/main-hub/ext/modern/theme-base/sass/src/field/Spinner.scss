@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fecac944df87dc7fcedc5f597ce5e4a47f5eb4f5f204f7eb2aa850e99ea82b1c
-size 434
+.#{$prefix}spinnerfield {
+    //http://stackoverflow.com/questions/3790935/can-i-hide-the-html5-number-inputs-spin-box
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .#{$prefix}spinner-button {
+        text-align: center;
+    }
+
+    &.#{$prefix}grouped-buttons {
+        .#{$prefix}input-el {
+            text-align: left;
+        }
+    }
+}

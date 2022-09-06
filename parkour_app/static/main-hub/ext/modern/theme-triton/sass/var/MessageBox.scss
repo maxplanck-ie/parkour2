@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5459a5e0e03cf3549be45a36abc7ca2b2987b0c3f8f6b6c15b432d4f3a37d076
-size 212
+$messagebox-title-background-color: dynamic($base-color);
+$messagebox-border-radius: dynamic(null);
+$messagebox-border-width: dynamic(2px);
+$messagebox-footer-background-color: dynamic($neutral-highlight-color);

@@ -1,3 +1,45 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4f900e1110c051797b46e0d1f7fb746ff9223c104a62eb2de36603d9c7217e41
-size 1515
+/**
+ * @class Ext.grid.selection.SelectionExtender
+ */
+
+/**
+ * @var {number}
+ * The height of the drag handle for extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-handle-height: dynamic(7px);
+
+/**
+ * @var {number}
+ * The width of the drag handle for extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-handle-width: dynamic(7px);
+
+/**
+ * @var {number}
+ * The color of the drag handle for extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-handle-color: dynamic($base-color);
+
+/**
+ * @var {number}
+ * The width of the dotted line indicating the dragged extension area when extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-mask-border-width: dynamic(1px);
+
+/**
+ * @var {string}
+ * The style of the dotted line indicating the dragged extension area when extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-mask-border-style: dynamic(dotted);
+
+/**
+ * @var {color}
+ * The color of the dotted line indicating the dragged extension area when extending a range in the
+ * {@link Ext.grid.selection.SpreadsheetModel spreadsheet grid selection model}.
+ */
+$spreadsheet-extender-mask-border-color: dynamic($base-color);

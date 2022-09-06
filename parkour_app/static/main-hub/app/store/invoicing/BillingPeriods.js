@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c084de1d99d502e4521441606f5e547b5ac94b8948edf39c681e6b4e9746de65
-size 510
+Ext.define('MainHub.store.invoicing.BillingPeriods', {
+  extend: 'Ext.data.Store',
+  storeId: 'BillingPeriods',
+
+  requires: [
+    'MainHub.model.invoicing.BillingPeriod'
+  ],
+
+  model: 'MainHub.model.invoicing.BillingPeriod',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/invoicing/billing_periods/',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false      // to remove param "_dc",
+  }
+});

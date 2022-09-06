@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:97ce25ad03475e59dd2161a6c7b15955284986b6f052d5293792b504f0d7da5f
-size 530
+Ext.define('Ext.rtl.panel.Title', {
+    override: 'Ext.panel.Title',
+
+    getIconRenderData: function() {
+        var me = this,
+            data = me.callParent(),
+            header = me.ownerCt;
+
+        if (header && header.isParentRtl()) {
+            data.childElCls = ' ' + me._rtlCls;
+        }
+
+        return data;
+    },
+
+    privates: {
+        _getVerticalAdjustDirection: function() {
+            var header = this.ownerCt;
+            return (header && header.isParentRtl()) ? 'right' : 'left';
+        }
+    }
+});

@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a2e171885bcac4347ea3acae1b0771e472e521f3bcfa994e3c597485f8a81838
-size 924
+/**
+ * @class Ext.form.action.DirectAction
+ * A mixin that contains methods specific to Ext Direct actions shared
+ * by DirectLoad and DirectSubmit.
+ * @private
+ */
+Ext.define('Ext.form.action.DirectAction', {
+    extend: 'Ext.Mixin',
+    
+    mixinConfig: {
+        id: 'directaction'
+    },
+    
+    resolveMethod: function(type) {
+        var me = this,
+            form = me.form,
+            api, fn;
+        
+        api = Ext.direct.Manager.resolveApi(form.api, me);
+        
+        //<debug>
+        if (!api) {
+            Ext.raise("Cannot resolve Ext Direct API method for " + type +
+                            " action; form " + form.id + " has no api object defined");
+        }
+        //</debug>
+        
+        fn = api[type];
+        
+        if (!fn) {
+            Ext.raise("Cannot resolve Ext Direct API method " + fnName + " for " + type + " action");
+        }
+        
+        return fn;
+    }
+});

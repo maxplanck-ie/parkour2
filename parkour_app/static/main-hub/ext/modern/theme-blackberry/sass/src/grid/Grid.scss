@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6bfb4bcd63754c890b16a82b81f865cc183ebf59d255cd0f1e05ec4b4d0b97dd
-size 235
+.x-grid .x-rowheader {
+    font-weight: normal;
+    font-size: 18px;
+    padding: 0px 10px;
+    border-top-color: #D1D1D1;
+    border-bottom: 2px solid #0AA9DC;
+    @include background(linear-gradient(color-stops(#FEFEFE, #DDDDDD)));
+}

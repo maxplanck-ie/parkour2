@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:58e5254c5880c0f9d4c83c04b27c55b2843698b2c1931f4a448a77657b9b6e54
-size 191
+.#{$prefix}grid .#{$prefix}dock-body > .#{$prefix}body {
+    width: 100%;
+}
+
+.#{$prefix}grid .#{$prefix}resize-marker-el {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+}

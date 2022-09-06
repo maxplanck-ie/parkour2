@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d9af949969dd6b548d63a7ab77cb459d7f9ecfa7b9292ff73505ee198d150721
-size 156
+.#{$prefix}color-picker-item {
+    float: left;
+    text-decoration: none;
+}
+
+.#{$prefix}color-picker-item-inner {
+    display: block;
+    font-size: 1px;
+}

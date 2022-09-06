@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:90a5ee307e7c3f717bcc815099a1e55cef74848f2968f70664990f20b67648bf
-size 825
+//$default-gradient: null;
+
+///**
+// * @class Global_CSS
+// */
+
+$bb-icons-path: '#{$bb-images-path}/icons';
+$bb-icons-light-path: '#{$bb-images-path}/icons-light';
+
+@mixin bb-gradient($color, $offset: 2) {
+  background: $color;
+  @include background-image(linear-gradient(top, color-stops(lighten($color, $offset), darken($color, $offset))));
+}
+
+@mixin bb-icon($icon) {
+  .x-button-icon.#{$icon} {
+    content: '';
+    background-image: url('#{$bb-icons-path}/ic_#{$icon}.png');
+
+    &:before {
+      content: '' !important;
+    }
+  }
+
+  .x-button-light .x-button-icon.#{$icon}, .x-button-icon.#{$icon}-light, .x-button.bb-default .x-button-icon.#{$icon} {
+    &:after {
+      content: '';
+      background-image: url('#{$bb-icons-light-path}/ic_#{$icon}.png');
+    }
+    &:before {
+      content: '' !important;
+    }
+  }
+}

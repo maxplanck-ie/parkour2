@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4be5f0df7c472dd9992f88f7eb3224cdad1287055d7a2507134ad0b0aac0da4b
-size 569
+.#{$prefix}gauge-text {
+    position: absolute;
+    text-align: center;
+}
+
+@include gauge-ui(
+    $track-fill: $gauge-track-fill,
+    $track-fill-opacity: $gauge-track-fill-opacity,
+    $track-stroke: $gauge-track-stroke,
+    $track-stroke-opacity: $gauge-track-stroke-opacity,
+    $track-stroke-width: $gauge-track-stroke-width,
+
+    $value-fill: $gauge-value-fill,
+    $value-fill-opacity: $gauge-value-fill-opacity,
+    $value-stroke: $gauge-value-stroke,
+    $value-stroke-opacity: $gauge-value-stroke-opacity,
+    $value-stroke-width: $gauge-value-stroke-width
+);

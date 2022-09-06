@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:24fd1ae54baa8bfb9024d7b2c9aa27893227bae8a71a1a1a5acc835e3721bbbf
-size 227
+/**
+ * @class Ext.form.Panel
+ */
+
+.x-formpanel-inner {
+    background-color: $formpanel-body-background-color;
+    padding: $formpanel-body-padding;
+
+    .#{$prefix}big & {
+        padding: $formpanel-body-padding-big;
+    }
+}

@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d4d67cf67158ca3a3ea023e9fcbc35eb1b08cbc5d3a10908057efe76f2c1d1d3
-size 830
+Ext.define('Ext.rtl.dd.DD', {
+    override: 'Ext.dd.DD',
+
+    // used be alignElWithMouse to get the local x coordinate adjusted for rtl mode if
+    // the page-level coordinate system is rtl.
+    getLocalX: function(el) {
+        return Ext.rootInheritedState.rtl ? el.rtlGetLocalX() : el.getLocalX();
+    },
+
+    // setLocalXY is used by alignElWithMouse to avoid the overhead that would be incurred
+    // by using setXY to calculate left/right/top styles from page coordinates.  Since the
+    // coordinates that go into the calculation are page-level, we need to use rtl local
+    // coordinates if the page-level coordinate system is rtl.
+    setLocalXY: function(el, x, y) {
+        if (Ext.rootInheritedState.rtl) {
+            el.rtlSetLocalXY(x, y);
+        } else {
+            el.setLocalXY(x, y);
+        }
+    }
+});

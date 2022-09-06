@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9614ab5d0cb28798a445aa602bde598e4b84f40e6699de52dfdfb72cc9eba342
-size 903
+/**
+ * @private
+ */
+Ext.define('Ext.device.capture.Cordova', {
+    captureAudio: function(config) {
+        // <debug>
+        if (!config.success) {
+            Ext.Logger.warn('You need to specify a `success` function for #captureAudio');
+        }
+        // </debug>
+
+        var options = {
+            limit: config.limit,
+            duration: config.maximumDuration
+        };
+
+        navigator.device.capture.captureAudio(config.success, config.failure, options);
+    },
+
+    captureVideo: function(config) {
+        // <debug>
+        if (!config.success) {
+            Ext.Logger.warn('You need to specify a `success` function for #captureVideo');
+        }
+        // </debug>
+
+        var options = {
+            limit: config.limit,
+            duration: config.maximumDuration
+        };
+
+        navigator.device.capture.captureVideo(config.success, config.failure, options);
+    }
+});

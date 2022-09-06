@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d273166d67827a996b1215642ca0d834363d83c15c7677faaca9ebd214a8104c
-size 226
+$spinuptrigger-icon: dynamic($ios-arrow-up iOS);
+$spinuptrigger-icon-big: dynamic($ios-spinner-plus iOS);
+
+$spinuptrigger-icon-size: dynamic(px-to-em(12px, 14px));
+$spinuptrigger-icon-font-size: dynamic(px-to-em(16px, 16px));

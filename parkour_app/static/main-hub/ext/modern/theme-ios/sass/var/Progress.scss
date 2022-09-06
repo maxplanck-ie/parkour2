@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2d3872ae1992e26d0441c43b778aab57ea9f402e4aacd9feba8c461f3a53e49f
-size 409
+$progress-min-height: dynamic(2px);
+$progress-min-height-big: dynamic(2px);
+$progress-background-color: dynamic($neutral-highlight-color);
+$progress-bar-background-color: dynamic($base-color);
+$progress-text-front-color: dynamic($light-color);
+$progress-text-back-color: dynamic($color);
+$progress-text-line-height: dynamic(px-to-em(20px, 14px));
+$progress-text-line-height-big: dynamic(px-to-em(24px, 16px));

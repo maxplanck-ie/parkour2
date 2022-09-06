@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:733c55c83309819b0017d7b301637db0a65218ab08fb82863ef793ea7cb6bfc6
-size 328
+.#{$prefix}col-move-top,
+.#{$prefix}col-move-bottom {
+    width: $grid-col-move-icon-size;
+    height: $grid-col-move-icon-size;
+}
+
+.#{$prefix}col-move-top {
+    background-image: theme-background-image('grid/col-move-top');
+}
+
+.#{$prefix}col-move-bottom {
+    background-image: theme-background-image('grid/col-move-bottom');
+}

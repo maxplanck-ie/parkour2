@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7f2186d821a192e46085e1c1917054593bc828623c697b0278a38591e43feb42
-size 637
+$tab-base-color: dynamic(#616f8c);
+$tab-base-color-over: dynamic(lighten(#616f8c, 5));
+$tab-base-color-active: dynamic($orange);
+$tab-color: dynamic(#fff);
+$tab-color-active: dynamic($tab-color);
+$tab-inner-border-width: dynamic(0);
+$tab-border-color: dynamic(#2e3746);
+$tab-border-color-active: dynamic(#74400e);
+$tab-background-gradient: dynamic(null);
+$tab-background-gradient-over: dynamic(null);
+$tab-background-gradient-active: dynamic(null);
+$tab-background-gradient-disabled: dynamic(null);
+$tab-closable-icon: dynamic('tabs/tab-close');
+$tab-closable-background-position: dynamic(top right);
+$tab-closable-width: dynamic(16px);

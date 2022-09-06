@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:31e096f3a894035ee15bc5ee62ecdc6aadde9ddf8796cac0719053d327db6589
-size 554
+Ext.define('Ext.rtl.button.Segmented', {
+    override: 'Ext.button.Segmented',
+
+    privates: {
+        _getFirstCls: function() {
+            var cls = this._firstCls;
+            if (!this.getVertical() && this.getInherited().rtl) {
+                cls = this._lastCls;
+            }
+            return cls;
+        },
+
+        _getLastCls: function() {
+            var cls = this._lastCls;
+            if (!this.getVertical() && this.getInherited().rtl) {
+                cls = this._firstCls;
+            }
+            return cls;
+        }
+    }
+});

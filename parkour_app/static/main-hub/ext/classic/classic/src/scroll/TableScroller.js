@@ -1,3 +1,26 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5489cf97b30690ebcfa96821200aeb3b27b7d5b63f8186acb649aaf48bcd3374
-size 579
+Ext.define('Ext.scroll.TableScroller', {
+    extend: 'Ext.scroll.Scroller',
+    alias: 'scroller.table',
+
+    config: {
+        lockingScroller: null
+    },
+
+    private: {
+        doScrollTo: function(x, y, animate) {
+            var lockingScroller;
+
+            if (y != null) {
+                lockingScroller = this.getLockingScroller();
+
+                if (lockingScroller) {
+                    lockingScroller.doScrollTo(null, y, animate);
+                    y = null;
+                }
+            }
+
+            this.callParent([x, y, animate]);
+        }
+    }
+
+});

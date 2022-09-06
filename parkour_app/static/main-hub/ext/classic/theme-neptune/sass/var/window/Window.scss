@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c8a80a30308e2502a90f339cb0a5aafb51829722e997eb2462819756dbf567bb
-size 303
+/** @class Ext.window.Window */
+//
+
+$window-base-color: dynamic($base-highlight-color);
+$window-body-border-width: dynamic(1px);
+$window-border-width: dynamic($panel-frame-border-width);
+$window-header-border-width: dynamic($window-border-width);
+$window-include-border-management-rules: dynamic(true);

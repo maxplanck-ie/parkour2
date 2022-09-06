@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0d69c0d9f713cb82a93ae0914d9f6053f61b453a0d6d4d525ac80c013def49fe
-size 64
+$bb-images-path: get-resource-path('images');
+@import 'mixins';

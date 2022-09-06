@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a48e1723319e112d56c33b16b0bc9e28cea3b99bb85ecb66731d7e674cab8649
-size 489
+{
+    "mount": "${workspace.dir}",
+    "pages": {
+        "strict": "index.html"
+    },
+    "scripts": [
+        "../../.sencha/test/jasmine.js",
+        "../../.sencha/test/Ext.cmd.api.adapter.js",
+        "../resources/init.js",
+        "../../../packages/core/test/resources/helpers.js"
+    ],
+    "specs": [
+        "../../../packages/core/test/specs",
+        "."
+    ],
+    "instrument": "ext/src/(.*)\\.js$,ext/overrides/(.*)\\.js$,ext/examples/ux/(.*)\\.js$,core/src/(.*)\\.js$"
+}

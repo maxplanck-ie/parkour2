@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c7c56db2eefae975a4a165fbffaf864aff720a9ad1676353c434c9a97b70c886
-size 615
+Ext.define('MainHub.model.libraries.LibraryProtocol', {
+    extend: 'MainHub.model.Base',
+
+    fields: [{
+        type: 'int',
+        name: 'id'
+    },
+    {
+        type: 'string',
+        name: 'name'
+    },
+    {
+        type: 'string',
+        name: 'provider'
+    },
+    {
+        type: 'string',
+        name: 'catalog'
+    },
+    {
+        type: 'string',
+        name: 'explanation'
+    },
+    {
+        type: 'string',
+        name: 'input_requirements'
+    },
+    {
+        type: 'string',
+        name: 'typical_application'
+    },
+    {
+        type: 'string',
+        name: 'comments'
+    }
+    ]
+});

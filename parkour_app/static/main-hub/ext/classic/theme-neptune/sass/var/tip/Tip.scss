@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:917b91b2c8ca51c46aeb0f234dd8cc1e7f43019e29ad42d40da645695b327251
-size 290
+/** @class Ext.tip.Tip */
+//
+
+$tip-background-color: dynamic(mix($base-light-color, #fff, 25%));
+$tip-border-color: dynamic($neutral-color);
+$tip-error-body-padding: dynamic(3px 3px 3px 22px);
+$tip-tool-spacing: dynamic(6px);
+$tip-tool-background-image: dynamic('tools/tool-sprites-dark');

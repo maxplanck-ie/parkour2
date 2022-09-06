@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:df3349b5dcf421b11996b88a8e9d293bb098d9ebfbe81a0bb6ea2699a41c5254
-size 318
+$tab-background-color: dynamic(transparent);
+$tab-active-background-color: dynamic(#fff);
+$tab-border-radius: dynamic(null);
+$tab-border-radius-big: dynamic(null);
+
+$tab-padding: dynamic(.54em .6em);
+$tab-line-height-big: dynamic(1.375em);
+$tab-padding-big: dynamic(.625em .6em);
+$tab-badge-border-radius: dynamic(0);
