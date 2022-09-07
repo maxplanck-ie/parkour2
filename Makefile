@@ -15,8 +15,12 @@ set-prod:
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"--reload", //' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
-			-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
-
+		-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
+	@sed -i -e 's/\(client_body_timeout\).*/\1 120;/' \
+		-e 's/\(client_header_timeout\).*/\1 120;/' \
+		-e 's/\(keepalive_timeout\).*/\1 120;/' \
+		-e 's/\(proxy_connect_timeout\).*/\1 120;/' \
+		-e 's/\(proxy_read_timeout\).*/\1 120;/' nginx-server.conf
 
 deploy-django: deploy-network deploy-containers
 
@@ -61,6 +65,11 @@ set-dev: set-prod unset-caddy
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
+	@sed -i -e 's/\(client_body_timeout\).*/\1 1h;/' \
+		-e 's/\(client_header_timeout\).*/\1 1h;/' \
+		-e 's/\(keepalive_timeout\).*/\1 1h;/' \
+		-e 's/\(proxy_connect_timeout\).*/\1 1h;/' \
+		-e 's/\(proxy_read_timeout\).*/\1 1h;/' nginx-server.conf
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
