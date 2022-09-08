@@ -43,6 +43,10 @@ class OrganizationAdmin(admin.ModelAdmin):
     pass
 
 
+    def has_module_permission(self, request):
+        return False
+
+
 @admin.register(CostUnit)
 class CostUnitAdmin(admin.ModelAdmin):
     list_display = (
@@ -58,6 +62,9 @@ class CostUnitAdmin(admin.ModelAdmin):
         ("pi", RelatedDropdownFilter),
         ("pi__organization", RelatedDropdownFilter),
     )
+
+    def has_module_permission(self, request):
+        return False
 
 
 @admin.register(OIDCGroup)
@@ -75,6 +82,9 @@ class OIDCGroupAdmin(admin.ModelAdmin):
         ("pi", RelatedDropdownFilter),
         ("pi__organization", RelatedDropdownFilter),
     )
+
+    def has_module_permission(self, request):
+        return False
 
 
 class CheckUserEmailExtension:
