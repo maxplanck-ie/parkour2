@@ -5,7 +5,7 @@ from common.models import PrincipalInvestigator
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.template.loader import render_to_string
-from common.models import CostUnit, Organization
+from common.models import Organization
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -99,7 +99,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
             user.is_staff = True
             user.is_bioinformatician = True
         else:
-            # For regular users, try to assign a PI, organization and cost centers based on
+            # For regular users, try to assign a PI and organization based on
             # their OIDC groups
             try:
                 pis = PrincipalInvestigator.objects.filter(oidcgroup__name__in=user_groups).distinct()
@@ -107,7 +107,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
                 pis = None
             if pis:
                 user.pi.add(*list(pis))
-                user.cost_unit.add(*list(CostUnit.objects.filter(pi__in=pis).distinct()))
+                # user.cost_unit.add(*list(CostUnit.objects.filter(pi__in=pis).distinct()))
                 try:
                     organization = Organization.objects.filter(id__in=pis.values_list('organization__id', flat=True)).distinct().get()
                     user.organization = organization
