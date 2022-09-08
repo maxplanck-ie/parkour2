@@ -96,11 +96,11 @@ class User(AbstractEmailUser):
         blank=True,
     )
 
-    cost_unit = models.ManyToManyField(
-        CostUnit,
-        verbose_name="Cost Unit",
-        blank=True,
-    )
+    # cost_unit = models.ManyToManyField(
+    #     CostUnit,
+    #     verbose_name="Cost Unit",
+    #     blank=True,
+    # )
 
     class Meta:
         db_table = "auth_user"

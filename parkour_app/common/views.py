@@ -125,15 +125,13 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = CostUnitSerializer
 
     def get_queryset(self):
-        queryset = CostUnit.objects.order_by("name")
-        user_id = self.request.query_params.get("user_id", None)
+        pi_id = self.request.query_params.get("principal_investigator_id", None)
         try:
-            user = get_object_or_404(User, id=user_id)
-            cost_units = user.cost_unit.values_list("pk", flat=True)
-            queryset = queryset.filter(pk__in=cost_units)
+            pi = get_object_or_404(PrincipalInvestigator, id=pi_id)
+            queryset = pi.costunit_set.all().order_by("name")
+            return queryset.order_by("name")
         except Exception:
-            pass
-        return queryset
+            return CostUnit.objects.all()
 
 
 class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):

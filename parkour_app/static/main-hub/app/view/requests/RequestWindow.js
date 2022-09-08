@@ -56,7 +56,21 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 emptyText: 'PI',
                 allowBlank: USER.is_staff,
                 forceSelection: true,
-                store: 'PrincipalInvestigators'
+                store: 'PrincipalInvestigators',
+                listeners: {
+                  change: {
+                    // Update Cost Unit options based on PI selection
+                    fn: function (cb) {
+                      Ext.getStore('CostUnits').reload(
+                        {
+                          params: {
+                            principal_investigator_id: cb.value ? cb.value : null
+                          },
+                        }
+                      );
+                    }
+                  }
+                }
               },
               {
                 xtype: 'combobox',

@@ -89,7 +89,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     // Load PIs
     Ext.getStore('PrincipalInvestigators').reload({
       params: {
-        user_id: userId
+        user_id: USER.is_staff ? null: userId
       },
       callback: function (records, operation, success) {
         if (success && request) {
@@ -101,7 +101,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     // Load Cost Units
     Ext.getStore('CostUnits').reload({
       params: {
-        user_id: userId
+        principal_investigator_id: request.pi ? request.pi : null
       },
       callback: function (records, operation, success) {
         if (success && request) {

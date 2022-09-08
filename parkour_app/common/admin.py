@@ -149,7 +149,7 @@ class UserAdmin(NamedUserAdmin):
         "phone",
         "organization",
         "pis",
-        "cost_units",
+        # "cost_units",
         "is_staff",
         'is_bioinformatician'
     )
@@ -161,7 +161,7 @@ class UserAdmin(NamedUserAdmin):
         "phone",
         "organization__name",
         "pi__name",
-        "cost_unit__name",
+        # "cost_unit__name",
     )
 
     list_filter = (
@@ -175,10 +175,9 @@ class UserAdmin(NamedUserAdmin):
     )
     autocomplete_fields = (
         "pi",
-        "cost_unit",
+        # "cost_unit",
     )
     filter_horizontal = (
-
         "groups",
         "user_permissions",
     )
@@ -202,7 +201,7 @@ class UserAdmin(NamedUserAdmin):
                     "phone",
                     "organization",
                     "pi",
-                    "cost_unit",
+                    # "cost_unit",
                 ),
             },
         ),
@@ -227,9 +226,9 @@ class UserAdmin(NamedUserAdmin):
         ),
     )
 
-    def cost_units(self, obj):
-        cost_units = obj.cost_unit.all().values_list("name", flat=True)
-        return ", ".join(sorted(cost_units))
+    # def cost_units(self, obj):
+    #     cost_units = obj.cost_unit.all().values_list("name", flat=True)
+    #     return ", ".join(sorted(cost_units))
 
     def pis(self, obj):
         pis = obj.pi.all().values_list("name", flat=True)
