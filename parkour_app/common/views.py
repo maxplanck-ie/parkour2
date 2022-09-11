@@ -127,11 +127,15 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         pi_id = self.request.query_params.get("principal_investigator_id", None)
         try:
+            user = self.request._user
             pi = get_object_or_404(PrincipalInvestigator, id=pi_id)
             queryset = pi.costunit_set.all().order_by("name")
-            return queryset.order_by("name")
+            if user.is_staff:
+                return queryset
+            else:
+                return queryset.filter(obsolete=settings.NON_OBSOLETE)
         except Exception:
-            return CostUnit.objects.all()
+            return CostUnit.objects.none()
 
 
 class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
@@ -140,15 +144,14 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PrincipalInvestigatorSerializer
 
     def get_queryset(self):
-        queryset = PrincipalInvestigator.objects.order_by("name")
-        user_id = self.request.query_params.get("user_id", None)
         try:
-            user = get_object_or_404(User, id=user_id)
-            pi_ids = user.pi.all().values_list('id', flat=True)
-            queryset = queryset.filter(pk__in=pi_ids)
+            user = self.request._user
+            if user.is_staff:
+                return PrincipalInvestigator.objects.all().order_by("name")
+            else:
+                return user.pi.all().order_by("name")
         except Exception:
-            pass
-        return queryset
+            return PrincipalInvestigator.objects.none()
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):

@@ -88,9 +88,6 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
     // Load PIs
     Ext.getStore('PrincipalInvestigators').reload({
-      params: {
-        user_id: USER.is_staff ? null: userId
-      },
       callback: function (records, operation, success) {
         if (success && request) {
           piCb.setValue(request.pi);
