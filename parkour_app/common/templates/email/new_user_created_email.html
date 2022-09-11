@@ -7,6 +7,7 @@
 <div>First name: {{user.first_name}}</div>
 <div>Last name: {{user.last_name}}</div>
 <div>Email address: {{user.email}}</div>
+{% if oidc_groups %}<div>OIDC groups: {{oidc_groups}}</div>{% endif %}
 <br>
 <div>You can check this user's profile <a href="{{user_admin_change_url}}">here</a>.</div>
 </p>

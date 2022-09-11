@@ -44,7 +44,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         # Otherwise try the default way
         return super(ParkourOIDCAuthenticationBackend, self).filter_users_by_claims(claims)
         
-    def send_email_new_user(self, user):
+    def send_email_new_user(self, user, claims=None):
 
         """Send an email to the staff when a new user is created
         automatically via the OIDC backend"""
@@ -55,6 +55,9 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         # Recipient list, all lab managers plus tUhe site admin
         recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='staff').values_list('email', flat=True)
 
+        # Get list of OIDC groups, if available
+        oidc_groups = claims.get('role', [])
+
         send_mail(
                 subject="[Parkour] A new user was automatically created via OpenID authentication",
                 message="",
@@ -63,6 +66,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
                     {
                         "user": user,
                         "user_admin_change_url": user_admin_change_url,
+                        "oidc_groups": ', '.join(oidc_groups)
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
@@ -117,7 +121,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         user.save()
 
         # Notify relevant staff that a new user was created
-        self.send_email_new_user(user)
+        self.send_email_new_user(user, claims)
 
         return user
 
