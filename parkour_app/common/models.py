@@ -41,6 +41,7 @@ class CostUnit(models.Model):
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
+    obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
         verbose_name = "Cost Unit"
