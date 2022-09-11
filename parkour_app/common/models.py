@@ -23,7 +23,8 @@ class PrincipalInvestigator(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.SET(get_deleted_org)
     )
-    parent_user = models.OneToOneField('User', on_delete=models.PROTECT, default=None, null=True)
+    parent_user = models.OneToOneField(
+        'User', on_delete=models.PROTECT, default=None, null=True, blank=True)
 
     class Meta:
         verbose_name = "Principal Investigator"
