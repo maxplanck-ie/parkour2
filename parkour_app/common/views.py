@@ -127,7 +127,7 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         pi_id = self.request.query_params.get("principal_investigator_id", None)
         try:
-            user = self.request._user
+            user = self.request.user
             pi = get_object_or_404(PrincipalInvestigator, id=pi_id)
             queryset = pi.costunit_set.all().order_by("name")
             if user.is_staff:
@@ -145,7 +145,7 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         try:
-            user = self.request._user
+            user = self.request.user
             if user.is_staff:
                 return PrincipalInvestigator.objects.all().order_by("name")
             else:
