@@ -35,7 +35,7 @@ class LibrarySampleTree(viewsets.ViewSet):
         if not showAll:
 
             queryset = queryset.filter(sequenced=False)
-        if not self.request.user.is_staff:
+        if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
             queryset = queryset.filter(user=self.request.user)
 
         return queryset
@@ -74,7 +74,7 @@ class LibrarySampleTree(viewsets.ViewSet):
                 .only("name")
             )
 
-            if not self.request.user.is_staff:
+            if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
                 queryset = queryset.filter(user=self.request.user)
 
             queryset = queryset.first()

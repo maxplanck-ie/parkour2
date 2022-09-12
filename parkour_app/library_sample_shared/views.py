@@ -198,7 +198,7 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             request_queryset = Request.objects.all().order_by("-create_time")
 
-        if not request.user.is_staff:
+        if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
             request_queryset = request_queryset.filter(user=request.user)
 
         for request_obj in request_queryset:

@@ -97,19 +97,19 @@ Ext.define('MainHub.view.requests.Requests', {
         {
           text: 'User',
           dataIndex: 'user_full_name',
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.is_bioinformatician),
           flex: 1
         },
         {
           text: 'PI',
           dataIndex: 'pi_name',
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.is_bioinformatician),
           flex: 1
         },
         {
           text: 'Cost Unit',
           dataIndex: 'cost_unit_name',
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.is_bioinformatician),
           flex: 1
         },
         {

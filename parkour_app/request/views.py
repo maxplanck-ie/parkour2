@@ -177,7 +177,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        if self.request.user.is_staff:
+        if self.request.user.is_staff or self.request.user.is_bioinformatician:
             # Show only those Requests, whose libraries and samples
             # haven't reached status 6 yet
             # TODO: find a way to hide requests

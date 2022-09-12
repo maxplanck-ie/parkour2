@@ -54,7 +54,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 displayField: 'name',
                 fieldLabel: 'PI',
                 emptyText: 'PI',
-                allowBlank: USER.is_staff,
+                allowBlank: USER.is_staff || USER.is_bioinformatician,
                 forceSelection: true,
                 store: 'PrincipalInvestigators',
                 listeners: {
@@ -81,7 +81,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 displayField: 'name',
                 fieldLabel: 'Cost Unit',
                 emptyText: 'Cost Unit',
-                allowBlank: USER.is_staff,
+                allowBlank: USER.is_staff || USER.is_bioinformatician,
                 forceSelection: true,
                 store: 'CostUnits'
               },

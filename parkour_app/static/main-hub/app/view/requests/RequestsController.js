@@ -114,7 +114,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         {
           text: 'Compose Email',
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.is_bioinformatician),
           handler: function () {
             Ext.create('MainHub.view.requests.EmailWindow', {
               title: 'New Email',
@@ -124,7 +124,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         {
           text: 'Mark as complete',
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.is_bioinformatician),
           handler: function(){
             Ext.Msg.show({
               title: 'Mark request as complete',

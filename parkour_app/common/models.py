@@ -82,7 +82,10 @@ class User(AbstractEmailUser):
     last_name = models.CharField("Last name", max_length=50)
     phone = models.CharField("Phone", max_length=50, null=True, blank=True)
     oidc_id = models.CharField("OIDC ID", max_length=255, null=True, unique=True, default=None, blank=True)
-    is_bioinformatician = models.BooleanField('Is bioinformatician?', default=False)
+    is_bioinformatician = models.BooleanField(
+        'Bioinformatician status',
+        help_text='Designates whether a user belongs to Bioinformatics.',
+        default=False)
 
     organization = models.ForeignKey(
         Organization,

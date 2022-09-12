@@ -28,6 +28,7 @@ def index(request):
                     "id": user.pk,
                     "name": user.full_name,
                     "is_staff": user.is_staff,
+                    "is_bioinformatician": user.is_bioinformatician,
                 }
             ),
         },
@@ -130,7 +131,7 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
             user = self.request.user
             pi = get_object_or_404(PrincipalInvestigator, id=pi_id)
             queryset = pi.costunit_set.all().order_by("name")
-            if user.is_staff:
+            if user.is_staff or user.is_bioinformatician:
                 return queryset
             else:
                 return queryset.filter(obsolete=settings.NON_OBSOLETE)
@@ -146,7 +147,7 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         try:
             user = self.request.user
-            if user.is_staff:
+            if user.is_staff or user.is_bioinformatician:
                 return PrincipalInvestigator.objects.all().order_by("name")
             else:
                 return user.pi.all().order_by("name")

@@ -100,7 +100,6 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
             user.groups.add(staff_group)
         # For BCF staff, also enable is_bioinformatician
         elif self.user_belongs_to_groups(user_groups, settings.OIDC_BIOINFO_GROUPS):
-            user.is_staff = True
             user.is_bioinformatician = True
         else:
             # For regular users, try to assign a PI and organization based on

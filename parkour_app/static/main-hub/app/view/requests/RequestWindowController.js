@@ -66,7 +66,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       }
 
       // Disable Request editing
-      if (!USER.is_staff && request.restrict_permissions) {
+      if (!(USER.is_staff || USER.is_bioinformatician) && request.restrict_permissions) {
         this.disableButtonsAndMenus();
         costUnitCb.setReadOnly(true);
         piCb.setReadOnly(true);
@@ -400,7 +400,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   },
 
   disableButtonsAndMenus: function () {
-    if (!USER.is_staff) {
+    if (!(USER.is_staff || USER.is_bioinformatician)) {
       var grid = Ext.getCmp('libraries-in-request-grid');
       // Don't add new records to a Request
       grid.down('#batch-add-button').disable();
