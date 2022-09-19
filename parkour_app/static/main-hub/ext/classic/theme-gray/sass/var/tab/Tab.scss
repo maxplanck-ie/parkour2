@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9af7dcc4431060bfcadd323679689da9fae967cd26976dfcadc344943f8b6ba8
-size 519
+/** @class Ext.tab.Tab */
+//
+
+$tab-base-color: dynamic(#eaeaea);
+$tab-base-color-disabled: dynamic(#eeeeee);
+
+$tab-color-active: dynamic(#333333);
+$tab-color-disabled: dynamic(#b7b7b7);
+
+$tab-border-color-disabled: dynamic(#dadada);
+
+$tab-background-gradient: dynamic(color-stops(#dcdcdc, #eaeaea));
+$tab-background-gradient-over: dynamic(color-stops(#ffffff, #f0f0f0));
+$tab-background-gradient-active: dynamic(color-stops(#ffffff, #eaeaea));
+$tab-background-gradient-disabled: dynamic(color-stops(#eeeeee, #f4f4f4));

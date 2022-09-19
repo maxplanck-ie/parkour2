@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8904925cda10b8775b80aed52753b9747e0d9804a05d0996753b5e924c753720
-size 426
+exports.init = function(runtime) {
+    runtime.register({
+        str_replace_regex: function (str, expression, value, global) {
+            var rt =this.getRuntime();
+
+            str = rt.unbox(str);
+            expression = rt.unbox(expression);
+            value = rt.unbox(value);
+            global = rt.unbox(global);
+            return str.replace(new RegExp(expression, global ? 'g' :''), value);
+        }
+    });
+};

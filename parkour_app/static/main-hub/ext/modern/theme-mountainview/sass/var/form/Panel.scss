@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a94d0490d5e38d9d43fd0b5ef5eee1bb7efb25743ffcf142c55a61a1e149b839
-size 796
+/**
+ * @class Ext.form.Panel
+ */
+
+/**
+ * @var {color} $form-bg-color
+ * Default background-color for forms.
+ */
+$form-bg-color: dynamic(#eee);
+
+/**
+ * @var {color} $form-light
+ * Light color for form fields, mostly used on field borders.
+ */
+$form-light: dynamic(#ddd);
+
+/**
+ * @var {color} $form-dark
+ * Dark color for form fields, mostly used on labels/text.
+ */
+$form-dark: dynamic(#333);
+
+/**
+ * @var {measurement} $form-spacing
+ * Default spacing for form fields, used for padding, etc.
+ */
+$form-spacing: dynamic(.3em);
+
+/**
+ * @var {measurement} $form-label-width
+ * Default width for form labels.
+ */
+$form-label-width: dynamic(6em);
+
+/**
+ * @var {color} $form-label-background-color
+ * The default background color for labels
+ */
+$form-label-background-color: lighten($form-light, 10%);

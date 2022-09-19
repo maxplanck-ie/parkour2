@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b682b4d7becd323db7f98304e00444d1ad7cdc3f9551b73dfcafcdc784ffa175
-size 471
+$slider-track-height: dynamic(2px);
+$slider-track-height-big: dynamic(2px);
+$slider-track-background-color: dynamic($divider-color);
+$slider-track-border-radius: dynamic(null);
+$slider-track-border-width: dynamic(null);
+$slider-track-border-style: dynamic(null);
+$slider-track-border-color: dynamic(null);
+$slider-fill-background-color: dynamic($base-highlight-color);
+$slider-disabled-fill-background-color: dynamic(transparent);
+$slider-disabled-opacity: dynamic(null);

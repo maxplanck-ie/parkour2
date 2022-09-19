@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a753cc2612fdda30739767a3a4dd48f4c0eefdf608b3398ef51cc6d0399ae884
-size 537
+/**
+ * This class represents an right-associative, infix (binary) operator.
+ * @private
+ */
+Ext.define('Ext.parse.symbol.InfixRight', {
+    extend: 'Ext.parse.symbol.Infix',
+
+    led: function (left) {
+        var me = this;
+
+        me.lhs = left;
+        me.rhs = me.parser.parseExpression(me.priority - 1);
+        // the next line is here in case this symbol already exists in the symbols table
+        // and this function overrides that symbol
+        me.arity = 'binary';
+        me.isBinary = true;
+
+        return me;
+    }
+});

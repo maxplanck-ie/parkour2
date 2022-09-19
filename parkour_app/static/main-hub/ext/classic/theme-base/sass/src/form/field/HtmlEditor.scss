@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6656ba2eabb76353426e93b612fec7a397aa4e2e673fa7de6bb80c89f2521ddd
-size 314
+.#{$prefix}html-editor-tb .#{$prefix}toolbar {
+    position: static !important;
+}
+
+.#{$prefix}htmleditor-iframe,
+.#{$prefix}htmleditor-textarea {
+    // display:block prevents extra whitespace from showing under the iframe
+    display: block;
+    overflow:auto;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

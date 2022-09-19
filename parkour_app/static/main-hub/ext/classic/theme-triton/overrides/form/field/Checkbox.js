@@ -1,3 +1,44 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5262ba9fb12c932a5b41050d76dd4029bf970a183b8230a7bbed88cedd628902
-size 896
+Ext.define('Ext.theme.triton.form.field.Checkbox', {
+    override: 'Ext.form.field.Checkbox',
+    
+    compatibility: Ext.isIE8,
+
+    initComponent: function() {
+        this.callParent();
+
+        Ext.on({
+            show: 'onGlobalShow',
+            scope: this
+        });
+    },
+    
+    onFocus: function(e) {
+        var focusClsEl;
+        
+        this.callParent([e]);
+        
+        focusClsEl = this.getFocusClsEl();
+        
+        if (focusClsEl) {
+            focusClsEl.syncRepaint();
+        }
+    },
+    
+    onBlur: function(e) {
+        var focusClsEl;
+        
+        this.callParent([e]);
+        
+        focusClsEl = this.getFocusClsEl();
+        
+        if (focusClsEl) {
+            focusClsEl.syncRepaint();
+        }
+    },
+
+    onGlobalShow: function(cmp) {
+        if (cmp.isAncestor(this)) {
+            this.getFocusClsEl().syncRepaint();
+        }
+    }
+});

@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:668695f4abebb57673c520be51ecc84ac18c0115a59659068ac8c91ae1c40d5e
-size 407
+Ext.define("Ext.locale.it.form.field.VTypes", {
+    override: "Ext.form.field.VTypes",
+
+    emailText: 'Il campo deve essere un indirizzo e-mail nel formato "nome@esempio.it"', 
+    urlText: 'Il campo deve essere un indirizzo URL nel formato "http:/' + '/www.esempio.it"', 
+    alphaText: 'Il campo deve contenere solo lettere e _', 
+    alphanumText: 'Il campo deve contenere solo lettere, numeri e _'
+});

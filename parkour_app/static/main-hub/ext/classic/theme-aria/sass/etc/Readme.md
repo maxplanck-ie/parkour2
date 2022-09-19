@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a8ea88aa3aff09d77eed6a171c466b855f4ce9c7f3fa4d2bbd0e053c09635afb
-size 142
+# theme-aria/sass/etc
+
+This folder contains miscellaneous SASS files. Unlike `"theme-aria/sass/etc"`, these files
+need to be used explicitly.

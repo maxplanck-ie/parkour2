@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f3e74d82da96a2666ce5ff9fd02c89b7d1f9c2e3e2b03a66057f05f30d80e507
-size 821
+Ext.define('Ext.theme.neptune.picker.Month', {
+    override:  'Ext.picker.Month',
+    
+    // Monthpicker contains logic that reduces the margins of the month items if it detects
+    // that the text has wrapped.  This can happen in the classic theme  in certain
+    // locales such as zh_TW.  In order to work around this, Month picker measures
+    // the month items to see if the height is greater than "measureMaxHeight".
+    // In neptune the height of the items is larger, so we must increase this value.
+    // While the actual height of the month items in neptune is 24px, we will only 
+    // determine that the text has wrapped if the height of the item exceeds 36px.
+    // this allows theme developers some leeway to increase the month item size in
+    // a neptune-derived theme.
+    measureMaxHeight: 36
+});

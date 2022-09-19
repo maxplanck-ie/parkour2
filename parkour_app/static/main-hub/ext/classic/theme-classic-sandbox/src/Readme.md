@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7817412472a02d6ee8fe6344ec74586282a582c9d1a6e3a8d90802211e17a66c
-size 117
+# /src
+
+This folder contains source code that will automatically be added to the classpath when
+the package is used.

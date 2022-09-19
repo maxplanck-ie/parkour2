@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1d2ab93a2096aaa0cf12ce9cecb8d0328737ff035d8bb3abf4b930e87db05e65
-size 312
+.#{$prefix}progress {
+    overflow: hidden;
+    position: relative;
+}
+
+.#{$prefix}progress-bar {
+    height: 100%;
+    width: 0;
+}
+
+.#{$prefix}progress-text {
+    overflow: hidden;
+}
+
+.#{$prefix}progress-bar {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

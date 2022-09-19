@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:88647bbbfb572b4790448dabacedcd78fcedb60c09e5868752092b09d0d4f4d9
-size 397
+/**
+ */
+Ext.define('Ext.data.field.String', {
+    extend: 'Ext.data.field.Field',
+
+    alias: 'data.field.string',
+
+    sortType: 'asUCString',
+
+    isStringField: true,
+
+    convert: function(v) {
+        var defaultValue = this.allowNull ? null : '';
+        return (v === undefined || v === null) ? defaultValue : String(v);
+    },
+
+    getType: function() {
+        return 'string';
+    }
+});

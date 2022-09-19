@@ -1,3 +1,63 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d494b7841a3fe0b04fe40a2c8e325365be70c73e9bf26b2b150ff2b65fc7f87d
-size 1515
+Ext.define('MainHub.view.usage.Usage', {
+  extend: 'Ext.container.Container',
+  xtype: 'usage',
+
+  requires: [
+    'MainHub.view.usage.UsageController',
+    'MainHub.view.usage.Records',
+    'MainHub.view.usage.Organizations',
+    'MainHub.view.usage.PrincipalInvestigators',
+    'MainHub.view.usage.LibraryTypes',
+    'Ext.ux.layout.ResponsiveColumn',
+    'Ext.ux.DateRangePicker'
+  ],
+
+  controller: 'usage',
+
+  layout: 'responsivecolumn',
+
+  items: [
+    {
+      xtype: 'container',
+      userCls: 'big-100',
+      style: { textAlign: 'center' },
+      items: [{
+        xtype: 'daterangepicker',
+        ui: 'header',
+        cls: 'daterangepicker',
+        padding: 0,
+        drpDefaults: {
+          showButtonTip: false,
+          dateFormat: 'd.m.Y',
+          mainBtnTextColor: '#999',
+          mainBtnIconCls: 'x-fa fa-calendar',
+          presetPeriodsBtnIconCls: 'x-fa fa-calendar-check-o',
+          confirmBtnIconCls: 'x-fa fa-check'
+        }
+      }]
+    },
+    {
+      xtype: 'usagerecords',
+      userCls: 'big-50 small-100'
+    },
+    {
+      xtype: 'usageorganizations',
+      userCls: 'big-50 small-100'
+    },
+    {
+      xtype: 'usageprincipalinvestigators',
+      userCls: 'big-50 small-100'
+    },
+    {
+      xtype: 'usagelibrarytypes',
+      userCls: 'big-50 small-100'
+    }
+    // {
+    //   xtype: 'container',
+    //   userCls: 'big-100',
+    //   html: '<hr style="border-top:1px solid #bdbdbd">',
+    //   style: { background: 'transparent' },
+    //   border: 0
+    // }
+  ]
+});

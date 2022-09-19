@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fb5fad0202ae3de34c2397f38cb5ecc91c5db93e091341154c3318d6d38073ef
-size 317
+$treelist-item-expander-glyph: dynamic($ios-arrow-right);
+$treelist-item-expander-expanded-glyph: dynamic($ios-arrow-down);
+
+$treelist-item-expander-font-size: dynamic(14px);
+$treelist-item-expander-font-size-big: dynamic(20px);
+
+$treelist-item-icon-width: dynamic(24px);
+$treelist-item-icon-width-big: dynamic(30px);

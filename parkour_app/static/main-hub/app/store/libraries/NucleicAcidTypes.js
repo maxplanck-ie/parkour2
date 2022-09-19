@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f597fe7ee0328a6d113dfbd87a58084056407c85404044f9056467b639dc1e37
-size 740
+Ext.define('MainHub.store.libraries.NucleicAcidTypes', {
+    extend: 'Ext.data.Store',
+    storeId: 'nucleicAcidTypesStore',
+
+    requires: [
+        'MainHub.model.libraries.SampleNucleicAcidType'
+    ],
+
+    model: 'MainHub.model.libraries.SampleNucleicAcidType',
+
+    proxy: {
+        type: 'ajax',
+        url: 'api/nucleic_acid_types/',
+        timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    },
+
+    autoLoad: true
+});

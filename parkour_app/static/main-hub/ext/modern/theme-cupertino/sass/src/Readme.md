@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cd194e794f23f68cf8afafd74d90327c03674b809b2f6378fea956f23ea799a8
-size 199
+# theme-cupertino/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

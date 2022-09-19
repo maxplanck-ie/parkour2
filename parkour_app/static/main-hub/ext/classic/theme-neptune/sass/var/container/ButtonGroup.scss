@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4dcae03bc9024de52a29860eb55b5308fba0e9cf39867c85c80026a453660ae4
-size 697
+/** @class Ext.container.ButtonGroup */
+//
+
+$btn-group-header-background-color: dynamic($panel-light-header-background-color);
+$btn-group-border-color: dynamic($btn-group-header-background-color);
+$btn-group-border-width: dynamic(1px);
+$btn-group-framed-border-width: dynamic(3px);
+$btn-group-framed-border-radius: dynamic(3px);
+$btn-group-header-color: dynamic($panel-light-header-color);
+$btn-group-header-font-size: dynamic($panel-light-header-font-size);
+$btn-group-header-font-weight: dynamic($font-weight);
+$btn-group-header-font-family: dynamic($panel-light-header-font-family);
+$btn-group-border-spacing: dynamic(5px);
+$btn-group-tool-background-image: dynamic('tools/tool-sprites-dark');

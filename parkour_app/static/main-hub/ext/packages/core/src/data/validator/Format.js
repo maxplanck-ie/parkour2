@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a1ad7e60f653770c0539f18058a16f9e1987cac42c14190ae4234e4c1c01a544
-size 1070
+/**
+ * Validates that the passed value matches a specific format specified by a regex.
+ * The format is provided by the {@link #matcher} config.
+ */
+Ext.define('Ext.data.validator.Format', {
+    extend: 'Ext.data.validator.Validator',
+    alias: 'data.validator.format',
+    
+    type: 'format',
+    
+    config: {
+        /**
+         * @cfg {String} message
+         * The error message to return when the value does not match the format.
+         */
+        message: 'Is in the wrong format',
+    
+        /**
+         * @cfg {RegExp} matcher (required) The matcher regex to test against the value.
+         */
+        matcher: undefined
+    },
+    
+    //<debug>
+    constructor: function() {
+        this.callParent(arguments);
+        if (!this.getMatcher()) {
+            Ext.raise('validator.Format must be configured with a matcher');
+        }
+    },
+    //</debug>
+    
+    validate: function(value) {
+        var matcher = this.getMatcher(),
+            result = matcher && matcher.test(value);
+
+        return result ? result : this.getMessage();
+    }
+});

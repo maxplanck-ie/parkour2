@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:77eef04727f1ee3fcf40b252343811953b9468287204a6ec04b23cc39954b03c
-size 629
+/**
+ * This class id generator produces successive negative numbers for id's. That is, -1, -2,
+ * etc..
+ *
+ * The advantage of this type of `identifier` is that these are seldom valid server-side
+ * id values (which typically start at 1 and increase from there) but are of the same
+ * data type (integer). This means that these values can typically be deserialized by a
+ * server and then recognized as provisionally generated.
+ */
+Ext.define('Ext.data.identifier.Negative', {
+    extend: 'Ext.data.identifier.Sequential',
+
+    alias: 'data.identifier.negative',
+
+    config: {
+        increment: -1,
+
+        seed: -1
+    }
+});

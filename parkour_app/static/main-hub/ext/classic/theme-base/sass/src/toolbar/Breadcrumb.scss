@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:127c48d45ac2ad6387a01d90fe959f156f602e9f5f1d5a431903d066bc4df54f
-size 408
+.#{$prefix}breadcrumb-btn .#{$prefix}box-target:first-child {
+    margin: 0;
+}
+
+.#{$prefix}btn-split-right > .#{$prefix}btn-button:after {
+    // hide the split border
+    .#{$prefix}breadcrumb-btn > & {
+        content: none;
+    }
+
+    // show the split border
+    .#{$prefix}breadcrumb-btn.#{$prefix}btn-over > &,
+    .#{$prefix}breadcrumb-btn.#{$prefix}btn-menu-active > & {
+        content: '';
+    }
+}

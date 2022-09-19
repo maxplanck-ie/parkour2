@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5c1d52f683996fba85660680eacebe474290d6f511bcd78c698f6a89a6397d0f
-size 269
+/** @class Ext.picker.Color */
+//
+
+$colorpicker-item-height: dynamic(24px);
+$colorpicker-item-width: dynamic(24px);
+$colorpicker-item-border-color-over: dynamic(#8bb8f3);
+$colorpicker-item-background-color-over: dynamic(mix($neutral-light-color, $neutral-color, 25%));

@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f70566257dfc84cb0f3f4af0665117d3a1393a07dad1d42b1776d62b663949b9
-size 695
+Ext.define('MainHub.store.flowcell.Sequencer', {
+    extend: 'Ext.data.Store',
+    storeId: 'sequencersStore',
+
+    requires: [
+        'MainHub.model.flowcell.Sequencer'
+    ],
+
+    model: 'MainHub.model.flowcell.Sequencer',
+
+    proxy: {
+        type: 'ajax',
+        url: 'api/sequencers/',
+        // timeout: 1000000,
+        pageParam: false,   //to remove param "page"
+        startParam: false,  //to remove param "start"
+        limitParam: false,  //to remove param "limit"
+        noCache: false,     //to remove param "_dc",
+        reader: {
+            type: 'json',
+            rootProperty: 'data',
+            successProperty: 'success'
+        }
+    },
+
+    autoLoad: true
+});

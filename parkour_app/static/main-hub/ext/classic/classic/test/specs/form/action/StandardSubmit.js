@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1b32c4d87c4a9a2ec50c549f770a95f249d869d8515973a8a206a2f0ac2a6e18
-size 417
+describe("Ext.form.action.StandardSubmit", function() {
+
+    it("should be registered in the action manager under the alias 'formaction.standardsubmit'", function() {
+        var inst = Ext.ClassManager.instantiateByAlias('formaction.standardsubmit', {});
+        expect(inst instanceof Ext.form.action.StandardSubmit).toBeTruthy();
+    });
+
+    // TODO specs will need to intercept and prevent the form submit.
+
+});

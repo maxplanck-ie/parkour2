@@ -1,3 +1,41 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:129c25785ff587e19cdc63e73d4359b1e92a1a6523d353efdb22b77f0f8654f5
-size 917
+/**
+ * @class Ext.sparkline.Base
+ */
+Ext.define('Ext.override.sparkline.Base', {
+    override: 'Ext.sparkline.Base',
+
+    statics: {
+        constructTip: function() {
+            return new Ext.tip['ToolTip']({
+                id: 'sparklines-tooltip',
+                showDelay: 0,
+                dismissDelay: 0,
+                hideDelay: 400
+            });
+        }
+    },
+
+    onMouseMove: function (e) {
+        this.tooltip.triggerEvent = e;
+        this.callParent([e]);
+    },
+
+    onMouseLeave: function(e) {
+        this.callParent([e]);
+        this.tooltip.target = null;  
+    },
+
+    privates: {
+        hideTip: function() {
+            var tip = this.tooltip;
+            tip.target = null;  
+            tip.hide();
+        },
+
+        showTip: function() {
+            var tip = this.tooltip;
+            tip.target = this.el;
+            tip.onTargetOver(tip.triggerEvent);
+        }
+    }
+});

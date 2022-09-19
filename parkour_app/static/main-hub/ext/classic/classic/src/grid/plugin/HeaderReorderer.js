@@ -1,3 +1,55 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7d36fc3965b9c9231b2d4c2753c5398c5bb595c21b33bd1edce9522ddc361971
-size 1364
+/**
+ * @private
+ */
+Ext.define('Ext.grid.plugin.HeaderReorderer', {
+    extend: 'Ext.plugin.Abstract',
+    requires: ['Ext.grid.header.DragZone', 'Ext.grid.header.DropZone'],
+    alias: 'plugin.gridheaderreorderer',
+
+    init: function(headerCt) {
+        this.headerCt = headerCt;
+        headerCt.on({
+            boxready: this.onHeaderCtRender,
+            single: true,
+            scope: this
+        });
+    },
+
+    destroy: function() {
+        var me = this;
+        
+        // The grid may happen to never render
+        me.headerCt.un('boxready', me.onHeaderCtRender, me);
+        
+        Ext.destroy(me.dragZone, me.dropZone);
+        me.headerCt = me.dragZone = me.dropZone = null;
+        
+        me.callParent();
+    },
+
+    onHeaderCtRender: function(headerCt) {
+        var me = this;
+        
+        me.dragZone = new Ext.grid.header.DragZone(me.headerCt);
+        me.dropZone = new Ext.grid.header.DropZone(me.headerCt);
+        if (me.disabled) {
+            me.dragZone.disable();
+        }
+
+        headerCt.setTouchAction({ panX: false });
+    },
+    
+    enable: function() {
+        this.disabled = false;
+        if (this.dragZone) {
+            this.dragZone.enable();
+        }
+    },
+    
+    disable: function() {
+        this.disabled = true;
+        if (this.dragZone) {
+            this.dragZone.disable();
+        }
+    }
+});

@@ -1,3 +1,49 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1a7c8d22bd4df925dc2587c42c726893630f2de4f5c4a0dc1d74c50a121307e2
-size 741
+.x-tabbar {
+	min-height: 3.2em;
+	background: $background-color;
+	border: 0 !important;
+	border-width: 0 !important;
+}
+
+.x-tab {
+	height: 3.2em;
+	padding: 0 1em;
+	border: 0;
+	background: $secondary-color;
+	@include st-box-orient(vertical);
+
+	.x-button-label {
+		font-size: 10pt;
+		text-transform: uppercase;
+		font-weight: bold;
+		line-height: 3.5em;
+	}
+
+	.x-button-icon {
+		display: block;
+	    width: 1.5em;
+	    height: 1.5em;
+	    margin: 2px auto 0;
+
+	    &:before {
+	    	color: $primary-text-color;
+	    }
+	}
+
+// 	.x-badge {
+// 		top: -2px;
+// 		left: 55%;
+// 		right: auto;
+// 		max-width: 55%;
+// 	}
+}
+
+.x-tab-icon {
+	.x-button-label {
+		line-height: 1.2em;
+	}
+}
+
+.x-tab-active {
+	@include box-shadow(inset 0 -5px 0 0 $base-color);
+}

@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:761076aa746822a20cb801c9d959a1ddd1ecd879efcb85b56c2c0a31ce2fb69b
-size 379
+/*!
+ * Ext JS Library
+ * Copyright(c) 2006-2014 Sencha Inc.
+ * licensing@sencha.com
+ * http://www.sencha.com/license
+ */
+
+Ext.define('Ext.ux.desktop.Module', {
+    mixins: {
+        observable: 'Ext.util.Observable'
+    },
+
+    constructor: function (config) {
+        this.mixins.observable.constructor.call(this, config);
+        this.init();
+    },
+
+    init: Ext.emptyFn
+});

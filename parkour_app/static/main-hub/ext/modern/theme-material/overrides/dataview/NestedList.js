@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:64cf887730300dbeb472003886741c97b43d260ba52d74d8580316d61d37bb5b
-size 278
+Ext.define('Ext.theme.material.dataview.NestedList', {
+    override: 'Ext.dataview.NestedList',
+
+    config: {
+        backText: '',
+        useTitleAsBackText: false,
+        backButton: {
+            iconCls: 'md-icon-arrow-back',
+            hidden: true
+        }
+    }
+});

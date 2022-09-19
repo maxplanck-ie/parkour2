@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:93099b4233af50d4de5bb7aa9ce43e1a5563688c838284568019261c2d411d4e
-size 194
+.x-grid-cell-inner-action-col .x-action-col-icon {
+	height: 16px;
+    width: 16px;
+    margin-right: 8px;
+}
+
+.x-grid-cell-inner-action-col .x-action-col-icon:nth-last-child {
+	margin-right: 0;
+}

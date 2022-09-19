@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6f466edc4c85ed960e8197c90770953ef12cbe1f804813151a5e485f1d1f4614
-size 471
+Ext.define('Ext.rtl.resizer.ResizeTracker', {
+    override: 'Ext.resizer.ResizeTracker',
+
+    _rtlRegionNames: {
+        south: 'south',
+        north: 'north',
+        east: 'west',
+        west: 'east',
+        northeast: 'northwest',
+        southeast: 'southwest',
+        southwest: 'southeast',
+        northwest: 'northeast'
+    },
+
+    convertRegionName: function(name) {
+        return (Ext.rootInheritedState.rtl) ? this._rtlRegionNames[name] : name;
+    }
+});

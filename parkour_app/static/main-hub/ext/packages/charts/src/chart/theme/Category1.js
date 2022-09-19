@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:89e29dec00296fb9a5b6ec6cb4453ab8829c25d4e3bdacedd583891aad4efdbe
-size 279
+Ext.define('Ext.chart.theme.Category1', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.category1',
+        'chart.theme.Category1'
+    ],
+    config: {
+        colors: ['#f0a50a', '#c20024', '#2044ba', '#810065', '#7eae29']
+    }
+});

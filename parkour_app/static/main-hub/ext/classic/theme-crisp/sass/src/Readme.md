@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fbdef37bcdbef7ba6e3b43dd9178090268c100ab656252651b7386547c9e211a
-size 195
+# theme-crisp/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

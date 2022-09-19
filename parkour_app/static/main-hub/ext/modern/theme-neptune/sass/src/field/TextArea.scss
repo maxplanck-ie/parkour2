@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9e29e5d1a648c484aecf4809f8b2c418d5d584b67181993b1ce11bb6868cb6a2
-size 193
+/**
+ * @class Ext.field.TextArea
+ */
+
+.#{$prefix}textareafield {
+    .#{$prefix}input-el {
+        min-height: $textareafield-input-min-height;
+        padding: $textareafield-padding;
+    }
+}

@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:09a1016c483d706742c58e67bc6f760c6fb13026931293f7b1aedfc3c0afbad5
-size 739
+/**
+ * A superclass for inclusion/exclusion validators.
+ * @private
+ */
+Ext.define('Ext.data.validator.List', {
+    extend: 'Ext.data.validator.Validator',
+    alias: 'data.validator.list',
+    
+    type: 'list',
+    
+    config: {
+        /**
+         * @cfg {Array} list (required)
+         * The list to check the passed value against.
+         */
+        list: null
+    },
+    
+    inclusion: null,
+    
+    validate: function(value) {
+        var contains = Ext.Array.contains(this.getList(), value),
+            inclusion = this.inclusion,
+            exclusion = !inclusion,
+            result;
+            
+        result = (inclusion && contains) || (exclusion && !contains);
+        return result || this.getMessage();
+    }
+});

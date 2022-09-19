@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:72afb7fdfd9c96560c601a8cf1032d387d9d29935bc41bb0a6dc36aca0a542d5
-size 185
+.#{$prefix}expandercell {
+    .#{$prefix}icon-el {
+        cursor: pointer;
+    }
+}
+
+div.#{$prefix}expandercell { // increase specificity to override .x-gridcell
+    line-height: 0;
+}
+

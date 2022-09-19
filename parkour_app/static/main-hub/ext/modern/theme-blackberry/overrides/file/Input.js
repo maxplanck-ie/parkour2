@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9bd6bbddcad28f389b878346176efcabeeaf5153be70d12af414fdce13634771
-size 292
+Ext.define('Ext.theme.blackberry.field.Input', {
+    override: 'Ext.field.Input',
+
+    updateType: function(newType, oldType) {
+        var prefix = Ext.baseCSSPrefix + 'input-';
+
+        this.input.replaceCls(prefix + oldType, prefix + newType);
+        this.callParent(arguments);
+    }
+});

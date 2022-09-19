@@ -1,3 +1,50 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3cc5de8a8552f460e2696b40f3e6ec8f3cf16d7c17e3596d97e6f3e3bfe57520
-size 1155
+/**
+ * @private
+ */
+Ext.define('Ext.util.TranslatableGroup', {
+    extend: 'Ext.util.translatable.Abstract',
+
+    config: {
+        items: [],
+
+        activeIndex: 0,
+
+        itemLength: {
+            x: 0,
+            y: 0
+        }
+    },
+
+    applyItems: function(items) {
+        return Ext.Array.from(items);
+    },
+
+    doTranslate: function(x, y) {
+        var items = this.getItems(),
+            activeIndex = this.getActiveIndex(),
+            itemLength = this.getItemLength(),
+            itemLengthX = itemLength.x,
+            itemLengthY = itemLength.y,
+            useX = Ext.isNumber(x),
+            useY = Ext.isNumber(y),
+            offset, i, ln, item, translateX, translateY;
+
+        for (i = 0, ln = items.length; i < ln; i++) {
+            item = items[i];
+
+            if (item) {
+                offset = (i - activeIndex);
+
+                if (useX) {
+                    translateX = x + offset * itemLengthX;
+                }
+
+                if (useY) {
+                    translateY = y + offset * itemLengthY;
+                }
+
+                item.translate(translateX, translateY);
+            }
+        }
+    }
+});

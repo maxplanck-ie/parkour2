@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:edab8f08fe3f3dc3de202bec53111b0ad3cd0bc61ebb864e32a69b8d3d11ac73
-size 300
+$expandercell-icon-color: dynamic($base-color);
+$expandercell-icon-size: dynamic(px-to-em(16px, 14px));
+$expandercell-icon-size-big: dynamic(px-to-em(24px, 16px));
+$expandercell-expand-icon: dynamic($ios-row-expander-expand iOS);
+$expandercell-collapse-icon: dynamic($ios-row-expander-collapse iOS);

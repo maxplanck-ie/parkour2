@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f7c069cd3d9d224efe4d2902f695d3c219e615204201b3c4de928d5e1d3362fd
-size 218
+Ext.define('Ext.chart.theme.Red', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.red',
+        'chart.theme.Red'
+    ],
+    config: {
+        baseColor: '#e84b67'
+    }
+});

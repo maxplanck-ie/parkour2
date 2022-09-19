@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ee07d6695ee93f146f6768bfdf0d269f2017d51b036f924105d6827501f7a7db
-size 432
+/**
+ * @private
+ */
+Ext.define('Ext.mixin.StyleCacher', {
+    extend: 'Ext.Mixin',
+
+    mixinConfig: {
+        id: 'stylecacher'
+    },
+
+    getCachedStyle: function(el, style) {
+        var cache = this.$styleCache;
+
+        if (!cache) {
+            cache = this.$styleCache = {};
+        }
+
+        if (!(style in cache)) {
+            cache[style] = Ext.fly(el).getStyle(style);
+        }
+
+        return cache[style];
+    }
+});

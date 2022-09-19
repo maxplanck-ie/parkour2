@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:64b2c99d5bffcba1086eab38780cfa6ab398cc0b0c12973833944a27fdf62b39
-size 515
+$toast-color: dynamic(#fff);
+$toast-background-color: dynamic(rgba(0,0,0,.6));
+$toast-border-width: dynamic(null);
+$toast-border-style: dynamic(null);
+$toast-border-color: dynamic(null);
+$toast-shadow: dynamic(null);
+
+$toast-font-size: dynamic(px-to-rem(14px, 14px));
+$toast-line-height: dynamic(px-to-em(18, 14));
+$toast-padding: dynamic(px-to-rem(5px, 14px));
+
+$toast-font-size-big: dynamic(px-to-rem(16px, 16px));
+$toast-line-height: dynamic(px-to-em(20, 16));
+$toast-padding-big: dynamic(px-to-rem(10px, 16px));

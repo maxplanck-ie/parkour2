@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:160ec0c61711334ca4bb2b24a8afb124615fd14b2f8c1a3fe33b9ba4ceba9ce3
-size 458
+/**
+ * @mixins Ext.device.media.Abstract
+ */
+Ext.define('Ext.device.Media', {
+    singleton: true,
+
+    requires: [
+        'Ext.device.Communicator',
+        'Ext.device.media.Cordova'
+    ],
+
+    constructor: function() {
+        var browserEnv = Ext.browser.is;
+
+        if (browserEnv.WebView && browserEnv.Cordova) {
+            return Ext.create('Ext.device.media.Cordova');
+        }
+
+        return Ext.create('Ext.device.media.Abstract');
+    }
+});

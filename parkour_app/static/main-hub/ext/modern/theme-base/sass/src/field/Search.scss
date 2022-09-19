@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:efe257c772bfcea55dc92f899da203043b527694b1beac6a0de75ebea78a83c8
-size 295
+.#{$prefix}searchfield {
+    .#{$prefix}input-el {
+        -webkit-appearance: textfield;
+
+        &::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
+    }
+}
+
+.#{$prefix}ie .#{$prefix}field.#{$prefix}searchfield {
+    .#{$prefix}mask-el {
+        z-index: -1;
+    }
+}

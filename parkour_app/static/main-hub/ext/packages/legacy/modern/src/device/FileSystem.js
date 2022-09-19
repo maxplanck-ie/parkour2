@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1a0c4338152f8211f8cdf766c8373c97501b951bed51f9fb0b9b45a17b29e1d0
-size 760
+/**
+ * Provides an API to navigate file system hierarchies.
+ *
+ * @mixins Ext.device.filesystem.Sencha
+ */
+Ext.define('Ext.device.FileSystem', {
+    singleton: true,
+
+    requires: [
+        'Ext.device.Communicator',
+        'Ext.device.filesystem.Cordova',
+        'Ext.device.filesystem.Chrome',
+        'Ext.device.filesystem.Simulator'
+    ],
+
+    constructor: function() {
+        var browserEnv = Ext.browser.is;
+        if (browserEnv.WebView) {
+            if (browserEnv.Cordova) {
+                return Ext.create('Ext.device.filesystem.Cordova');
+            }
+        } else if (browserEnv.Chrome) {
+            return Ext.create('Ext.device.filesystem.Chrome');
+        }
+
+        return Ext.create('Ext.device.filesystem.Simulator');
+    }
+});

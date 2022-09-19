@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6ced84db598726b47165dad2d3f90b6ff9602491aec247ebe0c95cb89375e58d
-size 219
+.x-grid .x-rowheader {
+    color: $secondary-text-color;
+    font-size: 12pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    background: transparent;
+    padding: 15px 5px 5px;
+    border-bottom: 1px solid;
+}

@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:49158e4e931ac019b85df6d3cd7aff9b9b0fa200885a754a544e5e1880c9e090
-size 201
+.#{$prefix}simplelistitem {
+    @include st-box-orient(horizontal);
+
+    .#{$prefix}listitem-body {
+        @include st-box-flex;
+        @include st-box;
+        @include st-box-align(center);
+    }
+}

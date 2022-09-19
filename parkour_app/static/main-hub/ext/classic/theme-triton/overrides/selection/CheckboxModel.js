@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c7e97ced5c5f8d66768c3a75afe68ce32230daf8c4428c2d815c5e2310c0959c
-size 374
+Ext.define('Ext.theme.triton.selection.CheckboxModel', {
+    override: 'Ext.selection.CheckboxModel',
+    
+    headerWidth: 32,
+
+    onHeaderClick: function(headerCt, header, e) {
+        this.callParent([headerCt, header, e]);
+
+        // Every checkbox needs repainting.
+        if (Ext.isIE8) {
+            header.getView().ownerGrid.el.syncRepaint();
+        }
+    }
+});

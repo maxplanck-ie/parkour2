@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:deb457dfb6779baabec53af0e18ba85953aafe0cd3ccdd1ba300ab753f2d3fb7
-size 409
+Ext.define("Ext.locale.pt_BR.form.field.Date", {
+    override: "Ext.form.field.Date",
+    disabledDaysText: "Desabilitado",
+    disabledDatesText: "Desabilitado",
+    minText: "A data deste campo deve ser igual ou posterior a {0}",
+    maxText: "A data deste campo deve ser igual ou anterior a {0}",
+    invalidText: "{0} não é uma data válida - deve ser informado no formato {1}",
+    format: "d/m/Y"
+});

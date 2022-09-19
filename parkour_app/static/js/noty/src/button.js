@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:fbb0515537d315a062a980ac0938851eb7265b2bc41ca3129a03ffea158c8d8b
-size 486
+import * as Utils from 'utils'
+
+export class NotyButton {
+  constructor (html, classes, cb, attributes = {}) {
+    this.dom = document.createElement('button')
+    this.dom.innerHTML = html
+    this.id = (attributes.id = attributes.id || Utils.generateID('button'))
+    this.cb = cb
+    Object.keys(attributes).forEach(propertyName => {
+      this.dom.setAttribute(propertyName, attributes[propertyName])
+    })
+    Utils.addClass(this.dom, classes || 'noty_btn')
+
+    return this
+  }
+}

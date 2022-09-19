@@ -1,3 +1,81 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9a17e85d6fff4a07d20c37ca7eef464a04cdc63631b45663421ad0e7096de013
-size 1271
+Ext.define('MainHub.model.statistics.RunStatistics', {
+  extend: 'MainHub.model.Base',
+
+  fields: [
+    {
+      name: 'pk',
+      type: 'int'
+    },
+    {
+      name: 'flowcell_id',
+      type: 'string'
+    },
+    {
+      name: 'create_time',
+      type: 'date'
+    },
+    {
+      name: 'sequencer',
+      type: 'string'
+    },
+    {
+      name: 'read_length',
+      type: 'string'
+    },
+    {
+      name: 'name',
+      type: 'string'
+    },
+    {
+      name: 'pool',
+      type: 'string'
+    },
+    {
+      name: 'request',
+      type: 'string'
+    },
+    {
+      name: 'library_preparation',
+      type: 'string'
+    },
+    {
+      name: 'library_type',
+      type: 'string'
+    },
+    {
+      name: 'loading_concentration',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'cluster_pf',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'reads_pf',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'undetermined_indices',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'phix',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'read_1',
+      type: 'float',
+      allowNull: true
+    },
+    {
+      name: 'read_2',
+      type: 'float',
+      allowNull: true
+    }
+  ]
+});

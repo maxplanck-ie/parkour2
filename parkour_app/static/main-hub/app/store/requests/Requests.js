@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f615554afc7403f584ba894e78baccfafb8812f0098c36f09fb033dd87e6f898
-size 695
+Ext.define('MainHub.store.requests.Requests', {
+  extend: 'Ext.data.BufferedStore',
+  storeId: 'requestsStore',
+
+  requires: [
+    'MainHub.model.requests.Request'
+  ],
+
+  model: 'MainHub.model.requests.Request',
+
+  leadingBufferZone: 20,
+  pageSize: 30,
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/requests/',
+    // pageParam: false,   //to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false,     // to remove param "_dc",
+    reader: {
+      type: 'json',
+      rootProperty: 'results',
+      totalProperty: 'count'
+    },
+    extraParams:{
+        showAll: 'True'
+    }
+  },
+
+  remoteFilter: true
+});

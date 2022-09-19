@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e813242e491e4810db4bcb9429c47aeeb12824d10c672df34ba46b0a042e3833
-size 708
+{
+    "name": "font-ios",
+    "namespace": "Ext",
+    "type": "code",
+    "creator": "Sencha",
+    "summary": "iOS font icons",
+    "detailedDescription": "Font icons used in the modern toolkit iOS theme",
+    "version": "6.2.0.981",
+    "compatVersion": "6.2.0",
+    "format": "1",
+    "output": "${framework.dir}/build/packages/${package.name}",
+    "local": true,
+    "sass" : {
+        "namespace": "Ext",
+        "etc": "${package.dir}/sass/etc/all.scss",
+        "var": "${package.dir}/sass/var",
+        "src": [
+            "${package.dir}/sass/src",
+            "${package.dir}/sass/src/all.scss"
+        ]
+    },
+    "classpath": "${package.dir}/src",
+    "overrides": "${package.dir}/overrides"
+}

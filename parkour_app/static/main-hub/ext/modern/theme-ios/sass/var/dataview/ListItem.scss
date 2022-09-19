@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:081a8c36bcf5ab8acfda17d187bbee6ae5af093e3f522728f3d5b46a93ba0efe
-size 602
+$listitem-disclosure-icon: dynamic($ios-arrow-right iOS);
+$listitem-disclosure-icon-size: dynamic(0.875em);
+$listitem-disclosure-icon-size-big: dynamic(0.875em);
+$listitem-selected-background-color: dynamic(ext-mix(#000, $neutral-color, 5%));
+$listitem-hovered-background-color: dynamic(null);
+$listitem-pressed-background-color: dynamic(null);
+$listitem-hovered-border-color: dynamic(null);
+$listitem-pressed-border-color: dynamic(null);
+$listitem-selected-border-color: dynamic($listitem-selected-background-color);
+
+$listitem-line-height: dynamic(1.2858em);
+$listitem-padding: dynamic(.5em .714em);

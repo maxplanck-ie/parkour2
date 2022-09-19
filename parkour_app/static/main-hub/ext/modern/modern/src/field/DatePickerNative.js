@@ -1,3 +1,43 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:10de7f88617de3734abe1370e24cf4380be552c733926ec59d06b083d981d9a8
-size 957
+/**
+ *
+ */
+Ext.define('Ext.field.DatePickerNative', {
+    extend: 'Ext.field.DatePicker',
+    alternateClassName: 'Ext.form.DatePickerNative',
+    xtype: 'datepickernativefield',
+
+    initialize: function() {
+
+        this.callParent();
+
+    },
+
+    onFocus: function(e) {
+        var me = this;
+
+        if (!(navigator.plugins && navigator.plugins.dateTimePicker)){
+
+            me.callParent();
+            return;
+        }
+
+        var success = function (res) {
+            me.setValue(res);
+        };
+
+        var fail = function (e) {
+            console.log("DateTimePicker: error occurred or cancelled: " + e);
+        };
+
+        try {
+
+            var dateTimePickerFunc = me.getName() == 'date' ? navigator.plugins.dateTimePicker.selectDate :
+                navigator.plugins.dateTimePicker.selectTime;
+
+            dateTimePickerFunc(success, fail, { value: me.getValue()});
+
+        } catch (ex) {
+            fail(ex);
+        }
+    }
+});

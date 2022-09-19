@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3e2f12010cafd262d28aae55b271a4a994abdf564470f9f34cdb193a6ee4cb5c
-size 287
+/**
+ * @class Ext.field.Slider
+ */
+
+/**
+ * @var {measurement} $form-thumb-size
+ * Default size of "thumbs" for form sliders/toggles.
+ */
+$form-thumb-size: dynamic(1.8em);
+
+/**
+ * @var {measurement} $form-slider-size
+ * Height of the slider "track."
+ */
+$form-slider-size: dynamic(.5em);

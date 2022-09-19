@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6d57d9dc3ca659baec61d86d30fba5e3926767c4e84dea3e57533530ee45874d
-size 228
+.#{$prefix}border-layout-ct {
+    overflow: hidden;
+}
+
+.#{$prefix}border-layout-ct {
+    position: relative;
+}
+
+.#{$prefix}border-region-slide-in {
+    z-index: 5;
+}
+
+.#{$prefix}region-collapsed-placeholder {
+    z-index: 4;
+}
+

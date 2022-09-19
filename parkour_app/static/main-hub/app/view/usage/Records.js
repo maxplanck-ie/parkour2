@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:898a23c3ded99fc2a6bbfcfdba12de8ce0ae5193fd7df6d3f59686ae49888b86
-size 511
+Ext.define('MainHub.view.usage.Records', {
+  extend: 'MainHub.view.usage.ChartBase',
+  xtype: 'usagerecords',
+
+  requires: [
+    'MainHub.view.usage.ChartPolarBase'
+  ],
+
+  title: 'Libraries & Samples',
+  // iconCls: 'x-fa fa-pie-chart',
+
+  items: [
+    {
+      itemId: 'empty-text',
+      html: '<h2 style="color:#999;text-align:center;margin-top:150px">No Data</h2>',
+      border: 0,
+      hidden: true
+    },
+    {
+      xtype: 'parkourpolar',
+      store: 'UsageRecords',
+      hidden: false
+    }
+  ]
+});

@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:15e29cbaa183cd37945ce52b124dade0279b91bee8a04e28696392fae70e5ebd
-size 723
+/**
+ * @class Ext.calendar.panel.Panel
+ */
+
+/**
+ * @var {number/list}
+ * The margin for the panel sidebar.
+ */
+$calendar-panel-sidebar-padding: dynamic(10px);
+
+$calendar-panel-create-button-horizontal-padding: dynamic(35px);
+
+@mixin calendar-panel-ui(
+    $ui: null,
+
+    $sidebar-padding: null,
+
+    $create-button-horizontal-padding: null
+) {
+    $ui-suffix: ui-suffix($ui);
+
+    .#{$prefix}calendar-panel#{$ui-suffix} {
+        .#{$prefix}calendar-panel-create-button {
+            padding-left: $create-button-horizontal-padding;
+            padding-right: $create-button-horizontal-padding;
+        }
+
+        .#{$prefix}calendar-sidebar .#{$prefix}panel-body {
+            padding: $sidebar-padding;
+        }
+    }
+}

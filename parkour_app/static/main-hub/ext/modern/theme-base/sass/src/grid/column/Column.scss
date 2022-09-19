@@ -1,3 +1,27 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5b66f717fcbdf9e3520f10ceb98e5fbca988b6e54d031570b077bc2a3833fdb5
-size 558
+.#{$prefix}gridcolumn {
+    position: relative;
+    @include st-box;
+    @include st-box-align(stretch);
+    flex-shrink: 0;
+
+    .#{$prefix}title-el {
+        max-width: 100%;
+        @include st-box;
+        @include st-box-align(center);
+    }
+
+    .#{$prefix}text-el {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        @include st-box-flex(1, 'auto');
+    }
+
+    &.#{$prefix}align-right {
+        @include st-box-pack(end);
+    }
+
+    &.#{$prefix}align-center {
+        @include st-box-pack(center);
+    }
+}

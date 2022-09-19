@@ -1,3 +1,47 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e2ea75526e71b46f9497cc9180e9ad22adda368a1b43bcd643e84b0188c5715f
-size 1127
+/**
+ * A Text Field Trigger that contains a {@link Ext.Component Component} or {@link
+ * Ext.Widget Widget}.
+ * @private
+ */
+Ext.define('Ext.form.trigger.Component', {
+    extend: 'Ext.form.trigger.Trigger',
+    alias: 'trigger.component',
+
+    cls: Ext.baseCSSPrefix + 'form-trigger-cmp',
+
+    /**
+     * @cfg {Object/Ext.Component/Ext.Widget} component A config object for a Component or Widget,
+     * or an already instantiated Component or Widget.
+     */
+
+    /**
+     * @property {Ext.Component/Ext.Widget} component The component or widget
+     * @readonly
+     */
+
+    onFieldRender: function() {
+        var me = this,
+            component = me.component;
+
+        me.callParent();
+
+        if (!component.isComponent && !component.isWidget) {
+            component = Ext.widget(component);
+        }
+
+        me.component = component;
+
+        component.render(me.el);
+    },
+
+    destroy: function() {
+        var component = this.component;
+
+        if (component.isComponent || component.isWidget) {
+            component.destroy();
+        }
+
+        this.component = null;
+        this.callParent();
+    }
+});

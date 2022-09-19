@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ed8a3e068e0659c36990d564afaac0cc92dc3de820dd43ccd94f7eeb350b7215
-size 635
+/**
+ * The base class that other non-interacting Toolbar Item classes should extend in order to
+ * get some basic common toolbar item functionality.
+ */
+Ext.define('Ext.toolbar.Item', {
+    extend: 'Ext.Component',
+    // Toolbar required here because we'll try to decorate it's alternateClassName
+    // with this class' alternate name
+    requires: ['Ext.toolbar.Toolbar'],
+    alias: 'widget.tbitem',
+    alternateClassName: 'Ext.Toolbar.Item',
+    enable:Ext.emptyFn,
+    disable:Ext.emptyFn,
+    focus:Ext.emptyFn
+    /**
+     * @cfg {String} overflowText
+     * Text to be used for the menu if the item is overflowed.
+     */
+});

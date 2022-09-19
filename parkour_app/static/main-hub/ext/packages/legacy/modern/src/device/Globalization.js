@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a44a1cff81d699dcf9e5c44dba2147ad24164ad0656ad3868edbdef7f4700948
-size 884
+/**
+ * Provides access to the native Globalization API
+ *
+ * - [PhoneGap](http://docs.phonegap.com/en/2.6.0/cordova_globalization_globalization.md.html)
+ *
+ * Class currently only works with Cordova and does not have a simulated HTML counter part.
+ * Please see notes on Cordova Docs for more information.
+ *
+ * http://docs.phonegap.com/en/2.6.0/cordova_globalization_globalization.md.html
+ */
+Ext.define('Ext.device.Globalization', {
+    singleton: true,
+
+    requires: [
+        'Ext.device.globalization.Cordova',
+        'Ext.device.globalization.Simulator'
+    ],
+
+    constructor: function() {
+        var browserEnv = Ext.browser.is;
+        if (browserEnv.WebView) {
+            if (browserEnv.Cordova) {
+                return Ext.create('Ext.device.globalization.Cordova');
+            }
+        }
+
+        return Ext.create('Ext.device.globalization.Simulator');
+    }
+});

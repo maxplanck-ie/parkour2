@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0d78b5ba7a122f635be18ca02fa10869e731947bef9fd1658eabd5d509a20ba4
-size 292
+$trigger-width: dynamic(px-to-em(22px, 14px));
+$trigger-width-big: dynamic(px-to-em(30px, 16px));
+$trigger-icon: dynamic($ios-arrow-down iOS);
+$trigger-icon-color: dynamic($base-color);
+
+$trigger-icon-size: dynamic(px-to-em(16px, 14px));
+$trigger-icon-size-big: dynamic(px-to-em(24px, 16px));

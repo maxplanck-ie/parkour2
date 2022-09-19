@@ -1,3 +1,48 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4d4461f38178ffb5ed9f4b825d823c3ee1aabe8bfe9203d3e4be9b6dc324c381
-size 1113
+/**
+ * A simple header component for grouped lists.  List headers are created automatically
+ * by {@link Ext.dataview.List Lists} and should not be directly instantiated.
+ */
+Ext.define('Ext.dataview.ItemHeader', {
+    extend: 'Ext.Component',
+    xtype: 'itemheader',
+
+    config: {
+        /**
+         * @private
+         */
+        pinned: null,
+
+        /**
+         * @private
+         */
+        list: null
+    },
+
+    html: '&nbsp;',
+
+    classCls: Ext.baseCSSPrefix + 'itemheader',
+    pinnedCls: Ext.baseCSSPrefix + 'pinned',
+    manageWidth: true,
+
+    updatePinned: function(pinned) {
+        var me = this;
+
+        me.element.toggleCls(me.pinnedCls, !!pinned);
+
+        if (me.manageWidth && pinned) {
+            me.getList().on({
+                updateVisibleCount: 'refreshWidth',
+                refresh: 'refreshWidth',
+                resize: 'refreshWidth',
+                scope: me
+            });
+            me.refreshWidth();
+        }
+    },
+
+    privates: {
+        refreshWidth: function() {
+            this.setWidth(this.getList().scrollElement.dom.clientWidth);
+        }
+    }
+});

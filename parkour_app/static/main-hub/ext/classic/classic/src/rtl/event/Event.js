@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5da979d12c8e7a9e8df06e3087194ad16a73ee69f2cc1c6289612648f14cfe1c
-size 363
+Ext.define('Ext.rtl.event.Event', {
+    override: 'Ext.event.Event',
+    
+    getXY: function() {
+        var me = this,
+            xy = me.xy;
+
+        if (!xy) {
+            xy = me.callParent();
+            if (Ext.rootInheritedState.rtl) {
+                xy[0] = Ext.Element.getViewportWidth() - xy[0];
+            }
+        }
+        return xy;
+    }
+
+});

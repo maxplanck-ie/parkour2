@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:94e5962bb4ae3a17fca4c8f1e00428b0568f0a6d1902decee22b538dc8c08f0f
-size 632
+Ext.define('Ext.rtl.layout.container.Box', {
+    override: 'Ext.layout.container.Box',
+
+    initLayout: function() {
+        var me = this;
+
+        if (me.owner.getInherited().rtl) {
+            me.names = Ext.Object.chain(me.names);
+            Ext.apply(me.names, me.rtlNames);
+        }
+
+        me.callParent(arguments);
+    },
+
+    getRenderData: function () {
+        var renderData = this.callParent();
+
+        if (this.owner.getInherited().rtl) {
+            renderData.targetElCls =
+                (renderData.targetElCls || '') + ' ' + Ext.baseCSSPrefix + 'rtl';
+        }
+        
+        return renderData;
+    }
+});

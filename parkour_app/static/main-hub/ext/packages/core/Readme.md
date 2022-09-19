@@ -1,3 +1,3 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8750438ed830453b8708066204277cfa3557b71512678f3e88c6681627848264
-size 87
+# core - Read Me
+
+This package contains the core features common to Sencha frameworks.

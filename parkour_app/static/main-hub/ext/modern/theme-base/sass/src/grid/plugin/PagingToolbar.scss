@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4c6faa185b3fa2ed5f023b6251d904a8807f43abd4f57c2fa85f6b1b06cac6fb
-size 205
+.#{$prefix}pagingtoolbar {
+    > .#{$prefix}body {
+        @include st-box-align(center);
+    }
+}
+
+.#{$prefix}pagingtoolbar-summary {
+    text-align: center;
+    white-space: nowrap;
+    min-width: 4em;
+}

@@ -1,3 +1,33 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3fa77c2df25a7659e7ef616413845f99f3b7595aa8d14ee2f394f9fb6301d1da
-size 973
+describe('Ext.ux.PreviewPlugin', function() {
+    it('should not throw an error', function() {
+        // See EXTJSIV-12783.
+        var grid;
+
+        expect(function() {
+            grid = new Ext.grid.Panel({
+                renderTo: Ext.getBody(),
+                height: 400,
+                width: 600,
+                title: 'Preview Test',
+                store: {
+                    data: [
+                        {name: 'foo', description: 'foo description' }
+                    ],
+                    fields: ['name', 'description']
+                },
+                columns: [{
+                    text: 'Name',
+                    dataIndex: 'name'
+                }],
+                plugins: [{
+                    ptype: 'preview',
+                    bodyField: 'description',
+                    expanded: true,
+                    pluginId: 'preview'
+                }]
+            });
+        }).not.toThrow();
+
+        grid.destroy();
+    });
+});

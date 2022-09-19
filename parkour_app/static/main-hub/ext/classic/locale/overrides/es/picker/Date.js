@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0cd98e43dc366d59a08e499d1c9bf754b4ba6fbf3bd5e27712523e5a24bc1f1d
-size 522
+Ext.define("Ext.locale.es.picker.Date", {
+    override: "Ext.picker.Date",
+    todayText: "Hoy",
+    minText: "Esta fecha es anterior a la fecha mínima",
+    maxText: "Esta fecha es posterior a la fecha máxima",
+    disabledDaysText: "",
+    disabledDatesText: "",
+    nextText: 'Mes Siguiente (Control+Right)',
+    prevText: 'Mes Anterior (Control+Left)',
+    monthYearText: 'Seleccione un mes (Control+Up/Down para desplazar el año)',
+    todayTip: "{0} (Barra espaciadora)",
+    format: "d/m/Y",
+    startDay: 1
+});

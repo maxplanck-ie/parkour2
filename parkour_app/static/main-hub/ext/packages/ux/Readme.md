@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:60505be3da6da9b15637af546808ca34c0b6304544b4a1e751802052f6a41de7
-size 196
+# ux
+
+This package contains extensions to Ext JS that should be considered as a 'beta' or a
+'work in progress'. We hope they are useful 'as is' or serve as inspiration for more
+feature-rich work.

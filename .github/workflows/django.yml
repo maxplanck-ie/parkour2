@@ -26,7 +26,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - uses: nschloe/action-cached-lfs-checkout@v1
+      - uses: actions/checkout@v3
       #   - name: Set up Tmux session for debugging purposes
       #     if: ${{ failure() }}
       #     uses: mxschmitt/action-tmate@v3
