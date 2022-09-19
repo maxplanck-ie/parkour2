@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:44dbfd232e3cf6818509d211b87c41c06014f92f1127e99a7c4393f1b029a214
-size 407
+$titlebar-color: dynamic($color);
+$titlebar-title-color: dynamic($titlebar-color);
+
+$titlebar-title-font-size: dynamic(1rem);
+$titlebar-background-color: dynamic($neutral-light-color);
+$titlebar-border-color: dynamic($neutral-color);
+
+$titlebar-padding: dynamic(0.4286em 0.714em);
+$titlebar-padding-big: dynamic(0 .625em);
+$titlebar-min-height: dynamic(2.5715em);
+$titlebar-min-height-big: dynamic(2.75em);

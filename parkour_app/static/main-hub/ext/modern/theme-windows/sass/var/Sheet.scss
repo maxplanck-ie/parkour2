@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:56dcb4d15d9c7aa0d9205533464f2ee2c8f59b9bdf18b32945e4b48191c2fea1
-size 399
+/**
+ * @class Ext.Sheet
+ */
+
+/**
+ * @var {color} $sheet-bg-color
+ * Background-color for action sheets and message boxes.
+ */
+$sheet-bg-color: dynamic(#fff);
+
+/**
+ * @var {measurement} $sheet-button-spacing
+ * Vertical spacing between sheet buttons.
+ */
+$sheet-button-spacing: dynamic(.5em);
+
+/**
+ * @var {measurement} $sheet-padding
+ * Overall padding in a sheet.
+ */
+$sheet-padding: dynamic(0em);

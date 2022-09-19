@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e233b6d239c76c4753cfd628ef046078b4e9fcf9f0cfcf6d40f61d0e1df9bba0
-size 546
+// private
+$gridviewoptions-icon-size: dynamic(1.23em);
+$gridviewoptions-icon-size-big: dynamic(1.6em);
+
+$gridviewoptions-icon-font-size: dynamic($gridviewoptions-icon-size);
+$gridviewoptions-icon-font-size-big: dynamic($gridviewoptions-icon-size-big);
+
+$gridviewoptions-sortablehandle-icon: dynamic($fa-var-bars);
+$gridviewoptions-visibleindicator-icon: dynamic($fa-var-eye);
+$gridviewoptions-groupindicator-icon: dynamic($fa-var-group);
+$gridviewoptions-folder-icon: dynamic($fa-var-folder);
+$gridviewoptions-leaf-icon: dynamic($fa-var-file);
+

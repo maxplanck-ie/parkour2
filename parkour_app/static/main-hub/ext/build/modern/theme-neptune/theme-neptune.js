@@ -1,3 +1,1 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:46b28444068ffe2d260d0d901ec9711ada9406e00abaf01f663305fdf76da5c8
-size 331
+Ext.define("Ext.theme.neptune.Titlebar",{override:"Ext.TitleBar",config:{defaultButtonUI:"alt"}});Ext.define("Ext.theme.neptune.tip.ToolTip",{override:"Ext.tip.ToolTip",bodyBorder:false});Ext.namespace("Ext.theme.is").Neptune=true;Ext.theme.name="Neptune";Ext.theme.getDocCls=function(){return Ext.platformTags.desktop?"":"x-big"};

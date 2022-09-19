@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c46b9f16b9edcd8e7c770440821c1bb6d6de54dca4a0f5c59d71b97620c0f750
-size 161
+// This file makes use of vars defined in grid-field.scss
+@import '../../form/field/Base.scss';
+@import '../../view/Table.scss';
+@import '../../grid-field.scss';

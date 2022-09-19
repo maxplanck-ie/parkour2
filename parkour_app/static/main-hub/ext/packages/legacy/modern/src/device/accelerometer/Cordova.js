@@ -1,3 +1,29 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3216bbea01f2b295eba6b4fb493ae69344b49df2dcba36cf0d568dc291368af8
-size 911
+/**
+ * @private
+ */
+Ext.define('Ext.device.accelerometer.Cordova', {
+    alternateClassName: 'Ext.device.accelerometer.PhoneGap',
+    extend: 'Ext.device.accelerometer.Abstract',
+    activeWatchID: null,
+    getCurrentAcceleration: function(config) {
+        config = this.callParent(arguments);
+        navigator.accelerometer.getCurrentAcceleration(config.success, config.failure);
+        return config;
+    },
+
+    watchAcceleration: function(config) {
+        config = this.callParent(arguments);
+        if (this.activeWatchID) {
+            this.clearWatch();
+        }
+        this.activeWatchID = navigator.accelerometer.watchAcceleration(config.callback, config.failure, config);
+        return config;
+    },
+
+    clearWatch: function() {
+        if (this.activeWatchID) {
+            navigator.accelerometer.clearWatch(this.activeWatchID);
+            this.activeWatchID = null;
+        }
+    }
+});

@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9998ad01ae12c78cca86ef32683b27da5fec923e7b80692705fa614460b3b1d4
-size 589
+/**
+ *
+ */
+Ext.define('Ext.layout.Float', {
+    extend: 'Ext.layout.Default',
+
+    alias: 'layout.float',
+
+    config: {
+        direction: 'left'
+    },
+
+    cls: Ext.baseCSSPrefix + 'layout-float',
+
+    itemCls: Ext.baseCSSPrefix + 'layout-float-item',
+
+    setContainer: function(container) {
+        this.callParent(arguments);
+
+        container.innerElement.addCls(this.layoutClass);
+    },
+
+    updateDirection: function(direction, oldDirection) {
+        var prefix = 'direction-';
+
+        this.container.innerElement.swapCls(prefix + direction, prefix + oldDirection);
+    }
+});

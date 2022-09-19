@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e4a3505072555c88ca1956e34d542c9b57d12b6a8cd8e1f6fb422d86cee7e9d3
-size 225
+/** @class Ext.grid.property.Grid */
+//
+
+$grid-property-cell-background-image: dynamic('grid/property-cell-bg');
+$grid-property-cell-background-position: dynamic(-16px 2px);
+$grid-property-cell-before-padding: dynamic(12px);

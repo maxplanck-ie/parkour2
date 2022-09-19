@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2810cfb497f1b3d2bd53795e1844b741fe6679bc7f690c0d973ffa9923b346e7
-size 878
+@if $include-checkbox-default-ui {
+    @include extjs-checkbox-ui(
+        $ui: 'default'
+    );
+}
+
+@if $include-checkbox-toolbar-ui {
+    @include extjs-checkbox-ui(
+        $ui: 'toolbar',
+        $ui-field-height: $form-toolbar-field-height,
+        $ui-checkbox-size: $form-toolbar-checkbox-size,
+        $ui-checkbox-background-image: $form-toolbar-checkbox-background-image,
+        $ui-radio-background-image: $form-toolbar-radio-background-image,
+        $ui-label-color: $form-toolbar-checkbox-label-color,
+        $ui-label-font-weight: $form-toolbar-checkbox-label-font-weight,
+        $ui-label-font-size: $form-toolbar-checkbox-label-font-size,
+        $ui-label-font-family: $form-toolbar-checkbox-label-font-family,
+        $ui-label-line-height: $form-toolbar-checkbox-label-line-height,
+        $ui-label-spacing: $form-toolbar-checkbox-label-spacing
+    );
+}
+

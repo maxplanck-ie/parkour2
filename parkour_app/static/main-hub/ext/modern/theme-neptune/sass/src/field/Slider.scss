@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:031fbe3aa1ff3276efd81eac1bb5c7bc6d78c6dad3950d9686ef50b89f7fddf3
-size 249
+/**
+ * @class Ext.field.Slider
+ */
+
+.x-sliderfield {
+    .x-body-el {
+        padding: $sliderfield-padding;
+
+        @if $enable-big {
+            .#{$prefix}big & {
+                padding: $sliderfield-padding-big;
+            }
+        }
+    }
+}

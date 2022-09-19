@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d19a716cf6879e6e92a35e98c33ad31a65520b0121de3727f18b291a5d496a18
-size 488
+Ext.define('MainHub.view.usage.Organizations', {
+  extend: 'MainHub.view.usage.ChartBase',
+  xtype: 'usageorganizations',
+
+  requires: [
+    'MainHub.view.usage.ChartPolarBase'
+  ],
+
+  title: 'Organizations',
+
+  items: [
+    {
+      itemId: 'empty-text',
+      html: '<h2 style="color:#999;text-align:center;margin-top:150px">No Data</h2>',
+      border: 0,
+      hidden: true
+    },
+    {
+      xtype: 'parkourpolar',
+      store: 'UsageOrganizations',
+      hidden: false
+    }
+  ]
+});

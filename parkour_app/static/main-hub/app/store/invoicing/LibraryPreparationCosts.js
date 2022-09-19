@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:af9433d3944e7731e8f0ee685e87e70926a6fe92b1184fdfadeb678e505f14a4
-size 714
+Ext.define('MainHub.store.invoicing.LibraryPreparationCosts', {
+  extend: 'Ext.data.Store',
+  storeId: 'LibraryPreparationCosts',
+
+  requires: [
+    'MainHub.model.invoicing.LibraryPreparationCost'
+  ],
+
+  model: 'MainHub.model.invoicing.LibraryPreparationCost',
+
+  sorters: [{
+    property: 'name',
+    direction: 'ASC'
+  }],
+
+  proxy: {
+    type: 'ajax',
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false,     // to remove param "_dc",
+    actionMethods: {
+      read: 'GET',
+      update: 'PUT'
+    },
+    api: {
+      read: 'api/library_preparation_costs/',
+      update: ''
+    }
+  }
+});

@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6368bc12fba18652091cb3c497bfdc615aa56638cc25f016028ac85bace300ac
-size 231
+Ext.define("Ext.locale.it.form.field.Text", {
+    override: "Ext.form.field.Text",
+
+    minLengthText: "La lunghezza minima \u00E8 {0}",
+    maxLengthText: "La lunghezza massima \u00E8 {0}",
+    blankText: "Campo obbligatorio"
+});

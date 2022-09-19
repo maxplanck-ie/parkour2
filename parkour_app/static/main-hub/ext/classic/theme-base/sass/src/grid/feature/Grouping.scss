@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:058de3572614cc735a33227fccd5fc7f222f1dd952a83c2db47de729e743fb02
-size 564
+.#{$prefix}group-hd-container {
+    overflow: hidden;
+}
+
+.#{$prefix}grid-group-hd {
+    white-space: nowrap;
+    outline: none;
+}
+
+.#{$prefix}grid-group-title {
+    position: relative;
+
+    @if $enable-font-icons {
+        &:before {
+            position: absolute;
+            left: 0;
+        }
+    }
+}
+
+@if $include-rtl and $enable-font-icons {
+    .#{$prefix}rtl.#{$prefix}grid-view .#{$prefix}grid-group-title{
+        &:before {
+            right: 0;
+        }
+    }
+}
+
+.#{$prefix}grid-row-body-hidden, .#{$prefix}grid-group-collapsed {
+    display: none;
+}

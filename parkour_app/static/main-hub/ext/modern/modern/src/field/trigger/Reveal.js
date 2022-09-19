@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aa3c68fbcb3660acc882073ca9c8f78892645b9df25cdb0f75d7b9ac420c5511
-size 429
+/**
+ * A "reveal" trigger.  Used in {@link Ext.field.Password Password Fields} when
+ * `{@link Ext.field.Password#revealable revealable}` is `true`.
+ */
+Ext.define('Ext.field.trigger.Reveal', {
+    extend: 'Ext.field.trigger.Trigger',
+    xtype: 'revealtrigger',
+    alias: 'trigger.reveal',
+    classCls: Ext.baseCSSPrefix + 'revealtrigger',
+    weight: -1000,
+    hidden: true,
+    handler: 'onRevealTap',
+    scope: 'this'
+});

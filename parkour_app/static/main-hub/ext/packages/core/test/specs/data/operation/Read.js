@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3794a636bace35a0b1d27d6dc4adbb351a115338fdf04f3e2231ec4d151ab90f
-size 640
+describe("Ext.data.operation.Read", function() {
+    
+    var op;
+    
+    function makeOperation(cfg) {
+        op = new Ext.data.operation.Read(cfg);
+    }
+    
+    afterEach(function() {
+        op = null;
+    });
+    
+    describe("execute", function() {
+        it("should call the proxy read method and pass itself", function() {
+            var proxy = new Ext.data.proxy.Proxy();
+            spyOn(proxy, 'read').andReturn(new Ext.data.Request());
+            makeOperation({
+                proxy: proxy
+            });
+            op.execute();
+            expect(proxy.read).toHaveBeenCalledWith(op);
+        });
+    });    
+});

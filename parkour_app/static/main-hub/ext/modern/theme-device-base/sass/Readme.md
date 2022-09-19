@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:63873fcf50a851964caff694037a7698f00d5f1a90f58ff42584f3f752540de8
-size 196
+# theme-device-base/sass
+
+This folder contains SASS files of various kinds, organized in sub-folders:
+
+    theme-device-base/sass/etc
+    theme-device-base/sass/src
+    theme-device-base/sass/var

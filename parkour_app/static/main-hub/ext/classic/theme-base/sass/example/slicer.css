@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b95a45065abd20c5fbec5198365319ac6d35c9f92693b1dba3b95db08b304363
-size 410
+.widget-container {
+    margin: 10px;
+    width: 400px;
+    position: relative;
+    overflow: visible;
+}
+
+.x-slicer-target,
+.x-slicer-target * {
+    opacity: 1;
+}
+
+/* ensure body does not overlap the rounded corners of framed panel/window when slicing */
+.x-panel-body,
+.x-window-body {
+    background: transparent;
+}
+
+/* prevent focus outline from being sliced */
+.x-btn-wrap {
+    outline: none !important;
+}

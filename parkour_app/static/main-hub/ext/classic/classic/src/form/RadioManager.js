@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:50f4862c7c68f47db1e0a5e7d4ef8eaa7c320a79cbced684431ba15ca02fcadc
-size 858
+/**
+ * @private
+ * Private utility class for managing all {@link Ext.form.field.Radio} fields grouped by name.
+ */
+Ext.define('Ext.form.RadioManager', {
+    extend: 'Ext.util.MixedCollection',
+    singleton: true,
+
+    getByName: function(name, formId) {
+        return this.filterBy(function(item) {
+            return item.name === name && item.getFormId() === formId;
+        });
+    },
+
+    getWithValue: function(name, value, formId) {
+        return this.filterBy(function(item) {
+            return item.name === name &&
+                   item.inputValue == value && // jshint ignore:line
+                   item.getFormId() === formId;
+        });
+    },
+
+    getChecked: function(name, formId) {
+        return this.findBy(function(item) {
+            return item.name === name && item.checked && item.getFormId() === formId;
+        });
+    }
+});

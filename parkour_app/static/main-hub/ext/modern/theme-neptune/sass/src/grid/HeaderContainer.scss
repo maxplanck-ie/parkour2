@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3fae06ac60684ef62029b9a2eecfb07f7ed72aa885b1584704eebaa4d1c5dd41
-size 180
+@include headercontainer-ui(
+    $border-width: $headercontainer-border-width,
+    $border-style: $headercontainer-border-style,
+    $border-color: $headercontainer-border-color
+);

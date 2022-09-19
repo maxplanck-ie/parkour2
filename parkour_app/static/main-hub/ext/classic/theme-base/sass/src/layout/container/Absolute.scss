@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1cfa6e996af53e4a197644ed70732fc5396cccb22f34273e09fe4b82b2db1fc1
-size 119
+.#{$prefix}abs-layout-ct {
+    position: relative;
+}
+
+.#{$prefix}abs-layout-item {
+    position: absolute !important;
+}

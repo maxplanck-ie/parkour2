@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:85e61214c0b6c98e778c09f43cf4541d505277a55f940b3dcb36678b07c00311
-size 363
+Ext.define('Ext.rtl.view.NavigationModel', {
+    override: 'Ext.view.NavigationModel',
+
+    initKeyNav: function(view) {
+        var me = this,
+            proto = me.self.prototype;
+
+        if (view.getInherited().rtl) {
+            me.onKeyLeft = proto.onKeyRight;
+            me.onKeyRight = proto.onKeyLeft;
+        }
+        me.callParent([view]);
+    }
+});

@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:807282ed40e41215179b58d6dad4f1dad3007f7385b55d1efabe5cfae32dc824
-size 179
+$tabbar-base-color: dynamic($neutral-light-color);
+$tabbar-padding: dynamic(6px);
+$tab-margin: dynamic(0 5px);
+$tabbar-strip-height: dynamic(0);
+$tab-border-radius: dynamic(2px);

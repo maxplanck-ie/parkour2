@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7ec0b49a48cdd63153e631a17cfde49b68928ee4b93113194a63b5bd3ef35630
-size 622
+$grid-header-background-color: dynamic(#fff);
+$grid-header-over-background-color: dynamic($grid-row-cell-over-background-color);
+$grid-header-trigger-background-color-open: dynamic(mix(#000, $grid-header-open-background-color, 5%));
+$grid-header-border-color: dynamic($neutral-color);
+$grid-header-padding: dynamic(7px 10px 6px);
+$grid-header-trigger-glyph-color: dynamic($neutral-dark-color);
+$grid-header-sort-icon-spacing: dynamic(5px);
+$grid-header-sorted-background-color: dynamic($grid-header-background-color);
+$grid-header-sort-glyph-color: dynamic($neutral-dark-color);
+$grid-header-trigger-width: dynamic(24px);

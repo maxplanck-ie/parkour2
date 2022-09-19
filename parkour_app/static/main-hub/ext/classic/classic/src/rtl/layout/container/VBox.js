@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3b430d644b7e3c4bdaf046aa7a2aec916e7b3f8c5adaf1d492d34ac3cce20519
-size 197
+Ext.define('Ext.rtl.layout.container.VBox', {
+    override: 'Ext.layout.container.VBox',
+
+    rtlNames: {
+        beforeY: 'right',
+        afterY: 'left',
+        scrollTo: 'rtlScrollTo'
+    }
+});

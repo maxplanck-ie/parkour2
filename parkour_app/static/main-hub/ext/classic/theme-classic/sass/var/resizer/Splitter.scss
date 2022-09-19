@@ -1,3 +1,2 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:167be6590f3afb8fcb49ff50d7434860f99b5a29baba058eccd79bb1c869996c
-size 165
+$splitter-focus-outline-color: dynamic(adjust-color($neutral-color, $hue: 0deg, $saturation: 0%, $lightness: -66%));
+$splitter-focus-outline-style: dynamic(dotted);

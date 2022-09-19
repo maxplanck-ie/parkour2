@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5752daa25ed1056cb715bb4b278fc009126827236adbb85ff8ed4c98f56070df
-size 130
+.x-surface { // surface 'div'
+    position: absolute;
+}
+
+.#{$prefix}surface-canvas { // 'canvas' element
+    position: absolute;
+}

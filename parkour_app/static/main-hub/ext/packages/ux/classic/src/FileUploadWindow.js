@@ -1,3 +1,51 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4865542a5af16ee983310a840210a9bca244ee7a61808d05f6af4082cc733804
-size 1002
+Ext.define('Ext.ux.FileUploadWindow', {
+  extend: 'Ext.window.Window',
+  alias: 'widget.fileuploadwindow',
+
+  title: 'Upload file',
+  width: 450,
+  modal: true,
+  autoShow: true,
+
+  fileFieldName: 'file',
+
+  initComponent: function () {
+    var me = this;
+
+    me.items = [{
+      xtype: 'form',
+      items: [{
+        xtype: 'filefield',
+        name: me.fileFieldName,
+        fieldLabel: 'File',
+        labelWidth: 50,
+        buttonText: 'Select',
+        allowBlank: false,
+        width: 413,
+        margin: 15,
+        listeners: {
+          change: function (fld, value) {
+            fld.setRawValue(value.replace(/C:\\fakepath\\/g, ''));
+          }
+        }
+      }]
+    }];
+
+    me.buttons = [
+      {
+        text: 'Upload',
+        handler: function () {
+          this.up('window').onFileUpload();
+        }
+      },
+      {
+        text: 'Cancel',
+        handler: function () {
+          this.up('window').close();
+        }
+      }
+    ];
+
+    this.callParent(arguments);
+  }
+});

@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a4c9c90c980f2fa130018262adf559bdfd68cad045c4e25768516e06d4ec2cb7
-size 211
+$grid-header-background-color: dynamic(#373c4b);
+$grid-header-over-background-color: dynamic(#496085);
+$grid-header-sort-icon-width: dynamic(15px);
+$grid-header-selected-cell-background-color: dynamic($orange);

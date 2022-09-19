@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ec9112fb1358394df17de39ad4868a1758bdcae71af010d82b2755b63ace77fd
-size 222
+/**
+ * @class Ext.form.Panel
+ */
+
+.x-field {
+    .x-label-el {
+        @include label();
+        padding: $form-spacing;
+    }
+
+    &.x-label-align-top .x-label-el {
+        border-bottom: 1px solid $base-color;
+    }
+}
+
+

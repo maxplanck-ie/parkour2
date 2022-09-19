@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f53341752a2dcafbdb25e7c21a2f801b7774a047d543464d52e7fec460080bd7
-size 193
+// The min-height ensures we get a horizontal scroll bar 
+// if necessary, even when the grid has no items in it.
+.#{$prefix}grid-item-container {
+    min-height: 1px;
+    position: relative;
+}

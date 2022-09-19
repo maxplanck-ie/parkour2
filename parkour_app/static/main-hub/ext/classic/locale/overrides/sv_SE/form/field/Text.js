@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:696f6268fe15fc299302e72a36f0c91b171de778e18eaa43a82d9d743ca012be
-size 320
+Ext.define("Ext.locale.sv_SE.form.field.Text", {
+    override: "Ext.form.field.Text",
+    minLengthText: "Minsta tillåtna längd för detta fält är {0}",
+    maxLengthText: "Största tillåtna längd för detta fält är {0}",
+    blankText: "Detta fält är obligatoriskt",
+    regexText: "",
+    emptyText: null
+});

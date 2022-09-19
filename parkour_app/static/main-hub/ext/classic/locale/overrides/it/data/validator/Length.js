@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:53dcb88e2ae8d9a1f1632f739dc70beffb154566cf9307a6585068d7bcec6048
-size 243
+Ext.define("Ext.locale.it.data.validator.Length", {
+    override: "Ext.data.validator.Length",
+
+    minOnlyMessage: "Lunghezza minima {0}", 
+    maxOnlyMessage: "Lunghezza massima {0}",
+    bothMessage: "Lunghezza compresa tra {0} e {1}" 
+});

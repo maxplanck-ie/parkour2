@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0154b96522422673a464f5a320f9945ce6d1c8f6c03ca18d098fa7448dc6b62c
-size 724
+/**
+ * This class represents a constant in the parser.
+ * @private
+ */
+Ext.define('Ext.parse.symbol.Constant', {
+    extend: 'Ext.parse.Symbol',
+
+    arity: 'literal',
+    isLiteral: true,
+
+    defaultProperty: 'value',
+
+    constructor: function (id, config) {
+        this.callParent([ id, config ]);
+
+        this._value = this.value;
+    },
+
+    nud: function () {
+        var me = this;
+
+        // The value property gets smashed by the parser so restore it.
+        me.value = me._value;
+        // the next line is here in case this symbol already exists in the symbols table
+        // and this function overrides that symbol
+        me.arity = 'literal';
+        me.isLiteral = true;
+
+        return me;
+    }
+});

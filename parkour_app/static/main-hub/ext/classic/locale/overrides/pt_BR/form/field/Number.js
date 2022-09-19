@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:7a01287f4da6a6d5bc2f6e17dec7d9146e19ce7fc93d2f58b501b88516aa3353
-size 249
+Ext.define("Ext.locale.pt_BR.form.field.Number", {
+    override: "Ext.form.field.Number",
+    minText: "O valor mínimo para este campo é {0}",
+    maxText: "O valor máximo para este campo é {0}",
+    nanText: "{0} não é um número válido"
+});

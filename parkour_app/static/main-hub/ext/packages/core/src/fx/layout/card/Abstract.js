@@ -1,3 +1,64 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c60b463ad6159c80a45f115a61943a0717e207781261ba7fabd43c5bbfd4a921
-size 1236
+/**
+ * @private
+ */
+Ext.define('Ext.fx.layout.card.Abstract', {
+    extend: 'Ext.Evented',
+    isAnimation: true,
+
+    config: {
+        direction: 'left',
+
+        duration: null,
+
+        reverse: null,
+
+        layout: null
+    },
+
+    updateLayout: function(layout) {
+        if (layout) {
+            this.enable();
+        }
+    },
+
+    enable: function() {
+        var layout = this.getLayout();
+
+        if (layout) {
+            layout.on('beforeactiveitemchange', 'onActiveItemChange', this);
+        }
+    },
+
+    disable: function() {
+        var layout = this.getLayout();
+
+        if (this.isAnimating) {
+            this.stopAnimation();
+        }
+
+        if (layout) {
+            layout.un('beforeactiveitemchange', 'onActiveItemChange', this);
+        }
+    },
+
+    onActiveItemChange: Ext.emptyFn,
+
+    destroy: function() {
+        var me = this,
+            layout = me.getLayout();
+
+        if (me.isAnimating) {
+            me.stopAnimation();
+        }
+
+        if (layout) {
+            layout.un('beforeactiveitemchange', 'onActiveItemChange', this);
+        }
+        me.setLayout(null);
+
+        if (me.observableId) {
+            me.fireEvent('destroy', this);
+        }
+        me.callParent();
+    }
+});

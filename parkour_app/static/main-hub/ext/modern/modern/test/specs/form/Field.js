@@ -1,3 +1,79 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1868aab42349dc211a5f88c1379e7196448ce167c53f71b2cea39e668e203f09
-size 516
+describe('Ext.form.Field', function() {
+    var field;
+
+    var create = function(config) {
+        field = Ext.create('Ext.form.Field', config || {});
+        return this;
+    };
+
+    var render = function() {
+        field.render(Ext.getBody());
+        return this;
+    };
+
+    afterEach(function() {
+        if (field) {
+            field.destroy();
+        }
+    });
+
+    describe('deprecated configurations + methods', function() {
+        
+    }); 
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5d16d298e911f2263343b6111205d19e9749098665bc7169db03c68dd7fb6878
-size 162
+/** @class Ext.grid.column.Column */
+//
+
+$grid-column-header-font-size: dynamic(ceil($font-size * .9));
+
+$grid-column-header-focus-border-style: dynamic(dotted);

@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f9b85e5e23d6041002aa85ed96f4bbd392dbbe440fa6e1a44fc3b9e03c8d1774
-size 675
+/**
+ * @class Ext.Toast
+ */
+
+.#{$prefix}toast {
+    margin: $toast-margin;
+    @include border($toast-border-width $toast-border-style $toast-border-color);
+    @include box-shadow($toast-shadow);
+
+    .#{$prefix}toast-inner {
+        color: $toast-color;
+        background-color: $toast-background-color;
+        @include font($toast-font-weight, $toast-font-size, $toast-line-height, $toast-font-family);
+        padding: $toast-padding;
+    }
+
+    .#{$prefix}big & {
+        .#{$prefix}toast-inner {
+            @include font($toast-font-weight, $toast-font-size-big, $toast-line-height-big, $toast-font-family);
+            padding: $toast-padding-big;
+        }
+    }
+}

@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4e1a2b7c440fe32f71fbc86e7c4bc23c2683cb90403e821ab1c3a749123320cb
-size 203
+@function toolbar-border-color($background-color) {
+    @return darken($background-color, 50%);
+}
+
+@function toolbar-title-color($background-color) {
+    @return color-by-background($background-color);
+}

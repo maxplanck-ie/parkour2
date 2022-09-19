@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d2d5dfede11d5437efdc69daa062c9a350227affd4b024c09de5760bc29adb85
-size 432
+/**
+ * @class Ext.field.TextArea
+ */
+
+.#{$prefix}textareafield {
+    &.#{$prefix}label-align-left, &.#{$prefix}label-align-right {
+        @include st-box-align(stretch);
+    }
+
+    .#{$prefix}body-el {
+        @include st-box;
+        @include st-box-orient(vertical);
+    }
+
+    .#{$prefix}input {
+        @include st-box-flex;
+        @include st-box-align(stretch);
+    }
+
+    .#{$prefix}input-el {
+        resize: none;
+    }
+}

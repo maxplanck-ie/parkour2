@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4598cd0668129343cef69b30ecb6a8f85ffa1a3ac1791de880f1e8f4ae9a5843
-size 262
+// Must always be on top
+// Pointer events go through so that mousemove fires on the element being dragged *over*
+.#{$prefix}dd-drag-proxy, // StatusProxy
+.#{$prefix}dd-drag-current { // DragDropManager
+    z-index: 1000000!important;
+    pointer-events: none;
+}

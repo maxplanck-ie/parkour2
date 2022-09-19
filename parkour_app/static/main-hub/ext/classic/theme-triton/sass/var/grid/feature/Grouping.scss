@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:720386e9e1739b4d7bf6a77ad28b47f3121c75d6076427cb81d041f6bab1ce5d
-size 321
+$grid-grouped-title-color: dynamic($highlight-color);
+$grid-grouped-title-font-size: dynamic($font-size);
+$grid-grouped-header-padding: dynamic(8px 10px);
+$grid-grouped-header-background-color: dynamic(#fff);
+$grid-grouped-title-glyph-color: dynamic($neutral-dark-color);
+$grid-grouped-icon-padding: dynamic(0 0 0 24px);

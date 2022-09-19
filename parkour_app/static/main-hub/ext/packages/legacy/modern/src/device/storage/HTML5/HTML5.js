@@ -1,3 +1,40 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2601433760bcab69ec422d1b9e4ff6c459aac45eaaedd2cbcbdcce5d979e19b7
-size 997
+/**
+ * @private
+ */
+Ext.define('Ext.device.storage.HTML5.HTML5', {
+    extend: 'Ext.device.storage.Abstract',
+    requires: ['Ext.device.storage.HTML5.Database'],
+    dbCache: {},
+
+    openDatabase: function(config) {
+        config = this.callParent(arguments);
+        if (!this.dbCache[config.name] || config.noCache) {
+            this.dbCache[config.name] = Ext.create('Ext.device.storage.HTML5.Database', config);
+        }
+        return this.dbCache[config.name];
+    },
+
+    numKeys: function() {
+        return window.localStorage.length;
+    },
+
+    getKey: function(index) {
+        return window.localStorage.key(index);
+    },
+
+    getItem: function(key) {
+        return window.localStorage.getItem(key);
+    },
+
+    setItem: function(key, value) {
+        return window.localStorage.setItem(key, value);
+    },
+
+    removeItem: function(key) {
+        return window.localStorage.removeItem(key);
+    },
+
+    clear: function() {
+        return window.localStorage.clear();
+    }
+});

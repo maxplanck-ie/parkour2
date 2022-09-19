@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bf8164f096d8ee761cf42c8afcb5fc5452ff587c3efe0742dae08663c977c47d
-size 204
+$grid-cell-selected-color: dynamic(black);
+$grid-cell-selected-background-color: dynamic($orange);
+
+$grid-row-cell-over-background-color: dynamic(#7e55ef);
+
+$grid-row-cell-focus-border-width: dynamic(0);

@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c00a1030ab123c82ce9c28020fd0dce0638cc5eb4ff4a5a7209dfc99561090f5
-size 328
+// panel header changes overflow of it's box layout's innerCt to visible so that certain
+// items can negate the effect of the header's padding by using negative margins
+.#{$prefix}box-inner {
+    .#{$prefix}header > &,
+    .#{$prefix}panel-header-mc > &,
+    .#{$prefix}window-header-mc > & {
+        overflow: visible;
+    }
+}

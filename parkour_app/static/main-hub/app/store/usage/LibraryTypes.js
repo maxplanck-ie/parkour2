@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2e55ad06530150bd2de63ee043de72cc99a52dc1720748921e41f3893885e194
-size 570
+Ext.define('MainHub.store.usage.LibraryTypes', {
+  extend: 'Ext.data.Store',
+  storeId: 'UsageLibraryTypes',
+
+  requires: [
+    'MainHub.model.usage.ChartPolar'
+  ],
+
+  model: 'MainHub.model.usage.ChartPolar',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/usage/library_types/',
+    timeout: 1000000,
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false      // to remove param "_dc",
+  },
+
+  getId: function () {
+    return 'UsageLibraryTypes';
+  }
+});

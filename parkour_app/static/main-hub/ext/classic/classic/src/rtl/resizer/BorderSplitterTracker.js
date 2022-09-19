@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a6b9b3af94a921ec777def666b60c9aab532bcbe3c4982514a7c5033aff738d3
-size 531
+Ext.define('Ext.rtl.resizer.BorderSplitterTracker', {
+    override: 'Ext.resizer.BorderSplitterTracker',
+
+    rtlDirections: {
+        top: 'top',
+        right: 'left',
+        bottom: 'bottom',
+        left: 'right'
+    },
+
+    getCollapseDirection: function() {
+        var direction = this.splitter.getCollapseDirection();
+        if (!this.splitter.getInherited().rtl !== !Ext.rootInheritedState.rtl) { // jshint ignore:line
+            direction = this.rtlDirections[direction];
+        }
+        return direction;
+    }
+});

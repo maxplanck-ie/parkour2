@@ -1,3 +1,40 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:bd1e5e8c980ab31957f1ac73185f5767f52f47ab6a5238de8fe423200753a338
-size 808
+.#{$prefix}list {
+    overflow: hidden;
+
+    .#{$prefix}list-inner {
+        width: 100% !important;
+    }
+
+    .#{$prefix}empty-text {
+        text-align: center;
+        pointer-events: none;
+        @include st-box();
+        @include st-box-orient(vertical);
+        @include st-box-pack(center);
+    }
+
+    .#{$prefix}scrolldock {
+        position: absolute !important;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    &.#{$prefix}infinite {
+        .#{$prefix}listitem,
+        .#{$prefix}itemheader {
+            width: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    }
+}
+
+.#{$prefix}list.#{$prefix}inline .#{$prefix}listitem {
+    display: inline-block;
+}
+
+.#{$prefix}list.#{$prefix}nowrap .#{$prefix}listitem {
+    white-space: nowrap;
+}

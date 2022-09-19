@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:025674e4f9f131bf52b18f8307836772700195eb433032dbfecb6eebe3df92e6
-size 706
+/**
+ * @class Ext.app.domain.View
+ */
+Ext.define('Ext.app.domain.View', {
+    extend: 'Ext.app.EventDomain',
+
+    requires: ['Ext.Widget'],
+    
+    isInstance: true,
+    
+    constructor: function(controller) {
+        this.callParent([controller]);
+        this.controller = controller;
+        this.monitoredClasses = [Ext.Widget];
+    },
+    
+    match: function(target, selector, controller) {
+        var out = false;
+        if (selector === '#') {
+            out = controller === target.getController();
+        } else {
+            out = target.is(selector);
+        }
+        return out;
+    },
+    
+    destroy: function() {
+        this.controller = null;
+        this.callParent();
+    }
+});

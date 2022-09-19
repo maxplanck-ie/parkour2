@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0b740e7377fc922a22b2018bafcce5197cd41201eaff943edd3209c1debaf134
-size 328
+/** @class Ext.form.field.Trigger */
+//
+
+$form-trigger-width: dynamic(17px);
+$form-trigger-border-width: dynamic(0 0 1px);
+$form-trigger-border-color-focus: dynamic($form-field-focus-border-color);
+$form-trigger-border-color-over: dynamic($form-trigger-border-color-focus);
+$form-trigger-background-color: dynamic(transparent);

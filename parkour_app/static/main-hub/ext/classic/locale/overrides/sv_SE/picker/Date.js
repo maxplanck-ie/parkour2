@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:10f28a52bdc777347c3d05261ac03f6501470d24f2aecb234f741871120972e3
-size 560
+Ext.define("Ext.locale.sv_SE.picker.Date", {
+    override: "Ext.picker.Date",
+    todayText: "Idag",
+    minText: "Detta datum inträffar före det tidigast tillåtna",
+    maxText: "Detta datum inträffar efter det senast tillåtna",
+    disabledDaysText: "",
+    disabledDatesText: "",
+    nextText: 'Nästa månad (Ctrl + högerpil)',
+    prevText: 'Föregående månad (Ctrl + vänsterpil)',
+    monthYearText: 'Välj en månad (Ctrl + uppåtpil/neråtpil för att ändra årtal)',
+    todayTip: "{0} (mellanslag)",
+    format: "Y-m-d",
+    startDay: 1
+});

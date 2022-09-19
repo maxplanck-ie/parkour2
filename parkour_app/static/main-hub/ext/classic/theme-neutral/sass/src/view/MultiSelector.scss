@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:858656f593a7dadf3e3e776d64c20beda1fcfa72a017ab2035359176443ea59f
-size 372
+.#{$prefix}multiselector-remove {
+    font-size: $multiselector-remove-font-size;
+    color: $multiselector-remove-text-color;
+    cursor: $multiselector-remove-cursor;
+
+    .#{$prefix}grid-cell-inner {
+        padding: $multiselector-remove-padding;
+    }
+}
+
+.#{$prefix}grid-item-over .#{$prefix}multiselector-remove {
+    color: $multiselector-remove-text-color-over;
+}

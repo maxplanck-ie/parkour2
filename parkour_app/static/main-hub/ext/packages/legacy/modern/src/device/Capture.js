@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8ba80bda3296eb2ad207e517b8cea5665da8552477184f23dbff508010f80106
-size 590
+/**
+ * Provides access to the audio and video capture capabilities of the device.
+ *
+ * @mixins Ext.device.capture.Abstract
+ */
+Ext.define('Ext.device.Capture', {
+    singleton: true,
+
+    requires: [
+        'Ext.device.Communicator',
+        'Ext.device.capture.Cordova',
+        'Ext.device.capture.Simulator'
+    ],
+
+    constructor: function() {
+        var browserEnv = Ext.browser.is;
+
+        if (browserEnv.WebView && browserEnv.Cordova) {
+            return Ext.create('Ext.device.capture.Cordova');
+        }
+
+        return Ext.create('Ext.device.capture.Simulator');
+    }
+});

@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2efe5dfc60c737be12d312eca0674fdec7535cfea6a4f23abaff6ce83d4be155
-size 912
+@include progress-ui(
+    $border-color: $progress-border-color,
+    $background-color: $progress-background-color,
+    $bar-background-color: $progress-bar-background-color,
+    $bar-background-gradient: $progress-bar-background-gradient,
+    $front-color: $progress-text-front-color,
+    $back-color: $progress-text-back-color,
+    $min-height: $progress-min-height,
+    $min-height-big: $progress-min-height-big,
+    $border-width: $progress-border-width,
+    $border-radius: $progress-border-radius,
+    $border-style: $progress-border-style,
+    $text-text-align: $progress-text-text-align,
+    $text-font-size: $progress-text-font-size,
+    $text-font-size-big: $progress-text-font-size-big,
+    $text-font-weight: $progress-text-font-weight,
+    $text-font-family: $progress-text-font-family,
+    $text-line-height: $progress-text-line-height,
+    $text-line-height-big: $progress-text-line-height-big
+);

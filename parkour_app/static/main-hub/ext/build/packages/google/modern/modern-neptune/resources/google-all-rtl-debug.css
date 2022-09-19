@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0738baf20a8e3d6811a3be2633c2fc1b68bacf68df141655d3196f4f10631294
-size 780
+/* /Users/space/buildAgent/work/8cc7421dd8da164c/staging/packages/google/modern/sass/src/ux/google/Map.scss:5 */
+.x-map {
+    /**
+ * @class Ext.ux.google.Map
+ */
+    background-color: #edeae2;
+}
+/* /Users/space/buildAgent/work/8cc7421dd8da164c/staging/packages/google/modern/sass/src/ux/google/Map.scss:8 */
+.x-map * {
+    -webkit-box-sizing: content-box;
+    box-sizing: content-box;
+}
+/* /Users/space/buildAgent/work/8cc7421dd8da164c/staging/packages/google/modern/sass/src/ux/google/Map.scss:14 */
+.x-mask-map {
+    background: transparent !important;
+}
+/* /Users/space/buildAgent/work/8cc7421dd8da164c/staging/packages/google/modern/sass/src/ux/google/Map.scss:18 */
+.x-map-container {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}

@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:883e869786daa521e7b68fe1534c2ba7779b548f8891a3a111e8c436e0053361
-size 375
+/**
+ * @class Ext.plugin.ListPaging
+ */
+
+.x-list-paging {
+    .x-loading-spinner {
+        display: none;
+        margin: auto;
+    }
+
+    .x-list-paging-msg {
+        text-align: center;
+        clear: both;
+    }
+
+    &.x-loading {
+        .x-loading-spinner {
+            display: block;
+        }
+
+        .x-list-paging-msg {
+            display: none;
+        }
+    }
+}

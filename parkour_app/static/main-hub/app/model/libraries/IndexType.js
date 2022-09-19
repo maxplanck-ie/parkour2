@@ -1,3 +1,34 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:feea0e6cf38a7d1442d7bafde09a4c004c3b7b2fdf3159d8745c26b54bcfaca2
-size 488
+Ext.define('MainHub.model.libraries.IndexType', {
+  extend: 'MainHub.model.Base',
+
+  fields: [
+    {
+      name: 'id',
+      type: 'int'
+    },
+    {
+      name: 'name',
+      type: 'string'
+    },
+    {
+      name: 'index_reads',
+      type: 'int'
+    },
+    {
+      name: 'is_dual',
+      type: 'bool'
+    },
+    {
+      name: 'index_length',
+      type: 'int'
+    },
+    {
+      name: 'format',
+      type: 'string'
+    },
+    {
+      name: 'obsolete',
+      type: 'int'
+    }
+  ]
+});

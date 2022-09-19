@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ef935d64c7423cd465d658218e37e016cbe51f5ff2a431970f11b3a2f4fddc92
-size 571
+// @tag enterprise
+/**
+ * Reader class to access v1.1 SOAP (Simple Object Access Protocol) services.
+ */
+Ext.define('Ext.data.soap.Reader', {
+    extend: 'Ext.data.reader.Xml',
+    alias: 'reader.soap',
+	
+    getData: function(data) {
+        var envelope = data.documentElement,
+            // we can't always assume that the Body element's namespace prefix is "soap",
+            // but we can assume that it is the same as the envelope's namespace prefix
+            prefix = envelope.prefix; 
+
+        return Ext.DomQuery.selectNode(prefix + '|Body', data);
+    }
+});

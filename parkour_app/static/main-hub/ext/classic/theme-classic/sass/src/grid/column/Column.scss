@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:37c9dbfc89952a2bbf3a3f2fcf5ed6026803809402c2a3182bbf5e286f0edb58
-size 334
+.#{$prefix}column-header-trigger {
+    background-color: $grid-header-background-color;
+}
+
+// Classic theme uses different left.right menu trigger images.
+@if $include-rtl {
+    .#{$prefix}rtl.#{$prefix}column-header-trigger {
+        background-image: theme-background-image($grid-header-trigger-background-image + '-left');
+    }
+}

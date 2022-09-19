@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:48bddaf7a356a797f89819b127605ffc40887ba6f6b326d6e915afc9c1770573
-size 884
+describe("Ext.data.ErrorCollection", function() {
+    var errors;
+
+    beforeEach(function() {
+        errors = new Ext.data.ErrorCollection();
+    });
+
+    describe("if valid", function() {
+        it("should return true to isValid", function() {
+            expect(errors.isValid()).toBe(true);
+        });
+    });
+
+    describe("if not valid", function() {
+        beforeEach(function() {
+            errors.add('name', 'Foo');
+            errors.add('email', 'Bar');
+        });
+    
+        it("should return false to isValid", function() {
+            expect(errors.isValid()).toBe(false);
+        });
+    
+        it("should return the errors for a single field", function() {
+            var getByField = errors.getByField('name');
+        
+            expect(getByField.length).toEqual(1);
+            expect(getByField[0].field).toEqual('name');
+        });
+    });
+});    

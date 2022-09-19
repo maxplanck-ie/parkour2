@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:48c76b0daec4fd2afe7d12a46b4a473c250db4c5753c52da813028871aa66b68
-size 360
+/**
+ * @class Ext.Sheet
+ */
+
+.x-sheet,
+.x-picker,
+.x-sheet-action {
+    padding: .7em;
+    border-top: 1px solid darken($base-color, 30%);
+    background-color: white;
+    @include border-radius(0);
+}
+
+.x-sheet-inner,
+.x-sheet-action-inner {
+    > .x-button {
+        margin-bottom: .5em;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

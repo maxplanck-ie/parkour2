@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:59bc7f4890632455e9558941361536e572e854c55e2e520a122f2e7f829437e7
-size 325
+/**
+ * @class Ext.table.Table
+ * @ignore
+ */
+
+.x-table-inner {
+    display: table;
+    width: 100% !important;
+    height: 100% !important;
+
+    &.x-fixed-layout {
+        table-layout: fixed !important;
+    }
+}
+
+.x-table-row {
+    display: table-row;
+}
+
+.x-table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}

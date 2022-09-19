@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f12108fe5f3ecf8651982307969d36efe1c32046ff2581d8b8a673fa79bd3feb
-size 516
+$checkboxfield-checkbox-color: dynamic($base-color);
+$checkboxfield-checkbox-size: dynamic(px-to-rem(22px, 14px));
+$checkboxfield-checkbox-size-big: dynamic(px-to-rem(30px, 16px));
+$checkboxfield-checkbox-color: dynamic($base-color);
+$checkboxfield-checkbox-icon: dynamic($ios-check-box-unchecked iOS);
+$checkboxfield-checked-checkbox-icon: dynamic($ios-check-box-checked iOS);
+$checkboxfield-checkbox-font-size: dynamic(px-to-rem(16px, 14px));
+$checkboxfield-checkbox-font-size-big: dynamic(px-to-rem(24px, 16px));

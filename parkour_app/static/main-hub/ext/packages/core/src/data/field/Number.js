@@ -1,3 +1,20 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:01cb5cc4cfe5b99d693e7851b1b098e39bc42a9ce13a7728ee7ddbf6d0676bdd
-size 372
+/**
+ */
+Ext.define('Ext.data.field.Number', {
+    extend: 'Ext.data.field.Integer',
+
+    alias: [
+        'data.field.float',
+        'data.field.number'
+    ],
+
+    isIntegerField: false,
+    isNumberField: true,
+    numericType: 'float',
+
+    getNumber: Ext.identityFn,
+
+    parse: function(v) {
+        return parseFloat(String(v).replace(this.stripRe, ''));
+    }
+});

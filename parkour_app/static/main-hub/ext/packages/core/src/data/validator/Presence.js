@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6caade6f129f17f090ea79affda3a6ee19f3b94b1088a9783999a197e44d05f9
-size 810
+/**
+ * Validates that the passed value is not `null` or `undefined` or `''`.
+ */
+Ext.define('Ext.data.validator.Presence', {
+    extend: 'Ext.data.validator.Validator',
+    alias: 'data.validator.presence',
+
+    type: 'presence',
+    
+    config: {
+        /**
+         * @cfg {String} message
+         * The error message to return when the value is not specified.
+         */
+        message: 'Must be present',
+
+        /**
+         * @cfg {Boolean} allowEmpty
+         * `true` to allow `''` as a valid value.
+         */
+        allowEmpty: false
+    },
+    
+    validate: function(value) {
+        var valid = !(value === undefined || value === null);
+        if (valid && !this.getAllowEmpty()) {
+            valid = !(value === '');
+        }
+        return valid ? true : this.getMessage();
+    }
+});

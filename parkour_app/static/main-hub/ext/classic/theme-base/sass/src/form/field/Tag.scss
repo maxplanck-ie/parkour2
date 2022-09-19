@@ -1,3 +1,56 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:062b7a94d4f6f8d4b7267e7cfc9c7bfa556613b0dec51bc1e0e7537771312db7
-size 1069
+.#{$prefix}tagfield-body {
+    vertical-align: top;
+}
+
+.#{$prefix}tagfield {
+    height: auto!important; /* The wrap has to accommodate the list, so override the .x-form-text height rule */
+    cursor: text;
+    overflow-y: auto;
+}
+
+.#{$prefix}tagfield .#{$prefix}tagfield-list {
+    padding: 0;
+    margin: 0;
+}
+
+.#{$prefix}tagfield-list.#{$prefix}tagfield-singleselect {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.#{$prefix}tagfield-input, .#{$prefix}tagfield-item {
+    vertical-align: top;
+    display: inline-block;
+    position: relative;
+}
+
+.#{$prefix}tagfield-input-field {
+    font: inherit;
+    border: 0;
+    margin: 0;
+    background: none;
+    width: 100%;
+}
+
+.#{$prefix}tagfield-stacked .#{$prefix}tagfield-item {
+    display: block;
+}
+
+.#{$prefix}tagfield-item {
+    cursor: default;
+}
+
+.#{$prefix}tagfield-item-close {
+    cursor: pointer;
+    position: absolute;
+}
+
+.#{$prefix}tagfield-arialist {
+    list-style-type: none;
+    position: absolute;
+    clip: rect(0, 0, 0, 0);
+}
+
+.#{$prefix}tagfield-arialist-item {
+    list-style-type: none;
+}

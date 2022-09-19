@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:61776e70078f4783e54d91ee95c4f3de80985c036ca0bd44b9e74b43fa56da71
-size 477
+$menu-background-color: dynamic(#414551);
+$menu-text-color: dynamic(#fff);
+$menu-border-color: dynamic(darken($panel-border-color, 15%));
+$menu-item-active-background-color: dynamic($orange);
+$menu-item-active-border-color: dynamic(darken($orange, 5));
+$menu-separator-border-color: dynamic(#222233);
+$menu-separator-background-color: dynamic(#666666);
+
+$menu-scroller-opacity: dynamic(1);
+$menu-scroller-opacity-over: dynamic(.8);
+$menu-scroller-opacity-pressed: dynamic(.6);

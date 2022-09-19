@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:185c0c6c7f4e96c072c86e606fe0fa747a73ac1b10dcdd19708e017685d972a7
-size 625
+/**
+ * @private
+ *
+ * CSS Transform implementation
+ */
+Ext.define('Ext.util.translatable.CssTransform', {
+    extend: 'Ext.util.translatable.Dom',
+
+    isCssTransform: true,
+
+    doTranslate: function(x, y) {
+        var me = this,
+            element = me.getElement();
+
+        if (!me.destroyed && !element.destroyed) {
+            element.translate(x, y);
+        }
+
+        me.callParent([x, y]);
+    },
+
+    destroy: function() {
+        var element = this.getElement();
+
+        if (element && !element.destroyed) {
+            element.dom.style.webkitTransform = null;
+        }
+
+        this.callParent();
+    }
+});

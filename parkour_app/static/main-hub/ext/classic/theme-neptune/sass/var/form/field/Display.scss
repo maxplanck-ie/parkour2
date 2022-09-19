@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:202aadb40269c97e369e82ca87d58f8d9bcf0d5432460a51878556191b4b468b
-size 172
+/** @class Ext.form.field.Display */
+//
+
+$form-display-field-line-height: dynamic(17px);
+$form-toolbar-display-field-line-height: dynamic($form-display-field-line-height);

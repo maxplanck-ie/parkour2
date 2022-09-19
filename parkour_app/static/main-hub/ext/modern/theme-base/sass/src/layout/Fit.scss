@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f2a3916711c4d63756ebc2197749778cf2534015529dfe5b701b45b21a32aa25
-size 332
+/**
+ * @class Ext.layout.Fit
+ */
+
+.x-layout-fit.x-stretched > .x-layout-fit-item {
+    @include st-box();
+    @include st-box-flex(1);
+}
+
+.x-layout-fit {
+    position: relative;
+}
+
+.x-layout-fit-item {
+    &.x-sized {
+        @include absolute-position();
+    }
+
+    &.x-unsized {
+        width: 100%;
+        height: 100%;
+    }
+}

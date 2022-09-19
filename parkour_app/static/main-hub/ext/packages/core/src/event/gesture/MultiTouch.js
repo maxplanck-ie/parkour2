@@ -1,3 +1,33 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4c8ef6573ee3b0594a4d667fb66a46721428abe6f01fdea4923b00226b3e2300
-size 851
+/**
+ * A base class for gesture recognizers that involve multiple simultaneous contact points
+ * between the screen and the input-device, e.g. 'pinch' and 'rotate'
+ * @abstract
+ * @private
+ */
+Ext.define('Ext.event.gesture.MultiTouch', {
+    extend: 'Ext.event.gesture.Recognizer',
+
+    requiredTouchesCount: 2,
+
+    isTracking: false,
+
+    isMultiTouch: true,
+
+    onTouchStart: function(e) {
+        var me = this,
+            requiredTouchesCount = me.requiredTouchesCount,
+            touches = e.touches,
+            touchesCount = touches.length;
+
+        if (touchesCount === requiredTouchesCount) {
+            me.isTracking = true;
+        } else if (touchesCount > requiredTouchesCount) {
+            return me.cancel(e);
+        }
+    },
+
+    reset: function() {
+        this.isTracking = false;
+        return this.callParent();
+    }
+});

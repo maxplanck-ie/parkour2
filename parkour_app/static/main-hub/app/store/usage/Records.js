@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b786543d5838f559fbcfbde0c4a3da400aed8991345b620ba9106ec11b92b4dc
-size 549
+Ext.define('MainHub.store.usage.Records', {
+  extend: 'Ext.data.Store',
+  storeId: 'UsageRecords',
+
+  requires: [
+    'MainHub.model.usage.ChartPolar'
+  ],
+
+  model: 'MainHub.model.usage.ChartPolar',
+
+  proxy: {
+    type: 'ajax',
+    url: 'api/usage/records/',
+    timeout: 1000000,
+    pageParam: false,   // to remove param "page"
+    startParam: false,  // to remove param "start"
+    limitParam: false,  // to remove param "limit"
+    noCache: false      // to remove param "_dc",
+  },
+
+  getId: function () {
+    return 'UsageRecords';
+  }
+});

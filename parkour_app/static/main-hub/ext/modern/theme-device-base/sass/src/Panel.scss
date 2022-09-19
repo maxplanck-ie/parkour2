@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:51795172deea5ac1c69ea01800d367aba6c130de95a727e6f201048d6229a60a
-size 299
+.x-msgbox {
+    padding: 6px;
+    background-color: #ccc;
+}
+.x-panel, .x-formpanel {
+    &.x-floating {
+        padding: 6px;
+
+        > * > .x-dock-body {
+            background-color: #fff;
+        }
+    }
+}
+
+.x-panel.x-floating > .x-dock.x-sized,
+.x-msgbox > .x-dock.x-sized {
+    margin: 6px;
+}

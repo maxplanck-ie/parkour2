@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0429fc83b8c84fe5002dcb6c72d80291667f9bb04022c848930e669316006cd4
-size 231
+$fa-font-path: get-resource-path('fonts', 'shared');
+
+@import "_mixins";
+
+// NOTE:
+//  _variables.scss is imported much earlier by ext/sass/etc/font-awesome-variables.scss
+//  all css generating pieces are imported by src/all.scss

@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9aa29030d3111fc4a447269c4eee97e68bdaa9675c7a1e5b9f160072c0b545ee
-size 415
+/**
+ * @class Ext.field.Checkbox
+ */
+
+.x-checkboxfield {
+    .x-mask-el {
+        &::after {
+            @include checkmark(#ccc);
+        }
+    }
+
+    .x-input-el {
+        visibility: hidden;
+
+        &:checked + .x-mask-el::after {
+            color: $ios7-blue;
+        }
+    }
+
+    &.x-disabled {
+        .x-input-el:checked + .x-mask-el::after {
+            color: lighten($ios7-blue, 20%);
+        }
+    }
+}

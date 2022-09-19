@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9956a8b3823782e7e72b83f1c16dfc7a727e10ce17314ea6ffce831310f8b2f2
-size 291
+.#{$prefix}thumb {
+    position: absolute;
+    left: 0;
+    top: 50% !important; // overrides inline style applied by translatable during dragging
+    @include st-box;
+    @include st-box-pack(center);
+    @include st-box-align(center);
+
+    + .#{$prefix}sizer-el {
+        width: 0;
+    }
+}

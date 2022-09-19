@@ -1,3 +1,21 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4918f79bb2be1d4d86d55d84324d36613a0ff01b0cb5151cdbd90a7c663d3a2a
-size 320
+.x-tab {
+    background-color: #eee;
+    border: 1px solid #ccc;
+    min-width : 3.3em;
+}
+
+.x-tabbar {
+    border-color: #ccc;
+    border-style: solid;
+    border-width: 0;
+    background-color: #eee;
+}
+
+.x-tabbar.x-docked-top {
+    border-bottom-width: 1px;
+}
+
+.x-tabbar.x-docked-bottom {
+    border-top-width: 1px;
+}
+

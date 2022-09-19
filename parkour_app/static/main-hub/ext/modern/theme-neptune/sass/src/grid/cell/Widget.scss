@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:06af7a5851d2d4f71b1908760d419a48d343278eeabb292bd7171badb7ef8187
-size 104
+@include widgetcell-ui(
+    $padding: $widgetcell-padding,
+    $padding-big: $widgetcell-padding-big
+);

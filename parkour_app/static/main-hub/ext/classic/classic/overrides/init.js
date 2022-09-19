@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4de9a09045b66b57f3ee52edec8955c4941fcfcd4bf14b071a6c8bfe926f026f
-size 304
+// @override Ext
+
+// This file is order extremely early (typically right after Ext.js) due to the
+// above Cmd directive. This ensures that the "modern" and "classic" platform tags
+// are properly set up as soon as possible.
+
+Ext.platformTags.modern = !(Ext.platformTags.classic = Ext.isClassic = true);

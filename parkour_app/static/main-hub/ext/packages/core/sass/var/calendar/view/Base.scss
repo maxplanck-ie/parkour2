@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:083eb35889eded2a856c54a1e21a64d520ddba431c22967b894b74d16b3bed42
-size 434
+$calendar-background-color: dynamic(#fff);
+
+$calendar-font-size: dynamic($font-size);
+
+$calendar-large-font-size: dynamic($font-size);
+
+$calendar-small-font-size: dynamic($font-size);
+
+$calendar-font-family: dynamic($font-family);
+
+$calendar-border-color: dynamic(#ddd);
+
+$calendar-selection-color: dynamic(#cff);
+
+$calendar-tooltip-border-color: $panel-border-color;
+
+$calendar-tooltip-background-color: $panel-body-background-color;

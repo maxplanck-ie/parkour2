@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f66bb6ed72ef66cc60c25af2ef36d178144b0f6917403592d91dda0c50e9c052
-size 707
+This classic-specific directory can include any (if not all) of the following directories:  
+
+* overrides: Any classes in this directory will be automatically required and included in the classic build.
+In case any of these classes define an Ext JS override (using Ext.define with an "override" property),
+that override will in fact only be included in the build if the target class specified
+in the "override" property is also included.  
+
+- sass: Any classic-specific style rules should reside in this package, following the same structure
+as the directory in the package root (see package.json for more information).  
+
+- src: The classic-specific classes of this package should reside in this directory.

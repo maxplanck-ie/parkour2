@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ed744b660c00c3ad2c5b8d98e78b3ad73d1a3c4058939a3b8f591693059c3ce9
-size 399
+/**
+ * @class Ext.chart.axis.Numeric3D
+ */
+Ext.define('Ext.chart.axis.Numeric3D', {
+    extend: 'Ext.chart.axis.Axis3D',
+    alias: ['axis.numeric3d'],
+    type: 'numeric3d',
+    requires: [
+        'Ext.chart.axis.layout.Continuous',
+        'Ext.chart.axis.segmenter.Numeric'
+    ],
+    config: {
+        layout: 'continuous',
+
+        segmenter: 'numeric',
+
+        aggregator: 'double'
+    }
+});

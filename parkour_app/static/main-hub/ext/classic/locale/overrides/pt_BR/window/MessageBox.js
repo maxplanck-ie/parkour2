@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b639efaf5ea55714a8a4a9e8d78e53415a62eb9448133aa8e6524835ff8ecf3e
-size 206
+Ext.define("Ext.locale.pt_BR.window.MessageBox", {
+    override: "Ext.window.MessageBox",
+    buttonText: {
+        ok: "OK",
+        cancel: "Cancelar",
+        yes: "Sim",
+        no: "Não"
+    }    
+});

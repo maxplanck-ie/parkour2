@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:69d564738fe04488f3b534a35afc28d47e4aa0997457e8cda4061cc47b4596d3
-size 244
+@include summaryrow-ui(
+    $color: $summaryrow-color,
+    $background-color: $summaryrow-background-color,
+    $border-width: $summaryrow-border-width,
+    $border-style: $summaryrow-border-style,
+    $border-color: $summaryrow-border-color
+);

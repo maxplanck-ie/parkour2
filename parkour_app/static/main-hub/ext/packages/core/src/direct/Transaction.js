@@ -1,3 +1,44 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3f97646360581aae1956572a1ebb03160a8f2cddfe5be60d2c551270dac75168
-size 877
+/**
+ * Supporting Class for Ext Direct (not intended to be used directly).
+ */
+Ext.define('Ext.direct.Transaction', {
+    alias: 'direct.transaction',
+   
+    statics: {
+        TRANSACTION_ID: 0
+    },
+    
+    /**
+     * @cfg {Ext.direct.Provider} provider Provider to use with this Transaction.
+     */
+   
+    /**
+     * Creates new Transaction.
+     * @param {Object} [config] Config object.
+     */
+    constructor: function(config) {
+        var me = this;
+        
+        Ext.apply(me, config);
+
+        me.id = me.tid = ++me.self.TRANSACTION_ID;
+        me.retryCount = 0;
+    },
+   
+    send: function() {
+        var me = this;
+        
+        me.provider.queueTransaction(me);
+    },
+
+    retry: function() {
+        var me = this;
+        
+        me.retryCount++;
+        me.send();
+    },
+
+    getProvider: function() {
+        return this.provider;
+    }
+});

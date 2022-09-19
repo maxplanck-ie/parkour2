@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5810a7f3ed8ca5811958b229d58590241eeb2d2c094f663cdd3a7c6999bbe555
-size 384
+Ext.define('Ext.rtl.layout.container.boxOverflow.Scroller', {
+    override: 'Ext.layout.container.boxOverflow.Scroller',
+
+    getWheelDelta: function(e) {
+        var layout = this.layout,
+            delta = e.getWheelDelta();
+
+        if (layout.direction === 'horizontal' && layout.owner.getInherited().rtl) {
+            delta = -delta;
+        }
+
+        return delta;
+    }
+});

@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6648adaecface0ee15a017224257e7b47e7b5f9565b228c59df6b401e2233539
-size 340
+.x-sheet,
+.x-picker,
+.x-sheet-action {
+    padding: $sheet-padding;
+    background-color: $sheet-background-color;
+    border-top: 1px solid $sheet-border-color;
+}
+
+.x-sheet-inner,
+.x-sheet-action-inner {
+    > .x-button {
+        margin-bottom: $sheet-button-spacing;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+}

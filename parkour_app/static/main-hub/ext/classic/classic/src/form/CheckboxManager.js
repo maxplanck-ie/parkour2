@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:714909b80d9806e0344a128387d18016ab60be5d2dd7af04ad87b0bad6dbefc8
-size 399
+/**
+ * @private
+ * Private utility class for managing all {@link Ext.form.field.Checkbox} fields grouped by name.
+ */
+Ext.define('Ext.form.CheckboxManager', {
+    extend: 'Ext.util.MixedCollection',
+    singleton: true,
+
+    getByName: function(name, formId) {
+        return this.filterBy(function(item) {
+            return item.name === name && item.getFormId() === formId;
+        });
+    }
+});

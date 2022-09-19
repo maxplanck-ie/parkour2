@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:56ad81887bdda1f48127b25e88d5e675c84f2e1a69a0ad2d3f71cf5497fd383c
-size 575
+Ext.define('Ext.theme.triton.menu.Menu', {
+    override: 'Ext.menu.Menu',
+    
+    compatibility: Ext.isIE8,
+    
+    afterShow: function() {
+        var me = this,
+            items, item, i, len;
+        
+        me.callParent(arguments);
+        
+        items = me.items.getRange();
+        
+        for (i = 0, len = items.length; i < len; i++) {
+            item = items[i];
+            
+            // Just in case if it happens to be a non-menu Item 
+            if (item && item.repaintIcons) {
+                item.repaintIcons();
+            }
+        }
+    }
+});

@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ffae96c778fe53c5e710e7d00f804daf08c1a9f94ddca7e96cc785e0f58801af
-size 331
+Ext.define('Ext.chart.theme.SkyGradients', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.sky-gradients',
+        'chart.theme.Sky:gradients'
+    ],
+    config: {
+        baseColor: '#4ce0e7',
+        gradients: {
+            type: 'linear',
+            degrees: 90
+        }
+    }
+});
