@@ -15,8 +15,13 @@ _quickly jump to that information you need!_ 🤸🏻‍♀️
 ## Documentation
 
 - Installation instructions available on the [Wiki](https://github.com/maxplanck-ie/parkour2/wiki/Installation#steps).
+
 <br />
-- Our "old" [User Manual](https://parkour.readthedocs.io/manual.html) is still valid, and provides detailed information on this LIMS features.
+
+- Our "old" [User Manual](https://parkour.readthedocs.io/manual.html) is still valid, and provides detailed information on the LIMS features.
+
 <br />
-- Last but not least, there's the original 2019 [Research Article](https://doi.org/10.1093/bioinformatics/bty820).
+
+- Last, but not least, there's the original 2019 [Research Article](https://doi.org/10.1093/bioinformatics/bty820). Please read & cite.
+
 <br />
