@@ -94,7 +94,7 @@ convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sql
 
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
-		find $$PWD/media_dump/ -maxdepth 1 -type d | \
+		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
 			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
 
 load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
