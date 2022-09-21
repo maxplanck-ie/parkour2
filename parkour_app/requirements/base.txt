@@ -19,7 +19,7 @@ bioblend==0.18.0
     # via -r parkour_app/requirements/base.in
 boto==2.49.0
     # via bioblend
-certifi==2022.6.15
+certifi==2022.9.14
     # via requests
 charset-normalizer==2.1.1
     # via
@@ -43,9 +43,9 @@ django-admin-list-filter-dropdown==1.0.3
     # via -r parkour_app/requirements/base.in
 django-authtools==2.0.0
     # via -r parkour_app/requirements/base.in
-django-extensions==3.2.0
+django-extensions==3.2.1
     # via -r parkour_app/requirements/base.in
-django-import-export==2.8.0
+django-import-export==2.9.0
     # via -r parkour_app/requirements/base.in
 django-monthfield==0.1.3
     # via -r parkour_app/requirements/base.in
@@ -63,7 +63,7 @@ future==0.18.2
     # via tuspy
 gunicorn==20.1.0
     # via -r parkour_app/requirements/base.in
-idna==3.3
+idna==3.4
     # via
     #   requests
     #   yarl
@@ -75,7 +75,7 @@ multidict==6.0.2
     # via
     #   aiohttp
     #   yarl
-numpy==1.23.2
+numpy==1.23.3
     # via
     #   -r parkour_app/requirements/base.in
     #   pandas
@@ -83,7 +83,7 @@ odfpy==1.4.1
     # via tablib
 openpyxl==3.0.10
     # via tablib
-pandas==1.4.4
+pandas==1.5.0
     # via -r parkour_app/requirements/base.in
 psycopg2-binary==2.8.6
     # via -r parkour_app/requirements/base.in
