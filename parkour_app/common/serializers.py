@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
 
 
-from .models import CostUnit, PrincipalInvestigator
+from .models import CostUnit, User
 
 
 class CostUnitSerializer(ModelSerializer):
@@ -15,8 +15,8 @@ class PrincipalInvestigatorSerializer(ModelSerializer):
     name = SerializerMethodField()
 
     class Meta:
-        model = PrincipalInvestigator
+        model = User
         fields = ("id", "name")
 
     def get_name(self, obj):
-        return str(obj)
+        return  str(obj)

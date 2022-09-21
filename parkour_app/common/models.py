@@ -8,7 +8,7 @@ def get_deleted_org():
 
 
 def get_deleted_pi():
-    return PrincipalInvestigator.objects.get_or_create(name="deleted PI")[0]
+    return User.objects.get_or_create(name="deleted PI")[0]
 
 
 class Organization(models.Model):
@@ -18,27 +18,10 @@ class Organization(models.Model):
         return self.name
 
 
-class PrincipalInvestigator(models.Model):
-    name = models.CharField("Name", max_length=100)
-    organization = models.ForeignKey(
-        Organization, on_delete=models.SET(get_deleted_org)
-    )
-    parent_user = models.OneToOneField(
-        'User', on_delete=models.PROTECT, default=None, null=True, blank=True)
-
-    class Meta:
-        verbose_name = "Principal Investigator"
-        verbose_name_plural = "Principal Investigators"
-        ordering = ["organization__name", "name"]
-
-    def __str__(self):
-        return f"{self.name} ({self.organization.name})"
-
-
 class CostUnit(models.Model):
     name = models.CharField("Name", max_length=100)
     pi = models.ForeignKey(
-        PrincipalInvestigator,
+        'User',
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
@@ -50,13 +33,13 @@ class CostUnit(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return f"{self.name} ({self.pi.organization.name}: {self.pi.name})"
+        return self.name
 
 
 class OIDCGroup (models.Model):
     name = models.CharField("Name", max_length=200, unique=True)
     pi = models.ForeignKey(
-        PrincipalInvestigator,
+        'User',
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
@@ -86,26 +69,31 @@ class User(AbstractEmailUser):
         'Bioinformatician status',
         help_text='Designates whether a user belongs to Bioinformatics.',
         default=False)
+    is_pi = models.BooleanField(
+        'Principal Investigator status',
+        help_text='Designates whether a user is a Principal Investigator.',
+        default=False)
 
     organization = models.ForeignKey(
         Organization,
         verbose_name="Organization",
         on_delete=models.SET_NULL,
         null=True,
-        blank=True,
+        blank=False,
     )
 
     pi = models.ManyToManyField(
-        PrincipalInvestigator,
+        'self',
         verbose_name="Principal Investigator",
+        symmetrical=False,
         blank=True,
     )
 
-    # cost_unit = models.ManyToManyField(
-    #     CostUnit,
-    #     verbose_name="Cost Unit",
-    #     blank=True,
-    # )
+    cost_unit = models.ManyToManyField(
+        CostUnit,
+        verbose_name="Cost Unit",
+        blank=True,
+    )
 
     class Meta:
         db_table = "auth_user"
@@ -116,7 +104,7 @@ class User(AbstractEmailUser):
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
+        return f"{self.first_name} {self.last_name} ({self.organization})"
 
 
 class DateTimeMixin(models.Model):

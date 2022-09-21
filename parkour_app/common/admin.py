@@ -1,6 +1,6 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm, UserChangeForm
-from common.models import CostUnit, Organization, PrincipalInvestigator, OIDCGroup
+from common.models import CostUnit, Organization, OIDCGroup
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -20,22 +20,6 @@ class CostUnitInline(admin.TabularInline):
 class OIDCGroupInline(admin.TabularInline):
     model = OIDCGroup
     extra = 1
-
-
-@admin.register(PrincipalInvestigator)
-class PrincipalInvestigatorAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "organization",
-        'parent_user',
-    )
-    search_fields = (
-        "name",
-        "organization__name",
-    )
-    autocomplete_fields = ['parent_user']
-    list_filter = ("organization",)
-    inlines = [CostUnitInline, OIDCGroupInline]
 
 
 @admin.register(Organization)
@@ -124,6 +108,7 @@ class UserChangeForm(UserChangeForm, CheckUserEmailExtension):
 
 
 class UserAdmin(NamedUserAdmin):
+    inlines = [CostUnitInline, OIDCGroupInline]
     form = UserChangeForm
     add_form = UserCreationForm
     add_fieldsets = (
@@ -139,6 +124,7 @@ class UserAdmin(NamedUserAdmin):
                     "first_name",
                     "last_name",
                     "email",
+                    "is_pi",
                 ),
             },
         ),
@@ -156,12 +142,11 @@ class UserAdmin(NamedUserAdmin):
         "first_name",
         "last_name",
         "email",
-        "phone",
         "organization",
         "pis",
-        # "cost_units",
-        "is_staff",
-        'is_bioinformatician'
+        "pi_status",
+        "staff_status",
+        'bioinformatician_status',
     )
 
     search_fields = (
@@ -170,8 +155,7 @@ class UserAdmin(NamedUserAdmin):
         "email",
         "phone",
         "organization__name",
-        "pi__name",
-        # "cost_unit__name",
+        "pi__last_name",
     )
 
     list_filter = (
@@ -185,7 +169,6 @@ class UserAdmin(NamedUserAdmin):
     )
     autocomplete_fields = (
         "pi",
-        # "cost_unit",
     )
     filter_horizontal = (
         "groups",
@@ -210,8 +193,8 @@ class UserAdmin(NamedUserAdmin):
                 "fields": (
                     "phone",
                     "organization",
+                    "is_pi",
                     "pi",
-                    # "cost_unit",
                 ),
             },
         ),
@@ -236,13 +219,46 @@ class UserAdmin(NamedUserAdmin):
         ),
     )
 
-    # def cost_units(self, obj):
-    #     cost_units = obj.cost_unit.all().values_list("name", flat=True)
-    #     return ", ".join(sorted(cost_units))
-
     def pis(self, obj):
-        pis = obj.pi.all().values_list("name", flat=True)
-        return ", ".join(sorted(pis))
+        return ", ".join(sorted([pi.full_name for pi in obj.pi.all()]))
+
+    def pi_status(self, obj):
+        return obj.is_pi
+    pi_status.boolean = True
+    pi_status.short_description = "PI?"
+    pi_status.admin_order_field = 'is_pi'
+
+    def staff_status(self, obj):
+        return obj.is_staff
+    staff_status.boolean = True
+    staff_status.short_description = "Staff?"
+    staff_status.admin_order_field = 'is_staff'
+
+    def bioinformatician_status(self, obj):
+        return obj.is_bioinformatician
+    bioinformatician_status.boolean = True
+    bioinformatician_status.short_description = "BioInfo?"
+    bioinformatician_status.admin_order_field = 'is_bioinformatician'
+
+    def add_view(self, request, extra_context=None):
+        self.inlines = []
+        return super().add_view(request)
+
+    def change_view(self, request, object_id, extra_context=None):
+        
+        self.inlines = []
+        obj = self.model.objects.get(id=object_id)
+        if obj.is_pi:
+            self.inlines = [CostUnitInline, OIDCGroupInline]
+        return super().change_view(request, object_id)
+
+    def get_search_results(self, request, queryset, search_term):
+
+        if request.GET.get('field_name', '') == 'pi':
+            queryset, use_distinct = super(UserAdmin, self).get_search_results(request, queryset, search_term)
+            return queryset.filter(is_pi=True), use_distinct
+
+        return super().get_search_results(request, queryset, search_term)
 
     def save_model(self, request, obj, form, change):
         if not change and (

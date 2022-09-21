@@ -88,9 +88,17 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
     // Load PIs
     Ext.getStore('PrincipalInvestigators').reload({
+      params: {
+        request_pi: request ? request.pi : null
+      },
       callback: function (records, operation, success) {
         if (success && request) {
           piCb.setValue(request.pi);
+        }
+        else {
+          if (!(USER.is_staff || USER.is_bioinformatician) && Ext.getStore('PrincipalInvestigators').getCount() === 1) {
+            piCb.setValue(Ext.getStore('PrincipalInvestigators').first());
+          }
         }
       }
     });
@@ -98,7 +106,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     // Load Cost Units
     Ext.getStore('CostUnits').reload({
       params: {
-        principal_investigator_id: request.pi ? request.pi : null
+        principal_investigator_id: request ? request.pi : null
       },
       callback: function (records, operation, success) {
         if (success && request) {

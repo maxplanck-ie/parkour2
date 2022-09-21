@@ -199,7 +199,10 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
             request_queryset = Request.objects.all().order_by("-create_time")
 
         if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
-            request_queryset = request_queryset.filter(user=request.user)
+            if self.request.user.is_pi:
+                request_queryset = request_queryset.filter(pi=self.request.user)
+            else:
+                request_queryset = request_queryset.filter(user=self.request.user)
 
         for request_obj in request_queryset:
             # TODO: sort by item['barcode'][3:]

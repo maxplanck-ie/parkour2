@@ -123,10 +123,7 @@ class PrincipalInvestigatorsUsage(APIView):
         samples_qs = Sample.objects.only("id")
 
         requests = (
-            Request.objects.select_related(
-                "user",
-                "user__pi",
-            )
+            Request.objects
             .prefetch_related(
                 Prefetch(
                     "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
@@ -134,13 +131,13 @@ class PrincipalInvestigatorsUsage(APIView):
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
             .filter(create_time__gte=start, create_time__lte=end)
-            .only("id", "user__pi__name", "libraries", "samples")
+            .only("id", "libraries", "samples")
         )
 
         counts = {}
         for req in requests:
-            pi = req.user.pi
-            pi_name = pi.name if pi else "None"
+            pi = req.pi
+            pi_name = pi.full_name if pi else "None"
             if pi_name not in counts.keys():
                 counts[pi_name] = {"libraries": 0, "samples": 0}
             counts[pi_name]["libraries"] += len(req.fetched_libraries)

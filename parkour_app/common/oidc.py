@@ -1,7 +1,7 @@
 from mozilla_django_oidc.auth import OIDCAuthenticationBackend
 from django.contrib.auth.models import Group
 from django.conf import settings
-from common.models import PrincipalInvestigator
+from common.models import User
 from django.core.mail import send_mail
 from django.urls import reverse
 from django.template.loader import render_to_string
@@ -105,7 +105,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
             # For regular users, try to assign a PI and organization based on
             # their OIDC groups
             try:
-                pis = PrincipalInvestigator.objects.filter(oidcgroup__name__in=user_groups).distinct()
+                pis = User.objects.filter(oidcgroup__name__in=user_groups, is_pi=True).distinct()
             except:
                 pis = None
             if pis:

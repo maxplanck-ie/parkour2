@@ -8,8 +8,9 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
 
-from .models import CostUnit, PrincipalInvestigator
+from .models import CostUnit
 from .serializers import CostUnitSerializer, PrincipalInvestigatorSerializer
 
 User = get_user_model()
@@ -29,6 +30,7 @@ def index(request):
                     "name": user.full_name,
                     "is_staff": user.is_staff,
                     "is_bioinformatician": user.is_bioinformatician,
+                    "is_pi": user.is_pi,
                 }
             ),
         },
@@ -127,16 +129,17 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         pi_id = self.request.query_params.get("principal_investigator_id", None)
+        if self.request.user.is_pi:
+            pi_id = self.request.user.id
         try:
-            user = self.request.user
-            pi = get_object_or_404(PrincipalInvestigator, id=pi_id)
+            pi = get_object_or_404(User, id=pi_id)
             queryset = pi.costunit_set.all().order_by("name")
-            if user.is_staff or user.is_bioinformatician:
+            if self.request.user.is_staff or self.request.user.is_bioinformatician:
                 return queryset
             else:
                 return queryset.filter(obsolete=settings.NON_OBSOLETE)
         except Exception:
-            return CostUnit.objects.none()
+            return CostUnit.objects.all() if self.request.user.is_staff or self.request.user.is_bioinformatician else CostUnit.objects.none()
 
 
 class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
@@ -145,14 +148,23 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PrincipalInvestigatorSerializer
 
     def get_queryset(self):
+        # If a seq request already exists, add the PI attached to it 
+        # to the list of PIs shown in the PI drop-down box for said request
+        # This is to account for those cases where a PI is not attached to
+        # a User anymore and therefore would not otherwise be shown
+        seq_request_pi_id = self.request.query_params.get("request_pi", None)
+        seq_request_pi_id = seq_request_pi_id if seq_request_pi_id else None
         try:
             user = self.request.user
             if user.is_staff or user.is_bioinformatician:
-                return PrincipalInvestigator.objects.all().order_by("name")
+                qs =  User.objects.filter(Q(is_pi=True) | Q(id=seq_request_pi_id))
+            elif user.is_pi:
+                qs = User.objects.filter(id__in=[user.id, seq_request_pi_id])
             else:
-                return user.pi.all().order_by("name")
+                qs = User.objects.filter(id__in=list(user.pi.all().values_list('id', flat=True)) + [seq_request_pi_id])
+            return qs.distinct().order_by("last_name")
         except Exception:
-            return PrincipalInvestigator.objects.none()
+            return User.objects.none()
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):

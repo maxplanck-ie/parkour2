@@ -14,7 +14,7 @@ from pandas import DataFrame
 from .sql import LIBRARY_SELECT, QUERY, SAMPLE_JOINS, SAMPLE_SELECT
 
 Organization = apps.get_model("common", "Organization")
-PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
+# PrincipalInvestigator = apps.get_model("common", "PrincipalInvestigator")
 LibraryProtocol = apps.get_model("library_sample_shared", "LibraryProtocol")
 
 Library = apps.get_model("library", "Library")
@@ -150,8 +150,8 @@ class Report:
         counts = {}
 
         for req in self.requests:
-            pi = req.user.pi
-            pi_name = pi.name if pi else "None"
+            pi = req.pi
+            pi_name = pi.full_name if pi else "None"
             if pi_name not in counts.keys():
                 counts[pi_name] = {"libraries": 0, "samples": 0}
             counts[pi_name]["libraries"] += len(req.fetched_libraries)
@@ -203,8 +203,8 @@ class Report:
 
         pi_mapping = {}
         for req in self.requests:  # gets records from requests
-            pi = req.user.pi
-            pi_name = pi.name if pi else "None"
+            pi = req.pi
+            pi_name = pi.full_name if pi else "None"
             records = req.fetched_libraries + req.fetched_samples
 
             pi_mapping.update(

@@ -1,7 +1,7 @@
 import json
 import tempfile
 
-from common.models import Organization, PrincipalInvestigator
+from common.models import Organization
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
@@ -31,11 +31,14 @@ class TestRequestModel(TestCase):
         self.org = Organization(name=get_random_name())
         self.org.save()
 
-        self.pi = PrincipalInvestigator(
-            name=get_random_name(),
+        self.pi = User.objects.create_user(
+            first_name="Greatest",
+            last_name="Pie",
+            email="greatest.pie@bar.io",
+            password="pie-pie",
             organization=self.org,
+            is_pi=True
         )
-        self.pi.save()
 
         self.user = User.objects.create_user(
             first_name="Foo",

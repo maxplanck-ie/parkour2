@@ -33,10 +33,12 @@ class LibrarySampleTree(viewsets.ViewSet):
             .order_by("-create_time")
         )
         if not showAll:
-
             queryset = queryset.filter(sequenced=False)
         if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
-            queryset = queryset.filter(user=self.request.user)
+            if self.request.user.is_pi:
+               queryset =queryset.filter(pi=self.request.user)
+            else:
+                queryset = queryset.filter(user=self.request.user)
 
         return queryset
 
@@ -75,7 +77,10 @@ class LibrarySampleTree(viewsets.ViewSet):
             )
 
             if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
-                queryset = queryset.filter(user=self.request.user)
+                if self.request.user.is_pi:
+                    queryset = queryset.filter(pi=self.request.user)
+                else:
+                    queryset = queryset.filter(user=self.request.user)
 
             queryset = queryset.first()
             serializer = RequestChildrenNodesSerializer(queryset)

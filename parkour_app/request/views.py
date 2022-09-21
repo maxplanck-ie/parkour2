@@ -156,7 +156,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         "name",
         "user__last_name",
         "cost_unit__name",
-        "user__pi__name",
+        "pi__last_name",
         "user__organization__name"
     )
 
@@ -184,6 +184,8 @@ class RequestViewSet(viewsets.ModelViewSet):
             # queryset = [x for x in queryset if x.statuses.count(6) == 0]
             # queryset = [x for x in queryset if x.statuses.count(5)==0]
             pass
+        elif self.request.user.is_pi:
+            queryset = queryset.filter(pi=self.request.user)
         else:
             queryset = queryset.filter(user=self.request.user)
 
