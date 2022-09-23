@@ -127,11 +127,14 @@ shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
+dbshell:
+	@docker exec -it parkour2-postgres psql -U postgres -p 5432
+
 reload-nginx:
 	@docker exec -it parkour2-nginx nginx -s reload
 
 reload-django:
-	@find $$PWD/parkour_app/ -maxdepth 1 -type d -mtime -3 | \
+	@find $$PWD/parkour_app/ -maxdepth 1 -mindepth 1 -type d -mtime -3 | \
 		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
 
 graph_models:
