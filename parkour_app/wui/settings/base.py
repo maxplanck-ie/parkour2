@@ -25,7 +25,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 
 
 # Allow all host headers
-ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
+ALLOWED_HOSTS = ["*"]
 
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
