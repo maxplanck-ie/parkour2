@@ -1,8 +1,0 @@
-*.cfg filter=lfs diff=lfs merge=lfs -text
-*.cvsignore filter=lfs diff=lfs merge=lfs -text
-*.eslintrc filter=lfs diff=lfs merge=lfs -text
-*.md filter=lfs diff=lfs merge=lfs -text
-*.otf filter=lfs diff=lfs merge=lfs -text
-*.properties filter=lfs diff=lfs merge=lfs -text
-*.rb filter=lfs diff=lfs merge=lfs -text
-*.svg filter=lfs diff=lfs merge=lfs -text
