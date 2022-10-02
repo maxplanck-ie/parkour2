@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8c83e8af4769b628e3e1c51d2ee96592c94110711e5bb7aafaf1b19cff43f45f
-size 668
+/**
+ */
+Ext.define('Ext.data.field.Boolean', {
+    extend: 'Ext.data.field.Field',
+
+    alias: [
+        'data.field.bool',
+        'data.field.boolean'
+    ],
+
+    isBooleanField: true,
+
+    /**
+     * @property [trueRe]
+     * Values matching this regular expression are considered `true`.
+     */
+    trueRe: /^\s*(?:true|yes|on|1)\s*$/i,
+
+    convert: function (v) {
+        if (typeof v === 'boolean') {
+            return v;
+        }
+        if (this.allowNull && (v === undefined || v === null || v === '')) {
+            return null;
+        }
+        return this.trueRe.test(String(v));
+    },
+    
+    getType: function() {
+        return 'bool';
+    }
+});

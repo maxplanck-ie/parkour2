@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cf80c3ce0cca41cdcb58323ede534ebad7d3bd0328a42d3dc319666e7a7ed636
-size 611
+/*
+ * This file is generated as a starting point by Sencha Cmd - it will not be replaced or
+ * updated by "sencha package upgrade".
+ * 
+ * This file can be removed and the script tag in theme.html removed if this theme does
+ * not need custom additional manifest or shortcut entries. These are documented in
+ * ./packages/theme-base/sass/example/render.js.
+ */
+
+Ext.theme.addManifest(
+    {
+        xtype: 'button',
+        ui: 'plain-toolbar'
+    },
+    {
+        xtype: 'widget.panel',
+        ui: 'light'
+    },
+    {
+        xtype: 'widget.header',
+        ui: 'light'
+    }
+);
+
+//Ext.theme.addShortcuts();

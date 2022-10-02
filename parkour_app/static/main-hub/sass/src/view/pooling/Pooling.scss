@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6397ac35ba5ebf333d612e83ce8b4346f5f5be0469d6d6a2b66307bc686abffa
-size 371
+.download-pooling-template {
+    float: right;
+}
+
+.download-pooling-template a,
+.download-pooling-template a:hover {
+    color: #606060;
+}
+
+.library-not-prepared {
+    color: #9e9e9e;
+    background-color: #fafafa;
+}
+
+.library-not-prepared .x-grid-item-focused {
+    color: #9e9e9e;
+}
+
+.pool-header-red {
+    color: #c62828;
+}
+
+.pool-header-green {
+    color: #388e3c;
+}

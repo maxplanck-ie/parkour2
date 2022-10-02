@@ -1,3 +1,31 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:666deeeddecd6cf3e220385dd9ed0c29376b145523eee4a863ad097c51fe037e
-size 986
+Ext.define(null, {
+    override: 'Ext.form.field.Checkbox',
+    
+    compatibility: Ext.isIE8,
+    
+    // IE8 does not support change event but it has propertychange which is even better
+    changeEventName: 'propertychange',
+    
+    onChangeEvent: function(e) {
+        // IE8 propertychange fires for *any* property change but we're only interested in checked
+        // We also don't want to react to propertychange fired as the result of assigning
+        // checked property in setRawValue().
+        if (this.duringSetRawValue || e.browserEvent.propertyName !== 'checked') {
+            return;
+        }
+        
+        this.callParent([e]);
+    },
+    
+    updateCheckedCls: function(checked) {
+        var me = this,
+            displayEl = me.displayEl;
+        
+        me.callParent([checked]);
+        
+        // IE8 has a bug with font icons and pseudo-elements
+        if (displayEl && checked !== me.lastValue) {
+            displayEl.repaint();
+        }
+    }
+});

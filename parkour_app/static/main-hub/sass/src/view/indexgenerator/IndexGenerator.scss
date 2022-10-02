@@ -1,3 +1,46 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:85c20ee708d2727b5fcd4b92740d1a0520977521dc883410c4b52769576b59fc
-size 810
+.pooling-grid .nucleotide .x-grid-cell-inner {
+    text-align: center !important;
+}
+
+.pooling-grid .nucleotide-header {
+    text-align: center;
+}
+
+.x-grid-row-summary .x-grid-cell.problematic-cycle {
+    background-color: #ef5350 !important;
+    font-weight: bold;
+    color: #fff;
+}
+
+.x-grid-row-summary .x-grid-cell.problematic-cycle .x-grid-cell-inner {
+    text-align: center !important;
+}
+
+.summary-green {
+    color: #388e3c;
+    font-weight: bold;
+}
+
+.summary-red {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.x-item-disabled {
+  &.x-boundlist-item {
+    color: #8c8c8c;
+    cursor: default;
+  }
+  &.x-boundlist-item-over {
+    background: inherit;
+    border-color: white;
+  }
+}
+
+* grayed out combobox item */
+
+.obsolete2 {
+  color: lightgray;
+  background-color: whitesmoke;
+  font-style: italic;
+}

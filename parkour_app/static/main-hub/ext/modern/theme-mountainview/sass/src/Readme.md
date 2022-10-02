@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:32f59d5c9df4e3d6bc29b120117bcb9145a7a87d7e2775dca2fe308ad728464b
-size 202
+# theme-mountainview/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1c8f1eb1de86ec1614a953308fe1ec803d89ee12565a3f234af2831e671c6ee9
-size 207
+/**
+ * @class Ext.field.Select
+ */
+
+.x-panel.x-selectfield-overlay {
+	padding: 8px;
+	background-color: #fff;
+
+	> .x-panel-inner {
+		overflow: hidden;
+	}
+
+	.x-list {
+		background: transparent !important;
+	}
+}

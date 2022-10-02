@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:df69667ca40a6e2e766df819b1f0c43b72874d6de19ace6af5ab570ac2bca1d4
-size 155
+/**
+ * Makes the element text overflow to use ellipsis.
+ */
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:52f040b9d193dcb0ee6c7d1e4b9437bffae1bed4facbb2a7e0facc74c4690efa
-size 1007
+SenchaTestRunner.bindings = {
+
+    setCurrentScript : function(script) {
+        jasmine.setCurrentScript(script);
+    },
+
+    waitUntilPageIsReady : function(callbackFunction) {
+        var args = arguments;
+        if (typeof Ext !== 'undefined') {
+            Ext.require('*');
+            Ext.onReady(function() {
+                window.__pageIsReady = true;
+            });
+        } else {
+            window.__pageIsReady = true;
+        }
+    },
+
+    startTestRunner : function(jsonOptions, contextDirectoryMapping) {
+//        jasmine.contextMapping = JSON.parse(contextDirectoryMapping);
+        jasmine.setOptions(jsonOptions);
+        jasmine.initDebug();
+        jasmine.getEnv().addReporter(new SenchaTestRunner.Reporter());
+        jasmine.getEnv().execute();
+    },
+
+    testsAreRunning : function() {
+        return SenchaTestRunner.isRunning();
+    },
+
+    getTestResultsAsJson : function() {
+        return JSON.stringify(SenchaTestRunner.results);
+    }
+
+};
+
+addGlobal('__pageIsReady');

@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:410fa00fdc48b616a8ed0a1759b1d31070c0806dc03cae8edb6d2505622c74c6
-size 799
+// Tree tables must assume either full width of the View element, or, when necessary, must overflow
+// They must not shrink wrap the width and only be as wide as their widest node's content.
+.#{$prefix}autowidth-table {
+    .#{$prefix}grid-item-container {
+        overflow: visible;
+    }
+    
+    .#{$prefix}grid-item {
+        table-layout: auto;
+        width: auto !important;
+    }
+}
+
+.#{$prefix}tree-view {
+    overflow: hidden;
+}
+
+.#{$prefix}tree-elbow-img,
+.#{$prefix}tree-icon {
+    display: inline-block;
+    text-align: center;
+    background-repeat: no-repeat;
+    background-position: 0 center;
+    vertical-align: top;
+}
+
+.#{$prefix}tree-checkbox {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+.#{$prefix}tree-animator-wrap {
+    overflow: hidden;
+}

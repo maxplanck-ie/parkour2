@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:ea84d2d97dea48d8319273ae2c3554d4904ed24a0e2b0f7fed396e68831b4fc8
-size 343
+$tree-elbow-width: dynamic(18px);
+$tree-glyph-color: dynamic($neutral-dark-color);
+$tree-elbow-spacing: dynamic(2px);
+$tree-checkbox-spacing: dynamic(4px);
+$tree-icon-spacing: dynamic(4px);
+$tree-cell-inner-padding: dynamic(
+    top($grid-cell-inner-padding)
+    right($grid-cell-inner-padding)
+    bottom($grid-cell-inner-padding)
+    6px
+);

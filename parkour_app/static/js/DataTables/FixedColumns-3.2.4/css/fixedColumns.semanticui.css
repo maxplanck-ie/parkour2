@@ -1,3 +1,40 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f1493cfbc2cce8e154e328f3f520ecc70940ede71692684e0a983aaca161cebf
-size 1472
+div.DTFC_LeftWrapper table.ui.table.dataTable {
+  border-right: none;
+}
+
+div.DTFC_RightWrapper table.ui.table.dataTable {
+  border-left: none;
+}
+
+div.DTFC_Blocker {
+  background-color: white;
+}
+
+div.DTFC_LeftWrapper table.dataTable,
+div.DTFC_RightWrapper table.dataTable {
+  z-index: 2;
+}
+
+div.DTFC_LeftHeadWrapper table.ui.table.dataTable,
+div.DTFC_RightHeadWrapper table.ui.table.dataTable {
+  border-bottom: none;
+}
+
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable {
+  border-top: none;
+}
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting:after,
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting_asc:after,
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting_desc:after,
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting:after,
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting_asc:after,
+div.DTFC_LeftBodyWrapper table.ui.table.dataTable thead .sorting_desc:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting_asc:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting_desc:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting_asc:after,
+div.DTFC_RightBodyWrapper table.ui.table.dataTable thead .sorting_desc:after {
+  display: none;
+}

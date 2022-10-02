@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8e4f2bc0cafa2e78af91bbdc682b0deabe526c5933af749e8295739ba771124b
-size 225
+$mask-opacity: dynamic(0.7);
+$mask-background-color: dynamic($background-color);
+
+$mask-page-opacity: dynamic($mask-opacity);
+$mask-page-background-color: dynamic($mask-background-color);
+
+$mask-message-color: dynamic(null);

@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0a9e6bab8827b0358a1fefa7c90cddc9255c3fcea43c7a11dede5066d8115cc5
-size 190
+.#{$prefix}checkcolumn {
+    @include st-box-orient(vertical);
+    @include st-box-align(center);
+
+    &.#{$prefix}no-header-checkbox .#{$prefix}checkbox-el {
+        display: none;
+    }
+}

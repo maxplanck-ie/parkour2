@@ -1,3 +1,5 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4653a5b8835d9eefe06ac4ec408ffe158bb9239a7258cdc96495515120ae0b12
-size 105
+require('px-to-em');
+
+@function px-to-em($px, $divisor) {
+    @return pxToEmHelper($px, $divisor, em);
+}

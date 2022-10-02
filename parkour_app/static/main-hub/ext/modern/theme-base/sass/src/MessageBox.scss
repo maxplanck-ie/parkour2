@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cbd8ddf07474e8efe14007978b43b71a7333e1c4de74b21e1b7d87a2c32e0485
-size 523
+/**
+ * @class Ext.MessageBox
+ */
+
+.x-msgbox {
+    min-width: 15em;
+    max-width: 20em;
+    max-height: 90%;
+
+    // to hide content that is too large (vertically)
+    .x-docking-vertical {
+        overflow: hidden;
+    }
+}
+
+// This will need to be generalized at some point
+.x-ie {
+    .x-msgbox {
+        .x-dock.x-dock-horizontal.x-unsized {
+            > .x-dock-body {
+               @include st-box-flex(1, 0px);
+            }
+        }
+    }
+}
+
+
+.x-msgbox-buttons {
+    .x-button {
+        min-width: 4.5em;
+    }
+}

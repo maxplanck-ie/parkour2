@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:762051f4ed5c1d2fe35b6c38086fea0bd92dcadd969769455a711ee5f4ba94db
-size 395
+Ext.define("Ext.locale.es.toolbar.Paging", {
+    override: "Ext.PagingToolbar",
+    beforePageText: "Página",
+    afterPageText: "de {0}",
+    firstText: "Primera página",
+    prevText: "Página anterior",
+    nextText: "Página siguiente",
+    lastText: "Última página",
+    refreshText: "Actualizar",
+    displayMsg: "Mostrando {0} - {1} de {2}",
+    emptyMsg: 'Sin datos para mostrar'
+});

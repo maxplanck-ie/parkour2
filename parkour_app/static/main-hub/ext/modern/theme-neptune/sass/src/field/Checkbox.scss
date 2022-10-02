@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c31b5977553927e0d43fea55795a0ef6159d873429eb1eabe1f0ecaa15c8a40b
-size 686
+@include checkboxfield-ui(
+    $checkbox-size: $checkboxfield-checkbox-size,
+    $checkbox-size-big: $checkboxfield-checkbox-size-big,
+    $checkbox-font-size: $checkboxfield-checkbox-font-size,
+    $checkbox-font-size-big: $checkboxfield-checkbox-font-size-big,
+    $checkbox-margin: $checkboxfield-checkbox-margin,
+    $checkbox-margin-big: $checkboxfield-checkbox-margin-big,
+    $checkbox-icon: $checkboxfield-checkbox-icon,
+    $checked-checkbox-icon: $checkboxfield-checked-checkbox-icon,
+    $checkbox-color: $checkboxfield-checkbox-color,
+    $checked-checkbox-color: $checkboxfield-checked-checkbox-color,
+    $disabled-checkbox-color: $checkboxfield-disabled-checkbox-color
+);

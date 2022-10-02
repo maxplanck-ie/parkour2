@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5400aada4278e30aec47662b960f6612924009b9fbc6daf993cfef67ca18bd05
-size 491
+Ext.define('Ext.rtl.util.FocusableContainer', {
+    override: 'Ext.util.FocusableContainer',
+    
+    privates: {
+        // Direction reversal here is necessary because right and left arrow
+        // are not reversed in RTL like Tab, so pressing left arrow would move
+        // focus to the right.
+        moveChildFocus: function(e, forward) {
+            var fwd = this.getInherited().rtl ? !forward : forward;
+        
+            return this.callParent([e, fwd]);
+        }
+    }
+});

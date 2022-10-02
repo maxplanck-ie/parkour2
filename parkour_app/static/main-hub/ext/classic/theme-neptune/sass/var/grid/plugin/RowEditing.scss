@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5a1695da57691833c65a984f0141e6dde02825ef53ebaa845cd9acd93e736fea
-size 394
+/** @class Ext.grid.plugin.RowEditing */
+//
+
+$grid-row-editor-background-color: dynamic(mix($base-light-color, $neutral-light-color, 30%));
+$grid-row-editor-padding: dynamic(5px 0 5px 0);
+$grid-row-editor-border-color: dynamic($neutral-color);
+$grid-row-editor-field-spacing: dynamic(5px);
+$grid-row-editor-button-spacing: dynamic(5px);
+$grid-row-editor-button-container-padding: dynamic(5px);

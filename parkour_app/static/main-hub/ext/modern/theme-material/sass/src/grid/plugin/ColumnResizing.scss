@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e9c25d6c6d190cedcebc7c08b9f9c18542e05abb992ff02c89aa2458fe8927dc
-size 228
+.#{$prefix}gridcolumn:after {
+  content: '';
+  width: 0;
+  background-color: $accent-light-color;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.#{$prefix}gridcolumn.#{$prefix}resizing:after {
+  width: 16px;
+}
+

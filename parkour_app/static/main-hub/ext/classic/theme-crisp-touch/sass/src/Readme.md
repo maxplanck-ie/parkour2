@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3df253b4637729c3e7484a97aa9ae7000786bb2bbb7b3eeb95c8f3ecded1cb5b
-size 201
+# theme-crisp-touch/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

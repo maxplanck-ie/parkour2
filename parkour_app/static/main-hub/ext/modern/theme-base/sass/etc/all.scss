@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e92b3272a324701af14f98e32d4fd0dd67b8bc2e7d9c9676fb5c8b22d69c6ac2
-size 324
+$ext-version: '6.2.0.981' !default;  // Updated automatically by the build script.
+$ext-trial: false !default; // Updated automatically by the build script.
+$ext-beta: false !default; // Updated automatically by the build script.
+@import 'compass/css3';
+
+@import 'recipes/gradients';
+
+@import 'mixins';
+@import 'functions';

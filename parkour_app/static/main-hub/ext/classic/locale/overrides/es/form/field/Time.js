@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8deaa29ffefa667e977fb293cc6c052323752d020c09d3671e49f28c4b41c532
-size 386
+Ext.define("Ext.locale.es.form.field.Time", {
+    override: "Ext.form.field.Time",
+    minText: "La hora en este campo debe ser igual o posterior a {0}",
+    maxText: "La hora en este campo debe ser igual o anterior a {0}",
+    invalidText: "{0} no es una hora válida",
+    format: "g:i A",
+    altFormats: "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H"
+});

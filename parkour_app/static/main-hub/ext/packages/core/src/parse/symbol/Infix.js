@@ -1,3 +1,25 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:80e47a461479e65e7b53a5c0d909e2e72c2e961e933b9cf018a8fb3eaa76c21b
-size 579
+/**
+ * This class represents an infix (binary) operator.
+ * @private
+ */
+Ext.define('Ext.parse.symbol.Infix', {
+    extend: 'Ext.parse.Symbol',
+
+    arity: 'binary',
+    isBinary: true,
+
+    defaultProperty: 'priority',
+
+    led: function (left) {
+        var me = this;
+
+        me.lhs = left;
+        me.rhs = me.parser.parseExpression(me.priority);
+        // the next line is here in case this symbol already exists in the symbols table
+        // and this function overrides that symbol
+        me.arity = 'binary';
+        me.isBinary = true;
+
+        return me;
+    }
+});

@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8c7943ccd0d56d4276b0a2c8f45173c1d494f0f85b41798b58824100f258ae3d
-size 677
+@include checkcell-ui(
+    $padding: $checkcell-padding,
+    $padding-big: $checkcell-padding-big,
+    $checkbox-size: $checkcell-checkbox-size,
+    $checkbox-size-big: $checkcell-checkbox-size-big,
+    $checkbox-font-size: $checkcell-checkbox-font-size,
+    $checkbox-font-size-big: $checkcell-checkbox-font-size-big,
+    $checkbox-icon: $checkcell-checkbox-icon,
+    $checked-checkbox-icon: $checkcell-checked-checkbox-icon,
+    $checkbox-color: $checkcell-checkbox-color,
+    $checked-checkbox-color: $checkcell-checked-checkbox-color,
+    $disabled-checkbox-opacity: $checkcell-disabled-checkbox-opacity,
+    $disabled-checkbox-color: $checkcell-disabled-checkbox-color
+);

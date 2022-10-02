@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2d0a430245999ff23c98dfe47e7801d4277215681da997e4b3808dccc45caa15
-size 205
+addGlobal([
+    'spec', '__pageIsReady', '__injectionDone',
+    // Seems to be some weird issue with firebug where it will randomly introduce this
+    // global, so lets ignore it for now.
+    '_xdc_'
+]);

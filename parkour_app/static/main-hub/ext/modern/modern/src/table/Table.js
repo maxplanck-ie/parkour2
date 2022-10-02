@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1d0ce9df275ea520c1e0774c5719661c53786e86a2ad11af19c1b3e2f11fe1e7
-size 435
+Ext.define('Ext.table.Table', {
+    extend: 'Ext.Container',
+
+    requires: ['Ext.table.Row'],
+
+    xtype: 'table',
+
+    config: {
+        baseCls: 'x-table',
+        defaultType: 'tablerow'
+    },
+
+    cachedConfig: {
+        fixedLayout: false
+    },
+
+    fixedLayoutCls: 'x-table-fixed',
+
+    updateFixedLayout: function(fixedLayout) {
+        this.innerElement[fixedLayout ? 'addCls' : 'removeCls'](this.fixedLayoutCls);
+    }
+});

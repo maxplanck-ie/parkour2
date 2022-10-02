@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:204da628ca1de288d7d6d7cb54f1faba12d589388e1e2e7de8b04ac98241a64b
-size 785
+describe('Ext.chart.series.sprite.PieSlice', function () {
+
+    describe('destroy', function () {
+        it("should remove itself from the surface", function () {
+            var surface = new Ext.draw.Surface({}),
+                // PieSlice uses the MarkerHolder mixin, if a MarkerHolder
+                // calls callParent in its 'destroy' method,
+                // this alters the destruction sequence and this
+                // test will fail.
+                sprite = new Ext.chart.series.sprite.PieSlice({}),
+                id = sprite.getId();
+
+            surface.add(sprite);
+            sprite.destroy();
+
+            expect(surface.getItems().length).toBe(0);
+            expect(surface.get(id)).toBe(undefined);
+
+            surface.destroy();
+        });
+    });
+
+});

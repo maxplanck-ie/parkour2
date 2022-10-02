@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9056b96d1cbfcd5cac96e87abdf4e1438138b05796cf556746178fcac777de5c
-size 344
+/**
+ * @private
+ */
+Ext.define('Ext.util.paintmonitor.OverflowChange', {
+
+    extend: 'Ext.util.paintmonitor.Abstract',
+
+    eventName: Ext.browser.is.Firefox ? 'overflow' : 'overflowchanged',
+
+    monitorClass: 'overflowchange',
+
+    onElementPainted: function(e) {
+        this.getCallback().apply(this.getScope(), this.getArgs());
+    }
+});

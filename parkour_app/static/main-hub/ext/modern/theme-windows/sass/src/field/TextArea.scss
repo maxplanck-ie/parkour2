@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dc3f78d16fd5da30b0de00ca058fecff9979a2c593e624561016dadf8eb66c9a
-size 113
+/**
+ * @class Ext.field.TextArea
+ */
+
+.x-textareafield textarea {
+    min-height: 100px;
+    padding-top: .5em;
+}

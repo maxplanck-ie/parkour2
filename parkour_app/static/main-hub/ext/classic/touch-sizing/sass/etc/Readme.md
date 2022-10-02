@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:36ab013846c4d2d19c878fb08949b506d23f90a1e3789ec78b15d1381dd75994
-size 146
+# touch-sizing/sass/etc
+
+This folder contains miscellaneous SASS files. Unlike `"touch-sizing/sass/etc"`, these files
+need to be used explicitly.

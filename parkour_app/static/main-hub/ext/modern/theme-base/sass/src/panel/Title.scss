@@ -1,3 +1,39 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:42ef0c520344408f23f35cb892aec6b513751ae0ad833742e95b3ea0ddc659ca
-size 742
+.#{$prefix}panel-title {
+    @include st-box;
+    @include st-box-align(center);
+}
+
+.#{$prefix}panel-title-align-left {
+    text-align: left;
+}
+
+.#{$prefix}panel-title-align-center {
+    text-align: center;
+}
+
+.#{$prefix}panel-title-align-right {
+    text-align: right;
+}
+
+.#{$prefix}panel-title-vertical {
+    @include st-box-orient(vertical);
+
+    &.#{$prefix}panel-title-align-left {
+        @include st-box-align(start);
+    }
+
+    &.#{$prefix}panel-title-align-center {
+        @include st-box-align(center);
+    }
+
+    &.#{$prefix}panel-title-align-right {
+        @include st-box-align(end);
+    }
+}
+
+.#{$prefix}panel-title-text {
+    @include st-box-flex;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

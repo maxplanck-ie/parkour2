@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:928c16a6465d2462cd296a7b5c000704a9337070fd8eca7533b04a920a7a015d
-size 345
+.#{$prefix}form-no-input-borders > .#{$prefix}field {
+    .#{$prefix}input {
+        border: 0 !important;
+    }
+}
+
+.#{$prefix}form-no-input-borders:not(.#{$prefix}form-field-separators) .#{$prefix}input-el {
+    // textfield sass may add negative margins to account for different border
+    // widths between states.
+    margin: 0 !important;
+}

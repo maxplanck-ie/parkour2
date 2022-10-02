@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:880e0b8b9e522f646e0af2fd34fc41af40f2b799065c54dbc6be4741dfb1e9bf
-size 353
+/**
+ * @private
+ */
+Ext.define('Ext.util.translatable.Dom', {
+    extend: 'Ext.util.translatable.Abstract',
+
+    config: {
+        element: null
+    },
+
+    applyElement: function(element) {
+        if (!element) {
+            return;
+        }
+
+        return Ext.get(element);
+    },
+
+    updateElement: function() {
+        this.refresh();
+    }
+});

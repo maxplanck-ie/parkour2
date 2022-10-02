@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2c0b37d1bda0e9a685800180135a7f61285a84e92ed6c8a0dc6cc44d2dbabd1b
-size 197
+# theme-neptune/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

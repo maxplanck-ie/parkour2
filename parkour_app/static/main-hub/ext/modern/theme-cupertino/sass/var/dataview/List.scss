@@ -1,3 +1,14 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:43f01489ce301226a06f37311de4d1a62d1c6f5011d8dbe9cc74e570b6ad38d4
-size 306
+/**
+ * @class Ext.dataview.List
+ */
+
+/**
+ * @var {measurement} $list-disclosure-size
+ * Default size (width/height) for disclosure icons.
+ */
+$list-disclosure-size: 26px;
+
+$list-header-color: #f7f7f7;
+$list-item-pressed-color: #d9d9d9;
+$list-item-selected-color: #e6e6e6;
+$list-item-border-color: #dbdbe0;

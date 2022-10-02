@@ -1,3 +1,41 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1e39caf805dfd7b6fa6ba26df9fbcb2e97d4a2efc0bc5d1f9334e51a869b5dc0
-size 883
+/**
+ * @class Ext.slider.Slider
+ */
+
+.#{$prefix}slider {
+    @include st-box();
+    @include st-box-align(center);
+
+    .#{$prefix}track-el {
+        width: 100%;
+        position: relative;
+        @include st-box();
+        @include st-box-align(center);
+    }
+
+    .#{$prefix}thumb-wrap-el {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .#{$prefix}fill-el {
+        position: absolute;
+        top: 0;
+        left: 0;
+        // important is needed here to override more specific styles applied by the slider-ui mixin
+        border-right-width: 0 !important;
+
+        &:not(:first-child) {
+            border-left-width: 0 !important;
+        }
+    }
+}
+
+.#{$prefix}slider:not(.#{$prefix}toggleslider) .#{$prefix}fill-el {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+

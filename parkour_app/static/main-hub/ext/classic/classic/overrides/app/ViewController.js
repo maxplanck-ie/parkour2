@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0622e18d5d964d83d402bebbb92711452b85eb3da3635ab2d57f206e6785857c
-size 797
+/**
+ * @class Ext.app.ViewController
+ */
+
+/**
+ * @method beforeRender
+ * @template
+ * Template method called by the owning component's 
+ * {@link Ext.Component#method-beforeRender beforeRender} method.
+ * @param {Ext.Component} component The owner component attached to the 
+ * ViewController
+ */
+
+/**
+ * @method afterRender
+ * @template
+ * Template method called by the owning component's 
+ * {@link Ext.Component#method-afterRender afterRender} method.
+ * @param {Ext.Component} component The owner component attached to the 
+ * ViewController
+ */
+
+/**
+ * @method boxReady
+ * @template
+ * Template method called by the owning component's 
+ * {@link Ext.Component#method-onBoxReady onBoxReady} method.
+ * @param {Ext.Component} component The owner component attached to the 
+ * ViewController
+ */

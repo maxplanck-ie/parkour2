@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c8c79559cae92aacfd90c0a8dc7a48c1113880c4863ea83bc5a8179c1eea5d92
-size 721
+.#{$prefix}form-field-separators {
+    > .#{$prefix}field {
+        border-bottom: 1px solid bottom($textfield-input-border-color);
+    }
+
+    > .#{$prefix}textfield {
+        &.#{$prefix}focused {
+            @include border(
+                bottom($textfield-focused-input-border-width),
+                bottom($textfield-focused-input-border-style),
+                bottom($textfield-focused-input-border-color)
+            );
+        }
+
+        &.#{$prefix}invalid {
+            @include border(
+                bottom($textfield-invalid-input-border-width),
+                bottom($textfield-invalid-input-border-style),
+                bottom($textfield-invalid-input-border-color)
+            );
+        }
+    }
+}

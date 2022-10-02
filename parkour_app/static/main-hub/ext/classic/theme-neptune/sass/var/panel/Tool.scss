@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d90f3c38d6303d6f8aafc5233e6a6f2c606f2993ec79b50147603dc5b1ddce73
-size 173
+/** @class Ext.panel.Tool */
+//
+
+$tool-include-hover-icons: dynamic(false);
+$tool-opacity: dynamic(.5);
+$tool-opacity-over: dynamic(.6);
+$tool-opacity-pressed: dynamic(.7);

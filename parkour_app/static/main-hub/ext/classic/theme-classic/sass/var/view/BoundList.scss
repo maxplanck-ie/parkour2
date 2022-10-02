@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c5bcd91e72248f518480c9cbe96430006dce083ceee59bfbbe9d26cb2dcff5d2
-size 613
+/** @class Ext.view.BoundList */
+//
+
+$boundlist-border-color: dynamic(adjust-color($base-color, $hue: 0.58deg, $saturation: 25.146%, $lightness: -6.471%));
+$boundlist-item-over-border-color: dynamic(adjust-color($base-color, $hue: 6.952deg, $saturation: 5.848%, $lightness: -6.471%));
+$boundlist-item-selected-border-color: dynamic(darken($boundlist-item-over-border-color, 5));
+$boundlist-item-over-background-color: dynamic(adjust-color($base-color, $hue: 3.188deg, $saturation: 0.542%, $lightness: 7.843%));
+$boundlist-item-selected-background-color: dynamic(darken($boundlist-item-over-background-color, 5));

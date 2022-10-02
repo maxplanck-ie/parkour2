@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:abe5674c4ff6cf9526260e04432e42e0f7a4b01b46899caa469dcacb8d53ae7a
-size 721
+.#{$prefix}indexbar-wrapper {
+    pointer-events: none;
+    @include st-box-pack(end);
+
+    &.#{$prefix}horizontal {
+        @include st-box-orient(horizontal);
+        @include st-box-pack(center);
+        @include st-box-align(end);
+    }
+}
+
+.#{$prefix}indexbar {
+    pointer-events: auto;
+    z-index: 2;
+
+    @include st-box-flex(0, auto, important);
+    @include st-box;
+
+    &.#{$prefix}vertical {
+        @include st-box-orient(vertical);
+    }
+
+    &.#{$prefix}horizontal {
+        width: auto;
+        @include st-box-orient(horizontal);
+    }
+}
+
+.#{$prefix}indexbar-item {
+    line-height: 0;
+    @include st-box-flex;
+    @include st-box;
+    @include st-box-align(center);
+    @include st-box-pack(center);
+}

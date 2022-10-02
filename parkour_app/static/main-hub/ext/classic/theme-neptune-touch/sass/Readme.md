@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4455915528778edd372198a3fff6dcad98b00dc1f97d74d2d7db3c4ccbcc5939
-size 204
+# theme-neptune-touch/sass
+
+This folder contains SASS files of various kinds, organized in sub-folders:
+
+    theme-neptune-touch/sass/etc
+    theme-neptune-touch/sass/src
+    theme-neptune-touch/sass/var

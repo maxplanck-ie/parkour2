@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9f09220283dc9b49eccca891acfb7a00aed31c54852694e6aa9c079e6c732b01
-size 155
+// Used to allow badges to escape from tabbars
+.#{$prefix}tabbar-inner {
+    overflow: visible;
+    padding: 0;
+
+    .x-big & {
+        padding: 0;
+    }
+}

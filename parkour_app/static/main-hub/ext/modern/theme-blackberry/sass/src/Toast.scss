@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:e75689808ec18240edf0ff0cd0cfa6fb5bb7775465efdb475df1bdcafa8c5e8f
-size 334
+/**
+ * Includes default toast styles.
+ *
+ * @member Ext.Toast
+ */
+
+.x-toast {
+    padding: 0;
+    border: 1px solid #fff;
+    background: #000;
+    color: #fff;
+    @include border-radius(10px);
+}
+
+.x-panel.x-floating {
+    background: #fff;
+    padding: 0;
+    border: 0;
+}
+
+.x-toast-text {
+    padding: 20px;
+    font-size: 14px;
+}

@@ -1,3 +1,16 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1c284fc19aa21bb85d33ded0d10df09991d4de8e9cd2b0ab691200286cc3625c
-size 366
+/**
+ * @private
+ */
+Ext.define('Ext.dataview.ListItemDisclosure', {
+    extend: 'Ext.Component',
+    xtype: 'listitemdisclosure',
+    baseCls: Ext.baseCSSPrefix + 'listitem-disclosure',
+
+    template: [{
+        reference: 'iconElement',
+        classList: [
+            Ext.baseCSSPrefix + 'icon-el',
+            Ext.baseCSSPrefix + 'font-icon'
+        ]
+    }]
+});

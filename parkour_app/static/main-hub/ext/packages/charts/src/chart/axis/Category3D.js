@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:d8b829663a77cd6c9fe817182bb2d36ffff54cb146b63825f7d7682888a6a258
-size 364
+/**
+ * Category 3D Axis
+ */
+Ext.define('Ext.chart.axis.Category3D', {
+    requires: [
+        'Ext.chart.axis.layout.CombineDuplicate',
+        'Ext.chart.axis.segmenter.Names'
+    ],
+    extend: 'Ext.chart.axis.Axis3D',
+    alias: 'axis.category3d',
+    type: 'category3d',
+
+    config: {
+        layout: 'combineDuplicate',
+
+        segmenter: 'names'
+    }
+});

@@ -1,3 +1,89 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:3dca4bd75c637163302c5d1a78091e139d3a1ffa2357f4e4dd17c7b5af7151d1
-size 902
+describe('Ext.TitleBar', function() {
+    var toolbar,
+        createToolbar = function(config) {
+            config = Ext.apply(config, {
+                
+            });
+
+            toolbar = Ext.create('Ext.TitleBar', config);
+        };
+
+    afterEach(function() {
+        if (toolbar) {
+            toolbar.destroy();
+        }
+    });
+
+    // configs
+    describe("configurations", function() {
+        describe("title", function() {
+            describe("method", function() {
+                beforeEach(function() {
+                    createToolbar({
+                        title: 'testing'
+                    });
+                });
+
+                it("should return text", function() {
+                    expect(toolbar.getTitle()).toEqual('testing');
+                });
+            });
+        });
+    });
+    // end configs
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

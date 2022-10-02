@@ -1,3 +1,35 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:aefc69fa303552e65d3cf79c54e4e6662229e325d611824713a66eb742ba1278
-size 594
+/**
+ * @class Ext.Toolbar
+ */
+
+.x-toolbar {
+    padding: 0 $toolbar-spacing;
+    background-color: transparent;
+    border-width: 0 !important;
+    min-height: 4em;
+
+    &.x-docked-left {
+        width: 7em;
+        padding: $toolbar-spacing;
+    }
+
+    &.x-docked-right {
+        width: 7em;
+        padding: $toolbar-spacing;
+    }
+
+    &.x-docked-bottom {
+        background-color: $background-color;
+    }
+}
+
+.x-toolbar-inner {
+    height: 100% !important;
+}
+
+.x-title {
+    line-height: 44px;
+    font-size: $font-size-extra-large;
+    color: $foreground-color;
+    font-weight: normal;
+}

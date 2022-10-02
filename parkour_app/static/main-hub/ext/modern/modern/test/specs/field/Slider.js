@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c14d733c5f847de45055ddc086de1032f474d2697df830ac548d06e6ef720e99
-size 868
+describe('Ext.field.Slider', function() {
+    var field,
+        createField = function(config) {
+            if (field) {
+                field.destroy();
+            }
+
+            field = Ext.create('Ext.field.Slider', config || {});
+        };
+
+    afterEach(function() {
+        if (field) {
+            field.destroy();
+        }
+    });
+
+    describe('readOnly', function() {
+        beforeEach(function() {
+            createField({
+                readOnly : true,
+                value    : 50,
+                minValue : 0,
+                maxValue : 100
+            });
+        });
+
+        it('should not move thumb on tap', function() {
+            var component = field.getComponent();
+
+            spyOn(component, 'fireAction');
+
+            component.onTap();
+
+            expect(component.fireAction).not.toHaveBeenCalled();
+        });
+    });
+});

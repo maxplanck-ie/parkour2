@@ -1,3 +1,30 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9e7e4bff624d9eddb3411ea00040758a3ac3397678275c7a74ceb39e07ff9022
-size 791
+describe('Ext.layout.container.Absolute', function() {
+    var ct;
+
+    afterEach(function() {
+        ct = Ext.destroy(ct);
+    });
+
+    it("should layout an item with anchor that was initially hidden", function() {
+        ct = new Ext.container.Container({
+            renderTo: Ext.getBody(),
+            width: 400,
+            height: 400,
+            layout: 'absolute',
+            items: [{
+                xtype: 'component',
+                hidden: true,
+                x: 200,
+                y: 100,
+                anchor: '-5 -50'
+            }]
+        });
+
+        var c = ct.items.first();
+        c.show();
+        expect(c.getWidth()).toBe(195);
+        expect(c.getHeight()).toBe(250);
+        expect(c.getX()).toBe(200);
+        expect(c.getY()).toBe(100);
+    });
+});

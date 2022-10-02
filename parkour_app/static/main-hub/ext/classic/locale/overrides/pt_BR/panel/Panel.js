@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:b5846a7f9c0fbdc34ebeac605f46db59388bbb56a7ca3a7202aac6615dd810da
-size 278
+/**
+ * Portuguese/Brazil Translation by Guilherme Portela
+ * 07 March 2016
+ */
+Ext.define("Ext.locale.pt_BR.panel.Panel", {
+    override: "Ext.panel.Panel",
+    closeToolText: "Fechar painel",
+    collapseToolText: "Recolher painel",
+    expandToolText: "Expandir painel"   
+});

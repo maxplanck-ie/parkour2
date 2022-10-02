@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cbcc6cd16f2a535f59ff39fa6b1ac877f5c3695294bfe474d4b359a131183877
-size 357
+/**
+ * @class Ext.carousel.Carousel
+ */
+
+.x-carousel-indicator span {
+	width: $carousel-indicator-size;
+	height: $carousel-indicator-size;
+	margin: $carousel-indicator-spacing;
+}
+
+.x-carousel-indicator-light span,
+.x-carousel-indicator-dark span {
+	background-color: $inactive-color;
+
+	&.x-carousel-indicator-active {
+		background-color: $base-color;
+	}
+}
+

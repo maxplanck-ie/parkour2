@@ -1,3 +1,17 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:71660c19f89479a3cb8cd2da5b26f987face04d968c6147a102fe9fbaad98835
-size 438
+/**
+ * @private
+ */
+Ext.define('Ext.util.paintmonitor.CssAnimation', {
+
+    extend: 'Ext.util.paintmonitor.Abstract',
+
+    eventName: Ext.browser.is.WebKit ? 'webkitAnimationEnd' : 'animationend',
+
+    monitorClass: 'cssanimation',
+
+    onElementPainted: function(e) {
+        if (e.animationName === Ext.baseCSSPrefix + 'paint-monitor-helper') {
+            this.getCallback().apply(this.getScope(), this.getArgs());
+        }
+    }
+});

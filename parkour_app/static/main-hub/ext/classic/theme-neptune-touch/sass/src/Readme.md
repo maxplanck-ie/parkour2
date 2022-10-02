@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:65d803948df3f6048bfd147faef8a56d0d85a2382240fdea2013b1972d761a7c
-size 203
+# theme-neptune-touch/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

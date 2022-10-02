@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5b49cf2758d56cb0c13b003e3933ee449c8256b4146e8f8c32dac16bc94eb810
-size 139
+.#{$prefix}touch-action-pan-y {
+    overflow-x: hidden !important;
+}
+
+.#{$prefix}touch-action-pan-x {
+    overflow-y: hidden !important;
+}

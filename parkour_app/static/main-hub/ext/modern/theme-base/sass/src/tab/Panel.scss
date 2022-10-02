@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:60841ef28b43703dbf45882d99b1cdbd99b86483d1d507d3e35f7e77f599b163
-size 492
+/**
+ * @class Ext.tab.Panel
+ */
+
+.x-tabbar.x-docked-top {
+    .x-tab .x-button-icon {
+        position: relative;
+
+        &.x-shown {
+            display: inline-block;
+        }
+
+        &.x-hidden {
+            display: none;
+        }
+    }
+}
+
+.x-tabbar.x-docked-bottom {
+    .x-tab .x-button-icon {
+        display: block;
+        position: relative;
+
+        &.x-shown {
+            visibility: visible;
+        }
+
+        &.x-hidden {
+            visibility: hidden;
+        }
+    }
+}

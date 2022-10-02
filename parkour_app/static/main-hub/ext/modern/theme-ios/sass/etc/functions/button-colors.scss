@@ -1,3 +1,7 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5c43e9316e40c36bd2f12a2ea9921f9790d039fd65eb9b89bf2e0594e7b036b7
-size 176
+@function button-border-color($background-color) {
+    @return $background-color;
+}
+
+@function button-pressed-border-color($background-color) {
+    @return $background-color;
+}

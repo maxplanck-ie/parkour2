@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:f74ab5f182ebb418ded1059cd9a4379c48021408bbd61ecb440eee570734b756
-size 824
+/**
+ * This class defines the operators that are shared by DomQuery and ComponentQuery
+ * @class Ext.util.Operators
+ * @private
+ */
+Ext.ns('Ext.util').Operators = {
+// @define Ext.util.Operators
+    "=": function(a, v) {
+        return a == v;
+    },
+    "!=": function(a, v) {
+        return a != v;
+    },
+    "^=": function(a, v) {
+        return a && a.substr(0, v.length) == v;
+    },
+    "$=": function(a, v) {
+        return a && a.substr(a.length - v.length) == v;
+    },
+    "*=": function(a, v) {
+        return a && a.indexOf(v) !== -1;
+    },
+    "%=": function(a, v) {
+        return (a % v) === 0;
+    },
+    "|=": function(a, v) {
+        return a && (a == v || a.substr(0, v.length + 1) == v + '-');
+    },
+    "~=": function(a, v) {
+        return a && (' ' + a + ' ').indexOf(' ' + v + ' ') != -1;
+    }
+};

@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cb98d791227f00b4845c8fafb4edd0022ea0f931476d21b0576dabab6c507346
-size 820
+/**
+ * Creates a margin on an element.
+ * If any item in the list is null it will be excluded.
+ *
+ * @param {number/list} $margin
+ * The margin size.
+ * 
+ * @member Global_CSS
+ * @private
+ */
+@mixin margin($margin: null) {
+    @if $margin != null {
+        $len: length($margin);
+        @if $len == 1 {
+            margin: $margin;
+        } @else {
+            $top: top($margin);
+            $right: right($margin);
+            $bottom: bottom($margin);
+            $left: left($margin);
+
+            @if $top != null and $top == $bottom and $right != null and $right == $left {
+                margin: $top $right;
+            } @else {
+                margin-top: $top;
+                margin-right: $right;
+                margin-bottom: $bottom;
+                margin-left: $left;
+            }
+        }
+    }
+}

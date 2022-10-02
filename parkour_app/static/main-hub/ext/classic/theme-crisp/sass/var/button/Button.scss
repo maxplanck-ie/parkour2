@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:95458f85bb3b4c8b13bcafe77e0a52e7bdb40eb0d2cb714390c5fca7ab693941
-size 580
+$button-default-background-gradient: dynamic(null);
+$button-default-background-gradient-over: dynamic(null);
+$button-default-background-gradient-pressed: dynamic(null);
+$button-default-background-gradient-disabled: dynamic(null);
+$button-toolbar-background-gradient: dynamic(null);
+$button-toolbar-background-gradient-over: dynamic(null);
+$button-toolbar-background-gradient-pressed: dynamic(null);
+$button-toolbar-background-gradient-disabled: dynamic(null);
+
+$button-default-border-color: dynamic($base-color);
+$button-toolbar-border-color: dynamic($neutral-medium-dark-color);

@@ -1,3 +1,10 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:365fdb17c53c8b08d2ff48365546bad053d7b22e96241bfa3b5c5651c2e32edb
-size 210
+.#{$prefix}menu {
+    .#{$prefix}button {
+        border-bottom-color: $neutral-highlight-color;
+        border-radius: 0;
+
+        &:last-child {
+            border-bottom-color: transparent;
+        }
+    }
+}

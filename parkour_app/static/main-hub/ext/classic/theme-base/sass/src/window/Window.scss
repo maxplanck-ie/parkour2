@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a26db9ee1da05501de932ec15efe2ff92912b2b4ed77990b88fc709d866b7019
-size 200
+.#{$prefix}window {
+    outline: none;
+    overflow: hidden;
+
+    .#{$prefix}window-wrap {
+        position: relative;
+    }
+}
+
+.#{$prefix}window-body {
+    position: relative;
+    overflow: hidden;
+}

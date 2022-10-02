@@ -1,3 +1,12 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6ed4064a2eb74b051a47bc227426734dbdacdc193d1fa1bde5f7355f007e1a8e
-size 354
+.#{$prefix}html-editor-wrap {
+    .#{$prefix}toolbar {
+        border-left-color: $html-editor-border-color;
+        border-top-color: $html-editor-border-color;
+        border-right-color: $html-editor-border-color;
+    }
+}
+
+.#{$prefix}html-editor-input {
+    border: $html-editor-border-width solid $html-editor-border-color;
+    border-top-width: 0;
+}

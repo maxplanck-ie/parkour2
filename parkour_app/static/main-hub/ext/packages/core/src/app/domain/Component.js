@@ -1,3 +1,45 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:eca09dc2cc525b2e8f632a08ff4f71d7c61bd3ffffbfd5a2b7bdc00e711bb552
-size 1148
+/**
+ * This class implements the component event domain. All classes extending from
+ * {@link Ext.Component} are included in this domain. The matching criteria uses
+ * {@link Ext.ComponentQuery}.
+ * 
+ * @private
+ */
+Ext.define('Ext.app.domain.Component', {
+    extend: 'Ext.app.EventDomain',
+    singleton: true,
+
+    requires: [
+        'Ext.Widget'
+    ],
+
+    type: 'component',
+
+    constructor: function() {
+        this.callParent();
+
+        this.monitor(Ext.Widget);
+    },
+    
+    dispatch: function(target, ev, args) {
+        var controller = target.lookupController(false), // don't skip target
+            domain, view;
+           
+         
+        while (controller) {
+            domain = controller.compDomain;
+            if (domain) {
+                if (domain.dispatch(target, ev, args) === false) {
+                    return false;
+                }
+            }
+            view = controller.getView();
+            controller = view ? view.lookupController(true) : null;
+        }
+        return this.callParent(arguments);    
+    },
+
+    match: function(target, selector) {
+        return target.is(selector);
+    }
+});

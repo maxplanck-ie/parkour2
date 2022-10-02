@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:9d951fa09515be8f125ec89414453a062b39ba32431d55eb667819988107dae2
-size 435
+.#{$prefix}grid-row-editor-wrap {
+    position: absolute;
+    overflow: visible;
+    // Floating editor's z-index must be higher than z-index of focused grid-cell-inner
+    z-index: 2;
+}
+
+.#{$prefix}grid-row-editor {
+    position: absolute;
+
+    // Needs z-index:0 to avoid visual issues with clipped editor obscuring scrollbars
+    z-index: 0;
+}
+
+.#{$prefix}grid-row-editor-buttons {
+    position: absolute;
+    white-space: nowrap;
+}

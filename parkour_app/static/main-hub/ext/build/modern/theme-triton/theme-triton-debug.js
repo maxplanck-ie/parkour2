@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:480d4a2e5b1e36c0ed0206a1e0d802783fb18b9387f012ee0923d89c4ee3d0d3
-size 561
+Ext.define('Ext.theme.neptune.Titlebar', {
+    override: 'Ext.TitleBar',
+    config: {
+        defaultButtonUI: 'alt'
+    }
+});
+
+Ext.define('Ext.theme.neptune.tip.ToolTip', {
+    override: 'Ext.tip.ToolTip',
+    bodyBorder: false
+});
+
+Ext.namespace('Ext.theme.is').Neptune = true;
+Ext.theme.name = 'Neptune';
+Ext.theme.getDocCls = function() {
+    return Ext.platformTags.desktop ? '' : 'x-big';
+};
+
+Ext.namespace('Ext.theme.is').Triton = true;
+Ext.theme.name = 'Triton';
+Ext.theme.getDocCls = function() {
+    return Ext.platformTags.phone ? 'x-big' : '';
+};
+

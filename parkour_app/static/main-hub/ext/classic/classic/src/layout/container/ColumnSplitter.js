@@ -1,3 +1,32 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4416470a27488c63023e0deac55adb6ccb73ca9af39cfc51d73c262769ecaaac
-size 615
+/**
+ */
+Ext.define('Ext.layout.container.ColumnSplitter', {
+    extend: 'Ext.resizer.Splitter',
+    xtype: 'columnsplitter',
+
+    requires: [
+        'Ext.layout.container.ColumnSplitterTracker'
+    ],
+
+    isSplitter: true,
+
+    synthetic  : true,
+
+    cls : Ext.baseCSSPrefix + 'splitter-vertical',
+
+    orientation: 'vertical',
+
+    collapseDirection: 'left',
+
+    trackerClass: 'Ext.layout.container.ColumnSplitterTracker',
+
+    width: 7,
+
+    height: 1,
+
+    getTrackerConfig: function () {
+        var tracker = this.callParent();
+        tracker.xclass = this.trackerClass;
+        return tracker;
+    }
+});

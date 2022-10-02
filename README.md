@@ -12,14 +12,16 @@ sequencing users, laboratory personnel, and data managers will benefit from
 using Parkour LIMS as a central laboratory and quality management platform:
 _quickly jump to that information you need!_ 🤸🏻‍♀️
 
-#### Citation
+## Documentation
 
-> E Anatskiy, D P Ryan, B A Grüning, L Arrigoni, T Manke, U Bönisch; "Parkour
-> LIMS: high-quality sample preparation in next generation sequencing";
-> Bioinformatics, Volume 35, Issue 8, 15 April 2019, Pages 1422–1424;
-> <https://doi.org/10.1093/bioinformatics/bty820>
+- Installation instructions available on the [Wiki](https://github.com/maxplanck-ie/parkour2/wiki/Installation#steps).
 
-#### Installation
+<br />
 
-Instructions are available at our
-[documentation](https://github.com/maxplanck-ie/parkour2/wiki/Installation#steps).
+- Our "old" [User Manual](https://parkour.readthedocs.io/manual.html) is still valid, and provides detailed information on the LIMS features.
+
+<br />
+
+- Last, but not least, there's the original 2019 [Research Article](https://doi.org/10.1093/bioinformatics/bty820). Please read & cite.
+
+<br />

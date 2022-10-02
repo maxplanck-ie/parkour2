@@ -1,3 +1,64 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:5303b5903eeb915b7b0f1492d0799ad8659e9f6bfe977448732e7b9ef542e2f3
-size 1553
+/**
+ * @class Ext.chart.axis.Time3D
+ */
+Ext.define('Ext.chart.axis.Time3D', {
+    extend: 'Ext.chart.axis.Numeric3D',
+    alias: 'axis.time3d',
+    type: 'time3d',
+    requires: [
+        'Ext.chart.axis.layout.Continuous',
+        'Ext.chart.axis.segmenter.Time'
+    ],
+    config: {
+        /**
+         * @cfg {Boolean} calculateByLabelSize
+         * The minimum value drawn by the axis. If not set explicitly, the axis
+         * minimum will be calculated automatically.
+         */
+        calculateByLabelSize: true,
+
+        /**
+         * @cfg {String/Boolean} dateFormat
+         * Indicates the format the date will be rendered on.
+         * For example: 'M d' will render the dates as 'Jan 30', etc.
+         */
+        dateFormat: null,
+
+        /**
+         * @cfg {Date} fromDate The starting date for the time axis.
+         */
+        fromDate: null,
+
+        /**
+         * @cfg {Date} toDate The ending date for the time axis.
+         */
+        toDate: null,
+
+        layout: 'continuous',
+
+        segmenter: 'time',
+
+        aggregator: 'time'
+    },
+
+    updateDateFormat: function (format) {
+        this.setRenderer(function (axis, date) {
+            return Ext.Date.format(new Date(date), format);
+        });
+    },
+
+    updateFromDate: function (date) {
+        this.setMinimum(+date);
+    },
+
+    updateToDate: function (date) {
+        this.setMaximum(+date);
+    },
+
+    getCoordFor: function (value) {
+        if (Ext.isString(value)) {
+            value = new Date(value);
+        }
+        return +value;
+    }
+});

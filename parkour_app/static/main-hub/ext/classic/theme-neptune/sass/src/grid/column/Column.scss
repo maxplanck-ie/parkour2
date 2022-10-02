@@ -1,3 +1,33 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:4003a03b8521c12d9f74683a7586e3fe014176594b2588d2fb53c5c4454903c2
-size 867
+$grid-header-trigger-border: 
+    $grid-column-header-border-width
+    $grid-column-header-border-style
+    $grid-header-border-color;
+
+.#{$prefix}column-header-trigger {
+    background-color: $grid-header-over-background-color;
+    border-left: $grid-header-trigger-border;
+}
+
+@if $include-rtl {
+    .#{$prefix}rtl.#{$prefix}column-header-trigger {
+        border-right: $grid-header-trigger-border;
+        border-left: 0;
+    }
+}
+
+.#{$prefix}column-header-last {
+    border-right-width: 0;
+    .#{$prefix}column-header-over .#{$prefix}column-header-trigger {
+        border-right: $grid-header-trigger-border;
+    }
+}
+
+@if $include-rtl {
+    .#{$prefix}rtl.#{$prefix}column-header-last {
+        border-left-width: 0;
+        .#{$prefix}column-header-over .#{$prefix}column-header-trigger {
+            border-left: $grid-header-trigger-border;
+        }
+    }
+
+}

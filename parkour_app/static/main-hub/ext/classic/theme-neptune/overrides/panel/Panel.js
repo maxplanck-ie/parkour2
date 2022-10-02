@@ -1,3 +1,18 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1489c560ac8889ad92fdae1926148cf0e54d203bcf0bb105b0fba5f22e1842fc
-size 571
+Ext.define('Ext.theme.neptune.panel.Panel', {
+    override: 'Ext.panel.Panel',
+    
+    border: false,
+    bodyBorder: false,
+
+    initBorderProps: Ext.emptyFn,
+
+    initBodyBorder: function() {
+        // The superclass method converts a truthy bodyBorder into a number and sets
+        // an inline border-width style on the body element.  This prevents that from
+        // happening if borderBody === true so that the body will get its border-width
+        // the stylesheet.
+        if (this.bodyBorder !== true) {
+            this.callParent();
+        }
+    }
+});

@@ -1,3 +1,36 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a483f6200cdd0ccde7aa435bc959dcc2eeac8dc0a3ceb8c514df7fd669bcd274
-size 773
+{
+    "name": "theme-blackberry",
+    "type": "theme",
+    "extend": "theme-device-base",
+
+    "framework": "ext",
+    "toolkit": "modern",
+    "requires": [
+        "font-pictos"
+    ],
+
+    "creator": "Sencha",
+    "summary": "Ext JS Blackberry Theme",
+    "detailedDescription": "This theme provides a look and feel to match Blackberry",
+
+    "version": "6.2.0.981",
+    "compatVersion": "6.0.0",
+    "format": "1",
+
+    "output": "${workspace.subpkg.prefix}/${package.name}",
+    "local": true,
+
+    "sass": {
+        "namespace": "Ext",
+
+        "etc": "${package.dir}/sass/etc/all.scss",
+
+        "var": "${package.dir}/sass/var",
+
+        "src": "${package.dir}/sass/src"
+    },
+
+    "classpath": "${package.dir}/src",
+
+    "overrides": "${package.dir}/overrides"
+}

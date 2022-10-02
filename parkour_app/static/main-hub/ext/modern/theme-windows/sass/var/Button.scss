@@ -1,3 +1,9 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:828031334e29a12dfe1bb538230f0a547ee98e6d0d3cd3b6a6ed535e33eade9b
-size 195
+/**
+ * @class Ext.Button
+ */
+
+/**
+ * @var {boolean} $include-button-uis
+ * Optionally disable separate button UIs, including action, confirm, and decline.
+ */
+$include-button-uis: dynamic(true);

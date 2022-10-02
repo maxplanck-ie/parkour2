@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:cfcfcc30b69b6fbac21397114ac2db034e01d409a4e6292643d820d326186206
-size 498
+Ext.define('Ext.chart.theme.Muted', {
+    extend: 'Ext.chart.theme.Base',
+    singleton: true,
+    alias: [
+        'chart.theme.muted',
+        'chart.theme.Muted'
+    ],
+    config: {
+        colors: [
+            '#8ca640',
+            '#974144',
+            '#4091ba',
+            '#8e658e',
+            '#3b8d8b',
+            '#b86465',
+            '#d2af69',
+            '#6e8852',
+            '#3dcc7e',
+            '#a6bed1',
+            '#cbaa4b',
+            '#998baa'
+        ]
+    }
+});

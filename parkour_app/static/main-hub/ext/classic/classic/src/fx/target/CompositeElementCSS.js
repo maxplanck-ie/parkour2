@@ -1,3 +1,22 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:df0faceb3409e82c026e90e38ae5192370fbe84049ac0a5af2420cfb91f6a98c
-size 766
+/**
+ * @class Ext.fx.target.CompositeElementCSS
+ * 
+ * This class represents a animation target for a {@link Ext.CompositeElement}, where the
+ * constituent elements support CSS based animation. It allows each {@link Ext.dom.Element} in 
+ * the group to be animated as a whole. In general this class will not be created directly, 
+ * the {@link Ext.CompositeElement} will be passed to the animation and the appropriate target 
+ * will be created.
+ */
+Ext.define('Ext.fx.target.CompositeElementCSS', {
+
+    /* Begin Definitions */
+
+    extend: 'Ext.fx.target.CompositeElement',
+
+    requires: ['Ext.fx.target.ElementCSS'],
+
+    /* End Definitions */
+    setAttr: function() {
+        return Ext.fx.target.ElementCSS.prototype.setAttr.apply(this, arguments);
+    }
+});

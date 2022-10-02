@@ -1,3 +1,38 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1a0f9418d0e00b08af6e5478acf5ac673a7ca2db6bb6996e663d7a9b9037c431
-size 960
+Ext.define('Ext.theme.blackberry.field.Picker', {
+    override: 'Ext.field.Picker',
+
+    initialize: function() {
+        this.callParent();
+        this.label.on({
+            scope: this,
+            tap: 'onFocus'
+        });
+    },
+
+    getElementConfig: function() {
+        return {
+            reference: 'element',
+            children: [{
+                reference: 'bodyElement',
+                cls: Ext.baseCSSPrefix + 'body-el',
+                children: [{
+                    reference: 'labelElement',
+                    cls: Ext.baseCSSPrefix + 'label-el',
+                    children: [{
+                        reference: 'labelTextElement',
+                        cls: Ext.baseCSSPrefix + 'label-text-el',
+                        tag: 'span'
+                    }]
+                }]
+            }]
+        };
+    },
+
+    updateLabelWidth: function() {
+        return;
+    },
+
+    updateLabelAlign: function() {
+        return;
+    }
+});

@@ -1,3 +1,11 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:6dedaedee09ddb916bc640ffb28396fba790f29b2f8eb0f57a359496e49e57c2
-size 264
+/**
+ * A drag proxy that uses the {@link Ext.drag.Source#element}.
+ */
+Ext.define('Ext.drag.proxy.Original', {
+    extend: 'Ext.drag.proxy.None',
+    alias: 'drag.proxy.original',
+
+    getElement: function(info) {
+        return info.source.getElement();
+    }
+});

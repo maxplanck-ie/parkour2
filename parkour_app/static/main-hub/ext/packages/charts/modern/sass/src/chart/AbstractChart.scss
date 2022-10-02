@@ -1,3 +1,37 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:1f86c344b72459877b012c421c998fd5ea418ba42f23e3fdd81382e0d570b38e
-size 544
+.#{$prefix}chart-toolbar {
+  position: absolute;
+  z-index: 9;
+  @include display-box;
+  padding: .6em;
+
+  .#{$prefix}button {
+    margin: .2em;
+  }
+
+  &[data-side=left], &[data-side=right] {
+    top: 0;
+    @include box-orient(vertical);
+  }
+
+  &[data-side=left] {
+    left: 0;
+  }
+
+  &[data-side=right] {
+    right: 0;
+  }
+
+  &[data-side=top], &[data-side=bottom] {
+    @include box-orient(horizontal);
+    right: 0;
+  }
+
+  &[data-side=top] {
+    top: 0;
+  }
+
+  &[data-side=bottom] {
+    bottom: 0;
+    @include box-orient(horizontal);
+  }
+}

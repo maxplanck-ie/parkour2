@@ -1,3 +1,24 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:2c0b4e51a9771002c12d7963f308707de172bcdd14fa1ea5aedbb2bd373ba8d8
-size 597
+/**
+ * @override Ext.rtl.layout.ContextItem
+ * This override adds RTL support to Ext.layout.ContextItem.
+ */
+Ext.define('Ext.rtl.layout.ContextItem', {
+    override: 'Ext.layout.ContextItem',
+
+    addPositionStyles: function(styles, props) {
+        var x = props.x,
+            y = props.y,
+            count = 0;
+
+        if (x !== undefined) {
+            styles[this.parent.target.getInherited().rtl ? 'right' : 'left'] = x + 'px';
+            ++count;
+        }
+        if (y !== undefined) {
+            styles.top = y + 'px';
+            ++count;
+        }
+        return count;
+    }
+
+});

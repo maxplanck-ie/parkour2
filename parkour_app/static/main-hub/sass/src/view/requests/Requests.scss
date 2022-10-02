@@ -1,3 +1,13 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:06108bfe5587b7ed308db60370d57d799d16a86e866f8505e234aeefb6a220cc
-size 191
+@import 'RequestsCommon';
+
+.x-grid-cell-inner-row-expander {
+    padding-bottom: 5px;
+}
+
+.request-attachments-expander {
+    cursor: pointer;
+}
+
+.attached-file-link a {
+    color: #757575;
+}

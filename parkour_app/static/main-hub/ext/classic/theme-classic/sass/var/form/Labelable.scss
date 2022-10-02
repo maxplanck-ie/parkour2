@@ -1,3 +1,6 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:dce7d216a204f193d70bc7d45fe7a8d5b5d9ba16411aeca84aaa91ad431f3021
-size 200
+/** @class Ext.form.Labelable */
+//
+
+$form-error-msg-color: dynamic(#c0272b);
+$form-error-msg-font-size: dynamic(ceil($font-size * .9));
+$form-toolbar-label-font-size: dynamic(ceil($font-size * .9));

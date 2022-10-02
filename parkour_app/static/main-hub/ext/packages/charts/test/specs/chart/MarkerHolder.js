@@ -1,3 +1,23 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:56990a4df24c9558f9106a349eada7e03ca64e5862fa989774b2aa8978cd32b0
-size 884
+describe('Ext.chart.MarkerHolder', function () {
+    describe('bindMarker', function () {
+        it("should release the bound marker when the marker is destroyed", function () {
+            var surface = new Ext.draw.Surface({}),
+                markerHolder = new Ext.chart.series.sprite.PieSlice({}),
+                markers = new Ext.chart.Markers({}),
+                template = new Ext.draw.sprite.Text({});
+
+            markers.setTemplate(template);
+            markerHolder.bindMarker('labels', markers);
+            expect(markerHolder.getMarker('labels')).toBe(markers);
+            surface.add(markerHolder);
+            markers.destroy();
+
+            expect(markerHolder.getMarker('labels')).toBe(null);
+
+            surface.destroy();
+
+            expect(markerHolder.isDestroyed).toBe(true);
+            expect(template.isDestroyed).toBe(true);
+        });
+    });
+});
