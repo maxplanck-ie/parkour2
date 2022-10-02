@@ -6,6 +6,7 @@ from django.core.mail import send_mail
 from django.urls import reverse
 from django.template.loader import render_to_string
 from common.models import Organization
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -50,27 +51,30 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         automatically via the OIDC backend"""
 
         # URL for the admin page of the newly created users
-        user_admin_change_url = f'https://{settings.ALLOWED_HOSTS[0]}{reverse("admin:common_user_change", args=(user.id,))}'
+        current_site = get_current_site(self.request)
+        user_admin_change_url = f'{self.request.scheme + "://" if self.request.scheme else ""}{current_site}{reverse("admin:common_user_change", args=(user.id,))}'
         
         # Recipient list, all lab managers plus tUhe site admin
         recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='staff').values_list('email', flat=True)
 
         # Get list of OIDC groups, if available
         oidc_groups = claims.get('role', [])
+        oidc_groups.sort()
+
 
         send_mail(
-                subject="[Parkour] A new user was automatically created via OpenID authentication",
+                subject=f"{settings.EMAIL_SUBJECT_PREFIX} A new user was automatically created via OpenID authentication",
                 message="",
                 html_message=render_to_string(
                     "email/new_user_created_email.html",
                     {
                         "user": user,
                         "user_admin_change_url": user_admin_change_url,
-                        "oidc_groups": ', '.join(oidc_groups)
+                        "oidc_groups": oidc_groups
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=recipients,
+                recipient_list= recipients,
             )
 
     def create_user(self, claims):

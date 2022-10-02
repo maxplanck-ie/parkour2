@@ -1,16 +1,53 @@
 {% load i18n %}{% autoescape off %}
-<p><i>Dear all,</i></p>
+
+<style>
+    .verticalheader {
+        text-align: left;
+        white-space: nowrap;
+        vertical-align: top;
+        padding-right: 10px;
+    }
+</style>
+
+<p>Dear all,</p>
 
 <p>
 <div>A new user was automatically created via OpenID authentication.</div>
 <br>
-<div>First name: {{user.first_name}}</div>
-<div>Last name: {{user.last_name}}</div>
-<div>Email address: {{user.email}}</div>
-{% if oidc_groups %}<div>OIDC groups: {{oidc_groups}}</div>{% endif %}
-<br>
+
 <div>You can check this user's profile <a href="{{user_admin_change_url}}">here</a>.</div>
+<br>
+
+<hr />
+<p style="font-weight: bold; text-align: center;">Summary of OIDC user profile</p>
+<table style="width:100%;border:0px;">
+    <tr>
+        <th class='verticalheader'>First name:</th>
+        <td>{{user.first_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Last name:</th>
+        <td>{{user.last_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Email:</th>
+        <td>{{user.email}}</td>
+    </tr>
+    {% if oidc_groups %}
+    <tr>
+        <th class='verticalheader'>OIDC groups:</th>
+        <td>
+            {% for g in oidc_groups %}
+            <div>{{g}}</div>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+<br>
+<hr />
 </p>
+
 <p>
     <i>
         --<br />
