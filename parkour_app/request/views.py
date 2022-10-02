@@ -21,6 +21,11 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from django.shortcuts import render
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils import timezone
+from django.core.files.base import ContentFile
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -301,6 +306,126 @@ class RequestViewSet(viewsets.ModelViewSet):
                 return Response({"noncomplete": True})
             else:
                 return Response({"error": "error"})
+
+    def send_approval_email(self, instance, subject, message, recipients, save_html=False):
+        """Send emails related to the approval of a request"""
+
+        # Create relevant info for the email
+        instance.date = instance.create_time.strftime("%d.%m.%Y")
+        instance.cost_unit = instance.cost_unit if instance.cost_unit else 'NA'
+        instance.description = instance.description if instance.description else 'NA'
+        objects = list(
+            itertools.chain(
+                instance.samples.all(),
+                instance.libraries.all(),
+            )
+        )
+        records = [
+            {
+                "name": obj.name,
+                "type": obj.__class__.__name__,
+                "barcode": obj.barcode,
+                "depth": obj.sequencing_depth,
+            }
+            for obj in objects
+        ]
+        records = sorted(records, key=lambda x: x["barcode"][3:])
+
+        # Create the message
+        html_message = render_to_string(
+                            "approval_email.html",
+                            {
+                                "original": instance,
+                                'message': message,
+                                "records": records,
+                            },)
+
+        # If required, save the message to deep_seq_request
+        if save_html:
+            deep_seq_request_content = ContentFile(html_message)
+            instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.html", deep_seq_request_content)
+            instance.save()
+
+        send_mail(
+                subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
+                message="",
+                html_message=html_message,
+                from_email=settings.SERVER_EMAIL,
+                recipient_list= recipients,
+            )
+
+    @action(methods=["get"], detail=True)
+    def approve(self, request, pk=None):
+        """
+        Mark request as approved by saving message as deep_seq_request and 
+        change request's libraries' and samples' statuses to 1.
+        """
+        instance = Request.objects.get(pk=pk)
+        
+        # Make sure that the user trying to approve a request is
+        # the PI of said request
+        if request.user != instance.pi:
+            return Response({"success": False, 'message': 'You are not allowed to approve this request.'})
+
+        # # A request can't be approved twice
+        if instance.deep_seq_request:
+            return Response({"success": False, 'message': 'This request was already approved.'})
+
+        # Change the status of libraries and samples
+        instance.libraries.all().update(status=1)
+        instance.samples.all().update(status=1)
+
+        email_recipients = [instance.pi.email, instance.user.email] + \
+                           list(User.objects.filter(is_active=True, is_staff=True))
+
+        request.session_id = request.session._get_or_create_session_key()
+        
+        subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
+        message = render_to_string('approved_message.html',
+                                   {'pi_full_name': instance.pi.full_name,
+                                    'now_dt': timezone.now().strftime('%d.%m.%Y at %H:%M:%S'),
+                                    'request': request})
+
+        self.send_approval_email(instance, subject, message, email_recipients, save_html=True)
+
+        # Check whether from where approval comes from
+        # email -> redirect = True
+        # click from context menu -> redirect = False 
+        redirect = request.GET.get('redirect', False)
+        if redirect:
+            return render(request, 'confirm_request_approval.html')
+
+        return Response({"success": True})
+
+    @action(methods=["get"], detail=True)
+    def request_approval(self, request, pk=None):
+        """Send email to PI to ask for request approval"""
+
+        try:
+            # Set some variables for the obj to then be used in the email template
+            instance = Request.objects.get(pk=pk)# self.get_object()
+
+            # Build relevant URLs
+            current_site = get_current_site(request)
+            base_domain =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
+            approval_url= f'{base_domain}{reverse("request-request-approval",  args=(pk,))}?redirect=true'
+
+            email_recipients = [instance.pi.email]
+        
+            subject = 'A sequencing request needs your approval'
+            message = render_to_string('request_approval_message.html',
+                                        {'original': instance,
+                                        'approval_url': approval_url,
+                                        'base_domain': base_domain})
+
+            self.send_approval_email(instance, subject, message, email_recipients)
+
+            return Response({"success": True})
+            
+        except Exception as e:
+            
+            logger.exception(e)
+            return Response({"success": False, 'message': 'There was an error handling this request.'})
 
     @action(methods=["post"], detail=True)
     def samples_submitted(self, request, pk=None):

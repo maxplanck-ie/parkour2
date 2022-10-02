@@ -72,24 +72,50 @@ Ext.define('MainHub.view.requests.RequestsController', {
           }
         },
         '-',
+        // {
+        //   text: 'Download Request Form',
+        //   tooltip: 'Download deep sequencing request form',
+        //   disabled: !(deepSeqReqPath === ''),
+        //   handler: function () {
+        //     var url = Ext.String.format(
+        //       'api/requests/{0}/download_deep_sequencing_request/', requestId
+        //     );
+        //     var downloadForm = Ext.create('Ext.form.Panel', { standardSubmit: true });
+        //     downloadForm.submit({ url: url, method: 'GET' });
+        //   }
+        // },
+        // {
+        //   text: 'Upload Signed Request',
+        //   tooltip: 'Upload signed request form to complete the submission',
+        //   disabled: !(deepSeqReqPath === ''),
+        //   handler: function () {
+        //     me.uploadSignedRequest(requestId);
+        //   }
+        // },
         {
-          text: 'Download Request Form',
-          tooltip: 'Download deep sequencing request form',
+          text: 'Request approval from PI',
+          hidden: USER.is_pi || deepSeqReqPath !== '',
           disabled: !(deepSeqReqPath === ''),
-          handler: function () {
-            var url = Ext.String.format(
-              'api/requests/{0}/download_deep_sequencing_request/', requestId
-            );
-            var downloadForm = Ext.create('Ext.form.Panel', { standardSubmit: true });
-            downloadForm.submit({ url: url, method: 'GET' });
+          handler: function(){
+            me.requestApproval(record,'False');
           }
         },
         {
-          text: 'Upload Signed Request',
-          tooltip: 'Upload signed request form to complete the submission',
+          text: deepSeqReqPath === '' ? 'Approve' : 'Approved by PI',
+          hidden: !USER.is_pi && deepSeqReqPath === '',
           disabled: !(deepSeqReqPath === ''),
-          handler: function () {
-            me.uploadSignedRequest(requestId);
+          handler: function(){
+            Ext.Msg.show({
+              title: 'Approve request',
+              message: 'Are you sure you want to approve this request?',
+              buttons: Ext.Msg.YESNO,
+              icon: Ext.Msg.QUESTION,
+              fn: function(btn){
+               if(btn==='yes'){
+                me.approve(record,'False');
+               }
+              }
+            });
           }
         },
         {
@@ -189,6 +215,70 @@ Ext.define('MainHub.view.requests.RequestsController', {
         }
    });
   },
+
+  approve: function(record,admin_override){
+    var me = this;
+    Ext.Ajax.request({
+     url: Ext.String.format('api/requests/{0}/approve/', record.get('pk')),
+       method: 'GET',
+       scope: me,
+       params:{
+        data:Ext.JSON.encode({
+          override:admin_override
+        })
+ 
+       },
+       success: function (response) {
+         var obj = Ext.JSON.decode(response.responseText);
+ 
+         if (obj.success) {
+           Ext.getStore('requestsStore').reload();
+           new Noty({ text: 'Request has been approved' }).show();
+         } 
+          else {
+           new Noty({ text: obj.message, type: 'error' }).show();
+         }
+       },
+ 
+       failure: function (response) {
+         new Noty({ text: response.statusText, type: 'error' }).show();
+         console.error(response);
+         }
+    });
+   },
+
+   requestApproval: function(record,admin_override){
+    var me = this;
+    Ext.Ajax.request({
+     url: Ext.String.format('api/requests/{0}/request_approval/', record.get('pk')),
+       method: 'GET',
+       scope: me,
+ 
+ 
+       params:{
+        data:Ext.JSON.encode({
+          override:admin_override
+        })
+ 
+       },
+       success: function (response) {
+         var obj = Ext.JSON.decode(response.responseText);
+ 
+         if (obj.success) {
+           Ext.getStore('requestsStore').reload();
+           new Noty({ text: 'Approval has been successfully requested' }).show();
+         } 
+          else {
+           new Noty({ text: obj.message, type: 'error' }).show();
+         }
+       },
+ 
+       failure: function (response) {
+         new Noty({ text: response.statusText, type: 'error' }).show();
+         console.error(response);
+         }
+    });
+   },
 
   deleteRequest: function (record) {
     Ext.Ajax.request({

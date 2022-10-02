@@ -104,14 +104,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
           {
             id: 'uploadedDeepSeqRequest',
             border: 0,
-            html: 'Signed Deep Sequencing Request ' +
-                    '<sup><strong><span class="request-field-tooltip" tooltip-text="' +
-                      '1. Save the request.<br/>' +
-                      '2. Download the Deep Sequencing Request blank using the download button below.<br/>' +
-                      '3. Print and sign it.<br/>' +
-                      '4. Scan the blank and upload it back using the upload button below.<br/><br/>' +
-                    '<strong>Note</strong>: if the blank is already uploaded, you cannot update it.' +
-                  '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>'
+            html: '<span id="approved-request-file">Not yet approved by PI</span>'
           }
         ]
       },
