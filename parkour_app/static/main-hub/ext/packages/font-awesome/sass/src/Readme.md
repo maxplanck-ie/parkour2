@@ -1,3 +1,4 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:90ecfbf37bf14421ade71298105f489f6068200413e98e7a428eaa8a029e17d4
-size 186
+# fa/sass/src
+
+This folder contains SASS sources that mimic the component-class hierarchy. These files
+are gathered in to a build of the CSS based on classes that are used by the build.

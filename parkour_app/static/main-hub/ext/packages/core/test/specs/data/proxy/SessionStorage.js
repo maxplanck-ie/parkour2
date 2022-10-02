@@ -1,3 +1,43 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:62cd06f14e5b3a233df51e00abf899f932da0f4d293d6439d3ca517f285454e6
-size 1750
+describe("Ext.data.proxy.SessionStorage", function() {
+    var proxy;
+
+    if (window.sessionStorage) {    
+        beforeEach(function() {
+            proxy = new Ext.data.proxy.SessionStorage({id: 1});
+        });
+    
+        describe("instantiation", function() {
+            it("should extend Ext.data.proxy.WebStorage", function() {
+                expect(proxy.superclass).toEqual(Ext.data.proxy.WebStorage.prototype);
+            });
+        });
+    
+        describe("methods", function() {
+            describe("getStorageObject", function() {
+                it("should return localStorage object", function() {
+                    // IE8 throw Class doesn't support Automation when comparing sessionStorage to itself (or localStorage)
+                    var automationBug = false;
+                    try {
+                        sessionStorage === sessionStorage;
+                    } catch(e) {
+                        automationBug = true;
+                    }
+                    if (!automationBug) {
+                        expect(proxy.getStorageObject()).toEqual(sessionStorage);
+                    } else { 
+                        var storageObject = proxy.getStorageObject();
+                        expect(window.sessionStorage.setItem === storageObject.setItem).toBe(true);
+                    }
+                });
+            });
+        });
+    } else {
+        describe("instantiation", function() {
+            it("should throw an error", function() {
+                expect(function() {
+                    new Ext.data.proxy.SessionStorage({id: 1});
+                }).toThrow("Local Storage is not supported in this browser, please use another type of data proxy");
+            });
+        });        
+    }
+});

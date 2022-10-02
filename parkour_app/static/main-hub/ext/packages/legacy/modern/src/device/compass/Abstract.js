@@ -1,3 +1,49 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:45c0567695f7746519805f017ec91f8b9f4de79a064c2ff5cfe3bd9a78bc47d2
-size 1223
+/**
+ * @private
+ */
+Ext.define('Ext.device.compass.Abstract', {
+    config: {
+        /**
+         * @cfg {Number} frequency The default frequency to get the current heading when using {@link Ext.device.Compass#watchHeading}.
+         */
+        frequency: 100
+    },
+
+    getHeadingAvailable: function(config) {
+        // <debug>
+        if (!config.callback) {
+            Ext.Logger.warn('You need to specify a `callback` function for #getHeadingAvailable');
+        }
+        // </debug>
+
+        return config;
+    },
+
+    getCurrentHeading: function(config) {
+        // <debug>
+        if (!config.success) {
+            Ext.Logger.warn('You need to specify a `success` function for #getCurrentHeading');
+        }
+        // </debug>
+
+        return config;
+    },
+
+    watchHeading: function(config) {
+        var defaultConfig = Ext.device.compass.Abstract.prototype.config;
+
+        config = Ext.applyIf(config, {
+            frequency: defaultConfig.frequency
+        });
+
+        // <debug>
+        if (!config.callback) {
+            Ext.Logger.warn('You need to specify a `callback` function for #watchHeading');
+        }
+        // </debug>
+
+        return config;
+    },
+
+    clearWatch: Ext.emptyFn
+});

@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0bbf631ec4f8d8fc940ab1a31228a1b7ab1c1b924896e27e8ad5408b7d4d012f
-size 450
+.#{$prefix}tab-tabmenu-right {
+    background: transparent theme-background-image('tabscrollermenu/menu', 'gif') no-repeat 0 0;
+    width:18px;
+    height: 20px;
+    cursor:pointer;
+    zoom: 1;
+    z-index: 6;
+    float: right;
+}
+.#{$prefix}tab-tabmenu-over {
+    background-position: -18px 0;
+}
+.#{$prefix}tab-tabmenu-disabled {
+    background-position: 0 0;
+    opacity:.5;
+    -moz-opacity:.5;
+    filter:alpha(opacity=50);
+    cursor:default;
+}

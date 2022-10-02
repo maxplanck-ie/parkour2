@@ -1,3 +1,28 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:c9db01c5cde7560c9d64243e790a22bc4a75421d61d235955452589203229f85
-size 726
+describe("Ext.mixin.Identifiable", function() {
+    var TestClass;
+
+    beforeEach(function() {
+        TestClass = new Ext.Class({
+            mixins: [Ext.mixin.Identifiable]
+        });
+    });
+
+    describe("getId()", function() {
+        it("should return a unique id and cache it", function() {
+            var foo = new TestClass(),
+                id1 = foo.getId(),
+                id2 = foo.getId();
+
+            expect(id1).toBe(id2);
+        });
+
+        it("should return unique ids", function() {
+            var foo = new TestClass(),
+                bar = new TestClass(),
+                id1 = foo.getId(),
+                id2 = bar.getId();
+
+            expect(id1).not.toEqual(id2);
+        });
+    });
+});
