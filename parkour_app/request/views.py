@@ -681,13 +681,13 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Send an email to the user."""
         error = ""
 
-        instance = self.get_object()
+        instance = Request.objects.get(id=pk)
         subject = request.data.get("subject", "")
         message = request.data.get("message", "")
         include_failed_records = json.loads(
-            request.POST.get("include_failed_records", "false")
+            request.POST.get("reject_request", "false")
         )
-        records = []
+        failed_records = []
 
         # TODO: check if it's possible to send emails at all
 
@@ -696,25 +696,40 @@ class RequestViewSet(viewsets.ModelViewSet):
                 raise ValueError("Email subject and/or message is missing.")
 
             if include_failed_records:
-                records = list(instance.libraries.filter(status=-1)) + list(
-                    instance.samples.filter(status=-1)
+                libraries = instance.libraries.all()
+                samples = instance.samples.all()
+                failed_records = list(libraries.filter(status=-1)) + list(
+                    samples.filter(status=-1)
                 )
-                records = sorted(records, key=lambda x: x.barcode[3:])
+                failed_records = sorted(failed_records, key=lambda x: x.barcode[3:])
+
+                # Reject request and change status of libraries/samples to 0
+                instance.deep_seq_request = None
+                instance.save()
+                libraries.update(status=0)
+                samples.update(status=0)
 
             send_mail(
-                subject=subject,
+                subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
                 message="",
                 html_message=render_to_string(
                     "email.html",
                     {
                         "full_name": instance.user.full_name,
-                        "message": message,
-                        "records": records,
+                        "message": message.replace('\n', '<br>'),
+                        "records": failed_records,
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=[instance.user.email],
+                recipient_list=[instance.user.email, request.user.email],
             )
+
+            if failed_records:
+                # Add a comment to failed samples/libraries
+                for r in failed_records:
+                    r.comments_facility = r.comments_facility if r.comments_facility else ""
+                    r.comments_facility = (f'[{settings.EMAIL_SUBJECT_PREFIX} This library/sample previously failed QC] ' + r.comments_facility).strip()
+                    r.save()
 
         except Exception as e:
             error = str(e)

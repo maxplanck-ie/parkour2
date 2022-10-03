@@ -17,11 +17,13 @@ Ext.define('MainHub.view.requests.EmailWindowController', {
     boxready: function(wnd) {
         var subjectField = wnd.down('#subject-field');
         subjectField.setValue(wnd.record.get('name'));
+        this.initializeTooltips();
     },
 
     send: function(btn) {
         var wnd = btn.up('window');
         var form = wnd.down('#email-form').getForm();
+        console.log(form.getFieldValues());
 
         if (!form.isValid()) {
             new Noty({ text: 'All fields must be filled in.', type: 'warning' }).show();
@@ -41,5 +43,18 @@ Ext.define('MainHub.view.requests.EmailWindowController', {
                 console.error(action);
             }
         });
-    }
+    },
+
+    initializeTooltips: function () {
+        $.each($('.reject-request-tooltip'), function (idx, item) {
+          Ext.create('Ext.tip.ToolTip', {
+            // title: 'Help',
+            target: item,
+            html: $(item).attr('tooltip-text'),
+            dismissDelay: 15000,
+            maxWidth: 300
+          });
+        });
+      },
+    
 });

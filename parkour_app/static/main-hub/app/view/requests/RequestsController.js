@@ -140,7 +140,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         {
           text: 'Compose Email',
-          hidden: !(USER.is_staff || USER.is_bioinformatician),
+          hidden: !(USER.is_staff),
           handler: function () {
             Ext.create('MainHub.view.requests.EmailWindow', {
               title: 'New Email',
