@@ -31,7 +31,7 @@ diff-match-patch==20200713
     # via django-import-export
 dj-database-url==1.0.0
     # via -r parkour_app/requirements/base.in
-django==3.2.15
+django==3.2.16
     # via
     #   -r parkour_app/requirements/base.in
     #   dj-database-url
