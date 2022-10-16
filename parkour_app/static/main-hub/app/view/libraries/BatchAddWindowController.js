@@ -46,6 +46,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       // '#download-sample-form':{
       //   click: 'downloadSampleForm'
       // }
+
+      '#reorder-columns-paste':{
+        click: 'reorderColumns'
+      }
     }
   },
 
@@ -155,6 +159,43 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       method: 'GET',
 
     });
+  },
+
+  reorderColumns: function (btn) {
+    var wnd = btn.up('window');
+    var grid = Ext.getCmp('batch-add-grid');
+    var columns = grid.headerCt.columnManager.getColumns();
+    var columnOrderCurrent = columns.map(function (e) { return e.dataIndex });
+    if (typeof this.columOrderOriginal === 'undefined') {
+      this.columOrderOriginal = null;
+    }
+    this.columOrderOriginal = this.columOrderOriginal ? this.columOrderOriginal : columns.map(function (e) { return e.dataIndex });
+
+    if (wnd.recordType === 'Library') {
+      var columnOrderPaste = [
+        'numberer', 'barcode', 'name', 'concentration', 'mean_fragment_size',
+        'sequencing_depth', 'amplification_cycles', 'qpcr_result',
+        'comments', 'library_protocol', 'library_type', 'index_type',
+        'index_reads', 'index_i7', 'index_i5', 'equal_representation_nucleotides',
+        'read_length', 'sample_volume', 'concentration_method',
+        'organism'];
+    } else {
+      var columnOrderPaste = [
+        'numberer', 'barcode', 'name', 'concentration', 'rna_quality',
+        'sequencing_depth', 'amplification_cycles','comments', 
+        'read_length', 'nucleic_acid_type', 'library_protocol', 
+        'library_type', 'equal_representation_nucleotides', 
+        'sample_volume', 'concentration_method', 'organism', 
+      ]
+    }
+
+    var order = columnOrderCurrent.at(-1) === 'comments' ? columnOrderPaste : this.columOrderOriginal;
+    columns = this.sortColumns(columns, order);
+    grid.headerCt.suspendLayouts();
+    for (var i = 0; i < columns.length; i++) {
+      grid.headerCt.moveAfter(columns[i], (columns[i - 1] || null));
+    }
+    grid.headerCt.resumeLayouts(true);
   },
 
   applyToAll: function (record, dataIndex) {

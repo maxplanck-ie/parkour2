@@ -71,7 +71,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       id: 'batch-add-grid',
       itemId: 'batch-add-grid',
       sortableColumns: false,
-      enableColumnMove: false,
+      enableColumnMove: true,
       enableColumnHide: false,
       // multiSelect: true,
       border: 0,
@@ -135,6 +135,14 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       xtype: 'toolbar',
       dock: 'bottom',
       items: [
+        {
+          xtype: 'button',
+          itemId: 'reorder-columns-paste',
+          iconCls: 'fa fa-random fa-lg',
+          tooltip: '<strong>Reorder columns for easy data pasting. </strong>' +
+          'To edit multiple cells at once (Excel-like), ' +
+          'please select a cell, press Esc, paste data'
+        },
         '->',
         {
           xtype: 'button',
