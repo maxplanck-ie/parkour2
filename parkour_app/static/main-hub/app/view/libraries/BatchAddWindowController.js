@@ -463,7 +463,14 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     indexReadsEditor.enable();
 
     for (var i = 0; i <= record.get('index_reads'); i++) {
-      indexReadsEditor.getStore().add({ num: i });
+      
+    }
+    indexReadsEditor.getStore().add({ num: 0, label: 'None' });
+    indexReadsEditor.getStore().add({ num: 7, label: 'I7 only' });
+
+    if (record.get('index_reads') > 1) {
+      indexReadsEditor.getStore().add({ num: 5, label: 'I5 only'})
+      indexReadsEditor.getStore().add({ num: 75, label: 'I7 + I5'})
     }
 
     // Remove values before loading new stores
@@ -485,11 +492,15 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var indexI7Editor = Ext.getCmp('indexI7Editor');
     var indexI5Editor = Ext.getCmp('indexI5Editor');
 
-    if (record.get('num') === 1) {
+    if (record.get('num') === 7) {
       indexI7Editor.enable();
       indexI5Editor.disable();
       indexI5Editor.setValue(null);
-    } else if (record.get('num') === 2) {
+    } else if (record.get('num') === 5) {
+      indexI5Editor.enable();
+      indexI7Editor.disable();
+      indexI7Editor.setValue(null);
+    } else if (record.get('num') === 75) {
       indexI7Editor.enable();
       indexI5Editor.enable();
     } else {
@@ -582,10 +593,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           id: 'indexReadsEditor',
           itemId: 'indexReadsEditor',
           queryMode: 'local',
-          displayField: 'num',
+          displayField: 'label',
           valueField: 'num',
           store: Ext.create('Ext.data.Store', {
-            fields: [{ name: 'num', type: 'int' }],
+            fields: [{ name: 'num', type: 'int' }, {name: 'label', type: 'string'}],
             data: []
           }),
           forceSelection: true
@@ -599,7 +610,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             meta.tdAttr = 'data-qtip="' + record.get('errors')[dataIndex] + '"';
           }
 
-          return item ? item.get('num') : value;
+          return item ? item.get('label') : value;
         }
       },
       {
