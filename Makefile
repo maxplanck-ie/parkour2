@@ -94,7 +94,7 @@ convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sql
 
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
-		find $$PWD/media_dump/ -maxdepth 1 -type d | \
+		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
 			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
 
 load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
@@ -127,11 +127,14 @@ shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
+dbshell:
+	@docker exec -it parkour2-postgres psql -U postgres -p 5432
+
 reload-nginx:
 	@docker exec -it parkour2-nginx nginx -s reload
 
 reload-django:
-	@find $$PWD/parkour_app/ -maxdepth 1 -type d -mtime -3 | \
+	@find $$PWD/parkour_app/ -maxdepth 1 -mindepth 1 -type d -mtime -3 | \
 		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
 
 graph_models:
