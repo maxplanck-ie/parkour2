@@ -161,7 +161,51 @@ Ext.define('MainHub.view.requests.RequestWindow', {
             itemId: 'batch-add-button',
             text: 'Add'
           }
-        ]
+        ],
+        listeners: {
+          // Open Batch Window by double record
+          itemdblclick: function (dv, record, item, index, e) {
+
+            var type = record.get('record_type') === 'Library' ? 'libraries' : 'samples';
+            var id = record.get('pk');
+            var url = Ext.String.format('api/{0}/', type);
+        
+            Ext.Ajax.request({
+              url: url,
+              method: 'GET',
+              scope: this,
+              params: {
+                request_id: null,
+                ids: Ext.JSON.encode([id])
+              },
+        
+              success: function (response) {
+
+                var obj = Ext.JSON.decode(response.responseText);
+        
+                if (obj.success) {
+                  if (obj.data.length === 0) {
+                    new Noty({ text: 'No data.', type: 'warning' }).show();
+                    return;
+                  }
+        
+                  Ext.create('MainHub.view.libraries.BatchAddWindow', {
+                    mode: 'edit',
+                    type: record.get('record_type'),
+                    records: obj.data
+                  });
+                } else {
+                  new Noty({ text: obj.message, type: 'error' }).show();
+                }
+              },
+        
+              failure: function (response) {
+                new Noty({ text: response.statusText, type: 'error' }).show();
+                console.error(response);
+              }
+            });
+          }
+        }
       }
     ]
   }],
