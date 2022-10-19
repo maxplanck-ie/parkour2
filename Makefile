@@ -40,6 +40,16 @@ load-migrations:
 	@docker compose run parkour2-django python manage.py makemigrations > /dev/null && \
 	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
 
+get-migrations: load-migrations
+	@docker exec -it parkour2-django sh -c \
+	"apt update && apt install -y rsync && mkdir -p /usr/src/app/staticfiles/migrations" && \
+	docker exec parkour2-django \
+		sh -c "find **/migrations/ -maxdepth 1 -mindepth 1 -type f -mtime 3 | \
+		xargs -I {} rsync -qaR {} /usr/src/app/staticfiles/migrations/"
+	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
+	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
+	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
+
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
@@ -158,15 +168,15 @@ dev-setup: ## Create virtualenv with development tools (e.g. pip compiler)
 		env python3 -m pip install --upgrade pip && \
 		pip install \
 			pre-commit \
-			pip-compile-multi
+			pip-compile-multi && \
+	deactivate
 
 ## TODO: ReadTheDocs (DEPRECATION)> sphinx sphinx-autobuild sphinx-rtd-theme
 
 
 # Don't confuse 'dev-setup' with the app environment (dev.in & dev.txt) to run
 # it in 'dev' mode, mind the 'hierarchical' difference. We're going to use
-# pip-compile-multi to manage parkour_app/requirements/*.txt files.
+# pip-compile-multi to manage parkour_app/requirements/*.txt files. And, please
+# also note that there's pre-commit to keep a tidy repo.
 
-
-# Last, but not least, please also note that there's pre-commit to keep a tidy
-# repo. And, git-lfs (e.g.  `.gitattributes`) to track `parkour_app/static/`.
+# Remember: (docker compose run == docker exec) != docker run
