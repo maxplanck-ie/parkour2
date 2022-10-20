@@ -40,7 +40,7 @@ load-migrations:
 	@docker compose run parkour2-django python manage.py makemigrations > /dev/null && \
 	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
 
-get-migrations: load-migrations
+get-migrations:
 	@docker exec -it parkour2-django sh -c \
 	"apt update && apt install -y rsync && mkdir -p /usr/src/app/staticfiles/migrations" && \
 	docker exec parkour2-django \
@@ -106,7 +106,7 @@ convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sql
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
 		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
-			xargs -I _ docker cp _ parkour2-django:/usr/src/app/media/
+			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/
 
 load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 	@[[ -f latest.sqldump ]] && \
@@ -145,8 +145,8 @@ reload-nginx:
 	@docker exec -it parkour2-nginx nginx -s reload
 
 reload-django:
-	@find $$PWD/parkour_app/ -maxdepth 1 -mindepth 1 -type d -mtime -3 | \
-		xargs -I _ docker cp _ parkour2-django:/usr/src/app/
+	@find parkour_app/ -maxdepth 1 -mindepth 1 -type d -mtime -3 | \
+		xargs -I {} docker cp {} parkour2-django:/usr/src/app/
 
 graph_models:
 	@docker exec -it parkour2-django sh -c \
