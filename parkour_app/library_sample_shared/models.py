@@ -150,7 +150,11 @@ class IndexPair(models.Model):
         IndexType, verbose_name="Index Type", on_delete=models.SET_NULL, null=True
     )
     index1 = models.ForeignKey(
-        IndexI7, verbose_name="Index 1", on_delete=models.SET_NULL, null=True
+        IndexI7,
+        verbose_name="Index 1",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
     )
     index2 = models.ForeignKey(
         IndexI5,
