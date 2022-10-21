@@ -157,6 +157,9 @@ class RequestViewSet(viewsets.ModelViewSet):
         "description",
         "user__first_name",
         "user__last_name",
+        "user__pi__name",
+        "user__organization__name",
+        "cost_unit__name",
     )
 
     def get_queryset(self, showAll=False):
