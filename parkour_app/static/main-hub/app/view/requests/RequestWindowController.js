@@ -275,7 +275,8 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           Ext.create('MainHub.view.libraries.BatchAddWindow', {
             mode: 'edit',
             type: records[0].record_type,
-            records: obj.data
+            records: obj.data,
+            requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
           });
         } else {
           new Noty({ text: obj.message, type: 'error' }).show();
@@ -403,7 +404,8 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
   showBatchAddWindow: function () {
     Ext.create('MainHub.view.libraries.BatchAddWindow', {
-      mode: 'add'
+      mode: 'add',
+      requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
     });
   },
 

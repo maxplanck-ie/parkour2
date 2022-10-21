@@ -23,7 +23,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         click: 'createEmptyRecords'
       },
 
-        // Libraries only
+      // Libraries only
       '#indexTypeEditor': {
         select: 'selectIndexType'
       },
@@ -31,7 +31,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         select: 'selectIndexReads'
       },
 
-        // Samples only
+      // Samples only
       '#nucleicAcidTypeEditor': {
         select: 'selectNucleicAcidType'
       },
@@ -47,7 +47,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       //   click: 'downloadSampleForm'
       // }
 
-      '#reorder-columns-paste':{
+      '#reorder-columns-paste': {
         click: 'reorderColumns'
       }
     }
@@ -74,6 +74,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var wnd = btn.up('window');
     var layout = btn.up('panel').getLayout();
     var configuration;
+    this.requestName = btn.up('window').requestName;
 
     wnd.setSize(1000, 650);
     wnd.center();
@@ -81,25 +82,27 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     if (wnd.mode === 'add') {
       wnd.getDockedItems('toolbar[dock="top"]')[0].show();
     } else {
-        // wnd.down('#cancel-button').show();
+      // wnd.down('#cancel-button').show();
     }
     layout.setActiveItem(1);
 
     if (btn.itemId === 'library-card-button') {
       wnd.recordType = 'Library';
-      wnd.setTitle('Add Libraries');
+      wnd.setTitle(this.requestName + ' - ' + 'Add Libraries');
       // wnd.getComponent('create-empty-records').getComponent('download-sample-form').setVisible(false);
       configuration = this.getLibraryGridConfiguration(wnd.mode);
     } else {
       wnd.recordType = 'Sample';
-      wnd.setTitle('Add Samples');
+      wnd.setTitle(this.requestName + ' - ' + 'Add Samples');
       // wnd.getComponent('create-empty-records').getComponent('download-sample-form').setVisible(true);
       configuration = this.getSampleGridConfiguration(wnd.mode);
     }
 
-      // Add selected records for editing to the store
+    // Add selected records for editing to the store
     if (wnd.mode === 'edit') {
       configuration[0].add(wnd.records);
+      // Change the title of the Batch Window to Edit if editing
+      wnd.setTitle(wnd.title.replace('Add', 'Edit'));
     }
 
     wnd.maximize();  // auto fullscreen
@@ -182,10 +185,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     } else {
       var columnOrderPaste = [
         'numberer', 'barcode', 'name', 'concentration', 'rna_quality',
-        'sequencing_depth', 'amplification_cycles','comments', 
-        'read_length', 'nucleic_acid_type', 'library_protocol', 
-        'library_type', 'equal_representation_nucleotides', 
-        'sample_volume', 'concentration_method', 'organism', 
+        'sequencing_depth', 'amplification_cycles', 'comments',
+        'read_length', 'nucleic_acid_type', 'library_protocol',
+        'library_type', 'equal_representation_nucleotides',
+        'sample_volume', 'concentration_method', 'organism',
       ]
     }
 
@@ -286,7 +289,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
               if (
                 (item.get('nucleic_acid_type') !== record.get('nucleic_acid_type')) ||
                 ((item.get('nucleic_acid_type') === record.get('nucleic_acid_type')) &&
-                (item.get('library_protocol') !== record.get('library_protocol')))
+                  (item.get('library_protocol') !== record.get('library_protocol')))
               ) {
                 item.set('library_type', null);
               }
@@ -463,14 +466,14 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     indexReadsEditor.enable();
 
     for (var i = 0; i <= record.get('index_reads'); i++) {
-      
+
     }
     indexReadsEditor.getStore().add({ num: 0, label: 'None' });
     indexReadsEditor.getStore().add({ num: 7, label: 'I7 only' });
 
     if (record.get('index_reads') > 1) {
-      indexReadsEditor.getStore().add({ num: 5, label: 'I5 only'})
-      indexReadsEditor.getStore().add({ num: 75, label: 'I7 + I5'})
+      indexReadsEditor.getStore().add({ num: 5, label: 'I5 only' })
+      indexReadsEditor.getStore().add({ num: 75, label: 'I7 + I5' })
     }
 
     // Remove values before loading new stores
@@ -596,7 +599,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           displayField: 'label',
           valueField: 'num',
           store: Ext.create('Ext.data.Store', {
-            fields: [{ name: 'num', type: 'int' }, {name: 'label', type: 'string'}],
+            fields: [{ name: 'num', type: 'int' }, { name: 'label', type: 'string' }],
             data: []
           }),
           forceSelection: true
@@ -626,7 +629,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           displayField: 'name',
           displayTpl: Ext.create('Ext.XTemplate',
             '<tpl for=".">',
-              '{index}',
+            '{index}',
             '</tpl>'
           ),
           valueField: 'index',
@@ -650,7 +653,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           displayField: 'name',
           displayTpl: Ext.create('Ext.XTemplate',
             '<tpl for=".">',
-              '{index}',
+            '{index}',
             '</tpl>'
           ),
           valueField: 'index',
@@ -1054,7 +1057,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       meta.tdAttr = 'data-qtip="' + errors[dataIndex] + '"';
     }
 
-      // Render indices as '{Index ID} - {Index}'
+    // Render indices as '{Index ID} - {Index}'
     if ((dataIndex === 'index_i7' || dataIndex === 'index_i5') && value !== '') {
       var store = meta.column.getEditor().getStore();
       var index = store.findRecord('index', value);
@@ -1091,11 +1094,29 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var grid = Ext.getCmp('batch-add-grid');
     var store = grid.getStore();
     var numRecords = btn.up().down('#num-empty-records').getValue();
+    var numRecordsLen = numRecords.toString().length;
+    // Get the 'short' version of a typical request name from IMB, if possible
+    var requestName = this.requestName.split('_').length > 3 ?
+      this.requestName.split('_').slice(0, 4).join('_') :
+      this.requestName
+
+    // Left pad a number num with padString to a max length length
+    var lpad = function (num, padString, length) {
+      var str = String(num)
+      while (str.length < length)
+        str = padString + str;
+      return str;
+    }
 
     if (numRecords && numRecords > 0) {
       var data = [];
       for (var i = 0; i < numRecords; i++) {
-        data.push({});
+        data.push({
+          // Set a base name for a library/sample based on the request name
+          name: Ext.String.format('{0}_{1}',
+          requestName,
+            lpad(i + 1, '0', numRecordsLen))
+        });
       }
       store.add(data);
     }

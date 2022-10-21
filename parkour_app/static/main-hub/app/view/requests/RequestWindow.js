@@ -192,7 +192,8 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                   Ext.create('MainHub.view.libraries.BatchAddWindow', {
                     mode: 'edit',
                     type: record.get('record_type'),
-                    records: obj.data
+                    records: obj.data,
+                    requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
                   });
                 } else {
                   new Noty({ text: obj.message, type: 'error' }).show();
