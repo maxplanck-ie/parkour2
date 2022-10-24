@@ -350,3 +350,12 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
 
     def _get_model_name_plural(self):
         return self._get_model()._meta.verbose_name_plural.lower()
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        # A ripoff of https://stackoverflow.com/a/52700398/4222260
+
+        try:
+            super(LibrarySampleBaseViewSet, self).destroy(request, pk, *args, **kwargs)
+            return Response({"success": True}, 200)
+        except:
+            return Response({"success": False, "message": 'The record could not be deleted.'}, 400)

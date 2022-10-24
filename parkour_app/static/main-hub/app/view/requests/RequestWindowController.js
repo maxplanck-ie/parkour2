@@ -291,19 +291,20 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   },
 
   deleteRecord: function (record) {
-    var url = record.get('record_type') === 'Library' ? 'api/libraries/{0}/' : 'api/samples/{0}/';
+    var url = record['record_type'] === 'Library' ? 'api/libraries/{0}/' : 'api/samples/{0}/';
 
     Ext.Ajax.request({
-      url: Ext.String.format(url, record.get('pk')),
+      url: Ext.String.format(url, record['pk']),
       method: 'DELETE',
       scope: this,
 
       success: function (response) {
+        console.log(response.responseText);
         var obj = Ext.JSON.decode(response.responseText);
         if (obj.success) {
           var grid = Ext.getCmp('libraries-in-request-grid');
           grid.fireEvent('refresh', grid);
-          new Noty({ text: 'Record has been deleted!' }).show();
+          new Noty({ text: 'The record has been deleted!' }).show();
         } else {
           new Noty({ text: obj.message, type: 'error' }).show();
         }

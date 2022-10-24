@@ -291,14 +291,15 @@ Ext.define('MainHub.view.requests.RequestsController', {
 
         if (obj.success) {
           Ext.getStore('requestsStore').reload();
-          new Noty({ text: 'Request has been deleted!' }).show();
+          new Noty({ text: 'The request has been deleted!' }).show();
         } else {
           new Noty({ text: obj.message, type: 'error' }).show();
         }
       },
 
       failure: function (response) {
-        new Noty({ text: response.statusText, type: 'error' }).show();
+        var obj = Ext.JSON.decode(response.responseText);
+        new Noty({ text: obj.message, type: 'error' }).show();
         console.error(response);
       }
     });

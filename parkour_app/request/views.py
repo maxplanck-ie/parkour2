@@ -1029,3 +1029,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         else:
             post_data = json.loads(request.data.get("data", "{}"))
         return post_data
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        # A ripoff of https://stackoverflow.com/a/52700398/4222260
+
+        try:
+            super(RequestViewSet, self).destroy(request, pk, *args, **kwargs)
+            return Response({"success": True}, 200)
+        except:
+            return Response({"success": False, "message": 'The request could not be deleted.'}, 400)
