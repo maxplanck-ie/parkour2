@@ -403,10 +403,23 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   },
 
   showBatchAddWindow: function () {
-    Ext.create('MainHub.view.libraries.BatchAddWindow', {
-      mode: 'add',
-      requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
-    });
+    var form = Ext.getCmp('request-form');
+
+    if (form.isValid()) {
+      var wnd = form.up('window');
+      Ext.create('MainHub.view.libraries.BatchAddWindow', {
+        mode: 'add',
+        requestName: Ext.getCmp('request-form').getForm().getFieldValues().name,
+        requestId: wnd.mode === 'add' ? null : wnd.record.get('pk'),
+        requestMode: wnd.mode
+      });
+    } else {
+      new Noty({
+        text: 'Please fill in all the required fields for ' +
+              'a request before adding new libraries/samples.',
+        type: 'warning'
+      }).show();
+    }
   },
 
   disableButtonsAndMenus: function () {

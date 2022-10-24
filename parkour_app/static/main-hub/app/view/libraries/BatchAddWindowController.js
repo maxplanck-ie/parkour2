@@ -943,6 +943,71 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     return columns;
   },
 
+  autoSaveRequest: function (wnd) {
+    var form = Ext.getCmp('request-form');
+    var store = Ext.getStore('librariesInRequestStore');
+    var url;
+
+    if (wnd.requestMode === 'add') {
+      url = 'api/requests/';
+    } else {
+      url = Ext.String.format('api/requests/{0}/edit/', wnd.requestId);
+    }
+
+    if ((store.getCount() === 0)) {
+      new Noty({
+        text: 'No libraries/samples are added to the request.',
+        type: 'warning'
+      }).show();
+      return;
+    }
+
+    var data = form.getForm().getFieldValues();
+
+    Ext.Ajax.request({
+      url: url,
+      method: 'POST',
+      scope: this,
+
+      params: {
+        data: Ext.JSON.encode({
+          name: data.name,
+          pi: data.pi,
+          cost_unit: data.cost_unit,
+          description: data.description,
+          records: Ext.Array.pluck(store.data.items, 'data'),
+          files: form.down('filegridfield').getValue()
+        })
+      },
+
+      success: function (response) {
+        var obj = Ext.JSON.decode(response.responseText);
+
+        if (obj.success) {
+          var message;
+
+          if (wnd.requestMode === 'add') {
+            message = 'Request has been saved.';
+          } else {
+            message = 'The changes have been saved.';
+          }
+
+          new Noty({ text: message }).show();
+          Ext.getStore('requestsStore').reload();
+        } else {
+          new Noty({ text: obj.message, type: 'error' }).show();
+          console.error(response);
+        }
+
+      },
+
+      failure: function (response) {
+        new Noty({ text: response.statusText, type: 'error' }).show();
+        console.error(response);
+      }
+    });
+  },
+
   save: function (btn) {
     var wnd = btn.up('window');
     var store = Ext.getCmp('batch-add-grid').getStore();
@@ -991,6 +1056,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             }
 
             new Noty({ text: 'Records have been added!' }).show();
+            // If new libraries/samples are added, try to automatically save the request,
+            // otherwise, if the request is not saved, such libraries/samples
+            // are 'lost', or at least they don't have a request associated to them
+            this.autoSaveRequest(wnd)
           } else {
             librariesInRequestGrid.down('#check-column').fireEvent('unselectall');
             new Noty({ text: 'The changes have been saved!' }).show();
