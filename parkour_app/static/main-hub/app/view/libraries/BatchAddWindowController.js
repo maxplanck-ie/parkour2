@@ -943,15 +943,16 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     return columns;
   },
 
-  autoSaveRequest: function (wnd) {
+  autoSaveRequest: function () {
     var form = Ext.getCmp('request-form');
+    var requestWnd = form.up('window');
     var store = Ext.getStore('librariesInRequestStore');
     var url;
 
-    if (wnd.requestMode === 'add') {
+    if (requestWnd.mode === 'add') {
       url = 'api/requests/';
     } else {
-      url = Ext.String.format('api/requests/{0}/edit/', wnd.requestId);
+      url = Ext.String.format('api/requests/{0}/edit/', requestWnd.record.get('pk'));
     }
 
     if ((store.getCount() === 0)) {
@@ -986,8 +987,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         if (obj.success) {
           var message;
 
-          if (wnd.requestMode === 'add') {
+          if (requestWnd.mode === 'add') {
             message = 'Request has been saved.';
+            requestWnd.mode = 'edit';
+            requestWnd.autoSaveRequestId = obj.pk;
           } else {
             message = 'The changes have been saved.';
           }
@@ -1059,7 +1062,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             // If new libraries/samples are added, try to automatically save the request,
             // otherwise, if the request is not saved, such libraries/samples
             // are 'lost', or at least they don't have a request associated to them
-            this.autoSaveRequest(wnd)
+            this.autoSaveRequest()
           } else {
             librariesInRequestGrid.down('#check-column').fireEvent('unselectall');
             new Noty({ text: 'The changes have been saved!' }).show();

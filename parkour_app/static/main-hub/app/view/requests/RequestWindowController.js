@@ -326,7 +326,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     if (wnd.mode === 'add') {
       url = 'api/requests/';
     } else {
-      url = Ext.String.format('api/requests/{0}/edit/', wnd.record.get('pk'));
+      url = Ext.String.format('api/requests/{0}/edit/', wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get('pk'));
     }
 
     if (store.getCount() === 0) {
@@ -411,8 +411,8 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       Ext.create('MainHub.view.libraries.BatchAddWindow', {
         mode: 'add',
         requestName: Ext.getCmp('request-form').getForm().getFieldValues().name,
-        requestId: wnd.mode === 'add' ? null : wnd.record.get('pk'),
-        requestMode: wnd.mode
+        // requestId: wnd.mode === 'add' ? null : wnd.record.get('pk'),
+        // requestMode: wnd.mode
       });
     } else {
       new Noty({
