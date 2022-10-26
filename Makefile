@@ -41,10 +41,10 @@ load-migrations:
 	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
 
 get-migrations:
-	@docker exec -it parkour2-django sh -c \
-	"apt update && apt install -y rsync && mkdir -p /usr/src/app/staticfiles/migrations" && \
-	docker exec parkour2-django \
-		sh -c "find **/migrations/ -maxdepth 1 -mindepth 1 -type f -mtime 3 | \
+	@docker exec parkour2-django sh -c \
+		"apt update && apt install -y rsync && \
+		mkdir -p /usr/src/app/staticfiles/migrations && \
+		find **/migrations/ -maxdepth 1 -mindepth 1 -type f | \
 		xargs -I {} rsync -qaR {} /usr/src/app/staticfiles/migrations/"
 	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
 	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
@@ -61,6 +61,10 @@ clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 
 prune:  ## USE WITH CAUTION. Remove every docker container, image and volume. Including those unrelated to parkour!
 	@docker system prune -a -f --volumes
+
+clearpy:
+	@find . -type f -name "*.py[co]" -delete
+	@find . -type d -name "__pycache__" -delete
 
 prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
@@ -98,7 +102,7 @@ deploy-ncdb:
 
 convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sqldump (will overwrite if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 10s && \
-		docker exec -it parkour2-convert-backup sh -c \
+		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump" && \
 		docker cp parkour2-convert-backup:/tmp/postgres_dump latest.sqldump && \
 		docker compose -f convert-backup.yml down
@@ -111,7 +115,7 @@ load-media:  ## Copy all media files into running instance
 load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 	@[[ -f latest.sqldump ]] && \
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
-		docker exec -it parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
+		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
 
 load-backup: load-media load-postgres
 
@@ -121,13 +125,13 @@ save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
-	@docker exec -it parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
+	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
 		sleep 1m && \
-		docker exec -it parkour2-rsnapshot rsnapshot daily
+		docker exec parkour2-rsnapshot rsnapshot daily
 
 test: down clean prod
 	@echo "Testing on a 'clean' production deployment..."
@@ -142,20 +146,16 @@ dbshell:
 	@docker exec -it parkour2-postgres psql -U postgres -p 5432
 
 reload-nginx:
-	@docker exec -it parkour2-nginx nginx -s reload
-
-reload-django:
-	@find parkour_app/ -maxdepth 1 -mindepth 1 -type d -mtime -3 | \
-		xargs -I {} docker cp {} parkour2-django:/usr/src/app/
+	@docker exec parkour2-nginx nginx -s reload
 
 graph_models:
-	@docker exec -it parkour2-django sh -c \
+	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pygraphviz" && \
-		docker exec -it parkour2-django python manage.py graph_models -a -g -o /tmp/parkour.png && \
+		docker exec parkour2-django python manage.py graph_models -a -g -o /tmp/parkour.png && \
 		docker cp parkour2-django:/tmp/parkour.png models.png
 
 show_urls:
-	@docker exec -it parkour2-django python manage.py show_urls
+	@docker exec parkour2-django python manage.py show_urls
 
 compile:  ## Render parkour_app/requirements/*.in to TXT
 	@source ./env/bin/activate && \
