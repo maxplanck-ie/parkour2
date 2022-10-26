@@ -276,7 +276,6 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
             mode: 'edit',
             type: records[0].record_type,
             records: obj.data,
-            requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
           });
         } else {
           new Noty({ text: obj.message, type: 'error' }).show();
@@ -410,9 +409,6 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       var wnd = form.up('window');
       Ext.create('MainHub.view.libraries.BatchAddWindow', {
         mode: 'add',
-        requestName: Ext.getCmp('request-form').getForm().getFieldValues().name,
-        // requestId: wnd.mode === 'add' ? null : wnd.record.get('pk'),
-        // requestMode: wnd.mode
       });
     } else {
       new Noty({

@@ -193,7 +193,6 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     mode: 'edit',
                     type: record.get('record_type'),
                     records: obj.data,
-                    requestName: Ext.getCmp('request-form').getForm().getFieldValues().name
                   });
                 } else {
                   new Noty({ text: obj.message, type: 'error' }).show();

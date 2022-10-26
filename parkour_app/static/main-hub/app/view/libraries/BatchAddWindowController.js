@@ -74,7 +74,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var wnd = btn.up('window');
     var layout = btn.up('panel').getLayout();
     var configuration;
-    this.requestName = btn.up('window').requestName;
+    this.requestName = Ext.getCmp('request-form').getForm().getFieldValues().name;
 
     wnd.setSize(1000, 650);
     wnd.center();
