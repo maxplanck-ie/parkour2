@@ -991,6 +991,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             message = 'Request has been saved.';
             requestWnd.mode = 'edit';
             requestWnd.autoSaveRequestId = obj.pk;
+            requestWnd.setTitle(this.requestName);
           } else {
             message = 'The changes have been saved.';
           }
