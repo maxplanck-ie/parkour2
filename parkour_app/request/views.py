@@ -364,7 +364,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         
         # Make sure that the user trying to approve a request is
         # the PI of said request
-        if request.user != instance.pi:
+        if request.user != instance.pi and not request.user.is_staff:
             return Response({"success": False, 'message': 'You are not allowed to approve this request.'})
 
         # # A request can't be approved twice
@@ -379,10 +379,15 @@ class RequestViewSet(viewsets.ModelViewSet):
                            list(User.objects.filter(is_active=True, is_staff=True))
 
         request.session_id = request.session._get_or_create_session_key()
+
+        if request.user == instance.pi:
+            approved_by = instance.pi.full_name
+        else:
+            approved_by = f'{request.user.full_name} on behalf of {instance.pi.full_name}'
         
         subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
         message = render_to_string('approved_message.html',
-                                   {'pi_full_name': instance.pi.full_name,
+                                   {'approved_by': approved_by,
                                     'now_dt': timezone.now().strftime('%d.%m.%Y at %H:%M:%S'),
                                     'request': request})
 

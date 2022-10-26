@@ -102,7 +102,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         {
           text: deepSeqReqPath === '' ? 'Approve' : 'Approved by PI',
-          hidden: !USER.is_pi && deepSeqReqPath === '',
+          hidden: !(USER.is_pi || USER.is_staff) && deepSeqReqPath === '',
           disabled: !(deepSeqReqPath === ''),
           handler: function(){
             Ext.Msg.show({
