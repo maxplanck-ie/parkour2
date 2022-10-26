@@ -40,6 +40,7 @@ Ext.define('MainHub.view.requests.EmailWindow', {
             xtype: 'fieldcontainer',
             defaultType: 'checkboxfield',
             name: 'reject_request',
+            itemId: 'reject-field',
             items: [{
                 boxLabel: 'Reject request <sup><strong>' +
                 '<span class="reject-request-tooltip" tooltip-text="' +

@@ -709,6 +709,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 failed_records = sorted(failed_records, key=lambda x: x.barcode[3:])
 
                 # Reject request and change status of libraries/samples to 0
+                subject = f'REJECTED {subject.strip()}'
                 instance.deep_seq_request = None
                 instance.save()
                 libraries.update(status=0)

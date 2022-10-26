@@ -18,6 +18,12 @@ Ext.define('MainHub.view.requests.EmailWindowController', {
         var subjectField = wnd.down('#subject-field');
         subjectField.setValue(wnd.record.get('name'));
         this.initializeTooltips();
+
+        var deepSeqReqPath = wnd.record.get('deep_seq_request_path');
+        var rejectBox = wnd.down('#reject-field');
+        if (deepSeqReqPath === ''){
+            rejectBox.disable()
+        }   
     },
 
     send: function(btn) {
