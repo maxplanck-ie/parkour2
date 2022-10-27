@@ -69,9 +69,11 @@ clearpy:
 prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
-dev0: set-dev set-caddy deploy-full load-backup
+dev101: set-dev set-caddy deploy-full load-backup
 
-dev: set-dev deploy-django deploy-nginx deploy-ready load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
+dev0: set-dev deploy-django deploy-nginx deploy-ready
+
+dev: dev0 load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
