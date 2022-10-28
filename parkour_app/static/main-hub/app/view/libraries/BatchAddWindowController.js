@@ -1166,8 +1166,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   createEmptyRecords: function (btn) {
     var grid = Ext.getCmp('batch-add-grid');
     var store = grid.getStore();
+    var numStoredRecords = store.getCount() + Ext.getStore('librariesInRequestStore').getCount();
     var numRecords = btn.up().down('#num-empty-records').getValue();
     var numRecordsLen = numRecords.toString().length;
+    numRecordsLen = numRecordsLen < 2 ? 2 : numRecordsLen;
     // Get the 'short' version of a typical request name from IMB, if possible
     var requestName = this.requestName.split('_').length > 3 ?
       this.requestName.split('_').slice(0, 4).join('_') :
@@ -1183,7 +1185,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     if (numRecords && numRecords > 0) {
       var data = [];
-      for (var i = 0; i < numRecords; i++) {
+      for (var i = numStoredRecords; i < numRecords + numStoredRecords; i++) {
         data.push({
           // Set a base name for a library/sample based on the request name
           name: Ext.String.format('{0}_{1}',
