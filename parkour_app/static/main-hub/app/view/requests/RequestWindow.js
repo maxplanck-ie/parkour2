@@ -43,7 +43,9 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 xtype: 'textfield',
                 fieldLabel: 'Name',
                 emptyText: 'Name',
-                allowBlank: false
+                allowBlank: false,
+                regex: /^[A-Za-z0-9_]+$/,
+                regexText: 'Only A-Z a-z 0-9 and _ are allowed',
               },
               {
                 xtype: 'combobox',
