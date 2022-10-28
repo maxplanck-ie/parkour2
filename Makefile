@@ -1,11 +1,16 @@
 .PHONY: *
 SHELL := /bin/bash
 
-deploy: set-prod deploy-full
+deploy: check-rootdir set-prod deploy-full
 
-help:
+help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
 	@echo "" && echo 'Please note: this is just a list of the most common available routines, for details see the source Makefile.'
+
+check-rootdir:
+	@test "$$(basename $$PWD)" == "parkour2" || \
+		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
+		exit 1; }
 
 deploy-full:  deploy-django deploy-caddy deploy-ready
 
@@ -56,10 +61,16 @@ stop:
 down:  ## Turn off running instance
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down --volumes
 
+down-lite:  ## Turn off running instance, keeping docker-volumes: media & staticfiles
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down
+	@docker volume rm -f parkour2_pgdb
+
+down0: down-lite
+
 clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@echo "Config reset OK. Cleaning? Try: make prune"
 
-prune:  ## USE WITH CAUTION. Remove every docker container, image and volume. Including those unrelated to parkour!
+prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour)
 	@docker system prune -a -f --volumes
 
 clearpy:
@@ -69,11 +80,14 @@ clearpy:
 prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
-dev101: set-dev set-caddy deploy-full load-backup
+dev-easy: set-dev set-caddy deploy-full load-backup  ## Deploy development instance with Caddy webserver
 
-dev0: set-dev deploy-django deploy-nginx deploy-ready
+dev-lite: set-dev deploy-django deploy-nginx ## Deploy development instance without static, media, migrations, or backup data
+	@echo "WARNING: Current deployment could use the help of rules: collect-static load-migrations load-media load-backup"
 
-dev: dev0 load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
+dev0: dev-lite
+
+dev: set-dev deploy-django deploy-nginx collect-static load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -102,8 +116,9 @@ deploy-nginx:
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 
-convert-backup:  ## Convert ./rsnapshot/../daily.0/parkour2_pgdb to ./latest.sqldump (will overwrite if there's one already)
-	@docker compose -f convert-backup.yml up -d && sleep 10s && \
+convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (will overwrite if there's one already)
+	@docker compose -f convert-backup.yml up -d && sleep 1m && \
+		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump" && \
 		docker cp parkour2-convert-backup:/tmp/postgres_dump latest.sqldump && \
@@ -164,7 +179,7 @@ compile:  ## Render parkour_app/requirements/*.in to TXT
 		pip-compile-multi -d parkour_app/requirements/ && \
 		deactivate
 
-dev-setup: ## Create virtualenv with development tools (e.g. pip compiler)
+env-setup-dev: ## Create virtualenv with development tools (e.g. pip compiler)
 	@env python3 -m venv env && \
 		source ./env/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
@@ -176,8 +191,8 @@ dev-setup: ## Create virtualenv with development tools (e.g. pip compiler)
 ## TODO: ReadTheDocs (DEPRECATION)> sphinx sphinx-autobuild sphinx-rtd-theme
 
 
-# Don't confuse 'dev-setup' with the app environment (dev.in & dev.txt) to run
-# it in 'dev' mode, mind the 'hierarchical' difference. We're going to use
+# Don't confuse 'env-setup-dev' with the app environment (dev.in & dev.txt) to
+# run it in 'dev' mode, mind the 'hierarchical' difference. We're going to use
 # pip-compile-multi to manage parkour_app/requirements/*.txt files. And, please
 # also note that there's pre-commit to keep a tidy repo.
 
