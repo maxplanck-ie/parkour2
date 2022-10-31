@@ -144,6 +144,10 @@ class IndexPairAdmin(admin.ModelAdmin):
         "coordinate",
     )
     search_fields = ("index_type__name",)
+    autocomplete_fields = (
+        "index1",
+        "index2",
+    )
     list_filter = ("index_type",)
 
     def index_pair(self, obj):
@@ -177,7 +181,9 @@ class IndexI5Admin(ImportExportModelAdmin):
         "type",
     )
     search_fields = (
+        "prefix",
         "index",
+        "number",
         "index_type__name",
     )
     list_filter = (("index_type", RelatedDropdownFilter),)
@@ -211,7 +217,9 @@ class IndexI7Admin(ImportExportModelAdmin):
         "type",
     )
     search_fields = (
+        "prefix",
         "index",
+        "number",
         "index_type__name",
     )
     list_filter = (("index_type", RelatedDropdownFilter),)

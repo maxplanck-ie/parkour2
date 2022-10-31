@@ -17,6 +17,10 @@ class PoolingAdmin(admin.ModelAdmin):
         "sample__name",
         "sample__barcode",
     )
+    autocomplete_fields = (
+        "library",
+        "sample",
+    )
     list_select_related = True
 
     def name(self, obj):

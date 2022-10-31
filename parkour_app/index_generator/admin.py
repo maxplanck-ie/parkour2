@@ -68,6 +68,9 @@ class PoolAdmin(admin.ModelAdmin):
         "size__multiplier",
         "size__size",
     )
+    autocomplete_fields = (
+        "user",
+    )
     list_filter = (("size", RelatedDropdownFilter),)
     inlines = [LibraryInline, SampleInline]
     exclude = (
