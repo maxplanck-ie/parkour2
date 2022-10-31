@@ -223,7 +223,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save()
-            return Response({"success": True}, 201)
+            return Response({"success": True, 'pk': serializer.data['pk']}, 201)
 
         else:
             return Response(
