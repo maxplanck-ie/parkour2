@@ -68,7 +68,8 @@ down-lite:  ## Turn off running instance, keeping docker-volumes: media & static
 down0: down-lite
 
 clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
-	@echo "Config reset OK. Cleaning? Try: make prune"
+	@git status
+	@echo "Config reset OK. Do we need to clean docker? Try: make prune"
 
 prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour)
 	@docker system prune -a -f --volumes
