@@ -83,12 +83,12 @@ prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production ins
 
 dev-easy: set-dev set-caddy deploy-full load-backup  ## Deploy development instance with Caddy webserver
 
-dev-lite: set-dev deploy-django deploy-nginx ## Deploy development instance without static, media, migrations, or backup data
-	@echo "WARNING: Current deployment could use the help of rules: collect-static load-migrations load-media load-backup"
+dev-lite: set-dev deploy-django deploy-nginx load-migrations  ## Deploy development instance without static, media, migrations, or backup data
+	@echo "WARNING: Current deployment could use the help of rules: collect-static load-backup"
 
 dev0: dev-lite
 
-dev: set-dev deploy-django deploy-nginx collect-static load-backup load-migrations  ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
+dev: set-dev deploy-django deploy-nginx collect-static load-migrations load-backup   ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -135,6 +135,10 @@ load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
 
+load-postgres-plain:
+	@docker cp /parkour/data/docker/postgres_dumps/2022-Aug-04.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
+		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp/parkour-postgres.dump > /dev/null"
+
 load-backup: load-media load-postgres
 
 backup: save-media save-postgres
@@ -145,6 +149,14 @@ save-media:  ## Copy over all media files (media_dump/)
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
+
+save-postgres-json:
+	@docker exec parkour2-django sh -c 'python manage.py dumpdata | tail -1 > /tmp/postgres_dump' && \
+		docker cp parkour2-django:/tmp/postgres_dump latest-dump.json
+
+load-postgres-json:
+	@docker cp latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
+		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
