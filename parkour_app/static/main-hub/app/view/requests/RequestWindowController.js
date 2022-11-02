@@ -305,7 +305,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     if (wnd.mode === 'add') {
       url = 'api/requests/';
     } else {
-      url = Ext.String.format('api/requests/{0}/edit/', wnd.record.get('pk'));
+      url = Ext.String.format('api/requests/{0}/edit/', wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get('pk'));
     }
 
     if (store.getCount() === 0) {
@@ -381,9 +381,19 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   },
 
   showBatchAddWindow: function () {
-    Ext.create('MainHub.view.libraries.BatchAddWindow', {
-      mode: 'add'
-    });
+    var form = Ext.getCmp('request-form');
+
+    if (form.isValid()) {
+      Ext.create('MainHub.view.libraries.BatchAddWindow', {
+        mode: 'add'
+      });
+    } else {
+      new Noty({
+        text: 'Please fill in all the required fields for ' +
+              'a request before adding new libraries/samples.',
+        type: 'warning'
+      }).show();
+    }
   },
 
   disableButtonsAndMenus: function () {
