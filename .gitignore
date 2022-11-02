@@ -1,6 +1,7 @@
 *.env
 *.pem
 *.sqldump
+*-dump.json
 *_dump/
 *_dumps/
 rsnapshot/
