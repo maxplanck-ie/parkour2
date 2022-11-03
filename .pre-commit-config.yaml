@@ -28,7 +28,7 @@ repos:
         entry: /usr/bin/env sed
         language: script
         files: 'Caddyfile'
-        args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1 {/']
+        args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1:9980 {/']
     -   id: set-local-url-2
         name: set-local-url-2
         entry: /usr/bin/env sed
