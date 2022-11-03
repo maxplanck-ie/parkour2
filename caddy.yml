@@ -6,8 +6,8 @@ services:
     container_name: parkour2-caddy
     restart: unless-stopped
     ports:
-      - "80:80"
-      - "443:443"
+      - "9980:9980"
+      - "9443:9443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
