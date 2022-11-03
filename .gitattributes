@@ -6,3 +6,4 @@
 *.scss linguist-detectable=false
 *.css linguist-detectable=false
 *.rb linguist-detectable=false
+*.js linguist-detectable=false
