@@ -58,14 +58,15 @@ get-migrations:
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
-down: down-lite rm-volumes  ## Turn off running instance
+down: down-lite rm-volumes  ## Turn off running instance (incl. all docker volumes)
 
 rm-volumes:
-	@docker volume rm -f $$(docker volume ls -q | grep "^parkour2_") > /dev/null
+	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
+	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
-down-lite:  ## Turn off running instance (incl. pgdb). Keep media & staticfiles docker volumes
-	@docker container rm \
-		$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}')
+down-lite:  ## Turn off running instance (but persist media & staticfiles docker volumes)
+	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
+	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 
