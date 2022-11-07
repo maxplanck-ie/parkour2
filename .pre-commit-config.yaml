@@ -11,6 +11,12 @@ ci:
 repos:
 -   repo: local
     hooks:
+    -   id: set-prod-docker-0
+        name: set-prod-docker-0
+        entry: /usr/bin/env sed
+        language: script
+        files: 'Dockerfile'
+        args: [-i, '/^#CMD \["gunicorn/s/#CMD/CMD/']
     -   id: set-prod-docker-1
         name: set-prod-docker-1
         entry: /usr/bin/env sed
@@ -53,6 +59,12 @@ repos:
         language: script
         files: 'docker-compose.yml'
         args: [-E, -i, -e, '/^ +tty/s/: .*/: false/', -e, '/^ +stdin_open/s/: .*/: false/']
+    -   id: set-prod-docker-4
+        name: set-prod-docker-4
+        entry: /usr/bin/env sed
+        language: script
+        files: 'Dockerfile'
+        args: [-i, '/^CMD \["python".*"runserver_plus"/s/CMD/#CMD/']
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
