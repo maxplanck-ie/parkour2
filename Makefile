@@ -39,14 +39,14 @@ deploy-containers:
 	@docker compose up -d
 
 collect-static:
-	@docker compose exec -it parkour2-django python manage.py collectstatic --no-input
+	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
 apply-migrations:
-	@docker compose exec -it parkour2-django python manage.py migrate
+	@docker compose exec parkour2-django python manage.py migrate
 
 get-migrations:
-	@docker compose exec -it parkour2-django python manage.py makemigrations --check && \
-		docker compose exec -it parkour2-django python manage.py migrate \
+	@docker compose exec parkour2-django python manage.py makemigrations --check && \
+		docker compose exec parkour2-django python manage.py migrate \
 			--fake-initial --check --traceback --verbosity 2
 	@docker exec parkour2-django sh -c \
 		"apt update && apt install -y rsync && \
@@ -56,8 +56,8 @@ get-migrations:
 	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
 	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
 	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
-	@docker compose exec -it parkour2-django python manage.py check
-	@docker compose exec -it parkour2-django python manage.py showmigrations -l
+	@docker compose exec parkour2-django python manage.py check
+	@docker compose exec parkour2-django python manage.py showmigrations -l
 
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
