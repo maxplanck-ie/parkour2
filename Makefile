@@ -12,13 +12,15 @@ check-rootdir:
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
 
-deploy-full:  deploy-django deploy-caddy deploy-ready
+deploy-full:  deploy-django deploy-caddy collect-static apply-migrations
 
 set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
+	@sed -E -i -e '/^#CMD \["gunicorn/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"--reload", //' Dockerfile
+	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
 		-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
 	@sed -i -e 's/\(client_body_timeout\).*/\1 120;/' \
@@ -36,16 +38,16 @@ deploy-containers:
 	@docker compose build
 	@docker compose up -d
 
-deploy-ready: collect-static load-migrations
-
 collect-static:
-	@docker compose run parkour2-django python manage.py collectstatic --noinput > /dev/null
+	@docker compose exec -it parkour2-django python manage.py collectstatic --no-input
 
-load-migrations:
-	@docker compose run parkour2-django python manage.py makemigrations > /dev/null && \
-	docker compose run parkour2-django python manage.py migrate --noinput > /dev/null
+apply-migrations:
+	@docker compose exec -it parkour2-django python manage.py migrate
 
 get-migrations:
+	@docker compose exec -it parkour2-django python manage.py makemigrations --check && \
+		docker compose exec -it parkour2-django python manage.py migrate \
+			--fake-initial --check --traceback --verbosity 2
 	@docker exec parkour2-django sh -c \
 		"apt update && apt install -y rsync && \
 		mkdir -p /usr/src/app/staticfiles/migrations && \
@@ -54,23 +56,25 @@ get-migrations:
 	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
 	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
 	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
+	@docker compose exec -it parkour2-django python manage.py check
+	@docker compose exec -it parkour2-django python manage.py showmigrations -l
 
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
-down: down-lite rm-volumes  ## Turn off running instance (incl. all docker volumes)
+down-full: down-lite rm-volumes  ## Turn off running instance (removing all volumes)
 
 rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
-down-lite:  ## Turn off running instance (but persist media & staticfiles docker volumes)
+down-lite:
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 
-down0: down-lite
+down: down-lite  ## Turn off running instance (persisting media & staticfiles volumes)
 
 clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@git status
@@ -83,22 +87,23 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
+prod: set-prod deploy-django deploy-nginx collect-static apply-migrations  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
-dev-easy: set-dev set-caddy deploy-full load-backup  ## Deploy development instance with Caddy webserver
+dev-easy: set-dev set-caddy deploy-full  ## Deploy with Caddy webserver and fixtures' data
+	@echo "WARNING: latest.sqldump not loaded..."
 
-dev-lite: set-dev deploy-django deploy-nginx load-migrations  ## Deploy development instance without static, media, migrations, or backup data
-	@echo "WARNING: Current deployment could use the help of rules: collect-static load-backup"
+dev: set-dev deploy-django deploy-nginx collect-static apply-migrations  ## Deploy development instance (werkzeug instead of gunicorn)
+	@echo "WARNING: latest.sqldump not loaded..."
 
-dev0: dev-lite
-
-dev: set-dev deploy-django deploy-nginx collect-static load-migrations load-backup   ## Deploy development instance with Nginx, and loaded media & postgres latest SQL dump
+dev0: set-dev deploy-django deploy-nginx collect-static apply-migrations load-backup
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
+	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 	@sed -i -e 's/\(client_body_timeout\).*/\1 1h;/' \
@@ -168,10 +173,10 @@ deploy-rsnapshot:
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot daily
 
-test: down clean prod
+test: down-full clean prod
 	@echo "Testing on a 'clean' production deployment..."
 	@docker compose run parkour2-django python manage.py validate_templates && \
-		docker compose run parkour2-django python -Wa manage.py test
+		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --pdb --failfast --timing
 
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
