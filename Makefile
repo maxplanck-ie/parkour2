@@ -1,7 +1,7 @@
 .PHONY: *
 SHELL := /bin/bash
 
-deploy: check-rootdir set-prod deploy-full
+deploy: check-rootdir set-prod deploy-full  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
@@ -90,10 +90,11 @@ clearpy:
 prod: set-prod deploy-django deploy-nginx collect-static apply-migrations  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
-dev-easy: set-dev set-caddy deploy-full  ## Deploy with Caddy webserver and fixtures' data
+dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
 	@echo "WARNING: latest.sqldump not loaded..."
+	@echo "optional: $ make deploy-ncdb"
 
-dev: set-dev deploy-django deploy-nginx collect-static apply-migrations  ## Deploy development instance (werkzeug instead of gunicorn)
+dev: set-dev deploy-django deploy-nginx collect-static apply-migrations  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 	@echo "WARNING: latest.sqldump not loaded..."
 
 dev0: set-dev deploy-django deploy-nginx collect-static apply-migrations load-backup
@@ -126,8 +127,9 @@ deploy-nginx:
 
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
+	@echo "WARNING: After setup wizard, new tables would be added to parkour DB."
 
-convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (will overwrite if there's one already)
+convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (overwriting if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
@@ -210,8 +212,6 @@ env-setup-dev: ## Create virtualenv with development tools (e.g. pip compiler)
 			pre-commit \
 			pip-compile-multi && \
 	deactivate
-
-## TODO: ReadTheDocs (DEPRECATION)> sphinx sphinx-autobuild sphinx-rtd-theme
 
 
 # Don't confuse 'env-setup-dev' with the app environment (dev.in & dev.txt) to
