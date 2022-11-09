@@ -1,32 +1,21 @@
 http://127.0.0.1:9980 {
-#http://parkour-test.ie-freiburg.mpg.de {
-#parkour-test.ie-freiburg.mpg.de {
-
-#	tls /etc/ssl/cert.pem /etc/ssl/key.pem
-
-	handle /static/* {
-		root * /parkour2
-		file_server
-	}
-	handle /media/* {
-		root * /parkour2
-		file_server
-	}
-	handle {
-		reverse_proxy parkour2-django:8000
-	}
-	log
+        handle /static/* {
+                root * /parkour2
+                file_server
+        }
+        handle /media/* {
+                root * /parkour2
+                file_server
+        }
+        handle {
+                reverse_proxy parkour2-django:8000
+        }
+        log
 }
 
-
-# NoCode DataBase (deploy-ncdb)...
-# beware, it populates/contaminates DB Schema.
-
 http://127.0.0.1:9981 {
-#http://db-test.ie-freiburg.mpg.de {
-
-	handle {
-		reverse_proxy parkour2-nocodb:8080
-	}
-	log
+        handle {
+                reverse_proxy parkour2-nocodb:8080
+        }
+        log
 }

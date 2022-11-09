@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     ports:
       - "9980:9980"
-      - "9443:9443"
+      - "9981:9981"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
@@ -24,6 +24,3 @@ volumes:
     external: true
   parkour2_staticfiles:
     external: true
-
-# TODO: gunicorn recommends nginx, https://docs.gunicorn.org/en/latest/deploy.html#deploying-gunicorn
-# so, test it: https://github.com/rakyll/hey
