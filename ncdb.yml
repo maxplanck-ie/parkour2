@@ -13,7 +13,6 @@ services:
       NC_DB: $$DATABASE_URL
       NC_DISABLE_TELE: True
       NC_MIN: "ok"
-      NC_BASEURL_INTERNAL: db-test.ie-freiburg.mpg.de
 
 volumes:
   ncdb_data: {}
