@@ -7,10 +7,7 @@ services:
     restart: always
     volumes:
       - ncdb_data:/usr/app/data
-    env_file:
-      - ./parkour.env
     environment:
-      NC_DB: $$DATABASE_URL
       NC_DISABLE_TELE: True
       NC_MIN: "ok"
 
