@@ -193,7 +193,7 @@ shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
-dbshell:
+dbshell:  ## Open PostgreSQL shell
 	@docker exec -it parkour2-postgres psql -U postgres -p 5432
 
 reload-nginx:
