@@ -466,7 +466,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.multi_info_row("Description", instance.description)
 
         y = pdf.get_y()
-        pdf.line(pdf.l_margin + 1, y, pdf.fw - pdf.r_margin - 1, y)
+        pdf.line(pdf.l_margin + 1, y, pdf.w - pdf.r_margin - 1, y)
 
         # List of libraries/samples
         heading = "List of libraries/samples to be submitted for sequencing"
@@ -488,7 +488,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         pdf.ln(10)
         y = pdf.get_y()
-        pdf.line(pdf.l_margin + 1, y, pdf.fw - pdf.r_margin - 1, y)
+        pdf.line(pdf.l_margin + 1, y, pdf.w - pdf.r_margin - 1, y)
         pdf.ln(30)
 
         # Ensure there is enough space for the signature
@@ -499,10 +499,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         # Signature
         pdf.set_draw_color(0, 0, 0)
         y = pdf.get_y()
-        x1_date = pdf.fw / 2
+        x1_date = pdf.w / 2
         x2_date = x1_date + 45
         x1_signature = x2_date + 5
-        x2_signature = pdf.fw - pdf.r_margin - 1
+        x2_signature = pdf.w - pdf.r_margin - 1
         pdf.line(x1_date, y, x2_date, y)
         pdf.line(x1_signature, y, x2_signature, y)
 
@@ -511,14 +511,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.set_x(x1_signature + 2)
         pdf.cell(0, 10, "(Principal Investigator)")
 
-        pdf = pdf.output(dest="S").encode("latin-1")
-
         # Generate response
         request_name = (
             normalize("NFKD", instance.name).encode("ASCII", "ignore").decode("utf-8")
         )
         f_name = request_name + "_Deep_Sequencing_Request.pdf"
-        response = HttpResponse(pdf, content_type="application/pdf")
+        response = HttpResponse(bytes(pdf.output()), content_type="application/pdf")
         response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 
         return response
