@@ -161,6 +161,7 @@ load-fixtures:
 		nucleic_acid_types
 
 load-backup: load-media load-postgres
+	@echo "Loaded media file(s) & PostgreSQL database OK."
 
 backup: save-media save-postgres
 
