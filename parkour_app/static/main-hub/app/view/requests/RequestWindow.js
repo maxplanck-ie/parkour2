@@ -8,10 +8,10 @@ Ext.define('MainHub.view.requests.RequestWindow', {
   ],
   controller: 'requests-requestwindow',
 
-  height: 530,
-  width: 850,
+  height: 636,
+  width: 935,
   modal: true,
-  resizable: false,
+  resizable: true,
 
   items: [{
     xtype: 'container',
@@ -23,7 +23,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
       {
         border: 0,
         padding: 15,
-        width: 500,
+        width: 490,
         items: [
           {
             xtype: 'form',
@@ -38,6 +38,15 @@ Ext.define('MainHub.view.requests.RequestWindow', {
               anchor: '100%'
             },
             items: [
+              {
+                xtype: 'checkboxfield',
+                name: 'gmo',
+                fieldLabel: 'Declaration',
+                boxLabel: 'This is NOT a Genetically Modified Organism (GMO).',
+                itemId: 'gmo-checkbox',
+                // cls: 'gmo-checkbox',
+                checked: true
+              },
               {
                 xtype: 'combobox',
                 itemId: 'cost-unit-cb',
@@ -57,7 +66,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 fieldLabel: 'Description',
                 emptyText: 'Description',
                 allowBlank: false,
-                height: 125
+                height: 150
               },
               {
                 xtype: 'filegridfield',
@@ -75,7 +84,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     '<sup><strong><span class="request-field-tooltip" tooltip-text="' +
                       '1. Save the request.<br/>' +
                       '2. Download the Deep Sequencing Request blank using the download button below.<br/>' +
-                      '3. Print and sign it.<br/>' +
+                      '3. Print, check GMO declaration, and sign it.<br/>' +
                       '4. Scan the blank and upload it back using the upload button below.<br/><br/>' +
                     '<strong>Note</strong>: if the blank is already uploaded, you cannot update it.' +
                   '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>'
@@ -87,8 +96,8 @@ Ext.define('MainHub.view.requests.RequestWindow', {
         id: 'libraries-in-request-grid',
         itemId: 'libraries-in-request-grid',
         title: 'Libraries/Samples',
-        width: 345,
-        height: 432,
+        width: 440,
+        height: 518,
         padding: '12px 15px 15px 0',
         rowspan: 2,
         viewConfig: {
