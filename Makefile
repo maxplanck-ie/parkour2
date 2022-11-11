@@ -148,8 +148,17 @@ load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
 
 load-postgres-plain:
-	@docker cp /parkour/data/docker/postgres_dumps/2022-Aug-04.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
+	@#cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql
+	@docker cp ./this.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp/parkour-postgres.dump > /dev/null"
+
+load-fixtures:
+	@#fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' '
+	@docker compose exec parkour2-django python manage.py loaddata \
+		cost_units organizations principal_investigators sequencers pool_sizes fixed_costs \
+		library_preparation_costs sequencing_costs concentration_methods index_pairs index_types \
+		index_types_data indices_i5 indices_i7 library_protocols library_types organisms read_lengths \
+		nucleic_acid_types
 
 load-backup: load-media load-postgres
 
