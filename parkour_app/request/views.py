@@ -65,6 +65,20 @@ class PDF(FPDF):  # pragma: no cover
         self.multi_cell(0, 5, value)
         self.ln(6)
 
+    def multi_checkbox_row(self, title, values):
+        self.set_font(self.font, style="B", size=11)
+        self.ln(3)
+        self.cell(35, 4, title + ":")
+        for i in range(len(values)):
+            if i > 0:
+                self.cell(35, 4, "")
+            self.set_font("glyphicons", size=11)
+            self.cell(1, 4, "")
+            self.set_font(self.font, size=11)
+            self.multi_cell(0, 5, values[i])
+            self.ln(1)
+        self.ln(1)
+
     def table_row(self, index, name, barcode, type, depth, bold=False):
         if bold:
             self.set_font(self.font, style="B", size=11)
@@ -444,12 +458,25 @@ class RequestViewSet(viewsets.ModelViewSet):
         ]
         records = sorted(records, key=lambda x: x["barcode"][3:])
 
-        declaration = (
-            "None of the samples listed below contain any disease carrying agents or GMO of"
-            " risk group 2 or higher. They can be handled in an S1 laboratory without any safety concerns."
-        )
+        declaration = [
+            (
+                "  Non-GMO samples. Samples listed below do not fall under GenTG regulation (naked DNA, RNA, proteins or metabolites, fixed or lysed cells, etc.). No additional documentation is required."
+            ),
+            (
+                '  GMO samples of BioSafety Level 1 (BSL 1). Samples listed below fall under GenTG regulation, and are already documented as part of a project using the "Formblatt S1" in the white folder. Additional documentation is required, please provide an electronic copy of this form (in editable format) to the Deep Sequencing Facility BEFORE you bring S1 GMO to the facility (e.g. upload via Parkour to your Request).'
+            ),
+            (
+                "  GMO samples of BioSafety Level 2 (BSL 2). Not possible to be processed in the Deep Sequencing Facility."
+            ),
+        ]
 
         pdf = PDF("Deep Sequencing Request")
+        pdf.add_font(
+            "glyphicons",
+            "",
+            "/usr/src/app/static/fonts/glyphicons-halflings-regular.ttf",
+            uni=True,
+        )
         pdf.set_draw_color(217, 217, 217)
         pdf.alias_nb_pages()
         pdf.add_page()
@@ -462,7 +489,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.info_row("Email", user.email)
         pdf.info_row("Organization", organization)
         pdf.info_row("Cost Unit", cost_unit)
-        pdf.multi_info_row("Declaration", declaration)
+        pdf.multi_checkbox_row("Declaration", declaration)
         pdf.multi_info_row("Description", instance.description)
 
         y = pdf.get_y()
@@ -470,7 +497,6 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         # List of libraries/samples
         heading = "List of libraries/samples to be submitted for sequencing"
-        pdf.set_font("Arial", style="B", size=13)
         pdf.ln(5)
         pdf.cell(0, 10, heading, align="C")
         pdf.ln(10)
