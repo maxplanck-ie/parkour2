@@ -200,6 +200,14 @@ dbshell:  ## Open PostgreSQL shell
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
+#reload-django:  ## If only docker-rsync existed... Alas, even docker-cp lacks "-u"
+#	@find parkour_app/ -mtime 1 -type f | \
+#		xargs -I {} docker rsync -qaR {} parkour2-django:/usr/src/app/
+## Alternatives? Maybe https://github.com/emacs-pe/docker-tramp.el
+
+reload: down dev load-backup clean  ## "Have you tried turning it off and on again?"
+	@clear && docker ps
+
 graph_models:
 	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pygraphviz" && \
