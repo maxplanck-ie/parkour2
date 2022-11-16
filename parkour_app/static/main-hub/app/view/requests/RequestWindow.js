@@ -39,15 +39,6 @@ Ext.define('MainHub.view.requests.RequestWindow', {
             },
             items: [
               {
-                xtype: 'checkboxfield',
-                name: 'gmo',
-                fieldLabel: 'Declaration',
-                boxLabel: 'This is NOT a Genetically Modified Organism (GMO).',
-                itemId: 'gmo-checkbox',
-                // cls: 'gmo-checkbox',
-                checked: true
-              },
-              {
                 xtype: 'combobox',
                 itemId: 'cost-unit-cb',
                 name: 'cost_unit',
@@ -87,7 +78,8 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                       '3. Print, check GMO declaration, and sign it.<br/>' +
                       '4. Scan the blank and upload it back using the upload button below.<br/><br/>' +
                     '<strong>Note</strong>: if the blank is already uploaded, you cannot update it.' +
-                  '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>'
+                  '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>' +
+                  'Download <a href="static/docs/S1.docx">BSL1-GMO Form</a>.'
           }
         ]
       },

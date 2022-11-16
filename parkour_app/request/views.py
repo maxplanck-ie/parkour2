@@ -424,7 +424,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=False)
     def download_RELACS_Pellets_Abs_form(self, request):
         print(settings.FILES_PATH)
-        file_path = os.path.join(settings.FILES_PATH, "RELACS_Pellets_Abs_form.xlsx")
+        file_path = os.path.join(settings.STATIC_ROOT, "docs/RELACS.xlsx")
         print(file_path)
 
         with open(file_path, "rb") as fh:
