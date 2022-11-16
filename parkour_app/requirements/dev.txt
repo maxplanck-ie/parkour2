@@ -60,7 +60,7 @@ pywatchman==1.4.1
     # via -r parkour_app/requirements/dev.in
 pyxdg==0.28
     # via bpython
-stack-data==0.6.0
+stack-data==0.6.1
     # via ipython
 toml==0.10.2
     # via ipdb
