@@ -5,6 +5,7 @@ django-admin-list-filter-dropdown
 django-monthfield
 django-extensions
 django-import-export
+ipykernel
 gunicorn
 mozilla-django-oidc==2.0.0
 
