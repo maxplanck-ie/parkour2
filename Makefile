@@ -38,6 +38,8 @@ deploy-containers:
 	@docker compose build
 	@docker compose up -d
 
+deploy-ready: apply-migrations collect-static
+
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
