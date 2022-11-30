@@ -75,11 +75,11 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     '<sup><strong><span class="request-field-tooltip" tooltip-text="' +
                       '1. Save the request.<br/>' +
                       '2. Download the Deep Sequencing Request blank using the download button below.<br/>' +
-                      '3. Print, check GMO declaration, and sign it.<br/>' +
+                      '3. Print, check GMO declaration(s), and sign it.<br/>' +
                       '4. Scan the blank and upload it back using the upload button below.<br/><br/>' +
                     '<strong>Note</strong>: if the blank is already uploaded, you cannot update it.' +
                   '">[?]</span></strong></sup>: <span id="uploaded-request-file">Not uploaded</span>' +
-                  'Download <a href="static/docs/S1.docx">BSL1-GMO Form</a>.'
+                  '<br />Download <a href="static/docs/S1.docx">BSL1-GMO Form</a>.'
           }
         ]
       },
