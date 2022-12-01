@@ -98,6 +98,7 @@ dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddy
 
 dev: set-dev deploy-django deploy-nginx collect-static apply-migrations  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 	@echo "WARNING: latest.sqldump not loaded..."
+	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
 
 dev0: set-dev deploy-django deploy-nginx collect-static apply-migrations load-backup
 
@@ -129,7 +130,11 @@ deploy-nginx:
 
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
-	@echo "WARNING: After setup wizard, new tables would be added to parkour DB."
+	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-ncdb-nginx rule.'
+
+add-ncdb-nginx:
+	@docker cp nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
+	@docker exec parkour2-nginx nginx -s reload
 
 convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (overwriting if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
