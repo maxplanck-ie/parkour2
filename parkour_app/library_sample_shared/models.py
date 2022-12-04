@@ -190,7 +190,7 @@ class IndexPair(models.Model):
 
 
 class BarcodeCounter(models.Model):
-    year = models.PositiveSmallIntegerField(default=timezone.now().year, unique=True)
+    year = models.PositiveSmallIntegerField(default=2018, unique=True)
 
     last_id = models.PositiveSmallIntegerField(default=0)
 

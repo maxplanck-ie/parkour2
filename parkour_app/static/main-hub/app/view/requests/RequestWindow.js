@@ -11,7 +11,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
   height: 570,
   width: 850,
   modal: true,
-  resizable: false,
+  resizable: true,
 
   items: [{
     xtype: 'container',
@@ -23,7 +23,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
       {
         border: 0,
         padding: 15,
-        width: 500,
+        width: 490,
         items: [
           {
             xtype: 'form',
