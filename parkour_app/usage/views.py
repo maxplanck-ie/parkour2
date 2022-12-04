@@ -83,8 +83,8 @@ class OrganizationsUsage(APIView):
 
         requests = (
             Request.objects.select_related(
-                "user",
-                "user__organization",
+                "cost_unit",
+                "cost_unit__organization",
             )
             .prefetch_related(
                 Prefetch(
@@ -93,12 +93,12 @@ class OrganizationsUsage(APIView):
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
             .filter(create_time__gte=start, create_time__lte=end)
-            .only("id", "user", "libraries", "samples")
+            .only("id", "cost_unit", "libraries", "samples")
         )
 
         counts = {}
         for req in requests:
-            organization = req.user.organization
+            organization = req.cost_unit.organization
             org_name = organization.name if organization else "None"
             if org_name not in counts.keys():
                 counts[org_name] = {"libraries": 0, "samples": 0}

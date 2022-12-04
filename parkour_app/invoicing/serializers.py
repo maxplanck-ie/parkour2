@@ -68,9 +68,11 @@ class InvoicingSerializer(ModelSerializer):
     def __init__(self, instance=None, data=empty, **kwargs):
         super().__init__(instance, data, **kwargs)
 
+        organization_id = self.context["organization_id"]
+
         # Fetch all pools
         libraries_qs = (
-            Library.objects.all()
+            Library.objects.filter(request__cost_unit__organization__id=organization_id)
             .select_related(
                 "read_length",
             )
@@ -80,7 +82,7 @@ class InvoicingSerializer(ModelSerializer):
             )
         )
         samples_qs = (
-            Sample.objects.all()
+            Sample.objects.filter(request__cost_unit__organization__id=organization_id)
             .select_related(
                 "read_length",
             )
@@ -104,23 +106,23 @@ class InvoicingSerializer(ModelSerializer):
         )
 
         # Fetch Fixed Costs
-        fixed_costs = FixedCosts.objects.values("sequencer", "price")
-        fixed_costs = {x["sequencer"]: x["price"] for x in fixed_costs}
+        fixed_costs = FixedCosts.objects.filter(fixedprice__organization__id=organization_id).values("sequencer", "fixedprice__price")
+        fixed_costs = {x["sequencer"]: x["fixedprice__price"] for x in fixed_costs}
 
         # Fetch Preparation Costs
-        preparation_costs = LibraryPreparationCosts.objects.values(
-            "library_protocol", "price"
+        preparation_costs = LibraryPreparationCosts.objects.filter(librarypreparationprice__organization__id=organization_id).values(
+            "library_protocol", "librarypreparationprice__price"
         )
         preparation_costs = {
-            x["library_protocol"]: x["price"] for x in preparation_costs
+            x["library_protocol"]: x["librarypreparationprice__price"] for x in preparation_costs
         }
 
         # Fetch Sequencing Costs
-        sequencing_costs = SequencingCosts.objects.values(
-            "sequencer", "read_length", "price"
+        sequencing_costs = SequencingCosts.objects.filter(sequencingprice__organization__id=organization_id).values(
+            "sequencer", "read_length", "sequencingprice__price"
         )
         sequencing_costs = {
-            str(x["sequencer"]) + "_" + str(x["read_length"]): x["price"]
+            str(x["sequencer"]) + "_" + str(x["read_length"]): x["sequencingprice__price"]
             for x in sequencing_costs
         }
 
@@ -386,12 +388,21 @@ class InvoicingSerializer(ModelSerializer):
 
 class BaseSerializer(ModelSerializer):
     name = SerializerMethodField()
+    price = SerializerMethodField()
 
     class Meta:
-        fields = ("name",)
+        fields = ("name", "price",)
 
     def get_name(self, obj):
         return str(obj)
+
+    def to_internal_value(self, data):
+        updated_data = super().to_internal_value(data)
+        price = data.get("price")
+        updated_data.update({
+            "price": price
+        })
+        return updated_data
 
 
 class FixedCostsSerializer(BaseSerializer):
@@ -400,36 +411,87 @@ class FixedCostsSerializer(BaseSerializer):
         fields = (
             "id",
             "sequencer",
-            "price",
         ) + BaseSerializer.Meta.fields
         extra_kwargs = {
             "sequencer": {"required": False},
         }
 
+    def get_price(self, obj):
+        try:
+            organization_id = self.context["organization_id"]
+            if organization_id:
+                return obj.fixedprice_set.get(organization__id=organization_id).price
+        except:
+            pass
+        return 0
+    
+    def update(self, instance, validated_data):
+        organization_id = self.context["organization_id"]
+        price = instance.fixedprice_set.get(organization__id=organization_id)
+        price.price = validated_data.get('price', 0)
+        price.save()
+        return instance
+
 
 class LibraryPreparationCostsSerializer(BaseSerializer):
+
+    price = SerializerMethodField()
+
     class Meta(BaseSerializer.Meta):
         model = LibraryPreparationCosts
         fields = (
             "id",
             "library_protocol",
-            "price",
         ) + BaseSerializer.Meta.fields
         extra_kwargs = {
             "library_protocol": {"required": False},
         }
 
+    def get_price(self, obj):
+        try:
+            organization_id = self.context["organization_id"]
+            if organization_id:
+                return obj.librarypreparationprice_set.get(organization__id=organization_id).price
+        except:
+            pass
+        return 0
+
+    def update(self, instance, validated_data):
+        organization_id = self.context["organization_id"]
+        price = instance.librarypreparationprice_set.get(organization__id=organization_id)
+        price.price = validated_data.get('price', 0)
+        price.save()
+        return instance
+
 
 class SequencingCostsSerializer(BaseSerializer):
+
+    price = SerializerMethodField()
+    
     class Meta(BaseSerializer.Meta):
         model = SequencingCosts
         fields = (
             "id",
             "sequencer",
             "read_length",
-            "price",
         ) + BaseSerializer.Meta.fields
         extra_kwargs = {
             "sequencer": {"required": False},
             "read_length": {"required": False},
         }
+
+    def get_price(self, obj):
+        try:
+            organization_id = self.context["organization_id"]
+            if organization_id:
+                return obj.sequencingprice_set.get(organization__id=organization_id).price
+        except:
+            pass
+        return 0
+
+    def update(self, instance, validated_data):
+        organization_id = self.context["organization_id"]
+        price = instance.sequencingprice_set.get(organization__id=organization_id)
+        price.price = validated_data.get('price', 0)
+        price.save()
+        return instance

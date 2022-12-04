@@ -14,58 +14,29 @@ User = get_user_model()
 
 class CostUnitInline(admin.TabularInline):
     model = CostUnit
+    fields = ('name', 'organization', 'obsolete',)
     extra = 1
+
+@admin.register(CostUnit)
+class CostUnitAdmin(admin.ModelAdmin):
+
+    def has_module_permission(self, request):
+        return False
 
 
 class OIDCGroupInline(admin.TabularInline):
     model = OIDCGroup
     extra = 1
 
+@admin.register(OIDCGroup)
+class OIDCGroupAdmin(admin.ModelAdmin):
+
+    def has_module_permission(self, request):
+        return False
+
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    pass
-
-
-    def has_module_permission(self, request):
-        return False
-
-
-@admin.register(CostUnit)
-class CostUnitAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "pi",
-    )
-    search_fields = (
-        "name",
-        "pi__name",
-        "pi__organization__name",
-    )
-    list_filter = (
-        ("pi", RelatedDropdownFilter),
-        ("pi__organization", RelatedDropdownFilter),
-    )
-
-    def has_module_permission(self, request):
-        return False
-
-
-@admin.register(OIDCGroup)
-class OIDCGroupAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "pi",
-    )
-    search_fields = (
-        "name",
-        "pi__name",
-        "pi__organization__name",
-    )
-    list_filter = (
-        ("pi", RelatedDropdownFilter),
-        ("pi__organization", RelatedDropdownFilter),
-    )
 
     def has_module_permission(self, request):
         return False
@@ -142,7 +113,7 @@ class UserAdmin(NamedUserAdmin):
         "first_name",
         "last_name",
         "email",
-        "organization",
+        "organizations",
         "pis",
         "pi_status",
         "staff_status",
@@ -154,13 +125,13 @@ class UserAdmin(NamedUserAdmin):
         "last_name",
         "email",
         "phone",
-        "organization__name",
+        "costunit__organization__name",
         "pi__last_name",
     )
 
     list_filter = (
         "is_staff",
-        "organization",
+        "costunit__organization__name",
     )
     list_display_links = (
         "first_name",
@@ -192,7 +163,6 @@ class UserAdmin(NamedUserAdmin):
             {
                 "fields": (
                     "phone",
-                    "organization",
                     "is_pi",
                     "pi",
                 ),
@@ -239,6 +209,15 @@ class UserAdmin(NamedUserAdmin):
     bioinformatician_status.boolean = True
     bioinformatician_status.short_description = "BioInfo?"
     bioinformatician_status.admin_order_field = 'is_bioinformatician'
+
+    def organizations(self, obj):
+        try:
+            return ', '.join(obj.costunit_set.all().
+                             order_by('organization__name').
+                             values_list('organization__name', flat=True).
+                             distinct())
+        except:
+            return ''
 
     def add_view(self, request, extra_context=None):
         self.inlines = []

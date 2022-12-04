@@ -15,6 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
+from common.models import Organization
 
 from .models import (
     FixedCosts,
@@ -46,13 +47,16 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
-        ctx = {"curr_month": month, "curr_year": year, "today": today}
+        organization_id = self.request.query_params.get("organization", 0)
+        ctx = {"curr_month": month, "curr_year": year,
+               "today": today, "organization_id": organization_id}
         return ctx
 
     def get_queryset(self):
         today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
+        organization_id = self.request.query_params.get("organization", None)
 
         flowcell_qs = Flowcell.objects.select_related(
             "sequencer",
@@ -80,6 +84,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 flowcell__create_time__year=year,
                 flowcell__create_time__month=month,
                 sequenced=True,
+                cost_unit__organization__id=organization_id
             )
             .select_related(
                 "cost_unit",
@@ -126,15 +131,17 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         dates = pd.date_range(start_date, end_date, inclusive="left", freq="M")
         for dt in dates:
             try:
-                report = InvoicingReport.objects.get(month=dt.strftime("%Y-%m"))
-                report_url = settings.MEDIA_URL + report.report.name
+                report_urls = []
+                reports = InvoicingReport.objects.filter(month=dt.strftime("%Y-%m"))
+                for r in reports:
+                    report_urls.append({'organization_id': r.organization.id, 'url': settings.MEDIA_URL + r.report.name})
             except InvoicingReport.DoesNotExist:
-                report_url = ""
+                report_urls = []
             data.append(
                 {
                     "name": dt.strftime("%B %Y"),
                     "value": [dt.year, dt.month],
-                    "report_url": report_url,
+                    "report_urls": report_urls,
                 }
             )
 
@@ -149,22 +156,25 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         """Upload Invoicing Report."""
         month = request.data.get("month", None)
         report = request.data.get("report", None)
+        organization_id = request.data.get("organization", None)
 
-        if not month or not report:
+        if not month or not report or not organization_id:
             return Response(
                 {
                     "success": False,
-                    "error": "Month or report is not set.",
+                    "error": "Month, report or organization is not set.",
                 },
                 400,
             )
 
         try:
-            report = InvoicingReport.objects.get(month=month)
+            report = InvoicingReport.objects.get(month=month, organization__id=organization_id)
             report.report = request.data.get("report")
         except InvoicingReport.DoesNotExist:
             report = InvoicingReport(
-                month=Month.from_string(month), report=request.data.get("report")
+                month=Month.from_string(month),
+                report=request.data.get("report"),
+                organization_id=organization_id
             )
         finally:
             report.save()
@@ -177,8 +187,9 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
         month = int(self.request.query_params.get("month", today.month))
+        organization = Organization.objects.get(id=self.request.query_params.get("organization", 0))
 
-        filename = f"Invoicing_Report_{calendar.month_name[month]}_{year}.xls"
+        filename = f"Invoicing_Report_{'_'.join(str(organization).split())}_{calendar.month_name[month]}_{year}.xls"
         response = HttpResponse(content_type="application/ms-excel")
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
@@ -272,9 +283,9 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer", "Price"]
         write_header(ws, row_num, header)
-        for item in FixedCosts.objects.all():
+        for item in FixedCosts.objects.filter(fixedprice__organization=organization):
             row_num += 1
-            row = [item.sequencer.name, item.price]
+            row = [item.sequencer.name, item.fixedprice_set.get(organization=organization).price]
             write_row(ws, row_num, row)
 
         # Third sheet
@@ -282,9 +293,9 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Library Protocol", "Price"]
         write_header(ws, row_num, header)
-        for item in LibraryPreparationCosts.objects.all():
+        for item in LibraryPreparationCosts.objects.filter(librarypreparationprice__organization=organization):
             row_num += 1
-            row = [item.library_protocol.name, item.price]
+            row = [item.library_protocol.name, item.librarypreparationprice_set.get(organization=organization).price]
             write_row(ws, row_num, row)
 
         # Fourth sheet
@@ -292,11 +303,11 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer + Read Length", "Price"]
         write_header(ws, row_num, header)
-        for item in SequencingCosts.objects.all():
+        for item in SequencingCosts.objects.filter(sequencingprice__organization=organization):
             row_num += 1
             row = [
                 f"{item.sequencer.name} {item.read_length.name}",
-                item.price,
+                item.sequencingprice_set.get(organization=organization).price,
             ]
             write_row(ws, row_num, row)
 
@@ -310,6 +321,11 @@ class FixedCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = FixedCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
     serializer_class = FixedCostsSerializer
+
+    def get_serializer_context(self):
+        organization_id = self.request.query_params.get("organization", 0)
+        ctx = {'organization_id': organization_id}
+        return ctx
 
 
 class LibraryPreparationCostsViewSet(
@@ -325,6 +341,15 @@ class LibraryPreparationCostsViewSet(
 
     serializer_class = LibraryPreparationCostsSerializer
 
+    def get_serializer_context(self):
+        organization_id = self.request.query_params.get("organization", 0)
+        ctx = {'organization_id': organization_id}
+        return ctx
+
+    def update(self, request, *args, **kwargs):
+
+        return super().update(request, *args, **kwargs)
+
 
 class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of Sequencing Costs."""
@@ -332,3 +357,8 @@ class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelView
     permission_classes = [IsAdminUser]
     queryset = SequencingCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
     serializer_class = SequencingCostsSerializer
+
+    def get_serializer_context(self):
+        organization_id = self.request.query_params.get("organization", 0)
+        ctx = {'organization_id': organization_id}
+        return ctx

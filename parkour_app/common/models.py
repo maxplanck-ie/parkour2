@@ -18,13 +18,29 @@ class Organization(models.Model):
         return self.name
 
 
-class CostUnit(models.Model):
+class OrganizationMixin(models.Model):
+
+    organization = models.ForeignKey(
+        Organization,
+        verbose_name="Organization",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
+    )
+
+    class Meta:
+        abstract = True
+
+
+class CostUnit(OrganizationMixin, models.Model):
     name = models.CharField("Name", max_length=100)
+    
     pi = models.ForeignKey(
         'User',
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
+
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
@@ -33,7 +49,7 @@ class CostUnit(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return self.name
+        return f"{self.name} ({self.organization})"
 
 
 class OIDCGroup (models.Model):
@@ -74,14 +90,6 @@ class User(AbstractEmailUser):
         help_text='Designates whether a user is a Principal Investigator.',
         default=False)
 
-    organization = models.ForeignKey(
-        Organization,
-        verbose_name="Organization",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=False,
-    )
-
     pi = models.ManyToManyField(
         'self',
         verbose_name="Principal Investigator",
@@ -104,7 +112,7 @@ class User(AbstractEmailUser):
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.organization})"
+        return f"{self.first_name} {self.last_name}"
 
 
 class DateTimeMixin(models.Model):

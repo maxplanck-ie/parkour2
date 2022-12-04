@@ -10,8 +10,10 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
 from django.db.models import Q
 
-from .models import CostUnit
-from .serializers import CostUnitSerializer, PrincipalInvestigatorSerializer
+from .models import CostUnit, Organization
+from .serializers import (CostUnitSerializer,
+                          PrincipalInvestigatorSerializer,
+                          OrganizationSerializer)
 
 User = get_user_model()
 
@@ -165,6 +167,13 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
             return qs.distinct().order_by("last_name")
         except Exception:
             return User.objects.none()
+
+
+class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of Principal Investigators."""
+
+    serializer_class = OrganizationSerializer
+    queryset = Organization.objects.all()
 
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
