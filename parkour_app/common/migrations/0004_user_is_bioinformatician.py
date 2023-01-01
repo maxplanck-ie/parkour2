@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0003_oidcgroup'),
+        ('common', '0003_oidc'),
     ]
 
     operations = [

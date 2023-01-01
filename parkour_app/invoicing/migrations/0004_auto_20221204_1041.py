@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('common', '0014_auto_20221031_1657'),
-        ('invoicing', '0003_auto_20220818_1435'),
+        ('invoicing', '0003_dj32_upgrade'),
     ]
 
     operations = [

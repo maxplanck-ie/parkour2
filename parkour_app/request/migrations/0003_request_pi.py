@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('common', '0006_principalinvestigator_parent_user'),
-        ('request', '0002_auto_20220818_1435'),
+        ('request', '0002_dj32_upgrade'),
     ]
 
     operations = [

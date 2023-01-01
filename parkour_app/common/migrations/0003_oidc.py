@@ -7,10 +7,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0002_auto_20220812_1630'),
+        ('common', '0002_dj32_upgrade'),
     ]
 
     operations = [
+        migrations.AddField(
+            model_name="user",
+            name="oidc_id",
+            field=models.CharField(
+                blank=True,
+                default=None,
+                max_length=255,
+                null=True,
+                unique=True,
+                verbose_name="OIDC ID",
+                ),
+        ),
         migrations.CreateModel(
             name='OIDCGroup',
             fields=[
@@ -25,3 +37,4 @@ class Migration(migrations.Migration):
             },
         ),
     ]
+
