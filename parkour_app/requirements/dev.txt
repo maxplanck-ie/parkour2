@@ -6,7 +6,7 @@
 #    pip-compile-multi
 #
 -r base.txt
-asttokens==2.1.0
+asttokens==2.2.1
     # via stack-data
 backcall==0.2.0
     # via ipython
@@ -24,17 +24,17 @@ decorator==5.1.1
     # via
     #   ipdb
     #   ipython
-django-debug-toolbar==3.7.0
+django-debug-toolbar==3.8.1
     # via -r parkour_app/requirements/dev.in
 executing==1.2.0
     # via stack-data
 greenlet==2.0.1
     # via bpython
-ipdb==0.13.9
+ipdb==0.13.11
     # via -r parkour_app/requirements/dev.in
-ipython==8.6.0
+ipython==8.8.0
     # via ipdb
-jedi==0.18.1
+jedi==0.18.2
     # via ipython
 markupsafe==2.1.1
     # via werkzeug
@@ -46,13 +46,13 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-prompt-toolkit==3.0.32
+prompt-toolkit==3.0.36
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
-pygments==2.13.0
+pygments==2.14.0
     # via
     #   bpython
     #   ipython
@@ -60,11 +60,11 @@ pywatchman==1.4.1
     # via -r parkour_app/requirements/dev.in
 pyxdg==0.28
     # via bpython
-stack-data==0.6.1
+stack-data==0.6.2
     # via ipython
-toml==0.10.2
+tomli==2.0.1
     # via ipdb
-traitlets==5.5.0
+traitlets==5.8.0
     # via
     #   ipython
     #   matplotlib-inline
