@@ -89,18 +89,18 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: set-prod deploy-django deploy-nginx collect-static apply-migrations  ## Deploy production instance with Nginx, and rsnapshot service
+prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
 dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
 	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb"
 
-dev: set-dev deploy-django deploy-nginx collect-static apply-migrations  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: set-dev deploy-django deploy-nginx deploy-ready  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
 
-dev0: set-dev deploy-django deploy-nginx collect-static apply-migrations load-backup
+dev0: set-dev deploy-django deploy-nginx deploy-ready load-backup
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
