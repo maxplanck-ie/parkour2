@@ -378,7 +378,9 @@ class TestSamples(BaseTestCase):
                 kwargs={"pk": sample.pk},
             )
         )
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {"success": True})
 
     def test_delete_sample_incorrect_id(self):
         """Ensure error is thrown if the id does not exist."""
@@ -389,3 +391,6 @@ class TestSamples(BaseTestCase):
             )
         )
         self.assertEqual(response.status_code, 404)
+        self.assertJSONEqual(response.content,
+                             {"success": False,
+                              "message": 'The record could not be deleted.'})

@@ -337,8 +337,6 @@ class LibraryPreparationCostsViewSet(
     queryset = LibraryPreparationCosts.objects.filter(
         library_protocol__obsolete=settings.NON_OBSOLETE
     )
-    print(queryset.query)
-
     serializer_class = LibraryPreparationCostsSerializer
 
     def get_serializer_context(self):

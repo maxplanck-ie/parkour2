@@ -10,38 +10,60 @@ from flowcell.tests import create_flowcell, create_sequencer
 from library_sample_shared.tests import create_library_protocol, create_read_length
 from month import Month
 from rest_framework import status
+from django.utils.http import urlencode
 
 from .models import (
     FixedCosts,
     InvoicingReport,
     LibraryPreparationCosts,
     SequencingCosts,
+    FixedPrice,
+    LibraryPreparationPrice,
+    SequencingPrice
 )
 
+from common.models import Organization
 
-def create_fixed_cost(sequencer, price):
-    fixed_cost = FixedCosts(sequencer=sequencer, price=price)
+
+def create_fixed_cost(sequencer, price, organization):
+    fixed_cost = FixedCosts(sequencer=sequencer)
     fixed_cost.save()
+    fixed_cost.fixedprice_set.create(
+        price=price,
+        organization=organization
+    )
     return fixed_cost
 
 
-def create_preparation_cost(library_protocol, price):
+def create_preparation_cost(library_protocol, price, organization):
     preparation_cost = LibraryPreparationCosts(
-        library_protocol=library_protocol,
-        price=price,
+        library_protocol=library_protocol
     )
     preparation_cost.save()
+    preparation_cost.librarypreparationprice_set.create(
+        price=price,
+        organization=organization
+    )
     return preparation_cost
 
 
-def create_sequencing_cost(sequencer, read_length, price):
+def create_sequencing_cost(sequencer, read_length, price, organization):
     sequencing_cost = SequencingCosts(
         sequencer=sequencer,
         read_length=read_length,
-        price=price,
     )
     sequencing_cost.save()
+    sequencing_cost.sequencingprice_set.create(
+        price=price,
+        organization=organization,
+    )
     return sequencing_cost
+
+
+def create_organization(name):
+    organization = Organization(name=name)
+    organization.save()
+    return organization
 
 
 # Models
@@ -62,34 +84,37 @@ class TestInvoicingReport(BaseTestCase):
 class TestFixedCostsModel(BaseTestCase):
     def setUp(self):
         self.sequencer = create_sequencer(get_random_name())
-        self.cost = create_fixed_cost(self.sequencer, 10)
+        organization = create_organization(get_random_name())
+        self.cost = create_fixed_cost(self.sequencer, 10, organization)
 
     def test_name(self):
         self.assertEqual(str(self.cost), self.sequencer.name)
-        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
+        self.assertEqual(self.cost.fixedprice_set.first().price_amount, f"{self.cost.fixedprice_set.first().price} €")
 
 
 class TestLibraryPreparationCostsModel(BaseTestCase):
     def setUp(self):
         self.library_protocol = create_library_protocol(get_random_name())
-        self.cost = create_preparation_cost(self.library_protocol, 10)
+        organization = create_organization(get_random_name())
+        self.cost = create_preparation_cost(self.library_protocol, 10, organization)
 
     def test_name(self):
         self.assertEqual(str(self.cost), self.library_protocol.name)
-        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
+        self.assertEqual(self.cost.librarypreparationprice_set.first().price_amount, f"{self.cost.librarypreparationprice_set.first().price} €")
 
 
 class TestSequencingCostsModel(BaseTestCase):
     def setUp(self):
         self.sequencer = create_sequencer(get_random_name())
         self.read_length = create_read_length(get_random_name())
-        self.cost = create_sequencing_cost(self.sequencer, self.read_length, 10)
+        organization = create_organization(get_random_name())
+        self.cost = create_sequencing_cost(self.sequencer, self.read_length, 10, organization)
 
     def test_name(self):
         self.assertEqual(
             str(self.cost), f"{self.sequencer.name} {self.read_length.name}"
         )
-        self.assertEqual(self.cost.price_amount, f"{self.cost.price} €")
+        self.assertEqual(self.cost.sequencingprice_set.first().price_amount, f"{self.sequencingprice_set.first().price} €")
 
 
 # Views
@@ -101,7 +126,8 @@ class TestFixedCostsViewSet(BaseAPITestCase):
         self.login()
 
         sequencer = create_sequencer(get_random_name())
-        self.cost = create_fixed_cost(sequencer, 10)
+        self.organization = create_organization(get_random_name())
+        self.cost = create_fixed_cost(sequencer, 10, self.organization)
 
     def test_costs_list(self):
         """Ensure get fixed costs list behaves correctly."""
@@ -113,12 +139,14 @@ class TestFixedCostsViewSet(BaseAPITestCase):
 
     def test_update_price(self):
         """Ensure update price behaves correctly."""
+        query_kwargs = {"organization": self.organization.pk}
+        url = f'{reverse("fixed-costs-detail", kwargs={"pk": self.cost.pk})}?{urlencode(query_kwargs)}'
         response = self.client.put(
-            path=reverse("fixed-costs-detail", kwargs={"pk": self.cost.pk}),
+            path=url,
             data=json.dumps(
                 {
                     "id": self.cost.pk,
-                    "price": 15,
+                    "price": 15
                 }
             ),
             content_type="application/json",
@@ -126,7 +154,7 @@ class TestFixedCostsViewSet(BaseAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         updated_cost = FixedCosts.objects.get(pk=self.cost.pk)
-        self.assertEqual(updated_cost.price, 15)
+        self.assertEqual(updated_cost.fixedprice_set.first().price, 15)
 
     def test_non_staff(self):
         self.create_user("non-staff@test.io", "test", False)
@@ -141,7 +169,8 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
         self.login()
 
         library_protocol = create_library_protocol(get_random_name())
-        self.cost = create_preparation_cost(library_protocol, 10)
+        self.organization = create_organization(get_random_name())
+        self.cost = create_preparation_cost(library_protocol, 10, self.organization)
 
     def test_costs_list(self):
         """Ensure get library preparation costs list behaves correctly."""
@@ -153,10 +182,10 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
 
     def test_update_price(self):
         """Ensure update price behaves correctly."""
+        query_kwargs = {"organization": self.organization.pk}
+        url = f'{reverse("library-preparation-costs-detail", kwargs={"pk": self.cost.pk})}?{urlencode(query_kwargs)}'
         response = self.client.put(
-            path=reverse(
-                "library-preparation-costs-detail", kwargs={"pk": self.cost.pk}
-            ),
+            path=url,
             data=json.dumps(
                 {
                     "id": self.cost.pk,
@@ -168,7 +197,7 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         updated_cost = LibraryPreparationCosts.objects.get(pk=self.cost.pk)
-        self.assertEqual(updated_cost.price, 15)
+        self.assertEqual(updated_cost.librarypreparationprice_set.first().price, 15)
 
     def test_non_staff(self):
         self.create_user("non-staff@test.io", "test", False)
@@ -184,7 +213,8 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
 
         sequencer = create_sequencer(get_random_name())
         read_length = create_read_length(get_random_name())
-        self.cost = create_sequencing_cost(sequencer, read_length, 10)
+        self.organization = create_organization(get_random_name())
+        self.cost = create_sequencing_cost(sequencer, read_length, 10, self.organization)
 
     def test_costs_list(self):
         """Ensure get sequencing costs list behaves correctly."""
@@ -196,8 +226,10 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
 
     def test_update_price(self):
         """Ensure update price behaves correctly."""
+        query_kwargs = {"organization": self.organization.pk}
+        url = f'{reverse("sequencing-costs-detail", kwargs={"pk": self.cost.pk})}?{urlencode(query_kwargs)}'
         response = self.client.put(
-            path=reverse("sequencing-costs-detail", kwargs={"pk": self.cost.pk}),
+            path=url,
             data=json.dumps(
                 {
                     "id": self.cost.pk,
@@ -209,7 +241,7 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         updated_cost = SequencingCosts.objects.get(pk=self.cost.pk)
-        self.assertEqual(updated_cost.price, 15)
+        self.assertEqual(updated_cost.sequencingprice_set.first().price, 15)
 
     def test_non_staff(self):
         self.create_user("non-staff@test.io", "test", False)
@@ -244,17 +276,21 @@ class TestInvoicingViewSet(BaseAPITestCase):
         self.assertEqual(
             response.data,
             [
-                {"name": "November 2017", "value": [2017, 11], "report_url": ""},
-                {"name": "December 2017", "value": [2017, 12], "report_url": ""},
+                {"name": "November 2017", "value": [2017, 11], "report_urls": []},
+                {"name": "December 2017", "value": [2017, 12], "report_urls": []},
             ],
         )
 
     def test_report_upload(self):
+
+        organization = create_organization(get_random_name())
+
         month = timezone.now().strftime("%Y-%m")
         response = self.client.post(
             reverse("invoicing-upload"),
             {
                 "month": month,
+                "organization": str(organization.id),
                 "report": SimpleUploadedFile("file.txt", b"content"),
             },
         )

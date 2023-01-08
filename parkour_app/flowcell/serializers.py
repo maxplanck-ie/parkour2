@@ -121,7 +121,6 @@ class LaneSerializer(ModelSerializer):
         i = 0
         records = obj.pool.libraries.all() or obj.pool.samples.all()
         for record in records:
-            print(record.library_protocol.name)
             read_lengths.append(str(record.read_length.name))
 
         if len(read_lengths) == 1 or len(set(read_lengths)) == 1:
@@ -196,7 +195,7 @@ class FlowcellListSerializer(ModelSerializer):
         )
 
     def get_flowcell(self, obj):
-        pprint(vars(obj))
+        # pprint(vars(obj)) # not sure why this is here
         return obj.pk
 
     def get_sequencer_name(self, obj):

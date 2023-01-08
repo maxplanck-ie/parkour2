@@ -358,4 +358,4 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
             super(LibrarySampleBaseViewSet, self).destroy(request, pk, *args, **kwargs)
             return Response({"success": True}, 200)
         except:
-            return Response({"success": False, "message": 'The record could not be deleted.'}, 400)
+            return Response({"success": False, "message": 'The record could not be deleted.'}, 404)

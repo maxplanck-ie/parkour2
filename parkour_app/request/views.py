@@ -176,7 +176,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         "user__last_name",
         "cost_unit__name",
         "pi__last_name",
-        "user__organization__name"
+        "user__cost_unit__organization__name"
     )
 
     def get_queryset(self, showAll=False):
@@ -1067,4 +1067,4 @@ class RequestViewSet(viewsets.ModelViewSet):
             super(RequestViewSet, self).destroy(request, pk, *args, **kwargs)
             return Response({"success": True}, 200)
         except:
-            return Response({"success": False, "message": 'The request could not be deleted.'}, 400)
+            return Response({"success": False, "message": 'The request could not be deleted.'}, 404)

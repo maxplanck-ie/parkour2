@@ -62,16 +62,17 @@ class CostUnitTest(TestCase):
             last_name="Pie",
             email="greatest.pie@bar.io",
             password="pie-pie",
-            organization=self.org,
             is_pi=True
         )
-        self.cost_unit = CostUnit(name="K", pi=self.pi)
+        self.cost_unit = CostUnit(name="K",
+                                  pi=self.pi,
+                                  organization=self.org)
 
     def test_cost_unit_name(self):
         self.assertTrue(isinstance(self.org, Organization))
         self.assertTrue(isinstance(self.pi, User))
         self.assertTrue(isinstance(self.cost_unit, CostUnit))
-        self.assertEqual(self.cost_unit.__str__(), self.cost_unit.name)
+        self.assertEqual(self.cost_unit.__str__(), f"{self.cost_unit.name} ({self.cost_unit.organization})")
 
 class OIDCGroupTest(TestCase):
     def setUp(self):
@@ -81,7 +82,6 @@ class OIDCGroupTest(TestCase):
             last_name="Pie",
             email="greatest.pie@bar.io",
             password="pie-pie",
-            organization=self.org,
             is_pi=True
         )
         self.oidc_group = OIDCGroup(name="some_group", pi=self.pi)

@@ -1,7 +1,6 @@
 import json
 import tempfile
 
-from common.models import Organization
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
@@ -28,15 +27,12 @@ def create_request(user, save=True):
 
 class TestRequestModel(TestCase):
     def setUp(self):
-        self.org = Organization(name=get_random_name())
-        self.org.save()
 
         self.pi = User.objects.create_user(
             first_name="Greatest",
             last_name="Pie",
             email="greatest.pie@bar.io",
             password="pie-pie",
-            organization=self.org,
             is_pi=True
         )
 
@@ -45,7 +41,6 @@ class TestRequestModel(TestCase):
             last_name="Bar",
             email="foo@bar.io",
             password="foo-foo",
-            organization=self.org,
         )
         self.user.pi.add(self.pi)
 
@@ -314,13 +309,18 @@ class TestRequests(BaseTestCase):
         """Ensure delete request behaves correctly."""
         request = create_request(self.user)
         response = self.client.delete(f"/api/requests/{request.pk}/")
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {"success": True})
 
     def test_delete_request_invalid_id(self):
         """Ensure error is thrown if the id does not exist."""
         response = self.client.delete("/api/requests/-1/")
         self.assertEqual(response.status_code, 404)
-
+        self.assertJSONEqual(response.content,
+                             {"success": False,
+                              "message": 'The request could not be deleted.'})
+    
     def test_get_records(self):
         """Ensure get request's records behaves correctly."""
         request = create_request(self.user)
