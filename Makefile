@@ -39,12 +39,18 @@ deploy-containers:
 	@docker compose up -d
 
 deploy-ready: apply-migrations collect-static
+	@docker compose exec parkour2-django find . -maxdepth 1 -mindepth 1 -type d \
+		! -name media ! -name staticfiles ! -name logs ! -name htmlcov \
+		-exec tar czf media/current_code_snapshot.tar.gz {} \+
 
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate
+
+migrations:
+	@docker compose exec parkour2-django python manage.py makemigrations
 
 get-migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations --check && \
@@ -167,7 +173,7 @@ load-fixtures:
 		index_types_data indices_i5 indices_i7 library_protocols library_types organisms read_lengths \
 		nucleic_acid_types
 
-load-backup: load-media load-postgres
+load-backup: load-postgres load-media
 	@echo "Loaded media file(s) & PostgreSQL database OK."
 
 backup: save-media save-postgres
