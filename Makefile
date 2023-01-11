@@ -12,7 +12,7 @@ check-rootdir:
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
 
-deploy-full:  deploy-django deploy-caddy collect-static apply-migrations
+deploy-full:  deploy-django deploy-caddy deploy-ready
 
 set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
