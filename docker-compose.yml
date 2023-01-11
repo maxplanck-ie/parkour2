@@ -23,6 +23,7 @@ services:
       - ./parkour.env
     restart: always
     volumes:
+      - ./parkour_app:/usr/src/app
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
     depends_on:
