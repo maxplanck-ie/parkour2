@@ -12,7 +12,7 @@ check-rootdir:
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
 
-deploy-full:  deploy-django deploy-caddy deploy-ready
+deploy-full:  deploy-django deploy-caddy
 
 set-prod:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
@@ -182,7 +182,7 @@ export-migras:
 	@find ./**/ -name migrations -type d -exec tar czf ./migras.tar.gz {} \+
 
 import-migras:
-	@echo "find ./**/ -name migrations -type d -exec rm -rf {} \; && tar xzf ./migras.tar.gz"
+	@echo "find . -name migrations -type d -exec rm -rf {} \; && tar xzf ./migras.tar.gz"
 
 save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
