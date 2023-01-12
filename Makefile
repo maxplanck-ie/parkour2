@@ -49,6 +49,8 @@ collect-static:
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate
 
+migrate:  apply-migrations
+
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
@@ -95,18 +97,16 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: set-prod deploy-django deploy-nginx deploy-ready  ## Deploy production instance with Nginx, and rsnapshot service
+prod: set-prod deploy-django deploy-nginx  ## Deploy production instance with Nginx, and rsnapshot service
 	@echo "Consider: make deploy-rsnapshot"
 
 dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
 	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb"
 
-dev: set-dev deploy-django deploy-nginx deploy-ready  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: set-dev deploy-django deploy-nginx  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
-
-dev0: set-dev deploy-django deploy-nginx deploy-ready load-backup
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
@@ -243,8 +243,8 @@ env-setup-dev: ## Create virtualenv with development tools (e.g. pip compiler)
 	deactivate
 
 
-# Don't confuse 'env-setup-dev' with the app environment (dev.in & dev.txt) to
-# run it in 'dev' mode, mind the 'hierarchical' difference. We're going to use
+# Don't confuse 'env-setup-dev' with the app environment (dev.in & dev.txt, for
+# running in 'dev' mode) mind the 'hierarchical' difference. We're going to use
 # pip-compile-multi to manage parkour_app/requirements/*.txt files. And, please
 # also note that there's pre-commit to keep a tidy repo.
 
