@@ -176,7 +176,13 @@ load-fixtures:
 load-backup: load-postgres load-media
 	@echo "Loaded media file(s) & PostgreSQL database OK."
 
-backup: save-media save-postgres
+backup: save-media save-postgres export-migras
+
+export-migras:
+	@find ./**/ -name migrations -type d -exec tar czf ./migras.tar.gz {} \+
+
+import-migras:
+	@echo "find ./**/ -name migrations -type d -exec rm -rf {} \; && tar xzf ./migras.tar.gz"
 
 save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
