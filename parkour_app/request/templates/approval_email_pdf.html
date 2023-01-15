@@ -1,0 +1,78 @@
+{% load i18n %}{% autoescape off %}
+
+<p>{{message}}<br><br></p>
+
+<hr />
+<p align="center"><b>Summary of sequencing request</b></p>
+<table width="100%">
+    <tr>
+        <td width="17%" align="left"><b>Request name:</b></td>
+        <td width="83%" align="left">{{original.name}}</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>Date:</b></td>
+        <td width="83%" align="left">{{original.date}}</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>User</b></td>
+        <td width="83%" align="left">{{original.user.full_name}}</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>Email:</b></td>
+        <td width="83%" align="left">{{original.user.email}}</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>Cost Unit:</b></td>
+        <td width="83%" align="left">{{original.cost_unit}}</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>Declaration:</b></td>
+        <td width="83%" align="left">None of the samples listed below contain any disease carrying agents or GMO of risk</td>
+    </tr>
+    <tr>
+        <td width="17%" align="left">&nbsp;</td>
+        <td width="83%" align="left">group 2 or higher. They can be handled in an S1 laboratory without any safety concerns.</td>
+
+    </tr>
+    <tr>
+        <td width="17%" align="left"><b>Description:</b></td>
+        <td width="83%" align="left">{{original.description}}</td>
+    </tr>
+</table>
+<br>
+
+<hr />
+{% if records %}
+<p align="center"><b>List of libraries/samples to be submitted for sequencing</b></p>
+<table width="100%">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td width="40%">Name</td>
+            <td width="17%">Barcode</td>
+            <td width="17%">Type</td>
+            <td width="17%">Sequencing Depth (M)</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td width="40%">{{ record.name }}</td>
+            <td width="17%">{{ record.barcode }}</td>
+            <td width="17%">{{ record.type }}</td>
+            <td width="17%">{{ record.sequencing_depth }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<hr />
+{% endif %}
+
+<p>
+<i>
+--<br />
+Kind regards,<br />
+Parkour<br />
+</i>
+</p>
+{% endautoescape %}

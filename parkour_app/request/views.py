@@ -166,6 +166,10 @@ class Report(FPDF, HTMLMixin):
         return html
 
 
+class ApprovalEmailAsPDF(FPDF, HTMLMixin):
+    pass
+
+
 class RequestViewSet(viewsets.ModelViewSet):
     serializer_class = RequestSerializer
     pagination_class = StandardResultsSetPagination
@@ -321,7 +325,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             else:
                 return Response({"error": "error"})
 
-    def send_approval_email(self, instance, subject, message, recipients, save_html=False):
+    def send_approval_email(self, instance, subject, message, recipients, save_email_as_pdf=False):
         """Send emails related to the approval of a request"""
 
         # Create relevant info for the email
@@ -355,9 +359,19 @@ class RequestViewSet(viewsets.ModelViewSet):
                             },)
 
         # If required, save the message to deep_seq_request
-        if save_html:
-            deep_seq_request_content = ContentFile(html_message)
-            instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.html", deep_seq_request_content)
+        if save_email_as_pdf:
+            html_pdf = render_to_string(
+                            "approval_email_pdf.html",
+                            {
+                                "original": instance,
+                                'message': message,
+                                "records": records,
+                            },)
+            pdf = ApprovalEmailAsPDF()
+            pdf.add_page()
+            pdf.write_html(html_pdf)
+            deep_seq_request_content = ContentFile(pdf.output(dest='S').encode('latin1'))
+            instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.pdf", deep_seq_request_content)
             instance.save()
 
         send_mail(
@@ -377,11 +391,11 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance = Request.objects.get(pk=pk)
         
         # Make sure that the user trying to approve a request is
-        # the PI of said request
+        # the PI of said request or is a staff member
         if request.user != instance.pi and not request.user.is_staff:
             return Response({"success": False, 'message': 'You are not allowed to approve this request.'})
 
-        # # A request can't be approved twice
+        # A request can't be approved twice
         if instance.deep_seq_request:
             return Response({"success": False, 'message': 'This request was already approved.'})
 
@@ -405,9 +419,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                                     'now_dt': timezone.now().strftime('%d.%m.%Y at %H:%M:%S'),
                                     'request': request})
 
-        self.send_approval_email(instance, subject, message, email_recipients, save_html=True)
+        self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
 
-        # Check whether from where approval comes from
+        # Check where the approval comes from
         # email -> redirect = True
         # click from context menu -> redirect = False 
         redirect = request.GET.get('redirect', False)
