@@ -416,7 +416,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
         message = render_to_string('approved_message.html',
                                    {'approved_by': approved_by,
-                                    'now_dt': timezone.now().strftime('%d.%m.%Y at %H:%M:%S'),
+                                    'now_dt': timezone.localtime(timezone.now()).strftime('%d.%m.%Y at %H:%M:%S'),
                                     'request': request})
 
         self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
