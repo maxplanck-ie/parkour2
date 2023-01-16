@@ -14,6 +14,8 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+    ports:
+      - 5432:5432
 
   parkour2-django:
     container_name: parkour2-django

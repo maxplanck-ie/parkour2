@@ -153,12 +153,16 @@ convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (overwriting if t
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
 		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
-			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/
+			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
+		echo "Loaded media file(s)." || \
+		echo 'Folder media_dump not found!'
 
 load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
 	@[[ -f latest.sqldump ]] && \
 		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
-		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null
+		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null && \
+		echo "Loaded PostgreSQL database OK." || \
+		echo '$ scp root@production:~/parkour2/latest.sqldump .'
 
 load-postgres-plain:
 	@#cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql
@@ -174,15 +178,18 @@ load-fixtures:
 		nucleic_acid_types
 
 load-backup: load-postgres load-media
-	@echo "Loaded media file(s) & PostgreSQL database OK."
 
 backup: save-media save-postgres export-migras
 
-export-migras:
+export-migras:  ## Pack your DB schema, for future reference
 	@find ./**/ -name migrations -type d -exec tar czf ./migras.tar.gz {} \+
 
-import-migras:
-	@echo "find . -name migrations -type d -exec rm -rf {} \; && tar xzf ./migras.tar.gz"
+refresh-migras:  ## Remove old migrations (assuming those weren't applied!)
+	@[[ -f migras.tar.gz ]] && \
+		rm parkour_app/**/migrations/* && \
+		tar xzf migras.tar.gz && \
+		echo '$ make down dev migrate load-postgres' || \
+		echo '$ scp root@production:~/parkour2/migras.tar.gz .'
 
 save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
