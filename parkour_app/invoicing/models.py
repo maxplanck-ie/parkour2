@@ -40,9 +40,8 @@ class FixedCosts(models.Model):
 
 
 class LibraryPreparationCosts(models.Model):
-    library_protocol = models.ForeignKey(
+    library_protocol = models.OneToOneField(
         LibraryProtocol,
-        unique=True,
         limit_choices_to={"obsolete": 1},
         on_delete=models.SET_NULL,
         null=True,
