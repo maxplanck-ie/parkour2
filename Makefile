@@ -49,7 +49,10 @@ collect-static:
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate
 
-migrate:  apply-migrations
+migrasync:
+	@docker compose exec parkour2-django python manage.py migrate --run-syncdb
+
+migrate: apply-migrations
 
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
@@ -78,7 +81,7 @@ rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
-down-lite:
+down-lite: clearpy
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down
@@ -198,13 +201,21 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
-save-postgres-json:
-	@docker exec parkour2-django sh -c 'python manage.py dumpdata | tail -1 > /tmp/postgres_dump' && \
+save-db-json:  ## Backup to JSON dump (useful when production's migrations are out of sync)
+	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
 		docker cp parkour2-django:/tmp/postgres_dump latest-dump.json
 
-load-postgres-json:
+load-db-json:
 	@docker cp latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
+
+reload-json: down prep4json dev migrasync load-db-json  ## Restore from JSON dump (slower but robust)
+
+prep4json:
+	@rm -f parkour_app/library_preparation/apps.py
+	@rm -f parkour_app/library_preparation/signals.py
+	@rm -f parkour_app/pooling/apps.py
+	@rm -f parkour_app/pooling/signals.py
 
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
