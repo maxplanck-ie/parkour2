@@ -4,6 +4,7 @@ import logging
 import os
 from unicodedata import normalize
 
+from common.serializers import UserSerializer
 from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings
@@ -362,6 +363,19 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         data = sorted(data, key=lambda x: x["barcode"][3:])
         return Response(data)
+
+    @action(methods=["get"], detail=True)
+    def get_email(self, request, pk=None):
+        """Get the user email address to ship him data."""
+        users_qs = User.objects.all()
+        data = (
+            Request.objects.filter(pk=pk)
+            .prefetch_related(Prefetch("user", queryset=users_qs))
+            .only("user")
+            .first()
+        )
+        serializer = UserSerializer(data.user)
+        return Response(serializer.data)
 
     @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):
