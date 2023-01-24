@@ -415,7 +415,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             text: 'Index I5 ID',
             dataIndex: 'index_i5_id',
             summaryRenderer: function () {
-              var totalSequencingDepth = Ext.getCmp('pool-grid').getStore().sum('sequencingDepth');
+              var totalSequencingDepth = Ext.getCmp('pool-grid').getStore().sum('sequencing_depth');
               return totalSequencingDepth > 0
                 ? '<span class="summary-green">green:</span><br><span class="summary-red">red:</span>'
                 : '';
