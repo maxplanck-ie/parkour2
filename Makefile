@@ -4,7 +4,7 @@ SHELL := /bin/bash
 deploy: check-rootdir set-prod deploy-full  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
 
 help: check-rootdir
-	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST) | sort
+	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 	@echo "" && echo 'Please note: this is just a list of the most common available routines, for details see the source Makefile.'
 
 check-rootdir:
@@ -35,7 +35,7 @@ deploy-network:
 	@docker network create parkour2_default
 
 deploy-containers:
-	@docker compose build
+	@docker compose build -q
 	@docker compose up -d
 
 deploy-ready: apply-migrations collect-static
@@ -57,20 +57,21 @@ migrate: apply-migrations
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
-get-migrations:
-	@docker compose exec parkour2-django python manage.py makemigrations --check && \
-		docker compose exec parkour2-django python manage.py migrate \
-			--fake-initial --check --traceback --verbosity 2
-	@docker exec parkour2-django sh -c \
-		"apt update && apt install -y rsync && \
-		mkdir -p /usr/src/app/staticfiles/migrations && \
-		find **/migrations/ -maxdepth 1 -mindepth 1 -type f | \
-		xargs -I {} rsync -qaR {} /usr/src/app/staticfiles/migrations/"
-	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
-	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
-	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
-	@docker compose exec parkour2-django python manage.py check
-	@docker compose exec parkour2-django python manage.py showmigrations -l
+## DEPRECATED in favour of export-migras migrasync refresh-migras
+# get-migrations:
+# 	@docker compose exec parkour2-django python manage.py makemigrations --check && \
+# 		docker compose exec parkour2-django python manage.py migrate \
+# 			--fake-initial --check --traceback --verbosity 2
+# 	@docker exec parkour2-django sh -c \
+# 		"apt update && apt install -y rsync && \
+# 		mkdir -p /usr/src/app/staticfiles/migrations && \
+# 		find **/migrations/ -maxdepth 1 -mindepth 1 -type f | \
+# 		xargs -I {} rsync -qaR {} /usr/src/app/staticfiles/migrations/"
+# 	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
+# 	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
+# 	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
+# 	@docker compose exec parkour2-django python manage.py check
+# 	@docker compose exec parkour2-django python manage.py showmigrations -l
 
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
@@ -184,10 +185,10 @@ load-backup: load-postgres load-media
 
 backup: save-media save-postgres export-migras
 
-export-migras:  ## Pack your DB schema, for future reference
+export-migras:
 	@find ./**/ -name migrations -type d -exec tar czf ./migras.tar.gz {} \+
 
-refresh-migras:  ## Remove old migrations (assuming those weren't applied!)
+refresh-migras:
 	@[[ -f migras.tar.gz ]] && \
 		rm parkour_app/**/migrations/* && \
 		tar xzf migras.tar.gz && \
@@ -209,13 +210,69 @@ load-db-json:
 	@docker cp latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
-reload-json: down prep4json dev migrasync load-db-json  ## Restore from JSON dump (slower but robust)
+reload-json: down prep4json dev migrasync load-db-json restore-prep4json  ## Restore from JSON dump (slower but robust)
 
 prep4json:
 	@rm -f parkour_app/library_preparation/apps.py
 	@rm -f parkour_app/library_preparation/signals.py
 	@rm -f parkour_app/pooling/apps.py
 	@rm -f parkour_app/pooling/signals.py
+
+restore-prep4json:
+	@git restore -W parkour_app/library_preparation/apps.py
+	@git restore -W parkour_app/library_preparation/signals.py
+	@git restore -W parkour_app/pooling/apps.py
+	@git restore -W parkour_app/pooling/signals.py
+
+VM_PROD := root@parkour
+# ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
+# ssh-copy-id -i ~/.ssh/parkour2.pub root@parkour
+
+full-import-json:
+	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
+	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/latest-dump.json .
+
+upgrade:  ## (WIP) Print instructions to stdout...
+	@echo '# Prepare'
+	@echo make compile full-import-json reload-json save-postgres
+	@echo make migrations
+	@echo make down dev migrate load-postgres
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "rm -rf ~/pk2_old"
+	@echo '# Backup'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker ps > ~/last.txt && git --git-dir=~/parkour2/.git --work-tree=~/parkour2 log | head -1 >> ~/last.txt"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres export-migras"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker system prune -a"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker-compose -f docker-compose.yml -f nginx.yml -f rsnapshot.yml stop"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clean"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mv ~/parkour2 ~/pk2_old"
+	@echo '# Deploy'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mkdir -p ~/parkour2/parkour_app/static/main-hub/"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp -ruva ~/pk2_old/parkour_app/static/main-hub/app ~/parkour2/parkour_app/static/main-hub/"
+	@echo rsync -rauL -vhP --delete \
+		--exclude={'.git','env','*.env','*.pem','rsnapshot/backups','frontend','media_dump'} \
+		~/parkour2 ${VM_PROD}:~/
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i 's/docker compose/docker-compose/g' ~/parkour2/Makefile"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i '/^RUN/s/RUN --mount=.* pip/RUN pip/' ~/parkour2/Dockerfile"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups ~/parkour2/rsnapshot/backups"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/daily.0/localhost/data/parkour2_media ~/parkour2/media_dump"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp ~/pk2_old/parkour.env ~/parkour2/"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/cert.pem ~/parkour2/"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/key.pem ~/parkour2/"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy down prod migrate load-postgres collect-static deploy-rsnapshot"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
+	@echo "make git-release  # Further instructions to follow if everything went alright..."
+
+git-release:
+	@echo '# Release'
+	@echo gh pr create --fill -B main
+	@echo git checkout main
+	@echo git pull
+	@echo git tag -a "0.4.0" -m "Small bug fixes, overall performance improvement and better stability."
+	@echo git push --tags
+	@echo git checkout develop
+	@echo gh release create --generate-notes
 
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
@@ -247,11 +304,13 @@ show_urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:  ## Render parkour_app/requirements/*.in to TXT
-	@source ./env/bin/activate && \
+	@test -d ./env && \
+		source ./env/bin/activate && \
 		pip-compile-multi -d parkour_app/requirements/ && \
 		deactivate
+	@test -d ./env || echo "venv not found! Try: make env-setup-dev"
 
-env-setup-dev: ## Create virtualenv with development tools (e.g. pip compiler)
+env-setup-dev:
 	@env python3 -m venv env && \
 		source ./env/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
