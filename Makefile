@@ -304,11 +304,11 @@ show_urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:  ## Render parkour_app/requirements/*.in to TXT
+	@test -d ./env || echo "venv not found! Try: make env-setup-dev"
 	@test -d ./env && \
 		source ./env/bin/activate && \
 		pip-compile-multi -d parkour_app/requirements/ && \
 		deactivate
-	@test -d ./env || echo "venv not found! Try: make env-setup-dev"
 
 env-setup-dev:
 	@env python3 -m venv env && \
