@@ -211,7 +211,7 @@ load-db-json:
 	@docker cp latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
-reload-json: down prep4json dev migrasync load-db-json restore-prep4json  ## Restore from JSON dump (slower but robust)
+reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
 
 reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
 
@@ -227,6 +227,14 @@ restore-prep4json:
 	@git restore -W parkour_app/pooling/apps.py
 	@git restore -W parkour_app/pooling/signals.py
 
+reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
+
+restore-prep4json-prod:
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+
 VM_PROD := root@parkour
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
 # ssh-copy-id -i ~/.ssh/parkour2.pub root@parkour
@@ -235,7 +243,8 @@ full-import-json:  ## Run save-db-json on $VM_PROD, and bring JSON dump.
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/latest-dump.json .
 
-upgrade:  ## (WIP) Print instructions to stdout...
+# TODO: move files on root repo folder to apropiate subfolders (e.g. webserver-configs)
+upgrade:  ## (WIP) Print instructions to stdout... Paste 1 by 1, until we wrap this into a script
 	@echo '# Prepare'
 	@echo make compile full-import-json reload-json save-postgres
 	@echo make migrations
@@ -249,23 +258,35 @@ upgrade:  ## (WIP) Print instructions to stdout...
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker-compose -f docker-compose.yml -f nginx.yml -f rsnapshot.yml stop"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clean"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mv ~/parkour2 ~/pk2_old"
-	@echo '# Deploy'
+	@echo '# Deployment'
+	@echo '## Prepare static'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mkdir -p ~/parkour2/parkour_app/static/main-hub/"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp -ruva ~/pk2_old/parkour_app/static/main-hub/app ~/parkour2/parkour_app/static/main-hub/"
+	@echo '## Ship code (asks for password, TODO)'
 	@echo rsync -rauL -vhP --delete \
 		--exclude={'.git','env','*.env','*.pem','rsnapshot/backups','frontend','media_dump'} \
 		~/parkour2 ${VM_PROD}:~/
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i 's/docker compose/docker-compose/g' ~/parkour2/Makefile"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i '/^RUN/s/RUN --mount=.* pip/RUN pip/' ~/parkour2/Dockerfile"
+	@echo '## Corrections'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'s/docker compose/docker-compose/g\' ~/parkour2/Makefile"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'/^RUN/s/RUN --mount=.* pip/RUN pip/\' ~/parkour2/Dockerfile"
+	@echo '## Symlinks'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups ~/parkour2/rsnapshot/backups"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/daily.0/localhost/data/parkour2_media ~/parkour2/media_dump"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp ~/pk2_old/parkour.env ~/parkour2/"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/cert.pem ~/parkour2/"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/key.pem ~/parkour2/"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy down prod migrate load-postgres collect-static deploy-rsnapshot"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
+	@echo '## Configuration'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/parkour.env ~/parkour2/"'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/cert.pem ~/parkour2/"'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/key.pem ~/parkour2/"'
+	@echo '## Get JSON dump and start the service...'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp ~/pk2_old/latest-dump.json ~/parkour2/"
+	#echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "git init && git add ."  # Otherwise restore-prep4json wouldn't work. FIXME (replace git with scp from pk-test?) DONE (pero cambiarlo para q sea from pk-prod)
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy prep4json prod migrasync load-db-json"
+	@echo 'SKIP: Here would go the option to do the legacy procedure, moving SQLdump... (TODO), something in the lines of: make clearpy prod migrate load-postgres'
+	@echo make restore-prep4json-prod
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 collect-static deploy-rsnapshot"
+	@echo '## Manual login OK? Proceeding...'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
 	@echo "make git-release  # Further instructions to follow if everything went alright..."
 
 git-release:
