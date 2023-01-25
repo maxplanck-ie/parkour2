@@ -26,33 +26,21 @@ class LaneInline(admin.TabularInline):
         "completed",
     )
 
-    @admin.display(
-        description="Name"
-    )
+    @admin.display(description="Name")
     def name(self, instance):
         return instance.lane.name
 
-
-    @admin.display(
-        description="Pool"
-    )
+    @admin.display(description="Pool")
     def pool(self, instance):
         return instance.lane.pool.name
 
-
-    @admin.display(
-        description="Loading Concentration"
-    )
+    @admin.display(description="Loading Concentration")
     def loading_concentration(self, instance):
         return instance.lane.loading_concentration
 
-
-    @admin.display(
-        description="PhiX %"
-    )
+    @admin.display(description="PhiX %")
     def phix(self, instance):
         return instance.lane.phix
-
 
     @admin.display(
         description="Completed",
@@ -60,7 +48,6 @@ class LaneInline(admin.TabularInline):
     )
     def completed(self, instance):
         return instance.lane.completed
-
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -74,26 +61,17 @@ class SequencerAdmin(admin.ModelAdmin):
         "mark_as_non_obsolete",
     )
 
-    @admin.action(
-        description="Mark sequencer as obsolete"
-    )
+    @admin.action(description="Mark sequencer as obsolete")
     def mark_as_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.OBSOLETE)
 
-
-    @admin.action(
-        description="Mark sequencer as non-obsolete"
-    )
+    @admin.action(description="Mark sequencer as non-obsolete")
     def mark_as_non_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.NON_OBSOLETE)
 
-
-    @admin.display(
-        description="STATUS"
-    )
+    @admin.display(description="STATUS")
     def obsolete_name(self, obj):
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
-
 
 
 @admin.register(Flowcell)

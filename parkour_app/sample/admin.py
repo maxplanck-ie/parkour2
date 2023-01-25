@@ -5,22 +5,14 @@ from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from .models import NucleicAcidType, Sample
 
 
-@admin.action(
-    description="Mark nucleid acid type as obsolete"
-)
+@admin.action(description="Mark nucleid acid type as obsolete")
 def mark_as_obsolete(modeladmin, request, queryset):
     queryset.update(status=settings.OBSOLETE)
 
 
-
-
-@admin.action(
-    description="Mark nucleid acid type as non-obsolete"
-)
+@admin.action(description="Mark nucleid acid type as non-obsolete")
 def mark_as_non_obsolete(modeladmin, request, queryset):
     queryset.update(status=settings.NON_OBSOLETE)
-
-
 
 
 @admin.register(NucleicAcidType)
@@ -32,13 +24,10 @@ class NucleicAcidTypeAdmin(admin.ModelAdmin):
     list_filter = ("type",)
     actions = (mark_as_obsolete, mark_as_non_obsolete)
 
-    @admin.display(
-        description="STATUS"
-    )
+    @admin.display(description="STATUS")
     def status_name(self, obj):
 
         return "Non-obsolete" if obj.status == settings.NON_OBSOLETE else "Obsolete"
-
 
 
 @admin.register(Sample)
