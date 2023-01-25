@@ -43,6 +43,12 @@ deploy-ready: apply-migrations collect-static
 		! -name media ! -name staticfiles ! -name logs ! -name htmlcov \
 		-exec tar czf media/current_code_snapshot.tar.gz {} \+
 
+collect-static:
+	@docker compose exec parkour2-django python manage.py collectstatic --no-input
+
+apply-migrations:
+	@docker compose exec parkour2-django python manage.py migrate
+
 migrasync:
 	@docker compose exec parkour2-django python manage.py migrate --run-syncdb
 
@@ -75,7 +81,6 @@ down-full: down-lite rm-volumes  ## Turn off running instance (removing all volu
 rm-volumes:
 	@VOLUMES=$$(docker volume ls -q | grep "^parkour2_") || :
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
-
 
 down-lite: clearpy
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
@@ -316,14 +321,6 @@ dbshell:  ## Open PostgreSQL shell
 
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
-
-#reload-django:  ## If only docker-rsync existed... Alas, even docker-cp lacks "-u"
-#	@find parkour_app/ -mtime 1 -type f | \
-#		xargs -I {} docker rsync -qaR {} parkour2-django:/usr/src/app/
-## Alternatives? Maybe https://github.com/emacs-pe/docker-tramp.el
-
-reload: down dev load-backup clean  ## "Have you tried turning it off and on again?"
-	@clear && docker ps
 
 graph_models:
 	@docker exec parkour2-django sh -c \
