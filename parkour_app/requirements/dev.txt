@@ -12,7 +12,7 @@ backcall==0.2.0
     # via ipython
 blessed==1.19.1
     # via curtsies
-bpython==0.23
+bpython==0.24
     # via -r parkour_app/requirements/dev.in
 curtsies==0.4.1
     # via bpython
@@ -36,7 +36,7 @@ ipython==8.8.0
     # via ipdb
 jedi==0.18.2
     # via ipython
-markupsafe==2.1.1
+markupsafe==2.1.2
     # via werkzeug
 matplotlib-inline==0.1.6
     # via ipython
@@ -64,11 +64,11 @@ stack-data==0.6.2
     # via ipython
 tomli==2.0.1
     # via ipdb
-traitlets==5.8.0
+traitlets==5.8.1
     # via
     #   ipython
     #   matplotlib-inline
-wcwidth==0.2.5
+wcwidth==0.2.6
     # via
     #   blessed
     #   prompt-toolkit
