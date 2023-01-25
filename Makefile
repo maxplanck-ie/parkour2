@@ -202,7 +202,8 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
 
-save-db-json:  ## Backup to JSON dump (useful when production's migrations are out of sync)
+# TODO: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
+save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
 		docker cp parkour2-django:/tmp/postgres_dump latest-dump.json
 
@@ -211,6 +212,8 @@ load-db-json:
 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
 reload-json: down prep4json dev migrasync load-db-json restore-prep4json  ## Restore from JSON dump (slower but robust)
+
+reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
 
 prep4json:
 	@rm -f parkour_app/library_preparation/apps.py
@@ -228,7 +231,7 @@ VM_PROD := root@parkour
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
 # ssh-copy-id -i ~/.ssh/parkour2.pub root@parkour
 
-full-import-json:
+full-import-json:  ## Run save-db-json on $VM_PROD, and bring JSON dump.
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/latest-dump.json .
 
@@ -261,6 +264,7 @@ upgrade:  ## (WIP) Print instructions to stdout...
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/cert.pem ~/parkour2/"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "echo -n y | cp /root/pk2_old/key.pem ~/parkour2/"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy down prod migrate load-postgres collect-static deploy-rsnapshot"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
 	@echo "make git-release  # Further instructions to follow if everything went alright..."
 
@@ -287,6 +291,9 @@ test: down-full clean prod
 shell:
 	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
+
+list-sessions:  # If you saw any nginx log entry, most probably it corresponds to last element in the list.
+	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
 
 dbshell:  ## Open PostgreSQL shell
 	@docker exec -it parkour2-postgres psql -U postgres -p 5432
