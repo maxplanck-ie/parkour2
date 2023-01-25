@@ -14,6 +14,8 @@ services:
       interval: 10s
       timeout: 2s
       retries: 10
+    ports:
+      - 5432:5432
 
   parkour2-django:
     container_name: parkour2-django
@@ -23,6 +25,7 @@ services:
       - ./parkour.env
     restart: always
     volumes:
+      - ./parkour_app:/usr/src/app
       - media:/usr/src/app/media
       - staticfiles:/usr/src/app/staticfiles
     depends_on:

@@ -38,21 +38,18 @@ class ReadLengthAdmin(admin.ModelAdmin):
     list_display = ("name", "obsolete_name")
     actions = ("mark_as_obsolete", "mark_as_non_obsolete")
 
+    @admin.action(description="Mark read length as obsolete")
     def mark_as_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.OBSOLETE)
 
-    mark_as_obsolete.short_description = "Mark read length as obsolete"
-
+    @admin.action(description="Mark read length as non-obsolete")
     def mark_as_non_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.NON_OBSOLETE)
 
-    mark_as_non_obsolete.short_description = "Mark read length as non-obsolete"
-
+    @admin.display(description="STATUS")
     def obsolete_name(self, obj):
 
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
-
-    obsolete_name.short_description = "STATUS"
 
 
 class IndexI7Inline(admin.TabularInline):
@@ -107,21 +104,18 @@ class IndexTypeAdmin(admin.ModelAdmin):
         ),
     )
 
+    @admin.action(description="Mark index type as obsolete")
     def mark_as_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.OBSOLETE)
 
-    mark_as_obsolete.short_description = "Mark index type as obsolete"
-
+    @admin.action(description="Mark index type as non-obsolete")
     def mark_as_non_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.NON_OBSOLETE)
 
-    mark_as_non_obsolete.short_description = "Mark index type as non-obsolete"
-
+    @admin.display(description="STATUS")
     def obsolete_name(self, obj):
 
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
-
-    obsolete_name.short_description = "STATUS"
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         # Display inline when the object has been saved and
@@ -184,10 +178,9 @@ class IndexI5Admin(ImportExportModelAdmin):
 
     resource_class = IndexI5Resource
 
+    @admin.display(description="Index ID")
     def idx_id(sef, obj):
         return obj.prefix + obj.number
-
-    idx_id.short_description = "Index ID"
 
 
 class IndexI7Resource(resources.ModelResource):
@@ -218,10 +211,9 @@ class IndexI7Admin(ImportExportModelAdmin):
 
     resource_class = IndexI7Resource
 
+    @admin.display(description="Index ID")
     def idx_id(sef, obj):
         return obj.prefix + obj.number
-
-    idx_id.short_description = "Index ID"
 
 
 @admin.register(LibraryProtocol)
@@ -246,21 +238,18 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "mark_as_non_obsolete",
     )
 
+    @admin.action(description="Mark library protocol as obsolete")
     def mark_as_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.OBSOLETE)
 
-    mark_as_obsolete.short_description = "Mark library protocol as obsolete"
-
+    @admin.action(description="Mark library protocol as non-obsolete")
     def mark_as_non_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.NON_OBSOLETE)
 
-    mark_as_non_obsolete.short_description = "Mark library protocol as non-obsolete"
-
+    @admin.display(description="STATUS")
     def obsolete_name(self, obj):
 
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
-
-    obsolete_name.short_description = "STATUS"
 
 
 @admin.register(LibraryType)

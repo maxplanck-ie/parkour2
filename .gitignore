@@ -7,3 +7,4 @@
 rsnapshot/
 *.swp
 env/
+*.tar.gz

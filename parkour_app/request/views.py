@@ -4,6 +4,7 @@ import logging
 import os
 from unicodedata import normalize
 
+from common.serializers import UserSerializer
 from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings
@@ -364,6 +365,19 @@ class RequestViewSet(viewsets.ModelViewSet):
         return Response(data)
 
     @action(methods=["get"], detail=True)
+    def get_email(self, request, pk=None):
+        """Get the user email address to ship him data."""
+        users_qs = User.objects.all()
+        data = (
+            Request.objects.filter(pk=pk)
+            .prefetch_related(Prefetch("user", queryset=users_qs))
+            .only("user")
+            .first()
+        )
+        serializer = UserSerializer(data.user)
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):
         """Get the list of attached files for a request with a given id."""
         instance = self.get_object()
@@ -458,12 +472,14 @@ class RequestViewSet(viewsets.ModelViewSet):
         ]
         records = sorted(records, key=lambda x: x["barcode"][3:])
 
-        declaration = [
+        declaration_general = "None of the samples listed below are potentially infectious. The listed samples can be handled in an S1 laboratory (BioSafety Level 1) without any safety concerns."
+
+        declaration_gmo = [
             (
-                "  Non-GMO samples. Samples listed below do not fall under GenTG regulation (naked DNA, RNA, proteins or metabolites, fixed or lysed cells, etc.). No additional documentation is required."
+                "  Non-GMO samples. Samples listed below do not fall under GenTG regulation (naked DNA, Sequencing libraries, RNA, proteins or metabolites, fixed or lysed cells, etc.). No additional documentation is required."
             ),
             (
-                '  GMO samples of BioSafety Level 1 (BSL 1). Samples listed below fall under GenTG regulation, and are already documented as part of a project using the "Formblatt S1" in the white folder. Additional documentation is required, please provide an electronic copy of this form (in editable format) to the Deep Sequencing Facility BEFORE you bring S1 GMO to the facility (e.g. upload via Parkour to your Request).'
+                '  GMO samples of BioSafety Level 1 (BSL 1). Samples listed below fall under GenTG regulation. Additional documentation is required: an electronic copy of "Formblatt S1" (in "white" folder) in editable format is provided to the Deep Sequencing Facility BEFORE bringing S1 GMO to the facility (e.g. upload "Formblatt S1" via Parkour to your Request).'
             ),
             (
                 "  GMO samples of BioSafety Level 2 (BSL 2). Not possible to be processed in the Deep Sequencing Facility."
@@ -489,7 +505,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.info_row("Email", user.email)
         pdf.info_row("Organization", organization)
         pdf.info_row("Cost Unit", cost_unit)
-        pdf.multi_checkbox_row("Declaration", declaration)
+        pdf.multi_info_row("Declaration", declaration_general)
+        pdf.multi_checkbox_row("GMO Samples", declaration_gmo)
         pdf.multi_info_row("Description", instance.description)
 
         y = pdf.get_y()

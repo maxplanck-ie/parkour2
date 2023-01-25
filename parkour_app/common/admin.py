@@ -75,6 +75,7 @@ class UserCreationForm(UserCreationForm):
         return password2
 
 
+@admin.register(User)
 class UserAdmin(NamedUserAdmin):
     add_form = UserCreationForm
     add_fieldsets = (
@@ -214,4 +215,3 @@ class UserAdmin(NamedUserAdmin):
 
 
 # admin.site.unregister(User)
-admin.site.register(User, UserAdmin)

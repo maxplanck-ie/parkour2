@@ -21,25 +21,21 @@ class BaseInline(admin.TabularInline):
     can_delete = False
     extra = 0
 
+    @admin.display(description="Name")
     def name(self, instance):
         return getattr(instance, self.verbose_name.lower()).name
 
-    name.short_description = "Name"
-
+    @admin.display(description="Barcode")
     def barcode(self, instance):
         return getattr(instance, self.verbose_name.lower()).barcode
 
-    barcode.short_description = "Barcode"
-
+    @admin.display(description="Status")
     def status(self, instance):
         return getattr(instance, self.verbose_name.lower()).status
 
-    status.short_description = "Status"
-
+    @admin.display(description="Request")
     def request(self, instance):
         return getattr(instance, self.verbose_name.lower()).request.get().name
-
-    request.short_description = "Request"
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -84,17 +80,14 @@ class PoolSizeAdmin(admin.ModelAdmin):
         "mark_as_non_obsolete",
     )
 
+    @admin.action(description="Mark pool size as obsolete")
     def mark_as_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.OBSOLETE)
 
-    mark_as_obsolete.short_description = "Mark pool size as obsolete"
-
+    @admin.action(description="Mark pool size as non-obsolete")
     def mark_as_non_obsolete(self, request, queryset):
         queryset.update(obsolete=settings.NON_OBSOLETE)
 
-    mark_as_non_obsolete.short_description = "Mark pool size as non-obsolete"
-
+    @admin.display(description="STATUS")
     def obsolete_name(self, obj):
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
-
-    obsolete_name.short_description = "STATUS"
