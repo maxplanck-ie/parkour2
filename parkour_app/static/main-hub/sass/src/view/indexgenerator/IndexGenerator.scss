@@ -1,5 +1,12 @@
 .pooling-grid .nucleotide .x-grid-cell-inner {
     text-align: center !important;
+    border: white 1px solid;
+}
+
+.pooling-grid .summary-colours .x-grid-cell-inner {
+  text-align: center !important;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .pooling-grid .nucleotide-header {
@@ -14,6 +21,8 @@
 
 .x-grid-row-summary .x-grid-cell.problematic-cycle .x-grid-cell-inner {
     text-align: center !important;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .summary-green {
@@ -24,6 +33,10 @@
 .summary-red {
     color: #f44336;
     font-weight: bold;
+}
+
+.summary-black {
+  font-weight: bold;
 }
 
 .x-item-disabled {

@@ -12,7 +12,8 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         beforeedit: 'toggleEditors',
         edit: 'editRecord',
         itemcontextmenu: 'showMenu',
-        groupcontextmenu: 'showGroupMenu'
+        groupcontextmenu: 'showGroupMenu',
+        reset: '_resetGeneratedIndices'
       },
       '#check-column': {
         beforecheckchange: 'beforeSelect',
@@ -58,7 +59,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
   beforeSelect: function () {
     if (!Ext.getCmp('poolSizeCb').getValue()) {
       new Noty({
-        text: 'Pool Size must be set.',
+        text: 'A Pool Size must be set.',
         type: 'warning'
       }).show();
       return false;
@@ -188,6 +189,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var startCoordinate = grid.down('#start-coordinate');
     var direction = grid.down('#direction');
 
+    var sequencerChemistry = grid.down('#sequencerChemistryCb').getValue();
+    var minHammingDistance = grid.down('#minHammingDistanceBox').getValue();
+
     if (eOpts && eOpts.hasOwnProperty('multipleSelect')) {
       multipleSelect = eOpts.multipleSelect;
     }
@@ -264,7 +268,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       Ext.getCmp('save-pool-button').enable();
 
       var recordTypes = Ext.pluck(Ext.Array.pluck(store.data.items, 'data'), 'record_type');
-      if (recordTypes.indexOf('Sample') > -1) {
+      if (recordTypes.indexOf('Sample') > -1 && sequencerChemistry > -1 && minHammingDistance > 0) {
         Ext.getCmp('generate-indices-button').enable();
       }
 
@@ -289,6 +293,8 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var poolGrid = Ext.getCmp('pool-grid');
     var startCoordinate = poolGrid.down('#start-coordinate');
     var direction = poolGrid.down('#direction');
+    var sequencerChemistry = poolGrid.baseColours;
+    var minHammingDistanceBox = poolGrid.down('#minHammingDistanceBox');
     var store = poolGrid.getStore();
     var libraries = [];
     var samples = [];
@@ -315,7 +321,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         libraries: Ext.JSON.encode(libraries),
         samples: Ext.JSON.encode(samples),
         start_coord: startCoordinate.getValue(),
-        direction: direction.getValue()
+        direction: direction.getValue(),
+        sequencer_chemistry: Ext.JSON.encode(sequencerChemistry),
+        min_hamming_distance: minHammingDistanceBox.getValue()
       },
       success: function (response) {
         var obj = Ext.JSON.decode(response.responseText);
@@ -324,6 +332,29 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
           store.add(obj.data);
         } else {
           new Noty({ text: obj.error, type: 'error' }).show();
+        }
+        
+        // Show/hide i5/i7 columns to prettify grid
+        var poolGridCols = poolGrid.getColumnManager().columns;
+
+        var len_i7 = store.getAt(0).data.index_i7.index.length;
+        if (len_i7) {
+          var colsToShow = poolGridCols.slice(4, 5 + len_i7);
+          var colsToHide = poolGridCols.slice(5 + len_i7, 17);
+          colsToShow.forEach(function(c){c.setVisible(true);});
+          colsToHide.forEach(function(c){c.setVisible(false);});
+        } else {
+          poolGridCols.slice(4, 17).forEach(function(c){c.setVisible(false);});
+        }
+
+        var len_i5 = store.getAt(0).data.index_i5.index.length;
+        if (len_i5) {
+          var colsToShow = poolGridCols.slice(17, 18 + len_i5);
+          var colsToHide = poolGridCols.slice(18 + len_i5, 30);
+          colsToShow.forEach(function(c){c.setVisible(true);});
+          colsToHide.forEach(function(c){c.setVisible(false);});
+        } else {
+          poolGridCols.slice(17, 30).forEach(function(c){c.setVisible(false);});
         }
 
         indexGeneratorGrid.enable();

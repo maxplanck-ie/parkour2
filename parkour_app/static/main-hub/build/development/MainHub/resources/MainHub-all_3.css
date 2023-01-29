@@ -1,3 +1,12 @@
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1129 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle .x-btn-soft-cyan-small-mc {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1135 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-last .x-btn-soft-cyan-small-mc {
+    padding-top: 7px !important;
+}
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1141 */
 .x-nbr .x-segmented-button-item.x-btn-soft-cyan-small:after {
     content: ' ';

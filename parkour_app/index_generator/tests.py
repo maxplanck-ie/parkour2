@@ -479,6 +479,23 @@ class TestIndexGenerator(BaseTestCase):
 
         self.index_type7 = create_index_type(INDICES_10, INDICES_11, "plate")
 
+        self.sequencer_chemistries = [{"sequencerChemistry": 0,
+                                  "green": [],
+                                  "red": [],
+                                  "black": []
+                                  }, 
+                                  {"sequencerChemistry": 2,
+                                  "green": ['A', 'T'],
+                                  "red": ['A', 'C'],
+                                  "black": ['G']
+                                  },
+                                  {"sequencerChemistry": 4,
+                                  "green": ['G', 'T'],
+                                  "red": ['A', 'C'],
+                                  "black": []
+                                  }]
+        self.min_hamming_distance = 3
+
     # Test valid data
 
     def test_save_pool(self):
@@ -670,6 +687,8 @@ class TestIndexGenerator(BaseTestCase):
             "/api/index_generator/generate_indices/",
             {
                 "samples": json.dumps([sample1.pk, sample2.pk]),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -698,6 +717,8 @@ class TestIndexGenerator(BaseTestCase):
             "/api/index_generator/generate_indices/",
             {
                 "samples": json.dumps([sample1.pk, sample2.pk]),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -727,6 +748,8 @@ class TestIndexGenerator(BaseTestCase):
             "/api/index_generator/generate_indices/",
             {
                 "samples": json.dumps([sample1.pk, sample2.pk]),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -773,6 +796,8 @@ class TestIndexGenerator(BaseTestCase):
             "/api/index_generator/generate_indices/",
             {
                 "samples": json.dumps([sample1.pk, sample2.pk]),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -846,6 +871,8 @@ class TestIndexGenerator(BaseTestCase):
                         sample4.pk,
                     ]
                 ),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -877,6 +904,8 @@ class TestIndexGenerator(BaseTestCase):
             "/api/index_generator/generate_indices/",
             {
                 "samples": json.dumps(sample_ids),
+                "sequencer_chemistry": json.dumps(self.sequencer_chemistries[0]),
+                "min_hamming_distance": 0
             },
         )
         data = response.json()
@@ -915,136 +944,225 @@ class TestIndexGenerator(BaseTestCase):
     def test_libraries_and_samples_format_tube_mode_single(self):
         index_i7_ids = [x.index_id for x in self.index_type1.indices_i7.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type1,
         )
-        library.index_i7 = INDICES_1[5].index
-        library.save()
+        library1.index_i7 = INDICES_1[0].index
+        library1.save()
+        
+        library2 = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+        library2.index_i7 = INDICES_1[5].index
+        library2.save()
 
-        sample = create_sample(
+        sample1 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+        )
+        
+        sample2 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type1,
         )
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
-        )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "A06")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
+        for sequencer_chemistry in self.sequencer_chemistries:
+        
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "A01")
+            self.assertEqual(data["data"][1]["index_i7_id"], "A06")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+
 
     def test_libraries_and_samples_format_tube_mode_dual(self):
         index_i7_ids = [x.index_id for x in self.index_type2.indices_i7.all()]
         index_i5_ids = [x.index_id for x in self.index_type2.indices_i5.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
-        library.index_i7 = INDICES_2[1].index
-        library.index_i5 = INDICES_3[2].index
-        library.save()
+        library1.index_i7 = INDICES_2[1].index
+        library1.index_i5 = INDICES_3[2].index
+        library1.save()
 
-        sample = create_sample(
+        library2 = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
+        )
+        library2.index_i7 = INDICES_2[2].index
+        library2.index_i5 = INDICES_3[3].index
+        library2.save()
+
+        sample1 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
         )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "B02")
-        self.assertEqual(data["data"][0]["index_i5_id"], "C03")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
-        self.assertIn(data["data"][1]["index_i5_id"], index_i5_ids)
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "B02")
+            self.assertEqual(data["data"][0]["index_i5_id"], "C03")
+            self.assertEqual(data["data"][1]["index_i7_id"], "B03")
+            self.assertEqual(data["data"][1]["index_i5_id"], "C04")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][2]["index_i5_id"], index_i5_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i5_id"], index_i5_ids)
 
     def test_libraries_and_samples_format_plate_mode_single(self):
         index_i7_ids = [x.index_id for x in self.index_type6.indices_i7.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type6,
         )
-        library.index_i7 = INDICES_9[3].index
-        library.save()
+        library1.index_i7 = INDICES_9[2].index
+        library1.save()
 
-        sample = create_sample(
+        library2 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type6,
         )
+        library2.index_i7 = INDICES_9[3].index
+        library2.save()
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
-        )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "I04")
-        self.assertEqual(data["data"][0]["index_i5_id"], "")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
-        self.assertEqual(data["data"][1]["index_i5_id"], "")
+        sample1 = create_sample(
+                    get_random_name(),
+                    read_length=self.read_length,
+                    index_type=self.index_type6,
+                    )
+        
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type6,
+            )
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "I03")
+            self.assertEqual(data["data"][0]["index_i5_id"], "")
+            self.assertEqual(data["data"][1]["index_i7_id"], "I04")
+            self.assertEqual(data["data"][1]["index_i5_id"], "")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertEqual(data["data"][2]["index_i5_id"], "")
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+            self.assertEqual(data["data"][3]["index_i5_id"], "")
 
     def test_libraries_and_samples_format_plate_mode_dual(self):
         index_i7_ids = [x.index_id for x in self.index_type5.indices_i7.all()]
         index_i5_ids = [x.index_id for x in self.index_type5.indices_i5.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type5,
         )
-        library.index_i7 = INDICES_7[2].index
-        library.index_i5 = INDICES_8[1].index
-        library.save()
+        library1.index_i7 = INDICES_7[0].index
+        library1.index_i5 = INDICES_8[1].index
+        library1.save()
 
-        sample = create_sample(
+        library2 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type5,
         )
+        library2.index_i7 = INDICES_7[2].index
+        library2.index_i5 = INDICES_8[2].index
+        library2.save()
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
-        )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "G03")
-        self.assertEqual(data["data"][0]["index_i5_id"], "H02")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
-        self.assertIn(data["data"][1]["index_i5_id"], index_i5_ids)
+        sample1 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type5,
+            )
+
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type5,
+            )
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "G01")
+            self.assertEqual(data["data"][0]["index_i5_id"], "H02")
+            self.assertEqual(data["data"][1]["index_i7_id"], "G03")
+            self.assertEqual(data["data"][1]["index_i5_id"], "H03")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][2]["index_i5_id"], index_i5_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i5_id"], index_i5_ids)
 
     def test_library_custom_index_i7_format_tube_mode_single(self):
         """
@@ -1052,104 +1170,172 @@ class TestIndexGenerator(BaseTestCase):
         behaves correctly.
         """
         index_type = _create_index_type(get_random_name(), index_length="6")
-        library = create_library(
+        
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=index_type,
         )
-        library.index_i7 = INDICES_1[1].index
-        library.save()
+        library1.index_i7 = INDICES_1[2].index
+        library1.save()
+
+        library2 = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=index_type,
+        )
+        library2.index_i7 = INDICES_1[3].index
+        library2.save()
 
         index_i7_ids = [x.index_id for x in self.index_type1.indices_i7.all()]
-        sample = create_sample(
+
+        sample1 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type1,
-        )
+            )
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
-        )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type1,
+            )
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "")
+            self.assertEqual(data["data"][1]["index_i7_id"], "")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
 
     def test_library_custom_index_i5_format_tube_mode_dual(self):
         index_i7_ids = [x.index_id for x in self.index_type2.indices_i7.all()]
         index_i5_ids = [x.index_id for x in self.index_type2.indices_i5.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
-        library.index_i7 = INDICES_2[0].index
-        library.index_i5 = "ACACAC"
-        library.save()
+        library1.index_i7 = INDICES_2[0].index
+        library1.index_i5 = "ACACAC"
+        library1.save()
 
-        sample = create_sample(
+        library2 = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
+        )
+        library2.index_i7 = INDICES_2[1].index
+        library2.index_i5 = "CACACA"
+        library2.save()
+
+        sample1 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
         )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertIn(data["data"][0]["index_i7_id"], index_i7_ids)
-        self.assertEqual(data["data"][0]["index_i5_id"], "")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
-        self.assertIn(data["data"][1]["index_i5_id"], index_i5_ids)
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertIn(data["data"][0]["index_i7_id"], index_i7_ids)
+            self.assertEqual(data["data"][0]["index_i5_id"], "")
+            self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
+            self.assertEqual(data["data"][1]["index_i5_id"], "")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][2]["index_i5_id"], index_i5_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i5_id"], index_i5_ids)
 
     def test_library_custom_indices_i7_and_i5_format_tube_mode_dual(self):
         index_i7_ids = [x.index_id for x in self.index_type2.indices_i7.all()]
         index_i5_ids = [x.index_id for x in self.index_type2.indices_i5.all()]
 
-        library = create_library(
+        library1 = create_library(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
-        library.index_i7 = "TGTGTG"
-        library.index_i5 = "ACACAC"
-        library.save()
+        library1.index_i7 = "TGTGTG"
+        library1.index_i5 = "ACACAC"
+        library1.save()
 
-        sample = create_sample(
+        library2 = create_library(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
+        )
+        library2.index_i7 = "ACACAC"
+        library2.index_i5 = "TGTGTG"
+        library2.save()
+
+        sample1 = create_sample(
             get_random_name(),
             read_length=self.read_length,
             index_type=self.index_type2,
         )
 
-        response = self.client.post(
-            "/api/index_generator/generate_indices/",
-            {
-                "libraries": json.dumps([library.pk]),
-                "samples": json.dumps([sample.pk]),
-            },
+        sample2 = create_sample(
+            get_random_name(),
+            read_length=self.read_length,
+            index_type=self.index_type2,
         )
-        data = response.json()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(data["success"])
-        self.assertEqual(len(data["data"]), 2)
-        self.assertEqual(data["data"][0]["index_i7_id"], "")
-        self.assertEqual(data["data"][0]["index_i5_id"], "")
-        self.assertIn(data["data"][1]["index_i7_id"], index_i7_ids)
-        self.assertIn(data["data"][1]["index_i5_id"], index_i5_ids)
+
+        for sequencer_chemistry in self.sequencer_chemistries:
+
+            response = self.client.post(
+                "/api/index_generator/generate_indices/",
+                {
+                    "libraries": json.dumps([library1.pk, library2.pk]),
+                    "samples": json.dumps([sample1.pk, sample2.pk]),
+                    "sequencer_chemistry": json.dumps(sequencer_chemistry),
+                    "min_hamming_distance": self.min_hamming_distance
+                },
+            )
+            data = response.json()
+            self.assertEqual(response.status_code, 200)
+            self.assertTrue(data["success"])
+            self.assertEqual(len(data["data"]), 4)
+            self.assertEqual(data["data"][0]["index_i7_id"], "")
+            self.assertEqual(data["data"][0]["index_i5_id"], "")
+            self.assertEqual(data["data"][1]["index_i7_id"], "")
+            self.assertEqual(data["data"][1]["index_i5_id"], "")
+            self.assertIn(data["data"][2]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][2]["index_i5_id"], index_i5_ids)
+            self.assertIn(data["data"][3]["index_i7_id"], index_i7_ids)
+            self.assertIn(data["data"][3]["index_i5_id"], index_i5_ids)
 
     # Test failing data
 

@@ -54,7 +54,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             dataIndex: 'selected',
             resizable: false,
             tdCls: 'no-dirty',
-            width: 35
+            width: 36
           },
           {
             text: 'Name',
@@ -144,7 +144,12 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               //store: 'IndexTypes',
               store: 'GeneratorIndexTypes',
               matchFieldWidth: false,
-              forceSelection: true
+              forceSelection: true,
+              listeners: {
+                change: function(checkbox, newValue, oldValue, eOpts) {
+                  Ext.getCmp('index-generator-grid').fireEvent('reset');
+                }
+              }
             },
             renderer: function (value, meta) {
               var record = Ext.getStore('GeneratorIndexTypes').findRecord(
@@ -210,6 +215,12 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
         id: 'pool-grid',
         itemId: 'pool-grid',
         cls: 'pooling-grid',
+        baseColours: {
+            sequencerChemistry: 0,
+            green: [],
+            red: [],
+            black: []
+          },
         header: {
           title: 'Pool',
           height: 56,
@@ -225,7 +236,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               cls: 'panel-header-combobox',
               fieldLabel: 'Start Coordinate',
               labelWidth: 110,
-              width: 550,
+              width: 200,
               margin: '0 15px 0 0',
               hidden: true
             },
@@ -297,9 +308,18 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             dataIndex: 'index_i7_id',
             width: 90,
             summaryRenderer: function () {
-              var totalSequencingDepth = Ext.getCmp('pool-grid').getStore().sum('sequencing_depth');
+              var grid = Ext.getCmp('pool-grid');
+              var sequencerChemistry = grid.baseColours.sequencerChemistry;
+              var labels = '';
+
+              if (sequencerChemistry === 2) {
+                labels = '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>'
+              } else if (sequencerChemistry === 4) {
+                labels = '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>'
+              }
+              var totalSequencingDepth = grid.getStore().sum('sequencing_depth');
               return totalSequencingDepth > 0
-                ? '<span class="summary-green">green:</span><br><span class="summary-red">red:</span>'
+                ? labels
                 : '';
             }
           },
@@ -310,7 +330,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '2',
@@ -319,7 +339,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '3',
@@ -328,7 +348,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '4',
@@ -337,7 +357,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '5',
@@ -346,7 +366,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '6',
@@ -355,7 +375,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '7',
@@ -364,7 +384,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '8',
@@ -373,7 +393,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '9',
@@ -382,7 +402,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '10',
@@ -391,7 +411,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '11',
@@ -400,7 +420,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '12',
@@ -409,15 +429,24 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: 'Index I5 ID',
             dataIndex: 'index_i5_id',
             summaryRenderer: function () {
-              var totalSequencingDepth = Ext.getCmp('pool-grid').getStore().sum('sequencingDepth');
+              var grid = Ext.getCmp('pool-grid');
+              var sequencerChemistry = grid.baseColours.sequencerChemistry;
+              var labels = '';
+
+              if (sequencerChemistry === 2) {
+                labels = '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>'
+              } else if (sequencerChemistry === 4) {
+                labels = '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>'
+              }
+              var totalSequencingDepth = grid.getStore().sum('sequencing_depth');
               return totalSequencingDepth > 0
-                ? '<span class="summary-green">green:</span><br><span class="summary-red">red:</span>'
+                ? labels
                 : '';
             },
             width: 90
@@ -429,7 +458,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '2',
@@ -438,7 +467,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '3',
@@ -447,7 +476,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '4',
@@ -456,7 +485,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '5',
@@ -465,7 +494,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '6',
@@ -474,7 +503,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '7',
@@ -483,7 +512,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '8',
@@ -492,7 +521,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '9',
@@ -501,7 +530,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '10',
@@ -510,7 +539,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '11',
@@ -519,7 +548,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           },
           {
             text: '12',
@@ -528,11 +557,80 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55
+            width: 36
           }
         ],
         store: [],
         bbar: [
+          {
+            xtype: 'combobox',
+            id: 'sequencerChemistryCb',
+            store: Ext.create('Ext.data.Store', {
+              fields: ['sequencerChemistry', 'name'],
+              data: [{
+                sequencerChemistry: 0,
+                name: 'N/A',
+                tooltip: 'None'
+              },
+              {
+                sequencerChemistry: 2,
+                name: '2-ch',
+                tooltip: 'Illumina 2-channel SBS technology'
+              },
+              {
+                sequencerChemistry: 4,
+                name: '4-ch',
+                tooltip: 'Illumina 4-channel SBS technology'
+              }
+              ]
+            }),
+            queryMode: 'local',
+            displayField: 'name',
+            valueField: 'sequencerChemistry',
+            value: 0,
+            forceSelection: true,
+            allowBlank: false,
+            fieldLabel: 'Chemistry',
+            labelWidth: 65,
+            width: 150,
+            listeners: {
+              change: function (checkbox, newValue, oldValue, eOpts) {
+                var poolGrid = Ext.getCmp('pool-grid');
+                poolGrid.baseColours = me.getBaseColours(newValue);
+                Ext.getCmp('index-generator-grid').fireEvent('reset');
+                poolGrid.getView().refresh();
+              }
+            },
+            listConfig: {
+              getInnerTpl: function () {
+                return '<span data-qtip="{tooltip}">{name}</span>';
+              }
+            }
+          },
+          {
+            xtype: 'tbseparator'
+          },
+          {
+            xtype: 'numberfield',
+            id: 'minHammingDistanceBox',
+            fieldLabel: '<span data-qtip="Minimum Hamming distance">Min. HD</span>',
+            allowBlank: false,
+            minValue: 1,
+            maxValue: 5,
+            value: 3,
+            labelWidth: 55,
+            width: 125,
+            listeners: {
+              change: function(checkbox, newValue, oldValue, eOpts) {
+                var grid = Ext.getCmp('index-generator-grid');
+                grid.fireEvent('reset');
+                Ext.getCmp('pool-grid').getView().refresh();
+              }
+            }
+          },
+          {
+            xtype: 'tbseparator'
+          },
           {
             xtype: 'button',
             id: 'generate-indices-button',
@@ -565,40 +663,86 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
     me.callParent(arguments);
   },
 
+  getBaseColours: function (sequencerChemistry) {
+    sequencerChemistry = sequencerChemistry ? sequencerChemistry : 0;
+
+    var baseColoursBySequencerChemistry = [
+      {
+        sequencerChemistry: 0,
+        green: [],
+        red: [],
+        black: []
+      },
+      {
+        sequencerChemistry: 2,
+        green: ['A', 'T'],
+        red: ['A', 'C'],
+        black: ['G']
+      },
+      {
+        sequencerChemistry: 4,
+        green:  ['G', 'T'],
+        red: ['A', 'C'],
+        black: []
+      },
+    ];
+    
+    return baseColoursBySequencerChemistry.find(function (o) { return o.sequencerChemistry === sequencerChemistry });
+
+  },
+
   renderNucleotide: function (val, meta) {
-    if (val === 'G' || val === 'T') {
-      meta.tdStyle = 'background-color:#dcedc8';
-    } else if (val === 'A' || val === 'C') {
-      meta.tdStyle = 'background-color:#ef9a9a';
-    }
+
+    var baseColours = this.baseColours;
     meta.tdCls = 'nucleotide';
-    return val;
+
+    if (baseColours.green.includes(val) & baseColours.red.includes(val)) {
+      meta.tdStyle += 'background-color:#fffacd;';
+      return val;
+    } else if (baseColours.green.includes(val)) {
+      meta.tdStyle += 'background-color:#dcedc8;';
+      return val;
+    } else if (baseColours.red.includes(val)) {
+      meta.tdStyle += 'background-color:#ef9a9a;';
+      return val;
+    }
+
+    meta.tdStyle = '';
+    return val
   },
 
   calculateColorDiversity: function (records, values) {
-    var diversity = { green: 0, red: 0 };
+
+    var baseColours = Ext.getCmp('pool-grid').baseColours;
+  
+    var diversity = { green: 0, red: 0 , black: 0};
 
     for (var i = 0; i < values.length; i++) {
       var nuc = values[i];
       if (nuc && nuc !== ' ') {
-        if (nuc === 'G' || nuc === 'T') {
+        if (baseColours.green.includes(nuc)) {
           diversity.green += records[i].get('sequencing_depth');
-        } else if (nuc === 'A' || nuc === 'C') {
+        }
+        if (baseColours.red.includes(nuc)) {
           diversity.red += records[i].get('sequencing_depth');
+        }
+        if (baseColours.black.includes(nuc)) {
+          diversity.black += records[i].get('sequencing_depth');
         }
       }
     }
-
     return diversity;
   },
 
   renderSummary: function (value, summaryData, dataIndex, meta) {
     var grid = Ext.getCmp('pool-grid');
+    var sequencerChemistry = grid.baseColours.sequencerChemistry;
     var store = grid.getStore();
     var result = '';
     var totalSequencingDepth = 0;
+    meta.tdCls = 'summary-colours';
 
-    if (store.getCount() > 1 && (value.green > 0 || value.red > 0)) {
+    if (store.getCount() > 1 && (value.green > 0 || value.red > 0 || value.black > 0)) {
       if (dataIndex.split('_')[1] === 'i7') {
         // Consider only non empty Index I7 indices
         store.each(function (record) {
@@ -617,15 +761,23 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
 
       var green = parseInt(((value.green / totalSequencingDepth) * 100).toFixed(0));
       var red = parseInt(((value.red / totalSequencingDepth) * 100).toFixed(0));
+      var black = parseInt(((value.black / totalSequencingDepth) * 100).toFixed(0));
 
-      result = Ext.String.format('{0}%<br/>{1}%', green, red);
+      if (sequencerChemistry === 4) {
+        result = Ext.String.format('{0}<br/>{1}', green, red);
+      } else if (sequencerChemistry === 2) {
+        result = Ext.String.format('{0}<br/>{1}<br/>{2}', green, red, black);
+      }
 
-      if ((green < 20 && red > 80) || (red < 20 && green > 80)) {
-        meta.tdCls = 'problematic-cycle';
-        result += '<br/>!';
+      if (sequencerChemistry !== 0) {
+        if ((green < 20 && red > 80) || (red < 20 && green > 80) || (black > 80)) {
+          meta.tdCls = 'problematic-cycle';
+          result += '<br/>!';
+        }
       }
     }
 
     return result;
-  }
+  },
+
 });

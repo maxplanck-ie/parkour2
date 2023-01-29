@@ -159,6 +159,8 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         samples = json.loads(request.data.get("samples", "[]"))
         start_coord = request.data.get("start_coord", None)
         direction = request.data.get("direction", None)
+        sequencer_chemistry = json.loads(request.data.get("sequencer_chemistry", "{}"))
+        min_hamming_distance =  int(request.data.get("min_hamming_distance", 3))
 
         try:
             index_generator = IndexGenerator(
@@ -166,6 +168,8 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 samples,
                 start_coord,
                 direction,
+                sequencer_chemistry,
+                min_hamming_distance
             )
             data = index_generator.generate()
         except Exception as e:

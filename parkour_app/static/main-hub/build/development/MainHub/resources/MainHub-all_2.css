@@ -8980,42 +8980,55 @@ tr.pool-not-ready .x-grid-item-focused {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:1 */
 .pooling-grid .nucleotide .x-grid-cell-inner {
     text-align: center !important;
+    border: white 1px solid;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:5 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:6 */
+.pooling-grid .summary-colours .x-grid-cell-inner {
+    text-align: center !important;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:12 */
 .pooling-grid .nucleotide-header {
     text-align: center;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:9 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:16 */
 .x-grid-row-summary .x-grid-cell.problematic-cycle {
     background-color: #ef5350 !important;
     font-weight: bold;
     color: #fff;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:15 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:22 */
 .x-grid-row-summary .x-grid-cell.problematic-cycle .x-grid-cell-inner {
     text-align: center !important;
+    padding-left: 0px;
+    padding-right: 0px;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:19 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:28 */
 .summary-green {
     color: #388e3c;
     font-weight: bold;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:24 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:33 */
 .summary-red {
     color: #f44336;
     font-weight: bold;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:30 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:38 */
+.summary-black {
+    font-weight: bold;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:43 */
 .x-item-disabled.x-boundlist-item {
     color: #8c8c8c;
     cursor: default;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:34 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:47 */
 .x-item-disabled.x-boundlist-item-over {
     background: inherit;
     border-color: white;
 }
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:42 */
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:55 */
 .obsolete2 {
     /* grayed out combobox item */
     color: lightgray;
@@ -14700,13 +14713,4 @@ hr {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1127 */
 .x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle {
     border-bottom-width: 1px !important;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1129 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle .x-btn-soft-cyan-small-mc {
-    padding-top: 7px !important;
-    padding-bottom: 7px !important;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1135 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-last .x-btn-soft-cyan-small-mc {
-    padding-top: 7px !important;
 }
