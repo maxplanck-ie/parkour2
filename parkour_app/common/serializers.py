@@ -26,3 +26,9 @@ class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organization
         fields = ("id", "name")
+
+
+class UserSerializer(ModelSerializer):
+    class Meta:
+        model = User
+        fields = ("email",)

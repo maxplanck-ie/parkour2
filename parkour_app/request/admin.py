@@ -37,10 +37,10 @@ class RequestAdmin(admin.ModelAdmin):
         "sequenced",
     )
 
+    @admin.display(boolean=True)
     def request_uploaded(self, obj):
         return obj.deep_seq_request.name != ""
 
-    request_uploaded.boolean = True
 
     def get_search_results(self, request, queryset, search_term):
 

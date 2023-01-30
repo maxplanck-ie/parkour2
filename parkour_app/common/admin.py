@@ -78,6 +78,7 @@ class UserChangeForm(UserChangeForm, CheckUserEmailExtension):
     pass
 
 
+@admin.register(User)
 class UserAdmin(NamedUserAdmin):
     inlines = [CostUnitInline, OIDCGroupInline]
     form = UserChangeForm
@@ -266,4 +267,3 @@ class UserAdmin(NamedUserAdmin):
 
 
 # admin.site.unregister(User)
-admin.site.register(User, UserAdmin)

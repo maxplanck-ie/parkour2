@@ -8,7 +8,7 @@
 -r base.txt
 blessed==1.19.1
     # via curtsies
-bpython==0.23
+bpython==0.24
     # via -r parkour_app/requirements/dev.in
 curtsies==0.4.1
     # via bpython
@@ -16,16 +16,22 @@ cwcwidth==0.1.8
     # via
     #   bpython
     #   curtsies
-django-debug-toolbar==3.7.0
+django-debug-toolbar==3.8.1
     # via -r parkour_app/requirements/dev.in
-greenlet==1.1.3
+greenlet==2.0.2
     # via bpython
-ipdb==0.13.9
+ipdb==0.13.11
+    # via -r parkour_app/requirements/dev.in
+markupsafe==2.1.2
+    # via werkzeug
+pywatchman==1.4.1
     # via -r parkour_app/requirements/dev.in
 pyxdg==0.28
     # via bpython
-toml==0.10.2
+tomli==2.0.1
     # via ipdb
+werkzeug==2.2.2
+    # via -r parkour_app/requirements/dev.in
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
