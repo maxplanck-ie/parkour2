@@ -74,7 +74,7 @@ Ext.define('MainHub.view.main.Main', {
                     xtype: 'button',
                     ui: 'header',
                     iconCls: 'x-fa fa-book',
-                    href: 'https://parkour.readthedocs.io/',
+                    href: 'https://gitlab.rlp.net/imbforge/parkour2/-/wikis/home',
                     tooltip: 'Documentation'
                 },
                 {
