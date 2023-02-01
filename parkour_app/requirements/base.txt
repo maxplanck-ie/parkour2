@@ -104,7 +104,7 @@ pytz==2022.7.1
     #   pandas
 pyyaml==6.0
     # via tablib
-requests==2.28.2
+requests==2.28.1
     # via
     #   bioblend
     #   requests-toolbelt
@@ -125,7 +125,7 @@ tuspy==1.0.0
     # via bioblend
 typing-extensions==4.4.0
     # via bioblend
-urllib3==1.26.14
+urllib3==1.26.13
     # via requests
 xlrd==2.0.1
     # via tablib
