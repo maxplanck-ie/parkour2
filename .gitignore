@@ -1,10 +1,11 @@
-*.env
-*.pem
-*.sqldump
-*-dump.json
+misc/*.env
+misc/*.pem
+misc/*.txt
+misc/*.tar.gz
+misc/*-dump.json
+misc/*.sqldump
 *_dump/
 *_dumps/
 rsnapshot/
 *.swp
 env/
-*.tar.gz

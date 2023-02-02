@@ -15,7 +15,7 @@ check-rootdir:
 deploy-full:  deploy-django deploy-caddy
 
 set-prod:
-	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' parkour.env
+	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["gunicorn/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
@@ -27,7 +27,7 @@ set-prod:
 		-e 's/\(client_header_timeout\).*/\1 120;/' \
 		-e 's/\(keepalive_timeout\).*/\1 120;/' \
 		-e 's/\(proxy_connect_timeout\).*/\1 120;/' \
-		-e 's/\(proxy_read_timeout\).*/\1 120;/' nginx-server.conf
+		-e 's/\(proxy_read_timeout\).*/\1 120;/' misc/nginx-server.conf
 
 deploy-django: deploy-network deploy-containers
 
@@ -113,7 +113,7 @@ dev: set-dev deploy-django deploy-nginx  ## Deploy Werkzeug instance with Nginx 
 	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
 
 set-dev: set-prod unset-caddy
-	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' parkour.env
+	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
@@ -124,13 +124,13 @@ set-dev: set-prod unset-caddy
 		-e 's/\(client_header_timeout\).*/\1 1h;/' \
 		-e 's/\(keepalive_timeout\).*/\1 1h;/' \
 		-e 's/\(proxy_connect_timeout\).*/\1 1h;/' \
-		-e 's/\(proxy_read_timeout\).*/\1 1h;/' nginx-server.conf
+		-e 's/\(proxy_read_timeout\).*/\1 1h;/' misc/nginx-server.conf
 
 set-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/caddyfile\.in\.use\:/" caddy.yml
+	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
 
 unset-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/Caddyfile\:/" caddy.yml
+	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -143,15 +143,15 @@ deploy-ncdb:
 	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-ncdb-nginx rule.'
 
 add-ncdb-nginx:
-	@docker cp nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
+	@docker cp misc/nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
 	@docker exec parkour2-nginx nginx -s reload
 
-convert-backup:  ## Convert daily.0's pgdb to ./latest.sqldump (overwriting if there's one already)
+convert-backup:  ## Convert daily.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump" && \
-		docker cp parkour2-convert-backup:/tmp/postgres_dump latest.sqldump && \
+		docker cp parkour2-convert-backup:/tmp/postgres_dump misc/latest.sqldump && \
 		docker compose -f convert-backup.yml down
 
 load-media:  ## Copy all media files into running instance
@@ -161,12 +161,12 @@ load-media:  ## Copy all media files into running instance
 		echo "Loaded media file(s)." || \
 		echo 'Folder media_dump not found!'
 
-load-postgres:  ## Restore instant snapshot (latest.sqldump) on running instance
-	@[[ -f latest.sqldump ]] && \
-		docker cp ./latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
+load-postgres:  ## Restore instant snapshot (sqldump) on running instance
+	@[[ -f misc/latest.sqldump ]] && \
+		docker cp ./misc/latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null && \
 		echo "Loaded PostgreSQL database OK." || \
-		echo '$ scp root@production:~/parkour2/latest.sqldump .'
+		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
 
 load-postgres-plain:
 	@#cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql
@@ -186,29 +186,29 @@ load-backup: load-postgres load-media
 backup: save-media save-postgres export-migras
 
 export-migras:
-	@find ./**/ -name migrations -type d -exec tar czf ./migras.tar.gz {} \+
+	@find ./**/ -name migrations -type d -exec tar czf ./misc/migras.tar.gz {} \+
 
 refresh-migras:
-	@[[ -f migras.tar.gz ]] && \
+	@[[ -f misc/migras.tar.gz ]] && \
 		rm parkour_app/**/migrations/* && \
-		tar xzf migras.tar.gz && \
+		tar xzf misc/migras.tar.gz && \
 		echo '$ make down dev migrate load-postgres' || \
-		echo '$ scp root@production:~/parkour2/migras.tar.gz .'
+		echo '$ scp root@production:~/parkour2/misc/migras.tar.gz .'
 
 save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
-		docker cp parkour2-postgres:/tmp/postgres_dump latest.sqldump
+		docker cp parkour2-postgres:/tmp/postgres_dump misc/latest.sqldump
 
 # TODO: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
-		docker cp parkour2-django:/tmp/postgres_dump latest-dump.json
+		docker cp parkour2-django:/tmp/postgres_dump misc/latest-dump.json
 
 load-db-json:
-	@docker cp latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
+	@docker cp misc/latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
 reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
@@ -241,9 +241,8 @@ VM_PROD := root@parkour
 
 full-import-json:  ## Run save-db-json on $VM_PROD, and bring JSON dump.
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
-	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/latest-dump.json .
+	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json .
 
-# TODO: move files on root repo folder to apropiate subfolders (e.g. webserver-configs)
 upgrade:  ## (WIP) Print instructions to stdout... Paste 1 by 1, until we wrap this into a script
 	@echo '# Prepare'
 	@echo make compile full-import-json reload-json save-postgres
@@ -274,11 +273,11 @@ upgrade:  ## (WIP) Print instructions to stdout... Paste 1 by 1, until we wrap t
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/daily.0/localhost/data/parkour2_media ~/parkour2/media_dump"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
 	@echo '## Configuration'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/parkour.env ~/parkour2/"'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/cert.pem ~/parkour2/"'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/key.pem ~/parkour2/"'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/misc/parkour.env ~/parkour2/misc/"'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/cert.pem ~/parkour2/misc/"'
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/key.pem ~/parkour2/misc/"'
 	@echo '## Get JSON dump and start the service...'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp ~/pk2_old/latest-dump.json ~/parkour2/"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp ~/pk2_old/misc/latest-dump.json ~/parkour2/misc/"
 	#echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "git init && git add ."  # Otherwise restore-prep4json wouldn't work. FIXME (replace git with scp from pk-test?) DONE (pero cambiarlo para q sea from pk-prod)
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy prep4json prod migrasync load-db-json"
 	@echo 'SKIP: Here would go the option to do the legacy procedure, moving SQLdump... (TODO), something in the lines of: make clearpy prod migrate load-postgres'
