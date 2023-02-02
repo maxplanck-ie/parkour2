@@ -9,13 +9,13 @@ services:
       - "9980:9980"
       - "9981:9981"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./misc/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
       - parkour2_media:/parkour2/media
       - parkour2_staticfiles:/parkour2/static
-      # ./cert.pem:/etc/ssl/cert.pem:ro
-      # ./key.pem:/etc/ssl/key.pem:ro
+      # ./misc/cert.pem:/etc/ssl/cert.pem:ro
+      # ./misc/key.pem:/etc/ssl/key.pem:ro
 
 volumes:
   caddy_data:

@@ -5,7 +5,7 @@ services:
     container_name: parkour2-postgres
     image: postgres:latest
     env_file:
-      - ./parkour.env
+      - ./misc/parkour.env
     restart: always
     volumes:
       - pgdb:/var/lib/postgresql/data/
@@ -22,7 +22,7 @@ services:
     build:
       dockerfile: ./Dockerfile
     env_file:
-      - ./parkour.env
+      - ./misc/parkour.env
     restart: always
     volumes:
       - ./parkour_app:/usr/src/app

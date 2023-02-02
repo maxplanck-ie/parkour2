@@ -5,7 +5,7 @@ services:
     container_name: parkour2-convert-backup
     image: postgres:latest
     env_file:
-      - ./parkour.env
+      - ./misc/parkour.env
     restart: always
     volumes:
       - ./rsnapshot/backups/daily.0/localhost/data/parkour2_pgdb/:/var/lib/postgresql/data/

@@ -2,7 +2,7 @@
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maxplanck-ie/parkour2/main.svg)](https://results.pre-commit.ci/latest/github/maxplanck-ie/parkour2/main) ![dj-tests status](https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg)
 
-![Parkour](./readme.png)
+![Parkour](./misc/readme.png)
 
 Parkour is a Laboratory Information Management System (LIMS) software package
 for sample processing and quality management of high-throughput sequencing
