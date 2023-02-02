@@ -27,20 +27,20 @@ repos:
         name: set-prod-env
         entry: /usr/bin/env sed
         language: script
-        files: 'parkour.env'
+        files: 'misc/parkour.env'
         args: [-i, '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/']
     -   id: set-local-url-1
         name: set-local-url-1
         entry: /usr/bin/env sed
         language: script
-        files: 'Caddyfile'
+        files: 'misc/Caddyfile'
         args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1:9980 {/']
     -   id: set-local-url-2
         name: set-local-url-2
         entry: /usr/bin/env sed
         language: script
         files: 'caddy.yml'
-        args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/Caddyfile\:/']
+        args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/']
     -   id: set-prod-docker-2
         name: set-prod-docker-2
         entry: /usr/bin/env sed
