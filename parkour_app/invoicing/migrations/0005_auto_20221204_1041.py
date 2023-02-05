@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('common', '0014_auto_20221031_1657'),
-        ('invoicing', '0003_dj32_upgrade'),
+        ('invoicing', '0004_alter_librarypreparationcosts_library_protocol'),
     ]
 
     operations = [
