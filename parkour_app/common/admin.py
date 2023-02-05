@@ -8,6 +8,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.crypto import get_random_string
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin
 
 User = get_user_model()
 
@@ -140,54 +142,11 @@ class UserAdmin(NamedUserAdmin):
         "email",
     )
     autocomplete_fields = (
+        "groups",
         "pi",
     )
     filter_horizontal = (
-        "groups",
         "user_permissions",
-    )
-
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "password",
-                ),
-            },
-        ),
-        (
-            "Personal info",
-            {
-                "fields": (
-                    "phone",
-                    "is_pi",
-                    "pi",
-                ),
-            },
-        ),
-        (
-            "Permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_staff",
-                    "is_bioinformatician",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                ),
-            },
-        ),
-        (
-            "Other",
-            {
-                "fields": ("last_login",),
-            },
-        ),
     )
 
     def pis(self, obj):
@@ -230,6 +189,92 @@ class UserAdmin(NamedUserAdmin):
         obj = self.model.objects.get(id=object_id)
         if obj.is_pi:
             self.inlines = [CostUnitInline, OIDCGroupInline]
+
+        if request.user.is_superuser:
+            self.fieldsets = (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "password",
+                        ),
+                    },
+                ),
+                (
+                    "Personal info",
+                    {
+                        "fields": (
+                            "phone",
+                            "is_pi",
+                            "pi",
+                        ),
+                    },
+                ),
+                (
+                    "Permissions",
+                    {
+                        "fields": (
+                            "is_active",
+                            "is_staff",
+                            "is_bioinformatician",
+                            "is_superuser",
+                            "groups",
+                            "user_permissions",
+                        ),
+                    },
+                ),
+                (
+                    "Other",
+                    {
+                        "fields": ("last_login",),
+                    },
+                ),
+            )
+        else:
+            self.fieldsets = (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "password",
+                        ),
+                    },
+                ),
+                (
+                    "Personal info",
+                    {
+                        "fields": (
+                            "phone",
+                            "is_pi",
+                            "pi",
+                        ),
+                    },
+                ),
+                (
+                    "Permissions",
+                    {
+                        "fields": (
+                            "is_active",
+                            "is_staff",
+                            "is_bioinformatician",
+                            "groups",
+                        ),
+                    },
+                ),
+                (
+                    "Other",
+                    {
+                        "fields": ("last_login",),
+                    },
+                ),
+            )
+
         return super().change_view(request, object_id)
 
     def get_search_results(self, request, queryset, search_term):
@@ -267,3 +312,12 @@ class UserAdmin(NamedUserAdmin):
 
 
 # admin.site.unregister(User)
+
+admin.site.unregister(Group)
+@admin.register(Group)
+class CustomGroupAdmin(GroupAdmin):
+    
+    def has_module_permission(self, request):
+        if not request.user.is_superuser:
+            return False
+        return True
