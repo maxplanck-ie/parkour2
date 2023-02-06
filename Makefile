@@ -57,22 +57,6 @@ migrate: apply-migrations
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
-## DEPRECATED in favour of export-migras migrasync refresh-migras
-# get-migrations:
-# 	@docker compose exec parkour2-django python manage.py makemigrations --check && \
-# 		docker compose exec parkour2-django python manage.py migrate \
-# 			--fake-initial --check --traceback --verbosity 2
-# 	@docker exec parkour2-django sh -c \
-# 		"apt update && apt install -y rsync && \
-# 		mkdir -p /usr/src/app/staticfiles/migrations && \
-# 		find **/migrations/ -maxdepth 1 -mindepth 1 -type f | \
-# 		xargs -I {} rsync -qaR {} /usr/src/app/staticfiles/migrations/"
-# 	@echo "Following command (using staticfiles volume) is dependant on default docker settings..."
-# 	cp -rv /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations/* parkour_app/
-# 	@rm -rf /var/lib/docker/volumes/parkour2_staticfiles/_data/migrations
-# 	@docker compose exec parkour2-django python manage.py check
-# 	@docker compose exec parkour2-django python manage.py showmigrations -l
-
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
 
