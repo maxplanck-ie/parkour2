@@ -89,11 +89,9 @@ prod: set-prod deploy-django deploy-nginx  ## Deploy production instance with Ng
 	@echo "Consider: make deploy-rsnapshot"
 
 dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
-	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb"
 
 dev: set-dev deploy-django deploy-nginx  ## Deploy Werkzeug instance with Nginx (incl. TLS)
-	@echo "WARNING: latest.sqldump not loaded..."
 	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
 
 set-dev: set-prod unset-caddy
