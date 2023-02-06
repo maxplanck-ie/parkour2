@@ -166,7 +166,7 @@ load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
 
 load-postgres-plain:
-	@#cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql
+	@echo "cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
 	@docker cp ./this.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp/parkour-postgres.dump > /dev/null"
 
