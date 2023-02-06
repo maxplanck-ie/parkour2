@@ -58,7 +58,7 @@ migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml stop
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml stop
 
 down-full: down-lite rm-volumes  ## Turn off running instance (removing all volumes)
 
@@ -69,7 +69,7 @@ rm-volumes:
 down-lite: clearpy
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml down
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles volumes)
