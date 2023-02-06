@@ -9,10 +9,10 @@ services:
       - "443:443"
     restart: always
     volumes:
-      - ./misc/nginx-daemon.conf:/etc/nginx/nginx.conf:ro
-      - ./misc/nginx-server.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./misc/cert.pem:/etc/cert.pem:ro
-      - ./misc/key.pem:/etc/key.pem:ro
+      - ./misc/nginx-daemon.conf:/etc/nginx/nginx.conf
+      - ./misc/nginx-server.conf:/etc/nginx/conf.d/default.conf
+      - ./misc/cert.pem:/etc/ssl/cert.pem
+      - ./misc/key.pem:/etc/ssl/key.pem
       - parkour2_media:/parkour2/media
       - parkour2_staticfiles:/parkour2/static
 
