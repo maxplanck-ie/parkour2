@@ -142,9 +142,22 @@ deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-ncdb-nginx rule.'
 
-add-ncdb-nginx:
+add-ncdb-nginx: check-nginxdir
 	@docker cp misc/nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
 	@docker exec parkour2-nginx nginx -s reload
+
+deploy-pgadmin:
+	@docker compose -f pgadmin.yml up -d
+	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-pgadmin-nginx rule.'
+
+add-pgadmin-nginx: check-nginxdir
+	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
+	@docker exec parkour2-nginx nginx -s reload
+
+check-nginxdir:
+	@test "$$(docker exec parkour2-nginx ls /etc/nginx/conf.d/ | wc -l)" -eq 1 || \
+		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin on the same subdomain requires manual intervention.'; \
+		exit 1; }
 
 convert-backup:  ## Convert daily.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
