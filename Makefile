@@ -89,10 +89,8 @@ prod: set-prod deploy-django deploy-nginx  ## Deploy production instance with Ng
 	@echo "Consider: make deploy-rsnapshot"
 
 dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
-	@echo "optional: $ make deploy-ncdb"
 
 dev: set-dev deploy-django deploy-nginx  ## Deploy Werkzeug instance with Nginx (incl. TLS)
-	@echo "optional: $ make deploy-ncdb add-ncdb-nginx"
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
@@ -124,7 +122,7 @@ deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
 	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-ncdb-nginx rule.'
 
-add-ncdb-nginx: check-nginxdir
+add-ncdb-nginx: check-nginx-conf
 	@docker cp misc/nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
 	@docker exec parkour2-nginx nginx -s reload
 
@@ -132,13 +130,13 @@ deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
 	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-pgadmin-nginx rule.'
 
-add-pgadmin-nginx: check-nginxdir
+add-pgadmin-nginx: check-nginx-conf
 	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
 	@docker exec parkour2-nginx nginx -s reload
 
-check-nginxdir:
+check-nginx-conf:
 	@test "$$(docker exec parkour2-nginx ls /etc/nginx/conf.d/ | wc -l)" -eq 1 || \
-		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin on the same subdomain requires manual intervention.'; \
+		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin default to the same subdomain, so this requires your quick manual intervention.'; \
 		exit 1; }
 
 convert-backup:  ## Convert daily.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
