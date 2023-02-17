@@ -137,11 +137,12 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       items: [
         {
           xtype: 'button',
-          itemId: 'reorder-columns-paste',
+          itemId: 'reorder-columns',
           iconCls: 'fa fa-random fa-lg',
           tooltip: '<strong>Reorder columns for easy data pasting. </strong>' +
-          'To edit multiple cells at once (Excel-like), ' +
-          'please select a cell, press Esc, paste data'
+          'Group columns together into which data can be pasted at once. ' +
+          'Relevant column headers are highlighted with blue text. ' +
+          'Select a cell, press Esc, paste data (CTRL + V).'
         },
         '->',
         {

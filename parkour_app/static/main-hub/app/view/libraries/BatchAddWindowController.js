@@ -47,7 +47,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       //   click: 'downloadSampleForm'
       // }
 
-      '#reorder-columns-paste': {
+      '#reorder-columns': {
         click: 'reorderColumns'
       }
     }
@@ -169,13 +169,18 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var grid = Ext.getCmp('batch-add-grid');
     var columns = grid.headerCt.columnManager.getColumns();
     var columnOrderCurrent = columns.map(function (e) { return e.dataIndex });
+
+    // Check if columOrderOriginal exists and, if not, set it
     if (typeof this.columOrderOriginal === 'undefined') {
       this.columOrderOriginal = null;
     }
     this.columOrderOriginal = this.columOrderOriginal ? this.columOrderOriginal : columns.map(function (e) { return e.dataIndex });
 
+    var newColumnOrder;
+
     if (wnd.recordType === 'Library') {
-      var columnOrderPaste = [
+      // Column order for library
+      newColumnOrder = [
         'numberer', 'barcode', 'name', 'concentration', 'mean_fragment_size',
         'sequencing_depth', 'amplification_cycles', 'qpcr_result',
         'comments', 'library_protocol', 'library_type', 'index_type',
@@ -183,7 +188,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         'read_length', 'sample_volume', 'concentration_method',
         'organism'];
     } else {
-      var columnOrderPaste = [
+      // Column order for sample
+      newColumnOrder = [
         'numberer', 'barcode', 'name', 'concentration', 'rna_quality',
         'sequencing_depth', 'amplification_cycles', 'comments',
         'read_length', 'nucleic_acid_type', 'library_protocol',
@@ -192,13 +198,35 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       ]
     }
 
-    var order = columnOrderCurrent.at(-1) === 'comments' ? columnOrderPaste : this.columOrderOriginal;
-    columns = this.sortColumns(columns, order);
+    var isCommentsColumLast = columnOrderCurrent.at(-1) === 'comments'
+    newColumnOrder = isCommentsColumLast ? newColumnOrder : this.columOrderOriginal;
+
+    // Sort columns as desired
+    columns = this.sortColumns(columns, newColumnOrder);
+    newColumnOrder = columns.map(function (e) { return e.dataIndex });
+
+    // Reorder columns
     grid.headerCt.suspendLayouts();
     for (var i = 0; i < columns.length; i++) {
       grid.headerCt.moveAfter(columns[i], (columns[i - 1] || null));
     }
     grid.headerCt.resumeLayouts(true);
+
+    // Add some formatting to highlight which multiple columns can be pasted in one go
+    var limitLeftPastable = isCommentsColumLast ? newColumnOrder.indexOf('name') : 0;
+    var limitRightPastable = isCommentsColumLast ? newColumnOrder.indexOf('comments') + 1 : -1;
+
+    if (limitRightPastable > 1) {
+      grid.headerCt.columnManager.getColumns().slice(limitLeftPastable, limitRightPastable).forEach(function (e) { e.addCls('highlight-header-text-blue') });
+      btn.addCls('highlight-shuffle-icon-blue');
+    }
+    else {
+      grid.headerCt.columnManager.getColumns().forEach(function (e) { e.removeCls('highlight-header-text-blue') });
+      btn.removeCls('highlight-shuffle-icon-blue');
+    }
+
+    grid.getView().refresh()
+
   },
 
   applyToAll: function (record, dataIndex) {
