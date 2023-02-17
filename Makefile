@@ -67,7 +67,7 @@ rm-volumes:
 	@test $${#VOLUMES[@]} -gt 1 && docker volume rm -f $$VOLUMES > /dev/null || :
 
 down-lite: clearpy
-	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7}') || :
+	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
@@ -110,6 +110,7 @@ set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
 
 unset-caddy:
+	@sed -i -e 's/pgadmin/nocodb/' misc/caddyfile.in.use
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
 
 deploy-caddy:
@@ -120,7 +121,9 @@ deploy-nginx:
 
 deploy-ncdb:
 	@docker compose -f ncdb.yml up -d
-	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-ncdb-nginx rule.'
+	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
+	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-ncdb-nginx || :
+	@[[ $${CONTAINERS[*]} =~ caddy ]] && sed -i -e 's/pgadmin/nocodb/' misc/caddyfile.in.use || :
 
 add-ncdb-nginx: check-nginx-conf
 	@docker cp misc/nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
@@ -128,7 +131,9 @@ add-ncdb-nginx: check-nginx-conf
 
 deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
-	@echo 'Using Caddyfile (Dev-easy)? Ok. Using Nginx? run add-pgadmin-nginx rule.'
+	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
+	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
+	@[[ $${CONTAINERS[*]} =~ caddy ]] && sed -i -e 's/nocodb/pgadmin/' misc/caddyfile.in.use || :
 
 add-pgadmin-nginx: check-nginx-conf
 	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
@@ -236,7 +241,15 @@ full-import-json:  ## Run save-db-json on $VM_PROD, and bring JSON dump.
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json .
 
-upgrade:  ## (WIP) Print instructions to stdout... Paste 1 by 1, until we wrap this into a script
+upgrade:
+	@echo '# TODO:'
+	@echo '# - BarcodeCounter has a bug? keeps being reset whenever we load json dump. Adjust manually?'
+	@echo '# - new certs under misc/, we have alt names now. Adjust calendar due date to 7 feb 2024.. or better, put this task together with rstudio... Correct dissectBCL custom chain, verify if it\'s still required tho'
+	@echo '# - lastest{sqldump,json} should be symlinks to dated filenames, update save-{} rules'
+	@echo '# - Disable down rule, or prepend- a save-postgres + rename snapshots with date'
+	@echo '# - Wrap these into a script.'
+	@echo '# - ~~Add maintenance mode?~~'
+	@echo '# - ~~Load JSON on budibase?~~'
 	@echo '# Prepare'
 	@echo make compile full-import-json reload-json save-postgres
 	@echo make migrations
