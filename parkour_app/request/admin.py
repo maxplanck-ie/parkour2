@@ -3,6 +3,13 @@ from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from request.models import Request, FileRequest
 
 
+class RelatedDropdownFilterPi(RelatedDropdownFilter):
+
+    def field_choices(self, field, request, model_admin):
+        pk_qs =  model_admin.get_queryset(request).filter(pi__is_pi=True).distinct().values_list('%s__pk' % self.field_path, flat=True)
+        ordering = self.field_admin_ordering(field, request, model_admin)
+        return field.get_choices(include_blank=False, limit_choices_to={'pk__in': pk_qs}, ordering=ordering)
+
 @admin.register(FileRequest)
 class FileRequestAdmin(admin.ModelAdmin):
     search_fields = ('name', )
@@ -34,6 +41,7 @@ class RequestAdmin(admin.ModelAdmin):
 
     list_filter = (
         ("user", RelatedDropdownFilter),
+        ("pi", RelatedDropdownFilterPi),
         "sequenced",
     )
 
@@ -44,6 +52,8 @@ class RequestAdmin(admin.ModelAdmin):
 
     def get_search_results(self, request, queryset, search_term):
 
+        queryset, use_distinct = super(RequestAdmin, self).get_search_results(request, queryset, search_term)
         if request.GET.get('field_name', '') == 'pi':
-            queryset, use_distinct = super(RequestAdmin, self).get_search_results(request, queryset, search_term)
             return queryset.filter(is_pi=True), use_distinct
+        
+        return queryset, use_distinct
