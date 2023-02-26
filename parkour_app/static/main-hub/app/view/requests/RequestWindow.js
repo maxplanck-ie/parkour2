@@ -47,47 +47,59 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 regex: /^[A-Za-z0-9_]+$/,
                 regexText: 'Only A-Z a-z 0-9 and _ are allowed',
               },
+              ,
               {
-                xtype: 'combobox',
-                itemId: 'pi-cb',
-                name: 'pi',
-                queryMode: 'local',
-                valueField: 'id',
-                displayField: 'name',
+                xtype: 'fieldcontainer',
+                layout: 'hbox',
+                width: 300,
                 fieldLabel: 'PI',
-                emptyText: 'PI',
+                fieldWidth: 80,
+                items: [
+                  {
+                    xtype: 'combobox',
+                    itemId: 'pi-cb',
+                    name: 'pi',
+                    queryMode: 'local',
+                    valueField: 'id',
+                    displayField: 'name',
+                    fieldLabel: '',
+                    emptyText: 'PI',
                     padding: "0 10px 0 0",
                     width: 160,
-                allowBlank: USER.is_staff || USER.is_bioinformatician,
-                forceSelection: true,
-                store: 'PrincipalInvestigators',
-                listeners: {
-                  change: {
-                    // Update Cost Unit options based on PI selection
-                    fn: function (cb) {
-                      Ext.getStore('CostUnits').reload(
-                        {
-                          params: {
-                            principal_investigator_id: cb.value ? cb.value : null
-                          },
+                    allowBlank: USER.is_staff || USER.is_bioinformatician,
+                    forceSelection: true,
+                    store: 'PrincipalInvestigators',
+                    listeners: {
+                      change: {
+                        // Update Cost Unit options based on PI selection
+                        fn: function (cb) {
+                          Ext.getStore('CostUnits').reload(
+                            {
+                              params: {
+                                principal_investigator_id: cb.value ? cb.value : null
+                              },
+                            }
+                          );
                         }
-                      );
+                      }
                     }
-                  }
-                }
-              },
-              {
-                xtype: 'combobox',
-                itemId: 'cost-unit-cb',
-                name: 'cost_unit',
-                queryMode: 'local',
-                valueField: 'id',
-                displayField: 'name',
-                fieldLabel: 'Cost Unit',
-                emptyText: 'Cost Unit',
-                allowBlank: USER.is_staff || USER.is_bioinformatician,
-                forceSelection: true,
-                store: 'CostUnits'
+                  },
+                  {
+                    xtype: 'combobox',
+                    itemId: 'cost-unit-cb',
+                    name: 'cost_unit',
+                    queryMode: 'local',
+                    valueField: 'id',
+                    displayField: 'name',
+                    emptyText: 'Cost Unit', 
+                    labelWidth: 60,
+                    width: 175,
+                    fieldLabel: 'Cost Unit',
+                    allowBlank: USER.is_staff || USER.is_bioinformatician,
+                    forceSelection: true,
+                    store: 'CostUnits'
+                  },
+                ],
               },
               {
                 name: 'description',
