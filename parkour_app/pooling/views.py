@@ -100,6 +100,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             .values(
                 "pk",
                 "name",
+                "pooled_libraries",
                 "libraries__id",
                 "samples__id",
             )
@@ -112,6 +113,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 requests_map[item["libraries__id"], "Library"] = {
                     "pk": item["pk"],
                     "name": item["name"],
+                    "pooled_libraries": item["pooled_libraries"],
                 }
             if item["samples__id"]:
                 requests_map[item["samples__id"], "Sample"] = {

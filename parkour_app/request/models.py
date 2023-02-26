@@ -53,6 +53,29 @@ class Request(DateTimeMixin):
         blank=True,
     )
 
+    pooled_libraries = models.BooleanField(
+        verbose_name="Pooled libraries?",
+        default=False,
+    )
+
+    pooled_libraries_concentration_user = models.FloatField(
+        "Library pool Concentration by User",
+        null=True,
+        blank=True,
+    )
+
+    pooled_libraries_volume_user = models.FloatField(
+        "Library pool Volume by User",
+        null=True,
+        blank=True,
+    )
+
+    pooled_libraries_fragment_size_user = models.PositiveIntegerField(
+        "Library pool Mean Fragment Size by User",
+        null=True,
+        blank=True,
+    )
+
     samples = models.ManyToManyField(
         Sample,
         related_name="request",

@@ -66,7 +66,21 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
           hideable: false,
           tdCls: 'no-dirty userEntry',
           // locked: true,
-          width: 35
+          width: 35,
+          listeners: {
+            checkchange: function (checkcolumn, rowIndex, checked, record, eOpts) {
+              // If pool of libraries force select/unselect of all records in request
+              if (record.get('pooled_libraries')) {
+                var grid = this.up('#incoming-libraries-grid');
+                var store = grid.getStore();
+                store.each(function (item) {
+                  if (item.get('request') === record.get('request')) {
+                    item.set('selected', checked);
+                  }
+                });
+              }
+            },
+          }
         },
         {
           text: 'Name',
@@ -320,7 +334,7 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
         '</span>',
         // '<div data-qtip="{children:this.getTooltip}" class="incoming-libraries-group-header">',
         '<strong>Request: {children:this.getName}</strong> ',
-        '(#: {rows.length}, Total Depth: {children:this.getTotalDepth} M)',
+        '(#: {rows.length}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M)',
         // '</div>',
         {
           getName: function (children) {
@@ -332,6 +346,9 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
           },
           getChecked: function (children) {
             return children[0].get(this.owner.checkDataIndex) ? 'checked' : '';
+          },
+          isPooled: function (children) {
+            return children[0].get('pooled_libraries') ? 'Pool, ' : '';
           }
           // getTooltip: function (children) {
           //   var totalDepth = Ext.Array.sum(Ext.Array.pluck(Ext.Array.pluck(

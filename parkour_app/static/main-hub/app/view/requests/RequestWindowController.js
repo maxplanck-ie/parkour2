@@ -36,17 +36,17 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
   onRequestWindowBoxready: function (wnd) {
     var librariesInRequestGrid = wnd.down('#libraries-in-request-grid');
+    var librariesInRequestStore = librariesInRequestGrid.getStore();
     var costUnitCb = wnd.down('#cost-unit-cb');
     var piCb = wnd.down('#pi-cb');
     var form = Ext.getCmp('request-form').getForm();
-    var grid = Ext.getCmp('libraries-in-request-grid');
     var userId = USER.id;
     var request;
 
     Ext.getStore('requestFilesStore').removeAll();
 
     if (wnd.mode === 'add') {
-      Ext.getStore('librariesInRequestStore').removeAll();
+      librariesInRequestStore.removeAll();
       librariesInRequestGrid.getColumns()[0].hide();
     } else {
       request = wnd.record.data;
@@ -73,7 +73,8 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       }
 
       // Load all Libraries/Samples for current Request
-      grid.fireEvent('refresh', grid);
+      librariesInRequestGrid.fireEvent('refresh', librariesInRequestGrid);
+      librariesInRequestStore.addListener('datachanged', this._togglePoolFields, librariesInRequestStore);
 
       // Load files
       if (request.files.length > 0) {
@@ -199,12 +200,23 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     }
 
     e.stopEvent();
-    Ext.create('Ext.menu.Menu', {
-      plain: true,
-      defaults: {
-        margin: 5
-      },
-      items: [{
+
+    // Simplify context menu for record selection based on whether
+    // all records are either samples or libraries, while preserving
+    // original functionality if records in request are or mixed type
+    var records = column.up('#libraries-in-request-grid').store.getRange();
+    var allRecordsLibraries = records.every(function (e) {return e.data.record_type === 'Library' });
+    var allRecordsSamples = records.every(function (e) {return e.data.record_type === 'Sample' });
+    var contextMenuItems = ['-', {
+      text: 'Unselect All',
+      handler: function () {
+        me.unselectAll();
+      }
+    }];
+
+    if (!allRecordsLibraries && !allRecordsSamples) {
+
+      contextMenuItems.unshift({
         text: 'Select All Libraries',
         handler: function () {
           me.selectAll('Library');
@@ -214,13 +226,27 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
         handler: function () {
           me.selectAll('Sample');
         }
-      }, '-', {
-        text: 'Unselect All',
+      });
+
+    } else {
+
+      contextMenuItems.unshift({
+        text: 'Select All',
         handler: function () {
-          me.unselectAll();
+          me.selectAll(allRecordsLibraries ? 'Library' : 'Sample');
         }
-      }]
+      });
+
+    }
+
+    Ext.create('Ext.menu.Menu', {
+      plain: true,
+      defaults: {
+        margin: 5
+      },
+      items: contextMenuItems
     }).showAt(e.getXY());
+
   },
 
   selectAll: function (recordType) {
@@ -298,7 +324,6 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       scope: this,
 
       success: function (response) {
-        console.log(response.responseText);
         var obj = Ext.JSON.decode(response.responseText);
         if (obj.success) {
           var grid = Ext.getCmp('libraries-in-request-grid');
@@ -336,6 +361,18 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       return;
     }
 
+    // Set pool fields to required, if enabled just before saving,
+    //  in order to triggers relevant errors during form validation
+    ['#pooled-libraries', '#pooled-libraries-concentration',
+     '#pooled-libraries-volume', '#pooled-libraries-fragment-size'].map(
+      function (fieldId) {
+        var field = form.down(fieldId);
+        if (!field.disabled) {
+          field.allowBlank = false
+        }
+      }
+    );
+
     if (!form.isValid()) {
       new Noty({ text: 'Check the form', type: 'warning' }).show();
       return;
@@ -355,6 +392,9 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           pi: data.pi,
           cost_unit: data.cost_unit,
           description: data.description,
+          pooled_libraries: data.pooled_libraries,
+          pooled_libraries_concentration_user: data.pooled_libraries_concentration_user,
+          pooled_libraries_fragment_size_user: data.pooled_libraries_fragment_size_user,
           records: Ext.Array.pluck(store.data.items, 'data'),
           files: form.down('filegridfield').getValue()
         })
@@ -405,6 +445,19 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   showBatchAddWindow: function () {
     var form = Ext.getCmp('request-form');
 
+    // Set pool fields to optional, if enabled before opening
+    // BatchAddWindow to avoid raising form validation errors
+    // at this point
+    ['#pooled-libraries', '#pooled-libraries-concentration',
+     '#pooled-libraries-volume', '#pooled-libraries-fragment-size'].map(
+      function (e) {
+        var field = form.down(e);
+        if (!field.disabled) {
+          field.allowBlank = true
+        }
+      }
+    );
+
     if (form.isValid()) {
       var wnd = form.up('window');
       Ext.create('MainHub.view.libraries.BatchAddWindow', {
@@ -443,5 +496,28 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     });
 
     return selectedItems;
-  }
+  },
+
+  _togglePoolFields: function (store) {
+    // If all records are libraries show/hide all the fields realted a pool of libraries
+    var records = store.getRange();
+    var showPoolFields = store.data.length ? records.every(function (e) {return e.data.record_type === 'Library' }) : false;
+    var requestGrid = Ext.getCmp('request-form');
+    var pooledRequestCb = requestGrid.down('#pooled-libraries');
+    var poolConcentrationBox = requestGrid.down('#pooled-libraries-concentration');
+    var poolVolumeBox = requestGrid.down('#pooled-libraries-volume');
+    var poolSizeBox = requestGrid.down('#pooled-libraries-fragment-size');
+    var poolFields = [pooledRequestCb, poolConcentrationBox, poolVolumeBox, poolSizeBox];
+    if (showPoolFields) {
+      poolFields.map(function (e) { e.enable() });
+      pooledRequestCb.setValue(true);
+    }
+    else {
+      poolFields.map(function (e) { e.disable() })
+      pooledRequestCb.setValue(false);
+      poolConcentrationBox.setValue(null);
+      poolVolumeBox.setValue(null);
+      poolSizeBox.setValue(null);
+    }
+  },
 });

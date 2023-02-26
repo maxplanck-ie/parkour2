@@ -56,11 +56,25 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
 
   boxready: function (wnd) {
+    // Bypass Selection (Library/Sample) dialog if editing
     if (wnd.mode === 'edit') {
       if (wnd.type === 'Library') {
         wnd.down('#library-card-button').click();
       } else {
         wnd.down('#sample-card-button').click();
+      }
+    }
+    else {
+      // When adding new records, check if at least one has already been added 
+      // and force addition of same 
+      var librariesInRequestStore = Ext.getStore('librariesInRequestStore');
+      var records = librariesInRequestStore.getRange();
+      if (librariesInRequestStore.data.length){
+        if (records.every(function (e) {return e.data.record_type === 'Library' })){
+          wnd.down('#library-card-button').click();
+        } else {
+          wnd.down('#sample-card-button').click();
+        }
       }
     }
 

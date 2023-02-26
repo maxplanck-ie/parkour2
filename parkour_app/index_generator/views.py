@@ -234,7 +234,9 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         except Exception as e:
             return Response({"success": False, "message": str(e)}, 400)
 
-        pool.libraries.add(*library_ids)
+        # Add samples before libraries so that in the update_libraries_create_pooling_obj
+        # signal checking for the presence of samples in the pool is meaningful
         pool.samples.add(*sample_ids)
+        pool.libraries.add(*library_ids)
 
         return Response({"success": True})

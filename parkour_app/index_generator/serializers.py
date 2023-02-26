@@ -122,6 +122,7 @@ class IndexGeneratorSerializer(ModelSerializer):
             "request_name",
             "libraries",
             "samples",
+            "pooled_libraries"
         )
 
     def get_request(self, obj):
@@ -145,6 +146,7 @@ class IndexGeneratorSerializer(ModelSerializer):
                             **{
                                 "request": data["request"],
                                 "request_name": data["request_name"],
+                                "pooled_libraries": data['pooled_libraries'],
                             },
                             **x,
                         },

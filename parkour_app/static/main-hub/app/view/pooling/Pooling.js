@@ -56,7 +56,21 @@ Ext.define('MainHub.view.pooling.Pooling', {
         menuDisabled: true,
         hideable: false,
         tdCls: 'no-dirty',
-        width: 35
+        width: 35,
+          listeners: {
+            checkchange: function (checkcolumn, rowIndex, checked, record, eOpts) {
+              // If pool of libraries, force select/unselect all records in request
+              if (record.get('request_pooled_libraries')) {
+                var grid = this.up('#pooling-grid');
+                var store = grid.getStore();
+                store.each(function (item) {
+                  if (item.get('request') === record.get('request')) {
+                    item.set('selected', checked);
+                  }
+                });
+              }
+            },
+          }
       },
       {
         text: 'Request',

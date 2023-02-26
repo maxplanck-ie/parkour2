@@ -23,7 +23,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
       {
         border: 0,
         padding: 15,
-        width: 490,
+        width: 460,
         items: [
           {
             xtype: 'form',
@@ -56,6 +56,8 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 displayField: 'name',
                 fieldLabel: 'PI',
                 emptyText: 'PI',
+                    padding: "0 10px 0 0",
+                    width: 160,
                 allowBlank: USER.is_staff || USER.is_bioinformatician,
                 forceSelection: true,
                 store: 'PrincipalInvestigators',
@@ -95,6 +97,62 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 height: 85
               },
               {
+                xtype: 'fieldcontainer',
+                layout: 'hbox',
+                width: 300,
+                fieldLabel: 'Pool',
+                items: [
+                  {
+                    xtype: 'checkbox',
+                    itemId: 'pooled-libraries',
+                    name: 'pooled_libraries',
+                    boxLabel: '<span data-qtip="Check if the libraries are already pooled">?</span>',
+                    disabled: true,
+                    readOnly: true
+                  },
+                  {
+                    xtype: 'numberfield',
+                    itemId: 'pooled-libraries-concentration',
+                    name: 'pooled_libraries_concentration_user',
+                    fieldLabel: '<span data-qtip="Pool concentration">ng/μl</span>',
+                    // emptyText: 'Concentration',
+                    labelWidth: 35,
+                    width: 100,
+                    padding: "0 0 0 10px",
+                    disabled: true,
+                    hideTrigger: true,
+                    keyNavEnabled: false,
+                    mouseWheelEnabled: false
+                  },
+                  {
+                    xtype: 'numberfield',
+                    itemId: 'pooled-libraries-volume',
+                    name: 'pooled_libraries_volume_user',
+                    fieldLabel: '<span data-qtip="Pool volume">μl</span>',
+                    // emptyText: 'Concentration',
+                    labelWidth: 20,
+                    width: 80,
+                    padding: "0 0 0 10px",
+                    disabled: true,
+                    hideTrigger: true,
+                    keyNavEnabled: false,
+                    mouseWheelEnabled: false
+                  },
+                  {
+                    xtype: 'numberfield',
+                    itemId: 'pooled-libraries-fragment-size',
+                    name: 'pooled_libraries_fragment_size_user',
+                    fieldLabel: '<span data-qtip="Avg. pool size in bp">bp</span>',
+                    // emptyText: 'Mean Size',
+                    disabled: true,
+                    labelWidth: 20,
+                    width: 107,
+                    padding: "0 0 0 10px",
+                    allowDecimals: false
+                  },
+                ],
+              },
+              {
                 xtype: 'filegridfield',
                 fieldLabel: 'Files',
                 store: 'requestFilesStore',
@@ -115,7 +173,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
         id: 'libraries-in-request-grid',
         itemId: 'libraries-in-request-grid',
         title: 'Libraries/Samples',
-        width: 345,
+        width: 375,
         height: 477,
         padding: '12px 15px 15px 0',
         rowspan: 2,

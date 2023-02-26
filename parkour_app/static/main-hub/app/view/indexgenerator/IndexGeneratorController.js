@@ -198,62 +198,20 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
     // Reset all samples' indices
     this._resetGeneratedIndices();
+    var me = this;
 
-    if (checked) {
-      if (
-        this._isIndexTypeSet(store, record) &&
-        // this._isUnique(store, record) &&
-        this._isCompatible(store, record) &&
-        this._isPoolSizeOk(store, record, multipleSelect)
-      ) {
-        record.set('selected', true);
 
-        var indexI7 = record.get('index_i7');
-        var indexI5 = record.get('index_i5');
-        var indexI7Sequence = indexI7.split('');
-        var indexI5Sequence = indexI5.split('');
+    // If pool of librariesm force select/unselect all records in request
+    if (record.get('pooled_libraries')) {
 
-        if (indexI7.length === 6) {
-          indexI7Sequence = indexI7Sequence.concat([' ', ' ']);
+      var indexGeneratorStore = Ext.getStore('IndexGenerator');
+      indexGeneratorStore.each(function (item) {
+        if (item.get('request') === record.get('request')) {
+          me._checkRecord(checked, me, store, item, multipleSelect);
         }
-
-        if (indexI5.length === 0) {
-          indexI5Sequence = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ', ' ', ' ', ' '];
-        } else if (indexI5Sequence.length === 6) {
-          indexI5Sequence = indexI5Sequence.concat([' ', ' ',' ',' ', ' ',' ']);
-        }
-
-        var data = {
-          pk: record.get('pk'),
-          name: record.get('name'),
-          record_type: record.get('record_type'),
-          sequencing_depth: record.get('sequencing_depth'),
-          read_length: record.get('read_length'),
-          index_type: record.get('index_type'),
-          index_i7_id: record.get('index_i7_id'),
-          index_i5_id: record.get('index_i5_id'),
-          index_i7: { index: indexI7 },
-          index_i5: { index: indexI5 }
-        };
-
-        for (var i = 0; i < 12; i++) {
-          data['index_i7_' + (i + 1)] = indexI7Sequence[i];
-          data['index_i5_' + (i + 1)] = indexI5Sequence[i];
-        }
-
-        store.add(data);
-      } else {
-        record.set('selected', false);
-      }
-    } else {
-      var itemIdx = store.findBy(function (rec) {
-        return rec.get('record_type') === record.get('record_type') &&
-          rec.get('pk') === record.get('pk');
       });
-
-      if (itemIdx !== -1) {
-        store.removeAt(itemIdx);
-      }
+    } else {
+      me._checkRecord(checked, me, store, record, multipleSelect);
     }
 
     // Update Summary
@@ -379,6 +337,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var store = Ext.getCmp('pool-grid').getStore();
     var libraries = [];
     var samples = [];
+    var librariesRequestNames = [];
 
     if (!this._isPoolValid(store)) {
       new Noty({
@@ -415,6 +374,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       };
       if (record.get('record_type') === 'Library') {
         libraries.push(item);
+        librariesRequestNames.push(record.get('request_name'))
       } else {
         samples.push(item);
       }
@@ -437,6 +397,14 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
           Ext.getCmp('pool-grid').setTitle('Pool');
           Ext.getCmp('poolingContainer').setLoading(false);
           new Noty({ text: 'Pool has been saved!' }).show();
+
+          // If only libraries from one request are present in pool
+          // notify user that said pool has been pushed through the
+          // Pooling stage directly onto the Load flowcells stage
+          var allLibrariesSameRequest = librariesRequestNames.every(function (e) {return e === librariesRequestNames[0] });
+          if (allLibrariesSameRequest && samples.length === 0){
+            new Noty({ text: "The pool has been automatically pushed through to the 'Load Flowcells' stage" }).show();
+          }
 
           // Reload stores
           Ext.getStore('IndexGenerator').reload();
@@ -656,5 +624,67 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       }
     });
     return result;
+  },
+
+  _checkRecord: function(checked, me, store, item, multipleSelect){
+    
+    if (checked) {
+      if (
+        me._isIndexTypeSet(store, item) &&
+        // me._isUnique(store, item) &&
+        me._isCompatible(store, item) &&
+        me._isPoolSizeOk(store, item, multipleSelect)
+      ) {
+        item.set('selected', true);
+
+        var indexI7 = item.get('index_i7');
+        var indexI5 = item.get('index_i5');
+        var indexI7Sequence = indexI7.split('');
+        var indexI5Sequence = indexI5.split('');
+
+        if (indexI7.length === 6) {
+          indexI7Sequence = indexI7Sequence.concat([' ', ' ']);
+        }
+
+        if (indexI5.length === 0) {
+          indexI5Sequence = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',' ', ' ', ' ', ' '];
+        } else if (indexI5Sequence.length === 6) {
+          indexI5Sequence = indexI5Sequence.concat([' ', ' ',' ',' ', ' ',' ']);
+        }
+
+        var data = {
+          pk: item.get('pk'),
+          name: item.get('name'),
+          record_type: item.get('record_type'),
+          sequencing_depth: item.get('sequencing_depth'),
+          read_length: item.get('read_length'),
+          index_type: item.get('index_type'),
+          index_i7_id: item.get('index_i7_id'),
+          index_i5_id: item.get('index_i5_id'),
+          index_i7: { index: indexI7 },
+          index_i5: { index: indexI5 }
+        };
+
+        for (var i = 0; i < 12; i++) {
+          data['index_i7_' + (i + 1)] = indexI7Sequence[i];
+          data['index_i5_' + (i + 1)] = indexI5Sequence[i];
+        }
+
+        store.add(data);
+      } else {
+        item.set('selected', false);
+      }
+    } else {
+      var itemIdx = store.findBy(function (rec) {
+        return rec.get('record_type') === item.get('record_type') &&
+          rec.get('pk') === item.get('pk');
+      });
+
+      if (itemIdx !== -1) {
+        store.removeAt(itemIdx);
+        item.set('selected', false);
+      }
+    }
   }
+  
 });

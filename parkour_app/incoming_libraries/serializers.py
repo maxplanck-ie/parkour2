@@ -131,6 +131,7 @@ class RequestSerializer(ModelSerializer):
             "samples_submitted",
             "libraries",
             "samples",
+            "pooled_libraries"
         )
 
     def get_request(self, obj):
@@ -155,6 +156,7 @@ class RequestSerializer(ModelSerializer):
                                 "request": data["request"],
                                 "request_name": data["request_name"],
                                 "samples_submitted": data["samples_submitted"],
+                                "pooled_libraries": data['pooled_libraries'],
                             },
                             **x,
                         },

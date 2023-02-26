@@ -37,6 +37,22 @@ Ext.define('MainHub.model.requests.Request', {
     },
     {
       type: 'bool',
+      name: 'pooled_libraries'
+    },
+    {
+      type: 'float',
+      name: 'pooled_libraries_concentration_user'
+    },
+    {
+      type: 'float',
+      name: 'pooled_libraries_volume_user'
+    },
+    {
+      type: 'int',
+      name: 'pooled_libraries_fragment_size_user'
+    },
+    {
+      type: 'bool',
       name: 'restrict_permissions'
     },
     {

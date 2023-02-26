@@ -42,6 +42,11 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibrariesController', {
     var rnaQualityEditor = Ext.getCmp('rnaQualityIncomingEditor');
     var nucleicAcidTypesStore = Ext.getStore('nucleicAcidTypesStore');
 
+    // If pooled libraries disable row editing
+    if (record.get('pooled_libraries')){
+      return false;
+    }
+
     // Toggle qPCR Result and RNA Quality
     if (record.get('record_type') === 'Library') {
       qPCRResultEditor.enable();

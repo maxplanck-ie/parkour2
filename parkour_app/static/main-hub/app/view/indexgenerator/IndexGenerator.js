@@ -195,10 +195,13 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
           ftype: 'grouping',
           startCollapsed: true,
           groupHeaderTpl: [
-            '<strong>Request: {children:this.getName}</strong> (Total Sequencing Depth: {children:this.getTotalDepth} M, No. Samples/Libraries: {children:this.getCount})',
+            '<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M)',
             {
               getName: function (children) {
                 return children[0].get('request_name');
+              },
+              isPooled: function (children) {
+                return children[0].get('pooled_libraries') ? 'Pool, ' : '';
               },
               getTotalDepth: function (children) {
                 return Ext.sum(Ext.pluck(Ext.pluck(children, 'data'), 'sequencing_depth'));
