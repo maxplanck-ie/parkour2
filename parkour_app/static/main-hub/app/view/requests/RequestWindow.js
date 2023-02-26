@@ -41,8 +41,8 @@ Ext.define('MainHub.view.requests.RequestWindow', {
               {
                 name: 'name',
                 xtype: 'textfield',
-                fieldLabel: 'Name',
-                emptyText: 'Name',
+                fieldLabel: '<span data-qtip="The name of the request/project, as provided by the Bioinformatics CF">Name</span>',
+                emptyText: 'Project name, e.g. imb_2020_03_smith_rnaseq_[...]',
                 allowBlank: false,
                 regex: /^[A-Za-z0-9_]+$/,
                 regexText: 'Only A-Z a-z 0-9 and _ are allowed',
