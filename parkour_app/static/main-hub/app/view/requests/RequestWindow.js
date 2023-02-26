@@ -272,7 +272,10 @@ Ext.define('MainHub.view.requests.RequestWindow', {
               },
         
               failure: function (response) {
-                new Noty({ text: response.statusText, type: 'error' }).show();
+                var responseText = response.responseText ? Ext.JSON.decode(response.responseText) : null;
+                responseText = responseText.detail ? responseText.detail : 'Unknown error.';
+                responseText = response.statusText ? response.statusText : responseText;
+                new Noty({ text: responseText, type: 'error' }).show();
                 console.error(response);
               }
             });
