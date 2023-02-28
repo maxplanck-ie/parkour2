@@ -31,6 +31,10 @@ def create_pooling_object(
         request.libraries.add(library)
         pool.libraries.add(library)
         pooling_object = Pooling.objects.get(library=library)
+        # Set library status to 2, to reverse changes made in
+        # update_libraries_create_pooling_obj signal
+        library.status = 2
+        library.save()
 
     if sample:
         request.samples.add(sample)
