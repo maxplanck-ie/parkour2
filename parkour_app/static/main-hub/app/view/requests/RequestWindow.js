@@ -131,7 +131,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     xtype: 'checkbox',
                     itemId: 'pooled-libraries',
                     name: 'pooled_libraries',
-                    boxLabel: '<span data-qtip="Check if the libraries are already pooled">?</span>',
+                    boxLabel: '<span data-qtip="Check, if the libraries are already pooled">?</span>',
                     disabled: true,
                     readOnly: true
                   },
