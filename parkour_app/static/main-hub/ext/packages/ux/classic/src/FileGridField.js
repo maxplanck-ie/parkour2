@@ -72,6 +72,11 @@ Ext.define('Ext.ux.FileGridField', {
       },
       store: me.store,
       bbar: [
+        {
+          xtype: 'label',
+          html: '<b>Tip:</b> Use this table to upload file(s) related to the</br>request, e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
+          style: "font-size:10px;"
+        },
         '->',
         {
           xtype: 'button',
