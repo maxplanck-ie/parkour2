@@ -95,7 +95,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     labelWidth: 60,
                     width: 175,
                     fieldLabel: 'Cost Unit',
-                    allowBlank: USER.is_staff || USER.member_of_bcf,
+                    allowBlank: false,
                     forceSelection: true,
                     store: 'CostUnits'
                   },
