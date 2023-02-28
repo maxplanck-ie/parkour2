@@ -122,6 +122,7 @@ class UserAdmin(NamedUserAdmin):
         "pi_status",
         "staff_status",
         'bioinformatician_status',
+        'user_groups'
     )
 
     search_fields = (
@@ -179,6 +180,11 @@ class UserAdmin(NamedUserAdmin):
                              distinct())
         except:
             return ''
+        
+    def user_groups (self, obj):
+        """ Pass a user's group membership to a custom column """
+        return ', '.join(obj.groups.values_list('name', flat=True))
+    user_groups.short_description = 'Groups'
 
     def add_view(self, request, extra_context=None):
         self.inlines = []
