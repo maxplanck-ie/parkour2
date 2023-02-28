@@ -56,7 +56,7 @@ Ext.define('MainHub.view.requests.Requests', {
           },
           {
             name: 'showAll',
-            boxLabel: 'Show all',
+            boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show all</span>',
             boxLabelAlign: 'before',
             checked: true,
             id: 'showAll',
