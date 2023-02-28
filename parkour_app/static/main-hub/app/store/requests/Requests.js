@@ -24,7 +24,8 @@ Ext.define('MainHub.store.requests.Requests', {
       totalProperty: 'count'
     },
     extraParams:{
-        showAll: 'True'
+        showAll: 'True',
+        asBioinformatician: 'False'
     }
   },
 

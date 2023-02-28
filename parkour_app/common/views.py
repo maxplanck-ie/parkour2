@@ -13,7 +13,8 @@ from django.db.models import Q
 from .models import CostUnit, Organization
 from .serializers import (CostUnitSerializer,
                           PrincipalInvestigatorSerializer,
-                          OrganizationSerializer)
+                          OrganizationSerializer,
+                          BioinformaticianSerializer)
 
 User = get_user_model()
 
@@ -31,6 +32,7 @@ def index(request):
                     "id": user.pk,
                     "name": user.full_name,
                     "is_staff": user.is_staff,
+                    "member_of_bcf": user.member_of_bcf,
                     "is_bioinformatician": user.is_bioinformatician,
                     "is_pi": user.is_pi,
                 }
@@ -136,12 +138,12 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             pi = get_object_or_404(User, id=pi_id)
             queryset = pi.costunit_set.all().order_by("name")
-            if self.request.user.is_staff or self.request.user.is_bioinformatician:
+            if self.request.user.is_staff or self.request.user.member_of_bcf:
                 return queryset
             else:
                 return queryset.filter(obsolete=settings.NON_OBSOLETE)
         except Exception:
-            return CostUnit.objects.all() if self.request.user.is_staff or self.request.user.is_bioinformatician else CostUnit.objects.none()
+            return CostUnit.objects.all() if self.request.user.is_staff or self.request.user.member_of_bcf else CostUnit.objects.none()
 
 
 class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
@@ -158,7 +160,7 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
         seq_request_pi_id = seq_request_pi_id if seq_request_pi_id else None
         try:
             user = self.request.user
-            if user.is_staff or user.is_bioinformatician:
+            if user.is_staff or user.member_of_bcf:
                 qs =  User.objects.filter(Q(is_pi=True) | Q(id=seq_request_pi_id))
             elif user.is_pi:
                 qs = User.objects.filter(id__in=[user.id, seq_request_pi_id])
@@ -167,6 +169,54 @@ class PrincipalInvestigatorViewSet(viewsets.ReadOnlyModelViewSet):
             return qs.distinct().order_by("last_name")
         except Exception:
             return User.objects.none()
+
+
+class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of Bioinformaticians"""
+
+    serializer_class = BioinformaticianSerializer
+
+    def get_queryset(self):
+
+        try:
+
+            seq_request_user_id = int(self.request.query_params.get("request_user", 0))
+            seq_request_bioinformatician_id = int(self.request.query_params.get("request_bioinformatician", 0))
+
+            #  Create or get external bioinformatician user
+            external_bioinformatician, created = User.objects.get_or_create(email='external.bioinformatician@example.com',
+                                                                            first_name='External',
+                                                                            last_name='Bioinformatician',
+                                                                            is_bioinformatician=True)
+            # If external_bioinformatician is newly created, set it so
+            # that it can't be used to log in
+            if created:
+                external_bioinformatician.is_active = False
+                external_bioinformatician.set_unusable_password()
+                external_bioinformatician.save()
+
+            choices = list(User.objects.filter(Q(is_bioinformatician=True) |
+                                               Q(id__in=[seq_request_user_id, seq_request_bioinformatician_id, self.request.user.id]))
+                                       .distinct())
+
+            # Prettify the full name of external_bioinformatician for the front end
+            external_bioinformatician = [u for u in choices if u.id == external_bioinformatician.id][0]
+            external_bioinformatician.last_name = "(add details to 'Description')"
+
+            if seq_request_user_id:
+                # Highlight the sequencing request user
+                seq_request_user = [u for u in choices if u.id == int(seq_request_user_id)][0]
+                seq_request_user.last_name += ' (request user)'
+
+            # Highlight the http request user, i.e. themselves
+            http_request_user = [u for u in choices if u.id == self.request.user.id][0]
+            http_request_user.last_name = http_request_user.last_name.replace(' (request user)', '') + ' (you)'
+
+            return sorted(choices, key=lambda u: u.last_name)
+
+        except:
+
+            return User.objects.filter(is_bioinformatician=True)
 
 
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):

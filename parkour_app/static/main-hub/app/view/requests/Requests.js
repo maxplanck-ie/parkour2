@@ -26,36 +26,58 @@ Ext.define('MainHub.view.requests.Requests', {
     header: {
       title: 'Requests',
       items: [{
-          xtype: 'fieldcontainer',
-          defaultType: 'checkboxfield',
-          layout: 'hbox',
-          margin: '0 20 0 0',
-          items: [
-            {
+        xtype: 'fieldcontainer',
+        defaultType: 'checkboxfield',
+        layout: 'hbox',
+        margin: '0 20 0 0',
+        items: [
+          {
+            name: 'asBioinformatician',
+            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As bioinformatician</span>',
+            boxLabelAlign: 'before',
+            checked: false,
+            id: 'asBioinformatician',
 
-       name : 'showAll',
-       boxLabel: 'Show all',
-       boxLabelAlign: 'before',
-       checked:true,
-       id : 'showAll',
+            margin: '0 15 0 0',
+            cls: 'grid-header-checkbox',
+            hidden: !USER.is_bioinformatician,
+            listeners: {
+              change: function (checkbox, newValue, oldValue, eOpts) {
 
-       margin: '0 15 0 0',
-       cls: 'grid-header-checkbox',
-       hidden: false,
-       listeners:{
-        change: function(checkbox, newValue, oldValue, eOpts) {
+                if (newValue) {
+                  Ext.getStore('requestsStore').getProxy().extraParams.asBioinformatician = 'True';
+                  Ext.getStore('requestsStore').load()
+                } else {
+                  Ext.getStore('requestsStore').getProxy().extraParams.asBioinformatician = 'False';
+                  Ext.getStore('requestsStore').load()
+                }
+              }
+            }
+          },
+          {
+            name: 'showAll',
+            boxLabel: 'Show all',
+            boxLabelAlign: 'before',
+            checked: true,
+            id: 'showAll',
 
-        if (newValue) {
-            Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'True';
-            Ext.getStore('requestsStore').load()
-        } else {
-            Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'False';
-            Ext.getStore('requestsStore').load()
-        }
-        }
-       }
-      }]
-        },
+            margin: '0 15 0 0',
+            cls: 'grid-header-checkbox',
+            hidden: false,
+            listeners: {
+              change: function (checkbox, newValue, oldValue, eOpts) {
+
+                if (newValue) {
+                  Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'True';
+                  Ext.getStore('requestsStore').load()
+                } else {
+                  Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'False';
+                  Ext.getStore('requestsStore').load()
+                }
+              }
+            }
+          }]
+      },
 
       {
         xtype: 'searchfield',
@@ -97,19 +119,19 @@ Ext.define('MainHub.view.requests.Requests', {
         {
           text: 'User',
           dataIndex: 'user_full_name',
-          hidden: !(USER.is_staff || USER.is_bioinformatician || USER.is_pi),
+          hidden: !(USER.is_staff || USER.member_of_bcf || USER.is_pi),
           flex: 1
         },
         {
           text: 'PI',
           dataIndex: 'pi_name',
-          hidden: !(USER.is_staff || USER.is_bioinformatician),
+          hidden: !(USER.is_staff || USER.member_of_bcf),
           flex: 1
         },
         {
           text: 'Cost Unit',
           dataIndex: 'cost_unit_name',
-          hidden: !(USER.is_staff || USER.is_bioinformatician),
+          hidden: !(USER.is_staff || USER.member_of_bcf),
           flex: 1
         },
         {

@@ -22,6 +22,17 @@ class PrincipalInvestigatorSerializer(ModelSerializer):
         return  str(obj)
 
 
+class BioinformaticianSerializer(ModelSerializer):
+    name = SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ("id", "name")
+
+    def get_name(self, obj):
+        return str(obj)
+
+
 class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organization

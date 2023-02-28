@@ -150,7 +150,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         {
           text: 'Mark as complete',
-          hidden: !(USER.is_staff || USER.is_bioinformatician),
+          hidden: !(USER.is_staff || USER.member_of_bcf),
           handler: function(){
             Ext.Msg.show({
               title: 'Mark request as complete',

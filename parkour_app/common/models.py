@@ -83,7 +83,7 @@ class User(AbstractEmailUser):
     oidc_id = models.CharField("OIDC ID", max_length=255, null=True, unique=True, default=None, blank=True)
     is_bioinformatician = models.BooleanField(
         'Bioinformatician status',
-        help_text='Designates whether a user belongs to Bioinformatics.',
+        help_text='Designates whether a user is a bioinformatician.',
         default=False)
     is_pi = models.BooleanField(
         'Principal Investigator status',
@@ -113,6 +113,10 @@ class User(AbstractEmailUser):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def member_of_bcf(self):
+        return self.groups.filter(name='Bioinfo-CF').exists()
 
 
 class DateTimeMixin(models.Model):

@@ -8,7 +8,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
   ],
   controller: 'requests-requestwindow',
 
-  height: 570,
+  height: 600,
   width: 850,
   modal: true,
   resizable: true,
@@ -66,7 +66,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     emptyText: 'PI',
                     padding: "0 10px 0 0",
                     width: 160,
-                    allowBlank: USER.is_staff || USER.is_bioinformatician,
+                    allowBlank: USER.is_staff || USER.member_of_bcf,
                     forceSelection: true,
                     store: 'PrincipalInvestigators',
                     listeners: {
@@ -95,11 +95,24 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                     labelWidth: 60,
                     width: 175,
                     fieldLabel: 'Cost Unit',
-                    allowBlank: USER.is_staff || USER.is_bioinformatician,
+                    allowBlank: USER.is_staff || USER.member_of_bcf,
                     forceSelection: true,
                     store: 'CostUnits'
                   },
                 ],
+              },
+              {
+                xtype: 'combobox',
+                itemId: 'bioinformatician-cb',
+                name: 'bioinformatician',
+                queryMode: 'local',
+                valueField: 'id',
+                displayField: 'name',
+                fieldLabel: 'Analysis by',
+                emptyText: 'Bioinformatician',
+                allowBlank: false,
+                forceSelection: true,
+                store: 'Bioinformaticians',
               },
               {
                 name: 'description',
@@ -186,7 +199,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
         itemId: 'libraries-in-request-grid',
         title: 'Libraries/Samples',
         width: 375,
-        height: 477,
+        height: 515,
         padding: '12px 15px 15px 0',
         rowspan: 2,
         viewConfig: {

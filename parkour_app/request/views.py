@@ -27,6 +27,7 @@ from django.shortcuts import render
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 from django.core.files.base import ContentFile
+from django.db.models import Q
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -184,7 +185,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         "user__cost_unit__organization__name"
     )
 
-    def get_queryset(self, showAll=False):
+    def get_queryset(self, showAll=False, asBioinformatician=False):
+        
         libraries_qs = Library.objects.all().only("status", "sequencing_depth")
         samples_qs = Sample.objects.all().only("status", "sequencing_depth")
         #   print(libraries_qs.values())
@@ -201,7 +203,11 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        if self.request.user.is_staff or self.request.user.is_bioinformatician:
+        
+        if asBioinformatician:
+            return queryset.filter(bioinformatician=self.request.user)
+        
+        if self.request.user.is_staff or self.request.user.member_of_bcf:
             # Show only those Requests, whose libraries and samples
             # haven't reached status 6 yet
             # TODO: find a way to hide requests
@@ -211,7 +217,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         elif self.request.user.is_pi:
             queryset = queryset.filter(pi=self.request.user)
         else:
-            queryset = queryset.filter(user=self.request.user)
+            queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
         # queryset = [x for x in queryset if x.statuses.count(5)==0]
 
@@ -221,10 +227,15 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Get the list of requests."""
 
         showAll = False
+        asBioinformatician = False
+        
         if request.GET.get("showAll") == "True":
             showAll = True
 
-        queryset = self.filter_queryset(self.get_queryset(showAll))
+        if request.GET.get("asBioinformatician") == "True":
+            asBioinformatician = True
+
+        queryset = self.filter_queryset(self.get_queryset(showAll, asBioinformatician))
 
         try:
             page = self.paginate_queryset(queryset)

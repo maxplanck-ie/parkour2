@@ -37,6 +37,7 @@ class RequestAdmin(admin.ModelAdmin):
         "files",
         "user",
         "pi",
+        "bioinformatician",
     )
 
     list_filter = (

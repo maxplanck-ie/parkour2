@@ -5,6 +5,7 @@ from django.db.models import Prefetch
 from library_sample_shared.views import LibrarySampleBaseViewSet
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.db.models import Q
 
 from .serializers import (
     LibrarySerializer,
@@ -20,7 +21,9 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
-    def get_queryset(self, showAll=False):
+    
+    def get_queryset(self, showAll=False, asBioinformatician=False):
+        
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
@@ -32,22 +35,34 @@ class LibrarySampleTree(viewsets.ViewSet):
             .only("name")
             .order_by("-create_time")
         )
+        
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
+        
+        if asBioinformatician:
+            return queryset.filter(bioinformatician=self.request.user)
+        
+        if not (self.request.user.is_staff or self.request.user.member_of_bcf):
             if self.request.user.is_pi:
                queryset =queryset.filter(pi=self.request.user)
             else:
-                queryset = queryset.filter(user=self.request.user)
+                queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
         return queryset
 
     def list(self, request):
         """Get the list of libraries and samples."""
+        
         showAll = False
+        asBioinformatician = False
+        
         if request.GET.get("showAll") == "True":
             showAll = True
-        queryset = self.get_queryset(showAll)
+
+        if request.GET.get("asBioinformatician") == "True":
+            asBioinformatician = True
+
+        queryset = self.get_queryset(showAll, asBioinformatician)
 
         request_id = self.request.query_params.get("node", None)
 
@@ -76,11 +91,11 @@ class LibrarySampleTree(viewsets.ViewSet):
                 .only("name")
             )
 
-            if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
+            if not (self.request.user.is_staff or self.request.user.member_of_bcf):
                 if self.request.user.is_pi:
                     queryset = queryset.filter(pi=self.request.user)
                 else:
-                    queryset = queryset.filter(user=self.request.user)
+                    queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
             queryset = queryset.first()
             serializer = RequestChildrenNodesSerializer(queryset)

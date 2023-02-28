@@ -10,6 +10,7 @@ from django.utils.crypto import get_random_string
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin
+from django.core.exceptions import PermissionDenied
 
 User = get_user_model()
 
@@ -190,6 +191,11 @@ class UserAdmin(NamedUserAdmin):
         if obj.is_pi:
             self.inlines = [CostUnitInline, OIDCGroupInline]
 
+        # Prevent modification of 'system' users. System users are those whose
+        # email ends in example.com
+        if obj.email.lower().endswith('example.com'):
+            raise PermissionDenied
+
         if request.user.is_superuser:
             self.fieldsets = (
                 (
@@ -279,12 +285,16 @@ class UserAdmin(NamedUserAdmin):
 
     def get_search_results(self, request, queryset, search_term):
 
+        queryset, use_distinct = super(UserAdmin, self).get_search_results(request, queryset, search_term)
+
         if request.GET.get('field_name', '') == 'pi':
-            queryset, use_distinct = super(UserAdmin, self).get_search_results(request, queryset, search_term)
             return queryset.filter(is_pi=True), use_distinct
 
-        return super().get_search_results(request, queryset, search_term)
+        # Excluse 'system' users from the changelist view
+        queryset = queryset.exclude(email__iendswith='example.com')
 
+        return queryset, use_distinct
+    
     def save_model(self, request, obj, form, change):
         if not change and (
             not form.cleaned_data["password1"] or not obj.has_usable_password()

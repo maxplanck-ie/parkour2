@@ -47,6 +47,15 @@ class Request(DateTimeMixin):
         on_delete=models.SET_NULL,
     )
 
+    bioinformatician = models.ForeignKey(
+        User,
+        verbose_name="Bioinformatician",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_bioinformatician'
+    )
+
     libraries = models.ManyToManyField(
         Library,
         related_name="request",

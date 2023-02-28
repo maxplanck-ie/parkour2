@@ -7,6 +7,7 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Q
 
 from .models import (
     ConcentrationMethod,
@@ -188,6 +189,7 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
     # TODO: add pagination
     def list(self, request):
         """Get the list of all libraries or samples."""
+        
         data = []
 
         request_id = request.query_params.get("request_id", None)
@@ -198,11 +200,11 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         else:
             request_queryset = Request.objects.all().order_by("-create_time")
 
-        if not (self.request.user.is_staff or self.request.user.is_bioinformatician):
+        if not (self.request.user.is_staff or self.request.user.member_of_bcf):
             if self.request.user.is_pi:
                 request_queryset = request_queryset.filter(pi=self.request.user)
             else:
-                request_queryset = request_queryset.filter(user=self.request.user)
+                request_queryset = request_queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
         for request_obj in request_queryset:
             # TODO: sort by item['barcode'][3:]

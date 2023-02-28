@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='is_bioinformatician',
-            field=models.BooleanField(default=False, help_text='Designates whether a user belongs to Bioinformatics.', verbose_name='Bioinformatician status'),
+            field=models.BooleanField(default=False, help_text='Designates whether a user is a bioinformatician.', verbose_name='Bioinformatician status'),
         ),
     ]

@@ -260,4 +260,4 @@ OIDC_ALLOWED_GROUPS = os.environ["OIDC_ALLOWED_GROUPS"].split(',')
 OIDC_RP_SCOPES = 'openid email name groups'
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 86400 # 24 h
 OIDC_STAFF_GROUPS= os.environ["OIDC_STAFF_GROUPS"].split(',')
-OIDC_BIOINFO_GROUPS= os.environ["OIDC_BIOINFO_GROUPS"].split(',')
+OIDC_BIOINFOCF_GROUPS= os.environ["OIDC_BIOINFOCF_GROUPS"].split(',')

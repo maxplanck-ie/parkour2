@@ -51,25 +51,48 @@ Ext.define('MainHub.view.libraries.Libraries', {
           layout: 'hbox',
           margin: '0 20 0 0',
           items: [
-          {
-            name : 'showAll',
-            boxLabel: 'Show all',
-            boxLabelAlign: 'before',
-            checked:true,
-            id : 'showAlllr',
-            margin: '0 15 0 0',
-            cls: 'grid-header-checkbox',
-            hidden: false,
-            listeners:{
-                change: function(checkbox, newValue, oldValue, eOpts) {
-                if (newValue) {
+            {
+              name: 'asBioinformatician',
+              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As bioinformatician</span>',
+              boxLabelAlign: 'before',
+              checked: false,
+              id: 'asBioinformaticianlr',
+
+              margin: '0 15 0 0',
+              cls: 'grid-header-checkbox',
+              hidden: !USER.is_bioinformatician,
+              listeners: {
+                change: function (checkbox, newValue, oldValue, eOpts) {
+
+                  if (newValue) {
+                    Ext.getStore('librariesStore').getProxy().extraParams.asBioinformatician = 'True';
+                    Ext.getStore('librariesStore').load()
+                  } else {
+                    Ext.getStore('librariesStore').getProxy().extraParams.asBioinformatician = 'False';
+                    Ext.getStore('librariesStore').load()
+                  }
+                }
+              }
+            },
+            {
+              name: 'showAll',
+              boxLabel: 'Show all',
+              boxLabelAlign: 'before',
+              checked: true,
+              id: 'showAlllr',
+              margin: '0 15 0 0',
+              cls: 'grid-header-checkbox',
+              hidden: false,
+              listeners: {
+                change: function (checkbox, newValue, oldValue, eOpts) {
+                  if (newValue) {
                     Ext.getStore('librariesStore').getProxy().extraParams.showAll = 'True';
                     Ext.getStore('librariesStore').load()
-                } else {
+                  } else {
                     Ext.getStore('librariesStore').getProxy().extraParams.showAll = 'False';
                     Ext.getStore('librariesStore').load()
+                  }
                 }
-               }
               }
             },
             {
