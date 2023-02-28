@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from common.models import Organization
 from django.contrib.sites.shortcuts import get_current_site
-from common.staff_group_permissions import GROUP_PERMISSIONS
+from common.gcf_group_permissions import GROUP_PERMISSIONS
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -56,7 +56,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         user_admin_change_url = f'{self.request.scheme + "://" if self.request.scheme else ""}{current_site}{reverse("admin:common_user_change", args=(user.id,))}'
         
         # Recipient list, all lab managers plus tUhe site admin
-        recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='staff').values_list('email', flat=True)
+        recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='Genomics-CF').values_list('email', flat=True)
 
         # Get list of OIDC groups, if available
         oidc_groups = claims.get('role', [])
@@ -99,18 +99,20 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         # If a user belong to either the Genomics or Bioinformatics CFs
         # make them automatically staff, i.e. is_staff = True.
         # For GCF staff, add them to the staff group
-        if self.user_belongs_to_groups(user_groups, settings.OIDC_STAFF_GROUPS):
+        if self.user_belongs_to_groups(user_groups, settings.OIDC_GENOMICSCF_GROUPS):
             user.is_staff = True
-            staff_group, staff_group_created = Group.objects.get_or_create(name='staff')
-            if staff_group_created:
-                staff_group.permissions.add(*GROUP_PERMISSIONS)
-            user.groups.add(staff_group)
+            gcf_group, gcf_group_created = Group.objects.get_or_create(name='Genomics-CF')
+            if gcf_group_created:
+                gcf_group.permissions.add(*GROUP_PERMISSIONS)
+            user.groups.add(gcf_group)
+        
         # For BCF (bioinformatics core facility) staff, also set is_bioinformatician to True
         # and assign them to the Bioinfo-CF group
         elif self.user_belongs_to_groups(user_groups, settings.OIDC_BIOINFOCF_GROUPS):
             user.is_bioinformatician = True
             bcf_group, _ = Group.objects.get_or_create(name='Bioinfo-CF')
             user.groups.add(bcf_group)
+        
         else:
             # For regular users, try to assign a PI and organization based on
             # their OIDC groups
