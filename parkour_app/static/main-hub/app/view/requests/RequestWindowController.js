@@ -319,7 +319,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
       failure: function (response) {
         var responseText = response.responseText ? Ext.JSON.decode(response.responseText) : null;
-        responseText = responseText.detail ? responseText.detail : 'Unknown error.';
+        responseText = responseText.message ? responseText.message : 'Unknown error.';
         responseText = response.statusText ? response.statusText : responseText;
         new Noty({ text: responseText, type: 'error' }).show();
         console.error(response);
@@ -348,7 +348,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
       failure: function (response) {
         var responseText = response.responseText ? Ext.JSON.decode(response.responseText) : null;
-        responseText = responseText.detail ? responseText.detail : 'Unknown error.';
+        responseText = responseText.message ? responseText.message : 'Unknown error.';
         responseText = response.statusText ? response.statusText : responseText;
         new Noty({ text: responseText, type: 'error' }).show();
         console.error(response);
@@ -442,7 +442,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       failure: function (response) {
         wnd.setLoading(false);
         var responseText = response.responseText ? Ext.JSON.decode(response.responseText) : null;
-        responseText = responseText.detail ? responseText.detail : 'Unknown error.';
+        responseText = responseText.message ? responseText.message : 'Unknown error.';
         responseText = response.statusText ? response.statusText : responseText;
         new Noty({ text: responseText, type: 'error' }).show();
         console.error(response);
