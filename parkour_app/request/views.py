@@ -400,55 +400,77 @@ class RequestViewSet(viewsets.ModelViewSet):
         Mark request as approved by saving message as deep_seq_request and 
         change request's libraries' and samples' statuses to 1.
         """
-        instance = Request.objects.get(pk=pk)
         
-        # Make sure that the user trying to approve a request is
-        # the PI of said request or is a staff member
-        if request.user != instance.pi and not request.user.is_staff:
-            return Response({"success": False, 'message': 'You are not allowed to approve this request.'})
+        try:
+            
+            instance = Request.objects.get(pk=pk)
 
-        # A request can't be approved twice
-        if instance.deep_seq_request:
-            return Response({"success": False, 'message': 'This request was already approved.'})
+            if not instance.pi:
+                return Response({"success": False,
+                                "message": "The request cannot be approved because the PI is missing."},
+                                400)
+            
+            # Make sure that the user trying to approve a request is
+            # the PI of said request or is a staff member
+            if request.user != instance.pi and not request.user.is_staff:
+                return Response({"success": False,
+                                'message': 'You are not allowed to approve this request.'},
+                                400)
 
-        # Change the status of libraries and samples
-        instance.libraries.all().update(status=1)
-        instance.samples.all().update(status=1)
+            # A request can't be approved twice
+            if instance.deep_seq_request:
+                return Response({"success": False,
+                                'message': 'This request was already approved.'}
+                                )
 
-        email_recipients = [instance.pi.email, instance.user.email] + \
-                           list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
+            # Change the status of libraries and samples
+            instance.libraries.all().update(status=1)
+            instance.samples.all().update(status=1)
 
-        request.session_id = request.session._get_or_create_session_key()
+            email_recipients = [instance.pi.email, instance.user.email] #+ \
+                            #list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
 
-        if request.user == instance.pi:
-            approved_by = instance.pi.full_name
-        else:
-            approved_by = f'{request.user.full_name} on behalf of {instance.pi.full_name}'
+            request.session_id = request.session._get_or_create_session_key()
+
+            if request.user == instance.pi:
+                approved_by = instance.pi.full_name
+            else:
+                approved_by = f'{request.user.full_name} on behalf of {instance.pi.full_name}'
+            
+            subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
+            message = render_to_string('approved_message.html',
+                                    {'approved_by': approved_by,
+                                        'now_dt': timezone.localtime(timezone.now()).strftime('%d.%m.%Y at %H:%M:%S'),
+                                        'request': request})
+
+            self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
+
+            # Check where the approval comes from
+            # email -> redirect = True
+            # click from context menu -> redirect = False 
+            redirect = request.GET.get('redirect', False)
+            if redirect:
+                return render(request, 'confirm_request_approval.html')
+
+            return Response({"success": True})
         
-        subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
-        message = render_to_string('approved_message.html',
-                                   {'approved_by': approved_by,
-                                    'now_dt': timezone.localtime(timezone.now()).strftime('%d.%m.%Y at %H:%M:%S'),
-                                    'request': request})
+        except Exception as e:
 
-        self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
-
-        # Check where the approval comes from
-        # email -> redirect = True
-        # click from context menu -> redirect = False 
-        redirect = request.GET.get('redirect', False)
-        if redirect:
-            return render(request, 'confirm_request_approval.html')
-
-        return Response({"success": True})
+            logger.exception(e)
+            return Response({"success": False, 'detail': 'There was an error handling this request.'}, 400)
 
     @action(methods=["get"], detail=True)
     def request_approval(self, request, pk=None):
         """Send email to PI to ask for request approval"""
 
-        try:
+        try:            
             # Set some variables for the obj to then be used in the email template
             instance = Request.objects.get(pk=pk)# self.get_object()
+
+            if not instance.pi:
+                return Response({"success": False, 
+                                 "message": "Approval cannot be requested because the PI is missing."},
+                                400)
 
             # Build relevant URLs
             current_site = get_current_site(request)
@@ -470,7 +492,9 @@ class RequestViewSet(viewsets.ModelViewSet):
         except Exception as e:
             
             logger.exception(e)
-            return Response({"success": False, 'message': 'There was an error handling this request.'})
+            return Response({"success": False,
+                             'message': 'There was an error handling this request.'},
+                             400)
 
     @action(methods=["post"], detail=True)
     def samples_submitted(self, request, pk=None):
