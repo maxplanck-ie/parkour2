@@ -72,13 +72,13 @@ down-lite: clearpy
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 
-down: down-lite  ## Turn off running instance (persisting media & staticfiles volumes)
+down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
 clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@git status
 	@echo "Config reset OK. Do we need to clean docker? Try: make prune"
 
-prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour)
+prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour2)
 	@docker system prune -a -f --volumes
 
 clearpy:
@@ -309,13 +309,11 @@ deploy-rsnapshot:
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot daily
 
-test: down-full clean prod
-	@echo "Testing on a 'clean' production deployment..."
+test: down-full clean set-prod deploy-django
 	@docker compose run parkour2-django python manage.py validate_templates && \
-		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --pdb --failfast --timing
+		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --failfast --timing
 
 shell:
-	@echo "Spawning bpython shell plus (only for dev deployments)..."
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
 list-sessions:  # If you saw any nginx log entry, most probably it corresponds to last element in the list.
