@@ -74,8 +74,10 @@ Ext.define('Ext.ux.FileGridField', {
       bbar: [
         {
           xtype: 'label',
-          html: '<b>Tip:</b> Use this table to upload file(s) related to the</br>request, e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
-          style: "font-size:10px;"
+          html: '<b>Hint:</b> Use this field to attach relevant file(s) to the request, ' +
+                'e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
+          width: 235,
+          style: "font-size:10px; line-height:normal;"
         },
         '->',
         {
