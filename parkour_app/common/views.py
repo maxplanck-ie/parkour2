@@ -8,6 +8,12 @@ from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination
+from django.db.models import Q
+from django.http import HttpResponse, Http404
+from request.models import Request
+from mimetypes import guess_type
+from os.path import basename
+from urllib.parse import quote
 
 from .models import CostUnit
 from .serializers import CostUnitSerializer
@@ -117,6 +123,43 @@ def get_navigation_tree(request):
         ]
 
     return JsonResponse({"text": ".", "children": data})
+
+
+@login_required
+def protected_media(request, *args, **kwargs):
+    """Protected view for media files"""
+
+    allow_download = False
+    url_path = kwargs["url_path"]
+
+    if request.user.is_staff:
+        allow_download = True
+    else:
+        allow_download = Request.objects.filter(Q(deep_seq_request=url_path) | Q(files__file=url_path),
+                                                user=request.user) \
+                                        .exists()
+
+    if allow_download:
+
+        response = HttpResponse()
+
+        # Set file type and encoding
+        mimetype, encoding = guess_type(url_path)
+        response["Content-Type"] = mimetype if mimetype else 'application/octet-stream'
+        if encoding:
+            response["Content-Encoding"] = encoding
+
+        # Set internal redirect to protected media
+        response['X-Accel-Redirect'] = f"/protected_media/{url_path}"
+
+        # Set file name
+        file_name = basename(url_path)
+        # Needed for file names that include special, non ascii, characters
+        response["Content-Disposition"] = f"attachment; filename*=utf-8''{quote(file_name)}"
+
+        return response
+
+    raise Http404
 
 
 class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
