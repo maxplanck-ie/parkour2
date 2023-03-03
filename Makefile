@@ -76,7 +76,10 @@ down: down-lite  ## Turn off running instance (persisting media & staticfiles' v
 
 clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@git status
-	@echo "Config reset OK. Do we need to clean docker? Try: make prune"
+	@echo "Config reset OK. You may also be interested into: make prune sweep"
+
+sweep:  ## Remove any sqldump snapshot in ./misc/ that is older than a day
+	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
 
 prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour2)
 	@docker system prune -a -f --volumes
@@ -161,7 +164,7 @@ load-media:  ## Copy all media files into running instance
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
-		docker cp ./misc/latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
+		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres pg_restore -d postgres -U postgres -1 -c /tmp/parkour-postgres.dump > /dev/null && \
 		echo "Loaded PostgreSQL database OK." || \
 		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
@@ -196,9 +199,11 @@ refresh-migras:
 save-media:  ## Copy over all media files (media_dump/)
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
+timestamp := $(shell date +%Y%m%d-%H%M%S)
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
-		docker cp parkour2-postgres:/tmp/postgres_dump misc/latest.sqldump
+		docker cp parkour2-postgres:/tmp/postgres_dump misc/db_$(timestamp).sqldump
+	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
 # TODO: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
@@ -290,7 +295,7 @@ upgrade:
 	@echo make restore-prep4json-prod
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 collect-static deploy-rsnapshot"
 	@echo '## Manual login OK? Proceeding...'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
 	@echo "make git-release  # Further instructions to follow if everything went alright..."
 
