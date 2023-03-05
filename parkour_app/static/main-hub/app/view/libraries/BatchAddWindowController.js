@@ -204,7 +204,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     } else {
       // Column order for sample
       newColumnOrder = [
-        'numberer', 'barcode', 'name', 'concentration', 'rna_quality',
+        'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration', 'rna_quality',
         'sequencing_depth', 'amplification_cycles', 'comments',
         'read_length', 'nucleic_acid_type', 'library_protocol',
         'library_type', 'equal_representation_nucleotides',
@@ -775,13 +775,24 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           regexText: 'Only values between 1 and 10 are allowed.'
         },
         renderer: this.errorRenderer
-      }
+      },
+      {
+        text: 'µl',
+        dataIndex: 'sample_volume_user',
+        tooltip: 'Volume of submitted sample',
+        width: 80,
+        editor: {
+          xtype: 'numberfield',
+          minValue: 0
+        },
+      renderer: this.errorRenderer
+    },
     ]);
 
     // Sort columns
     var order = [
       'numberer', 'name', 'barcode', 'nucleic_acid_type',
-      'library_protocol', 'library_type', 'concentration', 'rna_quality',
+      'library_protocol', 'library_type', 'sample_volume_user', 'concentration', 'rna_quality',
       'read_length', 'sequencing_depth', 'amplification_cycles',
       'equal_representation_nucleotides', 'sample_volume',
       'concentration_method', 'organism', 'comments'

@@ -51,6 +51,11 @@ Ext.define('MainHub.model.libraries.BatchAdd.Common', {
             defaultValue: null
         },
         {
+            name: 'sample_volume_user',
+            type: 'float',
+            allowNull: true
+        },
+        {
             type: 'float',
             name: 'concentration',
             defaultValue: null

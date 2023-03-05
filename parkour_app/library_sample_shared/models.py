@@ -282,6 +282,12 @@ class GenericLibrarySample(DateTimeMixin):
 
     status = models.SmallIntegerField(default=0)
 
+    sample_volume_user = models.PositiveIntegerField(
+        "Sample Volume",
+        null=True,
+        blank=True,
+    )
+
     library_protocol = models.ForeignKey(
         LibraryProtocol,
         verbose_name="Library Protocol",

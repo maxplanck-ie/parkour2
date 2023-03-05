@@ -84,6 +84,7 @@ class SampleAdmin(admin.ModelAdmin):
                     "library_protocol",
                     "library_type",
                     "nucleic_acid_type",
+                    "sample_volume_user",
                     "concentration",
                     "concentration_method",
                     "organism",

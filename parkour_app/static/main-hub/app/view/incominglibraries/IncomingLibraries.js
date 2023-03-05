@@ -139,6 +139,13 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
           }
         },
         {
+          text: 'µl',
+          tooltip: 'Volume (user)',
+          dataIndex: 'sample_volume_user',
+          tdCls: 'userEntry',
+          width: 70
+        },
+        {
           text: 'ng/µl',
           tooltip: 'Concentration (user)',
           dataIndex: 'concentration',
