@@ -1,6 +1,6 @@
-Ext.define('Ext.ux.FileGridField', {
+Ext.define('MainHub.components.RequestFileGridField', {
   extend: 'Ext.form.FieldContainer',
-  alias: 'widget.filegridfield',
+  alias: 'widget.requestfilegridfield',
 
   requires: ['Ext.ux.MultiFileField'],
 
@@ -13,7 +13,7 @@ Ext.define('Ext.ux.FileGridField', {
 
     me.items = [{
       xtype: 'grid',
-      height: 200,
+      height: 160,
       viewConfig: {
         loadMask: false,
         stripeRows: false
@@ -72,6 +72,13 @@ Ext.define('Ext.ux.FileGridField', {
       },
       store: me.store,
       bbar: [
+        {
+          xtype: 'label',
+          html: '<b>Hint:</b> Use this field to attach relevant file(s) to the request, ' +
+                'e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
+          width: 235,
+          style: "font-size:10px; line-height:normal;"
+        },
         '->',
         {
           xtype: 'button',

@@ -1030,7 +1030,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           cost_unit: data.cost_unit,
           description: data.description,
           records: Ext.Array.pluck(store.data.items, 'data'),
-          files: form.down('filegridfield').getValue()
+          files: form.down('requestfilegridfield').getValue()
         })
       },
 

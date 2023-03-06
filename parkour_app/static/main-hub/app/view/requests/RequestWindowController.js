@@ -413,7 +413,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           pooled_libraries_volume_user: data.pooled_libraries_volume_user,
           pooled_libraries_fragment_size_user: data.pooled_libraries_fragment_size_user,
           records: Ext.Array.pluck(store.data.items, 'data'),
-          files: form.down('filegridfield').getValue()
+          files: form.down('requestfilegridfield').getValue()
         })
       },
 

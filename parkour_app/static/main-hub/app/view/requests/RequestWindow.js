@@ -4,7 +4,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
     'MainHub.view.requests.RequestWindowController',
     'MainHub.view.libraries.LibraryWindow',
     'MainHub.view.libraries.BatchAddWindow',
-    'Ext.ux.FileGridField'
+    'MainHub.components.RequestFileGridField'
   ],
   controller: 'requests-requestwindow',
 
@@ -178,7 +178,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 ],
               },
               {
-                xtype: 'filegridfield',
+                xtype: 'requestfilegridfield',
                 fieldLabel: 'Files',
                 store: 'requestFilesStore',
                 uploadFileUrl: 'api/requests/upload_files/'
