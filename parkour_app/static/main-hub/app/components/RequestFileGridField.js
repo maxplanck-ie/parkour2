@@ -13,7 +13,8 @@ Ext.define('MainHub.components.RequestFileGridField', {
 
     me.items = [{
       xtype: 'grid',
-      height: 160,
+      cls: 'request-filegrid',
+      height: 155,
       viewConfig: {
         loadMask: false,
         stripeRows: false
@@ -26,12 +27,14 @@ Ext.define('MainHub.components.RequestFileGridField', {
         items: [{
           text: 'Name',
           dataIndex: 'name',
-          flex: 1
+          flex: 1,
+          cls: 'request-file-header'
         },
         {
           text: 'Size',
           dataIndex: 'size',
           width: 100,
+          cls: 'request-file-header',
           renderer: function (val) {
             var dim = '';
             var KB = 1000;
@@ -56,12 +59,14 @@ Ext.define('MainHub.components.RequestFileGridField', {
           width: 36,
           dataIndex: 'path',
           xtype: 'templatecolumn',
+          cls: 'request-file-header',
           tpl: '<a href="{path}" download><img src="/static/main-hub/resources/images/download.png"></a>'
         },
         {
           xtype: 'actioncolumn',
           width: 36,
           align: 'center',
+          cls: 'request-file-header',
           items: [{
             icon: '/static/main-hub/resources/images/delete.png',
             tooltip: 'Delete',
@@ -71,53 +76,62 @@ Ext.define('MainHub.components.RequestFileGridField', {
         ]
       },
       store: me.store,
-      bbar: [
-        {
-          xtype: 'label',
-          html: '<b>Hint:</b> Use this field to attach relevant file(s) to the request, ' +
-                'e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
-          width: 235,
-          style: "font-size:10px; line-height:normal;"
-        },
-        '->',
-        {
-          xtype: 'button',
-          text: 'Add files',
-          handler: function () {
-            Ext.widget({
-              xtype: 'window',
-              title: 'Upload files',
-              width: 450,
-              autoShow: true,
-              modal: true,
 
-              items: [{
-                xtype: 'form',
+      dockedItems: [{
+        xtype: 'toolbar',
+        dock: 'bottom',
+        padding: '4px 0 4px 8px',
+        items: [
+          {
+            xtype: 'label',
+            html: '<b>Hint:</b> Use this field to attach relevant file(s) to the request, ' +
+                  'e.g. Bioanalyzer/Tapestation profiles, <i>etc</i>.',
+            width: 235,
+            style: "font-size:10px; line-height:normal;"
+          },
+          '->',
+          {
+            xtype: 'button',
+            text: 'Add files',
+            padding: 0,
+            height: 28,
+            width: 70,
+            handler: function () {
+              Ext.widget({
+                xtype: 'window',
+                title: 'Upload files',
+                width: 450,
+                autoShow: true,
+                modal: true,
+  
                 items: [{
-                  xtype: 'multifilefield',
-                  name: 'files',
-                  fieldLabel: 'Files',
-                  labelWidth: 50,
-                  buttonText: 'Select',
-                  allowBlank: false,
-                  width: 413,
-                  margin: 15
-                }]
-              }],
-              bbar: [
-                '->',
-                {
-                  text: 'Upload',
-                  handler: me.uploadFiles,
-                  uploadFileUrl: me.uploadFileUrl,
-                  getFileUrl: me.getFileUrl,
-                  grid: me.down('grid')
-                }
-              ]
-            });
+                  xtype: 'form',
+                  items: [{
+                    xtype: 'multifilefield',
+                    name: 'files',
+                    fieldLabel: 'Files',
+                    labelWidth: 50,
+                    buttonText: 'Select',
+                    allowBlank: false,
+                    width: 413,
+                    margin: 15
+                  }]
+                }],
+                bbar: [
+                  '->',
+                  {
+                    text: 'Upload',
+                    handler: me.uploadFiles,
+                    uploadFileUrl: me.uploadFileUrl,
+                    getFileUrl: me.getFileUrl,
+                    grid: me.down('grid')
+                  }
+                ]
+              });
+            }
           }
-        }
-      ]
+        ]
+    }]
     }];
 
     me.callParent(arguments);
