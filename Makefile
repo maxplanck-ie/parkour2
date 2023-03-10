@@ -242,9 +242,14 @@ VM_PROD := root@parkour
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
 # ssh-copy-id -i ~/.ssh/parkour2.pub root@parkour
 
-full-import-json:  ## Run save-db-json on $VM_PROD, and bring JSON dump.
+import-pgdb: sweep  ## Run save-postgres on $VM_PROD, and bring all their sqldumps. Note: first we sweep local sqldumps!
+	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
+	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" --exclude='*' --include='*.sqldump' \
+		${VM_PROD}:~/parkour2/misc misc/
+
+full-import-json:
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
-	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json .
+	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json misc/
 
 upgrade:
 	@echo '# TODO:'
