@@ -36,6 +36,7 @@ logger = logging.getLogger("db")
 
 class PDF(FPDF):  # pragma: no cover
     def __init__(self, title="Title", font="Arial"):
+        self.core_fonts_encoding = "UTF-8"
         self.title = title
         self.font = font
         super().__init__()
@@ -95,6 +96,7 @@ class PDF(FPDF):  # pragma: no cover
 
 class Report(FPDF, HTMLMixin):
     def __init__(self, title="Report", font="Arial"):
+        self.core_fonts_encoding = "UTF-8"
         self.title = title
         self.font = font
         super().__init__()
