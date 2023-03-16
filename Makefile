@@ -184,7 +184,7 @@ load-fixtures:
 
 load-backup: load-postgres load-media
 
-backup: save-media save-postgres export-migras
+# backup: save-media save-postgres export-migras
 
 export-migras:
 	@find ./**/ -name migrations -type d -exec tar czf ./misc/migras.tar.gz {} \+
@@ -196,7 +196,7 @@ refresh-migras:
 		echo '$ make down dev migrate load-postgres' || \
 		echo '$ scp root@production:~/parkour2/misc/migras.tar.gz .'
 
-save-media:  ## Copy over all media files (media_dump/)
+save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 timestamp := $(shell date +%Y%m%d-%H%M%S)
@@ -241,6 +241,10 @@ restore-prep4json-prod:
 VM_PROD := root@parkour
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
 # ssh-copy-id -i ~/.ssh/parkour2.pub root@parkour
+
+import-media:
+	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
+		${VM_PROD}:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
 
 import-pgdb: sweep  ## Run save-postgres on $VM_PROD, and bring all their sqldumps. Note: first we sweep local sqldumps!
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
