@@ -3,7 +3,7 @@ http://127.0.0.1:9980 {
 		root * /parkour2
 		file_server
 	}
-	handle /media/* {
+	handle /protected_media/* {
 		root * /parkour2
 		file_server
 	}
