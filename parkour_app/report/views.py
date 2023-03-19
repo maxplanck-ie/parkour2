@@ -479,10 +479,10 @@ def database_data(request):
         "qPCR Result",
         "qPCR Result (Facility)",
         "Pool",
-        "Pool Size",
         "Flowcell ID",
         "Flowcell create time",
         "Sequencer",
+        "Sequencing Kit",
     ]
 
     return JsonResponse({"columns": columns, "data": data})

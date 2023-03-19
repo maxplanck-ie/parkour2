@@ -4,7 +4,7 @@ from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.apps import apps
 from flowcell.tests import create_flowcell, create_sequencer
-from index_generator.tests import create_pool
+from index_generator.tests import create_pool, create_pool_size
 from library.tests import create_library
 from request.tests import create_request
 from sample.tests import create_sample
@@ -36,8 +36,8 @@ class TestRunStatistics(BaseTestCase):
         pool.samples.add(sample1)
         pool.samples.add(sample2)
 
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         lanes = []
         matrix = []
@@ -58,13 +58,13 @@ class TestRunStatistics(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data), 8)
         self.assertEqual(data[0]["name"], "Lane 1")
-        self.assertEqual(data[0]["sequencer"], flowcell.sequencer.name)
+        self.assertEqual(data[0]["sequencer"], flowcell.pool_size.sequencer.name)
         self.assertEqual(data[0]["read_length"], library1.read_length.name)
         self.assertEqual(data[0]["read_1"], 1)
 
     def test_upload_flowcell_matrix(self):
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         matrix = [
             {
@@ -115,8 +115,8 @@ class TestRunStatistics(BaseTestCase):
         )
 
     def test_upload_flowcell_matrix_invalid_matrix(self):
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         response = self.client.post(
             "/api/run_statistics/upload/",
@@ -154,8 +154,8 @@ class TestSequencesStatistics(BaseTestCase):
         pool.samples.add(sample1)
         pool.samples.add(sample2)
 
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
         sequences = [
             {"barcode": library1.barcode},
             {"barcode": library2.barcode},
@@ -178,11 +178,11 @@ class TestSequencesStatistics(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data), 4)
-        self.assertEqual(data[0]["sequencer"], flowcell.sequencer.name)
+        self.assertEqual(data[0]["sequencer"], flowcell.pool_size.sequencer.name)
 
     def test_upload_flowcell_sequences(self):
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         sequences = [
             {"barcode": "barcode"},
@@ -216,8 +216,8 @@ class TestSequencesStatistics(BaseTestCase):
         self.assertEqual(data["detail"], "Not found.")
 
     def test_upload_flowcell_sequences_invalid_data(self):
-        sequencer = create_sequencer(get_random_name(), lanes=8)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=8)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         response = self.client.post(
             "/api/sequences_statistics/upload/",

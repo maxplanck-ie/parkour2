@@ -44,6 +44,14 @@ Ext.define('MainHub.model.requests.Request', {
       name: 'bioinformatician_name'
     },
     {
+      type: 'int',
+      name: 'pool_size_user'
+    },
+    {
+      type: 'string',
+      name: 'pool_size_user_name'
+    },
+    {
       type: 'bool',
       name: 'pooled_libraries'
     },

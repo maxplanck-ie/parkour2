@@ -108,8 +108,8 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           filter: { type: 'string' }
         },
         {
-          text: 'Sequencer',
-          dataIndex: 'sequencer_name',
+          text: 'Sequencing kit',
+          dataIndex: 'pool_size_name',
           filter: { type: 'list' }
         },
       /*  {

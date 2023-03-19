@@ -39,7 +39,7 @@ Ext.define('MainHub.model.flowcell.Flowcell', {
             type: 'int'
         },
         {
-            name: 'sequencer_name',
+            name: 'pool_size_name',
             type: 'string'
         },
         {

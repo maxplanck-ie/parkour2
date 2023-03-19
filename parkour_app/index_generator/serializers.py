@@ -16,6 +16,8 @@ Sample = apps.get_model("sample", "Sample")
 
 class PoolSizeSerializer(ModelSerializer):
     name = SerializerMethodField()
+    multiplier = SerializerMethodField()
+
 
     class Meta:
         model = PoolSize
@@ -24,11 +26,14 @@ class PoolSizeSerializer(ModelSerializer):
             "name",
             "multiplier",
             "size",
+            "sequencer",
         )
 
     def get_name(self, obj):
-        return f"{obj.multiplier}x{obj.size}"
+        return f"{obj.sequencer} - {obj.sequencer.lanes}×{obj.size}M"
 
+    def get_multiplier(self, obj):
+        return obj.sequencer.lanes
 
 class IndexGeneratorListSerializer(ListSerializer):
     def update(self, instance, validated_data):
@@ -112,6 +117,7 @@ class IndexGeneratorSampleSerializer(IndexGeneratorBaseSerializer):
 class IndexGeneratorSerializer(ModelSerializer):
     request = SerializerMethodField()
     request_name = SerializerMethodField()
+    pool_size_user_name = SerializerMethodField()
     libraries = IndexGeneratorLibrarySerializer(many=True)
     samples = IndexGeneratorSampleSerializer(many=True)
 
@@ -122,7 +128,8 @@ class IndexGeneratorSerializer(ModelSerializer):
             "request_name",
             "libraries",
             "samples",
-            "pooled_libraries"
+            "pooled_libraries",
+            "pool_size_user_name"
         )
 
     def get_request(self, obj):
@@ -130,6 +137,9 @@ class IndexGeneratorSerializer(ModelSerializer):
 
     def get_request_name(self, obj):
         return obj.name
+
+    def get_pool_size_user_name(self, obj):
+        return str(obj.pool_size_user)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -147,6 +157,7 @@ class IndexGeneratorSerializer(ModelSerializer):
                                 "request": data["request"],
                                 "request_name": data["request_name"],
                                 "pooled_libraries": data['pooled_libraries'],
+                                "pool_size_user_name": data['pool_size_user_name'],
                             },
                             **x,
                         },

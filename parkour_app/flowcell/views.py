@@ -121,7 +121,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         queryset = (
             Flowcell.objects.select_related(
-                "sequencer",
+                "pool_size",
             )
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs),
@@ -203,7 +203,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
-            .filter(size__multiplier__gt=F("loaded"))
+            .filter(size__sequencer__lanes__gt=F("loaded"))
             .order_by("pk")
         )
 

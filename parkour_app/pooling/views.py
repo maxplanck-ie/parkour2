@@ -37,6 +37,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     sample_model = Sample
     library_serializer = PoolingLibrarySerializer
     sample_serializer = PoolingSampleSerializer
+    serializer_class = PoolSerializer
 
     def get_queryset(self):
         libraries_qs = (

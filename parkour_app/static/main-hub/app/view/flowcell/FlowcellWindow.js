@@ -44,22 +44,24 @@ Ext.define('MainHub.view.flowcell.FlowcellWindow', {
             },
             items: [
               {
-                id: 'sequencer-field',
-                itemId: 'sequencer-field',
+                id: 'sequencing-kit-field',
+                itemId: 'sequencing-kit-field',
                 queryMode: 'local',
                 displayField: 'name',
                 valueField: 'id',
-                name: 'sequencer',
-                fieldLabel: 'Sequencer',
-                emptyText: 'Sequencer',
-                store: 'sequencersStore',
-                forceSelection: true
+                name: 'sequencing_kit',
+                fieldLabel: 'Sequencing Kit',
+                emptyText: 'Sequencing Kit',
+                store: 'PoolSizes',
+                forceSelection: true,
+                labelWidth: 140
               },
               {
                 xtype: 'textfield',
                 name: 'flowcell_id',
                 fieldLabel: 'Flowcell ID',
-                emptyText: 'Flowcell ID'
+                emptyText: 'Flowcell ID',
+                labelWidth: 140
               }
             ]
           },
@@ -150,7 +152,7 @@ Ext.define('MainHub.view.flowcell.FlowcellWindow', {
               );
 
               var size = pool.get('pool_size') - pool.get('loaded');
-              return size === 0 ? size : size + 'x' + poolSize.get('size');
+              return size === 0 ? size : size + '×' + poolSize.get('size') + 'M';
             }
           }
         ],

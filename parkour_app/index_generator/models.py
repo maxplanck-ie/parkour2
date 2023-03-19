@@ -8,19 +8,26 @@ from sample.models import Sample
 
 
 class PoolSize(models.Model):
-    multiplier = models.PositiveSmallIntegerField("Multiplier", default=1)
+    sequencer = models.ForeignKey('flowcell.Sequencer',
+                                  verbose_name='Sequencer',
+                                  null=True,
+                                  on_delete=models.SET_NULL)
     size = models.PositiveSmallIntegerField("Size")
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
-        ordering = ["multiplier", "size"]
+        ordering = ["sequencer", "size"]
 
     def __str__(self):
-        return f"{self.multiplier}x{self.size}"
+        return f"{self.sequencer} - {self.sequencer.lanes}×{self.size}M"
 
     @property
     def name(self):
-        return f"{self.multiplier}x{self.size}"
+        return f"{self.sequencer} - {self.sequencer.lanes}×{self.size}M"
+
+    @property
+    def multiplier(self):
+        return self.sequencer.lanes
 
 
 def get_sentinel_user():

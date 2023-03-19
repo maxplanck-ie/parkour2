@@ -124,23 +124,13 @@ class SequencingPrice(OrganizationMixin):
         return f'{self.sequencing_cost} - {self.organization}'
 
 class SequencingCosts(models.Model):
-    sequencer = models.ForeignKey(
-        Sequencer,
-        limit_choices_to={"obsolete": 1},
-        on_delete=models.SET_NULL,
-        null=True,
-    )
-    read_length = models.ForeignKey(
-        ReadLength, verbose_name="Read Length", on_delete=models.SET_NULL, null=True
+    pool_size = models.ForeignKey(
+        'index_generator.PoolSize', verbose_name="Sequencing kit", on_delete=models.SET_NULL, null=True
     )
 
     class Meta:
         verbose_name = "Sequencing Cost"
         verbose_name_plural = "Sequencing Costs"
-        unique_together = (
-            "sequencer",
-            "read_length",
-        )
 
     def __str__(self):
-        return f"{self.sequencer.name} {self.read_length.name}"
+        return str(self.pool_size)

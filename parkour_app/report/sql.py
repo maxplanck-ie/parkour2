@@ -78,7 +78,7 @@ FROM (
         cmf.name AS "Concentration Method (Facility)",
         pooling.concentration_c1 AS "Concentration C1",
         p.name AS "Pool",
-        concat(psize.multiplier, 'x', psize.size) AS "Pool Size",
+        concat(pseq.lanes, '×', psize.size, 'M') AS "Sequencing Kit",
 
 
         /* Sample-specific fields */
@@ -125,6 +125,9 @@ FROM (
     LEFT JOIN index_generator_poolsize as psize
         ON p.size_id = psize.id
 
+    LEFT JOIN flowcell_sequencer as pseq
+        ON psize.sequencer_id = pseq.id
+
     LEFT JOIN pooling_pooling as pooling
         ON record.id = pooling.{table_name}_id
 
@@ -149,8 +152,10 @@ LEFT JOIN (
         ON l.id = fl.lane_id
     LEFT JOIN flowcell_flowcell as f
         ON fl.flowcell_id = f.id
+    LEFT JOIN index_generator_poolsize as psize
+        ON p.size_id = psize.id
     LEFT JOIN flowcell_sequencer AS s
-        ON f.sequencer_id = s.id
+        ON psize.sequencer_id = s.id
     GROUP BY record.id, f.create_time::date
 ) t2 ON t1_id = t2_id
 """

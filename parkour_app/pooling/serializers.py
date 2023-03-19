@@ -194,7 +194,7 @@ class PoolSerializer(ModelSerializer):
 
     def get_pool_size(self, obj):
         size = obj.size
-        return f"{size.multiplier}x{size.size}"
+        return f"{size.sequencer} - {size.sequencer.lanes}×{size.size}M"
 
     def get_libraries(self, obj):
         serializer = PoolingLibrarySerializer(

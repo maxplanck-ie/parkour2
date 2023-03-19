@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from library.models import Library
 from sample.models import Sample
+from index_generator.models import PoolSize
 
 
 def get_sentinel_user():
@@ -54,6 +55,15 @@ class Request(DateTimeMixin):
         null=True,
         on_delete=models.SET_NULL,
         related_name = 'request_bioinformatician'
+    )
+
+    pool_size_user = models.ForeignKey(
+        PoolSize,
+        verbose_name="Sequencing kit (user)",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_pool_size_user'
     )
 
     libraries = models.ManyToManyField(

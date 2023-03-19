@@ -93,7 +93,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
                 matrix__isnull=True,
             )
             .select_related(
-                "sequencer",
+                "pool_size",
             )
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
@@ -242,7 +242,7 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
                 sequences__isnull=True,
             )
             .select_related(
-                "sequencer",
+                "pool_size",
             )
             .prefetch_related(
                 Prefetch(

@@ -54,9 +54,9 @@ Ext.define('MainHub.view.invoicing.Invoicing', {
             minWidth: 150
           },
           {
-            text: 'Sequencer',
-            dataIndex: 'sequencer',
-            renderer: 'sequencerRenderer'
+            text: 'Sequencing Kit',
+            dataIndex: 'pool_size',
+            renderer: 'sequencingKitRenderer'
           },
           {
             text: 'Date + Flowcell ID',

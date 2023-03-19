@@ -407,6 +407,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           pi: data.pi,
           cost_unit: data.cost_unit,
           bioinformatician: data.bioinformatician ? data.bioinformatician : null,
+          pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
           pooled_libraries: data.pooled_libraries,
           pooled_libraries_concentration_user: data.pooled_libraries_concentration_user,

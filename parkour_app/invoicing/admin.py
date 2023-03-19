@@ -85,18 +85,15 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
 class SequencingCostsAdmin(admin.ModelAdmin):
     inlines = [SequencingPriceInline]
     search_fields = (
-        "sequencer__name",
-        "read_length__name",
         "price",
+        "pool_size"
     )
     list_display = (
-        "sequencer",
-        "read_length",
+        "pool_size",
         "price_amounts",
     )
     list_filter = (
-        "sequencer",
-        "read_length",
+        "pool_size__sequencer",
     )
 
     def price_amounts(self, obj):

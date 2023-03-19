@@ -32,6 +32,7 @@ class InvoicingSerializer(ModelSerializer):
     request = SerializerMethodField()
     cost_unit = SerializerMethodField()
     sequencer = SerializerMethodField()
+    pool_size = SerializerMethodField()
     flowcell = SerializerMethodField()
     pool = SerializerMethodField()
     percentage = SerializerMethodField()
@@ -51,6 +52,7 @@ class InvoicingSerializer(ModelSerializer):
             "request",
             "cost_unit",
             "sequencer",
+            "pool_size",
             "flowcell",
             "pool",
             "percentage",
@@ -119,10 +121,10 @@ class InvoicingSerializer(ModelSerializer):
 
         # Fetch Sequencing Costs
         sequencing_costs = SequencingCosts.objects.filter(sequencingprice__organization__id=organization_id).values(
-            "sequencer", "read_length", "sequencingprice__price"
+            "pool_size", "sequencingprice__price"
         )
         sequencing_costs = {
-            str(x["sequencer"]) + "_" + str(x["read_length"]): x["sequencingprice__price"]
+            str(x["pool_size"]): x["sequencingprice__price"]
             for x in sequencing_costs
         }
 
@@ -143,11 +145,20 @@ class InvoicingSerializer(ModelSerializer):
     def get_cost_unit(self, obj):
         return obj.cost_unit.name if obj.cost_unit else None
 
+    def get_pool_size(self, obj):
+        return [
+            {
+                "flowcell_id": flowcell.flowcell_id,
+                "pool_size_name": str(flowcell.pool_size),
+            }
+            for flowcell in obj.flowcell.all()
+        ]
+
     def get_sequencer(self, obj):
         return [
             {
                 "flowcell_id": flowcell.flowcell_id,
-                "sequencer_name": flowcell.sequencer.name,
+                "sequencer_name": flowcell.pool_size.sequencer.name,
             }
             for flowcell in obj.flowcell.all()
         ]
@@ -172,7 +183,8 @@ class InvoicingSerializer(ModelSerializer):
 
             flowcell_dict = {
                 "flowcell_id": flowcell.flowcell_id,
-                "sequencer": flowcell.sequencer.pk,
+                "sequencer": flowcell.pool_size.sequencer.pk,
+                "pool_size": flowcell.pool_size.pk,
                 "pools": [],
                 "flowcell_create_month": int(flowcell.create_time.strftime("%m")),
                 "flowcell_create_year": int(flowcell.create_time.strftime("%Y")),
@@ -345,7 +357,7 @@ class InvoicingSerializer(ModelSerializer):
             # if flowcell['flowcell_create_month'] == self.context['curr_month'] and flowcell['flowcell_create_year'] == self.context['curr_year']:
             if dt == curr_date:
                 for pool in flowcell["pools"]:
-                    key = f"{flowcell['sequencer']}_{pool['read_length']}"
+                    key = str(flowcell['pool_size'])
                     costs += sequencing_costs.get(key, 0) * reduce(
                         lambda x, y: Decimal(x) * Decimal(y),
                         pool["percentage"].split("*"),
@@ -472,12 +484,10 @@ class SequencingCostsSerializer(BaseSerializer):
         model = SequencingCosts
         fields = (
             "id",
-            "sequencer",
-            "read_length",
+            "pool_size",
         ) + BaseSerializer.Meta.fields
         extra_kwargs = {
-            "sequencer": {"required": False},
-            "read_length": {"required": False},
+            "pool_size": {"required": False},
         }
 
     def get_price(self, obj):

@@ -20,6 +20,9 @@ from sample.tests import create_sample
 
 from .index_generator import IndexGenerator, IndexRegistry
 from .models import Pool, PoolSize
+from django.apps import apps
+
+Sequencer = apps.get_model("flowcell", "Sequencer")
 
 Index = namedtuple("Index", ["prefix", "number", "index"])
 
@@ -124,10 +127,17 @@ INDICES_11 = [  # I5
 ]
 
 
-def create_pool(user, multiplier=1, size=200, save=True):
-    pool_size = PoolSize(multiplier=multiplier, size=size)
+def create_pool_size(multiplier=1, size=200):
+    sequencer, _ = Sequencer.objects.get_or_create(lanes=multiplier,
+                                                   defaults={'name': get_random_name()})
+    pool_size = PoolSize(sequencer=sequencer, size=size)
     pool_size.save()
+    return pool_size
 
+
+def create_pool(user, multiplier=1, size=200, save=True):
+    
+    pool_size = create_pool_size(multiplier, size)
     pool = Pool(user=user, size=pool_size)
 
     if save:
@@ -222,11 +232,11 @@ class TestPoolModel(BaseTestCase):
 
 class TestPoolSizeModel(BaseTestCase):
     def setUp(self):
-        self.size = PoolSize(multiplier=1, size=200)
+        self.size = create_pool_size(multiplier=1, size=200)
         self.size.save()
 
     def test_name(self):
-        self.assertEqual(str(self.size), f"{self.size.multiplier}x{self.size.size}")
+        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.sequencer.lanes}×{self.size.size}M")
 
 
 # Views
@@ -239,7 +249,7 @@ class TestPoolSize(BaseTestCase):
 
     def test_pool_size_list(self):
         """Ensure get pool sizes behaves correctly."""
-        pool_size = PoolSize(multiplier=1, size=10)
+        pool_size = create_pool_size(multiplier=1, size=10)
         pool_size.save()
 
         response = self.client.get("/api/pool_sizes/")
@@ -452,7 +462,7 @@ class TestIndexGenerator(BaseTestCase):
         self.create_user()
         self.login()
 
-        self.pool_size = PoolSize(multiplier=1, size=200)
+        self.pool_size = create_pool_size(multiplier=1, size=200)
         self.pool_size.save()
 
         self.read_length = ReadLength(name=get_random_name())

@@ -39,9 +39,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             valueField: 'id',
             forceSelection: true,
             cls: 'panel-header-combobox',
-            fieldLabel: 'Pool Size',
-            labelWidth: 65,
-            width: 170
+            fieldLabel: '<span data-qtip="Sequencing kit">Seq. Kit</span>',
+            labelWidth: 50,
+            width: 250
           }]
         },
         store: 'IndexGenerator',
@@ -195,7 +195,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
           ftype: 'grouping',
           startCollapsed: true,
           groupHeaderTpl: [
-            '<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M)',
+            '<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M, Seq. Kit: {children:this.getPoolSize})',
             {
               getName: function (children) {
                 return children[0].get('request_name');
@@ -208,6 +208,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               },
               getCount: function(children){
                 return children.length
+              },
+              getPoolSize: function(children){
+                return children[0].get('pool_size_user_name');
               }
             }
           ]

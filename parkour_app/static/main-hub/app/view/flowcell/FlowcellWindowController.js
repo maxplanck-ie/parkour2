@@ -8,7 +8,7 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
         boxready: 'onWindowReady',
         beforeclose: 'onWindowClose'
       },
-      '#sequencer-field': {
+      '#sequencing-kit-field': {
         change: 'changeSequencer'
       },
       '#pools-flowcell-grid': {
@@ -34,6 +34,15 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
   },
 
   changeSequencer: function (cb, newValue, oldValue) {
+    var poolSizesStore = Ext.getStore('PoolSizes');
+    // Get new and old values for sequencer id, not pool size
+    newValue = poolSizesStore.findRecord(
+      'id', newValue, 0, false, true, true
+    ).get('sequencer');
+    oldValue = oldValue ? poolSizesStore.findRecord(
+      'id', oldValue, 0, false, true, true
+    ).get('sequencer') : null;
+
     var lanes = Ext.getCmp('lanes');
     var lanesStore = Ext.getStore('lanesStore');
     var sequencersStore = Ext.getStore('sequencersStore');
@@ -130,9 +139,9 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
   initializeLaneDropZone: function (v) {
     var lanesStore = Ext.getStore('lanesStore');
     var poolsStore = Ext.getStore('poolsStore');
-    var sequencerId = Ext.getCmp('sequencer-field').getValue();
-    var sequencer = Ext.getStore('sequencersStore').findRecord(
-      'id', sequencerId, 0, false, true, true
+    var sequencingKitId = Ext.getCmp('sequencing-kit-field').getValue();
+    var sequencingKit = Ext.getStore('PoolSizes').findRecord(
+      'id', sequencingKitId, 0, false, true, true
     );
 
     // Initialize 'click' event
@@ -143,7 +152,7 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
     }
 
     function isSizeMatch (poolSize) {
-      return sequencer.get('lane_capacity') >= poolSize.get('size');
+      return sequencingKit.get('size') >= poolSize.get('size');
     }
 
     function isReadLengthOK (pool) {
@@ -215,7 +224,7 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
           if (!isSizeMatch(poolSize)) {
             message = Ext.String.format(
               'Pool with size {0} cannot be fit on a lane with capacity {1}.',
-              poolSize.get('size'), sequencer.get('lane_capacity')
+              poolSize.get('size'), sequencingKit.get('size')
             );
             new Noty({ text: message, type: 'warning' }).show();
             return false;
@@ -337,7 +346,7 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
       params: {
         data: Ext.JSON.encode({
           flowcell_id: data.flowcell_id,
-          sequencer: data.sequencer,
+          pool_size: data.sequencing_kit,
           lanes: lanes
         })
       },

@@ -178,14 +178,14 @@ Ext.define('MainHub.view.invoicing.InvoicingController', {
     return value.join('; ');
   },
 
-  sequencerRenderer: function (value, meta) {
+  sequencingKitRenderer: function (value, meta) {
     var items = value.map(function (item) {
       return Ext.String.format('{0}: {1}',
-        item.flowcell_id, item.sequencer_name
+        item.flowcell_id, item.pool_size_name
       );
     });
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', items.join('<br/>'));
-    return _.uniq(Ext.Array.pluck(value, 'sequencer_name')).sort().join('; ');
+    return _.uniq(Ext.Array.pluck(value, 'pool_size_name')).sort().join('; ');
   },
 
   percentageRenderer: function (value, meta) {

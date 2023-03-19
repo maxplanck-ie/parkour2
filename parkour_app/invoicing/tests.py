@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from flowcell.tests import create_flowcell, create_sequencer
 from library_sample_shared.tests import create_library_protocol, create_read_length
+from index_generator.tests import create_pool_size
 from month import Month
 from rest_framework import status
 from django.utils.http import urlencode
@@ -47,10 +48,9 @@ def create_preparation_cost(library_protocol, price, organization):
     return preparation_cost
 
 
-def create_sequencing_cost(sequencer, read_length, price, organization):
+def create_sequencing_cost(pool_size, price, organization):
     sequencing_cost = SequencingCosts(
-        sequencer=sequencer,
-        read_length=read_length,
+        pool_size=pool_size
     )
     sequencing_cost.save()
     sequencing_cost.sequencingprice_set.create(
@@ -105,14 +105,13 @@ class TestLibraryPreparationCostsModel(BaseTestCase):
 
 class TestSequencingCostsModel(BaseTestCase):
     def setUp(self):
-        self.sequencer = create_sequencer(get_random_name())
-        self.read_length = create_read_length(get_random_name())
+        self.pool_size = create_pool_size()
         organization = create_organization(get_random_name())
-        self.cost = create_sequencing_cost(self.sequencer, self.read_length, 10, organization)
+        self.cost = create_sequencing_cost(self.pool_size, 10, organization)
 
     def test_name(self):
         self.assertEqual(
-            str(self.cost), f"{self.sequencer.name} {self.read_length.name}"
+            str(self.cost), f"{self.pool_size.sequencer.name} - {self.pool_size.sequencer.lanes}×{self.pool_size.size}M"
         )
         self.assertEqual(self.cost.sequencingprice_set.first().price_amount, f"{self.sequencingprice_set.first().price} €")
 
@@ -211,10 +210,9 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
         self.create_user()
         self.login()
 
-        sequencer = create_sequencer(get_random_name())
-        read_length = create_read_length(get_random_name())
+        pool_size = create_pool_size()
         self.organization = create_organization(get_random_name())
-        self.cost = create_sequencing_cost(sequencer, read_length, 10, self.organization)
+        self.cost = create_sequencing_cost(pool_size, 10, self.organization)
 
     def test_costs_list(self):
         """Ensure get sequencing costs list behaves correctly."""
@@ -261,13 +259,13 @@ class TestInvoicingViewSet(BaseAPITestCase):
     #     InvoicingReport.objects.all().delete()
 
     def test_billing_periods_list(self):
-        sequencer = create_sequencer(get_random_name())
+        pool_size = create_pool_size()
 
-        flowcell1 = create_flowcell(get_random_name(), sequencer)
+        flowcell1 = create_flowcell(get_random_name(), pool_size)
         flowcell1.create_time = timezone.datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell1.save()
 
-        flowcell2 = create_flowcell(get_random_name(), sequencer)
+        flowcell2 = create_flowcell(get_random_name(), pool_size)
         flowcell2.create_time = timezone.datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
         flowcell2.save()
 

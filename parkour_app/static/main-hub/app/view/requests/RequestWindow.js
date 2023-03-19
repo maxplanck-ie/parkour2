@@ -115,6 +115,19 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 store: 'Bioinformaticians',
               },
               {
+                xtype: 'combobox',
+                itemId: 'pool-size-user-cb',
+                name: 'pool_size_user',
+                queryMode: 'local',
+                valueField: 'id',
+                displayField: 'name',
+                fieldLabel: 'Seq. Kit',
+                emptyText: 'Sequencing kit',
+                allowBlank: false,
+                forceSelection: true,
+                store: 'PoolSizes',
+              },
+              {
                 name: 'description',
                 xtype: 'textarea',
                 fieldLabel: 'Description',
@@ -199,7 +212,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
         itemId: 'libraries-in-request-grid',
         title: 'Libraries/Samples',
         width: 375,
-        height: 515,
+        height: 510,
         padding: '12px 15px 15px 0',
         rowspan: 2,
         viewConfig: {

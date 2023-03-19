@@ -59,7 +59,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
   beforeSelect: function () {
     if (!Ext.getCmp('poolSizeCb').getValue()) {
       new Noty({
-        text: 'A Pool Size must be set.',
+        text: 'A Sequencing Kit must be set.',
         type: 'warning'
       }).show();
       return false;
@@ -156,7 +156,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
     if (!Ext.getCmp('poolSizeCb').getValue()) {
       new Noty({
-        text: 'Pool Size must be set.',
+        text: 'A Sequencing Kit must be set.',
         type: 'warning'
       }).show();
       return false;

@@ -59,7 +59,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         organization_id = self.request.query_params.get("organization", None)
 
         flowcell_qs = Flowcell.objects.select_related(
-            "sequencer",
+            "pool_size",
         ).order_by("flowcell_id")
 
         libraries_qs = (
@@ -218,7 +218,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         header = [
             "Request ID",
             "Cost Unit",
-            "Sequencer",
+            "Sequencing kit",
             "Date + Flowcell ID",
             "Pool ID",
             "% of Lanes",
@@ -237,8 +237,8 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             row_num += 1
 
             # cost_units = '; '.join(sorted(item['cost_unit']))
-            sequencers = "; ".join(
-                sorted(list({x["sequencer_name"] for x in item["sequencer"]}))
+            pool_sizes = "; ".join(
+                sorted(list({x["pool_size_name"] for x in item["pool_size"]}))
             )
             flowcells = "; ".join(item["flowcell"])
             pools = "; ".join(item["pool"])
@@ -263,7 +263,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             row = [
                 item["request"],
                 item["cost_unit"],
-                sequencers,
+                pool_sizes,
                 flowcells,
                 pools,
                 percentage,
@@ -301,12 +301,12 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         # Fourth sheet
         ws = wb.add_sheet("Sequencing Costs")
         row_num = 0
-        header = ["Sequencer + Read Length", "Price"]
+        header = ["Sequencing Kit", "Price"]
         write_header(ws, row_num, header)
         for item in SequencingCosts.objects.filter(sequencingprice__organization=organization):
             row_num += 1
             row = [
-                f"{item.sequencer.name} {item.read_length.name}",
+                str(item.pool_size),
                 item.sequencingprice_set.get(organization=organization).price,
             ]
             write_row(ws, row_num, row)
@@ -353,7 +353,7 @@ class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelView
     """Get the list of Sequencing Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = SequencingCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
+    queryset = SequencingCosts.objects.filter(pool_size__sequencer__obsolete=settings.NON_OBSOLETE)
     serializer_class = SequencingCostsSerializer
 
     def get_serializer_context(self):

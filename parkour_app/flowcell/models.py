@@ -7,7 +7,6 @@ from request.models import Request
 class Sequencer(models.Model):
     name = models.CharField("Name", max_length=50)
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
-    lane_capacity = models.PositiveSmallIntegerField("Lane Capacity")
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     def __str__(self):
@@ -41,8 +40,10 @@ class Lane(models.Model):
 
 class Flowcell(DateTimeMixin):
     flowcell_id = models.CharField("Flowcell ID", max_length=50, unique=True)
-    sequencer = models.ForeignKey(
-        Sequencer, verbose_name="Sequencer", on_delete=models.SET_NULL, null=True
+    pool_size = models.ForeignKey(
+        'index_generator.PoolSize',
+        verbose_name="Pool Size",
+        on_delete=models.SET_NULL, null=True
     )
     lanes = models.ManyToManyField(Lane, related_name="flowcell", blank=True)
     requests = models.ManyToManyField(Request, related_name="flowcell", blank=True)

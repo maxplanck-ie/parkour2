@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
+from index_generator.models import PoolSize
 
 
 class LaneInline(admin.TabularInline):
@@ -53,13 +54,21 @@ class LaneInline(admin.TabularInline):
         return False
 
 
+class PoolSizeInline(admin.TabularInline):
+    model = PoolSize
+    fields = ('size', 'obsolete',)
+    extra = 1
+    verbose_name = 'Lane size' # PoolSize as capacity/size of lane
+    verbose_name_plural = 'Lane sizes'
+
 @admin.register(Sequencer)
 class SequencerAdmin(admin.ModelAdmin):
-    list_display = ("name", "lanes", "lane_capacity", "obsolete_name")
+    list_display = ("name", "lanes", "obsolete_name")
     actions = (
         "mark_as_obsolete",
         "mark_as_non_obsolete",
     )
+    inlines = [PoolSizeInline]
 
     @admin.action(description="Mark sequencer as obsolete")
     def mark_as_obsolete(self, request, queryset):
@@ -78,10 +87,10 @@ class SequencerAdmin(admin.ModelAdmin):
 class FlowcellAdmin(admin.ModelAdmin):
     list_display = (
         "flowcell_id",
-        "sequencer",
+        "pool_size",
     )
     # search_fields = ('flowcell_id', 'sequencer',)
-    list_filter = ("sequencer",)
+    list_filter = ("pool_size",)
     exclude = (
         "lanes",
         "requests",

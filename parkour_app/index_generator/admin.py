@@ -75,7 +75,9 @@ class PoolAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(PoolSize)
+# Do not show in 'main' admin anymore, now used as inline for
+# lane capacity/size of Sequencer
+# @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
     list_display = ("name", "obsolete_name")
     actions = (
