@@ -42,8 +42,8 @@ class Report:
 
         self.requests = (
             Request.objects.select_related(
-                "user__organization",
-                "user__pi",
+                "cost_unit__organization",
+                "pi",
             )
             .prefetch_related(
                 Prefetch(
@@ -55,8 +55,8 @@ class Report:
                 "id",
                 "libraries",
                 "samples",
-                "user__organization__name",
-                "user__pi__name",
+                "cost_unit__organization__name",
+                "pi",
             )
         )
 
@@ -77,12 +77,12 @@ class Report:
 
         self.flowcells = (
             Flowcell.objects.select_related(
-                "sequencer",
+                "pool_size__sequencer",
             )
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
             )
-            .only("id", "sequencer__name", "lanes")
+            .only("id", "pool_size__sequencer__name", "lanes")
         )
 
     def get_total_counts(self):
@@ -106,7 +106,7 @@ class Report:
         counts = {}
 
         for req in self.requests:
-            organization = req.user.organization
+            organization = req.cost_unit.organization
             org_name = organization.name if organization else "None"
             if org_name not in counts.keys():
                 counts[org_name] = {"libraries": 0, "samples": 0}
@@ -163,7 +163,7 @@ class Report:
         counts = {}
 
         for flowcell in self.flowcells:
-            sequencer_name = flowcell.sequencer.name
+            sequencer_name = flowcell.pool_size.sequencer.name
             if sequencer_name not in counts.keys():
                 counts[sequencer_name] = {"libraries": 0, "samples": 0, "runs": 0}
             counts[sequencer_name]["runs"] += 1
@@ -186,12 +186,12 @@ class Report:
         return sorted(data, key=lambda x: x["name"])
 
     def get_sequencers_list(self):
-        return sorted({x.sequencer.name for x in self.flowcells})
+        return sorted({x.pool_size.sequencer.name for x in self.flowcells})
 
     def get_pi_sequencer_counts(self):
         sequencer_mapping = {}
         for flowcell in self.flowcells:  # gets records from flowcell
-            sequencer_name = flowcell.sequencer.name
+            sequencer_name = flowcell.pool_size.sequencer.name
             pools = {x.pool for x in flowcell.fetched_lanes}
             for pool in pools:
                 records = pool.fetched_libraries + pool.fetched_samples
