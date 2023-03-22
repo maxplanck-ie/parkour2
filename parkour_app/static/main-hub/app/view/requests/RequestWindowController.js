@@ -56,7 +56,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
       if (request.deep_seq_request_path !== '') {
         $('#approved-request-file').html(
-          '<span>Approved by PI <a href="javascript:void(0)" class="uploaded-request-link" title="Download confirmation of approval">🢃</a></span>'
+          '<span>Approved by PI <a href="javascript:void(0)" class="uploaded-request-link" title="Download confirmation of approval"><span class="fa fa-download fa-lg" style="padding-left=5px;"></span></a></span>'
         ).on('click', function () {
           var link = document.createElement('a');
           link.href = request.deep_seq_request_path;
