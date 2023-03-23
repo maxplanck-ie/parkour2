@@ -25,25 +25,32 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
     listeners: {
       beforeedit: function (editor, context, eOpts) {
 
+        var allowedColumns = [
+          'dilution_factor',
+          'concentration_facility',
+          'concentration_method_facility',
+          'sample_volume_facility',
+          'amount_facility',
+          'size_distribution_facility',
+          'comments_facility',
+          'qpcr_result_facility',
+          'rna_quality_facility'
+        ];
+
+        var isAllowedColumn = allowedColumns.includes(context.field);
+
         // If request is not submitted yet prevent editing and inform user
         if (!context.record.get('samples_submitted')) {
 
-          var allowedColumns = [
-            'dilution_factor',
-            'concentration_facility',
-            'concentration_method_facility',
-            'sample_volume_facility',
-            'amount_facility',
-            'size_distribution_facility',
-            'comments_facility',
-            'qpcr_result_facility',
-            'rna_quality_facility'
-          ];
-
-          if (allowedColumns.includes(context.field)) {
+          if (isAllowedColumn) {
             new Noty({ text: 'Beforing modifying a record, confirm that the request has been submitted.', type: 'warning' }).show();
           }
           return false;
+        }
+
+        // If pooled libraries, warn that cell cannot be edited
+        if (context.record.get('pooled_libraries') && isAllowedColumn) {
+          new Noty({ text: 'This field cannot be edited for pooled libraries.', type: 'warning' }).show();
         }
       }
     },
