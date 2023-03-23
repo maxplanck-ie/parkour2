@@ -22,6 +22,32 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
       qualityCheckMenuOptions: ['passed', 'compromised', 'failed']
     },
 
+    listeners: {
+      beforeedit: function (editor, context, eOpts) {
+
+        // If request is not submitted yet prevent editing and inform user
+        if (!context.record.get('samples_submitted')) {
+
+          var allowedColumns = [
+            'dilution_factor',
+            'concentration_facility',
+            'concentration_method_facility',
+            'sample_volume_facility',
+            'amount_facility',
+            'size_distribution_facility',
+            'comments_facility',
+            'qpcr_result_facility',
+            'rna_quality_facility'
+          ];
+
+          if (allowedColumns.includes(context.field)) {
+            new Noty({ text: 'Beforing modifying a record, confirm that the request has been submitted.', type: 'warning' }).show();
+          }
+          return false;
+        }
+      }
+    },
+
     header: {
       title: 'Incoming Libraries and Samples',
       items: [
@@ -69,6 +95,13 @@ Ext.define('MainHub.view.incominglibraries.IncomingLibraries', {
           width: 35,
           listeners: {
             checkchange: function (checkcolumn, rowIndex, checked, record, eOpts) {
+
+              // If request is not submitted yet prevent editing and inform user
+              if (!record.get('samples_submitted')) {
+                new Noty({ text: 'Beforing modifying a record, confirm that the request has been submitted.', type: 'warning' }).show();
+                record.set('selected', !checked)
+                return
+              }
               // If pool of libraries force select/unselect of all records in request
               if (record.get('pooled_libraries')) {
                 var grid = this.up('#incoming-libraries-grid');
