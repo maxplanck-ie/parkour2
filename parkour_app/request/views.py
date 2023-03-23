@@ -501,7 +501,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         post_data = self._get_post_data(request)
         instance.samples_submitted = post_data["result"]
-        instance.save(update_fields=["samples_submitted"])
+        # Set or unset time of request submission
+        if post_data["result"]:
+            instance.samples_submitted_time = timezone.now()
+        else:
+            instance.samples_submitted_time = None
+        instance.save(update_fields=["samples_submitted", "samples_submitted_time"])
         return Response({"success": True})
 
     @action(methods=["get"], detail=True)

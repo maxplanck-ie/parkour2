@@ -119,6 +119,11 @@ class Request(DateTimeMixin):
         default=False,
     )
 
+    samples_submitted_time = models.DateTimeField(verbose_name="Samples Submitted Time",
+                                                  null=True,
+                                                  default=None
+                                                  )
+
     sequenced = models.BooleanField(
         verbose_name="Sequenced",
         default=False,
