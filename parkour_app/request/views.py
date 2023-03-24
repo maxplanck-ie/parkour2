@@ -427,8 +427,8 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.libraries.all().update(status=1)
             instance.samples.all().update(status=1)
 
-            email_recipients = [instance.pi.email, instance.user.email] #+ \
-                            #list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
+            email_recipients = [instance.pi.email, instance.user.email] + \
+                            list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
 
             request.session_id = request.session._get_or_create_session_key()
 
