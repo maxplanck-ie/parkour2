@@ -9218,6 +9218,11 @@ a.library-preparation-download:active {
 .daterangepicker .x-btn-wrap-header-small.x-btn-arrow-right::after {
     color: #9e9e9e;
 }
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/usage/Usage.scss:5 */
+.download-report-button {
+    right: 0;
+    position: absolute;
+}
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/main/Main.scss:1 */
 a {
     color: #03b4d5;
@@ -14710,8 +14715,4 @@ hr {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1102 */
 .x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-first .x-btn-soft-cyan-small-mc {
     padding-right: 7px !important;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1106 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-middle {
-    border-right-width: 1px !important;
 }

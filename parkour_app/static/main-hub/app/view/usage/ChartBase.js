@@ -13,24 +13,26 @@ Ext.define('MainHub.view.usage.ChartBase', {
     width: '100%'
   },
 
-  tools: [{
-    type: 'print',
-    handler: function () {
-      var panel = this.up('panel');
-      var polar = panel.down('polar');
-      var cartesian = panel.down('cartesian');
+  // Get rid of functionality to download image, it relies on an
+  // external service
+  // tools: [{
+  //   type: 'print',
+  //   handler: function () {
+  //     var panel = this.up('panel');
+  //     var polar = panel.down('polar');
+  //     var cartesian = panel.down('cartesian');
 
-      if (polar) {
-        polar.download({
-          filename: panel.title
-        });
-      }
+  //     if (polar) {
+  //       polar.download({
+  //         filename: panel.title
+  //       });
+  //     }
 
-      if (cartesian) {
-        cartesian.download({
-          filename: panel.title
-        });
-      }
-    }
-  }]
+  //     if (cartesian) {
+  //       cartesian.download({
+  //         filename: panel.title
+  //       });
+  //     }
+  //   }
+  // }]
 });

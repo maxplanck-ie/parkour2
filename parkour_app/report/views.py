@@ -6,10 +6,12 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from django.db import connection
 from django.db.models import Prefetch
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
 from pandas import DataFrame
+
+from xlwt import Workbook, XFStyle
 
 from .sql import LIBRARY_SELECT, QUERY, SAMPLE_JOINS, SAMPLE_SELECT
 
@@ -27,18 +29,22 @@ Lane = apps.get_model("flowcell", "Lane")
 
 
 class Report:
-    def __init__(self, start, end):
+    def __init__(self, start, end, status):
         libraries_qs = (
-            Library.objects.select_related("library_protocol")
-            .only("id", "library_protocol__name")
-            .filter(create_time__gt=start, create_time__lt=end)
+            Library.objects.select_related("library_protocol", "library_type")
+            .filter(request__samples_submitted_time__gte=start, request__samples_submitted_time__lte=end)
+            .only("id", "library_protocol__name", "library_type__name")
         )
 
         samples_qs = (
-            Sample.objects.select_related("library_protocol")
-            .only("id", "library_protocol__name")
-            .filter(create_time__gt=start, create_time__lt=end)
+            Sample.objects.select_related("library_protocol", "library_type")
+            .filter(request__samples_submitted_time__gte=start, request__samples_submitted_time__lte=end)
+            .only("id", "library_protocol__name", "library_type__name")
         )
+
+        if status != '0':
+            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
+            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
 
         self.requests = (
             Request.objects.select_related(
@@ -51,6 +57,7 @@ class Report:
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
+            .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
             .only(
                 "id",
                 "libraries",
@@ -69,7 +76,9 @@ class Report:
                     to_attr="fetched_libraries",
                 ),
                 Prefetch(
-                    "pool__samples", queryset=samples_qs, to_attr="fetched_samples"
+                    "pool__samples",
+                    queryset=samples_qs,
+                    to_attr="fetched_samples"
                 ),
             )
             .only("id", "pool__libraries", "pool__samples")
@@ -80,8 +89,11 @@ class Report:
                 "pool_size__sequencer",
             )
             .prefetch_related(
-                Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
+                Prefetch("lanes",
+                         queryset=lanes_qs,
+                         to_attr="fetched_lanes"),
             )
+            .filter(requests__samples_submitted_time__gte=start, requests__samples_submitted_time__lte=end)
             .only("id", "pool_size__sequencer__name", "lanes")
         )
 
@@ -89,16 +101,35 @@ class Report:
         data = []
         num_libraries = 0
         num_samples = 0
+        num_libraries_failed = 0
+        num_libraries_compromised = 0
+        num_samples_failed = 0
+        num_samples_compromised = 0
 
         for req in self.requests:
-            num_libraries += len(req.fetched_libraries)
-            num_samples += len(req.fetched_samples)
+            fetched_libraries = req.fetched_libraries
+            num_libraries += len(fetched_libraries)
+            num_libraries_failed += len([l for l in fetched_libraries if l.status == -1])
+            num_libraries_compromised += len([l for l in fetched_libraries if l.status == -2])
+            fetched_samples = req.fetched_samples
+            num_samples += len(fetched_samples)
+            num_samples_failed += len([s for s in fetched_samples if s.status == -1])
+            num_samples_compromised += len([s for s in fetched_samples if s.status == -2])
 
-        if num_samples > 0:
-            data.append({"type": "Samples", "count": num_samples})
+        data.append({"type": "Samples", 
+                        "count": num_samples, 
+                        'count_failed': num_samples_failed,
+                        'count_compromised': num_samples_compromised})
 
-        if num_libraries > 0:
-            data.append({"type": "Libraries", "count": num_libraries})
+        data.append({"type": "Libraries", 
+                        "count": num_libraries,
+                        'count_failed': num_libraries_failed,
+                        'count_compromised': num_libraries_compromised})
+        
+        data.append({"type": "Samples + Libraries", 
+            "count": num_samples + num_libraries,
+            'count_failed': num_samples_failed + num_libraries_failed,
+            'count_compromised': num_samples_compromised + num_libraries_compromised})
 
         return data
 
@@ -109,9 +140,10 @@ class Report:
             organization = req.cost_unit.organization
             org_name = organization.name if organization else "None"
             if org_name not in counts.keys():
-                counts[org_name] = {"libraries": 0, "samples": 0}
+                counts[org_name] = {"libraries": 0, "samples": 0, "total": 0}
             counts[org_name]["libraries"] += len(req.fetched_libraries)
             counts[org_name]["samples"] += len(req.fetched_samples)
+            counts[org_name]["total"] += len(req.fetched_libraries) + len(req.fetched_samples)
 
         return self._get_data(counts)
 
@@ -139,9 +171,42 @@ class Report:
             }
 
             for k, v in count.items():
-                temp_dict = counts.get(k, {"libraries": 0, "samples": 0})
+                temp_dict = counts.get(k, {"libraries": 0, "samples": 0, "total": 0})
                 temp_dict["libraries"] += v["libraries"]
                 temp_dict["samples"] += v["samples"]
+                temp_dict["total"] += v["libraries"] + v["samples"]
+                counts[k] = temp_dict
+
+        return self._get_data(counts)
+
+    def get_library_type_counts(self):
+
+        counts = {}
+        for req in self.requests:
+            # Extract Library Types
+            library_types = [x.library_type.name for x in req.fetched_libraries]
+            sample_types = [x.library_type.name for x in req.fetched_samples]
+
+            # Merge the counts
+            library_cnt = {
+                x[0]: {"libraries": x[1]} for x in Counter(library_types).items()
+            }
+            sample_cnt = {
+                x[0]: {"samples": x[1]} for x in Counter(sample_types).items()
+            }
+            count = {
+                k: {
+                    **library_cnt.get(k, {"libraries": 0}),
+                    **sample_cnt.get(k, {"samples": 0}),
+                }
+                for k in library_cnt.keys() | sample_cnt.keys()
+            }
+
+            for k, v in count.items():
+                temp_dict = counts.get(k, {"libraries": 0, "samples": 0, "total": 0})
+                temp_dict["libraries"] += v["libraries"]
+                temp_dict["samples"] += v["samples"]
+                temp_dict["total"] += v["libraries"] + v["samples"]
                 counts[k] = temp_dict
 
         return self._get_data(counts)
@@ -153,9 +218,10 @@ class Report:
             pi = req.pi
             pi_name = pi.full_name if pi else "None"
             if pi_name not in counts.keys():
-                counts[pi_name] = {"libraries": 0, "samples": 0}
+                counts[pi_name] = {"libraries": 0, "samples": 0, "total": 0}
             counts[pi_name]["libraries"] += len(req.fetched_libraries)
             counts[pi_name]["samples"] += len(req.fetched_samples)
+            counts[pi_name]["total"] += len(req.fetched_libraries) + len(req.fetched_samples)
 
         return self._get_data(counts)
 
@@ -216,6 +282,75 @@ class Report:
             for sequencer_name in v:
                 try:
                     pairs.append((pi_mapping[k], sequencer_name))
+                except KeyError:  # KeyError if record exists under flowcell but the correspond. request was deleted.
+                    pass  # could add a warning pop-up here
+        counts = Counter(pairs)
+
+        data = {}
+        for item, count in counts.items():
+            if item[0] not in data:
+                data[item[0]] = {}
+            data[item[0]][item[1]] = count
+
+        return OrderedDict(sorted(data.items()))
+
+    def get_sequencing_kit_counts(self):
+        counts = {}
+
+        for flowcell in self.flowcells:
+            sequencing_kit_name = str(flowcell.pool_size)
+            if sequencing_kit_name not in counts.keys():
+                counts[sequencing_kit_name] = {"libraries": 0, "samples": 0, "runs": 0}
+            counts[sequencing_kit_name]["runs"] += 1
+
+            pools = {x.pool for x in flowcell.fetched_lanes}
+            for pool in pools:
+                counts[sequencing_kit_name]["libraries"] += len(pool.fetched_libraries)
+                counts[sequencing_kit_name]["samples"] += len(pool.fetched_samples)
+
+        data = [
+            {
+                "name": name,
+                "items_count": count["libraries"] + count["samples"],
+                "runs_count": count["runs"],
+            }
+            for name, count in counts.items()
+            if count["libraries"] + count["samples"] > 0
+        ]
+
+        return sorted(data, key=lambda x: x["name"])
+
+    def get_sequencing_kit_list(self):
+        return sorted({str(x.pool_size) for x in self.flowcells})
+
+    def get_pi_sequencing_kit_counts(self):
+        sequencer_mapping = {}
+        for flowcell in self.flowcells:  # gets records from flowcell
+            sequencing_kit_name = str(flowcell.pool_size)
+            pools = {x.pool for x in flowcell.fetched_lanes}
+            for pool in pools:
+                records = pool.fetched_libraries + pool.fetched_samples
+                for record in records:
+                    if record not in sequencer_mapping:
+                        sequencer_mapping[record] = []
+                    sequencer_mapping[record].append(sequencing_kit_name)
+        items = sequencer_mapping.keys()
+
+        pi_mapping = {}
+        for req in self.requests:  # gets records from requests
+            pi = req.pi
+            pi_name = pi.full_name if pi else "None"
+            records = req.fetched_libraries + req.fetched_samples
+
+            pi_mapping.update(
+                {record: pi_name for record in records if record in items}
+            )
+
+        pairs = []
+        for k, v in sequencer_mapping.items():
+            for sequencing_kit_name in v:
+                try:
+                    pairs.append((pi_mapping[k], sequencing_kit_name))
                 except KeyError:  # KeyError if record exists under flowcell but the correspond. request was deleted.
                     pass  # could add a warning pop-up here
         counts = Counter(pairs)
@@ -335,12 +470,143 @@ class Report:
                 "name": name,
                 "libraries_count": count["libraries"],
                 "samples_count": count["samples"],
+                "total_count": count["total"],
             }
             for name, count in counts.items()
             if count["libraries"] + count["samples"] > 0
         ]
 
         return sorted(data, key=lambda x: x["name"])
+
+
+def download_report(data, start, end, status):
+        """Generate Report as XLS file"""
+
+        font_style = XFStyle()
+        font_style.alignment.wrap = 1
+        font_style_bold = XFStyle()
+        font_style_bold.font.bold = True
+        font_style_bold_underline = XFStyle()
+        font_style_bold_underline.font.bold = True
+        font_style_bold_underline.font.underline = True
+
+        wb = Workbook(encoding="utf-8")
+        ws = wb.add_sheet("Report")
+
+        sections = {
+            'total_counts': {
+                'section_header': 'Total counts',
+                'columns': [('type', 'Type'),
+                            ('count', 'Total count'),
+                            ('count_compromised', 'Count compromised'),
+                            ('count_failed', 'Count failed')]
+            },
+            'organization_counts': {
+                'section_header': 'Organization Counts',
+                'columns': [('name', 'Organization'),
+                            ('total_count', 'Samples + Libraries'),
+                            ('samples_count', 'Samples'),
+                            ('libraries_count', 'Libraries')
+                            ]
+            },
+            'protocol_counts': {
+                'section_header': 'Protocol Counts',
+                'columns': [('name', 'Protocol'),
+                            ('total_count', 'Samples + Libraries'),
+                            ('samples_count', 'Samples'),
+                            ('libraries_count', 'Libraries')]
+            },
+            'library_type_counts': {
+                'section_header': 'Library Type Counts',
+                'columns': [('name', 'Library Type'),
+                            ('total_count', 'Samples + Libraries'),
+                            ('samples_count', 'Samples'),
+                            ('libraries_count', 'Libraries')]
+            },
+            'pi_counts': {
+                'section_header': 'Principal Investigator Counts',
+                'columns': [('name', 'Principal Investigator'),
+                            ('total_count', 'Samples + Libraries'),
+                            ('samples_count', 'Samples'),
+                            ('libraries_count', 'Libraries')]
+            },
+            'sequencer_counts': {
+                'section_header': 'Sequencer Counts',
+                'columns': [('name', 'Sequencer'),
+                            ('items_count', 'Libraries + Samples'),
+                            ('runs_count', 'Runs')]
+            },
+            'libraries_on_sequencers_counts': {
+                'section_header': 'Libraries on Sequencers',
+                'columns': [('pi', 'Principal Investigator')]
+            },
+            'sequencing_kit_counts': {
+                'section_header': 'Sequencing Kit Counts',
+                'columns': [('name', 'Sequencing Kit'),
+                            ('items_count', 'Libraries + Samples'),
+                            ('runs_count', 'Runs')]
+            },
+            'libraries_on_sequencing_kit_counts': {
+                'section_header': 'Libraries on Sequencing Kit',
+                'columns': [('pi', 'Principal Investigator')]
+            }
+        }
+
+        row_num = 0
+
+        ws.write(row_num, 0, 'Start date', font_style_bold)
+        ws.write(row_num, 1, start.strftime('%d.%m.%Y'), font_style)
+        row_num += 1
+        ws.write(row_num, 0, 'End date', font_style_bold)
+        ws.write(row_num, 1, end.strftime('%d.%m.%Y'), font_style)
+        row_num += 1
+        if status == '0':
+            message = 'All samples/libraries that were SUBMITTED ' \
+                      'in the selected date range are shown.'
+        else:
+            message = 'Only samples/libraries that passed the ' \
+                      'library preparation stage and were SUBMITTED ' \
+                      'in the selected date range are shown.'
+        ws.write(row_num, 0, message, font_style)
+
+        row_num += 2
+
+        for section_name, section_headers in sections.items():
+
+            section_data = data[section_name]
+            section_main_header = section_headers['section_header']
+            section_column_names = [c[1] for c in section_headers['columns']]
+            section_column_ids = [c[0] for c in section_headers['columns']]
+
+            # Write main section header
+            ws.write(row_num, 0, section_main_header, font_style_bold_underline)
+            row_num += 2 # Skip one row
+
+            # Write column headers
+            if section_name == 'libraries_on_sequencers_counts':
+                section_column_names = section_column_names + data['sequencers_list']
+                section_column_ids = section_column_ids + data['sequencers_list']
+                section_data = [{**{'pi': pi}, **{s: count.get(s, 0) for s in data['sequencers_list']}} for pi, count in section_data.items()]
+            elif section_name == 'libraries_on_sequencing_kit_counts':
+                section_column_names = section_column_names + data['sequencing_kit_list']
+                section_column_ids = section_column_ids + data['sequencing_kit_list']
+                section_data = [{**{'pi': pi}, **{s: count.get(s, 0) for s in data['sequencing_kit_list']}} for pi, count in section_data.items()]
+
+            for i, column_name in enumerate(section_column_names):
+                ws.write(row_num, i, column_name, font_style_bold)
+                ws.col(i).width = 8000
+
+            # Write data columns
+            for d in section_data:
+                row_num += 1
+                col_num = 0
+                for column_id in section_column_ids:
+                    ws.write(row_num, col_num, d[column_id], font_style)
+                    col_num += 1
+
+            row_num += 3
+
+        return wb
 
 
 @login_required
@@ -351,6 +617,10 @@ def report(request):
     now = timezone.now()
     start = request.GET.get("start", now)
     end = request.GET.get("end", now)
+
+    download = request.GET.get("download", False)
+    download = True if download else False
+    status = request.GET.get("status", '0')
 
     try:
         start = (
@@ -373,7 +643,7 @@ def report(request):
     if start > end:
         start = end.replace(hour=0, minute=0)
 
-    report = Report(start, end)
+    report = Report(start, end, status)
 
     # Total Sample Count
     data["total_counts"] = report.get_total_counts()
@@ -384,6 +654,9 @@ def report(request):
     # Count by Library Protocol
     data["protocol_counts"] = report.get_library_protocol_counts()
 
+    # Count by Library Type
+    data["library_type_counts"] = report.get_library_type_counts()
+
     # Count by Principal Investigator
     data["pi_counts"] = report.get_pi_counts()
 
@@ -392,10 +665,27 @@ def report(request):
 
     # Count by PI and Sequencer
     data["sequencers_list"] = report.get_sequencers_list()
-    data["libraries_on_sequencers_count"] = report.get_pi_sequencer_counts()
+    data["libraries_on_sequencers_counts"] = report.get_pi_sequencer_counts()
+
+    # Count by Sequencing Kit
+    data["sequencing_kit_counts"] = report.get_sequencing_kit_counts()
+
+    # Count by PI and Sequencing Kit
+    data["sequencing_kit_list"] = report.get_sequencing_kit_list()
+    data["libraries_on_sequencing_kit_counts"] = report.get_pi_sequencing_kit_counts()
 
     # Count days
     # data["turnaround"] = report.get_turnaround()
+
+    if download:
+        wb = download_report(data, start, end, status)
+
+        filename = f"Report_{start.strftime('%d%m%Y')}_{end.strftime('%d%m%Y')}.xls"
+        response = HttpResponse(content_type="application/ms-excel")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        wb.save(response)
+        return response
 
     return render(request, "report.html", data)
 

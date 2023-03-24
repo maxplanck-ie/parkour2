@@ -6,6 +6,7 @@ from django.utils import timezone
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from report.views import report
 
 Request = apps.get_model("request", "Request")
 LibraryType = apps.get_model("library_sample_shared", "LibraryType")
@@ -45,18 +46,23 @@ class RecordsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        status = request.query_params.get('status', '0')
 
         libraries = Library.objects.filter(
             request__isnull=False,
-            create_time__gte=start,
-            create_time__lte=end,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
         ).only("id")
 
         samples = Sample.objects.filter(
             request__isnull=False,
-            create_time__gte=start,
-            create_time__lte=end,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
         ).only("id")
+
+        if status != '0':
+            samples = samples.exclude(status__gte=0, status__lte=2)
+            libraries = libraries.exclude(status__gte=0, status__lte=2)
 
         return Response(
             [
@@ -77,9 +83,22 @@ class OrganizationsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        status = request.query_params.get('status', '0')
 
-        libraries_qs = Library.objects.only("id")
-        samples_qs = Sample.objects.only("id")
+        libraries_qs = Library.objects.filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id")
+        samples_qs = Sample.objects.filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id")
+
+        if status != '0':
+            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
+            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
 
         requests = (
             Request.objects.select_related(
@@ -92,8 +111,8 @@ class OrganizationsUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .filter(create_time__gte=start, create_time__lte=end)
-            .only("id", "cost_unit", "libraries", "samples")
+            .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
+            .only("id", "cost_unit__organization__name", "libraries", "samples")
         )
 
         counts = {}
@@ -118,9 +137,22 @@ class PrincipalInvestigatorsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        status = request.query_params.get('status', '0')
 
-        libraries_qs = Library.objects.only("id")
-        samples_qs = Sample.objects.only("id")
+        libraries_qs = Library.objects.filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id")
+        samples_qs = Sample.objects.filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id")
+
+        if status != '0':
+            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
+            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
 
         requests = (
             Request.objects
@@ -130,7 +162,7 @@ class PrincipalInvestigatorsUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .filter(create_time__gte=start, create_time__lte=end)
+            .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
             .only("id", "libraries", "samples")
         )
 
@@ -162,13 +194,25 @@ class LibraryTypesUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
+        status = request.query_params.get('status', '0')
 
-        libraries_qs = Library.objects.select_related("library_type").only(
-            "id", "library_type__name"
-        )
-        samples_qs = Sample.objects.select_related("library_type").only(
-            "id", "library_type__name"
-        )
+        libraries_qs = Library.objects. \
+        select_related("library_type"). \
+        filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id", "library_type__name")
+        samples_qs = Sample.objects.select_related("library_type"). \
+        filter(
+            request__isnull=False,
+            request__samples_submitted_time__gte=start,
+            request__samples_submitted_time__lte=end,
+        ).only("id", "library_type__name")
+
+        if status != '0':
+            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
+            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
 
         requests = (
             Request.objects.prefetch_related(
@@ -177,7 +221,7 @@ class LibraryTypesUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .filter(create_time__gte=start, create_time__lte=end)
+            .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
             .only("id", "libraries", "samples")
         )
 
@@ -220,3 +264,15 @@ class LibraryTypesUsage(APIView):
 
         data = sorted(data, key=lambda x: x["name"])
         return Response(data)
+
+class UsageReport(APIView):
+
+    permission_classes = (IsAdminUser,)
+
+    def get(self, request):
+
+        request.GET = request.GET.copy()
+        request.GET['download'] = 'true'
+        request.GET['status'] = request.query_params.get('status', '0')
+
+        return report(request)
