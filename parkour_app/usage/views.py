@@ -3,7 +3,7 @@ from collections import Counter
 from django.apps import apps
 from django.db.models import Prefetch
 from django.utils import timezone
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from report.views import report
@@ -12,6 +12,12 @@ Request = apps.get_model("request", "Request")
 LibraryType = apps.get_model("library_sample_shared", "LibraryType")
 Library = apps.get_model("library", "Library")
 Sample = apps.get_model("sample", "Sample")
+
+class IsMemberBcf(BasePermission):
+
+    def has_permission(self, request, view):
+
+        return request.user.member_of_bcf
 
 
 def get_date_range(request, format):
@@ -42,7 +48,7 @@ def get_date_range(request, format):
 
 
 class RecordsUsage(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAdminUser|IsMemberBcf]
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
@@ -79,7 +85,7 @@ class RecordsUsage(APIView):
 
 
 class OrganizationsUsage(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAdminUser|IsMemberBcf]
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
@@ -133,7 +139,7 @@ class OrganizationsUsage(APIView):
 
 
 class PrincipalInvestigatorsUsage(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAdminUser|IsMemberBcf]
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
@@ -190,7 +196,7 @@ class PrincipalInvestigatorsUsage(APIView):
 
 
 class LibraryTypesUsage(APIView):
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAdminUser|IsMemberBcf]
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
@@ -267,7 +273,7 @@ class LibraryTypesUsage(APIView):
 
 class UsageReport(APIView):
 
-    permission_classes = (IsAdminUser,)
+    permission_classes = [IsAdminUser|IsMemberBcf]
 
     def get(self, request):
 

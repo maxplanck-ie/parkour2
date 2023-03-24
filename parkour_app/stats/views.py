@@ -11,6 +11,7 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
+from usage.views import IsMemberBcf
 from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
 
@@ -24,7 +25,7 @@ Lane = apps.get_model("flowcell", "Lane")
 
 
 class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|IsMemberBcf]
     serializer_class = RunsSerializer
 
     def get_queryset(self):
@@ -165,7 +166,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminUser|IsMemberBcf]
     serializer_class = SequencesSerializer
 
     def get_queryset(self):

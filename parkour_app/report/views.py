@@ -610,7 +610,7 @@ def download_report(data, start, end, status):
 
 
 @login_required
-@staff_member_required
+# @staff_member_required
 def report(request):
     data = {}
 
