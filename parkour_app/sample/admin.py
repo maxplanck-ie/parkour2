@@ -88,6 +88,7 @@ class SampleAdmin(admin.ModelAdmin):
                     "concentration",
                     "concentration_method",
                     "organism",
+                    "source",
                     "read_length",
                     "sequencing_depth",
                     "equal_representation_nucleotides",

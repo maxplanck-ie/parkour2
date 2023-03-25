@@ -306,6 +306,12 @@ class GenericLibrarySample(DateTimeMixin):
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
 
+    source = models.CharField(
+        "Source",
+        max_length=200,
+        blank=True,
+    )
+
     concentration = models.FloatField("Concentration")
 
     concentration_method = models.ForeignKey(

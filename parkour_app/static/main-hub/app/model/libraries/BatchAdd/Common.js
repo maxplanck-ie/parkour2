@@ -89,6 +89,10 @@ Ext.define('MainHub.model.libraries.BatchAdd.Common', {
         },
         {
             type: 'string',
+            name: 'source'
+        },
+        {
+            type: 'string',
             name: 'comments'
         },
         {
@@ -117,6 +121,7 @@ Ext.define('MainHub.model.libraries.BatchAdd.Common', {
         sequencing_depth: 'greaterthanzero',
         amplification_cycles: 'presence',
         concentration_method: 'presence',
-        organism: 'presence'
+        organism: 'presence',
+        source: 'presence'
     }
 });

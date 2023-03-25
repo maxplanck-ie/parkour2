@@ -145,6 +145,7 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "library_type",
             "library_type_name",
             "organism",
+            "source",
             "equal_representation_nucleotides",
             "sample_volume_user",
             "concentration",
