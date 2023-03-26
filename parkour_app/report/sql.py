@@ -31,10 +31,21 @@ FROM (
         record.name AS "Name",
         record.barcode AS "Barcode",
         record.status AS "Status",
-        record.concentration AS "Concentration",
+        record.concentration AS "Concentration (User)",
+        record.sample_volume_user AS "Sample Volume (User)",
         record.sequencing_depth AS "Sequencing Depth",
         record.equal_representation_nucleotides AS "Equal Representation of Nucleotides",
-        record.index_reads AS "Index Reads",
+        (
+            CASE
+                WHEN record.index_reads = 5
+                    THEN 'I5'
+                WHEN record.index_reads = 7
+                    THEN 'I7'
+                WHEN record.index_reads = 75
+                    THEN 'I5 + I7'
+                ELSE NULL
+            END
+        ) AS "Index Reads",
         record.index_i7 AS "Index I7",
         record.index_i5 AS "Index I5",
         record.amplification_cycles AS "Amplification Cycles",
@@ -43,6 +54,7 @@ FROM (
         record.sample_volume_facility AS "Sample Volume (Facility)",
         record.amount_facility AS "Amount (Facility)",
         record.size_distribution_facility AS "Size Distribution (Facility)",
+        record.source AS "Source",
 
         (
             SELECT concat(i.prefix, i.number)
@@ -69,6 +81,7 @@ FROM (
 
         r.name AS "Request",
         concat(u.first_name, ' ', u.last_name) AS "User",
+        concat(bu.first_name, ' ', bu.last_name) AS "Bioinformatician",
         lp.name AS "Library Protocol",
         lt.name AS "Library Type",
         o.name AS "Organism",
@@ -78,7 +91,13 @@ FROM (
         cmf.name AS "Concentration Method (Facility)",
         pooling.concentration_c1 AS "Concentration C1",
         p.name AS "Pool",
-        concat(pseq.lanes, '×', psize.size, 'M') AS "Sequencing Kit",
+        (
+            CASE
+                WHEN psize IS NOT NULL
+                THEN concat(psize.lanes, '×', psize.size, 'M') 
+                ELSE NULL
+            END
+        ) AS "Sequencing Kit",
 
 
         /* Sample-specific fields */
@@ -94,6 +113,9 @@ FROM (
 
     LEFT JOIN auth_user as u
         ON r.user_id = u.id
+
+    LEFT JOIN auth_user as bu
+        ON r.bioinformatician_id = bu.id
 
     LEFT JOIN library_sample_shared_libraryprotocol as lp
         ON record.library_protocol_id = lp.id
@@ -124,9 +146,6 @@ FROM (
 
     LEFT JOIN index_generator_poolsize as psize
         ON p.size_id = psize.id
-
-    LEFT JOIN flowcell_sequencer as pseq
-        ON psize.sequencer_id = pseq.id
 
     LEFT JOIN pooling_pooling as pooling
         ON record.id = pooling.{table_name}_id

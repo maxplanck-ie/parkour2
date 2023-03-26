@@ -698,7 +698,7 @@ def database(request):
 
 # @print_sql_queries
 @login_required
-@staff_member_required
+# @staff_member_required
 def database_data(request):
     with connection.cursor() as c:
         query = QUERY.format(
@@ -735,9 +735,11 @@ def database_data(request):
         "Status",
         "Request",
         "User",
+        "Bioinformatician",
         "Library Type",
         "Library Protocol",
-        "Concentration",
+        "Concentration (User)",
+        "Sample Volume (User)",
         "Sequencing Depth",
         "Read Length",
         "Concentration Method",
@@ -757,6 +759,7 @@ def database_data(request):
         "Concentration Method (Facility)",
         "RNA Quality (Facility)",
         "Organism",
+        "Source",
         "Concentration C1",
         "RNA Quality",
         "Nucleic Acid Type",

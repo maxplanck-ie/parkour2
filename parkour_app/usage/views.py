@@ -6,7 +6,7 @@ from django.utils import timezone
 from rest_framework.permissions import IsAdminUser, BasePermission
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from report.views import report
+from report.views import report, database_data
 
 Request = apps.get_model("request", "Request")
 LibraryType = apps.get_model("library_sample_shared", "LibraryType")
@@ -282,3 +282,12 @@ class UsageReport(APIView):
         request.GET['status'] = request.query_params.get('status', '0')
 
         return report(request)
+
+
+class DbData(APIView):
+
+    permission_classes = [IsAdminUser|IsMemberBcf]
+
+    def get(self, request):
+
+        return database_data(request)
