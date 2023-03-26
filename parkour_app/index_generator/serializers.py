@@ -30,10 +30,10 @@ class PoolSizeSerializer(ModelSerializer):
         )
 
     def get_name(self, obj):
-        return f"{obj.sequencer} - {obj.sequencer.lanes}×{obj.size}M"
+        return obj.name
 
     def get_multiplier(self, obj):
-        return obj.sequencer.lanes
+        return obj.lanes
 
 class IndexGeneratorListSerializer(ListSerializer):
     def update(self, instance, validated_data):

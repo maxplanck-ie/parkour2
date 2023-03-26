@@ -203,7 +203,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
-            .filter(size__sequencer__lanes__gt=F("loaded"))
+            .filter(size__lanes__gt=F("loaded"))
             .order_by("pk")
         )
 

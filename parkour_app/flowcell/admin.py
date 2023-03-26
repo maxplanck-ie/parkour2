@@ -56,14 +56,14 @@ class LaneInline(admin.TabularInline):
 
 class PoolSizeInline(admin.TabularInline):
     model = PoolSize
-    fields = ('size', 'obsolete',)
+    fields = ('size', 'lanes', 'obsolete',)
     extra = 1
-    verbose_name = 'Lane size' # PoolSize as capacity/size of lane
-    verbose_name_plural = 'Lane sizes'
+    verbose_name = 'Sequencing kit' # PoolSize as Sequencing kit
+    verbose_name_plural = 'Sequencing kits'
 
 @admin.register(Sequencer)
 class SequencerAdmin(admin.ModelAdmin):
-    list_display = ("name", "lanes", "obsolete_name")
+    list_display = ("name", "obsolete_name")
     actions = (
         "mark_as_obsolete",
         "mark_as_non_obsolete",

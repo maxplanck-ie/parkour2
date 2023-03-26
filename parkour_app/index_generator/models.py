@@ -6,28 +6,39 @@ from django.db import models
 from library.models import Library
 from sample.models import Sample
 
+from math import log, floor
+from decimal import Decimal
 
 class PoolSize(models.Model):
     sequencer = models.ForeignKey('flowcell.Sequencer',
                                   verbose_name='Sequencer',
                                   null=True,
                                   on_delete=models.SET_NULL)
-    size = models.PositiveSmallIntegerField("Size")
+    size = models.PositiveSmallIntegerField("Size (in million reads)")
+    lanes = models.PositiveSmallIntegerField("Number of Lanes")
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
         ordering = ["sequencer", "size"]
+        constraints = [
+            models.UniqueConstraint(fields=['sequencer', 'size', 'lanes', 'obsolete'],
+                                    name='unique_pool_size')
+        ]
 
     def __str__(self):
-        return f"{self.sequencer} - {self.sequencer.lanes}×{self.size}M"
+        size = Decimal(self.size)
+        prefixes = ['M', 'G', 'T', 'P']
+        k = Decimal(1000)
+        magnitude = int(floor(log(size, k)))
+        return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}"
 
     @property
     def name(self):
-        return f"{self.sequencer} - {self.sequencer.lanes}×{self.size}M"
+        return self.__str__()
 
     @property
     def multiplier(self):
-        return self.sequencer.lanes
+        return self.lanes
 
 
 def get_sentinel_user():

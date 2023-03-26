@@ -26,7 +26,6 @@ class SequencerSerializer(ModelSerializer):
         fields = (
             "id",
             "name",
-            "lanes",
         )
 
 
@@ -254,8 +253,7 @@ class FlowcellSerializer(ModelSerializer):
 
         # Check if all lanes are loaded
         pool_size = internal_value.get("pool_size")
-        sequencer = pool_size.sequencer
-        if len(lanes) != sequencer.lanes:
+        if len(lanes) != pool_size.lanes:
             raise ValidationError(
                 {
                     "lanes": ["All lanes must be loaded."],
@@ -292,7 +290,7 @@ class FlowcellSerializer(ModelSerializer):
         # After creating a flowcell, update all pool's libraries' and
         # samples' statuses if the pool is fully loaded
         for pool in pools:
-            if pool.loaded == pool.size.sequencer.lanes:
+            if pool.loaded == pool.size.lanes:
                 pool.libraries.all().filter(status=4).update(status=5)
                 pool.samples.all().filter(status=4).update(status=5)
 
@@ -349,7 +347,7 @@ class PoolListSerializer(ModelSerializer):
         return obj.size.pk
 
     def get_pool_size(self, obj):
-        return obj.size.sequencer.lanes
+        return obj.size.lanes
 
     def get_ready(self, obj):
         libraries_statuses = [x.status for x in obj.libraries.all()]

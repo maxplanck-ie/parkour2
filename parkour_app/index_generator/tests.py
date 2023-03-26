@@ -127,10 +127,9 @@ INDICES_11 = [  # I5
 ]
 
 
-def create_pool_size(multiplier=1, size=200):
-    sequencer, _ = Sequencer.objects.get_or_create(lanes=multiplier,
-                                                   defaults={'name': get_random_name()})
-    pool_size = PoolSize(sequencer=sequencer, size=size)
+def create_pool_size(multiplier=8, size=200):
+    sequencer = Sequencer.objects.create(name=get_random_name())
+    pool_size = PoolSize(sequencer=sequencer, lanes=multiplier, size=size)
     pool_size.save()
     return pool_size
 
@@ -236,7 +235,7 @@ class TestPoolSizeModel(BaseTestCase):
         self.size.save()
 
     def test_name(self):
-        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.sequencer.lanes}×{self.size.size}M")
+        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.lanes}×{self.size.size}M")
 
 
 # Views

@@ -10,10 +10,9 @@ from sample.tests import create_sample
 from .models import Flowcell, Lane, Sequencer
 
 
-def create_sequencer(name, lanes=8):
+def create_sequencer(name):
     sequencer = Sequencer(
         name=name,
-        lanes=lanes
     )
     sequencer.save()
     return sequencer
@@ -43,7 +42,7 @@ def create_flowcell(flowcell_id, pool_size):
 
 class TestSequencerModel(BaseTestCase):
     def setUp(self):
-        self.sequencer = create_sequencer(get_random_name(), lanes=1)
+        self.sequencer = create_sequencer(get_random_name())
 
     def test_sequencer_name(self):
         self.assertTrue(isinstance(self.sequencer, Sequencer))

@@ -3,7 +3,7 @@ import json
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.apps import apps
-from flowcell.tests import create_flowcell, create_sequencer
+from flowcell.tests import create_flowcell
 from index_generator.tests import create_pool, create_pool_size
 from library.tests import create_library
 from request.tests import create_request

@@ -7,8 +7,5 @@ Ext.define('MainHub.model.flowcell.Sequencer', {
     }, {
         name: 'id',
         type: 'int'
-    }, {
-        name: 'lanes',
-        type: 'int'
     }]
 });

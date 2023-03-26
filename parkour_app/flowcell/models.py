@@ -6,7 +6,6 @@ from request.models import Request
 
 class Sequencer(models.Model):
     name = models.CharField("Name", max_length=50)
-    lanes = models.PositiveSmallIntegerField("Number of Lanes")
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     def __str__(self):

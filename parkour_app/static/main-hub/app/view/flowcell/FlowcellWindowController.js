@@ -35,26 +35,18 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
 
   changeSequencer: function (cb, newValue, oldValue) {
     var poolSizesStore = Ext.getStore('PoolSizes');
-    // Get new and old values for sequencer id, not pool size
-    newValue = poolSizesStore.findRecord(
+    var poolSize = poolSizesStore.findRecord(
       'id', newValue, 0, false, true, true
-    ).get('sequencer');
-    oldValue = oldValue ? poolSizesStore.findRecord(
-      'id', oldValue, 0, false, true, true
-    ).get('sequencer') : null;
+    );
 
     var lanes = Ext.getCmp('lanes');
     var lanesStore = Ext.getStore('lanesStore');
-    var sequencersStore = Ext.getStore('sequencersStore');
 
     lanes.removeAll(true);
     lanesStore.removeAll();
 
-    var sequencer = sequencersStore.findRecord(
-      'id', newValue, 0, false, true, true
-    );
-    if (sequencer) {
-      var numLanes = sequencer.get('lanes');
+    if (poolSize) {
+      var numLanes = poolSize.get('multiplier');
       var laneTileWidth = numLanes === 1 ? 145 : 82;
 
       for (var i = 0; i < numLanes; i++) {
