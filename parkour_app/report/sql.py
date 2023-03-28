@@ -82,6 +82,9 @@ FROM (
         r.name AS "Request",
         concat(u.first_name, ' ', u.last_name) AS "User",
         concat(bu.first_name, ' ', bu.last_name) AS "Bioinformatician",
+        concat(piu.first_name, ' ', piu.last_name) AS "PI",
+        cu.name AS "Cost Unit",
+        org.name AS "Organization",
         lp.name AS "Library Protocol",
         lt.name AS "Library Type",
         o.name AS "Organism",
@@ -116,6 +119,15 @@ FROM (
 
     LEFT JOIN auth_user as bu
         ON r.bioinformatician_id = bu.id
+
+    LEFT JOIN auth_user as piu
+        ON r.pi_id = piu.id
+
+    LEFT JOIN common_costunit as cu
+        ON r.cost_unit_id = cu.id
+
+    LEFT JOIN common_organization as org
+        ON cu.organization_id = org.id
 
     LEFT JOIN library_sample_shared_libraryprotocol as lp
         ON record.library_protocol_id = lp.id
