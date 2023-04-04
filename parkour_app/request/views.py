@@ -17,6 +17,8 @@ from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
+from library_sample_shared.models import LibraryProtocol
+from library_sample_shared.serializers import LibraryProtocolSerializer
 from rest_framework import filters, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
@@ -365,6 +367,13 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         data = sorted(data, key=lambda x: x["barcode"][3:])
         return Response(data)
+
+    @action(methods=["get"], detail=True)
+    def get_protocol(self, request, pk=None):
+        """For example, to poll IDs of Nanopore's Sequencing Kits"""
+        instance = LibraryProtocol(id=pk)
+        serializer = LibraryProtocolSerializer(instance)
+        return Response(serializer.data)
 
     @action(methods=["get"], detail=True)
     def get_email(self, request, pk=None):
