@@ -57,6 +57,10 @@ migrate: apply-migrations
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
+# TODO: add conditional 'if containers are running'; else: handle...
+check-migras:
+	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
+
 stop:
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml stop
 
@@ -81,15 +85,15 @@ clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 sweep:  ## Remove any sqldump snapshot in ./misc/ that is older than a day
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
 
-prune:  ## Remove EVERY docker container, image and volume (even those unrelated to parkour2)
-	@docker system prune -a -f --volumes
+prune:
+	@echo "Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
+	@sleep 10s && docker system prune -a -f --volumes
 
 clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: set-prod deploy-django deploy-nginx  ## Deploy production instance with Nginx, and rsnapshot service
-	@echo "Consider: make deploy-rsnapshot"
+prod: set-prod deploy-django deploy-nginx deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
 dev-easy: set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
 
@@ -184,18 +188,6 @@ load-fixtures:
 
 load-backup: load-postgres load-media
 
-# backup: save-media save-postgres export-migras
-
-export-migras:
-	@find ./**/ -name migrations -type d -exec tar czf ./misc/migras.tar.gz {} \+
-
-refresh-migras:
-	@[[ -f misc/migras.tar.gz ]] && \
-		rm parkour_app/**/migrations/* && \
-		tar xzf misc/migras.tar.gz && \
-		echo '$ make down dev migrate load-postgres' || \
-		echo '$ scp root@production:~/parkour2/misc/migras.tar.gz .'
-
 save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
@@ -205,10 +197,11 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 		docker cp parkour2-postgres:/tmp/postgres_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
-# TODO: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
+# check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
-		docker cp parkour2-django:/tmp/postgres_dump misc/latest-dump.json
+		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
+	@rm -f misc/latest-dump.json && ln -s db_$(timestamp)-dump.json misc/latest-dump.json
 
 load-db-json:
 	@docker cp misc/latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
@@ -257,13 +250,11 @@ full-import-json:
 
 upgrade:
 	@echo '# TODO:'
-	@echo '# - BarcodeCounter has a bug? keeps being reset whenever we load json dump. Adjust manually?'
-	@echo '# - new certs under misc/, we have alt names now. Adjust calendar due date to 7 feb 2024.. or better, put this task together with rstudio... Correct dissectBCL custom chain, verify if it\'s still required tho'
+	@echo '# - BarcodeCounter has a bug! keeps being reset whenever we load json dump. Adjust manually?'
 	@echo '# - lastest{sqldump,json} should be symlinks to dated filenames, update save-{} rules'
 	@echo '# - Disable down rule, or prepend- a save-postgres + rename snapshots with date'
 	@echo '# - Wrap these into a script.'
 	@echo '# - ~~Add maintenance mode?~~'
-	@echo '# - ~~Load JSON on budibase?~~'
 	@echo '# Prepare'
 	@echo make compile full-import-json reload-json save-postgres
 	@echo make migrations
@@ -271,8 +262,8 @@ upgrade:
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "rm -rf ~/pk2_old"
 	@echo '# Backup'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker ps > ~/last.txt && git --git-dir=~/parkour2/.git --work-tree=~/parkour2 log | head -1 >> ~/last.txt"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot daily"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres export-migras"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker system prune -a"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker-compose -f docker-compose.yml -f nginx.yml -f rsnapshot.yml stop"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clean"
@@ -290,7 +281,7 @@ upgrade:
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'/^RUN/s/RUN --mount=.* pip/RUN pip/\' ~/parkour2/Dockerfile"
 	@echo '## Symlinks'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups ~/parkour2/rsnapshot/backups"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/daily.0/localhost/data/parkour2_media ~/parkour2/media_dump"
+	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/halfy.0/localhost/data/parkour2_media ~/parkour2/media_dump"
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
 	@echo '## Configuration'
 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/misc/parkour.env ~/parkour2/misc/"'
@@ -321,7 +312,7 @@ git-release:
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
 		sleep 1m && \
-		docker exec parkour2-rsnapshot rsnapshot daily
+		docker exec parkour2-rsnapshot rsnapshot halfy
 
 test: down-full clean set-prod deploy-django
 	@docker compose run parkour2-django python manage.py validate_templates && \
@@ -350,12 +341,11 @@ graph_models:
 show_urls:
 	@docker exec parkour2-django python manage.py show_urls
 
-compile:  ## Render parkour_app/requirements/*.in to TXT
-	@test -d ./env || echo "venv not found! Try: make env-setup-dev"
+compile:
 	@test -d ./env && \
 		source ./env/bin/activate && \
 		pip-compile-multi -d parkour_app/requirements/ && \
-		deactivate
+		deactivate || echo "venv not found! Try: make env-setup-dev"
 
 env-setup-dev:
 	@env python3 -m venv env && \
@@ -364,12 +354,7 @@ env-setup-dev:
 		pip install \
 			pre-commit \
 			pip-compile-multi && \
+		pip install -r parkour_app/requirements/dev.txt && \
 	deactivate
-
-
-# Don't confuse 'env-setup-dev' with the app environment (dev.in & dev.txt, for
-# running in 'dev' mode) mind the 'hierarchical' difference. We're going to use
-# pip-compile-multi to manage parkour_app/requirements/*.txt files. And, please
-# also note that there's pre-commit to keep a tidy repo.
 
 # Remember: (docker compose run == docker exec) != docker run

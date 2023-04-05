@@ -65,6 +65,14 @@ repos:
         language: script
         files: 'Dockerfile'
         args: [-i, '/^CMD \["python".*"runserver_plus"/s/CMD/#CMD/']
+    #   id: check-migrations
+    #   name: Check django migrations
+    #   entry: ./parkour_app/manage.py makemigrations --no-input --check --dry-run
+    #   language: system
+    #     # This will use system's python instead of a new env
+    #   types: [python]
+    #   pass_filenames: false
+
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
