@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /Users/evgeny/Work/parkour/static/main-hub/app.js
+// @require /root/parkour2/parkour_app/static/main-hub/app.js
