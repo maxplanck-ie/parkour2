@@ -47,7 +47,7 @@ collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
 apply-migrations:
-	@docker compose exec parkour2-django python manage.py migrate
+	@docker compose exec parkour2-django python manage.py migrate --traceback
 
 migrasync:
 	@docker compose exec parkour2-django python manage.py migrate --run-syncdb
@@ -325,6 +325,13 @@ shell:
 # + set a timeout (only for non-staff users)
 list-sessions:
 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
+
+kill-sessions:
+	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
+
+## This should be a cronjob on your host VM/ production deployment machine.
+clearsessions:
+	@docker exec -it parkour2-django python manage.py clearsessions
 
 dbshell:  ## Open PostgreSQL shell
 	@docker exec -it parkour2-postgres psql -U postgres -p 5432
