@@ -248,13 +248,12 @@ full-import-json:
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json misc/
 
-upgrade:
+## DEPRECATED
+upgrade-through-json:
 	@echo '# TODO:'
-	@echo '# - BarcodeCounter has a bug! keeps being reset whenever we load json dump. Adjust manually?'
-	@echo '# - lastest{sqldump,json} should be symlinks to dated filenames, update save-{} rules'
-	@echo '# - Disable down rule, or prepend- a save-postgres + rename snapshots with date'
-	@echo '# - Wrap these into a script.'
-	@echo '# - ~~Add maintenance mode?~~'
+	@echo '# - Get rid of json dumps, BarcodeCounter has a bug!'
+	@echo '# - Wrap these into a script. Add Migration Tester/Linter/Precommit?...'
+	@echo '#'
 	@echo '# Prepare'
 	@echo make compile full-import-json reload-json save-postgres
 	@echo make migrations
