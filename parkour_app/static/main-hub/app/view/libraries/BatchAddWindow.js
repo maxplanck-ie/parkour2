@@ -117,10 +117,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
         {
           xtype: 'container',
           margin: '0 0 0 30px',
-          html: '<span id="edit-hint"><strong>Hint(s):</strong> [1] To edit multiple cells at once (Excel-like), ' +
-            'please select a cell, press Esc, paste data. [2] To learn how to create a request, read ' +
+          html: '<span id="edit-hint"><strong>Hint(s):</strong> ' +
+            '[1] To learn how to create a request, read ' +
             '<a href="https://max.mpg.de/sites/mpi-ie/Facilities/Deep-Sequencing-Facility/Pages/Parkour-Help.aspx"' +
-            ' target="_blank">this</a>.</span>'
+            ' style="background-color: Teal; color: GoldenRod; font-weight: bold" target="_blank">MAX page on Intranet</a>.' +
+            '[2] To edit multiple cells at once (Excel-like), please select a cell, press Esc, paste data.</span>'
         },
         {
               text: 'Download RELACS Pellets Abs form',
