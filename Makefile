@@ -54,6 +54,8 @@ migrasync:
 
 migrate: apply-migrations
 
+schema: apply-migrations
+
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
@@ -82,7 +84,7 @@ clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
 	@git status
 	@echo "Config reset OK. You may also be interested into: make prune sweep"
 
-sweep:  ## Remove any sqldump snapshot in ./misc/ that is older than a day
+sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
 
 prune:
@@ -239,10 +241,10 @@ import-media:
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
 		${VM_PROD}:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
 
-import-pgdb: sweep  ## Run save-postgres on $VM_PROD, and bring all their sqldumps. Note: first we sweep local sqldumps!
-	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
+import-pgdb: sweep
+	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 convert-backup"
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" --exclude='*' --include='*.sqldump' \
-		${VM_PROD}:~/parkour2/misc misc/
+		${VM_PROD}:~/parkour2 misc/
 
 full-import-json:
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
