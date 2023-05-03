@@ -8960,13 +8960,13 @@ tr.pool-not-ready .x-grid-item-focused {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/incominglibraries/IncomingLibraries.scss:1 */
 .x-grid-cell.userEntry {
-    background-color: #ffebee;
-    color: #c62828;
+    background-color: #f5eef8;
+    color: #6c3483;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/incominglibraries/IncomingLibraries.scss:6 */
 .x-grid-cell.facilityEntry {
-    background-color: #dcedc8;
-    color: #388e3c;
+    background-color: #fdf2e9;
+    color: #a04000;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/src/view/incominglibraries/IncomingLibraries.scss:11 */
 .incoming-libraries-group-header {
