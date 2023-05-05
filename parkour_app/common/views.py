@@ -249,7 +249,7 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             seq_request_user_id = int(self.request.query_params.get("request_user", 0))
             seq_request_bioinformatician_id = int(self.request.query_params.get("request_bioinformatician", 0))
 
-            choices = list(User.objects.filter(Q(is_bioinformatician=True) |
+            choices = list(User.objects.filter(Q(is_bioinformatician=True, is_active=True) |
                                                Q(id__in=[seq_request_user_id, seq_request_bioinformatician_id, self.request.user.id]))
                                        .distinct())
 
