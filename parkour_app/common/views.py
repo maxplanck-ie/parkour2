@@ -249,48 +249,24 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             seq_request_user_id = int(self.request.query_params.get("request_user", 0))
             seq_request_bioinformatician_id = int(self.request.query_params.get("request_bioinformatician", 0))
 
-            # Create or get external bioinformatician user
-            ext_bioinfo, ext_bioinfo_created = User.objects.get_or_create(email='external.bioinformatician@example.com',
-                                                                            first_name='External',
-                                                                            last_name='Bioinformatician',
-                                                                            is_bioinformatician=True)
-            # If ext_bioinfo is newly created, set it so
-            # that it can't be used to log in
-            if ext_bioinfo_created:
-                ext_bioinfo.is_active = False
-                ext_bioinfo.set_unusable_password()
-                ext_bioinfo.save()
-
-            # Create or get multiple bioinformaticians user
-            multi_bioinfos, multi_bioinfos_created = User.objects.get_or_create(email='multiple.bioinformaticians@example.com',
-                                                                            first_name='Multiple',
-                                                                            last_name='Bioinformaticians',
-                                                                            is_bioinformatician=True)
-            # If multi_bioinfos is newly created, set it so
-            # that it can't be used to log in
-            if multi_bioinfos_created:
-                multi_bioinfos.is_active = False
-                multi_bioinfos.set_unusable_password()
-                multi_bioinfos.save()
-
             choices = list(User.objects.filter(Q(is_bioinformatician=True) |
                                                Q(id__in=[seq_request_user_id, seq_request_bioinformatician_id, self.request.user.id]))
                                        .distinct())
 
-            # Prettify the full name of ext_bioinfo and multi_bioinfos for the front end
-            ext_bioinfo = [u for u in choices if u.id == ext_bioinfo.id][0]
-            ext_bioinfo.last_name = "(add details to 'Description')"
-            multi_bioinfos = [u for u in choices if u.id == multi_bioinfos.id][0]
-            multi_bioinfos.last_name = "(add details to 'Description')"
+            # If they exist, prettify the full name of external and multiple bioinformatician
+            # users for the front end
+            # You can load these users from fixture common/fixtures/system_bioinformaticians.json
+            for u in [u for u in choices if u.email.endswith('@example.com')]:
+                u.last_name = "(add details to 'Description')"
 
             if seq_request_user_id:
                 # Highlight the sequencing request user
-                seq_request_user = [u for u in choices if u.id == int(seq_request_user_id)][0]
-                seq_request_user.last_name += ' (request user)'
+                for u in [u for u in choices if u.id == int(seq_request_user_id)]:
+                    u.last_name += ' (request user)'
 
             # Highlight the http request user, i.e. themselves
-            http_request_user = [u for u in choices if u.id == self.request.user.id][0]
-            http_request_user.last_name = http_request_user.last_name.replace(' (request user)', '') + ' (you)'
+            for u in [u for u in choices if u.id == self.request.user.id]:
+                u.last_name = u.last_name.replace(' (request user)', '') + ' (you)'
 
             return sorted(choices, key=lambda u: u.last_name)
 
