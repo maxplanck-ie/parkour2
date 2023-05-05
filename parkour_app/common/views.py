@@ -249,25 +249,39 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             seq_request_user_id = int(self.request.query_params.get("request_user", 0))
             seq_request_bioinformatician_id = int(self.request.query_params.get("request_bioinformatician", 0))
 
-            #  Create or get external bioinformatician user
-            external_bioinformatician, created = User.objects.get_or_create(email='external.bioinformatician@example.com',
+            # Create or get external bioinformatician user
+            ext_bioinfo, ext_bioinfo_created = User.objects.get_or_create(email='external.bioinformatician@example.com',
                                                                             first_name='External',
                                                                             last_name='Bioinformatician',
                                                                             is_bioinformatician=True)
-            # If external_bioinformatician is newly created, set it so
+            # If ext_bioinfo is newly created, set it so
             # that it can't be used to log in
-            if created:
-                external_bioinformatician.is_active = False
-                external_bioinformatician.set_unusable_password()
-                external_bioinformatician.save()
+            if ext_bioinfo_created:
+                ext_bioinfo.is_active = False
+                ext_bioinfo.set_unusable_password()
+                ext_bioinfo.save()
+
+            # Create or get multiple bioinformaticians user
+            multi_bioinfos, multi_bioinfos_created = User.objects.get_or_create(email='multiple.bioinformaticians@example.com',
+                                                                            first_name='Multiple',
+                                                                            last_name='Bioinformaticians',
+                                                                            is_bioinformatician=True)
+            # If multi_bioinfos is newly created, set it so
+            # that it can't be used to log in
+            if multi_bioinfos_created:
+                multi_bioinfos.is_active = False
+                multi_bioinfos.set_unusable_password()
+                multi_bioinfos.save()
 
             choices = list(User.objects.filter(Q(is_bioinformatician=True) |
                                                Q(id__in=[seq_request_user_id, seq_request_bioinformatician_id, self.request.user.id]))
                                        .distinct())
 
-            # Prettify the full name of external_bioinformatician for the front end
-            external_bioinformatician = [u for u in choices if u.id == external_bioinformatician.id][0]
-            external_bioinformatician.last_name = "(add details to 'Description')"
+            # Prettify the full name of ext_bioinfo and multi_bioinfos for the front end
+            ext_bioinfo = [u for u in choices if u.id == ext_bioinfo.id][0]
+            ext_bioinfo.last_name = "(add details to 'Description')"
+            multi_bioinfos = [u for u in choices if u.id == multi_bioinfos.id][0]
+            multi_bioinfos.last_name = "(add details to 'Description')"
 
             if seq_request_user_id:
                 # Highlight the sequencing request user
