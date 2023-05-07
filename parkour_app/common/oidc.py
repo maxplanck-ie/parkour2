@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from common.models import Organization
 from django.contrib.sites.shortcuts import get_current_site
-from common.gcf_group_permissions import GROUP_PERMISSIONS
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -101,9 +100,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         # If a user belong to the Genomics CF set is_staff = True and add them to Genomics-CF
         if self.user_belongs_to_groups(user_groups, settings.OIDC_GENOMICSCF_GROUPS):
             user.is_staff = True
-            gcf_group, gcf_group_created = Group.objects.get_or_create(name='Genomics-CF')
-            if gcf_group_created:
-                gcf_group.permissions.add(*GROUP_PERMISSIONS)
+            gcf_group, _ = Group.objects.get_or_create(name='Genomics-CF')
             user.groups.add(gcf_group)
         
         # For BCF (bioinformatics core facility) staff set is_bioinformatician to True
