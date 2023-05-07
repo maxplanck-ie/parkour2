@@ -246,16 +246,13 @@ class UserAdmin(NamedUserAdmin):
                 ),
             )
         else:
+            user_fields = ["first_name", "last_name", "email"]
+            user_fields = user_fields + ['password'] if obj.has_usable_password() else user_fields
             self.fieldsets = (
                 (
                     None,
                     {
-                        "fields": (
-                            "first_name",
-                            "last_name",
-                            "email",
-                            "password",
-                        ),
+                        "fields": user_fields
                     },
                 ),
                 (
@@ -286,6 +283,11 @@ class UserAdmin(NamedUserAdmin):
                     },
                 ),
             )
+        
+        # If this is an "OpenID" user do not allow firs/last names
+        # and email to be changed
+        if obj.oidc_id:
+            self.readonly_fields = user_fields
 
         return super().change_view(request, object_id)
 

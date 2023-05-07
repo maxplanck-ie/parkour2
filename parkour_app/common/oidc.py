@@ -95,10 +95,10 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
                                                   is_active=True,
                                                   oidc_id=oidc_id,
                                                   )
-        
-        # If a user belong to either the Genomics or Bioinformatics CFs
-        # make them automatically staff, i.e. is_staff = True.
-        # For GCF staff, add them to the staff group
+        # Set an unusable password so that it cannot be changed
+        user.set_unusable_password()
+
+        # If a user belong to the Genomics CF set is_staff = True and add them to Genomics-CF
         if self.user_belongs_to_groups(user_groups, settings.OIDC_GENOMICSCF_GROUPS):
             user.is_staff = True
             gcf_group, gcf_group_created = Group.objects.get_or_create(name='Genomics-CF')
@@ -106,7 +106,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
                 gcf_group.permissions.add(*GROUP_PERMISSIONS)
             user.groups.add(gcf_group)
         
-        # For BCF (bioinformatics core facility) staff, also set is_bioinformatician to True
+        # For BCF (bioinformatics core facility) staff set is_bioinformatician to True
         # and assign them to the Bioinfo-CF group
         elif self.user_belongs_to_groups(user_groups, settings.OIDC_BIOINFOCF_GROUPS):
             user.is_bioinformatician = True
