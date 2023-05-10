@@ -8,6 +8,7 @@ django-import-export
 ipykernel
 gunicorn
 mozilla-django-oidc==2.0.0
+django-constance[database]
 
 # Database
 psycopg2-binary>=2.8,<2.9  # https://stackoverflow.com/a/68034786

@@ -15,6 +15,8 @@ from mimetypes import guess_type
 from os.path import basename
 from urllib.parse import quote
 
+from constance import config
+
 from .models import CostUnit, Organization
 from .serializers import (CostUnitSerializer,
                           PrincipalInvestigatorSerializer,
@@ -42,6 +44,8 @@ def index(request):
                     "is_pi": user.is_pi,
                 }
             ),
+            "DOCUMENTATION_URL": config.DOCUMENTATION_URL,
+            "GRID_INTRO_VIDEO_URL": config.GRID_INTRO_VIDEO_URL,
         },
     )
 

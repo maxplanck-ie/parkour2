@@ -7,26 +7,28 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from common.models import Organization
 from django.contrib.sites.shortcuts import get_current_site
+from constance import config
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
 
     def user_belongs_to_groups(self, user_groups, groups):
-        """Check if any group assigned to a user is found in a list
-        of groups."""
+        """Check if any group assigned to a user, -> user_groups, is found
+        in a list of groups, -> groups, which should be a str of comma
+        separated group names"""
         
-        return any(g in user_groups for g in groups)
+        return any(g in user_groups for g in groups.split(','))
     
     def verify_claims(self, claims):
         """Verify the provided claims to decide if authentication should be allowed.
            Only users that belong to one of the groups in OIDC_ALLOWED_GROUPS can 
            sign in.
-        """ 
+        """
 
         # Check that the user is part of one of the allowed OIDC groups
-        if settings.OIDC_ALLOWED_GROUPS:
+        if config.OIDC_ALLOWED_GROUPS:
             user_groups = claims.get('role', [])
-            if not self.user_belongs_to_groups(user_groups, settings.OIDC_ALLOWED_GROUPS):
+            if not self.user_belongs_to_groups(user_groups, config.OIDC_ALLOWED_GROUPS):
                 return False
 
         # Otherwise carry out the default checks
@@ -98,14 +100,14 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         user.set_unusable_password()
 
         # If a user belong to the Genomics CF set is_staff = True and add them to Genomics-CF
-        if self.user_belongs_to_groups(user_groups, settings.OIDC_GENOMICSCF_GROUPS):
+        if self.user_belongs_to_groups(user_groups, config.OIDC_GENOMICSCF_GROUPS):
             user.is_staff = True
             gcf_group, _ = Group.objects.get_or_create(name='Genomics-CF')
             user.groups.add(gcf_group)
         
         # For BCF (bioinformatics core facility) staff set is_bioinformatician to True
         # and assign them to the Bioinfo-CF group
-        elif self.user_belongs_to_groups(user_groups, settings.OIDC_BIOINFOCF_GROUPS):
+        elif self.user_belongs_to_groups(user_groups, config.OIDC_BIOINFOCF_GROUPS):
             user.is_bioinformatician = True
             bcf_group, _ = Group.objects.get_or_create(name='Bioinfo-CF')
             user.groups.add(bcf_group)

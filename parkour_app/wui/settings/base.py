@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     "django_admin_listfilter_dropdown",
     "django_extensions",
     "import_export",
+    'constance',
+    'constance.backends.database',
     "common",
     "library_sample_shared",
     "library",
@@ -256,8 +258,34 @@ OIDC_OP_JWKS_ENDPOINT = os.environ["OIDC_OP_JWKS_ENDPOINT"]
 OIDC_OP_AUTHORIZATION_ENDPOINT = os.environ["OIDC_OP_AUTHORIZATION_ENDPOINT"]
 OIDC_OP_TOKEN_ENDPOINT = os.environ["OIDC_OP_TOKEN_ENDPOINT"]
 OIDC_OP_USER_ENDPOINT = os.environ["OIDC_OP_USER_ENDPOINT"]
-OIDC_ALLOWED_GROUPS = os.environ["OIDC_ALLOWED_GROUPS"].split(',')
 OIDC_RP_SCOPES = 'openid email name groups'
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 86400 # 24 h
-OIDC_GENOMICSCF_GROUPS= os.environ["OIDC_GENOMICSCF_GROUPS"].split(',')
-OIDC_BIOINFOCF_GROUPS= os.environ["OIDC_BIOINFOCF_GROUPS"].split(',')
+
+OIDC_ALLOWED_GROUPS = os.environ.get("OIDC_ALLOWED_GROUPS", '')
+OIDC_GENOMICSCF_GROUPS= os.environ.get("OIDC_GENOMICSCF_GROUPS", '')
+OIDC_BIOINFOCF_GROUPS= os.environ.get("OIDC_BIOINFOCF_GROUPS", '')
+
+# Costance
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+CONSTANCE_SUPERUSER_ONLY = False
+CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': ('genomics@imb-mainz.de',
+                                            'Shared email address of the the genomics laboratory',
+                                            str),
+                    'OIDC_ALLOWED_GROUPS': (OIDC_ALLOWED_GROUPS,
+                                            'Comma-separated list of LDAP group(s) that are allowed to log in Parkour. '
+                                            'Lower case, no spaces',
+                                            str),
+                    'OIDC_GENOMICSCF_GROUPS': (OIDC_GENOMICSCF_GROUPS,
+                                               'Comma-separated list of LDAP group(s) for staff of the genomics laboratory. '
+                                               'Lower case, no spaces',
+                                               str),
+                    'OIDC_BIOINFOCF_GROUPS': (OIDC_BIOINFOCF_GROUPS,
+                                              'Comma-separated list of LDAP group(s) for staff of the bioinformatics group. '
+                                              'Lower case, no spaces',
+                                              str),
+                    'DOCUMENTATION_URL': ('https://gitlab.rlp.net/imbforge/parkour2/-/wikis/home',
+                                          "Link for Parkour's manual",
+                                          str),
+                    'GRID_INTRO_VIDEO_URL': ('https://gitlab.rlp.net/imbforge/parkour2/-/wikis/home',
+                                             "Link for the video introduction to Parkour's grid",
+                                             str)}
