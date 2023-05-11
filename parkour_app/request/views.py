@@ -864,7 +864,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=[instance.user.email, request.user.email],
+                recipient_list=[instance.user.email, instance.pi.email] + staff_emails,
                 reply_to=staff_emails if staff_emails else None
             )
 
