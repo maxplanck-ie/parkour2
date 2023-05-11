@@ -826,8 +826,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         flex: 1,
         editor: {
           xtype: 'textfield',
-          regex: new RegExp(/^[A-Za-z0-9_]+$/),
-          regexText: 'Only A-Z a-z 0-9 and _ are allowed'
+          regex: new RegExp(/^[A-Za-z0-9_]+(?<![rR][1-4])$/),
+          regexText: 'Only A-Z a-z 0-9 and _ are allowed. ' +
+                     'Any trailing combination of [rR][1-4], <i>e.g.</i> ' +
+                     'r1, R2, <i>etc.</i> is NOT allowed'
         },
         renderer: this.errorRenderer
       },
