@@ -9,7 +9,8 @@ from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagi
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core.mail import send_mail
+from django.core.mail import get_connection
+from django.core.mail.message import EmailMultiAlternatives
 from django.db.models import Prefetch
 from django.http import Http404, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
@@ -28,6 +29,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils import timezone
 from django.core.files.base import ContentFile
 from django.db.models import Q
+from constance import config
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -38,6 +40,39 @@ Sample = apps.get_model("sample", "Sample")
 LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 
 logger = logging.getLogger("db")
+
+
+def send_mail_with_replyto(subject, message, from_email, recipient_list,
+                           reply_to, fail_silently=False, auth_user=None,
+                           auth_password=None, connection=None, html_message=None):
+    """
+    Amended django.core.mail.send_mail to include reply-to email address(es)
+    """
+    connection = connection or get_connection(
+        username=auth_user,
+        password=auth_password,
+        fail_silently=fail_silently,
+    )
+    mail = EmailMultiAlternatives(subject,
+                                  message,
+                                  from_email,
+                                  recipient_list,
+                                  reply_to=reply_to,
+                                  connection=connection)
+    if html_message:
+        mail.attach_alternative(html_message, 'text/html')
+
+    return mail.send()
+
+
+def get_staff_emails():
+    """If available, return shared staff email address from settings,
+    otherwise get email addresses of all active staff members"""
+
+    if config.STAFF_EMAIL_ADDRESS:
+        return [config.STAFF_EMAIL_ADDRESS]
+    else:
+        return list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
 
 
 class PDF(FPDF):  # pragma: no cover
@@ -370,8 +405,13 @@ class RequestViewSet(viewsets.ModelViewSet):
                                 "records": records,
                             },)
 
+        staff_emails = get_staff_emails()
+
         # If required, save the message to deep_seq_request
         if save_email_as_pdf:
+
+            recipients += staff_emails
+
             html_pdf = render_to_string(
                             "approval_email_pdf.html",
                             {
@@ -386,12 +426,13 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.pdf", deep_seq_request_content)
             instance.save()
 
-        send_mail(
+        send_mail_with_replyto(
                 subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
                 message="",
                 html_message=html_message,
                 from_email=settings.SERVER_EMAIL,
-                recipient_list= recipients,
+                recipient_list=recipients,
+                reply_to=staff_emails if staff_emails else None
             )
 
     @action(methods=["get"], detail=True)
@@ -427,8 +468,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.libraries.all().update(status=1)
             instance.samples.all().update(status=1)
 
-            email_recipients = [instance.pi.email, instance.user.email] + \
-                            list(User.objects.filter(is_active=True, is_staff=True).values_list('email', flat=True))
+            email_recipients = [instance.pi.email, instance.user.email]
 
             request.session_id = request.session._get_or_create_session_key()
 
@@ -810,7 +850,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                 libraries.update(status=0)
                 samples.update(status=0)
 
-            send_mail(
+            staff_emails = get_staff_emails()
+
+            send_mail_with_replyto(
                 subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
                 message="",
                 html_message=render_to_string(
@@ -823,6 +865,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 ),
                 from_email=settings.SERVER_EMAIL,
                 recipient_list=[instance.user.email, request.user.email],
+                reply_to=staff_emails if staff_emails else None
             )
 
             if failed_records:
