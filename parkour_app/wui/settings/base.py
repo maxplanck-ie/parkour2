@@ -262,13 +262,16 @@ OIDC_RP_SCOPES = 'openid email name groups'
 OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 86400 # 24 h
 
 OIDC_ALLOWED_GROUPS = os.environ.get("OIDC_ALLOWED_GROUPS", '')
-OIDC_GENOMICSCF_GROUPS= os.environ.get("OIDC_GENOMICSCF_GROUPS", '')
-OIDC_BIOINFOCF_GROUPS= os.environ.get("OIDC_BIOINFOCF_GROUPS", '')
+OIDC_GENOMICSCF_GROUPS = os.environ.get("OIDC_GENOMICSCF_GROUPS", '')
+OIDC_BIOINFOCF_GROUPS = os.environ.get("OIDC_BIOINFOCF_GROUPS", '')
 
 # Costance
+STAFF_EMAIL_ADDRESS = os.environ.get("STAFF_EMAIL_ADDRESS", '')
+DOCUMENTATION_URL = os.environ.get("DOCUMENTATION_URL", '')
+GRID_INTRO_VIDEO_URL = os.environ.get("GRID_INTRO_VIDEO_URL", '')
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
-CONSTANCE_SUPERUSER_ONLY = False
-CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': ('genomics@imb-mainz.de',
+CONSTANCE_SUPERUSER_ONLY = True
+CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
                                             'Shared email address of the the genomics laboratory',
                                             str),
                     'OIDC_ALLOWED_GROUPS': (OIDC_ALLOWED_GROUPS,
@@ -283,9 +286,9 @@ CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': ('genomics@imb-mainz.de',
                                               'Comma-separated list of LDAP group(s) for staff of the bioinformatics group. '
                                               'Lower case, no spaces',
                                               str),
-                    'DOCUMENTATION_URL': ('https://gitlab.rlp.net/imbforge/parkour2/-/wikis/home',
+                    'DOCUMENTATION_URL': (DOCUMENTATION_URL,
                                           "Link for Parkour's manual",
                                           str),
-                    'GRID_INTRO_VIDEO_URL': ('https://gitlab.rlp.net/imbforge/parkour2/-/wikis/home',
+                    'GRID_INTRO_VIDEO_URL': (GRID_INTRO_VIDEO_URL,
                                              "Link for the video introduction to Parkour's grid",
                                              str)}
