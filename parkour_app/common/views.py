@@ -256,13 +256,7 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             choices = list(User.objects.filter(Q(is_bioinformatician=True, is_active=True) |
                                                Q(is_bioinformatician=True, email__endswith='@example.com') |
                                                Q(id__in=[seq_request_user_id, seq_request_bioinformatician_id, self.request.user.id]))
-                                       .distinct())
-
-            # If they exist, prettify the full name of external and multiple bioinformatician
-            # users for the front end
-            # You can load these users from fixture common/fixtures/system_bioinformaticians.json
-            for u in [u for u in choices if u.email.endswith('@example.com')]:
-                u.last_name = "(add details to 'Description')"
+                                       .order_by('last_name').distinct())
 
             if seq_request_user_id:
                 # Highlight the sequencing request user
@@ -273,7 +267,11 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             for u in [u for u in choices if u.id == self.request.user.id]:
                 u.last_name = u.last_name.replace(' (request user)', '') + ' (you)'
 
-            return sorted(choices, key=lambda u: u.last_name)
+            # Put system bioinformatician at the end of choices
+            system_bioinformaticians = [u for u in choices if u.email.lower().endswith('@example.com')]
+            choices = [u for u in choices if not u.email.lower().endswith('@example.com')] + system_bioinformaticians
+
+            return choices
 
         except:
 

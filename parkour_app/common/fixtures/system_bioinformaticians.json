@@ -6,12 +6,12 @@
             "password": "!MVThzA3O4eCa50RZv2AtXypGlEzjxlNxDahatdTI",
             "last_login": null,
             "is_superuser": false,
-            "email": "external.bioinformatician@example.com",
+            "email": "other.bioinformatician@example.com",
             "is_staff": false,
             "is_active": false,
             "date_joined": "2023-02-27T13:15:33.726Z",
-            "first_name": "External",
-            "last_name": "Bioinformatician",
+            "first_name": "Other",
+            "last_name": "(e.g. external, many; specify in Description)",
             "phone": null,
             "oidc_id": null,
             "is_bioinformatician": true,
@@ -19,29 +19,6 @@
             "groups": [
                 2
             ],
-            "user_permissions": [],
-            "pi": [],
-            "cost_unit": []
-        }
-    },
-    {
-        "model": "common.user",
-        "pk": null,
-        "fields": {
-            "password": "!DbUPOHPz956a2fS4aeN4pBLsRkJJnEhWrPH0fxwH",
-            "last_login": null,
-            "is_superuser": false,
-            "email": "multiple.bioinformaticians@example.com",
-            "is_staff": false,
-            "is_active": false,
-            "date_joined": "2023-05-05T14:30:01.822Z",
-            "first_name": "Multiple",
-            "last_name": "Bioinformaticians",
-            "phone": null,
-            "oidc_id": null,
-            "is_bioinformatician": true,
-            "is_pi": false,
-            "groups": [],
             "user_permissions": [],
             "pi": [],
             "cost_unit": []
