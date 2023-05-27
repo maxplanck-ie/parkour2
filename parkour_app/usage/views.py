@@ -52,7 +52,7 @@ class RecordsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
-        status = request.query_params.get('status', '0')
+        status = request.query_params.get('status', 'submitted')
 
         libraries = Library.objects.filter(
             request__isnull=False,
@@ -66,9 +66,9 @@ class RecordsUsage(APIView):
             request__samples_submitted_time__lte=end,
         ).only("id")
 
-        if status != '0':
-            samples = samples.exclude(status__gte=0, status__lte=2)
-            libraries = libraries.exclude(status__gte=0, status__lte=2)
+        if status == 'sequenced':
+            samples = samples.filter(request__sequenced=True)
+            libraries = libraries.filter(request__sequenced=True)
 
         return Response(
             [
@@ -89,7 +89,7 @@ class OrganizationsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
-        status = request.query_params.get('status', '0')
+        status = request.query_params.get('status', 'submitted')
 
         libraries_qs = Library.objects.filter(
             request__isnull=False,
@@ -102,9 +102,9 @@ class OrganizationsUsage(APIView):
             request__samples_submitted_time__lte=end,
         ).only("id")
 
-        if status != '0':
-            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
-            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
+        if status == 'sequenced':
+            samples_qs = samples_qs.filter(request__sequenced=True)
+            libraries_qs = libraries_qs.filter(request__sequenced=True)
 
         requests = (
             Request.objects.select_related(
@@ -117,9 +117,12 @@ class OrganizationsUsage(APIView):
                 ),
                 Prefetch("samples", queryset=samples_qs, to_attr="fetched_samples"),
             )
-            .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
+            .filter(samples_submitted_time__gte=start,samples_submitted_time__lte=end)
             .only("id", "cost_unit__organization__name", "libraries", "samples")
         )
+
+        if status == 'sequenced':
+            requests = requests.filter(sequenced=True)
 
         counts = {}
         for req in requests:
@@ -143,7 +146,7 @@ class PrincipalInvestigatorsUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
-        status = request.query_params.get('status', '0')
+        status = request.query_params.get('status', 'submitted')
 
         libraries_qs = Library.objects.filter(
             request__isnull=False,
@@ -156,9 +159,9 @@ class PrincipalInvestigatorsUsage(APIView):
             request__samples_submitted_time__lte=end,
         ).only("id")
 
-        if status != '0':
-            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
-            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
+        if status == 'sequenced':
+            samples_qs = samples_qs.filter(request__sequenced=True)
+            libraries_qs = libraries_qs.filter(request__sequenced=True)
 
         requests = (
             Request.objects
@@ -171,6 +174,9 @@ class PrincipalInvestigatorsUsage(APIView):
             .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
             .only("id", "libraries", "samples")
         )
+
+        if status == 'sequenced':
+            requests = requests.filter(sequenced=True)
 
         counts = {}
         for req in requests:
@@ -200,25 +206,23 @@ class LibraryTypesUsage(APIView):
 
     def get(self, request):
         start, end = get_date_range(request, "%Y-%m-%dT%H:%M:%S")
-        status = request.query_params.get('status', '0')
+        status = request.query_params.get('status', 'submitted')
 
         libraries_qs = Library.objects. \
         select_related("library_type"). \
-        filter(
-            request__isnull=False,
-            request__samples_submitted_time__gte=start,
-            request__samples_submitted_time__lte=end,
+        filter(request__isnull=False,
+               request__samples_submitted_time__gte=start,
+               request__samples_submitted_time__lte=end,
         ).only("id", "library_type__name")
         samples_qs = Sample.objects.select_related("library_type"). \
-        filter(
-            request__isnull=False,
-            request__samples_submitted_time__gte=start,
-            request__samples_submitted_time__lte=end,
+        filter(request__isnull=False,
+               request__samples_submitted_time__gte=start,
+               request__samples_submitted_time__lte=end,
         ).only("id", "library_type__name")
 
-        if status != '0':
-            samples_qs = samples_qs.exclude(status__gte=0, status__lte=2)
-            libraries_qs = libraries_qs.exclude(status__gte=0, status__lte=2)
+        if status == 'sequenced':
+            samples_qs = samples_qs.filter(request__sequenced=True)
+            libraries_qs = libraries_qs.filter(request__sequenced=True)
 
         requests = (
             Request.objects.prefetch_related(
@@ -230,6 +234,9 @@ class LibraryTypesUsage(APIView):
             .filter(samples_submitted_time__gte=start, samples_submitted_time__lte=end)
             .only("id", "libraries", "samples")
         )
+
+        if status == 'sequenced':
+            requests = requests.filter(sequenced=True)
 
         counts = {}
         for req in requests:
@@ -279,7 +286,7 @@ class UsageReport(APIView):
 
         request.GET = request.GET.copy()
         request.GET['download'] = 'true'
-        request.GET['status'] = request.query_params.get('status', '0')
+        request.GET['status'] = request.query_params.get('status', 'submitted')
 
         return report(request)
 

@@ -58,13 +58,13 @@ Ext.define('MainHub.view.usage.Usage', {
         itemId: 'statusCb',
         fieldLabel: 'Status',
         labelWidth: 45,
-        width: 230,
+        width: 180,
         padding: "0 0 0 15px",
         store: Ext.create('Ext.data.Store', {
           fields: ['name', 'label'],
           data: [
-            { status: 0, label: 'All submitted' },
-            { status: 3, label: '≥ Libraries prepared' }
+            { status: 'submitted', label: 'Submitted' },
+            { status: 'sequenced', label: 'Sequenced' }
           ],
           proxy: { type: 'memory' }
         }),
@@ -75,7 +75,7 @@ Ext.define('MainHub.view.usage.Usage', {
         listeners: {
           afterrender: function () {
             // Set default value upon rendering
-            this.setValue(0);
+            this.setValue('submitted');
           }
         }
       }
