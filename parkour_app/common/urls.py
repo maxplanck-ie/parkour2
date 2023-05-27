@@ -8,9 +8,6 @@ urlpatterns = [
     path("get_navigation_tree/", views.get_navigation_tree, name="get_navigation_tree"),
     path("media/<path:url_path>", views.protected_media, name="protected_media"),
     path(
-        "login_parkour/", auth_views.LoginView.as_view(template_name="login_parkour.html"), name="login_parkour"
-    ),
-    path(
         "login/", auth_views.LoginView.as_view(template_name="login.html"), name="login"
     ),
     path("logout/", auth_views.LogoutView.as_view(next_page="/"), name="logout"),

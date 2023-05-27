@@ -2,14 +2,22 @@
 {% load static %}
 
 {% block css %}
-    <style>
-        body {
-            background: url("{% static 'images/login-page-background.jpg' %}") no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            background-size: cover;
-        }
-    </style>
+<style>
+    body {
+        background: url("{% static 'images/login-page-background.jpg' %}") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+    }
+
+    .collapsible {
+        display: block;
+    }
+
+    .local-login {
+        display: none;
+    }
+</style>
 {% endblock css %}
 
 {% block title %}Parkour LIMS | Login{% endblock title %}
@@ -17,9 +25,9 @@
 {% block content %}
 
 {% if form.errors %}
-    <div class="alert alert-danger" role="alert">
-        <p class="lead text-center">Your username and password didn't match. Please try again.</p>
-    </div>
+<div class="alert alert-danger" role="alert">
+    <p class="lead text-center">Your username and password didn't match. Please try again.</p>
+</div>
 {% endif %}
 
 <div id="login-form" class="form-signin">
@@ -31,12 +39,38 @@
                 alt="Johannes Gutenberg-Universität Mainz">JGU Mainz
         </button>
     </a>
-    <a href="{% url 'login_parkour' %}">
-        <button class="btn btn-default btn-block" style="text-align:left;">
-            <img src="{% static 'main-hub/resources/images/logo1.svg' %}"
-                style="width: 50px; margin-right: 7px; filter: invert(100%);" alt="Parkour">Parkour
-        </button>
-    </a>
+    <button class="btn btn-default btn-block collapsible" style="text-align:left;">
+        <img src="{% static 'main-hub/resources/images/logo1.svg' %}"
+            style="width: 50px; margin-right: 7px; filter: invert(100%);" alt="Parkour">Parkour
+    </button>
+
+    <form class="form-signin local-login" method="post" action="{% url 'login' %}" style="opacity:1">
+        {% csrf_token %}
+        <input type="text" class="form-control" id="id_username" name="username" placeholder="Email" required=""
+            autofocus="" />
+        <input type="password" class="form-control" id="id_password" name="password" placeholder="Password"
+            required="" />
+        <div class="text-center link-forgot-password">
+            <a class="" href="{% url 'password_reset' %}">Forgot password?</a>
+        </div>
+        <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login" />
+        <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+
 </div>
 
+{% endblock %}
+{% block js %}
+<script type="text/javascript">
+    var button = document.getElementsByClassName("collapsible")[0];
+    button.addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.display === "block") {
+            content.style.display = "none";
+        } else {
+            content.style.display = "block";
+        }
+    });
+</script>
 {% endblock %}
