@@ -181,7 +181,12 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   reorderColumns: function (btn) {
     var wnd = btn.up('window');
     var grid = Ext.getCmp('batch-add-grid');
-    var columns = grid.headerCt.columnManager.getColumns();
+    // Grids with locked elements are split into a normalGrid
+    // and a lockedGrid components, we just need to reorder
+    // the columns in the normalGrid component
+    var normalGrid = grid.normalGrid;
+    var lockedGrid = grid.lockedGrid;
+    var columns = normalGrid.headerCt.columnManager.getColumns();
     var columnOrderCurrent = columns.map(function (e) { return e.dataIndex });
 
     // Check if columOrderOriginal exists and, if not, set it
@@ -190,45 +195,50 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     }
     this.columOrderOriginal = this.columOrderOriginal ? this.columOrderOriginal : columns.map(function (e) { return e.dataIndex });
 
+    // Initialize newColumnOrder
     var newColumnOrder;
 
+    // Check if we are dealing with libraries or samples and set the
+    // new column order accordingly
     if (wnd.recordType === 'Library') {
       // Column order for library
       newColumnOrder = [
-        'numberer', 'barcode', 'name', 'concentration', 'mean_fragment_size',
-        'sequencing_depth', 'amplification_cycles', 'qpcr_result', 'source',
-        'comments', 'library_protocol', 'library_type', 'index_type',
-        'index_reads', 'index_i7', 'index_i5', 'equal_representation_nucleotides',
-        'read_length', 'sample_volume', 'concentration_method',
-        'organism'];
+        'concentration', 'mean_fragment_size', 'sequencing_depth', 
+        'amplification_cycles', 'qpcr_result', 'source', 'comments',
+        'library_protocol', 'library_type', 'index_type', 'index_reads',
+        'index_i7', 'index_i5', 'equal_representation_nucleotides',
+        'read_length', 'sample_volume', 'concentration_method', 'organism'];
     } else {
       // Column order for sample
       newColumnOrder = [
-        'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
-        'rna_quality', 'sequencing_depth', 'amplification_cycles', 'source',
-        'comments', 'read_length', 'nucleic_acid_type', 'library_protocol',
+        'sample_volume_user', 'concentration', 'rna_quality',
+        'sequencing_depth', 'amplification_cycles', 'source', 'comments',
+        'read_length', 'nucleic_acid_type', 'library_protocol',
         'library_type', 'equal_representation_nucleotides', 'sample_volume',
         'concentration_method', 'organism',
       ]
     }
 
+    // Check if the last column is comments
     var isCommentsColumLast = columnOrderCurrent.at(-1) === 'comments'
     newColumnOrder = isCommentsColumLast ? newColumnOrder : this.columOrderOriginal;
 
-    // Sort columns as desired
+    // Sort column names as desired
     columns = this.sortColumns(columns, newColumnOrder);
     newColumnOrder = columns.map(function (e) { return e.dataIndex });
 
     // Reorder columns
-    grid.headerCt.suspendLayouts();
+    normalGrid.headerCt.suspendLayouts();
     for (var i = 0; i < columns.length; i++) {
-      grid.headerCt.moveAfter(columns[i], (columns[i - 1] || null));
+      normalGrid.headerCt.moveAfter(columns[i], (columns[i - 1] || null));
     }
-    grid.headerCt.resumeLayouts(true);
+    normalGrid.headerCt.resumeLayouts(true);
 
-    // Add some formatting to highlight which multiple columns can be pasted in one go
-    var limitLeftPastable = isCommentsColumLast ? newColumnOrder.indexOf('name') : 0;
-    var limitRightPastable = isCommentsColumLast ? newColumnOrder.indexOf('comments') + 1 : -1;
+    // Add some formatting to highlight which columns have been grouped
+    // together so that data can be pasted in one go
+    var lockedGridLength = lockedGrid.headerCt.columnManager.getColumns().length
+    var limitLeftPastable = lockedGridLength - 1;
+    var limitRightPastable = isCommentsColumLast ? newColumnOrder.indexOf('comments') + lockedGridLength + 1 : -1;
 
     if (limitRightPastable > 1) {
       grid.headerCt.columnManager.getColumns().slice(limitLeftPastable, limitRightPastable).forEach(function (e) { e.addCls('highlight-header-text-blue') });
@@ -238,8 +248,6 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       grid.headerCt.columnManager.getColumns().forEach(function (e) { e.removeCls('highlight-header-text-blue') });
       btn.removeCls('highlight-shuffle-icon-blue');
     }
-
-    grid.getView().refresh()
 
   },
 
@@ -721,7 +729,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'library_protocol', 'library_type',
+      'numberer', 'barcode', 'name', 'library_protocol', 'library_type',
       'concentration', 'mean_fragment_size', 'index_type', 'index_reads',
       'index_i7', 'index_i5', 'read_length', 'sequencing_depth',
       'amplification_cycles', 'equal_representation_nucleotides',
@@ -791,7 +799,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'nucleic_acid_type', 'library_protocol',
+      'numberer', 'barcode', 'name', 'nucleic_acid_type', 'library_protocol',
       'library_type', 'sample_volume_user', 'concentration', 'rna_quality',
       'read_length', 'sequencing_depth', 'amplification_cycles',
       'equal_representation_nucleotides', 'sample_volume',
@@ -816,14 +824,17 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       {
         xtype: 'rownumberer',
         dataIndex: 'numberer',
-        width: 40
+        width: 40,
+        locked:true,
       },
       {
         text: 'Name',
         dataIndex: 'name',
         tooltip: 'Name',
-        minWidth: 200,
-        flex: 1,
+        // minWidth: 200,
+        // flex: 1,
+        width: 200,
+        locked:true,
         editor: {
           xtype: 'textfield',
           regex: new RegExp(/^[A-Za-z0-9_]+(?<![rR][1-4])$/),
@@ -1001,7 +1012,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       columns.push({
         text: 'Barcode',
         dataIndex: 'barcode',
-        width: 95
+        width: 95,
+        locked:true,
       });
     }
 
@@ -1127,17 +1139,23 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           var librariesInRequestGrid = Ext.getCmp('libraries-in-request-grid');
           if (wnd.mode === 'add') {
             librariesInRequestGrid.getStore().add(obj.data);
-
-            for (var i = 0; i < obj.data.length; i++) {
-              var record = store.findRecord('name', obj.data[i].name);
-              store.remove(record);
-            }
-
-            new Noty({ text: 'Records have been added!' }).show();
             // If new libraries/samples are added, try to automatically save the request,
             // otherwise, if the request is not saved, such libraries/samples
             // are 'lost', or at least they don't have a request associated to them
             this.autoSaveRequest()
+
+            // The following loop causes an undefined error when enableLocking is
+            // set to true on the batch-add-grid grid. I am also not sure why
+            // removing items from the store is necessary, therefore I disabled
+            // this code and substituted it with a one-liner to wipe all data
+            // from the store
+            // for (var i = 0; i < obj.data.length; i++) {
+            //   var record = store.findRecord('name', obj.data[i].name);
+            //   store.remove(record);
+            // }
+            store.loadData([], false);
+
+            new Noty({ text: 'Records have been added!' }).show();
           } else {
             librariesInRequestGrid.down('#check-column').fireEvent('unselectall');
             new Noty({ text: 'The changes have been saved!' }).show();
