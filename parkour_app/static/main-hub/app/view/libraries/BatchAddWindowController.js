@@ -602,7 +602,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   getLibraryGridConfiguration: function (mode) {
     var store = Ext.create('Ext.data.Store', {
       model: 'MainHub.model.libraries.BatchAdd.Library',
-      data: []
+      data: [],
+      sorters: [{
+        property: 'barcode',
+        direction: 'ASC'
+      }],
     });
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
@@ -744,7 +748,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   getSampleGridConfiguration: function (mode) {
     var store = Ext.create('Ext.data.Store', {
       model: 'MainHub.model.libraries.BatchAdd.Sample',
-      data: []
+      data: [],
+      sorters: [{
+        property: 'barcode',
+        direction: 'ASC'
+      }],
     });
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
