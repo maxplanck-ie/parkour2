@@ -30,6 +30,8 @@ from django.utils import timezone
 from django.core.files.base import ContentFile
 from django.db.models import Q
 from constance import config
+from openpyxl import Workbook
+from openpyxl.styles import Font
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -1182,3 +1184,64 @@ class RequestViewSet(viewsets.ModelViewSet):
             return Response({"success": True}, 200)
         except:
             return Response({"success": False, "message": 'The request could not be deleted.'}, 404)
+
+    @action(methods=["get"], detail=True)
+    def download_libraries_excel(self, request, pk=None):
+        
+        # Create Excel workbook, sheet and bold style
+        wb = Workbook()
+        ws = wb.active
+        bold_font = Font(bold=True)
+
+        # Get libraries and samples from sequencing request
+        instance = self.get_object()
+        libraries = instance.libraries.all().order_by('barcode')
+        samples = instance.samples.all().order_by('barcode')
+
+        # Add samples, if they exist
+        if samples.exists():
+            
+            ws.title = 'Samples'
+            sample_columns = ['barcode', 'name', 'nucleic_acid_type__name', 'library_protocol__name',
+                              'library_type__name', 'sample_volume_user', 'concentration', 'rna_quality',
+                              'read_length__name', 'sequencing_depth', 'amplification_cycles',
+                              'equal_representation_nucleotides','concentration_method__name',
+                              'organism__name', 'source', 'comments']
+            # Write header
+            model = samples.model
+            sample_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in sample_columns]
+            ws.append(sample_columns_names)
+            # Make header bold
+            for cell in ws[f'{ws._current_row}:{ws._current_row}']:
+                cell.font = bold_font
+            # Append data
+            [ws.append(sample)for sample in samples.values_list(*sample_columns)]
+
+        # Add libraries, if they exist
+        if libraries.exists():
+
+            if ws.title == 'Samples':
+                ws = wb.create_sheet()
+            ws.title = 'Libraries'
+            library_columns = ['barcode', 'name', 'library_protocol__name', 'library_type__name',
+                               'concentration', 'mean_fragment_size', 'index_type',
+                               'index_i7', 'index_i5', 'read_length__name', 'sequencing_depth',
+                               'amplification_cycles', 'equal_representation_nucleotides',
+                               'qpcr_result', 'sample_volume_user', 'concentration_method__name',
+                               'organism__name', 'source', 'comments']
+            # Write header
+            model = libraries.model
+            library_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in library_columns]
+            ws.append(library_columns_names)
+            # Make header bold
+            for cell in ws[f'{ws._current_row}:{ws._current_row}']:
+                cell.font = bold_font
+            # Append data
+            [ws.append(library) for library in libraries.values_list(*library_columns)]
+
+        filename = f"{instance.name}_libraries_samples.xlsx"
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        wb.save(response)
+        return response

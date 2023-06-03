@@ -254,6 +254,12 @@ Ext.define('MainHub.view.requests.RequestWindow', {
         },
         store: 'librariesInRequestStore',
         bbar: [
+          {
+            xtype: 'button',
+            itemId: 'export-libraries-excel',
+            iconCls: 'fa fa-file-excel-o fa-lg',
+            tooltip: 'Export all samples/libraries to Excel'
+          },
           '->',
           {
             itemId: 'batch-add-button',

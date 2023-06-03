@@ -23,7 +23,10 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       },
       '#batch-add-button': {
         click: 'showBatchAddWindow'
-      }
+      },
+      '#export-libraries-excel': {
+        click: 'exportLibrariesExcel'
+      },
     }
   },
 
@@ -541,4 +544,14 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       poolSizeBox.setValue(null);
     }
   },
+
+  exportLibrariesExcel: function (btn) {
+    var requestId = btn.up('window').record.get('pk');
+    var url = Ext.String.format(
+      'api/requests/{0}/download_libraries_excel/', requestId
+    );
+    var downloadForm = Ext.create('Ext.form.Panel', { standardSubmit: true });
+    downloadForm.submit({ url: url, method: 'GET' });
+  },
+
 });
