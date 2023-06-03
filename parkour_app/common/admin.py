@@ -193,6 +193,8 @@ class UserAdmin(NamedUserAdmin):
     def change_view(self, request, object_id, extra_context=None):
         
         self.inlines = []
+        user_fields = []
+
         obj = self.model.objects.get(id=object_id)
         if obj.is_pi:
             self.inlines = [CostUnitInline, OIDCGroupInline]
@@ -284,7 +286,7 @@ class UserAdmin(NamedUserAdmin):
                 ),
             )
         
-        # If this is an "OpenID" user do not allow firs/last names
+        # If this is an "OpenID" user do not allow first/last names
         # and email to be changed
         if obj.oidc_id:
             self.readonly_fields = user_fields
