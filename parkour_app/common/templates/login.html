@@ -33,12 +33,15 @@
 <div id="login-form" class="form-signin">
     <h2 class="form-signin-heading">Parkour</h2>
     <h4>Sign in with</h4>
-    <a href="{% url 'oidc_authentication_init' %}">
-        <button class="btn btn-default btn-block" style="margin-bottom:10px;text-align:left;">
+
+    <form method="get" action="{% url 'oidc_authentication_init' %}" style="opacity:1">
+        <input type="hidden" name="next" value="{{ next }}" />
+        <button type="submit" class="btn btn-default btn-block" style="margin-bottom:10px;text-align:left;">
             <img src="{% static 'images/oidc_provider_logo.png' %}" style="width: 50px; margin-right: 7px;"
                 alt="Johannes Gutenberg-Universität Mainz">JGU Mainz
         </button>
-    </a>
+    </form>
+
     <button class="btn btn-default btn-block collapsible" style="text-align:left;">
         <img src="{% static 'main-hub/resources/images/logo1.svg' %}"
             style="width: 50px; margin-right: 7px; filter: invert(100%);" alt="Parkour">Parkour
