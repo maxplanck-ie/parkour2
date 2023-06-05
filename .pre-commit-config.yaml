@@ -139,10 +139,10 @@ repos:
     -   id: rst-directive-colons
 
 -   repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.12.0
+    rev: 1.13.0
     hooks:
     -   id: django-upgrade
-        args: [--target-version, "3.2"]
+        args: [--target-version, "4.2"]
 
 -   repo: https://github.com/pycqa/isort
     rev: 5.12.0
