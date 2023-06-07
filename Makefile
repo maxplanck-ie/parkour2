@@ -350,10 +350,11 @@ show_urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:
-	@test -d ./env && \
-		source ./env/bin/activate && \
+	@test -d ./env || \
+		{ echo "venv not found! Try: make env-setup-dev"; exit 1; }
+	@source ./env/bin/activate && \
 		pip-compile-multi -d parkour_app/requirements/ && \
-		deactivate || echo "venv not found! Try: make env-setup-dev"
+		deactivate
 
 env-setup-dev:
 	@env python3 -m venv env && \
@@ -361,8 +362,7 @@ env-setup-dev:
 		env python3 -m pip install --upgrade pip && \
 		pip install \
 			pre-commit \
-			pip-compile-multi && \
-		pip install -r parkour_app/requirements/dev.txt && \
+			pip-compile-multi
 	deactivate
 
 # Remember: (docker compose run == docker exec) != docker run
