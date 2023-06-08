@@ -40,6 +40,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   onRequestWindowBoxready: function (wnd) {
     var librariesInRequestGrid = wnd.down('#libraries-in-request-grid');
     var librariesInRequestStore = librariesInRequestGrid.getStore();
+    librariesInRequestStore.addListener('datachanged', this._togglePoolFields, librariesInRequestStore);
     var costUnitCb = wnd.down('#cost-unit-cb');
     var piCb = wnd.down('#pi-cb');
     var form = Ext.getCmp('request-form').getForm();
@@ -77,7 +78,6 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
       // Load all Libraries/Samples for current Request
       librariesInRequestGrid.fireEvent('refresh', librariesInRequestGrid);
-      librariesInRequestStore.addListener('datachanged', this._togglePoolFields, librariesInRequestStore);
 
       // Load files
       if (request.files.length > 0) {
