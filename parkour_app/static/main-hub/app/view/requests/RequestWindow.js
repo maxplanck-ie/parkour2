@@ -121,11 +121,28 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 queryMode: 'local',
                 valueField: 'id',
                 displayField: 'name',
-                fieldLabel: 'Seq. Kit',
+                fieldLabel: '<span data-qtip="Sequencer - # lanes × # reads, # cycles">Seq. Kit</span>',
                 emptyText: 'Sequencing kit',
                 allowBlank: false,
                 forceSelection: true,
                 store: 'PoolSizes',
+                listeners: {
+                  change: function (cb) {
+                    // Reload Read Lengths for specific request
+                    var requestForm = cb.up('#request-form');
+                    var requestFormFieldValues = requestForm.getForm().getFieldValues();
+                    var requestRecord = requestForm.up('window').record;
+                    var requestId = requestRecord ? requestRecord.get('pk') : 0;
+                    Ext.getStore('readLengthsStore').reload(
+                      {
+                        params: {
+                          pool_size_user: requestFormFieldValues.pool_size_user ? requestFormFieldValues.pool_size_user : 0,
+                          request_id: requestId,
+                        }
+                      }
+                    );
+                  }
+                }
               },
               {
                 name: 'description',

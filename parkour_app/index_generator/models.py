@@ -16,12 +16,14 @@ class PoolSize(models.Model):
                                   on_delete=models.SET_NULL)
     size = models.PositiveSmallIntegerField("Size (in million reads)")
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
+    cycles = models.PositiveSmallIntegerField("Number of cycles")
+    read_lengths = models.ManyToManyField('library_sample_shared.ReadLength', verbose_name='read lengths', related_name='pool_size',)
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
-        ordering = ["sequencer", "size"]
+        ordering = ["sequencer", "size", "cycles"]
         constraints = [
-            models.UniqueConstraint(fields=['sequencer', 'size', 'lanes', 'obsolete'],
+            models.UniqueConstraint(fields=['sequencer', 'size', 'cycles', 'lanes', 'obsolete'],
                                     name='unique_pool_size')
         ]
 
@@ -30,7 +32,7 @@ class PoolSize(models.Model):
         prefixes = ['M', 'G', 'T', 'P']
         k = Decimal(1000)
         magnitude = int(floor(log(size, k)))
-        return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}"
+        return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}, {self.cycles}c"
 
     @property
     def name(self):

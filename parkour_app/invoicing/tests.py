@@ -111,7 +111,7 @@ class TestSequencingCostsModel(BaseTestCase):
 
     def test_name(self):
         self.assertEqual(
-            str(self.cost), f"{self.pool_size.sequencer.name} - {self.pool_size.lanes}×{self.pool_size.size}M"
+            str(self.cost), f"{self.pool_size.sequencer.name} - {self.pool_size.lanes}×{self.pool_size.size}M, {self.pool_size.cycles}c"
         )
         self.assertEqual(self.cost.sequencingprice_set.first().price_amount, f"{self.sequencingprice_set.first().price} €")
 

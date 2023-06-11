@@ -75,9 +75,38 @@ class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of read lengths."""
 
     # queryset = ReadLength.objects.all()
-    queryset = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
+    # queryset = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
     serializer_class = ReadLengthSerializer
 
+    def get_queryset(self):
+
+        request_id = int(self.request.query_params.get("request_id", 0))
+        pool_size_user_id = int(self.request.query_params.get("pool_size_user", 0))
+        set_read_lengths = ReadLength.objects.none()
+
+        try:
+
+            if not (request_id or pool_size_user_id):
+                raise Exception
+
+            # Get reads that have already been added
+            request = Request.objects.filter(id=request_id).first()
+            if request:
+                set_read_length_ids = set(list(request.libraries.values_list('read_length', flat=True)) +
+                                        list(request.samples.values_list('read_length', flat=True)))
+                set_read_lengths = ReadLength.objects.filter(id__in=set_read_length_ids)
+
+            # Filter choices based on sequencing kit selected and lengths already present
+            if pool_size_user_id:
+                choices = ReadLength.objects.filter(pool_size__id=pool_size_user_id, obsolete=settings.NON_OBSOLETE)
+            else:
+                raise Exception
+
+        except:
+
+            choices = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
+        
+        return sorted((choices | set_read_lengths).distinct(), key= lambda e: [int(n) for n in e.name.split('x')])
 
 class ReadLengthInvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 

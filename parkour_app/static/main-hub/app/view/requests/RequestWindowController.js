@@ -128,6 +128,15 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     }
     );
 
+    // Reload Read Lengths for specific request
+    Ext.getStore('readLengthsStore').reload(
+      {
+        params: {
+          pool_size_user: request.pool_size_user ? request.pool_size_user : 0,
+          request_id: request.pk,
+        }
+      });
+
     this.initializeTooltips();
   },
 

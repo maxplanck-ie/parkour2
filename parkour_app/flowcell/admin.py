@@ -56,7 +56,9 @@ class LaneInline(admin.TabularInline):
 
 class PoolSizeInline(admin.TabularInline):
     model = PoolSize
-    fields = ('size', 'lanes', 'obsolete',)
+    fields = ('lanes', 'size', 'cycles', 'read_lengths', 'obsolete',)
+    ordering = ('lanes', 'size', 'cycles',)
+    autocomplete_fields = ('read_lengths',)
     extra = 1
     verbose_name = 'Sequencing kit' # PoolSize as Sequencing kit
     verbose_name_plural = 'Sequencing kits'

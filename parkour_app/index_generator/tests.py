@@ -127,16 +127,16 @@ INDICES_11 = [  # I5
 ]
 
 
-def create_pool_size(multiplier=8, size=200):
+def create_pool_size(multiplier=8, size=200, cycles=150):
     sequencer = Sequencer.objects.create(name=get_random_name())
-    pool_size = PoolSize(sequencer=sequencer, lanes=multiplier, size=size)
+    pool_size = PoolSize(sequencer=sequencer, lanes=multiplier, size=size, cycles=cycles)
     pool_size.save()
     return pool_size
 
 
-def create_pool(user, multiplier=1, size=200, save=True):
+def create_pool(user, multiplier=1, size=200, cycles=150, save=True):
     
-    pool_size = create_pool_size(multiplier, size)
+    pool_size = create_pool_size(multiplier, size, cycles)
     pool = Pool(user=user, size=pool_size)
 
     if save:
@@ -231,11 +231,11 @@ class TestPoolModel(BaseTestCase):
 
 class TestPoolSizeModel(BaseTestCase):
     def setUp(self):
-        self.size = create_pool_size(multiplier=1, size=200)
+        self.size = create_pool_size(multiplier=1, size=200, cycles=200)
         self.size.save()
 
     def test_name(self):
-        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.lanes}×{self.size.size}M")
+        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.lanes}×{self.size.size}M, {self.size.cycles}c")
 
 
 # Views
@@ -248,7 +248,7 @@ class TestPoolSize(BaseTestCase):
 
     def test_pool_size_list(self):
         """Ensure get pool sizes behaves correctly."""
-        pool_size = create_pool_size(multiplier=1, size=10)
+        pool_size = create_pool_size(multiplier=1, size=10, cycles=300)
         pool_size.save()
 
         response = self.client.get("/api/pool_sizes/")
@@ -461,7 +461,7 @@ class TestIndexGenerator(BaseTestCase):
         self.create_user()
         self.login()
 
-        self.pool_size = create_pool_size(multiplier=1, size=200)
+        self.pool_size = create_pool_size(multiplier=1, size=200, cycles=200)
         self.pool_size.save()
 
         self.read_length = ReadLength(name=get_random_name())

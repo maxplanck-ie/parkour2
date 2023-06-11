@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
+from django.forms import ValidationError
 
 AlphaValidator = RegexValidator(
     r"^[A-Z]$", "Only capital alpha characters are allowed."
@@ -39,7 +40,7 @@ class ConcentrationMethod(models.Model):
 
 
 class ReadLength(models.Model):
-    name = models.CharField("Name", max_length=50)
+    name = models.CharField("Name", max_length=50, help_text='AxB, where A and B are integers')
     obsolete = models.PositiveIntegerField("Obsolete", default=1)
 
     class Meta:
@@ -49,6 +50,21 @@ class ReadLength(models.Model):
     def __str__(self):
         return self.name
 
+    def clean(self):
+    
+        errors = []
+
+        # Check that name conforms to schema AxB, where A and B are int
+        try:
+            
+            ends, cycles = self.name.split('x')
+            int(ends)
+            int(cycles)
+        except:
+            errors.append(ValidationError('Name must be AxB, where A and B are integers'))
+
+        if len(errors) > 0:
+            raise ValidationError(errors)
 
 class GenericIndex(models.Model):
     prefix = models.CharField("Prefix", max_length=10, default="")

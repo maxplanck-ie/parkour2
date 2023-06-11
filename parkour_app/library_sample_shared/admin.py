@@ -37,6 +37,8 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 class ReadLengthAdmin(admin.ModelAdmin):
     list_display = ("name", "obsolete_name")
     actions = ("mark_as_obsolete", "mark_as_non_obsolete")
+    search_fields = ('name',)
+    ordering = ('name',)
 
     @admin.action(description="Mark read length as obsolete")
     def mark_as_obsolete(self, request, queryset):
