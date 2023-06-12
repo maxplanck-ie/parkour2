@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from common.models import Organization
 from django.contrib.sites.shortcuts import get_current_site
 from constance import config
+from request.views import get_staff_emails
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -57,7 +58,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         user_admin_change_url = f'{self.request.scheme + "://" if self.request.scheme else ""}{current_site}{reverse("admin:common_user_change", args=(user.id,))}'
         
         # Recipient list, all lab managers plus tUhe site admin
-        recipients = self.UserModel.objects.filter(is_active=True, is_staff=True, groups__name='Genomics-CF').values_list('email', flat=True)
+        recipients = get_staff_emails()
 
         # Get list of OIDC groups, if available
         oidc_groups = claims.get('role', [])
@@ -76,7 +77,7 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list= recipients,
+                recipient_list=recipients,
             )
 
     def create_user(self, claims):
