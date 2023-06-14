@@ -153,7 +153,7 @@ check-nginx-conf:
 		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin default to the same subdomain, so this requires your quick manual intervention.'; \
 		exit 1; }
 
-convert-backup:  ## Convert daily.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
+convert-backup:  ## Convert xxxly.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
@@ -190,6 +190,10 @@ load-fixtures:
 
 load-backup: load-postgres load-media
 
+# In our production VM, media_dump is a symlink to another partition (mounted
+# as /parkour) with its own set of backup rules set by Core IT. The last
+# command (mv) will move subfolders (e.g. request_files) in this partition.
+# Also, note that this partition is where rsnapshot is writing every time.
 save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
@@ -246,6 +250,7 @@ import-pgdb:
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" --exclude='*' --include='*.sqldump' \
 		${VM_PROD}:~/parkour2 misc/
 
+## Beware the BarcodeCounter bug!
 full-import-json:
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json misc/
