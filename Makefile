@@ -247,8 +247,10 @@ import-media:
 
 import-pgdb:
 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 convert-backup"
-	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" --exclude='*' --include='*.sqldump' \
-		${VM_PROD}:~/parkour2 misc/
+	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='*.sqldump' \
+		--exclude='*.conf' --exclude='*.pem' --exclude='*.yml' \
+		--exclude='*.txt' --exclude='*.json' --exclude='*.env' \
+		${VM_PROD}:~/parkour2/misc/ misc/
 
 ## Beware the BarcodeCounter bug!
 full-import-json:
