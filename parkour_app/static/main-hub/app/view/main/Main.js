@@ -74,7 +74,7 @@ Ext.define('MainHub.view.main.Main', {
                     xtype: 'button',
                     ui: 'header',
                     iconCls: 'x-fa fa-book',
-                    href: 'https://parkour.readthedocs.io/',
+                    href: 'https://github.com/maxplanck-ie/parkour2/wiki/Introduction',
                     tooltip: 'Documentation'
                 },
                 {
