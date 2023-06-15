@@ -9,3 +9,4 @@ misc/*.sqldump
 rsnapshot/
 *.swp
 env/
+parkour_app/static/main-hub/ext/build/
