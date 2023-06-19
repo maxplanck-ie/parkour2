@@ -10,3 +10,4 @@ rsnapshot/
 *.swp
 env/
 parkour_app/static/main-hub/ext/build/
+sencha-error-*.log
