@@ -1001,6 +1001,9 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
             for (var i = 0; i < obj.data.length; i++) {
               var record = store.findRecord('name', obj.data[i].name);
+              if (record.get('sequencing_depth') <= 10) {
+                new Noty({ text: 'Seq. depth higher than 10M is highly recommended.', type: 'warning' }).show();
+              }    
               store.remove(record);
             }
 
