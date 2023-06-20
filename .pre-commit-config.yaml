@@ -65,13 +65,6 @@ repos:
         language: script
         files: 'Dockerfile'
         args: [-i, '/^CMD \["python".*"runserver_plus"/s/CMD/#CMD/']
-    #   id: check-migrations
-    #   name: Check django migrations
-    #   entry: ./parkour_app/manage.py makemigrations --no-input --check --dry-run
-    #   language: system
-    #     # This will use system's python instead of a new env
-    #   types: [python]
-    #   pass_filenames: false
     -   id: set-prod-docker-5
         name: set-prod-docker-5
         entry: /usr/bin/env sed

@@ -59,7 +59,6 @@ schema: apply-migrations
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
-# TODO: add conditional 'if containers are running'; else: handle...
 check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
 
@@ -325,12 +324,11 @@ deploy-rsnapshot:
 test: down-full clean set-prod deploy-django
 	@docker compose run parkour2-django python manage.py validate_templates && \
 		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --failfast --timing
+	$(MAKE) check-migras
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
-# TODO: https://django-user-sessions.readthedocs.io
-# + set a timeout (only for non-staff users)
 list-sessions:
 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
 
