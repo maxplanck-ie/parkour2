@@ -72,6 +72,12 @@ repos:
     #     # This will use system's python instead of a new env
     #   types: [python]
     #   pass_filenames: false
+    -   id: set-prod-docker-5
+        name: set-prod-docker-5
+        entry: /usr/bin/env sed
+        language: script
+        files: 'Dockerfile'
+        args: [-i, '/^ENV PYTHONDEVMODE/s/1$/0$/']
 
 
 # On centos, with py36, this was locked to 4.0.1
