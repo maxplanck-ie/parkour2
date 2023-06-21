@@ -46,6 +46,12 @@ deploy-ready: apply-migrations collect-static
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
+update-extjs:
+	@which sencha > /dev/null \
+		&& cd ./parkour_app/static/main-hub \
+		&& sencha app build development
+	$(MAKE) collect-static
+
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
 
