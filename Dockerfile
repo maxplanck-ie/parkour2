@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM python:3.8
+FROM python:3.11
 LABEL maintainer="Adrian S. <lims@omics.dev>"
 
 ENV DEBIAN_FRONTEND=noninteractive
