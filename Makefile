@@ -14,7 +14,7 @@ check-rootdir:
 
 deploy-full:  deploy-django deploy-caddy
 
-set-prod:
+set-prod: down
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["gunicorn/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
