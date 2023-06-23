@@ -99,7 +99,7 @@ repos:
     hooks:
     -   id: black
         language_version: python3
-        entry: black --target-version=py38  # 3.8
+        entry: black --target-version=py311  # 3.11
 
 -   repo: https://github.com/asottile/blacken-docs
     rev: v1.12.1
@@ -111,7 +111,7 @@ repos:
     rev: v3.3.1
     hooks:
     -   id: pyupgrade
-        args: [--py38-plus]  # 3.8
+        args: [--py311-plus]  # 3.11
 
 #-   repo: https://gitlab.com/pycqa/flake8.git
 #    rev: 4.0.1
