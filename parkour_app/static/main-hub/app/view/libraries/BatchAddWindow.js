@@ -70,7 +70,6 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       },
       id: 'batch-add-grid',
       itemId: 'batch-add-grid',
-      enableLocking: true,
       sortableColumns: false,
       enableColumnMove: true,
       enableColumnHide: false,
