@@ -132,8 +132,8 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     Ext.getStore('readLengthsStore').reload(
       {
         params: {
-          pool_size_user: request.pool_size_user ? request.pool_size_user : 0,
-          request_id: request.pk,
+          pool_size_user: request ? request.pool_size_user : 0,
+          request_id: request ? request.pk : 0,
         }
       });
 
