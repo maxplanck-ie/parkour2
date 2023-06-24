@@ -44,6 +44,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     var costUnitCb = wnd.down('#cost-unit-cb');
     var piCb = wnd.down('#pi-cb');
     var bioinfoCb = wnd.down('#bioinformatician-cb');
+    var readLengthsCb = wnd.down('#pool-size-user-cb');
     var form = Ext.getCmp('request-form').getForm();
     var userId = USER.id;
     var request;
@@ -140,6 +141,11 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
         params: {
           pool_size_user: request ? request.pool_size_user : 0,
           request_id: request ? request.pk : 0,
+        },
+        callback: function (records, operation, success) {
+          if (success && request) {
+            readLengthsCb.setValue(request.pool_size_user);
+          }
         }
       });
 
