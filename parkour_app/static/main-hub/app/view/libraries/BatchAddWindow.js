@@ -17,6 +17,22 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
   autoShow: true,
   layout: 'fit',
 
+  onEsc: function () {
+
+    // Ask before closing window on hitting Esc,
+    // This avoids accidental window closure before
+    // saving
+    var me = this;
+    Ext.Msg.confirm(
+      '',
+      'Do you really want to close the window before saving?',
+      function (btn) {
+        if (btn === 'yes')
+          me.hide();
+      }
+    );
+  },
+
   items: [{
     xtype: 'panel',
     border: 0,
