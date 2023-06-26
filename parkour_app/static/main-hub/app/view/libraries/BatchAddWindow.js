@@ -17,21 +17,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
   autoShow: true,
   layout: 'fit',
 
-  onEsc: function () {
-
-    // Ask before closing window on hitting Esc,
-    // This avoids accidental window closure before
-    // saving
-    var me = this;
-    Ext.Msg.confirm(
-      '',
-      'Do you really want to close the window before saving?',
-      function (btn) {
-        if (btn === 'yes')
-          me.hide();
-      }
-    );
-  },
+  // onEsc: this.closeBatchAddWindow(),
 
   items: [{
     xtype: 'panel',
@@ -170,5 +156,21 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       ],
       hidden: true
     }
-  ]
+  ],
+
+  listeners: {
+
+    beforeclose: function (wnd) {
+      if (!wnd.isConfirmed) {
+        Ext.MessageBox.confirm('', 'Do you want to close this window before saving your changes?', function (btn) {
+          if (btn == 'yes') {
+            wnd.isConfirmed = true;
+            wnd.close();
+          }
+        });
+        return false;
+      }
+    }
+  }
+
 });
