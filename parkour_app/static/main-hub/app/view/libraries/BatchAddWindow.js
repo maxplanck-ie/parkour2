@@ -87,7 +87,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
       plugins: [
         {
           ptype: 'rowediting',
-          clicksToEdit: 1
+          clicksToEdit: 2
         },
         {
           ptype: 'clipboard'

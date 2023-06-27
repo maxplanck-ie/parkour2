@@ -185,7 +185,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
           },
           {
             ptype: 'rowediting',
-            clicksToEdit: 1
+            clicksToEdit: 2
           }
         ],
 

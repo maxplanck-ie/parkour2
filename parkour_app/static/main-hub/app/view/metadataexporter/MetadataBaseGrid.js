@@ -18,7 +18,7 @@ Ext.define('MainHub.view.metadataexporter.MetadataBaseGrid', {
   plugins: [
     {
       ptype: 'cellediting',
-      clicksToEdit: 1
+      clicksToEdit: 2
     },
     {
       ptype: 'clipboard'
