@@ -180,6 +180,7 @@ LOGGING = {
             "formatter": "verbose",
             "maxBytes": 15 * 1024 * 1024,  # 15 MB
             "backupCount": 2,
+            "delay": True,
         },
         "dblogfile": {
             "level": "DEBUG",
@@ -188,6 +189,7 @@ LOGGING = {
             "formatter": "verbose",
             "maxBytes": 15 * 1024 * 1024,
             "backupCount": 2,
+            "delay": True,
         },
     },
 }
