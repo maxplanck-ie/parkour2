@@ -51,7 +51,7 @@ update-extjs:
 	@which sencha > /dev/null \
 		&& cd ./parkour_app/static/main-hub \
 		&& sencha app build development
-	$(MAKE) collect-static
+	@$(MAKE) collect-static
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
@@ -88,7 +88,7 @@ down: down-lite  ## Turn off running instance (persisting media & staticfiles' v
 
 clean:
 	@sleep 1s
-	$(MAKE) set-prod unset-caddy > /dev/null
+	@$(MAKE) set-prod unset-caddy > /dev/null
 
 sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
@@ -333,7 +333,7 @@ deploy-rsnapshot:
 test: down-full clean set-prod deploy-django
 	@docker compose run parkour2-django python manage.py validate_templates && \
 		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --failfast --timing
-	$(MAKE) check-migras
+	@$(MAKE) check-migras
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
