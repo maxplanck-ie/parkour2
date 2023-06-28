@@ -1,6 +1,7 @@
 # Parkour
 
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maxplanck-ie/parkour2/main.svg)](https://results.pre-commit.ci/latest/github/maxplanck-ie/parkour2/main) ![dj-tests status](https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maxplanck-ie/parkour2/develop.svg)](https://results.pre-commit.ci/latest/github/maxplanck-ie/parkour2/develop)
+ [![dj-tests status](https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg)](https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml)
 
 ![Parkour](./misc/readme.png)
 
