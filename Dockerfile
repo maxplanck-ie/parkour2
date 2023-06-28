@@ -28,4 +28,4 @@ ENV PYTHONBREAKPOINT ipdb.set_trace
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 #CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
-CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "2", "-b", ":8000"]
+CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "4", "-b", ":8000"]
