@@ -1,5 +1,6 @@
 .PHONY: *
 SHELL := /bin/bash
+timestamp := $(shell date +%Y%m%d-%H%M%S)
 
 deploy: check-rootdir set-prod deploy-full  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
 
@@ -85,9 +86,9 @@ down-lite: clearpy
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
-clean: set-prod unset-caddy
-	@git status
-	@echo "Config reset OK. You may also be interested into: make prune sweep"
+clean:
+	@sleep 1s
+	$(MAKE) set-prod unset-caddy > /dev/null
 
 sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
@@ -160,13 +161,14 @@ check-nginx-conf:
 		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin default to the same subdomain, so this requires your quick manual intervention.'; \
 		exit 1; }
 
-convert-backup:  ## Convert xxxly.0's pgdb to ./misc/latest.sqldump (overwriting if there's one already)
+convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump" && \
-		docker cp parkour2-convert-backup:/tmp/postgres_dump misc/latest.sqldump && \
+		docker cp parkour2-convert-backup:/tmp/postgres_dump misc/db_$(timestamp).sqldump
 		docker compose -f convert-backup.yml down
+	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
@@ -204,7 +206,6 @@ load-backup: load-postgres load-media
 save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
-timestamp := $(shell date +%Y%m%d-%H%M%S)
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
 		docker cp parkour2-postgres:/tmp/postgres_dump misc/db_$(timestamp).sqldump
