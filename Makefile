@@ -85,7 +85,7 @@ down-lite: clearpy
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
-clean: set-prod unset-caddy  ## Reset config(s) to production (default) state
+clean: set-prod unset-caddy
 	@git status
 	@echo "Config reset OK. You may also be interested into: make prune sweep"
 
@@ -102,9 +102,9 @@ clearpy:
 
 prod: down set-prod deploy-django deploy-nginx deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-dev-easy: down set-dev set-caddy deploy-full  ## Deploy Werkzeug instance (see: caddyfile.in.use)
+dev-easy: down set-dev set-caddy deploy-full clean  ## Deploy Werkzeug instance (see: caddyfile.in.use)
 
-dev: down set-dev deploy-django deploy-nginx  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-django deploy-nginx clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
