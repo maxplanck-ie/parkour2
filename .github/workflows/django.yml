@@ -12,7 +12,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.8, 3.9]
+        python-version: [3.9, '3.10', 3.11]
     services:
       postgres:
         env:
@@ -42,7 +42,7 @@ jobs:
           pip install -r parkour_app/requirements/prod.txt
       - name: Run Tests
         run: |
-          python parkour_app/manage.py test parkour_app
+          python parkour_app/manage.py test parkour_app --parallel
         env:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
