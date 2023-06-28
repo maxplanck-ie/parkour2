@@ -5,3 +5,4 @@ ipdb
 bpython
 pywatchman
 Werkzeug
+rich

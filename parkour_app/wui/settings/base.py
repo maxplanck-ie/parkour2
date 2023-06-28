@@ -161,6 +161,7 @@ LOGGING = {
             "format": "[%(levelname)s] [%(asctime)s] [%(pathname)s:%(lineno)s]: %(funcName)s(): %(message)s",
             "datefmt": "%d/%b/%Y %H:%M:%S",
         },
+        "rich": {"datefmt": "[%d-%b %X]"},
     },
     "handlers": {
         "mail_admins": {
