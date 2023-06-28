@@ -131,6 +131,8 @@ deploy-caddy:
 	@docker compose -f caddy.yml up -d
 
 deploy-nginx:
+	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
+		{ echo "TLS certificates not found!"; exit 1; }
 	@docker compose -f nginx.yml up -d
 
 deploy-ncdb:
