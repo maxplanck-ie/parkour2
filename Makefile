@@ -49,6 +49,9 @@ deploy-ready: apply-migrations collect-static
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
 
+check-templates:
+	@docker compose exec parkour2-django python manage.py validate_templates
+
 update-extjs:
 	@which sencha > /dev/null \
 		&& cd ./parkour_app/static/main-hub \
@@ -193,6 +196,8 @@ load-postgres-plain:
 	@docker cp ./this.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
 		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp/parkour-postgres.dump > /dev/null"
 
+db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
+
 load-fixtures:
 	@#fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' '
 	@docker compose exec parkour2-django python manage.py loaddata \
@@ -334,10 +339,12 @@ deploy-rsnapshot:
 		sleep 1m && \
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
-test: down-full clean set-prod deploy-django
-	@docker compose run parkour2-django python manage.py validate_templates && \
-		docker compose run parkour2-django python -Wa manage.py test --buffer --reverse --failfast --timing
-	@$(MAKE) check-migras
+# --buffer --reverse --failfast --timing
+test: down set-prod deploy-django clean  ## Run unittests
+	@docker compose exec parkour2-django python manage.py test --parallel
+
+full-test: check-migras check-templates test  ## Run all tests, on every level
+	@#echo 'TODO: run sencha test suite'
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
