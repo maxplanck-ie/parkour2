@@ -179,7 +179,7 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "django.log"),
             "formatter": "verbose",
-            "maxBytes": 15 * 1024 * 1024,  # 15 MB
+            "maxBytes": 5 * 1024 * 1024,
             "backupCount": 2,
             "delay": True,
         },
@@ -188,7 +188,7 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "db.log"),
             "formatter": "verbose",
-            "maxBytes": 15 * 1024 * 1024,
+            "maxBytes": 5 * 1024 * 1024,
             "backupCount": 2,
             "delay": True,
         },
