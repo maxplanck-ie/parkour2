@@ -19,7 +19,7 @@ DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": show_toolbar_to_all_IPs,
 }
 
-""" LOGGING["handlers"] = {
+LOGGING["handlers"] = {
     "rich_console": {
         "class": "rich.logging.RichHandler",
         "formatter": "rich",
@@ -27,23 +27,23 @@ DEBUG_TOOLBAR_CONFIG = {
         "rich_tracebacks": True,
         "tracebacks_show_locals": True,
     },
-} """
+}
 
 LOGGING["loggers"] = {
     "django.request": {
-        "handlers": ["console"],
+        "handlers": ["rich_console"],
         "level": "ERROR",
         "propagate": True,
     },
     "django": {
-        "handlers": ["console"],
+        "handlers": ["rich_console"],
         "propagate": False,
     },
     "django.db.backends": {
-        "handlers": ["console"],
+        "handlers": ["rich_console"],
         "propagate": False,
     },
     "db": {
-        "handlers": ["console"],
+        "handlers": ["rich_console"],
     },
 }
