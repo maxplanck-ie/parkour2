@@ -19,16 +19,15 @@ DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": show_toolbar_to_all_IPs,
 }
 
-LOGGING["handlers"] = {
-    "console": {
+""" LOGGING["handlers"] = {
+    "rich_console": {
         "class": "rich.logging.RichHandler",
-        "filters": ["require_debug_true"],
         "formatter": "rich",
         "level": "DEBUG",
         "rich_tracebacks": True,
         "tracebacks_show_locals": True,
     },
-}
+} """
 
 LOGGING["loggers"] = {
     "django.request": {
