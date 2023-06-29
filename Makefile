@@ -22,8 +22,7 @@ set-prod:
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"--reload", //' Dockerfile
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
-	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' \
-		-e '/^ENV PYTHONTRACEMALLOC/s/25/0/' Dockerfile
+	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: false/' \
 		-e '/^ +stdin_open/s/: .*/: false/' docker-compose.yml
 	@sed -i -e 's/\(client_body_timeout\).*/\1 120;/' \
@@ -118,8 +117,7 @@ set-dev: set-prod unset-caddy
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"--reload", "-t", "3600"/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
-	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' \
-			-e '/^ENV PYTHONTRACEMALLOC/s/0/25/' Dockerfile
+	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -E -i -e '/^ +tty/s/: .*/: true/' \
 			-e '/^ +stdin_open/s/: .*/: true/' docker-compose.yml
 	@sed -i -e 's/\(client_body_timeout\).*/\1 1h;/' \

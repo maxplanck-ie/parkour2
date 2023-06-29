@@ -71,12 +71,6 @@ repos:
         language: script
         files: 'Dockerfile'
         args: [-i, '/^ENV PYTHONDEVMODE/s/1$/0$/']
-    -   id: set-prod-docker-6
-        name: set-prod-docker-6
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^ENV PYTHONTRACEMALLOC/s/25$/0$/']
 
 
 # On centos, with py36, this was locked to 4.0.1
