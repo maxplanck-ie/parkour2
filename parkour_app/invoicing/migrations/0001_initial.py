@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("flowcell", "0001_initial"),
         ("library_sample_shared", "0001_initial"),

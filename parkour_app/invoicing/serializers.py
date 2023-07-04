@@ -167,7 +167,6 @@ class InvoicingSerializer(ModelSerializer):
         data = []
 
         for flowcell in obj.flowcell.all():
-
             flowcell_dict = {
                 "flowcell_id": flowcell.flowcell_id,
                 "sequencer": flowcell.sequencer.pk,
@@ -222,7 +221,6 @@ class InvoicingSerializer(ModelSerializer):
         return {x.read_length.pk for x in obj.records}
 
     def get_num_libraries_samples_show(self, obj):
-
         num_libraries = obj.libraries.count()
         num_samples = obj.samples.count()
 
@@ -232,7 +230,6 @@ class InvoicingSerializer(ModelSerializer):
             return f"{num_samples} samples"
 
     def get_num_libraries_samples(self, obj):
-
         flowcells = self.get_percentage(obj)
 
         mindt = min(d["flowcell_create_time"] for d in flowcells)
@@ -248,7 +245,6 @@ class InvoicingSerializer(ModelSerializer):
         num_samples = obj.samples.count()
 
         if num_libraries > 0:
-
             libcount = 0
 
             # for flowcell in flowcells:
@@ -327,7 +323,6 @@ class InvoicingSerializer(ModelSerializer):
             dt = trunc_datetime(timezone.datetime(dt.year, dt.month, 1))
             # if flowcell['flowcell_create_month'] == int(self.context['curr_month']) and flowcell['flowcell_create_year'] == int(self.context['curr_year']):
             if dt == curr_date:
-
                 for pool in flowcell["pools"]:
                     costs += fixed_costs.get(flowcell["sequencer"], 0) * reduce(
                         lambda x, y: Decimal(x) * Decimal(y),
@@ -354,7 +349,6 @@ class InvoicingSerializer(ModelSerializer):
         costs = 0
         split = num_libraries_samples.split(" ")
         if split[1] == "samples":
-
             costs = preparation_costs.get(library_protocol, 0) * Decimal(split[0])
         else:
             try:

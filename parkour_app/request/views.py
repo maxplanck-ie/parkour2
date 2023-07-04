@@ -652,9 +652,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def download_complete_report(self, request, pk=None):
         def add_table(document, header, data, contains_comments=True):
-
             if contains_comments:
-
                 # Create table
                 # table = document.add_table(rows=1, cols=len(header))
                 table = document.add_table(rows=1, cols=len(header) - 1)
@@ -686,7 +684,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                 table = document.add_table(rows=1, cols=len(header))
                 hdr_cells = table.rows[0].cells
                 for i, h in enumerate(header):
-
                     hdr_cells[i].text = h
                 for row in data:
                     row_cells = table.add_row().cells

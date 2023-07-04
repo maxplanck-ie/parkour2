@@ -421,7 +421,6 @@ class FlowcellAnalysisViewSet(viewsets.ViewSet):
                 itertools.chain(request.libraries.all(), request.samples.all())
             )
             for item in records:
-
                 #               quick fix to deal with undefined index_type
                 #               this can happen for failed samples
                 if item.index_type is not None:

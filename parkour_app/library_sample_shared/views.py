@@ -79,7 +79,6 @@ class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class ReadLengthInvoicingViewSet(viewsets.ReadOnlyModelViewSet):
-
     queryset = ReadLength.objects.all()
     serializer_class = ReadLengthSerializer
 

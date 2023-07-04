@@ -139,7 +139,6 @@ def protected_media(request, *args, **kwargs):
         ).exists()
 
     if allow_download:
-
         response = HttpResponse()
 
         # Set file type and encoding

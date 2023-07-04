@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("sample", "0004_dj32_upgrade"),
         ("library_preparation", "0001_initial"),

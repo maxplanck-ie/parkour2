@@ -216,7 +216,9 @@ class Report:
             for sequencer_name in v:
                 try:
                     pairs.append((pi_mapping[k], sequencer_name))
-                except KeyError:  # KeyError if record exists under flowcell but the correspond. request was deleted.
+                except (
+                    KeyError
+                ):  # KeyError if record exists under flowcell but the correspond. request was deleted.
                     pass  # could add a warning pop-up here
         counts = Counter(pairs)
 

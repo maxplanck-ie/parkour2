@@ -193,7 +193,6 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def edit_comment(self, request, pk=None):
-
         instance = Pool.objects.filter(pk=pk)
 
         post_data = self._get_post_data(request)
