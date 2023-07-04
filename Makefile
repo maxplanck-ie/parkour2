@@ -218,39 +218,39 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 		docker cp parkour2-postgres:/tmp/postgres_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
-# check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
-save-db-json:
-	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
-		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
-	@rm -f misc/latest-dump.json && ln -s db_$(timestamp)-dump.json misc/latest-dump.json
+# # check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
+# save-db-json:
+# 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
+# 		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
+# 	@rm -f misc/latest-dump.json && ln -s db_$(timestamp)-dump.json misc/latest-dump.json
 
-load-db-json:
-	@docker cp misc/latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
-		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
+# load-db-json:
+# 	@docker cp misc/latest-dump.json parkour2-django:/tmp/postgres_dump.json && \
+# 		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
 
-reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
+# reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
 
-reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
+# reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
 
-prep4json:
-	@rm -f parkour_app/library_preparation/apps.py
-	@rm -f parkour_app/library_preparation/signals.py
-	@rm -f parkour_app/pooling/apps.py
-	@rm -f parkour_app/pooling/signals.py
+# prep4json:
+# 	@rm -f parkour_app/library_preparation/apps.py
+# 	@rm -f parkour_app/library_preparation/signals.py
+# 	@rm -f parkour_app/pooling/apps.py
+# 	@rm -f parkour_app/pooling/signals.py
 
-restore-prep4json:
-	@git restore -W parkour_app/library_preparation/apps.py
-	@git restore -W parkour_app/library_preparation/signals.py
-	@git restore -W parkour_app/pooling/apps.py
-	@git restore -W parkour_app/pooling/signals.py
+# restore-prep4json:
+# 	@git restore -W parkour_app/library_preparation/apps.py
+# 	@git restore -W parkour_app/library_preparation/signals.py
+# 	@git restore -W parkour_app/pooling/apps.py
+# 	@git restore -W parkour_app/pooling/signals.py
 
-reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
+# reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
 
-restore-prep4json-prod:
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# restore-prep4json-prod:
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 
 VM_PROD := root@parkour
 # ssh-keygen -t rsa -b 4096 -f ~/.ssh/parkour2 -C "your@email.tld"
@@ -267,70 +267,70 @@ import-pgdb:
 		--exclude='*.txt' --exclude='*.json' --exclude='*.env' \
 		${VM_PROD}:~/parkour2/misc/ misc/
 
-## Beware the BarcodeCounter bug!
-full-import-json:
-	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
-	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json misc/
+# ## Beware the BarcodeCounter bug!
+# full-import-json:
+# 	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-db-json"
+# 	@scp -i ~/.ssh/parkour2 ${VM_PROD}:~/parkour2/misc/latest-dump.json misc/
 
-## DEPRECATED
-upgrade-through-json:
-	@echo '# TODO:'
-	@echo '# - Get rid of json dumps, BarcodeCounter has a bug!'
-	@echo '# - Wrap these into a script. Add Migration Tester/Linter/Precommit?...'
-	@echo '#'
-	@echo '# Prepare'
-	@echo make compile full-import-json reload-json save-postgres
-	@echo make migrations
-	@echo make down dev migrate load-postgres
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "rm -rf ~/pk2_old"
-	@echo '# Backup'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker ps > ~/last.txt && git --git-dir=~/parkour2/.git --work-tree=~/parkour2 log | head -1 >> ~/last.txt"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker system prune -a"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker-compose -f docker-compose.yml -f nginx.yml -f rsnapshot.yml stop"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clean"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mv ~/parkour2 ~/pk2_old"
-	@echo '# Deployment'
-	@echo '## Prepare static'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mkdir -p ~/parkour2/parkour_app/static/main-hub/"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp -ruva ~/pk2_old/parkour_app/static/main-hub/app ~/parkour2/parkour_app/static/main-hub/"
-	@echo '## Ship code (asks for password, TODO)'
-	@echo rsync -rauL -vhP --delete \
-		--exclude={'.git','env','*.env','*.pem','rsnapshot/backups','frontend','media_dump'} \
-		~/parkour2 ${VM_PROD}:~/
-	@echo '## Corrections'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'s/docker compose/docker-compose/g\' ~/parkour2/Makefile"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'/^RUN/s/RUN --mount=.* pip/RUN pip/\' ~/parkour2/Dockerfile"
-	@echo '## Symlinks'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups ~/parkour2/rsnapshot/backups"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/halfy.0/localhost/data/parkour2_media ~/parkour2/media_dump"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
-	@echo '## Configuration'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/misc/parkour.env ~/parkour2/misc/"'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/cert.pem ~/parkour2/misc/"'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/key.pem ~/parkour2/misc/"'
-	@echo '## Get JSON dump and start the service...'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp ~/pk2_old/misc/latest-dump.json ~/parkour2/misc/"
-	#echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "git init && git add ."  # Otherwise restore-prep4json wouldn't work. FIXME (replace git with scp from pk-test?) DONE (pero cambiarlo para q sea from pk-prod)
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy prep4json prod migrasync load-db-json"
-	@echo 'SKIP: Here would go the option to do the legacy procedure, moving SQLdump... (TODO), something in the lines of: make clearpy prod migrate load-postgres'
-	@echo make restore-prep4json-prod
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 collect-static deploy-rsnapshot"
-	@echo '## Manual login OK? Proceeding...'
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
-	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
-	@echo "make git-release  # Further instructions to follow if everything went alright..."
+# ## DEPRECATED
+# upgrade-through-json:
+# 	@echo '# TODO:'
+# 	@echo '# - Get rid of json dumps, BarcodeCounter has a bug!'
+# 	@echo '# - Wrap these into a script. Add Migration Tester/Linter/Precommit?...'
+# 	@echo '#'
+# 	@echo '# Prepare'
+# 	@echo make compile full-import-json reload-json save-postgres
+# 	@echo make migrations
+# 	@echo make down dev migrate load-postgres
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "rm -rf ~/pk2_old"
+# 	@echo '# Backup'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker ps > ~/last.txt && git --git-dir=~/parkour2/.git --work-tree=~/parkour2 log | head -1 >> ~/last.txt"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker system prune -a"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker-compose -f docker-compose.yml -f nginx.yml -f rsnapshot.yml stop"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clean"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mv ~/parkour2 ~/pk2_old"
+# 	@echo '# Deployment'
+# 	@echo '## Prepare static'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "mkdir -p ~/parkour2/parkour_app/static/main-hub/"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp -ruva ~/pk2_old/parkour_app/static/main-hub/app ~/parkour2/parkour_app/static/main-hub/"
+# 	@echo '## Ship code (asks for password, TODO)'
+# 	@echo rsync -rauL -vhP --delete \
+# 		--exclude={'.git','env','*.env','*.pem','rsnapshot/backups','frontend','media_dump'} \
+# 		~/parkour2 ${VM_PROD}:~/
+# 	@echo '## Corrections'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'s/docker compose/docker-compose/g\' ~/parkour2/Makefile"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "sed -i \'/^RUN/s/RUN --mount=.* pip/RUN pip/\' ~/parkour2/Dockerfile"
+# 	@echo '## Symlinks'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups ~/parkour2/rsnapshot/backups"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s /parkour/backups/halfy.0/localhost/data/parkour2_media ~/parkour2/media_dump"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "ln -s ~/parkour2/parkour_app/static/main-hub/app ~/parkour2/frontend"
+# 	@echo '## Configuration'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp ~/pk2_old/misc/parkour.env ~/parkour2/misc/"'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/cert.pem ~/parkour2/misc/"'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t '"echo -n y | cp /root/pk2_old/misc/key.pem ~/parkour2/misc/"'
+# 	@echo '## Get JSON dump and start the service...'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "cp ~/pk2_old/misc/latest-dump.json ~/parkour2/misc/"
+# 	#echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "git init && git add ."  # Otherwise restore-prep4json wouldn't work. FIXME (replace git with scp from pk-test?) DONE (pero cambiarlo para q sea from pk-prod)
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 clearpy prep4json prod migrasync load-db-json"
+# 	@echo 'SKIP: Here would go the option to do the legacy procedure, moving SQLdump... (TODO), something in the lines of: make clearpy prod migrate load-postgres'
+# 	@echo make restore-prep4json-prod
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 collect-static deploy-rsnapshot"
+# 	@echo '## Manual login OK? Proceeding...'
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-rsnapshot rsnapshot halfy"
+# 	@echo ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "docker exec parkour2-django python manage.py check"
+# 	@echo "make git-release  # Further instructions to follow if everything went alright..."
 
-git-release:
-	@echo '# Release'
-	@echo gh pr create --fill -B main
-	@echo git checkout main
-	@echo git pull
-	@echo git tag -a "0.4.0" -m "Small bug fixes, overall performance improvement and better stability."
-	@echo git push --tags
-	@echo git checkout develop
-	@echo gh release create --generate-notes
+# git-release:
+# 	@echo '# Release'
+# 	@echo gh pr create --fill -B main
+# 	@echo git checkout main
+# 	@echo git pull
+# 	@echo git tag -a "0.4.0" -m "Small bug fixes, overall performance improvement and better stability."
+# 	@echo git push --tags
+# 	@echo git checkout develop
+# 	@echo gh release create --generate-notes
 
 deploy-rsnapshot:
 	@docker compose -f rsnapshot.yml up -d && \
