@@ -33,7 +33,6 @@ class LibrarySampleTree(viewsets.ViewSet):
             .order_by("-create_time")
         )
         if not showAll:
-
             queryset = queryset.filter(sequenced=False)
         if not self.request.user.is_staff:
             queryset = queryset.filter(user=self.request.user)

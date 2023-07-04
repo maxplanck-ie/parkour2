@@ -7,7 +7,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("index_generator", "0001_initial"),
         ("request", "0001_initial"),

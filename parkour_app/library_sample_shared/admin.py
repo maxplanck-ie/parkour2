@@ -48,7 +48,6 @@ class ReadLengthAdmin(admin.ModelAdmin):
 
     @admin.display(description="STATUS")
     def obsolete_name(self, obj):
-
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
 
 
@@ -114,7 +113,6 @@ class IndexTypeAdmin(admin.ModelAdmin):
 
     @admin.display(description="STATUS")
     def obsolete_name(self, obj):
-
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
@@ -248,7 +246,6 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 
     @admin.display(description="STATUS")
     def obsolete_name(self, obj):
-
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
 
 
