@@ -1,3 +1,4 @@
+import json
 import os
 
 import dj_database_url
@@ -32,6 +33,10 @@ LOGIN_REDIRECT_URL = "/"
 
 # Fix FileUpload
 X_FRAME_OPTIONS = "SAMEORIGIN"
+
+
+# CSRF cookie
+CSRF_TRUSTED_ORIGINS = json.loads(os.environ["CSRF_TRUSTED_ORIGINS"])
 
 
 # Application definition
