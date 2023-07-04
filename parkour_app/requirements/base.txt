@@ -15,7 +15,7 @@ async-timeout==4.0.2
     # via aiohttp
 attrs==23.1.0
     # via aiohttp
-bioblend==1.1.1
+bioblend==1.2.0
     # via -r parkour_app/requirements/base.in
 certifi==2023.5.7
     # via requests
@@ -31,7 +31,7 @@ diff-match-patch==20230430
     # via django-import-export
 dj-database-url==2.0.0
     # via -r parkour_app/requirements/base.in
-django==3.2.19
+django==3.2.20
     # via
     #   -r parkour_app/requirements/base.in
     #   dj-database-url
@@ -85,9 +85,9 @@ odfpy==1.4.1
     # via tablib
 openpyxl==3.1.2
     # via tablib
-pandas==2.0.2
+pandas==2.0.3
     # via -r parkour_app/requirements/base.in
-pillow==9.5.0
+pillow==10.0.0
     # via fpdf2
 psycopg2-binary==2.9.6
     # via -r parkour_app/requirements/base.in
@@ -123,7 +123,7 @@ tinydb==4.8.0
     # via tuspy
 tuspy==1.0.1
     # via bioblend
-typing-extensions==4.6.3
+typing-extensions==4.7.1
     # via
     #   asgiref
     #   bioblend
