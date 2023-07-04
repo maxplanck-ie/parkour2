@@ -53,3 +53,4 @@ jobs:
           EMAIL_SUBJECT_PREFIX: Parkour2_-_
           ADMIN_EMAIL: your_inbox@email.tld
           SERVER_EMAIL: info@server.tld
+          CSRF_TRUSTED_ORIGINS: '["http://127.0.0.1"]'
