@@ -54,7 +54,7 @@ jobs:
           EMAIL_SUBJECT_PREFIX: Parkour2_-_
           ADMIN_EMAIL: your_inbox@email.tld
           SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: '["http://127.0.0.1"]'
+          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py makemigrations --no-input --check --dry-run
       - name: Run unittests
@@ -68,7 +68,7 @@ jobs:
           EMAIL_SUBJECT_PREFIX: Parkour2_-_
           ADMIN_EMAIL: your_inbox@email.tld
           SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: '["http://127.0.0.1"]'
+          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py test parkour_app --parallel
       - name: Validate templates
@@ -82,6 +82,6 @@ jobs:
           EMAIL_SUBJECT_PREFIX: Parkour2_-_
           ADMIN_EMAIL: your_inbox@email.tld
           SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: '["http://127.0.0.1"]'
+          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py validate_templates

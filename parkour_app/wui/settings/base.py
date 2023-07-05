@@ -1,4 +1,3 @@
-import json
 import os
 
 import dj_database_url
@@ -36,7 +35,10 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 
 
 # CSRF cookie
-CSRF_TRUSTED_ORIGINS = json.loads(os.environ["CSRF_TRUSTED_ORIGINS"])
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = (
+    CSRF_TRUSTED_ORIGINS.split(",") if CSRF_TRUSTED_ORIGINS is not None else []
+)
 
 
 # Application definition
