@@ -82,8 +82,6 @@ repos:
         types: [python]
     -   id: end-of-file-fixer
         types: [python]
-    -   id: check-added-large-files
-        types: [python]
     -   id: check-merge-conflict
         types: [python]
 
