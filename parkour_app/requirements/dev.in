@@ -6,3 +6,4 @@ bpython
 pywatchman
 Werkzeug
 rich
+django-linear-migrations
