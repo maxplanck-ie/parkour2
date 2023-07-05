@@ -341,10 +341,10 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-test: down set-prod deploy-django clean  ## Run unittests
+test: down set-prod deploy-django clean
 	@docker compose exec parkour2-django python manage.py test --parallel
 
-pytest: down set-prod deploy-django clean  ## Run unittests
+pytest: down set-prod deploy-django clean  ## Run pytest
 	@docker compose exec parkour2-django sh -c \
 		'pip install pytest-django pytest-xdist && \
 		pytest -n 2'
