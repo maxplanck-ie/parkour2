@@ -84,4 +84,4 @@ jobs:
           SERVER_EMAIL: info@server.tld
           CSRF_TRUSTED_ORIGINS: '["http://127.0.0.1"]'
         run: |
-          python manage.py validate_templates
+          python parkour_app/manage.py validate_templates
