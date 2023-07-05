@@ -67,6 +67,9 @@ migrate: apply-migrations
 
 schema: apply-migrations
 
+lint-migras:
+	@docker compose exec parkour2-django python manage.py lintmigrations
+
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
 
@@ -346,7 +349,7 @@ pytest: down set-prod deploy-django clean  ## Run unittests
 		'pip install pytest-django pytest-xdist && \
 		pytest -n 2'
 
-full-test: check-migras check-templates test  ## Run all tests, on every level
+full-test: lint-migras check-migras check-templates test  ## Run all tests, on every level
 	@#echo 'TODO: run sencha test suite'
 
 shell:

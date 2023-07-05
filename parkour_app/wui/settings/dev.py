@@ -5,6 +5,7 @@ DEBUG = True
 INSTALLED_APPS += [
     "debug_toolbar",
     "django_linear_migrations",
+    "django_migration_linter",
 ]
 
 MIDDLEWARE += [
@@ -18,6 +19,10 @@ def show_toolbar_to_all_IPs(request):
 
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": show_toolbar_to_all_IPs,
+}
+
+MIGRATION_LINTER_OPTIONS = {
+    "no_cache": True,
 }
 
 LOGGING["handlers"] = {

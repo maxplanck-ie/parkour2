@@ -7,3 +7,4 @@ pywatchman
 Werkzeug
 rich
 django-linear-migrations
+django-migration-linter
