@@ -341,6 +341,11 @@ deploy-rsnapshot:
 test: down set-prod deploy-django clean  ## Run unittests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
+pytest: down set-prod deploy-django clean  ## Run unittests
+	@docker compose exec parkour2-django sh -c \
+		'pip install pytest-django pytest-xdist && \
+		pytest -n 2'
+
 full-test: check-migras check-templates test  ## Run all tests, on every level
 	@#echo 'TODO: run sencha test suite'
 
