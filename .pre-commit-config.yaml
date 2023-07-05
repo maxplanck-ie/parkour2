@@ -70,7 +70,7 @@ repos:
         entry: /usr/bin/env sed
         language: script
         files: 'Dockerfile'
-        args: [-i, '/^ENV PYTHONDEVMODE/s/1$/0$/']
+        args: [-i, '/^ENV PYTHONDEVMODE/s/1$/0/']
 
 
 # On centos, with py36, this was locked to 4.0.1
