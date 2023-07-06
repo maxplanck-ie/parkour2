@@ -1,0 +1,7 @@
+-r base.in
+
+rich
+coverage
+pytest-django
+pytest-xdist
+playwright

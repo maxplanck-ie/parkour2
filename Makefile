@@ -310,20 +310,21 @@ deploy-rsnapshot:
 test: down set-prod deploy-django clean
 	@docker compose exec parkour2-django python manage.py test --parallel
 
-pytest: down set-prod deploy-django clean  ## Run pytest
-	@docker compose exec parkour2-django sh -c \
-		'pip install pytest-django pytest-xdist && \
-		pytest -n 2'
+set-testing: set-prod
+	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1testing/' misc/parkour.env
+	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1testing\2/' Dockerfile
 
-coverage: down set-prod deploy-django clean  ## Run pytest & generate codecov report(s)
-	@docker compose exec parkour2-django pip install pytest-cov pytest-django pytest-xdist
+pytest: down set-testing deploy-django clean
+	@docker compose exec parkour2-django pytest -n 2
+
+coverage: down set-testing deploy-django clean
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n 2
 	@docker compose exec parkour2-django coverage report -m
 	@docker compose exec parkour2-django coverage html
 
-full-test: lint-migras check-migras check-templates test  ## Run all tests, on every level
-	@#echo 'TODO: run sencha test suite'
+full-test: coverage lint-migras check-migras check-templates  ## Run all tests, on every level
+	@#echo 'TODO new rule with: run playwright + run sencha test suite?'
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
