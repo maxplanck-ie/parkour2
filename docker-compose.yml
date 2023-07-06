@@ -31,10 +31,6 @@ services:
     depends_on:
       parkour2-postgres:
         condition: service_healthy
-    tty: false
-    stdin_open: false
-    # docker attach parkour2-django
-    # Remember: Exit with ctrl+PQ (not C!!)
 
 volumes:
   pgdb:

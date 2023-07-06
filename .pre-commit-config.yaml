@@ -41,24 +41,6 @@ repos:
         language: script
         files: 'caddy.yml'
         args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/']
-    -   id: set-prod-docker-2
-        name: set-prod-docker-2
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/']
-    -   id: set-prod-docker-3
-        name: set-prod-docker-3
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["gunicorn/s/"--reload", //']
-    -   id: set-prod-docker-compose
-        name: set-prod-docker-compose
-        entry: /usr/bin/env sed
-        language: script
-        files: 'docker-compose.yml'
-        args: [-E, -i, -e, '/^ +tty/s/: .*/: false/', -e, '/^ +stdin_open/s/: .*/: false/']
     -   id: set-prod-docker-4
         name: set-prod-docker-4
         entry: /usr/bin/env sed
