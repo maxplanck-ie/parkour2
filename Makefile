@@ -68,7 +68,7 @@ check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
 
 stop:
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml stop
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f pgadmin.yml stop
 
 down-full: down-lite rm-volumes  ## Turn off running instance (removing all volumes)
 
@@ -79,7 +79,7 @@ rm-volumes:
 down-lite: clearpy
 	@CONTAINERS=$$(docker ps -a -f status=exited | awk '/^parkour2_parkour2-/ { print $$7 }') || :
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
-	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f ncdb.yml -f pgadmin.yml down
+	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
@@ -116,7 +116,6 @@ set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
 
 unset-caddy:
-	@sed -i -e 's/pgadmin/nocodb/' misc/caddyfile.in.use
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
 
 deploy-caddy:
@@ -127,30 +126,14 @@ deploy-nginx:
 		{ echo "TLS certificates not found!"; exit 1; }
 	@docker compose -f nginx.yml up -d
 
-deploy-ncdb:
-	@docker compose -f ncdb.yml up -d
-	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
-	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-ncdb-nginx || :
-	@[[ $${CONTAINERS[*]} =~ caddy ]] && sed -i -e 's/pgadmin/nocodb/' misc/caddyfile.in.use || :
-
-add-ncdb-nginx: check-nginx-conf
-	@docker cp misc/nginx-ncdb.conf parkour2-nginx:/etc/nginx/conf.d/
-	@docker exec parkour2-nginx nginx -s reload
-
 deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
 	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
 	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
-	@[[ $${CONTAINERS[*]} =~ caddy ]] && sed -i -e 's/nocodb/pgadmin/' misc/caddyfile.in.use || :
 
-add-pgadmin-nginx: check-nginx-conf
+add-pgadmin-nginx:
 	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
 	@docker exec parkour2-nginx nginx -s reload
-
-check-nginx-conf:
-	@test "$$(docker exec parkour2-nginx ls /etc/nginx/conf.d/ | wc -l)" -eq 1 || \
-		{ echo 'There is already an extra NGINX config in place! Keep in mind that both NocoDB and pgAdmin default to the same subdomain, so this requires your quick manual intervention.'; \
-		exit 1; }
 
 convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \

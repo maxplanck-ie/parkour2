@@ -15,7 +15,7 @@ http://127.0.0.1:9980 {
 
 http://127.0.0.1:9981 {
         handle {
-                reverse_proxy parkour2-nocodb:8080
+                reverse_proxy parkour2-pgadmin:8080
         }
         log
 }
