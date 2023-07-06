@@ -315,6 +315,13 @@ pytest: down set-prod deploy-django clean  ## Run pytest
 		'pip install pytest-django pytest-xdist && \
 		pytest -n 2'
 
+coverage: down set-prod deploy-django clean  ## Run pytest & generate codecov report(s)
+	@docker compose exec parkour2-django pip install pytest-cov pytest-django pytest-xdist
+	@docker compose exec parkour2-django coverage erase
+	@docker compose exec parkour2-django coverage run -m pytest -n 2
+	@docker compose exec parkour2-django coverage report -m
+	@docker compose exec parkour2-django coverage html
+
 full-test: lint-migras check-migras check-templates test  ## Run all tests, on every level
 	@#echo 'TODO: run sencha test suite'
 
