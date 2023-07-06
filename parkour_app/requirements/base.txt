@@ -69,7 +69,7 @@ idna==3.4
     # via
     #   requests
     #   yarl
-lxml==4.9.2
+lxml==4.9.3
     # via python-docx
 markuppy==1.14
     # via tablib
