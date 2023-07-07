@@ -223,6 +223,9 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         write_header(ws, row_num, header)
 
         for item in data:
+            if item["library_protocol"] == "":
+                continue
+
             row_num += 1
 
             # cost_units = '; '.join(sorted(item['cost_unit']))
