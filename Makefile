@@ -360,6 +360,9 @@ compile:
 		pip-compile-multi -d parkour_app/requirements/ && \
 		deactivate
 
+get-pin:
+	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2
+
 env-setup-dev:
 	@env python3 -m venv env && \
 		source ./env/bin/activate && \
