@@ -1,8 +1,16 @@
 from .base import *
 
-## These are the same as in dev.py
+## These are the same as in dev.py but without Django-debug-toolbar
 
 DEBUG = True
+
+INSTALLED_APPS += [
+    "django_migration_linter",
+]
+
+MIGRATION_LINTER_OPTIONS = {
+    "no_cache": True,
+}
 
 LOGGING["handlers"] = {
     "rich_console": {
