@@ -1,7 +1,5 @@
--r base.in
+-r dev.in
 
-rich
 coverage
 pytest-django
 pytest-xdist
-playwright

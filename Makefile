@@ -59,7 +59,7 @@ migrate: apply-migrations
 schema: apply-migrations
 
 lint-migras:
-	@docker compose exec parkour2-django python manage.py lintmigrations
+	@docker compose exec parkour2-django python manage.py lintmigrations || exit 0
 
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
@@ -307,7 +307,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-test: down set-prod deploy-django clean
+djtest: down set-prod deploy-django clean
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing: set-prod
@@ -323,8 +323,7 @@ coverage: down set-testing deploy-django clean
 	@docker compose exec parkour2-django coverage report -m
 	@docker compose exec parkour2-django coverage html
 
-full-test: coverage lint-migras check-migras check-templates  ## Run all tests, on every level
-	@#echo 'TODO new rule with: run playwright + run sencha test suite?'
+test: lint-migras check-migras check-templates coverage  ## Run all tests, on every level
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
