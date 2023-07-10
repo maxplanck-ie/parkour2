@@ -1,3 +1,35 @@
+0.4.0
+=====
+
+**Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...0.4.0
+
+> **IMPORTANT**: Since we've upgraded the backend (Django), `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration.
+
+> **NOTICE**: Ever since our pre-relased 0.3.9 version, some seemingly redundant files corresponding to our frontend were removed. **We did our best to fix any issues in this release**. Yet, if you see a blank page on a fresh installation, please check the browser console (e.g. pressing F12) and [file a new issue](https://github.com/maxplanck-ie/parkour2/issues/new) with the corresponding log message (e.g. pressing F12 and looking for the 'could not load **.js' or 'file not found' error messages.)
+
+## Dependencies
+
+- Updated all python requirements, including our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!)
+- **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`.
+
+## Bugfix
+
+- Failed sequencing are now skipped from invoice XLS report. In the past staff users (sequencign team) needed to go request by request un-checking the 'sequenced' status on each.
+
+## Testing
+
+- **new rule: pytest**, to run tests with pytest (soon we'll add playwright end-to-end tests)
+- added django-linear-migrations to development, to ease up fixing merge conflicts if we were to change models on different git branches.
+- added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
+- The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
+- Removed old debugging strategy, we've been using werkzeug traceback interpreter anyway.
+- **new rule: coverage**, run pytest with code coverage report(s)
+
+## Improvements
+
+- Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
+
+
 0.3.9
 =====
 
