@@ -375,4 +375,18 @@ env-setup-dev:
 			pip-compile-multi
 	deactivate
 
+open-pr:
+	@git pull && git push && git pull origin main
+	@gh pr create --title "quick upgrade" --fill -B main
+	@echo "-- Pull Request OPENED"
+
+# merge-pr:
+# 	@CURRENT_BRANCH=$$(git rev-parse --abbrev-ref HEAD) \
+# 	&& git pull origin main \
+# 	&& git checkout main \
+# 	&& git merge $$CURRENT_BRANCH \
+# 	&& git push -u origin main \
+# 	&& echo "-- Pull Request MERGED" \
+# 	&& git checkout $$CURRENT_BRANCH
+
 # Remember: (docker compose run == docker exec) != docker run
