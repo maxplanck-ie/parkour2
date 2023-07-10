@@ -334,6 +334,9 @@ list-sessions:
 kill-sessions:
 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
 
+reload-code:  ## Gracefully ship small code updates into production backend
+	@docker compose exec -it parkour2-django kill -1 1
+
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:
 	@docker exec -it parkour2-django python manage.py clearsessions
