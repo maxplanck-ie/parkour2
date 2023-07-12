@@ -101,7 +101,7 @@ clearpy:
 
 prod: down set-prod deploy-django deploy-nginx deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-dev-easy: down set-dev set-caddy deploy-full clean  ## Deploy Werkzeug instance (see: caddyfile.in.use)
+dev-easy: down set-dev set-caddy deploy-full clean  ## Deploy Werkzeug instance with Caddy
 
 dev: down set-dev deploy-django deploy-nginx clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
