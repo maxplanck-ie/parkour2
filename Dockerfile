@@ -20,7 +20,7 @@ ENV TZ "Europe/Berlin"
 
 WORKDIR /usr/src/app
 COPY ./parkour_app .
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/testing.txt
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
 EXPOSE 8000
 ENV PYTHONDEVMODE 0
 ENV PYTHONBREAKPOINT ipdb.set_trace
