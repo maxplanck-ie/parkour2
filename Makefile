@@ -322,6 +322,12 @@ set-testing-front: set-testing
 pytest: down set-testing deploy-django clean
 	@docker compose exec parkour2-django pytest -n 2
 
+playwright: down set-testing deploy-django clean db
+	docker exec parkour2-django playwright install-deps
+	docker exec parkour2-django playwright install
+	@docker compose exec parkour2-django python manage.py create_admin --email test.user@test.com --password StrongPassword!1
+	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
+
 coverage: down set-testing deploy-django clean
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n 2
