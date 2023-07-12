@@ -21,7 +21,7 @@ set-prod:
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
-	@sed -i -e 's#\(dockerfile:\) ./parkour_app/frontend/Dockerfile#\1 ./Dockerfile#' docker-compose.yml
+	@sed -i -e 's#\(dockerfile:\) ./parkour_app/frontend/Dockerfile#\1 ./Dockerfile#' docker-compose.yml  # FIXME
 
 deploy-django: deploy-network deploy-containers
 
@@ -112,7 +112,7 @@ set-dev: set-prod unset-caddy
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
-	@sed -i -e 's#\(dockerfile:\) ./parkour_app/frontend/Dockerfile#\1 ./Dockerfile#' docker-compose.yml
+	@sed -i -e 's#\(dockerfile:\) ./parkour_app/frontend/Dockerfile#\1 ./Dockerfile#' docker-compose.yml  # FIXME
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
@@ -317,7 +317,7 @@ set-testing: set-prod
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1testing\2/' Dockerfile
 
 set-testing-front: set-testing
-	@sed -i -e 's#\(dockerfile:\) ./Dockerfile#\1 ./parkour_app/frontend/Dockerfile#' docker-compose.yml
+	@sed -i -e 's#\(dockerfile:\) ./Dockerfile#\1 ./parkour_app/frontend/Dockerfile#' docker-compose.yml  # FIXME
 
 pytest: down set-testing deploy-django clean
 	@docker compose exec parkour2-django pytest -n 2

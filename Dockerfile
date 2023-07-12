@@ -1,5 +1,5 @@
 # syntax = docker/dockerfile:experimental
-FROM python:3.11
+FROM python:3.11 AS pk2_base
 LABEL maintainer="Adrian S. <lims@omics.dev>"
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -28,3 +28,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 #CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
 CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "4", "-b", ":8000"]
+
+FROM pk2_base AS pk2_playwright
+
+RUN playwright install --install-deps  # FIXME
