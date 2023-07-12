@@ -20,7 +20,7 @@ ENV TZ "Europe/Berlin"
 
 WORKDIR /usr/src/app
 COPY ./parkour_app .
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/testing.txt
 EXPOSE 8000
 ENV PYTHONDEVMODE 0
 ENV PYTHONBREAKPOINT ipdb.set_trace
@@ -30,5 +30,5 @@ ENV PYTHONDONTWRITEBYTECODE 1
 CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "4", "-b", ":8000"]
 
 FROM pk2_base AS pk2_playwright
-
-RUN playwright install --install-deps  # FIXME
+RUN playwright install-deps \
+    && playwright install
