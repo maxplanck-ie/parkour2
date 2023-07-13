@@ -358,9 +358,9 @@ reload-nginx:
 
 graph_models:
 	@docker exec parkour2-django sh -c \
-	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pygraphviz" && \
-		docker exec parkour2-django python manage.py graph_models -a -g -o /tmp/parkour.png && \
-		docker cp parkour2-django:/tmp/parkour.png models.png
+	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pydot" && \
+		docker exec parkour2-django python manage.py graph_models -n --pydot -g -a -o /tmp/parkour.pdf && \
+		docker cp parkour2-django:/tmp/parkour.pdf models.pdf
 
 show_urls:
 	@docker exec parkour2-django python manage.py show_urls
