@@ -356,12 +356,18 @@ dbshell:  ## Open PostgreSQL shell
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
-# tile on 3xA4 pages: pdfposter -mA4 -pA2 models.pdf models_poster.pdf
-graph_models:
+graph_models:  ## Generate models.pdf (A4 sheet), and two models.A*.pdf to print a A1 poster using either A3 or A4 sheets.
 	@docker exec parkour2-django sh -c \
-	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pydot" && \
-		docker exec parkour2-django python manage.py graph_models -n --pydot -g -a -o /tmp/parkour.pdf && \
-		docker cp parkour2-django:/tmp/parkour.pdf models.pdf
+	"apt update && apt install -y pdfposter graphviz libgraphviz-dev pkg-config && pip install pydot && \
+		python manage.py graph_models -n --pydot -g -a -o /tmp/parkour.dot && \
+		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp/parkour.dot && \
+		dot -T pdf -o /tmp/parkour.dot && \
+		pdfposter -mA3 -pA1 /tmp/parkour.pdf /tmp/models.A3.pdf && \
+		pdfposter -mA4 -pA1 /tmp/parkour.pdf /tmp/models.A4.pdf && \
+		pdfposter -mA4 /tmp/parkour.pdf /tmp/models.pdf"
+	@docker cp parkour2-django:/tmp/models.A3.pdf models.A3.pdf
+	@docker cp parkour2-django:/tmp/models.A4.pdf models.A4.pdf
+	@docker cp parkour2-django:/tmp/models.pdf models.pdf
 
 show_urls:
 	@docker exec parkour2-django python manage.py show_urls

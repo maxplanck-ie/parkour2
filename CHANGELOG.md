@@ -31,6 +31,7 @@
 
 - **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
+- rule `graph_models` now generates 3 PDF files, one is a simple A4 sheet (`models.pdf`). The other two (`models.A{3,4}.pdf`) are for printing posters in A1 size using either A4 or A3 sheets.
 
 
 0.3.9
