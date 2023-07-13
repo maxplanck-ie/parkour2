@@ -31,4 +31,4 @@ class Command(BaseCommand):
                 is_superuser=True,
             )
         except:
-            pass
+            print("Error! Did you apply migrations?")
