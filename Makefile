@@ -356,6 +356,7 @@ dbshell:  ## Open PostgreSQL shell
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
+# tile on 3xA4 pages: pdfposter -mA4 -pA2 models.pdf models_poster.pdf
 graph_models:
 	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y graphviz libgraphviz-dev pkg-config && pip install pydot" && \
