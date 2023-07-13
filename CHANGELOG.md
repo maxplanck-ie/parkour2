@@ -11,6 +11,7 @@
 
 - Updated all python requirements, including our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!)
 - **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`.
+- The docker image is now using Debian Bullseye as base, to match [playwright system requirements](https://playwright.dev/python/docs/intro#system-requirements).
 
 ## Bugfix
 
@@ -18,7 +19,8 @@
 
 ## Testing
 
-- **new rule: pytest**, to run tests with pytest (soon we'll add playwright end-to-end tests)
+- **new rule: pytest**, to run tests with pytest using 2 cores
+- **new rule: playwright**, to run end-to-end tests (frontend), for now only 1 simple test implemented.
 - added django-linear-migrations to development, to ease up fixing merge conflicts if we were to change models on different git branches.
 - added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
 - The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
