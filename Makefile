@@ -388,6 +388,7 @@ env-setup-dev:
 		env python3 -m pip install --upgrade pip && \
 		pip install \
 			pre-commit \
+			pip-tools \
 			pip-compile-multi
 	deactivate
 
