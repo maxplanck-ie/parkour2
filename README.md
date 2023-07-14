@@ -16,4 +16,6 @@ using Parkour LIMS as a central laboratory and quality management platform:
 
 #### Documentation and link to Demo are available on our [Wiki](https://github.com/maxplanck-ie/parkour2/wiki)
 
+If you wanted to run a Demo of your own, see the [Installation](https://github.com/maxplanck-ie/parkour2/wiki/Installation) wiki page. Developers that went through the Installation, may take advantage of our [Contributing](https://github.com/maxplanck-ie/parkour2/wiki/Contributing) guide.
+
 Last, but not least, there's the original 2019 [Research Article](https://doi.org/10.1093/bioinformatics/bty820). Please read & cite.
