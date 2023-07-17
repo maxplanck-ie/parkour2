@@ -39,6 +39,7 @@ Ext.define('MainHub.view.main.Main', {
             id: 'headerBar',
             itemId: 'headerBar',
             cls: 'sencha-dash-dash-headerbar shadow',
+            style: 'background-color: #32404e',
             height: 64,
             padding: 0,
             items: [
@@ -51,36 +52,37 @@ Ext.define('MainHub.view.main.Main', {
                 },
                 {
                     margin: '0 0 0 8',
-                    // ui: 'header',
-                    iconCls: 'x-fa fa-navicon',
+                    ui: 'header',
+                    iconCls: 'x-fa fa-navicon color-white background-transparent',
                     id: 'main-navigation-btn',
-                    handler: 'onToggleNavigationSize'
+                    handler: 'onToggleNavigationSize',
+                    tooltip: 'Expand/Collapse Navigation Bar'
                 },
                 '->',
                 {
                     xtype: 'tbtext',
-                    cls: 'top-user-name',
+                    cls: 'header-username color-bluish-grey',
                     text: USER.name      // from 'globals.html'
                 },
                 {
                     xtype: 'button',
                     ui: 'header',
                     id: 'adminSiteBtn',
-                    iconCls: 'x-fa fa-cog',
+                    iconCls: 'x-fa fa-cog color-white',
                     href: 'admin',
-                    tooltip: 'Site administration'
+                    tooltip: 'Site Administration'
                 },
                 {
                     xtype: 'button',
                     ui: 'header',
-                    iconCls: 'x-fa fa-book',
+                    iconCls: 'x-fa fa-book color-white',
                     href: 'https://github.com/maxplanck-ie/parkour2/wiki/Introduction',
                     tooltip: 'Documentation'
                 },
                 {
                     xtype: 'button',
                     ui: 'header',
-                    iconCls: 'x-fa fa-sign-out',
+                    iconCls: 'x-fa fa-sign-out color-white',
                     href: 'logout',
                     hrefTarget:'_self',
                     tooltip: 'Logout'
