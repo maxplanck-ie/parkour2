@@ -20,6 +20,7 @@ set-prod:
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
+	@sed -i 's/base-color: #2f343a/base-color: #35baf6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
 
 deploy-django: deploy-network deploy-containers
 
@@ -122,6 +123,7 @@ set-dev: set-prod unset-caddy
 	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
+	@sed -i 's/base-color: #35baf6/base-color: #2f343a/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
