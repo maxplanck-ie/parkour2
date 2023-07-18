@@ -53,7 +53,7 @@ Ext.define('MainHub.view.main.Main', {
                 {
                     margin: '0 0 0 8',
                     ui: 'header',
-                    iconCls: 'x-fa fa-navicon color-white background-transparent',
+                    iconCls: 'x-fa fa-navicon color-white',
                     id: 'main-navigation-btn',
                     handler: 'onToggleNavigationSize',
                     tooltip: 'Expand/Collapse Navigation Bar'

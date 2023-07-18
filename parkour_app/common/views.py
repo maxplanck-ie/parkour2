@@ -105,7 +105,7 @@ def get_navigation_tree(request):
             {
                 "text": "Statistics",
                 "iconCls": "x-fa fa-line-chart",
-                "expanded": True,
+                "expanded": False,
                 "children": [
                     {
                         "text": "Runs",
