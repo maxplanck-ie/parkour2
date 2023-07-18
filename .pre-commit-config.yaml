@@ -11,49 +11,20 @@ ci:
 repos:
 -   repo: local
     hooks:
-    -   id: set-prod-docker-0
-        name: set-prod-docker-0
-        entry: /usr/bin/env sed
+    -   id: set-prod-docker
+        name: set-prod-docker
+        entry: /usr/bin/make
         language: script
-        files: 'Dockerfile'
-        args: [-i, '/^#CMD \["gunicorn/s/#CMD/CMD/']
-    -   id: set-prod-docker-1
-        name: set-prod-docker-1
-        entry: /usr/bin/env sed
+        pass_filenames: false
+        files: Dockerfile|docker-compose\.yml
+        args: ['set-prod']
+    -   id: set-prod-docker
+        name: unset-caddy
+        entry: /usr/bin/make
         language: script
-        files: 'Dockerfile'
-        args: [-i, '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/']
-    -   id: set-prod-env
-        name: set-prod-env
-        entry: /usr/bin/env sed
-        language: script
-        files: 'misc/parkour.env'
-        args: [-i, '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/']
-    -   id: set-local-url-1
-        name: set-local-url-1
-        entry: /usr/bin/env sed
-        language: script
-        files: 'misc/Caddyfile'
-        args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1:9980 {/']
-    -   id: set-local-url-2
-        name: set-local-url-2
-        entry: /usr/bin/env sed
-        language: script
-        files: 'caddy.yml'
-        args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/']
-    -   id: set-prod-docker-4
-        name: set-prod-docker-4
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["python".*"runserver_plus"/s/CMD/#CMD/']
-    -   id: set-prod-docker-5
-        name: set-prod-docker-5
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^ENV PYTHONDEVMODE/s/1$/0/']
-
+        pass_filenames: false
+        files: caddy\.yml
+        args: ['unset-caddy']
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
