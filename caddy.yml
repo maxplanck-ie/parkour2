@@ -24,3 +24,7 @@ volumes:
     external: true
   parkour2_staticfiles:
     external: true
+
+networks:
+  parkour2_default:
+    external: true

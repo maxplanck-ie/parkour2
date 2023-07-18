@@ -19,3 +19,7 @@ volumes:
     external: true
   parkour2_media:
     external: true
+
+networks:
+  parkour2_default:
+    external: true

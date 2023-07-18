@@ -41,3 +41,4 @@ volumes:
 networks:
   default:
     name: parkour2_default
+    driver: bridge

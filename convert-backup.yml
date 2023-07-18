@@ -16,5 +16,5 @@ services:
       retries: 10
 
 networks:
-  default:
-    name: parkour2_convert_backup
+  parkour2_default:
+    external: true
