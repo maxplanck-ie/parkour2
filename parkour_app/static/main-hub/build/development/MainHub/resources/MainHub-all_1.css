@@ -1,3 +1,22 @@
+/* /root/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:5 */
+.color-white {
+    /*
+ * This is is imported by virtue of "sass.etc" in "app.json".
+ */
+    color: white !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:9 */
+.color-bluish-grey {
+    color: #adb3b8 !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:13 */
+.background-transparent {
+    background: transparent !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:17 */
+.header-username {
+    text-transform: uppercase;
+}
 /* /root/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/util/SizeMonitor.scss:5 */
 .x-size-monitored {
     /**
@@ -16225,20 +16244,4 @@ div.x-border-layout-ct {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1886 */
-.x-tab-default-bottom {
-    margin: 0 4px 0 0;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1890 */
-.x-tab-default-bottom.x-rtl {
-    margin: 0 0 0 4px;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1895 */
-.x-tab-default-bottom.x-tab-rotate-left {
-    margin: 0 0 0 4px;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1899 */
-.x-tab-default-bottom.x-tab-rotate-left.x-rtl {
-    margin: 0 4px 0 0;
 }
