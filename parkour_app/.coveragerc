@@ -4,6 +4,9 @@ branch = False
 omit =
     **/migrations/*.py
     manage.py
+    __init__.py
+    wui/settings/*.py
+    wui/wsgi.py
 
 [report]
 ignore_errors = True
