@@ -91,7 +91,7 @@ jobs:
       - name: Generate Report
         run: |
           awk '(NR>2)' parkour_app/requirements/testing.in | xargs pip install
-          pytest -n 2 --cov=./ --cov-report=xml
+          pytest -n 2 --cov=./parkour_app --cov-config=./parkour_app/.coveragerc --cov-report=xml
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:

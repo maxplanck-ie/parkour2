@@ -234,7 +234,7 @@ playwright: down set-testing-front deploy-django clean apply-migrations
 	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
 
 coverage-xml: down set-testing deploy-django clean
-	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-report=xml
+	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=xml
 
 coverage-html: down set-testing deploy-django clean
 	@docker compose exec parkour2-django coverage erase
