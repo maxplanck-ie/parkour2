@@ -139,7 +139,7 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
-			"pg_dump -Fc postgres -U postgres -f /tmp_parkour_dump" && \
+			"pg_dump -Fc postgres -U postgres -f tmp_parkour_dump" && \
 		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 		docker compose -f convert-backup.yml down
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
@@ -161,7 +161,7 @@ load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 load-postgres-plain:
 	@echo "cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
 	@docker cp ./this.sql parkour2-postgres:/tmp_parkour-postgres.dump && \
-		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp_parkour-postgres.dump > /dev/null"
+		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null"
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
