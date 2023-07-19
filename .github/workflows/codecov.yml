@@ -7,7 +7,7 @@ on:
     branches: [$default-branch]
 
 jobs:
-  build:
+  pytest-cov:
     runs-on: ubuntu-latest
     steps:
     
@@ -27,9 +27,11 @@ jobs:
 
       - name: Generate Report
         run: |
-          pytest -n ${{ steps.cpu-cores.outputs.count }} \
+          sh -c 'pytest -n ${{ steps.cpu-cores.outputs.count }} \
             --cov-config=./parkour_app/.coveragerc \
-            --cov=./parkour_app --cov-report=xml --cov-fail-under=0
+            --cov=./parkour_app --cov-report=xml --cov-fail-under=0; \
+              ret=$?; [ $ret = 5 ] && exit 0 || exit $ret'
+      
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
