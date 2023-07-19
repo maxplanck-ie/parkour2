@@ -1,6 +1,6 @@
 -r dev.in
 
-coverage
+pytest-cov
 pytest-django
 pytest-xdist
 pytest-playwright

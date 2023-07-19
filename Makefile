@@ -233,7 +233,10 @@ playwright: down set-testing-front deploy-django clean apply-migrations
 	@docker compose exec parkour2-django python manage.py create_admin --email test.user@test.com --password StrongPassword!1
 	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
 
-coverage: down set-testing deploy-django clean
+coverage-xml: down set-testing deploy-django clean
+	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-report=xml
+
+coverage-html: down set-testing deploy-django clean
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n 2
 	@docker compose exec parkour2-django coverage report -m

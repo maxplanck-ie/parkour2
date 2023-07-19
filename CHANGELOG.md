@@ -25,7 +25,7 @@
 - added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
 - The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
 - Removed old debugging strategy, we've been using werkzeug traceback interpreter anyway.
-- **new rule: coverage**, run pytest with code coverage report(s)
+- **new rules: coverage-html coverage-xml**, run pytest with code coverage report(s).
 
 ## Improvements
 
