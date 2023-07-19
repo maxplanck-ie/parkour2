@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
 
-deploy: check-rootdir set-prod deploy-full  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
+deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -12,8 +12,6 @@ check-rootdir:
 	@test "$$(basename $$PWD)" == "parkour2" || \
 		{ echo 'Makefile, and the corresponding compose YAML files, only work if parent directory is named "parkour2"'; \
 		exit 1; }
-
-deploy-full:  deploy-django deploy-caddy collect-static
 
 set-prod:
 	@test -e misc/parkour.env && sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env
@@ -100,11 +98,11 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: down set-prod deploy-django deploy-nginx deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-dev-easy: down set-dev set-caddy deploy-full clean  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev deploy-django deploy-nginx clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
