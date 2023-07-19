@@ -154,7 +154,7 @@ load-media:  ## Copy all media files into running instance
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
 		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump && \
-		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c /tmp_parkour-postgres.dump > /dev/null && \
+		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c tmp_parkour-postgres.dump > /dev/null && \
 		echo "Loaded PostgreSQL database OK." || \
 		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
 
@@ -183,7 +183,7 @@ save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
-	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp_parkour_dump && \
+	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f tmp_parkour_dump && \
 		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
