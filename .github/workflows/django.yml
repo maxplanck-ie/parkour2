@@ -10,7 +10,7 @@ on:
 # https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -28,13 +28,11 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+    
+    
+    
     steps:
       - uses: actions/checkout@v3
-      #   - name: Set up Tmux session for debugging purposes
-      #     if: ${{ failure() }}
-      #     uses: mxschmitt/action-tmate@v3
-      #     with:
-      #       limit-access-to-actor: true
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
         with:
@@ -43,6 +41,8 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r parkour_app/requirements/prod.txt
+
+
       - name: Verify migrations
         env:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
@@ -57,6 +57,8 @@ jobs:
           CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py makemigrations --no-input --check --dry-run
+
+
       - name: Run unittests
         env:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
@@ -71,6 +73,8 @@ jobs:
           CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py test parkour_app --parallel
+
+
       - name: Validate templates
         env:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
@@ -85,14 +89,3 @@ jobs:
           CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py validate_templates
-      - name: Get number of CPU cores
-        uses: SimenB/github-actions-cpu-cores@v1
-        id: cpu-cores
-      - name: Generate Report
-        run: |
-          awk '(NR>2)' parkour_app/requirements/testing.in | xargs pip install
-          pytest -n 2 --cov=./parkour_app --cov-config=./parkour_app/.coveragerc --cov-report=xml
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
