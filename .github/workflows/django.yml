@@ -85,6 +85,12 @@ jobs:
           CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py validate_templates
+      - name: Generate Report
+        run: |
+          pip install coverage pytest-django pytest-xdist
+          coverage erase
+          coverage run -m pytest -n 2
+          coverage report -m
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         env:
