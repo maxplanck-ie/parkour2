@@ -139,8 +139,8 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
 		echo "If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
-			"pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump" && \
-		docker cp parkour2-convert-backup:/tmp/postgres_dump misc/db_$(timestamp).sqldump
+			"pg_dump -Fc postgres -U postgres -f /tmp_parkour_dump" && \
+		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 		docker compose -f convert-backup.yml down
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
@@ -153,15 +153,15 @@ load-media:  ## Copy all media files into running instance
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
-		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp/parkour-postgres.dump && \
-		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c /tmp/parkour-postgres.dump > /dev/null && \
+		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump && \
+		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c /tmp_parkour-postgres.dump > /dev/null && \
 		echo "Loaded PostgreSQL database OK." || \
 		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
 
 load-postgres-plain:
 	@echo "cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
-	@docker cp ./this.sql parkour2-postgres:/tmp/parkour-postgres.dump && \
-		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp/parkour-postgres.dump > /dev/null"
+	@docker cp ./this.sql parkour2-postgres:/tmp_parkour-postgres.dump && \
+		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < /tmp_parkour-postgres.dump > /dev/null"
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
@@ -183,8 +183,8 @@ save-media:
 	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
-	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp/postgres_dump && \
-		docker cp parkour2-postgres:/tmp/postgres_dump misc/db_$(timestamp).sqldump
+	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f /tmp_parkour_dump && \
+		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
 VM_PROD := root@parkour
@@ -266,15 +266,15 @@ reload-nginx:
 graph_models:  ## Generate models.pdf (A4 sheet), and two models.A*.pdf to print a A1 poster using either A3 or A4 sheets.
 	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y pdfposter graphviz libgraphviz-dev pkg-config && pip install pydot && \
-		python manage.py graph_models -n --pydot -g -a -o /tmp/parkour.dot && \
-		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp/parkour.dot && \
-		dot -T pdf -o /tmp/parkour.dot && \
-		pdfposter -mA3 -pA1 /tmp/parkour.pdf /tmp/models.A3.pdf && \
-		pdfposter -mA4 -pA1 /tmp/parkour.pdf /tmp/models.A4.pdf && \
-		pdfposter -mA4 /tmp/parkour.pdf /tmp/models.pdf"
-	@docker cp parkour2-django:/tmp/models.A3.pdf models.A3.pdf
-	@docker cp parkour2-django:/tmp/models.A4.pdf models.A4.pdf
-	@docker cp parkour2-django:/tmp/models.pdf models.pdf
+		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
+		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp_parkour.dot && \
+		dot -T pdf -o /tmp_parkour.dot && \
+		pdfposter -mA3 -pA1 /tmp_parkour.pdf /tmp_models.A3.pdf && \
+		pdfposter -mA4 -pA1 /tmp_parkour.pdf /tmp_models.A4.pdf && \
+		pdfposter -mA4 /tmp_parkour.pdf /tmp_models.pdf"
+	@docker cp parkour2-django:/tmp_models.A3.pdf models.A3.pdf
+	@docker cp parkour2-django:/tmp_models.A4.pdf models.A4.pdf
+	@docker cp parkour2-django:/tmp_models.pdf models.pdf
 
 show_urls:
 	@docker exec parkour2-django python manage.py show_urls
