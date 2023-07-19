@@ -21,6 +21,7 @@ set-prod:
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 	@sed -i 's/base-color: #2f343a/base-color: #35baf6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
+	@$(MAKE) update-extjs
 
 deploy-django: deploy-network deploy-containers
 
@@ -45,8 +46,8 @@ check-templates:
 update-extjs:
 	@which sencha > /dev/null \
 		&& cd ./parkour_app/static/main-hub \
-		&& sencha app build development
-	@$(MAKE) collect-static
+		&& sencha app build development \
+		|| echo "Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
@@ -116,7 +117,7 @@ set-try-prod:
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 	#PLACEHOLDER
 
-set-dev: set-prod unset-caddy
+set-dev: unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
@@ -124,6 +125,7 @@ set-dev: set-prod unset-caddy
 	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 	@sed -i 's/base-color: #35baf6/base-color: #2f343a/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
+	@$(MAKE) update-extjs
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
