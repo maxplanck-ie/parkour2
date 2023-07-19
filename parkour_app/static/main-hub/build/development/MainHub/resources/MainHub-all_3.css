@@ -1,3 +1,20 @@
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1123 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-first .x-btn-soft-cyan-small-mc {
+    padding-bottom: 7px !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1127 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle {
+    border-bottom-width: 1px !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1129 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle .x-btn-soft-cyan-small-mc {
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1135 */
+.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-last .x-btn-soft-cyan-small-mc {
+    padding-top: 7px !important;
+}
 /* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1141 */
 .x-nbr .x-segmented-button-item.x-btn-soft-cyan-small:after {
     content: ' ';

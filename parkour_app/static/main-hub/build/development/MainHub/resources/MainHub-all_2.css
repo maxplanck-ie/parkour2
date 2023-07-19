@@ -1,3 +1,19 @@
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1886 */
+.x-tab-default-bottom {
+    margin: 0 4px 0 0;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1890 */
+.x-tab-default-bottom.x-rtl {
+    margin: 0 0 0 4px;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1895 */
+.x-tab-default-bottom.x-tab-rotate-left {
+    margin: 0 0 0 4px;
+}
+/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1899 */
+.x-tab-default-bottom.x-tab-rotate-left.x-rtl {
+    margin: 0 4px 0 0;
+}
 /* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1917 */
 .x-tab-default-bottom.x-tab-focus {
     -webkit-box-shadow: none;
@@ -14692,21 +14708,4 @@ hr {
 /* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1121 */
 .x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-first {
     border-bottom-width: 1px !important;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1123 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-first .x-btn-soft-cyan-small-mc {
-    padding-bottom: 7px !important;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1127 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle {
-    border-bottom-width: 1px !important;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1129 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-middle .x-btn-soft-cyan-small-mc {
-    padding-top: 7px !important;
-    padding-bottom: 7px !important;
-}
-/* /root/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1135 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-last .x-btn-soft-cyan-small-mc {
-    padding-top: 7px !important;
 }
