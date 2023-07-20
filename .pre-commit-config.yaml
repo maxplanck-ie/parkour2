@@ -17,7 +17,7 @@ repos:
         language: script
         pass_filenames: false
         files: Dockerfile|docker-compose\.yml
-        args: ['set-prod', 'set-prod-color']
+        args: ['set-prod']
     -   id: set-prod-docker
         name: unset-caddy
         entry: /usr/bin/make
