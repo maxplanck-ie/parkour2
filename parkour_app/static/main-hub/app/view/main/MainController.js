@@ -61,6 +61,7 @@ Ext.define('MainHub.view.main.MainController', {
             wrapContainer.updateLayout();  // ... since this will flush them
         } else {
             if (!collapsing) {
+                Ext.select('#header-title').removeCls('display-none');
                 // If we are leaving micro mode (expanding), we do that first so that the
                 // text of the items in the navlist will be revealed by the animation.
                 navigationList.setMicro(false);
@@ -81,6 +82,7 @@ Ext.define('MainHub.view.main.MainController', {
             // allows the "sweep" to leave the item text in place until it is no longer
             // visible.
             if (collapsing) {
+                Ext.select('#header-title').addCls('display-none');
                 navigationList.on({
                     afterlayoutanimation: function() {
                         refs.logo.el.addCls('logo-collapsed');
