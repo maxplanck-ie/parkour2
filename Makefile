@@ -100,9 +100,20 @@ clearpy:
 
 prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
+try-prod: down set-try-prod set-caddy deploy-django deploy-caddy collect-static
+
 dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
 dev: down set-dev deploy-django deploy-nginx collect-static  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+
+set-try-prod:
+	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
+	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
+	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
+	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
+	@sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
+	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
+	#PLACEHOLDER
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
