@@ -100,9 +100,9 @@ clearpy:
 
 prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-django deploy-nginx collect-static  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: set-prod unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
@@ -216,7 +216,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod deploy-django clean
+djtest: down set-prod deploy-django
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing: set-prod
@@ -226,17 +226,17 @@ set-testing: set-prod
 set-testing-front: set-testing
 	@sed -i -e 's#\(target:\) pk2_base#\1 pk2_playwright#' docker-compose.yml
 
-pytest: down set-testing deploy-django clean
+pytest: down set-testing deploy-django
 	@docker compose exec parkour2-django pytest -n 2
 
-playwright: down set-testing-front deploy-django clean apply-migrations
+playwright: down set-testing-front deploy-django apply-migrations
 	@docker compose exec parkour2-django python manage.py create_admin --email test.user@test.com --password StrongPassword!1
 	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
 
-coverage-xml: down set-testing deploy-django clean
+coverage-xml: down set-testing deploy-django
 	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=xml
 
-coverage-html: down set-testing deploy-django clean
+coverage-html: down set-testing deploy-django
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n 2
 	@docker compose exec parkour2-django coverage report -m
