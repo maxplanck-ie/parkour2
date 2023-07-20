@@ -28,12 +28,14 @@ jobs:
 
       - name: Run Tests & Generate Report
         run: |
-          sh -c 'pytest -n ${{ steps.cpu-cores.outputs.count }} \
-            --cov-config=./parkour_app/.coveragerc \
-            --cov=./parkour_app --cov-report=lcov --cov-fail-under=0; \
-              ret=$?; [ $ret = 5 ] && exit 0 || exit $ret'
+          sh -c \
+            'cd parkour_app && \
+              pytest -n ${{ steps.cpu-cores.outputs.count }} \
+                --cov-config=.coveragerc --cov=. --cov-report=lcov --cov-fail-under=0; \
+                  ret=$?; [ $ret = 5 ] && exit 0 || exit $ret'
       
-      - name: Coveralls
+      - name: Upload Report
         with:
+          format: lcov
           base-path: parkour_app
         uses: coverallsapp/github-action@v2
