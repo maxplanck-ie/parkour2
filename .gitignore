@@ -9,7 +9,6 @@ misc/*.sqldump
 rsnapshot/
 *.swp
 env/
-parkour_app/static/main-hub/ext/build/
 sencha-error-*.log
 graveyard/
 *.patch
@@ -17,3 +16,5 @@ models*.pdf
 models.png
 models.svg
 models.dot
+Dockerfile
+parkour_app/static/main-hub/
