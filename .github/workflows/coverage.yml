@@ -30,12 +30,10 @@ jobs:
         run: |
           sh -c 'pytest -n ${{ steps.cpu-cores.outputs.count }} \
             --cov-config=./parkour_app/.coveragerc \
-            --cov=./parkour_app --cov-report=xml --cov-fail-under=0; \
+            --cov=./parkour_app --cov-report=lcov --cov-fail-under=0; \
               ret=$?; [ $ret = 5 ] && exit 0 || exit $ret'
       
-      # - name: Upload Report
-      #   run: |
-      #     coveralls report
-
       - name: Coveralls
+        with:
+          base-path: parkour_app
         uses: coverallsapp/github-action@v2
