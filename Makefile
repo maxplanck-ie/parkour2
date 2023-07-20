@@ -104,7 +104,7 @@ clearpy:
 
 prod: down set-prod set-prod-color deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-try-prod: down set-dev set-prod-color prod set-caddy deploy-django deploy-caddy collect-static
+try-prod: down set-dev set-prod-color set-caddy deploy-django deploy-caddy collect-static
 
 dev-easy: down set-dev set-dev-color set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
