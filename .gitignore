@@ -9,6 +9,7 @@ misc/*.sqldump
 rsnapshot/
 *.swp
 env/
+env_*/
 sencha-error-*.log
 graveyard/
 *.patch
