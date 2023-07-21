@@ -14,7 +14,9 @@ check-rootdir:
 		exit 1; }
 
 set-prod:
-	@-test -e misc/parkour.env && sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env
+	@-test -e misc/parkour.env && \
+		sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env || \
+		echo "Warning: misc/parkour.env file not found."
 	@sed -E -i -e '/^#CMD \["gunicorn/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
@@ -49,7 +51,7 @@ update-extjs:
 	@which sencha > /dev/null \
 		&& cd ./parkour_app/static/main-hub \
 		&& OPENSSL_CONF=/dev/null sencha app build development \
-		|| echo "Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
+		|| echo "Warning: Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
@@ -95,7 +97,7 @@ sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
 
 prune:
-	@echo "Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
+	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
 	@sleep 10s && docker system prune -a -f --volumes
 
 clearpy:
@@ -133,7 +135,7 @@ deploy-caddy:
 
 deploy-nginx:
 	@test -e ./misc/key.pem && test -e ./misc/cert.pem || \
-		{ echo "TLS certificates not found!"; exit 1; }
+		{ echo "ERROR: TLS certificates not found!"; exit 1; }
 	@docker compose -f nginx.yml up -d
 
 deploy-pgadmin:
@@ -147,7 +149,7 @@ add-pgadmin-nginx:
 
 convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink too)
 	@docker compose -f convert-backup.yml up -d && sleep 1m && \
-		echo "If this fails, most probably pg was still starting... retry manually!" && \
+		echo "Warning: If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f tmp_parkour_dump" && \
 		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(timestamp).sqldump
@@ -158,20 +160,22 @@ load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
 		find $$PWD/media_dump/ -maxdepth 1 -mindepth 1 -type d | \
 			xargs -I {} docker cp {} parkour2-django:/usr/src/app/media/ && \
-		echo "Loaded media file(s)." || \
-		echo 'Folder media_dump not found!'
+		echo "Info: Loaded media file(s)." || \
+		echo 'ERROR: Folder media_dump not found!'
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
 		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump && \
 		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c tmp_parkour-postgres.dump > /dev/null && \
-		echo "Loaded PostgreSQL database OK." || \
+		echo "Info: Loaded PostgreSQL database OK." || \
 		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
 
 load-postgres-plain:
-	@echo "cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
-	@docker cp ./this.sql parkour2-postgres:/tmp_parkour-postgres.dump && \
-		docker exec parkour2-postgres sh -c "psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null"
+	@test -e ./this.sql && \
+		docker cp ./this.sql parkour2-postgres:/tmp_parkour-postgres.dump && \
+		docker exec parkour2-postgres sh -c \
+			"psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null" || \
+		echo "ERROR: ./this.sql not found, do something in the lines of... cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
@@ -294,7 +298,7 @@ show_urls:
 
 compile:
 	@test -d ./env || \
-		{ echo "venv not found! Try: make env-setup-dev"; exit 1; }
+		{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	@source ./env/bin/activate && \
 		pip-compile-multi -d parkour_app/requirements/ && \
 		deactivate
@@ -315,7 +319,7 @@ env-setup-dev:
 open-pr:
 	@git pull && git push && git pull origin main
 	@gh pr create --title "quick upgrade" --fill -B main
-	@echo "-- Pull Request OPENED"
+	@echo "Info: Pull Request OPENED"
 
 # merge-pr:
 # 	@CURRENT_BRANCH=$$(git rev-parse --abbrev-ref HEAD) \
