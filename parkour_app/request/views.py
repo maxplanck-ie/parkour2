@@ -199,11 +199,6 @@ class RequestViewSet(viewsets.ModelViewSet):
         if not showAll:
             queryset = queryset.filter(sequenced=False)
         if self.request.user.is_staff:
-            # Show only those Requests, whose libraries and samples
-            # haven't reached status 6 yet
-            # TODO: find a way to hide requests
-            # queryset = [x for x in queryset if x.statuses.count(6) == 0]
-            # queryset = [x for x in queryset if x.statuses.count(5)==0]
             pass
         else:
             queryset = queryset.filter(user=self.request.user)
