@@ -38,8 +38,7 @@ Ext.define('MainHub.view.main.Main', {
             xtype: 'toolbar',
             id: 'headerBar',
             itemId: 'headerBar',
-            cls: 'sencha-dash-dash-headerbar shadow',
-            style: 'background-color: #32404e',
+            cls: 'sencha-dash-dash-headerbar shadow bg-color-beige',
             height: 64,
             padding: 0,
             items: [
@@ -53,7 +52,7 @@ Ext.define('MainHub.view.main.Main', {
                 {
                     margin: '0 0 0 8',
                     ui: 'header',
-                    iconCls: 'x-fa fa-navicon color-white',
+                    iconCls: 'x-fa fa-navicon color-bluish-grey',
                     id: 'main-navigation-btn',
                     handler: 'onToggleNavigationSize',
                     tooltip: 'Expand/Collapse Navigation Bar'
@@ -68,21 +67,21 @@ Ext.define('MainHub.view.main.Main', {
                     xtype: 'button',
                     ui: 'header',
                     id: 'adminSiteBtn',
-                    iconCls: 'x-fa fa-cog color-white',
+                    iconCls: 'x-fa fa-cog color-bluish-grey',
                     href: 'admin',
                     tooltip: 'Site Administration'
                 },
                 {
                     xtype: 'button',
                     ui: 'header',
-                    iconCls: 'x-fa fa-book color-white',
+                    iconCls: 'x-fa fa-book color-bluish-grey',
                     href: 'https://github.com/maxplanck-ie/parkour2/wiki/Introduction',
                     tooltip: 'Documentation'
                 },
                 {
                     xtype: 'button',
                     ui: 'header',
-                    iconCls: 'x-fa fa-sign-out color-white',
+                    iconCls: 'x-fa fa-sign-out color-bluish-grey',
                     href: 'logout',
                     hrefTarget:'_self',
                     tooltip: 'Logout'
