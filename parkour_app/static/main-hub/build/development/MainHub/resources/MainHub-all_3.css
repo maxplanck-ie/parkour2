@@ -1,3 +1,8 @@
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
+.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-mc,
+.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-mc {
+    background-color: #0287a0;
+}
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-soft-cyan-small-tl,
 .x-btn.x-btn-disabled .x-btn-soft-cyan-small-bl,

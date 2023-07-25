@@ -1,3 +1,9 @@
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
+.x-cmd-slicer.x-tab-default-right:before {
+    /*<if slicer>*/
+    display: none;
+    content: "x-slicer:, frame:0 0 0 0" !important;
+}
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1597 */
 .x-tab-default {
     border-color: transparent;
@@ -14724,9 +14730,4 @@ hr {
 .x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-ml,
 .x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-mr {
     background-image: url(images/btn/btn-soft-cyan-small-focus-pressed-sides.gif);
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-mc,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-mc {
-    background-color: #0287a0;
 }

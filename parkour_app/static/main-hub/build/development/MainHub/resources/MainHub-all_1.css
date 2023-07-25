@@ -37,7 +37,8 @@
 .x-treelist-item-selected.x-treelist-item-tool,
 .x-treelist-item-selected.x-treelist-item-expanded,
 .x-treelist-item-tool:hover,
-.x-treelist-row-over {
+.x-treelist-row-over,
+.x-treelist-item-expanded > ul > li {
     background-color: #dbdbd4 !important;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:44 */
@@ -16205,10 +16206,4 @@ div.x-border-layout-ct {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
 .x-tab-default-right-mc {
     padding: 8px 10px 8px 10px;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
-.x-cmd-slicer.x-tab-default-right:before {
-    /*<if slicer>*/
-    display: none;
-    content: "x-slicer:, frame:0 0 0 0" !important;
 }
