@@ -37,7 +37,8 @@
 .x-treelist-item-selected.x-treelist-item-tool,
 .x-treelist-item-selected.x-treelist-item-expanded, 
 .x-treelist-item-tool:hover,
-.x-treelist-row-over, .x-treelist-item-expanded > ul > li {
+.x-treelist-row-over,
+.x-treelist-item-expanded > ul > li {
     background-color: #dbdbd4 !important;
 }
 
