@@ -1,3 +1,80 @@
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1597 */
+.x-tab-default {
+    border-color: transparent;
+    cursor: pointer;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1656 */
+.x-tab-default-top {
+    margin: 0 4px 0 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1660 */
+.x-tab-default-top.x-rtl {
+    margin: 0 0 0 4px;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1665 */
+.x-tab-default-top.x-tab-rotate-left {
+    margin: 0 0 0 4px;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1669 */
+.x-tab-default-top.x-tab-rotate-left.x-rtl {
+    margin: 0 4px 0 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1687 */
+.x-tab-default-top.x-tab-focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1716 */
+.x-tab-default-top.x-tab-focus.x-tab-over {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1745 */
+.x-tab-default-top.x-tab-focus.x-tab-active {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1771 */
+.x-tab-default-right {
+    margin: 0 0 4px 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1775 */
+.x-tab-default-right.x-rtl {
+    margin: 0 0 4px 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1780 */
+.x-tab-default-right.x-tab-rotate-right {
+    margin: 4px 0 0 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1784 */
+.x-tab-default-right.x-tab-rotate-right.x-rtl {
+    margin: 4px 0 0 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1802 */
+.x-tab-default-right.x-tab-focus {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1831 */
+.x-tab-default-right.x-tab-focus.x-tab-over {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1860 */
+.x-tab-default-right.x-tab-focus.x-tab-active {
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1886 */
+.x-tab-default-bottom {
+    margin: 0 4px 0 0;
+}
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1890 */
 .x-tab-default-bottom.x-rtl {
     margin: 0 0 0 4px;
@@ -137,7 +214,7 @@
 .x-tab-focus.x-tab-default {
     border-color: transparent;
     background-color: transparent;
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
     outline-offset: -3px;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/css-outline.scss:64 */
@@ -156,7 +233,7 @@
     right: 2px;
     bottom: 2px;
     left: 2px;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
     pointer-events: none;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2314 */
@@ -228,7 +305,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2637 */
 .x-tab.x-tab-active.x-tab-default .x-tab-inner-default {
-    color: #2a95c5;
+    color: #005652;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2642 */
 .x-tab-bar-plain .x-tab.x-tab-active.x-tab-default .x-tab-inner-default {
@@ -236,11 +313,11 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2657 */
 .x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
-    color: #2a95c5;
+    color: #005652;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2665 */
 .x-ie8 .x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
-    color: #6ab5d6;
+    color: #4d8986;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:2671 */
 .x-tab-bar-plain .x-tab.x-tab-active.x-tab-default .x-tab-icon-el {
@@ -984,7 +1061,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Bar.scss:168 */
 .x-tab-bar-default {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Bar.scss:207 */
 .x-tab-bar-default-top > .x-tab-bar-body-default {
@@ -1199,7 +1276,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Bar.scss:580 */
 .x-box-scroller-tab-bar-default {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Bar.scss:586 */
 .x-box-scroller-tab-bar-default .x-ie8 .x-box-scroller-plain {
@@ -1363,7 +1440,7 @@
 .x-tree-arrows .x-tree-expander {
     font-size: 16px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-arrows .x-tree-expander:before {
@@ -1382,7 +1459,7 @@
 .x-tree-arrows .x-grid-tree-node-expanded .x-tree-expander {
     font-size: 16px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-arrows .x-grid-tree-node-expanded .x-tree-expander:before {
@@ -1393,7 +1470,7 @@
 .x-tree-elbow-end-plus {
     font-size: 14px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-elbow-plus:before,
@@ -1405,7 +1482,7 @@
 .x-grid-tree-node-expanded .x-tree-elbow-end-plus {
     font-size: 14px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-grid-tree-node-expanded .x-tree-elbow-plus:before,
@@ -1417,7 +1494,7 @@
     width: 16px;
     height: 32px;
     line-height: 32px;
-    color: #35baf6;
+    color: #006c66;
     font-size: 16px;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tree/View.scss:165 */
@@ -1443,7 +1520,7 @@
 .x-tree-icon-leaf {
     font-size: 16px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-icon-leaf:before {
@@ -1453,7 +1530,7 @@
 .x-tree-icon-parent {
     font-size: 16px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-icon-parent:before {
@@ -1463,7 +1540,7 @@
 .x-tree-icon-parent-expanded {
     font-size: 16px;
     font-family: FontAwesome;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-icon-parent-expanded:before {
@@ -1488,7 +1565,7 @@
     width: 18px;
     height: 18px;
     font: 18px/1 ExtJS;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/etc/mixins/font-icon.scss:126 */
 .x-tree-checkbox:before {
@@ -1580,11 +1657,11 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Toast.scss:17 */
 .x-toast-light .x-window-header {
     /* Custom styling */
-    background-color: #5dc8f8;
+    background-color: #338985;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Toast.scss:21 */
 .x-toast-light .x-tool-img {
-    background-color: #5dc8f8;
+    background-color: #338985;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Toast.scss:25 */
 .x-toast-light {
@@ -1846,9 +1923,9 @@
 .x-btn-focus.x-btn-plain-toolbar-small {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-plain-toolbar-small .x-btn-arrow-el {
@@ -1866,7 +1943,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-plain-toolbar-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-small {
@@ -1876,9 +1953,9 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-small,
@@ -1890,9 +1967,9 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-small,
 .x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-plain-toolbar-small {
@@ -2116,18 +2193,18 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-plain-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-plain-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-small:before {
@@ -2424,9 +2501,9 @@
 .x-btn-focus.x-btn-plain-toolbar-medium {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-plain-toolbar-medium .x-btn-arrow-el {
@@ -2444,7 +2521,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-plain-toolbar-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-medium {
@@ -2454,9 +2531,9 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-medium {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-medium,
@@ -2468,9 +2545,9 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-medium,
 .x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-medium {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-plain-toolbar-medium {
@@ -2694,18 +2771,18 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-plain-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-plain-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-medium:before {
@@ -3002,9 +3079,9 @@
 .x-btn-focus.x-btn-plain-toolbar-large {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-plain-toolbar-large .x-btn-arrow-el {
@@ -3022,7 +3099,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-plain-toolbar-large.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-plain-toolbar-large {
@@ -3032,9 +3109,9 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-plain-toolbar-large {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-plain-toolbar-large,
@@ -3046,9 +3123,9 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-large,
 .x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-large {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-plain-toolbar-large {
@@ -3272,18 +3349,18 @@
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-plain-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-plain-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-plain-toolbar-large:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-plain-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-plain-toolbar-large:before {
@@ -3570,7 +3647,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:830 */
 .x-panel-header-light .x-tool-focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
     outline-offset: 1px;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/css-outline.scss:64 */
@@ -3589,7 +3666,7 @@
     right: -2px;
     bottom: -2px;
     left: -2px;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
     pointer-events: none;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:842 */
@@ -5030,7 +5107,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:830 */
 .x-panel-header-light-framed .x-tool-focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
     outline-offset: 1px;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/css-outline.scss:64 */
@@ -5049,7 +5126,7 @@
     right: -2px;
     bottom: -2px;
     left: -2px;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
     pointer-events: none;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:842 */
@@ -5189,7 +5266,7 @@
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:6 */
 .x-column-header-trigger {
-    background-color: #e6f1f6;
+    background-color: #e2ebea;
     border-left: 1px solid #d0d0d0;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neptune/sass/src/grid/column/Column.scss:12 */
@@ -9239,7 +9316,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:480 */
 .x-treelist-navigation {
-    background-color: #32404e;
+    background-color: #ecebe5;
     background-position: 44px 0%;
     padding: 0 0 0 0;
 }
@@ -9253,7 +9330,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:109 */
 .x-treelist-navigation .x-treelist-item-selected.x-treelist-item-tool {
-    background-color: #475360;
+    background-color: #eeede8;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:114 */
 .x-treelist-navigation .x-treelist-item-selected.x-treelist-item-tool:after {
@@ -9263,11 +9340,11 @@ hr {
     left: 0;
     content: " ";
     width: 5px;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:131 */
 .x-treelist-navigation .x-treelist-item-selected > .x-treelist-row {
-    background-color: #475360;
+    background-color: #eeede8;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:140 */
 .x-treelist-navigation .x-treelist-item-tool {
@@ -9282,7 +9359,7 @@ hr {
     left: 0;
     content: " ";
     width: 5px;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:163 */
 .x-treelist-navigation .x-treelist-item-icon:before,
@@ -9306,7 +9383,7 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:190 */
 .x-treelist-navigation .x-treelist-item-icon,
 .x-treelist-navigation .x-treelist-item-tool {
-    color: #adb3b8;
+    color: #29485d;
     font-size: 18px;
     width: 44px;
 }
@@ -9350,11 +9427,11 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:279 */
 .x-treelist-navigation .x-treelist-item-selected > .x-treelist-row-over:before {
-    background-color: #57c6f8;
+    background-color: #009088;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:283 */
 .x-treelist-navigation .x-treelist-item-selected > .x-treelist-row:before {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:289 */
 .x-treelist-navigation .x-treelist-item-floated .x-treelist-container {
@@ -9402,7 +9479,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:348 */
 .x-treelist-navigation.x-treelist-highlight-path .x-treelist-item-over > * > .x-treelist-item-text {
-    color: #d6d9dc;
+    color: #94a4ae;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:352 */
 .x-treelist-navigation.x-treelist-highlight-path .x-treelist-item-over > * > .x-treelist-item-expander {
@@ -9410,7 +9487,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:359 */
 .x-treelist-navigation .x-treelist-row-over {
-    background-color: #3c4a57;
+    background-color: #edece6;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:362 */
 .x-treelist-navigation .x-treelist-row-over > * > .x-treelist-item-icon {
@@ -9418,7 +9495,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:366 */
 .x-treelist-navigation .x-treelist-row-over > * > .x-treelist-item-text {
-    color: #d6d9dc;
+    color: #94a4ae;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:370 */
 .x-treelist-navigation .x-treelist-row-over > * > .x-treelist-item-expander {
@@ -9489,7 +9566,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/sass/src/view/main/Main.scss:137 */
 .main-logo {
-    background-color: #35baf6;
+    background-color: #006c66;
     height: 65px;
     font-size: 16px;
     color: #fff;
@@ -9634,7 +9711,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-header-small {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-header-small {
@@ -9788,9 +9865,9 @@ hr {
 .x-btn-focus.x-btn-header-small {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-header-small .x-btn-arrow-el {
@@ -9808,33 +9885,33 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-header-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-header-small {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-header-small {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-header-small,
 .x-btn.x-btn-pressed.x-btn-header-small {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-header-small,
 .x-btn-focus.x-btn-pressed.x-btn-header-small {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-header-small {
@@ -10058,18 +10135,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-header-small:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-header-small:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-header-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-header-small:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-header-small:before {
@@ -10212,7 +10289,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-menu-button-medium {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-menu-button-medium {
@@ -10366,9 +10443,9 @@ hr {
 .x-btn-focus.x-btn-menu-button-medium {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-menu-button-medium .x-btn-arrow-el {
@@ -10386,33 +10463,33 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-menu-button-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-menu-button-medium {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-menu-button-medium {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-menu-button-medium,
 .x-btn.x-btn-pressed.x-btn-menu-button-medium {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-menu-button-medium,
 .x-btn-focus.x-btn-pressed.x-btn-menu-button-medium {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-menu-button-medium {
@@ -10636,18 +10713,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-button-medium:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-menu-button-medium:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-menu-button-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-menu-button-medium:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-menu-button-medium:before {
@@ -10790,7 +10867,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-menu-button-green-medium {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-menu-button-green-medium {
@@ -10944,9 +11021,9 @@ hr {
 .x-btn-focus.x-btn-menu-button-green-medium {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-menu-button-green-medium .x-btn-arrow-el {
@@ -10964,33 +11041,33 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-menu-button-green-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-menu-button-green-medium {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-menu-button-green-medium {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-menu-button-green-medium,
 .x-btn.x-btn-pressed.x-btn-menu-button-green-medium {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-menu-button-green-medium,
 .x-btn-focus.x-btn-pressed.x-btn-menu-button-green-medium {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-menu-button-green-medium {
@@ -11214,18 +11291,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-button-green-medium:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-menu-button-green-medium:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-menu-button-green-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-menu-button-green-medium:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-menu-button-green-medium:before {
@@ -11372,7 +11449,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-menu-button-red-medium {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-menu-button-red-medium {
@@ -11526,9 +11603,9 @@ hr {
 .x-btn-focus.x-btn-menu-button-red-medium {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-menu-button-red-medium .x-btn-arrow-el {
@@ -11546,33 +11623,33 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-menu-button-red-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-menu-button-red-medium {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-menu-button-red-medium {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-menu-button-red-medium,
 .x-btn.x-btn-pressed.x-btn-menu-button-red-medium {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-menu-button-red-medium,
 .x-btn-focus.x-btn-pressed.x-btn-menu-button-red-medium {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-menu-button-red-medium {
@@ -11796,18 +11873,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-button-red-medium:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-menu-button-red-medium:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-menu-button-red-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-menu-button-red-medium:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-menu-button-red-medium:before {
@@ -11954,7 +12031,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-menu-button-yellow-medium {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-menu-button-yellow-medium {
@@ -12108,9 +12185,9 @@ hr {
 .x-btn-focus.x-btn-menu-button-yellow-medium {
     background-image: none;
     background-color: transparent;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-menu-button-yellow-medium .x-btn-arrow-el {
@@ -12128,33 +12205,33 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-menu-button-yellow-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-menu-button-yellow-medium {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-menu-button-yellow-medium {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-menu-button-yellow-medium,
 .x-btn.x-btn-pressed.x-btn-menu-button-yellow-medium {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
     background-color: transparent;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-menu-button-yellow-medium,
 .x-btn-focus.x-btn-pressed.x-btn-menu-button-yellow-medium {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-menu-button-yellow-medium {
@@ -12378,18 +12455,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-button-yellow-medium:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-menu-button-yellow-medium:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-menu-button-yellow-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-menu-button-yellow-medium:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-menu-button-yellow-medium:before {
@@ -12707,9 +12784,9 @@ hr {
 .x-btn-focus.x-btn-soft-blue-small {
     background-image: none;
     background-color: #2eadf5;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-soft-blue-small .x-btn-arrow-el {
@@ -12727,7 +12804,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-soft-blue-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-soft-blue-small {
@@ -12737,9 +12814,9 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-soft-blue-small {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-soft-blue-small,
@@ -12751,9 +12828,9 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-soft-blue-small,
 .x-btn-focus.x-btn-pressed.x-btn-soft-blue-small {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-soft-blue-small {
@@ -12977,18 +13054,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-soft-blue-small:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-soft-blue-small:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-soft-blue-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-soft-blue-small:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-soft-blue-small:before {
@@ -13302,9 +13379,9 @@ hr {
 .x-btn-focus.x-btn-soft-blue-large {
     background-image: none;
     background-color: #2eadf5;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-soft-blue-large .x-btn-arrow-el {
@@ -13322,7 +13399,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-soft-blue-large.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-soft-blue-large {
@@ -13332,9 +13409,9 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-soft-blue-large {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-soft-blue-large,
@@ -13346,9 +13423,9 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-soft-blue-large,
 .x-btn-focus.x-btn-pressed.x-btn-soft-blue-large {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-soft-blue-large {
@@ -13572,18 +13649,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-soft-blue-large:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-soft-blue-large:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-soft-blue-large:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-soft-blue-large:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-soft-blue-large:before {
@@ -13897,9 +13974,9 @@ hr {
 .x-btn-focus.x-btn-soft-blue-toolbar-small {
     background-image: none;
     background-color: #2eadf5;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-soft-blue-toolbar-small .x-btn-arrow-el {
@@ -13917,7 +13994,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-soft-blue-toolbar-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-soft-blue-toolbar-small {
@@ -13927,9 +14004,9 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-soft-blue-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-soft-blue-toolbar-small,
@@ -13941,9 +14018,9 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-soft-blue-toolbar-small,
 .x-btn-focus.x-btn-pressed.x-btn-soft-blue-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-soft-blue-toolbar-small {
@@ -14167,18 +14244,18 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-soft-blue-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-soft-blue-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-soft-blue-toolbar-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-soft-blue-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-soft-blue-toolbar-small:before {
@@ -14492,9 +14569,9 @@ hr {
 .x-btn-focus.x-btn-soft-cyan-small {
     background-image: none;
     background-color: #03b4d5;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-soft-cyan-small .x-btn-arrow-el {
@@ -14512,7 +14589,7 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-soft-cyan-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-soft-cyan-small {
@@ -14522,9 +14599,9 @@ hr {
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-soft-cyan-small {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-soft-cyan-small,
@@ -14536,9 +14613,9 @@ hr {
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-soft-cyan-small,
 .x-btn-focus.x-btn-pressed.x-btn-soft-cyan-small {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-soft-cyan-small {
@@ -14652,60 +14729,4 @@ hr {
 .x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-mc,
 .x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-mc {
     background-color: #0287a0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-tl,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-bl,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-tr,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-br,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-tc,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-bc {
-    background-image: url(images/btn/btn-soft-cyan-small-disabled-corners.gif);
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1061 */
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-ml,
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-mr {
-    background-image: url(images/btn/btn-soft-cyan-small-disabled-sides.gif);
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
-.x-btn.x-btn-disabled .x-btn-soft-cyan-small-mc {
-    background-color: #03b4d5;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
-.x-nbr .x-btn-soft-cyan-small {
-    background-image: none;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1081 */
-.x-btn-disabled.x-btn-soft-cyan-small {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-    opacity: 0.5;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1100 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-first {
-    border-right-width: 1px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1102 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-first .x-btn-soft-cyan-small-mc {
-    padding-right: 7px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1106 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-middle {
-    border-right-width: 1px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1108 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-middle .x-btn-soft-cyan-small-mc {
-    padding-right: 7px !important;
-    padding-left: 7px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1114 */
-.x-nbr .x-segmented-button-item-horizontal.x-btn-soft-cyan-small.x-segmented-button-last .x-btn-soft-cyan-small-mc {
-    padding-left: 7px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1121 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-first {
-    border-bottom-width: 1px !important;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1123 */
-.x-nbr .x-segmented-button-item-vertical.x-btn-soft-cyan-small.x-segmented-button-first .x-btn-soft-cyan-small-mc {
-    padding-bottom: 7px !important;
 }
