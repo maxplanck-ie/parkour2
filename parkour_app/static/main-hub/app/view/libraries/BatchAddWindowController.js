@@ -609,27 +609,28 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         },
         renderer: this.errorRenderer
       },
-      {
-        text: 'qPCR (nM)',
-        dataIndex: 'qpcr_result',
-        tooltip: 'qPCR Result (nM)',
-        width: 85,
-        editor: {
-          xtype: 'numberfield',
-          allowBlank: true,
-          minValue: 0
-        }
-      }
+      // {
+      //   text: 'qPCR (nM)',
+      //   dataIndex: 'qpcr_result',
+      //   tooltip: 'qPCR Result (nM)',
+      //   width: 85,
+      //   editor: {
+      //     xtype: 'numberfield',
+      //     allowBlank: true,
+      //     minValue: 0
+      //   }
+      // }
     ]);
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'library_protocol',
-      'library_type', 'concentration', 'mean_fragment_size',
-      'index_type', 'index_reads', 'index_i7', 'index_i5', 'read_length',
-      'sequencing_depth', 'amplification_cycles',
-      'equal_representation_nucleotides', 'qpcr_result',
-      'sample_volume', 'concentration_method', 'organism', 'comments'
+      'numberer', 'name', 'barcode', 'library_protocol', 'library_type',
+      'concentration', 'mean_fragment_size', 'index_type', 'index_reads',
+      'index_i7', 'index_i5', 'read_length', 'sequencing_depth',
+      // 'amplification_cycles', 'equal_representation_nucleotides', 'qpcr_result',
+      'sample_volume',
+      //'concentration_method',
+      'organism', 'comments'
     ];
     columns = this.sortColumns(columns, order);
 
@@ -683,11 +684,12 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'nucleic_acid_type',
-      'library_protocol', 'library_type', 'concentration', 'rna_quality',
-      'read_length', 'sequencing_depth', 'amplification_cycles',
-      'equal_representation_nucleotides', 'sample_volume',
-      'concentration_method', 'organism', 'comments'
+      'numberer', 'name', 'barcode', 'nucleic_acid_type', 'library_protocol',
+      'library_type', 'concentration', 'rna_quality', 'read_length', 'sequencing_depth',
+      // 'amplification_cycles', 'equal_representation_nucleotides',
+      'sample_volume',
+      // 'concentration_method',
+      'organism', 'comments'
     ];
     columns = this.sortColumns(columns, order);
 
@@ -809,46 +811,46 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         },
         renderer: this.errorRenderer
       },
-      {
-        text: 'Amplification',
-        tooltip: 'Amplification cycles',
-        dataIndex: 'amplification_cycles',
-        width: 105,
-        editor: {
-          xtype: 'numberfield',
-          minValue: 0,
-          allowDecimals: false,
-          allowBlank: true
-        },
-        renderer: this.errorRenderer
-      },
-      {
-        xtype: 'checkcolumn',
-        text: 'Equal nucl.',
-        tooltip: 'Equal Representation of Nucleotides: check = Yes, no check = No',
-        dataIndex: 'equal_representation_nucleotides',
-        width: 95,
-        editor: {
-          xtype: 'checkbox',
-          cls: 'x-grid-checkheader-editor'
-        }
-      },
-      {
-        text: 'F/S',
-        dataIndex: 'concentration_method',
-        tooltip: 'Concentration Determined by',
-        width: 80,
-        editor: {
-          xtype: 'combobox',
-          queryMode: 'local',
-          valueField: 'id',
-          displayField: 'name',
-          store: 'concentrationMethodsStore',
-          matchFieldWidth: false,
-          forceSelection: true
-        },
-        renderer: this.comboboxErrorRenderer
-      },
+      // {
+      //   text: 'Amplification',
+      //   tooltip: 'Amplification cycles',
+      //   dataIndex: 'amplification_cycles',
+      //   width: 105,
+      //   editor: {
+      //     xtype: 'numberfield',
+      //     minValue: 0,
+      //     allowDecimals: false,
+      //     allowBlank: true
+      //   },
+      //   renderer: this.errorRenderer
+      // },
+      // {
+      //   xtype: 'checkcolumn',
+      //   text: 'Equal nucl.',
+      //   tooltip: 'Equal Representation of Nucleotides: check = Yes, no check = No',
+      //   dataIndex: 'equal_representation_nucleotides',
+      //   width: 95,
+      //   editor: {
+      //     xtype: 'checkbox',
+      //     cls: 'x-grid-checkheader-editor'
+      //   }
+      // },
+      // {
+      //   text: 'F/S',
+      //   dataIndex: 'concentration_method',
+      //   tooltip: 'Concentration Determined by',
+      //   width: 80,
+      //   editor: {
+      //     xtype: 'combobox',
+      //     queryMode: 'local',
+      //     valueField: 'id',
+      //     displayField: 'name',
+      //     store: 'concentrationMethodsStore',
+      //     matchFieldWidth: false,
+      //     forceSelection: true
+      //   },
+      //   renderer: this.comboboxErrorRenderer
+      // },
       {
         text: 'Organism',
         dataIndex: 'organism',
