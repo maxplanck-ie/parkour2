@@ -41,22 +41,46 @@
 .x-treelist-item-expanded > ul > li {
     background-color: #dbdbd4 !important;
 }
-/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:44 */
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:45 */
 .x-treelist-navigation .x-treelist-item-floated > .x-treelist-row,
 .x-treelist-item-tool,
 .x-treelist-item-leaf,
 .x-treelist-item-expandable {
     background-color: #ecebe5 !important;
 }
-/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:51 */
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:52 */
 .x-treelist-item-text,
 .x-treelist-item-expander {
     color: #29485d !important;
     font-weight: bold !important;
 }
-/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:57 */
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:58 */
 .x-treelist-item-expanded > ul > li > div > div {
     margin-left: 22px !important;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:62 */
+.noty_bar.noty_type__success {
+    background-color: #00b1ea !important;
+    border-color: #00b1ea !important;
+    color: #fff !important;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:68 */
+.noty_bar.noty_type__error {
+    background-color: #e74c3c !important;
+    border-color: #c0392b !important;
+    color: #fff !important;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:74 */
+.noty_bar.noty_type__warning {
+    background-color: #ef7c00 !important;
+    border-color: #d66f00 !important;
+    color: #fff !important;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/sass/etc/all.scss:80 */
+.noty_bar.noty_type__information {
+    background-color: #006c66 !important;
+    border-color: #055 !important;
+    color: #fff !important;
 }
 /* /docker/parkour2/parkour_app/static/main-hub/ext/packages/core/sass/src/util/SizeMonitor.scss:5 */
 .x-size-monitored {
@@ -16188,22 +16212,4 @@ div.x-border-layout-ct {
 .x-tab-default-right-br,
 .x-tab-default-right-mr {
     padding-right: 0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
-.x-tab-default-right-tl,
-.x-tab-default-right-bl,
-.x-tab-default-right-ml {
-    padding-left: 0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
-.x-tab-default-right-tc {
-    height: 0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
-.x-tab-default-right-bc {
-    height: 0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
-.x-tab-default-right-mc {
-    padding: 8px 10px 8px 10px;
 }
