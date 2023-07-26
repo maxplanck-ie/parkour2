@@ -1,3 +1,21 @@
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
+.x-tab-default-right-tl,
+.x-tab-default-right-bl,
+.x-tab-default-right-ml {
+    padding-left: 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
+.x-tab-default-right-tc {
+    height: 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
+.x-tab-default-right-bc {
+    height: 0;
+}
+/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
+.x-tab-default-right-mc {
+    padding: 8px 10px 8px 10px;
+}
 /* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-tab-default-right:before {
     /*<if slicer>*/
@@ -14708,26 +14726,4 @@ hr {
 .x-btn.x-btn-menu-active .x-btn-soft-cyan-small-mc,
 .x-btn.x-btn-pressed .x-btn-soft-cyan-small-mc {
     background-color: #0287a0;
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-tl,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-bl,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-tr,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-br,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-tc,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-bc,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-tl,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-bl,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-tr,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-br,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-tc,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-bc {
-    background-image: url(images/btn/btn-soft-cyan-small-focus-pressed-corners.gif);
-}
-/* /docker/parkour2/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1036 */
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-ml,
-.x-btn-focus.x-btn-menu-active .x-btn-soft-cyan-small-mr,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-ml,
-.x-btn-focus.x-btn-pressed .x-btn-soft-cyan-small-mr {
-    background-image: url(images/btn/btn-soft-cyan-small-focus-pressed-sides.gif);
 }

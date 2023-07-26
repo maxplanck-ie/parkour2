@@ -58,3 +58,27 @@
 .x-treelist-item-expanded > ul > li > div > div {
     margin-left: 22px !important;
 }
+
+.noty_bar.noty_type__success {
+    background-color: #00b1ea !important;
+    border-color: #00b1ea !important;
+    color: #ffffff !important;
+}
+
+.noty_bar.noty_type__error {
+    background-color: #e74c3c !important;
+    border-color: #c0392b !important;
+    color: #ffffff !important;
+}
+
+.noty_bar.noty_type__warning {
+    background-color: #ef7c00 !important;
+    border-color: #d66f00 !important;
+    color: #ffffff !important;
+}
+
+.noty_bar.noty_type__information {
+    background-color: #006c66 !important;
+    border-color: #005555 !important;
+    color: #ffffff !important;
+}
