@@ -67,12 +67,16 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           text: 'Lane',
           dataIndex: 'name',
           hideable: false,
+          minWidth: 85,
+          width: 85,
           filter: { type: 'string' }
         },
         {
           text: 'Pool',
           dataIndex: 'pool_name',
           hideable: false,
+          minWidth: 85,
+          width: 85,
           filter: { type: 'string' },
           renderer: function (value) {
             return Ext.String.format('<a href="javascript:void(0)" class="pool-name">{0}</a>', value);
@@ -82,6 +86,8 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           text: 'Date',
           dataIndex: 'create_time',
           renderer: Ext.util.Format.dateRenderer(),
+          minWidth: 100,
+          width: 100,
           filter: { type: 'date' }
         },
         {
@@ -93,23 +99,31 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           text: 'Length',
           tooltip: 'Read Length',
           dataIndex: 'read_length_name',
+          minWidth: 80,
+          width: 80,
           filter: { type: 'list' }
         },
         {
           text: 'Index I7',
           dataIndex: 'index_i7_show',
+          minWidth: 80,
+          width: 80,
           //renderer: 'yesNoRenderer',
           filter: { type: 'string' }
         },
         {
           text: 'Index I5',
           dataIndex: 'index_i5_show',
+          minWidth: 80,
+          width: 80,
           //renderer: 'yesNoRenderer',
           filter: { type: 'string' }
         },
         {
           text: 'Sequencing kit',
           dataIndex: 'pool_size_name',
+          minWidth: 200,
+          width: 200,
           filter: { type: 'list' }
         },
       /*  {
@@ -119,6 +133,22 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           renderer: 'yesNoRenderer',
           filter: { type: 'boolean' }
         },*/
+        {
+          text: 'Run name',
+          dataIndex: 'run_name',
+          filter: { type: 'string' }
+        },
+        {
+          text: 'Cycles: R1, R2, I1, I2',
+          renderer: function(val, meta, record, rowIndex) {
+            console.log(record);
+            return Ext.String.format('{0}, {1}, {2}, {3}',
+                                     record.get('read1_cycles'),
+                                     record.get('read2_cycles'),
+                                     record.get('index1_cycles'),
+                                     record.get('index2_cycles'));
+        }
+        },
         {
             text: 'Library protocol',
             dataIndex: 'protocol',
@@ -184,7 +214,7 @@ Ext.define('MainHub.view.flowcell.Flowcells', {
           },
           {
             itemId: 'download-sample-sheet-button',
-            text: 'Download Sample Sheet',
+            text: 'Download Sample Sheet (ILMN v2)',
             iconCls: 'fa fa-file-excel-o fa-lg'
           },
           '->',

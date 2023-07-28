@@ -295,85 +295,49 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         authentication_classes=[CsrfExemptSessionAuthentication],
     )
     def download_sample_sheet(self, request):
-        """Generate Benchtop Protocol as XLS file for selected lanes."""
-
-        def create_row(lane, record):
-            index_i7 = IndexI7.objects.filter(
-                index=record.index_i7, index_type=record.index_type
-            )
-            index_i7_id = index_i7[0].index_id if index_i7 else ""
-
-            index_i5 = IndexI5.objects.filter(
-                index=record.index_i5, index_type=record.index_type
-            )
-            index_i5_id = index_i5[0].index_id if index_i5 else ""
-
-            request_name = unicodedata.normalize("NFKD", record.request.get().name)
-            request_name = str(request_name.encode("ASCII", "ignore"), "utf-8")
-
-            library_protocol = unicodedata.normalize(
-                "NFKD", record.library_protocol.name
-            )
-            library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
-
-            return [
-                lane.name.split()[1],  # Lane
-                record.barcode,  # Sample_ID
-                record.name,  # Sample_Name
-                "",  # Sample_Plate
-                "",  # Sample_Well
-                index_i7_id,  # I7_Index_ID
-                record.index_i7,  # index
-                index_i5_id,  # I5_Index_ID
-                record.index_i5,  # index2
-                request_name,  # Sample_Project / Request ID
-                library_protocol,  # Description / Library Protocol
-            ]
+        """Generate an Illumina v2 sample sheet for selected lanes."""
 
         response = HttpResponse(content_type="text/csv")
         ids = json.loads(request.data.get("ids", "[]"))
         flowcell_id = request.data.get("flowcell_id", "")
+        flowcell = Flowcell.objects.get(pk=flowcell_id)
+        sequencer = flowcell.pool_size.sequencer
 
         writer = csv.writer(response)
 
-        #        writer.writerow(['[Header]'] + [''] * 10)
-        #        writer.writerow(['IEMFileVersion', '4'] + [''] * 9)
-        #        writer.writerow(['Date', '11/3/2016'] + [''] * 9)
-        #        writer.writerow(['Workflow', 'GenerateFASTQ'] + [''] * 9)
-        #        writer.writerow(['Application', 'HiSeq FASTQ Only'] + ['' * 9])
-        #        writer.writerow(['Assay', 'Nextera XT'] + [''] * 9)
-        #        writer.writerow(['Description'] + [''] * 10)
-        #        writer.writerow(['Chemistry', 'Amplicon'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Reads]'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Settings]'] + [''] * 10)
-        #        writer.writerow(['ReverseComplement', '0'] + [''] * 9)
-        #        writer.writerow(['Adapter', 'CTGTCTCTTATACACATCT'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        writer.writerow(["[Data]"] + [""] * 10)
+        # Header
+        writer.writerow(['[Header]'] + [''] * 2)
+        writer.writerow(['FileFormatVersion', '2'] + [''])
+        writer.writerow(['RunName', flowcell.run_name] + [''])
+        writer.writerow(['InstrumentPlatform', sequencer.instrument_platform] + [''])
+        writer.writerow(['InstrumentType', sequencer.instrument_type] + [''])
+        writer.writerow([''] * 3)
 
-        writer.writerow(
-            [
-                "Lane",
-                "Sample_ID",
-                "Sample_Name",
-                "Sample_Plate",
-                "Sample_Well",
-                "I7_Index_ID",
-                "index",
-                "I5_Index_ID",
-                "index2",
-                "Sample_Project",
-                "Description",
-            ]
-        )
+        # Reads
+        writer.writerow(['[Reads]'] + [''] * 2)
+        writer.writerow(['Read1Cycles', flowcell.read1_cycles if flowcell.read1_cycles else ''] + [''])
+        writer.writerow(['Read2Cycles', flowcell.read2_cycles if flowcell.read2_cycles else ''] + [''])
+        writer.writerow(['Index1Cycles', flowcell.index1_cycles if flowcell.index1_cycles else ''] + [''])
+        writer.writerow(['Index2Cycles', flowcell.index2_cycles if flowcell.index2_cycles else ''] + [''])
+        writer.writerow([''] * 3)
+        
+        # Sequencing settings
+        if flowcell.library_prep_kits:
+            writer.writerow(['[Sequencing_Settings]'] + [''] * 2)
+            writer.writerow(['LibraryPrepKits', flowcell.library_prep_kits] + [''])
+            writer.writerow([''] * 3)
+        
+        # BCLconvert settings
+        writer.writerow(['[BCLConvert_Settings]'] + [''] * 2)
+        writer.writerow(['SoftwareVersion', sequencer.bclconvert_version] + [''])
+        writer.writerow(['BarcodeMismatchesIndex1', '1'] + [''])
+        writer.writerow(['BarcodeMismatchesIndex2', '1'] + [''])
+        writer.writerow(['FastqCompressionFormat', 'gzip'] + [''])
+        writer.writerow([''] * 3)
 
-        flowcell = Flowcell.objects.get(pk=flowcell_id)
-        f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
-        response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
+        # BCLconvert data
+        writer.writerow(["[BCLConvert_Data]"] + [''] * 2)
+        writer.writerow(['Sample_ID', 'Index', 'Index2'])
 
         lanes = Lane.objects.filter(pk__in=ids).order_by("name")
 
@@ -381,18 +345,23 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         for lane in lanes:
             records = list(
                 itertools.chain(
-                    lane.pool.libraries.all().filter(~Q(status=-1)),
-                    lane.pool.samples.all().filter(~Q(status=-1)),
+                    lane.pool.libraries.all().filter(~Q(status=-1)).only('name', 'index_i7', 'index_i5'),
+                    lane.pool.samples.all().filter(~Q(status=-1)).only('name', 'index_i7', 'index_i5'),
                 )
             )
 
             for record in records:
-                row = create_row(lane, record)
-                rows.append(row)
+                rows.append([record.name, record.index_i7, record.index_i5])
 
-        rows = sorted(rows, key=lambda x: (x[0], x[1][3:]))
+        rows = sorted(rows, key=lambda x: x[0])
         for row in rows:
             writer.writerow(row)
+
+        writer.writerow([''] * 3)
+
+        # Response name
+        f_name = f"{flowcell.flowcell_id}_{flowcell.run_name}_SampleSheet.csv"
+        response["Content-Disposition"] = f'attachment; filename="{f_name}"'
 
         return response
 

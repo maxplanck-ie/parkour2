@@ -339,6 +339,12 @@ Ext.define('MainHub.view.flowcell.FlowcellWindowController', {
         data: Ext.JSON.encode({
           flowcell_id: data.flowcell_id,
           pool_size: data.sequencing_kit,
+          run_name: data.run_name,
+          read1_cycles: data.read1_cycles,
+          read2_cycles: data.read2_cycles,
+          index1_cycles: data.index1_cycles,
+          index2_cycles: data.index2_cycles,
+          library_prep_kits: data.library_prep_kits ? data.library_prep_kits : "",
           lanes: lanes
         })
       },
