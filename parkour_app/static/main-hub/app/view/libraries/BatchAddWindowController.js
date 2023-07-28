@@ -86,6 +86,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   selectCard: function (btn) {
     var me = this;
     var wnd = btn.up('window');
+    wnd.allowClose = false;
     var layout = btn.up('panel').getLayout();
     var configuration;
     this.requestName = Ext.getCmp('request-form').getForm().getFieldValues().name;
@@ -1150,6 +1151,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             librariesInRequestGrid.down('#check-column').fireEvent('unselectall');
             new Noty({ text: 'The changes have been saved!' }).show();
           }
+          wnd.allowClose = true;
           wnd.close();
         } else {
           new Noty({ text: obj.message, type: 'error' }).show();

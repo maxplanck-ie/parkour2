@@ -161,10 +161,10 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
   listeners: {
 
     beforeclose: function (wnd) {
-      if (!wnd.isConfirmed) {
+      if (!wnd.allowClose) {
         Ext.MessageBox.confirm('', 'Do you want to close this window before saving your changes?', function (btn) {
           if (btn == 'yes') {
-            wnd.isConfirmed = true;
+            wnd.allowClose = true;
             wnd.close();
           }
         });
