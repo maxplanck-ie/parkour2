@@ -38,12 +38,12 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        
+
         if asBioinformatician:
-            return queryset.filter(bioinformatician=self.request.user)
-        
+            queryset =queryset.filter(bioinformatician=self.request.user)
+
         if asHandler:
-            return queryset.filter(handler=self.request.user)
+            queryset = queryset.filter(handler=self.request.user)
 
         if not (self.request.user.is_staff or self.request.user.member_of_bcf):
             if self.request.user.is_pi:
