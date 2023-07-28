@@ -208,7 +208,7 @@ import-media:
 		${VM_PROD}:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
 
 import-pgdb:
-	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 convert-backup"
+	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
 	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='*.sqldump' \
 		--exclude='*.conf' --exclude='*.pem' --exclude='*.yml' \
 		--exclude='*.txt' --exclude='*.json' --exclude='*.env' \
