@@ -196,7 +196,7 @@ Ext.define('MainHub.view.requests.Requests', {
       // Open Request Window by double clicking row
       itemdblclick: function (dv, record, item, index, e) {
         Ext.create('MainHub.view.requests.RequestWindow', {
-          title: record.get('name'),
+          title: Ext.String.format("{0} - {1}", record.get('pk'), record.get('name')),
           mode: 'edit',
           record: record
         }).show();
