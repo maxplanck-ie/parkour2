@@ -25,7 +25,8 @@ Ext.define('MainHub.store.requests.Requests', {
     },
     extraParams:{
         showAll: 'True',
-        asBioinformatician: 'False'
+        asBioinformatician: 'False',
+        asHandler: 'False'
     }
   },
 

@@ -222,8 +222,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         "user__cost_unit__organization__name"
     )
 
-    def get_queryset(self, showAll=False, asBioinformatician=False):
-        
+    def get_queryset(self, showAll=False, asBioinformatician=False, asHandler=False):
+
         libraries_qs = Library.objects.all().only("status", "sequencing_depth")
         samples_qs = Sample.objects.all().only("status", "sequencing_depth")
         #   print(libraries_qs.values())
@@ -240,10 +240,13 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        
+
         if asBioinformatician:
             return queryset.filter(bioinformatician=self.request.user)
-        
+
+        if asHandler:
+            return queryset.filter(handler=self.request.user)
+
         if self.request.user.is_staff or self.request.user.member_of_bcf:
             # Show only those Requests, whose libraries and samples
             # haven't reached status 6 yet
@@ -265,6 +268,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         showAll = False
         asBioinformatician = False
+        asHandler = False
         
         if request.GET.get("showAll") == "True":
             showAll = True
@@ -272,7 +276,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         if request.GET.get("asBioinformatician") == "True":
             asBioinformatician = True
 
-        queryset = self.filter_queryset(self.get_queryset(showAll, asBioinformatician))
+        if request.GET.get("asHandler") == "True":
+            asHandler = True
+
+        queryset = self.filter_queryset(self.get_queryset(showAll, asBioinformatician, asHandler))
 
         try:
             page = self.paginate_queryset(queryset)

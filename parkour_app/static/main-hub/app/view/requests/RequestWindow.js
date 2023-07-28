@@ -8,7 +8,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
   ],
   controller: 'requests-requestwindow',
 
-  height: 600,
+  height: 610,
   width: 850,
   modal: true,
   resizable: true,
@@ -47,7 +47,6 @@ Ext.define('MainHub.view.requests.RequestWindow', {
                 regex: /^[A-Za-z0-9_]+$/,
                 regexText: 'Only A-Z a-z 0-9 and _ are allowed',
               },
-              ,
               {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
@@ -334,6 +333,23 @@ Ext.define('MainHub.view.requests.RequestWindow', {
     ]
   }],
   bbar: [
+    {
+      xtype: 'combobox',
+      itemId: 'handler-cb',
+      name: 'handler',
+      queryMode: 'local',
+      valueField: 'id',
+      displayField: 'name',
+      labelWidth: 80,
+      width: 430,
+      padding: 7,
+      fieldLabel: 'Handled by',
+      emptyText: 'GCF staff member',
+      allowBlank: true,
+      forceSelection: false,
+      store: 'StaffMembers',
+      hidden: !(USER.is_staff || USER.member_of_bcf || USER.is_bioinformatician)
+    },
     '->',
     {
       xtype: 'button',

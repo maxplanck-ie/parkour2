@@ -21,9 +21,9 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
-    
-    def get_queryset(self, showAll=False, asBioinformatician=False):
-        
+
+    def get_queryset(self, showAll=False, asBioinformatician=False, asHandler=False):
+
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
@@ -35,13 +35,16 @@ class LibrarySampleTree(viewsets.ViewSet):
             .only("name")
             .order_by("-create_time")
         )
-        
+
         if not showAll:
             queryset = queryset.filter(sequenced=False)
         
         if asBioinformatician:
             return queryset.filter(bioinformatician=self.request.user)
         
+        if asHandler:
+            return queryset.filter(handler=self.request.user)
+
         if not (self.request.user.is_staff or self.request.user.member_of_bcf):
             if self.request.user.is_pi:
                queryset =queryset.filter(pi=self.request.user)
@@ -55,14 +58,18 @@ class LibrarySampleTree(viewsets.ViewSet):
         
         showAll = False
         asBioinformatician = False
-        
+        asHandler = False
+
         if request.GET.get("showAll") == "True":
             showAll = True
 
         if request.GET.get("asBioinformatician") == "True":
             asBioinformatician = True
 
-        queryset = self.get_queryset(showAll, asBioinformatician)
+        if request.GET.get("asHandler") == "True":
+            asHandler = True
+
+        queryset = self.get_queryset(showAll, asBioinformatician, asHandler)
 
         request_id = self.request.query_params.get("node", None)
 

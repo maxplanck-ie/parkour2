@@ -15,7 +15,8 @@ Ext.define('MainHub.store.libraries.Libraries', {
         reader: 'json',
         extraParams:{
             showAll: 'True',
-            asBioinformatician: 'False'
+            asBioinformatician: 'False',
+            asHandler: 'False'
         }
     },
 

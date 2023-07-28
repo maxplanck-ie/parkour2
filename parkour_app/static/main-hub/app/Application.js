@@ -30,6 +30,7 @@ Ext.define('MainHub.Application', {
     'requests.RequestFiles',
     'requests.PrincipalInvestigators',
     'requests.Bioinformaticians',
+    'requests.StaffMembers',
     'requests.CostUnits',
     'libraries.Libraries',
     'libraries.LibraryProtocols',

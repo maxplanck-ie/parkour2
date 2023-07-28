@@ -278,6 +278,24 @@ class BioinformaticianViewSet(viewsets.ReadOnlyModelViewSet):
             return User.objects.filter(is_bioinformatician=True)
 
 
+class StaffMemberViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of members of GCF/Staff"""
+
+    serializer_class = BioinformaticianSerializer
+
+    def get_queryset(self):
+
+        try:
+
+            request_handler = int(self.request.query_params.get("request_handler", 0))
+            return User.objects.filter(Q(groups__name='Genomics-CF', is_active=True, is_staff=True) |
+                                       Q(id=request_handler)).order_by('last_name').distinct()
+
+        except:
+
+            return User.objects.filter(groups__name='Genomics-CF')
+
+
 class OrganizationViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of Principal Investigators."""
 

@@ -9,6 +9,7 @@ class RequestSerializer(ModelSerializer):
     user_full_name = SerializerMethodField()
     pi_name = SerializerMethodField()
     bioinformatician_name = SerializerMethodField()
+    handler_name = SerializerMethodField()
     pool_size_user_name = SerializerMethodField()
     cost_unit_name = SerializerMethodField()
     restrict_permissions = SerializerMethodField()
@@ -30,6 +31,8 @@ class RequestSerializer(ModelSerializer):
             "pi_name",
             "bioinformatician",
             "bioinformatician_name",
+            "handler",
+            "handler_name",
             "pool_size_user",
             "pool_size_user_name",
             "create_time",
@@ -58,6 +61,9 @@ class RequestSerializer(ModelSerializer):
     
     def get_bioinformatician_name(self, obj):
         return str(obj.bioinformatician)
+
+    def get_handler_name(self, obj):
+        return str(obj.handler) if obj.handler else None
 
     def get_pool_size_user_name(self, obj):
         return str(obj.pool_size_user)

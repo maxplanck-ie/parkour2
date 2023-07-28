@@ -37,18 +37,37 @@ Ext.define('MainHub.view.requests.Requests', {
             boxLabelAlign: 'before',
             checked: false,
             id: 'asBioinformatician',
-
             margin: '0 15 0 0',
             cls: 'grid-header-checkbox',
             hidden: !USER.is_bioinformatician,
             listeners: {
               change: function (checkbox, newValue, oldValue, eOpts) {
-
                 if (newValue) {
                   Ext.getStore('requestsStore').getProxy().extraParams.asBioinformatician = 'True';
                   Ext.getStore('requestsStore').load()
                 } else {
                   Ext.getStore('requestsStore').getProxy().extraParams.asBioinformatician = 'False';
+                  Ext.getStore('requestsStore').load()
+                }
+              }
+            }
+          },
+          {
+            name: 'asHandler',
+            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for processing">As handler</span>',
+            boxLabelAlign: 'before',
+            checked: false,
+            id: 'asHandler',
+            margin: '0 15 0 0',
+            cls: 'grid-header-checkbox',
+            hidden: !USER.is_staff,
+            listeners: {
+              change: function (checkbox, newValue, oldValue, eOpts) {
+                if (newValue) {
+                  Ext.getStore('requestsStore').getProxy().extraParams.asHandler = 'True';
+                  Ext.getStore('requestsStore').load()
+                } else {
+                  Ext.getStore('requestsStore').getProxy().extraParams.asHandler = 'False';
                   Ext.getStore('requestsStore').load()
                 }
               }
@@ -143,7 +162,8 @@ Ext.define('MainHub.view.requests.Requests', {
         {
           text: 'Total Sequencing Depth (M)',
           dataIndex: 'total_sequencing_depth',
-          flex: 1
+          flex: 1,
+          hidden: (USER.is_staff || USER.member_of_bcf),
         },
         {
           text: 'Description',
@@ -160,6 +180,12 @@ Ext.define('MainHub.view.requests.Requests', {
           text: 'Number of samples and libraries',
           dataIndex: 'number_of_samples',
           flex: 1
+        },
+        {
+          text: 'Handler',
+          dataIndex: 'handler_name',
+          flex: 1,
+          hidden: !(USER.is_staff || USER.member_of_bcf),
         }
       ]
     },

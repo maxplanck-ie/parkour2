@@ -44,6 +44,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     var costUnitCb = wnd.down('#cost-unit-cb');
     var piCb = wnd.down('#pi-cb');
     var bioinfoCb = wnd.down('#bioinformatician-cb');
+    var handlerCb = wnd.down('#handler-cb');
     var readLengthsCb = wnd.down('#pool-size-user-cb');
     var form = Ext.getCmp('request-form').getForm();
     var userId = USER.id;
@@ -130,6 +131,19 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       callback: function (records, operation, success) {
         if (success && request) {
           bioinfoCb.setValue(request.bioinformatician);
+        }
+      }
+    }
+    );
+
+    // Load staff members
+    Ext.getStore('StaffMembers').reload({
+      params: {
+        request_handler: request ? request.handler : 0,
+      },
+      callback: function (records, operation, success) {
+        if (success && request) {
+          handlerCb.setValue(request.handler);
         }
       }
     }
@@ -382,6 +396,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
 
   save: function (btn) {
     var wnd = btn.up('window');
+    var handlerCb = wnd.down('#handler-cb');
     var form = Ext.getCmp('request-form');
     var store = Ext.getStore('librariesInRequestStore');
     var url;
@@ -431,6 +446,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           pi: data.pi,
           cost_unit: data.cost_unit,
           bioinformatician: data.bioinformatician ? data.bioinformatician : null,
+          handler: handlerCb.value ? handlerCb.value : null,
           pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
           pooled_libraries: data.pooled_libraries,

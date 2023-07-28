@@ -75,6 +75,27 @@ Ext.define('MainHub.view.libraries.Libraries', {
               }
             },
             {
+              name: 'asHandler',
+              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for processing">As handler</span>',
+              boxLabelAlign: 'before',
+              checked: false,
+              id: 'asHandlerlr',
+              margin: '0 15 0 0',
+              cls: 'grid-header-checkbox',
+              hidden: !USER.is_staff,
+              listeners: {
+                change: function (checkbox, newValue, oldValue, eOpts) {
+                  if (newValue) {
+                    Ext.getStore('librariesStore').getProxy().extraParams.asHandler = 'True';
+                    Ext.getStore('librariesStore').load()
+                  } else {
+                    Ext.getStore('librariesStore').getProxy().extraParams.asHandler = 'False';
+                    Ext.getStore('librariesStore').load()
+                  }
+                }
+              }
+            },
+            {
               name: 'showAll',
               boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show all</span>',
               boxLabelAlign: 'before',

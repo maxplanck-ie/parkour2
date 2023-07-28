@@ -57,6 +57,15 @@ class Request(DateTimeMixin):
         related_name = 'request_bioinformatician'
     )
 
+    handler = models.ForeignKey(
+        User,
+        verbose_name="Handler",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_handler'
+    )
+
     pool_size_user = models.ForeignKey(
         PoolSize,
         verbose_name="Sequencing kit (user)",
