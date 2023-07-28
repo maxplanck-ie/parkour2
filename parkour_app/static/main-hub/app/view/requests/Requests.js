@@ -127,8 +127,8 @@ Ext.define('MainHub.view.requests.Requests', {
         {
           text: 'ID',
           dataIndex: 'pk',
-          hidden: true,
-          flex: 1
+          width: 70,
+          minWidth: 70,
         },
         {
           text: 'Name',
@@ -151,19 +151,21 @@ Ext.define('MainHub.view.requests.Requests', {
           text: 'Cost Unit',
           dataIndex: 'cost_unit_name',
           hidden: !(USER.is_staff || USER.member_of_bcf),
-          flex: 1
+          width: 80,
+          width: 80
         },
         {
           text: 'Date',
           dataIndex: 'create_time',
           renderer: Ext.util.Format.dateRenderer('d.m.Y'),
-          flex: 1
+          width: 100,
+          minWidth: 100
         },
         {
-          text: 'Total Sequencing Depth (M)',
+          text: 'Total seq. depth (M)',
           dataIndex: 'total_sequencing_depth',
-          flex: 1,
-          hidden: (USER.is_staff || USER.member_of_bcf),
+          width: 150,
+          minWidth: 150
         },
         {
           text: 'Description',
@@ -177,9 +179,10 @@ Ext.define('MainHub.view.requests.Requests', {
           }
         },
         {
-          text: 'Number of samples and libraries',
+          text: '# samples/libraries',
           dataIndex: 'number_of_samples',
-          flex: 1
+          width: 140,
+          minWidth: 140
         },
         {
           text: 'Handler',
