@@ -206,9 +206,15 @@ class IndexPair(models.Model):
 
 
 class BarcodeCounter(models.Model):
-    year = models.PositiveSmallIntegerField(default=2018, unique=True)
+    year = models.PositiveSmallIntegerField(default=2018)
 
-    last_id = models.PositiveSmallIntegerField(default=0, unique=True)
+    last_id = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        constraints = [
+        models.UniqueConstraint(fields=['year', 'last_id'],
+                                name='unique_year_last_id')
+            ]
 
     @classmethod
     def load(cls, year=timezone.now().year):
