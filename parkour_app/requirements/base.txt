@@ -144,7 +144,7 @@ prompt-toolkit==3.0.36
     # via ipython
 psutil==5.9.4
     # via ipykernel
-psycopg2-binary==2.8.6
+psycopg2-binary==2.9.6
     # via -r parkour_app/requirements/base.in
 ptyprocess==0.7.0
     # via pexpect
