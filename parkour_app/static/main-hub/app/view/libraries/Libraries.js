@@ -114,6 +114,7 @@ Ext.define('MainHub.view.libraries.Libraries', {
           menuDisabled: true,
           hideable: false,
           minWidth: 250,
+          flex: 1,
           renderer: function (value, meta, record) {
             if (record.get('leaf')) {
               meta.tdStyle = 'font-weight:bold';
@@ -264,45 +265,46 @@ Ext.define('MainHub.view.libraries.Libraries', {
           tooltip: 'Sequencing Depth',
           dataIndex: 'sequencing_depth'
         },
-        {
-          text: 'Amplification',
-          tooltip: 'Amplification Cycles',
-          dataIndex: 'amplification_cycles'
-        },
-        {
-          text: 'Equal nucl.',
-          tooltip: 'Equal Representation of Nucleotides',
-          dataIndex: 'equal_representation_nucleotides',
-          width: 90,
-          renderer: function (value, meta) {
-            if (meta.record.get('leaf')) {
-              return value ? 'Yes' : 'No';
-            }
-          }
-        },
-        {
-          text: 'qPCR (nM)',
-          tooltip: 'qPCR Result',
-          dataIndex: 'qpcr_result'
-        },
-        {
-          text: 'F/S',
-          tooltip: 'Concentration Determined by',
-          dataIndex: 'concentration_method',
-          width: 50,
-          renderer: function (value, meta) {
-            if (meta.record.get('leaf')) {
-              var store = Ext.getStore('concentrationMethodsStore');
-              var record = store.findRecord('id', value);
-              var name = record.get('name');
-              meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
-              return name.charAt(0);
-            }
-          }
-        },
+        // {
+        //   text: 'Amplification',
+        //   tooltip: 'Amplification Cycles',
+        //   dataIndex: 'amplification_cycles'
+        // },
+        // {
+        //   text: 'Equal nucl.',
+        //   tooltip: 'Equal Representation of Nucleotides',
+        //   dataIndex: 'equal_representation_nucleotides',
+        //   width: 90,
+        //   renderer: function (value, meta) {
+        //     if (meta.record.get('leaf')) {
+        //       return value ? 'Yes' : 'No';
+        //     }
+        //   }
+        // },
+        // {
+        //   text: 'qPCR (nM)',
+        //   tooltip: 'qPCR Result',
+        //   dataIndex: 'qpcr_result'
+        // },
+        // {
+        //   text: 'F/S',
+        //   tooltip: 'Concentration Determined by',
+        //   dataIndex: 'concentration_method',
+        //   width: 50,
+        //   renderer: function (value, meta) {
+        //     if (meta.record.get('leaf')) {
+        //       var store = Ext.getStore('concentrationMethodsStore');
+        //       var record = store.findRecord('id', value);
+        //       var name = record.get('name');
+        //       meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
+        //       return name.charAt(0);
+        //     }
+        //   }
+        // },
         {
           text: 'Organism',
-          dataIndex: 'organism_name'
+          dataIndex: 'organism_name',
+          width: 150
         },
         {
           text: 'Comments',
