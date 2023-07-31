@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
 
-deploy: check-rootdir set-prod set-prod-color deploy-django deploy-caddy collect-static  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
+deploy: check-rootdir set-prod set-prod-color deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to 127.0.0.1:9980 with initial and required data loaded!
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
