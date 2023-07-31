@@ -180,12 +180,11 @@ load-postgres-plain:
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
 load-fixtures:
-	@#fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' '
-	@docker compose exec parkour2-django python manage.py loaddata \
-		cost_units organizations principal_investigators sequencers pool_sizes fixed_costs \
-		library_preparation_costs sequencing_costs concentration_methods index_pairs index_types \
-		index_types_data indices_i5 indices_i7 library_protocols library_types organisms read_lengths \
-		nucleic_acid_types
+	@docker compose exec parkour2-django python manage.py load_initial_data
+
+# load-initial-data:
+# 	@docker compose exec parkour2-django python manage.py loaddata \
+# 		$$(fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' ')
 
 load-backup: load-postgres load-media
 
