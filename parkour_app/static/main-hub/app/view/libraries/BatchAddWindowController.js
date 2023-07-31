@@ -629,7 +629,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       'index_i7', 'index_i5', 'read_length', 'sequencing_depth',
       // 'amplification_cycles', 'equal_representation_nucleotides', 'qpcr_result',
       'sample_volume',
-      //'concentration_method',
+      // 'concentration_method',
       'organism', 'comments'
     ];
     columns = this.sortColumns(columns, order);
@@ -855,7 +855,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         text: 'Organism',
         dataIndex: 'organism',
         tooltip: 'Organism',
-        width: 100,
+        width: 200,
         editor: {
           xtype: 'combobox',
           queryMode: 'local',
@@ -972,7 +972,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       return;
     }
 
-    this.validateAll();
+    this.validateAll(url);
 
     var numInvalidRecords = store.data.items.reduce(function (n, item) {
       return n + (item.get('invalid') === true);
@@ -1031,23 +1031,31 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     });
   },
 
-  validateAll: function () {
+  validateAll: function (url) {
     var me = this;
     var grid = Ext.getCmp('batch-add-grid');
     var store = grid.getStore();
 
     // Validate all records
     store.each(function (record) {
-      me.validateRecord(record);
+      me.validateRecord(record, url);
     });
 
     // Refresh the grid
     grid.getView().refresh();
   },
 
-  validateRecord: function (record) {
+  validateRecord: function (record, url) {
     var grid = Ext.getCmp('batch-add-grid');
     var store = grid.getStore();
+    
+    // Passing default values to the API for the removed variables which are still required in the request object
+    record.data.amplification_cycles = 0;
+    record.data.concentration_method = 4;
+    record.data.equal_representation_nucleotides = false;
+    if(url == 'api/libraries/')
+      record.data.qpcr_result = 0;
+
     var validation = record.getValidation(true).data;
     var invalid = false;
     var errors = {};
