@@ -306,23 +306,28 @@ compile:
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2
 
+# Support installation without docker
+## https://github.com/maxplanck-ie/parkour2/wiki/Installation-without-docker
+#
+# install: check-python-version env-setup-app load-env-vars  ## Install without Docker (WIP)
+#
 ## TODO: Doesn't makefile rules run in subshells? needs to be tested.
 # load-env-vars:
 # 	@test -e misc/parkour.env && \
 # 		set +a; source misc/parkour.env; set -a || \
 # 		echo "ERROR: misc/parkour.env was not found, you may copy misc/parkour.env.sample"
-
-check-python-version:
-	@test $(env python3 -V | cut -d. -f2) -gt 8 || echo "Warning: Python version <= 9 is not tested."
-	@test $(env python3 -V | cut -d. -f2) -lt 11 || echo "Warning: Python version >=12 is not tested."
-
-env-setup-app: check-python-version  ## Install without Docker (WIP)
-	@env python3 -m venv env_app/ && \
-		source ./env_app/bin/activate && \
-		env python3 -m pip install --upgrade pip && \
-		pip install -r parkour_app/requirements/prod.txt
-	deactivate
-	@echo "Info: venv env_app created, source it (together with env-vars) and then use django command runserver. Good luck!"
+#
+# check-python-version:
+# 	@test $(env python3 -V | cut -d. -f2) -gt 8 || echo "Warning: Python version <= 9 is not tested."
+# 	@test $(env python3 -V | cut -d. -f2) -lt 11 || echo "Warning: Python version >=12 is not tested."
+#
+# env-setup-app: 
+# 	@env python3 -m venv env_app/ && \
+# 		source ./env_app/bin/activate && \
+# 		env python3 -m pip install --upgrade pip && \
+# 		pip install -r parkour_app/requirements/prod.txt
+# 	deactivate
+# 	@echo "Info: venv env_app created, source it (together with env-vars) and then use django command runserver. Good luck!"
 
 env-setup-dev:
 	@env python3 -m venv env_dev && \
