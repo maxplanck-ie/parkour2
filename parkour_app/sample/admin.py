@@ -26,7 +26,6 @@ class NucleicAcidTypeAdmin(admin.ModelAdmin):
 
     @admin.display(description="STATUS")
     def status_name(self, obj):
-
         return "Non-obsolete" if obj.status == settings.NON_OBSOLETE else "Obsolete"
 
 

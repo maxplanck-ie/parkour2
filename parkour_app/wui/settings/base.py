@@ -34,6 +34,13 @@ LOGIN_REDIRECT_URL = "/"
 X_FRAME_OPTIONS = "SAMEORIGIN"
 
 
+# CSRF cookie
+CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
+CSRF_TRUSTED_ORIGINS = (
+    CSRF_TRUSTED_ORIGINS.split(",") if CSRF_TRUSTED_ORIGINS is not None else []
+)
+
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -140,7 +147,6 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = os.environ["TIME_ZONE"]
 USE_I18N = True
-USE_L10N = True
 USE_TZ = True
 
 
@@ -171,6 +177,7 @@ LOGGING = {
             "format": "[%(levelname)s] [%(asctime)s] [%(pathname)s:%(lineno)s]: %(funcName)s(): %(message)s",
             "datefmt": "%d/%b/%Y %H:%M:%S",
         },
+        "rich": {"datefmt": "[%d-%b %X]"},
     },
     "handlers": {
         "mail_admins": {
@@ -188,16 +195,18 @@ LOGGING = {
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "django.log"),
             "formatter": "verbose",
-            "maxBytes": 15 * 1024 * 1024,  # 15 MB
+            "maxBytes": 5 * 1024 * 1024,
             "backupCount": 2,
+            "delay": True,
         },
         "dblogfile": {
             "level": "DEBUG",
             "class": "logging.handlers.RotatingFileHandler",
             "filename": os.path.join(LOG_DIR, "db.log"),
             "formatter": "verbose",
-            "maxBytes": 15 * 1024 * 1024,
+            "maxBytes": 5 * 1024 * 1024,
             "backupCount": 2,
+            "delay": True,
         },
     },
 }

@@ -1,3 +1,87 @@
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:5 */
+.color-mpg-green {
+    /*
+ * This is is imported by virtue of "sass.etc" in "app.json".
+ */
+    color: #006c66 !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:9 */
+.color-bluish-grey {
+    color: #29485d !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:13 */
+.bg-color-beige {
+    background-color: #ecebe5 !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:17 */
+.display-none {
+    display: none !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:21 */
+.header-username {
+    font-weight: bold !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:25 */
+.x-treelist-item-tool,
+.x-treelist-navigation .x-treelist-row-over > * > .x-treelist-item-icon {
+    transition: all 0.2s ease-in-out;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:30 */
+.x-treelist-item-tool:hover,
+.x-treelist-navigation .x-treelist-row-over > * > .x-treelist-item-icon {
+    color: #006c66 !important;
+    transform: scale(1.3);
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:36 */
+.x-treelist-navigation .x-treelist-item-selected > .x-treelist-row,
+.x-treelist-item-selected.x-treelist-item-tool,
+.x-treelist-item-selected.x-treelist-item-expanded,
+.x-treelist-item-tool:hover,
+.x-treelist-row-over,
+.x-treelist-item-expanded > ul > li {
+    background-color: #dbdbd4 !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:45 */
+.x-treelist-navigation .x-treelist-item-floated > .x-treelist-row,
+.x-treelist-item-tool,
+.x-treelist-item-leaf,
+.x-treelist-item-expandable {
+    background-color: #ecebe5 !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:52 */
+.x-treelist-item-text,
+.x-treelist-item-expander {
+    color: #29485d !important;
+    font-weight: bold !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:58 */
+.x-treelist-item-expanded > ul > li > div > div {
+    margin-left: 22px !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:62 */
+.noty_bar.noty_type__success {
+    background-color: #00b1ea !important;
+    border-color: #00b1ea !important;
+    color: #fff !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:68 */
+.noty_bar.noty_type__error {
+    background-color: #e74c3c !important;
+    border-color: #c0392b !important;
+    color: #fff !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:74 */
+.noty_bar.noty_type__warning {
+    background-color: #ef7c00 !important;
+    border-color: #d66f00 !important;
+    color: #fff !important;
+}
+/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/sass/etc/all.scss:80 */
+.noty_bar.noty_type__information {
+    background-color: #006c66 !important;
+    border-color: #055 !important;
+    color: #fff !important;
+}
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/util/SizeMonitor.scss:5 */
 .x-size-monitored {
     /**
@@ -326,7 +410,7 @@
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:190 */
 .x-treelist-item-icon,
 .x-treelist-item-tool {
-    color: #35baf6;
+    color: #006c66;
     font-size: 16px;
     width: 16px;
 }
@@ -336,7 +420,7 @@
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:213 */
 .x-treelist-item-expander {
-    color: #35baf6;
+    color: #006c66;
     font-size: 16px;
     width: 18px;
 }
@@ -412,7 +496,7 @@
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:344 */
 &.x-treelist-highlight-path .x-treelist-item-over > * > .x-treelist-item-icon {
-    color: #35baf6;
+    color: #006c66;
     transition: color 0.5s;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:348 */
@@ -422,16 +506,16 @@
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:352 */
 &.x-treelist-highlight-path .x-treelist-item-over > * > .x-treelist-item-expander {
-    color: #35baf6;
+    color: #006c66;
     transition: color 0.5s;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:359 */
 .x-treelist-row-over {
-    background-color: #e6f1f6;
+    background-color: #e2ebea;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:362 */
 .x-treelist-row-over > * > .x-treelist-item-icon {
-    color: #35baf6;
+    color: #006c66;
     transition: color 0.5s;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:366 */
@@ -441,7 +525,7 @@
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:370 */
 .x-treelist-row-over > * > .x-treelist-item-expander {
-    color: #35baf6;
+    color: #006c66;
     transition: color 0.5s;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/packages/core/sass/src/list/TreeItem.scss:377 */
@@ -1939,7 +2023,7 @@ the height of a multi-line element */
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/view/View.scss:1 */
 .x-view-item-focused {
-    outline: 1px dashed #35baf6!important;
+    outline: 1px dashed #006c66!important;
     outline-offset: -1px;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/view/BoundList.scss:8 */
@@ -2376,7 +2460,7 @@ the height of a multi-line element */
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/column/Action.scss:5 */
 .x-grid-cell-inner-action-col :focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/column/Action.scss:10 */
 .x-action-col-icon {
@@ -2397,7 +2481,7 @@ the height of a multi-line element */
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/column/Check.scss:18 */
 .x-grid-checkcolumn-cell-inner :focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/feature/Grouping.scss:1 */
 .x-group-hd-container {
@@ -2627,7 +2711,7 @@ the height of a multi-line element */
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/plugin/RowExpander.scss:7 */
 .x-grid-row-expander:focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/src/grid/plugin/RowExpander.scss:11 */
 .x-grid-hide-row-expander-spacer .x-grid-row-expander-spacer {
@@ -3117,7 +3201,7 @@ body > .x-mask {
 .x-mask.x-focus {
     border-style: solid;
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/LoadMask.scss:29 */
 .x-mask-msg {
@@ -3147,7 +3231,7 @@ body > .x-mask {
     background-color: #ececec;
     border-width: 0;
     height: 24px;
-    border-color: #35baf6;
+    border-color: #006c66;
     border-style: solid;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/ProgressBar.scss:111 */
@@ -3177,7 +3261,7 @@ body > .x-mask {
     right: 0;
     bottom: 0;
     left: 0;
-    border: 0 solid #35baf6;
+    border: 0 solid #006c66;
     pointer-events: none;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
@@ -3209,11 +3293,11 @@ body > .x-mask {
     padding: 7px 7px 7px 7px;
     border-width: 1px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-default-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-btn-default-small {
@@ -3312,7 +3396,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-default-small {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-default-small {
@@ -3465,10 +3549,10 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:727 */
 .x-btn-focus.x-btn-default-small {
     background-image: none;
-    background-color: #35baf6;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    background-color: #006c66;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-small .x-btn-arrow-el {
@@ -3486,38 +3570,38 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-small {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-small {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-small,
 .x-btn.x-btn-pressed.x-btn-default-small {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-small,
 .x-btn-focus.x-btn-pressed.x-btn-default-small {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-small {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:929 */
 .x-btn-focus .x-btn-default-small-tl,
@@ -3535,7 +3619,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-default-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-default-small-tl,
@@ -3553,7 +3637,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-default-small-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-default-small-tl,
@@ -3571,7 +3655,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-default-small-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-default-small-tl,
@@ -3598,7 +3682,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1015 */
 .x-btn.x-btn-menu-active .x-btn-default-small-mc,
 .x-btn.x-btn-pressed .x-btn-default-small-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-small-tl,
@@ -3625,7 +3709,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-small-mc,
 .x-btn-focus.x-btn-pressed .x-btn-default-small-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-default-small-tl,
@@ -3643,7 +3727,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-default-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-default-small {
@@ -3736,18 +3820,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-small:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-small:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-small:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-small:before {
@@ -3804,11 +3888,11 @@ body > .x-mask {
     padding: 8px 8px 8px 8px;
     border-width: 1px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-default-medium-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-btn-default-medium {
@@ -3907,7 +3991,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-default-medium {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-default-medium {
@@ -4060,10 +4144,10 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:727 */
 .x-btn-focus.x-btn-default-medium {
     background-image: none;
-    background-color: #35baf6;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    background-color: #006c66;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-medium .x-btn-arrow-el {
@@ -4081,38 +4165,38 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-medium {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-medium {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-medium,
 .x-btn.x-btn-pressed.x-btn-default-medium {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-medium,
 .x-btn-focus.x-btn-pressed.x-btn-default-medium {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-medium {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:929 */
 .x-btn-focus .x-btn-default-medium-tl,
@@ -4130,7 +4214,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-default-medium-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-default-medium-tl,
@@ -4148,7 +4232,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-default-medium-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-default-medium-tl,
@@ -4166,7 +4250,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-default-medium-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-default-medium-tl,
@@ -4193,7 +4277,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1015 */
 .x-btn.x-btn-menu-active .x-btn-default-medium-mc,
 .x-btn.x-btn-pressed .x-btn-default-medium-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-medium-tl,
@@ -4220,7 +4304,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-medium-mc,
 .x-btn-focus.x-btn-pressed .x-btn-default-medium-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-default-medium-tl,
@@ -4238,7 +4322,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-default-medium-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-default-medium {
@@ -4331,18 +4415,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-medium:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-medium:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-medium:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-medium:before {
@@ -4399,11 +4483,11 @@ body > .x-mask {
     padding: 9px 9px 9px 9px;
     border-width: 1px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-default-large-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-btn-default-large {
@@ -4502,7 +4586,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-default-large {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-default-large {
@@ -4655,10 +4739,10 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:727 */
 .x-btn-focus.x-btn-default-large {
     background-image: none;
-    background-color: #35baf6;
-    -webkit-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    -moz-box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
-    box-shadow: #cbe5f1 0 1px 0px 0 inset, #cbe5f1 0 -1px 0px 0 inset, #cbe5f1 -1px 0 0px 0 inset, #cbe5f1 1px 0 0px 0 inset;
+    background-color: #006c66;
+    -webkit-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
+    box-shadow: #c0d6d4 0 1px 0px 0 inset, #c0d6d4 0 -1px 0px 0 inset, #c0d6d4 -1px 0 0px 0 inset, #c0d6d4 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-large .x-btn-arrow-el {
@@ -4676,38 +4760,38 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-large.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #cbe5f1;
+    border: 1px solid #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-large {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-large {
-    -webkit-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    -moz-box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
-    box-shadow: #cae2ed 0 1px 0px 0 inset, #cae2ed 0 -1px 0px 0 inset, #cae2ed -1px 0 0px 0 inset, #cae2ed 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
+    box-shadow: #c0d4d3 0 1px 0px 0 inset, #c0d4d3 0 -1px 0px 0 inset, #c0d4d3 -1px 0 0px 0 inset, #c0d4d3 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-large,
 .x-btn.x-btn-pressed.x-btn-default-large {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-large,
 .x-btn-focus.x-btn-pressed.x-btn-default-large {
-    -webkit-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    -moz-box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
-    box-shadow: #c8dce5 0 1px 0px 0 inset, #c8dce5 0 -1px 0px 0 inset, #c8dce5 -1px 0 0px 0 inset, #c8dce5 1px 0 0px 0 inset;
+    -webkit-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    -moz-box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
+    box-shadow: #c0d0cf 0 1px 0px 0 inset, #c0d0cf 0 -1px 0px 0 inset, #c0d0cf -1px 0 0px 0 inset, #c0d0cf 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-large {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:929 */
 .x-btn-focus .x-btn-default-large-tl,
@@ -4725,7 +4809,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-default-large-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-default-large-tl,
@@ -4743,7 +4827,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-default-large-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-default-large-tl,
@@ -4761,7 +4845,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-default-large-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-default-large-tl,
@@ -4788,7 +4872,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1015 */
 .x-btn.x-btn-menu-active .x-btn-default-large-mc,
 .x-btn.x-btn-pressed .x-btn-default-large-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-large-tl,
@@ -4815,7 +4899,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
 .x-btn-focus.x-btn-menu-active .x-btn-default-large-mc,
 .x-btn-focus.x-btn-pressed .x-btn-default-large-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-default-large-tl,
@@ -4833,7 +4917,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-default-large-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-default-large {
@@ -4926,18 +5010,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-large:after {
     border-width: 1px;
-    border-color: #cbe5f1;
+    border-color: #c0d6d4;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-large:after {
     border-width: 1px;
-    border-color: #cae2ed;
+    border-color: #c0d4d3;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-large:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-large:after {
     border-width: 1px;
-    border-color: #c8dce5;
+    border-color: #c0d0cf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-large:before {
@@ -5251,9 +5335,9 @@ body > .x-mask {
 .x-btn-focus.x-btn-default-toolbar-small {
     background-image: none;
     background-color: #f6f6f6;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-toolbar-small .x-btn-arrow-el {
@@ -5271,7 +5355,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-toolbar-small.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-toolbar-small {
@@ -5281,9 +5365,9 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-toolbar-small,
@@ -5295,9 +5379,9 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-small,
 .x-btn-focus.x-btn-pressed.x-btn-default-toolbar-small {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-toolbar-small {
@@ -5521,18 +5605,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-small:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-small:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-small:before {
@@ -5846,9 +5930,9 @@ body > .x-mask {
 .x-btn-focus.x-btn-default-toolbar-medium {
     background-image: none;
     background-color: #f6f6f6;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-toolbar-medium .x-btn-arrow-el {
@@ -5866,7 +5950,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-toolbar-medium.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-toolbar-medium {
@@ -5876,9 +5960,9 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-toolbar-medium {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-toolbar-medium,
@@ -5890,9 +5974,9 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-medium,
 .x-btn-focus.x-btn-pressed.x-btn-default-toolbar-medium {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-toolbar-medium {
@@ -6116,18 +6200,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-medium:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-medium:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-medium:before {
@@ -6441,9 +6525,9 @@ body > .x-mask {
 .x-btn-focus.x-btn-default-toolbar-large {
     background-image: none;
     background-color: #f6f6f6;
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-default-toolbar-large .x-btn-arrow-el {
@@ -6461,7 +6545,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:778 */
 .x-btn-default-toolbar-large.x-arrow-focus .x-btn-arrow-el {
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-default-toolbar-large {
@@ -6471,9 +6555,9 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:812 */
 .x-btn-focus.x-btn-over.x-btn-default-toolbar-large {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-default-toolbar-large,
@@ -6485,9 +6569,9 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:868 */
 .x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-large,
 .x-btn-focus.x-btn-pressed.x-btn-default-toolbar-large {
-    -webkit-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    -moz-box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
-    box-shadow: #35baf6 0 1px 0px 0 inset, #35baf6 0 -1px 0px 0 inset, #35baf6 -1px 0 0px 0 inset, #35baf6 1px 0 0px 0 inset;
+    -webkit-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    -moz-box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
+    box-shadow: #006c66 0 1px 0px 0 inset, #006c66 0 -1px 0px 0 inset, #006c66 -1px 0 0px 0 inset, #006c66 1px 0 0px 0 inset;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-default-toolbar-large {
@@ -6711,18 +6795,18 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1190 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-default-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1204 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-over.x-btn-default-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1219 */
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-menu-active.x-btn-default-toolbar-large:after,
 .x-nbr .x-segmented-button-item.x-btn-focus.x-btn-pressed.x-btn-default-toolbar-large:after {
     border-width: 1px;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
 .x-cmd-slicer.x-btn-focus.x-btn-default-toolbar-large:before {
@@ -6796,7 +6880,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Tool.scss:29 */
 .x-tool-focus {
-    outline: 1px solid #35baf6;
+    outline: 1px solid #006c66;
     outline-offset: 1px;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/css-outline.scss:64 */
@@ -6815,7 +6899,7 @@ body > .x-mask {
     right: -2px;
     bottom: -2px;
     left: -2px;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
     pointer-events: none;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Tool.scss:38 */
@@ -7334,7 +7418,7 @@ body > .x-mask {
     right: 1px;
     bottom: 1px;
     left: 1px;
-    border: 1px solid #2a95c5;
+    border: 1px solid #005652;
     pointer-events: none;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/toolbar/Toolbar.scss:232 */
@@ -7407,7 +7491,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/toolbar/Toolbar.scss:328 */
 .x-toolbar-text-default {
     padding: 0 4px;
-    color: #464a4c;
+    color: #0e4b48;
     font: 400 13px/16px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/toolbar/Toolbar.scss:334 */
@@ -7599,7 +7683,7 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/toolbar/Toolbar.scss:328 */
 .x-toolbar-text-footer {
     padding: 0 4px;
-    color: #464a4c;
+    color: #0e4b48;
     font: 400 13px/16px 'Open Sans', 'Helvetica Neue', helvetica, arial, verdana, sans-serif;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/toolbar/Toolbar.scss:334 */
@@ -7751,17 +7835,17 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:276 */
 .x-panel-default {
-    border-color: #35baf6;
+    border-color: #006c66;
     padding: 0;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:282 */
 .x-panel-header-default {
     font-size: 16px;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:307 */
 .x-panel-header-default .x-tool-tool-el {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:313 */
 .x-panel-header-default-horizontal {
@@ -7886,17 +7970,17 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:676 */
 .x-panel-header-default {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:680 */
 .x-panel-header-default-vertical {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:685 */
 .x-rtl.x-panel-header-default-vertical {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:738 */
 .x-panel .x-panel-header-default-collapsed-border-top {
@@ -8009,120 +8093,120 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-panel-default-outer-border-l {
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-panel-default-outer-border-b {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-panel-default-outer-border-bl {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-panel-default-outer-border-r {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-panel-default-outer-border-rl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-panel-default-outer-border-rb {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-panel-default-outer-border-rbl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-panel-default-outer-border-t {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-panel-default-outer-border-tl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-panel-default-outer-border-tb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-panel-default-outer-border-tbl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-panel-default-outer-border-tr {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-panel-default-outer-border-trl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-panel-default-outer-border-trb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-panel-default-outer-border-trbl {
-    border-color: #35baf6 !important;
+    border-color: #006c66 !important;
     border-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:276 */
 .x-panel-default-framed {
-    border-color: #35baf6;
+    border-color: #006c66;
     padding: 0;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:282 */
 .x-panel-header-default-framed {
     font-size: 16px;
-    border: 2px solid #35baf6;
+    border: 2px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:307 */
 .x-panel-header-default-framed .x-tool-tool-el {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/panel/Panel.scss:313 */
 .x-panel-header-default-framed-horizontal {
@@ -8379,11 +8463,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px 2px 0 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-top-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-top {
@@ -8497,16 +8581,16 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px 2px 2px 0;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-default-framed-right {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-right-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-right {
@@ -8629,11 +8713,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 0 2px 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-bottom-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-bottom {
@@ -8747,16 +8831,16 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px 0 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-default-framed-left {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-left-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-left {
@@ -8879,11 +8963,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-collapsed-top-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-collapsed-top {
@@ -8997,16 +9081,16 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-default-framed-collapsed-right {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-collapsed-right-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-collapsed-right {
@@ -9129,11 +9213,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-collapsed-bottom-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-collapsed-bottom {
@@ -9247,16 +9331,16 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:226 */
 .x-rtl.x-panel-header-default-framed-collapsed-left {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-panel-header-default-framed-collapsed-left-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-panel-header-default-framed-collapsed-left {
@@ -9465,105 +9549,105 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-panel-default-framed-outer-border-l {
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-panel-default-framed-outer-border-b {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-panel-default-framed-outer-border-bl {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-panel-default-framed-outer-border-r {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-panel-default-framed-outer-border-rl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-panel-default-framed-outer-border-rb {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-panel-default-framed-outer-border-rbl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-panel-default-framed-outer-border-t {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-panel-default-framed-outer-border-tl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-panel-default-framed-outer-border-tb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-panel-default-framed-outer-border-tbl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-panel-default-framed-outer-border-tr {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-panel-default-framed-outer-border-trl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-panel-default-framed-outer-border-trb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-panel-default-framed-outer-border-trbl {
-    border-color: #35baf6 !important;
+    border-color: #006c66 !important;
     border-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/container/ButtonGroup.scss:101 */
@@ -9900,7 +9984,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:228 */
 .x-window-default {
-    border-color: #35baf6;
+    border-color: #006c66;
     -webkit-border-radius: 0 0 0 0;
     -moz-border-radius: 0 0 0 0;
     -ms-border-radius: 0 0 0 0;
@@ -10027,7 +10111,7 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:250 */
 .x-window-body-default {
-    border-color: #35baf6;
+    border-color: #006c66;
     border-width: 1px;
     border-style: solid;
     background: #fff;
@@ -10039,12 +10123,12 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:264 */
 .x-window-header-default {
     font-size: 16px;
-    border-color: #35baf6;
-    background-color: #35baf6;
+    border-color: #006c66;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:269 */
 .x-window-header-default .x-tool-img {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:282 */
 .x-window-header-default-horizontal .x-window-header-default-tab-bar {
@@ -10133,11 +10217,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px 2px 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-top-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-top {
@@ -10251,11 +10335,11 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px 2px 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-right-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-right {
@@ -10378,11 +10462,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px 2px 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-bottom-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-bottom {
@@ -10496,11 +10580,11 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px 2px 2px 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-left-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-left {
@@ -10623,11 +10707,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-collapsed-top-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-collapsed-top {
@@ -10741,11 +10825,11 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-collapsed-right-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-collapsed-right {
@@ -10868,11 +10952,11 @@ body > .x-mask {
     padding: 10px 14px 10px 14px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-collapsed-bottom-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-collapsed-bottom {
@@ -10986,11 +11070,11 @@ body > .x-mask {
     padding: 14px 10px 14px 10px;
     border-width: 2px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-window-header-default-collapsed-left-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-window-header-default-collapsed-left {
@@ -11181,105 +11265,105 @@ body > .x-mask {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:2 */
 .x-window-default-outer-border-l {
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:6 */
 .x-window-default-outer-border-b {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:10 */
 .x-window-default-outer-border-bl {
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:16 */
 .x-window-default-outer-border-r {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:20 */
 .x-window-default-outer-border-rl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:26 */
 .x-window-default-outer-border-rb {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:32 */
 .x-window-default-outer-border-rbl {
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:40 */
 .x-window-default-outer-border-t {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:44 */
 .x-window-default-outer-border-tl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:50 */
 .x-window-default-outer-border-tb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:56 */
 .x-window-default-outer-border-tbl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:64 */
 .x-window-default-outer-border-tr {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:70 */
 .x-window-default-outer-border-trl {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-left-color: #35baf6 !important;
+    border-left-color: #006c66 !important;
     border-left-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:78 */
 .x-window-default-outer-border-trb {
-    border-top-color: #35baf6 !important;
+    border-top-color: #006c66 !important;
     border-top-width: 1px !important;
-    border-right-color: #35baf6 !important;
+    border-right-color: #006c66 !important;
     border-right-width: 1px !important;
-    border-bottom-color: #35baf6 !important;
+    border-bottom-color: #006c66 !important;
     border-bottom-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/border-management.scss:86 */
 .x-window-default-outer-border-trbl {
-    border-color: #35baf6 !important;
+    border-color: #006c66 !important;
     border-width: 1px !important;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/window/Window.scss:708 */
@@ -11883,14 +11967,14 @@ body > .x-mask {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/BoundList.scss:25 */
 .x-boundlist-selected {
     color: #fff;
-    background: #35baf6;
-    border-color: #35baf6;
+    background: #006c66;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/BoundList.scss:33 */
 .x-boundlist-item-over {
     color: #fff;
-    background: #5dc8f8;
-    border-color: #5dc8f8;
+    background: #338985;
+    border-color: #338985;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/BoundList.scss:42 */
 .x-boundlist-floating {
@@ -12035,11 +12119,11 @@ div.x-datepicker-date:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/picker/Date.scss:178 */
 .x-datepicker-selected {
     border-style: solid;
-    border-color: #5dc8f8;
+    border-color: #338985;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/picker/Date.scss:181 */
 .x-datepicker-selected div.x-datepicker-date {
-    background-color: #35baf6;
+    background-color: #006c66;
     color: #fff;
     font-weight: 400;
 }
@@ -12047,7 +12131,7 @@ div.x-datepicker-date:hover {
 .x-datepicker-today {
     border-color: darkred;
     border-style: solid;
-    background-color: #aee3fb;
+    background-color: #99c4c2;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/picker/Date.scss:199 */
 .x-datepicker-prevday .x-datepicker-date,
@@ -12125,10 +12209,10 @@ a.x-monthpicker-item-inner:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/picker/Date.scss:301 */
 .x-monthpicker-item a.x-monthpicker-selected {
-    background-color: #35baf6;
+    background-color: #006c66;
     color: #fff;
     border-style: solid;
-    border-color: #5dc8f8;
+    border-color: #338985;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/picker/Date.scss:308 */
 .x-monthpicker-yearnav {
@@ -12878,8 +12962,8 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/var/form/field/Tag.scss:352 */
 .x-form-text-default .x-tagfield-item.x-tagfield-item-selected {
-    background-color: #5dc8f8;
-    border-color: #5dc8f8;
+    background-color: #338985;
+    border-color: #338985;
     color: #fff;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/var/form/field/Tag.scss:361 */
@@ -12957,7 +13041,7 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:35 */
 .x-grid-item-over {
     color: #404040;
-    background-color: #e6f1f6;
+    background-color: #e2ebea;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:42 */
 .x-grid-item-focused {
@@ -12978,7 +13062,7 @@ a.x-color-picker-item:hover {
     bottom: 0px;
     left: 0px;
     pointer-events: none;
-    border: 1px solid #35baf6;
+    border: 1px solid #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:76 */
 .x-grid-item-selected {
@@ -12998,12 +13082,12 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:94 */
 .x-grid-with-row-lines .x-grid-item.x-grid-item-over {
     border-style: solid;
-    border-color: #dbe5ea;
+    border-color: #d7dfdf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:99 */
 .x-grid-with-row-lines .x-grid-item-over + .x-grid-item {
     border-top-style: solid;
-    border-top-color: #dbe5ea;
+    border-top-color: #d7dfdf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:104 */
 .x-grid-with-row-lines .x-grid-item.x-grid-item-selected {
@@ -13073,7 +13157,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:244 */
 .x-grid-with-col-lines .x-grid-item-over .x-grid-cell {
-    border-color: #dbe5ea;
+    border-color: #d7dfdf;
     border-style: solid;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/view/Table.scss:249 */
@@ -13217,7 +13301,7 @@ a.x-color-picker-item:hover {
     right: 0px;
     bottom: 0px;
     left: 0px;
-    border: 1px solid #5dc8f8;
+    border: 1px solid #338985;
     pointer-events: none;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:64 */
@@ -13227,7 +13311,7 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:77 */
 .x-column-header-over {
     background-image: none;
-    background-color: #e6f1f6;
+    background-color: #e2ebea;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:81 */
 .x-column-header-sort-ASC,
@@ -13237,11 +13321,11 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:109 */
 .x-column-header-open {
-    background-color: #e6f1f6;
+    background-color: #e2ebea;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:112 */
 .x-column-header-open .x-column-header-trigger {
-    background-color: #dbe5ea;
+    background-color: #d7dfdf;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/column/Column.scss:117 */
 .x-column-header-over .x-column-header-trigger,
@@ -13409,11 +13493,11 @@ a.x-color-picker-item:hover {
     padding: 7px 7px 7px 7px;
     border-width: 1px;
     border-style: solid;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-btn-grid-cell-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-btn-grid-cell-small {
@@ -13512,7 +13596,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:445 */
 .x-btn-grid-cell-small {
-    border-color: #31ade5;
+    border-color: #00645f;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:452 */
 .x-btn-button-grid-cell-small {
@@ -13665,7 +13749,7 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:727 */
 .x-btn-focus.x-btn-grid-cell-small {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:762 */
 .x-btn-grid-cell-small .x-btn-arrow-el {
@@ -13683,21 +13767,21 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:785 */
 .x-btn-over.x-btn-grid-cell-small {
-    border-color: #2d9fd2;
+    border-color: #005c57;
     background-image: none;
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:840 */
 .x-btn.x-btn-menu-active.x-btn-grid-cell-small,
 .x-btn.x-btn-pressed.x-btn-grid-cell-small {
-    border-color: #2582ac;
+    border-color: #004b47;
     background-image: none;
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:897 */
 .x-btn.x-btn-disabled.x-btn-grid-cell-small {
     background-image: none;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:929 */
 .x-btn-focus .x-btn-grid-cell-small-tl,
@@ -13715,7 +13799,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:941 */
 .x-btn-focus .x-btn-grid-cell-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:953 */
 .x-btn-over .x-btn-grid-cell-small-tl,
@@ -13733,7 +13817,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:965 */
 .x-btn-over .x-btn-grid-cell-small-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:977 */
 .x-btn-focus.x-btn-over .x-btn-grid-cell-small-tl,
@@ -13751,7 +13835,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:989 */
 .x-btn-focus.x-btn-over .x-btn-grid-cell-small-mc {
-    background-color: #31abe2;
+    background-color: #00635e;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1003 */
 .x-btn.x-btn-menu-active .x-btn-grid-cell-small-tl,
@@ -13778,7 +13862,7 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1015 */
 .x-btn.x-btn-menu-active .x-btn-grid-cell-small-mc,
 .x-btn.x-btn-pressed .x-btn-grid-cell-small-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1028 */
 .x-btn-focus.x-btn-menu-active .x-btn-grid-cell-small-tl,
@@ -13805,7 +13889,7 @@ a.x-color-picker-item:hover {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1040 */
 .x-btn-focus.x-btn-menu-active .x-btn-grid-cell-small-mc,
 .x-btn-focus.x-btn-pressed .x-btn-grid-cell-small-mc {
-    background-color: #288cb9;
+    background-color: #00514d;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1053 */
 .x-btn.x-btn-disabled .x-btn-grid-cell-small-tl,
@@ -13823,7 +13907,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1065 */
 .x-btn.x-btn-disabled .x-btn-grid-cell-small-mc {
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1075 */
 .x-nbr .x-btn-grid-cell-small {
@@ -14082,12 +14166,12 @@ a.x-color-picker-item:hover {
 .x-menu-item-default.x-menu-item-focus,
 .x-menu-item-default.x-menu-item-active {
     background-image: none;
-    background-color: #5dc8f8;
+    background-color: #338985;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/menu/Menu.scss:363 */
 .x-nlg .x-menu-item-default.x-menu-item-focus,
 .x-nlg .x-menu-item-default.x-menu-item-active {
-    background: #5dc8f8 repeat-x left top;
+    background: #338985 repeat-x left top;
     background-image: url(images/menu/menu-item-default-active-bg.gif);
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/menu/Menu.scss:370 */
@@ -14436,12 +14520,12 @@ a.x-color-picker-item:hover {
 .x-menu-item-default-menubar.x-menu-item-focus,
 .x-menu-item-default-menubar.x-menu-item-active {
     background-image: none;
-    background-color: #5dc8f8;
+    background-color: #338985;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/menu/Menu.scss:363 */
 .x-nlg .x-menu-item-default-menubar.x-menu-item-focus,
 .x-nlg .x-menu-item-default-menubar.x-menu-item-active {
-    background: #5dc8f8 repeat-x left top;
+    background: #338985 repeat-x left top;
     background-image: url(images/menu/menu-item-default-menubar-active-bg.gif);
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/menu/Menu.scss:370 */
@@ -14850,7 +14934,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/locking/Lockable.scss:59 */
 .x-rtl.x-grid-inner-locked {
-    border-right-color: #35baf6;
+    border-right-color: #006c66;
     border-left-color: #d0d0d0;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/locking/Lockable.scss:61 */
@@ -14955,7 +15039,7 @@ a.x-color-picker-item:hover {
     border-top: 1px solid #d0d0d0 !important;
     border-bottom: 1px solid #d0d0d0 !important;
     padding: 5px 0 5px 0;
-    background-color: #e0f0f7;
+    background-color: #dae7e6;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/plugin/RowEditing.scss:60 */
 .x-grid-with-col-lines .x-grid-row-editor .x-form-cb {
@@ -14983,11 +15067,11 @@ a.x-color-picker-item:hover {
     padding: 5px 5px 5px 5px;
     border-width: 0 1px 1px 1px;
     border-style: solid;
-    background-color: #e0f0f7;
+    background-color: #dae7e6;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-grid-row-editor-buttons-default-bottom-mc {
-    background-color: #e0f0f7;
+    background-color: #dae7e6;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-grid-row-editor-buttons-default-bottom {
@@ -15101,11 +15185,11 @@ a.x-color-picker-item:hover {
     padding: 5px 5px 5px 5px;
     border-width: 1px 1px 0 1px;
     border-style: solid;
-    background-color: #e0f0f7;
+    background-color: #dae7e6;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:237 */
 .x-grid-row-editor-buttons-default-top-mc {
-    background-color: #e0f0f7;
+    background-color: #dae7e6;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:264 */
 .x-nbr .x-grid-row-editor-buttons-default-top {
@@ -15278,11 +15362,11 @@ a.x-color-picker-item:hover {
 .x-ssm-extender-drag-handle {
     height: 7px;
     width: 7px;
-    background-color: #35baf6;
+    background-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/grid/selection/SpreadsheetModel.scss:22 */
 .x-ssm-extender-mask {
-    border: 1px dotted #35baf6;
+    border: 1px dotted #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:1 */
 .x-accordion-layout-ct {
@@ -15304,7 +15388,7 @@ a.x-color-picker-item:hover {
 .x-accordion-item .x-accordion-hd {
     background: #fff;
     border-width: 0;
-    border-color: #35baf6;
+    border-color: #006c66;
     padding: 12px 10px;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:24 */
@@ -15313,7 +15397,7 @@ a.x-color-picker-item:hover {
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:29 */
 .x-accordion-item .x-accordion-hd-sibling-expanded {
-    border-top-color: #35baf6;
+    border-top-color: #006c66;
     border-top-width: 0;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:34 */
@@ -15328,7 +15412,7 @@ a.x-color-picker-item:hover {
 .x-accordion-hd .x-tool-img {
     background-image: url(images/tools/tool-sprites-dark.png);
     background-color: #fff;
-    color: #35baf6;
+    color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/layout/container/Accordion.scss:58 */
 .x-accordion-hd .x-tool-collapse-top,
@@ -15623,7 +15707,7 @@ div.x-border-layout-ct {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:33 */
 .x-slider-thumb-over {
     background-color: #fcfcfc;
-    border-color: #c5cfd4;
+    border-color: #c0c9c8;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:36 */
 .x-slider-thumb-over:before {
@@ -15632,11 +15716,11 @@ div.x-border-layout-ct {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:41 */
 .x-slider-focus .x-slider-thumb {
     background-color: #f6f6f6;
-    border-color: #35baf6;
+    border-color: #006c66;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:44 */
 .x-slider-focus .x-slider-thumb:before {
-    color: #91d3f1;
+    color: #76aca9;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:49 */
 .x-slider-focus .x-slider-thumb-over {
@@ -15645,7 +15729,7 @@ div.x-border-layout-ct {
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:53 */
 .x-slider-thumb-drag {
     background-color: #f1f1f1;
-    border-color: #bbcbd2;
+    border-color: #b5c1c1;
 }
 /* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/slider/Multi.scss:56 */
 .x-slider-thumb-drag:before {
@@ -16128,117 +16212,4 @@ div.x-border-layout-ct {
 .x-tab-default-right-br,
 .x-tab-default-right-mr {
     padding-right: 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:394 */
-.x-tab-default-right-tl,
-.x-tab-default-right-bl,
-.x-tab-default-right-ml {
-    padding-left: 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:400 */
-.x-tab-default-right-tc {
-    height: 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:403 */
-.x-tab-default-right-bc {
-    height: 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/frame.scss:464 */
-.x-tab-default-right-mc {
-    padding: 8px 10px 8px 10px;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-base/sass/etc/mixins/slicer.scss:83 */
-.x-cmd-slicer.x-tab-default-right:before {
-    /*<if slicer>*/
-    display: none;
-    content: "x-slicer:, frame:0 0 0 0" !important;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1597 */
-.x-tab-default {
-    border-color: transparent;
-    cursor: pointer;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1656 */
-.x-tab-default-top {
-    margin: 0 4px 0 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1660 */
-.x-tab-default-top.x-rtl {
-    margin: 0 0 0 4px;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1665 */
-.x-tab-default-top.x-tab-rotate-left {
-    margin: 0 0 0 4px;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1669 */
-.x-tab-default-top.x-tab-rotate-left.x-rtl {
-    margin: 0 4px 0 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1687 */
-.x-tab-default-top.x-tab-focus {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1716 */
-.x-tab-default-top.x-tab-focus.x-tab-over {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1745 */
-.x-tab-default-top.x-tab-focus.x-tab-active {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1771 */
-.x-tab-default-right {
-    margin: 0 0 4px 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1775 */
-.x-tab-default-right.x-rtl {
-    margin: 0 0 4px 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1780 */
-.x-tab-default-right.x-tab-rotate-right {
-    margin: 4px 0 0 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1784 */
-.x-tab-default-right.x-tab-rotate-right.x-rtl {
-    margin: 4px 0 0 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1802 */
-.x-tab-default-right.x-tab-focus {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1831 */
-.x-tab-default-right.x-tab-focus.x-tab-over {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1860 */
-.x-tab-default-right.x-tab-focus.x-tab-active {
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1886 */
-.x-tab-default-bottom {
-    margin: 0 4px 0 0;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1890 */
-.x-tab-default-bottom.x-rtl {
-    margin: 0 0 0 4px;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1895 */
-.x-tab-default-bottom.x-tab-rotate-left {
-    margin: 0 0 0 4px;
-}
-/* /home/nzilio/dev_parkour/parkour/parkour_app/static/main-hub/ext/classic/theme-neutral/sass/src/tab/Tab.scss:1899 */
-.x-tab-default-bottom.x-tab-rotate-left.x-rtl {
-    margin: 0 4px 0 0;
 }

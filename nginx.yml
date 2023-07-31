@@ -1,23 +1,4 @@
-version: "3.9"
 
-services:
-  parkour2-nginx:
-    container_name: parkour2-nginx
-    image: nginx:latest
-    ports:
-      - "80:80"
-      - "443:443"
-    restart: always
-    volumes:
-      - ./nginx-daemon.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx-server.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./cert.pem:/etc/cert.pem:ro
-      - ./key.pem:/etc/key.pem:ro
-      - parkour2_media:/parkour2/media
-      - parkour2_staticfiles:/parkour2/static
-
-volumes:
-  parkour2_media:
-    external: true
-  parkour2_staticfiles:
+networks:
+  parkour2_default:
     external: true

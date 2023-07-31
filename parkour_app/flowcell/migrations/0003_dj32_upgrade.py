@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("index_generator", "0004_dj32_upgrade"),
         ("flowcell", "0002_sequencer_obsolete"),

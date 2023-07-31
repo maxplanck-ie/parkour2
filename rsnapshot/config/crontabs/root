@@ -5,7 +5,8 @@
 0       3       *       *       6       run-parts /etc/periodic/weekly
 0       5       1       *       *       run-parts /etc/periodic/monthly
 # https://github.com/rsnapshot/rsnapshot/blob/master/README.md#configuration
-00 00 * * *     /usr/bin/rsnapshot daily
-00 23 * * 6     /usr/bin/rsnapshot weekly
-00 22 1 * *     /usr/bin/rsnapshot monthly
-00 01 1 1 *     /usr/bin/rsnapshot yearly
+0,30 * * * *     /usr/bin/rsnapshot halfy
+15 00 * * *     /usr/bin/rsnapshot daily
+15 21 * * 6     /usr/bin/rsnapshot weekly
+15 19 1 * *     /usr/bin/rsnapshot monthly
+15 10 1 1 *     /usr/bin/rsnapshot yearly

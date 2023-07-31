@@ -5,7 +5,7 @@ services:
     container_name: parkour2-postgres
     image: postgres:latest
     env_file:
-      - ./parkour.env
+      - ./misc/parkour.env
     restart: always
     volumes:
       - pgdb:/var/lib/postgresql/data/
@@ -21,8 +21,9 @@ services:
     container_name: parkour2-django
     build:
       dockerfile: ./Dockerfile
+      target: pk2_base
     env_file:
-      - ./parkour.env
+      - ./misc/parkour.env
     restart: always
     volumes:
       - ./parkour_app:/usr/src/app
@@ -31,10 +32,6 @@ services:
     depends_on:
       parkour2-postgres:
         condition: service_healthy
-    tty: false
-    stdin_open: false
-    # docker attach parkour2-django
-    # Remember: Exit with ctrl+PQ (not C!!)
 
 volumes:
   pgdb:
@@ -44,3 +41,4 @@ volumes:
 networks:
   default:
     name: parkour2_default
+    driver: bridge

@@ -84,7 +84,6 @@ class LaneSerializer(ModelSerializer):
         }
 
     def get_request(self, obj):
-
         requests = []
         records = obj.pool.libraries.all() or obj.pool.samples.all()
 
@@ -97,7 +96,6 @@ class LaneSerializer(ModelSerializer):
             return ";".join(requests)
 
     def get_protocol(self, obj):
-
         protocols = []
 
         records = obj.pool.libraries.all() or obj.pool.samples.all()
@@ -111,7 +109,6 @@ class LaneSerializer(ModelSerializer):
             return ";".join(protocols)
 
     def get_pool_name(self, obj):
-
         return obj.pool.name
 
     def get_read_length_name(self, obj):

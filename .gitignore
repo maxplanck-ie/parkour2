@@ -1,10 +1,21 @@
-*.env
-*.pem
-*.sqldump
-*-dump.json
+misc/*.env
+misc/*.pem
+misc/*.txt
+misc/*.tar.gz
+misc/*-dump.json
+misc/*.sqldump
 *_dump/
 *_dumps/
 rsnapshot/
 *.swp
 env/
-*.tar.gz
+env_*/
+sencha-error-*.log
+graveyard/
+*.patch
+models*.pdf
+models.png
+models.svg
+models.dot
+Dockerfile
+# parkour_app/static/main-hub/

@@ -11,60 +11,20 @@ ci:
 repos:
 -   repo: local
     hooks:
-    -   id: set-prod-docker-0
-        name: set-prod-docker-0
-        entry: /usr/bin/env sed
+    -   id: set-prod-docker
+        name: set-prod-docker
+        entry: /usr/bin/make
         language: script
-        files: 'Dockerfile'
-        args: [-i, '/^#CMD \["gunicorn/s/#CMD/CMD/']
-    -   id: set-prod-docker-1
-        name: set-prod-docker-1
-        entry: /usr/bin/env sed
+        pass_filenames: false
+        files: Dockerfile|docker-compose\.yml
+        args: ['set-prod']
+    -   id: set-prod-docker
+        name: unset-caddy
+        entry: /usr/bin/make
         language: script
-        files: 'Dockerfile'
-        args: [-i, '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/']
-    -   id: set-prod-env
-        name: set-prod-env
-        entry: /usr/bin/env sed
-        language: script
-        files: 'parkour.env'
-        args: [-i, '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/']
-    -   id: set-local-url-1
-        name: set-local-url-1
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Caddyfile'
-        args: [-i, '/^http/s/http\:\/\/.* {/http:\/\/127\.0\.0\.1:9980 {/']
-    -   id: set-local-url-2
-        name: set-local-url-2
-        entry: /usr/bin/env sed
-        language: script
-        files: 'caddy.yml'
-        args: [-i, '/\:\/etc\/caddy\/Caddyfile$/s/\.\/.*\:/\.\/Caddyfile\:/']
-    -   id: set-prod-docker-2
-        name: set-prod-docker-2
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["gunicorn/s/"-t", "[0-9]+"/"-t", "600"/']
-    -   id: set-prod-docker-3
-        name: set-prod-docker-3
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["gunicorn/s/"--reload", //']
-    -   id: set-prod-docker-compose
-        name: set-prod-docker-compose
-        entry: /usr/bin/env sed
-        language: script
-        files: 'docker-compose.yml'
-        args: [-E, -i, -e, '/^ +tty/s/: .*/: false/', -e, '/^ +stdin_open/s/: .*/: false/']
-    -   id: set-prod-docker-4
-        name: set-prod-docker-4
-        entry: /usr/bin/env sed
-        language: script
-        files: 'Dockerfile'
-        args: [-i, '/^CMD \["python".*"runserver_plus"/s/CMD/#CMD/']
+        pass_filenames: false
+        files: caddy\.yml
+        args: ['unset-caddy']
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
@@ -75,36 +35,21 @@ repos:
         types: [python]
     -   id: end-of-file-fixer
         types: [python]
-    -   id: check-added-large-files
-        types: [python]
     -   id: check-merge-conflict
         types: [python]
 
-#-   repo: https://github.com/pre-commit/mirrors-mypy
-#    rev: 'v0.931'
-#    hooks:
-#    -   id: mypy
-
-# https://github.com/hadolint/hadolint/blob/master/docs/INTEGRATION.md#pre-commit
-
 -   repo: https://github.com/psf/black
-    rev: 22.12.0
+    rev: 23.3.0
     hooks:
     -   id: black
         language_version: python3
-        entry: black --target-version=py38  # 3.8
-
--   repo: https://github.com/asottile/blacken-docs
-    rev: v1.12.1
-    hooks:
-    -   id: blacken-docs
-        additional_dependencies: [black==21.4b2]
+        entry: black --target-version=py311  # 3.11
 
 -   repo: https://github.com/asottile/pyupgrade
-    rev: v3.3.1
+    rev: v3.8.0
     hooks:
     -   id: pyupgrade
-        args: [--py38-plus]  # 3.8
+        args: [--py311-plus]  # 3.11
 
 #-   repo: https://gitlab.com/pycqa/flake8.git
 #    rev: 4.0.1
@@ -115,13 +60,8 @@ repos:
 #        language_version: python3
 #        args: [--max-line-length, "222", --extend-ignore, "E203"]
 
--   repo: https://github.com/pycqa/doc8
-    rev: v1.1.1
-    hooks:
-    -   id: doc8
-
 -   repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
     -   id: python-check-blanket-noqa
     -   id: python-check-mock-methods
@@ -131,13 +71,13 @@ repos:
     -   id: rst-directive-colons
 
 -   repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.12.0
+    rev: 1.14.0
     hooks:
     -   id: django-upgrade
-        args: [--target-version, "3.2"]
+        args: [--target-version, "4.2"]
 
 -   repo: https://github.com/pycqa/isort
-    rev: 5.11.4
+    rev: 5.12.0
     hooks:
     -   id: isort
         args: [--profile, "black"]

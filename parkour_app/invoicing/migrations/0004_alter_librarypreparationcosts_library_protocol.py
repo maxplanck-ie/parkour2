@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("library_sample_shared", "0008_optional_index1_long"),
         ("invoicing", "0003_dj32_upgrade"),
