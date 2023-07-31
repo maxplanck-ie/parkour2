@@ -104,7 +104,7 @@ jupyter-client==8.0.1
     # via ipykernel
 jupyter-core==5.1.5
     # via jupyter-client
-lxml==4.9.2
+lxml==4.9.3
     # via python-docx
 markuppy==1.14
     # via tablib
