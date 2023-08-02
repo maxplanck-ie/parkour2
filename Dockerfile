@@ -26,7 +26,11 @@ RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
 
 EXPOSE 8000
 
+RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
+      > /root/.pythonrc
+
 ENV \
+    PYTHONSTARTUP=/root/.pythonrc \
     PYTHONDEVMODE=0 \
     PYTHONBREAKPOINT=ipdb.set_trace \
     PYTHONUNBUFFERED=1 \
