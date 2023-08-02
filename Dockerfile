@@ -2,7 +2,14 @@
 FROM python:3.11-bullseye AS pk2_base
 LABEL maintainer="Adrian S. <lims@omics.dev>"
 
-ENV DEBIAN_FRONTEND=noninteractive
+ENV \
+    DEBIAN_FRONTEND=noninteractive \
+    LANG=en_US.UTF-8 \
+    LANGUAGE=en_US:en \
+    LC_ALL=en_US.UTF-8 \
+    LC_TIME=en_DK.UTF-8 \
+    TZ="Europe/Berlin"
+
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
     && apt-get install -y software-properties-common \
@@ -13,12 +20,6 @@ RUN apt-get update --fix-missing \
     && rm -rf /var/lib/apt/lists/*
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
-ENV \
-    LANG=en_US.UTF-8 \
-    LANGUAGE=en_US:en \
-    LC_ALL=en_US.UTF-8 \
-    LC_TIME=en_DK.UTF-8 \
-    TZ="Europe/Berlin"
 
 WORKDIR /usr/src/app
 COPY ./parkour_app .
