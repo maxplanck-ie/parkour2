@@ -110,7 +110,7 @@ try-prod: down set-dev set-prod-color set-caddy deploy-django deploy-caddy colle
 
 dev-easy: down set-dev set-dev-color set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev set-dev-color deploy-django deploy-nginx collect-static  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev set-dev-color deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
