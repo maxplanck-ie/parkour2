@@ -1,4 +1,6 @@
-0.4.0
+<!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
+
+0.4.0 (no tag yet //WIP// current develop branch)
 =====
 
 **Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...0.4.0
@@ -9,8 +11,8 @@
 
 ## Dependencies
 
-- Updated all python requirements, including our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!)
-- **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`.
+- Updated all python requirements.
+- **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`. This will be mandatory once we update to Django 4.2
 - The docker image is now using Debian Bullseye as base, to match [playwright system requirements](https://playwright.dev/python/docs/intro#system-requirements).
 
 ## Bugfix
@@ -32,7 +34,7 @@
 - Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
 - **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
-- rule `graph_models` now generates 3 PDF files, one is a simple A4 sheet (`models.pdf`). The other two (`models.A{3,4}.pdf`) are for printing posters in A1 size using either A4 or A3 sheets.
+- rule `models` now generates 3 PDF files, one is a simple A4 sheet for quick preview, and the other two are for printing posters in A1 size using multiple sheets in either A4 or A3 sizes.
 
 
 0.3.9
