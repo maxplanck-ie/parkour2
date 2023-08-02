@@ -27,7 +27,7 @@ ENV PYTHONBREAKPOINT ipdb.set_trace
 ENV PYTHONUNBUFFERED 1
 ENV PYTHONDONTWRITEBYTECODE 1
 #CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
-CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "4", "-b", ":8000"]
+CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 FROM pk2_base AS pk2_playwright
 RUN playwright install-deps \
