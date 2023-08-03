@@ -39,6 +39,5 @@ volumes:
   staticfiles:
 
 networks:
-  default:
-    name: parkour2_default
-    driver: bridge
+  parkour2:
+    external: true

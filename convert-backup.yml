@@ -16,5 +16,5 @@ services:
       retries: 10
 
 networks:
-  parkour2_default:
+  parkour2:
     external: true

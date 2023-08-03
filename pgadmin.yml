@@ -18,5 +18,5 @@ volumes:
   pgadmin_data: {}
 
 networks:
-  parkour2_default:
+  parkour2:
     external: true

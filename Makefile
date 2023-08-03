@@ -30,7 +30,7 @@ set-prod-color:
 deploy-django: deploy-network deploy-containers
 
 deploy-network:
-	@docker network create parkour2_default
+	@docker network create parkour2
 
 deploy-containers:
 	@docker compose build -q
@@ -86,6 +86,7 @@ down-lite: clearpy
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
+	@docker network rm -f parkour2
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
