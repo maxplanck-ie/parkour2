@@ -1,4 +1,5 @@
-from django.core.management import call_command
+import subprocess
+
 from django.core.management.base import BaseCommand
 
 
@@ -15,8 +16,20 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("Successfully saved demo data."))
 
     def dumpdata_wrapper(self, model, app_label):
-        with open(app_label + "/fixtures/" + model + ".json", "w") as f:
-            call_command("dumpdata", app_label + "." + model, stdout=f)
+        with open(
+            app_label + "/fixtures/" + model + ".json", "w", encoding="utf-8"
+        ) as f:
+            # django.core.management.call_command("dumpdata", app_label + "." + model, stdout=f)
+            subprocess.run(
+                """
+            python manage.py dumpdata {} | tail -1 |
+            jq .""".format(
+                    app_label + "." + model
+                ),
+                stdout=f,
+                shell=True,
+                check=True,
+            )
 
     def save_library_sample_shared_fixtures(self):
         self.dumpdata_wrapper(model="organism", app_label="library_sample_shared")

@@ -14,6 +14,7 @@ RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
     && apt-get install -y software-properties-common \
     && apt-get install -y --no-install-recommends \
+       jq \
        less \
        locales \
     && apt-get clean \
