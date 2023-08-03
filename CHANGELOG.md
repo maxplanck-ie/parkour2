@@ -11,7 +11,7 @@
 
 ## Dependencies
 
-- Updated all python requirements.
+- Updated all python requirements, but keeping on Django 3.2 to avoid an ongoing issue with sequencing depth miscalculation.
 - **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`. This will be mandatory once we update to Django 4.2
 - The docker image is now using Debian Bullseye as base, to match [playwright system requirements](https://playwright.dev/python/docs/intro#system-requirements).
 
@@ -31,6 +31,7 @@
 
 ## Improvements
 
+- Fixtures (JSON) are in long format now, and a new django-admin custom command `save_demo_data` is available to share some of our data to other research facilities.
 - Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
 - **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
