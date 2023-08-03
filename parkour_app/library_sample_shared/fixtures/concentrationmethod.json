@@ -1,1 +1,23 @@
-[{"model": "library_sample_shared.concentrationmethod", "pk": 1, "fields": {"name": "Fluorometry"}}, {"model": "library_sample_shared.concentrationmethod", "pk": 2, "fields": {"name": "Spectrophotometry"}}, {"model": "library_sample_shared.concentrationmethod", "pk": 3, "fields": {"name": "Fragment Analyzer"}}]
+[
+    {
+        "fields": {
+            "name": "Fluorometry"
+        },
+        "model": "library_sample_shared.concentrationmethod",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Spectrophotometry"
+        },
+        "model": "library_sample_shared.concentrationmethod",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Fragment Analyzer"
+        },
+        "model": "library_sample_shared.concentrationmethod",
+        "pk": 3
+    }
+]
