@@ -1,1 +1,56 @@
-[{"model": "flowcell.sequencer", "pk": 1, "fields": {"name": "MiSeq", "lanes": 1, "lane_capacity": 25}}, {"model": "flowcell.sequencer", "pk": 2, "fields": {"name": "NextSeq MID", "lanes": 1, "lane_capacity": 130}}, {"model": "flowcell.sequencer", "pk": 3, "fields": {"name": "NextSeq HIGH", "lanes": 1, "lane_capacity": 400}}, {"model": "flowcell.sequencer", "pk": 4, "fields": {"name": "HiSeq2500", "lanes": 8, "lane_capacity": 200}}, {"model": "flowcell.sequencer", "pk": 5, "fields": {"name": "HiSeq3000", "lanes": 8, "lane_capacity": 300}}, {"model": "flowcell.sequencer", "pk": 6, "fields": {"name": "HiSeq Rapid", "lanes": 1, "lane_capacity": 300}}]
+[
+    {
+        "fields": {
+            "lane_capacity": 25,
+            "lanes": 1,
+            "name": "MiSeq"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "lane_capacity": 130,
+            "lanes": 1,
+            "name": "NextSeq MID"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "lane_capacity": 400,
+            "lanes": 1,
+            "name": "NextSeq HIGH"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "lane_capacity": 200,
+            "lanes": 8,
+            "name": "HiSeq2500"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "lane_capacity": 300,
+            "lanes": 8,
+            "name": "HiSeq3000"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "lane_capacity": 300,
+            "lanes": 1,
+            "name": "HiSeq Rapid"
+        },
+        "model": "flowcell.sequencer",
+        "pk": 6
+    }
+]
