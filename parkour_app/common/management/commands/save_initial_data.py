@@ -7,13 +7,13 @@ class Command(BaseCommand):
     help = "Saves relevant database content into fixture(s) correspondingly."
 
     def handle(self, *args, **options):
-        # Save demo data for all apps
+        # Save initial data for all apps
         self.save_library_sample_shared_fixtures()
         self.save_sample_fixtures()
         self.save_index_generator_fixtures()
         self.save_flowcell_fixtures()
 
-        self.stdout.write(self.style.SUCCESS("Successfully saved demo data."))
+        self.stdout.write(self.style.SUCCESS("Successfully saved initial data."))
 
     def dumpdata_wrapper(self, model, app_label):
         with open(
@@ -22,7 +22,7 @@ class Command(BaseCommand):
             # django.core.management.call_command("dumpdata", app_label + "." + model, stdout=f)
             subprocess.run(
                 """
-            python manage.py dumpdata {} | tail -1 |
+            python manage.py dumpdata --natural-primary {} | tail -1 |
             jq .""".format(
                     app_label + "." + model
                 ),
