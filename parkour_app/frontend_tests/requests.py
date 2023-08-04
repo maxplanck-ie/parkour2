@@ -1,28 +1,76 @@
-import re
 import time
+import csv
 
 from playwright.sync_api import Page, expect
 
-correctEmailId = "dome@ie-freiburg.mpg.de"
-correctPassword = "Workspace!1"
-
 def test_login_page(page: Page):
-    page.goto("http://127.0.0.1:9980/login")
-
-    expect(page).to_have_title(re.compile("Parkour LIMS | Login"))
-
+    correctEmailId = "dome@ie-freiburg.mpg.de"
+    correctPassword = "Workspace!1"
     inputEmail = page.locator("input#id_username")
     inputPassword = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
-
+    page.goto("http://127.0.0.1:9980/login")
     inputEmail.fill(correctEmailId)
     inputPassword.fill(correctPassword)
     loginButton.click()
-    time.sleep(2)
-    page.locator("div:has-text('Parkour LIMS')")
 
-    addButton = page.locator("a.pl-add-request-button")
-    addButton.click()
+    addRequestButton = page.locator("a.pl-add-request-button")
+    descriptionTextarea = page.locator("div.pl-description>div>div>div>textarea")
+    addBatchButton = page.locator("a.pl-batch-add-button")
+    libraryCardButton = page.locator("a.pl-library-card-button")
+    sampleCardButton = page.locator("a.pl-sample-card-button")
+    createEmptyRowInput = page.locator("div.pl-num-empty-records>div>div>div>input")
+    createEmptyRowButton = page.locator("a.pl-create-empty-records-button")
+    nameInput = page.locator("input[name='name']")
+    libraryProtocolInput = page.locator("input[name='library_protocol']")
+    libraryTypeInput = page.locator("input[name='library_type']")
+    concentrationInput = page.locator("input[name='concentration']")
+    meanFragmentSizeInput = page.locator("input[name='mean_fragment_size']")
+    indexTypeInput = page.locator("input[name='index_type']")
+    indexReadsInput = page.locator("input[name='index_reads']")
+    indexi7Input = page.locator("input[name='index_i7']")
+    indexi5Input = page.locator("input[name='index_i5']")
+    readLengthInput = page.locator("input[name='read_length']")
+    sequencingDepthInput = page.locator("input[name='sequencing_depth']")
+    organismInput = page.locator("input[name='organism']")
+    commentsInput = page.locator("input[name='comments']")
+    updateButton = page.locator("a.x-row-editor-update-button")
+    addSaveRequestButton = page.get_by_text("Save").nth(1)
+    saveAddedRequestbutton = page.get_by_text("Save")
 
-    page.locator("div:has-text('New Request')")
+    addRequestButton.click()
+    expect(page.get_by_text("New Request")).to_be_visible()
+    descriptionTextarea.fill("This is description text.")
+    addBatchButton.click()
+    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    libraryCardButton.click()
+    expect(page.get_by_text("Add Libraries")).to_be_visible()
+    createEmptyRowInput.fill("1")
 
+    with open('./test_data/library_request.csv', newline='', encoding='utf-8') as library_csv_file:
+        spamreader = csv.reader(library_csv_file, delimiter=',', quotechar='|')
+        for index, row in enumerate(spamreader):
+            if index > 0:
+                createEmptyRowButton.click()
+                editRow = page.locator("div.x-grid-item-container>table:nth-child("+str(index)+")")
+                editRow.click()
+                nameInput.fill(row[0])
+                libraryProtocolInput.fill(row[1])
+                page.keyboard.press("Enter")
+                libraryTypeInput.fill(row[2])
+                concentrationInput.fill(row[3])
+                meanFragmentSizeInput.fill(row[4])
+                indexTypeInput.fill(row[5])
+                page.keyboard.press("Enter")
+                indexReadsInput.fill(row[6])
+                page.keyboard.press("Enter")
+                indexi7Input.fill(row[7])
+                indexi5Input.fill(row[8])
+                readLengthInput.fill(row[9])
+                sequencingDepthInput.fill(row[10])
+                organismInput.fill(row[11])
+                commentsInput.fill(row[12])
+                updateButton.click()
+    addSaveRequestButton.click()
+    saveAddedRequestbutton.click()
+    time.sleep(3)
