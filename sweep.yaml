@@ -1,0 +1,3 @@
+branch: 'develop'
+gha_enabled: False
+description: 'This is a Django project with all the python code inside the parkour_app folder. We are using Django REST Framework to expose API endpoints. You should ignore anything else that it's not Python code. Write code that adheres to PEP8.'
