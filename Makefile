@@ -241,7 +241,7 @@ set-testing-front: set-testing
 	@sed -i -e 's#\(target:\) pk2_base#\1 pk2_playwright#' docker-compose.yml
 
 pytest: down set-testing deploy-django
-	@docker compose exec parkour2-django pytest -n 2
+	@docker compose exec parkour2-django pytest -n auto
 
 create_admin:
 	@docker compose exec parkour2-django sh -c \
@@ -249,14 +249,14 @@ create_admin:
 			python manage.py createsuperuser --no-input"
 
 playwright: down set-testing-front deploy-django apply-migrations load-fixtures create_admin
-	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
+	@docker compose exec parkour2-django pytest -n auto -c playwright.ini
 
 coverage-xml: down set-testing deploy-django
-	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=xml
+	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
 
 coverage-html: down set-testing deploy-django
 	@docker compose exec parkour2-django coverage erase
-	@docker compose exec parkour2-django coverage run -m pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=html
+	@docker compose exec parkour2-django coverage run -m pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=html
 
 test: lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
 
