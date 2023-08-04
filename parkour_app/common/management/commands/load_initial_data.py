@@ -16,42 +16,48 @@ class Command(BaseCommand):
 
         self.stdout.write(self.style.SUCCESS("Successfully loaded initial data."))
 
+    def loaddata_wrapper(self, model, app_label):
+        print("\t Processing: " + app_label + "/fixtures/" + model + ".json")
+        call_command("loaddata", model, app_label=app_label)
+
     def load_common_fixtures(self):
-        call_command("loaddata", "organization", app_label="common")
-        call_command("loaddata", "principalinvestigator", app_label="common")
-        call_command("loaddata", "costunit", app_label="common")
+        self.loaddata_wrapper(model="organization", app_label="common")
+        self.loaddata_wrapper(model="principalinvestigator", app_label="common")
+        self.loaddata_wrapper(model="costunit", app_label="common")
 
     def load_library_sample_shared_fixtures(self):
-        call_command("loaddata", "organism", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="organism", app_label="library_sample_shared")
 
         call_command(
             "loaddata", "concentrationmethod", app_label="library_sample_shared"
         )
 
-        call_command("loaddata", "readlength", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="readlength", app_label="library_sample_shared")
 
-        call_command("loaddata", "indexi7", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="indexi7", app_label="library_sample_shared")
 
-        call_command("loaddata", "indexi5", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="indexi5", app_label="library_sample_shared")
 
-        call_command("loaddata", "indextype", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="indextype", app_label="library_sample_shared")
 
-        call_command("loaddata", "indexpair", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="indexpair", app_label="library_sample_shared")
 
-        call_command("loaddata", "libraryprotocol", app_label="library_sample_shared")
+        self.loaddata_wrapper(
+            model="libraryprotocol", app_label="library_sample_shared"
+        )
 
-        call_command("loaddata", "librarytype", app_label="library_sample_shared")
+        self.loaddata_wrapper(model="librarytype", app_label="library_sample_shared")
 
     def load_sample_fixtures(self):
-        call_command("loaddata", "nucleicacidtype", app_label="sample")
+        self.loaddata_wrapper(model="nucleicacidtype", app_label="sample")
 
     def load_index_generator_fixtures(self):
-        call_command("loaddata", "poolsize", app_label="index_generator")
+        self.loaddata_wrapper(model="poolsize", app_label="index_generator")
 
     def load_flowcell_fixtures(self):
-        call_command("loaddata", "sequencer", app_label="flowcell")
+        self.loaddata_wrapper(model="sequencer", app_label="flowcell")
 
     def load_invoicing_fixtures(self):
-        call_command("loaddata", "fixedcosts", app_label="invoicing")
-        call_command("loaddata", "librarypreparationcosts", app_label="invoicing")
-        call_command("loaddata", "sequencingcosts", app_label="invoicing")
+        self.loaddata_wrapper(model="fixedcosts", app_label="invoicing")
+        self.loaddata_wrapper(model="librarypreparationcosts", app_label="invoicing")
+        self.loaddata_wrapper(model="sequencingcosts", app_label="invoicing")
