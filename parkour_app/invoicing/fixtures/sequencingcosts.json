@@ -20,7 +20,7 @@
     {
         "fields": {
             "price": "989.97",
-            "read_length": 2,
+            "read_length": 8,
             "sequencer": 2
         },
         "model": "invoicing.sequencingcosts",
@@ -38,7 +38,7 @@
     {
         "fields": {
             "price": "2544.94",
-            "read_length": 2,
+            "read_length": 8,
             "sequencer": 3
         },
         "model": "invoicing.sequencingcosts",
@@ -55,15 +55,6 @@
     },
     {
         "fields": {
-            "price": "1554.72",
-            "read_length": 2,
-            "sequencer": 4
-        },
-        "model": "invoicing.sequencingcosts",
-        "pk": 7
-    },
-    {
-        "fields": {
             "price": "1729.88",
             "read_length": 8,
             "sequencer": 4
@@ -74,7 +65,7 @@
     {
         "fields": {
             "price": "1422.88",
-            "read_length": 2,
+            "read_length": 8,
             "sequencer": 5
         },
         "model": "invoicing.sequencingcosts",
