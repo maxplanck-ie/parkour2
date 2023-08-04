@@ -1,7 +1,6 @@
 [
   {
     "model": "flowcell.sequencer",
-    "pk": 1,
     "fields": {
       "name": "MiSeq",
       "lanes": 1,
@@ -11,7 +10,6 @@
   },
   {
     "model": "flowcell.sequencer",
-    "pk": 2,
     "fields": {
       "name": "NextSeq MID",
       "lanes": 1,
@@ -21,7 +19,6 @@
   },
   {
     "model": "flowcell.sequencer",
-    "pk": 3,
     "fields": {
       "name": "NextSeq HIGH",
       "lanes": 1,
@@ -31,7 +28,6 @@
   },
   {
     "model": "flowcell.sequencer",
-    "pk": 8,
     "fields": {
       "name": "NovaSeq SP (XP)",
       "lanes": 2,
@@ -41,7 +37,15 @@
   },
   {
     "model": "flowcell.sequencer",
-    "pk": 9,
+    "fields": {
+      "name": "NovaSeq SP (XP)",
+      "lanes": 2,
+      "lane_capacity": 400,
+      "obsolete": 1
+    }
+  },
+  {
+    "model": "flowcell.sequencer",
     "fields": {
       "name": "NovaSeq SP",
       "lanes": 1,

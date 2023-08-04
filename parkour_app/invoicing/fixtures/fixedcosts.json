@@ -22,29 +22,5 @@
         },
         "model": "invoicing.fixedcosts",
         "pk": 3
-    },
-    {
-        "fields": {
-            "price": "340.00",
-            "sequencer": 4
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 4
-    },
-    {
-        "fields": {
-            "price": "340.00",
-            "sequencer": 5
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 5
-    },
-    {
-        "fields": {
-            "price": "680.00",
-            "sequencer": 6
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 6
     }
 ]
