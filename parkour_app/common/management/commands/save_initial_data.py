@@ -22,7 +22,7 @@ class Command(BaseCommand):
             # django.core.management.call_command("dumpdata", app_label + "." + model, stdout=f)
             subprocess.run(
                 """
-            python manage.py dumpdata --natural-primary {} | tail -1 |
+            python manage.py dumpdata {} | tail -1 |
             jq .""".format(
                     app_label + "." + model
                 ),
