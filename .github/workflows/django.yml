@@ -2,9 +2,14 @@ name: Test suite
 
 on:
   push:
-    branches: [develop]
-  pull_request:
     branches: [$default-branch]
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - closed
 
 # Interestingly... defining env vars here is broken...
 # https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
