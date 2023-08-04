@@ -33,16 +33,16 @@ Ext.define('MainHub.view.requests.Requests', {
           items: [
             {
 
-       name : 'showAll',
-       boxLabel: 'Show all',
-       boxLabelAlign: 'before',
-       checked:true,
-       id : 'showAll',
+      name : 'showAll',
+      boxLabel: 'Show all',
+      boxLabelAlign: 'before',
+      checked:true,
+      id : 'showAll',
 
-       margin: '0 15 0 0',
-       cls: 'grid-header-checkbox',
-       hidden: false,
-       listeners:{
+      margin: '0 15 0 0',
+      cls: 'grid-header-checkbox',
+      hidden: false,
+      listeners:{
         change: function(checkbox, newValue, oldValue, eOpts) {
 
         if (newValue) {
@@ -53,7 +53,7 @@ Ext.define('MainHub.view.requests.Requests', {
             Ext.getStore('requestsStore').load()
         }
         }
-       }
+      }
       }]
         },
 
@@ -68,6 +68,7 @@ Ext.define('MainHub.view.requests.Requests', {
       {
         xtype: 'button',
         itemId: 'add-request-button',
+        cls:'pl-add-request-button',
         text: 'Add'
       }]
     },

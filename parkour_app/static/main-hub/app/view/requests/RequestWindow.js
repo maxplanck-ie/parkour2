@@ -53,6 +53,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
               },
               {
                 name: 'description',
+                cls: 'pl-description',
                 xtype: 'textarea',
                 fieldLabel: 'Description',
                 emptyText: 'Description',
@@ -134,6 +135,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
           '->',
           {
             itemId: 'batch-add-button',
+            cls: 'pl-batch-add-button',
             text: 'Add'
           }
         ]
