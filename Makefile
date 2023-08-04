@@ -245,11 +245,10 @@ pytest: down set-testing deploy-django
 
 create_admin:
 	@docker compose exec parkour2-django sh -c \
-		"DJANGO_SUPERUSER_PASSWORD='StrongPassword\!1' DJANGO_SUPERUSER_EMAIL='test.user@test.com' \
+		"DJANGO_SUPERUSER_PASSWORD=StrongPassword\!1 DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-playwright: down set-testing-front deploy-django apply-migrations
-	@$(MAKE) create_admin
+playwright: down set-testing-front deploy-django apply-migrations load-fixtures create_admin
 	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
 
 coverage-xml: down set-testing deploy-django
