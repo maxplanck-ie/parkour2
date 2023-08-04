@@ -24,13 +24,13 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 WORKDIR /usr/src/app
 COPY ./parkour_app .
-<<<<<<< HEAD
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
+
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/dev.txt
 
 EXPOSE 8000
 
 RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
-      > /root/.pythonrc
+    > /root/.pythonrc
 
 ENV \
     PYTHONSTARTUP=/root/.pythonrc \
@@ -39,18 +39,8 @@ ENV \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 
-#CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
-CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
-=======
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/dev.txt
-EXPOSE 8000
-ENV PYTHONDEVMODE 0
-ENV PYTHONBREAKPOINT ipdb.set_trace
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
 CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
-#CMD ["gunicorn", "wui.wsgi:application", "-t", "600", "-w", "4", "-b", ":8000"]
->>>>>>> 2f658890... Library request partial tests
+#CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 FROM pk2_base AS pk2_playwright
 RUN playwright install-deps \
