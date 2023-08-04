@@ -50,6 +50,16 @@ class TestSequencerModel(BaseTestCase):
         self.assertTrue(isinstance(self.sequencer, Sequencer))
         self.assertEqual(self.sequencer.__str__(), self.sequencer.name)
 
+    def test_sequencer_lanes(self):
+        self.assertEqual(self.sequencer.lanes, 1)
+
+    def test_sequencer_lane_capacity(self):
+        self.assertEqual(self.sequencer.lane_capacity, 200)
+
+    def test_sequencer_different_lanes(self):
+        sequencer = create_sequencer(get_random_name(), lanes=2, lane_capacity=200)
+        self.assertEqual(sequencer.lanes, 2)
+
 
 class TestLaneModel(BaseTestCase):
     def setUp(self):
@@ -62,6 +72,19 @@ class TestLaneModel(BaseTestCase):
         self.assertEqual(
             self.lane.__str__(), f"{self.lane.name}: {self.lane.pool.name}"
         )
+
+    def test_lane_loading_concentration(self):
+        self.assertEqual(self.lane.loading_concentration, 1.0)
+
+    def test_lane_different_loading_concentration(self):
+        lane = create_lane(get_random_name(len=6), pool, loading_concentration=2.0)
+        self.assertEqual(lane.loading_concentration, 2.0)
+
+    def test_lane_phix(self):
+        self.assertIsNone(self.lane.phix)
+
+    def test_lane_completed(self):
+        self.assertFalse(self.lane.completed)
 
     def test_increment_pool_loaded(self):
         """
@@ -88,6 +111,28 @@ class TestFlowcellModel(BaseTestCase):
     def test_lane_name(self):
         self.assertTrue(isinstance(self.flowcell, Flowcell))
         self.assertEqual(self.flowcell.__str__(), self.flowcell.flowcell_id)
+
+    def test_flowcell_different_sequencer(self):
+        sequencer = create_sequencer(get_random_name(), lanes=2)
+        flowcell = create_flowcell(get_random_name(), sequencer)
+        self.assertEqual(flowcell.sequencer, sequencer)
+
+    def test_flowcell_lanes(self):
+        self.assertEqual(self.flowcell.lanes.count(), 0)
+
+    def test_flowcell_add_lane(self):
+        lane = create_lane(get_random_name(len=6), pool)
+        self.flowcell.lanes.add(lane)
+        self.assertEqual(self.flowcell.lanes.count(), 1)
+
+    def test_flowcell_requests(self):
+        self.assertEqual(self.flowcell.requests.count(), 0)
+
+    def test_flowcell_matrix(self):
+        self.assertIsNone(self.flowcell.matrix)
+
+    def test_flowcell_sequences(self):
+        self.assertIsNone(self.flowcell.sequences)
 
 
 # Views
