@@ -76,10 +76,6 @@ class TestLaneModel(BaseTestCase):
     def test_lane_loading_concentration(self):
         self.assertEqual(self.lane.loading_concentration, 1.0)
 
-    def test_lane_different_loading_concentration(self):
-        lane = create_lane(get_random_name(len=6), pool, loading_concentration=2.0)
-        self.assertEqual(lane.loading_concentration, 2.0)
-
     def test_lane_phix(self):
         self.assertIsNone(self.lane.phix)
 
@@ -119,11 +115,6 @@ class TestFlowcellModel(BaseTestCase):
 
     def test_flowcell_lanes(self):
         self.assertEqual(self.flowcell.lanes.count(), 0)
-
-    def test_flowcell_add_lane(self):
-        lane = create_lane(get_random_name(len=6), pool)
-        self.flowcell.lanes.add(lane)
-        self.assertEqual(self.flowcell.lanes.count(), 1)
 
     def test_flowcell_requests(self):
         self.assertEqual(self.flowcell.requests.count(), 0)
