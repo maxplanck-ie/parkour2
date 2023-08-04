@@ -257,11 +257,9 @@ coverage-xml: down set-testing deploy-django
 
 coverage-html: down set-testing deploy-django
 	@docker compose exec parkour2-django coverage erase
-	@docker compose exec parkour2-django coverage run -m pytest -n 2
-	@docker compose exec parkour2-django coverage report -m
-	@docker compose exec parkour2-django coverage html
+	@docker compose exec parkour2-django coverage run -m pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=html
 
-test: lint-migras check-migras check-templates coverage  ## Run all tests, on every level
+test: lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
