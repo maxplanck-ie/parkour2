@@ -82,7 +82,7 @@ class Pool(DateTimeMixin):
         created = self.pk is None
         super().save(*args, **kwargs)
 
-        if created:
+        if created and not self.name:
             # Update the pool name after receiving a Pool id
             self.name = f"Pool_{self.pk}"
             self.save()

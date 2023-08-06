@@ -216,6 +216,11 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
     // Update Summary
     grid.getView().refresh();
+    var savePoolButton = grid.down('#save-pool-button');
+    var generateIndexButton = grid.down('#generate-indices-button');
+    var poolName = grid.down("#pool-name");
+    var sequencerChemistryCb = grid.down("#sequencerChemistryCb");
+    var minHammingDistanceBox = grid.down("#minHammingDistanceBox");
 
     // Update grid's header and enable/disable 'Pool' button
     if (store.getCount() > 0) {
@@ -223,11 +228,15 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         'Pool (total size: {0} M)',
         grid.getStore().sum('sequencing_depth')
       ));
-      Ext.getCmp('save-pool-button').enable();
+      savePoolButton.enable();
+      sequencerChemistryCb.enable();
+      minHammingDistanceBox.enable();
+      poolName.enable();
+      poolName.reset();
 
       var recordTypes = Ext.pluck(Ext.Array.pluck(store.data.items, 'data'), 'record_type');
       if (recordTypes.indexOf('Sample') > -1 && sequencerChemistry > -1 && minHammingDistance > 0) {
-        Ext.getCmp('generate-indices-button').enable();
+        generateIndexButton.enable();
       }
 
       // Show plate params
@@ -239,8 +248,13 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       }
     } else {
       grid.setTitle('Pool');
-      Ext.getCmp('save-pool-button').disable();
-      Ext.getCmp('generate-indices-button').disable();
+      savePoolButton.disable();
+      sequencerChemistryCb.enable();
+      minHammingDistanceBox.enable();
+      generateIndexButton.disable();
+      poolName.setValue(null);
+      poolName.reset();
+      poolName.disable();
       startCoordinate.hide();
       direction.hide();
     }
@@ -334,7 +348,18 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
   save: function () {
     var me = this;
-    var store = Ext.getCmp('pool-grid').getStore();
+    var grid = Ext.getCmp('pool-grid');
+    var poolName = grid.down('#pool-name');
+
+    if (!poolName.isValid()) {
+      new Noty({
+        text: 'A name for a pool must be set and valid before it can be saved.',
+        type: 'error'
+      }).show();
+      return;
+    }
+
+    var store = grid.getStore();
     var libraries = [];
     var samples = [];
     var librariesRequestNames = [];
@@ -387,6 +412,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       scope: this,
       params: {
         pool_size_id: Ext.getCmp('poolSizeCb').getValue(),
+        pool_name: poolName.value,
         libraries: Ext.JSON.encode(libraries),
         samples: Ext.JSON.encode(samples)
       },
@@ -408,6 +434,26 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
           // Reload stores
           Ext.getStore('IndexGenerator').reload();
+
+          // Disable relevant fields/buttons
+          if (store.getTotalCount() == 0) {
+            poolName.setValue(null);
+            poolName.reset();
+            poolName.disable();
+            grid.down("#save-pool-button").disable();
+            grid.down("#generate-indices-button").disable();
+            var sequencerChemistryCb = grid.down("#sequencerChemistryCb");
+            var minHammingDistanceBox = grid.down("#minHammingDistanceBox");
+            sequencerChemistryCb.reset();
+            sequencerChemistryCb.disable();
+            minHammingDistanceBox.reset();
+            minHammingDistanceBox.disable();
+            Ext.getCmp('poolSizeCb').setValue(null);
+          } else {
+            poolName.setValue(null);
+            poolName.reset();
+          }
+
         } else {
           Ext.getCmp('poolingContainer').setLoading(false);
           new Noty({ text: obj.message, type: 'error' }).show();

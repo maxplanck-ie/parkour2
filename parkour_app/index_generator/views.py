@@ -184,6 +184,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         object and a Pooling object for each added library/sample.
         """
         pool_size_id = request.data.get("pool_size_id", None)
+        pool_name = request.data.get("pool_name", "")
         libraries = json.loads(request.data.get("libraries", "[]"))
         samples = json.loads(request.data.get("samples", "[]"))
 
@@ -196,7 +197,9 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             except (ValueError, PoolSize.DoesNotExist):
                 raise ValueError("Invalid Pool Size id.")
 
-            pool = Pool(user=request.user, size=pool_size)
+            pool = Pool(user=request.user,
+                        size=pool_size,
+                        name=pool_name)
             pool.save()
 
             library_ids = [x["pk"] for x in libraries]

@@ -41,7 +41,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
             cls: 'panel-header-combobox',
             fieldLabel: '<span data-qtip="Sequencing kit">Seq. Kit</span>',
             labelWidth: 50,
-            width: 250
+            width: 285
           }]
         },
         store: 'IndexGenerator',
@@ -567,101 +567,131 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
           }
         ],
         store: [],
-        bbar: [
+        dockedItems: [
           {
-            xtype: 'combobox',
-            id: 'sequencerChemistryCb',
-            store: Ext.create('Ext.data.Store', {
-              fields: ['sequencerChemistry', 'name'],
-              data: [{
-                sequencerChemistry: 0,
-                name: 'N/A',
-                tooltip: 'None'
-              },
-              {
-                sequencerChemistry: 2,
-                name: '2-ch',
-                tooltip: 'Illumina 2-channel SBS technology'
-              },
-              {
-                sequencerChemistry: 4,
-                name: '4-ch',
-                tooltip: 'Illumina 4-channel SBS technology'
-              }
+            xtype: 'toolbar',
+            dock: 'top',
+            items:
+              [
+                {
+                  xtype: 'combobox',
+                  id: 'sequencerChemistryCb',
+                  store: Ext.create('Ext.data.Store', {
+                    fields: ['sequencerChemistry', 'name'],
+                    data: [{
+                      sequencerChemistry: 0,
+                      name: 'N/A',
+                      tooltip: 'None'
+                    },
+                    {
+                      sequencerChemistry: 2,
+                      name: '2-ch',
+                      tooltip: 'Illumina 2-channel SBS technology'
+                    },
+                    {
+                      sequencerChemistry: 4,
+                      name: '4-ch',
+                      tooltip: 'Illumina 4-channel SBS technology'
+                    }
+                    ]
+                  }),
+                  queryMode: 'local',
+                  displayField: 'name',
+                  valueField: 'sequencerChemistry',
+                  value: 0,
+                  forceSelection: true,
+                  allowBlank: false,
+                  fieldLabel: 'Chemistry',
+                  labelWidth: 65,
+                  width: 150,
+                  disabled: true,
+                  listeners: {
+                    change: function (checkbox, newValue, oldValue, eOpts) {
+                      var poolGrid = Ext.getCmp('pool-grid');
+                      poolGrid.baseColours = me.getBaseColours(newValue);
+                      Ext.getCmp('index-generator-grid').fireEvent('reset');
+                      poolGrid.getView().refresh();
+                    }
+                  },
+                  listConfig: {
+                    getInnerTpl: function () {
+                      return '<span data-qtip="{tooltip}">{name}</span>';
+                    }
+                  }
+                },
+                {
+                  xtype: 'tbseparator'
+                },
+                {
+                  xtype: 'numberfield',
+                  id: 'minHammingDistanceBox',
+                  fieldLabel: '<span data-qtip="Minimum Hamming distance">Min. HD</span>',
+                  allowBlank: false,
+                  disabled: true,
+                  minValue: 1,
+                  maxValue: 5,
+                  value: 3,
+                  labelWidth: 55,
+                  width: 125,
+                  listeners: {
+                    change: function (checkbox, newValue, oldValue, eOpts) {
+                      var grid = Ext.getCmp('index-generator-grid');
+                      grid.fireEvent('reset');
+                      Ext.getCmp('pool-grid').getView().refresh();
+                    }
+                  }
+                },
+                '->',
+                {
+                  xtype: 'button',
+                  id: 'generate-indices-button',
+                  itemId: 'generate-indices-button',
+                  iconCls: 'fa fa-cogs fa-lg',
+                  text: 'Generate Indices',
+                  disabled: true
+                },
+
+                /* for future:
+                {
+                  xtype: 'button',
+                  itemId: 'download-index-list-button',
+                  text: 'Download Index List (csv)',
+                  iconCls: 'fa fa-file-excel-o fa-lg'
+                },
+                */
               ]
-            }),
-            queryMode: 'local',
-            displayField: 'name',
-            valueField: 'sequencerChemistry',
-            value: 0,
-            forceSelection: true,
-            allowBlank: false,
-            fieldLabel: 'Chemistry',
-            labelWidth: 65,
-            width: 150,
-            listeners: {
-              change: function (checkbox, newValue, oldValue, eOpts) {
-                var poolGrid = Ext.getCmp('pool-grid');
-                poolGrid.baseColours = me.getBaseColours(newValue);
-                Ext.getCmp('index-generator-grid').fireEvent('reset');
-                poolGrid.getView().refresh();
-              }
-            },
-            listConfig: {
-              getInnerTpl: function () {
-                return '<span data-qtip="{tooltip}">{name}</span>';
-              }
-            }
           },
           {
-            xtype: 'tbseparator'
+            xtype: 'toolbar',
+            dock: 'bottom',
+            items:
+              [
+                {
+                  xtype: 'textfield',
+                  id: 'pool_name',
+                  fieldLabel: 'Pool name',
+                  itemId: 'pool-name',
+                  text: 'Pool name',
+                  labelWidth: 70,
+                  width: 200,
+                  maxLength: 5,
+                  enforceMaxLength: true,
+                  allowBlank: false,
+                  regex: /^[A-Z]+$/,
+                  regexText: 'Only A-Z are allowed',
+                  msgTarget: 'side',
+                  disabled: true
+                },
+                '->',
+                {
+                  xtype: 'button',
+                  id: 'save-pool-button',
+                  itemId: 'save-pool-button',
+                  iconCls: 'fa fa-floppy-o fa-lg',
+                  text: 'Save Pool',
+                  disabled: true
+                }]
           },
-          {
-            xtype: 'numberfield',
-            id: 'minHammingDistanceBox',
-            fieldLabel: '<span data-qtip="Minimum Hamming distance">Min. HD</span>',
-            allowBlank: false,
-            minValue: 1,
-            maxValue: 5,
-            value: 3,
-            labelWidth: 55,
-            width: 125,
-            listeners: {
-              change: function(checkbox, newValue, oldValue, eOpts) {
-                var grid = Ext.getCmp('index-generator-grid');
-                grid.fireEvent('reset');
-                Ext.getCmp('pool-grid').getView().refresh();
-              }
-            }
-          },
-          {
-            xtype: 'tbseparator'
-          },
-          {
-            xtype: 'button',
-            id: 'generate-indices-button',
-            itemId: 'generate-indices-button',
-            iconCls: 'fa fa-cogs fa-lg',
-            text: 'Generate Indices',
-            disabled: true
-          },
-          /* for future:
-          {
-            xtype: 'button',
-            itemId: 'download-index-list-button',
-            text: 'Download Index List (csv)',
-            iconCls: 'fa fa-file-excel-o fa-lg'
-          },
-          */
-          '->',
-          {
-            xtype: 'button',
-            id: 'save-pool-button',
-            itemId: 'save-pool-button',
-            iconCls: 'fa fa-floppy-o fa-lg',
-            text: 'Save Pool',
-            disabled: true
-          }
         ]
       }
     ];
