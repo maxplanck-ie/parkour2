@@ -14,6 +14,7 @@ from django.core.mail.message import EmailMultiAlternatives
 from django.db.models import Prefetch
 from django.http import Http404, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
@@ -222,7 +223,21 @@ class RequestViewSet(viewsets.ModelViewSet):
         "user__cost_unit__organization__name"
     )
 
-    def get_queryset(self, showAll=False, asBioinformatician=False, asHandler=False):
+    def get_queryset(self, request=None):
+
+        showAll = True
+        asBioinformatician = False
+        asHandler = False
+
+        if request:
+            if request.GET.get("showAll") == "False":
+                showAll = False
+
+            if request.GET.get("asBioinformatician") == "True":
+                asBioinformatician = True
+
+            if request.GET.get("asHandler") == "True":
+                asHandler = True
 
         libraries_qs = Library.objects.all().only("status", "sequencing_depth")
         samples_qs = Sample.objects.all().only("status", "sequencing_depth")
@@ -266,20 +281,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     def list(self, request):
         """Get the list of requests."""
 
-        showAll = False
-        asBioinformatician = False
-        asHandler = False
-        
-        if request.GET.get("showAll") == "True":
-            showAll = True
-
-        if request.GET.get("asBioinformatician") == "True":
-            asBioinformatician = True
-
-        if request.GET.get("asHandler") == "True":
-            asHandler = True
-
-        queryset = self.filter_queryset(self.get_queryset(showAll, asBioinformatician, asHandler))
+        queryset = self.filter_queryset(self.get_queryset(request))
 
         try:
             page = self.paginate_queryset(queryset)
@@ -613,7 +615,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):
         """Get the list of attached files for a request with a given id."""
-        instance = self.get_object()
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
         files = instance.files.all().order_by("name")
         serializer = RequestFileSerializer(files, many=True)
         return Response(serializer.data)
@@ -1201,7 +1203,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         bold_font = Font(bold=True)
 
         # Get libraries and samples from sequencing request
-        instance = self.get_object()
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
         libraries = instance.libraries.all().order_by('barcode')
         samples = instance.samples.all().order_by('barcode')
 
