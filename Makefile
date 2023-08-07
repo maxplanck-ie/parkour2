@@ -2,7 +2,7 @@
 SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
 
-deploy: check-rootdir set-prod set-prod-color deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to 127.0.0.1:9980 with initial and required data loaded!
+deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to 127.0.0.1:9980 with initial and required data loaded!
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -22,10 +22,6 @@ set-prod:
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
-
-set-prod-color:
-	@#sed -i 's/base-color: #2ebea6/base-color: #35baf6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
-	@#$(MAKE) update-extjs
 
 deploy-django: deploy-network deploy-containers
 
@@ -92,7 +88,7 @@ down: down-lite  ## Turn off running instance (persisting media & staticfiles' v
 
 clean:
 	@sleep 1s
-	@$(MAKE) set-prod set-prod-color unset-caddy > /dev/null
+	@$(MAKE) set-prod unset-caddy > /dev/null
 
 sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
@@ -105,13 +101,13 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: down set-prod set-prod-color deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-try-prod: down set-dev set-prod-color set-caddy deploy-django deploy-caddy collect-static
+try-prod: down set-dev set-caddy deploy-django deploy-caddy collect-static
 
-dev-easy: down set-dev set-dev-color set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev set-dev-color deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev: unset-caddy
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
@@ -120,10 +116,6 @@ set-dev: unset-caddy
 	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
-
-set-dev-color:
-	@#sed -i 's/base-color: #35baf6/base-color: #2ebea6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
-	@#$(MAKE) update-extjs
 
 set-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
@@ -228,10 +220,10 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod set-prod-color deploy-django
+djtest: down set-prod deploy-django
 	@docker compose exec parkour2-django python manage.py test --parallel
 
-set-testing: set-prod set-prod-color
+set-testing: set-prod
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1testing/' misc/parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1testing\2/' Dockerfile
 
