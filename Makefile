@@ -201,18 +201,16 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
-VM_PROD := root@parkour
-
 import-media:
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
-		${VM_PROD}:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
+		root@parkour:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
 
 import-pgdb:
-	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
+	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
 	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='*.sqldump' \
 		--exclude='*.conf' --exclude='*.pem' --exclude='*.yml' \
 		--exclude='*.txt' --exclude='*.json' --exclude='*.env' \
-		${VM_PROD}:~/parkour2/misc/ misc/
+		root@parkour:~/parkour2/misc/ misc/
 
 # git-release:
 # 	@echo '# Release'
