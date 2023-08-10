@@ -8,7 +8,8 @@ def pretest_login(page: Page):
     inputPassword = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
 
-    page.goto("http://127.0.0.1:9980/login")
+    # page.goto("http://127.0.0.1:9980/login")
+    page.goto("http://0.0.0.0:8000/login")
     inputEmail.fill(testEmailID)
     inputPassword.fill(testPassword)
     loginButton.click()
