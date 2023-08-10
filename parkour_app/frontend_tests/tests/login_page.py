@@ -10,8 +10,8 @@ def test_login_page(page: Page):
     inputPassword = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
 
-    page.goto("http://127.0.0.1:9980/login")
-    # page.goto("http://0.0.0.0:8000/login")
+    # page.goto("http://127.0.0.1:9980/login")
+    page.goto("http://0.0.0.0:8000/login")
     expect(page.locator("h2.form-signin-heading")).to_have_text("Parkour")
 
     inputEmail.fill(wrongEmailId)
