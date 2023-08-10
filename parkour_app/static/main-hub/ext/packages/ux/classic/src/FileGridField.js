@@ -75,7 +75,7 @@ Ext.define('Ext.ux.FileGridField', {
         '->',
         {
           xtype: 'button',
-          text: 'Add files',
+          text: 'Add Files',
           handler: function () {
             Ext.widget({
               xtype: 'window',
