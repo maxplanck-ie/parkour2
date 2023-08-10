@@ -9,7 +9,7 @@ services:
       - "9980:9980"
       - "9981:9981"
     volumes:
-      - ./misc/caddyfile.in.use:/etc/caddy/Caddyfile
+      - ./misc/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
       - parkour2_media:/parkour2/media
