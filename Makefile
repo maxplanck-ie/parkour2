@@ -104,9 +104,9 @@ clearpy:
 
 prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-try-prod: down set-dev set-caddy deploy-django deploy-caddy collect-static
+try-prod: down set-dev deploy-django deploy-caddy collect-static
 
-dev-easy: down set-dev set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
 dev: down set-dev deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
@@ -118,8 +118,8 @@ set-dev: unset-caddy
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 
-set-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
+add-pgadmin-caddy:
+	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile_with_pgadmin\:/" caddy.yml
 
 unset-caddy:
 	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
@@ -136,6 +136,7 @@ deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
 	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
 	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
+	@[[ $${CONTAINERS[*]} =~ caddy ]] && $(MAKE) add-pgadmin-caddy || :
 
 add-pgadmin-nginx:
 	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
