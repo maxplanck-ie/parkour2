@@ -1,9 +1,4 @@
-misc/*.env
-misc/*.pem
-misc/*.txt
-misc/*.tar.gz
-misc/*-dump.json
-misc/*.sqldump
+misc/
 *_dump/
 *_dumps/
 rsnapshot/
@@ -17,6 +12,5 @@ models*.pdf
 models.png
 models.svg
 models.dot
-Dockerfile
-parkour_app/static/main-hub/
+parkour_app/static/
 parkour_app/coverage_html_report/
