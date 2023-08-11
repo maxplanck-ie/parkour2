@@ -20,4 +20,4 @@ models.dot
 Dockerfile
 parkour_app/static/main-hub/
 parkour_app/coverage_html_report/
-parkour_app/playwright/test-results/
+test-results/
