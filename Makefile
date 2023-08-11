@@ -89,7 +89,7 @@ down: down-lite  ## Turn off running instance (persisting media & staticfiles' v
 
 clean:
 	@sleep 1s
-	@$(MAKE) set-prod unset-caddy > /dev/null
+	@$(MAKE) set-prod hardreset-caddyfile > /dev/null
 
 sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
@@ -110,7 +110,7 @@ dev-easy: down set-dev deploy-django deploy-caddy collect-static  ## Deploy Werk
 
 dev: down set-dev deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
-set-dev: unset-caddy
+set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
@@ -118,11 +118,11 @@ set-dev: unset-caddy
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 
-add-pgadmin-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile_with_pgadmin\:/" caddy.yml
+add-pgadmin-caddy: hardreset-caddyfile
+	@echo -e "\nhttp://127.0.0.1:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
 
-unset-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
+hardreset-caddyfile:
+	@echo -e "http://127.0.0.1:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}\n" > misc/Caddyfile
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d

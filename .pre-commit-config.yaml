@@ -18,13 +18,13 @@ repos:
         pass_filenames: false
         files: Dockerfile|docker-compose\.yml
         args: ['set-prod']
-    -   id: set-prod-docker
-        name: unset-caddy
+    -   id: hardreset-caddyfile
+        name: hardreset-caddyfile
         entry: /usr/bin/make
         language: script
         pass_filenames: false
-        files: caddy\.yml
-        args: ['unset-caddy']
+        files: misc/Caddyfile
+        args: ['hardreset-caddyfile']
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
