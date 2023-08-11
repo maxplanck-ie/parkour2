@@ -1,4 +1,5 @@
 import csv
+
 import test_utils
 from playwright.sync_api import Page, expect
 import pytest
@@ -12,6 +13,7 @@ def browser_context_args(browser_context_args):
             "height": 720,
         }
     }
+
 
 def test_requests(page: Page):
     test_utils.pretest_login(page)
@@ -52,12 +54,16 @@ def test_requests(page: Page):
     libraryCardButton.click()
     expect(page.get_by_text("Add Libraries")).to_be_visible()
     createEmptyRowInput.fill("1")
-    with open('../data/library_request.csv', newline='', encoding='utf-8') as library_csv_file:
-        spamreader = csv.reader(library_csv_file, delimiter=',', quotechar='"')
+    with open(
+        "../data/library_request.csv", newline="", encoding="utf-8"
+    ) as library_csv_file:
+        spamreader = csv.reader(library_csv_file, delimiter=",", quotechar='"')
         for index, row in enumerate(spamreader):
             if index > 0:
                 createEmptyRowButton.click()
-                editRow = page.locator("div.x-grid-cell-inner-row-numberer").get_by_text(str(index))
+                editRow = page.locator(
+                    "div.x-grid-cell-inner-row-numberer"
+                ).get_by_text(str(index))
                 editRow.click()
                 nameInput.fill(row[0])
                 libraryProtocolInput.fill(row[1])
@@ -89,12 +95,16 @@ def test_requests(page: Page):
     sampleCardButton.click()
     expect(page.get_by_text("Add Samples")).to_be_visible()
     createEmptyRowInput.fill("1")
-    with open('../data/sample_request.csv', newline='', encoding='utf-8') as sample_csv_file:
-        spamreader = csv.reader(sample_csv_file, delimiter=',', quotechar='"')
+    with open(
+        "../data/sample_request.csv", newline="", encoding="utf-8"
+    ) as sample_csv_file:
+        spamreader = csv.reader(sample_csv_file, delimiter=",", quotechar='"')
         for index, row in enumerate(spamreader):
             if index > 0:
                 createEmptyRowButton.click()
-                editRow = page.locator("div.x-grid-cell-inner-row-numberer").get_by_text(str(index))
+                editRow = page.locator(
+                    "div.x-grid-cell-inner-row-numberer"
+                ).get_by_text(str(index))
                 editRow.click()
                 nameInput.fill(row[0])
                 nucleicAcidInput.fill(row[1])
