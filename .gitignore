@@ -21,3 +21,4 @@ Dockerfile
 parkour_app/static/main-hub/
 parkour_app/coverage_html_report/
 test-results/
+.*_cache/

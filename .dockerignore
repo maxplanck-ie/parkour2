@@ -15,3 +15,4 @@ models.dot
 parkour_app/static/
 parkour_app/coverage_html_report/
 **/test-results/
+**/.*_cache/
