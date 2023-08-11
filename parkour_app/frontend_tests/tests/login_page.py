@@ -1,17 +1,27 @@
 from playwright.sync_api import Page, expect
 import test_utils
+import pytest
+
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    return {
+        **browser_context_args,
+        "viewport": {
+            "width": 1280,
+            "height": 720,
+        }
+    }
 
 def test_login_page(page: Page):
     wrongEmailId = "wrong.email.id@test.com"
-    wrongPassword = "WrongPassword!1"
+    wrongPassword = "wrong.password"
     correctEmailId = test_utils.testEmailID
     correctPassword = test_utils.testPassword
     inputEmail = page.locator("input#id_username")
     inputPassword = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
 
-    # page.goto("http://127.0.0.1:9980/login")
-    page.goto("http://0.0.0.0:8000/login")
+    test_utils.visit_login_page(page)
     expect(page.locator("h2.form-signin-heading")).to_have_text("Parkour")
 
     inputEmail.fill(wrongEmailId)
