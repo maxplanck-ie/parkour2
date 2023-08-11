@@ -29,7 +29,7 @@ deploy-network:
 	@docker network create parkour2
 
 deploy-containers:
-	@docker compose build -q
+	@docker compose build
 	@docker compose up -d
 
 deploy-ready: apply-migrations collect-static
