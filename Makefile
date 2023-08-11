@@ -1,6 +1,7 @@
 .PHONY: *
 SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
+NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
 
 deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to 127.0.0.1:9980 with initial and required data loaded!
 
@@ -239,7 +240,7 @@ create_admin:
 			python manage.py createsuperuser --no-input"
 
 playwright: down set-testing-front deploy-django apply-migrations load-fixtures create_admin
-	@docker compose exec parkour2-django pytest -n auto -c playwright.ini
+	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
 
 coverage-xml: down set-testing deploy-django
 	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
