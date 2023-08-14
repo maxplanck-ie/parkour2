@@ -44,11 +44,13 @@ CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--
 
 FROM pk2_base AS pk2_playwright
 
-RUN apt-get update --fix-missing \
-    && apt-get install -y --no-install-recommends \
-       xauth \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+
+## xvfb-run 
+# RUN apt-get update --fix-missing \
+#     && apt-get install -y --no-install-recommends \
+#        xauth \
+#     && apt-get clean \
+#     && rm -rf /var/lib/apt/lists/*
 
 RUN playwright install-deps firefox \
         && playwright install firefox
