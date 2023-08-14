@@ -5,8 +5,7 @@ testPassword = "testing.password"
 
 
 def visit_login_page(page):
-    # page.goto("http://127.0.0.1:9980/login")
-    page.goto("http://0.0.0.0:8000/login")
+    page.goto("http://parkour2-caddy:9980/login")
 
 
 def pretest_login(page: Page):

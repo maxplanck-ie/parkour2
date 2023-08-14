@@ -32,6 +32,9 @@ services:
     depends_on:
       parkour2-postgres:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 
 volumes:
   pgdb:
