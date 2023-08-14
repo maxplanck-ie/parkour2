@@ -39,5 +39,5 @@ volumes:
   staticfiles:
 
 networks:
-  parkour2:
+  parkour2_default:
     external: true
