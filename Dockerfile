@@ -50,6 +50,5 @@ RUN apt-get update --fix-missing \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,target=/root/.cache\
-    playwright install-deps chromium \
-        && playwright install chromium
+RUN playwright install-deps firefox \
+        && playwright install firefox
