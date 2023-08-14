@@ -33,3 +33,6 @@ NOTEBOOK_ARGUMENTS += [
     "0.0.0.0",
     "--allow-root",
 ]
+
+if SECRET_KEY == "94e9206c6a0ac99409aa":
+    raise RuntimeError("Can't run production with hard-coded SECRET_KEY")
