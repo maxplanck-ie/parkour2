@@ -119,10 +119,10 @@ set-dev:
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 
 add-pgadmin-caddy: hardreset-caddyfile
-	@echo -e "\nhttp://127.0.0.1:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
+	@echo -e "\nhttp://*:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
 
 hardreset-caddyfile:
-	@echo -e "http://127.0.0.1:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}\n" > misc/Caddyfile
+	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}\n" > misc/Caddyfile
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
