@@ -43,5 +43,13 @@ ENV \
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 FROM pk2_base AS pk2_playwright
-RUN playwright install-deps \
-    && playwright install
+
+RUN apt-get update --fix-missing \
+    && apt-get install -y --no-install-recommends \
+       xauth \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN --mount=type=cache,target=/root/.cache\
+    playwright install-deps chromium \
+        && playwright install chromium
