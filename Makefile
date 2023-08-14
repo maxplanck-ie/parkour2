@@ -243,7 +243,7 @@ create-admin:
 playwright: down set-testing-front deploy-django deploy-caddy collect-static apply-migrations load-fixtures create-admin set-prod e2e
 
 e2e:
-	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
+	@docker compose exec parkour2-django xvfb-run pytest -n $(NcpuThird) -c playwright.ini
 
 coverage-xml: down set-testing deploy-django
 	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
