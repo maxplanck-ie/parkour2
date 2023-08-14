@@ -26,5 +26,5 @@ volumes:
     external: true
 
 networks:
-  parkour2:
+  parkour2_default:
     external: true
