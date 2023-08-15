@@ -336,8 +336,8 @@ env-setup-dev:
 	deactivate
 
 open-pr:
-	@git pull && git push && git pull origin main
-	@gh pr create --title "quick upgrade" --fill -B main
+	@git pull && git push && git pull origin develop
+	@gh pr create --title "quick upgrade" --fill -B develop
 	@echo "Info: Pull Request OPENED"
 
 # merge-pr:
