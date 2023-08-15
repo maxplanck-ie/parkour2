@@ -17,6 +17,7 @@ on:
 
 jobs:
   build-and-test:
+    if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -92,5 +93,4 @@ jobs:
           docker cp misc/Caddyfile caddy:/etc/caddy/Caddyfile
           #python parkour_app/manage.py collectstatic
           HOSTNAME=parkour2-django pytest -n auto -c parkour_app/playwright.ini
-
 
