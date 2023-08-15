@@ -1,6 +1,7 @@
-from playwright.sync_api import Page, expect
-import test_utils
 import pytest
+import test_utils
+from playwright.sync_api import Page, expect
+
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
@@ -9,8 +10,9 @@ def browser_context_args(browser_context_args):
         "viewport": {
             "width": 1280,
             "height": 720,
-        }
+        },
     }
+
 
 def test_login_page(page: Page):
     wrongEmailId = "wrong.email.id@test.com"
@@ -27,7 +29,9 @@ def test_login_page(page: Page):
     inputEmail.fill(wrongEmailId)
     inputPassword.fill(wrongPassword)
     loginButton.click()
-    expect(page.get_by_text("Your username and password didn't match. Please try again.")).to_be_visible()
+    expect(
+        page.get_by_text("Your username and password didn't match. Please try again.")
+    ).to_be_visible()
 
     inputEmail.fill(correctEmailId)
     inputPassword.fill(correctPassword)
