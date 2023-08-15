@@ -2,7 +2,7 @@ import csv
 import os
 
 import pytest
-import test_utils
+import utilities
 from playwright.sync_api import Page, expect
 
 
@@ -18,7 +18,7 @@ def browser_context_args(browser_context_args):
 
 
 def test_requests(page: Page):
-    test_utils.pretest_login(page)
+    utilities.pretest_login(page)
 
     addRequestButton = page.locator("a.pl-add-request-button")
     descriptionTextarea = page.locator("div.pl-description>div>div>div>textarea")

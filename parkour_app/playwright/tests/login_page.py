@@ -1,5 +1,5 @@
 import pytest
-import test_utils
+import utilities
 from playwright.sync_api import Page, expect
 
 
@@ -17,13 +17,13 @@ def browser_context_args(browser_context_args):
 def test_login_page(page: Page):
     wrongEmailId = "wrong.email.id@test.com"
     wrongPassword = "wrong.password"
-    correctEmailId = test_utils.testEmailID
-    correctPassword = test_utils.testPassword
+    correctEmailId = utilities.testEmailID
+    correctPassword = utilities.testPassword
     inputEmail = page.locator("input#id_username")
     inputPassword = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
 
-    test_utils.visit_login_page(page)
+    utilities.visit_login_page(page)
     expect(page.locator("h2.form-signin-heading")).to_have_text("Parkour")
 
     inputEmail.fill(wrongEmailId)
