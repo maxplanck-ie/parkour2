@@ -52,5 +52,4 @@ FROM pk2_base AS pk2_playwright
 #     && apt-get clean \
 #     && rm -rf /var/lib/apt/lists/*
 
-RUN playwright install-deps firefox \
-        && playwright install firefox
+RUN python -m playwright install --with-deps firefox
