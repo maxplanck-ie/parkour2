@@ -22,7 +22,7 @@
 ## Testing
 
 - **new rule: pytest**, to run tests with pytest using 2 cores
-- **new rule: playwright**, to run end-to-end tests (frontend), for now only 1 simple test implemented.
+- **new rule: playwright**, to run end-to-end tests (frontend), for now 2 test were implemented.
 - added django-linear-migrations to development, to ease up fixing merge conflicts if we were to change models on different git branches.
 - added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
 - The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
@@ -37,6 +37,9 @@
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
 - rule `models` now generates 3 PDF files, one is a simple A4 sheet for quick preview, and the other two are for printing posters in A1 size using multiple sheets in either A4 or A3 sizes.
 
+## Changes
+
+- Submission of sample and libraries updated, we are hardcoding values for columns that were hidden in frontend.
 
 0.3.9
 =====
