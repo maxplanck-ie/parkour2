@@ -83,12 +83,11 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          docker run -d \
-            -v ./parkour_app/staticfiles/:/parkour2/static \
+          docker run -d -p 9980:9980 \
+            -v staticfiles:/parkour2/static \
             -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
-            -p 9980:9980 \
             caddy
-          python -m playwright install --with-deps firefox
           python parkour_app/manage.py collectstatic
+          python -m playwright install --with-deps firefox
           pytest -n auto -c parkour_app/playwright.ini
 
