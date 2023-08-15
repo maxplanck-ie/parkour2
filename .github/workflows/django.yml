@@ -91,6 +91,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
+          python parkour_app/manage.py collectstatic
           HOSTNAME=parkour2-django pytest -n auto -c parkour_app/playwright.ini
 
 
