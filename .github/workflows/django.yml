@@ -28,7 +28,7 @@ jobs:
         ports:
           - 9980/tcp
         volumes:
-          - ./misc/Caddyfile:/etc/caddy/Caddyfile
+          - ${{ github.workspace }}/misc/Caddyfile:/etc/caddy/Caddyfile
       postgres:
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
