@@ -28,6 +28,14 @@ Ext.define('MainHub.view.main.MainController', {
         if (!USER.is_staff) {
             Ext.getCmp('adminSiteBtn').hide();
         }
+
+        var refs = me.getReferences();
+        if (refs.navigationTreeList.getWidth() === 64) {
+            refs.logo.addCls('logo-collapsed');
+            refs.navigationTreeList.expandedWidth = 300;
+            refs.navigationTreeList.setMicro(true);
+        }
+
     },
 
     onNavigationTreeSelectionChange: function(tree, node) {
@@ -45,6 +53,9 @@ Ext.define('MainHub.view.main.MainController', {
             wrapContainer = refs.mainContainerWrap,
             collapsing = !navigationList.getMicro(),
             new_width = collapsing ? 64 : 300;
+
+        Ext.util.Cookies.set('navPanelState', collapsing ? "collapsed" : "extended",
+            new Date(Ext.Date.now() + (1000 * 60 * 60 * 24 * 90))); // 90 days
 
         if (Ext.isIE9m || !Ext.os.is.Desktop) {
             Ext.suspendLayouts();

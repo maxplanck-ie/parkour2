@@ -47,7 +47,8 @@ Ext.define('MainHub.view.main.Main', {
                     reference: 'logo',
                     cls: 'main-logo',
                     html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div class="title">Parkour LIMS</div></div>',
-                    width: 300
+                    width: 300,
+                    listeners: { beforerender: function (cmp) { cmp.width = cmp.up().up().down('#navigationTreeList').getWidth() } }
                 },
                 {
                     margin: '0 0 0 8',
@@ -99,7 +100,7 @@ Ext.define('MainHub.view.main.Main', {
                     itemId: 'navigationTreeList',
                     ui: 'navigation',
                     store: 'NavigationTree',
-                    width: 300,
+                    width: Ext.util.Cookies.get('navPanelState') !== 'extended' ? 64 : 300,
                     expanderFirst: false,
                     expanderOnly: false,
                     listeners: {
