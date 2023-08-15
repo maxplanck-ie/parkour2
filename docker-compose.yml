@@ -19,6 +19,7 @@ services:
 
   parkour2-django:
     container_name: parkour2-django
+    hostname: parkour2-django
     build:
       dockerfile: ./Dockerfile
       target: pk2_base
