@@ -76,20 +76,19 @@ jobs:
         run: |
           python parkour_app/manage.py validate_templates
 
-      - name: Install Playwright with dependencies
-        run: |
-          pip install -r parkour_app/requirements/testing.txt
-          python -m playwright install --with-deps firefox
       - name: Run end-to-end tests
         env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DJANGO_SETTINGS_MODULE: wui.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          #python parkour_app/manage.py collectstatic
-          HOSTNAME=parkour2-django pytest -n auto -c parkour_app/playwright.ini
           docker run -d 
             -v ./parkour_app/staticfiles/:/parkour2/static \
             -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
             -p 9980:9980 \
             caddy
+          pip install -r parkour_app/requirements/testing.txt
+          python -m playwright install --with-deps firefox
+          python parkour_app/manage.py collectstatic
+          pytest -n auto -c parkour_app/playwright.ini
+
