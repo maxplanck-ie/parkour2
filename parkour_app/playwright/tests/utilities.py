@@ -1,3 +1,5 @@
+from platform import node as nodename
+
 from playwright.sync_api import Page
 
 testEmailID = "test.user@test.com"
@@ -5,7 +7,14 @@ testPassword = "testing.password"
 
 
 def visit_login_page(page):
-    page.goto("http://parkour2-caddy:9980/login")
+    hostname = os.getenv("HOSTNAME", nodename())
+    if hostname == "parkour2-django":
+        # relying on docker network and extra_hosts field at compose
+        page.goto("http://parkour2-caddy:9980/login")
+    else:
+        # assuming we're outside our docker container
+        # where HOSTNAME may be defined, e.g. on the CI
+        page.goto("http://" + hostname + ":9980/login")
 
 
 def pretest_login(page: Page):
