@@ -24,10 +24,6 @@ jobs:
       matrix:
         python-version: [3.9, '3.10', 3.11]
     services:
-      caddy:
-        image: caddy:latest
-        ports:
-          - 9980/tcp
       postgres:
         env:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -90,7 +86,10 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          docker cp misc/Caddyfile caddy:/etc/caddy/Caddyfile
           #python parkour_app/manage.py collectstatic
           HOSTNAME=parkour2-django pytest -n auto -c parkour_app/playwright.ini
-
+          docker run -d 
+            -v ./parkour_app/staticfiles/:/parkour2/static \
+            -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
+            -p 9980:9980 \
+            caddy
