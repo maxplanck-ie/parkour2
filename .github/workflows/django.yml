@@ -3,8 +3,7 @@ name: Test suite
 on:
   workflow_dispatch:
   push:
-    branches
-    tags
+    branches: ['develop']
   pull_request:
     types:
       - opened
