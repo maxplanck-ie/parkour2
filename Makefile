@@ -34,9 +34,6 @@ deploy-containers:
 	@docker compose up -d
 
 deploy-ready: apply-migrations collect-static
-	@docker compose exec parkour2-django find . -maxdepth 1 -mindepth 1 -type d \
-		! -name media ! -name staticfiles ! -name logs ! -name htmlcov \
-		-exec tar czf media/current_code_snapshot.tar.gz {} \+
 
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
