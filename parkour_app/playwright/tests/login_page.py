@@ -6,8 +6,8 @@ from playwright.sync_api import Page, expect
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
     my_screen_size = {
-        "width": 1280,
-        "height": 720,
+        "width": 2560,
+        "height": 1440,
     }
     return {
         **browser_context_args,
