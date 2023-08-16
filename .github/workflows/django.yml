@@ -96,7 +96,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
+          name: test-suite-report
           if-no-files-found: ignore  ## remove this line asap (default: warn)
           path: |
             parkour_app/playwright/videos/
