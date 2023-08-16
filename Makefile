@@ -85,7 +85,7 @@ down-lite: clearpy
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
 clean:
-	@sleep 1s
+	@rm -f parkour_app/logs/*.log && sleep 1s
 	@$(MAKE) set-prod hardreset-caddyfile > /dev/null
 
 sweep:
