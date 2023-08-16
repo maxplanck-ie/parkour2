@@ -1,4 +1,4 @@
-name: Backend Tests
+name: Frontend Tests
 
 on:
   workflow_dispatch:
@@ -12,8 +12,7 @@ on:
       - ready_for_review
       - closed
 
-# Interestingly... defining env vars here is broken...
-# https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
+# TODO: there is no badge in the readme yet
 
 jobs:
   build-and-test:
@@ -50,30 +49,28 @@ jobs:
           pip install -r parkour_app/requirements/prod.txt
 
 
-      - name: Verify migrations
+      - name: Run end-to-end tests
         env:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          python parkour_app/manage.py makemigrations --no-input --check --dry-run
-
-
-      - name: Validate templates
-        env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
-          python parkour_app/manage.py validate_templates
-
-
-      - name: Run unittests
-        env:
-          DJANGO_SETTINGS_MODULE: wui.settings.testing
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
+          docker run -d -p 9980:9980 \
+            -v staticfiles:/parkour2/static \
+            -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
+            caddy
           pip install -r parkour_app/requirements/testing.txt
-          python parkour_app/manage.py test parkour_app --parallel
+          python -m playwright install --with-deps firefox
+          python parkour_app/manage.py collectstatic
+          pytest -n auto -c parkour_app/playwright.ini
 
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-suite-report
+          if-no-files-found: ignore  ## remove this line asap (default: warn)
+          path: |
+            parkour_app/playwright/videos/
+            ## add trace.zip (only in Npx version?)
+          retention-days: 30
