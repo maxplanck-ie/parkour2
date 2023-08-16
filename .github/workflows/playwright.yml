@@ -52,7 +52,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r parkour_app/requirements/testing.txt
           python -m playwright install --with-deps firefox
-          python parkour_app/manage.py collectstatic
 
       - name: Run end-to-end tests
         env:
@@ -60,6 +59,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
+          python parkour_app/manage.py collectstatic --no-input
           pytest -n auto -c parkour_app/playwright.ini
 
 
