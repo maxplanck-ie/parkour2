@@ -90,6 +90,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
+          pip install -r parkour_app/requirements/testing.txt
           python parkour_app/manage.py test parkour_app --parallel
 
 
