@@ -44,7 +44,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          docker run -d -p 9980:9980 \
+          docker run --name=pk2_caddy -d -p 9980:9980 \
             -v staticfiles:/parkour2/static \
             -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
             caddy
@@ -60,7 +60,8 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
           python parkour_app/manage.py collectstatic --no-input
-          pytest -n auto -c parkour_app/playwright.ini
+          docker ps
+          HOSTNAME=pk2_caddy pytest -n auto -c parkour_app/playwright.ini
 
 
       - uses: actions/upload-artifact@v3
