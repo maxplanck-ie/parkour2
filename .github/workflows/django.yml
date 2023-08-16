@@ -81,7 +81,7 @@ jobs:
           pip install -r parkour_app/requirements/testing.txt
           python -m playwright install --with-deps firefox
           python parkour_app/manage.py collectstatic
-          pytest -n auto -c parkour_app/playwright.ini
+          pytest -n auto --slowmo 500 --video on -c parkour_app/playwright.ini
 
 
       - name: Run unittests
@@ -92,3 +92,14 @@ jobs:
         run: |
           python parkour_app/manage.py test parkour_app --parallel
 
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          if-no-files-found: ignore  ## remove this line asap (default: warn)
+          path: |
+            parkour_app/playwright/videos/
+            ## add trace.zip (only in Npx version?)
+            ## parkour_app/coverage_html_report/  # not generated (yet?)
+          retention-days: 30
