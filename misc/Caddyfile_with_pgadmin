@@ -1,4 +1,4 @@
-http://127.0.0.1:9980 {
+http://*:9980 {
 	handle /static/* {
 		root * /parkour2
 		file_server
@@ -13,7 +13,7 @@ http://127.0.0.1:9980 {
 	log
 }
 
-http://127.0.0.1:9981 {
+http://*:9981 {
 	handle {
 		reverse_proxy parkour2-pgadmin:8080
 	}

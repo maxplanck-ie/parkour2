@@ -3,7 +3,7 @@ SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
 NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
 
-deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to 127.0.0.1:9980 with initial and required data loaded!
+deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
