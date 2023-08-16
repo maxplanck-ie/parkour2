@@ -34,9 +34,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
-    
-    
+
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -52,6 +51,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r parkour_app/requirements/testing.txt
           python -m playwright install --with-deps firefox
+
 
       - name: Run end-to-end tests
         env:
