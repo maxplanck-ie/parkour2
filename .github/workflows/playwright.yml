@@ -43,25 +43,24 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          docker run --name=pk2_caddy -d -p 9980:9980 \
-            -v staticfiles:/parkour2/static \
-            -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
-            caddy
-          python -m pip install --upgrade pip
-          pip install -r parkour_app/requirements/testing.txt
-          python -m playwright install --with-deps firefox
+        run: make playwright
+      #     docker run -d -p 9980:9980 \
+      #       -v staticfiles:/parkour2/static \
+      #       -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
+      #       --name=pk2_caddy caddy:latest
+      #     python -m pip install --upgrade pip
+      #     pip install -r parkour_app/requirements/testing.txt
+      #     python -m playwright install --with-deps firefox
 
 
-      - name: Run end-to-end tests
-        env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-        run: |
-          python parkour_app/manage.py collectstatic --no-input
-          docker ps
-          HOSTNAME=pk2_caddy pytest -n auto -c parkour_app/playwright.ini
+      # - name: Run end-to-end tests
+      #   env:
+      #     DJANGO_SETTINGS_MODULE: wui.settings.prod
+      #     DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+      #     SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      #   run: |
+      #     python parkour_app/manage.py collectstatic --no-input
+      #     HOSTNAME=pk2_caddy pytest -n auto -c parkour_app/playwright.ini
 
 
       - uses: actions/upload-artifact@v3
