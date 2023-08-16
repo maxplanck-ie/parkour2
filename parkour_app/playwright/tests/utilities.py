@@ -8,13 +8,13 @@ testPassword = "testing.password"
 
 
 def visit_login_page(page):
-    hostname = getenvvar("HOSTNAME", "localhost")
     if nodename() == "parkour2-django":
         # relying on docker network and extra_hosts field at compose
         page.goto("http://parkour2-caddy:9980/login")
     else:
         # assuming we're outside our docker container
         # where HOSTNAME may be defined, e.g. on the CI
+        hostname = getenvvar("HOSTNAME", "localhost")
         page.goto("http://" + hostname + ":9980/login")
 
 
