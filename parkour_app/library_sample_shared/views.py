@@ -1,6 +1,7 @@
 import json
 import logging
 
+from common.utils import retrieve_group_items
 from common.views import StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings
@@ -198,7 +199,10 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
             request_queryset = Request.objects.all().order_by("-create_time")
 
         if not request.user.is_staff:
-            request_queryset = request_queryset.filter(user=request.user)
+            if not request.user.is_pi:
+                queryset = queryset.filter(user=request.user)
+            else:
+                queryset = retrieve_group_items(request, queryset)
 
         for request_obj in request_queryset:
             # TODO: sort by item['barcode'][3:]

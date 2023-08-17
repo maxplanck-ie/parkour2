@@ -31,6 +31,7 @@
 
 ## Improvements
 
+- New permission for users 'Access as PI', grants them the ability to see all requests shared under their PrincipalInvestigator, whichever that is.
 - Fixtures (JSON) are in long format now, and a new django-admin custom command `save_demo_data` is available to share some of our data to other research facilities.
 - Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
 - **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))

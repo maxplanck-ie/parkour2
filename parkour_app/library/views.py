@@ -1,5 +1,6 @@
 import logging
 
+from common.utils import retrieve_group_items
 from django.apps import apps
 from django.db.models import Prefetch
 from library_sample_shared.views import LibrarySampleBaseViewSet
@@ -35,7 +36,10 @@ class LibrarySampleTree(viewsets.ViewSet):
         if not showAll:
             queryset = queryset.filter(sequenced=False)
         if not self.request.user.is_staff:
-            queryset = queryset.filter(user=self.request.user)
+            if not self.request.user.is_pi:
+                queryset = queryset.filter(user=self.request.user)
+            else:
+                queryset = retrieve_group_items(self.request, queryset)
 
         return queryset
 
@@ -74,7 +78,10 @@ class LibrarySampleTree(viewsets.ViewSet):
             )
 
             if not self.request.user.is_staff:
-                queryset = queryset.filter(user=self.request.user)
+                if not self.request.user.is_pi:
+                    queryset = queryset.filter(user=self.request.user)
+                else:
+                    queryset = retrieve_group_items(self.request, queryset)
 
             queryset = queryset.first()
             serializer = RequestChildrenNodesSerializer(queryset)

@@ -70,6 +70,8 @@ class User(AbstractEmailUser):
         blank=True,
     )
 
+    is_pi = models.BooleanField("PI Account", default=False)
+
     cost_unit = models.ManyToManyField(
         CostUnit,
         verbose_name="Cost Unit",

@@ -169,6 +169,7 @@ class UserAdmin(NamedUserAdmin):
             {
                 "fields": (
                     "is_active",
+                    "is_pi",
                     "is_staff",
                     "is_superuser",
                     "groups",

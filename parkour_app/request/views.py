@@ -5,6 +5,7 @@ import os
 from unicodedata import normalize
 
 from common.serializers import UserSerializer
+from common.utils import retrieve_group_items
 from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings
@@ -201,9 +202,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         if self.request.user.is_staff:
             pass
         else:
-            queryset = queryset.filter(user=self.request.user)
-
-        # queryset = [x for x in queryset if x.statuses.count(5)==0]
+            if not self.request.user.is_pi:
+                queryset = queryset.filter(user=self.request.user)
+            else:
+                queryset = retrieve_group_items(self.request, queryset)
 
         return queryset
 
