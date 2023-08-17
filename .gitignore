@@ -20,6 +20,5 @@ models.dot
 Dockerfile
 parkour_app/static/main-hub/
 parkour_app/coverage_html_report/
-parkour_app/playwright/results/videos/
 parkour_app/playwright/results/playwright-tests-*/
 .*_cache/

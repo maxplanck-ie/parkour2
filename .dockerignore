@@ -14,6 +14,5 @@ models.svg
 models.dot
 parkour_app/static/
 parkour_app/coverage_html_report/
-parkour_app/playwright/results/videos/
 parkour_app/playwright/results/playwright-tests-*/
 **/.*_cache/
