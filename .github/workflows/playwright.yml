@@ -44,8 +44,8 @@ jobs:
         #   python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-        ln -s misc/parkour.env misc/parkour.env.sample
-        make playwright
+          ln -s misc/parkour.env misc/parkour.env.sample
+          make playwright
       #     docker run -d -p 9980:9980 \
       #       -v staticfiles:/parkour2/static \
       #       -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
