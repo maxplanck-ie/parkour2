@@ -2,7 +2,9 @@
     <a href="https://results.pre-commit.ci/latest/github/maxplanck-ie/parkour2/develop">
     <img alt="pre-commit ci status" src="https://results.pre-commit.ci/badge/github/maxplanck-ie/parkour2/develop.svg"></a>
     <a href="https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml">
-    <img alt="github ci status" src="https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg"></a>
+    <img alt="backend ci status" src="https://github.com/maxplanck-ie/parkour2/actions/workflows/django.yml/badge.svg"></a>
+    <a href="https://github.com/maxplanck-ie/parkour2/actions/workflows/playwright.yml">
+    <img alt="frontend ci status" src="https://github.com/maxplanck-ie/parkour2/actions/workflows/playwright.yml/badge.svg"></a>
     <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/maxplanck-ie/parkour2">
     <img alt="GitHub issues" src="https://img.shields.io/github/issues/maxplanck-ie/parkour2">
 </div>
