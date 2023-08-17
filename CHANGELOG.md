@@ -1,13 +1,17 @@
 <!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
 
-0.4.0 (no tag yet //WIP// current develop branch)
-=====
+23.08.17
+========
 
-**Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...0.4.0
+**Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...23.08.17
 
-> **IMPORTANT**: `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration. This way we are prepared for upcoming Django 4.2
+## Important News
 
-> **NOTICE**: Ever since our pre-relased 0.3.9 version, some seemingly redundant files corresponding to our frontend were removed. **We did our best to fix any issues in this release**. Yet, if you see a blank page on a fresh installation, please check the browser console (e.g. pressing F12) and [file a new issue](https://github.com/maxplanck-ie/parkour2/issues/new) with the corresponding log message (e.g. pressing F12 and looking for the 'could not load **.js' or 'file not found' error messages.)
+- We abandoned semantic versioning, from now on we will use dates. This is displayed on the `login.html`, righ above where users input their credentials.
+
+- `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration. This way we are prepared for upcoming Django 4.2
+
+- Ever since our pre-relased 0.3.9 version, some seemingly redundant files corresponding to our frontend were removed. **We did our best to fix any issues in this release**. Yet, if you see a blank page on a fresh installation, please check the browser console (e.g. pressing F12) and [file a new issue](https://github.com/maxplanck-ie/parkour2/issues/new) with the corresponding log message (e.g. pressing F12 and looking for the 'could not load **.js' or 'file not found' error messages.)
 
 ## Dependencies
 
