@@ -1,3 +1,5 @@
+import re
+
 import pytest
 import utilities
 from playwright.sync_api import Page, expect
