@@ -14,7 +14,7 @@ on:
 
 
 jobs:
-  build-and-test:
+  test-and-report:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
