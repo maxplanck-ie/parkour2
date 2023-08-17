@@ -51,12 +51,12 @@ def test_requests(page: Page):
     finalSuccessNotification = page.get_by_text("The changes have been saved.")
 
     addRequestButton.click()
-    # expect(page.get_by_text("New Request")).to_be_visible()
+    expect(page.get_by_text("New Request")).to_be_visible()
     descriptionTextarea.fill("This is libraries' description text.")
     addBatchButton.click()
-    # expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
     libraryCardButton.click()
-    # expect(page.get_by_text("Add Libraries")).to_be_visible()
+    expect(page.get_by_text("Add Libraries")).to_be_visible()
     createEmptyRowInput.fill("1")
     with open(
         os.getcwd() + "/playwright/data/library_request.csv",
@@ -94,12 +94,12 @@ def test_requests(page: Page):
     expect(addSuccessNotification).to_be_visible()
     expect(finalSuccessNotification).to_be_visible()
     addRequestButton.click()
-    # expect(page.get_by_text("New Request")).to_be_visible()
+    expect(page.get_by_text("New Request")).to_be_visible()
     descriptionTextarea.fill("This is samples' description.")
     addBatchButton.click()
-    # expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
     sampleCardButton.click()
-    # expect(page.get_by_text("Add Samples")).to_be_visible()
+    expect(page.get_by_text("Add Samples")).to_be_visible()
     createEmptyRowInput.fill("1")
     with open(
         os.getcwd() + "/playwright/data/sample_request.csv",
@@ -128,7 +128,7 @@ def test_requests(page: Page):
                 commentsInput.fill(row[9])
                 updateButton.click()
     addSaveRequestButton.click()
-    # expect(page.get_by_text("New Request")).to_be_visible()
+    expect(page.get_by_text("New Request")).to_be_visible()
     saveAddedRequestbutton.click()
     expect(addSuccessNotification).to_be_visible()
     expect(finalSuccessNotification).to_be_visible()
