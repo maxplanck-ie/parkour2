@@ -11,8 +11,6 @@ def browser_context_args(browser_context_args):
     }
     return {
         **browser_context_args,
-        "record_video_dir": "playwright/results/videos/",
-        "record_video_size": my_screen_size,
         "viewport": my_screen_size,
         "device_scale_factor": 2,
     }
