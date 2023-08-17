@@ -29,6 +29,9 @@ Ext.define('MainHub.view.main.MainController', {
             Ext.getCmp('adminSiteBtn').hide();
         }
 
+        // Decide whether to show nav panel expanded or collapsed
+        // by getting the width of navigationTreeList, which is set
+        // based on the state of the navPanelState cookie
         var refs = me.getReferences();
         if (refs.navigationTreeList.getWidth() === 64) {
             refs.logo.addCls('logo-collapsed');
@@ -54,6 +57,8 @@ Ext.define('MainHub.view.main.MainController', {
             collapsing = !navigationList.getMicro(),
             new_width = collapsing ? 64 : 300;
 
+        // Remember whether a user sets the nav panel as extended or collapsed
+        // by saving the choice in a cookie
         Ext.util.Cookies.set('navPanelState', collapsing ? "collapsed" : "extended",
             new Date(Ext.Date.now() + (1000 * 60 * 60 * 24 * 90))); // 90 days
 

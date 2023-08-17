@@ -48,6 +48,7 @@ Ext.define('MainHub.view.main.Main', {
                     cls: 'main-logo',
                     html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div class="title">Parkour LIMS</div></div>',
                     width: 300,
+                    // Set the width of this element based on that of the navigationTreeList
                     listeners: { beforerender: function (cmp) { cmp.width = cmp.up().up().down('#navigationTreeList').getWidth() } }
                 },
                 {
@@ -100,6 +101,8 @@ Ext.define('MainHub.view.main.Main', {
                     itemId: 'navigationTreeList',
                     ui: 'navigation',
                     store: 'NavigationTree',
+                    // If present, get the value for the navPanelState cookie and
+                    // set the width of the nav panel accordingly
                     width: Ext.util.Cookies.get('navPanelState') !== 'extended' ? 64 : 300,
                     expanderFirst: false,
                     expanderOnly: false,
