@@ -18,32 +18,34 @@ jobs:
   build-and-test:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.9, '3.10', 3.11]
-    services:
-      postgres:
-        env:
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-        image: postgres:latest
-        ports:
-          - 5432/tcp
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # strategy:
+    #   max-parallel: 4
+    #   matrix:
+    #     python-version: [3.9, '3.10', 3.11]
+    # services:
+    #   postgres:
+    #     env:
+    #       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+    #     image: postgres:latest
+    #     ports:
+    #       - 5432/tcp
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
 
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3
-        with:
-          python-version: ${{ matrix.python-version }}
+        # with:
+        #   python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: make playwright
+        run: |
+        ln -s misc/parkour.env misc/parkour.env.sample
+        make playwright
       #     docker run -d -p 9980:9980 \
       #       -v staticfiles:/parkour2/static \
       #       -v ./misc/Caddyfile:/etc/caddy/Caddyfile \
@@ -70,5 +72,5 @@ jobs:
           if-no-files-found: ignore  ## remove this line asap (default: warn)
           path: |
             parkour_app/playwright/videos/
-            ## add trace.zip (only in Npx version?)
+            parkour_app/playwright/results/
           retention-days: 30
