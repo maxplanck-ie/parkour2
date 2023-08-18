@@ -1,6 +1,6 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm
-from common.models import CostUnit, Organization, PrincipalInvestigator
+from common.models import CostUnit, Organization, PrincipalInvestigator, Duty
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -214,5 +214,21 @@ class UserAdmin(NamedUserAdmin):
                     email_template_name="registration/" + "user_creation_email.html",
                 )
 
+@admin.register(Duty)
+class DutyAdmin(admin.ModelAdmin):
+    list_display = (
+        "main_name",
+        "backup_name",
+        "start_date",
+        "end_date",
+        "facility",
+        "platform",
+    )
+    search_fields = (
+        "main_name",
+        "backup_name",
+        "facility",
+    )
+    list_filter = ("facility",)
 
 # admin.site.unregister(User)
