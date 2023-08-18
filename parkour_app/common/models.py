@@ -1,5 +1,6 @@
 from authtools.models import AbstractEmailUser
 from django.db import models
+from datetime import datetime
 
 
 def get_deleted_org():
@@ -89,6 +90,54 @@ class User(AbstractEmailUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.email})"
 
+class Duty(models.Model):
+    main_name = models.ForeignKey(
+        User,
+        on_delete=models.deletion.CASCADE,
+        related_name="main_name",
+        verbose_name="Responsible Person",
+    )
+    backup_name = models.ForeignKey(
+        User,
+        on_delete=models.deletion.CASCADE,
+        related_name="backup_name",
+        verbose_name="Backup Person",
+        null=True,
+        blank=True,
+    )
+    start_date = models.DateTimeField(
+        "Start Date",
+        default=datetime.now,
+    )
+    end_date = models.DateTimeField(
+        "End Date",
+        null=True,
+        blank=True,
+    )
+    facility = models.CharField(
+        "Facility",
+        choices=[
+            ("bioinfo","BioInfo"),
+            ("deepseq","DeepSeq")
+            ],
+        default="bioinfo",
+        max_length=7
+    )
+    platform = models.CharField(
+        "Platform",
+        choices=[
+            ("short","Short"),
+            ("long", "Long")
+            ],
+        default="short",
+        max_length=5
+    )
+
+    class Meta:
+        db_table = "duty"
+        verbose_name = "Duty"
+        verbose_name_plural = "Duties"
+        ordering = ["end_date", "start_date"]
 
 class DateTimeMixin(models.Model):
     create_time = models.DateTimeField("Create Time", auto_now_add=True)
