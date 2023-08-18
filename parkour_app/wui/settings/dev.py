@@ -4,7 +4,6 @@ DEBUG = True
 
 INSTALLED_APPS += [
     "debug_toolbar",
-    "django_linear_migrations",
     "django_migration_linter",
 ]
 

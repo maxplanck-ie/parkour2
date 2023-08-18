@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "django_admin_listfilter_dropdown",
     "django_extensions",
     "import_export",
+    "django_linear_migrations",
     "common",
     "library_sample_shared",
     "library",

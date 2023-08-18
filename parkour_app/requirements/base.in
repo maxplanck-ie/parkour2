@@ -5,6 +5,7 @@ django-admin-list-filter-dropdown
 django-monthfield
 django-extensions
 django-import-export
+django-linear-migrations
 gunicorn
 psycopg2-binary
 dj-database-url
