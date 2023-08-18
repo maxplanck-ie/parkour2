@@ -229,8 +229,8 @@ set-testing: set-prod
 set-testing-front: set-testing
 	@sed -i -e 's#\(target:\) pk2_base#\1 pk2_playwright#' docker-compose.yml
 
-pytest: down set-testing deploy-django
-	@docker compose exec parkour2-django pytest -n auto
+# pytest: down set-testing deploy-django
+# 	@docker compose exec parkour2-django pytest -n auto
 
 create-admin:
 	@docker compose exec parkour2-django sh -c \
