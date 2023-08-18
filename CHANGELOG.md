@@ -3,7 +3,7 @@
 23.08.17
 ========
 
-**Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...23.08.17
+**Full commit history**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...23.08.17
 
 ## Important News
 
@@ -25,26 +25,25 @@
 
 ## Testing
 
-- **new rule: pytest**, to run tests with pytest using 2 cores
-- **new rule: playwright**, to run end-to-end tests (frontend), for now 2 test were implemented.
-- added django-linear-migrations to development, to ease up fixing merge conflicts if we were to change models on different git branches.
-- added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
-- The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
-- Removed old debugging strategy, we've been using werkzeug traceback interpreter anyway.
 - **new rules: coverage-html coverage-xml**, run pytest with code coverage report(s).
+- **new rule: playwright**, to run end-to-end tests (frontend), for now 2 test were implemented.
+- The old test rule is now renamed as **djtest**, and it only runs the django unittests (functinal + integration).
+- added django-linear-migrations extension, to ease up fixing merge conflicts if we were to change models on different git branches.
+- added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
+- Removed old debugging strategy of attaching term to docker container to work with PDB. It was too clunky, and we've been using werkzeug traceback interpreter anywayz.
 
 ## Improvements
 
-- New permission for users 'Access as PI', grants them the ability to see all requests shared under their PrincipalInvestigator, whichever that is.
-- Fixtures (JSON) are in long format now, and a new django-admin custom command `save_demo_data` is available to share some of our data to other research facilities.
-- Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
-- **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))
+- New permission for users: 'Access as PI', grants them the ability to see all requests shared under their PrincipalInvestigator, whichever that is.
+- **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration)) (note: development deployments run on werkzeug and auto-reload code via the docker bind mounts anyway!)
+- Fixtures (JSON) are in long format now, and a new django-admin custom command `save_initial_data` is available to share some of our data to other research facilities. The good old `load_initial_data` is there too.
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
 - rule `models` now generates 3 PDF files, one is a simple A4 sheet for quick preview, and the other two are for printing posters in A1 size using multiple sheets in either A4 or A3 sizes.
+- Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
 
 ## Changes
 
-- Submission of sample and libraries updated, we are hardcoding values for columns that were hidden in frontend.
+- Submission of sample and libraries updated, we are hardcoding values for columns that are now hidden in frontend (e.g. concentration_method and RQN). Like always, custom parameters and its values can be passed in the free-text form inside Description or using file attachments to each request.
 
 0.3.9
 =====
