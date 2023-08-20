@@ -130,7 +130,8 @@ class TestFixedCostsViewSet(BaseAPITestCase):
 
     def test_costs_list(self):
         """Ensure get fixed costs list behaves correctly."""
-        response = self.client.get(reverse("fixed-costs-list"))
+        query_kwargs = {"organization": self.organization.pk}
+        response = self.client.get(f'{reverse("fixed-costs-list")}?{urlencode(query_kwargs)}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         costs = [x["name"] for x in response.data]
@@ -173,7 +174,8 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
 
     def test_costs_list(self):
         """Ensure get library preparation costs list behaves correctly."""
-        response = self.client.get(reverse("library-preparation-costs-list"))
+        query_kwargs = {"organization": self.organization.pk}
+        response = self.client.get(f'{reverse("library-preparation-costs-list")}?{urlencode(query_kwargs)}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         costs = [x["name"] for x in response.data]
@@ -216,7 +218,8 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
 
     def test_costs_list(self):
         """Ensure get sequencing costs list behaves correctly."""
-        response = self.client.get(reverse("sequencing-costs-list"))
+        query_kwargs = {"organization": self.organization.pk}
+        response = self.client.get(f'{reverse("sequencing-costs-list")}?{urlencode(query_kwargs)}')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         costs = [x["name"] for x in response.data]

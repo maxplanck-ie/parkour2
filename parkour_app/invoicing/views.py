@@ -319,8 +319,17 @@ class FixedCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of Fixed Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = FixedCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
     serializer_class = FixedCostsSerializer
+
+    def get_queryset(self):
+        organization = self.request.query_params.get("organization", 0)
+        if organization:
+            return FixedCosts.objects.filter(
+            sequencer__obsolete=settings.NON_OBSOLETE,
+            fixedprice__organization__id=organization
+            )
+        else:
+            return FixedCosts.objects.none()
 
     def get_serializer_context(self):
         organization_id = self.request.query_params.get("organization", 0)
@@ -334,10 +343,17 @@ class LibraryPreparationCostsViewSet(
     """Get the list of Library Preparation Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = LibraryPreparationCosts.objects.filter(
-        library_protocol__obsolete=settings.NON_OBSOLETE
-    )
     serializer_class = LibraryPreparationCostsSerializer
+
+    def get_queryset(self):
+        organization = self.request.query_params.get("organization", 0)
+        if organization:
+            return LibraryPreparationCosts.objects.filter(
+            library_protocol__obsolete=settings.NON_OBSOLETE,
+            librarypreparationprice__organization__id=organization
+            )
+        else:
+            return LibraryPreparationCosts.objects.none()
 
     def get_serializer_context(self):
         organization_id = self.request.query_params.get("organization", 0)
@@ -353,8 +369,17 @@ class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelView
     """Get the list of Sequencing Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = SequencingCosts.objects.filter(pool_size__sequencer__obsolete=settings.NON_OBSOLETE)
     serializer_class = SequencingCostsSerializer
+
+    def get_queryset(self):
+        organization = self.request.query_params.get("organization", 0)
+        if organization:
+            return SequencingCosts.objects.filter(
+            pool_size__sequencer__obsolete=settings.NON_OBSOLETE,
+            sequencingprice__organization__id=organization
+            )
+        else:
+            return SequencingCosts.objects.none()
 
     def get_serializer_context(self):
         organization_id = self.request.query_params.get("organization", 0)
