@@ -70,7 +70,7 @@ class GeneratorIndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 class PoolSizeViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of pool sizes."""
 
-    queryset = PoolSize.objects.all().filter(archive=False)
+    queryset = PoolSize.objects.all().filter(archived=False)
     serializer_class = PoolSizeSerializer
 
 

@@ -16,7 +16,7 @@ class NucleicAcidTypeViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = NucleicAcidTypeSerializer
 
     def get_queryset(self):
-        return NucleicAcidType.objects.filter(status=settings.NON_OBSOLETE).order_by(
+        return NucleicAcidType.objects.filter(archived=False).order_by(
             "type", "name"
         )
 

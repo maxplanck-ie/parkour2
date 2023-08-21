@@ -42,7 +42,7 @@ class FixedCosts(models.Model):
 class LibraryPreparationCosts(models.Model):
     library_protocol = models.OneToOneField(
         LibraryProtocol,
-        limit_choices_to={"obsolete": 1},
+        limit_choices_to={"archived": False},
         on_delete=models.SET_NULL,
         null=True,
     )
@@ -64,7 +64,7 @@ class LibraryPreparationCosts(models.Model):
 class SequencingCosts(models.Model):
     sequencer = models.ForeignKey(
         Sequencer,
-        limit_choices_to={"obsolete": 1},
+        limit_choices_to={"archived": False},
         on_delete=models.SET_NULL,
         null=True,
     )

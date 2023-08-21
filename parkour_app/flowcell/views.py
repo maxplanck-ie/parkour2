@@ -74,7 +74,7 @@ logger = logging.getLogger("db")
 class SequencerViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of sequencers."""
 
-    queryset = Sequencer.objects.all().filter(obsolete=settings.NON_OBSOLETE)
+    queryset = Sequencer.objects.all().filter(archived=False)
     serializer_class = SequencerSerializer
 
 

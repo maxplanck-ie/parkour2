@@ -40,7 +40,7 @@ class ConcentrationMethod(models.Model):
 
 class ReadLength(models.Model):
     name = models.CharField("Name", max_length=50)
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Read Length"
@@ -135,7 +135,7 @@ class IndexType(models.Model):
         default="short",
     )
 
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Index Type"
@@ -225,7 +225,7 @@ class LibraryProtocol(models.Model):
 
     status = models.PositiveIntegerField("Status", default=1)
     comments = models.TextField("Comments", null=True, blank=True)
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Library Protocol"

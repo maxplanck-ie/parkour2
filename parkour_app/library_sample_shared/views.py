@@ -75,7 +75,7 @@ class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of read lengths."""
 
     # queryset = ReadLength.objects.all()
-    queryset = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
+    queryset = ReadLength.objects.filter(archived=False)
     serializer_class = ReadLengthSerializer
 
 
@@ -94,7 +94,7 @@ class ConcentrationMethodViewSet(viewsets.ReadOnlyModelViewSet):
 class IndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of index types."""
 
-    queryset = IndexType.objects.filter(obsolete=settings.NON_OBSOLETE).order_by("name")
+    queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
 
 
@@ -145,7 +145,7 @@ class LibraryProtocolViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
         na_type = self.request.query_params.get("type", None)
         if na_type is not None:
             queryset = queryset.filter(type=na_type)
-        queryset = queryset.filter(obsolete=settings.NON_OBSOLETE)
+        queryset = queryset.filter(archived=False)
         return queryset
 
 

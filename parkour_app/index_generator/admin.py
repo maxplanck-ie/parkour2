@@ -74,4 +74,4 @@ class PoolAdmin(admin.ModelAdmin):
 
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
-    list_display = ("name", "archive")
+    list_display = ("name", "archived")
