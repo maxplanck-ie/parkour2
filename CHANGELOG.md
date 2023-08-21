@@ -1,5 +1,13 @@
 <!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
 
+23.08.21
+========
+
+- BUGFIX: the rule `load-fixtures` was missing the pre-requisite rule `apply-migrations` (#59)
+- BUGFIX: password reset was redirecting to a missing success URL (giving a 404 to users right after resetting their passwords, what seemed misleading). We now redirect to login.
+- IMPROVEMENT: Django Linear Migrations extension moved from `dev.py` to `base.py` settings. This way we are ready to run `makemigrations` in any deployment (Be it production or development.)
+
+
 23.08.17
 ========
 
