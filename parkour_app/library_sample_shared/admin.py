@@ -233,7 +233,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = (("type",),("archived",))
+    list_filter = (("type",RelatedDropdownFilter),("archived",RelatedDropdownFilter))
 
     actions = (
         "mark_as_archived",

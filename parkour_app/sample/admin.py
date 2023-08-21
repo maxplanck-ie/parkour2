@@ -11,7 +11,7 @@ class NucleicAcidTypeAdmin(admin.ModelAdmin):
         "archived"
     )
 
-    list_filter = (("type",),("archived",))
+    list_filter = (("type",RelatedDropdownFilter),("archived",RelatedDropdownFilter))
 
     actions = (
         "mark_as_archived",
@@ -62,7 +62,7 @@ class SampleAdmin(admin.ModelAdmin):
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
         ("index_type", RelatedDropdownFilter),
-        ("archived",),
+        ("archived",RelatedDropdownFilter),
     )
 
     fieldsets = (
