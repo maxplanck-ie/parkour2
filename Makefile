@@ -171,7 +171,7 @@ load-postgres-plain:
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
-load-fixtures:
+load-fixtures: apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 
 # load-initial-data:
@@ -237,7 +237,7 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-playwright: down set-testing-front deploy-django deploy-caddy collect-static apply-migrations load-fixtures create-admin set-prod e2e
+playwright: down set-testing-front deploy-django deploy-caddy collect-static load-fixtures create-admin set-prod e2e
 
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
