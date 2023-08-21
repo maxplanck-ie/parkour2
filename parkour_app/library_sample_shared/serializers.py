@@ -25,7 +25,7 @@ class OrganismSerializer(ModelSerializer):
 class ReadLengthSerializer(ModelSerializer):
     class Meta:
         model = ReadLength
-        fields = ("id", "name", "obsolete")
+        fields = ("id", "name", "archived")
 
 
 class ConcentrationMethodSerializer(ModelSerializer):
@@ -47,7 +47,7 @@ class IndexTypeSerializer(ModelSerializer):
             "is_dual",
             "format",
             "index_length",
-            "obsolete",
+            "archived",
             "read_type",
         )
 

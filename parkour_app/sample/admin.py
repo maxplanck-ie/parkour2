@@ -4,29 +4,27 @@ from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import NucleicAcidType, Sample
 
-
-@admin.action(description="Mark nucleid acid type as obsolete")
-def mark_as_obsolete(modeladmin, request, queryset):
-    queryset.update(status=settings.OBSOLETE)
-
-
-@admin.action(description="Mark nucleid acid type as non-obsolete")
-def mark_as_non_obsolete(modeladmin, request, queryset):
-    queryset.update(status=settings.NON_OBSOLETE)
-
-
 @admin.register(NucleicAcidType)
 class NucleicAcidTypeAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "status_name",
+        "archived"
     )
-    list_filter = ("type",)
-    actions = (mark_as_obsolete, mark_as_non_obsolete)
 
-    @admin.display(description="STATUS")
-    def status_name(self, obj):
-        return "Non-obsolete" if obj.status == settings.NON_OBSOLETE else "Obsolete"
+    list_filter = (("type",),("archived",))
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(Sample)
@@ -38,8 +36,11 @@ class SampleAdmin(admin.ModelAdmin):
         "request_name",
         "library_protocol",
         "library_type",
+        "archived"
     )
+
     list_select_related = True
+
     readonly_fields = (
         "create_time",
         "update_time",
@@ -61,6 +62,7 @@ class SampleAdmin(admin.ModelAdmin):
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
         ("index_type", RelatedDropdownFilter),
+        ("archived",),
     )
 
     fieldsets = (
@@ -127,3 +129,16 @@ class SampleAdmin(admin.ModelAdmin):
     def request_name(self, obj):
         request = obj.request.filter()
         return request[0].name if request else None
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)

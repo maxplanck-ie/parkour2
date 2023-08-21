@@ -5,7 +5,7 @@
       "name": "MiSeq",
       "lanes": 1,
       "lane_capacity": 25,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -14,7 +14,7 @@
       "name": "NextSeq MID",
       "lanes": 1,
       "lane_capacity": 130,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -23,7 +23,7 @@
       "name": "NextSeq HIGH",
       "lanes": 1,
       "lane_capacity": 400,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -32,7 +32,7 @@
       "name": "NovaSeq SP (XP)",
       "lanes": 2,
       "lane_capacity": 400,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -41,7 +41,7 @@
       "name": "NovaSeq SP (XP)",
       "lanes": 2,
       "lane_capacity": 400,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -50,7 +50,7 @@
       "name": "NovaSeq SP",
       "lanes": 1,
       "lane_capacity": 800,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -60,7 +60,7 @@
       "name": "NovaSeq S1",
       "lanes": 1,
       "lane_capacity": 1600,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -70,7 +70,7 @@
       "name": "NovaSeq S1 (XP)",
       "lanes": 2,
       "lane_capacity": 800,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -80,7 +80,7 @@
       "name": "NovaSeq S2",
       "lanes": 1,
       "lane_capacity": 4000,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -90,7 +90,7 @@
       "name": "NovaSeq S2 (XP)",
       "lanes": 2,
       "lane_capacity": 2000,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -100,7 +100,7 @@
       "name": "NovaSeq S4",
       "lanes": 1,
       "lane_capacity": 8000,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -110,7 +110,7 @@
       "name": "NovaSeq S4 (XP)",
       "lanes": 4,
       "lane_capacity": 2000,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -120,7 +120,7 @@
       "name": "MinION MK1B",
       "lanes": 1,
       "lane_capacity": 10,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -130,7 +130,7 @@
       "name": "GridION Mk1",
       "lanes": 1,
       "lane_capacity": 1000,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -140,7 +140,7 @@
       "name": "P2Solo",
       "lanes": 1,
       "lane_capacity": 200,
-      "obsolete": 1
+      "archived": "False"
     }
   },
   {
@@ -150,7 +150,7 @@
       "name": "ONT wash",
       "lanes": 1,
       "lane_capacity": 200,
-      "obsolete": 1
+      "archived": "False"
     }
   }
 ]

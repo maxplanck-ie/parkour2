@@ -8,7 +8,7 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1,
         2,
@@ -71,7 +71,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         73,
         74,
@@ -131,7 +131,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         85,
         86,
@@ -242,7 +242,7 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         181,
         182,
@@ -305,7 +305,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         229,
         230,
@@ -341,7 +341,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         589,
         590,
@@ -368,7 +368,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         601,
         602,
@@ -576,7 +576,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -590,7 +590,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -604,7 +604,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         698,
         699,
@@ -812,7 +812,7 @@
       "index_length": "6",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         794,
         795,
@@ -1020,7 +1020,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         890,
         891,
@@ -1228,7 +1228,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         986,
         987,
@@ -1436,7 +1436,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1082,
         1083,
@@ -1644,7 +1644,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1178,
         1179,
@@ -1852,7 +1852,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1274,
         1275,
@@ -1916,7 +1916,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1298,
         1299,
@@ -2124,7 +2124,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1490,
         1491,
@@ -2332,7 +2332,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2346,7 +2346,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2360,7 +2360,7 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2374,7 +2374,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2388,7 +2388,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2402,7 +2402,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1777,
         1778,
@@ -2433,7 +2433,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1637,
         1638,
@@ -2641,7 +2641,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1600,
         1601,
@@ -2727,7 +2727,7 @@
       "index_length": "24",
       "format": "single",
       "read_type": "long",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1733,
         1804
@@ -2744,7 +2744,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1765,
         1766,
@@ -2780,7 +2780,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1794,
         1795,
@@ -2816,7 +2816,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [],
       "indices_i5": []
     }
@@ -2830,7 +2830,7 @@
       "index_length": "24",
       "format": "single",
       "read_type": "long",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1805,
         1806,
@@ -2857,7 +2857,7 @@
       "index_length": "24",
       "format": "single",
       "read_type": "long",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1820,
         1821,
@@ -2896,7 +2896,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         1940,
         1941,
@@ -3104,7 +3104,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2228,
         2229,
@@ -3312,7 +3312,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2420,
         2421,
@@ -3520,7 +3520,7 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2528,
         2529,
@@ -3556,7 +3556,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2564,
         2565,
@@ -3620,7 +3620,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2612,
         2613,
@@ -3684,7 +3684,7 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
+      "archived": "False",
       "indices_i7": [
         2660,
         2661,

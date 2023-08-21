@@ -35,20 +35,22 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 
 @admin.register(ReadLength)
 class ReadLengthAdmin(admin.ModelAdmin):
-    list_display = ("name", "obsolete_name")
-    actions = ("mark_as_obsolete", "mark_as_non_obsolete")
+    list_display = ("name", "archived")
 
-    @admin.action(description="Mark read length as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    list_filter = ("archived",)
 
-    @admin.action(description="Mark read length as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
 
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 class IndexI7Inline(admin.TabularInline):
@@ -76,14 +78,14 @@ class IndexPairInline(admin.TabularInline):
 @admin.register(IndexType)
 class IndexTypeAdmin(admin.ModelAdmin):
     form = IndexTypeForm
-    list_display = ("name", "index_length", "is_dual", "format", "obsolete_name")
+
+    list_display = ("name", "index_length", "is_dual", "format", "archived")
+
+    list_filter = ("archived",)
+
     filter_horizontal = (
         "indices_i7",
         "indices_i5",
-    )
-    actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
     )
 
     fieldsets = (
@@ -103,17 +105,18 @@ class IndexTypeAdmin(admin.ModelAdmin):
         ),
     )
 
-    @admin.action(description="Mark index type as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
 
-    @admin.action(description="Mark index type as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         # Display inline when the object has been saved and
@@ -222,7 +225,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "provider",
         "catalog",
         "typical_application",
-        "obsolete_name",
+        "archived",
     )
     search_fields = (
         "name",
@@ -230,23 +233,20 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = ("type",)
+    list_filter = (("type",),("archived",))
+
     actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
 
-    @admin.action(description="Mark library protocol as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.action(description="Mark library protocol as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(LibraryType)

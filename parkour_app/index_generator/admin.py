@@ -58,13 +58,14 @@ class PoolAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "size",
+        "archived"
     )
     search_fields = (
         "name",
         "size__multiplier",
         "size__size",
     )
-    list_filter = (("size", RelatedDropdownFilter),)
+    list_filter = (("size", RelatedDropdownFilter),("archived",RelatedDropdownFilter))
     inlines = [LibraryInline, SampleInline]
     exclude = (
         "libraries",
@@ -75,3 +76,4 @@ class PoolAdmin(admin.ModelAdmin):
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
+    list_filter = ("archived",)
