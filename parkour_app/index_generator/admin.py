@@ -74,20 +74,4 @@ class PoolAdmin(admin.ModelAdmin):
 
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
-    list_display = ("name", "obsolete_name")
-    actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
-    )
-
-    @admin.action(description="Mark pool size as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
-
-    @admin.action(description="Mark pool size as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    list_display = ("name", "archive")

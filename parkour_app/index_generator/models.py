@@ -10,7 +10,7 @@ from sample.models import Sample
 class PoolSize(models.Model):
     multiplier = models.PositiveSmallIntegerField("Multiplier", default=1)
     size = models.PositiveSmallIntegerField("Size")
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archive = models.BooleanField("Archive", default=False)
 
     class Meta:
         ordering = ["multiplier", "size"]

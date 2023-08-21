@@ -5,7 +5,7 @@
     "fields": {
       "multiplier": 1,
       "size": 25,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -14,7 +14,7 @@
     "fields": {
       "multiplier": 1,
       "size": 300,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -23,7 +23,7 @@
     "fields": {
       "multiplier": 2,
       "size": 300,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -32,7 +32,7 @@
     "fields": {
       "multiplier": 3,
       "size": 300,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -41,7 +41,7 @@
     "fields": {
       "multiplier": 4,
       "size": 300,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -50,7 +50,7 @@
     "fields": {
       "multiplier": 1,
       "size": 130,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -59,7 +59,7 @@
     "fields": {
       "multiplier": 6,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -68,7 +68,7 @@
     "fields": {
       "multiplier": 1,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -77,7 +77,7 @@
     "fields": {
       "multiplier": 2,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -86,7 +86,7 @@
     "fields": {
       "multiplier": 10,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -95,7 +95,7 @@
     "fields": {
       "multiplier": 1,
       "size": 2000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -104,7 +104,7 @@
     "fields": {
       "multiplier": 1,
       "size": 800,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -113,7 +113,7 @@
     "fields": {
       "multiplier": 1,
       "size": 1600,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -122,7 +122,7 @@
     "fields": {
       "multiplier": 1,
       "size": 4000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -131,7 +131,7 @@
     "fields": {
       "multiplier": 1,
       "size": 10000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -140,7 +140,7 @@
     "fields": {
       "multiplier": 1,
       "size": 2500,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -149,7 +149,7 @@
     "fields": {
       "multiplier": 2,
       "size": 800,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -158,7 +158,7 @@
     "fields": {
       "multiplier": 2,
       "size": 4000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -167,7 +167,7 @@
     "fields": {
       "multiplier": 1,
       "size": 10,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -176,7 +176,7 @@
     "fields": {
       "multiplier": 2,
       "size": 10,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -185,7 +185,7 @@
     "fields": {
       "multiplier": 4,
       "size": 2000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -194,7 +194,7 @@
     "fields": {
       "multiplier": 2,
       "size": 2000,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -203,7 +203,7 @@
     "fields": {
       "multiplier": 2,
       "size": 1600,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -212,7 +212,7 @@
     "fields": {
       "multiplier": 3,
       "size": 800,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -221,7 +221,7 @@
     "fields": {
       "multiplier": 3,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -230,7 +230,7 @@
     "fields": {
       "multiplier": 5,
       "size": 800,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -239,7 +239,7 @@
     "fields": {
       "multiplier": 3,
       "size": 10,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -248,7 +248,7 @@
     "fields": {
       "multiplier": 4,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -257,7 +257,7 @@
     "fields": {
       "multiplier": 4,
       "size": 800,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -266,7 +266,7 @@
     "fields": {
       "multiplier": 8,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -275,7 +275,7 @@
     "fields": {
       "multiplier": 1,
       "size": 1,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -284,7 +284,7 @@
     "fields": {
       "multiplier": 1,
       "size": 6,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -293,7 +293,7 @@
     "fields": {
       "multiplier": 12,
       "size": 400,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -302,7 +302,7 @@
     "fields": {
       "multiplier": 2,
       "size": 5,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -311,7 +311,7 @@
     "fields": {
       "multiplier": 2,
       "size": 1,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -320,7 +320,7 @@
     "fields": {
       "multiplier": 1,
       "size": 5,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -329,7 +329,7 @@
     "fields": {
       "multiplier": 2,
       "size": 6,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -338,7 +338,7 @@
     "fields": {
       "multiplier": 4,
       "size": 5,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -347,7 +347,7 @@
     "fields": {
       "multiplier": 10,
       "size": 10,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -356,7 +356,7 @@
     "fields": {
       "multiplier": 6,
       "size": 10,
-      "obsolete": 1
+      "archive":"False"
     }
   },
   {
@@ -365,7 +365,7 @@
     "fields": {
       "multiplier": 1,
       "size": 50,
-      "obsolete": 1
+      "archive":"False"
     }
   }
 ]
