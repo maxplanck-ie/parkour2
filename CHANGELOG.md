@@ -1,16 +1,30 @@
-0.4.0
-=====
+<!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
 
-**Full Changelog**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...0.4.0
+23.08.21
+========
 
-> **IMPORTANT**: Since we've upgraded the backend (Django), `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration.
+- BUGFIX: the rule `load-fixtures` was missing the pre-requisite rule `apply-migrations` (#59)
+- BUGFIX: password reset was redirecting to a missing success URL (giving a 404 to users right after resetting their passwords, what seemed misleading). We now redirect to login.
+- IMPROVEMENT: Django Linear Migrations extension moved from `dev.py` to `base.py` settings. This way we are ready to run `makemigrations` in any deployment (Be it production or development.)
 
-> **NOTICE**: Ever since our pre-relased 0.3.9 version, some seemingly redundant files corresponding to our frontend were removed. **We did our best to fix any issues in this release**. Yet, if you see a blank page on a fresh installation, please check the browser console (e.g. pressing F12) and [file a new issue](https://github.com/maxplanck-ie/parkour2/issues/new) with the corresponding log message (e.g. pressing F12 and looking for the 'could not load **.js' or 'file not found' error messages.)
+
+23.08.17
+========
+
+**Full commit history**: https://github.com/maxplanck-ie/parkour2/compare/0.3.9...23.08.17
+
+## Important News
+
+- We abandoned semantic versioning, from now on we will use dates. This is displayed on the `login.html`, righ above where users input their credentials.
+
+- `parkour.env.sample` has a new environmental variable (`CSRF_TRUSTED_ORIGINS`) that requires manual intervention/ copy to your deployments configuration. This way we are prepared for upcoming Django 4.2
+
+- Ever since our pre-relased 0.3.9 version, some seemingly redundant files corresponding to our frontend were removed. **We did our best to fix any issues in this release**. Yet, if you see a blank page on a fresh installation, please check the browser console (e.g. pressing F12) and [file a new issue](https://github.com/maxplanck-ie/parkour2/issues/new) with the corresponding log message (e.g. pressing F12 and looking for the 'could not load **.js' or 'file not found' error messages.)
 
 ## Dependencies
 
-- Updated all python requirements, including our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!)
-- **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`.
+- Updated all python requirements, but keeping on Django 3.2 to avoid an ongoing issue with sequencing depth miscalculation.
+- **New CSRF_TRUSTED_ORIGINS option in `misc/parkour.env`**, lists domains were application is deployed. You may use a wildcard to trust all subdomains. Be sure to add it, as in the file we provide: `misc/parkour.env.sample`. This will be mandatory once we update to Django 4.2
 - The docker image is now using Debian Bullseye as base, to match [playwright system requirements](https://playwright.dev/python/docs/intro#system-requirements).
 
 ## Bugfix
@@ -19,21 +33,25 @@
 
 ## Testing
 
-- **new rule: pytest**, to run tests with pytest using 2 cores
-- **new rule: playwright**, to run end-to-end tests (frontend), for now only 1 simple test implemented.
-- added django-linear-migrations to development, to ease up fixing merge conflicts if we were to change models on different git branches.
-- added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
-- The old test rule is now renamed as **djtest rule**, and it only runs the django unittests (functinal + integration).
-- Removed old debugging strategy, we've been using werkzeug traceback interpreter anyway.
 - **new rules: coverage-html coverage-xml**, run pytest with code coverage report(s).
+- **new rule: playwright**, to run end-to-end tests (frontend), for now 2 test were implemented.
+- The old test rule is now renamed as **djtest**, and it only runs the django unittests (functinal + integration).
+- added django-linear-migrations extension, to ease up fixing merge conflicts if we were to change models on different git branches.
+- added django-migration-linter with a **new rule**: lint-migras. This is now part of the **test rule** too, even though it's failing for 25 out of 38 migrations (see: [incompatibilities](https://github.com/3YOURMIND/django-migration-linter/blob/main/docs/incompatibilities.md) for details, we have plenty of altering columns and a couple of missing default values on DB schema..)
+- Removed old debugging strategy of attaching term to docker container to work with PDB. It was too clunky, and we've been using werkzeug traceback interpreter anywayz.
 
 ## Improvements
 
-- Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
-- **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration))
+- New permission for users: 'Access as PI', grants them the ability to see all requests shared under their PrincipalInvestigator, whichever that is.
+- **new rule: reload-code**, sends the hung-up signal to green unicorn, gracefully reloading the wsgi config and the app code (details [here](https://docs.gunicorn.org/en/latest/signals.html#reload-the-configuration)) (note: development deployments run on werkzeug and auto-reload code via the docker bind mounts anyway!)
+- Fixtures (JSON) are in long format now, and a new django-admin custom command `save_initial_data` is available to share some of our data to other research facilities. The good old `load_initial_data` is there too.
 - Backup cronjobs are more separated in time now, to avoid [a known issue](https://serverfault.com/a/221646) with `rsnapshot`.
-- rule `graph_models` now generates 3 PDF files, one is a simple A4 sheet (`models.pdf`). The other two (`models.A{3,4}.pdf`) are for printing posters in A1 size using either A4 or A3 sheets.
+- rule `models` now generates 3 PDF files, one is a simple A4 sheet for quick preview, and the other two are for printing posters in A1 size using multiple sheets in either A4 or A3 sizes.
+- Support for developers working on Windows is better now. Feel free to open an issue if you face further difficulties.
 
+## Changes
+
+- Submission of sample and libraries updated, we are hardcoding values for columns that are now hidden in frontend (e.g. concentration_method and RQN). Like always, custom parameters and its values can be passed in the free-text form inside Description or using file attachments to each request.
 
 0.3.9
 =====

@@ -19,6 +19,7 @@ services:
 
   parkour2-django:
     container_name: parkour2-django
+    hostname: parkour2-django
     build:
       dockerfile: ./Dockerfile
       target: pk2_base
@@ -32,6 +33,9 @@ services:
     depends_on:
       parkour2-postgres:
         condition: service_healthy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
 
 volumes:
   pgdb:
@@ -39,6 +43,5 @@ volumes:
   staticfiles:
 
 networks:
-  default:
-    name: parkour2_default
-    driver: bridge
+  parkour2_default:
+    external: true

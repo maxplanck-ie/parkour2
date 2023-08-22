@@ -1,0 +1,11 @@
+Name,Protocol,Library Type,ng/µl,size (bp),Index Type,# of Index Reads,Index I7,Index I5,Length,Depth (M),Organims,Comments
+Library_1,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,7.80,8,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TTACCGAC,CGTATTCG,2x150,30,mouse,Please sent results of initial QC via Email
+Library_2,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,3.80,6,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TCGTCTGA,TCAAGGAC,2x150,30,mouse,
+Library_3,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,0.23,2,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TTCCAGGT,AAGCACTG,2x150,30,mouse,
+Library_4,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,1.30,4,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TACGGTCT,GCAATGGA,2x150,30,mouse,
+Library_5,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,9.56,6,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,AAGACCGT,CAATCGAC,2x150,30,mouse,
+Library_6,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,4.89,6,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,CAGGTTCA,GGCGTTAT,2x150,30,mouse,
+Library_7,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,0.01,8,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TAGGAGCT,GTTAAGGC,2x150,30,mouse,
+Library_8,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,10.80,2,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,TACTCCAG,CCTATACC,2x150,40,mouse,
+Library_9,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,12.89,8,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,AGTGACCT,CTCCTAGA,2x150,100,mouse,
+Library_10,NEBNext Ultra II DNA Library Prep Kit for Illumina,ChIP-Seq,20.89,2,NEBNext Multiplex Oligos for Illumina 96 Unique Dual Index Primer Pairs_E6440,2,AGCCTATC,GTTACGCA,2x150,17,mouse,

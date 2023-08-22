@@ -1,6 +1,7 @@
 import json
 import logging
 
+from common.utils import retrieve_group_items
 from common.views import StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings

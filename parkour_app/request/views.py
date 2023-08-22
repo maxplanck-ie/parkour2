@@ -5,6 +5,7 @@ import os
 from unicodedata import normalize
 
 from common.serializers import UserSerializer
+from common.utils import retrieve_group_items
 from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagination
 from django.apps import apps
 from django.conf import settings

@@ -21,7 +21,7 @@ except OSError:
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-SECRET_KEY = os.environ["SECRET_KEY"]
+SECRET_KEY = os.environ.get("SECRET_KEY", "94e9206c6a0ac99409aa")
 
 
 # Allow all host headers
@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     "import_export",
     'constance',
     'constance.backends.database',
+    "django_linear_migrations",
     "common",
     "library_sample_shared",
     "library",
@@ -119,8 +120,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.config()}
-
+# SQLite is fallback option if no DATABASE_URL env-var is found by the extension
+DATABASES = {
+    "default": dj_database_url.config(
+        default="sqlite:////usr/src/db.sqlite",
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -145,13 +152,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-TIME_ZONE = os.environ["TIME_ZONE"]
+TIME_ZONE = os.environ.get("TIME_ZONE", "CET")
 USE_I18N = True
 USE_TZ = True
 
 
 ADMINS = [
-    (os.environ["ADMIN_NAME"], os.environ["ADMIN_EMAIL"]),
+    (
+        os.environ.get("ADMIN_NAME", "ParkourAdmin"),
+        os.environ.get("ADMIN_EMAIL", "admin@mail.server.tld"),
+    ),
 ]
 
 
@@ -159,9 +169,9 @@ AUTH_USER_MODEL = "common.User"  # authtools
 
 
 # Email config
-EMAIL_HOST = os.environ["EMAIL_HOST"]
-EMAIL_SUBJECT_PREFIX = os.environ["EMAIL_SUBJECT_PREFIX"]
-SERVER_EMAIL = os.environ["SERVER_EMAIL"]
+EMAIL_HOST = os.environ.get("EMAIL_HOST", "mail.server.tld")
+EMAIL_SUBJECT_PREFIX = os.environ.get("EMAIL_SUBJECT_PREFIX", "[Parkour2]")
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@mail.server.tld")
 
 
 LOGGING = {

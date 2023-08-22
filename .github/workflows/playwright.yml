@@ -1,0 +1,36 @@
+name: Frontend
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['develop']
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - closed
+
+
+jobs:
+  test-and-report:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+      - name: Install dependencies
+        run: |
+          cp misc/parkour.env.sample misc/parkour.env
+          make playwright
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: test-suite-report
+          if-no-files-found: ignore  ## remove this line asap (default: warn)
+          path: |
+            parkour_app/playwright/videos/
+            parkour_app/playwright/results/
+          retention-days: 30

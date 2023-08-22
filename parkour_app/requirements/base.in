@@ -5,12 +5,10 @@ django-admin-list-filter-dropdown
 django-monthfield
 django-extensions
 django-import-export
-ipykernel
 gunicorn
+django-linear-migrations
 mozilla-django-oidc==2.0.0
 django-constance[database]
-
-# Database
 psycopg2-binary
 dj-database-url
 xlwt

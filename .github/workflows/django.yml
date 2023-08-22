@@ -1,16 +1,23 @@
-name: Test suite
+name: Backend
 
 on:
+  workflow_dispatch:
   push:
-    branches: [develop]
+    branches: ['develop']
   pull_request:
-    branches: [$default-branch]
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+      - closed
 
 # Interestingly... defining env vars here is broken...
 # https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
 
 jobs:
   build-and-test:
+    if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
@@ -28,9 +35,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    
-    
-    
+
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -48,31 +54,8 @@ jobs:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          TIME_ZONE: Europe/Berlin
-          ADMIN_NAME: adr1an
-          EMAIL_HOST: mail.server.tld
-          EMAIL_SUBJECT_PREFIX: Parkour2_-_
-          ADMIN_EMAIL: your_inbox@email.tld
-          SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py makemigrations --no-input --check --dry-run
-
-
-      - name: Run unittests
-        env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
-          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          TIME_ZONE: Europe/Berlin
-          ADMIN_NAME: adr1an
-          EMAIL_HOST: mail.server.tld
-          EMAIL_SUBJECT_PREFIX: Parkour2_-_
-          ADMIN_EMAIL: your_inbox@email.tld
-          SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
-        run: |
-          python parkour_app/manage.py test parkour_app --parallel
 
 
       - name: Validate templates
@@ -80,12 +63,15 @@ jobs:
           DJANGO_SETTINGS_MODULE: wui.settings.prod
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          TIME_ZONE: Europe/Berlin
-          ADMIN_NAME: adr1an
-          EMAIL_HOST: mail.server.tld
-          EMAIL_SUBJECT_PREFIX: Parkour2_-_
-          ADMIN_EMAIL: your_inbox@email.tld
-          SERVER_EMAIL: info@server.tld
-          CSRF_TRUSTED_ORIGINS: http://127.0.0.1
         run: |
           python parkour_app/manage.py validate_templates
+
+
+      - name: Run unittests
+        env:
+          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        run: |
+          python parkour_app/manage.py test parkour_app --parallel
+

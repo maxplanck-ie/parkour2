@@ -1,8 +1,9 @@
 .PHONY: *
 SHELL := /bin/bash
 timestamp := $(shell date +%Y%m%d-%H%M%S)
+NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
 
-deploy: check-rootdir set-prod set-prod-color deploy-django deploy-caddy collect-static  ## Deploy Gunicorn instance to 127.0.0.1:9980 (see: Caddyfile)
+deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
 
 help: check-rootdir
 	@awk 'BEGIN {FS = ":.*?## "} /^[a-zA-Z_-]+:.*?## / {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}' $(MAKEFILE_LIST)
@@ -23,23 +24,16 @@ set-prod:
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/1/0/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 
-set-prod-color:
-	@#sed -i 's/base-color: #2ebea6/base-color: #35baf6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
-	@#$(MAKE) update-extjs
-
 deploy-django: deploy-network deploy-containers
 
 deploy-network:
-	@docker network create parkour2_default
+	@docker network create parkour2
 
 deploy-containers:
-	@docker compose build -q
+	@docker compose build
 	@docker compose up -d
 
 deploy-ready: apply-migrations collect-static
-	@docker compose exec parkour2-django find . -maxdepth 1 -mindepth 1 -type d \
-		! -name media ! -name staticfiles ! -name logs ! -name htmlcov \
-		-exec tar czf media/current_code_snapshot.tar.gz {} \+
 
 collect-static:
 	@docker compose exec parkour2-django python manage.py collectstatic --no-input
@@ -86,12 +80,13 @@ down-lite: clearpy
 	@test $${#CONTAINERS[@]} -gt 1 && docker rm $$CONTAINERS > /dev/null || :
 	@docker compose -f docker-compose.yml -f caddy.yml -f nginx.yml -f rsnapshot.yml -f pgadmin.yml down
 	@docker volume rm -f parkour2_pgdb > /dev/null
+	@docker network rm -f parkour2
 
 down: down-lite  ## Turn off running instance (persisting media & staticfiles' volumes)
 
 clean:
-	@sleep 1s
-	@$(MAKE) set-prod set-prod-color unset-caddy > /dev/null
+	@rm -f parkour_app/logs/*.log && sleep 1s
+	@$(MAKE) set-prod hardreset-caddyfile > /dev/null
 
 sweep:
 	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
@@ -104,15 +99,15 @@ clearpy:
 	@find . -type f -name "*.py[co]" -delete
 	@find . -type d -name "__pycache__" -delete
 
-prod: down set-prod set-prod-color deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
-try-prod: down set-dev set-prod-color set-caddy deploy-django deploy-caddy collect-static
+try-prod: down set-dev deploy-django deploy-caddy collect-static
 
-dev-easy: down set-dev set-dev-color set-caddy deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
+dev-easy: down set-dev deploy-django deploy-caddy collect-static  ## Deploy Werkzeug instance with Caddy
 
-dev: down set-dev set-dev-color deploy-django deploy-nginx collect-static  ## Deploy Werkzeug instance with Nginx (incl. TLS)
+dev: down set-dev deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
-set-dev: unset-caddy
+set-dev:
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
@@ -120,15 +115,11 @@ set-dev: unset-caddy
 	@#sed -E -i -e '/^ENV PYTHONDEVMODE/s/0/1/' Dockerfile
 	@sed -i -e 's#\(target:\) pk2_playwright#\1 pk2_base#' docker-compose.yml
 
-set-dev-color:
-	@#sed -i 's/base-color: #35baf6/base-color: #2ebea6/g' parkour_app/static/main-hub/sass/var/view/main/Main.scss
-	@#$(MAKE) update-extjs
+add-pgadmin-caddy: hardreset-caddyfile
+	@echo -e "\nhttp://*:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
 
-set-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/caddyfile\.in\.use\:/" caddy.yml
-
-unset-caddy:
-	@sed -i -e "/\:\/etc\/caddy\/Caddyfile$$/s/\.\/.*\:/\.\/misc\/Caddyfile\:/" caddy.yml
+hardreset-caddyfile:
+	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}\n" > misc/Caddyfile
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -142,6 +133,7 @@ deploy-pgadmin:
 	@docker compose -f pgadmin.yml up -d
 	@CONTAINERS=$$(docker ps -a -f status=running | awk '/^parkour2-/ { print $$1}') || :
 	@[[ $${CONTAINERS[*]} =~ nginx ]] && $(MAKE) add-pgadmin-nginx || :
+	@[[ $${CONTAINERS[*]} =~ caddy ]] && $(MAKE) add-pgadmin-caddy || :
 
 add-pgadmin-nginx:
 	@docker cp misc/nginx-pgadmin.conf parkour2-nginx:/etc/nginx/conf.d/
@@ -179,13 +171,12 @@ load-postgres-plain:
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
-load-fixtures:
-	@#fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' '
-	@docker compose exec parkour2-django python manage.py loaddata \
-		cost_units organizations principal_investigators sequencers pool_sizes fixed_costs \
-		library_preparation_costs sequencing_costs concentration_methods index_pairs index_types \
-		index_types_data indices_i5 indices_i7 library_protocols library_types organisms read_lengths \
-		nucleic_acid_types
+load-fixtures: apply-migrations
+	@docker compose exec parkour2-django python manage.py load_initial_data
+
+# load-initial-data:
+# 	@docker compose exec parkour2-django python manage.py loaddata \
+# 		$$(fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' ')
 
 load-backup: load-postgres load-media
 
@@ -201,18 +192,16 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(timestamp).sqldump
 	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
 
-VM_PROD := root@parkour
-
 import-media:
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
-		${VM_PROD}:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
+		root@parkour:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
 
 import-pgdb:
-	@ssh -i ~/.ssh/parkour2 ${VM_PROD} -t "make --directory ~/parkour2 save-postgres"
+	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
 	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='*.sqldump' \
 		--exclude='*.conf' --exclude='*.pem' --exclude='*.yml' \
 		--exclude='*.txt' --exclude='*.json' --exclude='*.env' \
-		${VM_PROD}:~/parkour2/misc/ misc/
+		root@parkour:~/parkour2/misc/ misc/
 
 # git-release:
 # 	@echo '# Release'
@@ -230,42 +219,46 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod set-prod-color deploy-django
+djtest: down set-prod deploy-django
 	@docker compose exec parkour2-django python manage.py test --parallel
 
-set-testing: set-prod set-prod-color
+set-testing: set-prod
 	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1testing/' misc/parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1testing\2/' Dockerfile
 
 set-testing-front: set-testing
 	@sed -i -e 's#\(target:\) pk2_base#\1 pk2_playwright#' docker-compose.yml
 
-pytest: down set-testing deploy-django
-	@docker compose exec parkour2-django pytest -n 2
+# pytest: down set-testing deploy-django
+# 	@docker compose exec parkour2-django pytest -n auto
 
-playwright: down set-testing-front deploy-django apply-migrations
-	@docker compose exec parkour2-django python manage.py create_admin --email test.user@test.com --password StrongPassword!1
-	@docker compose exec parkour2-django pytest -n 2 -c playwright.ini
+create-admin:
+	@docker compose exec parkour2-django sh -c \
+		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
+			python manage.py createsuperuser --no-input"
+
+playwright: down set-testing-front deploy-django deploy-caddy collect-static load-fixtures create-admin set-prod e2e
+
+e2e:
+	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
 
 coverage-xml: down set-testing deploy-django
-	@docker compose exec parkour2-django pytest -n 2 --cov=./ --cov-config=.coveragerc --cov-report=xml
+	@docker compose exec parkour2-django pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=xml
 
 coverage-html: down set-testing deploy-django
 	@docker compose exec parkour2-django coverage erase
-	@docker compose exec parkour2-django coverage run -m pytest -n 2
-	@docker compose exec parkour2-django coverage report -m
-	@docker compose exec parkour2-django coverage html
+	@docker compose exec parkour2-django coverage run -m pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=html
 
-test: lint-migras check-migras check-templates coverage  ## Run all tests, on every level
+test: lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
 
-list-sessions:
-	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
+# list-sessions:
+# 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
 
-kill-sessions:
-	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
+# kill-sessions:
+# 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
 
 reload-code:  ## Gracefully ship small code updates into production backend
 	@docker compose exec -it parkour2-django kill -1 1
@@ -280,7 +273,7 @@ dbshell:  ## Open PostgreSQL shell
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
-graph_models:  ## Generate models.pdf (A4 sheet), and two models.A*.pdf to print a A1 poster using either A3 or A4 sheets.
+models:  ## Printable A1 PDF posters using smaller A4 or A3 sheets.
 	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y pdfposter graphviz libgraphviz-dev pkg-config && pip install pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
@@ -289,9 +282,9 @@ graph_models:  ## Generate models.pdf (A4 sheet), and two models.A*.pdf to print
 		pdfposter -mA3 -pA1 /tmp_parkour.pdf /tmp_models.A3.pdf && \
 		pdfposter -mA4 -pA1 /tmp_parkour.pdf /tmp_models.A4.pdf && \
 		pdfposter -mA4 /tmp_parkour.pdf /tmp_models.pdf"
-	@docker cp parkour2-django:/tmp_models.A3.pdf models.A3.pdf
-	@docker cp parkour2-django:/tmp_models.A4.pdf models.A4.pdf
-	@docker cp parkour2-django:/tmp_models.pdf models.pdf
+	@docker cp parkour2-django:/tmp_models.A3.pdf models_poster_using_A3.pdf
+	@docker cp parkour2-django:/tmp_models.A4.pdf models_poster_using_A4.pdf
+	@docker cp parkour2-django:/tmp_models.pdf models_A4_preview.pdf
 
 show_urls:
 	@docker exec parkour2-django python manage.py show_urls
@@ -306,23 +299,28 @@ compile:
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2
 
+# Support installation without docker
+## https://github.com/maxplanck-ie/parkour2/wiki/Installation-without-docker
+#
+# install: check-python-version env-setup-app load-env-vars  ## Install without Docker (WIP)
+#
 ## TODO: Doesn't makefile rules run in subshells? needs to be tested.
 # load-env-vars:
 # 	@test -e misc/parkour.env && \
 # 		set +a; source misc/parkour.env; set -a || \
 # 		echo "ERROR: misc/parkour.env was not found, you may copy misc/parkour.env.sample"
-
-check-python-version:
-	@test $(env python3 -V | cut -d. -f2) -gt 8 || echo "Warning: Python version <= 9 is not tested."
-	@test $(env python3 -V | cut -d. -f2) -lt 11 || echo "Warning: Python version >=12 is not tested."
-
-env-setup-app: check-python-version  ## Install without Docker (WIP)
-	@env python3 -m venv env_app/ && \
-		source ./env_app/bin/activate && \
-		env python3 -m pip install --upgrade pip && \
-		pip install -r parkour_app/requirements/prod.txt
-	deactivate
-	@echo "Info: venv env_app created, source it (together with env-vars) and then use django command runserver. Good luck!"
+#
+# check-python-version:
+# 	@test $(env python3 -V | cut -d. -f2) -gt 8 || echo "Warning: Python version <= 9 is not tested."
+# 	@test $(env python3 -V | cut -d. -f2) -lt 11 || echo "Warning: Python version >=12 is not tested."
+#
+# env-setup-app: 
+# 	@env python3 -m venv env_app/ && \
+# 		source ./env_app/bin/activate && \
+# 		env python3 -m pip install --upgrade pip && \
+# 		pip install -r parkour_app/requirements/prod.txt
+# 	deactivate
+# 	@echo "Info: venv env_app created, source it (together with env-vars) and then use django command runserver. Good luck!"
 
 env-setup-dev:
 	@env python3 -m venv env_dev && \
@@ -335,8 +333,8 @@ env-setup-dev:
 	deactivate
 
 open-pr:
-	@git pull && git push && git pull origin main
-	@gh pr create --title "quick upgrade" --fill -B main
+	@git pull && git push && git pull origin develop
+	@gh pr create --title "quick upgrade" --fill -B develop
 	@echo "Info: Pull Request OPENED"
 
 # merge-pr:

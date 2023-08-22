@@ -1,0 +1,21 @@
+http://*:9980 {
+	handle /static/* {
+		root * /parkour2
+		file_server
+	}
+	handle /protected_media/* {
+		root * /parkour2
+		file_server
+	}
+	handle {
+		reverse_proxy parkour2-django:8000
+	}
+	log
+}
+
+http://*:9981 {
+	handle {
+		reverse_proxy parkour2-pgadmin:8080
+	}
+	log
+}

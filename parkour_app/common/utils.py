@@ -77,3 +77,25 @@ def get_date_range(start, end, format):
         start = end.replace(hour=0, minute=0)
 
     return (start, end)
+
+
+def is_iterable(obj):
+    answer = True
+    try:
+        _ = iter(obj)
+    except TypeError:
+        answer = False
+    return answer
+
+
+def retrieve_group_items(request, queryset):
+    from django.contrib.auth import get_user_model
+
+    User = get_user_model()
+    this_lab_group = User.objects.all().filter(pi__in=[request.user.pi])
+    if is_iterable(this_lab_group):
+        queryset = queryset.filter(user__in=this_lab_group)
+    else:
+        assert isinstance(this_lab_group, User)
+        queryset = queryset.filter(user=this_lab_group)
+    return queryset

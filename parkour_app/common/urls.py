@@ -24,9 +24,7 @@ urlpatterns = [
     path("password_reset/done/", auth_views.PasswordResetDoneView.as_view()),
     path(
         "password_reset/<uidb64>/<token>/",
-        auth_views.PasswordResetConfirmView.as_view(
-            success_url="/accounts/password/done/"
-        ),
+        auth_views.PasswordResetConfirmView.as_view(success_url="/login/"),
         name="password_reset_confirm",
     ),
     path('oidc/', include('mozilla_django_oidc.urls')),

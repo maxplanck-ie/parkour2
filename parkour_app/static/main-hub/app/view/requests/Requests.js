@@ -109,6 +109,7 @@ Ext.define('MainHub.view.requests.Requests', {
       {
         xtype: 'button',
         itemId: 'add-request-button',
+        cls:'pl-add-request-button',
         text: 'Add'
       }]
     },

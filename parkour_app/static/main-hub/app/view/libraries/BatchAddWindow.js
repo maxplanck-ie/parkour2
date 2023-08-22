@@ -46,10 +46,12 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
           items: [
             {
               itemId: 'library-card-button',
+              cls:"pl-library-card-button",
               text: 'Library'
             },
             {
               itemId: 'sample-card-button',
+              cls:"pl-sample-card-button",
               text: 'Sample'
             }
           ]
@@ -105,6 +107,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
         {
           xtype: 'numberfield',
           itemId: 'num-empty-records',
+          cls: 'pl-num-empty-records',
           fieldLabel: 'Create empty records',
           padding: '0 10px 0 0',
           labelWidth: 145,
@@ -114,6 +117,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
         {
           xtype: 'button',
           itemId: 'create-empty-records-button',
+          cls: 'pl-create-empty-records-button',
           text: 'Create'
         },
         {
