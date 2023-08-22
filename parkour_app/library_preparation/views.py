@@ -60,7 +60,7 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         # Get Pools
         pools = (
-            Pool.objects.filter(samples__pk__in=sample_ids)
+            Pool.objects.filter(archived=False, samples__pk__in=sample_ids)
             .distinct()
             .values("name", "samples")
         )

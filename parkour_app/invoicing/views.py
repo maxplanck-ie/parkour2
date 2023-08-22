@@ -56,7 +56,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
         flowcell_qs = Flowcell.objects.select_related(
             "sequencer",
-        ).order_by("flowcell_id")
+        ).filter(archived=False).order_by("flowcell_id")
 
         libraries_qs = (
             Library.objects.filter(~Q(pool=None))
@@ -113,7 +113,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(methods=["get"], detail=False)
     def billing_periods(self, request):
-        flowcells = Flowcell.objects.all()
+        flowcells = Flowcell.objects.all().filter(archived=False)
         data = []
 
         if flowcells.count() == 0:

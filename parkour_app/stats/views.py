@@ -89,7 +89,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.exclude(
+            Flowcell.objects.filter(archived=False).exclude(
                 matrix__isnull=True,
             )
             .select_related(
@@ -124,7 +124,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         matrix = request.data.get("matrix", "")
 
         try:
-            flowcell = Flowcell.objects.get(flowcell_id=flowcell_id)
+            flowcell = Flowcell.objects.filter(archived=False).get(flowcell_id=flowcell_id)
         except (ValueError, Flowcell.DoesNotExist):
             return Response(
                 {
@@ -238,7 +238,7 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.exclude(
+            Flowcell.objects.filter(archived=False).exclude(
                 sequences__isnull=True,
             )
             .select_related(

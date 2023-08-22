@@ -275,7 +275,7 @@ class FlowcellSerializer(ModelSerializer):
             )
             .distinct()
         )
-        pools = Pool.objects.filter(pk__in=pool_ids)
+        pools = Pool.objects.filter(archived=False, pk__in=pool_ids)
 
         # After creating a flowcell, update all pool's libraries' and
         # samples' statuses if the pool is fully loaded

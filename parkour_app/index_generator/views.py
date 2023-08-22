@@ -63,7 +63,7 @@ class MoveOtherMixin:
 class GeneratorIndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of index types."""
 
-    queryset = IndexType.objects.order_by("name")
+    queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
 
 
@@ -188,7 +188,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 raise ValueError("No libraries nor samples have been provided")
 
             try:
-                pool_size = PoolSize.objects.get(pk=pool_size_id)
+                pool_size = PoolSize.objects.filter(archived=False).get(pk=pool_size_id)
             except (ValueError, PoolSize.DoesNotExist):
                 raise ValueError("Invalid Pool Size id.")
 

@@ -82,7 +82,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             )
         )
 
-        return Pool.objects.select_related("size").prefetch_related(
+        return Pool.objects.select_related("size").filter(archived=False).prefetch_related(
             Prefetch("libraries", queryset=libraries_qs),
             Prefetch("samples", queryset=samples_qs),
         )
@@ -193,7 +193,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def edit_comment(self, request, pk=None):
-        instance = Pool.objects.filter(pk=pk)
+        instance = Pool.objects.filter(archived=False, pk=pk)
 
         post_data = self._get_post_data(request)
         newComment = post_data["newComment"]
@@ -214,7 +214,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         bp = json.loads(request.data.get("bp", "[]"))
 
         pool_id = request.POST.get("pool_id", "")
-        pool = Pool.objects.get(pk=pool_id)
+        pool = Pool.objects.filter(archived=False).get(pk=pool_id)
 
         records = list(
             itertools.chain(

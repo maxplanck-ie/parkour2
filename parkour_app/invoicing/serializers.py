@@ -95,7 +95,7 @@ class InvoicingSerializer(ModelSerializer):
 
         pool_ids = instance.values_list("flowcell__lanes__pool")
         pools = (
-            Pool.objects.filter(pk__in=pool_ids)
+            Pool.objects.filter(archived=False, pk__in=pool_ids)
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),

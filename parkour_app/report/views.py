@@ -79,6 +79,7 @@ class Report:
             Flowcell.objects.select_related(
                 "sequencer",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
             )

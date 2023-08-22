@@ -79,7 +79,7 @@ class SequencerViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class PoolViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Pool.objects.all()
+    queryset = Pool.objects.all().filter(archived=False)
     serializer_class = PoolInfoSerializer
     permission_classes = [IsAdminUser]
 
@@ -123,6 +123,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             Flowcell.objects.select_related(
                 "sequencer",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs),
             )
@@ -203,7 +204,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
-            .filter(size__multiplier__gt=F("loaded"))
+            .filter(archived=False, size__multiplier__gt=F("loaded"))
             .order_by("pk")
         )
 
@@ -371,7 +372,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             ]
         )
 
-        flowcell = Flowcell.objects.get(pk=flowcell_id)
+        flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell_id)
         f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
         response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 

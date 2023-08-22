@@ -65,15 +65,41 @@ class PoolAdmin(admin.ModelAdmin):
         "size__multiplier",
         "size__size",
     )
-    list_filter = (("size", RelatedDropdownFilter),("archived",RelatedDropdownFilter))
+    list_filter = ("size", "archived")
     inlines = [LibraryInline, SampleInline]
     exclude = (
         "libraries",
         "samples",
     )
 
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
+
 
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
     list_filter = ("archived",)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
