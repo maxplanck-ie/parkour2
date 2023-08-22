@@ -127,8 +127,8 @@ INDICES_11 = [  # I5
 ]
 
 
-def create_pool_size(multiplier=8, size=200, cycles=150):
-    sequencer = Sequencer.objects.create(name=get_random_name())
+def create_pool_size(multiplier=8, size=200, cycles=150, sequencer=None):
+    sequencer = sequencer if sequencer else Sequencer.objects.create(name=get_random_name())
     pool_size = PoolSize(sequencer=sequencer, lanes=multiplier, size=size, cycles=cycles)
     pool_size.save()
     return pool_size

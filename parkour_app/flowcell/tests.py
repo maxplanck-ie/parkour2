@@ -10,11 +10,12 @@ from sample.tests import create_sample
 from .models import Flowcell, Lane, Sequencer
 
 
-def create_sequencer(name):
+def create_sequencer(name, lanes=1, lane_capacity=200):
     sequencer = Sequencer(
         name=name,
     )
     sequencer.save()
+    create_pool_size(multiplier=lanes, size=lane_capacity, cycles=150, sequencer=sequencer)
     return sequencer
 
 
@@ -55,14 +56,14 @@ class TestSequencerModel(BaseTestCase):
         self.assertEqual(self.sequencer.__str__(), self.sequencer.name)
 
     def test_sequencer_lanes(self):
-        self.assertEqual(self.sequencer.lanes, 1)
+        self.assertEqual(self.sequencer.poolsize_set.first().lanes, 1)
 
     def test_sequencer_lane_capacity(self):
-        self.assertEqual(self.sequencer.lane_capacity, 200)
+        self.assertEqual(self.sequencer.poolsize_set.first().size, 200)
 
     def test_sequencer_different_lanes(self):
         sequencer = create_sequencer(get_random_name(), lanes=2, lane_capacity=200)
-        self.assertEqual(sequencer.lanes, 2)
+        self.assertEqual(sequencer.poolsize_set.first().lanes, 2)
 
 
 class TestLaneModel(BaseTestCase):
@@ -114,8 +115,8 @@ class TestFlowcellModel(BaseTestCase):
 
     def test_flowcell_different_sequencer(self):
         sequencer = create_sequencer(get_random_name(), lanes=2)
-        flowcell = create_flowcell(get_random_name(), sequencer)
-        self.assertEqual(flowcell.sequencer, sequencer)
+        flowcell = create_flowcell(get_random_name(), sequencer.poolsize_set.first())
+        self.assertEqual(flowcell.pool_size.sequencer, sequencer)
 
     def test_flowcell_lanes(self):
         self.assertEqual(self.flowcell.lanes.count(), 0)
