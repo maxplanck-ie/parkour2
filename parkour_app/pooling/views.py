@@ -82,9 +82,13 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             )
         )
 
-        return Pool.objects.select_related("size").filter(archived=False).prefetch_related(
-            Prefetch("libraries", queryset=libraries_qs),
-            Prefetch("samples", queryset=samples_qs),
+        return (
+            Pool.objects.select_related("size")
+            .filter(archived=False)
+            .prefetch_related(
+                Prefetch("libraries", queryset=libraries_qs),
+                Prefetch("samples", queryset=samples_qs),
+            )
         )
 
     def get_context(self, queryset):

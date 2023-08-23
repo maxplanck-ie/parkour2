@@ -35,7 +35,9 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
         return
 
     try:
-        lib_prep_object = LibraryPreparation.objects.filter(archived=False).get(sample=instance)
+        lib_prep_object = LibraryPreparation.objects.filter(archived=False).get(
+            sample=instance
+        )
     except LibraryPreparation.DoesNotExist:
         lib_prep_object = None
 

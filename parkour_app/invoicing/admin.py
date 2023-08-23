@@ -15,11 +15,7 @@ class InvoicingReportAdmin(admin.ModelAdmin):
 
 @admin.register(FixedCosts)
 class FixedCostsAdmin(admin.ModelAdmin):
-    list_display = (
-        "sequencer",
-        "price_amount",
-        "archived"
-    )
+    list_display = ("sequencer", "price_amount", "archived")
 
     list_filter = ("archived",)
 
@@ -43,11 +39,7 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
         "library_protocol__name",
         "price",
     )
-    list_display = (
-        "library_protocol",
-        "price_amount",
-        "archived"
-    )
+    list_display = ("library_protocol", "price_amount", "archived")
 
     list_filter = ("archived",)
 
@@ -72,17 +64,8 @@ class SequencingCostsAdmin(admin.ModelAdmin):
         "read_length__name",
         "price",
     )
-    list_display = (
-        "sequencer",
-        "read_length",
-        "price_amount",
-        "archived"
-    )
-    list_filter = (
-        "sequencer",
-        "read_length",
-        "archived"
-    )
+    list_display = ("sequencer", "read_length", "price_amount", "archived")
+    list_filter = ("sequencer", "read_length", "archived")
 
     actions = (
         "mark_as_archived",

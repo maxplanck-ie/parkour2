@@ -54,9 +54,13 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
 
-        flowcell_qs = Flowcell.objects.select_related(
-            "sequencer",
-        ).filter(archived=False).order_by("flowcell_id")
+        flowcell_qs = (
+            Flowcell.objects.select_related(
+                "sequencer",
+            )
+            .filter(archived=False)
+            .order_by("flowcell_id")
+        )
 
         libraries_qs = (
             Library.objects.filter(~Q(pool=None))
@@ -321,7 +325,9 @@ class LibraryPreparationCostsViewSet(
     """Get the list of Library Preparation Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = LibraryPreparationCosts.objects.filter(archived=False, library_protocol__archived=False)
+    queryset = LibraryPreparationCosts.objects.filter(
+        archived=False, library_protocol__archived=False
+    )
     print(queryset.query)
 
     serializer_class = LibraryPreparationCostsSerializer

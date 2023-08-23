@@ -19,11 +19,7 @@ class CostUnitInline(admin.TabularInline):
 
 @admin.register(PrincipalInvestigator)
 class PrincipalInvestigatorAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "organization",
-        "archived"
-    )
+    list_display = ("name", "organization", "archived")
     search_fields = (
         "name",
         "organization__name",

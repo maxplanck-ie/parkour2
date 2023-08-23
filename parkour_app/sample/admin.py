@@ -4,12 +4,10 @@ from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import NucleicAcidType, Sample
 
+
 @admin.register(NucleicAcidType)
 class NucleicAcidTypeAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "archived"
-    )
+    list_display = ("name", "archived")
 
     list_filter = ("type", "archived")
 
@@ -36,7 +34,7 @@ class SampleAdmin(admin.ModelAdmin):
         "request_name",
         "library_protocol",
         "library_type",
-        "archived"
+        "archived",
     )
 
     list_select_related = True

@@ -55,11 +55,7 @@ class SampleInline(BaseInline):
 
 @admin.register(Pool)
 class PoolAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "size",
-        "archived"
-    )
+    list_display = ("name", "size", "archived")
     search_fields = (
         "name",
         "size__multiplier",

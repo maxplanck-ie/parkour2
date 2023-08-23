@@ -75,11 +75,7 @@ class SequencerAdmin(admin.ModelAdmin):
 
 @admin.register(Flowcell)
 class FlowcellAdmin(admin.ModelAdmin):
-    list_display = (
-        "flowcell_id",
-        "sequencer",
-        "archived"
-    )
+    list_display = ("flowcell_id", "sequencer", "archived")
     # search_fields = ('flowcell_id', 'sequencer',)
     list_filter = ("sequencer", "archived")
     exclude = (

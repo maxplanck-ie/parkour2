@@ -104,13 +104,15 @@ class InvoicingSerializer(ModelSerializer):
         )
 
         # Fetch Fixed Costs
-        fixed_costs = FixedCosts.objects.filter(archived=False).values("sequencer", "price")
+        fixed_costs = FixedCosts.objects.filter(archived=False).values(
+            "sequencer", "price"
+        )
         fixed_costs = {x["sequencer"]: x["price"] for x in fixed_costs}
 
         # Fetch Preparation Costs
-        preparation_costs = LibraryPreparationCosts.objects.filter(archived=False).values(
-            "library_protocol", "price"
-        )
+        preparation_costs = LibraryPreparationCosts.objects.filter(
+            archived=False
+        ).values("library_protocol", "price")
         preparation_costs = {
             x["library_protocol"]: x["price"] for x in preparation_costs
         }
@@ -352,9 +354,11 @@ class InvoicingSerializer(ModelSerializer):
             costs = preparation_costs.get(library_protocol, 0) * Decimal(split[0])
         else:
             try:
-                price = LibraryPreparationCosts.objects.filter(archived=False).get(
-                    library_protocol__name="Quality Control"
-                ).price
+                price = (
+                    LibraryPreparationCosts.objects.filter(archived=False)
+                    .get(library_protocol__name="Quality Control")
+                    .price
+                )
                 costs = Decimal(split[0]) * price
             except LibraryPreparationCosts.DoesNotExist:
                 logger.exception(f"Preparation Cost for libraries is not set.")
