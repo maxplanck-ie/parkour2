@@ -11,7 +11,7 @@ class RequestAdmin(admin.ModelAdmin):
         "request_uploaded",
         "samples_submitted",
         "sequenced",
-        "archived"
+        "archived",
     )
     list_select_related = True
 
@@ -23,11 +23,7 @@ class RequestAdmin(admin.ModelAdmin):
         "files",
     )
 
-    list_filter = (
-        ("user", RelatedDropdownFilter),
-        "sequenced",
-        "archived"
-    )
+    list_filter = (("user", RelatedDropdownFilter), "sequenced", "archived")
 
     actions = (
         "mark_as_archived",

@@ -101,8 +101,12 @@ class IndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 class IndexViewSet(viewsets.ViewSet):
     def list(self, request):
         """Get the list of all indices."""
-        index_i7_serializer = IndexI7Serializer(IndexI7.objects.all().filter(archived=False), many=True)
-        index_i5_serializer = IndexI5Serializer(IndexI5.objects.all().filter(archived=False), many=True)
+        index_i7_serializer = IndexI7Serializer(
+            IndexI7.objects.all().filter(archived=False), many=True
+        )
+        index_i5_serializer = IndexI5Serializer(
+            IndexI5.objects.all().filter(archived=False), many=True
+        )
         indices = index_i7_serializer.data + index_i5_serializer.data
         data = sorted(indices, key=lambda x: x["index_id"])
         return Response(data)
@@ -194,9 +198,13 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         ids = json.loads(request.query_params.get("ids", "[]"))
 
         if request_id:
-            request_queryset = Request.objects.all().filter(archived=False, pk=request_id)
+            request_queryset = Request.objects.all().filter(
+                archived=False, pk=request_id
+            )
         else:
-            request_queryset = Request.objects.all().filter(archived=False).order_by("-create_time")
+            request_queryset = (
+                Request.objects.all().filter(archived=False).order_by("-create_time")
+            )
 
         if not request.user.is_staff:
             if not request.user.is_pi:

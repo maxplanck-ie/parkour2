@@ -251,7 +251,9 @@ class LibraryProtocol(models.Model):
             # protocols of the Library Type 'Other'. If the latter does not
             # exist, create it
             try:
-                library_type = LibraryType.objects.filter(archived=False).get(name="Other")
+                library_type = LibraryType.objects.filter(archived=False).get(
+                    name="Other"
+                )
             except LibraryType.DoesNotExist:
                 library_type = LibraryType(name="Other")
                 library_type.save()

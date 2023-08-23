@@ -21,12 +21,7 @@ from .models import (
 
 @admin.register(Organism)
 class OrganismAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "scientific_name",
-        "taxon_id",
-        "archived"
-    )
+    list_display = ("name", "scientific_name", "taxon_id", "archived")
 
     list_filter = ("archived",)
 
@@ -83,10 +78,14 @@ class IndexPairInline(admin.TabularInline):
         index_type_id = args[0] if args else None
 
         if db_field.name == "index1":
-            kwargs["queryset"] = IndexI7.objects.filter(archived=False, index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI7.objects.filter(
+                archived=False, index_type__id=index_type_id
+            )
 
         elif db_field.name == "index2":
-            kwargs["queryset"] = IndexI5.objects.filter(archived=False, index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI5.objects.filter(
+                archived=False, index_type__id=index_type_id
+            )
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -150,11 +149,7 @@ class IndexTypeAdmin(admin.ModelAdmin):
 
 @admin.register(IndexPair)
 class IndexPairAdmin(admin.ModelAdmin):
-    list_display = (
-        "index_pair",
-        "coordinate",
-        "archived"
-    )
+    list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
     list_filter = ("index_type", "archived")
 
@@ -196,17 +191,12 @@ class IndexI5Resource(resources.ModelResource):
 
 @admin.register(IndexI5)
 class IndexI5Admin(ImportExportModelAdmin):
-    list_display = (
-        "idx_id",
-        "index",
-        "type",
-        "archived"
-    )
+    list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter),"archived")
+    list_filter = (("index_type", RelatedDropdownFilter), "archived")
 
     resource_class = IndexI5Resource
 
@@ -243,12 +233,7 @@ class IndexI7Resource(resources.ModelResource):
 
 @admin.register(IndexI7)
 class IndexI7Admin(ImportExportModelAdmin):
-    list_display = (
-        "idx_id",
-        "index",
-        "type",
-        "archived"
-    )
+    list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "index",
         "index_type__name",

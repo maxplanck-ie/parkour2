@@ -200,21 +200,25 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             )
         )
 
-        requests_qs = Request.objects.filter(archived=False).prefetch_related(
-            Prefetch(
+        requests_qs = (
+            Request.objects.filter(archived=False)
+            .prefetch_related(
+                Prefetch(
+                    "libraries",
+                    queryset=libraries_qs,
+                    to_attr="fetched_libraries",
+                ),
+                Prefetch(
+                    "samples",
+                    queryset=samples_qs,
+                    to_attr="fetched_samples",
+                ),
+            )
+            .only(
+                "name",
                 "libraries",
-                queryset=libraries_qs,
-                to_attr="fetched_libraries",
-            ),
-            Prefetch(
                 "samples",
-                queryset=samples_qs,
-                to_attr="fetched_samples",
-            ),
-        ).only(
-            "name",
-            "libraries",
-            "samples",
+            )
         )
 
         lanes_qs = (

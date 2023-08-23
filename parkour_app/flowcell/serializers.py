@@ -294,7 +294,7 @@ class FlowcellSerializer(ModelSerializer):
                     libraries.values_list("request", flat=True).distinct(),
                     samples.values_list("request", flat=True).distinct(),
                 )
-            )
+            ),
         )
         requests.update(sequenced=True)
         instance.requests.add(*requests)

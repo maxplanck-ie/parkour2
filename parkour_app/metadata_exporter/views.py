@@ -75,13 +75,17 @@ class MetadataExporterViewSet(viewsets.ViewSet):
             .filter(status__gte=5)
         )
 
-        queryset = Request.objects.filter(archived=False).prefetch_related(
-            Prefetch("libraries", queryset=libraries_qs),
-            Prefetch("samples", queryset=samples_qs),
-        ).only(
-            "description",
-            "libraries",
-            "samples",
+        queryset = (
+            Request.objects.filter(archived=False)
+            .prefetch_related(
+                Prefetch("libraries", queryset=libraries_qs),
+                Prefetch("samples", queryset=samples_qs),
+            )
+            .only(
+                "description",
+                "libraries",
+                "samples",
+            )
         )
 
         if not request.user.is_staff:

@@ -135,7 +135,9 @@ def protected_media(request, *args, **kwargs):
         allow_download = True
     else:
         allow_download = Request.objects.filter(
-            Q(deep_seq_request=url_path) | Q(files__file=url_path), user=request.user, archived=False
+            Q(deep_seq_request=url_path) | Q(files__file=url_path),
+            user=request.user,
+            archived=False,
         ).exists()
 
     if allow_download:

@@ -188,7 +188,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         #   print(libraries_qs.values())
 
         queryset = (
-            Request.objects.filter(archived=False).select_related("user")
+            Request.objects.filter(archived=False)
+            .select_related("user")
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),

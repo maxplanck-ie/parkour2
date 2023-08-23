@@ -26,7 +26,8 @@ class LibrarySampleTree(viewsets.ViewSet):
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
         queryset = (
-            Request.objects.filter(archived=False).prefetch_related(
+            Request.objects.filter(archived=False)
+            .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )

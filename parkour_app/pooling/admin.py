@@ -6,13 +6,7 @@ from .models import Pooling
 @admin.register(Pooling)
 class PoolingAdmin(admin.ModelAdmin):
     list_filter = ("archived",)
-    list_display = (
-        "name",
-        "barcode",
-        "request",
-        "pool",
-        "archived"
-    )
+    list_display = ("name", "barcode", "request", "pool", "archived")
     search_fields = (
         "library__name",
         "library__barcode",

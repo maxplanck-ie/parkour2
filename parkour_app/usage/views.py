@@ -82,7 +82,8 @@ class OrganizationsUsage(APIView):
         samples_qs = Sample.objects.only("id")
 
         requests = (
-            Request.objects.filter(archived=False).select_related(
+            Request.objects.filter(archived=False)
+            .select_related(
                 "user",
                 "user__organization",
             )
@@ -123,7 +124,8 @@ class PrincipalInvestigatorsUsage(APIView):
         samples_qs = Sample.objects.only("id")
 
         requests = (
-            Request.objects.filter(archived=False).select_related(
+            Request.objects.filter(archived=False)
+            .select_related(
                 "user",
                 "user__pi",
             )
@@ -174,7 +176,8 @@ class LibraryTypesUsage(APIView):
         )
 
         requests = (
-            Request.objects.filter(archived=False).prefetch_related(
+            Request.objects.filter(archived=False)
+            .prefetch_related(
                 Prefetch(
                     "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
                 ),

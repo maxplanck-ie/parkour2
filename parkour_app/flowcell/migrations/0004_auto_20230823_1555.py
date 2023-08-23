@@ -4,24 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('flowcell', '0003_dj32_upgrade'),
+        ("flowcell", "0003_dj32_upgrade"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='sequencer',
-            name='obsolete',
+            model_name="sequencer",
+            name="obsolete",
         ),
         migrations.AddField(
-            model_name='flowcell',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="flowcell",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='sequencer',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="sequencer",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]
