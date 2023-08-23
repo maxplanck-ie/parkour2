@@ -288,6 +288,7 @@ class FlowcellSerializer(ModelSerializer):
         libraries = Library.objects.filter(pool__in=pools)
         samples = Sample.objects.filter(pool__in=pools)
         requests = Request.objects.filter(
+            archived=False,
             pk__in=set(
                 itertools.chain(
                     libraries.values_list("request", flat=True).distinct(),

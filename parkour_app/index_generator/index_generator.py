@@ -67,7 +67,7 @@ class IndexRegistry:
         if index_type.pk not in self.pairs.keys():
             self.pairs[index_type.pk] = []
 
-        index_pairs = IndexPair.objects.filter(index_type=index_type).select_related(
+        index_pairs = IndexPair.objects.filter(archived=False, index_type=index_type).select_related(
             "index1", "index2"
         )
 
@@ -455,11 +455,11 @@ class IndexGenerator:
         with_index = []
 
         for library in self.libraries:
-            index_i7 = idx_dict(IndexI7, library.index_i7, library.index_type)
+            index_i7 = idx_dict(IndexI7.objects.filter(archived=False), library.index_i7, library.index_type)
             index_i5 = self.index_registry.create_index_dict(is_library=True)
 
             if self.mode == "dual":
-                index_i5 = idx_dict(IndexI5, library.index_i5, library.index_type)
+                index_i5 = idx_dict(IndexI5.objects.filter(archived=False), library.index_i5, library.index_type)
 
             d = self.create_result_dict(library, index_i7, index_i5)
             if d["index_i7"]["prefix"] != "":

@@ -23,7 +23,7 @@ Sample = apps.get_model("sample", "Sample")
 
 class MetadataExporterViewSet(viewsets.ViewSet):
     def list(self, request):
-        queryset = Request.objects.all().order_by("-create_time")
+        queryset = Request.objects.all().filter(archived=False).order_by("-create_time")
         if not request.user.is_staff:
             queryset = queryset.filter(user=request.user)
         data = queryset.values("pk", "name")
@@ -75,7 +75,7 @@ class MetadataExporterViewSet(viewsets.ViewSet):
             .filter(status__gte=5)
         )
 
-        queryset = Request.objects.prefetch_related(
+        queryset = Request.objects.filter(archived=False).prefetch_related(
             Prefetch("libraries", queryset=libraries_qs),
             Prefetch("samples", queryset=samples_qs),
         ).only(

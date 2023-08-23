@@ -98,7 +98,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         # Get Requests in one query
         requests = (
             Request.objects.filter(
-                Q(libraries__in=library_ids) | Q(samples__in=sample_ids)
+                Q(libraries__in=library_ids) | Q(samples__in=sample_ids), archived=False
             )
             .prefetch_related("libraries", "samples")
             .values(
@@ -137,7 +137,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         # Get Pooling objects in one query
         pooling_objects = (
-            Pooling.objects.select_related("library", "sample")
+            Pooling.objects.filter(archived=False).select_related("library", "sample")
             .filter(Q(library__in=library_ids) | Q(sample__in=sample_ids))
             .only("library__id", "sample__id", "concentration_c1", "create_time")
         )
@@ -164,6 +164,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         index_types = index_types1 | index_types2
         index_pairs = (
             IndexPair.objects.filter(
+                archived=False,
                 index_type__pk__in=index_types,
             )
             .select_related("index_type", "index1", "index2")

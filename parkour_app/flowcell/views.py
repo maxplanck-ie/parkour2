@@ -300,12 +300,12 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         def create_row(lane, record):
             index_i7 = IndexI7.objects.filter(
-                index=record.index_i7, index_type=record.index_type
+                archived=False, index=record.index_i7, index_type=record.index_type
             )
             index_i7_id = index_i7[0].index_id if index_i7 else ""
 
             index_i5 = IndexI5.objects.filter(
-                index=record.index_i5, index_type=record.index_type
+                archived=False, index=record.index_i5, index_type=record.index_type
             )
             index_i5_id = index_i5[0].index_id if index_i5 else ""
 

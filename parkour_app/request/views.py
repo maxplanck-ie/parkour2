@@ -188,7 +188,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         #   print(libraries_qs.values())
 
         queryset = (
-            Request.objects.select_related("user")
+            Request.objects.filter(archived=False).select_related("user")
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
@@ -279,7 +279,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     def mark_as_complete(self, request, pk=None):
         """Mark request as complete, set sequenced to true"""
 
-        instance = Request.objects.filter(pk=pk)
+        instance = Request.objects.filter(archived=False, pk=pk)
 
         post_data = self._get_post_data(request)
         override = post_data["override"]
@@ -340,7 +340,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         )
 
         instance = (
-            Request.objects.filter(pk=pk)
+            Request.objects.filter(archived=False, pk=pk)
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
@@ -377,7 +377,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Get the user email address to ship him data."""
         users_qs = User.objects.all()
         data = (
-            Request.objects.filter(pk=pk)
+            Request.objects.filter(archived=False, pk=pk)
             .prefetch_related(Prefetch("user", queryset=users_qs))
             .only("user")
             .first()

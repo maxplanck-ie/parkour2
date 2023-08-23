@@ -142,7 +142,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             )
         )
 
-        queryset = Request.objects.prefetch_related(
+        queryset = Request.objects.filter(archived=False).prefetch_related(
             Prefetch("libraries", queryset=libraries_qs),
             Prefetch("samples", queryset=samples_qs),
         )

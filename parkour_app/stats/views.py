@@ -28,7 +28,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RunsSerializer
 
     def get_queryset(self):
-        request_qs = Request.objects.only("name")
+        request_qs = Request.objects.filter(archived=False).only("name")
 
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
@@ -200,7 +200,7 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             )
         )
 
-        requests_qs = Request.objects.prefetch_related(
+        requests_qs = Request.objects.filter(archived=False).prefetch_related(
             Prefetch(
                 "libraries",
                 queryset=libraries_qs,

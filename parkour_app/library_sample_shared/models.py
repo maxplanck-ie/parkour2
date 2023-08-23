@@ -22,6 +22,7 @@ class Organism(models.Model):
         blank=True,
         null=True,
     )
+    archived = models.BooleanField("Archived", default=False)
 
     def __str__(self):
         return self.name
@@ -79,12 +80,16 @@ class GenericIndex(models.Model):
 
 
 class IndexI7(GenericIndex):
+    archived = models.BooleanField("Archived", default=False)
+
     class Meta:
         verbose_name = "Index I7"
         verbose_name_plural = "Indices I7"
 
 
 class IndexI5(GenericIndex):
+    archived = models.BooleanField("Archived", default=False)
+
     class Meta:
         verbose_name = "Index I5"
         verbose_name_plural = "Indices I5"
@@ -172,6 +177,8 @@ class IndexPair(models.Model):
         "Numeric Coordinate", validators=[MinValueValidator(1)]
     )
 
+    archived = models.BooleanField("Archived", default=False)
+
     class Meta:
         verbose_name = "Index Pair"
         verbose_name_plural = "Index Pairs"
@@ -244,7 +251,7 @@ class LibraryProtocol(models.Model):
             # protocols of the Library Type 'Other'. If the latter does not
             # exist, create it
             try:
-                library_type = LibraryType.objects.get(name="Other")
+                library_type = LibraryType.objects.filter(archived=False).get(name="Other")
             except LibraryType.DoesNotExist:
                 library_type = LibraryType(name="Other")
                 library_type.save()
@@ -259,6 +266,7 @@ class LibraryType(models.Model):
         LibraryProtocol,
         verbose_name="Library Protocol",
     )
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Library Type"

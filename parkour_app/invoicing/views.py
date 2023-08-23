@@ -84,6 +84,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 flowcell__create_time__year=year,
                 flowcell__create_time__month=month,
                 sequenced=True,
+                archived=False
             )
             .select_related(
                 "cost_unit",
@@ -249,12 +250,12 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
             read_lengths = "; ".join(
-                ReadLength.objects.filter(pk__in=item["read_length"])
+                ReadLength.objects.filter(archived=False, pk__in=item["read_length"])
                 .order_by("name")
                 .values_list("name", flat=True)
             )
 
-            protocol = LibraryProtocol.objects.get(pk=item["library_protocol"])
+            protocol = LibraryProtocol.objects.filter(archived=False).get(pk=item["library_protocol"])
 
             row = [
                 item["request"],

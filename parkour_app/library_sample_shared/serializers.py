@@ -99,7 +99,7 @@ class LibraryTypeSerializer(ModelSerializer):
         fields = ("id", "name", "library_protocol")
 
     def get_library_protocol(self, obj):
-        return LibraryType.objects.filter(pk=obj.pk).values_list(
+        return LibraryType.objects.filter(archived=False, pk=obj.pk).values_list(
             "library_protocol__id", flat=True
         )
 

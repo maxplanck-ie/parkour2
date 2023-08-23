@@ -25,7 +25,23 @@ class OrganismAdmin(admin.ModelAdmin):
         "name",
         "scientific_name",
         "taxon_id",
+        "archived"
     )
+
+    list_filter = ("archived",)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(ConcentrationMethod)
@@ -67,10 +83,10 @@ class IndexPairInline(admin.TabularInline):
         index_type_id = args[0] if args else None
 
         if db_field.name == "index1":
-            kwargs["queryset"] = IndexI7.objects.filter(index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI7.objects.filter(archived=False, index_type__id=index_type_id)
 
         elif db_field.name == "index2":
-            kwargs["queryset"] = IndexI5.objects.filter(index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI5.objects.filter(archived=False, index_type__id=index_type_id)
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -137,9 +153,23 @@ class IndexPairAdmin(admin.ModelAdmin):
     list_display = (
         "index_pair",
         "coordinate",
+        "archived"
     )
     search_fields = ("index_type__name",)
-    list_filter = ("index_type",)
+    list_filter = ("index_type", "archived")
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def index_pair(self, obj):
         return str(obj)
@@ -147,7 +177,7 @@ class IndexPairAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         context["adminform"].form.fields[
             "index_type"
-        ].queryset = IndexType.objects.filter(format="plate")
+        ].queryset = IndexType.objects.filter(archived=False, format="plate")
         return super().render_change_form(request, context, args, kwargs)
 
 
@@ -170,14 +200,28 @@ class IndexI5Admin(ImportExportModelAdmin):
         "idx_id",
         "index",
         "type",
+        "archived"
     )
     search_fields = (
         "index",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter),)
+    list_filter = (("index_type", RelatedDropdownFilter),"archived")
 
     resource_class = IndexI5Resource
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -203,14 +247,28 @@ class IndexI7Admin(ImportExportModelAdmin):
         "idx_id",
         "index",
         "type",
+        "archived"
     )
     search_fields = (
         "index",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter),)
+    list_filter = (("index_type", RelatedDropdownFilter), "archived")
 
     resource_class = IndexI7Resource
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -233,7 +291,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = (("type", RelatedDropdownFilter), ("archived", RelatedDropdownFilter))
+    list_filter = ("type", "archived")
 
     actions = (
         "mark_as_archived",
@@ -252,3 +310,18 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 @admin.register(LibraryType)
 class LibraryTypeAdmin(admin.ModelAdmin):
     filter_horizontal = ("library_protocol",)
+    list_display = ("archived",)
+    list_filter = ("archived",)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
