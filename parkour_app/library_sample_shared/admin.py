@@ -310,7 +310,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 @admin.register(LibraryType)
 class LibraryTypeAdmin(admin.ModelAdmin):
     filter_horizontal = ("library_protocol",)
-    list_display = ("archived",)
+    list_display = ("name", "archived")
     list_filter = ("archived",)
 
     actions = (
