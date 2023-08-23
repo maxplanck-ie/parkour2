@@ -104,11 +104,11 @@ class InvoicingSerializer(ModelSerializer):
         )
 
         # Fetch Fixed Costs
-        fixed_costs = FixedCosts.objects.values("sequencer", "price")
+        fixed_costs = FixedCosts.objects.filter(archived=False).values("sequencer", "price")
         fixed_costs = {x["sequencer"]: x["price"] for x in fixed_costs}
 
         # Fetch Preparation Costs
-        preparation_costs = LibraryPreparationCosts.objects.values(
+        preparation_costs = LibraryPreparationCosts.objects.filter(archived=False).values(
             "library_protocol", "price"
         )
         preparation_costs = {
@@ -116,7 +116,7 @@ class InvoicingSerializer(ModelSerializer):
         }
 
         # Fetch Sequencing Costs
-        sequencing_costs = SequencingCosts.objects.values(
+        sequencing_costs = SequencingCosts.objects.filter(archived=False).values(
             "sequencer", "read_length", "price"
         )
         sequencing_costs = {
@@ -352,7 +352,7 @@ class InvoicingSerializer(ModelSerializer):
             costs = preparation_costs.get(library_protocol, 0) * Decimal(split[0])
         else:
             try:
-                price = LibraryPreparationCosts.objects.get(
+                price = LibraryPreparationCosts.objects.filter(archived=False).get(
                     library_protocol__name="Quality Control"
                 ).price
                 costs = Decimal(split[0]) * price

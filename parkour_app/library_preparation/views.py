@@ -44,7 +44,7 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 "sample__index_type__indices_i7",
                 "sample__index_type__indices_i5",
             )
-            .filter(Q(sample__status=2) | Q(sample__status=-2))
+            .filter(archived=False ,(Q(sample__status=2) | Q(sample__status=-2)))
         )
 
     def get_context(self, queryset):
@@ -154,7 +154,7 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             row_num += 1
             row_idx = str(row_num + 1)
             library_preparation_object = (
-                LibraryPreparation.objects.filter(id=item["pk"])
+                LibraryPreparation.objects.filter(archived=False, id=item["pk"])
                 .only("starting_amount", "spike_in_description")
                 .first()
             )

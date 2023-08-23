@@ -26,6 +26,7 @@ class InvoicingReport(DateTimeMixin):
 class FixedCosts(models.Model):
     sequencer = models.OneToOneField(Sequencer, on_delete=models.SET_NULL, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Fixed Cost"
@@ -48,6 +49,7 @@ class LibraryPreparationCosts(models.Model):
     )
     # library_protocol = models.OneToOneField(LibraryProtocol)
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Library Preparation Cost"
@@ -72,6 +74,7 @@ class SequencingCosts(models.Model):
         ReadLength, verbose_name="Read Length", on_delete=models.SET_NULL, null=True
     )
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Sequencing Cost"

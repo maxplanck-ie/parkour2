@@ -18,7 +18,23 @@ class FixedCostsAdmin(admin.ModelAdmin):
     list_display = (
         "sequencer",
         "price_amount",
+        "archived"
     )
+
+    list_filter = ("archived",)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(LibraryPreparationCosts)
@@ -30,7 +46,23 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
     list_display = (
         "library_protocol",
         "price_amount",
+        "archived"
     )
+
+    list_filter = ("archived",)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(SequencingCosts)
@@ -44,8 +76,23 @@ class SequencingCostsAdmin(admin.ModelAdmin):
         "sequencer",
         "read_length",
         "price_amount",
+        "archived"
     )
     list_filter = (
         "sequencer",
         "read_length",
+        "archived"
     )
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)

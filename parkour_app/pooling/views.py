@@ -121,7 +121,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         # Get Library Preparation objects in one query
         preparation_objects = (
-            LibraryPreparation.objects.filter(sample__in=sample_ids)
+            LibraryPreparation.objects.filter(archived=False, sample__in=sample_ids)
             .select_related("sample")
             .only(
                 "sample__id",

@@ -275,7 +275,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer", "Price"]
         write_header(ws, row_num, header)
-        for item in FixedCosts.objects.all():
+        for item in FixedCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [item.sequencer.name, item.price]
             write_row(ws, row_num, row)
@@ -285,7 +285,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Library Protocol", "Price"]
         write_header(ws, row_num, header)
-        for item in LibraryPreparationCosts.objects.all():
+        for item in LibraryPreparationCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [item.library_protocol.name, item.price]
             write_row(ws, row_num, row)
@@ -295,7 +295,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer + Read Length", "Price"]
         write_header(ws, row_num, header)
-        for item in SequencingCosts.objects.all():
+        for item in SequencingCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [
                 f"{item.sequencer.name} {item.read_length.name}",
@@ -321,9 +321,7 @@ class LibraryPreparationCostsViewSet(
     """Get the list of Library Preparation Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = LibraryPreparationCosts.objects.filter(
-        library_protocol__archived=False
-    )
+    queryset = LibraryPreparationCosts.objects.filter(archived=False, library_protocol__archived=False)
     print(queryset.query)
 
     serializer_class = LibraryPreparationCostsSerializer

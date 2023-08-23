@@ -3,15 +3,16 @@ from django.db import models
 
 
 def get_deleted_org():
-    return Organization.objects.get_or_create(name="deleted ORG")[0]
+    return Organization.objects.filter(archived=False).get_or_create(name="deleted ORG")[0]
 
 
 def get_deleted_pi():
-    return PrincipalInvestigator.objects.get_or_create(name="deleted PI")[0]
+    return PrincipalInvestigator.objects.filter(archived=False).get_or_create(name="deleted PI")[0]
 
 
 class Organization(models.Model):
     name = models.CharField("Name", max_length=100)
+    archived = models.BooleanField("Archived", default=False)
 
     def __str__(self):
         return self.name
@@ -22,6 +23,7 @@ class PrincipalInvestigator(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.SET(get_deleted_org)
     )
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Principal Investigator"

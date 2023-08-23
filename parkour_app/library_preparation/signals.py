@@ -27,6 +27,6 @@ def update_samples(sender, instance, action, **kwargs):
 
         # TODO: maybe there is a better way to create multiple objects at once
         for sample in instance.samples.all():
-            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
+            obj, created = LibraryPreparation.objects.filter(archived=False).get_or_create(sample=sample)
             if created:
                 obj.save()

@@ -125,7 +125,7 @@ class TestFixedCostsViewSet(BaseAPITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        updated_cost = FixedCosts.objects.get(pk=self.cost.pk)
+        updated_cost = FixedCosts.objects.filter(archived=False).get(pk=self.cost.pk)
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):
@@ -167,7 +167,7 @@ class TestLibraryPreparationCostsViewSet(BaseAPITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        updated_cost = LibraryPreparationCosts.objects.get(pk=self.cost.pk)
+        updated_cost = LibraryPreparationCosts.objects.filter(archived=False).get(pk=self.cost.pk)
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):
@@ -208,7 +208,7 @@ class TestSequencingCostsViewSet(BaseAPITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-        updated_cost = SequencingCosts.objects.get(pk=self.cost.pk)
+        updated_cost = SequencingCosts.objects.filter(archived=False).get(pk=self.cost.pk)
         self.assertEqual(updated_cost.price, 15)
 
     def test_non_staff(self):

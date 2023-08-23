@@ -813,6 +813,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             + "appendix."
         )
         lib_prep_objects = LibraryPreparation.objects.filter(
+            archived=False,
             sample__in=instance.samples.all()
         )
         header = [
