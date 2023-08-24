@@ -291,7 +291,7 @@ class TestFlowcell(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 201)
         self.assertTrue(data["success"])
-        flowcells = Flowcell.objects.filter(archived=False).values_list(
+        flowcells = Flowcell.objects.values_list(
             "flowcell_id", flat=True
         )
         self.assertIn(flowcell_id, flowcells)

@@ -18,9 +18,7 @@ def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
 
         # TODO: maybe there is a better way to create multiple objects at once
         for library in instance.libraries.all():
-            obj, created = Pooling.objects.filter(archived=False).get_or_create(
-                library=library
-            )
+            obj, created = Pooling.objects.get_or_create(library=library)
             if created:
                 obj.save()
 
@@ -37,7 +35,7 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
         return
 
     try:
-        lib_prep_object = LibraryPreparation.objects.filter(archived=False).get(
+        lib_prep_object = LibraryPreparation.objects.get(
             sample=instance
         )
     except LibraryPreparation.DoesNotExist:
@@ -46,8 +44,12 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
     if lib_prep_object and instance.status == 3:
         # If a sample has an associated Library Preparation object and
         # passes the quality check, create a Pooling object for the sample
+<<<<<<< HEAD
         obj, created = Pooling.objects.filter(archived=False).get_or_create(
             sample=instance
         )
+=======
+        obj, created = Pooling.objects.get_or_create(sample=instance)
+>>>>>>> 23b1ee28 (tests.py and signals.py restored to normal)
         if created:
             obj.save()

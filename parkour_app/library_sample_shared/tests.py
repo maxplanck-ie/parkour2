@@ -156,7 +156,7 @@ class LibraryProtocolTest(TestCase):
         Ensure a new library protocol is added to the list of protocols of
         the library type 'Other'.
         """
-        library_type = LibraryType.objects.filter(archived=False).get(name="Other")
+        library_type = LibraryType.objects.get(name="Other")
         library_protocols = library_type.library_protocol.all().values_list(
             "name", flat=True
         )

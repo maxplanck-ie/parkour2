@@ -3,13 +3,13 @@ from django.db import models
 
 
 def get_deleted_org():
-    return Organization.objects.filter(archived=False).get_or_create(
+    return Organization.objects.get_or_create(
         name="deleted ORG"
     )[0]
 
 
 def get_deleted_pi():
-    return PrincipalInvestigator.objects.filter(archived=False).get_or_create(
+    return PrincipalInvestigator.objects.get_or_create(
         name="deleted PI"
     )[0]
 

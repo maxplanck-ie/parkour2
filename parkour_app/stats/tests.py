@@ -95,7 +95,7 @@ class TestRunStatistics(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
 
-        updated_flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell.pk)
+        updated_flowcell = Flowcell.objects.get(pk=flowcell.pk)
         self.assertEqual(updated_flowcell.matrix, matrix)
 
     def test_upload_flowcell_matrix_invalid_flowcell_id(self):
@@ -200,7 +200,7 @@ class TestSequencesStatistics(BaseTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response.json()["success"])
 
-        updated_flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell.pk)
+        updated_flowcell = Flowcell.objects.get(pk=flowcell.pk)
         self.assertEqual(updated_flowcell.sequences, sequences)
 
     def test_upload_flowcell_sequences_invalid_flowcell_id(self):
