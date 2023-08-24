@@ -44,12 +44,6 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
     if lib_prep_object and instance.status == 3:
         # If a sample has an associated Library Preparation object and
         # passes the quality check, create a Pooling object for the sample
-<<<<<<< HEAD
-        obj, created = Pooling.objects.filter(archived=False).get_or_create(
-            sample=instance
-        )
-=======
         obj, created = Pooling.objects.get_or_create(sample=instance)
->>>>>>> 23b1ee28 (tests.py and signals.py restored to normal)
         if created:
             obj.save()
