@@ -19,7 +19,7 @@ def browser_context_args(browser_context_args):
     }
 
 
-def test_requests(page: Page):
+def test_requests_page(page: Page):
     utilities.pretest_login(page)
 
     addRequestButton = page.locator("a.pl-add-request-button")
