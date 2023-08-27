@@ -53,8 +53,7 @@ Ext.define('MainHub.view.libraries.Libraries', {
           items: [
             {
               name: 'asBioinformatician',
-              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As bioinformatician</span>',
-              boxLabelAlign: 'before',
+              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As Bioinformatician</span>',
               checked: false,
               id: 'asBioinformaticianlr',
 
@@ -76,7 +75,6 @@ Ext.define('MainHub.view.libraries.Libraries', {
             {
               name: 'asHandler',
               boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
-              boxLabelAlign: 'before',
               checked: false,
               id: 'as-handler-libraries-samples-checkbox',
               margin: '0 15 0 0',
@@ -96,8 +94,7 @@ Ext.define('MainHub.view.libraries.Libraries', {
             },
             {
               name: 'showAll',
-              boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show all</span>',
-              boxLabelAlign: 'before',
+              boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show All</span>',
               checked: true,
               id: 'showAlllr',
               margin: '0 15 0 0',

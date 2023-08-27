@@ -33,8 +33,7 @@ Ext.define('MainHub.view.requests.Requests', {
         items: [
           {
             name: 'asBioinformatician',
-            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As bioinformatician</span>',
-            boxLabelAlign: 'before',
+            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As Bioinformatician</span>',
             checked: false,
             id: 'asBioinformatician',
             margin: '0 15 0 0',
@@ -55,9 +54,8 @@ Ext.define('MainHub.view.requests.Requests', {
           {
             name: 'asHandler',
             boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
-            boxLabelAlign: 'before',
             checked: false,
-            id: 'asHandler-requests-checkbox',
+            id: 'as-handler-requests-checkbox',
             margin: '0 15 0 0',
             cls: 'grid-header-checkbox',
             hidden: !USER.is_staff,
@@ -75,8 +73,7 @@ Ext.define('MainHub.view.requests.Requests', {
           },
           {
             name: 'showAll',
-            boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show all</span>',
-            boxLabelAlign: 'before',
+            boxLabel: '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show All</span>',
             checked: true,
             id: 'showAll',
 
