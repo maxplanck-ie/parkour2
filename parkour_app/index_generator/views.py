@@ -147,6 +147,9 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             Prefetch("samples", queryset=samples_qs),
         )
 
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(handler=request.user)
+
         serializer = IndexGeneratorSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         data = sorted(data, key=lambda x: x["barcode"][3:])

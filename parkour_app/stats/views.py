@@ -115,6 +115,9 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             create_time__lte=end,
         )
 
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(requests__handler=request.user)
+
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)
@@ -272,6 +275,9 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             create_time__gte=start,
             create_time__lte=end,
         )
+
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(requests__handler=request.user)
 
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))

@@ -19,6 +19,10 @@ Ext.define('MainHub.store.statistics.RunStatistics', {
     limitParam: false,  // to remove param "limit"
     noCache: false     // to remove param "_dc",
   },
+  
+  extraParams: {
+    asHandler: 'False'
+  },
 
   getId: function () {
     return 'RunStatistics';

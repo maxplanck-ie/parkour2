@@ -21,6 +21,39 @@ Ext.define('MainHub.view.librarypreparation.LibraryPreparation', {
     header: {
       title: 'Preparation',
       items: [{
+        xtype: 'checkbox',
+        boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+        itemId: 'as-handler-preparation-checkbox',
+        margin: '0 15 0 0',
+        cls: 'grid-header-checkbox',
+        checked: false,
+        listeners: {
+          change: function (checkbox, newValue, oldValue, eOpts) {
+            var grid = checkbox.up('#library-preparation-grid');
+            var gridGrouping = grid.view.getFeature('library-preparation-grid-grouping');
+            if (newValue) {
+              grid.store.getProxy().extraParams.asHandler = 'True';
+              grid.store.load({
+                callback: function (records, operation, success) {
+                  if (success) {
+                    gridGrouping.expandAll();
+                  }
+                }
+              })
+            } else {
+              grid.store.getProxy().extraParams.asHandler = 'False';
+              grid.store.load({
+                callback: function (records, operation, success) {
+                  if (success) {
+                    gridGrouping.collapseAll();
+                  }
+                }
+              })
+            }
+          }
+        }
+      },
+      {
         xtype: 'textfield',
         itemId: 'search-field',
         emptyText: 'Search',
@@ -220,6 +253,7 @@ Ext.define('MainHub.view.librarypreparation.LibraryPreparation', {
 
     features: [{
       ftype: 'grouping',
+      id: 'library-preparation-grid-grouping',
       startCollapsed: true,
       enableGroupingMenu: false,
       groupHeaderTpl: [

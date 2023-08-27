@@ -29,9 +29,43 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
         flex: 1,
         header: {
           title: 'Libraries and Samples for Pooling',
-          items: [{
-            xtype: 'combobox',
-            id: 'poolSizeCb',
+          items: [
+            {
+              xtype: 'checkbox',
+              boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+              itemId: 'as-handler-index-generator-checkbox',
+              margin: '0 15 0 0',
+              cls: 'grid-header-checkbox',
+              checked: false,
+              listeners: {
+                change: function (checkbox, newValue, oldValue, eOpts) {
+                  var grid = checkbox.up('#index-generator-grid');
+                  var gridGrouping = grid.view.getFeature('index-generator-grid-grouping');
+                  if (newValue) {
+                    grid.store.getProxy().extraParams.asHandler = 'True';
+                    grid.store.load({
+                      callback: function (records, operation, success) {
+                        if (success) {
+                          gridGrouping.expandAll();
+                        }
+                      }
+                    })
+                  } else {
+                    grid.store.getProxy().extraParams.asHandler = 'False';
+                    grid.store.load({
+                      callback: function (records, operation, success) {
+                        if (success) {
+                          gridGrouping.collapseAll();
+                        }
+                      }
+                    })
+                  }
+                }
+              }
+            },
+            {
+              xtype: 'combobox',
+              id: 'poolSizeCb',
             itemId: 'poolSizeCb',
             store: 'PoolSizes',
             queryMode: 'local',
@@ -193,6 +227,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
 
         features: [{
           ftype: 'grouping',
+          id: 'index-generator-grid-grouping',
           startCollapsed: true,
           groupHeaderTpl: [
             '<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M, Seq. Kit: {children:this.getPoolSize})',

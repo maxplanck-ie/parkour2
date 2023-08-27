@@ -141,6 +141,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             create_time__month=month,
         )
 
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(requests__handler=request.user)
+
         serializer = FlowcellListSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)

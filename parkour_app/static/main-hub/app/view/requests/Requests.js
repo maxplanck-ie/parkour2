@@ -54,10 +54,10 @@ Ext.define('MainHub.view.requests.Requests', {
           },
           {
             name: 'asHandler',
-            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for processing">As handler</span>',
+            boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
             boxLabelAlign: 'before',
             checked: false,
-            id: 'asHandler',
+            id: 'asHandler-requests-checkbox',
             margin: '0 15 0 0',
             cls: 'grid-header-checkbox',
             hidden: !USER.is_staff,

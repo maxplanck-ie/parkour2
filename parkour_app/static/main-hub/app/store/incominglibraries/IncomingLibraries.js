@@ -28,6 +28,9 @@ Ext.define('MainHub.store.incominglibraries.IncomingLibraries', {
       successProperty: 'success',
       messageProperty: 'message'
     },
+    extraParams:{
+        asHandler: 'False'
+    },
     writer: {
       type: 'json',
       rootProperty: 'data',

@@ -187,6 +187,8 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     def list(self, request):
         """Get the list of all pooling objects."""
         queryset = self.get_queryset()
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(Q(libraries__request__handler=request.user) | Q(samples__request__handler=request.user))
         serializer = PoolSerializer(
             queryset, many=True, context=self.get_context(queryset)
         )

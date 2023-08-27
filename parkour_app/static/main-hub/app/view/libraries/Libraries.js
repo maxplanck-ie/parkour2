@@ -63,7 +63,6 @@ Ext.define('MainHub.view.libraries.Libraries', {
               hidden: !USER.is_bioinformatician,
               listeners: {
                 change: function (checkbox, newValue, oldValue, eOpts) {
-
                   if (newValue) {
                     Ext.getStore('librariesStore').getProxy().extraParams.asBioinformatician = 'True';
                     Ext.getStore('librariesStore').load()
@@ -76,10 +75,10 @@ Ext.define('MainHub.view.libraries.Libraries', {
             },
             {
               name: 'asHandler',
-              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for processing">As handler</span>',
+              boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
               boxLabelAlign: 'before',
               checked: false,
-              id: 'asHandlerlr',
+              id: 'as-handler-libraries-samples-checkbox',
               margin: '0 15 0 0',
               cls: 'grid-header-checkbox',
               hidden: !USER.is_staff,
