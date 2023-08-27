@@ -33,7 +33,7 @@ Ext.define('MainHub.view.requests.Requests', {
         items: [
           {
             name: 'asBioinformatician',
-            boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As Bioinformatician</span>',
+            boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
             checked: false,
             id: 'asBioinformatician',
             margin: '0 15 0 0',

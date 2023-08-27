@@ -30,6 +30,7 @@ Ext.define('MainHub.view.statistics.RunStatistics', {
         itemId: 'as-handler-statistics-checkbox',
         margin: '0 15 0 0',
         cls: 'grid-header-checkbox',
+        hidden: !USER.is_staff,
         checked: false,
         listeners: {
           change: function (checkbox, newValue, oldValue, eOpts) {
@@ -46,6 +47,40 @@ Ext.define('MainHub.view.statistics.RunStatistics', {
               })
             } else {
               grid.store.getProxy().extraParams.asHandler = 'False';
+              grid.store.load({
+                callback: function (records, operation, success) {
+                  if (success) {
+                    gridGrouping.collapseAll();
+                  }
+                }
+              })
+            }
+          }
+        }
+      },
+      {
+        xtype: 'checkbox',
+        boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As bioinformatician</span>',
+        itemId: 'as-bioinformatician-statistics-checkbox',
+        margin: '0 15 0 0',
+        cls: 'grid-header-checkbox',
+        hidden: !USER.is_bioinformatician,
+        checked: false,
+        listeners: {
+          change: function (checkbox, newValue, oldValue, eOpts) {
+            var grid = checkbox.up('#run-statistics-grid');
+            var gridGrouping = grid.view.getFeature('run-statistics-grid-grouping');
+            if (newValue) {
+              grid.store.getProxy().extraParams.asBioinformatician = 'True';
+              grid.store.load({
+                callback: function (records, operation, success) {
+                  if (success) {
+                    gridGrouping.expandAll();
+                  }
+                }
+              })
+            } else {
+              grid.store.getProxy().extraParams.asBioinformatician = 'False';
               grid.store.load({
                 callback: function (records, operation, success) {
                   if (success) {

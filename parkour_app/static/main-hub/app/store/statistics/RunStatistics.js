@@ -21,7 +21,8 @@ Ext.define('MainHub.store.statistics.RunStatistics', {
   },
   
   extraParams: {
-    asHandler: 'False'
+    asHandler: 'False',
+    asBioinformatician: 'False'
   },
 
   getId: function () {

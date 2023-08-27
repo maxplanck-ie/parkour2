@@ -53,10 +53,9 @@ Ext.define('MainHub.view.libraries.Libraries', {
           items: [
             {
               name: 'asBioinformatician',
-              boxLabel: '<span data-qtip="Check, to filter requests for those where you are responsible for data analysis">As Bioinformatician</span>',
+              boxLabel: '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
               checked: false,
-              id: 'asBioinformaticianlr',
-
+              id: 'as-bioinformatician-libraries-samples-checkbox',
               margin: '0 15 0 0',
               cls: 'grid-header-checkbox',
               hidden: !USER.is_bioinformatician,

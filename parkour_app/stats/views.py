@@ -118,6 +118,9 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         if request.GET.get("asHandler") == "True":
             queryset = queryset.filter(requests__handler=request.user)
 
+        if request.GET.get("asBioinformatician") == "True":
+            queryset = queryset.filter(requests__bioinformatician=request.user)
+
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)
@@ -278,6 +281,9 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
         if request.GET.get("asHandler") == "True":
             queryset = queryset.filter(requests__handler=request.user)
+
+        if request.GET.get("asBioinformatician") == "True":
+            queryset = queryset.filter(requests__bioinformatician=request.user)
 
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))

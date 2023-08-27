@@ -21,7 +21,8 @@ Ext.define('MainHub.store.statistics.Sequences', {
   },
   
   extraParams: {
-    asHandler: 'False'
+    asHandler: 'False',
+    asBioinformatician: 'False'
   },
 
   getId: function () {
