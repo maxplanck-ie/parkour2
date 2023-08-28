@@ -346,4 +346,39 @@ open-pr:
 # 	&& echo "-- Pull Request MERGED" \
 # 	&& git checkout $$CURRENT_BRANCH
 
+## DO NOT USE WITH PRODUCTION DATA, BarcodeCounter bug is still in place!
+# check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
+save-db-json:
+	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
+		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
+	@rm -f misc/demo-dump.json && ln -s db_$(timestamp)-dump.json misc/demo-dump.json
+
+load-db-json:
+	@docker cp misc/demo-dump.json parkour2-django:/tmp/postgres_dump.json && \
+		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
+
+reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
+
+reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
+
+prep4json:
+	@rm -f parkour_app/library_preparation/apps.py
+	@rm -f parkour_app/library_preparation/signals.py
+	@rm -f parkour_app/pooling/apps.py
+	@rm -f parkour_app/pooling/signals.py
+
+restore-prep4json:
+	@git restore -W parkour_app/library_preparation/apps.py
+	@git restore -W parkour_app/library_preparation/signals.py
+	@git restore -W parkour_app/pooling/apps.py
+	@git restore -W parkour_app/pooling/signals.py
+
+reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
+
+restore-prep4json-prod:
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+
 # Remember: (docker compose run == docker exec) != docker run
