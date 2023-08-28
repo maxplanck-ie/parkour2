@@ -1,0 +1,92 @@
+[
+    {
+        "fields": {
+            "price": "975.28",
+            "read_length": 3,
+            "sequencer": 1
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "price": "1469.78",
+            "read_length": 9,
+            "sequencer": 1
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "price": "989.97",
+            "read_length": 8,
+            "sequencer": 2
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "price": "1585.32",
+            "read_length": 3,
+            "sequencer": 2
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "price": "2544.94",
+            "read_length": 8,
+            "sequencer": 3
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "price": "4072.49",
+            "read_length": 3,
+            "sequencer": 3
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "price": "1729.88",
+            "read_length": 8,
+            "sequencer": 4
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "price": "1422.88",
+            "read_length": 8,
+            "sequencer": 5
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 9
+    },
+    {
+        "fields": {
+            "price": "1990.10",
+            "read_length": 3,
+            "sequencer": 5
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 10
+    },
+    {
+        "fields": {
+            "price": "5441.41",
+            "read_length": 4,
+            "sequencer": 6
+        },
+        "model": "invoicing.sequencingcosts",
+        "pk": 11
+    }
+]
