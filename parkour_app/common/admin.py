@@ -19,16 +19,26 @@ class CostUnitInline(admin.TabularInline):
 
 @admin.register(PrincipalInvestigator)
 class PrincipalInvestigatorAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "organization",
-    )
+    list_display = ("name", "organization", "archived")
     search_fields = (
         "name",
         "organization__name",
     )
-    list_filter = ("organization",)
+    list_filter = ("organization", "archived")
     inlines = [CostUnitInline]
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(Organization)

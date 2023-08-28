@@ -275,7 +275,7 @@ class FlowcellSerializer(ModelSerializer):
             )
             .distinct()
         )
-        pools = Pool.objects.filter(pk__in=pool_ids)
+        pools = Pool.objects.filter(archived=False, pk__in=pool_ids)
 
         # After creating a flowcell, update all pool's libraries' and
         # samples' statuses if the pool is fully loaded
@@ -288,12 +288,13 @@ class FlowcellSerializer(ModelSerializer):
         libraries = Library.objects.filter(pool__in=pools)
         samples = Sample.objects.filter(pool__in=pools)
         requests = Request.objects.filter(
+            archived=False,
             pk__in=set(
                 itertools.chain(
                     libraries.values_list("request", flat=True).distinct(),
                     samples.values_list("request", flat=True).distinct(),
                 )
-            )
+            ),
         )
         requests.update(sequenced=True)
         instance.requests.add(*requests)
