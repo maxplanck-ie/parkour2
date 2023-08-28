@@ -15,6 +15,8 @@ class NucleicAcidType(models.Model):
 
     status = models.PositiveIntegerField("Status", default=1)
 
+    archived = models.BooleanField("Archived", default=False)
+
     class Meta:
         verbose_name = "Nucleic Acid Type"
         verbose_name_plural = "Nucleic Acid Types"
@@ -47,6 +49,8 @@ class Sample(GenericLibrarySample):
         null=True,
         blank=True,
     )
+
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Sample"

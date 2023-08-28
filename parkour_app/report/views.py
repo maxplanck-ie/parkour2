@@ -41,7 +41,8 @@ class Report:
         )
 
         self.requests = (
-            Request.objects.select_related(
+            Request.objects.filter(archived=False)
+            .select_related(
                 "user__organization",
                 "user__pi",
             )
@@ -79,6 +80,7 @@ class Report:
             Flowcell.objects.select_related(
                 "sequencer",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
             )

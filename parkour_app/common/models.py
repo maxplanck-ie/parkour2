@@ -14,6 +14,7 @@ def get_deleted_pi():
 
 class Organization(models.Model):
     name = models.CharField("Name", max_length=100)
+    archived = models.BooleanField("Archived", default=False)
 
     def __str__(self):
         return self.name
@@ -24,6 +25,7 @@ class PrincipalInvestigator(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.SET(get_deleted_org)
     )
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Principal Investigator"

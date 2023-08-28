@@ -28,7 +28,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RunsSerializer
 
     def get_queryset(self):
-        request_qs = Request.objects.only("name")
+        request_qs = Request.objects.filter(archived=False).only("name")
 
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
@@ -89,7 +89,8 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.exclude(
+            Flowcell.objects.filter(archived=False)
+            .exclude(
                 matrix__isnull=True,
             )
             .select_related(
@@ -124,7 +125,9 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         matrix = request.data.get("matrix", "")
 
         try:
-            flowcell = Flowcell.objects.get(flowcell_id=flowcell_id)
+            flowcell = Flowcell.objects.filter(archived=False).get(
+                flowcell_id=flowcell_id
+            )
         except (ValueError, Flowcell.DoesNotExist):
             return Response(
                 {
@@ -197,21 +200,25 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             )
         )
 
-        requests_qs = Request.objects.prefetch_related(
-            Prefetch(
+        requests_qs = (
+            Request.objects.filter(archived=False)
+            .prefetch_related(
+                Prefetch(
+                    "libraries",
+                    queryset=libraries_qs,
+                    to_attr="fetched_libraries",
+                ),
+                Prefetch(
+                    "samples",
+                    queryset=samples_qs,
+                    to_attr="fetched_samples",
+                ),
+            )
+            .only(
+                "name",
                 "libraries",
-                queryset=libraries_qs,
-                to_attr="fetched_libraries",
-            ),
-            Prefetch(
                 "samples",
-                queryset=samples_qs,
-                to_attr="fetched_samples",
-            ),
-        ).only(
-            "name",
-            "libraries",
-            "samples",
+            )
         )
 
         lanes_qs = (
@@ -238,7 +245,8 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.exclude(
+            Flowcell.objects.filter(archived=False)
+            .exclude(
                 sequences__isnull=True,
             )
             .select_related(
