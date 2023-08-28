@@ -456,7 +456,7 @@ class IndexGenerator:
 
         for library in self.libraries:
             index_i7 = idx_dict(
-                IndexI7.objects.filter(archived=False),
+                IndexI7,
                 library.index_i7,
                 library.index_type,
             )
@@ -464,7 +464,7 @@ class IndexGenerator:
 
             if self.mode == "dual":
                 index_i5 = idx_dict(
-                    IndexI5.objects.filter(archived=False),
+                    IndexI5,
                     library.index_i5,
                     library.index_type,
                 )
