@@ -237,7 +237,7 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-playwright: down set-testing-front deploy-django deploy-caddy collect-static load-fixtures create-admin set-prod e2e
+playwright: down set-testing-front prep4json deploy-django deploy-caddy collect-static migrasync load-db-json restore-prep4json set-prod e2e
 
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
@@ -373,12 +373,12 @@ restore-prep4json:
 	@git restore -W parkour_app/pooling/apps.py
 	@git restore -W parkour_app/pooling/signals.py
 
-reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
+# reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
 
-restore-prep4json-prod:
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
-	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# restore-prep4json-prod:
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 
 # Remember: (docker compose run == docker exec) != docker run

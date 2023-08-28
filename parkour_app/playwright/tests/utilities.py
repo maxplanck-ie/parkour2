@@ -3,8 +3,8 @@ from platform import node as nodename
 
 from playwright.sync_api import Page
 
-testEmailID = "test.user@test.com"
-testPassword = "testing.password"
+testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
+testPassword = "parkour-staff"
 
 
 def visit_login_page(page):
