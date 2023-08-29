@@ -4,7 +4,9 @@
 ========
 
 - BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
-- Added database from parkour-demo in JSON format under `misc/` subfolder. Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
+- Added database from parkour-demo in JSON format under `misc/` subfolder.
+- Updated fixtures with parkour-demo database (WIP: librarypreparation needs more love)
+- Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
 
 23.08.21
 ========

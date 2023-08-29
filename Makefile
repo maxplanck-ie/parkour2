@@ -174,9 +174,10 @@ db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 load-fixtures: apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 
+## DEPRECATED, we need to load in a defined order becase of relations!
 # load-initial-data:
-# 	@docker compose exec parkour2-django python manage.py loaddata \
-# 		$$(fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' ')
+# 	@find . -name '*.json' | grep fixtures | cut -d'/' -f3 | uniq | \
+# 		xargs docker compose exec parkour2-django python manage.py loaddata
 
 load-backup: load-postgres load-media
 
@@ -237,7 +238,7 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-playwright: down set-testing-front prep4json deploy-django deploy-caddy collect-static migrasync load-db-json restore-prep4json set-prod e2e
+playwright: down set-testing-front deploy-django deploy-caddy collect-static load-fixtures set-prod e2e
 
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini

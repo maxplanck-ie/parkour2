@@ -1,0 +1,50 @@
+[
+  {
+    "model": "common.user",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$260000$JQfgcSYWWrMO4WPOR0XZsv$/3EEt9hwNSLBjZJ8I3Sxs6COt7WrgMvO8y31C1big5k=",
+      "last_login": "2023-08-29T09:15:52.834Z",
+      "is_superuser": false,
+      "email": "parkour-staff@parkour-demo.ie-freiburg.mpg.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-08-14T00:03:52.760Z",
+      "first_name": "Test",
+      "last_name": "Staff",
+      "phone": null,
+      "organization": 2,
+      "pi": 6,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "common.user",
+    "pk": 2,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$l26cYcvBepxN$3mLiaiy2ryRK5u6TFqj5hBgb9qMr3KVC12BGvTyAJno=",
+      "last_login": "2023-07-17T15:51:55.268Z",
+      "is_superuser": true,
+      "email": "parkour-admin@parkour-demo.ie-freiburg.mpg.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-08-20T15:30:54.546Z",
+      "first_name": "LIMS",
+      "last_name": "User",
+      "phone": null,
+      "organization": 2,
+      "pi": 5,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": [
+        1
+      ]
+    }
+  }
+]
