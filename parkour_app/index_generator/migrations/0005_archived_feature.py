@@ -4,24 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('index_generator', '0004_dj32_upgrade'),
+        ("index_generator", "0004_dj32_upgrade"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='poolsize',
-            name='obsolete',
+            model_name="poolsize",
+            name="obsolete",
         ),
         migrations.AddField(
-            model_name='pool',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="pool",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='poolsize',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="poolsize",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]

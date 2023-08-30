@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('request', '0002_dj32_upgrade'),
+        ("request", "0002_dj32_upgrade"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='request',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="request",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]
