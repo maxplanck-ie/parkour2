@@ -1,6 +1,5 @@
-misc/*.env
+misc/*.env.bak
 misc/*.pem
-misc/*.txt
 misc/*.tar.gz
 misc/*-dump.json
 misc/*.sqldump
