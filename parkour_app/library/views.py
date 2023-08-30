@@ -21,7 +21,7 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
-    def get_queryset(self, showAll=False):
+    def get_queryset(self, showAll=True):
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 

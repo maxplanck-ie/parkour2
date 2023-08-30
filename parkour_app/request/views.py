@@ -182,7 +182,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         "cost_unit__name",
     )
 
-    def get_queryset(self, showAll=False):
+    def get_queryset(self, showAll=True):
         libraries_qs = Library.objects.all().only("status", "sequencing_depth")
         samples_qs = Sample.objects.all().only("status", "sequencing_depth")
         #   print(libraries_qs.values())
