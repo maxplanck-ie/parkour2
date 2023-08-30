@@ -15,9 +15,7 @@ check-rootdir:
 		exit 1; }
 
 set-prod:
-	@-test -e misc/parkour.env && \
-		sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env || \
-		echo "Warning: misc/parkour.env file not found."
+	@-sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1prod/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["gunicorn/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1prod\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["python",.*"runserver_plus"/s/CMD/#CMD/' Dockerfile
@@ -108,7 +106,7 @@ dev-easy: down set-dev deploy-django deploy-caddy collect-static  ## Deploy Werk
 dev: down set-dev deploy-django deploy-nginx collect-static set-prod  ## Deploy Werkzeug instance with Nginx (incl. TLS)
 
 set-dev:
-	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
+	@-sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1dev/' misc/parkour.env
 	@sed -E -i -e '/^#CMD \["python",.*"runserver_plus"/s/#CMD/CMD/' Dockerfile
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1dev\2/' Dockerfile
 	@sed -E -i -e '/^CMD \["gunicorn/s/CMD/#CMD/' Dockerfile
@@ -224,7 +222,7 @@ djtest: down set-prod deploy-django
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing: set-prod
-	@sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1testing/' misc/parkour.env
+	@-sed -i -e '/^DJANGO_SETTINGS_MODULE/s/\(wui\.settings\.\).*/\1testing/' misc/parkour.env
 	@sed -i -e '/^RUN .* pip install/s/\(requirements\/\).*\(\.txt\)/\1testing\2/' Dockerfile
 
 set-testing-front: set-testing
