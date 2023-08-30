@@ -107,7 +107,7 @@
         "password": "pbkdf2_sha256$36000$PDQLgDIc4tUT$CRrgZZKeZ6ocf2z6vRg3x2qpOFnyP6J7DcvEiVyQ+2k=",
         "last_login": "2018-08-14T00:32:32.074Z",
         "is_superuser": true,
-        "email": "ryan@ie-freiburg.mpg.de",
+        "email": "salatino@ie-freiburg.mpg.de",
         "is_staff": true,
         "is_active": true,
         "date_joined": "2018-08-13T17:06:09.736Z",
@@ -188,27 +188,6 @@
         "cost_unit": [
             1
         ]
-    }
-},
-{
-    "model": "common.user",
-    "pk": 5,
-    "fields": {
-        "password": "pbkdf2_sha256$36000$z9i8TGPwq9YM$ijqLu8FQPHx+F0FuxnJlm/3HPrcu3X9W2qai/VPMENc=",
-        "last_login": "2023-02-02T16:17:25.946Z",
-        "is_superuser": false,
-        "email": "n.zilio@imb.de",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2023-02-02T16:17:00.231Z",
-        "first_name": "Nicola",
-        "last_name": "Zilio",
-        "phone": null,
-        "organization": null,
-        "pi": null,
-        "groups": [],
-        "user_permissions": [],
-        "cost_unit": []
     }
 },
 {
