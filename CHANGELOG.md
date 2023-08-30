@@ -3,6 +3,8 @@
 2?.??.??
 ========
 
+- New 'Duties' model, to keep track in charge of whom are the responsibilities (both dry and wet processing of both short and long read sequencing.); so far it lists all users in database, but it's meant to be used only within the sequencing facility, and bioinformaticians.
+- New 'archived' field replaces the old obsolescence functionality that was broken in many if not all models.
 - BUGFIX: Uploaded files appeared and disappeared just by switching sequenced to True.
 - BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
 - Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
@@ -10,6 +12,7 @@
 - Added database from parkour-demo in JSON format under `misc/` subfolder. Integrated all `**/fixtures/*.json` into it.
 - Updated fixtures with parkour-demo database, usefult to overwrite or further customize such entries.
 - Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
+- Added `tblib` as a base dependency to have proper traceback when running tests in parallel.
 
 
 23.08.21
