@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0004_duty'),
+        ("common", "0004_duty"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='organization',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="organization",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='principalinvestigator',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="principalinvestigator",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]

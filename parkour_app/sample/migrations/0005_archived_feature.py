@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('sample', '0004_dj32_upgrade'),
+        ("sample", "0004_dj32_upgrade"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='nucleicacidtype',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="nucleicacidtype",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='sample',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="sample",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]

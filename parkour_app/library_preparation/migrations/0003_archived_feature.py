@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library_preparation', '0002_dj32_upgrade'),
+        ("library_preparation", "0002_dj32_upgrade"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='librarypreparation',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="librarypreparation",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]

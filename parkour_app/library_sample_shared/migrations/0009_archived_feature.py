@@ -4,62 +4,61 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('library_sample_shared', '0008_optional_index1_long'),
+        ("library_sample_shared", "0008_optional_index1_long"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='indextype',
-            name='obsolete',
+            model_name="indextype",
+            name="obsolete",
         ),
         migrations.RemoveField(
-            model_name='libraryprotocol',
-            name='obsolete',
+            model_name="libraryprotocol",
+            name="obsolete",
         ),
         migrations.RemoveField(
-            model_name='readlength',
-            name='obsolete',
+            model_name="readlength",
+            name="obsolete",
         ),
         migrations.AddField(
-            model_name='indexi5',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="indexi5",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='indexi7',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="indexi7",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='indexpair',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="indexpair",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='indextype',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="indextype",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='libraryprotocol',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="libraryprotocol",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='librarytype',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="librarytype",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='organism',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="organism",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
         migrations.AddField(
-            model_name='readlength',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="readlength",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]
