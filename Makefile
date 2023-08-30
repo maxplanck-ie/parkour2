@@ -172,11 +172,6 @@ db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 load-fixtures: apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 
-## DEPRECATED, we need to load in a defined order becase of relations!
-# load-initial-data:
-# 	@find . -name '*.json' | grep fixtures | cut -d'/' -f3 | uniq | \
-# 		xargs docker compose exec parkour2-django python manage.py loaddata
-
 load-backup: load-postgres load-media
 
 # In our production VM, media_dump is a symlink to another partition (mounted
