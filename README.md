@@ -16,11 +16,13 @@
     &ensp;·&ensp;
     <a href="https://github.com/maxplanck-ie/parkour2/wiki/Introduction#introduction">📕 Users' Manual</a>
     &ensp;·&ensp;
+    <a href="https://github.com/maxplanck-ie/parkour2/wiki/Contributing">⌨️ Developers' Guide</a>
+    <br/>
+    <a href="https://github.com/maxplanck-ie/parkour2/issues">🐛 Report a Bug</a>
+    &ensp;·&ensp;
     <a href="https://github.com/maxplanck-ie/parkour2/discussions">🎁 Request a Feature</a>
     &ensp;·&ensp;
-    <a href="https://github.com/maxplanck-ie/parkour2/wiki/Contributing">⌨️ Developers' Setup Guide</a>
-    &ensp;·&ensp;
-    <a href="https://github.com/maxplanck-ie/parkour2/issues">🐛 Report a Bug</a>
+    <a href="https://github.com/maxplanck-ie/parkour2/blob/develop/CHANGELOG.md">📰 Read Changelog</a>
 </p>
 
 ---

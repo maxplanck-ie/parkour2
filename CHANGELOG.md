@@ -1,5 +1,24 @@
 <!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
 
+2?.??.??
+========
+
+- BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
+- Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
+- Added user email to mailed traceback when Django encounters any errors. This way we can contact users if they were experiencing a bug.
+- Added database from parkour-demo in JSON format under `misc/` subfolder. Integrated all `**/fixtures/*.json` into it.
+- Updated fixtures with parkour-demo database, usefult to overwrite or further customize such entries.
+- Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
+
+
+23.08.21
+========
+
+- BUGFIX: the rule `load-fixtures` was missing the pre-requisite rule `apply-migrations` (#59)
+- BUGFIX: password reset was redirecting to a missing success URL (giving a 404 to users right after resetting their passwords, what seemed misleading). We now redirect to login.
+- IMPROVEMENT: Django Linear Migrations extension moved from `dev.py` to `base.py` settings. This way we are ready to run `makemigrations` in any deployment (Be it production or development.)
+
+
 23.08.17
 ========
 

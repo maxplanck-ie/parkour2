@@ -16,7 +16,7 @@ iniconfig==2.0.0
     # via pytest
 playwright==1.37.0
     # via pytest-playwright
-pluggy==1.2.0
+pluggy==1.3.0
     # via pytest
 pyee==9.0.4
     # via playwright

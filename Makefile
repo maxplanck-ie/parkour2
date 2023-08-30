@@ -171,12 +171,13 @@ load-postgres-plain:
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
-load-fixtures:
+load-fixtures: apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 
+## DEPRECATED, we need to load in a defined order becase of relations!
 # load-initial-data:
-# 	@docker compose exec parkour2-django python manage.py loaddata \
-# 		$$(fd -g \*.json | cut -d"/" -f5 | rev | cut -d"." -f2 | rev | tr '\n' ' ')
+# 	@find . -name '*.json' | grep fixtures | cut -d'/' -f3 | uniq | \
+# 		xargs docker compose exec parkour2-django python manage.py loaddata
 
 load-backup: load-postgres load-media
 
@@ -237,7 +238,7 @@ create-admin:
 		"DJANGO_SUPERUSER_PASSWORD=testing.password DJANGO_SUPERUSER_EMAIL=test.user@test.com \
 			python manage.py createsuperuser --no-input"
 
-playwright: down set-testing-front deploy-django deploy-caddy collect-static apply-migrations load-fixtures create-admin set-prod e2e
+playwright: down set-testing-front deploy-django deploy-caddy collect-static load-fixtures set-prod e2e
 
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
@@ -249,7 +250,7 @@ coverage-html: down set-testing deploy-django
 	@docker compose exec parkour2-django coverage erase
 	@docker compose exec parkour2-django coverage run -m pytest -n auto --cov=./ --cov-config=.coveragerc --cov-report=html
 
-test: lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
+test: playwright lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
 
 shell:
 	@docker exec -it parkour2-django python manage.py shell_plus --bpython
@@ -297,7 +298,7 @@ compile:
 		deactivate
 
 get-pin:
-	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2
+	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
 
 # Support installation without docker
 ## https://github.com/maxplanck-ie/parkour2/wiki/Installation-without-docker
@@ -345,5 +346,40 @@ open-pr:
 # 	&& git push -u origin main \
 # 	&& echo "-- Pull Request MERGED" \
 # 	&& git checkout $$CURRENT_BRANCH
+
+## DO NOT USE WITH PRODUCTION DATA, BarcodeCounter bug is still in place!
+# check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
+save-db-json:
+	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
+		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
+	@rm -f misc/demo-dump.json && ln -s db_$(timestamp)-dump.json misc/demo-dump.json
+
+load-db-json:
+	@docker cp misc/demo-dump.json parkour2-django:/tmp/postgres_dump.json && \
+		docker exec parkour2-django python manage.py loaddata /tmp/postgres_dump.json
+
+reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
+
+reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
+
+prep4json:
+	@rm -f parkour_app/library_preparation/apps.py
+	@rm -f parkour_app/library_preparation/signals.py
+	@rm -f parkour_app/pooling/apps.py
+	@rm -f parkour_app/pooling/signals.py
+
+restore-prep4json:
+	@git restore -W parkour_app/library_preparation/apps.py
+	@git restore -W parkour_app/library_preparation/signals.py
+	@git restore -W parkour_app/pooling/apps.py
+	@git restore -W parkour_app/pooling/signals.py
+
+# reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
+
+# restore-prep4json-prod:
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 
 # Remember: (docker compose run == docker exec) != docker run

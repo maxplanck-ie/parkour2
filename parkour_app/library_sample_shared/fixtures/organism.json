@@ -46,11 +46,29 @@
   },
   {
     "model": "library_sample_shared.organism",
-    "pk": 9,
+    "pk": 6,
     "fields": {
-      "name": "Caenorhabditis_elegans",
-      "scientific_name": "Caenorhabditis elegans",
-      "taxon_id": 6239
+      "name": "medaka",
+      "scientific_name": "Oryzias melastigma",
+      "taxon_id": 30732
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 7,
+    "fields": {
+      "name": "lamprey",
+      "scientific_name": "Petromyzon marinus",
+      "taxon_id": 7757
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 8,
+    "fields": {
+      "name": "A. gambiae",
+      "scientific_name": "Anopheles gambiae",
+      "taxon_id": 7165
     }
   }
 ]

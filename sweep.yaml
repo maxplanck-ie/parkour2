@@ -1,3 +1,13 @@
-branch: 'develop'
-gha_enabled: False
-description: 'This is a Django project with all the python code inside the parkour_app folder. We are using Django REST Framework to expose API endpoints. You should ignore anything else that it's not Python code. Write code that adheres to PEP8.'
+description: "We have a Django project inside the parkour_app folder. We are using Django REST Framework to expose API endpoints. You should ignore anything else that it's not Python code. Write code that adheres to PEP8."
+blocked_dirs: [".github/", "misc/", "rsnapshot/", "parkour_app/static/", "parkour_app/requirements/"]
+docs:
+  - Django: https://docs.djangoproject.com/en/latest/
+  - REST: https://www.django-rest-framework.org/api-guide/views/
+branch: "develop"
+gha_enabled: True
+draft: False
+sandbox:
+  enabled: true
+  image: "Python3"
+  install: "python -m venv env_app; . env_app/bin/activate; pip install -r parkour_app/requirements/testing.txt"
+  formatter: ". env_app/bin/activate; black {files}"

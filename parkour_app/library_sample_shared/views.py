@@ -200,9 +200,9 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
 
         if not request.user.is_staff:
             if not request.user.is_pi:
-                queryset = queryset.filter(user=request.user)
+                queryset = request_queryset.filter(user=request.user)
             else:
-                queryset = retrieve_group_items(request, queryset)
+                queryset = retrieve_group_items(request, request_queryset)
 
         for request_obj in request_queryset:
             # TODO: sort by item['barcode'][3:]
