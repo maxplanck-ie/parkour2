@@ -3,6 +3,7 @@
 2?.??.??
 ========
 
+- BUGFIX: Uploaded files appeared and disappeared just by switching sequenced to True.
 - BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
 - Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
 - Added user email to mailed traceback when Django encounters any errors. This way we can contact users if they were experiencing a bug.
