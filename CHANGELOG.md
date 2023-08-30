@@ -4,9 +4,12 @@
 ========
 
 - BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
-- Added database from parkour-demo in JSON format under `misc/` subfolder.
-- Updated fixtures with parkour-demo database (WIP: librarypreparation needs more love)
+- Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
+- Added user email to mailed traceback when Django encounters any errors. This way we can contact users if they were experiencing a bug.
+- Added database from parkour-demo in JSON format under `misc/` subfolder. Integrated all `**/fixtures/*.json` into it.
+- Updated fixtures with parkour-demo database (WIP: librarypreparation needs more love, atm load_initial_data would only work after loading demo-db...) only to overwrite or further customize such entries.
 - Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
+
 
 23.08.21
 ========
