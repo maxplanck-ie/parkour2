@@ -12,6 +12,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0008_180820152043_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [],
       "samples": [
         43,
@@ -57,6 +58,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0009_180820160143_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [],
       "samples": [
         64,
@@ -99,6 +101,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0011_180820162623_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [
         1,
         2,
@@ -159,6 +162,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0010_180820162536_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [
         40,
         41,
@@ -190,6 +194,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0012_180820164342_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [],
       "samples": [
         83,
@@ -225,6 +230,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0013_180821092045_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
+      "archived": false,
       "libraries": [
         49,
         50,
@@ -272,6 +278,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0014_180821135250_001.pdf",
       "samples_submitted": false,
       "sequenced": true,
+      "archived": false,
       "libraries": [],
       "samples": [
         94,
@@ -301,6 +308,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0015_180821140312_001.pdf",
       "samples_submitted": false,
       "sequenced": false,
+      "archived": false,
       "libraries": [],
       "samples": [
         104,
@@ -329,6 +337,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0016_180821140418_001.pdf",
       "samples_submitted": false,
       "sequenced": true,
+      "archived": false,
       "libraries": [
         75,
         76,
@@ -358,6 +367,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval.pdf",
       "samples_submitted": false,
       "sequenced": false,
+      "archived": false,
       "libraries": [],
       "samples": [
         136,
@@ -401,6 +411,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_nuTYbmX.pdf",
       "samples_submitted": true,
       "sequenced": false,
+      "archived": false,
       "libraries": [],
       "samples": [
         156,
@@ -442,6 +453,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_qFrrJ5c.pdf",
       "samples_submitted": true,
       "sequenced": false,
+      "archived": false,
       "libraries": [],
       "samples": [
         176,
@@ -467,6 +479,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_cq979aB.pdf",
       "samples_submitted": true,
       "sequenced": false,
+      "archived": false,
       "libraries": [
         85,
         86,
@@ -514,6 +527,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_S438HbS.pdf",
       "samples_submitted": true,
       "sequenced": false,
+      "archived": false,
       "libraries": [
         111,
         112,
@@ -547,6 +561,7 @@
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_OmZcsl9.pdf",
       "samples_submitted": true,
       "sequenced": false,
+      "archived": false,
       "libraries": [
         123,
         124,

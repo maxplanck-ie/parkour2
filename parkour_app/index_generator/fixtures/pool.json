@@ -10,6 +10,7 @@
       "size": 2,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         40,
         41,
@@ -35,6 +36,7 @@
       "size": 2,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         1,
         2,
@@ -64,6 +66,7 @@
       "size": 2,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         14,
         15,
@@ -93,6 +96,7 @@
       "size": 2,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         27,
         28,
@@ -122,6 +126,7 @@
       "size": 2,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         83,
@@ -149,6 +154,7 @@
       "size": 3,
       "loaded": 2,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         64,
@@ -184,6 +190,7 @@
       "size": 4,
       "loaded": 3,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         43,
@@ -221,6 +228,7 @@
       "size": 1,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": []
     }
@@ -236,6 +244,7 @@
       "size": 1,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         49,
         50,
@@ -278,6 +287,7 @@
       "size": 19,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": []
     }
@@ -293,6 +303,7 @@
       "size": 19,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [
         75,
         76,
@@ -319,6 +330,7 @@
       "size": 3,
       "loaded": 1,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         94,
@@ -339,6 +351,7 @@
       "size": 3,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         98,
@@ -360,6 +373,7 @@
       "size": 4,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         104,
@@ -385,6 +399,7 @@
       "size": 3,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         156,
@@ -421,6 +436,7 @@
       "size": 3,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [
         111,
         112,
@@ -449,6 +465,7 @@
       "size": 19,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": [
         176,
@@ -469,6 +486,7 @@
       "size": 12,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [
         85,
         86,
@@ -494,6 +512,7 @@
       "size": 1,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": []
     }
@@ -509,6 +528,7 @@
       "size": 1,
       "loaded": 0,
       "comment": "",
+      "archived": false,
       "libraries": [],
       "samples": []
     }

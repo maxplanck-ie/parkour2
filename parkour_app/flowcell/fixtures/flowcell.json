@@ -9,6 +9,7 @@
       "sequencer": 5,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         1,
         2,
@@ -38,6 +39,7 @@
       "sequencer": 1,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         9
       ],
@@ -56,6 +58,7 @@
       "sequencer": 3,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         10
       ],
@@ -74,6 +77,7 @@
       "sequencer": 6,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         11
       ],
@@ -92,6 +96,7 @@
       "sequencer": 3,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         12
       ],
@@ -110,6 +115,7 @@
       "sequencer": 3,
       "matrix": null,
       "sequences": null,
+      "archived": false,
       "lanes": [
         13
       ],

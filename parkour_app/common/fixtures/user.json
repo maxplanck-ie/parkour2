@@ -3,90 +3,94 @@
     "model": "common.user",
     "pk": 1,
     "fields": {
-        "password": "pbkdf2_sha256$36000$PDQLgDIc4tUT$CRrgZZKeZ6ocf2z6vRg3x2qpOFnyP6J7DcvEiVyQ+2k=",
-        "last_login": "2018-08-14T00:32:32.074Z",
-        "is_superuser": true,
-        "email": "salatino@ie-freiburg.mpg.de",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2018-08-13T17:06:09.736Z",
-        "first_name": "",
-        "last_name": "",
-        "phone": null,
-        "organization": null,
-        "pi": null,
-        "groups": [],
-        "user_permissions": [],
-        "cost_unit": []
+      "password": "pbkdf2_sha256$36000$PDQLgDIc4tUT$CRrgZZKeZ6ocf2z6vRg3x2qpOFnyP6J7DcvEiVyQ+2k=",
+      "last_login": "2018-08-14T00:32:32.074Z",
+      "is_superuser": true,
+      "email": "salatino@ie-freiburg.mpg.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-08-13T17:06:09.736Z",
+      "first_name": "",
+      "last_name": "",
+      "phone": null,
+      "organization": null,
+      "pi": null,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": []
     }
-},
-{
+  },
+  {
     "model": "common.user",
     "pk": 2,
     "fields": {
-        "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
-        "last_login": "2023-08-28T11:09:16.277Z",
-        "is_superuser": false,
-        "email": "parkour-staff@parkour-demo.ie-freiburg.mpg.de",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2018-08-14T00:03:52.760Z",
-        "first_name": "Test",
-        "last_name": "Staff",
-        "phone": null,
-        "organization": 2,
-        "pi": 6,
-        "groups": [],
-        "user_permissions": [],
-        "cost_unit": [
-            1
-        ]
+      "password": "pbkdf2_sha256$36000$fJgu2huZkqEI$x5ucxGa+dWeSrdBefSexsc7XpYgPOh6gs1aq8zpFgjU=",
+      "last_login": "2023-08-28T11:09:16.277Z",
+      "is_superuser": false,
+      "email": "parkour-staff@parkour-demo.ie-freiburg.mpg.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-08-14T00:03:52.760Z",
+      "first_name": "Test",
+      "last_name": "Staff",
+      "phone": null,
+      "organization": 2,
+      "pi": 6,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": [
+        1
+      ]
     }
-},
-{
+  },
+  {
     "model": "common.user",
     "pk": 3,
     "fields": {
-        "password": "pbkdf2_sha256$36000$l26cYcvBepxN$3mLiaiy2ryRK5u6TFqj5hBgb9qMr3KVC12BGvTyAJno=",
-        "last_login": "2023-07-17T15:51:55.268Z",
-        "is_superuser": true,
-        "email": "parkour-admin@parkour-demo.ie-freiburg.mpg.de",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2018-08-20T15:30:54.546Z",
-        "first_name": "LIMS",
-        "last_name": "User",
-        "phone": null,
-        "organization": 2,
-        "pi": 5,
-        "groups": [],
-        "user_permissions": [],
-        "cost_unit": [
-            1
-        ]
+      "password": "pbkdf2_sha256$36000$l26cYcvBepxN$3mLiaiy2ryRK5u6TFqj5hBgb9qMr3KVC12BGvTyAJno=",
+      "last_login": "2023-07-17T15:51:55.268Z",
+      "is_superuser": true,
+      "email": "parkour-admin@parkour-demo.ie-freiburg.mpg.de",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2018-08-20T15:30:54.546Z",
+      "first_name": "LIMS",
+      "last_name": "User",
+      "phone": null,
+      "organization": 2,
+      "pi": 5,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": [
+        1
+      ]
     }
-},
-{
+  },
+  {
     "model": "common.user",
     "pk": 4,
     "fields": {
-        "password": "pbkdf2_sha256$36000$HW4Rtw1waUnF$1WifT7NVSeF7aMK5A0oeOWQb7PdJAvKPCo5WBQmavbw=",
-        "last_login": null,
-        "is_superuser": false,
-        "email": "lims_user@ie-freiburg.mpg.de",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2018-08-20T16:24:24.136Z",
-        "first_name": "LIMS",
-        "last_name": "User2",
-        "phone": null,
-        "organization": 2,
-        "pi": 5,
-        "groups": [],
-        "user_permissions": [],
-        "cost_unit": [
-            1
-        ]
+      "password": "pbkdf2_sha256$36000$HW4Rtw1waUnF$1WifT7NVSeF7aMK5A0oeOWQb7PdJAvKPCo5WBQmavbw=",
+      "last_login": null,
+      "is_superuser": false,
+      "email": "lims_user@ie-freiburg.mpg.de",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2018-08-20T16:24:24.136Z",
+      "first_name": "LIMS",
+      "last_name": "User2",
+      "phone": null,
+      "organization": 2,
+      "pi": 5,
+      "is_pi": false,
+      "groups": [],
+      "user_permissions": [],
+      "cost_unit": [
+        1
+      ]
     }
   }
 ]

@@ -8,7 +8,8 @@
       "library": 40,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -20,7 +21,8 @@
       "library": 45,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -32,7 +34,8 @@
       "library": 46,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -44,7 +47,8 @@
       "library": 48,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -56,7 +60,8 @@
       "library": 44,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -68,7 +73,8 @@
       "library": 47,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -80,7 +86,8 @@
       "library": 41,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -92,7 +99,8 @@
       "library": 42,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -104,7 +112,8 @@
       "library": 43,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -116,7 +125,8 @@
       "library": 6,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -128,7 +138,8 @@
       "library": 8,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -140,7 +151,8 @@
       "library": 12,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -152,7 +164,8 @@
       "library": 9,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -164,7 +177,8 @@
       "library": 1,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -176,7 +190,8 @@
       "library": 2,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -188,7 +203,8 @@
       "library": 3,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -200,7 +216,8 @@
       "library": 7,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -212,7 +229,8 @@
       "library": 10,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -224,7 +242,8 @@
       "library": 11,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -236,7 +255,8 @@
       "library": 4,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -248,7 +268,8 @@
       "library": 5,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -260,7 +281,8 @@
       "library": 13,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -272,7 +294,8 @@
       "library": 25,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -284,7 +307,8 @@
       "library": 19,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -296,7 +320,8 @@
       "library": 22,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -308,7 +333,8 @@
       "library": 21,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -320,7 +346,8 @@
       "library": 16,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -332,7 +359,8 @@
       "library": 23,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -344,7 +372,8 @@
       "library": 26,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -356,7 +385,8 @@
       "library": 18,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -368,7 +398,8 @@
       "library": 20,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -380,7 +411,8 @@
       "library": 14,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -392,7 +424,8 @@
       "library": 17,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -404,7 +437,8 @@
       "library": 15,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -416,7 +450,8 @@
       "library": 24,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -428,7 +463,8 @@
       "library": 34,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -440,7 +476,8 @@
       "library": 32,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -452,7 +489,8 @@
       "library": 29,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -464,7 +502,8 @@
       "library": 33,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -476,7 +515,8 @@
       "library": 39,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -488,7 +528,8 @@
       "library": 31,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -500,7 +541,8 @@
       "library": 35,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -512,7 +554,8 @@
       "library": 38,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -524,7 +567,8 @@
       "library": 30,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -536,7 +580,8 @@
       "library": 27,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -548,7 +593,8 @@
       "library": 28,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -560,7 +606,8 @@
       "library": 36,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -572,7 +619,8 @@
       "library": 37,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -584,7 +632,8 @@
       "library": null,
       "sample": 64,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -596,7 +645,8 @@
       "library": null,
       "sample": 65,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -608,7 +658,8 @@
       "library": null,
       "sample": 66,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -620,7 +671,8 @@
       "library": null,
       "sample": 67,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -632,7 +684,8 @@
       "library": null,
       "sample": 68,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -644,7 +697,8 @@
       "library": null,
       "sample": 69,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -656,7 +710,8 @@
       "library": null,
       "sample": 70,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -668,7 +723,8 @@
       "library": null,
       "sample": 71,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -680,7 +736,8 @@
       "library": null,
       "sample": 72,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -692,7 +749,8 @@
       "library": null,
       "sample": 73,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -704,7 +762,8 @@
       "library": null,
       "sample": 74,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -716,7 +775,8 @@
       "library": null,
       "sample": 75,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -728,7 +788,8 @@
       "library": null,
       "sample": 76,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -740,7 +801,8 @@
       "library": null,
       "sample": 77,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -752,7 +814,8 @@
       "library": null,
       "sample": 78,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -764,7 +827,8 @@
       "library": null,
       "sample": 79,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -776,7 +840,8 @@
       "library": null,
       "sample": 80,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -788,7 +853,8 @@
       "library": null,
       "sample": 81,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -800,7 +866,8 @@
       "library": null,
       "sample": 82,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -812,7 +879,8 @@
       "library": null,
       "sample": 43,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -824,7 +892,8 @@
       "library": null,
       "sample": 44,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -836,7 +905,8 @@
       "library": null,
       "sample": 45,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -848,7 +918,8 @@
       "library": null,
       "sample": 46,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -860,7 +931,8 @@
       "library": null,
       "sample": 47,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -872,7 +944,8 @@
       "library": null,
       "sample": 48,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -884,7 +957,8 @@
       "library": null,
       "sample": 49,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -896,7 +970,8 @@
       "library": null,
       "sample": 50,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -908,7 +983,8 @@
       "library": null,
       "sample": 51,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -920,7 +996,8 @@
       "library": null,
       "sample": 52,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -932,7 +1009,8 @@
       "library": null,
       "sample": 53,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -944,7 +1022,8 @@
       "library": null,
       "sample": 54,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -956,7 +1035,8 @@
       "library": null,
       "sample": 55,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -968,7 +1048,8 @@
       "library": null,
       "sample": 56,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -980,7 +1061,8 @@
       "library": null,
       "sample": 57,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -992,7 +1074,8 @@
       "library": null,
       "sample": 58,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1004,7 +1087,8 @@
       "library": null,
       "sample": 59,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1016,7 +1100,8 @@
       "library": null,
       "sample": 60,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1028,7 +1113,8 @@
       "library": null,
       "sample": 61,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1040,7 +1126,8 @@
       "library": null,
       "sample": 62,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1052,7 +1139,8 @@
       "library": null,
       "sample": 63,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1064,7 +1152,8 @@
       "library": null,
       "sample": 83,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1076,7 +1165,8 @@
       "library": null,
       "sample": 84,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1088,7 +1178,8 @@
       "library": null,
       "sample": 85,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1100,7 +1191,8 @@
       "library": null,
       "sample": 86,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1112,7 +1204,8 @@
       "library": null,
       "sample": 87,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1124,7 +1217,8 @@
       "library": null,
       "sample": 88,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1136,7 +1230,8 @@
       "library": null,
       "sample": 89,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1148,7 +1243,8 @@
       "library": null,
       "sample": 90,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1160,7 +1256,8 @@
       "library": null,
       "sample": 91,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1172,7 +1269,8 @@
       "library": null,
       "sample": 92,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1184,7 +1282,8 @@
       "library": null,
       "sample": 93,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1196,7 +1295,8 @@
       "library": 62,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1208,7 +1308,8 @@
       "library": 71,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1220,7 +1321,8 @@
       "library": 57,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1232,7 +1334,8 @@
       "library": 72,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1244,7 +1347,8 @@
       "library": 61,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1256,7 +1360,8 @@
       "library": 65,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1268,7 +1373,8 @@
       "library": 52,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1280,7 +1386,8 @@
       "library": 49,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1292,7 +1399,8 @@
       "library": 50,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1304,7 +1412,8 @@
       "library": 53,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1316,7 +1425,8 @@
       "library": 54,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1328,7 +1438,8 @@
       "library": 51,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1340,7 +1451,8 @@
       "library": 70,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1352,7 +1464,8 @@
       "library": 64,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1364,7 +1477,8 @@
       "library": 55,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1376,7 +1490,8 @@
       "library": 68,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1388,7 +1503,8 @@
       "library": 58,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1400,7 +1516,8 @@
       "library": 66,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1412,7 +1529,8 @@
       "library": 69,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1424,7 +1542,8 @@
       "library": 59,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1436,7 +1555,8 @@
       "library": 60,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1448,7 +1568,8 @@
       "library": 63,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1460,7 +1581,8 @@
       "library": 67,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1472,7 +1594,8 @@
       "library": 74,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1484,7 +1607,8 @@
       "library": 73,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1496,7 +1620,8 @@
       "library": 56,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1508,7 +1633,8 @@
       "library": 77,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1520,7 +1646,8 @@
       "library": 75,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1532,7 +1659,8 @@
       "library": 82,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1544,7 +1672,8 @@
       "library": 76,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1556,7 +1685,8 @@
       "library": 80,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1568,7 +1698,8 @@
       "library": 81,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1580,7 +1711,8 @@
       "library": 83,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1592,7 +1724,8 @@
       "library": 78,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1604,7 +1737,8 @@
       "library": 84,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1616,7 +1750,8 @@
       "library": 79,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1628,7 +1763,8 @@
       "library": null,
       "sample": 94,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1640,7 +1776,8 @@
       "library": null,
       "sample": 95,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1652,7 +1789,8 @@
       "library": null,
       "sample": 96,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1664,7 +1802,8 @@
       "library": null,
       "sample": 97,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1676,7 +1815,8 @@
       "library": null,
       "sample": 98,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1688,7 +1828,8 @@
       "library": null,
       "sample": 99,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1700,7 +1841,8 @@
       "library": null,
       "sample": 101,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1712,7 +1854,8 @@
       "library": null,
       "sample": 102,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1724,7 +1867,8 @@
       "library": null,
       "sample": 103,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1736,7 +1880,8 @@
       "library": null,
       "sample": 104,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1748,7 +1893,8 @@
       "library": null,
       "sample": 105,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1760,7 +1906,8 @@
       "library": null,
       "sample": 106,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1772,7 +1919,8 @@
       "library": null,
       "sample": 107,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1784,7 +1932,8 @@
       "library": null,
       "sample": 108,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1796,7 +1945,8 @@
       "library": null,
       "sample": 109,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1808,7 +1958,8 @@
       "library": null,
       "sample": 110,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1820,7 +1971,8 @@
       "library": null,
       "sample": 111,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1832,7 +1984,8 @@
       "library": null,
       "sample": 112,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1844,7 +1997,8 @@
       "library": 117,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1856,7 +2010,8 @@
       "library": 112,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1868,7 +2023,8 @@
       "library": 118,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1880,7 +2036,8 @@
       "library": 111,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1892,7 +2049,8 @@
       "library": 116,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1904,7 +2062,8 @@
       "library": 119,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1916,7 +2075,8 @@
       "library": 114,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1928,7 +2088,8 @@
       "library": 113,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1940,7 +2101,8 @@
       "library": 115,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1952,7 +2114,8 @@
       "library": 122,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1964,7 +2127,8 @@
       "library": 120,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1976,7 +2140,8 @@
       "library": 121,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -1988,7 +2153,8 @@
       "library": 85,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2000,7 +2166,8 @@
       "library": 86,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2012,7 +2179,8 @@
       "library": 90,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2024,7 +2192,8 @@
       "library": 89,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2036,7 +2205,8 @@
       "library": 93,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2048,7 +2218,8 @@
       "library": 87,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2060,7 +2231,8 @@
       "library": 88,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2072,7 +2244,8 @@
       "library": 91,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   },
   {
@@ -2084,7 +2257,8 @@
       "library": 92,
       "sample": null,
       "concentration_c1": null,
-      "comment": ""
+      "comment": "",
+      "archived": false
     }
   }
 ]
