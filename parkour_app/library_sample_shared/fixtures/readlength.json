@@ -1,37 +1,66 @@
 [
   {
     "model": "library_sample_shared.readlength",
-    "pk": 2,
-    "fields": {
-      "name": "2x75"
-    }
-  },
-  {
-    "model": "library_sample_shared.readlength",
     "pk": 3,
     "fields": {
-      "name": "2x150"
+      "name": "2x150",
+      "archived": "False"
     }
   },
   {
     "model": "library_sample_shared.readlength",
     "pk": 4,
     "fields": {
-      "name": "2x250"
+      "name": "2x250",
+      "archived": "False"
     }
   },
   {
     "model": "library_sample_shared.readlength",
     "pk": 8,
     "fields": {
-      "name": "2x100"
+      "name": "2x100",
+      "archived": "False"
     }
   },
   {
     "model": "library_sample_shared.readlength",
     "pk": 9,
     "fields": {
-      "name": "2x300"
+      "name": "2x300",
+      "archived": "False"
+    }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 14,
+    "fields": {
+      "name": "2x50",
+      "archived": "False"
+    }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 15,
+    "fields": {
+      "name": "1x75",
+      "archived": "False"
+    }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 16,
+    "fields": {
+      "name": "1x100",
+      "archived": "False"
+    }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 17,
+    "fields": {
+      "name": "Oxford Nanopore",
+      "archived": "False"
     }
   }
 ]

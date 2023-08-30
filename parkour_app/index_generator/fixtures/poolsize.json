@@ -4,7 +4,8 @@
     "pk": 1,
     "fields": {
       "multiplier": 1,
-      "size": 25
+      "size": 25,
+      "archived":"False"
     }
   },
   {
@@ -12,7 +13,8 @@
     "pk": 2,
     "fields": {
       "multiplier": 1,
-      "size": 300
+      "size": 300,
+      "archived":"False"
     }
   },
   {
@@ -20,7 +22,8 @@
     "pk": 3,
     "fields": {
       "multiplier": 2,
-      "size": 300
+      "size": 300,
+      "archived":"False"
     }
   },
   {
@@ -28,7 +31,8 @@
     "pk": 4,
     "fields": {
       "multiplier": 3,
-      "size": 300
+      "size": 300,
+      "archived":"False"
     }
   },
   {
@@ -36,39 +40,8 @@
     "pk": 5,
     "fields": {
       "multiplier": 4,
-      "size": 300
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 6,
-    "fields": {
-      "multiplier": 5,
-      "size": 300
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 7,
-    "fields": {
-      "multiplier": 6,
-      "size": 300
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 8,
-    "fields": {
-      "multiplier": 7,
-      "size": 300
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 9,
-    "fields": {
-      "multiplier": 8,
-      "size": 300
+      "size": 300,
+      "archived":"False"
     }
   },
   {
@@ -76,47 +49,8 @@
     "pk": 10,
     "fields": {
       "multiplier": 1,
-      "size": 130
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 11,
-    "fields": {
-      "multiplier": 1,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 12,
-    "fields": {
-      "multiplier": 2,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 13,
-    "fields": {
-      "multiplier": 3,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 14,
-    "fields": {
-      "multiplier": 4,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 15,
-    "fields": {
-      "multiplier": 5,
-      "size": 200
+      "size": 130,
+      "archived":"False"
     }
   },
   {
@@ -124,23 +58,8 @@
     "pk": 16,
     "fields": {
       "multiplier": 6,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 17,
-    "fields": {
-      "multiplier": 7,
-      "size": 200
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 18,
-    "fields": {
-      "multiplier": 8,
-      "size": 200
+      "size": 400,
+      "archived":"False"
     }
   },
   {
@@ -148,15 +67,8 @@
     "pk": 19,
     "fields": {
       "multiplier": 1,
-      "size": 400
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 20,
-    "fields": {
-      "multiplier": 2,
-      "size": 25
+      "size": 400,
+      "archived":"False"
     }
   },
   {
@@ -164,15 +76,8 @@
     "pk": 21,
     "fields": {
       "multiplier": 2,
-      "size": 400
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 22,
-    "fields": {
-      "multiplier": 2,
-      "size": 25
+      "size": 400,
+      "archived":"False"
     }
   },
   {
@@ -180,7 +85,287 @@
     "pk": 23,
     "fields": {
       "multiplier": 10,
-      "size": 300
+      "size": 400,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 28,
+    "fields": {
+      "multiplier": 1,
+      "size": 2000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 29,
+    "fields": {
+      "multiplier": 1,
+      "size": 800,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 30,
+    "fields": {
+      "multiplier": 1,
+      "size": 1600,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 31,
+    "fields": {
+      "multiplier": 1,
+      "size": 4000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 32,
+    "fields": {
+      "multiplier": 1,
+      "size": 10000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 33,
+    "fields": {
+      "multiplier": 1,
+      "size": 2500,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 34,
+    "fields": {
+      "multiplier": 2,
+      "size": 800,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 35,
+    "fields": {
+      "multiplier": 2,
+      "size": 4000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 36,
+    "fields": {
+      "multiplier": 1,
+      "size": 10,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 37,
+    "fields": {
+      "multiplier": 2,
+      "size": 10,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 38,
+    "fields": {
+      "multiplier": 4,
+      "size": 2000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 39,
+    "fields": {
+      "multiplier": 2,
+      "size": 2000,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 40,
+    "fields": {
+      "multiplier": 2,
+      "size": 1600,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 41,
+    "fields": {
+      "multiplier": 3,
+      "size": 800,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 42,
+    "fields": {
+      "multiplier": 3,
+      "size": 400,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 43,
+    "fields": {
+      "multiplier": 5,
+      "size": 800,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 44,
+    "fields": {
+      "multiplier": 3,
+      "size": 10,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 45,
+    "fields": {
+      "multiplier": 4,
+      "size": 400,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 46,
+    "fields": {
+      "multiplier": 4,
+      "size": 800,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 47,
+    "fields": {
+      "multiplier": 8,
+      "size": 400,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 48,
+    "fields": {
+      "multiplier": 1,
+      "size": 1,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 49,
+    "fields": {
+      "multiplier": 1,
+      "size": 6,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 50,
+    "fields": {
+      "multiplier": 12,
+      "size": 400,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 51,
+    "fields": {
+      "multiplier": 2,
+      "size": 5,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 52,
+    "fields": {
+      "multiplier": 2,
+      "size": 1,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 53,
+    "fields": {
+      "multiplier": 1,
+      "size": 5,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 54,
+    "fields": {
+      "multiplier": 2,
+      "size": 6,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 55,
+    "fields": {
+      "multiplier": 4,
+      "size": 5,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 56,
+    "fields": {
+      "multiplier": 10,
+      "size": 10,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 57,
+    "fields": {
+      "multiplier": 6,
+      "size": 10,
+      "archived":"False"
+    }
+  },
+  {
+    "model": "index_generator.poolsize",
+    "pk": 58,
+    "fields": {
+      "multiplier": 1,
+      "size": 50,
+      "archived":"False"
     }
   }
 ]
