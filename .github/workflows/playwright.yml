@@ -23,7 +23,6 @@ jobs:
         uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          cp misc/parkour.env.sample misc/parkour.env
           make playwright
       - uses: actions/upload-artifact@v3
         if: always()
