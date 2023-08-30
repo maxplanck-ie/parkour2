@@ -298,7 +298,7 @@ compile:
 		deactivate
 
 get-pin:
-	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2
+	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
 
 # Support installation without docker
 ## https://github.com/maxplanck-ie/parkour2/wiki/Installation-without-docker
