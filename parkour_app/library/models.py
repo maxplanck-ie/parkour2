@@ -18,6 +18,8 @@ class Library(GenericLibrarySample):
         blank=True,
     )
 
+    archived = models.BooleanField("Archived", default=False)
+
     class Meta:
         verbose_name = "Library"
         verbose_name_plural = "Libraries"

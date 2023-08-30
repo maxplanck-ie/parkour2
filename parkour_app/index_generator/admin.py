@@ -55,39 +55,47 @@ class SampleInline(BaseInline):
 
 @admin.register(Pool)
 class PoolAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "size",
-    )
+    list_display = ("name", "size", "archived")
     search_fields = (
         "name",
         "size__multiplier",
         "size__size",
     )
-    list_filter = (("size", RelatedDropdownFilter),)
+    list_filter = ("size", "archived")
     inlines = [LibraryInline, SampleInline]
     exclude = (
         "libraries",
         "samples",
     )
 
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
+
 
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
-    list_display = ("name", "obsolete_name")
+    list_display = ("name", "archived")
+    list_filter = ("archived",)
+
     actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
 
-    @admin.action(description="Mark pool size as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.action(description="Mark pool size as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)

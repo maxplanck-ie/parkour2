@@ -5,8 +5,7 @@
     "fields": {
       "name": "MiSeq",
       "lanes": 1,
-      "lane_capacity": 25,
-      "obsolete": 1
+      "lane_capacity": 25
     }
   },
   {
@@ -15,8 +14,7 @@
     "fields": {
       "name": "NextSeq MID",
       "lanes": 1,
-      "lane_capacity": 130,
-      "obsolete": 1
+      "lane_capacity": 130
     }
   },
   {
@@ -25,8 +23,7 @@
     "fields": {
       "name": "NextSeq HIGH",
       "lanes": 1,
-      "lane_capacity": 400,
-      "obsolete": 1
+      "lane_capacity": 400
     }
   },
   {
@@ -35,8 +32,7 @@
     "fields": {
       "name": "HiSeq2500",
       "lanes": 8,
-      "lane_capacity": 200,
-      "obsolete": 1
+      "lane_capacity": 200
     }
   },
   {
@@ -45,8 +41,7 @@
     "fields": {
       "name": "HiSeq3000",
       "lanes": 8,
-      "lane_capacity": 300,
-      "obsolete": 1
+      "lane_capacity": 300
     }
   },
   {
@@ -55,8 +50,7 @@
     "fields": {
       "name": "HiSeq Rapid",
       "lanes": 1,
-      "lane_capacity": 300,
-      "obsolete": 1
+      "lane_capacity": 300
     }
   }
 ]

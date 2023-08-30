@@ -11,8 +11,7 @@
       "input_requirements": "-",
       "typical_application": "-",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -27,8 +26,7 @@
       "input_requirements": "-",
       "typical_application": "-",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -43,8 +41,7 @@
       "input_requirements": "500 - 1 µg of fragmented DNA",
       "typical_application": "ChIP-Seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -59,8 +56,7 @@
       "input_requirements": "1 µg high molecular weight genomic DANN",
       "typical_application": "WGS",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -75,8 +71,7 @@
       "input_requirements": "50 ng high molecular weight genomic DNA",
       "typical_application": "ATAC-Seq",
       "status": 1,
-      "comments": "can be used for: large/complex Genome sequencing",
-      "obsolete": 1
+      "comments": "can be used for: large/complex Genome sequencing"
     }
   },
   {
@@ -91,8 +86,7 @@
       "input_requirements": "1 ng high molecular weight DNA",
       "typical_application": "ATAC-Seq",
       "status": 1,
-      "comments": "can be used for: small Genome, Amplicons, Plasmide, ds-cDNA sequencing",
-      "obsolete": 1
+      "comments": "can be used for: small Genome, Amplicons, Plasmide, ds-cDNA sequencing"
     }
   },
   {
@@ -107,8 +101,7 @@
       "input_requirements": "50-100 ng high molecular weight genomic DNA",
       "typical_application": "WGBS",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -123,8 +116,7 @@
       "input_requirements": "NA",
       "typical_application": "Amplicon-Seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -139,8 +131,7 @@
       "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
       "typical_application": "stranded mRNA-Seq",
       "status": 1,
-      "comments": "previously isolated mRNA can also serve as starting material",
-      "obsolete": 1
+      "comments": "previously isolated mRNA can also serve as starting material"
     }
   },
   {
@@ -155,8 +146,7 @@
       "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
       "typical_application": "stranded RNA-Seq",
       "status": 1,
-      "comments": "Oligos designed to target Mouse/Rat/Human, can be used for other organisms drosophila/zebrafish",
-      "obsolete": 1
+      "comments": "Oligos designed to target Mouse/Rat/Human, can be used for other organisms drosophila/zebrafish"
     }
   },
   {
@@ -171,8 +161,7 @@
       "input_requirements": "10 pg - 10 ng total RNA, RIN/RQN: 8",
       "typical_application": "mRNA-Seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -187,8 +176,7 @@
       "input_requirements": "1 µg total RNA, RIN/RQN: 8",
       "typical_application": "small RNA-Seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -203,8 +191,7 @@
       "input_requirements": "10 ng - 1 µg total RNA, RIN/RQN: 8",
       "typical_application": "mRNA-Seq",
       "status": 1,
-      "comments": "alternative to TruSeq stranded mRNA, lower RNA input, no strand specificity",
-      "obsolete": 1
+      "comments": "alternative to TruSeq stranded mRNA, lower RNA input, no strand specificity"
     }
   },
   {
@@ -219,8 +206,7 @@
       "input_requirements": "100 ng - 1 µg total RNA, RIN/RQN: 8",
       "typical_application": "RNA-Seq",
       "status": 1,
-      "comments": "alternative to TruSeq stranded total RNA kit, alternate rRNA removal technology, no strand specificity",
-      "obsolete": 1
+      "comments": "alternative to TruSeq stranded total RNA kit, alternate rRNA removal technology, no strand specificity"
     }
   },
   {
@@ -235,8 +221,7 @@
       "input_requirements": "NA",
       "typical_application": "single cell RNA-seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -251,8 +236,7 @@
       "input_requirements": "-",
       "typical_application": "-",
       "status": 1,
-      "comments": "Not a protocol. It's a special entry used for the Preparation Costs calculation for libraries.",
-      "obsolete": 1
+      "comments": "Not a protocol. It's a special entry used for the Preparation Costs calculation for libraries."
     }
   },
   {
@@ -267,8 +251,7 @@
       "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
       "typical_application": "ChIP-seq for histones and abundant TF",
       "status": 1,
-      "comments": "procedure developed for gold standard epigenome production within the International Human Epigenome Consortium (IHEC). For additional details follow this publication: doi: 10.1093/nar/gkv1495",
-      "obsolete": 1
+      "comments": "procedure developed for gold standard epigenome production within the International Human Epigenome Consortium (IHEC). For additional details follow this publication: doi: 10.1093/nar/gkv1495"
     }
   },
   {
@@ -283,8 +266,7 @@
       "input_requirements": "500  ng total RNA",
       "typical_application": "3' mRNA-Seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -299,8 +281,7 @@
       "input_requirements": "Na",
       "typical_application": "single cell RNA-seq",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -315,8 +296,7 @@
       "input_requirements": "1,000 to 100,000 fixed cells per ChIP",
       "typical_application": "high-throughput ChIP, quantitative studies",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   },
   {
@@ -331,8 +311,7 @@
       "input_requirements": "10,000 to 100,000 fixed cells per ChIP",
       "typical_application": "enzymatic ChIP for small scale studies. Best suited for weakly bound TFs",
       "status": 1,
-      "comments": "",
-      "obsolete": 1
+      "comments": ""
     }
   }
 ]

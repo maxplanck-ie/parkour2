@@ -73,6 +73,8 @@ class Request(DateTimeMixin):
         default=False,
     )
 
+    archived = models.BooleanField("Archived", default=False)
+
     def __str__(self):
         return self.name
 

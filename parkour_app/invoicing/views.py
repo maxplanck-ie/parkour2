@@ -54,9 +54,13 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
 
-        flowcell_qs = Flowcell.objects.select_related(
-            "sequencer",
-        ).order_by("flowcell_id")
+        flowcell_qs = (
+            Flowcell.objects.select_related(
+                "sequencer",
+            )
+            .filter(archived=False)
+            .order_by("flowcell_id")
+        )
 
         libraries_qs = (
             Library.objects.filter(~Q(pool=None))
@@ -80,6 +84,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 flowcell__create_time__year=year,
                 flowcell__create_time__month=month,
                 sequenced=True,
+                archived=False,
             )
             .select_related(
                 "cost_unit",
@@ -113,7 +118,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(methods=["get"], detail=False)
     def billing_periods(self, request):
-        flowcells = Flowcell.objects.all()
+        flowcells = Flowcell.objects.all().filter(archived=False)
         data = []
 
         if flowcells.count() == 0:
@@ -245,12 +250,14 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
             read_lengths = "; ".join(
-                ReadLength.objects.filter(pk__in=item["read_length"])
+                ReadLength.objects.filter(archived=False, pk__in=item["read_length"])
                 .order_by("name")
                 .values_list("name", flat=True)
             )
 
-            protocol = LibraryProtocol.objects.get(pk=item["library_protocol"])
+            protocol = LibraryProtocol.objects.filter(archived=False).get(
+                pk=item["library_protocol"]
+            )
 
             row = [
                 item["request"],
@@ -275,7 +282,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer", "Price"]
         write_header(ws, row_num, header)
-        for item in FixedCosts.objects.all():
+        for item in FixedCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [item.sequencer.name, item.price]
             write_row(ws, row_num, row)
@@ -285,7 +292,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Library Protocol", "Price"]
         write_header(ws, row_num, header)
-        for item in LibraryPreparationCosts.objects.all():
+        for item in LibraryPreparationCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [item.library_protocol.name, item.price]
             write_row(ws, row_num, row)
@@ -295,7 +302,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer + Read Length", "Price"]
         write_header(ws, row_num, header)
-        for item in SequencingCosts.objects.all():
+        for item in SequencingCosts.objects.all().filter(archived=False):
             row_num += 1
             row = [
                 f"{item.sequencer.name} {item.read_length.name}",
@@ -311,7 +318,7 @@ class FixedCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of Fixed Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = FixedCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
+    queryset = FixedCosts.objects.filter(sequencer__archived=False)
     serializer_class = FixedCostsSerializer
 
 
@@ -322,7 +329,7 @@ class LibraryPreparationCostsViewSet(
 
     permission_classes = [IsAdminUser]
     queryset = LibraryPreparationCosts.objects.filter(
-        library_protocol__obsolete=settings.NON_OBSOLETE
+        archived=False, library_protocol__archived=False
     )
     print(queryset.query)
 
@@ -333,5 +340,5 @@ class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelView
     """Get the list of Sequencing Costs."""
 
     permission_classes = [IsAdminUser]
-    queryset = SequencingCosts.objects.filter(sequencer__obsolete=settings.NON_OBSOLETE)
+    queryset = SequencingCosts.objects.filter(sequencer__archived=False)
     serializer_class = SequencingCostsSerializer

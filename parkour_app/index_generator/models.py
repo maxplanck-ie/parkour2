@@ -10,7 +10,7 @@ from sample.models import Sample
 class PoolSize(models.Model):
     multiplier = models.PositiveSmallIntegerField("Multiplier", default=1)
     size = models.PositiveSmallIntegerField("Size")
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         ordering = ["multiplier", "size"]
@@ -41,6 +41,7 @@ class Pool(DateTimeMixin):
     libraries = models.ManyToManyField(Library, related_name="pool", blank=True)
     samples = models.ManyToManyField(Sample, related_name="pool", blank=True)
     comment = models.TextField(verbose_name="Comment", blank=True)
+    archived = models.BooleanField("Archived", default=False)
 
     # def get_size(self):
     #     size = 0

@@ -74,12 +74,12 @@ logger = logging.getLogger("db")
 class SequencerViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of sequencers."""
 
-    queryset = Sequencer.objects.all().filter(obsolete=settings.NON_OBSOLETE)
+    queryset = Sequencer.objects.all().filter(archived=False)
     serializer_class = SequencerSerializer
 
 
 class PoolViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Pool.objects.all()
+    queryset = Pool.objects.all().filter(archived=False)
     serializer_class = PoolInfoSerializer
     permission_classes = [IsAdminUser]
 
@@ -123,6 +123,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             Flowcell.objects.select_related(
                 "sequencer",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs),
             )
@@ -203,7 +204,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
-            .filter(size__multiplier__gt=F("loaded"))
+            .filter(archived=False, size__multiplier__gt=F("loaded"))
             .order_by("pk")
         )
 
@@ -299,12 +300,12 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         def create_row(lane, record):
             index_i7 = IndexI7.objects.filter(
-                index=record.index_i7, index_type=record.index_type
+                archived=False, index=record.index_i7, index_type=record.index_type
             )
             index_i7_id = index_i7[0].index_id if index_i7 else ""
 
             index_i5 = IndexI5.objects.filter(
-                index=record.index_i5, index_type=record.index_type
+                archived=False, index=record.index_i5, index_type=record.index_type
             )
             index_i5_id = index_i5[0].index_id if index_i5 else ""
 
@@ -371,7 +372,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             ]
         )
 
-        flowcell = Flowcell.objects.get(pk=flowcell_id)
+        flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell_id)
         f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
         response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 

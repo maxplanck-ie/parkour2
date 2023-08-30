@@ -11,6 +11,7 @@ class RequestAdmin(admin.ModelAdmin):
         "request_uploaded",
         "samples_submitted",
         "sequenced",
+        "archived",
     )
     list_select_related = True
 
@@ -22,10 +23,20 @@ class RequestAdmin(admin.ModelAdmin):
         "files",
     )
 
-    list_filter = (
-        ("user", RelatedDropdownFilter),
-        "sequenced",
+    list_filter = (("user", RelatedDropdownFilter), "sequenced", "archived")
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(boolean=True)
     def request_uploaded(self, obj):

@@ -8,7 +8,6 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [],
       "indices_i5": []
     }
@@ -22,7 +21,6 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         1,
         2,
@@ -85,7 +83,6 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         49,
         50,
@@ -124,7 +121,6 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         73,
         74,
@@ -160,7 +156,6 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         85,
         86,
@@ -271,7 +266,6 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         181,
         182,
@@ -334,7 +328,6 @@
       "index_length": "8",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         229,
         230,
@@ -370,7 +363,6 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         241,
         242,
@@ -406,7 +398,6 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         314,
         315,
@@ -470,7 +461,6 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         339,
         340,
@@ -678,7 +668,6 @@
       "index_length": "8",
       "format": "plate",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         532,
         533,
@@ -714,7 +703,6 @@
       "index_length": "6",
       "format": "single",
       "read_type": "short",
-      "obsolete": 1,
       "indices_i7": [
         544,
         545,

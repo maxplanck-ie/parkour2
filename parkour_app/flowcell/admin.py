@@ -55,35 +55,44 @@ class LaneInline(admin.TabularInline):
 
 @admin.register(Sequencer)
 class SequencerAdmin(admin.ModelAdmin):
-    list_display = ("name", "lanes", "lane_capacity", "obsolete_name")
+    list_display = ("name", "lanes", "lane_capacity", "archived")
+
+    list_filter = ("archived",)
+
     actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
 
-    @admin.action(description="Mark sequencer as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.action(description="Mark sequencer as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(Flowcell)
 class FlowcellAdmin(admin.ModelAdmin):
-    list_display = (
-        "flowcell_id",
-        "sequencer",
-    )
+    list_display = ("flowcell_id", "sequencer", "archived")
     # search_fields = ('flowcell_id', 'sequencer',)
-    list_filter = ("sequencer",)
+    list_filter = ("sequencer", "archived")
     exclude = (
         "lanes",
         "requests",
     )
     inlines = [LaneInline]
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
