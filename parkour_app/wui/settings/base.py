@@ -81,6 +81,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "extra.middleware.ErrorMiddleware",
 ]
 
 ROOT_URLCONF = "wui.urls"
