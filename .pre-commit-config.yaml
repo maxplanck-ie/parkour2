@@ -11,13 +11,13 @@ ci:
 repos:
 -   repo: local
     hooks:
-    -   id: set-prod-docker
-        name: set-prod-docker
+    -   id: set-base-docker
+        name: set-base-docker
         entry: /usr/bin/make
         language: script
         pass_filenames: false
         files: docker-compose\.yml
-        args: ['set-prod']
+        args: ['set-base']
     -   id: hardreset-caddyfile
         name: hardreset-caddyfile
         entry: /usr/bin/make
