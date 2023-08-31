@@ -362,6 +362,10 @@ import-migras: rm-migras
 	@[[ -f misc/migras*.tar.gz ]] && \
 		tar xzf misc/migras*.tar.gz
 
+dev-ez: dev-easy import-migras db  ## Useful after 'git checkout <tag> && export-migras && git switch -'
+	@git restore -W parkour_app/**/migrations/
+	@$(MAKE) migrate
+
 #get-migrations: export-migras migrasync import-migras
 
 # Remember: (docker compose run == docker exec) != docker run
