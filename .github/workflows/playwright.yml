@@ -26,7 +26,7 @@ jobs:
         if: always()
         with:
           name: test-suite-report
-          if-no-files-found: ignore  ## remove this line asap (default: warn)
+          # if-no-files-found: ignore  ## default: warn
           path: |
             parkour_app/playwright/videos/
             parkour_app/playwright/results/
