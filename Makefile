@@ -359,8 +359,8 @@ export-migras:
 	@find ./parkour_app/*/ -path '**/migrations' -exec tar czf ./misc/migras.tar.gz {} \+
 
 import-migras: rm-migras
-	@[[ -f misc/migras.tar.gz ]] && \
-		tar xzf migras.tar.gz
+	@[[ -f misc/migras*.tar.gz ]] && \
+		tar xzf migras*.tar.gz
 
 #get-migrations: export-migras migrasync import-migras
 
