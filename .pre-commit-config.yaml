@@ -16,7 +16,7 @@ repos:
         entry: /usr/bin/make
         language: script
         pass_filenames: false
-        files: Dockerfile|docker-compose\.yml|misc/parkour\.env
+        files: docker-compose\.yml
         args: ['set-prod']
     -   id: hardreset-caddyfile
         name: hardreset-caddyfile
