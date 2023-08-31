@@ -1,6 +1,6 @@
 .PHONY: *
 SHELL := /bin/bash
-timestamp := $(shell date +%Y%m%d-%H%M%S)
+stamp := $(shell date +%Y%m%d_%H%M%S)_$(shell git log --oneline -1 | cut -d' ' -f1)
 NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
 
 deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
@@ -86,8 +86,9 @@ clean:
 	@rm -f parkour_app/logs/*.log && sleep 1s
 	@$(MAKE) set-prod hardreset-caddyfile > /dev/null
 
-sweep:
-	@find ./misc -mtime +1 -name \*.sqldump -exec /bin/rm -rf {} +;
+sweep:  ## Remove any sqldump and migrations export older than a week.
+	@find ./misc -mtime +7 -name db_\*.sqldump -exec /bin/rm -rf {} +;
+	@find ./misc -mtime +7 -name migras_\*.tar.gz -exec /bin/rm -rf {} +;
 
 prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
@@ -142,9 +143,9 @@ convert-backup:  ## Convert xxxly.0's pgdb to ./misc/*.sqldump (updating symlink
 		echo "Warning: If this fails, most probably pg was still starting... retry manually!" && \
 		docker exec parkour2-convert-backup sh -c \
 			"pg_dump -Fc postgres -U postgres -f tmp_parkour_dump" && \
-		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(timestamp).sqldump
+		docker cp parkour2-convert-backup:/tmp_parkour_dump misc/db_$(stamp).sqldump
 		docker compose -f convert-backup.yml down
-	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
+	@rm -f misc/latest.sqldump && ln -s db_$(stamp).sqldump misc/latest.sqldump
 
 load-media:  ## Copy all media files into running instance
 	@[[ -d media_dump ]] && \
@@ -183,8 +184,8 @@ save-media:
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f tmp_parkour_dump && \
-		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(timestamp).sqldump
-	@rm -f misc/latest.sqldump && ln -s db_$(timestamp).sqldump misc/latest.sqldump
+		docker cp parkour2-postgres:/tmp_parkour_dump misc/db_$(stamp).sqldump
+	@rm -f misc/latest.sqldump && ln -s db_$(stamp).sqldump misc/latest.sqldump
 
 import-media:
 	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
@@ -321,8 +322,8 @@ open-pr:
 # check later: https://docs.djangoproject.com/en/3.2/ref/django-admin/#fixtures-compression
 save-db-json:
 	@docker exec parkour2-django sh -c 'python manage.py dumpdata --exclude contenttypes --exclude auth.permission --exclude sessions | tail -1 > /tmp/postgres_dump' && \
-		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(timestamp)-dump.json
-	@rm -f misc/demo-dump.json && ln -s db_$(timestamp)-dump.json misc/demo-dump.json
+		docker cp parkour2-django:/tmp/postgres_dump misc/db_$(stamp)-dump.json
+	@rm -f misc/demo-dump.json && ln -s db_$(stamp)-dump.json misc/demo-dump.json
 
 load-db-json:
 	@docker cp misc/demo-dump.json parkour2-django:/tmp/postgres_dump.json && \
@@ -356,11 +357,13 @@ rm-migras:
 	@rm -f parkour_app/**/migrations/*
 
 export-migras:
-	@find ./parkour_app/*/ -path '**/migrations' -exec tar czf ./misc/migras.tar.gz {} \+
+	@find ./parkour_app/*/ -path '**/migrations' \
+			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
+		rm -f misc/migras.tar.gz && ln -s migras_$(stamp).tar.gz misc/migras.tar.gz
 
 import-migras: rm-migras
-	@[[ -f misc/migras*.tar.gz ]] && \
-		tar xzf misc/migras*.tar.gz
+	@[[ -f misc/migras.tar.gz ]] && \
+		tar xzf misc/migras.tar.gz
 
 dev-ez: dev-easy import-migras db  ## Useful after 'git checkout <tag> && export-migras && git switch -'
 	@git restore -W parkour_app/**/migrations/
