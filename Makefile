@@ -360,7 +360,7 @@ export-migras:
 
 import-migras: rm-migras
 	@[[ -f misc/migras*.tar.gz ]] && \
-		tar xzf migras*.tar.gz
+		tar xzf misc/migras*.tar.gz
 
 #get-migrations: export-migras migrasync import-migras
 
