@@ -352,4 +352,16 @@ restore-prep4json:
 # 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 # 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 
+rm-migras:
+	@rm parkour_app/**/migrations/*
+
+export-migras:
+	@find ./parkour_app/*/ -path '**/migrations' -exec tar czf ./misc/migras.tar.gz {} \+
+
+import-migras: rm-migras
+	@[[ -f misc/migras.tar.gz ]] && \
+		tar xzf migras.tar.gz
+
+#get-migrations: export-migras migrasync import-migras
+
 # Remember: (docker compose run == docker exec) != docker run
