@@ -8,17 +8,17 @@ from datetime import datetime
 from playwright.sync_api import Page, expect
 
 
-# @pytest.fixture(scope="session")
-# def browser_context_args(browser_context_args):
-#     my_screen_size = {
-#         "width": 2560,
-#         "height": 1440,
-#     }
-#     return {
-#         **browser_context_args,
-#         "viewport": my_screen_size,
-#         "device_scale_factor": 2,
-#     }
+@pytest.fixture(scope="session")
+def browser_context_args(browser_context_args):
+    my_screen_size = {
+        "width": 2560,
+        "height": 1440,
+    }
+    return {
+        **browser_context_args,
+        "viewport": my_screen_size,
+        "device_scale_factor": 2,
+    }
 
 
 def test_requests_page(page: Page):
@@ -52,93 +52,93 @@ def test_requests_page(page: Page):
     addSuccessNotification = page.get_by_text("Request has been saved.")
     finalSuccessNotification = page.get_by_text("The changes have been saved.")
 
-    # addRequestButton.click()
+    addRequestButton.click()
+    expect(page.get_by_text("New Request")).to_be_visible()
+    descriptionTextarea.fill("This is libraries' description text.")
+    addBatchButton.click()
+    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    libraryCardButton.click()
+    expect(page.get_by_text("Add Libraries")).to_be_visible()
+    createEmptyRowInput.fill("1")
+    with open(
+        os.getcwd() + "/playwright/data/library_request.csv",
+        newline="",
+        encoding="utf-8",
+    ) as library_csv_file:
+        spamreader = csv.reader(library_csv_file, delimiter=",", quotechar='"')
+        for index, row in enumerate(spamreader):
+            if index > 0:
+                createEmptyRowButton.click()
+                editRow = page.locator(
+                    "div.x-grid-cell-inner-row-numberer"
+                ).get_by_text(str(index))
+                editRow.click()
+                nameInput.fill(row[0])
+                libraryProtocolInput.fill(row[1])
+                page.keyboard.press("Enter")
+                libraryTypeInput.fill(row[2])
+                concentrationInput.fill(row[3])
+                meanFragmentSizeInput.fill(row[4])
+                indexTypeInput.fill(row[5])
+                page.keyboard.press("Enter")
+                indexReadsInput.fill(row[6])
+                page.keyboard.press("Enter")
+                indexi7Input.fill(row[7])
+                indexi5Input.fill(row[8])
+                readLengthInput.fill(row[9])
+                sequencingDepthInput.fill(row[10])
+                organismInput.fill(row[11])
+                commentsInput.fill(row[12])
+                updateButton.click()
+    addSaveRequestButton.click()
     # expect(page.get_by_text("New Request")).to_be_visible()
-    # descriptionTextarea.fill("This is libraries' description text.")
-    # addBatchButton.click()
-    # expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
-    # libraryCardButton.click()
-    # expect(page.get_by_text("Add Libraries")).to_be_visible()
-    # createEmptyRowInput.fill("1")
-    # with open(
-    #     os.getcwd() + "\..\data\library_request.csv",
-    #     newline="",
-    #     encoding="utf-8",
-    # ) as library_csv_file:
-    #     spamreader = csv.reader(library_csv_file, delimiter=",", quotechar='"')
-    #     for index, row in enumerate(spamreader):
-    #         if index > 0:
-    #             createEmptyRowButton.click()
-    #             editRow = page.locator(
-    #                 "div.x-grid-cell-inner-row-numberer"
-    #             ).get_by_text(str(index))
-    #             editRow.click()
-    #             nameInput.fill(row[0])
-    #             libraryProtocolInput.fill(row[1])
-    #             page.keyboard.press("Enter")
-    #             libraryTypeInput.fill(row[2])
-    #             concentrationInput.fill(row[3])
-    #             meanFragmentSizeInput.fill(row[4])
-    #             indexTypeInput.fill(row[5])
-    #             page.keyboard.press("Enter")
-    #             indexReadsInput.fill(row[6])
-    #             page.keyboard.press("Enter")
-    #             indexi7Input.fill(row[7])
-    #             indexi5Input.fill(row[8])
-    #             readLengthInput.fill(row[9])
-    #             sequencingDepthInput.fill(row[10])
-    #             organismInput.fill(row[11])
-    #             commentsInput.fill(row[12])
-    #             updateButton.click()
-    # addSaveRequestButton.click()
-    # # expect(page.get_by_text("New Request")).to_be_visible()
-    # saveAddedRequestbutton.click()
-    # expect(addSuccessNotification).to_be_visible()
-    # expect(finalSuccessNotification).to_be_visible()
-    # addRequestButton.click()
-    # # expect(page.get_by_text("New Request")).to_be_visible()
-    # descriptionTextarea.fill("This is samples' description.")
-    # addBatchButton.click()
-    # expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
-    # sampleCardButton.click()
-    # expect(page.get_by_text("Add Samples")).to_be_visible()
-    # createEmptyRowInput.fill("1")
-    # with open(
-    #     os.getcwd() + "\..\data\sample_request.csv",
-    #     newline="",
-    #     encoding="utf-8",
-    # ) as sample_csv_file:
-    #     spamreader = csv.reader(sample_csv_file, delimiter=",", quotechar='"')
-    #     for index, row in enumerate(spamreader):
-    #         if index > 0:
-    #             createEmptyRowButton.click()
-    #             editRow = page.locator(
-    #                 "div.x-grid-cell-inner-row-numberer"
-    #             ).get_by_text(str(index))
-    #             editRow.click()
-    #             nameInput.fill(row[0])
-    #             nucleicAcidInput.fill(row[1])
-    #             page.keyboard.press("Enter")
-    #             libraryProtocolInput.fill(row[2])
-    #             page.keyboard.press("Enter")
-    #             libraryTypeInput.fill(row[3])
-    #             concentrationInput.fill(row[4])
-    #             rnaQualityInput.fill(row[5])
-    #             readLengthInput.fill(row[6])
-    #             sequencingDepthInput.fill(row[7])
-    #             organismInput.fill(row[8])
-    #             commentsInput.fill(row[9])
-    #             updateButton.click()
-    # addSaveRequestButton.click()
-    # # expect(page.get_by_text("New Request")).to_be_visible()
-    # saveAddedRequestbutton.click()
-    # expect(addSuccessNotification).to_be_visible()
-    # expect(finalSuccessNotification).to_be_visible()
+    saveAddedRequestbutton.click()
+    expect(addSuccessNotification).to_be_visible()
+    expect(finalSuccessNotification).to_be_visible()
+    addRequestButton.click()
+    # expect(page.get_by_text("New Request")).to_be_visible()
+    descriptionTextarea.fill("This is samples' description.")
+    addBatchButton.click()
+    expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
+    sampleCardButton.click()
+    expect(page.get_by_text("Add Samples")).to_be_visible()
+    createEmptyRowInput.fill("1")
+    with open(
+        os.getcwd() + "/playwright/data/sample_request.csv",
+        newline="",
+        encoding="utf-8",
+    ) as sample_csv_file:
+        spamreader = csv.reader(sample_csv_file, delimiter=",", quotechar='"')
+        for index, row in enumerate(spamreader):
+            if index > 0:
+                createEmptyRowButton.click()
+                editRow = page.locator(
+                    "div.x-grid-cell-inner-row-numberer"
+                ).get_by_text(str(index))
+                editRow.click()
+                nameInput.fill(row[0])
+                nucleicAcidInput.fill(row[1])
+                page.keyboard.press("Enter")
+                libraryProtocolInput.fill(row[2])
+                page.keyboard.press("Enter")
+                libraryTypeInput.fill(row[3])
+                concentrationInput.fill(row[4])
+                rnaQualityInput.fill(row[5])
+                readLengthInput.fill(row[6])
+                sequencingDepthInput.fill(row[7])
+                organismInput.fill(row[8])
+                commentsInput.fill(row[9])
+                updateButton.click()
+    addSaveRequestButton.click()
+    # expect(page.get_by_text("New Request")).to_be_visible()
+    saveAddedRequestbutton.click()
+    expect(addSuccessNotification).to_be_visible()
+    expect(finalSuccessNotification).to_be_visible()
     
     page.get_by_text("Libraries & Samples").click()
-    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").first.click()
+    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(0).click()
     with open(
-        os.getcwd() + "\..\data\sample_request.csv",
+        os.getcwd() + "/playwright/data/sample_request.csv",
         newline="",
         encoding="utf-8",
     ) as sample_csv_file:
@@ -146,7 +146,7 @@ def test_requests_page(page: Page):
         for index, row in enumerate(spamreader):
             if index > 0:
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span").nth(index)).to_contain_text(str(row[0]))
-                # expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div").nth(index)).to_contain_text(datetime.today().strftime('%d.%m.%Y'))             
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div").nth(index)).to_contain_text(datetime.today().strftime('%d.%m.%Y'))             
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div").nth(index)).to_contain_text(str(row[1]))
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div").nth(index)).to_contain_text(str(row[2]))
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div").nth(index)).to_contain_text(str(row[3]))
@@ -156,3 +156,28 @@ def test_requests_page(page: Page):
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div").nth(index)).to_contain_text(str(row[7]))
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div").nth(index)).to_contain_text(str(row[8]))
                 expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div").nth(index)).to_contain_text(str(row[9]))
+
+    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(0).click()
+    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(1).click()
+    with open(
+        os.getcwd() + "/playwright/data/library_request.csv",
+        newline="",
+        encoding="utf-8",
+    ) as library_csv_file:
+        spamreader = csv.reader(library_csv_file, delimiter=",", quotechar='"')
+        for index, row in enumerate(spamreader):
+            if index > 0:
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span").nth(index+1)).to_contain_text(str(row[0]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div").nth(index+1)).to_contain_text(datetime.today().strftime('%d.%m.%Y'))             
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div").nth(index+1)).to_contain_text(str(row[1]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div").nth(index+1)).to_contain_text(str(row[2]))
+                assert page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div").nth(index+1).inner_text() in str(row[3]), f"Values are not matching."
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(11)>div").nth(index+1)).to_contain_text(str(row[4]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(12)>div").nth(index+1)).to_contain_text(str(row[5]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(13)>div").nth(index+1)).to_contain_text(str(row[6]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(14)>div").nth(index+1)).to_contain_text(str(row[7]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(15)>div").nth(index+1)).to_contain_text(str(row[8]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div").nth(index+1)).to_contain_text(str(row[9]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div").nth(index+1)).to_contain_text(str(row[10]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div").nth(index+1)).to_contain_text(str(row[11]))
+                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div").nth(index+1)).to_contain_text(str(row[12]))
