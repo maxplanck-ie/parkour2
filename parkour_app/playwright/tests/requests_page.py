@@ -1,10 +1,10 @@
 import csv
 import os
 import time
+from datetime import datetime
 
 import pytest
 import utilities
-from datetime import datetime
 from playwright.sync_api import Page, expect
 
 
@@ -134,9 +134,11 @@ def test_requests_page(page: Page):
     saveAddedRequestbutton.click()
     expect(addSuccessNotification).to_be_visible()
     expect(finalSuccessNotification).to_be_visible()
-    
+
     page.get_by_text("Libraries & Samples").click()
-    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(0).click()
+    page.locator(
+        "#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander"
+    ).nth(0).click()
     with open(
         os.getcwd() + "/playwright/data/sample_request.csv",
         newline="",
@@ -145,20 +147,66 @@ def test_requests_page(page: Page):
         spamreader = csv.reader(sample_csv_file, delimiter=",", quotechar='"')
         for index, row in enumerate(spamreader):
             if index > 0:
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span").nth(index)).to_contain_text(str(row[0]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div").nth(index)).to_contain_text(datetime.today().strftime('%d.%m.%Y'))             
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div").nth(index)).to_contain_text(str(row[1]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div").nth(index)).to_contain_text(str(row[2]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div").nth(index)).to_contain_text(str(row[3]))
-                assert page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div").nth(index).inner_text() in str(row[4]), f"Values are not matching."
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(10)>div").nth(index)).to_contain_text(str(row[5]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div").nth(index)).to_contain_text(str(row[6]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div").nth(index)).to_contain_text(str(row[7]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div").nth(index)).to_contain_text(str(row[8]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div").nth(index)).to_contain_text(str(row[9]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span"
+                    ).nth(index)
+                ).to_contain_text(str(row[0]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div"
+                    ).nth(index)
+                ).to_contain_text(datetime.today().strftime("%d.%m.%Y"))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[1]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[2]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[3]))
+                assert page.locator(
+                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
+                ).nth(index).inner_text() in str(row[4]), f"Values are not matching."
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(10)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[5]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[6]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[7]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[8]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
+                    ).nth(index)
+                ).to_contain_text(str(row[9]))
 
-    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(0).click()
-    page.locator("#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander").nth(1).click()
+    page.locator(
+        "#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander"
+    ).nth(0).click()
+    page.locator(
+        "#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander"
+    ).nth(1).click()
     with open(
         os.getcwd() + "/playwright/data/library_request.csv",
         newline="",
@@ -167,17 +215,73 @@ def test_requests_page(page: Page):
         spamreader = csv.reader(library_csv_file, delimiter=",", quotechar='"')
         for index, row in enumerate(spamreader):
             if index > 0:
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span").nth(index+1)).to_contain_text(str(row[0]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div").nth(index+1)).to_contain_text(datetime.today().strftime('%d.%m.%Y'))             
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div").nth(index+1)).to_contain_text(str(row[1]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div").nth(index+1)).to_contain_text(str(row[2]))
-                assert page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div").nth(index+1).inner_text() in str(row[3]), f"Values are not matching."
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(11)>div").nth(index+1)).to_contain_text(str(row[4]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(12)>div").nth(index+1)).to_contain_text(str(row[5]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(13)>div").nth(index+1)).to_contain_text(str(row[6]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(14)>div").nth(index+1)).to_contain_text(str(row[7]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(15)>div").nth(index+1)).to_contain_text(str(row[8]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div").nth(index+1)).to_contain_text(str(row[9]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div").nth(index+1)).to_contain_text(str(row[10]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div").nth(index+1)).to_contain_text(str(row[11]))
-                expect(page.locator("#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div").nth(index+1)).to_contain_text(str(row[12]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(1)>div>span"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[0]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(datetime.today().strftime("%d.%m.%Y"))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[1]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[2]))
+                assert page.locator(
+                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
+                ).nth(index + 1).inner_text() in str(
+                    row[3]
+                ), f"Values are not matching."
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(11)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[4]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(12)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[5]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(13)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[6]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(14)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[7]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(15)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[8]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[9]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[10]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[11]))
+                expect(
+                    page.locator(
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
+                    ).nth(index + 1)
+                ).to_contain_text(str(row[12]))
