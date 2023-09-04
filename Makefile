@@ -350,7 +350,12 @@ export-migras:
 import-migras: rm-migras
 	@[[ -f misc/migras.tar.gz ]] && tar xzf misc/migras.tar.gz
 
-dev-ez: dev-easy import-migras db  ## Useful after 'git checkout <tag> && export-migras && git switch -'
+dev-migras: dev db-migras
+dev-ez: dev-easy db-migras
+
+db-migras: import-migras db restore-migras  ## Useful after 'git checkout <tag> && export-migras && git switch -'
+
+restore-migras:
 	@git restore -W parkour_app/**/migrations/
 	@$(MAKE) migrate
 

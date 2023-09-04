@@ -3,7 +3,7 @@
 2?.??.??
 ========
 
-- New rule `dev-ez`: follows `dev-easy` with a proper reset of migration files. See source code and its help message for instructions on how to use it.
+- New rule `db-migras`: loads production database snapshot with a proper reset of migration files. See source code and its help message for instructions on how to use it. It is a drop-in replacement to `db` rule when development version moved forward with changes into Django models that are not synchronized (yet) with production deployment that shall always run a version following github releases.
 - New 'Duties' model, to keep track in charge of whom are the responsibilities (both dry and wet processing of both short and long read sequencing.); so far it lists all users in database, but it's meant to be used only within the sequencing facility, and bioinformaticians.
 - New 'archived' field replaces the old obsolescence functionality that was broken in many if not all models.
 - BUGFIX: Uploaded files appeared and disappeared just by switching sequenced to True.
