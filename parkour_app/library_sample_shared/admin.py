@@ -91,7 +91,7 @@ class IndexPairInline(admin.TabularInline):
 
 
 @admin.register(IndexType)
-class IndexTypeAdmin(admin.ModelAdmin):
+class IndexTypeAdmin(ImportExportModelAdmin):
     form = IndexTypeForm
 
     list_display = ("name", "index_length", "is_dual", "format", "archived")
@@ -148,7 +148,7 @@ class IndexTypeAdmin(admin.ModelAdmin):
 
 
 @admin.register(IndexPair)
-class IndexPairAdmin(admin.ModelAdmin):
+class IndexPairAdmin(ImportExportModelAdmin):
     list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
     list_filter = ("index_type", "archived")

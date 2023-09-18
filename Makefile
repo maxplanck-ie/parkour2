@@ -77,7 +77,7 @@ set-base:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
-	@rm -f parkour_app/logs/*.log && sleep 1s
+	# @rm -f parkour_app/logs/*.log && sleep 1s
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
 sweep:  ## Remove any sqldump and migrations export older than a week.
