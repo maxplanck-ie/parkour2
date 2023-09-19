@@ -1,11 +1,12 @@
 from django.contrib import admin
 
 from .models import Pooling
+from common.admin import ArchivedFilter
 
 
 @admin.register(Pooling)
 class PoolingAdmin(admin.ModelAdmin):
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
     list_display = ("name", "barcode", "request", "pool", "archived")
     search_fields = (
         "library__name",
