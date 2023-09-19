@@ -293,11 +293,13 @@ class DutyAdmin(admin.ModelAdmin):
         "end_date",
         "facility",
         "platform",
+        "comment"
     )
     search_fields = (
         "main_name",
         "backup_name",
         "facility",
+        "comment"
     )
     list_filter = ("facility",)
 
