@@ -4,56 +4,72 @@ from common.models import CostUnit, Duty, Organization, PrincipalInvestigator
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.crypto import get_random_string
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
-
-from django.contrib.admin import SimpleListFilter
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext as _
 
 User = get_user_model()
 
+
 class DefaultListFilter(SimpleListFilter):
-    all_value = '_all'
+    all_value = "_all"
 
     def default_value(self):
         raise NotImplementedError()
 
     def queryset(self, request, queryset):
-        if self.parameter_name in request.GET and request.GET[self.parameter_name] == self.all_value:
+        if (
+            self.parameter_name in request.GET
+            and request.GET[self.parameter_name] == self.all_value
+        ):
             return queryset
 
         if self.parameter_name in request.GET:
-            return queryset.filter(**{self.parameter_name:request.GET[self.parameter_name]})
+            return queryset.filter(
+                **{self.parameter_name: request.GET[self.parameter_name]}
+            )
 
-        return queryset.filter(**{self.parameter_name:self.default_value()})
+        return queryset.filter(**{self.parameter_name: self.default_value()})
 
     def choices(self, cl):
         for lookup, title in self.lookup_choices:
             yield {
-                'selected': self.value() == force_text(lookup) or (self.value() == None and force_text(self.default_value()) == force_text(lookup)),
-                'query_string': cl.get_query_string({
-                    self.parameter_name: lookup,
-                }, []),
-                'display': title,
+                "selected": self.value() == force_str(lookup)
+                or (
+                    self.value() == None
+                    and force_str(self.default_value()) == force_str(lookup)
+                ),
+                "query_string": cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
+                "display": title,
             }
         yield {
-            'selected': self.value() == self.all_value,
-            'query_string': cl.get_query_string({self.parameter_name: self.all_value}, []),
-            'display': _('All'),
+            "selected": self.value() == self.all_value,
+            "query_string": cl.get_query_string(
+                {self.parameter_name: self.all_value}, []
+            ),
+            "display": _("All"),
         }
 
+
 class ArchivedFilter(DefaultListFilter):
-    title = _('Archived ')
-    parameter_name = 'archived__exact'
+    title = _("Archived ")
+    parameter_name = "archived__exact"
 
     def lookups(self, request, model_admin):
-        return ((False,'No'), (True,'Yes'))
+        return ((False, "No"), (True, "Yes"))
 
     def default_value(self):
         return False
+
 
 class CostUnitInline(admin.TabularInline):
     model = CostUnit

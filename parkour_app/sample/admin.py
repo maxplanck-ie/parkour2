@@ -1,9 +1,9 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
 from .models import NucleicAcidType, Sample
-from common.admin import ArchivedFilter
 
 
 @admin.register(NucleicAcidType)

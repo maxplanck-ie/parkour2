@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from django.urls import resolve
@@ -17,7 +18,6 @@ from .models import (
     Organism,
     ReadLength,
 )
-from common.admin import ArchivedFilter
 
 
 @admin.register(Organism)
