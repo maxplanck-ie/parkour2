@@ -5,7 +5,7 @@
 
 - New rule `db-migras`: loads production database snapshot with a proper reset of migration files. See source code and its help message for instructions on how to use it. It is a drop-in replacement to `db` rule when development version moved forward with changes into Django models that are not synchronized (yet) with production deployment that shall always run a version following github releases.
 - New 'Duties' model, to keep track in charge of whom are the responsibilities (both dry and wet processing of both short and long read sequencing.); so far it lists all users in database, but it's meant to be used only within the sequencing facility, and bioinformaticians.
-- New 'archived' field replaces the old obsolescence functionality that was broken in many if not all models.
+- New 'archived' field replaces the old obsolescence functionality that was broken in many if not all models. By default, all archived instances of models are filtered out at the Site Admin panel.
 - BUGFIX: Uploaded files appeared and disappeared just by switching sequenced to True.
 - BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
 - Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
