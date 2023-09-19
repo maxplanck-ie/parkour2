@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0005_archived_feature'),
+        ("common", "0005_archived_feature"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='duty',
-            name='comment',
-            field=models.TextField(blank=True, max_length=250, null=True, verbose_name='Comment'),
+            model_name="duty",
+            name="comment",
+            field=models.TextField(
+                blank=True, max_length=250, null=True, verbose_name="Comment"
+            ),
         ),
     ]
