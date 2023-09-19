@@ -1,7 +1,7 @@
+from common.admin import ArchivedFilter
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from request.models import Request
-from common.admin import ArchivedFilter
 
 
 @admin.register(Request)

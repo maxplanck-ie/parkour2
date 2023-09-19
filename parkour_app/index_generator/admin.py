@@ -1,8 +1,8 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 
-from common.admin import ArchivedFilter
 from .models import Pool, PoolSize
 
 

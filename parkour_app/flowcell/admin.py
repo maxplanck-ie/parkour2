@@ -1,7 +1,7 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
-from common.admin import ArchivedFilter
 
 
 class LaneInline(admin.TabularInline):
