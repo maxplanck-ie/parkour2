@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
+from common.admin import ArchivedFilter
 
 
 class LaneInline(admin.TabularInline):
@@ -57,7 +58,7 @@ class LaneInline(admin.TabularInline):
 class SequencerAdmin(admin.ModelAdmin):
     list_display = ("name", "lanes", "lane_capacity", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
@@ -77,7 +78,7 @@ class SequencerAdmin(admin.ModelAdmin):
 class FlowcellAdmin(admin.ModelAdmin):
     list_display = ("flowcell_id", "sequencer", "archived")
     # search_fields = ('flowcell_id', 'sequencer',)
-    list_filter = ("sequencer", "archived")
+    list_filter = ("sequencer", ArchivedFilter)
     exclude = (
         "lanes",
         "requests",

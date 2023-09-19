@@ -17,13 +17,14 @@ from .models import (
     Organism,
     ReadLength,
 )
+from common.admin import ArchivedFilter
 
 
 @admin.register(Organism)
 class OrganismAdmin(admin.ModelAdmin):
     list_display = ("name", "scientific_name", "taxon_id", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
@@ -48,7 +49,7 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 class ReadLengthAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
@@ -96,7 +97,7 @@ class IndexTypeAdmin(admin.ModelAdmin):
 
     list_display = ("name", "index_length", "is_dual", "format", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     filter_horizontal = (
         "indices_i7",
@@ -151,7 +152,7 @@ class IndexTypeAdmin(admin.ModelAdmin):
 class IndexPairAdmin(admin.ModelAdmin):
     list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
-    list_filter = ("index_type", "archived")
+    list_filter = ("index_type", ArchivedFilter)
 
     actions = (
         "mark_as_archived",
@@ -196,7 +197,7 @@ class IndexI5Admin(ImportExportModelAdmin):
         "index",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter), "archived")
+    list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
 
     resource_class = IndexI5Resource
 
@@ -238,7 +239,7 @@ class IndexI7Admin(ImportExportModelAdmin):
         "index",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter), "archived")
+    list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
 
     resource_class = IndexI7Resource
 
@@ -276,7 +277,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = ("type", "archived")
+    list_filter = ("type", ArchivedFilter)
 
     actions = (
         "mark_as_archived",
@@ -296,7 +297,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 class LibraryTypeAdmin(admin.ModelAdmin):
     filter_horizontal = ("library_protocol",)
     list_display = ("name", "archived")
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
