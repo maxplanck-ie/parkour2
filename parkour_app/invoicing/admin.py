@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.contrib import admin
 
 from .models import (
@@ -17,7 +18,7 @@ class InvoicingReportAdmin(admin.ModelAdmin):
 class FixedCostsAdmin(admin.ModelAdmin):
     list_display = ("sequencer", "price_amount", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
@@ -41,7 +42,7 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
     )
     list_display = ("library_protocol", "price_amount", "archived")
 
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
@@ -65,7 +66,7 @@ class SequencingCostsAdmin(admin.ModelAdmin):
         "price",
     )
     list_display = ("sequencer", "read_length", "price_amount", "archived")
-    list_filter = ("sequencer", "read_length", "archived")
+    list_filter = ("sequencer", "read_length", ArchivedFilter)
 
     actions = (
         "mark_as_archived",

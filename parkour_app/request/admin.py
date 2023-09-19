@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from request.models import Request
@@ -23,7 +24,7 @@ class RequestAdmin(admin.ModelAdmin):
         "files",
     )
 
-    list_filter = (("user", RelatedDropdownFilter), "sequenced", "archived")
+    list_filter = (("user", RelatedDropdownFilter), "sequenced", ArchivedFilter)
 
     actions = (
         "mark_as_archived",

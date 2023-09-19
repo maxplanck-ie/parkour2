@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
@@ -9,7 +10,7 @@ from .models import NucleicAcidType, Sample
 class NucleicAcidTypeAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
 
-    list_filter = ("type", "archived")
+    list_filter = ("type", ArchivedFilter)
 
     actions = (
         "mark_as_archived",
@@ -60,7 +61,7 @@ class SampleAdmin(admin.ModelAdmin):
         ("organism", RelatedDropdownFilter),
         ("read_length", RelatedDropdownFilter),
         ("index_type", RelatedDropdownFilter),
-        "archived",
+        ArchivedFilter,
     )
 
     fieldsets = (

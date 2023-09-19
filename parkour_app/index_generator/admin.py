@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
@@ -61,7 +62,7 @@ class PoolAdmin(admin.ModelAdmin):
         "size__multiplier",
         "size__size",
     )
-    list_filter = ("size", "archived")
+    list_filter = ("size", ArchivedFilter)
     inlines = [LibraryInline, SampleInline]
     exclude = (
         "libraries",
@@ -85,7 +86,7 @@ class PoolAdmin(admin.ModelAdmin):
 @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
-    list_filter = ("archived",)
+    list_filter = (ArchivedFilter,)
 
     actions = (
         "mark_as_archived",
