@@ -132,7 +132,7 @@ class Duty(models.Model):
     )
     comment = models.TextField(
         "Comment",
-        max_length=250,
+        max_length=2500,
         null=True,
         blank=True,
     )

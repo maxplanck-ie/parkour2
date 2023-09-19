@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
             model_name="duty",
             name="comment",
             field=models.TextField(
-                blank=True, max_length=250, null=True, verbose_name="Comment"
+                blank=True, max_length=2500, null=True, verbose_name="Comment"
             ),
         ),
     ]
