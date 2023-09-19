@@ -130,6 +130,12 @@ class Duty(models.Model):
         default="short",
         max_length=5,
     )
+    comment = models.TextField(
+        "Comment",
+        max_length=250,
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         db_table = "duty"
