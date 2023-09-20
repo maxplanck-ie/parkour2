@@ -80,9 +80,13 @@ clean:
 	#@docker compose exec parkour2-django rm -f parkour_app/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
-sweep:  ## Remove any sqldump and migrations export older than a week.
-	@find ./misc -mtime +7 -name db_\*.sqldump -exec /bin/rm -rf {} +;
-	@find ./misc -mtime +7 -name migras_\*.tar.gz -exec /bin/rm -rf {} +;
+sweep:  ## Remove any sqldump and migrations export older than a week. (Excluding current symlink targets.)
+	@find ./misc -mtime +7 -name db_\*.sqldump \
+		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-exec /bin/rm -rf {} +;
+	@find ./misc -mtime +7 -name migras_\*.tar.gz \
+		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-exec /bin/rm -rf {} +;
 
 prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"

@@ -14,6 +14,7 @@
 - Updated fixtures with parkour-demo database, usefult to overwrite or further customize such entries.
 - Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
 - Added `tblib` as a base dependency to have proper traceback when running tests in parallel.
+- Improvement: sweep rule won't remove current symlink targets anymore.
 
 
 23.08.21
