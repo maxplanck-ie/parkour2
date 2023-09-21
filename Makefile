@@ -184,7 +184,7 @@ import-media:
 
 import-pgdb:
 	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
-	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='*.sqldump' --exclude='*' \
+	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='migras*.tar.gz' --include='*.sqldump' --exclude='*' \
 		root@parkour:~/parkour2/misc/ misc/
 
 # git-release:
