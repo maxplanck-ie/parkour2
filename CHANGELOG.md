@@ -1,5 +1,10 @@
 <!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
 
+??.??.??
+========
+
+- Renamed rules import-migras=put-old-migras / export-migras=tar-old-migras / restore-migras=put-new-migras. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
+
 23.09.20
 ========
 

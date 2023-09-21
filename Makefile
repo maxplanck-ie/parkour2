@@ -80,7 +80,7 @@ clean:
 	#@docker compose exec parkour2-django rm -f parkour_app/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
-sweep:  ## Remove any sqldump and migrations export older than a week. (Excluding current symlink targets.)
+sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -mtime +7 -name db_\*.sqldump \
 		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
 		-exec /bin/rm -rf {} +;
@@ -344,23 +344,21 @@ restore-prep4json:
 rm-migras:
 	@rm -f parkour_app/**/migrations/*
 
-export-migras:
+tar-old-migras:
 	@find ./parkour_app/*/ -path '**/migrations' \
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
-import-migras: rm-migras
+put-old-migras: rm-migras
 	@[[ -f misc/migras.tar.gz ]] && tar xzf misc/migras.tar.gz
 
 dev-migras: dev db-migras
 dev-ez: dev-easy db-migras
 
-db-migras: import-migras db restore-migras  ## Useful after 'git checkout <tag> && export-migras && git switch -'
+db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag> && tar-old-migras && git switch -'
 
-restore-migras:
+put-new-migras:
 	@git restore -W parkour_app/**/migrations/
 	@$(MAKE) migrate
-
-#get-migrations: export-migras migrasync import-migras
 
 # Remember: (docker compose run == docker exec) != docker run
