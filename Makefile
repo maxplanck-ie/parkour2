@@ -166,12 +166,8 @@ load-fixtures: apply-migrations
 
 load-backup: load-postgres load-media
 
-# In our production VM, media_dump is a symlink to another partition (mounted
-# as /parkour) with its own set of backup rules set by Core IT. The last
-# command (mv) will move subfolders (e.g. request_files) in this partition.
-# Also, note that this partition is where rsnapshot is writing every time.
 save-media:
-	@docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
+	@rm -rf media_dump && docker cp parkour2-django:/usr/src/app/media/ . && mv media media_dump
 
 save-postgres:  ## Create instant snapshot (latest.sqldump) of running database instance
 	@docker exec parkour2-postgres pg_dump -Fc postgres -U postgres -f tmp_parkour_dump && \
@@ -179,12 +175,13 @@ save-postgres:  ## Create instant snapshot (latest.sqldump) of running database 
 	@ln -sf db_$(stamp).sqldump misc/latest.sqldump
 
 import-media:
-	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" \
-		root@parkour:~/parkour2/rsnapshot/backups/halfy.0/localhost/data/parkour2_media/ ./media_dump/
+	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-media"
+	@rsync -rauL -vhP -e "ssh -i ~/.ssh/parkour2" root@parkour:~/parkour2/media_dump .
 
 import-pgdb:
 	@ssh -i ~/.ssh/parkour2 root@parkour -t "make --directory ~/parkour2 save-postgres"
-	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" --include='migras*.tar.gz' --include='*.sqldump' --exclude='*' \
+	@rsync -raul -vhP -e "ssh -i ~/.ssh/parkour2" \
+		--include='migras*.tar.gz' --include='*.sqldump' --exclude='*' \
 		root@parkour:~/parkour2/misc/ misc/
 
 # git-release:
