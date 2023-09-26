@@ -3,6 +3,7 @@
 ??.??.??
 ========
 
+- Added 'archival' feature to CostUnit(s).
 - Renamed rules import-migras=put-old-migras / export-migras=tar-old-migras / restore-migras=put-new-migras. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
 

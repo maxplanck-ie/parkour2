@@ -38,6 +38,7 @@ class PrincipalInvestigator(models.Model):
 
 class CostUnit(models.Model):
     name = models.CharField("Name", max_length=100)
+    archived = models.BooleanField("Archived", default=False)
     pi = models.ForeignKey(
         PrincipalInvestigator,
         verbose_name="Principal Investigator",
