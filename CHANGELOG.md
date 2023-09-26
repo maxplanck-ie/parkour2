@@ -3,10 +3,12 @@
 ??.??.??
 ========
 
+- Email address displayed next so User (its string representation) now skips the email host if it's the same as in Django settings (parkour.env).
 - Added Phone next to email address for User display (if available).
 - Added 'archival' feature to CostUnit(s).
-- Renamed rules import-migras=put-old-migras / export-migras=tar-old-migras / restore-migras=put-new-migras. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
-- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+- Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
+- Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
+- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions). We might start using filesystem directly soon, so that such path is available to the sequencing facility directly.
 
 23.09.20
 ========
