@@ -93,8 +93,8 @@ prune:
 	@sleep 10s && docker system prune -a -f --volumes
 
 clearpy:
-	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -delete
-	@docker compose exec parkour2-django find . -type d -name "__pycache__" -delete
+	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
+	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
 prod: down clean deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
