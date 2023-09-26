@@ -25,6 +25,13 @@ repos:
         pass_filenames: false
         files: misc/Caddyfile
         args: ['hardreset-caddyfile']
+    -   id: hardreset-envfile
+        name: hardreset-envfile
+        entry: /usr/bin/make
+        language: script
+        pass_filenames: false
+        files: misc/parkour.env
+        args: ['hardreset-envfile']
 
 # On centos, with py36, this was locked to 4.0.1
 # Had to install anaconda3 and adjust INSTALL_PYTHON @ .git/hooks/pre-commit
