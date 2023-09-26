@@ -2,7 +2,7 @@ from datetime import datetime
 
 from authtools.models import AbstractEmailUser
 from django.db import models
-
+from django.conf import settings
 
 def get_deleted_org():
     return Organization.objects.get_or_create(name="deleted ORG")[0]
@@ -92,7 +92,17 @@ class User(AbstractEmailUser):
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.email})"
+        this_user_email = self.email
+        if not "\"" in this_user_email:
+            # email addresses are valid with more than one 'at' symbol, only if enquoted,
+            # we avoid the following in such cases. See: https://stackoverflow.com/a/12355882
+            if this_user_email.split("@")[1] == settings.EMAIL_HOST:
+                this_user_email = this_user_email.split("@")[0] + "@~"
+        if self.phone is not None:
+            this_user = f"{self.first_name} {self.last_name} ({self.phone} | {this_user_email})"
+        else:
+            this_user = f"{self.first_name} {self.last_name} ({this_user_email})"
+        return this_user
 
 
 class Duty(models.Model):
