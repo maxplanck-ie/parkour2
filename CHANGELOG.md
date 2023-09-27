@@ -3,6 +3,7 @@
 ??.??.??
 ========
 
+- Breaking changes for backup locations! `./rsnapshot` was moved under `./misc`, so the config files will be there.. that's not much of an issue. Yet, the backups subfolder (or symlink) will need to be adjusted manually.
 - Email address displayed next so User (its string representation) now skips the email host if it's the same as in Django settings (parkour.env).
 - Added Phone next to email address for User display (if available).
 - Added 'archival' feature to CostUnit(s).
