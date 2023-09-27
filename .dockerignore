@@ -1,7 +1,6 @@
 misc/
 *_dump/
 *_dumps/
-rsnapshot/
 *.swp
 env/
 env_*/

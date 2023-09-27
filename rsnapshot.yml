@@ -8,8 +8,8 @@ services:
     environment:
       - TZ=Europe/Berlin
     volumes:
-      - ./rsnapshot/config:/config
-      - ./rsnapshot/backups:/.snapshots
+      - ./misc/rsnapshot/config:/config
+      - ./misc/rsnapshot/backups:/.snapshots
       # sources go into /data
       - parkour2_pgdb:/data/parkour2_pgdb
       - parkour2_media:/data/parkour2_media
