@@ -506,7 +506,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           cellViabilityEditor = Ext.getCmp('cellViabilityEditor'),
           startingNumberCellsEditor = Ext.getCmp('startingNumberCellsEditor'),
           numberCellsPoolingEditor = Ext.getCmp('numberCellsPoolingEditor'),
-          concentrationEditor = Ext.getCmp('concentrationEditor');
+          concentrationEditor = Ext.getCmp('concentrationEditor'),
+          concentrationMethodEditor = Ext.getCmp('concentrationMethodEditor');
       
       var nucleicAcidTypesStore = Ext.getStore('nucleicAcidTypesStore');
       var singleCell = nucleicAcidType ?
@@ -523,6 +524,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         numberCellsPoolingEditor.enable();
 
         concentrationEditor.disable();
+        concentrationMethodEditor.disable()
       } else {
 
         cellDensityEditor.disable();
@@ -531,6 +533,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         numberCellsPoolingEditor.disable();
 
         concentrationEditor.enable();
+        concentrationMethodEditor.enable()
       }
 
       return singleCell;
@@ -560,6 +563,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
                      null;
     if (singleCell) {
       record.set('concentration', null)
+      record.set('concentration_method', null)
+
     } else {
       record.set('cell_density', null)
       record.set('cell_viability', null)
@@ -1169,6 +1174,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         editor: {
           xtype: 'combobox',
           queryMode: 'local',
+          id: 'concentrationMethodEditor',
+          itemId: 'concentrationMethodEditor',
           valueField: 'id',
           displayField: 'name',
           store: 'concentrationMethodsStore',

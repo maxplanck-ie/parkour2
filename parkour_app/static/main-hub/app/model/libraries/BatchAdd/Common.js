@@ -151,7 +151,7 @@ Ext.define('MainHub.model.libraries.BatchAdd.Common', {
         read_length: 'presence',
         sequencing_depth: 'greaterthanzero',
         amplification_cycles: 'presence',
-        concentration_method: 'presence',
+        concentration_method: 'concentration',
         organism: 'presence',
         source: 'presence'
     }
