@@ -124,7 +124,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
           xtype: 'container',
           margin: '0 0 0 30px',
           html: '<span id="edit-hint"><strong>Hint:</strong> To edit multiple cells at once (Excel-like), ' +
-            'select a cell, press Esc, paste data (CTRL + V)</span>'
+            'select a cell and paste data (CTRL + V)</span>'
         },
         // {
         //       text: 'Download RELACS Pellets Abs form',
