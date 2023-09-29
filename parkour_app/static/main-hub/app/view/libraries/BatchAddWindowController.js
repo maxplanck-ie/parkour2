@@ -196,12 +196,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     if (wnd.recordType === 'Library') {
       // Column order for library
       newColumnOrder = [
-        'numberer', 'barcode', 'name', 'concentration', 'mean_fragment_size',
-        'sequencing_depth', 'amplification_cycles', 'qpcr_result', 'source',
-        'comments', 'library_type', 'library_protocol', 'index_type',
-        'index_reads', 'index_i7', 'index_i5', 'equal_representation_nucleotides',
-        'read_length', 'sample_volume', 'concentration_method',
-        'organism'];
+        'numberer', 'barcode', 'name', 'source', 'sample_volume_user', 
+        'concentration', 'mean_fragment_size', 'sequencing_depth', 
+        'amplification_cycles', 'qpcr_result', 'comments', 'organism', 
+        'library_type', 'library_protocol', 'index_type', 'index_reads', 
+        'index_i7', 'index_i5', 'read_length', 'concentration_method'];
     } else {
 
       // Column order for sample
@@ -222,12 +221,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       if (singleCell) {
 
         newColumnOrder = [
-          'numberer', 'barcode', 'name', 'sample_volume_user', 'cell_density',
-          'cell_viability', 'starting_number_cells', 'number_targeted_cells',
-          'sequencing_depth', 'amplification_cycles', 'source', 'comments',
-          'concentration', 'rna_quality', 'read_length', 'nucleic_acid_type',
-          'library_type', 'library_protocol', 'equal_representation_nucleotides',
-          'sample_volume', 'concentration_method', 'organism',
+          'numberer', 'barcode', 'name', 'source', 'sample_volume_user', 
+          'cell_density', 'cell_viability', 'starting_number_cells', 
+          'number_targeted_cells', 'sequencing_depth', 'amplification_cycles', 
+          'comments', 'organism', 'concentration', 'rna_quality', 'read_length', 
+          'nucleic_acid_type', 'library_type', 'library_protocol', 'concentration_method'
         ]
 
       } else {
@@ -241,21 +239,21 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         if (rnaQuality) {
 
           newColumnOrder = [
-            'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
-            'rna_quality', 'sequencing_depth', 'amplification_cycles', 'source',
-            'comments', 'read_length', 'nucleic_acid_type', 'library_type', 
-            'library_protocol', 'equal_representation_nucleotides', 'sample_volume',
-            'concentration_method', 'organism',
+            'numberer', 'barcode', 'name', 'source', 'sample_volume_user', 'concentration',
+            'rna_quality', 'sequencing_depth', 'amplification_cycles', 'comments', 'organism', 
+            'cell_density', 'cell_viability', 'starting_number_cells', 'number_targeted_cells', 
+            'read_length', 'nucleic_acid_type', 'library_type', 'library_protocol', 
+            'concentration_method', 
           ]
 
         } else {
 
           newColumnOrder = [
-            'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
-            'sequencing_depth', 'amplification_cycles', 'source', 'comments',
-            'rna_quality', 'read_length', 'nucleic_acid_type', 'library_type', 
-            'library_protocol', 'equal_representation_nucleotides', 'sample_volume',
-            'concentration_method', 'organism',
+            'numberer', 'barcode', 'name', 'source', 'sample_volume_user', 'concentration',
+            'sequencing_depth', 'amplification_cycles', 'comments', 'organism',
+            'cell_density', 'cell_viability', 'starting_number_cells', 'number_targeted_cells', 
+            'rna_quality', 'read_length', 'nucleic_acid_type', 'library_type', 'library_protocol',
+            'concentration_method'
           ]
         }
       }
@@ -855,12 +853,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'library_type', 'library_protocol',
-      'concentration', 'mean_fragment_size', 'index_type', 'index_reads',
-      'index_i7', 'index_i5', 'read_length', 'sequencing_depth',
-      'amplification_cycles', 'equal_representation_nucleotides',
-      'qpcr_result', 'sample_volume', 'concentration_method', 'organism',
-      'source', 'comments'
+      'numberer', 'barcode', 'name', 'organism', 'source','library_type', 
+      'library_protocol', 'sample_volume_user', 'concentration', 
+      'mean_fragment_size', 'index_type', 'index_reads', 'index_i7', 
+      'index_i5', 'read_length', 'sequencing_depth', 'amplification_cycles', 
+      'qpcr_result', 'concentration_method', 'comments'
     ];
     columns = this.sortColumns(columns, order);
 
@@ -1011,12 +1008,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'nucleic_acid_type', 'library_type', 
-      'library_protocol', 'sample_volume_user', 'concentration', 'rna_quality',
-      'cell_density', 'cell_viability', 'starting_number_cells', 'number_targeted_cells',
-      'read_length', 'sequencing_depth', 'amplification_cycles',
-      'equal_representation_nucleotides', 'sample_volume',
-      'concentration_method', 'organism', 'source', 'comments'
+      'numberer', 'barcode', 'name', 'organism', 'source', 'nucleic_acid_type', 
+      'library_type', 'library_protocol', 'sample_volume_user', 'concentration', 
+      'rna_quality', 'cell_density', 'cell_viability', 'starting_number_cells', 
+      'number_targeted_cells', 'read_length', 'sequencing_depth', 'amplification_cycles', 
+      'concentration_method', 'comments'
     ];
     columns = this.sortColumns(columns, order);
 
