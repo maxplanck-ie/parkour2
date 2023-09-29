@@ -1237,6 +1237,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var form = Ext.getCmp('request-form');
     var requestWnd = form.up('window');
     var store = Ext.getStore('librariesInRequestStore');
+    var handlerCb = requestWnd.down('#handler-cb');
     var url;
 
     if (requestWnd.mode === 'add') {
@@ -1266,6 +1267,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           pi: data.pi,
           cost_unit: data.cost_unit,
           bioinformatician: data.bioinformatician ? data.bioinformatician : null,
+          handler: handlerCb.value ? handlerCb.value : null,
           pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
           pooled_libraries: data.pooled_libraries,
