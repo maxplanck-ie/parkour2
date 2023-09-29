@@ -229,7 +229,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-FILES_PATH = os.path.join(BASE_DIR, MEDIA_ROOT, "files")
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [

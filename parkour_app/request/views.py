@@ -422,6 +422,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         try:
             files = [f for f in FileRequest.objects.all() if f.id in file_ids]
+
             data = [
                 {
                     "id": file.id,
@@ -446,9 +447,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=False)
     def download_RELACS_Pellets_Abs_form(self, request):
-        print(settings.FILES_PATH)
         file_path = os.path.join(settings.STATIC_ROOT, "docs/RELACS.xlsx")
-        print(file_path)
 
         with open(file_path, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
