@@ -772,7 +772,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           valueField: 'num',
           store: Ext.create('Ext.data.Store', {
             fields: [{ name: 'num', type: 'int' }, { name: 'label', type: 'string' }],
-            data: []
+            data: [
+            { num: 0, label: 'None' },
+            { num: 7, label: 'I7 only' },
+            { num: 5, label: 'I5 only' },
+            { num: 75, label: 'I7 + I5' },]
           }),
           forceSelection: true
         },
