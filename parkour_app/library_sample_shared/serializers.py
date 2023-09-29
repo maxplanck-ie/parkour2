@@ -86,23 +86,46 @@ class IndexI5Serializer(IndexBaseSerializer):
 
 
 class LibraryProtocolSerializer(ModelSerializer):
+    library_type = SerializerMethodField()
+
     class Meta:
         model = LibraryProtocol
-        fields = "__all__"
+        fields = (
+            'id',
+            'name',
+            'type',
+            'nucleic_acid_type',
+            'library_type',
+            'provider',
+            'catalog',
+            'explanation',
+            'input_requirements',
+            'typical_application',
+            'comments'
+        )
 
+    def get_library_type(self, obj):
+        return obj.librarytype_set.all().distinct().values_list(
+            "id", flat=True
+        )
 
 class LibraryTypeSerializer(ModelSerializer):
     library_protocol = SerializerMethodField()
+    nucleic_acid_type = SerializerMethodField()
 
     class Meta:
         model = LibraryType
-        fields = ("id", "name", "library_protocol")
+        fields = ("id", "name", "library_protocol", "nucleic_acid_type")
 
     def get_library_protocol(self, obj):
         return LibraryType.objects.filter(pk=obj.pk).values_list(
             "library_protocol__id", flat=True
         )
 
+    def get_nucleic_acid_type(self, obj):
+        return LibraryType.objects.filter(pk=obj.pk).distinct().values_list(
+            "library_protocol__nucleic_acid_type__id", flat=True
+        )
 
 class LibrarySampleBaseListSerializer(ListSerializer):
     def update(self, instance, validated_data):

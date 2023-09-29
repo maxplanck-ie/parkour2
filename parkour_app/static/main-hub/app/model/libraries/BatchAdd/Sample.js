@@ -9,7 +9,26 @@ Ext.define('validator.RNAQuality', {
             record.get('nucleic_acid_type')
         );
 
-        if (nat && nat.get('type') === 'RNA' && value === null) {
+        if (nat && !nat.get('single_cell') && nat.get('type') === 'RNA' && value === null) {
+            isValid = false;
+        }
+
+        return isValid || 'Must be present';
+    }
+});
+
+Ext.define('validator.SingleCellField', {
+    extend: 'Ext.data.validator.Validator',
+    alias: 'data.validator.singlecellfield',
+    validate: function(value, record) {
+
+        var isValid = true;
+
+        var nat = Ext.getStore('nucleicAcidTypesStore').findRecord('id',
+            record.get('nucleic_acid_type')
+        );
+
+        if (nat && nat.get('single_cell') && value === null) {
             isValid = false;
         }
 
@@ -31,11 +50,39 @@ Ext.define('MainHub.model.libraries.BatchAdd.Sample', {
         name: 'rna_quality',
         allowNull: true,
         defaultValue: null
+    },
+    {
+        type: 'int',
+        name: 'cell_density',
+        allowNull: true,
+        defaultValue: null
+    },
+    {
+        type: 'int',
+        name: 'cell_viability',
+        allowNull: true,
+        defaultValue: null
+    },
+    {
+        type: 'int',
+        name: 'starting_number_cells',
+        allowNull: true,
+        defaultValue: null
+    },
+    {
+        type: 'int',
+        name: 'number_targeted_cells',
+        allowNull: true,
+        defaultValue: null
     }
     ],
 
     validators: {
         nucleic_acid_type: 'presence',
-        rna_quality: 'rnaquality'
+        rna_quality: 'rnaquality',
+        cell_density: 'singlecellfield',
+        cell_viability: 'singlecellfield',
+        starting_number_cells: 'singlecellfield',
+        concentration: 'singlecellfield'
     }
 });

@@ -3,6 +3,7 @@ import logging
 from django.conf import settings
 from library_sample_shared.views import LibrarySampleBaseViewSet
 from rest_framework import viewsets
+from django.db.models.functions import Lower
 
 from .models import NucleicAcidType
 from .serializers import NucleicAcidTypeSerializer, SampleSerializer
@@ -17,7 +18,7 @@ class NucleicAcidTypeViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         return NucleicAcidType.objects.filter(status=settings.NON_OBSOLETE).order_by(
-            "type", "name"
+            "type", Lower("name") # Lower to make filtering case insensitive
         )
 
 

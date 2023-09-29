@@ -35,8 +35,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       '#nucleicAcidTypeEditor': {
         select: 'selectNucleicAcidType'
       },
-      '#libraryProtocolEditor': {
-        select: 'selectLibraryProtocol'
+      '#libraryTypeEditor': {
+        select: 'selectLibraryType'
       },
 
       '#save-button': {
@@ -198,19 +198,67 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       newColumnOrder = [
         'numberer', 'barcode', 'name', 'concentration', 'mean_fragment_size',
         'sequencing_depth', 'amplification_cycles', 'qpcr_result', 'source',
-        'comments', 'library_protocol', 'library_type', 'index_type',
+        'comments', 'library_type', 'library_protocol', 'index_type',
         'index_reads', 'index_i7', 'index_i5', 'equal_representation_nucleotides',
         'read_length', 'sample_volume', 'concentration_method',
         'organism'];
     } else {
+
       // Column order for sample
-      newColumnOrder = [
-        'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
-        'rna_quality', 'sequencing_depth', 'amplification_cycles', 'source',
-        'comments', 'read_length', 'nucleic_acid_type', 'library_protocol',
-        'library_type', 'equal_representation_nucleotides', 'sample_volume',
-        'concentration_method', 'organism',
-      ]
+
+      // Get all items to decide how to reorder columns
+      var itemList = grid.store.data.items;
+      
+      // Check if all records are Single cell
+      var natTypeIds = itemList.map(function (e) { return e.get('nucleic_acid_type') });
+      var natStore = Ext.getStore('nucleicAcidTypesStore');
+      var singleCell = natTypeIds.every(function (i) {
+        var v =  i ? natStore.findRecord('id', i).get('single_cell') : false;
+        return v
+      });
+
+      // Rearrange columns based on experiment type
+      
+      if (singleCell) {
+
+        newColumnOrder = [
+          'numberer', 'barcode', 'name', 'sample_volume_user', 'cell_density',
+          'cell_viability', 'starting_number_cells', 'number_targeted_cells',
+          'sequencing_depth', 'amplification_cycles', 'source', 'comments',
+          'concentration', 'rna_quality', 'read_length', 'nucleic_acid_type',
+          'library_type', 'library_protocol', 'equal_representation_nucleotides',
+          'sample_volume', 'concentration_method', 'organism',
+        ]
+
+      } else {
+
+        // Check if all records are for RNA, therefore RQN is needed
+        rnaQuality = natTypeIds.every(function (i) {
+          var v = i ? natStore.findRecord('id', i).get('type') == 'RNA' : false;
+          return v
+        });
+
+        if (rnaQuality) {
+
+          newColumnOrder = [
+            'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
+            'rna_quality', 'sequencing_depth', 'amplification_cycles', 'source',
+            'comments', 'read_length', 'nucleic_acid_type', 'library_type', 
+            'library_protocol', 'equal_representation_nucleotides', 'sample_volume',
+            'concentration_method', 'organism',
+          ]
+
+        } else {
+
+          newColumnOrder = [
+            'numberer', 'barcode', 'name', 'sample_volume_user', 'concentration',
+            'sequencing_depth', 'amplification_cycles', 'source', 'comments',
+            'rna_quality', 'read_length', 'nucleic_acid_type', 'library_type', 
+            'library_protocol', 'equal_representation_nucleotides', 'sample_volume',
+            'concentration_method', 'organism',
+          ]
+        }
+      }
     }
 
     var isCommentsColumLast = columnOrderCurrent.at(-1) === 'comments'
@@ -316,36 +364,40 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
             item.set('nucleic_acid_type', record.get('nucleic_acid_type'));
           }
 
-          // If Library Protocol was selected, update Nuc. Type too
-          else if (dataIndex === 'library_protocol') {
+          // If Library Type was selected, update Nuc. Type too
+          else if (dataIndex === 'library_type') {
+            
             // Libraries
             if (typeof item.get('nucleic_acid_type') === 'undefined') {
-              // Reset Library Type for records with a different Library Protocol
-              if (item.get('library_protocol') !== record.get('library_protocol')) {
-                item.set('library_type', null);
+              // Reset Library Protocol for records with a different Library Type
+              if (item.get('library_type') !== record.get('library_type')) {
+                item.set('library_protocol', null);
               }
             }
+            
             // Samples
             else {
-              // Reset Library Type if Nucleic Acid Types Library Protocols
+              // Reset Library Protocol if Nucleic Acid Types Library Types
               // are different
               if (
                 (item.get('nucleic_acid_type') !== record.get('nucleic_acid_type')) ||
                 ((item.get('nucleic_acid_type') === record.get('nucleic_acid_type')) &&
-                  (item.get('library_protocol') !== record.get('library_protocol')))
+                  (item.get('library_type') !== record.get('library_type')))
               ) {
-                item.set('library_type', null);
+                item.set('library_protocol', null);
               }
               item.set('nucleic_acid_type', record.get('nucleic_acid_type'));
             }
-            item.set('library_protocol', record.get('library_protocol'));
+
+            item.set('library_type', record.get('library_type'));
+
           }
 
-          // If Library Type was selected, update Library Protocol and Nucleic Acid Type
-          else if (dataIndex === 'library_type') {
+          // If Library Protocol was selected, update Library Type and Nucleic Acid Type
+          else if (dataIndex === 'library_protocol') {
             item.set({
-              library_type: record.get('library_type'),
               library_protocol: record.get('library_protocol'),
+              library_type: record.get('library_type'),
               nucleic_acid_type: record.get('nucleic_acid_type')
             });
           }
@@ -380,19 +432,19 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var indexI5Editor = Ext.getCmp('indexI5Editor');
     var nucleicAcidTypesStore = Ext.getStore('nucleicAcidTypesStore');
     var libraryProtocolEditor = Ext.getCmp('libraryProtocolEditor');
-    var libraryProtocolsStore = Ext.getStore('libraryProtocolsStore');
     var libraryTypeEditor = Ext.getCmp('libraryTypeEditor');
     var rnaQualityEditor = Ext.getCmp('rnaQualityEditor');
     var record = context.record;
 
     // Toggle Library Type
-    if (record.get('library_protocol') === null) {
-      libraryTypeEditor.disable();
+    if (record.get('library_type') === null) {
+      libraryProtocolEditor.setValue(null);
+      libraryProtocolEditor.disable();
     } else {
-      libraryTypeEditor.enable();
+      libraryProtocolEditor.enable();
 
       // Filter Library Types store for currently selected Library Protocol
-      this.filterLibraryTypes(record.get('library_protocol'));
+      this.filterLibraryTypes(record.get('nucleic_acid_type'));
     }
 
     // Libraries
@@ -421,31 +473,70 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Samples
     else if (wnd.recordType === 'Sample') {
-      // Toggle Library Protocol
-      if (record.get('nucleic_acid_type') === null) {
-        libraryProtocolEditor.disable();
-      } else {
-        libraryProtocolEditor.enable();
 
-        // Filter Library Protocols store for currently selected Nucleic Acid Type
-        if (record.get('library_protocol') !== 0) {
-          var type = nucleicAcidTypesStore.findRecord('id',
-            record.get('nucleic_acid_type')
-          ).get('type');
-          this.filterLibraryProtocols(libraryProtocolsStore, type);
+      // Toggle Library Type
+      if (record.get('nucleic_acid_type') === null) {
+        libraryTypeEditor.setValue(null);
+        libraryTypeEditor.disable();
+      } else {
+        
+        libraryTypeEditor.enable();
+
+        // Filter Library Types store for currently selected Nucleic Acid Type
+        if (record.get('library_type') !== 0) {
+          this.filterLibraryTypes(record.get('nucleic_acid_type'));
         }
       }
+
+      var singleCell = this.toggleSingleCellFields(record.get('nucleic_acid_type'));
 
       // Toggle RNA Quality
       var nat = nucleicAcidTypesStore.findRecord('id',
         record.get('nucleic_acid_type')
       );
-      if (nat && nat.get('type') === 'RNA') {
+      if (nat && !singleCell && nat.get('type') === 'RNA') {
         rnaQualityEditor.enable();
       } else {
         rnaQualityEditor.disable();
       }
     }
+  },
+
+  toggleSingleCellFields: function (nucleicAcidType) {
+
+      var cellDensityEditor = Ext.getCmp('cellDensityEditor'),
+          cellViabilityEditor = Ext.getCmp('cellViabilityEditor'),
+          startingNumberCellsEditor = Ext.getCmp('startingNumberCellsEditor'),
+          numberCellsPoolingEditor = Ext.getCmp('numberCellsPoolingEditor'),
+          concentrationEditor = Ext.getCmp('concentrationEditor');
+      
+      var nucleicAcidTypesStore = Ext.getStore('nucleicAcidTypesStore');
+      var singleCell = nucleicAcidType ?
+                       nucleicAcidTypesStore.findRecord('id', nucleicAcidType).get('single_cell') :
+                       null;
+      
+      // Toggle Single Cell fields and concentration
+      // which is not necessary for this kind of project
+      if (singleCell) {
+
+        cellDensityEditor.enable();
+        cellViabilityEditor.enable();
+        startingNumberCellsEditor.enable();
+        numberCellsPoolingEditor.enable();
+
+        concentrationEditor.disable();
+      } else {
+
+        cellDensityEditor.disable();
+        cellViabilityEditor.disable();
+        startingNumberCellsEditor.disable();
+        numberCellsPoolingEditor.disable();
+
+        concentrationEditor.enable();
+      }
+
+      return singleCell;
+
   },
 
   editRecord: function (editor, context) {
@@ -459,9 +550,23 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       }
     }
 
-    // Reset Library Type if Library Protocol is empty
-    if (record.get('library_protocol') === null && record.get('library_type') !== null) {
-      record.set('library_type', null);
+    // Reset Library Protocol if Library Type is empty
+    if (record.get('library_type') === null && record.get('library_protocol') !== null) {
+      record.set('library_protocol', null);
+    }
+
+    // Check if single cell, then set relevant fields to null accordingly
+    var nucleicAcidTypesStore = Ext.getStore('nucleicAcidTypesStore');
+    var singleCell = record.get('nucleic_acid_type') ?
+                     nucleicAcidTypesStore.findRecord('id', record.get('nucleic_acid_type')).get('single_cell') :
+                     null;
+    if (singleCell) {
+      record.set('concentration', null)
+    } else {
+      record.set('cell_density', null)
+      record.set('cell_viability', null)
+      record.set('starting_number_cells', null)
+      record.set('number_targeted_cells', null)
     }
 
     // Reset Index I7 and Index I5 if # Index reads is 1 or 0
@@ -490,11 +595,14 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     grid.getView().refresh();
   },
 
-  selectLibraryProtocol: function (fld, record) {
-    var libraryTypeEditor = Ext.getCmp('libraryTypeEditor');
-    libraryTypeEditor.setValue(null);
-    libraryTypeEditor.enable();
-    this.filterLibraryTypes(record.get('id'));
+  selectLibraryType: function (fld, record) {
+    var libraryProtocolEditor = Ext.getCmp('libraryProtocolEditor');
+    var nucleicAcidTypeEditor = Ext.getCmp('nucleicAcidTypeEditor');
+    libraryProtocolEditor.setValue(null);
+    libraryProtocolEditor.enable();
+    var libraryTypeId = record.get('id');
+    var nucleicAcidTypeId = nucleicAcidTypeEditor ? nucleicAcidTypeEditor.getValue() : null;
+    this.filterLibraryProtocols(libraryTypeId, nucleicAcidTypeId);
   },
 
   selectIndexType: function (fld, record) {
@@ -559,17 +667,21 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
   selectNucleicAcidType: function (fld, record) {
     var libraryProtocolEditor = Ext.getCmp('libraryProtocolEditor');
-    var libraryProtocolsStore = Ext.getStore('libraryProtocolsStore');
     var libraryTypeEditor = Ext.getCmp('libraryTypeEditor');
     var rnaQualityEditor = Ext.getCmp('rnaQualityEditor');
 
+    var nucleicAcidTypeId = record.get('id');
+    this.filterLibraryTypes(nucleicAcidTypeId);
     libraryTypeEditor.setValue(null);
-    libraryTypeEditor.disable();
+    libraryTypeEditor.enable();
 
-    this.filterLibraryProtocols(libraryProtocolsStore, record.get('type'));
-    libraryProtocolEditor.enable();
+    libraryProtocolEditor.setValue(null);
 
-    if (record.get('type') === 'RNA') {
+    // Toggle Single Cell fields
+    var singleCell = this.toggleSingleCellFields(record.get('id'))
+
+    // Toggle RQN
+    if (!singleCell && record.get('type') === 'RNA') {
       rnaQualityEditor.enable();
     } else {
       rnaQualityEditor.setValue(null);
@@ -577,19 +689,32 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     }
   },
 
-  filterLibraryProtocols: function (store, value) {
+  filterLibraryProtocols: function (libraryTypeId, nucleicAcidTypeId) {
+    var store = Ext.getStore('libraryProtocolsStore');
     store.clearFilter();
+
+    // Filter by library type
     store.filterBy(function (item) {
-      return item.get('type') === value;
+      return item.get('library_type').indexOf(libraryTypeId) !== -1;
     });
+
+    // Filter by nucleic acid type
+    if (nucleicAcidTypeId){
+      store.filterBy(function (item) {
+        return item.get('nucleic_acid_type') === nucleicAcidTypeId;
+      });
+    }
   },
 
-  filterLibraryTypes: function (libraryProtocolId) {
+  filterLibraryTypes: function (nucleicAcidTypeId) {
     var store = Ext.getStore('libraryTypesStore');
     store.clearFilter();
+
+    // Filter by nucleic acid
+    if (nucleicAcidTypeId){
     store.filterBy(function (item) {
-      return item.get('library_protocol').indexOf(libraryProtocolId) !== -1;
-    });
+      return item.get('nucleic_acid_type').indexOf(nucleicAcidTypeId) !== -1;
+    });}
   },
 
   getLibraryGridConfiguration: function (mode) {
@@ -726,7 +851,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'library_protocol', 'library_type',
+      'numberer', 'name', 'barcode', 'library_type', 'library_protocol',
       'concentration', 'mean_fragment_size', 'index_type', 'index_reads',
       'index_i7', 'index_i5', 'read_length', 'sequencing_depth',
       'amplification_cycles', 'equal_representation_nucleotides',
@@ -750,20 +875,45 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: 'Nuc. Type',
+        text: 'Submitted material',
         dataIndex: 'nucleic_acid_type',
-        tooltip: 'Nucleic Acid Type',
+        tooltip: 'Submitted sample material<br><br>Type <i>DNA</i>, <i>RNA</i> ' +
+                 'or <i>Sin[gle cell]</i>, and select from choices.',
         width: 200,
         editor: {
           xtype: 'combobox',
           id: 'nucleicAcidTypeEditor',
           itemId: 'nucleicAcidTypeEditor',
+          emptyText: 'DNA / RNA / Single Cell',
           queryMode: 'local',
-          displayField: 'name',
+          displayField: 'type',
           valueField: 'id',
           store: 'nucleicAcidTypesStore',
           matchFieldWidth: false,
-          forceSelection: true
+          forceSelection: true,
+          minChars: 3,
+          hideTrigger: true,
+          displayTpl: Ext.create('Ext.XTemplate', '<tpl for=".">{name}</tpl>'),
+          listConfig: {
+            getInnerTpl: function () {
+              return '{name}';
+            }
+          },
+          listeners: {
+            beforequery: function (queryEvent) {
+              // Set query text on the Editor object, so that it's accessible
+              // to the expand listener
+              this.searchQuery = queryEvent.query;
+              return true;
+            },
+            expand: function (combo) {
+              // Hide choice dropdown if search query is shorter than 3 chars
+              if (!this.searchQuery || this.searchQuery.length < 3) {
+                var element = combo.getPicker().el;
+                combo.mouseLeaveMonitor = element.monitorMouseLeave(0, combo.collapse(), combo);
+              }
+            },
+          }
         },
         renderer: this.comboboxErrorRenderer
       },
@@ -794,14 +944,72 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           xtype: 'numberfield',
           minValue: 0
         },
-      renderer: this.errorRenderer
-    },
+        renderer: this.errorRenderer
+      },
+      {
+        text: 'Cells/µl',
+        dataIndex: 'cell_density',
+        tooltip: 'Cell density',
+        width: 70,
+        editor: {
+          xtype: 'numberfield',
+          id: 'cellDensityEditor',
+          minValue: 0,
+          regex: new RegExp('^[0-9]+$'),
+          regexText: 'Only integers are allowed.',
+        },
+        renderer: this.errorRenderer
+      },
+      {
+        text: '% Viability',
+        dataIndex: 'cell_viability',
+        tooltip: '% cell viability',
+        width: 90,
+        editor: {
+          xtype: 'numberfield',
+          id: 'cellViabilityEditor',
+          minValue: 0,
+          maxValue: 100,
+          regex: new RegExp('^[0-9]+$'),
+          regexText: 'Only integers are allowed.',
+        },
+        renderer: this.errorRenderer
+      },
+      {
+        text: 'Starting # Cells',
+        dataIndex: 'starting_number_cells',
+        width: 115,
+        editor: {
+          xtype: 'numberfield',
+          id: 'startingNumberCellsEditor',
+          minValue: 0,
+          regex: new RegExp('^[0-9]+$'),
+          regexText: 'Only integers are allowed.',
+        },
+        renderer: this.errorRenderer
+      },
+      {
+        text: '# Targeted Cells',
+        dataIndex: 'number_targeted_cells',
+        tooltip: 'Number of targeted cells',
+        regexText: 'Only integers are allowed.',
+        width: 125,
+        editor: {
+          xtype: 'numberfield',
+          id: 'numberCellsPoolingEditor',
+          minValue: 0,
+          regex: new RegExp('^[0-9]*$'),
+          regexText: 'Only integers are allowed.',
+        },
+        renderer: this.errorRenderer
+      },
     ]);
 
     // Sort columns
     var order = [
-      'numberer', 'name', 'barcode', 'nucleic_acid_type', 'library_protocol',
-      'library_type', 'sample_volume_user', 'concentration', 'rna_quality',
+      'numberer', 'name', 'barcode', 'nucleic_acid_type', 'library_type', 
+      'library_protocol', 'sample_volume_user', 'concentration', 'rna_quality',
+      'cell_density', 'cell_viability', 'starting_number_cells', 'number_targeted_cells',
       'read_length', 'sequencing_depth', 'amplification_cycles',
       'equal_representation_nucleotides', 'sample_volume',
       'concentration_method', 'organism', 'source', 'comments'
@@ -897,15 +1105,16 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         width: 90,
         editor: {
           xtype: 'numberfield',
+          id: 'concentrationEditor',
           minValue: 0
         },
         renderer: this.errorRenderer
       },
       {
-        text: 'Length',
+        text: 'Read Length',
         dataIndex: 'read_length',
         tooltip: 'Read Length',
-        width: 70,
+        width: 100,
         editor: {
           xtype: 'combobox',
           queryMode: 'local',
@@ -1285,7 +1494,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           // Set a base name for a library/sample based on the request name
           name: Ext.String.format('{0}_{1}',
           requestName,
-            lpad(i + 1, '0', numRecordsLen))
+            lpad(i + 1, '0', numRecordsLen)),
+          concentration: 0
         });
       }
       store.add(data);

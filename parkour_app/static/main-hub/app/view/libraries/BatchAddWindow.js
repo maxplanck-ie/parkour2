@@ -59,7 +59,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindow', {
         {
           html: '<p style="text-align:center">' +
                   'Choose <strong>Library</strong> if libraries have been prepared by the user and are ready for sequencing.<br><br>' +
-                  'Choose <strong>Sample</strong> if libraries are to be prepared by the facility.' +
+                  'Choose <strong>Sample</strong> if libraries are to be prepared by the facility. Also for <i>single cell</i> projects.' +
                 '</p>',
           width: 350
         }
