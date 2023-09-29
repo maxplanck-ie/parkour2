@@ -995,7 +995,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       {
         text: '# Targeted Cells',
         dataIndex: 'number_targeted_cells',
-        tooltip: 'Number of targeted cells',
+        tooltip: 'Target number of cells per sample',
         regexText: 'Only integers are allowed.',
         width: 125,
         editor: {

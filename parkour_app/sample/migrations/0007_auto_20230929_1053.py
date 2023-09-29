@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='sample',
             name='number_targeted_cells',
-            field=models.PositiveIntegerField(blank=True, default=None, help_text='For single cell projects', null=True, verbose_name='number of cells for pooling'),
+            field=models.PositiveIntegerField(blank=True, default=None, help_text='For single cell projects', null=True, verbose_name='number of targeted cells'),
         ),
         migrations.AddField(
             model_name='sample',

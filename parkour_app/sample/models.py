@@ -67,7 +67,7 @@ class Sample(GenericLibrarySample):
                                                         default=None,
                                                         null=True,
                                                         blank=True,)
-    number_targeted_cells = models.PositiveIntegerField("number of cells for pooling",
+    number_targeted_cells = models.PositiveIntegerField("number of targeted cells",
                                                        help_text='For single cell projects',
                                                        default=None,
                                                        null=True,
