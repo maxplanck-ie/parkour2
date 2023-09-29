@@ -1212,11 +1212,13 @@ class RequestViewSet(viewsets.ModelViewSet):
         if samples.exists():
             
             ws.title = 'Samples'
-            sample_columns = ['barcode', 'name', 'nucleic_acid_type__name', 'library_protocol__name',
-                              'library_type__name', 'sample_volume_user', 'concentration', 'rna_quality',
-                              'read_length__name', 'sequencing_depth', 'amplification_cycles',
-                              'equal_representation_nucleotides','concentration_method__name',
-                              'organism__name', 'source', 'comments']
+            sample_columns = ['barcode', 'name', 'organism__name', 'source', 'nucleic_acid_type__name', 
+                              'library_type__name', 'library_protocol__name', 'sample_volume_user', 
+                              'concentration', 'rna_quality', 'cell_density', 'cell_viability', 
+                              'starting_number_cells', 'number_targeted_cells', 'read_length__name', 
+                              'sequencing_depth', 'amplification_cycles', 'concentration_method__name',
+                              'comments']
+            
             # Write header
             model = samples.model
             sample_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in sample_columns]
@@ -1233,12 +1235,11 @@ class RequestViewSet(viewsets.ModelViewSet):
             if ws.title == 'Samples':
                 ws = wb.create_sheet()
             ws.title = 'Libraries'
-            library_columns = ['barcode', 'name', 'library_protocol__name', 'library_type__name',
-                               'concentration', 'mean_fragment_size', 'index_type',
-                               'index_i7', 'index_i5', 'read_length__name', 'sequencing_depth',
-                               'amplification_cycles', 'equal_representation_nucleotides',
-                               'qpcr_result', 'sample_volume_user', 'concentration_method__name',
-                               'organism__name', 'source', 'comments']
+            library_columns = ['barcode', 'name', 'organism__name', 'source', 'library_type__name',
+                               'library_protocol__name', 'sample_volume_user', 'concentration', 
+                               'mean_fragment_size', 'index_type', 'index_i7', 'index_i5', 
+                               'read_length__name', 'sequencing_depth', 'amplification_cycles',
+                               'qpcr_result', 'concentration_method__name', 'comments']
             # Write header
             model = libraries.model
             library_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in library_columns]
