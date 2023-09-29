@@ -840,17 +840,17 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         },
         renderer: this.errorRenderer
       },
-      // {
-      //   text: 'qPCR (nM)',
-      //   dataIndex: 'qpcr_result',
-      //   tooltip: 'qPCR Result (nM)',
-      //   width: 85,
-      //   editor: {
-      //     xtype: 'numberfield',
-      //     allowBlank: true,
-      //     minValue: 0
-      //   }
-      // }
+      {
+        text: 'qPCR (nM)',
+        dataIndex: 'qpcr_result',
+        tooltip: 'Concentration determined by qPCR (nM)',
+        width: 85,
+        editor: {
+          xtype: 'numberfield',
+          allowBlank: true,
+          minValue: 0
+        }
+      }
     ]);
 
     // Sort columns
@@ -1141,19 +1141,19 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         },
         renderer: this.errorRenderer
       },
-      // {
-      //   text: 'Amplification',
-      //   tooltip: 'Amplification cycles',
-      //   dataIndex: 'amplification_cycles',
-      //   width: 105,
-      //   editor: {
-      //     xtype: 'numberfield',
-      //     minValue: 0,
-      //     allowDecimals: false,
-      //     allowBlank: true
-      //   },
-      //   renderer: this.errorRenderer
-      // },
+      {
+        text: 'Amplification',
+        tooltip: 'Amplification cycles',
+        dataIndex: 'amplification_cycles',
+        width: 105,
+        editor: {
+          xtype: 'numberfield',
+          minValue: 0,
+          allowDecimals: false,
+          allowBlank: true
+        },
+        renderer: this.errorRenderer
+      },
       // {
       //   xtype: 'checkcolumn',
       //   text: 'Equal nucl.',
@@ -1165,22 +1165,22 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       //     cls: 'x-grid-checkheader-editor'
       //   }
       // },
-      // {
-      //   text: 'F/S',
-      //   dataIndex: 'concentration_method',
-      //   tooltip: 'Concentration Determined by',
-      //   width: 80,
-      //   editor: {
-      //     xtype: 'combobox',
-      //     queryMode: 'local',
-      //     valueField: 'id',
-      //     displayField: 'name',
-      //     store: 'concentrationMethodsStore',
-      //     matchFieldWidth: false,
-      //     forceSelection: true
-      //   },
-      //   renderer: this.comboboxErrorRenderer
-      // },
+      {
+        text: 'F/S',
+        dataIndex: 'concentration_method',
+        tooltip: 'Concentration Determined by',
+        width: 80,
+        editor: {
+          xtype: 'combobox',
+          queryMode: 'local',
+          valueField: 'id',
+          displayField: 'name',
+          store: 'concentrationMethodsStore',
+          matchFieldWidth: false,
+          forceSelection: true
+        },
+        renderer: this.comboboxErrorRenderer
+      },
       {
         text: 'Organism',
         dataIndex: 'organism',
@@ -1403,11 +1403,11 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var store = grid.getStore();
     
     // Passing default values to the API for the removed variables which are still required in the request object
-    record.data.amplification_cycles = 0;
-    record.data.concentration_method = 4;
+    // record.data.amplification_cycles = 0;
+    // record.data.concentration_method = 4;
     record.data.equal_representation_nucleotides = false;
-    if(url == 'api/libraries/')
-      record.data.qpcr_result = 0;
+    // if(url == 'api/libraries/')
+    //   record.data.qpcr_result = 0;
 
     var validation = record.getValidation(true).data;
     var invalid = false;
