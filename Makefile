@@ -345,7 +345,7 @@ restore-prep4json:
 # 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
 
 rm-migras:
-	@rm -f parkour_app/**/migrations/*
+	@rm -rf parkour_app/**/migrations/*
 
 tar-old-migras:
 	@find ./parkour_app/*/ -path '**/migrations' \
