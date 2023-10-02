@@ -273,11 +273,14 @@ show_urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:
-	@test -d ./env || \
-		{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
-	@source ./env/bin/activate && \
-		pip-compile-multi -d parkour_app/requirements/ && \
-		deactivate
+	# @test -d ./env_dev || \
+	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
+	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
+	# 	source ./env_dev/bin/activate && echo "venv activated!"
+	# else
+	# 	exit 1
+	# fi
+	@pip-compile-multi -d parkour_app/requirements/
 
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
