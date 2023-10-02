@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0006_duty_comment'),
+        ("common", "0006_duty_comment"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='costunit',
-            name='archived',
-            field=models.BooleanField(default=False, verbose_name='Archived'),
+            model_name="costunit",
+            name="archived",
+            field=models.BooleanField(default=False, verbose_name="Archived"),
         ),
     ]
