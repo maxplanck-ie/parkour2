@@ -283,6 +283,7 @@ OIDC_RENEW_ID_TOKEN_EXPIRY_SECONDS = 86400 # 24 h
 OIDC_ALLOWED_GROUPS = os.environ.get("OIDC_ALLOWED_GROUPS", '')
 OIDC_GENOMICSCF_GROUPS = os.environ.get("OIDC_GENOMICSCF_GROUPS", '')
 OIDC_BIOINFOCF_GROUPS = os.environ.get("OIDC_BIOINFOCF_GROUPS", '')
+OIDC_ALLOWED_USER_EMAILS = os.environ.get("OIDC_ALLOWED_USER_EMAILS", '')
 
 # Costance
 STAFF_EMAIL_ADDRESS = os.environ.get("STAFF_EMAIL_ADDRESS", '')
@@ -295,6 +296,10 @@ CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
                                             str),
                     'OIDC_ALLOWED_GROUPS': (OIDC_ALLOWED_GROUPS,
                                             'Comma-separated list of LDAP group(s) that are allowed to log in Parkour. '
+                                            'Lower case, no spaces',
+                                            str),
+                    'OIDC_ALLOWED_USER_EMAILS': (OIDC_ALLOWED_USER_EMAILS,
+                                            'Comma-separated list of email addresses that are allowed to log in Parkour. '
                                             'Lower case, no spaces',
                                             str),
                     'OIDC_GENOMICSCF_GROUPS': (OIDC_GENOMICSCF_GROUPS,

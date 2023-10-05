@@ -9,6 +9,7 @@ from common.models import Organization
 from django.contrib.sites.shortcuts import get_current_site
 from constance import config
 from request.views import get_staff_emails
+from django.contrib import messages
 
 
 class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
@@ -27,10 +28,11 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         """
 
         # Check that the user is part of one of the allowed OIDC groups
-        if config.OIDC_ALLOWED_GROUPS:
-            user_groups = claims.get('role', [])
-            if not self.user_belongs_to_groups(user_groups, config.OIDC_ALLOWED_GROUPS):
-                return False
+        user_email = claims.get('email', '').lower()
+        user_groups = claims.get('role', [])
+        if not (self.user_belongs_to_groups(user_groups, config.OIDC_ALLOWED_GROUPS) or user_email in config.OIDC_ALLOWED_USER_EMAILS):
+            messages.error(self.request, "Your user is not allowed to access Parkour.")
+            return False
 
         # Otherwise carry out the default checks
         return super(ParkourOIDCAuthenticationBackend, self).verify_claims(claims)
