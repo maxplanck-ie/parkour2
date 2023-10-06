@@ -308,7 +308,7 @@ class DutyAdmin(admin.ModelAdmin):
         "facility",
         "platform",
         "comment",
-        "archived"
+        "archived",
     )
     search_fields = ("main_name", "backup_name", "facility", "comment")
     list_filter = ("facility", ArchivedFilter)
