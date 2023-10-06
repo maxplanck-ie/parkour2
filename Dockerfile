@@ -14,9 +14,9 @@ RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
     && apt-get install -y software-properties-common \
     && apt-get install -y --no-install-recommends \
-       jq \
-       less \
-       locales \
+    jq \
+    less \
+    locales \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -36,7 +36,7 @@ RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
 # ----------------------
 FROM pk2_base AS pk2_dev
 RUN echo "from functools import partial\nimport rich\nhelp = partial(rich.inspect, help=True, methods=True)" \
-      > /root/.pythonrc
+    > /root/.pythonrc
 ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONSTARTUP=/root/.pythonrc \
     PYTHONDEVMODE=0 \
@@ -54,4 +54,3 @@ RUN --mount=type=cache,target=/root/.cache pip install -r requirements/testing.t
 # ----------------------
 FROM pk2_testing AS pk2_playwright
 RUN playwright install --with-deps firefox
-
