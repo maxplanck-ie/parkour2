@@ -308,9 +308,22 @@ class DutyAdmin(admin.ModelAdmin):
         "facility",
         "platform",
         "comment",
+        "archived"
     )
     search_fields = ("main_name", "backup_name", "facility", "comment")
-    list_filter = ("facility",)
+    list_filter = ("facility", ArchivedFilter)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 # admin.site.unregister(User)
