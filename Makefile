@@ -217,6 +217,8 @@ set-playwright:
 
 playwright: down set-playwright deploy-django deploy-caddy collect-static load-fixtures e2e  ## Re-deploy and run Frontend tests
 
+playwright-migras: down set-playwright deploy-django deploy-caddy collect-static load-fixtures-migras e2e
+
 e2e:
 	@docker compose exec parkour2-django pytest -n $(NcpuThird) -c playwright.ini
 
@@ -363,5 +365,9 @@ db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag>
 put-new-migras:
 	@git restore -W parkour_app/**/migrations/
 	@$(MAKE) migrate
+
+load-fixtures-migras: put-old-migras apply-migrations
+	@docker compose exec parkour2-django python manage.py load_initial_data
+	@$(MAKE) put-new-migras
 
 # Remember: (docker compose run == docker exec) != docker run
