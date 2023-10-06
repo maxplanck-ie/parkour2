@@ -23,17 +23,17 @@ class Command(BaseCommand):
             self.loaddata_wrapper(model=m, app_label="library_sample_shared")
         for m in ("nucleicacidtype", "sample"):
             self.loaddata_wrapper(model=m, app_label="sample")
-        for m in ("poolsize", "pool"):
-            self.loaddata_wrapper(model=m, app_label="index_generator")
-        for m in ("sequencer", "lane", "flowcell"):
-            self.loaddata_wrapper(model=m, app_label="flowcell")
         self.loaddata_wrapper(model="library", app_label="library")
         # self.loaddata_wrapper(
         #     model="librarypreparation", app_label="library_preparation"
         # )
         self.loaddata_wrapper(model="pooling", app_label="pooling")
+        for m in ("poolsize", "pool"):
+            self.loaddata_wrapper(model=m, app_label="index_generator")
         for m in ("filerequest", "request"):
             self.loaddata_wrapper(model=m, app_label="request")
+        for m in ("sequencer", "lane", "flowcell"):
+            self.loaddata_wrapper(model=m, app_label="flowcell")
         for m in ("fixedcosts", "librarypreparationcosts", "sequencingcosts"):
             self.loaddata_wrapper(model=m, app_label="invoicing")
         self.stdout.write(self.style.SUCCESS("Successfully loaded initial data."))
