@@ -4,6 +4,7 @@ DEBUG = True
 
 INSTALLED_APPS += [
     "debug_toolbar",
+    "schema_viewer",
     "django_migration_linter",
 ]
 
