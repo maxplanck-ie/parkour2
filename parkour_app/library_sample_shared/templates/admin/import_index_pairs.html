@@ -1,0 +1,55 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script type="text/javascript" src="{% url 'admin:jsi18n' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/vendor/jqueryui/jquery-ui.js' %}"></script>
+<script type="text/javascript" src="{% static 'admin/js/admin/ShowLoading.js' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/forms.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/spinner_loader.css" %}">
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url "admin:index" %}">{% trans "Home" %}</a> &rsaquo;
+  <a href="{% url "admin:app_list" app_label %}">{{opts.app_config.verbose_name}}</a> &rsaquo;
+  <a href="{% url "admin:app_list" app_label %}{{ opts.model_name }}">{{opts.verbose_name_plural|capfirst}}</a> &rsaquo;
+  Import {{opts.verbose_name_plural|capfirst}}
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div>Use the form below to import new <b>Indices</b> AND <b>{{opts.verbose_name_plural|capfirst}}</b> in the database using a properly formatted 
+  Excel file. An example of such file can be downloaded from
+  <a download href="{% static "docs/example_import_index_pairs.xlsx" %}">here</a>.
+ <h2>Conditions</h2>
+  <ul>
+    <li>The file must contain only one sheet</li>
+    <li>The first row in the sheet must contain the following column headers: index1_prefix, index1_name, index1_sequence, 
+        index2_prefix, index2_name, index2_sequence, coordinate, index_type</li>
+    <li>Matching Index type(s), by name, must be already present in the database</li>
+    <li>Index sequences can only contain [ATCG]</li>
+    <li>Coordinates must conform to the schema [A-H][1-12], <i>e.g.</i> A1, B8, F11, <i>etc</i>.</li>
+    <li>All fields must be filled for a record</li>
+  </ul>
+  <br>
+  <div style="font-weight: bold;">N.B.: After hitting the "Import" button below, it may take a few seconds to import all records, please be patient!
+</div><br>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="file" name="file">
+  <br><br>
+  <input id="submit" type="submit" value="Import">
+</form>
+
+{% endblock %}

@@ -5,6 +5,14 @@ from django.urls import resolve
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
+from openpyxl import load_workbook
+from zipfile import BadZipFile 
+from dataclasses import dataclass
+import re
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import path
+from django.shortcuts import render
 
 from .forms import IndexTypeForm
 from .models import (
@@ -175,6 +183,141 @@ class IndexPairAdmin(ImportExportModelAdmin):
             "index_type"
         ].queryset = IndexType.objects.filter(archived=False, format="plate")
         return super().render_change_form(request, context, args, kwargs)
+
+    def get_urls(self):
+        return [
+            path("import_index_pairs/",
+                self.admin_site.admin_view(self.import_index_pairs)),
+            *super().get_urls(),
+        ]
+
+    def import_index_pairs(self, request):
+
+        error = ''
+        
+        # Import Index Pairs from an Excel spreadsheet
+
+        # If the form has been posted
+        if request.method == 'POST':
+
+            try:
+
+                if not "file" in request.FILES:
+                    raise Exception("You did not select any file to import.")
+
+                @dataclass
+                class IndexPairForImport:
+                    index1_prefix: str
+                    index1_name: str
+                    index1_sequence: str
+                    index2_prefix: str
+                    index2_name: str
+                    index2_sequence: str
+                    coordinate: str
+                    index_type: str
+
+                # Load workbook
+                wb = load_workbook(filename=request.FILES['file'].file)
+
+                # Check that file contains only one worksheet
+                if len(wb.worksheets) > 1:
+                    raise Exception("The file could not be imported because it contains more than one sheet.")
+
+                # Load firt sheet
+                sheet = wb.worksheets[0]
+
+                # Get rows
+                rows = iter(sheet)
+
+                # Get table header
+                header = next(rows)
+                header_values = [str(cell.value).strip().lower() for cell in header if cell.value]
+
+                # Check that column headers are named and ordered as expected
+                expected_header_values = ["index1_prefix", "index1_name", "index1_sequence", "index2_prefix",
+                                        "index2_name", "index2_sequence", "coordinate", "index_type"]
+                if header_values != expected_header_values:
+                    raise Exception("The file could not be imported because the column titles do not "
+                                    "match the expected values: index1_prefix, index1_name, index1_sequence, "
+                                    "index2_prefix, index2_name, index2_sequence, coordinate, index_type.")
+
+                # Extract information
+                index_pairs = [IndexPairForImport(
+                                    index1_prefix = str(r[0].value).strip(),
+                                    index1_name = str(r[1].value).strip(),
+                                    index1_sequence = str(r[2].value).strip().upper(),
+                                    index2_prefix = str(r[3].value).strip(),
+                                    index2_name = str(r[4].value).strip(),
+                                    index2_sequence = str(r[5].value).strip().upper(),
+                                    coordinate = str(r[6].value).strip().upper(),
+                                    index_type = str(r[7].value).strip())
+                                for r in rows]
+
+                # Check that the index types being imported exist in the DB
+                index_type_names = set(ip.index_type for ip in index_pairs)
+                if IndexType.objects.filter(name__in=index_type_names).count() != len(index_type_names):
+                    raise Exception('The file could not be imported because there is at least '
+                                    'one invalid value in the "index_type" column')
+
+                # Check that the index sequences being imported contain only relevant characters
+                if not re.match(r"^[ATCG]+$", ''.join([(ip.index1_sequence + ip.index2_sequence) for ip in index_pairs])):
+                    raise Exception('The file could not be imported because there is at least '
+                                    'one invalid value in one of the index sequence column(s)')
+
+                # Check that the coordinates being imported match X00
+                if not all(re.match(r"^[A-H]([2-9]|1[0-2]?)$", ip.coordinate) for ip in index_pairs):
+                    raise Exception('The file could not be imported because there is at least '
+                                    'one invalid value in the "coordinate" column')
+
+                # Import index pairs
+                for index_pair in index_pairs:
+                    index_type = IndexType.objects.get(name=index_pair.index_type)
+                    index1 = IndexI7.objects.create(prefix=index_pair.index1_prefix,
+                                    number=index_pair.index1_name,
+                                    index=index_pair.index1_sequence)
+                    index2 = IndexI5.objects.create(prefix=index_pair.index2_prefix,
+                                    number=index_pair.index2_name,
+                                    index=index_pair.index2_sequence)
+                    IndexPair.objects.create(
+                        index_type=index_type,
+                        index1=index1,
+                        index2=index2,
+                        char_coord=index_pair.coordinate[:1],
+                        num_coord=index_pair.coordinate[1:]
+                    )
+                    
+                    # Assign indices to index_type
+                    index_type.indices_i7.add(index1)
+                    index_type.indices_i5.add(index2)
+
+            except (KeyError, BadZipFile):
+                error = "The file could not be imported because it is not in XLSX format."
+
+            except Exception as e:
+                error = str(e)
+
+            if error:
+                messages.error(request, error)
+            else:
+                messages.success(request, "The import has been succesful.")
+
+            return HttpResponseRedirect(".")
+
+        model = self.model
+        opts = model._meta
+        verbose_model_name_plural = opts.verbose_name_plural
+
+        context = {
+                'title': verbose_model_name_plural,
+                'module_name': 'Index Pairs',
+                'site_header': self.admin_site.site_header,
+                'has_permission': True,
+                'app_label': 'library_sample_shared',
+                'opts': opts,
+                'site_url': self.admin_site.site_url,
+                }
+
+        return render(request, 'admin/import_index_pairs.html', context)
 
 
 class IndexI5Resource(resources.ModelResource):
