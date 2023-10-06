@@ -150,6 +150,7 @@ class Duty(models.Model):
         null=True,
         blank=True,
     )
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         db_table = "duty"
