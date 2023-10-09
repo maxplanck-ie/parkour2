@@ -3,8 +3,8 @@ from .base import *
 DEBUG = True
 
 INSTALLED_APPS += [
-    "debug_toolbar",
     "schema_viewer",
+    "debug_toolbar",
     "django_migration_linter",
 ]
 
