@@ -33,9 +33,30 @@ import { RouterLink, RouterView } from "vue-router";
       >
         Filter
       </div>
-      <div style="padding-left: 8px">Filter 1</div>
-      <div style="padding-left: 8px">Filter 2</div>
-      <div style="padding-left: 8px">Filter 3</div>
+      <div style="padding-top: 4px">
+        <div style="padding-left: 8px; font-weight: bold">
+          Responsible Person
+        </div>
+        <div style="padding-left: 30px">Rs</div>
+      </div>
+      <div style="padding-top: 4px">
+        <div style="padding-left: 8px; font-weight: bold">Backup Person</div>
+        <div style="padding-left: 30px">Rs</div>
+      </div>
+      <div style="padding-top: 4px">
+        <div style="padding-left: 8px; font-weight: bold">Facility</div>
+        <div style="padding-left: 30px">Rs</div>
+      </div>
+      <div style="padding-top: 4px">
+        <div style="padding-left: 8px; font-weight: bold">Platform</div>
+        <div style="padding-left: 30px">Rs</div>
+      </div>
+      <div style="padding-top: 4px">
+        <div style="padding-left: 8px; font-weight: bold">Archived</div>
+        <div style="padding-left: 30px">No</div>
+        <div style="padding-left: 30px">Yes</div>
+        <div style="padding-left: 30px">All</div>
+      </div>
     </div>
   </div>
 </template>

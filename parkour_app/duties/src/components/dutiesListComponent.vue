@@ -54,6 +54,7 @@ export default {
           facility: "DeepInfo",
           platform: "Parkour",
           comments: "This is a comment.",
+          archived: "No",
         },
 
         {
@@ -65,6 +66,7 @@ export default {
           facility: "DeepInfo",
           platform: "Parkour",
           comments: "This is a comment.",
+          archived: "No",
         },
 
         {
@@ -76,6 +78,7 @@ export default {
           facility: "DeepInfo",
           platform: "Parkour",
           comments: "This is a comment.",
+          archived: "No",
         },
       ],
     };
@@ -129,13 +132,13 @@ export default {
           cellTemplate,
           prop: "resp_person",
           size: 200,
-          editor: 'select',
+          editor: "select",
         },
         {
           name: "Backup Person",
           prop: "back_person",
           size: 150,
-          editor: 'select',
+          editor: "select",
         },
         {
           name: "Start Date",
