@@ -237,7 +237,7 @@ coverage-html: down set-testing deploy-django
 test: playwright lint-migras check-migras check-templates coverage-html  ## Run all tests, on every level
 
 shell:
-	@docker exec -it parkour2-django python manage.py shell_plus --bpython
+	@docker exec -it parkour2-django python manage.py shell_plus --ipython
 
 # list-sessions:
 # 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; print([ User.objects.get(id=s.get_decoded().get('_auth_user_id')) for s in Session.objects.iterator() ])"
