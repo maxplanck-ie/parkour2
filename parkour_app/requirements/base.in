@@ -1,6 +1,7 @@
 Django~=4.2
 django-authtools @ git+https://github.com/adRn-s/django-authtools@dev_adRn
 djangorestframework
+neapolitan
 django-admin-list-filter-dropdown
 django-monthfield
 django-extensions

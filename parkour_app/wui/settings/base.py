@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     "django_extensions",
     "import_export",
     "django_linear_migrations",
+    "neapolitan",
     "common",
     "library_sample_shared",
     "library",
