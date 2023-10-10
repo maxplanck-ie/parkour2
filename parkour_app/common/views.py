@@ -185,7 +185,7 @@ def protected_media(request, *args, **kwargs):
         if encoding: response["Content-Encoding"] = encoding
         
         # Set internal redirect to protected media
-        response['X-Accel-Redirect'] = f"/protected_media/{url_path}"
+        response['X-Accel-Redirect'] = url_path
         
         # Set file name
         file_name = basename(url_path)
