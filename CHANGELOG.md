@@ -1,6 +1,11 @@
 ??.??.??
 ========
 
+- Added a new Django management command: list_templates
+- Added Tailwind CSS to beautify our base HTMLs when possible (raw)
+- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependecy would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
+- Added CRUDView (neapolitan) for the Duty model
+- Removed the \[broken\] import and export functionality at IndexPairs. Instead, we have a custom bulk import button now that works exclusively with plate coordinates.
 - **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after. **(**For The Record: At the time of writing, this upgrade required us to manually remove a missing package, `backports-zoneinfo`, from the _compiled_ `base.txt`...**)**
 - New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
 - Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages.
@@ -10,7 +15,7 @@
 - Added 'archival' feature to CostUnit(s).
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
-- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions). We might start using filesystem directly soon, so that such path is available to the sequencing facility directly.
+- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
 
 23.09.20
 ========
