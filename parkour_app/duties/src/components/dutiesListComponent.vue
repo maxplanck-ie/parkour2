@@ -35,6 +35,8 @@
 
 <script>
 import VGrid from "@revolist/vue3-datagrid";
+import axios from 'axios';
+
 export default {
   name: "App",
   components: {
@@ -82,6 +84,15 @@ export default {
         },
       ],
     };
+  },
+  created() {
+    try {
+      axios.get("http://localhost:9980/duty")
+      .then(response => 
+        console.log(response.data))
+      } catch (error) {
+        console.log(error);
+      }
   },
   watch: {
     isAllSelected(newV, oldV) {
@@ -197,7 +208,7 @@ export default {
       if (vNode) {
         vNode.$attrs$.checked = isChecked;
       }
-    },
+    }
   },
 };
 </script>

@@ -3,12 +3,13 @@ import "./assets/main.css";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 
-import dutiesApp from "./dutiesApp.vue";
-import dutiesRouter from "./router/dutiesRouter.js";
+import vueApp from "./vueApp.vue";
+import router from "./router/router.js";
+ 
+const app = createApp(vueApp);
+const store = createPinia();
 
-const app = createApp(dutiesApp);
-
-app.use(createPinia());
-app.use(dutiesRouter);
+app.use(store);
+app.use(router);
 
 app.mount("#app");

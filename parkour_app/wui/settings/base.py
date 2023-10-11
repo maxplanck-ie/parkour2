@@ -40,9 +40,12 @@ CSRF_TRUSTED_ORIGINS = (
     CSRF_TRUSTED_ORIGINS.split(",") if CSRF_TRUSTED_ORIGINS is not None else []
 )
 
+#CORS Configuration
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -72,6 +75,7 @@ INSTALLED_APPS = [
     "stats",
     "metadata_exporter",
     "drf_spectacular",
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +87,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "extra.middleware.ErrorMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = "wui.urls"
