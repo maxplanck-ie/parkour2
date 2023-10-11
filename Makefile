@@ -258,7 +258,7 @@ dbshell:  ## Open PostgreSQL shell
 reload-nginx:
 	@docker exec parkour2-nginx nginx -s reload
 
-models:  ## Printable A1 PDF posters using smaller A4 or A3 sheets.
+models:  ## Printable A1 PDF posters using smaller A4 or A3 sheets. Also, check <URL>/schema-viewer
 	@docker exec parkour2-django sh -c \
 	"apt update && apt install -y pdfposter graphviz libgraphviz-dev pkg-config && pip install pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
