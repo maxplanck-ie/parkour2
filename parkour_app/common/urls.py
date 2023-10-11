@@ -2,7 +2,6 @@ from common import models, views
 from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
-from neapolitan.views import CRUDView
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -29,20 +28,3 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
 ]
-
-
-class DutyView(CRUDView):
-    model = models.Duty
-    fields = [
-        "main_name",
-        "backup_name",
-        "start_date",
-        "end_date",
-        "facility",
-        "platform",
-        "comment",
-    ]
-    filterset_fields = ["archived"]
-
-
-urlpatterns += DutyView.get_urls()
