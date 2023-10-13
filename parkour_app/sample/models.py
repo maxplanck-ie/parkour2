@@ -11,6 +11,7 @@ class NucleicAcidType(models.Model):
         max_length=3,
         choices=(("DNA", "DNA"), ("RNA", "RNA")),
         default="DNA",
+        help_text='Does not apply if single cell is selected'
     )
 
     single_cell = models.BooleanField("single cell?", default=False)
