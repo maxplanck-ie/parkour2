@@ -237,10 +237,8 @@ class LibraryProtocol(models.Model):
         default="DNA",
         blank=True
     )
-    nucleic_acid_type = models.ForeignKey("sample.NucleicAcidType",
+    nucleic_acid_types = models.ManyToManyField("sample.NucleicAcidType",
         verbose_name="nucleic acid type",
-        on_delete=models.SET_NULL,
-        null=True,
     )
     provider = models.CharField("Provider", max_length=150)
     catalog = models.CharField("Catalog", max_length=150)
@@ -265,10 +263,6 @@ class LibraryProtocol(models.Model):
 
     def save(self, *args, **kwargs):
         created = self.pk is None
-        # Automatically set nucleic_acid_type type on Protocol
-        # based on nucleic_acid_type related object
-        if self.nucleic_acid_type:
-            self.type = self.nucleic_acid_type.type
         super().save(*args, **kwargs)
 
         if created:

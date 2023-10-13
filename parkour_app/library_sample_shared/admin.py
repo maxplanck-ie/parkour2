@@ -374,7 +374,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "type",
-        "nucleic_acid_type",
+        "nucleic_acid_type_set",
         "provider",
         "catalog",
         "typical_application",
@@ -386,29 +386,11 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = ("nucleic_acid_type", "nucleic_acid_type__type",)
+    list_filter = ("nucleic_acid_types", "type",)
     actions = (
         "mark_as_obsolete",
         "mark_as_non_obsolete",
     )
-    
-    def add_view(self, request, extra_context=None):
-        '''Override default add_view to show desired fields'''
-
-        self.fields = ('name', 'nucleic_acid_type', 'provider', 'catalog',
-              'explanation', 'input_requirements', 'typical_application',
-             'status', 'comments', 'obsolete')
-        return super().add_view(request, extra_context)
-
-    def change_view(self, request, object_id, extra_context=None):
-        '''Override default change_view to show desired fields'''
-
-        self.readonly_fields = ('type',)
-        self.fields = ('name', 'type', 'nucleic_acid_type', 'provider', 'catalog',
-              'explanation', 'input_requirements', 'typical_application',
-             'status', 'comments', 'obsolete')
-        
-        return super().change_view(request, object_id, extra_context)
 
     @admin.action(description="Mark library protocol as obsolete")
     def mark_as_obsolete(self, request, queryset):
@@ -423,6 +405,10 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 
         return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
 
+    @admin.display(description="Nucleic Acid Types")
+    def nucleic_acid_type_set(self, obj):
+
+        return ", ".join(obj.nucleic_acid_types.all().values_list('name', flat=True))
 
 @admin.register(LibraryType)
 class LibraryTypeAdmin(admin.ModelAdmin):

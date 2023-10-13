@@ -94,7 +94,7 @@ class LibraryProtocolSerializer(ModelSerializer):
             'id',
             'name',
             'type',
-            'nucleic_acid_type',
+            'nucleic_acid_types',
             'library_type',
             'provider',
             'catalog',
@@ -124,7 +124,7 @@ class LibraryTypeSerializer(ModelSerializer):
 
     def get_nucleic_acid_type(self, obj):
         return LibraryType.objects.filter(pk=obj.pk).distinct().values_list(
-            "library_protocol__nucleic_acid_type__id", flat=True
+            "library_protocol__nucleic_acid_types__id", flat=True
         )
 
 class LibrarySampleBaseListSerializer(ListSerializer):

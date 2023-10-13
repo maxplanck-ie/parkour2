@@ -704,7 +704,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     // Filter by nucleic acid type
     if (nucleicAcidTypeId){
       store.filterBy(function (item) {
-        return item.get('nucleic_acid_type') === nucleicAcidTypeId;
+        return item.get('nucleic_acid_types').indexOf(nucleicAcidTypeId) !== -1;
       });
     }
   },

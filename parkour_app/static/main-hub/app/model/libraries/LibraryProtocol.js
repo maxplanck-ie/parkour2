@@ -10,10 +10,6 @@ Ext.define('MainHub.model.libraries.LibraryProtocol', {
         name: 'name'
     },
     {
-        type: 'int',
-        name: 'nucleic_acid_type'
-    },
-    {
         type: 'string',
         name: 'type'
     },
