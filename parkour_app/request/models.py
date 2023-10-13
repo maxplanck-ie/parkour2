@@ -75,6 +75,8 @@ class Request(DateTimeMixin):
 
     archived = models.BooleanField("Archived", default=False)
 
+    filepaths = models.JSONField(null=False, default=dict(data=None, metadata=None))
+
     def __str__(self):
         return self.name
 

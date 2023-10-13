@@ -20,7 +20,7 @@ from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
 from library_sample_shared.models import LibraryProtocol
 from library_sample_shared.serializers import LibraryProtocolSerializer
-from rest_framework import filters, viewsets
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAdminUser
@@ -378,7 +378,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Get the user email address to ship him data."""
         users_qs = User.objects.all()
         data = (
-            Request.objects.filter(archived=False, pk=pk)
+            Request.objects.filter(pk=pk)
             .prefetch_related(Prefetch("user", queryset=users_qs))
             .only("user")
             .first()
@@ -925,6 +925,18 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         doc.save(response)
         return response
+
+    @action(methods=["get"], detail=True)
+    def get_filepaths(self, request, *args, **kwargs):
+        filepaths = self.get_object().filepaths
+        return JsonResponse({"success": True, "filepaths": filepaths})
+
+    @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
+    def put_filepaths(self, request, pk=None):
+        instance = self.get_object()
+        instance.filepaths = request.data
+        instance.save(update_fields=["filepaths"])
+        return Response({"success": True})
 
     def _get_post_data(self, request):
         post_data = {}
