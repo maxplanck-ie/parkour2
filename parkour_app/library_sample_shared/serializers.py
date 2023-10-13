@@ -19,7 +19,7 @@ from .models import (
 class OrganismSerializer(ModelSerializer):
     class Meta:
         model = Organism
-        fields = ("id", "name")
+        fields = ("id", "name", "scientific_name", "taxon_id")
 
 
 class ReadLengthSerializer(ModelSerializer):

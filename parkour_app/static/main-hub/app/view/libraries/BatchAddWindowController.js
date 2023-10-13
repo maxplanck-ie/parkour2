@@ -1196,7 +1196,15 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           displayField: 'name',
           store: 'organismsStore',
           // matchFieldWidth: false,
-          forceSelection: true
+          forceSelection: true,
+          listConfig: {
+            getInnerTpl: function () {
+              return '<span data-qtip="' +
+                '<strong>Scientific name</strong>: {scientific_name}<br/>' +
+                '<strong>Taxon ID</strong>: {taxon_id}<br/>' +
+                '">{name}</span>';
+            }
+          }
         },
         renderer: this.comboboxErrorRenderer
       },
