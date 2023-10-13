@@ -81,10 +81,10 @@ clean:
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
-	@find ./misc -mtime +7 -name db_\*.sqldump \
+	@find ./misc -ctime +7 -name db_\*.sqldump \
 		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
 		-exec /bin/rm -rf {} +;
-	@find ./misc -mtime +7 -name migras_\*.tar.gz \
+	@find ./misc -ctime +7 -name migras_\*.tar.gz \
 		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
 		-exec /bin/rm -rf {} +;
 
