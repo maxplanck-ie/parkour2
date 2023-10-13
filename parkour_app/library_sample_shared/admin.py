@@ -187,12 +187,12 @@ class IndexPairAdmin(admin.ModelAdmin):
         return [
             path(
                 "import_plate_pairs/",
-                self.admin_site.admin_view(self.import_plate_pairs),
+                self.admin_site.admin_view(self.import_index_pairs),
             ),
             *super().get_urls(),
         ]
 
-    def import_plate_pairs(self, request):
+    def import_index_pairs(self, request):
         error = ""
 
         # Import Index Pairs from an Excel spreadsheet
