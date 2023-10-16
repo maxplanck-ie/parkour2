@@ -2,7 +2,7 @@ from rest_framework.serializers import ModelSerializer
 from rest_framework.serializers import SerializerMethodField
 
 
-from .models import CostUnit, User, Organization
+from .models import CostUnit, User, Organization, Duty
 
 
 class CostUnitSerializer(ModelSerializer):
@@ -48,6 +48,12 @@ class OrganizationSerializer(ModelSerializer):
     class Meta:
         model = Organization
         fields = ("id", "name")
+
+
+class DutySerializer(ModelSerializer):
+    class Meta:
+        model = Duty
+        fields = "__all__"
 
 
 class UserSerializer(ModelSerializer):

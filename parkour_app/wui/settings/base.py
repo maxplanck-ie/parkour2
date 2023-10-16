@@ -84,6 +84,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "extra.middleware.ErrorMiddleware",
     'mozilla_django_oidc.middleware.SessionRefresh',
 ]
 
@@ -237,7 +238,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/media/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-FILES_PATH = os.path.join(BASE_DIR, MEDIA_ROOT, "files")
 
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
@@ -263,11 +263,6 @@ IPYTHON_ARGUMENTS = [
 
 SETUP_ADMIN_EMAIL = os.environ.get("SETUP_ADMIN_EMAIL", "")
 SETUP_ADMIN_PASSWORD = os.environ.get("SETUP_ADMIN_PASSWORD", None)
-
-
-# OBSOLETE/NON-OBSOLETE STATUS
-NON_OBSOLETE = 1
-OBSOLETE = 2
 
 # OIDC
 OIDC_RP_CLIENT_ID = os.environ["OIDC_RP_CLIENT_ID"]

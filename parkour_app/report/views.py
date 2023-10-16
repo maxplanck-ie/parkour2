@@ -56,7 +56,8 @@ class Report:
             samples_qs = samples_qs.filter(request__sequenced=True)
 
         self.requests = (
-            Request.objects.select_related(
+            Request.objects.filter(archived=False)
+            .select_related(
                 "cost_unit__organization",
                 "pi",
             )
@@ -104,6 +105,7 @@ class Report:
             Flowcell.objects.select_related(
                 "pool_size__sequencer",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes",
                          queryset=lanes_qs,

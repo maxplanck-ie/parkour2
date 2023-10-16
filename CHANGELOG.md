@@ -1,4 +1,36 @@
-<!-- ON HOLD. Requires BugFix: Updated our core dependency: **Django, to version 4.2 (LTS)**. The previous 3.2 reached end of extended support in April, although Django core team kept releasing security fixes (thanks!) -->
+??.??.??
+========
+
+- Added a new Django management command: list_templates
+- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependecy would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
+- Removed the \[broken\] import and export functionality at IndexPairs. Instead, we have a custom bulk import button now that works exclusively with plate coordinates. This may be a temporal solution until we work out the rough edges with the extension custom import (foreingkeywidget)
+- **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after. **(**For The Record: At the time of writing, this upgrade required us to manually remove a missing package, `backports-zoneinfo`, from the _compiled_ `base.txt`...**)**
+- New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
+- Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages.
+- Breaking changes for backup locations! `./rsnapshot` was moved under `./misc`, so the config files will be there.. that's not much of an issue. Yet, the backups subfolder (or symlink) will need to be adjusted manually.
+- Email address displayed next so User (its string representation) now skips the email host if it's the same as in Django settings (parkour.env).
+- Added Phone next to email address for User display (if available).
+- Added 'archival' feature to CostUnit(s).
+- Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
+- Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
+- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+
+23.09.20
+========
+
+- New rule `db-migras`: loads production database snapshot with a proper reset of migration files. See source code and its help message for instructions on how to use it. It is a drop-in replacement to `db` rule when development version moved forward with changes into Django models that are not synchronized (yet) with production deployment that shall always run a version following github releases.
+- New 'Duties' model, to keep track in charge of whom are the responsibilities (both dry and wet processing of both short and long read sequencing.); so far it lists all users in database, but it's meant to be used only within the sequencing facility, and bioinformaticians.
+- New 'archived' field replaces the old obsolescence functionality that was broken in many if not all models. By default, all archived instances of models are filtered out at the Site Admin panel.
+- BUGFIX: Uploaded files appeared and disappeared just by switching sequenced to True.
+- BUGFIX: One API endpoint (`/api/samples/?request_id=nnnn`) was giving error 400 to non-staff users.
+- Renamed `parkour_app/migrations` to `parkour_app/extras` to avoid confusion with actual migrations. Renamed the corresponding `test.py` in there to `test_migrations.py` accordingly.
+- Added user email to mailed traceback when Django encounters any errors. This way we can contact users if they were experiencing a bug.
+- Added database from parkour-demo in JSON format under `misc/` subfolder. Integrated all `**/fixtures/*.json` into it.
+- Updated fixtures with parkour-demo database, usefult to overwrite or further customize such entries.
+- Restored old makefile rules to save or load database in json. Do not use them with production data, BarcodeCounter bug is still in place, and it will be reset to 0 every time you use the json format. These rules are only meant to be helpers for the demo data which we prefer to have in JSON so that it's more robust to models' migrations.
+- Added `tblib` as a base dependency to have proper traceback when running tests in parallel.
+- Improvement: sweep rule won't remove current symlink targets anymore.
+
 
 23.08.21
 ========

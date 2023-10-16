@@ -1,12 +1,15 @@
 from authtools.admin import NamedUserAdmin
 from authtools.forms import UserCreationForm, UserChangeForm
-from common.models import CostUnit, Organization, OIDCGroup
+from common.models import CostUnit, Organization, OIDCGroup, Duty
 from django import forms
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.admin import SimpleListFilter
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import PasswordResetForm
 from django.utils.crypto import get_random_string
+from django.utils.encoding import force_str
+from django.utils.translation import gettext as _
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import GroupAdmin
@@ -15,9 +18,65 @@ from django.core.exceptions import PermissionDenied
 User = get_user_model()
 
 
+class DefaultListFilter(SimpleListFilter):
+    all_value = "_all"
+
+    def default_value(self):
+        raise NotImplementedError()
+
+    def queryset(self, request, queryset):
+        if (
+            self.parameter_name in request.GET
+            and request.GET[self.parameter_name] == self.all_value
+        ):
+            return queryset
+
+        if self.parameter_name in request.GET:
+            return queryset.filter(
+                **{self.parameter_name: request.GET[self.parameter_name]}
+            )
+
+        return queryset.filter(**{self.parameter_name: self.default_value()})
+
+    def choices(self, cl):
+        for lookup, title in self.lookup_choices:
+            yield {
+                "selected": self.value() == force_str(lookup)
+                or (
+                    self.value() == None
+                    and force_str(self.default_value()) == force_str(lookup)
+                ),
+                "query_string": cl.get_query_string(
+                    {
+                        self.parameter_name: lookup,
+                    },
+                    [],
+                ),
+                "display": title,
+            }
+        yield {
+            "selected": self.value() == self.all_value,
+            "query_string": cl.get_query_string(
+                {self.parameter_name: self.all_value}, []
+            ),
+            "display": _("All"),
+        }
+
+
+class ArchivedFilter(DefaultListFilter):
+    title = _("Archived ")
+    parameter_name = "archived__exact"
+
+    def lookups(self, request, model_admin):
+        return ((False, "No"), (True, "Yes"))
+
+    def default_value(self):
+        return False
+
+
 class CostUnitInline(admin.TabularInline):
     model = CostUnit
-    fields = ('name', 'organization', 'obsolete',)
+    fields = ('name', 'organization', 'archived',)
     extra = 1
 
 @admin.register(CostUnit)
@@ -37,6 +96,19 @@ class OIDCGroupAdmin(admin.ModelAdmin):
     def has_module_permission(self, request):
         return False
 
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
+
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
@@ -53,6 +125,14 @@ class CheckUserEmailExtension:
             if 'imb.de' in email:
                 raise forms.ValidationError("Use the full email extension imb-mainz.de, not just imb.de")
         return email
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
@@ -329,6 +409,34 @@ class UserAdmin(NamedUserAdmin):
                     subject_template_name="registration/" + "user_creation_subject.txt",
                     email_template_name="registration/" + "user_creation_email.html",
                 )
+
+
+# @admin.register(Duty)
+class DutyAdmin(admin.ModelAdmin):
+    list_display = (
+        "main_name",
+        "backup_name",
+        "start_date",
+        "end_date",
+        "facility",
+        "platform",
+        "comment",
+        "archived",
+    )
+    search_fields = ("main_name", "backup_name", "facility", "comment")
+    list_filter = ("facility", ArchivedFilter)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 # admin.site.unregister(User)

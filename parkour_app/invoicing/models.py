@@ -52,6 +52,7 @@ class FixedPrice(OrganizationMixin):
 
 class FixedCosts(models.Model):
     sequencer = models.OneToOneField(Sequencer, on_delete=models.SET_NULL, null=True)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Fixed Cost"
@@ -87,11 +88,12 @@ class LibraryPreparationPrice(OrganizationMixin):
 class LibraryPreparationCosts(models.Model):
     library_protocol = models.OneToOneField(
         LibraryProtocol,
-        limit_choices_to={"obsolete": 1},
+        limit_choices_to={"archived": False},
         on_delete=models.SET_NULL,
         null=True,
     )
     # library_protocol = models.OneToOneField(LibraryProtocol)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         verbose_name = "Library Preparation Cost"
@@ -127,6 +129,8 @@ class SequencingCosts(models.Model):
     pool_size = models.ForeignKey(
         'index_generator.PoolSize', verbose_name="Sequencing kit", on_delete=models.SET_NULL, null=True
     )
+    archived = models.BooleanField("Archived", default=False)
+
 
     class Meta:
         verbose_name = "Sequencing Cost"

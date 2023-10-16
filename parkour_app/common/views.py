@@ -14,14 +14,19 @@ from request.models import Request
 from mimetypes import guess_type
 from os.path import basename
 from urllib.parse import quote
-
 from constance import config
+from request.models import Request
+from rest_framework import status, viewsets
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAdminUser
 
-from .models import CostUnit, Organization
+from .models import CostUnit, Organization, Duty
 from .serializers import (CostUnitSerializer,
                           PrincipalInvestigatorSerializer,
                           OrganizationSerializer,
-                          BioinformaticianSerializer)
+                          BioinformaticianSerializer,
+                          DutySerializer)
 
 User = get_user_model()
 
@@ -171,9 +176,10 @@ def protected_media(request, *args, **kwargs):
     if request.user.is_staff or request.user.member_of_bcf:
         allow_download = True
     else:
-        allow_download = Request.objects.filter(Q(user=request.user) | Q(pi=request.user) | Q(bioinformatician=request.user),
-                                                Q(deep_seq_request=url_path) | Q(files__file=url_path)) \
-                                        .exists()
+        allow_download = Request.objects.filter(
+            Q(user=request.user) | Q(pi=request.user) | Q(bioinformatician=request.user),
+            Q(deep_seq_request=url_path) | Q(files__file=url_path)) \
+            .exists()
 
     if allow_download:
 
@@ -211,7 +217,7 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
             if self.request.user.is_staff or self.request.user.member_of_bcf:
                 return queryset
             else:
-                return queryset.filter(obsolete=settings.NON_OBSOLETE)
+                return queryset.filter(archived=False)
         except Exception:
             return CostUnit.objects.all() if self.request.user.is_staff or self.request.user.member_of_bcf else CostUnit.objects.none()
 
@@ -312,3 +318,63 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_size = 30
     page_size_query_param = "page_size"
     max_page_size = 100
+
+
+class DutyViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminUser]
+    serializer_class = DutySerializer
+    queryset = Duty.objects.all().filter(archived=False).order_by("-start_date")
+
+    def get(self, request, *args, **kwargs):
+        serializer = DutySerializer(self.queryset, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        data = {
+            "main_name": request.data.get("main_name"),
+            "backup_name": request.data.get("backup_name"),
+            "start_date": request.data.get("start_date"),
+            "end_date": request.data.get("end_date"),
+            "facility": request.data.get("facility"),
+            "platform": request.data.get("platform"),
+            "comment": request.data.get("comment"),
+            "archived": request.data.get("archived"),
+        }
+        serializer = DutySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, duty_id, *args, **kwargs):
+        duty_instance = self.get_object(duty_id)
+        if not duty_instance:
+            return Response(
+                {"res": "Object with duty id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        data = {
+            "main_name": request.data.get("main_name"),
+            "backup_name": request.data.get("backup_name"),
+            "start_date": request.data.get("start_date"),
+            "end_date": request.data.get("end_date"),
+            "facility": request.data.get("facility"),
+            "platform": request.data.get("platform"),
+            "comment": request.data.get("comment"),
+            "archived": request.data.get("archived"),
+        }
+        serializer = DutySerializer(instance=duty_instance, data=data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, duty_id, *args, **kwargs):
+        duty_instance = self.get_object(duty_id)
+        if not duty_instance:
+            return Response(
+                {"res": "Object with duty id does not exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        duty_instance.delete()
+        return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)

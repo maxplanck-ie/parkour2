@@ -58,9 +58,11 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         month = self.request.query_params.get("month", today.month)
         organization_id = self.request.query_params.get("organization", None)
 
-        flowcell_qs = Flowcell.objects.select_related(
+        flowcell_qs = (Flowcell.objects.select_related(
             "pool_size",
-        ).order_by("flowcell_id")
+        )
+        .filter(archived=False)
+        .order_by("flowcell_id"))
 
         libraries_qs = (
             Library.objects.filter(~Q(pool=None))
@@ -84,6 +86,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
                 flowcell__create_time__year=year,
                 flowcell__create_time__month=month,
                 sequenced=True,
+                archived=False,
                 cost_unit__organization__id=organization_id
             )
             .select_related(
@@ -118,7 +121,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(methods=["get"], detail=False)
     def billing_periods(self, request):
-        flowcells = Flowcell.objects.all()
+        flowcells = Flowcell.objects.all().filter(archived=False)
         data = []
 
         if flowcells.count() == 0:
@@ -253,12 +256,14 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
             read_lengths = "; ".join(
-                ReadLength.objects.filter(pk__in=item["read_length"])
+                ReadLength.objects.filter(archived=False, pk__in=item["read_length"])
                 .order_by("name")
                 .values_list("name", flat=True)
             )
 
-            protocol = LibraryProtocol.objects.get(pk=item["library_protocol"])
+            protocol = LibraryProtocol.objects.filter(archived=False).get(
+                pk=item["library_protocol"]
+            )
 
             row = [
                 item["request"],
@@ -283,7 +288,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencer", "Price"]
         write_header(ws, row_num, header)
-        for item in FixedCosts.objects.filter(fixedprice__organization=organization):
+        for item in FixedCosts.objects.filter(archived=False, fixedprice__organization=organization):
             row_num += 1
             row = [item.sequencer.name, item.fixedprice_set.get(organization=organization).price]
             write_row(ws, row_num, row)
@@ -293,7 +298,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Library Protocol", "Price"]
         write_header(ws, row_num, header)
-        for item in LibraryPreparationCosts.objects.filter(librarypreparationprice__organization=organization):
+        for item in LibraryPreparationCosts.objects.filter(archived=False, librarypreparationprice__organization=organization):
             row_num += 1
             row = [item.library_protocol.name, item.librarypreparationprice_set.get(organization=organization).price]
             write_row(ws, row_num, row)
@@ -303,7 +308,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         row_num = 0
         header = ["Sequencing Kit", "Price"]
         write_header(ws, row_num, header)
-        for item in SequencingCosts.objects.filter(sequencingprice__organization=organization):
+        for item in SequencingCosts.objects.filter(archived=False, sequencingprice__organization=organization):
             row_num += 1
             row = [
                 str(item.pool_size),
@@ -325,7 +330,7 @@ class FixedCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelViewSet):
         organization = self.request.query_params.get("organization", 0)
         if organization:
             return FixedCosts.objects.filter(
-            sequencer__obsolete=settings.NON_OBSOLETE,
+            sequencer__archived=False,
             fixedprice__organization__id=organization
             )
         else:
@@ -349,7 +354,7 @@ class LibraryPreparationCostsViewSet(
         organization = self.request.query_params.get("organization", 0)
         if organization:
             return LibraryPreparationCosts.objects.filter(
-            library_protocol__obsolete=settings.NON_OBSOLETE,
+            archived=False, library_protocol__archived=False,
             librarypreparationprice__organization__id=organization
             )
         else:
@@ -375,7 +380,7 @@ class SequencingCostsViewSet(mixins.UpdateModelMixin, viewsets.ReadOnlyModelView
         organization = self.request.query_params.get("organization", 0)
         if organization:
             return SequencingCosts.objects.filter(
-            pool_size__sequencer__obsolete=settings.NON_OBSOLETE,
+            pool_size__sequencer__archived=False,
             sequencingprice__organization__id=organization
             )
         else:

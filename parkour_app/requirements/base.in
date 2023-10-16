@@ -1,4 +1,4 @@
-Django~=3.2
+Django~=4.2
 django-authtools @ git+https://github.com/adRn-s/django-authtools@dev_adRn
 djangorestframework
 django-admin-list-filter-dropdown
@@ -18,3 +18,4 @@ pandas
 bioblend
 python-docx
 python-dateutil
+tblib

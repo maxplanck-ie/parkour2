@@ -1,23 +1,26 @@
 [
-    {
-        "fields": {
-            "name": "DEEP"
-        },
-        "model": "common.organization",
-        "pk": 1
-    },
-    {
-        "fields": {
-            "name": "MPI-IE"
-        },
-        "model": "common.organization",
-        "pk": 2
-    },
-    {
-        "fields": {
-            "name": "University Freiburg"
-        },
-        "model": "common.organization",
-        "pk": 3
+  {
+    "model": "common.organization",
+    "pk": 1,
+    "fields": {
+      "name": "DEEP",
+      "archived": false
     }
+  },
+  {
+    "model": "common.organization",
+    "pk": 2,
+    "fields": {
+      "name": "MPI-IE",
+      "archived": false
+    }
+  },
+  {
+    "model": "common.organization",
+    "pk": 3,
+    "fields": {
+      "name": "University Freiburg",
+      "archived": false
+    }
+  }
 ]

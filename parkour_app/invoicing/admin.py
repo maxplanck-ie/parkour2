@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
@@ -49,11 +50,23 @@ class InvoicingReportAdmin(admin.ModelAdmin):
 
 @admin.register(FixedCosts)
 class FixedCostsAdmin(admin.ModelAdmin):
+    list_display = ("sequencer",
+                    "price_amounts",
+                    "archived")
+    list_filter = (ArchivedFilter,)
     inlines = [FixedPriceInline]
-    list_display = (
-        "sequencer",
-        "price_amounts",
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def price_amounts(self, obj):
         try:
@@ -64,15 +77,28 @@ class FixedCostsAdmin(admin.ModelAdmin):
 
 @admin.register(LibraryPreparationCosts)
 class LibraryPreparationCostsAdmin(admin.ModelAdmin):
-    inlines = [LibraryPreparationPriceInline]
     search_fields = (
         "library_protocol__name",
-        "price",
     )
     list_display = (
         "library_protocol",
         "price_amounts",
+        "archived"
     )
+    list_filter = (ArchivedFilter,)
+    inlines = [LibraryPreparationPriceInline]
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def price_amounts(self, obj):
         try:
@@ -85,16 +111,29 @@ class LibraryPreparationCostsAdmin(admin.ModelAdmin):
 class SequencingCostsAdmin(admin.ModelAdmin):
     inlines = [SequencingPriceInline]
     search_fields = (
-        "price",
-        "pool_size"
+        "pool_size",
     )
     list_display = (
         "pool_size",
         "price_amounts",
+        "archived"
     )
-    list_filter = (
-        "pool_size__sequencer",
+    list_filter = ("pool_size__sequencer",
+                   "pool_size__read_lengths",
+                   ArchivedFilter)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def price_amounts(self, obj):
         try:

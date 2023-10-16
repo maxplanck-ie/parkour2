@@ -16,6 +16,16 @@ on:
 # https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
 
 jobs:
+  install-per-wiki-instructions:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Follow instructions
+        run: |
+          make
+          make create-admin
+
   build-and-test:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest

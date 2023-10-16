@@ -25,7 +25,7 @@ class OrganismSerializer(ModelSerializer):
 class ReadLengthSerializer(ModelSerializer):
     class Meta:
         model = ReadLength
-        fields = ("id", "name", "obsolete")
+        fields = ("id", "name", "archived")
 
 
 class ConcentrationMethodSerializer(ModelSerializer):
@@ -47,7 +47,7 @@ class IndexTypeSerializer(ModelSerializer):
             "is_dual",
             "format",
             "index_length",
-            "obsolete",
+            "archived",
             "read_type",
         )
 
@@ -118,7 +118,7 @@ class LibraryTypeSerializer(ModelSerializer):
         fields = ("id", "name", "library_protocol", "nucleic_acid_type")
 
     def get_library_protocol(self, obj):
-        return LibraryType.objects.filter(pk=obj.pk).values_list(
+        return LibraryType.objects.filter(archived=False, pk=obj.pk).values_list(
             "library_protocol__id", flat=True
         )
 

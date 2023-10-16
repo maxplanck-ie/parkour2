@@ -18,12 +18,12 @@ class PoolSize(models.Model):
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
     cycles = models.PositiveSmallIntegerField("Number of cycles")
     read_lengths = models.ManyToManyField('library_sample_shared.ReadLength', verbose_name='read lengths', related_name='pool_size',)
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         ordering = ["sequencer", "size", "cycles"]
         constraints = [
-            models.UniqueConstraint(fields=['sequencer', 'size', 'cycles', 'lanes', 'obsolete'],
+            models.UniqueConstraint(fields=['sequencer', 'size', 'cycles', 'lanes', 'archived'],
                                     name='unique_pool_size')
         ]
 
@@ -61,6 +61,7 @@ class Pool(DateTimeMixin):
     libraries = models.ManyToManyField(Library, related_name="pool", blank=True)
     samples = models.ManyToManyField(Sample, related_name="pool", blank=True)
     comment = models.TextField(verbose_name="Comment", blank=True)
+    archived = models.BooleanField("Archived", default=False)
 
     # def get_size(self):
     #     size = 0

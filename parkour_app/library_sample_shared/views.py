@@ -68,15 +68,13 @@ class MoveOtherMixin:
 class OrganismViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of organisms."""
 
-    queryset = Organism.objects.order_by("name")
+    queryset = Organism.objects.filter(archived=False).order_by("name")
     serializer_class = OrganismSerializer
 
 
 class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of read lengths."""
 
-    # queryset = ReadLength.objects.all()
-    # queryset = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
     serializer_class = ReadLengthSerializer
 
     def get_queryset(self):
@@ -99,19 +97,18 @@ class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
 
             # Filter choices based on sequencing kit selected and lengths already present
             if pool_size_user_id:
-                choices = ReadLength.objects.filter(pool_size__id=pool_size_user_id, obsolete=settings.NON_OBSOLETE)
+                choices = ReadLength.objects.filter(pool_size__id=pool_size_user_id, archived=False)
             else:
                 raise Exception
 
         except:
 
-            choices = ReadLength.objects.filter(obsolete=settings.NON_OBSOLETE)
+            choices = ReadLength.objects.filter(archived=False)
         
         return sorted((choices | set_read_lengths).distinct(), key= lambda e: [int(n) for n in e.name.split('x')])
 
 class ReadLengthInvoicingViewSet(viewsets.ReadOnlyModelViewSet):
-
-    queryset = ReadLength.objects.all()
+    queryset = ReadLength.objects.all().filter(archived=False)
     serializer_class = ReadLengthSerializer
 
 
@@ -125,15 +122,19 @@ class ConcentrationMethodViewSet(viewsets.ReadOnlyModelViewSet):
 class IndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of index types."""
 
-    queryset = IndexType.objects.filter(obsolete=settings.NON_OBSOLETE).order_by("name")
+    queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
 
 
 class IndexViewSet(viewsets.ViewSet):
     def list(self, request):
         """Get the list of all indices."""
-        index_i7_serializer = IndexI7Serializer(IndexI7.objects.all(), many=True)
-        index_i5_serializer = IndexI5Serializer(IndexI5.objects.all(), many=True)
+        index_i7_serializer = IndexI7Serializer(
+            IndexI7.objects.all().filter(archived=False), many=True
+        )
+        index_i5_serializer = IndexI5Serializer(
+            IndexI5.objects.all().filter(archived=False), many=True
+        )
         indices = index_i7_serializer.data + index_i5_serializer.data
         data = sorted(indices, key=lambda x: x["index_id"])
         return Response(data)
@@ -172,11 +173,11 @@ class LibraryProtocolViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = LibraryProtocolSerializer
 
     def get_queryset(self):
-        queryset = LibraryProtocol.objects.order_by("name")
+        queryset = LibraryProtocol.objects.filter(archived=False).order_by("name")
         na_type = self.request.query_params.get("type", None)
         if na_type is not None:
             queryset = queryset.filter(type=na_type)
-        queryset = queryset.filter(obsolete=settings.NON_OBSOLETE)
+        queryset = queryset.filter(archived=False)
         return queryset
 
 
@@ -186,7 +187,7 @@ class LibraryProtocolInvoicingViewSet(MoveOtherMixin, viewsets.ReadOnlyModelView
     serializer_class = LibraryProtocolSerializer
 
     def get_queryset(self):
-        queryset = LibraryProtocol.objects.order_by("name")
+        queryset = LibraryProtocol.objects.filter(archived=False).order_by("name")
         na_type = self.request.query_params.get("type", None)
         if na_type is not None:
             queryset = queryset.filter(type=na_type)
@@ -200,7 +201,7 @@ class LibraryTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = LibraryTypeSerializer
 
     def get_queryset(self):
-        queryset = LibraryType.objects.order_by("name")
+        queryset = LibraryType.objects.filter(archived=False).order_by("name")
         library_protocol = self.request.query_params.get("library_protocol_id", None)
         if library_protocol is not None:
             try:
@@ -226,9 +227,13 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
         ids = json.loads(request.query_params.get("ids", "[]"))
 
         if request_id:
-            request_queryset = Request.objects.all().filter(pk=request_id)
+            request_queryset = Request.objects.all().filter(
+                archived=False, pk=request_id
+            )
         else:
-            request_queryset = Request.objects.all().order_by("-create_time")
+            request_queryset = (
+                Request.objects.all().filter(archived=False).order_by("-create_time")
+            )
 
         if not (self.request.user.is_staff or self.request.user.member_of_bcf):
             if self.request.user.is_pi:

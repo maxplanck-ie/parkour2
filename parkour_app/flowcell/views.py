@@ -74,12 +74,12 @@ logger = logging.getLogger("db")
 class SequencerViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of sequencers."""
 
-    queryset = Sequencer.objects.all().filter(obsolete=settings.NON_OBSOLETE)
+    queryset = Sequencer.objects.all().filter(archived=False)
     serializer_class = SequencerSerializer
 
 
 class PoolViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Pool.objects.all()
+    queryset = Pool.objects.all().filter(archived=False)
     serializer_class = PoolInfoSerializer
     permission_classes = [IsAdminUser]
 
@@ -123,6 +123,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             Flowcell.objects.select_related(
                 "pool_size",
             )
+            .filter(archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs),
             )
@@ -206,7 +207,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
-            .filter(size__lanes__gt=F("loaded"))
+            .filter(archived=False, size__lanes__gt=F("loaded"))
             .order_by("pk")
         )
 

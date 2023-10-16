@@ -19,17 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
       - name: Install dependencies
         run: |
-          cp misc/parkour.env.sample misc/parkour.env
           make playwright
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: test-suite-report
-          if-no-files-found: ignore  ## remove this line asap (default: warn)
+          # if-no-files-found: ignore  ## default: warn
           path: |
             parkour_app/playwright/videos/
             parkour_app/playwright/results/

@@ -164,7 +164,7 @@ class PrincipalInvestigatorsUsage(APIView):
             libraries_qs = libraries_qs.filter(request__sequenced=True)
 
         requests = (
-            Request.objects
+            Request.objects.filter(archived=False)
             .prefetch_related(
                 Prefetch(
                     "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
@@ -225,7 +225,8 @@ class LibraryTypesUsage(APIView):
             libraries_qs = libraries_qs.filter(request__sequenced=True)
 
         requests = (
-            Request.objects.prefetch_related(
+            Request.objects.filter(archived=False)
+            .prefetch_related(
                 Prefetch(
                     "libraries", queryset=libraries_qs, to_attr="fetched_libraries"
                 ),

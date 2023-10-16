@@ -245,7 +245,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         #   print(libraries_qs.values())
 
         queryset = (
-            Request.objects.select_related("user")
+            Request.objects.filter(archived=False)
+            .select_related("user")
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
@@ -345,7 +346,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     def mark_as_complete(self, request, pk=None):
         """Mark request as complete, set sequenced to true"""
 
-        instance = Request.objects.filter(pk=pk)
+        instance = Request.objects.filter(archived=False, pk=pk)
 
         post_data = self._get_post_data(request)
         override = post_data["override"]
@@ -575,7 +576,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         )
 
         instance = (
-            Request.objects.filter(pk=pk)
+            Request.objects.filter(archived=False, pk=pk)
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
@@ -605,7 +606,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Get the user email address to ship him data."""
         users_qs = User.objects.all()
         data = (
-            Request.objects.filter(pk=pk)
+            Request.objects.filter(archived=False, pk=pk)
             .prefetch_related(Prefetch("user", queryset=users_qs))
             .only("user")
             .first()
@@ -649,6 +650,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         try:
             files = [f for f in FileRequest.objects.all() if f.id in file_ids]
+
             data = [
                 {
                     "id": file.id,
@@ -673,9 +675,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=False)
     def download_RELACS_Pellets_Abs_form(self, request):
-        print(settings.FILES_PATH)
         file_path = os.path.join(settings.STATIC_ROOT, "docs/RELACS.xlsx")
-        print(file_path)
 
         with open(file_path, "rb") as fh:
             response = HttpResponse(fh.read(), content_type="application/vnd.ms-excel")
@@ -1063,7 +1063,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             + "appendix."
         )
         lib_prep_objects = LibraryPreparation.objects.filter(
-            sample__in=instance.samples.all()
+            archived=False, sample__in=instance.samples.all()
         )
         header = [
             "Date",

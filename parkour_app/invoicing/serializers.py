@@ -99,7 +99,7 @@ class InvoicingSerializer(ModelSerializer):
 
         pool_ids = instance.values_list("flowcell__lanes__pool")
         pools = (
-            Pool.objects.filter(pk__in=pool_ids)
+            Pool.objects.filter(archived=False, pk__in=pool_ids)
             .prefetch_related(
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
@@ -372,9 +372,11 @@ class InvoicingSerializer(ModelSerializer):
             costs = preparation_costs.get(library_protocol, 0) * Decimal(split[0])
         else:
             try:
-                price = LibraryPreparationCosts.objects.get(
-                    library_protocol__name="Quality Control"
-                ).price
+                price = (
+                    LibraryPreparationCosts.objects.filter(archived=False)
+                    .get(library_protocol__name="Quality Control")
+                    .price
+                )
                 costs = Decimal(split[0]) * price
             except LibraryPreparationCosts.DoesNotExist:
                 logger.exception(f"Preparation Cost for libraries is not set.")

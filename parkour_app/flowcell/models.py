@@ -6,7 +6,7 @@ from request.models import Request
 
 class Sequencer(models.Model):
     name = models.CharField("Name", max_length=50)
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
 
     instrument_platform = models.CharField(
         "instrument platform", help_text='For samplesheet', max_length=50)
@@ -55,6 +55,7 @@ class Flowcell(DateTimeMixin):
     requests = models.ManyToManyField(Request, related_name="flowcell", blank=True)
     matrix = models.JSONField("Flowcell Matrix", blank=True, null=True)
     sequences = models.JSONField("Sequences", blank=True, null=True)
+    archived = models.BooleanField("Archived", default=False)
 
     run_name = models.CharField("run name", help_text='For samplesheet', max_length=200)
     read1_cycles = models.PositiveSmallIntegerField("read 1 cycles")

@@ -1,5 +1,7 @@
-from pyexpat import model
+from datetime import datetime
+
 from authtools.models import AbstractEmailUser
+from django.conf import settings
 from django.db import models
 
 
@@ -13,6 +15,7 @@ def get_deleted_pi():
 
 class Organization(models.Model):
     name = models.CharField("Name", max_length=100)
+    archived = models.BooleanField("Archived", default=False)
 
     def __str__(self):
         return self.name
@@ -27,6 +30,7 @@ class OrganizationMixin(models.Model):
         null=True,
         blank=False,
     )
+    archived = models.BooleanField("Archived", default=False)
 
     class Meta:
         abstract = True
@@ -34,14 +38,14 @@ class OrganizationMixin(models.Model):
 
 class CostUnit(OrganizationMixin, models.Model):
     name = models.CharField("Name", max_length=100)
-    
     pi = models.ForeignKey(
         'User',
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
 
-    obsolete = models.PositiveIntegerField("Obsolete", default=1)
+    archived = models.BooleanField("Archived", default=False)
+
 
     class Meta:
         verbose_name = "Cost Unit"
@@ -117,6 +121,57 @@ class User(AbstractEmailUser):
     @property
     def member_of_bcf(self):
         return self.groups.filter(name='Bioinfo-CF').exists()
+
+
+class Duty(models.Model):
+    main_name = models.ForeignKey(
+        User,
+        on_delete=models.deletion.CASCADE,
+        related_name="main_name",
+        verbose_name="Responsible Person",
+    )
+    backup_name = models.ForeignKey(
+        User,
+        on_delete=models.deletion.CASCADE,
+        related_name="backup_name",
+        verbose_name="Backup Person",
+        null=True,
+        blank=True,
+    )
+    start_date = models.DateTimeField(
+        "Start Date",
+        default=datetime.now,
+    )
+    end_date = models.DateTimeField(
+        "End Date",
+        null=True,
+        blank=True,
+    )
+    facility = models.CharField(
+        "Facility",
+        choices=[("bioinfo", "BioInfo"), ("deepseq", "DeepSeq")],
+        default="bioinfo",
+        max_length=7,
+    )
+    platform = models.CharField(
+        "Platform",
+        choices=[("short", "Short"), ("long", "Long")],
+        default="short",
+        max_length=5,
+    )
+    comment = models.TextField(
+        "Comment",
+        max_length=2500,
+        null=True,
+        blank=True,
+    )
+    archived = models.BooleanField("Archived", default=False)
+
+    class Meta:
+        db_table = "duty"
+        verbose_name = "Duty"
+        verbose_name_plural = "Duties"
+        ordering = ["end_date", "start_date"]
 
 
 class DateTimeMixin(models.Model):

@@ -37,10 +37,14 @@ class IncomingLibrariesViewSet(LibrarySampleMultiEditMixin, viewsets.ViewSet):
             "nucleic_acid_type",
         ).filter(status=1)
 
-        queryset = Request.objects.prefetch_related(
-            Prefetch("libraries", queryset=libraries_qs),
-            Prefetch("samples", queryset=samples_qs),
-        ).order_by("-create_time")
+        queryset = (
+            Request.objects.filter(archived=False)
+            .prefetch_related(
+                Prefetch("libraries", queryset=libraries_qs),
+                Prefetch("samples", queryset=samples_qs),
+            )
+            .order_by("-create_time")
+        )
 
         if request.GET.get("asHandler") == "True":
             queryset = queryset.filter(handler=request.user)

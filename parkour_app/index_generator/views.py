@@ -63,14 +63,14 @@ class MoveOtherMixin:
 class GeneratorIndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
     """Get the list of index types."""
 
-    queryset = IndexType.objects.order_by("name")
+    queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
 
 
 class PoolSizeViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of pool sizes."""
 
-    queryset = PoolSize.objects.all().filter(obsolete=settings.NON_OBSOLETE, sequencer__obsolete=settings.NON_OBSOLETE)
+    queryset = PoolSize.objects.all().filter(archived=False, sequencer__archived=False)
     serializer_class = PoolSizeSerializer
 
 
@@ -142,7 +142,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             )
         )
 
-        queryset = Request.objects.prefetch_related(
+        queryset = Request.objects.filter(archived=False).prefetch_related(
             Prefetch("libraries", queryset=libraries_qs),
             Prefetch("samples", queryset=samples_qs),
         )
@@ -196,7 +196,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 raise ValueError("No libraries nor samples have been provided")
 
             try:
-                pool_size = PoolSize.objects.get(pk=pool_size_id)
+                pool_size = PoolSize.objects.filter(archived=False).get(pk=pool_size_id)
             except (ValueError, PoolSize.DoesNotExist):
                 raise ValueError("Invalid Pool Size id.")
 

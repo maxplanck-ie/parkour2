@@ -1,6 +1,13 @@
+import re
+from dataclasses import dataclass
+from zipfile import BadZipFile
+
+from common.admin import ArchivedFilter
 from django.conf import settings
-from django.contrib import admin
-from django.urls import resolve
+from django.contrib import admin, messages
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from django.urls import path, resolve
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
@@ -29,11 +36,22 @@ from .models import (
 
 @admin.register(Organism)
 class OrganismAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "scientific_name",
-        "taxon_id",
+    list_display = ("name", "scientific_name", "taxon_id", "archived")
+
+    list_filter = (ArchivedFilter,)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(ConcentrationMethod)
@@ -43,23 +61,24 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 
 @admin.register(ReadLength)
 class ReadLengthAdmin(admin.ModelAdmin):
-    list_display = ("name", "obsolete_name")
-    actions = ("mark_as_obsolete", "mark_as_non_obsolete")
+    list_display = ("name", "archived")
     search_fields = ('name',)
     ordering = ('name',)
 
-    @admin.action(description="Mark read length as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    list_filter = (ArchivedFilter,)
 
-    @admin.action(description="Mark read length as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
 
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 class IndexI7Inline(admin.TabularInline):
@@ -76,25 +95,29 @@ class IndexPairInline(admin.TabularInline):
         index_type_id = args[0] if args else None
 
         if db_field.name == "index1":
-            kwargs["queryset"] = IndexI7.objects.filter(index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI7.objects.filter(
+                archived=False, index_type__id=index_type_id
+            )
 
         elif db_field.name == "index2":
-            kwargs["queryset"] = IndexI5.objects.filter(index_type__id=index_type_id)
+            kwargs["queryset"] = IndexI5.objects.filter(
+                archived=False, index_type__id=index_type_id
+            )
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
 @admin.register(IndexType)
-class IndexTypeAdmin(admin.ModelAdmin):
+class IndexTypeAdmin(ImportExportModelAdmin):
     form = IndexTypeForm
-    list_display = ("name", "index_length", "is_dual", "format", "obsolete_name")
+
+    list_display = ("name", "index_length", "is_dual", "format", "archived")
+
+    list_filter = (ArchivedFilter,)
+
     filter_horizontal = (
         "indices_i7",
         "indices_i5",
-    )
-    actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
     )
 
     fieldsets = (
@@ -114,18 +137,18 @@ class IndexTypeAdmin(admin.ModelAdmin):
         ),
     )
 
-    @admin.action(description="Mark index type as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
 
-    @admin.action(description="Mark index type as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def change_view(self, request, object_id, form_url="", extra_context=None):
         # Display inline when the object has been saved and
@@ -143,16 +166,26 @@ class IndexTypeAdmin(admin.ModelAdmin):
 
 @admin.register(IndexPair)
 class IndexPairAdmin(admin.ModelAdmin):
-    list_display = (
-        "index_pair",
-        "coordinate",
-    )
+    list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
     autocomplete_fields = (
         "index1",
         "index2",
     )
-    list_filter = ("index_type",)
+    list_filter = ("index_type", ArchivedFilter)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     def index_pair(self, obj):
         return str(obj)
@@ -160,7 +193,7 @@ class IndexPairAdmin(admin.ModelAdmin):
     def render_change_form(self, request, context, *args, **kwargs):
         context["adminform"].form.fields[
             "index_type"
-        ].queryset = IndexType.objects.filter(format="plate")
+        ].queryset = IndexType.objects.filter(archived=False, format="plate")
         return super().render_change_form(request, context, args, kwargs)
 
     def get_urls(self):
@@ -251,20 +284,24 @@ class IndexPairAdmin(admin.ModelAdmin):
                 # Import index pairs
                 for index_pair in index_pairs:
                     index_type = IndexType.objects.get(name=index_pair.index_type)
-                    index1 = IndexI7.objects.create(prefix=index_pair.index1_prefix,
-                                    number=index_pair.index1_name,
-                                    index=index_pair.index1_sequence)
-                    index2 = IndexI5.objects.create(prefix=index_pair.index2_prefix,
-                                    number=index_pair.index2_name,
-                                    index=index_pair.index2_sequence)
+                    index1 = IndexI7.objects.create(
+                        prefix=index_pair.index1_prefix,
+                        number=index_pair.index1_name,
+                        index=index_pair.index1_sequence,
+                    )
+                    index2 = IndexI5.objects.create(
+                        prefix=index_pair.index2_prefix,
+                        number=index_pair.index2_name,
+                        index=index_pair.index2_sequence,
+                    )
                     IndexPair.objects.create(
                         index_type=index_type,
                         index1=index1,
                         index2=index2,
                         char_coord=index_pair.coordinate[:1],
-                        num_coord=index_pair.coordinate[1:]
+                        num_coord=index_pair.coordinate[1:],
                     )
-                    
+
                     # Assign indices to index_type
                     index_type.indices_i7.add(index1)
                     index_type.indices_i5.add(index2)
@@ -314,20 +351,29 @@ class IndexI5Resource(resources.ModelResource):
 
 @admin.register(IndexI5)
 class IndexI5Admin(ImportExportModelAdmin):
-    list_display = (
-        "idx_id",
-        "index",
-        "type",
-    )
+    list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "prefix",
         "index",
         "number",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter),)
+    list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
 
     resource_class = IndexI5Resource
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -349,20 +395,29 @@ class IndexI7Resource(resources.ModelResource):
 
 @admin.register(IndexI7)
 class IndexI7Admin(ImportExportModelAdmin):
-    list_display = (
-        "idx_id",
-        "index",
-        "type",
-    )
+    list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
         "prefix",
         "index",
         "number",
         "index_type__name",
     )
-    list_filter = (("index_type", RelatedDropdownFilter),)
+    list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
 
     resource_class = IndexI7Resource
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(description="Index ID")
     def idx_id(sef, obj):
@@ -378,7 +433,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "provider",
         "catalog",
         "typical_application",
-        "obsolete_name",
+        "archived",
     )
     search_fields = (
         "name",
@@ -386,24 +441,20 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
         "catalog",
         "typical_application",
     )
-    list_filter = ("nucleic_acid_types", "type",)
+    list_filter = ("type", ArchivedFilter)
+
     actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
 
-    @admin.action(description="Mark library protocol as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.action(description="Mark library protocol as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
     @admin.display(description="Nucleic Acid Types")
     def nucleic_acid_type_set(self, obj):
@@ -413,3 +464,18 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
 @admin.register(LibraryType)
 class LibraryTypeAdmin(admin.ModelAdmin):
     filter_horizontal = ("library_protocol",)
+    list_display = ("name", "archived")
+    list_filter = (ArchivedFilter,)
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)

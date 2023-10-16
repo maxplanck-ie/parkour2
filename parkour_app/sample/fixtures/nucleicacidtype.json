@@ -5,7 +5,8 @@
     "fields": {
       "name": "DNA (genomic)",
       "type": "DNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -14,7 +15,18 @@
     "fields": {
       "name": "DNA (fragmented, i.e. Input plus ChIP)",
       "type": "DNA",
-      "status": 1
+      "status": 1,
+      "archived": false
+    }
+  },
+  {
+    "model": "sample.nucleicacidtype",
+    "pk": 3,
+    "fields": {
+      "name": "DNA (cDNA)",
+      "type": "DNA",
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -23,7 +35,8 @@
     "fields": {
       "name": "DNA (Amplicons)",
       "type": "DNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -32,7 +45,8 @@
     "fields": {
       "name": "RNA (total)",
       "type": "RNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -41,7 +55,18 @@
     "fields": {
       "name": "RNA (mRNA)",
       "type": "RNA",
-      "status": 1
+      "status": 1,
+      "archived": false
+    }
+  },
+  {
+    "model": "sample.nucleicacidtype",
+    "pk": 7,
+    "fields": {
+      "name": "RNA (rRNA depleted)",
+      "type": "RNA",
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -50,7 +75,18 @@
     "fields": {
       "name": "RNA (small RNA)",
       "type": "RNA",
-      "status": 1
+      "status": 1,
+      "archived": false
+    }
+  },
+  {
+    "model": "sample.nucleicacidtype",
+    "pk": 9,
+    "fields": {
+      "name": "Fixed cells (specify antibody)",
+      "type": "DNA",
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -59,7 +95,8 @@
     "fields": {
       "name": "fixed cell pellets",
       "type": "DNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -68,7 +105,8 @@
     "fields": {
       "name": "Cell suspension",
       "type": "DNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   },
   {
@@ -77,7 +115,8 @@
     "fields": {
       "name": "Cell suspension_RNA_methods",
       "type": "RNA",
-      "status": 1
+      "status": 1,
+      "archived": false
     }
   }
 ]

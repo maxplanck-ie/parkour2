@@ -1,3 +1,4 @@
+from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
@@ -56,7 +57,7 @@ class LaneInline(admin.TabularInline):
 
 class PoolSizeInline(admin.TabularInline):
     model = PoolSize
-    fields = ('lanes', 'size', 'cycles', 'read_lengths', 'obsolete',)
+    fields = ('lanes', 'size', 'cycles', 'read_lengths', 'archived',)
     ordering = ('lanes', 'size', 'cycles',)
     autocomplete_fields = ('read_lengths',)
     extra = 1
@@ -65,24 +66,23 @@ class PoolSizeInline(admin.TabularInline):
 
 @admin.register(Sequencer)
 class SequencerAdmin(admin.ModelAdmin):
-    list_display = ("name", "obsolete_name")
+    list_display = ("name", "archived")
+
+    list_filter = (ArchivedFilter,)
+
     actions = (
-        "mark_as_obsolete",
-        "mark_as_non_obsolete",
+        "mark_as_archived",
+        "mark_as_non_archived",
     )
     inlines = [PoolSizeInline]
 
-    @admin.action(description="Mark sequencer as obsolete")
-    def mark_as_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.OBSOLETE)
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
 
-    @admin.action(description="Mark sequencer as non-obsolete")
-    def mark_as_non_obsolete(self, request, queryset):
-        queryset.update(obsolete=settings.NON_OBSOLETE)
-
-    @admin.display(description="STATUS")
-    def obsolete_name(self, obj):
-        return "Non-obsolete" if obj.obsolete == settings.NON_OBSOLETE else "Obsolete"
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 @admin.register(Flowcell)
@@ -90,11 +90,24 @@ class FlowcellAdmin(admin.ModelAdmin):
     list_display = (
         "flowcell_id",
         "pool_size",
+        "archived"
     )
-    # search_fields = ('flowcell_id', 'sequencer',)
-    list_filter = ("pool_size",)
+    list_filter = ("pool_size", ArchivedFilter)
     exclude = (
         "lanes",
         "requests",
     )
     inlines = [LaneInline]
+
+    actions = (
+        "mark_as_archived",
+        "mark_as_non_archived",
+    )
+
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
