@@ -12,11 +12,12 @@ from django.shortcuts import get_object_or_404, render
 from request.models import Request
 from rest_framework import status, viewsets
 from rest_framework.authentication import SessionAuthentication
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 
 from .models import CostUnit, Duty
-from .serializers import CostUnitSerializer, DutySerializer
+from .serializers import CostUnitSerializer, DutySerializer, UserSerializer
 
 User = get_user_model()
 
@@ -198,6 +199,14 @@ class DutyViewSet(viewsets.ModelViewSet):
     serializer_class = DutySerializer
     queryset = Duty.objects.all().filter(archived=False).order_by("-start_date")
 
+    @action(methods=["get"], detail=False)
+    def responsibles(self, request, *args, **kwargs):
+        qs = User.objects.filter(is_active=True)
+        serializer = UserSerializer(
+            [u for u in list(qs) if u.facility is not None], many=True
+        )
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def get(self, request, *args, **kwargs):
         serializer = DutySerializer(self.queryset, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -208,7 +217,6 @@ class DutyViewSet(viewsets.ModelViewSet):
             "backup_name": request.data.get("backup_name"),
             "start_date": request.data.get("start_date"),
             "end_date": request.data.get("end_date"),
-            "facility": request.data.get("facility"),
             "platform": request.data.get("platform"),
             "comment": request.data.get("comment"),
             "archived": request.data.get("archived"),
@@ -231,7 +239,6 @@ class DutyViewSet(viewsets.ModelViewSet):
             "backup_name": request.data.get("backup_name"),
             "start_date": request.data.get("start_date"),
             "end_date": request.data.get("end_date"),
-            "facility": request.data.get("facility"),
             "platform": request.data.get("platform"),
             "comment": request.data.get("comment"),
             "archived": request.data.get("archived"),
@@ -242,12 +249,12 @@ class DutyViewSet(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, duty_id, *args, **kwargs):
-        duty_instance = self.get_object(duty_id)
-        if not duty_instance:
-            return Response(
-                {"res": "Object with duty id does not exists"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        duty_instance.delete()
-        return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
+    # def delete(self, request, duty_id, *args, **kwargs):
+    #     duty_instance = self.get_object(duty_id)
+    #     if not duty_instance:
+    #         return Response(
+    #             {"res": "Object with duty id does not exists"},
+    #             status=status.HTTP_400_BAD_REQUEST,
+    #         )
+    #     duty_instance.delete()
+    #     return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)

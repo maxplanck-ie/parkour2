@@ -264,3 +264,8 @@ IPYTHON_ARGUMENTS = [
 
 SETUP_ADMIN_EMAIL = os.environ.get("SETUP_ADMIN_EMAIL", "")
 SETUP_ADMIN_PASSWORD = os.environ.get("SETUP_ADMIN_PASSWORD", None)
+
+
+# Facilities
+DEEPSEQ = "DeepSeq"
+BIOINFO = "Manke"

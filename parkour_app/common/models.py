@@ -92,6 +92,18 @@ class User(AbstractEmailUser):
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
 
+    @property
+    def facility(self):
+        if self.pi is None:
+            membership = None
+        elif self.pi.name == settings.BIOINFO:
+            membership = "Bioinfo"
+        elif self.pi.name == settings.DEEPSEQ:
+            membership = "DeepSeq"
+        else:
+            membership = None
+        return membership
+
     def __str__(self):
         this_user_email = self.email
         if not '"' in this_user_email:
@@ -131,12 +143,6 @@ class Duty(models.Model):
         "End Date",
         null=True,
         blank=True,
-    )
-    facility = models.CharField(
-        "Facility",
-        choices=[("bioinfo", "BioInfo"), ("deepseq", "DeepSeq")],
-        default="bioinfo",
-        max_length=7,
     )
     platform = models.CharField(
         "Platform",

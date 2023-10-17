@@ -305,13 +305,13 @@ class DutyAdmin(admin.ModelAdmin):
         "backup_name",
         "start_date",
         "end_date",
-        "facility",
         "platform",
         "comment",
         "archived",
     )
-    search_fields = ("main_name", "backup_name", "facility", "comment")
-    list_filter = ("facility", ArchivedFilter)
+    search_fields = ("main_name", "backup_name", "comment")
+    list_filter = (ArchivedFilter,)
+    ## TODO: we may want to restore filtering and searching by facility, but it's now a property on users
     actions = (
         "mark_as_archived",
         "mark_as_non_archived",
