@@ -1,6 +1,12 @@
 ??.??.??
 ========
 
+Breaking API changes:
+
+- `<URL>/api/requests/<id>/get_email/` was renamed to `get_contact_details`, and the JSON Response now includes more data from the user.
+
+Other:
+
 - **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after. **(**For The Record: At the time of writing, this upgrade required us to manually remove a missing package, `backports-zoneinfo`, from the _compiled_ `base.txt`...**)**
 - New dependency added, navigate to `<URL>/openapi/schema/redoc` or `<URL>/openapi/schema/swagger-ui` to enjoy either ReDoc or Swagger UI over the automagically generated OpenAPI 3.0 schema.
 - New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.

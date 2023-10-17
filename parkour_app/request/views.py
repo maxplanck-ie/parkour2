@@ -374,8 +374,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @action(methods=["get"], detail=True)
-    def get_email(self, request, pk=None):
-        """Get the user email address to ship him data."""
+    def get_contact_details(self, request, pk=None):
+        """Get the user contact details."""
         users_qs = User.objects.all()
         data = (
             Request.objects.filter(pk=pk)
