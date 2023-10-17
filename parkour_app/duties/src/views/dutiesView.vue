@@ -3,7 +3,6 @@
   <div style="padding: 15px">
     <div style="float: left; width: 78%">
       <div style="margin: 15px; border: 1px solid #006c66">
-<<<<<<< HEAD
         <div
           style="
             padding: 7px 14px;
@@ -20,30 +19,6 @@
               placeholder="Search..."
               @input="searchDuty"
             />
-=======
-        <div style="padding: 10px 10px; background: #ecebe5; overflow-y: auto">
-          <div style="height: 20px">
-            <div style="display: inline; margin-right: 8px">
-              <span style="margin-right: 3px">Search:</span
-              ><input class="search-bar" type="text" />
-            </div>
-            <div class="multi-button">
-              <button>Current</button>
-              <button>Archived</button>
-              <button>All</button>
-            </div>
-            <div style="display: inline">
-              <button class="styled-button">
-                Archive
-              </button>
-              <button class="styled-button">
-                Unarchive
-              </button>
-              <button class="styled-button">
-                Delete
-              </button>
-            </div>
->>>>>>> f89d7f25 (AG grid setup)
           </div>
         </div>
         <div style="padding: 15px">
@@ -52,15 +27,10 @@
             style="height: 723px"
             rowSelection="multiple"
             animateRows="true"
-<<<<<<< HEAD
             rowDragManaged="true"
             :columnDefs="columns"
             :rowData="dutiesList"
             @cellValueChanged="editDuty"
-=======
-            :columnDefs="columns"
-            :rowData="rows"
->>>>>>> f89d7f25 (AG grid setup)
           />
         </div>
       </div>
@@ -86,7 +56,6 @@
       >
         Add Duty
       </div>
-<<<<<<< HEAD
       <div style="padding-top: 6px">
         <div style="padding-left: 8px; font-weight: bold">Facility:</div>
         <div style="padding-left: 30px">
@@ -196,82 +165,11 @@
       <button class="save-button" style="margin: 15px" @click="saveDuty()">
         Save
       </button>
-=======
-      <div style="padding-top: 4px">
-        <div style="padding-left: 8px; font-weight: bold">
-          Responsible Person:
-        </div>
-        <div class="dropdown-select" style="padding-left: 30px">
-          <select name="languages" id="lang">
-        <option value="javascript">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="java">Java</option>
-        <option value="golang">Golang</option>
-        <option value="python">Python</option>
-        <option value="c#">C#</option>
-        <option value="C++">C++</option>
-        <option value="erlang">Erlang</option>
-      </select>
-        </div>
-      </div>
-      <div style="padding-top: 4px">
-        <div style="padding-left: 8px; font-weight: bold">Backup Person</div>
-        <div class="dropdown-select" style="padding-left: 30px">
-          <select name="languages" id="lang">
-        <option value="javascript">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="java">Java</option>
-        <option value="golang">Golang</option>
-        <option value="python">Python</option>
-        <option value="c#">C#</option>
-        <option value="C++">C++</option>
-        <option value="erlang">Erlang</option>
-      </select>
-        </div>
-      </div>
-      <div style="padding-top: 4px">
-        <div style="padding-left: 8px; font-weight: bold">Facility</div>
-        <div class="dropdown-select" style="padding-left: 30px">
-          <select name="languages" id="lang">
-        <option value="javascript">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="java">Java</option>
-        <option value="golang">Golang</option>
-        <option value="python">Python</option>
-        <option value="c#">C#</option>
-        <option value="C++">C++</option>
-        <option value="erlang">Erlang</option>
-      </select>
-        </div>
-      </div>
-      <div style="padding-top: 4px">
-        <div style="padding-left: 8px; font-weight: bold">Platform</div>
-        <div class="dropdown-select" style="padding-left: 30px">
-          <select name="languages" id="lang">
-        <option value="javascript">JavaScript</option>
-        <option value="php">PHP</option>
-        <option value="java">Java</option>
-        <option value="golang">Golang</option>
-        <option value="python">Python</option>
-        <option value="c#">C#</option>
-        <option value="C++">C++</option>
-        <option value="erlang">Erlang</option>
-      </select>
-        </div>
-      </div>
-      <div style="padding-top: 4px">
-        <div style="padding-left: 8px; font-weight: bold">Comments</div>
-        <div style="padding-left: 30px">
-          <input type="text"/>
-        </div>
-      </div>
->>>>>>> f89d7f25 (AG grid setup)
     </div>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import { AgGridVue } from "ag-grid-vue3";
 import { showNotification, handleError, getProp } from "../utils/utilities";
 import { toRaw } from "vue";
@@ -286,14 +184,6 @@ const axiosRef = axios.create({
   xsrfHeaderName: "X-CSRFTOKEN",
 });
 
-=======
-import axios from "axios";
-import { AgGridVue } from "ag-grid-vue3";
-
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-
->>>>>>> f89d7f25 (AG grid setup)
 export default {
   name: "Duties",
   components: {
@@ -301,7 +191,6 @@ export default {
   },
   data() {
     return {
-<<<<<<< HEAD
       dutiesList: [],
       dutiesListBackup: [],
       newDuty: {},
@@ -626,157 +515,6 @@ export default {
       ];
     },
   },
-=======
-      selected: {},
-      allSelectedStatus: 0,
-      columns: null,
-      rows: null,
-    };
-  },
-  beforeMount() {
-    this.columns = [
-      {
-        headerName: "Select",
-        field: "select",
-        cellEditor: 'agCheckboxCellEditor',
-        editable: true
-      },
-      {
-        headerName: "Responsible Person",
-        field: "resp_person",
-        size: 200,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-            values: ['English', 'Spanish', 'French', 'Portuguese', '(other)'],
-            valueListGap: 0
-        }
-      },
-      {
-        headerName: "Backup Person",
-        field: "back_person",
-        size: 150,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-            values: ['English', 'Spanish', 'French', 'Portuguese', '(other)'],
-            valueListGap: 0
-        }
-      },
-      {
-        headerName: "Start Date",
-        field: "start_date",
-        cellEditor: 'agDateCellEditor',   
-        size: 120,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true
-      },
-      {
-        headerName: "End Date",
-        field: "end_date",
-        cellEditor: 'agDateCellEditor',
-        size: 120,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true
-      },
-      {
-        headerName: "Facility",
-        field: "facility",
-        size: 150,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-            values: ['English', 'Spanish', 'French', 'Portuguese', '(other)'],
-            valueListGap: 0
-        }
-      },
-      {
-        headerName: "Platform",
-        field: "platform",
-        size: 150,
-        filter: true,
-        sortable: true,
-        resizable: true,
-        editable: true,
-        cellEditor: 'agSelectCellEditor',
-        cellEditorParams: {
-            values: ['English', 'Spanish', 'French', 'Portuguese', '(other)'],
-            valueListGap: 0
-        }
-      },
-      {
-        headerName: "Comments",
-        field: "comments",
-        size: 300,
-        resizable: true,
-        editable: true
-      },
-    ];
-
-    this.rows = [
-      {
-        select: false,
-        resp_person: "Saurabh",
-        back_person: "Saurabh",
-        start_date: "20-20-2023",
-        end_date: "30-30-2030",
-        facility: "DeepInfo",
-        platform: "Parkour",
-        comments: "This is a comment.",
-        archived: "No",
-      },
-
-      {
-        select: false,
-        resp_person: "Saurabh",
-        back_person: "Saurabh",
-        start_date: "20-20-2023",
-        end_date: "30-30-2030",
-        facility: "DeepInfo",
-        platform: "Parkour",
-        comments: "This is a comment.",
-        archived: "No",
-      },
-
-      {
-        select: false,
-        resp_person: "Saurabh",
-        back_person: "Saurabh",
-        start_date: "20-20-2023",
-        end_date: "30-30-2030",
-        facility: "DeepInfo",
-        platform: "Parkour",
-        comments: "This is a comment.",
-        archived: "No",
-      },
-    ];
-  },
-  created() {
-    try {
-      axios
-        .get("http://localhost:9980/duty")
-        .then((response) => console.log(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  },
-  watch: {},
-  computed: {},
-  methods: {},
->>>>>>> f89d7f25 (AG grid setup)
 };
 </script>
 
@@ -791,7 +529,6 @@ export default {
 }
 
 .search-bar {
-<<<<<<< HEAD
   height: 28px;
   width: 25%;
   padding: 0px 8px;
@@ -834,37 +571,4 @@ export default {
 select:disabled {
   background: #dddddd;
 }
-=======
-  height: 25px;
-}
-
-.multi-button {
-  border: 1px solid black;
-  height: 25px;
-  display: inline-block; margin-right: 8px;
-}
-
-.multi-button > button {
-  width: 60px;
-  font-size: 10px;
-  height: 12px;
-  border: none;
-  margin-top: -10px;
-}
-
-.multi-button > button:nth-child(1), .multi-button > button:nth-child(2){
-border-right: 1px solid black !important;
-}
-
-.styled-button {
-  display: inline;
-  float: right;
-  margin-left: 8px;
-  height: 25px;
-}
-/* .header-wrapper,
-.rowHeaders {
-  background-color: #29485d54 !important;
-} */
->>>>>>> f89d7f25 (AG grid setup)
 </style>
