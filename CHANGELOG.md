@@ -11,7 +11,7 @@ Breaking changes:
 
 Non-breaking changes:
 
-- **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after. **(**For The Record: At the time of writing, this upgrade required us to manually remove a missing package, `backports-zoneinfo`, from the _compiled_ `base.txt`...**)**
+- **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after.
 - New dependency added, navigate to `<URL>/openapi/schema/redoc` or `<URL>/openapi/schema/swagger-ui` to enjoy either ReDoc or Swagger UI over the automagically generated OpenAPI 3.0 schema.
 - New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
 - Added a new Django management command: list_templates
