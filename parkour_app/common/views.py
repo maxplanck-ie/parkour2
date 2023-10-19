@@ -220,6 +220,7 @@ class DutyViewSet(viewsets.ModelViewSet):
             "end_date": request.data.get("end_date"),
             "platform": request.data.get("platform"),
             "comment": request.data.get("comment"),
+            "archived": request.data.get("archived"),
         }
         serializer = DutySerializer(data=data)
         if serializer.is_valid():
@@ -241,6 +242,7 @@ class DutyViewSet(viewsets.ModelViewSet):
             "end_date": request.data.get("end_date"),
             "platform": request.data.get("platform"),
             "comment": request.data.get("comment"),
+            "archived": request.data.get("archived"),
         }
         serializer = DutySerializer(instance=duty_instance, data=data, partial=True)
         if serializer.is_valid():
