@@ -26,6 +26,7 @@ class PrincipalInvestigator(models.Model):
     organization = models.ForeignKey(
         Organization, on_delete=models.SET(get_deleted_org)
     )
+    email = models.EmailField("E-Mail Address", default="Unset")
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
