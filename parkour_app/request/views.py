@@ -613,8 +613,6 @@ class RequestViewSet(viewsets.ModelViewSet):
         )
         records = []
 
-        # TODO: check if it's possible to send emails at all
-
         try:
             if subject == "" or message == "":
                 raise ValueError("Email subject and/or message is missing.")
