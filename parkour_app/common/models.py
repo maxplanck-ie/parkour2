@@ -105,6 +105,18 @@ class User(AbstractEmailUser):
             membership = None
         return membership
 
+    @property
+    def can_solicite_paperless_approval(self):
+        result_user = False
+        result_pi = False
+        user_email = self.email
+        pi_email = self.pi.email
+        if not '"' in user_email and user_email.split("@")[1] == settings.EMAIL_HOST:
+            result_user = True
+        if not '"' in pi_email and pi_email.split("@")[1] == settings.EMAIL_HOST:
+            result_pi = True
+        return result_user and result_pi
+
     def __str__(self):
         this_user_email = self.email
         if not '"' in this_user_email:
