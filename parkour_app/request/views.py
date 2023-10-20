@@ -632,7 +632,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 )
 
             if include_records:
-                records = list(instance.libraries) + list(instance.samples)
+                records = list(instance.libraries.all()) + list(instance.samples.all())
                 records = sorted(records, key=lambda x: x.barcode[3:])
 
             instance.token = get_random_string(30)
