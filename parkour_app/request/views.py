@@ -10,10 +10,13 @@ from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagi
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Prefetch
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.crypto import get_random_string
 from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
@@ -599,6 +602,68 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.samples.all().update(status=1)
 
         return JsonResponse({"success": True, "name": file_name, "path": file_path})
+
+    @action(methods=["post"], detail=True)
+    def solicite_approval(self, request, pk=None):  # pragma: no cover
+        """Send an email to the PI."""
+        error = ""
+
+        instance = self.get_object()
+        subject = f"[ PK2 | Experiment Approval for {instance.id} ]  "
+        subject += request.data.get("subject", "")
+        message = request.data.get("message", "")
+        include_records = json.loads(request.POST.get("include_records", "true"))
+        records = []
+
+        try:
+            if instance.user.pi.archived:
+                raise ValueError(
+                    "PI: "
+                    + instance.user.pi
+                    + ", is no longer enrolled. Please contact: "
+                    + settings.ADMIN_EMAIL
+                )
+            elif instance.user.pi.email == "Unset":
+                raise ValueError(
+                    "PI: "
+                    + instance.user.pi
+                    + ", has no e-mail address assigned. Please contact: "
+                    + settings.ADMIN_EMAIL
+                )
+
+            if include_records:
+                records = list(instance.libraries) + list(instance.samples)
+                records = sorted(records, key=lambda x: x.barcode[3:])
+
+            instance.token = get_random_string(30)
+            instance.save(update_fields=["token"])
+
+            url_scheme = request.is_secure() and "https" or "http"
+            url_domain = get_current_site(request).domain
+            url_query = urlencode({"token": instance.token})
+
+            send_mail(
+                subject=subject,
+                message="",
+                html_message=render_to_string(
+                    "approval.html",
+                    {
+                        "full_name": instance.user.full_name,
+                        "pi_name": instance.user.pi.name,
+                        "message": message,
+                        "token_url": f"{url_scheme}://{url_domain}?{url_query}",
+                        "records": records,
+                    },
+                ),
+                from_email=[instance.user.email],
+                recipient_list=[instance.user.pi.email],
+            )
+
+        except Exception as e:
+            error = str(e)
+            logger.exception(e)
+
+        return JsonResponse({"success": not error, "error": error})
 
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def send_email(self, request, pk=None):  # pragma: no cover

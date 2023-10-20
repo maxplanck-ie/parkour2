@@ -22,6 +22,7 @@ Non-breaking changes:
 - Added 'archival' feature to CostUnit(s).
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
+- Added an EmailField to PrincipalInvestigator. Meanwhile, a paperless approval via e-mail of sequencing requests is in the works...
 
 23.09.20
 ========
