@@ -610,7 +610,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         error = ""
 
         instance = self.get_object()
-        subject = f"[ PK2 | Experiment Approval for {instance.id} ]  "
+        subject = f"[ Parkour2 | sequencing experiment is pending approval ] "
         subject += request.data.get("subject", "")
         message = request.data.get("message", "")
         include_records = json.loads(request.POST.get("include_records", "true"))
