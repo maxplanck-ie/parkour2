@@ -4,9 +4,13 @@
 <p>{{ message }}</p>
 
 <p>
-    {{ full_name }} requested your approval on this sequencing request,
-    to do so, please click <a href={{ token_url }}>here</a>.
-    <b>Don't forward this e-mail, and please treat it as a one-time password.</b>
+    {{ full_name }} requested your approval on this experiment.
+    <b>Please treat the link within this email message as a one-time password,
+        scoped for the authorization of this sequencing request.</b>
+    To approve it, just forward, or Reply "OK", to this email.
+    Then {{ full_name }}, who's already authenticated with Parkour LIMS,
+    can click <a href={{ token_url }}>here</a>.
+    Afterward, processing will be started right away at the facility.
 </p>
 
 {% if records %}
