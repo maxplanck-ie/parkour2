@@ -656,7 +656,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "records": records,
                     },
                 ),
-                from_email=[instance.user.email],
+                from_email=instance.user.email,
                 recipient_list=[instance.user.pi.email],
             )
 
