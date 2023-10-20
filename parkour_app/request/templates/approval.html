@@ -3,10 +3,9 @@
 
 <p>{{ full_name }} requested your approval on this experiment.</p>
 
-{% if message %}
-They wrote:<br/>
-<hr/><p>{{ message }}</p><hr/>
-{% endif %}
+<p>They wrote:<br/>{{ message }}</p>
+
+<hr/>
 
 <p>
     <b>Please treat the link within this email message as a one-time password,
@@ -19,8 +18,6 @@ They wrote:<br/>
 </p>
 
 {% if records %}
-<p>The list of libraries/samples:</p>
-<hr/>
 <table style="width:100%;">
     <thead>
         <tr style="font-weight:bold;">
@@ -45,7 +42,6 @@ They wrote:<br/>
         {% endfor %}
     </tbody>
 </table>
-<hr/>
 {% endif %}
 
 <p>
