@@ -659,15 +659,20 @@ class RequestViewSet(viewsets.ModelViewSet):
             logger.exception(e)
         return JsonResponse({"success": not error, "error": error})
 
-    @action(methods=["post"], detail=True)
-    def approve(self, request):  # pragma: no cover
+    @action(methods=["get"], detail=True)
+    def approve(self, request, *args, **kwargs):  # pragma: no cover
         """Process token sent to PI."""
         error = ""
         instance = self.get_object()
         try:
             token = request.query_params.get("token")
-            if not token == instance.token:
-                raise ValueError(f"Token mismatch ({token}).")
+            if token == instance.token:
+                instance.libraries.all().update(status=1)
+                instance.samples.all().update(status=1)
+                instance.token = None
+                instance.save(update_fields=["token"])
+            else:
+                raise ValueError(f"Token mismatch.")
         except Exception as e:
             error = str(e)
             logger.exception(e)
