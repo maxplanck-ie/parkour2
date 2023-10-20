@@ -33,7 +33,6 @@ class RequestSerializer(ModelSerializer):
             "sequenced",
             "number_of_samples",
             "filepaths",
-            "token",
         )
 
     def get_user_full_name(self, obj):
