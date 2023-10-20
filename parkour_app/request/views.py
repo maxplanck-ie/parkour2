@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from unicodedata import normalize
+from urllib.parse import urlencode
 
 from common.serializers import UserSerializer
 from common.utils import retrieve_group_items
