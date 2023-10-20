@@ -608,21 +608,20 @@ class RequestViewSet(viewsets.ModelViewSet):
     def solicite_approval(self, request, pk=None):  # pragma: no cover
         """Send an email to the PI."""
         error = ""
-
         instance = self.get_object()
         subject = f"[ Parkour2 | sequencing experiment is pending approval ] "
         subject += request.data.get("subject", "")
         message = request.data.get("message", "")
         include_records = json.loads(request.POST.get("include_records", "true"))
         records = []
-
         try:
             if instance.user.pi.archived:
                 raise ValueError(
                     "PI: "
                     + instance.user.pi
-                    + ", is no longer enrolled. Please contact: "
+                    + ", is no longer enrolled. Please ask: "
                     + settings.ADMIN_EMAIL
+                    + " to un-archive the entry at the database."
                 )
             elif instance.user.pi.email == "Unset":
                 raise ValueError(
@@ -631,18 +630,14 @@ class RequestViewSet(viewsets.ModelViewSet):
                     + ", has no e-mail address assigned. Please contact: "
                     + settings.ADMIN_EMAIL
                 )
-
             if include_records:
                 records = list(instance.libraries.all()) + list(instance.samples.all())
                 records = sorted(records, key=lambda x: x.barcode[3:])
-
             instance.token = get_random_string(30)
             instance.save(update_fields=["token"])
-
             url_scheme = request.is_secure() and "https" or "http"
             url_domain = get_current_site(request).domain
             url_query = urlencode({"token": instance.token})
-
             send_mail(
                 subject=subject,
                 message="",
@@ -652,18 +647,30 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "full_name": instance.user.full_name,
                         "pi_name": instance.user.pi.name,
                         "message": message,
-                        "token_url": f"{url_scheme}://{url_domain}?{url_query}",
+                        "token_url": f"{url_scheme}://{url_domain}/api/requests/{instance.id}/approve?{url_query}",
                         "records": records,
                     },
                 ),
                 from_email=instance.user.email,
                 recipient_list=[instance.user.pi.email],
             )
-
         except Exception as e:
             error = str(e)
             logger.exception(e)
+        return JsonResponse({"success": not error, "error": error})
 
+    @action(methods=["post"], detail=True)
+    def approve(self, request):  # pragma: no cover
+        """Process token sent to PI."""
+        error = ""
+        instance = self.get_object()
+        try:
+            token = request.query_params.get("token")
+            if not token == instance.token:
+                raise ValueError(f"Token mismatch ({token}).")
+        except Exception as e:
+            error = str(e)
+            logger.exception(e)
         return JsonResponse({"success": not error, "error": error})
 
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
