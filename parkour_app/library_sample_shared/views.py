@@ -227,8 +227,10 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
                         400,
                     )
             serializer = self.serializer_class(records, many=True)
-            if records.name is not None:
+            try:
                 data += serializer.data
+            except AttributeError:
+                print(f"{records.name} is None! skipping {serializer}")
 
         return Response({"success": True, "data": data})
 
