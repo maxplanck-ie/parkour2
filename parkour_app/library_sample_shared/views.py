@@ -227,7 +227,8 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
                         400,
                     )
             serializer = self.serializer_class(records, many=True)
-            data += serializer.data
+            if records.name is not None:
+                data += serializer.data
 
         return Response({"success": True, "data": data})
 
