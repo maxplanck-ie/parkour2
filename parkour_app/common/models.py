@@ -109,14 +109,15 @@ class User(AbstractEmailUser):
     def can_solicite_paperless_approval(self):
         result_user = False
         result_pi = False
-        user_email = self.email
-        pi_email = self.pi.email
-        if pi_email != "Unset":
-            if not '"' in pi_email and pi_email.split("@")[1] == settings.EMAIL_HOST:
+        if self.pi is not None and self.pi.email != "Unset":
+            if (
+                not '"' in self.pi.email
+                and self.pi.email.split("@")[1] == settings.EMAIL_HOST
+            ):
                 result_pi = True
             if (
-                not '"' in user_email
-                and user_email.split("@")[1] == settings.EMAIL_HOST
+                not '"' in self.email
+                and self.email.split("@")[1] == settings.EMAIL_HOST
             ):
                 result_user = True
         return result_user and result_pi
