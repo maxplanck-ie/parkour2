@@ -28,6 +28,7 @@
             rowSelection="multiple"
             animateRows="true"
             rowDragManaged="true"
+            stopEditingWhenCellsLoseFocus="true"
             :columnDefs="columns"
             :rowData="dutiesList"
             @cellValueChanged="editDuty"
@@ -203,6 +204,7 @@ export default {
   beforeMount() {
     this.getUsers();
   },
+  mounted() {},
   created() {},
   watch: {},
   computed: {},
@@ -254,56 +256,58 @@ export default {
           .finally(() => (this.loading = false));
       }
     },
-    getDuty(userList) {
-      axiosRef
-        .get("http://localhost:9980/api/duties/")
-        .then((response) => {
-          let fetchedRows = [];
-          getProp(response, "data", []).forEach((element) => {
-            fetchedRows.push({
-              duty_id: element.id,
-              facility: getProp(
-                userList.find(
-                  (matcherElement) =>
-                    getProp(matcherElement, "id", 0) ==
-                    getProp(element, "main_name", 0)
-                ) || {},
-                "facility",
-                "-"
-              ),
-              main_name: getProp(
-                userList.find(
-                  (matcherElement) =>
-                    getProp(matcherElement, "id", 0) ==
-                    getProp(element, "main_name", 0)
-                ) || {},
-                "first_name",
-                "-"
-              ),
-              backup_name: getProp(
-                userList.find(
-                  (matcherElement) =>
-                    getProp(matcherElement, "id", 0) ==
-                    getProp(element, "backup_name", 0)
-                ) || {},
-                "first_name",
-                "-"
-              ),
-              start_date:
-                getProp(element, "start_date", "") &&
-                moment(getProp(element, "start_date", "")).format("YYYY-MM-DD"),
-              end_date:
-                getProp(element, "end_date", "") &&
-                moment(getProp(element, "end_date", "")).format("YYYY-MM-DD"),
-              platform: String(getProp(element, "platform", "-")).toLowerCase(),
-              comment: getProp(element, "comment", ""),
-            });
+    async getDuty(userList) {
+      try {
+        const response = await axiosRef.get(
+          "http://localhost:9980/api/duties/"
+        );
+        let fetchedRows = [];
+        getProp(response, "data", []).forEach((element) => {
+          fetchedRows.push({
+            duty_id: element.id,
+            facility: getProp(
+              userList.find(
+                (matcherElement) =>
+                  getProp(matcherElement, "id", 0) ==
+                  getProp(element, "main_name", 0)
+              ) || {},
+              "facility",
+              "-"
+            ),
+            main_name: getProp(
+              userList.find(
+                (matcherElement_1) =>
+                  getProp(matcherElement_1, "id", 0) ==
+                  getProp(element, "main_name", 0)
+              ) || {},
+              "first_name",
+              "-"
+            ),
+            backup_name: getProp(
+              userList.find(
+                (matcherElement_2) =>
+                  getProp(matcherElement_2, "id", 0) ==
+                  getProp(element, "backup_name", 0)
+              ) || {},
+              "first_name",
+              "-"
+            ),
+            start_date:
+              getProp(element, "start_date", "") &&
+              moment(getProp(element, "start_date", "")).format("YYYY-MM-DD"),
+            end_date:
+              getProp(element, "end_date", "") &&
+              moment(getProp(element, "end_date", "")).format("YYYY-MM-DD"),
+            platform: String(getProp(element, "platform", "-"))[0].toUpperCase()+String(getProp(element, "platform", "-")).slice(1),
+            comment: getProp(element, "comment", ""),
           });
+        });
 
-          this.dutiesList = fetchedRows;
-          this.dutiesListBackup = fetchedRows;
-        })
-        .finally(() => (this.loading = false));
+        this.dutiesList = fetchedRows;
+        this.dutiesListBackup = fetchedRows;
+      } finally {
+        return (this.loading = false);
+      }
     },
     editDuty(rowData) {
       let dutyId = rowData.data.duty_id;
@@ -342,7 +346,7 @@ export default {
             newValue = moment(newValue);
             break;
           case "platform":
-            newValue = newValue[0].toLowerCase() + newValue.slice(1);
+            newValue = String(newValue).toLowerCase();
             break;
           case "comment":
             newValue = newValue.trim();
@@ -352,7 +356,6 @@ export default {
           .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
-          .then()
           .catch((error) => handleError(error))
           .finally(() => (this.loading = false));
       }
