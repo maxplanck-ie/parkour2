@@ -208,6 +208,7 @@ export default {
   computed: {},
   methods: {
     updateDutyObject(event) {
+      let newDuty = toRaw(this.newDuty);
       if (event.target.id === "facility") {
         this.newDuty.main_name = "";
         this.newDuty.backup_name = "";
@@ -221,11 +222,18 @@ export default {
           (element) =>
             element.facility === document.getElementById("facility").value
         );
+        newDuty[event.target.id] = event.target.value;
+        this.newDuty = newDuty;
+      } else if (
+        event.target.id === "start_date" ||
+        event.target.id === "end_date"
+      ) {
+        newDuty[event.target.id] = moment(event.target.value);
+        this.newDuty = newDuty;
+      } else {
+        newDuty[event.target.id] = event.target.value;
+        this.newDuty = newDuty;
       }
-
-      let newDuty = toRaw(this.newDuty);
-      newDuty[event.target.id] = event.target.value;
-      this.newDuty = newDuty;
     },
     saveDuty() {
       let newDuty = toRaw(this.newDuty);
@@ -327,6 +335,12 @@ export default {
               0
             );
             break;
+          case "start_date":
+            newValue = moment(newValue);
+            break;
+          case "end_date":
+            newValue = moment(newValue);
+            break;
           case "platform":
             newValue = newValue[0].toLowerCase() + newValue.slice(1);
             break;
@@ -338,7 +352,7 @@ export default {
           .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
-          .then(this.getDuty(this.userList))
+          .then()
           .catch((error) => handleError(error))
           .finally(() => (this.loading = false));
       }
