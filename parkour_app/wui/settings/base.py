@@ -40,9 +40,10 @@ CSRF_TRUSTED_ORIGINS = (
     CSRF_TRUSTED_ORIGINS.split(",") if CSRF_TRUSTED_ORIGINS is not None else []
 )
 
-#CORS Configuration
+# CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW = True
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
 
 # Application definition

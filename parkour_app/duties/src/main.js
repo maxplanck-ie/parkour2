@@ -5,7 +5,7 @@ import { createPinia } from "pinia";
 
 import vueApp from "./vueApp.vue";
 import router from "./router/router.js";
- 
+
 const app = createApp(vueApp);
 const store = createPinia();
 

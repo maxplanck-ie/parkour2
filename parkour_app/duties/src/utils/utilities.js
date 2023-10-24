@@ -1,5 +1,5 @@
 export function showNotification(content, type) {
-    console.log(content)
+  console.log(content);
 }
 
 export function handleError(error) {

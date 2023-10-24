@@ -178,7 +178,7 @@ import moment from "moment";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
-const axiosRef = axios.create({
+var axiosRef = axios.create({
   withCredentials: true,
   xsrfCookieName: "csrftoken",
   xsrfHeaderName: "X-CSRFTOKEN",
@@ -298,7 +298,6 @@ export default {
         .finally(() => (this.loading = false));
     },
     editDuty(rowData) {
-      console.log("sss", rowData);
       let dutyId = rowData.data.duty_id;
       let columnName = rowData.column.colId;
       let oldValue = String(rowData.oldValue);
