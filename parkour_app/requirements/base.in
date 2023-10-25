@@ -7,7 +7,7 @@ django-extensions
 django-import-export
 gunicorn
 django-linear-migrations
-mozilla-django-oidc==2.0.0
+mozilla-django-oidc
 django-constance[database]
 psycopg2-binary
 dj-database-url
