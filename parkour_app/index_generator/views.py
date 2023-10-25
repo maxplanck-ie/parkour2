@@ -188,6 +188,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         """
         pool_size_id = request.data.get("pool_size_id", None)
         pool_name = request.data.get("pool_name", "")
+        ignore_errors = True if request.data.get("ignore_errors", False) == 'true' else False
         libraries = json.loads(request.data.get("libraries", "[]"))
         samples = json.loads(request.data.get("samples", "[]"))
 
@@ -234,11 +235,16 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                     sample.save(update_fields=["index_i7", "index_i5"])
 
             except ValueError as e:
-                pool.delete()
+                
+                if not ignore_errors:
+                    pool.delete()
                 raise e
 
         except Exception as e:
-            return Response({"success": False, "message": str(e)}, 400)
+            if not ignore_errors:
+                return Response({"success": False, "message": str(e)}, 400)
+            else:
+                pass
 
         # Add samples before libraries so that in the update_libraries_create_pooling_obj
         # signal checking for the presence of samples in the pool is meaningful

@@ -725,7 +725,16 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
                   iconCls: 'fa fa-floppy-o fa-lg',
                   text: 'Save Pool',
                   disabled: true
-                }]
+                },
+                {
+                  xtype: 'button',
+                  id: 'save-pool-ignore-errors-button',
+                  itemId: 'save-pool-ignore-errors-button',
+                  iconCls: 'fa fa-floppy-o fa-lg',
+                  text: 'Ignore error(s) and Save Pool',
+                  disabled: true,
+                },
+              ]
           },
         ]
       }

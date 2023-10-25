@@ -22,6 +22,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       '#save-pool-button': {
         click: 'save'
       },
+      '#save-pool-ignore-errors-button': {
+        click: 'saveIgnoreErrors'
+      },
       '#generate-indices-button': {
         click: 'generateIndices'
       }
@@ -217,6 +220,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     // Update Summary
     grid.getView().refresh();
     var savePoolButton = grid.down('#save-pool-button');
+    var savePoolIgnoreErrorsButton = grid.down('#save-pool-ignore-errors-button');
     var generateIndexButton = grid.down('#generate-indices-button');
     var poolName = grid.down("#pool-name");
     var sequencerChemistryCb = grid.down("#sequencerChemistryCb");
@@ -229,6 +233,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         grid.getStore().sum('sequencing_depth')
       ));
       savePoolButton.enable();
+      savePoolIgnoreErrorsButton.enable();
       sequencerChemistryCb.enable();
       minHammingDistanceBox.enable();
       poolName.enable();
@@ -249,6 +254,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     } else {
       grid.setTitle('Pool');
       savePoolButton.disable();
+      savePoolIgnoreErrorsButton.disable()
       sequencerChemistryCb.enable();
       minHammingDistanceBox.enable();
       generateIndexButton.disable();
@@ -346,7 +352,18 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     });
   },
 
-  save: function () {
+
+  saveIgnoreErrors: function(btn){
+    var me = this;
+    Ext.MessageBox.confirm('', 'Are you sure you want to ignore any index errors and save the pool?', function (MsBoxBtn) {
+      if (MsBoxBtn === 'yes') {
+        me.save(btn);
+      }
+    });
+
+  },
+
+  save: function (btn) {
     var me = this;
     var grid = Ext.getCmp('pool-grid');
     var poolName = grid.down('#pool-name');
@@ -364,12 +381,16 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var samples = [];
     var librariesRequestNames = [];
 
-    if (!this._isPoolValid(store)) {
-      new Noty({
-        text: 'Some of the indices are empty. The pool cannot be saved.',
-        type: 'warning'
-      }).show();
-      return;
+    var ignoreErrors = btn.id === 'save-pool-ignore-errors-button';
+
+    if (!ignoreErrors) {
+      if (!this._isPoolValid(store)) {
+        new Noty({
+          text: 'Some of the indices are empty. The pool cannot be saved.',
+          type: 'warning'
+        }).show();
+        return;
+      }
     }
 
     // if (Ext.query('.problematic-cycle').length > 0) {
@@ -412,6 +433,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       scope: this,
       params: {
         pool_size_id: Ext.getCmp('poolSizeCb').getValue(),
+        ignore_errors: ignoreErrors,
         pool_name: poolName.value,
         libraries: Ext.JSON.encode(libraries),
         samples: Ext.JSON.encode(samples)
@@ -441,6 +463,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
             poolName.reset();
             poolName.disable();
             grid.down("#save-pool-button").disable();
+            grid.down("#save-pool-ignore-errors-button").disable();
             grid.down("#generate-indices-button").disable();
             var sequencerChemistryCb = grid.down("#sequencerChemistryCb");
             var minHammingDistanceBox = grid.down("#minHammingDistanceBox");
