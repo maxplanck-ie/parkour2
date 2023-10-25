@@ -30,7 +30,7 @@ executing==2.0.0
     # via stack-data
 ipdb==0.13.13
     # via -r parkour_app/requirements/dev.in
-ipykernel==6.25.2
+ipykernel==6.26.0
     # via -r parkour_app/requirements/dev.in
 ipython==8.16.1
     # via
@@ -38,7 +38,7 @@ ipython==8.16.1
     #   ipykernel
 jedi==0.19.1
     # via ipython
-jupyter-client==8.4.0
+jupyter-client==8.5.0
     # via ipykernel
 jupyter-core==5.4.0
     # via
@@ -92,7 +92,7 @@ tornado==6.3.3
     # via
     #   ipykernel
     #   jupyter-client
-traitlets==5.11.2
+traitlets==5.12.0
     # via
     #   comm
     #   ipykernel
