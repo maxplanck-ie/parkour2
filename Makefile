@@ -170,6 +170,9 @@ load-postgres-plain:
 			"psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null" || \
 		echo "ERROR: ./this.sql not found, do something in the lines of... cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
 
+pg-analyze:
+	@docker exec -it parkour2-postgres psql -d postgres -U postgres -c 'ANALYZE VERBOSE'  > pg-analyze.txt.ignore
+
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
 load-fixtures: apply-migrations
