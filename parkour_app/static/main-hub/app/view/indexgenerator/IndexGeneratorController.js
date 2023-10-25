@@ -355,12 +355,11 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
   saveIgnoreErrors: function(btn){
     var me = this;
-    Ext.MessageBox.confirm('', 'Are you sure you want to ignore any index errors and save the pool?', function (MsBoxBtn) {
+    Ext.MessageBox.confirm('', 'Are you sure you want to ignore any errors with the indices and save the pool?', function (MsBoxBtn) {
       if (MsBoxBtn === 'yes') {
         me.save(btn);
       }
     });
-
   },
 
   save: function (btn) {
