@@ -157,10 +157,11 @@ load-media:  ## Copy all media files into running instance
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
-		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump && \
-		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c tmp_parkour-postgres.dump > /dev/null && \
-		echo "Info: Loaded PostgreSQL database OK." || \
-		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
+		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump
+	@docker exec parkour2-postgres sh -c "pg_restore --data-only --disable-triggers \
+		--dbname=postgres --username=postgres tmp_parkour-postgres.dump \
+		1> /tmp/pg_log_out.txt 2> /tmp/pg_log_err.txt" || \
+			docker exec parkour2-postgres cat /tmp/pg_log_err.txt
 
 load-postgres-plain:
 	@test -e ./this.sql && \
@@ -168,6 +169,9 @@ load-postgres-plain:
 		docker exec parkour2-postgres sh -c \
 			"psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null" || \
 		echo "ERROR: ./this.sql not found, do something in the lines of... cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
+
+pg-analyze:
+	@docker exec -it parkour2-postgres psql -d postgres -U postgres -c 'ANALYZE VERBOSE'  > pg-analyze.txt.ignore
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 
