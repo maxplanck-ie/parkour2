@@ -630,9 +630,13 @@ class RequestViewSet(viewsets.ModelViewSet):
                     + ", has no e-mail address assigned. Please contact: "
                     + settings.ADMIN_EMAIL
                 )
-            if include_records:
-                records = list(instance.libraries.all()) + list(instance.samples.all())
-                records = sorted(records, key=lambda x: x.barcode[3:])
+            records = list(instance.libraries.all()) + list(instance.samples.all())
+            for r in records:
+                if r.status != 0:
+                    raise ValueError("Not all records have status of zero.")
+            records = sorted(records, key=lambda x: x.barcode[3:])
+            if not include_records:
+                records = []
             instance.token = get_random_string(30)
             instance.save(update_fields=["token"])
             url_scheme = request.is_secure() and "https" or "http"
