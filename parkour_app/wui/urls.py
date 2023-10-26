@@ -36,6 +36,6 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [
-        # path("schema-viewer/", include("schema_viewer.urls")),  # waiting for dj 4.2
+        path("schema-viewer/", include("schema_viewer.urls")),
         path("__debug__/", include("debug_toolbar.urls")),
     ]
