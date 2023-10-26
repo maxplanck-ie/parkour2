@@ -11,8 +11,8 @@
         <tr style="font-weight:bold;">
             <td>Name</td>
             <td>Barcode</td>
+            <td>Nucleic Acid Type</td>
             <td>Protocol</td>
-            <td>Facility Comment</td>
         </tr>
     </thead>
     <tbody>
@@ -20,12 +20,8 @@
             <tr>
                 <td>{{ record.name }}</td>
                 <td>{{ record.barcode }}</td>
+                <td>{{ record.nucleic_acid_type.name }}</td>
                 <td>{{ record.library_protocol.name }}</td>
-                {% if record.comments_facility %}
-                    <td>{{ record.comments_facility }}</td>
-                {% else %}
-                    <td></td>
-                {% endif %}
             </tr>
         {% endfor %}
     </tbody>
