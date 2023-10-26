@@ -73,6 +73,16 @@ Ext.define('MainHub.view.requests.RequestsController', {
         },
         '-',
         {
+          text: 'Solicite Approval via Email',
+          hidden: !USER.can_solicite_paperless_approval,
+          handler: function () {
+            Ext.create('MainHub.view.requests.TokenWindow', {
+              title: 'New Email for Approval Solicitation',
+              record: record
+            });
+          }
+        },
+        {
           text: 'Download Request Form',
           tooltip: 'Download deep sequencing request form',
           disabled: !(deepSeqReqPath === ''),
@@ -118,16 +128,6 @@ Ext.define('MainHub.view.requests.RequestsController', {
           handler: function () {
             Ext.create('MainHub.view.requests.EmailWindow', {
               title: 'New Email',
-              record: record
-            });
-          }
-        },
-        {
-          text: 'Solicite Approval via Email',
-          hidden: !USER.can_solicite_paperless_approval,
-          handler: function () {
-            Ext.create('MainHub.view.requests.TokenWindow', {
-              title: 'New Email for Approval Solicitation',
               record: record
             });
           }
