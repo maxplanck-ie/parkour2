@@ -1,5 +1,14 @@
 <template>
-  <div class="header" style="padding: 5px, margin: 5px">Manage Duties</div>
+  <div class="header">
+    <font-awesome-icon
+      style="font-size: 28px"
+      icon="fa-solid fa-chalkboard-user"
+      size="xl"
+    />
+    <span style="font-size: 20px; font-weight: bold; margin-left: 5px">
+      Manage Duties</span
+    >
+  </div>
   <div style="padding: 15px">
     <div style="float: left; width: 78%">
       <div style="margin: 15px; border: 1px solid #006c66">
@@ -12,26 +21,29 @@
           "
         >
           <div>
-            <span class="icon"><i class="fa fa-search"></i></span>
+            <span class="icon"><i class="fa fa-book"></i></span>
             <input
               class="search-bar"
               type="text"
               placeholder="Search..."
-              @input="searchDuty"
+              @input="searchDuties"
             />
           </div>
         </div>
         <div style="padding: 15px">
           <ag-grid-vue
+            ref="dutiesGrid"
             class="ag-theme-alpine"
             style="height: 723px"
             rowSelection="multiple"
             animateRows="true"
             rowDragManaged="true"
             stopEditingWhenCellsLoseFocus="true"
-            :columnDefs="columns"
+            :columnDefs="columnsList"
             :rowData="dutiesList"
+            :gridOptions="gridOptions"
             @cellValueChanged="editDuty"
+            @first-data-rendered="updateGridDataObject"
           />
         </div>
       </div>
@@ -55,7 +67,8 @@
           height: 42px;
         "
       >
-        Add Duty
+        <font-awesome-icon icon="fa-regular fa-calendar-plus" />
+        <span style="margin-left: 4px">Add Duty</span>
       </div>
       <div style="padding-top: 6px">
         <div style="padding-left: 8px; font-weight: bold">Facility:</div>
@@ -176,8 +189,6 @@ import { showNotification, handleError, getProp } from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
 
 var axiosRef = axios.create({
   withCredentials: true,
@@ -192,15 +203,18 @@ export default {
   },
   data() {
     return {
-      dutiesList: [],
-      dutiesListBackup: [],
+      dutiesList: null,
+      dutiesListBackup: null,
       newDuty: {},
       userList: [],
       userListFiltered: [],
-      columns: [],
-      loading: false,
+      columnsList: [],
+      gridOptions: {},
+      gridData: [],
+      recordCounter: 0,
     };
   },
+  setup() {},
   beforeMount() {
     this.getUsers();
   },
@@ -238,25 +252,31 @@ export default {
       }
     },
     saveDuty() {
+      this.gridOptions.api.showLoadingOverlay();
       let newDuty = toRaw(this.newDuty);
       if (
         !newDuty.main_name ||
         !newDuty.main_name ||
         !newDuty.backup_name ||
         !newDuty.start_date ||
-        !newDuty.end_date ||
         !newDuty.platform
       ) {
-        showNotification("Please check all the necessary fields.", "Error");
+        showNotification(
+          "Please check all the necessary fields: \n 1. Facility \n 2. Responsible Person \n 3. Backup Person \n 4. Start Date \n 5. Platform",
+          "error"
+        );
       } else {
         axiosRef
           .post("http://localhost:9980/api/duties/", newDuty)
-          .then(this.getDuty(this.userList))
+          .then(() => {
+            this.getDuties(this.userList, true);
+            showNotification("Duty added successfully.", "success");
+          })
           .catch((error) => handleError(error))
-          .finally(() => (this.loading = false));
+          .finally();
       }
     },
-    async getDuty(userList) {
+    async getDuties(userList, refresh = false) {
       try {
         const response = await axiosRef.get(
           "http://localhost:9980/api/duties/"
@@ -298,15 +318,18 @@ export default {
             end_date:
               getProp(element, "end_date", "") &&
               moment(getProp(element, "end_date", "")).format("YYYY-MM-DD"),
-            platform: String(getProp(element, "platform", "-"))[0].toUpperCase()+String(getProp(element, "platform", "-")).slice(1),
+            platform:
+              String(getProp(element, "platform", "-"))[0].toUpperCase() +
+              String(getProp(element, "platform", "-")).slice(1),
             comment: getProp(element, "comment", ""),
           });
         });
-
-        this.dutiesList = fetchedRows;
+        if (refresh == true) {
+          this.dutiesList = fetchedRows;
+        }
         this.dutiesListBackup = fetchedRows;
       } finally {
-        return (this.loading = false);
+        () => this.gridOptions.api.hideOverlay();
       }
     },
     editDuty(rowData) {
@@ -356,11 +379,16 @@ export default {
           .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
+          .then(() => {
+            this.getDuties(this.userList);
+            showNotification("Duty edited successfully.", "success");
+          })
           .catch((error) => handleError(error))
-          .finally(() => (this.loading = false));
+          .finally();
+        this.updateGridDataObject();
       }
     },
-    searchDuty(event) {
+    searchDuties(event) {
       if (event.target.value === "") this.dutiesList = this.dutiesListBackup;
       else {
         this.dutiesList = this.dutiesListBackup.filter(
@@ -376,11 +404,17 @@ export default {
             (element.start_date &&
               element.start_date
                 .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
+                .replace(/[^a-zA-Z0-9 ]/g, "")
+                .includes(
+                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
+                )) ||
             (element.end_date &&
               element.end_date
                 .toLowerCase()
-                .includes(event.target.value.toLowerCase())) ||
+                .replace(/[^a-zA-Z0-9 ]/g, "")
+                .includes(
+                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
+                )) ||
             (element.facility &&
               element.facility
                 .toLowerCase()
@@ -402,14 +436,14 @@ export default {
         .then((response) => {
           let userList = getProp(response, "data", []);
           this.userList = userList;
-          this.getDuty(userList);
+          this.getDuties(userList, true);
           this.setColumns(userList);
         })
         .catch((error) => handleError(error))
-        .finally(() => (this.loading = false));
+        .finally(() => this.gridOptions.api.hideOverlay());
     },
     setColumns(userList) {
-      this.columns = [
+      this.columnsList = [
         // {
         //   headerName: "Select",
         //   field: "select",
@@ -426,9 +460,13 @@ export default {
           resizable: true,
           editable: true,
           cellEditor: "agSelectCellEditor",
-          cellEditorParams: {
-            values: userList.map((element) => element.first_name),
-            valueListGap: 0,
+          cellEditorParams: (params) => {
+            return {
+              values: userList
+                .filter((element) => element.facility === params.data.facility)
+                .map((element) => element.first_name),
+              valueListGap: 0,
+            };
           },
           rowDrag: true,
         },
@@ -442,9 +480,13 @@ export default {
           resizable: true,
           editable: true,
           cellEditor: "agSelectCellEditor",
-          cellEditorParams: {
-            values: userList.map((element) => element.first_name),
-            valueListGap: 0,
+          cellEditorParams: (params) => {
+            return {
+              values: userList
+                .filter((element) => element.facility === params.data.facility)
+                .map((element) => element.first_name),
+              valueListGap: 0,
+            };
           },
         },
         {
@@ -530,6 +572,13 @@ export default {
         },
       ];
     },
+    updateGridDataObject() {
+      let gridData = [];
+      this.gridOptions.api.forEachNode((rowNode, index) => {
+        gridData.push(rowNode.data);
+      });
+      this.gridData = gridData;
+    },
   },
 };
 </script>
@@ -537,11 +586,8 @@ export default {
 <style>
 .header {
   color: white;
-  font-size: 20px;
-  font-weight: bold;
   background: #006c66;
   padding: 16px 20px;
-  max-height: 100vh;
 }
 
 .search-bar {

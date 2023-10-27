@@ -1,14 +1,35 @@
+import { useToast } from "vue-toastification";
+
+const toast = useToast();
+
 export function showNotification(content, type) {
-  console.log(content);
+  let options = {
+    timeout: 3000,
+    toastClassName: "toast-main",
+    bodyClassName: "toast-body",
+    containerClassName: "toast-container",
+  };
+  if (type === "info") toast.info(content, options);
+  else if (type === "success") toast.success(content, options);
+  else if (type === "error") toast.error(content, options);
+  else if (type === "warning") toast.warning(content, options);
 }
 
 export function handleError(error) {
-  if (error.response) {
+  if (error.response.status && error.response.status === 403) {
+    window.location.href = "http://localhost:9980/login/";
+  } else if (error.response) {
+    showNotification("Error:" + error.response.data, "error");
     console.log("Error status:", error.response.status);
     console.log("Error data:", error.response.data);
   } else if (error.request) {
+    showNotification(
+      "No response received. The request may have timed out.",
+      "error"
+    );
     console.log("No response received. The request may have timed out.");
   } else {
+    showNotification("Error: " + error.message, "error");
     console.log("Error:", error.message);
   }
 }
