@@ -23,7 +23,8 @@ Non-breaking changes:
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
 - The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
-- Added an EmailField to PrincipalInvestigator. Meanwhile, a paperless approval via e-mail of sequencing requests is in the works...
+- Added an EmailField to PrincipalInvestigator. This field is used in the 'paperless approval' feature (see next point.)
+- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had).
 
 23.09.20
 ========
