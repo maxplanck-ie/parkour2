@@ -7,3 +7,4 @@ pywatchman
 Werkzeug
 rich
 django-migration-linter
+django-schema-viewer

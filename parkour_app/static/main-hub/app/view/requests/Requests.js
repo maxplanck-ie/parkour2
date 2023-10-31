@@ -7,6 +7,7 @@ Ext.define('MainHub.view.requests.Requests', {
     'MainHub.view.requests.RequestsController',
     'MainHub.view.requests.RequestWindow',
     'MainHub.view.requests.EmailWindow',
+    'MainHub.view.requests.TokenWindow',
     'MainHub.view.libraries.LibraryWindow',
     'MainHub.view.metadataexporter.MetadataExporter'
   ],
@@ -26,36 +27,36 @@ Ext.define('MainHub.view.requests.Requests', {
     header: {
       title: 'Requests',
       items: [{
-          xtype: 'fieldcontainer',
-          defaultType: 'checkboxfield',
-          layout: 'hbox',
-          margin: '0 20 0 0',
-          items: [
-            {
+        xtype: 'fieldcontainer',
+        defaultType: 'checkboxfield',
+        layout: 'hbox',
+        margin: '0 20 0 0',
+        items: [
+          {
 
-      name : 'showAll',
-      boxLabel: 'Show all',
-      boxLabelAlign: 'before',
-      checked:true,
-      id : 'showAll',
+            name: 'showAll',
+            boxLabel: 'Show all',
+            boxLabelAlign: 'before',
+            checked: true,
+            id: 'showAll',
 
-      margin: '0 15 0 0',
-      cls: 'grid-header-checkbox',
-      hidden: false,
-      listeners:{
-        change: function(checkbox, newValue, oldValue, eOpts) {
+            margin: '0 15 0 0',
+            cls: 'grid-header-checkbox',
+            hidden: false,
+            listeners: {
+              change: function (checkbox, newValue, oldValue, eOpts) {
 
-        if (newValue) {
-            Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'True';
-            Ext.getStore('requestsStore').load()
-        } else {
-            Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'False';
-            Ext.getStore('requestsStore').load()
-        }
-        }
-      }
-      }]
-        },
+                if (newValue) {
+                  Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'True';
+                  Ext.getStore('requestsStore').load()
+                } else {
+                  Ext.getStore('requestsStore').getProxy().extraParams.showAll = 'False';
+                  Ext.getStore('requestsStore').load()
+                }
+              }
+            }
+          }]
+      },
 
       {
         xtype: 'searchfield',
@@ -68,7 +69,7 @@ Ext.define('MainHub.view.requests.Requests', {
       {
         xtype: 'button',
         itemId: 'add-request-button',
-        cls:'pl-add-request-button',
+        cls: 'pl-add-request-button',
         text: 'Add'
       }]
     },
@@ -143,9 +144,9 @@ Ext.define('MainHub.view.requests.Requests', {
       rowBodyTpl: new Ext.XTemplate(
         '<strong>Attached files:</strong><br/>',
         '<tpl for="files">',
-          '<span class="attached-file-link">',
-            '<a href="{path}" download>{name}</a>',
-          '</span><br/>',
+        '<span class="attached-file-link">',
+        '<a href="{path}" download>{name}</a>',
+        '</span><br/>',
         '</tpl>'
       )
     }]

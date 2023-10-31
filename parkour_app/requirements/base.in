@@ -1,4 +1,4 @@
-Django~=3.2
+Django~=4.2
 backports-zoneinfo ; python_version < "3.9"  # hardcoded conditional to avoid issues on latest Py
 django-authtools @ git+https://github.com/adRn-s/django-authtools@dev_adRn
 djangorestframework
