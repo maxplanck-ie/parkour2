@@ -98,7 +98,7 @@ prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
 	@sleep 10s && docker system prune -a -f --volumes
 
-clearpy:
+clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. TODO: we should probably have to check duties/static/dist (buildDir from vite.cfg.js); among other directories like parkour_app/.pytest_cache ... gotta check.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
