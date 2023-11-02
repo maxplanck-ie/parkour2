@@ -1,6 +1,8 @@
 <!-- DISABLED FEATURE: - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had). -->
 
-??.??.??
+> Versioning is by dates (in `yy.mm.dd` format).
+
+23.11.02
 ========
 
 Breaking changes:
@@ -9,7 +11,7 @@ Breaking changes:
 - Removed the \[broken\] import and export functionality at IndexPairs. Instead, we have a custom bulk import button now that works exclusively with plate coordinates. This may be a temporal solution until we work out the rough edges with the extension custom import (foreingkeywidget)
 - Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages. To be clear, if you don't remove it there, the hardcoded value will overrule over the docker-compose switch that we are using for makefile rules `dev`, etc.
 - Breaking changes for backup locations! `./rsnapshot` was moved under `./misc`, so the config files will be there.. that's not much of an issue. Yet, the backups subfolder (or symlink) will need to be adjusted manually.
-- `/media_dump` is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+- `/media_dump` is no longer a symbolic link. ~~We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).~~ EDIT: seems like it does work, but we're keeping this change; at least for now.
 
 Non-breaking changes:
 
