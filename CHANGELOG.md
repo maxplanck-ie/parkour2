@@ -1,3 +1,5 @@
+<!-- DISABLED FEATURE: - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had). -->
+
 ??.??.??
 ========
 
@@ -24,7 +26,6 @@ Non-breaking changes:
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
 - The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
 - Added an EmailField to PrincipalInvestigator. This field is used in the 'paperless approval' feature (see next point.)
-- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had).
 - Added new endpoint, `<URL>/api/requests/<id>/get_poolpaths/`, returns a dictionary with records' barcode as keys and pool names as values.
 
 23.09.20
