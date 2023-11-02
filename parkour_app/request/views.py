@@ -1018,6 +1018,15 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.save(update_fields=["filepaths"])
         return Response({"success": True})
 
+    @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
+    def get_poolpaths(self, request, *args, **kwargs):
+        instance = self.get_object()
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        poolpaths = dict.fromkeys([r.barcode for r in records])
+        for r in records:
+            poolpaths[r.barcode] = [p.name for p in list(r.pool.all())]
+        return JsonResponse({"success": True, "poolpaths": poolpaths})
+
     def _get_post_data(self, request):
         post_data = {}
         if request.headers.get("x-requested-with") == "XMLHttpRequest":
