@@ -27,7 +27,7 @@ Non-breaking changes:
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
 - The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
-- Added an EmailField to PrincipalInvestigator. This field is used in the 'paperless approval' feature (see next point.)
+- Added an EmailField to PrincipalInvestigator. This field is going to be used in the 'paperless approval' feature (see next release.)
 - Added new endpoint, `<URL>/api/requests/<id>/get_poolpaths/`, returns a dictionary with records' barcode as keys and pool names as values.
 
 23.09.20
