@@ -117,32 +117,38 @@ class User(AbstractEmailUser):
 
     @property
     def facility(self):
-        if self.pi is None:
-            membership = None
-        elif self.pi.name == settings.BIOINFO:
-            membership = "Bioinfo"
-        elif self.pi.name == settings.DEEPSEQ:
-            membership = "DeepSeq"
-        else:
-            membership = None
-        return membership
+        # if self.pi is None:
+        #     membership = None
+        # elif self.pi.name == settings.BIOINFO:
+        #     membership = "Bioinfo"
+        # elif self.pi.name == settings.DEEPSEQ:
+        #     membership = "DeepSeq"
+        # else:
+        #     membership = None
+        # return membership
+
+        # For IMB'S fork of Parkour, this is irrelevant
+        return None
 
     @property
     def can_solicite_paperless_approval(self):
-        result_user = False
-        result_pi = False
-        if self.pi is not None and self.pi.email != "Unset":
-            if (
-                not '"' in self.pi.email
-                and self.pi.email.split("@")[1] == settings.EMAIL_HOST
-            ):
-                result_pi = True
-            if (
-                not '"' in self.email
-                and self.email.split("@")[1] == settings.EMAIL_HOST
-            ):
-                result_user = True
-        return result_user and result_pi
+        # result_user = False
+        # result_pi = False
+        # if self.pi is not None and self.pi.email != "Unset":
+        #     if (
+        #         not '"' in self.pi.email
+        #         and self.pi.email.split("@")[1] == settings.EMAIL_HOST
+        #     ):
+        #         result_pi = True
+        #     if (
+        #         not '"' in self.email
+        #         and self.email.split("@")[1] == settings.EMAIL_HOST
+        #     ):
+        #         result_user = True
+        # return result_user and result_pi
+
+        # For IMB'S fork of Parkour, this is irrelevant 
+        return False
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
