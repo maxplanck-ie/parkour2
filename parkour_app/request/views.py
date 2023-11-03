@@ -344,31 +344,36 @@ class RequestViewSet(viewsets.ModelViewSet):
             "is_converted",
         )
 
-        instance = (
-            Request.objects.filter(archived=False, pk=pk)
-            .prefetch_related(
-                Prefetch("libraries", queryset=libraries_qs),
-                Prefetch("samples", queryset=samples_qs),
+        try:
+            instance = (
+                Request.objects.filter(archived=False, pk=pk)
+                .prefetch_related(
+                    Prefetch("libraries", queryset=libraries_qs),
+                    Prefetch("samples", queryset=samples_qs),
+                )
+                .only("libraries", "samples")
+                .first()
             )
-            .only("libraries", "samples")
-            .first()
-        )
 
-        data = [
-            {
-                "pk": obj.pk,
-                "name": obj.name,
-                "barcode": obj.barcode,
-                "record_type": obj.__class__.__name__,
-                "is_converted": True
-                if hasattr(obj, "is_converted") and obj.is_converted
-                else False,
-            }
-            for obj in instance.records
-        ]
+            data = [
+                {
+                    "pk": obj.pk,
+                    "name": obj.name,
+                    "barcode": obj.barcode,
+                    "record_type": obj.__class__.__name__,
+                    "is_converted": True
+                    if hasattr(obj, "is_converted") and obj.is_converted
+                    else False,
+                }
+                for obj in instance.records
+            ]
 
-        data = sorted(data, key=lambda x: x["barcode"][3:])
-        return Response(data)
+            data = sorted(data, key=lambda x: x["barcode"][3:])
+            Res = Response(data)
+
+        except AttributeError as e:
+            Res = Response({"success": False, "message": f"{pk} not found!"}, 400)
+        return Res
 
     @action(methods=["get"], detail=True)
     def get_protocol(self, request, pk=None):
