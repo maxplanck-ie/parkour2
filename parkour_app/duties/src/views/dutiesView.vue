@@ -12,22 +12,62 @@
   <div style="padding: 15px">
     <div style="float: left; width: 78%">
       <div style="margin: 15px; border: 1px solid #006c66">
-        <div
-          style="
-            padding: 7px 14px;
-            height: 42px;
-            background: #ecebe5;
-            overflow-y: auto;
-          "
-        >
-          <div>
-            <span class="icon"><i class="fa fa-book"></i></span>
-            <input
-              class="search-bar"
-              type="text"
-              placeholder="Search..."
-              @input="searchDuties"
-            />
+        <div style="padding: 7px 14px; height: 42px; background: #ecebe5">
+          <div style="display: inline-block; float: left">
+            <div style="display: flex">
+              <div
+                style="
+                  display: inline-block;
+                  background: rgb(105, 105, 105);
+                  width: 28px;
+                  height: 28px;
+                  text-align: center;
+                "
+              >
+                <font-awesome-icon
+                  icon="fa-solid fa-magnifying-glass"
+                  style="color: white; margin-top: 6px"
+                />
+              </div>
+              <input
+                style="display: inline-block; width: 350px; outline: none"
+                class="styled-box"
+                type="text"
+                placeholder="Search..."
+                @input="searchDuties"
+              />
+            </div>
+          </div>
+          <div style="display: inline-block; float: right">
+            <div style="display: flex">
+              <div
+                style="
+                  display: inline-block;
+                  background: rgb(105, 105, 105);
+                  width: 28px;
+                  height: 28px;
+                  text-align: center;
+                "
+              >
+                <font-awesome-icon
+                  icon="fa-regular fa-calendar-days"
+                  style="color: white; margin-top: 6px"
+                />
+              </div>
+              <select
+                class="styled-box"
+                style="display: inline-block; width: 125px"
+                v-model="selectedFilter"
+              >
+                <option value="all">All</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="past-1-month">Past 1 Month</option>
+                <option value="past-3-months">Past 3 Months</option>
+                <option value="past-6-months">Past 6 Months</option>
+                <option value="past-1-year">Past 1 Year</option>
+              </select>
+            </div>
           </div>
         </div>
         <div style="padding: 15px">
@@ -189,11 +229,16 @@ import { showNotification, handleError, getProp } from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
+import Cookies from "js-cookie";
+
+var CSRF_TOKEN = Cookies.get("csrftoken");
 
 var axiosRef = axios.create({
   withCredentials: true,
-  xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "X-CSRFTOKEN",
+  headers: {
+    "content-type": "application/json",
+    "X-CSRFToken": CSRF_TOKEN,
+  },
 });
 
 export default {
@@ -211,7 +256,7 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      recordCounter: 0,
+      selectedFilter: "past-1-month",
     };
   },
   setup() {},
@@ -220,7 +265,11 @@ export default {
   },
   mounted() {},
   created() {},
-  watch: {},
+  watch: {
+    selectedFilter(value) {
+      this.getFilteredDuties(true, value);
+    },
+  },
   computed: {},
   methods: {
     updateDutyObject(event) {
@@ -251,7 +300,7 @@ export default {
         this.newDuty = newDuty;
       }
     },
-    saveDuty() {
+    async saveDuty() {
       this.gridOptions.api.showLoadingOverlay();
       let newDuty = toRaw(this.newDuty);
       if (
@@ -265,23 +314,40 @@ export default {
           "Please check all the necessary fields: \n 1. Facility \n 2. Responsible Person \n 3. Backup Person \n 4. Start Date \n 5. Platform",
           "error"
         );
+        this.gridOptions.api.hideOverlay();
       } else {
-        axiosRef
+        await axiosRef
           .post("http://localhost:9980/api/duties/", newDuty)
           .then(() => {
-            this.getDuties(this.userList, true);
+            this.newDuty = {};
+            document.getElementById("facility").value = "";
+            document.getElementById("main_name").value = "";
+            document.getElementById("backup_name").value = "";
+            document.getElementById("start_date").value = "";
+            document.getElementById("end_date").value = "";
+            document.getElementById("platform").value = "";
+            document.getElementById("comment").value = "";
+
+            if (this.selectedFilter == "all")
+              this.getFilteredDuties(true, "all");
+            else this.selectedFilter = "all";
             showNotification("Duty added successfully.", "success");
           })
-          .catch((error) => handleError(error))
+          .catch((error) => {
+            this.getFilteredDuties(true, this.selectedFilter);
+            handleError(error);
+          })
           .finally();
       }
     },
-    async getDuties(userList, refresh = false) {
+    async getDuties(refresh = false, additionalUrl = "") {
       try {
         const response = await axiosRef.get(
-          "http://localhost:9980/api/duties/"
+          "http://localhost:9980/api/duties/" +
+            (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
         let fetchedRows = [];
+        let userList = this.userList;
         getProp(response, "data", []).forEach((element) => {
           fetchedRows.push({
             duty_id: element.id,
@@ -328,11 +394,50 @@ export default {
           this.dutiesList = fetchedRows;
         }
         this.dutiesListBackup = fetchedRows;
+      } catch (error) {
+        () => handleError(error);
       } finally {
         () => this.gridOptions.api.hideOverlay();
       }
     },
-    editDuty(rowData) {
+    getFilteredDuties(refresh = false, selectedFilter) {
+      let additionalUrl = "";
+      let start_date = "";
+      let end_date = "";
+      if (selectedFilter === "all") {
+        additionalUrl = "";
+      } else if (selectedFilter === "ongoing") {
+        additionalUrl = "ongoing=TRUE";
+      } else if (selectedFilter === "upcoming") {
+        additionalUrl = "upcoming=TRUE";
+      } else if (selectedFilter === "past-1-month") {
+        end_date = moment().format("YYYY-MM-DD");
+        start_date = moment(end_date)
+          .subtract(1, "months")
+          .format("YYYY-MM-DD");
+        additionalUrl = "start_date=" + start_date + "&end_date=" + end_date;
+      } else if (selectedFilter === "past-3-months") {
+        end_date = moment().format("YYYY-MM-DD");
+        start_date = moment(end_date)
+          .subtract(3, "months")
+          .format("YYYY-MM-DD");
+        additionalUrl = "start_date=" + start_date + "&end_date=" + end_date;
+      } else if (selectedFilter === "past-6-months") {
+        end_date = moment().format("YYYY-MM-DD");
+        start_date = moment(end_date)
+          .subtract(6, "months")
+          .format("YYYY-MM-DD");
+        additionalUrl = "start_date=" + start_date + "&end_date=" + end_date;
+      } else if (selectedFilter === "past-1-year") {
+        end_date = moment().format("YYYY-MM-DD");
+        start_date = moment(end_date)
+          .subtract(12, "months")
+          .format("YYYY-MM-DD");
+        additionalUrl = "start_date=" + start_date + "&end_date=" + end_date;
+      }
+      this.getDuties(refresh, additionalUrl);
+    },
+    async editDuty(rowData) {
       let dutyId = rowData.data.duty_id;
       let columnName = rowData.column.colId;
       let oldValue = String(rowData.oldValue);
@@ -375,15 +480,18 @@ export default {
             newValue = newValue.trim();
             break;
         }
-        axiosRef
+        await axiosRef
           .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
           .then(() => {
-            this.getDuties(this.userList);
+            this.getFilteredDuties(false, this.selectedFilter);
             showNotification("Duty edited successfully.", "success");
           })
-          .catch((error) => handleError(error))
+          .catch((error) => {
+            this.getFilteredDuties(true, this.selectedFilter);
+            handleError(error);
+          })
           .finally();
         this.updateGridDataObject();
       }
@@ -430,13 +538,13 @@ export default {
         );
       }
     },
-    getUsers() {
-      axiosRef
-        .get("http://localhost:9980/api/duties/responsibles")
+    async getUsers() {
+      await axiosRef
+        .get("http://localhost:9980/api/duties/responsibles/")
         .then((response) => {
           let userList = getProp(response, "data", []);
           this.userList = userList;
-          this.getDuties(userList, true);
+          this.getFilteredDuties(true, this.selectedFilter);
           this.setColumns(userList);
         })
         .catch((error) => handleError(error))
@@ -590,11 +698,11 @@ export default {
   padding: 16px 20px;
 }
 
-.search-bar {
+.styled-box {
   height: 28px;
-  width: 25%;
   padding: 0px 8px;
-  border: 1px solid grey;
+  border: 1px solid rgb(105, 105, 105);
+  background: whitesmoke;
 }
 
 .dropdown-select,
@@ -616,6 +724,7 @@ export default {
   border: 1px solid grey;
   border-radius: 5px;
   font-size: 12px;
+  outline: none;
 }
 
 .save-button {

@@ -10,13 +10,24 @@ import router from "./router/router.js";
 import toast from "vue-toastification";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faChalkboardUser } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarPlus } from "@fortawesome/free-regular-svg-icons";
+import {
+  faChalkboardUser,
+  faMagnifyingGlass,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faCalendarPlus,
+  faCalendarDays,
+} from "@fortawesome/free-regular-svg-icons";
 
 const app = createApp(vueApp);
 const store = createPinia();
 
-library.add(faChalkboardUser, faCalendarPlus);
+library.add(
+  faChalkboardUser,
+  faMagnifyingGlass,
+  faCalendarPlus,
+  faCalendarDays
+);
 
 app.use(store);
 app.use(router);
