@@ -28,7 +28,8 @@ from .serializers import (CostUnitSerializer,
                           PrincipalInvestigatorSerializer,
                           OrganizationSerializer,
                           BioinformaticianSerializer,
-                          DutySerializer)
+                          DutySerializer,
+                          UserSerializer)
 
 User = get_user_model()
 
