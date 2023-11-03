@@ -8,7 +8,7 @@
 -r base.txt
 appdirs==1.4.4
     # via django-migration-linter
-asttokens==2.4.0
+asttokens==2.4.1
     # via stack-data
 backcall==0.2.0
     # via ipython
@@ -22,7 +22,7 @@ django-migration-linter==5.0.0
     # via -r parkour_app/requirements/dev.in
 django-schema-viewer==0.1.0
     # via -r parkour_app/requirements/dev.in
-executing==2.0.0
+executing==2.0.1
     # via stack-data
 ipdb==0.13.13
     # via -r parkour_app/requirements/dev.in
@@ -64,11 +64,11 @@ toml==0.10.2
     # via django-migration-linter
 tomli==2.0.1
     # via ipdb
-traitlets==5.11.2
+traitlets==5.13.0
     # via
     #   ipython
     #   matplotlib-inline
-wcwidth==0.2.8
+wcwidth==0.2.9
     # via prompt-toolkit
-werkzeug==3.0.0
+werkzeug==3.0.1
     # via -r parkour_app/requirements/dev.in

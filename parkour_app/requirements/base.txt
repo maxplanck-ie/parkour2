@@ -26,7 +26,7 @@ bioblend==1.2.0
     # via -r parkour_app/requirements/base.in
 certifi==2023.7.22
     # via requests
-charset-normalizer==3.3.0
+charset-normalizer==3.3.2
     # via
     #   aiohttp
     #   requests
@@ -38,7 +38,7 @@ diff-match-patch==20230430
     # via django-import-export
 dj-database-url==2.1.0
     # via -r parkour_app/requirements/base.in
-django==4.2.6
+django==4.2.7
     # via
     #   -r parkour_app/requirements/base.in
     #   dj-database-url
@@ -90,7 +90,7 @@ importlib-resources==6.1.0
     #   jsonschema-specifications
 inflection==0.5.1
     # via drf-spectacular
-jsonschema==4.19.1
+jsonschema==4.19.2
     # via drf-spectacular
 jsonschema-specifications==2023.7.1
     # via jsonschema
@@ -157,7 +157,7 @@ sqlparse==0.4.4
     # via django
 tablib[html,ods,xls,xlsx,yaml]==3.5.0
     # via django-import-export
-tblib==2.0.0
+tblib==3.0.0
     # via -r parkour_app/requirements/base.in
 tinydb==4.8.0
     # via tuspy

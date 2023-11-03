@@ -1,6 +1,11 @@
-<!-- DISABLED FEATURE: - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had). -->
-
 > Versioning is by dates (in `yy.mm.dd` format).
+
+??.??.??
+========
+
+<!-- DISABLED FEATURE: - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had). -->
+- Updated all dependencies.
+
 
 23.11.02
 ========
