@@ -105,14 +105,14 @@ class ParkourOIDCAuthenticationBackend(OIDCAuthenticationBackend):
         # If a user belong to the Genomics CF set is_staff = True and add them to Genomics-CF
         if self.user_belongs_to_groups(user_groups, config.OIDC_GENOMICSCF_GROUPS):
             user.is_staff = True
-            gcf_group, _ = Group.objects.get_or_create(name='Genomics-CF')
+            gcf_group, _ = Group.objects.get_or_create(name=settings.DEEPSEQ)
             user.groups.add(gcf_group)
         
         # For BCF (bioinformatics core facility) staff set is_bioinformatician to True
         # and assign them to the Bioinfo-CF group
         elif self.user_belongs_to_groups(user_groups, config.OIDC_BIOINFOCF_GROUPS):
             user.is_bioinformatician = True
-            bcf_group, _ = Group.objects.get_or_create(name='Bioinfo-CF')
+            bcf_group, _ = Group.objects.get_or_create(name=settings.BIOINFO)
             user.groups.add(bcf_group)
         
         else:

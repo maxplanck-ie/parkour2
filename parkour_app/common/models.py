@@ -155,7 +155,7 @@ class User(AbstractEmailUser):
     
     @property
     def member_of_bcf(self):
-        return self.groups.filter(name='Bioinfo-CF').exists()
+        return self.groups.filter(name=settings.BIOINFO).exists()
 
 
 class Duty(models.Model):

@@ -84,7 +84,7 @@ def get_staff_emails():
     if config.STAFF_EMAIL_ADDRESS:
         return [config.STAFF_EMAIL_ADDRESS]
     else:
-        return list(User.objects.filter(is_active=True, is_staff=True, groups__name='Genomics-CF').values_list('email', flat=True))
+        return list(User.objects.filter(is_active=True, is_staff=True, groups__name=settings.DEEPSEQ).values_list('email', flat=True))
 
 
 class PDF(FPDF):  # pragma: no cover

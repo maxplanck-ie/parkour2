@@ -323,5 +323,5 @@ CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
                                              str)}
 
 # Facilities
-DEEPSEQ = ""
-BIOINFO = ""
+DEEPSEQ = 'Genomics-CF'
+BIOINFO = 'Bioinfo-CF'
