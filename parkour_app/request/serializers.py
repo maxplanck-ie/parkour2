@@ -15,6 +15,7 @@ class RequestSerializer(ModelSerializer):
     restrict_permissions = SerializerMethodField()
     deep_seq_request_name = SerializerMethodField()
     deep_seq_request_path = SerializerMethodField()
+    approval_user_name = SerializerMethodField()
     completed = SerializerMethodField()
     files = SerializerMethodField()
     number_of_samples = SerializerMethodField()
@@ -48,6 +49,8 @@ class RequestSerializer(ModelSerializer):
             "completed",
             "deep_seq_request_name",
             "deep_seq_request_path",
+            "approval_user_name",
+            "approval_time",
             "files",
             "sequenced",
             "number_of_samples",
@@ -95,6 +98,9 @@ class RequestSerializer(ModelSerializer):
             if obj.deep_seq_request
             else ""
         )
+
+    def get_approval_user_name(self, obj):
+        return str(obj.approval_user)
 
     def get_files(self, obj):
         files = [

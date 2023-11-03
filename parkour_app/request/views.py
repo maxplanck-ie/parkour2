@@ -443,7 +443,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             pdf = ApprovalEmailAsPDF()
             pdf.add_page()
             pdf.write_html(html_pdf)
-            deep_seq_request_content = ContentFile(pdf.output(dest='S').encode('latin1'))
+            deep_seq_request_content = ContentFile(pdf.output(dest='S'))
             instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.pdf", deep_seq_request_content)
             instance.save()
 
@@ -462,48 +462,53 @@ class RequestViewSet(viewsets.ModelViewSet):
         Mark request as approved by saving message as deep_seq_request and 
         change request's libraries' and samples' statuses to 1.
         """
-        
+
         try:
-            
+
             instance = Request.objects.get(pk=pk)
+            token = request.GET.get("token")
 
             if not instance.pi:
-                return Response({"success": False,
-                                "message": "The request cannot be approved because the PI is missing."},
-                                400)
+                raise Exception("The request cannot be approved because the PI is missing.")
             
             # Make sure that the user trying to approve a request is
-            # the PI of said request or is a staff member
-            if request.user != instance.pi and not request.user.is_staff:
-                return Response({"success": False,
-                                'message': 'You are not allowed to approve this request.'},
-                                400)
+            # the PI of said request, is a staff member or a token is present
+            if not (request.user == instance.pi or request.user.is_staff or token):
+                raise Exception('You are not allowed to approve this request.')
+            
+            # Check if token is valid
+            if token and token != instance.token:
+                raise ValueError("The token is not valid.")
 
             # A request can't be approved twice
             if instance.deep_seq_request:
-                return Response({"success": False,
-                                'message': 'This request was already approved.'}
-                                )
+                raise Exception('This request was already approved.')
+
+            # If all conditions are met, approve request
 
             # Change the status of libraries and samples
             instance.libraries.all().update(status=1)
             instance.samples.all().update(status=1)
 
+            # Set approval user and datetime, and token (to None)
+            instance.approval_user = request.user
+            instance.approval_time = timezone.now()
+            instance.token = None
+            instance.save(update_fields=["token", "approval_user", "approval_time"])
+
             email_recipients = [instance.pi.email, instance.user.email]
+            if request.user.email not in email_recipients:
+                email_recipients.append(request.user.email)
 
             request.session_id = request.session._get_or_create_session_key()
-
-            if request.user == instance.pi:
-                approved_by = instance.pi.full_name
-            else:
-                approved_by = f'{request.user.full_name} on behalf of {instance.pi.full_name}'
+            approved_by = f'{request.user.full_name} ({request.user.email})'
             
             subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
             message = render_to_string('approved_message.html',
                                     {'approved_by': approved_by,
-                                        'now_dt': timezone.localtime(timezone.now()).strftime('%d.%m.%Y at %H:%M:%S'),
+                                        'now_dt': timezone.localtime(instance.approval_time).strftime('%d.%m.%Y at %H:%M:%S'),
                                         'request': request})
-
+            
             self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
 
             # Check where the approval comes from
@@ -518,7 +523,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         except Exception as e:
 
             logger.exception(e)
-            return Response({"success": False, 'detail': 'There was an error handling this request.'}, 400)
+            return Response({"success": False, 'detail': e}, 400)
 
     @action(methods=["get"], detail=True)
     def request_approval(self, request, pk=None):
@@ -527,6 +532,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         try:            
             # Set some variables for the obj to then be used in the email template
             instance = Request.objects.get(pk=pk)# self.get_object()
+            instance.token = get_random_string(30)
+            instance.save(update_fields=["token"])
 
             if not instance.pi:
                 return Response({"success": False, 
@@ -536,7 +543,8 @@ class RequestViewSet(viewsets.ModelViewSet):
             # Build relevant URLs
             current_site = get_current_site(request)
             base_domain =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
-            approval_url= f'{base_domain}{reverse("request-request-approval",  args=(pk,))}?redirect=true'
+            url_query_params = urlencode({"token": instance.token, 'redirect': 'true'})
+            approval_url= f'{base_domain}{reverse("request-request-approval", args=(pk,))}?{url_query_params}'
 
             email_recipients = [instance.pi.email]
         
@@ -905,24 +913,25 @@ class RequestViewSet(viewsets.ModelViewSet):
             logger.exception(e)
         return JsonResponse({"success": not error, "error": error})
 
-    @action(methods=["get"], detail=True)
-    def approve(self, request, *args, **kwargs):  # pragma: no cover
-        """Process token sent to PI."""
-        error = ""
-        instance = self.get_object()
-        try:
-            token = request.query_params.get("token")
-            if token == instance.token:
-                instance.libraries.all().update(status=1)
-                instance.samples.all().update(status=1)
-                instance.token = None
-                instance.save(update_fields=["token"])
-            else:
-                raise ValueError(f"Token mismatch.")
-        except Exception as e:
-            error = str(e)
-            logger.exception(e)
-        return JsonResponse({"success": not error, "error": error})
+    # For IMB'S fork of Parkour, this is irrelevant
+    # @action(methods=["get"], detail=True)
+    # def approve(self, request, *args, **kwargs):  # pragma: no cover
+    #     """Process token sent to PI."""
+    #     error = ""
+    #     instance = self.get_object()
+    #     try:
+    #         token = request.query_params.get("token")
+    #         if token == instance.token:
+    #             instance.libraries.all().update(status=1)
+    #             instance.samples.all().update(status=1)
+    #             instance.token = None
+    #             instance.save(update_fields=["token"])
+    #         else:
+    #             raise ValueError(f"Token mismatch.")
+    #     except Exception as e:
+    #         error = str(e)
+    #         logger.exception(e)
+    #     return JsonResponse({"success": not error, "error": error})
 
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def send_email(self, request, pk=None):  # pragma: no cover
@@ -952,6 +961,8 @@ class RequestViewSet(viewsets.ModelViewSet):
                 # Reject request and change status of libraries/samples to 0
                 subject = f'REJECTED {subject.strip()}'
                 instance.deep_seq_request = None
+                instance.approval_user = None
+                instance.approval_time = None
                 instance.save()
                 libraries.update(status=0)
                 samples.update(status=0)

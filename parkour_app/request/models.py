@@ -128,6 +128,20 @@ class Request(DateTimeMixin):
         null=True,
     )
 
+    approval_user = models.ForeignKey(
+        User,
+        verbose_name="approval user",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_approval_user'
+    )
+
+    approval_time = models.DateTimeField(verbose_name="Approval Time",
+                                             null=True,
+                                             default=None
+                                            )
+
     samples_submitted = models.BooleanField(
         verbose_name="Samples Submitted",
         default=False,

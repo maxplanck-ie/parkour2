@@ -219,7 +219,7 @@ Ext.define('MainHub.view.requests.RequestWindow', {
           {
             id: 'uploadedDeepSeqRequest',
             border: 0,
-            html: '<span id="approved-request-file">Not yet approved by PI</span>'
+            html: '<span id="approved-request-file">Not yet approved</span>'
           }
         ]
       },

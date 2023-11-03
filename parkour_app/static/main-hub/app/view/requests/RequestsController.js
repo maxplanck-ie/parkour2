@@ -101,7 +101,7 @@ Ext.define('MainHub.view.requests.RequestsController', {
           }
         },
         {
-          text: deepSeqReqPath === '' ? 'Approve' : 'Approved by PI',
+          text: deepSeqReqPath === '' ? 'Approve' : 'Approved',
           hidden: !(USER.is_pi || USER.is_staff) && deepSeqReqPath === '',
           disabled: !(deepSeqReqPath === ''),
           handler: function(){
@@ -239,7 +239,8 @@ Ext.define('MainHub.view.requests.RequestsController', {
            new Noty({ text: 'Request has been approved' }).show();
          } 
           else {
-           new Noty({ text: obj.message, type: 'error' }).show();
+            var message = obj.error ? obj.error : 'Unknown error.';
+            new Noty({ text: message, type: 'error' }).show();
          }
        },
  

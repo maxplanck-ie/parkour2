@@ -14,7 +14,7 @@ django-constance[database]
 psycopg2-binary
 dj-database-url
 xlwt
-fpdf
+fpdf2
 numpy
 pandas
 bioblend

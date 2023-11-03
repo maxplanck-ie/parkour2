@@ -84,6 +84,14 @@ Ext.define('MainHub.model.requests.Request', {
       name: 'deep_seq_request_path'
     },
     {
+      type: 'string',
+      name: 'approval_user_name'
+    },
+    {
+      type: 'string',
+      name: 'approval_time'
+    },
+    {
       type: 'float',
       name: 'total_sequencing_depth'
     },
