@@ -10,17 +10,17 @@ coverage[toml]==7.3.2
     # via pytest-cov
 execnet==2.0.2
     # via pytest-xdist
-greenlet==2.0.2
+greenlet==3.0.0
     # via playwright
 iniconfig==2.0.0
     # via pytest
-playwright==1.38.0
+playwright==1.39.0
     # via pytest-playwright
 pluggy==1.3.0
     # via pytest
-pyee==9.0.4
+pyee==11.0.1
     # via playwright
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   pytest-base-url
     #   pytest-cov
@@ -31,7 +31,7 @@ pytest-base-url==2.0.0
     # via pytest-playwright
 pytest-cov==4.1.0
     # via -r parkour_app/requirements/testing.in
-pytest-django==4.5.2
+pytest-django==4.6.0
     # via -r parkour_app/requirements/testing.in
 pytest-playwright==0.4.3
     # via -r parkour_app/requirements/testing.in
@@ -41,6 +41,3 @@ python-slugify==8.0.1
     # via pytest-playwright
 text-unidecode==1.3
     # via python-slugify
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

@@ -13,6 +13,10 @@ def get_sentinel_user():
     return get_user_model().objects.get_or_create(username="deleted")[0]
 
 
+def filepaths_default():
+    return {"data": None, "metadata": None}
+
+
 class FileRequest(models.Model):
     name = models.CharField("Name", max_length=200)
     file = models.FileField(upload_to="request_files/%Y/%m/%d/")
@@ -24,6 +28,7 @@ class FileRequest(models.Model):
 class Request(DateTimeMixin):
     name = models.CharField("Name", max_length=100, blank=True)
     description = models.TextField()
+    token = models.CharField("Token", max_length=50, blank=True, null=True, unique=True)
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -139,6 +144,8 @@ class Request(DateTimeMixin):
     )
 
     archived = models.BooleanField("Archived", default=False)
+
+    filepaths = models.JSONField(null=False, default=filepaths_default)
 
     def __str__(self):
         return self.name

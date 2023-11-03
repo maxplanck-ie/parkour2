@@ -1,7 +1,13 @@
 .PHONY: *
 SHELL := /bin/bash
+
+ifeq ($(OS),Windows_NT)
+	NcpuThird := 2
+else	
+	NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
+endif
+
 stamp := $(shell date +%Y%m%d_%H%M%S)_$(shell git log --oneline -1 | cut -d' ' -f1)
-NcpuThird := $(shell LC_NUMERIC=C echo "scale=0; ($$(nproc --all)*.333)" | bc | xargs printf "%.0f")
 
 deploy: check-rootdir set-prod deploy-django deploy-caddy collect-static load-fixtures  ## Deploy to localhost:9980 with initial and required data loaded!
 
@@ -81,10 +87,10 @@ clean:
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
-	@find ./misc -mtime +7 -name db_\*.sqldump \
+	@find ./misc -ctime +7 -name db_\*.sqldump \
 		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
 		-exec /bin/rm -rf {} +;
-	@find ./misc -mtime +7 -name migras_\*.tar.gz \
+	@find ./misc -ctime +7 -name migras_\*.tar.gz \
 		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
 		-exec /bin/rm -rf {} +;
 
@@ -104,6 +110,7 @@ dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Wer
 
 set-dev: hardreset-caddyfile
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 add-pgadmin-caddy: hardreset-caddyfile
 	@echo -e "\nhttp://*:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
@@ -150,10 +157,11 @@ load-media:  ## Copy all media files into running instance
 
 load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 	@[[ -f misc/latest.sqldump ]] && \
-		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump && \
-		docker exec parkour2-postgres pg_restore -d postgres -U postgres -c tmp_parkour-postgres.dump > /dev/null && \
-		echo "Info: Loaded PostgreSQL database OK." || \
-		echo '$ scp root@production:~/parkour2/misc/latest.sqldump .'
+		docker cp -L ./misc/latest.sqldump parkour2-postgres:/tmp_parkour-postgres.dump
+	@docker exec parkour2-postgres sh -c "pg_restore --data-only --disable-triggers \
+		--dbname=postgres --username=postgres tmp_parkour-postgres.dump \
+		1> /tmp/pg_log_out.txt 2> /tmp/pg_log_err.txt" || \
+			docker exec parkour2-postgres cat /tmp/pg_log_err.txt
 
 load-postgres-plain:
 	@test -e ./this.sql && \
@@ -161,6 +169,9 @@ load-postgres-plain:
 		docker exec parkour2-postgres sh -c \
 			"psql -d postgres -U postgres < tmp_parkour-postgres.dump > /dev/null" || \
 		echo "ERROR: ./this.sql not found, do something in the lines of... cd /parkour/data/docker/postgres_dumps/; ln -s this.sql 2022-Aug-04.sql"
+
+pg-analyze:
+	@docker exec -it parkour2-postgres psql -d postgres -U postgres -c 'ANALYZE VERBOSE'  > pg-analyze.txt.ignore
 
 db: schema load-postgres  ## Alias to: apply-migrations && load-postgres
 

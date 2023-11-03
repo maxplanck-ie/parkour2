@@ -3,6 +3,7 @@ import json
 import logging
 import os
 from unicodedata import normalize
+from urllib.parse import urlencode
 
 from common.serializers import UserSerializer
 from common.utils import retrieve_group_items
@@ -12,15 +13,22 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMultiAlternatives
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
 from django.db.models import Prefetch
-from django.http import Http404, HttpResponse, JsonResponse
+from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
 from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.utils.crypto import get_random_string
 from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
 from rest_framework import filters, viewsets
+from library_sample_shared.models import LibraryProtocol
+from library_sample_shared.serializers import LibraryProtocolSerializer
+from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAdminUser
@@ -604,9 +612,19 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def get_email(self, request, pk=None):
         """Get the user email address to ship him data."""
+        
+    def get_protocol(self, request, pk=None):
+        """For example, to poll IDs of Nanopore's Sequencing Kits"""
+        instance = LibraryProtocol(id=pk)
+        serializer = LibraryProtocolSerializer(instance)
+        return Response(serializer.data)
+
+    @action(methods=["get"], detail=True)
+    def get_contact_details(self, request, pk=None):
+        """Get the user contact details."""
         users_qs = User.objects.all()
         data = (
-            Request.objects.filter(archived=False, pk=pk)
+            Request.objects.filter(pk=pk)
             .prefetch_related(Prefetch("user", queryset=users_qs))
             .only("user")
             .first()
@@ -828,6 +846,84 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         return JsonResponse({"success": True, "name": file_name, "path": file_path})
 
+    @action(methods=["post"], detail=True)
+    def solicite_approval(self, request, pk=None):  # pragma: no cover
+        """Send an email to the PI."""
+        error = ""
+        instance = self.get_object()
+        subject = f"[ Parkour2 | sequencing experiment is pending approval ] "
+        subject += request.data.get("subject", "")
+        message = request.data.get("message", "")
+        include_records = json.loads(request.POST.get("include_records", "true"))
+        records = []
+        try:
+            if instance.user.pi.archived:
+                raise ValueError(
+                    "PI: "
+                    + instance.user.pi
+                    + ", is no longer enrolled. Please ask: "
+                    + settings.ADMIN_EMAIL
+                    + " to un-archive the entry at the database."
+                )
+            elif instance.user.pi.email == "Unset":
+                raise ValueError(
+                    "PI: "
+                    + instance.user.pi
+                    + ", has no e-mail address assigned. Please contact: "
+                    + settings.ADMIN_EMAIL
+                )
+            records = list(instance.libraries.all()) + list(instance.samples.all())
+            for r in records:
+                if r.status != 0:
+                    raise ValueError("Not all records have status of zero.")
+            records = sorted(records, key=lambda x: x.barcode[3:])
+            if not include_records:
+                records = []
+            instance.token = get_random_string(30)
+            instance.save(update_fields=["token"])
+            url_scheme = request.is_secure() and "https" or "http"
+            url_domain = get_current_site(request).domain
+            url_query = urlencode({"token": instance.token})
+            send_mail(
+                subject=subject,
+                message="",
+                html_message=render_to_string(
+                    "approval.html",
+                    {
+                        "full_name": instance.user.full_name,
+                        "pi_name": instance.user.pi.name,
+                        "message": message,
+                        "token_url": f"{url_scheme}://{url_domain}/api/requests/{instance.id}/approve?{url_query}",
+                        "records": records,
+                    },
+                ),
+                from_email=instance.user.email,
+                recipient_list=[instance.user.pi.email],
+            )
+        except Exception as e:
+            error = str(e)
+            logger.exception(e)
+        return JsonResponse({"success": not error, "error": error})
+
+    @action(methods=["get"], detail=True)
+    def approve(self, request, *args, **kwargs):  # pragma: no cover
+        """Process token sent to PI."""
+        error = ""
+        instance = self.get_object()
+        try:
+            token = request.query_params.get("token")
+            if token == instance.token:
+                instance.libraries.all().update(status=1)
+                instance.samples.all().update(status=1)
+                instance.token = None
+                instance.save(update_fields=["token"])
+            else:
+                raise ValueError(f"Token mismatch.")
+        except Exception as e:
+            error = str(e)
+            logger.exception(e)
+        return JsonResponse({"success": not error, "error": error})
+
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def send_email(self, request, pk=None):  # pragma: no cover
         """Send an email to the user."""
@@ -840,8 +936,6 @@ class RequestViewSet(viewsets.ModelViewSet):
             request.POST.get("reject_request", "false")
         )
         failed_records = []
-
-        # TODO: check if it's possible to send emails at all
 
         try:
             if subject == "" or message == "":
@@ -1175,6 +1269,18 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         doc.save(response)
         return response
+
+    @action(methods=["get"], detail=True)
+    def get_filepaths(self, request, *args, **kwargs):
+        filepaths = self.get_object().filepaths
+        return JsonResponse({"success": True, "filepaths": filepaths})
+
+    @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
+    def put_filepaths(self, request, pk=None):
+        instance = self.get_object()
+        instance.filepaths = request.data
+        instance.save(update_fields=["filepaths"])
+        return Response({"success": True})
 
     def _get_post_data(self, request):
         post_data = {}

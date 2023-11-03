@@ -8,10 +8,8 @@
 -r base.txt
 appdirs==1.4.4
     # via django-migration-linter
-asttokens==2.4.0
+asttokens==2.4.1
     # via stack-data
-backcall==0.2.0
-    # via ipython
 comm==0.1.4
     # via ipykernel
 debugpy==1.8.0
@@ -26,13 +24,13 @@ django-migration-linter==5.0.0
     # via -r parkour_app/requirements/dev.in
 django-schema-viewer==0.4.0
     # via -r parkour_app/requirements/dev.in
-executing==2.0.0
+executing==2.0.1
     # via stack-data
 ipdb==0.13.13
     # via -r parkour_app/requirements/dev.in
 ipykernel==6.26.0
     # via -r parkour_app/requirements/dev.in
-ipython==8.16.1
+ipython==8.17.2
     # via
     #   ipdb
     #   ipykernel
@@ -40,7 +38,7 @@ jedi==0.19.1
     # via ipython
 jupyter-client==8.5.0
     # via ipykernel
-jupyter-core==5.4.0
+jupyter-core==5.5.0
     # via
     #   ipykernel
     #   jupyter-client
@@ -59,8 +57,6 @@ nest-asyncio==1.5.8
 parso==0.8.3
     # via jedi
 pexpect==4.8.0
-    # via ipython
-pickleshare==0.7.5
     # via ipython
 platformdirs==3.11.0
     # via jupyter-core
@@ -92,7 +88,7 @@ tornado==6.3.3
     # via
     #   ipykernel
     #   jupyter-client
-traitlets==5.12.0
+traitlets==5.13.0
     # via
     #   comm
     #   ipykernel
@@ -100,10 +96,7 @@ traitlets==5.12.0
     #   jupyter-client
     #   jupyter-core
     #   matplotlib-inline
-wcwidth==0.2.8
+wcwidth==0.2.9
     # via prompt-toolkit
-werkzeug==3.0.0
+werkzeug==3.0.1
     # via -r parkour_app/requirements/dev.in
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

@@ -7,6 +7,7 @@ Ext.define('MainHub.view.requests.Requests', {
     'MainHub.view.requests.RequestsController',
     'MainHub.view.requests.RequestWindow',
     'MainHub.view.requests.EmailWindow',
+    'MainHub.view.requests.TokenWindow',
     'MainHub.view.libraries.LibraryWindow',
     'MainHub.view.metadataexporter.MetadataExporter'
   ],
@@ -106,7 +107,7 @@ Ext.define('MainHub.view.requests.Requests', {
       {
         xtype: 'button',
         itemId: 'add-request-button',
-        cls:'pl-add-request-button',
+        cls: 'pl-add-request-button',
         text: 'Add'
       }]
     },
@@ -211,9 +212,9 @@ Ext.define('MainHub.view.requests.Requests', {
       rowBodyTpl: new Ext.XTemplate(
         '<strong>Attached files:</strong><br/>',
         '<tpl for="files">',
-          '<span class="attached-file-link">',
-            '<a href="{path}" download>{name}</a>',
-          '</span><br/>',
+        '<span class="attached-file-link">',
+        '<a href="{path}" download>{name}</a>',
+        '</span><br/>',
         '</tpl>'
       )
     }]

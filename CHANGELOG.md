@@ -1,19 +1,30 @@
 ??.??.??
 ========
 
-- Added a new Django management command: list_templates
-- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependecy would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
+Breaking changes:
+
+- `<URL>/api/requests/<id>/get_email/` was renamed to `get_contact_details`, and the JSON Response now includes more data from the user.
 - Removed the \[broken\] import and export functionality at IndexPairs. Instead, we have a custom bulk import button now that works exclusively with plate coordinates. This may be a temporal solution until we work out the rough edges with the extension custom import (foreingkeywidget)
-- **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after. **(**For The Record: At the time of writing, this upgrade required us to manually remove a missing package, `backports-zoneinfo`, from the _compiled_ `base.txt`...**)**
-- New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
-- Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages.
+- Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages. To be clear, if you don't remove it there, the hardcoded value will overrule over the docker-compose switch that we are using for makefile rules `dev`, etc.
 - Breaking changes for backup locations! `./rsnapshot` was moved under `./misc`, so the config files will be there.. that's not much of an issue. Yet, the backups subfolder (or symlink) will need to be adjusted manually.
-- Email address displayed next so User (its string representation) now skips the email host if it's the same as in Django settings (parkour.env).
+- `/media_dump` is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+
+Non-breaking changes:
+
+- **Updated our core dependency**, Django, to version 4.2 (LTS). The previous LTS release 3.2 reached end of extended support in April. We thank the Django core team that kept releasing security fixes even after.
+- New dependency added, navigate to `<URL>/openapi/schema/redoc` or `<URL>/openapi/schema/swagger-ui` to enjoy either ReDoc or Swagger UI over the automagically generated OpenAPI 3.0 schema.
+- New dependency added, navigate to `<URL>/schema-viewer` to enjoy it (installed on dev settings only). Remember: use `models` rule if you'd like to have these in static print-friendly PDF docs.
+- Added a new Django management command: list_templates
+- Added `filepaths` JSONField to Request model. We'd like to track the location of, for example, delivered FASTQ files and QC reports.
+- Deprecated and removed bpython. shell_plus now uses ipython. This was to avoid runtime errors while compiling the requirements.txt files, given that greenlet dependecy would be pinned under contradicted version numbers (testing.txt has playwright that asks for greenlet v2, meanwhile bpython in dev.txt asked for v3..)
+- Email address displayed next to User (its string representation) now skips the email host if it's the same as in EMAIL_HOST settings (parkour.env) and instead displays `<user>@~`.
 - Added Phone next to email address for User display (if available).
 - Added 'archival' feature to CostUnit(s).
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
-- media_dump is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+- The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
+- Added an EmailField to PrincipalInvestigator. This field is used in the 'paperless approval' feature (see next point.)
+- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had).
 
 23.09.20
 ========

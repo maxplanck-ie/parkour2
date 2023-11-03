@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     "stats",
     "metadata_exporter",
     'mozilla_django_oidc',
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -244,6 +245,15 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "SEARCH_PARAM": "query",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Parkour",
+    "DESCRIPTION": "Quickly jump to that information that you need!",
+    "VERSION": "2",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # OTHER SETTINGS
 }
 
 # Use plain Python by default for shell_plus
@@ -311,3 +321,7 @@ CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
                     'GRID_INTRO_VIDEO_URL': (GRID_INTRO_VIDEO_URL,
                                              "Link for the video introduction to Parkour's grid",
                                              str)}
+
+# Facilities
+DEEPSEQ = ""
+BIOINFO = ""

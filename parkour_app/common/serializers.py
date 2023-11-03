@@ -59,4 +59,4 @@ class DutySerializer(ModelSerializer):
 class UserSerializer(ModelSerializer):
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ("id", "first_name", "last_name", "facility", "phone", "email")

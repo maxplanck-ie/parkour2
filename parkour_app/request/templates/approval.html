@@ -1,0 +1,32 @@
+{% load i18n %}{% autoescape off %}
+<p>Dear {{ pi_name }},</p>
+<p>{{ full_name }} requested your approval on this experiment. They wrote:</p>
+<p>{{ message }}</p>
+<hr/>
+<p>That was the end of their message. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, just forward, or Reply "OK", to this email. Then {{ full_name }}, who'd be authenticated within Parkour LIMS, can click <a href={{ token_url }}>this special link</a>. Afterward, processing will be started right away at the facility.<br/></p>
+{% if records %}
+<hr/>
+<table style="width:100%;">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td>Name</td>
+            <td>Barcode</td>
+            <td>Nucleic Acid Type</td>
+            <td>Protocol</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+            <tr>
+                <td>{{ record.name }}</td>
+                <td>{{ record.barcode }}</td>
+                <td>{{ record.nucleic_acid_type.name }}</td>
+                <td>{{ record.library_protocol.name }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<hr/>
+{% endif %}
+<p>--<br/><i>This e-mail was sent via Parkour2.</i><br/></p>
+{% endautoescape %}
