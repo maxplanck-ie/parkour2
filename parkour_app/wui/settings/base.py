@@ -43,7 +43,7 @@ CSRF_TRUSTED_ORIGINS = (
 # CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     "stats",
     "metadata_exporter",
     "drf_spectacular",
-    'corsheaders',
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
