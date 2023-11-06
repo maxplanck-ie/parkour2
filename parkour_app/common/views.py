@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import Http404, HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.utils import timezone
 from request.models import Request
 from rest_framework import status, viewsets
 from rest_framework.authentication import SessionAuthentication
@@ -209,8 +210,28 @@ class DutyViewSet(viewsets.ModelViewSet):
         )
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def get(self, request, *args, **kwargs):
-        serializer = DutySerializer(self.queryset, many=True)
+    def list(self, request, *args, **kwargs):
+        today_var = timezone.now()
+        start_date_var = request.query_params.get("start_date")
+        end_date_var = request.query_params.get("end_date")
+        ongoing_var = request.query_params.get("ongoing")
+        upcoming_var = request.query_params.get("upcoming")
+        queryset_var = self.queryset.filter()
+
+        if str(ongoing_var).lower() in ["true", "t", "yes", "y", "1"]:
+            queryset_var = self.queryset.filter(
+                Q(start_date__lte=today_var, end_date__gte=today_var)
+                | Q(start_date__lte=today_var, end_date__isnull=True)
+            )
+        elif str(upcoming_var).lower() in ["true", "t", "yes", "y", "1"]:
+            queryset_var = self.queryset.filter(start_date__gte=today_var)
+        elif start_date_var and end_date_var:
+            queryset_var = self.queryset.filter(
+                Q(start_date__gte=start_date_var, start_date__lte=end_date_var)
+                | Q(start_date__gte=start_date_var, end_date__isnull=True)
+            )
+
+        serializer = DutySerializer(queryset_var, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
