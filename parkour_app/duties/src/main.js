@@ -4,7 +4,6 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import "vue-toastification/dist/index.css";
 
 import { createApp } from "vue";
-import { createPinia } from "pinia";
 import vueApp from "./vueApp.vue";
 import router from "./router/router.js";
 import toast from "vue-toastification";
@@ -20,7 +19,6 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 
 const app = createApp(vueApp);
-const store = createPinia();
 
 library.add(
   faChalkboardUser,
@@ -29,7 +27,6 @@ library.add(
   faCalendarDays
 );
 
-app.use(store);
 app.use(router);
 app.use(toast);
 app.component("font-awesome-icon", FontAwesomeIcon);
