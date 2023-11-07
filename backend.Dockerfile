@@ -23,7 +23,7 @@ RUN apt-get update --fix-missing \
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
 WORKDIR /usr/src/app
-COPY ./parkour_app .
+COPY ./backend .
 EXPOSE 8000
 RUN --mount=type=cache,target=/root/.cache pip install -r requirements/base.txt
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
