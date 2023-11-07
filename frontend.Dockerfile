@@ -1,4 +1,4 @@
-FROM node:lts-bookworm-slim
+FROM node:20-bookworm
 LABEL maintainer="Adrian S. <lims@omics.dev>"
 
 ENV \
@@ -24,5 +24,5 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 WORKDIR /usr/src/app
 COPY ./frontend .
 EXPOSE 5173
-RUN npm i
-CMD ["node", "serve"]
+RUN npm install
+CMD ["serve", "--port", "5173"]
