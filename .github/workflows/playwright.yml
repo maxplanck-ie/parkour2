@@ -28,6 +28,6 @@ jobs:
           name: test-suite-report
           # if-no-files-found: ignore  ## default: warn
           path: |
-            backend/playwright/videos/
-            backend/playwright/results/
+            backend/frontend_testing_suite/videos/
+            backend/frontend_testing_suite/results/
           retention-days: 30
