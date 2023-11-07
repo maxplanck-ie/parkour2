@@ -42,7 +42,7 @@ check-templates:
 
 update-extjs:
 	@which sencha > /dev/null \
-		&& cd ./parkour_app/static/main-hub \
+		&& cd ./backend/static/main-hub \
 		&& OPENSSL_CONF=/dev/null sencha app build development \
 		|| echo "Warning: Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
 
@@ -83,7 +83,7 @@ set-base:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
-	#@docker compose exec parkour2-django rm -f parkour_app/logs/*.log
+	#@docker compose exec parkour2-django rm -f backend/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
@@ -98,7 +98,7 @@ prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
 	@sleep 10s && docker system prune -a -f --volumes
 
-clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. TODO: we should probably have to check duties/static/dist (buildDir from vite.cfg.js); among other directories like parkour_app/.pytest_cache ... gotta check.
+clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. TODO: we should probably have to check duties/static/dist (buildDir from vite.cfg.js); among other directories like backend/.pytest_cache ... gotta check.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
@@ -295,7 +295,7 @@ compile:
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi -d parkour_app/requirements/
+	@pip-compile-multi -d backend/requirements/
 
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
@@ -340,30 +340,30 @@ reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
 reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
 
 prep4json:
-	@rm -f parkour_app/library_preparation/apps.py
-	@rm -f parkour_app/library_preparation/signals.py
-	@rm -f parkour_app/pooling/apps.py
-	@rm -f parkour_app/pooling/signals.py
+	@rm -f backend/library_preparation/apps.py
+	@rm -f backend/library_preparation/signals.py
+	@rm -f backend/pooling/apps.py
+	@rm -f backend/pooling/signals.py
 
 restore-prep4json:
-	@git restore -W parkour_app/library_preparation/apps.py
-	@git restore -W parkour_app/library_preparation/signals.py
-	@git restore -W parkour_app/pooling/apps.py
-	@git restore -W parkour_app/pooling/signals.py
+	@git restore -W backend/library_preparation/apps.py
+	@git restore -W backend/library_preparation/signals.py
+	@git restore -W backend/pooling/apps.py
+	@git restore -W backend/pooling/signals.py
 
 # reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
 
 # restore-prep4json-prod:
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/library_preparation/apps.py ${VM_PROD}:~/parkour2/backend/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/library_preparation/signals.py ${VM_PROD}:~/parkour2/backend/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/pooling/apps.py ${VM_PROD}:~/parkour2/backend/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/pooling/signals.py ${VM_PROD}:~/parkour2/backend/pooling/
 
 rm-migras:
-	@rm -rf parkour_app/**/migrations/*
+	@rm -rf backend/**/migrations/*
 
 tar-old-migras:
-	@find ./parkour_app/*/ -path '**/migrations' \
+	@find ./backend/*/ -path '**/migrations' \
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
@@ -376,7 +376,7 @@ dev-ez: dev-easy db-migras
 db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag> && tar-old-migras && git switch -'
 
 put-new-migras:
-	@git restore -W parkour_app/**/migrations/
+	@git restore -W backend/**/migrations/
 	@$(MAKE) migrate
 
 load-fixtures-migras: put-old-migras apply-migrations
