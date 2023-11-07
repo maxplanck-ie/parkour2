@@ -7,6 +7,8 @@ import pytest
 import utilities
 from playwright.sync_api import Page, expect
 
+CSV_DATA = os.path.dirname(os.path.realpath(__file__)) + "/../data/"
+
 
 @pytest.fixture(scope="session")
 def browser_context_args(browser_context_args):
@@ -61,7 +63,7 @@ def test_requests_page(page: Page):
     expect(page.get_by_text("Add Libraries")).to_be_visible()
     createEmptyRowInput.fill("1")
     with open(
-        os.getcwd() + "/playwright/data/library_request.csv",
+        CSV_DATA + "library_request.csv",
         newline="",
         encoding="utf-8",
     ) as library_csv_file:
@@ -104,7 +106,7 @@ def test_requests_page(page: Page):
     expect(page.get_by_text("Add Samples")).to_be_visible()
     createEmptyRowInput.fill("1")
     with open(
-        os.getcwd() + "/playwright/data/sample_request.csv",
+        CSV_DATA + "sample_request.csv",
         newline="",
         encoding="utf-8",
     ) as sample_csv_file:
@@ -140,7 +142,7 @@ def test_requests_page(page: Page):
         "#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander"
     ).nth(0).click()
     with open(
-        os.getcwd() + "/playwright/data/sample_request.csv",
+        CSV_DATA + "sample_request.csv",
         newline="",
         encoding="utf-8",
     ) as sample_csv_file:
@@ -208,7 +210,7 @@ def test_requests_page(page: Page):
         "#librariesTable-body>div>div>table>tbody>tr>td>.x-grid-cell-inner-treecolumn>.x-tree-expander"
     ).nth(1).click()
     with open(
-        os.getcwd() + "/playwright/data/library_request.csv",
+        CSV_DATA + "library_request.csv",
         newline="",
         encoding="utf-8",
     ) as library_csv_file:

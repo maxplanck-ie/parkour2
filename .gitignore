@@ -16,6 +16,6 @@ models*.pdf
 models.png
 models.svg
 models.dot
-frontend_testing_suite/results/playwright-tests-*/
+backend/frontend_testing_suite/results/**/trace.zip
 .*_cache/
 *.ignore
