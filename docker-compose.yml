@@ -21,7 +21,7 @@ services:
     container_name: parkour2-django
     hostname: parkour2-django
     build:
-      dockerfile: ./Dockerfile
+      dockerfile: ./backend.Dockerfile
       target: pk2_base
     env_file:
       - ./misc/parkour.env
@@ -36,11 +36,11 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
-
 volumes:
   pgdb:
   media:
   staticfiles:
+
 
 networks:
   parkour2_default:
