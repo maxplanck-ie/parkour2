@@ -1,6 +1,15 @@
 version: "3.5"
 
 services:
+  parkour2-vite:
+    container_name: parkour2-vite
+    hostname: parkour2-vite
+    build:
+      dockerfile: ./frontend.Dockerfile
+    restart: always
+    volumes:
+      - ./frontend:/usr/src/app
+
   parkour2-postgres:
     container_name: parkour2-postgres
     image: postgres:latest
