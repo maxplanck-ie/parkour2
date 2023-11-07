@@ -25,4 +25,5 @@ WORKDIR /usr/src/app
 COPY ./frontend .
 EXPOSE 5173
 RUN npm install
-CMD ["serve", "--port", "5173"]
+RUN npm run build
+CMD ["serve", "-s", "dist", "-l", "5173"] 
