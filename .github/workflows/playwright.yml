@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - name: Playwright rule
         run: |
           make playwright
       - uses: actions/upload-artifact@v3
