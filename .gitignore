@@ -16,8 +16,6 @@ models*.pdf
 models.png
 models.svg
 models.dot
-Dockerfile
-parkour_app/coverage_html_report/
-parkour_app/playwright/results/playwright-tests-*/
+frontend_testing_suite/results/playwright-tests-*/
 .*_cache/
 *.ignore
