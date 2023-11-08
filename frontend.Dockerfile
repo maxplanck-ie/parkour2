@@ -21,9 +21,10 @@ RUN apt-get update --fix-missing \
 
 RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 
+COPY ./frontend /usr/src/app
 WORKDIR /usr/src/app
-COPY ./frontend .
-EXPOSE 5173
 RUN npm install
 RUN npm run build
-CMD ["serve", "-s", "dist", "-l", "5173"] 
+
+EXPOSE 5173
+CMD bash

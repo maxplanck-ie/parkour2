@@ -8,6 +8,7 @@ services:
     ports:
       - "9980:9980"
       - "9981:9981"
+      - "5173:5173"
     volumes:
       - ./misc/Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data

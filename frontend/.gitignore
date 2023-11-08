@@ -60,3 +60,4 @@ jspm_packages/
 
 # Build artifacts
 static/dist/
+dist/
