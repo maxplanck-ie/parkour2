@@ -10,6 +10,9 @@ http://*:9980 {
 	handle /vue/* {
 		reverse_proxy parkour2-vite:5173
 	}
+	handle /assets/* {
+		reverse_proxy parkour2-vite:5173
+	}
 	handle {
 		reverse_proxy parkour2-django:8000
 	}
