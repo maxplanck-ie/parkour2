@@ -1,11 +1,12 @@
 {
-  "name": "duties",
+  "name": "frontend",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "npm install && npm run build && npx serve -s dist -l 5173"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",

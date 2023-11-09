@@ -6,7 +6,7 @@ services:
     hostname: parkour2-vite
     build:
       dockerfile: ./frontend.Dockerfile
-    tty: true
+
   parkour2-postgres:
     container_name: parkour2-postgres
     image: postgres:latest
