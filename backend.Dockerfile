@@ -1,6 +1,5 @@
 # syntax = docker/dockerfile:experimental
 FROM python:3.11-bullseye AS pk2_base
-LABEL maintainer="Adrian S. <lims@omics.dev>"
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
