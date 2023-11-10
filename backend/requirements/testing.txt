@@ -32,13 +32,13 @@ pytest==7.4.3
 pytest-base-url==2.0.0
     # via pytest-playwright
 pytest-cov==4.1.0
-    # via -r parkour_app/requirements/testing.in
-pytest-django==4.6.0
-    # via -r parkour_app/requirements/testing.in
+    # via -r backend/requirements/testing.in
+pytest-django==4.7.0
+    # via -r backend/requirements/testing.in
 pytest-playwright==0.4.3
-    # via -r parkour_app/requirements/testing.in
+    # via -r backend/requirements/testing.in
 pytest-xdist==3.3.1
-    # via -r parkour_app/requirements/testing.in
+    # via -r backend/requirements/testing.in
 python-slugify==8.0.1
     # via pytest-playwright
 text-unidecode==1.3

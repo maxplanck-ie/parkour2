@@ -7,7 +7,10 @@ http://*:9980 {
 		root * /parkour2
 		file_server
 	}
-	handle /duties/* {
+	handle /vue/* {
+		reverse_proxy parkour2-vite:5173
+	}
+	handle /vue-assets/* {
 		reverse_proxy parkour2-vite:5173
 	}
 	handle {
@@ -15,4 +18,3 @@ http://*:9980 {
 	}
 	log
 }
-
