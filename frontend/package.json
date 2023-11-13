@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "npm install && npm run build && npx serve -s dist -l 5173"
+    "start-dev": "npm install && vite build && npx serve -s dist -l 5173",
+    "start-prod": "npm install && vite build && npx serve -s dist -l 5173"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.2",
