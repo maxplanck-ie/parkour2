@@ -58,6 +58,9 @@ jspm_packages/
 .yarn/install-state.gz
 .pnp.*
 
+# Node
+package-lock.json
+
 # Build artifacts
 static/dist/
 dist/
