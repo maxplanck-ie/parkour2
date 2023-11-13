@@ -154,6 +154,7 @@ class LibrarySampleBaseSerializer(ModelSerializer):
             "comments",
             "amplification_cycles",
             "organism_name",
+            "pool",
         )
         extra_kwargs = {"barcode": {"required": False}}
 
