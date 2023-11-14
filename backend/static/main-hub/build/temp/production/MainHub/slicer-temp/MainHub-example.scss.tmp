@@ -1,5 +1,5 @@
 $app-name:  dynamic( 'MainHub' );
-$image-search-path: 'C:/Users/07StarLord/parkour2/parkour_app/static/main-hub/build/production/MainHub/resources';
+$image-search-path: '/docker/parkour2/backend/static/main-hub/build/production/MainHub/resources';
 $theme-name:  dynamic( 'theme-triton' );
 $include-ext-abstractcomponent: dynamic(true);;
 $include-ext-abstractcontainer: dynamic(true);;
@@ -1297,6 +1297,8 @@ $include-mainhub-view-requests-requestwindow: dynamic(true);;
 $include-mainhub-view-requests-requestwindowcontroller: dynamic(true);;
 $include-mainhub-view-requests-requests: dynamic(true);;
 $include-mainhub-view-requests-requestscontroller: dynamic(true);;
+$include-mainhub-view-requests-tokenwindow: dynamic(true);;
+$include-mainhub-view-requests-tokenwindowcontroller: dynamic(true);;
 $include-mainhub-view-statistics-runstatistics: dynamic(true);;
 $include-mainhub-view-statistics-runstatisticscontroller: dynamic(true);;
 $include-mainhub-view-statistics-sequences: dynamic(true);;

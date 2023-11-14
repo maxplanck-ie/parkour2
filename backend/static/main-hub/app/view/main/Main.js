@@ -61,7 +61,7 @@ Ext.define('MainHub.view.main.Main', {
                 {
                     xtype: 'tbtext',
                     cls: 'header-username color-bluish-grey',
-                    text: USER.name      // from 'globals.html'
+                    text: USER.name // from 'globals.html'
                 },
                 {
                     xtype: 'button',
@@ -77,6 +77,13 @@ Ext.define('MainHub.view.main.Main', {
                     iconCls: 'x-fa fa-book color-bluish-grey',
                     href: 'https://github.com/maxplanck-ie/parkour2/wiki/Introduction',
                     tooltip: 'Documentation'
+                },
+                {
+                    xtype: 'button',
+                    ui: 'header',
+                    iconCls: 'x-fa fa-calendar color-bluish-grey',
+                    href: 'vue/duties',
+                    tooltip: 'Duties'
                 },
                 {
                     xtype: 'button',

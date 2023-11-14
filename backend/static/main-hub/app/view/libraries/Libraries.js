@@ -193,6 +193,17 @@ Ext.define('MainHub.view.libraries.Libraries', {
             return meta.record.getBarcode();
           }
         },
+        // {
+        //   text: 'Pool Paths',
+        //   dataIndex: 'pool',
+        //   resizable: false,
+        //   menuDisabled: true,
+        //   hideable: false,
+        //   width: 95,
+        //   renderer: function (value, meta) {
+        //     return meta.record.getPoolPaths(value, meta);
+        //   }
+        // },
         {
           text: 'Date',
           dataIndex: 'create_time',

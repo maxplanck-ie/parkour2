@@ -1,2 +1,2 @@
 // @tag full-page
-// @require C:\Users\07StarLord\parkour2\parkour_app\static\main-hub\app.js
+// @require /docker/parkour2/backend/static/main-hub/app.js
