@@ -21,7 +21,7 @@ from .models import NucleicAcidType, Sample
 User = get_user_model()
 
 
-def create_sample(name, status=0, save=True, read_length=None, index_type=None, pool=None):
+def create_sample(name, status=0, save=True, read_length=None, index_type=None):
     organism = Organism(name="Organism")
     organism.save()
 
@@ -62,9 +62,6 @@ def create_sample(name, status=0, save=True, read_length=None, index_type=None, 
         library_type_id=library_type.pk,
         nucleic_acid_type_id=nat.pk,
     )
-
-    if pool:
-        sample.pool = pool
 
     if index_type:
         sample.index_type = index_type

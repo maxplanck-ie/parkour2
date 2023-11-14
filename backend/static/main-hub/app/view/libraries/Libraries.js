@@ -205,17 +205,6 @@ Ext.define('MainHub.view.libraries.Libraries', {
         //   }
         // },
         {
-          text: 'Pool Paths',
-          dataIndex: 'pool',
-          resizable: false,
-          menuDisabled: true,
-          hideable: false,
-          width: 95,
-          renderer: function (value, meta) {
-            return meta.record.getPoolPaths();
-          }
-        },
-        {
           text: 'Date',
           dataIndex: 'create_time',
           renderer: Ext.util.Format.dateRenderer('d.m.Y')
