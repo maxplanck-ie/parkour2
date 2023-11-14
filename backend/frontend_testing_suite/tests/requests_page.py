@@ -156,50 +156,50 @@ def test_requests_page(page: Page):
                 ).to_contain_text(str(row[0]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div"
                     ).nth(index)
                 ).to_contain_text(datetime.today().strftime("%d.%m.%Y"))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[1]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[2]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[3]))
                 assert page.locator(
-                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
+                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(10)>div"
                 ).nth(index).inner_text() in str(row[4]), f"Values are not matching."
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(10)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(11)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[5]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[6]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[7]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[8]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(20)>div"
                     ).nth(index)
                 ).to_contain_text(str(row[9]))
 
@@ -224,66 +224,66 @@ def test_requests_page(page: Page):
                 ).to_contain_text(str(row[0]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(5)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(6)>div"
                     ).nth(index + 1)
                 ).to_contain_text(datetime.today().strftime("%d.%m.%Y"))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(7)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[1]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(8)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[2]))
                 assert page.locator(
-                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(9)>div"
+                    "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(10)>div"
                 ).nth(index + 1).inner_text() in str(
                     row[3]
                 ), f"Values are not matching."
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(11)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(12)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[4]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(12)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(13)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[5]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(13)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(14)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[6]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(14)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(15)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[7]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(15)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[8]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(16)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[9]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(17)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[10]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(18)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[11]))
                 expect(
                     page.locator(
-                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(19)>div"
+                        "#librariesTable-body>div>div>table>tbody>tr>td:nth-child(20)>div"
                     ).nth(index + 1)
                 ).to_contain_text(str(row[12]))
