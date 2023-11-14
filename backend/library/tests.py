@@ -21,7 +21,7 @@ from sample.tests import create_sample
 User = get_user_model()
 
 
-def create_library(name, status=0, save=True, read_length=None, index_type=None, pool=None):
+def create_library(name, status=0, save=True, read_length=None, index_type=None):
     organism = Organism(name="Organism")
     organism.save()
 
@@ -66,9 +66,6 @@ def create_library(name, status=0, save=True, read_length=None, index_type=None,
         index_reads=0,
         mean_fragment_size=1,
     )
-
-    if pool:
-        library.pool = pool
 
     if save:
         library.save()

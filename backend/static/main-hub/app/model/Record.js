@@ -48,8 +48,8 @@ Ext.define("MainHub.model.Record", {
     return this.get("is_converted") ? barcode + "*" : barcode;
   },
 
-  getPoolPaths: function () {
-    var pool = this.get("pool");
+  getPoolPaths: function (value) {
+    var pool = "";
     return pool;
   },
 });
