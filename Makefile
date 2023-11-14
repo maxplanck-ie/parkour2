@@ -32,6 +32,7 @@ deploy-network:
 deploy-containers:
 	@docker compose build
 	@docker compose up -d
+	@git checkout docker-compose.yml
 
 deploy-ready: apply-migrations collect-static
 
@@ -311,6 +312,7 @@ env-setup-dev:
 		source ./env_dev/bin/activate && \
 		env python3 -m pip install --upgrade pip && \
 		pip install \
+			djlint \
 			pre-commit \
 			pip-tools \
 			pip-compile-multi
