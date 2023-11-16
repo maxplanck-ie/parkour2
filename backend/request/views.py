@@ -15,6 +15,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Prefetch
 from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
@@ -29,8 +30,10 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from tablib import Dataset
 
 from .models import FileRequest, Request
+from .resources import RequestResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()
@@ -1041,3 +1044,136 @@ class RequestViewSet(viewsets.ModelViewSet):
         else:
             post_data = json.loads(request.data.get("data", "{}"))
         return post_data
+
+
+def export_request(request):
+    if request.method == "POST":
+        primary_key = request.POST["project-id"]
+        file_format = request.POST["file-format"]
+        dataset = Dataset()
+        dataset.headers = (
+            # The following are not submitted by user...
+            # id barcode create_time update_time status concentration concentration_method
+            # equal_representation_nucleotides comments is_pooled amplification_cycles
+            # dilution_factor concentration_facility concentration_method_facility archived
+            # sample_volume_facility amount_facility size_distribution_facility comments_facility
+            ##libraries-exclusively:
+            # qpcr_result qpcr_result_facility
+            ##sample-exclusively:
+            # is_converted
+            "id",
+            "name",
+            "barcode",
+            "nucleic_acid_type",  # samples
+            "library_protocol",
+            "library_type",
+            "concentration",
+            "mean_fragment_size",  # libraries
+            "index_type",  # libraries
+            "index_reads",  # libraries
+            "index_i7",  # libraries
+            "index_i5",  # libraries
+            "rna_quality",  # samples
+            "read_length",
+            "sequencing_depth",
+            "organism",
+            "comments",
+        )
+        qs = Request.objects.all().filter(id=primary_key)
+        records = list(qs)[0].records
+        for r in records:
+            r_type = r.__class__.__name__
+            if r_type == "Sample":
+                dataset.append(
+                    (
+                        "_",  # id
+                        r.name,
+                        "_",  # barcode
+                        r.nucleic_acid_type,
+                        r.library_protocol,
+                        r.library_type,
+                        r.concentration,
+                        "_",  # mean_fragment_size
+                        "_",  # index_type
+                        "_",  # index_reads
+                        "_",  # index_i7
+                        "_",  # index_i5
+                        r.rna_quality,
+                        r.read_length,
+                        r.sequencing_depth,
+                        r.organism,
+                        r.comments,
+                    )
+                )
+            elif r_type == "Library":
+                dataset.append(
+                    (
+                        "_",  # id
+                        r.name,
+                        "_",  # barcode
+                        "_",  # nucleic_acid_type
+                        r.library_protocol,
+                        r.library_type,
+                        r.concentration,
+                        r.mean_fragment_size,
+                        r.index_type,
+                        r.index_reads,
+                        r.index_i7,
+                        r.index_i5,
+                        "_",  # rna_quality
+                        r.read_length,
+                        r.sequencing_depth,
+                        r.organism,
+                        r.comments,
+                    )
+                )
+            else:
+                raise RuntimeError(f"What's {r.barcode} with {r_type}?!")
+        if file_format == "CSV":
+            response = HttpResponse(dataset.csv, content_type="text/csv")
+            response["Content-Disposition"] = (
+                'attachment; filename="exported_project_"' + str(primary_key) + '".csv"'
+            )
+            return response
+        elif file_format == "JSON":
+            response = HttpResponse(dataset.json, content_type="application/json")
+            response["Content-Disposition"] = (
+                'attachment; filename="exported_project_"'
+                + str(primary_key)
+                + '".json"'
+            )
+            return response
+        elif file_format == "XLS (Excel)":
+            response = HttpResponse(
+                dataset.xls, content_type="application/vnd.ms-excel"
+            )
+            response["Content-Disposition"] = (
+                'attachment; filename="exported_project_"' + str(primary_key) + '".xls"'
+            )
+            return response
+
+    return render(request, "export.html")
+
+
+def import_request(request):
+    if request.method == "POST":
+        file_format = request.POST["file-format"]
+        request_resource = RequestResource()
+        dataset = Dataset()
+        new_requests = request.FILES["importData"]
+
+        if file_format == "CSV":
+            imported_data = dataset.load(
+                new_requests.read().decode("utf-8"), format="csv"
+            )
+            result = request_resource.import_data(dataset, dry_run=True)
+        elif file_format == "JSON":
+            imported_data = dataset.load(
+                new_requests.read().decode("utf-8"), format="json"
+            )
+            result = request_resource.import_data(dataset, dry_run=True)
+
+        if not result.has_errors():
+            request_resource.import_data(dataset, dry_run=False)
+
+    return render(request, "import.html")

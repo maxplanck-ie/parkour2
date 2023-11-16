@@ -1,0 +1,35 @@
+<br />
+{% extends "base.html" %}
+<p>{% block content %}</p>
+    <h3>Export Sequencing Request</h3>
+    <p>Use the obtained file as a template for swiftly submitting your next sequencing request.</p>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <tr>
+            <td>Provide a project ID:</td>
+            <td>
+                <input type="text"
+                       class="form-control"
+                       name="project-id"
+                       pattern="[0-9]+"
+                       title="Integer number, most proably 4 digits"
+                       required>
+            </td>
+        </tr>
+        <p>Select format of file.</p>
+        <p>
+            <select name="file-format" class="form-control my-3">
+                <option selected>Choose format...</option>
+                <option>CSV</option>
+                <option>JSON</option>
+                <option>XLS (Excel)</option>
+            </select>
+            <br />
+            <button class="btn btn-primary" type="submit">Export</button>
+            <br />
+        </form>
+    </p>
+    <a href="{% url 'index' %}">Go back.</a>
+    <br />
+{% endblock content %}
+<br />

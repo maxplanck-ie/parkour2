@@ -1,0 +1,24 @@
+<br />
+{% extends "base.html" %}
+<p>{% block content %}</p>
+    <h3>Import Sequencing Request</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <br />
+        <input type="file" name="importData">
+        <p>Select format of file.</p>
+        <p>
+            <select name="file-format" class="form-control my-3">
+                <option selected>Choose format...</option>
+                <option>CSV</option>
+                <option>JSON</option>
+            </select>
+            <br />
+            <button class="btn btn-primary" type="submit">Import</button>
+            <br />
+        </p>
+    </form>
+    <a href="{% url 'index' %}">Go back.</a>
+    <br />
+{% endblock content %}
+<br />
