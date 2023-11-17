@@ -1,18 +1,18 @@
-Ext.define('MainHub.model.invoicing.BaseCost', {
-  extend: 'MainHub.model.Base',
+Ext.define("MainHub.model.invoicing.BaseCost", {
+  extend: "MainHub.model.Base",
 
   fields: [
     {
-      name: 'id',
-      type: 'int'
+      name: "id",
+      type: "int",
     },
     {
-      name: 'name',
-      type: 'string'
+      name: "name",
+      type: "string",
     },
     {
-      name: 'price',
-      type: 'float'
-    }
-  ]
+      name: "price",
+      type: "float",
+    },
+  ],
 });
