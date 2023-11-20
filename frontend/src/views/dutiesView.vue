@@ -542,7 +542,7 @@ export default {
     },
     async getUsers() {
       await axiosRef
-        .get("http://localhost:9980/api/duties/responsibles/")
+        .get(urlPart[0] + "/api/duties/responsibles/")
         .then((response) => {
           let userList = getProp(response, "data", []);
           this.userList = userList;
