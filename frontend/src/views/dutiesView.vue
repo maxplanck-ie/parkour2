@@ -258,7 +258,7 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "past-1-month",
+      selectedFilter: "ongoing",
     };
   },
   setup() {},
