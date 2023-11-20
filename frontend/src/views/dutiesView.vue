@@ -241,6 +241,8 @@ var axiosRef = axios.create({
   },
 });
 
+let urlPart = window.location.href.split("/vue/");
+
 export default {
   name: "Duties",
   components: {
@@ -302,7 +304,6 @@ export default {
     },
     async saveDuty() {
       this.gridOptions.api.showLoadingOverlay();
-      let slices = window.location.href.split("/vue/");
       let newDuty = toRaw(this.newDuty);
       if (
         !newDuty.main_name ||
@@ -318,7 +319,7 @@ export default {
         this.gridOptions.api.hideOverlay();
       } else {
         await axiosRef
-          .post(slices[0] + "/api/duties/", newDuty)
+          .post(urlPart[0] + "/api/duties/", newDuty)
           .then(() => {
             this.newDuty = {};
             document.getElementById("facility").value = "";
@@ -342,10 +343,9 @@ export default {
       }
     },
     async getDuties(refresh = false, additionalUrl = "") {
-      let slices = window.location.href.split("/vue/");
       try {
         const response = await axiosRef.get(
-          slices[0] + "/api/duties/" +
+          urlPart[0] + "/api/duties/" +
             (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
         let fetchedRows = [];
@@ -483,7 +483,7 @@ export default {
             break;
         }
         await axiosRef
-          .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
+          .patch(urlPart[0] + "/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
           .then(() => {
