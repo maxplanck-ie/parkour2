@@ -1046,6 +1046,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         return post_data
 
 
+@login_required
 def export_request(request):
     if request.method == "POST":
         primary_key = request.POST["project-id"]
@@ -1155,6 +1156,7 @@ def export_request(request):
     return render(request, "export.html")
 
 
+@login_required
 def import_request(request):
     if request.method == "POST":
         file_format = request.POST["file-format"]
@@ -1167,11 +1169,13 @@ def import_request(request):
                 new_requests.read().decode("utf-8"), format="csv"
             )
             result = request_resource.import_data(dataset, dry_run=True)
-        elif file_format == "JSON":
-            imported_data = dataset.load(
-                new_requests.read().decode("utf-8"), format="json"
-            )
-            result = request_resource.import_data(dataset, dry_run=True)
+
+        ## Leaving JSON for fixtures.
+        # elif file_format == "JSON":
+        #     imported_data = dataset.load(
+        #         new_requests.read().decode("utf-8"), format="json"
+        #     )
+        #     result = request_resource.import_data(dataset, dry_run=True)
 
         if not result.has_errors():
             request_resource.import_data(dataset, dry_run=False)
