@@ -1,27 +1,27 @@
-Ext.define('MainHub.view.metadataexporter.MetadataBaseGrid', {
-  extend: 'Ext.grid.Panel',
-  alias: 'widget.metadatabasegrid',
+Ext.define("MainHub.view.metadataexporter.MetadataBaseGrid", {
+  extend: "Ext.grid.Panel",
+  alias: "widget.metadatabasegrid",
 
   sortableColumns: false,
   enableColumnMove: false,
   enableColumnHide: false,
 
   viewConfig: {
-    stripeRows: false
+    stripeRows: false,
   },
 
   selModel: {
-    type: 'spreadsheet',
-    rowSelect: false
+    type: "spreadsheet",
+    rowSelect: false,
   },
 
   plugins: [
     {
-      ptype: 'cellediting',
-      clicksToEdit: 1
+      ptype: "cellediting",
+      clicksToEdit: 1,
     },
     {
-      ptype: 'clipboard'
-    }
-  ]
+      ptype: "clipboard",
+    },
+  ],
 });

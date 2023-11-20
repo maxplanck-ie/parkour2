@@ -1,14 +1,14 @@
-Ext.define('MainHub.model.requests.CostUnit', {
-  extend: 'MainHub.model.Base',
+Ext.define("MainHub.model.requests.CostUnit", {
+  extend: "MainHub.model.Base",
 
   fields: [
     {
-      type: 'int',
-      name: 'id'
+      type: "int",
+      name: "id",
     },
     {
-      type: 'string',
-      name: 'name'
-    }
-  ]
+      type: "string",
+      name: "name",
+    },
+  ],
 });

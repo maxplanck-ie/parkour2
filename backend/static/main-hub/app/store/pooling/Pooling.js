@@ -1,70 +1,71 @@
-Ext.define('MainHub.store.pooling.Pooling', {
-  extend: 'Ext.data.Store',
-  storeId: 'Pooling',
+Ext.define("MainHub.store.pooling.Pooling", {
+  extend: "Ext.data.Store",
+  storeId: "Pooling",
 
-  requires: [
-    'MainHub.model.pooling.Pooling'
-  ],
+  requires: ["MainHub.model.pooling.Pooling"],
 
-  model: 'MainHub.model.pooling.Pooling',
+  model: "MainHub.model.pooling.Pooling",
 
-  groupField: 'pool',
-  groupDir: 'DESC',
+  groupField: "pool",
+  groupDir: "DESC",
 
   proxy: {
-    type: 'ajax',
-      // timeout: 1000000,
-    pageParam: false,   // to remove param "page"
-    startParam: false,  // to remove param "start"
-    limitParam: false,  // to remove param "limit"
-    noCache: false,     // to remove param "_dc",
+    type: "ajax",
+    // timeout: 1000000,
+    pageParam: false, // to remove param "page"
+    startParam: false, // to remove param "start"
+    limitParam: false, // to remove param "limit"
+    noCache: false, // to remove param "_dc",
     api: {
-      read: 'api/pooling/',
-      update: 'api/pooling/edit/'
+      read: "api/pooling/",
+      update: "api/pooling/edit/",
     },
     reader: {
-      type: 'json',
-      rootProperty: 'data',
-      successProperty: 'success',
-      messageProperty: 'message'
+      type: "json",
+      rootProperty: "data",
+      successProperty: "success",
+      messageProperty: "message",
     },
     writer: {
-      type: 'json',
-      rootProperty: 'data',
+      type: "json",
+      rootProperty: "data",
       transform: {
         fn: function (data, request) {
           if (!(data instanceof Array)) {
             data = [data];
           }
 
-          var store = Ext.getStore('Pooling');
+          var store = Ext.getStore("Pooling");
           var newData = _.map(data, function (item) {
-            var record = store.findRecord('id', item.id, 0, false, true, true);
+            var record = store.findRecord("id", item.id, 0, false, true, true);
             if (record) {
-              return Ext.Object.merge({
-                pk: record.get('pk'),
-                record_type: record.get('record_type')
-              }, record.getChanges());
+              return Ext.Object.merge(
+                {
+                  pk: record.get("pk"),
+                  record_type: record.get("record_type"),
+                },
+                record.getChanges()
+              );
             }
           });
 
           return newData;
         },
-        scope: this
-      }
-    }
+        scope: this,
+      },
+    },
   },
 
   listeners: {
     load: function (store, records, success, operation) {
       if (success) {
         // Remove 'Click to collapse' tooltip
-        $('.x-grid-group-title').attr('data-qtip', '');
+        $(".x-grid-group-title").attr("data-qtip", "");
       }
-    }
+    },
   },
 
   getId: function () {
-    return 'Pooling';
-  }
+    return "Pooling";
+  },
 });

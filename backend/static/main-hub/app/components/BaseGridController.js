@@ -1,9 +1,9 @@
-Ext.define('MainHub.components.BaseGridController', {
-  extend: 'Ext.app.ViewController',
-  alias: 'controller.basegrid',
+Ext.define("MainHub.components.BaseGridController", {
+  extend: "Ext.app.ViewController",
+  alias: "controller.basegrid",
 
   activateView: function (view) {
-    var store = view.down('grid').getStore();
+    var store = view.down("grid").getStore();
     Ext.getStore(store.getId()).reload();
   },
 
@@ -15,14 +15,16 @@ Ext.define('MainHub.components.BaseGridController', {
     var self = this;
     var customConfig = gridView.grid.initialConfig.customConfig;
     var qcMenuOptions = [];
-    var menuItems = [{
-      text: 'Apply to All',
-      margin: '5px 5px 2px 5px',
-      handler: function () {
-        var dataIndex = self._getDataIndex(e, gridView);
-        self.applyToAll(gridView, record, dataIndex);
-      }
-    }];
+    var menuItems = [
+      {
+        text: "Apply to All",
+        margin: "5px 5px 2px 5px",
+        handler: function () {
+          var dataIndex = self._getDataIndex(e, gridView);
+          self.applyToAll(gridView, record, dataIndex);
+        },
+      },
+    ];
 
     if (customConfig && customConfig.qualityCheckMenuOptions) {
       qcMenuOptions = customConfig.qualityCheckMenuOptions;
@@ -30,90 +32,90 @@ Ext.define('MainHub.components.BaseGridController', {
 
     if (qcMenuOptions.length > 0) {
       var qcMenu = {
-        xtype: 'container',
+        xtype: "container",
         items: [
           {
-            xtype: 'container',
-            html: 'Quality Check',
-            margin: '10px 5px 5px 5px',
+            xtype: "container",
+            html: "Quality Check",
+            margin: "10px 5px 5px 5px",
             style: {
-              color: '#000'
-            }
+              color: "#000",
+            },
           },
           {
-            xtype: 'container',
+            xtype: "container",
             margin: 5,
             layout: {
-              type: 'hbox',
-              pack: 'center',
-              align: 'middle'
+              type: "hbox",
+              pack: "center",
+              align: "middle",
             },
             defaults: {
-              xtype: 'button',
-              scale: 'medium',
-              margin: '5px 10px 10px'
+              xtype: "button",
+              scale: "medium",
+              margin: "5px 10px 10px",
             },
-            items: []
-          }
-        ]
+            items: [],
+          },
+        ],
       };
 
-      if (qcMenuOptions.indexOf('passed') !== -1) {
+      if (qcMenuOptions.indexOf("passed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-green',
-          tooltip: 'passed',
-          iconCls: 'fa fa-lg fa-check',
+          ui: "menu-button-green",
+          tooltip: "passed",
+          iconCls: "fa fa-lg fa-check",
           handler: function () {
-            self.qualityCheckSingle(record, 'passed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSingle(record, "passed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('completed') !== -1) {
+      if (qcMenuOptions.indexOf("completed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-green',
-          tooltip: 'completed',
-          iconCls: 'fa fa-lg fa-check',
+          ui: "menu-button-green",
+          tooltip: "completed",
+          iconCls: "fa fa-lg fa-check",
           handler: function () {
-            self.qualityCheckSingle(record, 'completed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSingle(record, "completed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('compromised') !== -1) {
+      if (qcMenuOptions.indexOf("compromised") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-yellow',
-          tooltip: 'compromised',
-          iconCls: 'fa fa-lg fa-exclamation-triangle',
+          ui: "menu-button-yellow",
+          tooltip: "compromised",
+          iconCls: "fa fa-lg fa-exclamation-triangle",
           handler: function () {
-            self.qualityCheckSingle(record, 'compromised');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSingle(record, "compromised");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('failed') !== -1) {
+      if (qcMenuOptions.indexOf("failed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-red',
-          tooltip: 'failed',
-          iconCls: 'fa fa-lg fa-times',
+          ui: "menu-button-red",
+          tooltip: "failed",
+          iconCls: "fa fa-lg fa-times",
           handler: function () {
-            self.qualityCheckSingle(record, 'failed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSingle(record, "failed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      menuItems.push('-');
+      menuItems.push("-");
       menuItems.push(qcMenu);
     }
 
     e.stopEvent();
-    Ext.create('Ext.menu.Menu', {
+    Ext.create("Ext.menu.Menu", {
       plain: true,
-      items: menuItems
+      items: menuItems,
     }).showAt(e.getXY());
   },
 
@@ -124,19 +126,19 @@ Ext.define('MainHub.components.BaseGridController', {
     var qcMenuOptions = [];
     var menuItems = [
       {
-        text: 'Select All',
-        margin: '5px 5px 0 5px',
+        text: "Select All",
+        margin: "5px 5px 0 5px",
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), true);
-        }
+        },
       },
       {
-        text: 'Unselect All',
+        text: "Unselect All",
         margin: 5,
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), false);
-        }
-      }
+        },
+      },
     ];
 
     if (customConfig && customConfig.qualityCheckMenuOptions) {
@@ -148,90 +150,90 @@ Ext.define('MainHub.components.BaseGridController', {
       self._getSelectedRecords(grid.getStore(), parseInt(groupId)).length > 0
     ) {
       var qcMenu = {
-        xtype: 'container',
+        xtype: "container",
         items: [
           {
-            xtype: 'container',
-            html: 'Quality Check: Selected',
-            margin: '10px 5px 5px 5px',
+            xtype: "container",
+            html: "Quality Check: Selected",
+            margin: "10px 5px 5px 5px",
             style: {
-              color: '#000'
-            }
+              color: "#000",
+            },
           },
           {
-            xtype: 'container',
+            xtype: "container",
             margin: 5,
             layout: {
-              type: 'hbox',
-              pack: 'center',
-              align: 'middle'
+              type: "hbox",
+              pack: "center",
+              align: "middle",
             },
             defaults: {
-              xtype: 'button',
-              scale: 'medium',
-              margin: '5px 10px 10px'
+              xtype: "button",
+              scale: "medium",
+              margin: "5px 10px 10px",
             },
-            items: []
-          }
-        ]
+            items: [],
+          },
+        ],
       };
 
-      if (qcMenuOptions.indexOf('passed') !== -1) {
+      if (qcMenuOptions.indexOf("passed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-green',
-          tooltip: 'passed',
-          iconCls: 'fa fa-lg fa-check',
+          ui: "menu-button-green",
+          tooltip: "passed",
+          iconCls: "fa fa-lg fa-check",
           handler: function () {
-            self.qualityCheckSelected(grid, parseInt(groupId), 'passed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSelected(grid, parseInt(groupId), "passed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('completed') !== -1) {
+      if (qcMenuOptions.indexOf("completed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-green',
-          tooltip: 'completed',
-          iconCls: 'fa fa-lg fa-check',
+          ui: "menu-button-green",
+          tooltip: "completed",
+          iconCls: "fa fa-lg fa-check",
           handler: function () {
-            self.qualityCheckSelected(grid, parseInt(groupId), 'completed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSelected(grid, parseInt(groupId), "completed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('compromised') !== -1) {
+      if (qcMenuOptions.indexOf("compromised") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-yellow',
-          tooltip: 'compromised',
-          iconCls: 'fa fa-lg fa-exclamation-triangle',
+          ui: "menu-button-yellow",
+          tooltip: "compromised",
+          iconCls: "fa fa-lg fa-exclamation-triangle",
           handler: function () {
-            self.qualityCheckSelected(grid, parseInt(groupId), 'compromised');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSelected(grid, parseInt(groupId), "compromised");
+            this.up("menu").hide();
+          },
         });
       }
 
-      if (qcMenuOptions.indexOf('failed') !== -1) {
+      if (qcMenuOptions.indexOf("failed") !== -1) {
         qcMenu.items[1].items.push({
-          ui: 'menu-button-red',
-          tooltip: 'failed',
-          iconCls: 'fa fa-lg fa-times',
+          ui: "menu-button-red",
+          tooltip: "failed",
+          iconCls: "fa fa-lg fa-times",
           handler: function () {
-            self.qualityCheckSelected(grid, parseInt(groupId), 'failed');
-            this.up('menu').hide();
-          }
+            self.qualityCheckSelected(grid, parseInt(groupId), "failed");
+            this.up("menu").hide();
+          },
         });
       }
 
-      menuItems.push('-');
+      menuItems.push("-");
       menuItems.push(qcMenu);
     }
 
     e.stopEvent();
-    Ext.create('Ext.menu.Menu', {
+    Ext.create("Ext.menu.Menu", {
       plain: true,
-      items: menuItems
+      items: menuItems,
     }).showAt(e.getXY());
   },
 
@@ -247,10 +249,10 @@ Ext.define('MainHub.components.BaseGridController', {
           Ext.getStore(storeId).reload();
         }
 
-        if (obj.message && obj.message !== '') {
-          new Noty({ text: obj.message, type: 'warning' }).show();
+        if (obj.message && obj.message !== "") {
+          new Noty({ text: obj.message, type: "warning" }).show();
         } else {
-          new Noty({ text: 'The changes have been saved.' }).show();
+          new Noty({ text: "The changes have been saved." }).show();
         }
       },
 
@@ -260,15 +262,15 @@ Ext.define('MainHub.components.BaseGridController', {
 
         try {
           var obj = Ext.JSON.decode(error.response.responseText);
-          if (!obj.success && obj.message && obj.message !== '') {
+          if (!obj.success && obj.message && obj.message !== "") {
             error = obj.message;
           }
         } catch (e) {
           error = error.statusText;
         }
 
-        new Noty({ text: error, type: 'error' }).show();
-      }
+        new Noty({ text: error, type: "error" }).show();
+      },
     });
   },
 
@@ -277,14 +279,14 @@ Ext.define('MainHub.components.BaseGridController', {
 
     store.each(function (item) {
       if (item.get(store.groupField) === groupId) {
-        item.set('selected', selected);
+        item.set("selected", selected);
       }
     });
   },
 
   qualityCheckSingle: function (record, result) {
     var store = record.store;
-    record.set('quality_check', result);
+    record.set("quality_check", result);
     this.syncStore(store.getId(), true);
   },
 
@@ -292,8 +294,8 @@ Ext.define('MainHub.components.BaseGridController', {
     var store = grid.getStore();
 
     store.each(function (item) {
-      if (item.get(store.groupField) === groupId && item.get('selected')) {
-        item.set('quality_check', result);
+      if (item.get(store.groupField) === groupId && item.get("selected")) {
+        item.set("quality_check", result);
       }
     });
 
@@ -301,12 +303,12 @@ Ext.define('MainHub.components.BaseGridController', {
   },
 
   save: function (btn) {
-    var store = btn.up('grid').getStore();
+    var store = btn.up("grid").getStore();
     this.syncStore(store.getId());
   },
 
   cancel: function (btn) {
-    btn.up('grid').getStore().rejectChanges();
+    btn.up("grid").getStore().rejectChanges();
   },
 
   gridCellTooltipRenderer: function (value, meta) {
@@ -315,12 +317,12 @@ Ext.define('MainHub.components.BaseGridController', {
   },
 
   barcodeRenderer: function (value, meta) {
-    var record = this.getView().getStore().findRecord('barcode', value);
+    var record = this.getView().getStore().findRecord("barcode", value);
     return record ? record.getBarcode() : value;
   },
 
   yesNoRenderer: function (value) {
-    return value ? 'Yes' : 'No';
+    return value ? "Yes" : "No";
   },
 
   _getDataIndex: function (e, view) {
@@ -345,7 +347,7 @@ Ext.define('MainHub.components.BaseGridController', {
     var records = [];
 
     store.each(function (item) {
-      if (item.get(store.groupField) === groupId && item.get('selected')) {
+      if (item.get(store.groupField) === groupId && item.get("selected")) {
         records.push(item);
       }
     });
@@ -354,20 +356,26 @@ Ext.define('MainHub.components.BaseGridController', {
   },
 
   _showEditableColumnsMessage: function (gridView, allowedColumns) {
-    var columns = this._findColumnsByDataIndex(gridView.getGridColumns(), allowedColumns);
-    var columnNames = Ext.Array.pluck(columns, 'text').map(
-      function (name) { return '<li>' + name + '</li>'; }
-    ).join('');
+    var columns = this._findColumnsByDataIndex(
+      gridView.getGridColumns(),
+      allowedColumns
+    );
+    var columnNames = Ext.Array.pluck(columns, "text")
+      .map(function (name) {
+        return "<li>" + name + "</li>";
+      })
+      .join("");
 
-    if (columnNames === '') {
+    if (columnNames === "") {
       return;
     }
 
     var message = Ext.String.format(
-      'Only the following columns are editable:<br/><ul>{0}</ul>', columnNames
+      "Only the following columns are editable:<br/><ul>{0}</ul>",
+      columnNames
     );
 
-    new Noty({ text: message, type: 'warning' }).show();
+    new Noty({ text: message, type: "warning" }).show();
   },
 
   _findColumnsByDataIndex: function (columns, allowedColumns) {
@@ -382,5 +390,5 @@ Ext.define('MainHub.components.BaseGridController', {
     });
 
     return result;
-  }
+  },
 });
