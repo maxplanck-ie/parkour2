@@ -7,6 +7,7 @@
 - Subfolders were re-arranged. Basically, the old frontend (ExtJS), its tests (playwright), and the Django Project (`./parkour_app`) are now under `./backend`. Meanwhile, there's a new frontend under development, using ViteJS; and it's under `./frontend` subfolder. Also, there's a new Dockerfile, and container, for it.
 - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had).
 - A new column (`Pool Paths`) was added tot he 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
+- Staff users will find a new calendar icon that takes them to 'Duties', our first module using the new VueJS framework. Over there, we'll be keeping track of our rotations as to who is responsible of what (e.g. X person from Bioinformatics Facility is in charge of processing the short-read sequence data for ~3 months).
 
 
 23.11.02
