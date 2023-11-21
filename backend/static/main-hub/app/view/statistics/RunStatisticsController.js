@@ -1,34 +1,34 @@
-Ext.define('MainHub.view.statistics.RunStatisticsController', {
-  extend: 'MainHub.components.BaseGridController',
-  alias: 'controller.run-statistics',
+Ext.define("MainHub.view.statistics.RunStatisticsController", {
+  extend: "MainHub.components.BaseGridController",
+  alias: "controller.run-statistics",
 
   config: {
     control: {
-      '#': {
-        activate: 'activateView'
+      "#": {
+        activate: "activateView",
       },
-      'daterangepicker': {
-        select: 'setRange'
-      }
-    }
+      daterangepicker: {
+        select: "setRange",
+      },
+    },
   },
 
   activateView: function (view) {
-    var dateRange = view.down('daterangepicker');
-    dateRange.fireEvent('select', dateRange, dateRange.getPickerValue());
+    var dateRange = view.down("daterangepicker");
+    dateRange.fireEvent("select", dateRange, dateRange.getPickerValue());
   },
 
   setRange: function (drp, value) {
-    var grid = drp.up('grid');
+    var grid = drp.up("grid");
 
     grid.getStore().reload({
       params: {
         start: value.startDateObj,
-        end: value.endDateObj
+        end: value.endDateObj,
       },
       callback: function () {
         grid.getView().features[0].collapseAll();
-      }
+      },
     });
-  }
+  },
 });

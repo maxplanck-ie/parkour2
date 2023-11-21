@@ -287,7 +287,7 @@ models:
 	@docker cp parkour2-django:/tmp_models.A4.pdf models_poster_using_A4.pdf
 	@docker cp parkour2-django:/tmp_models.pdf models_A4_preview.pdf
 
-show_urls:
+show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:

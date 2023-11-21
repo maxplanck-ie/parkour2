@@ -120,7 +120,7 @@ class User(AbstractEmailUser):
                 and self.email.split("@")[1] == settings.EMAIL_HOST
             ):
                 result_user = True
-        return False  # TODO: switch hardcoded value for result_user and result_pi
+        return result_user and result_pi
 
     def __str__(self):
         this_user_email = self.email

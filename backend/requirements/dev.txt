@@ -44,19 +44,19 @@ pexpect==4.8.0
     # via ipython
 pickleshare==0.7.5
     # via ipython
-prompt-toolkit==3.0.39
+prompt-toolkit==3.0.41
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
-pygments==2.16.1
+pygments==2.17.1
     # via
     #   ipython
     #   rich
 pywatchman==1.4.1
     # via -r backend/requirements/dev.in
-rich==13.6.0
+rich==13.7.0
     # via -r backend/requirements/dev.in
 stack-data==0.6.3
     # via ipython
@@ -68,7 +68,7 @@ traitlets==5.13.0
     # via
     #   ipython
     #   matplotlib-inline
-wcwidth==0.2.9
+wcwidth==0.2.10
     # via prompt-toolkit
 werkzeug==3.0.1
     # via -r backend/requirements/dev.in

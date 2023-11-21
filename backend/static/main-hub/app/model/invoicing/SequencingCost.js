@@ -1,14 +1,14 @@
-Ext.define('MainHub.model.invoicing.SequencingCost', {
-  extend: 'MainHub.model.invoicing.BaseCost',
+Ext.define("MainHub.model.invoicing.SequencingCost", {
+  extend: "MainHub.model.invoicing.BaseCost",
 
   fields: [
     {
-      name: 'sequencer',
-      type: 'int'
+      name: "sequencer",
+      type: "int",
     },
     {
-      name: 'read_length',
-      type: 'int'
-    }
-  ]
+      name: "read_length",
+      type: "int",
+    },
+  ],
 });

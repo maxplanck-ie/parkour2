@@ -241,6 +241,8 @@ var axiosRef = axios.create({
   },
 });
 
+let urlPart = window.location.href.split("/vue/");
+
 export default {
   name: "Duties",
   components: {
@@ -256,7 +258,7 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "past-1-month",
+      selectedFilter: "ongoing",
     };
   },
   setup() {},
@@ -317,7 +319,7 @@ export default {
         this.gridOptions.api.hideOverlay();
       } else {
         await axiosRef
-          .post("http://localhost:9980/api/duties/", newDuty)
+          .post(urlPart[0] + "/api/duties/", newDuty)
           .then(() => {
             this.newDuty = {};
             document.getElementById("facility").value = "";
@@ -343,7 +345,7 @@ export default {
     async getDuties(refresh = false, additionalUrl = "") {
       try {
         const response = await axiosRef.get(
-          "http://localhost:9980/api/duties/" +
+          urlPart[0] + "/api/duties/" +
             (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
         let fetchedRows = [];
@@ -481,7 +483,7 @@ export default {
             break;
         }
         await axiosRef
-          .patch("http://localhost:9980/api/duties/" + String(dutyId) + "/", {
+          .patch(urlPart[0] + "/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
           .then(() => {
@@ -540,7 +542,7 @@ export default {
     },
     async getUsers() {
       await axiosRef
-        .get("http://localhost:9980/api/duties/responsibles/")
+        .get(urlPart[0] + "/api/duties/responsibles/")
         .then((response) => {
           let userList = getProp(response, "data", []);
           this.userList = userList;
@@ -743,3 +745,4 @@ select:disabled {
   background: #dddddd;
 }
 </style>
+

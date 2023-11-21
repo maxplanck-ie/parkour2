@@ -1,7 +1,7 @@
-Ext.define('MainHub.model.Base', {
-    extend: 'Ext.data.Model',
+Ext.define("MainHub.model.Base", {
+  extend: "Ext.data.Model",
 
-    schema: {
-        namespace: 'MainHub.model'
-    }
+  schema: {
+    namespace: "MainHub.model",
+  },
 });
