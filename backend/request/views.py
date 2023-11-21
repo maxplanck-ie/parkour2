@@ -623,17 +623,14 @@ class RequestViewSet(viewsets.ModelViewSet):
             if instance.user.pi.archived:
                 raise ValueError(
                     "PI: "
-                    + instance.user.pi
-                    + ", is no longer enrolled. Please ask: "
-                    + settings.ADMIN_EMAIL
-                    + " to un-archive the entry at the database."
+                    + instance.user.pi.name
+                    + ", is no longer enrolled. Please contact an admin."
                 )
             elif instance.user.pi.email == "Unset":
                 raise ValueError(
                     "PI: "
-                    + instance.user.pi
-                    + ", has no e-mail address assigned. Please contact: "
-                    + settings.ADMIN_EMAIL
+                    + instance.user.pi.name
+                    + ", has no e-mail address assigned. Please contact an admin."
                 )
             records = list(instance.libraries.all()) + list(instance.samples.all())
             for r in records:
