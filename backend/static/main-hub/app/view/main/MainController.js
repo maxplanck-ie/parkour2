@@ -27,6 +27,7 @@ Ext.define("MainHub.view.main.MainController", {
 
     if (!USER.is_staff) {
       Ext.getCmp("adminSiteBtn").hide();
+      Ext.getCmp("dutiesBtn").hide();
     }
   },
 

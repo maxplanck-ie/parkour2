@@ -123,8 +123,8 @@ Ext.define("MainHub.view.requests.RequestsController", {
         },
         "-",
         {
-          text: "Metadata Exporter",
-          disabled: !record.get("completed"),
+          text: 'Metadata Exporter',
+          disabled: !record.get('completed'),
           handler: function () {
             Ext.create("MainHub.view.metadataexporter.MetadataExporter", {
               request: record,

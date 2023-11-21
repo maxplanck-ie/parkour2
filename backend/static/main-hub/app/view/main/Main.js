@@ -81,6 +81,7 @@ Ext.define("MainHub.view.main.Main", {
         {
           xtype: "button",
           ui: "header",
+          id: "dutiesBtn",
           iconCls: "x-fa fa-calendar color-bluish-grey",
           href: "vue/duties",
           tooltip: "Duties",

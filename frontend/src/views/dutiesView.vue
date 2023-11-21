@@ -231,9 +231,9 @@ import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
 
-var CSRF_TOKEN = Cookies.get("csrftoken");
+const CSRF_TOKEN = Cookies.get("csrftoken");
 
-var axiosRef = axios.create({
+const axiosRef = axios.create({
   withCredentials: true,
   headers: {
     "content-type": "application/json",
@@ -241,7 +241,7 @@ var axiosRef = axios.create({
   },
 });
 
-let urlPart = window.location.href.split("/vue/");
+const urlPart = window.location.href.split("/vue/");
 
 export default {
   name: "Duties",
