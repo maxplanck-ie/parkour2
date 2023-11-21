@@ -123,16 +123,6 @@ Ext.define("MainHub.view.requests.RequestsController", {
         },
         "-",
         {
-          text: 'View File Paths',
-          hidden: !USER.is_staff,
-          handler: function () {
-            Ext.create('MainHub.view.requests.FilePathsWindow', {
-              title: 'File Paths',
-              record: record
-            });
-          }
-        },
-        {
           text: 'Metadata Exporter',
           disabled: !record.get('completed'),
           handler: function () {
