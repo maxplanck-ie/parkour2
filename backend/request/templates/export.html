@@ -16,14 +16,14 @@
                        required>
             </td>
         </tr>
-        <p>Select format of file.</p>
+        <p>{% comment %} Select format of file.</p>
         <p>
             <select name="file-format" class="form-control my-3">
                 <option selected>Choose format...</option>
                 <option>CSV</option>
                 <option>JSON</option>
                 <option>XLS (Excel)</option>
-            </select>
+            </select> {% endcomment %}
             <br />
             <button class="btn btn-primary" type="submit">Export</button>
             <br />

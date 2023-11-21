@@ -1131,28 +1131,31 @@ def export_request(request):
                 )
             else:
                 raise RuntimeError(f"What's {r.barcode} with {r_type}?!")
+
+        file_format = "CSV"  # hardcoded, yes
         if file_format == "CSV":
             response = HttpResponse(dataset.csv, content_type="text/csv")
             response["Content-Disposition"] = (
                 'attachment; filename="exported_project_"' + str(primary_key) + '".csv"'
             )
             return response
-        elif file_format == "JSON":
-            response = HttpResponse(dataset.json, content_type="application/json")
-            response["Content-Disposition"] = (
-                'attachment; filename="exported_project_"'
-                + str(primary_key)
-                + '".json"'
-            )
-            return response
-        elif file_format == "XLS (Excel)":
-            response = HttpResponse(
-                dataset.xls, content_type="application/vnd.ms-excel"
-            )
-            response["Content-Disposition"] = (
-                'attachment; filename="exported_project_"' + str(primary_key) + '".xls"'
-            )
-            return response
+
+        # elif file_format == "JSON":
+        #     response = HttpResponse(dataset.json, content_type="application/json")
+        #     response["Content-Disposition"] = (
+        #         'attachment; filename="exported_project_"'
+        #         + str(primary_key)
+        #         + '".json"'
+        #     )
+        #     return response
+        # elif file_format == "XLS (Excel)":
+        #     response = HttpResponse(
+        #         dataset.xls, content_type="application/vnd.ms-excel"
+        #     )
+        #     response["Content-Disposition"] = (
+        #         'attachment; filename="exported_project_"' + str(primary_key) + '".xls"'
+        #     )
+        #     return response
 
     return render(request, "export.html")
 
@@ -1165,13 +1168,13 @@ def import_request(request):
         dataset = Dataset()
         new_requests = request.FILES["importData"]
 
+        file_format = "CSV"  # hardcoded, yes
         if file_format == "CSV":
             imported_data = dataset.load(
                 new_requests.read().decode("utf-8"), format="csv"
             )
             result = request_resource.import_data(dataset, dry_run=True)
 
-        ## Leaving JSON for fixtures.
         # elif file_format == "JSON":
         #     imported_data = dataset.load(
         #         new_requests.read().decode("utf-8"), format="json"
