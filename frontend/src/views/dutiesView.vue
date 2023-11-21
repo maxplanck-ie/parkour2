@@ -241,7 +241,7 @@ var axiosRef = axios.create({
   },
 });
 
-let urlPart = window.location.href.split("/vue/");
+var urlPart = window.location.href.split("/vue/");
 
 export default {
   name: "Duties",
