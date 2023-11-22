@@ -302,7 +302,29 @@ Ext.define('MainHub.view.libraries.Libraries', {
         {
           text: 'Index Reads',
           tooltip: '# of Index Reads',
-          dataIndex: 'index_reads'
+          dataIndex: 'index_reads',
+          store: Ext.create('Ext.data.Store', {
+            fields: ['index_reads', 'name'],
+            data: [{
+              index_reads: 7,
+              name: 'i7',
+            },
+            {
+              index_reads: 5,
+              name: 'i5',
+            },
+            {
+              index_reads: 75,
+              name: 'i7 + i5',
+            }
+            ]
+          }),
+          renderer: function (value, meta) {
+            if (value) {
+              return meta.column.store.findRecord('index_reads', value).get('name') || value;
+            }
+            return value
+          }
         },
         {
           text: 'I7',
