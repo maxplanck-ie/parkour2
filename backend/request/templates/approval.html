@@ -10,13 +10,13 @@
       }
     </style>
     <p>Dear {{ pi_name }},</p>
-    <p>{{ full_name }} requested your approval on this experiment. They wrote:</p>
-    <p>{{ message }}</p>
-    <hr />
     <p>
-        That was the end of their message. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, just forward, or Reply "OK", to this email. Then {{ full_name }}, who'd be authenticated within Parkour LIMS, can click <a href={{ token_url }}>this special link</a>. Afterward, processing will be started right away at the facility.
-        <br />
+        {{ full_name }} requested your approval on this experiment. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, just forward, or Reply "OK", to this email. Then {{ full_name }}, would be authenticated (log-in) within Parkour LIMS, can click <a href={{ token_url }}>this special link</a>. Afterward, processing will be started right away at the facility. <b>If you don't want to approve the sequencing request, ignore this email. Ask for any changes, and the sending of a new e-mail just like this one (with a new link).</b>
     </p>
+    <hr />
+    <p>{{ full_name }} wrote:</p>
+    <p>{{ message }}</p>
+    <br />
     {% if records %}
         <hr />
         <table>
