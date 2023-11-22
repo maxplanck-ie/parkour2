@@ -1,6 +1,5 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
-
 {% block css %}
     <style>
         body {
@@ -11,29 +10,40 @@
         }
     </style>
 {% endblock css %}
-
-{% block title %}Parkour LIMS | Login{% endblock title %}
-
+{% block title %}
+    Parkour LIMS | Login
+{% endblock title %}
 {% block content %}
-
-{% if form.errors %}
-    <div class="alert alert-danger" role="alert">
-        <p class="lead text-center">Your username and password didn't match. Please try again.</p>
-    </div>
-{% endif %}
-
-<div id="login-form">
-    <form class="form-signin" method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <h2 class="form-signin-heading">Parkour 23.11.02</h2>
-        <input type="text" class="form-control" id="id_username" name="username" placeholder="Email" required="" autofocus="" />
-        <input type="password" class="form-control" id="id_password" name="password" placeholder="Password" required=""/>
-        <div class="text-center link-forgot-password">
-            <a class="" href="{% url 'password_reset' %}">Forgot password?</a>
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            <p class="lead text-center">Your username and password didn't match. Please try again.</p>
         </div>
-        <input class="btn btn-lg btn-primary btn-block" id="login_button" type="submit" value="Login" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
-</div>
-
-{% endblock %}
+    {% endif %}
+    <div id="login-form">
+        <form class="form-signin" method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h2 class="form-signin-heading">Parkour 23.11.22</h2>
+            <input type="text"
+                   class="form-control"
+                   id="id_username"
+                   name="username"
+                   placeholder="Email"
+                   required=""
+                   autofocus="" />
+            <input type="password"
+                   class="form-control"
+                   id="id_password"
+                   name="password"
+                   placeholder="Password"
+                   required="" />
+            <div class="text-center link-forgot-password">
+                <a href="{% url 'password_reset' %}">Forgot password?</a>
+            </div>
+            <input class="btn btn-lg btn-primary btn-block"
+                   id="login_button"
+                   type="submit"
+                   value="Login" />
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+    </div>
+{% endblock content %}
