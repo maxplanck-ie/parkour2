@@ -124,7 +124,7 @@ class User(AbstractEmailUser):
                 and self.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
             ):
                 result_user = True
-        return result_user and result_pi  # and not self.is_pi
+        return False  # result_user and result_pi  # and not self.is_pi
 
     def __str__(self):
         this_user_email = self.email
