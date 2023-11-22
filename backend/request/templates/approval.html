@@ -1,5 +1,14 @@
 {% load i18n %}
 {% autoescape off %}
+    <style>
+    table {
+        width: 100%;
+      }
+    td.center{
+        text-align:center;
+        font-weight:bold;
+      }
+    </style>
     <p>Dear {{ pi_name }},</p>
     <p>{{ full_name }} requested your approval on this experiment. They wrote:</p>
     <p>{{ message }}</p>
@@ -10,9 +19,9 @@
     </p>
     {% if records %}
         <hr />
-        <table style="width:100%;">
+        <table>
             <thead>
-                <tr style="font-weight:bold;">
+                <tr>
                     <td>Name</td>
                     <td>Barcode</td>
                     <td>Nucleic Acid Type</td>
