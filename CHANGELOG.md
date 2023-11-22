@@ -2,7 +2,7 @@
 
 <!-- - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at same server as the admin (`settings.SERVER_EMAIL`). -->
 
-??.??.??
+23.11.22
 ========
 
 - Updated all dependencies.
