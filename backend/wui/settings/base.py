@@ -162,7 +162,7 @@ AUTH_USER_MODEL = "common.User"  # authtools
 # Email config
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "mail.server.tld")
 EMAIL_SUBJECT_PREFIX = os.environ.get("EMAIL_SUBJECT_PREFIX", "[Parkour2]")
-SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@mail.server.tld")
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@server.tld")
 
 
 LOGGING = {
