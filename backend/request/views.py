@@ -671,6 +671,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         error = ""
         instance = self.get_object()
         try:
+            # if request.user.id != instance.user.id:
+            #     raise ValueError(
+            #         f"Sorry {instance.user}, the link is only valid for {request.user}!"
+            #     )
             token = request.query_params.get("token")
             if token == instance.token:
                 instance.libraries.all().update(status=1)

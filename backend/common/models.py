@@ -121,7 +121,7 @@ class User(AbstractEmailUser):
                 result_pi = True
             if not ('"' in self.email) and self.email.split("@")[1] == email_host:
                 result_user = True
-        return result_user and result_pi
+        return result_user and result_pi  # and not self.is_pi
 
     def __str__(self):
         email_host = ".".join(settings.EMAIL_HOST.split(".")[1:])
