@@ -1,0 +1,11 @@
+{% load i18n %}
+{% autoescape off %}
+    <p>Dear {{ full_name }},</p>
+    <p>{{ pi_name }} approved this experiment. Sequencing will start as soon as possible, please be patient.</p>
+    <p>
+        --
+        <br />
+        <i>This e-mail was sent via Parkour2.</i>
+        <br />
+    </p>
+{% endautoescape %}

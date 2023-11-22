@@ -14,7 +14,13 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Prefetch
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.http import (
+    Http404,
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.crypto import get_random_string
@@ -657,7 +663,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "records": records,
                     },
                 ),
-                from_email=instance.user.email,
                 recipient_list=[instance.user.pi.email],
             )
         except Exception as e:
@@ -686,7 +691,20 @@ class RequestViewSet(viewsets.ModelViewSet):
         except Exception as e:
             error = str(e)
             logger.exception(e)
-        return JsonResponse({"success": not error, "error": error})
+            return JsonResponse({"success": not error, "error": error})
+        send_mail(
+            subject=f"[ Parkour2 | seq. request was approved ] ",
+            message="",
+            html_message=render_to_string(
+                "approved.html",
+                {
+                    "full_name": instance.user.full_name,
+                    "pi_name": instance.user.pi.name,
+                },
+            ),
+            recipient_list=[instance.user.email],
+        )
+        return HttpResponseRedirect("/")
 
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def send_email(self, request, pk=None):  # pragma: no cover
