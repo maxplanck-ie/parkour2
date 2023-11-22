@@ -11,7 +11,11 @@
     </style>
     <p>Dear {{ pi_name }},</p>
     <p>
-        {{ full_name }} requested your approval on this experiment. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, just forward, or Reply "OK", to this email. Then {{ full_name }}, would be authenticated (log-in) within Parkour LIMS, can click <a href={{ token_url }}>this special link</a>. Afterward, processing will be started right away at the facility. <b>If you don't want to approve the sequencing request, ignore this email. Ask for any changes, and the sending of a new e-mail just like this one (with a new link).</b>
+        {{ full_name }} requested your approval on this experiment. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, click <a href={{ token_url }}>this link</a> yourself (assuming you have access to Parkour at the moment, e.g. using VPN while traveling).
+        <br />
+        Else, just forward -or Reply "OK"- to this email. Then {{ full_name }}, would be authenticated (log-in) within Parkour LIMS, be able click the special link themselves.
+        <br />
+        Afterward, processing will be started right away at the facility. <b>If you don't want to approve the sequencing request, ignore this email. Ask for any changes, and the re-sending of a new e-mail just like this one (with a new link).</b>
     </p>
     <hr />
     <p>{{ full_name }} wrote:</p>
