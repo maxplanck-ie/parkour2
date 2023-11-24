@@ -1,45 +1,76 @@
-Ext.define('MainHub.view.requests.FilePathsWindowController', {
-    extend: 'Ext.app.ViewController',
-    alias: 'controller.requests-filepathswindow',
-    requires: [],
+Ext.define("MainHub.view.requests.FilePathsWindowController", {
+  extend: "Ext.app.ViewController",
+  alias: "controller.requests-filePathsWindow",
 
-    config: {
-        control: {
-            '#': {
-                boxready: 'boxready'
-            },
-            '#send-filepaths-button': {
-                click: 'send'
-            }
-        }
+  config: {
+    control: {
+      "#": {
+        afterrender: "onAfterRender",
+      },
     },
+  },
 
-    boxready: function(wnd) {
-        var subjectField = wnd.down('#subject-field');
-        subjectField.setValue(wnd.record.get('name'));
-    },
+  onAfterRender: function (wnd) {
+    var requestNameTextarea = wnd.down("#request-name");
+    var dynamicContainer = wnd.down("#dynamic-container");
 
-    send: function(btn) {
-        var wnd = btn.up('window');
-        var form = wnd.down('#filepaths-form').getForm();
-
-        if (!form.isValid()) {
-            new Noty({ text: 'All fields must be filled in.', type: 'warning' }).show();
-            return;
-        }
-
-        form.submit({
-            url: Ext.String.format('api/requests/{0}/send_filepaths/', wnd.record.get('pk')),
-            params: form.getFieldValues(),
-            success: function(f, action) {
-                new Noty({ text: 'FilePaths has been sent!' }).show();
-                wnd.close();
+    for (var key in wnd.record.data.filepaths) {
+      if (wnd.record.data.filepaths.hasOwnProperty(key)) {
+        dynamicContainer.add({
+          xtype: "container",
+          items: [
+            {
+              xtype: "label",
+              text: key,
+              margin: "10 10 10 0",
+              style: {
+                fontWeight: "bold",
+                padding: "0px 5px",
+                borderRight: "1px solid #d4d4d4",
+                width: "30%",
+                display: "inline-block",
+                wordWrap: "break-word",
+              },
             },
-            failure: function(f, action) {
-                var error = action.result ? action.result.error : action.response.statusText;
-                new Noty({ text: error, type: 'error' }).show();
-                console.error(action);
-            }
+            {
+              xtype: "label",
+              text: wnd.record.data.filepaths[key] || "...",
+              margin: "10 0 0 0",
+              style: {
+                padding: "0px 5px",
+                display: "inline-block",
+                width: "60%",
+                wordWrap: "break-word",
+                cursor: "copy",
+              },
+              listeners: {
+                render: function (label) {
+                  label.getEl().on("click", function () {
+                    navigator.clipboard.writeText(label.text);
+                  });
+                  label.getEl().on("mouseover", function () {
+                    Ext.tip.QuickTipManager.register({
+                      target: label.getEl(),
+                      text: "Click to copy",
+                      showDelay: 600,
+                    });
+                  });
+                  label.getEl().on("mouseout", function () {
+                    Ext.tip.QuickTipManager.unregister(label.getEl());
+                  });
+                },
+              },
+            },
+          ],
+          style: {
+            width: "100%",
+            borderTop: "1px solid #d4d4d4",
+            borderBottom: "1px solid #d4d4d4",
+            marginBottom: "5px",
+          },
         });
+      }
     }
+    requestNameTextarea.setText(wnd.record.data.name);
+  },
 });
