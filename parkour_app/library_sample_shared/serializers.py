@@ -13,6 +13,7 @@ from .models import (
     LibraryType,
     Organism,
     ReadLength,
+    IndexPair,
 )
 
 
@@ -57,6 +58,17 @@ class IndexTypeSerializer(ModelSerializer):
     def get_index_length(self, obj):
         return int(obj.get_index_length_display())
 
+class IndexPairSerialzer(ModelSerializer):
+    class Meta:
+        model = IndexPair
+        fields = (
+            "index_type",
+            "index1_id",
+            "index2_id",
+            "char_coord",
+            "num_coord",
+            "archived"
+        )
 
 class IndexBaseSerializer(ModelSerializer):
     name = SerializerMethodField()

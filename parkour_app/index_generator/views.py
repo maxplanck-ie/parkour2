@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from .index_generator import IndexGenerator
+from .index_generator import IndexGenerator, check_min_hamming_distance
 from .models import Pool, PoolSize
 from .serializers import (
     IndexGeneratorLibrarySerializer,
@@ -191,6 +191,7 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         ignore_errors = True if request.data.get("ignore_errors", False) == 'true' else False
         libraries = json.loads(request.data.get("libraries", "[]"))
         samples = json.loads(request.data.get("samples", "[]"))
+        min_hamming_distance = int(request.data.get("min_hamming_distance", 3))
 
         try:
             if not any(libraries) and not any(samples):
@@ -215,6 +216,13 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             )
             if len(pairs) != len(set(pairs)):
                 raise ValueError("Some of the indices are not unique.")
+            
+            # Check that the minimum Hamming distance is met
+            for idx in ['index_i7', 'index_i5']:
+                indices = [x[idx] for x in libraries + samples]
+                min_hamming_distance = check_min_hamming_distance(set(indices), min_hamming_distance) if not all('' == s for s in indices) else True
+                if not min_hamming_distance:
+                    raise ValueError(f"The required minimum Hamming distance has not been met for {idx.replace('_', '')}")
 
             try:
                 for s in samples:

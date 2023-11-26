@@ -71,7 +71,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
   editRecord: function (editor, context) {
     var store = editor.grid.getStore();
-    this.syncStore(store.getId());
+    this.syncStore(store.getId(), true); // true to reload the store after the record has been edited
   },
 
   applyToAll: function (gridView, record, dataIndex) {
@@ -89,7 +89,16 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
             dataIndex === 'read_length' ||
             (dataIndex === 'index_type' && item.get('record_type') === 'Sample')
           ) {
+
+            // Set indices to null if index_type of the origin element for the action
+            // differs from that of the other records
+            if (dataIndex === 'index_type' && item.get('index_type') !== record.get('index_type')) {
+              item.set('index_i7', null);
+              item.set('index_i5', null)
+            }
+
             item.set(dataIndex, record.get(dataIndex));
+
           }
         }
       });
@@ -204,7 +213,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var me = this;
 
 
-    // If pool of librariesm force select/unselect all records in request
+    // If pool of libraries force select/unselect all records in request
     if (record.get('pooled_libraries')) {
 
       var indexGeneratorStore = Ext.getStore('IndexGenerator');
@@ -219,6 +228,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
 
     // Update Summary
     grid.getView().refresh();
+
     var savePoolButton = grid.down('#save-pool-button');
     var savePoolIgnoreErrorsButton = grid.down('#save-pool-ignore-errors-button');
     var generateIndexButton = grid.down('#generate-indices-button');
@@ -240,10 +250,9 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       poolName.reset();
 
       var recordTypes = Ext.pluck(Ext.Array.pluck(store.data.items, 'data'), 'record_type');
-      if (recordTypes.indexOf('Sample') > -1 && sequencerChemistry > -1 && minHammingDistance > 0) {
+      var samplesWithBarcodes = store.getRange().some(function(e){return e.get('record_type') === 'Sample' && (e.get('index_i7').index || e.get('index_i5').index)});
+      if (recordTypes.indexOf('Sample') > -1 && !samplesWithBarcodes && sequencerChemistry > -1 && minHammingDistance > 0) {
         generateIndexButton.enable();
-      }
-
       // Show plate params
       var indexType = Ext.getStore('IndexTypes').findRecord(
         'id', record.get('index_type'), 0, false, true, true);
@@ -251,6 +260,12 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         startCoordinate.show();
         direction.show();
       }
+      } else {
+        generateIndexButton.disable();
+        startCoordinate.hide();
+        direction.hide();
+      }
+
     } else {
       grid.setTitle('Pool');
       savePoolButton.disable();
@@ -366,6 +381,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var me = this;
     var grid = Ext.getCmp('pool-grid');
     var poolName = grid.down('#pool-name');
+    var minHammingDistanceBox = grid.down("#minHammingDistanceBox");
 
     if (!poolName.isValid()) {
       new Noty({
@@ -434,6 +450,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         pool_size_id: Ext.getCmp('poolSizeCb').getValue(),
         ignore_errors: ignoreErrors,
         pool_name: poolName.value,
+        min_hamming_distance: minHammingDistanceBox.getValue(), 
         libraries: Ext.JSON.encode(libraries),
         samples: Ext.JSON.encode(samples)
       },
@@ -465,7 +482,6 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
             grid.down("#save-pool-ignore-errors-button").disable();
             grid.down("#generate-indices-button").disable();
             var sequencerChemistryCb = grid.down("#sequencerChemistryCb");
-            var minHammingDistanceBox = grid.down("#minHammingDistanceBox");
             sequencerChemistryCb.reset();
             sequencerChemistryCb.disable();
             minHammingDistanceBox.reset();
@@ -628,14 +644,14 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         return false;
       }
 
-      // No pooling of indices with the length of 6 and 8 nucleotides (no mixed length)
+      // No pooling of indices with mixed lengths
       if (
         firstItemIndexType && recordIndexType &&
         firstItemIndexType.get('index_length') !== recordIndexType.get('index_length')
       ) {
         if (notif) {
           new Noty({
-            text: 'Pooling of indices with 6 and 8 nucleotides (mixed) is not allowed.',
+            text: 'Pooling indices of different lengths is not allowed.',
             type: 'warning'
           }).show();
         }
@@ -668,7 +684,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     var store = Ext.getCmp('pool-grid').getStore();
 
     store.each(function (record) {
-      if (record.get('record_type') === 'Sample') {
+      if (record.get('record_type') === 'Sample' && !record.get('index_i7').index && !record.get('index_i5').index) {
         record.set({
           index_i7: '',
           index_i7_id: '',

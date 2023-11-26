@@ -30,6 +30,7 @@ from library_preparation.views import LibraryPreparationViewSet
 from library_sample_shared.views import (
     ConcentrationMethodViewSet,
     IndexTypeViewSet,
+    IndexPairViewSet,
     IndexViewSet,
     LibraryProtocolInvoicingViewSet,
     LibraryProtocolViewSet,
@@ -62,6 +63,7 @@ router.register(
     basename="concentration-method",
 )
 router.register(r"index_types", IndexTypeViewSet, basename="index-type")
+router.register(r"index_pairs", IndexPairViewSet, basename='index-pair')
 router.register(
     r"generator_index_types", GeneratorIndexTypeViewSet, basename="generator-index-type"
 )

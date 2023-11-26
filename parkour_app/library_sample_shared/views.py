@@ -19,6 +19,7 @@ from .models import (
     LibraryType,
     Organism,
     ReadLength,
+    IndexPair
 )
 from .serializers import (
     ConcentrationMethodSerializer,
@@ -29,6 +30,7 @@ from .serializers import (
     LibraryTypeSerializer,
     OrganismSerializer,
     ReadLengthSerializer,
+    IndexPairSerialzer
 )
 
 Request = apps.get_model("request", "Request")
@@ -124,6 +126,23 @@ class IndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 
     queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
+
+
+class IndexPairViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of index pairs."""
+
+    queryset = IndexPair.objects.filter(archived=False)
+    serializer_class = IndexPairSerialzer
+
+    def get_queryset(self):
+        queryset = super(IndexPairViewSet, self).get_queryset()
+        index_type = self.request.query_params.get("index_type_id", None)
+        if index_type is not None:
+            try:
+                queryset = queryset.filter(index_type=index_type)
+            except ValueError:
+                queryset = []
+        return queryset
 
 
 class IndexViewSet(viewsets.ViewSet):

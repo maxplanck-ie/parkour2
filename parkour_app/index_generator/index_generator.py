@@ -15,6 +15,26 @@ Sample = apps.get_model("sample", "Sample")
 Pair = namedtuple("Pair", ["index1", "index2", "coordinate"])
 
 
+def calculate_hamming_distance(index_combination):
+    """Find the Hamming distance btw. 2 strings. Substitutions only.
+    
+    ORIGINALLY FROM http://en.wikipedia.org/wiki/Hamming_distance
+    
+    """
+    i1, i2 = index_combination
+    assert len(i1) == len(i2)
+    return sum([ch1 != ch2 for ch1, ch2 in zip(i1.upper(), i2.upper())])
+
+def check_min_hamming_distance(indices, min_hamming_distance):
+    return len(
+            list(
+                filter(lambda x: x < min_hamming_distance, 
+                        map(calculate_hamming_distance, itertools.combinations(indices, 2))
+                )
+                )
+                ) == 0
+
+
 class IndexRegistry:
     """
     Class for storing fetched and sorted indices i7/i5 and index pairs.
@@ -322,25 +342,6 @@ class IndexGenerator:
 
         return index_types
 
-    def _calculate_hamming_distance(self, index_combination):
-        """Find the Hamming distance btw. 2 strings. Substitutions only.
-        
-        ORIGINALLY FROM http://en.wikipedia.org/wiki/Hamming_distance
-        
-        """
-        i1, i2 = index_combination
-        assert len(i1) == len(i2)
-        return sum([ch1 != ch2 for ch1, ch2 in zip(i1.upper(), i2.upper())])
-
-    def _check_min_hamming_distance(self, indices):
-        return len(
-               list(
-                   filter(lambda x: x < self.min_hamming_distance, 
-                          map(self._calculate_hamming_distance, itertools.combinations(indices, 2))
-                    )
-                    )
-                    ) == 0
-
     def _colour_activation(self, indices, depths):
 
         barcode_length = len(indices[0])
@@ -476,8 +477,8 @@ class IndexGenerator:
             all_pairs_unique = len(all_pairs) == len(set(all_pairs))
             # Check if single mode for either i7 or i5, i.e. list of empty strings
 
-            min_hamming_distance_i5 = self._check_min_hamming_distance(set(i7_extracted)) if not all('' == s for s in i7_extracted) else True
-            min_hamming_distance_i7 = self._check_min_hamming_distance(set(i5_extracted)) if not all('' == s for s in i5_extracted) else True
+            min_hamming_distance_i5 = check_min_hamming_distance(set(i7_extracted), self.min_hamming_distance) if not all('' == s for s in i7_extracted) else True
+            min_hamming_distance_i7 = check_min_hamming_distance(set(i5_extracted), self.min_hamming_distance) if not all('' == s for s in i5_extracted) else True
 
             if all_pairs_unique and min_hamming_distance_i5 and min_hamming_distance_i7:
 

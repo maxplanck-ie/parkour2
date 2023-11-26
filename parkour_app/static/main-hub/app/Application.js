@@ -37,6 +37,7 @@ Ext.define('MainHub.Application', {
     'libraries.LibraryTypes',
     'libraries.Organisms',
     'libraries.IndexTypes',
+    'libraries.IndexPairs',
     'libraries.IndexI7',
     'libraries.IndexI5',
     'libraries.ConcentrationMethods',
