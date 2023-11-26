@@ -48,7 +48,7 @@ def get_sentinel_user():
 
 
 class Pool(DateTimeMixin):
-    name = models.CharField("Name", max_length=100, blank=True)
+    name = models.CharField("Name", max_length=100, blank=True, unique=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name="User",

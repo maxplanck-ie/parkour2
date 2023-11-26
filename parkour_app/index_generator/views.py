@@ -249,7 +249,12 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 raise e
 
         except Exception as e:
-            if not ignore_errors:
+
+            # Get error message to check if it arises out of a non unique 
+            # key on saving a pool
+            error_message = e.args[0] if 0 < len(e.args) else ''
+
+            if not ignore_errors or ('unique constraint' and 'index_generator_pool' in error_message):
                 return Response({"success": False, "message": str(e)}, 400)
             else:
                 pass
