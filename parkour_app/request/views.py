@@ -462,6 +462,19 @@ class RequestViewSet(viewsets.ModelViewSet):
         Mark request as approved by saving message as deep_seq_request and 
         change request's libraries' and samples' statuses to 1.
         """
+        
+        def get_client_ip(request):
+            # Stolen from https://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
+            # and amended
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            ip = 'N/A'
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                remote_address = request.META.get('REMOTE_ADDR')
+                if remote_address:
+                    ip = remote_address
+            return ip
 
         try:
 
@@ -501,6 +514,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 email_recipients.append(request.user.email)
 
             request.session_id = request.session._get_or_create_session_key()
+            request.origin_ip = get_client_ip(request)
             approved_by = f'{request.user.full_name} ({request.user.email})'
             
             subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
