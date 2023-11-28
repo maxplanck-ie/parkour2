@@ -170,7 +170,8 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         serializer = FlowcellSerializer(data=post_data)
         if serializer.is_valid():
-            serializer.save()
+            flowcell = serializer.save()
+            flowcell.requests.filter(invoice_date__isnull=True).distinct().update(invoice_date=flowcell.create_time)
             return Response({"success": True}, 201)
 
         else:

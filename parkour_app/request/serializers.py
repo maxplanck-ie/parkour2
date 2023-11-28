@@ -53,6 +53,7 @@ class RequestSerializer(ModelSerializer):
             "approval_time",
             "files",
             "sequenced",
+            "invoice_date",
             "number_of_samples",
             "filepaths",
         )

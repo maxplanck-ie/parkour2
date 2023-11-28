@@ -1246,6 +1246,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var requestWnd = form.up('window');
     var store = Ext.getStore('librariesInRequestStore');
     var handlerCb = requestWnd.down('#handler-cb');
+    var invoiceDateBox = requestWnd.down('#invoice-date'); 
     var url;
 
     if (requestWnd.mode === 'add') {
@@ -1276,6 +1277,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           cost_unit: data.cost_unit,
           bioinformatician: data.bioinformatician ? data.bioinformatician : null,
           handler: handlerCb.value ? handlerCb.value : null,
+          invoice_date: invoiceDateBox.value ? new Date(invoiceDateBox.value.setTime(invoiceDateBox.value.getTime() - invoiceDateBox.value.getTimezoneOffset() * 60000)): null,
           pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
           pooled_libraries: data.pooled_libraries,

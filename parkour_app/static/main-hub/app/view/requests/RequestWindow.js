@@ -336,21 +336,49 @@ Ext.define('MainHub.view.requests.RequestWindow', {
   }],
   bbar: [
     {
-      xtype: 'combobox',
-      itemId: 'handler-cb',
-      name: 'handler',
-      queryMode: 'local',
-      valueField: 'id',
-      displayField: 'name',
-      labelWidth: 80,
-      width: 430,
-      padding: 7,
-      fieldLabel: 'Handled by',
-      emptyText: 'GCF staff member',
-      allowBlank: true,
-      forceSelection: false,
-      store: 'StaffMembers',
-      hidden: !(USER.is_staff || USER.member_of_bcf || USER.is_bioinformatician)
+      xtype: 'fieldcontainer',
+      layout: {
+        type: "hbox",
+        pack: "center",
+        align: "center"
+      },
+      style: {
+        border: '1px solid #d0d0d0',
+        padding: "5px"
+
+      },
+      hidden: !(USER.is_staff || USER.member_of_bcf || USER.is_bioinformatician),
+      items: [
+        {
+          xtype: 'combobox',
+          itemId: 'handler-cb',
+          name: 'handler',
+          queryMode: 'local',
+          valueField: 'id',
+          displayField: 'name',
+          labelWidth: 140,
+          width: 310,
+          fieldLabel: '<span style="padding-right:18px; font-style: italic">Internal use</span><span data-qtip="The GCF staff member responsible for handling the project. Optional.">Handler</span>',
+          emptyText: 'GCF staff member',
+          allowBlank: true,
+          forceSelection: false,
+          store: 'StaffMembers',
+        },
+        {
+          xtype: 'datefield',
+          padding: "0 0 0 7px",
+          anchor: '100%',
+          fieldLabel: '<span data-qtip="Automatically set to the date of sequencing when adding the request to a flowcell. Can be overridden here.">Invoice date</span>',
+          format: 'd.m.Y',
+          name: 'invoice-date',
+          itemId: 'invoice-date',
+          emptyText: 'Invoice date',
+          labelWidth: 80,
+          width: 215,
+          allowBlank: true,
+          forceSelection: false
+        },
+      ],
     },
     '->',
     {

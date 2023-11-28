@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from flowcell.tests import create_flowcell, create_sequencer
 from library_sample_shared.tests import create_library_protocol, create_read_length
+from request.tests import create_request
 from index_generator.tests import create_pool_size
 from month import Month
 from rest_framework import status
@@ -255,22 +256,21 @@ class TestInvoicingViewSet(BaseAPITestCase):
     """Tests for the main Invoicing ViewSet."""
 
     def setUp(self):
-        self.create_user()
+        self.user = self.create_user()
         self.login()
 
     # def tearDown(self):
     #     InvoicingReport.objects.all().delete()
 
     def test_billing_periods_list(self):
-        pool_size = create_pool_size()
 
-        flowcell1 = create_flowcell(get_random_name(), pool_size)
-        flowcell1.create_time = timezone.datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
-        flowcell1.save()
+        request1 = create_request(self.user)
+        request1.invoice_date = timezone.datetime(2017, 11, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        request1.save()
 
-        flowcell2 = create_flowcell(get_random_name(), pool_size)
-        flowcell2.create_time = timezone.datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
-        flowcell2.save()
+        request2 = create_request(self.user)
+        request2.invoice_date = timezone.datetime(2017, 12, 1, 0, 0, 0, tzinfo=pytz.UTC)
+        request2.save()
 
         response = self.client.get(reverse("invoicing-billing-periods"))
         self.assertEqual(response.status_code, status.HTTP_200_OK)

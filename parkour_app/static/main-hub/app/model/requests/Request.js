@@ -45,6 +45,14 @@ Ext.define('MainHub.model.requests.Request', {
     },
     {
       type: 'int',
+      name: 'handler'
+    },
+    {
+      type: 'string',
+      name: 'handler_name'
+    },
+    {
+      type: 'int',
       name: 'pool_size_user'
     },
     {
@@ -90,6 +98,10 @@ Ext.define('MainHub.model.requests.Request', {
     {
       type: 'string',
       name: 'approval_time'
+    },
+    {
+      type: 'string',
+      name: 'invoice_date'
     },
     {
       type: 'float',

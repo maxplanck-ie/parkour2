@@ -83,8 +83,8 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
         queryset = (
             Request.objects.filter(
-                flowcell__create_time__year=year,
-                flowcell__create_time__month=month,
+                invoice_date__year=year,
+                invoice_date__month=month,
                 sequenced=True,
                 archived=False,
                 cost_unit__organization__id=organization_id
@@ -121,14 +121,14 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(methods=["get"], detail=False)
     def billing_periods(self, request):
-        flowcells = Flowcell.objects.all().filter(archived=False)
+        requests = Request.objects.all().filter(invoice_date__isnull=False, archived=False)
         data = []
 
-        if flowcells.count() == 0:
+        if requests.count() == 0:
             return Response(data)
 
-        start_date = flowcells.first().create_time
-        end_date = flowcells.last().create_time
+        start_date = requests.first().invoice_date
+        end_date = requests.last().invoice_date
         end_date = end_date + relativedelta(months=1)
 
         dates = pd.date_range(start_date, end_date, inclusive="left", freq="M")

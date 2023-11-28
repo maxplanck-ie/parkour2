@@ -157,6 +157,11 @@ class Request(DateTimeMixin):
         default=False,
     )
 
+    invoice_date = models.DateTimeField(verbose_name="Invoice Date",
+                                    null=True,
+                                    default=None
+                                    )
+
     archived = models.BooleanField("Archived", default=False)
 
     filepaths = models.JSONField(null=False, default=filepaths_default)

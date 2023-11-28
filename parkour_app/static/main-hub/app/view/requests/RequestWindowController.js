@@ -149,6 +149,13 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
     }
     );
 
+    // Set invoice date, if it exists
+    if (request.invoice_date) {
+      var invoiceDate = new Date(request.invoice_date);
+      var invoiceDateBox = wnd.down('#invoice-date');
+      invoiceDateBox.setValue(Ext.Date.format(invoiceDate, 'd.m.Y'));
+    }
+
     // Reload Read Lengths for specific request
     Ext.getStore('readLengthsStore').reload(
       {
@@ -397,6 +404,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
   save: function (btn) {
     var wnd = btn.up('window');
     var handlerCb = wnd.down('#handler-cb');
+    var invoiceDateBox = wnd.down('#invoice-date');
     var form = Ext.getCmp('request-form');
     var store = Ext.getStore('librariesInRequestStore');
     var url;
@@ -447,6 +455,7 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
           cost_unit: data.cost_unit,
           bioinformatician: data.bioinformatician ? data.bioinformatician : null,
           handler: handlerCb.value ? handlerCb.value : null,
+          invoice_date: invoiceDateBox.value ? new Date(invoiceDateBox.value.setTime(invoiceDateBox.value.getTime() - invoiceDateBox.value.getTimezoneOffset() * 60000)): null,
           pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
           pooled_libraries: data.pooled_libraries,
