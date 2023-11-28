@@ -415,13 +415,14 @@ Ext.define('MainHub.view.requests.RequestWindowController', {
       url = Ext.String.format('api/requests/{0}/edit/', wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get('pk'));
     }
 
-    if (store.getCount() === 0) {
-      new Noty({
-        text: 'No libraries/samples are added to the request.',
-        type: 'warning'
-      }).show();
-      return;
-    }
+    // Disable checking if librariesInRequestStore is empty for now, NZ
+    // if (store.getCount() === 0) {
+    //   new Noty({
+    //     text: 'No libraries/samples are added to the request.',
+    //     type: 'warning'
+    //   }).show();
+    //   return;
+    // }
 
     // Set pool fields to required, if enabled just before saving,
     //  in order to triggers relevant errors during form validation

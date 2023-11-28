@@ -118,12 +118,13 @@ class RequestSerializer(ModelSerializer):
         internal_value = super().to_internal_value(data)
 
         records = data.get("records", [])
-        if not records:
-            raise ValidationError(
-                {
-                    "records": ["No libraries or samples are provided."],
-                }
-            )
+        # Disable checking if libraries/samples are present for now, NZ
+        # if not records:
+        #     raise ValidationError(
+        #         {
+        #             "records": ["No libraries or samples are provided."],
+        #         }
+        #     )
 
         files = data.get("files", [])
 
