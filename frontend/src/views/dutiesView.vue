@@ -757,6 +757,7 @@ export default {
   padding: 0px 8px;
   border: 1px solid rgb(105, 105, 105);
   background: whitesmoke;
+  outline: none;
 }
 
 .dropdown-select,
