@@ -5,69 +5,91 @@
       icon="fa-solid fa-chalkboard-user"
       size="xl"
     />
-    <span style="font-size: 20px; font-weight: bold; margin-left: 5px">
+    <span
+      class="text-large"
+      style="font-size: 20px; font-weight: bold; margin-left: 5px"
+    >
       Manage Duties</span
     >
   </div>
-  <div style="padding: 15px">
-    <div style="float: left; width: 78%">
+  <div
+    class="parent-container"
+    style="
+      padding: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    "
+  >
+    <div class="table-container" style="flex: 1; margin-bottom: 20px">
       <div style="margin: 15px; border: 1px solid #006c66">
-        <div style="padding: 7px 14px; height: 42px; background: #ecebe5">
-          <div style="display: inline-block; float: left">
-            <div style="display: flex">
-              <div
-                style="
-                  display: inline-block;
-                  background: rgb(105, 105, 105);
-                  width: 28px;
-                  height: 28px;
-                  text-align: center;
-                "
-              >
-                <font-awesome-icon
-                  icon="fa-solid fa-magnifying-glass"
-                  style="color: white; margin-top: 6px"
-                />
-              </div>
-              <input
-                style="display: inline-block; width: 350px; outline: none"
-                class="styled-box"
-                type="text"
-                placeholder="Search..."
-                @input="searchDuties"
-              />
+        <div
+          style="
+            padding: 7px 15px;
+            height: 42px;
+            background: #ecebe5;
+            display: flex;
+            align-items: center;
+          "
+        >
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              flex-grow: 1;
+              overflow: hidden;
+              white-space: nowrap;
+            "
+          >
+            <div
+              style="
+                background: rgb(105, 105, 105);
+                width: 28px;
+                height: 28px;
+                text-align: center;
+              "
+            >
+              <font-awesome-icon
+                icon="fa-solid fa-magnifying-glass"
+                style="color: white; margin-top: 6px"
+              ></font-awesome-icon>
             </div>
+            <input
+              style="outline: none"
+              class="styled-box"
+              type="text"
+              placeholder="Search..."
+              @input="searchDuties"
+            />
           </div>
-          <div style="display: inline-block; float: right">
-            <div style="display: flex">
-              <div
-                style="
-                  display: inline-block;
-                  background: rgb(105, 105, 105);
-                  width: 28px;
-                  height: 28px;
-                  text-align: center;
-                "
-              >
-                <font-awesome-icon
-                  icon="fa-regular fa-calendar-days"
-                  style="color: white; margin-top: 6px"
-                />
-              </div>
-              <select
-                class="styled-box"
-                style="display: inline-block; width: 125px"
-                v-model="selectedFilter"
-              >
-                <option value="all">All</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="past-1-month">Past 1 Month</option>
-                <option value="past-3-months">Past 3 Months</option>
-                <option value="past-6-months">Past 6 Months</option>
-                <option value="past-1-year">Past 1 Year</option>
-              </select>
+
+          <div style="display: flex; align-items: center; margin-left: 10px">
+            <div
+              style="
+                background: rgb(105, 105, 105);
+                width: 28px;
+                height: 28px;
+                text-align: center;
+              "
+            >
+              <font-awesome-icon
+                icon="fa-regular fa-calendar-days"
+                style="color: white; margin-top: 6px"
+              ></font-awesome-icon>
             </div>
+            <select
+              class="styled-box"
+              style="flex-shrink: 0"
+              v-model="selectedFilter"
+            >
+              <option value="all">All</option>
+              <option value="ongoing">Ongoing</option>
+              <option value="upcoming">Upcoming</option>
+              <option value="past-1-month">Past 1 Month</option>
+              <option value="past-3-months">Past 3 Months</option>
+              <option value="past-6-months">Past 6 Months</option>
+              <option value="past-1-year">Past 1 Year</option>
+            </select>
           </div>
         </div>
         <div style="padding: 15px">
@@ -89,13 +111,15 @@
       </div>
     </div>
     <div
+      class="add-duty-container"
       style="
-        margin: 15px;
-        float: right;
+        margin: 13px;
         background: #ecebe5;
-        width: 18%;
+        width: 100%;
+        max-width: 320px;
         height: 800px;
         border: 1px solid #006c66;
+        box-sizing: border-box;
       "
     >
       <div
@@ -108,10 +132,12 @@
         "
       >
         <font-awesome-icon icon="fa-regular fa-calendar-plus" />
-        <span style="margin-left: 4px">Add Duty</span>
+        <span class="text-medium" style="margin-left: 4px">Add Duty</span>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">Facility:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          Facility:
+        </div>
         <div style="padding-left: 30px">
           <select
             class="dropdown-select"
@@ -126,7 +152,7 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
           Responsible Person:
         </div>
         <div style="padding-left: 30px">
@@ -145,7 +171,9 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">Backup Person:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          Backup Person:
+        </div>
         <div style="padding-left: 30px">
           <select
             class="dropdown-select"
@@ -162,7 +190,9 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">Start Date:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          Start Date:
+        </div>
         <div style="padding-left: 30px">
           <input
             class="date-selector"
@@ -177,7 +207,9 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">End Date:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          End Date:
+        </div>
         <div style="padding-left: 30px">
           <input
             class="date-selector"
@@ -192,7 +224,9 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">Platform:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          Platform:
+        </div>
         <div style="padding-left: 30px">
           <select
             class="dropdown-select"
@@ -207,7 +241,9 @@
         </div>
       </div>
       <div style="padding-top: 6px">
-        <div style="padding-left: 8px; font-weight: bold">Comments:</div>
+        <div class="text-medium" style="padding-left: 8px; font-weight: bold">
+          Comments:
+        </div>
         <div style="padding-left: 30px; padding-right: 30px">
           <textarea
             class="comment-textarea"
@@ -216,7 +252,11 @@
           />
         </div>
       </div>
-      <button class="save-button" style="margin: 15px" @click="saveDuty()">
+      <button
+        class="text-medium save-button"
+        style="margin: 15px"
+        @click="saveDuty()"
+      >
         Save
       </button>
     </div>
@@ -345,7 +385,8 @@ export default {
     async getDuties(refresh = false, additionalUrl = "") {
       try {
         const response = await axiosRef.get(
-          urlPart[0] + "/api/duties/" +
+          urlPart[0] +
+            "/api/duties/" +
             (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
         let fetchedRows = [];
@@ -698,6 +739,17 @@ export default {
   color: white;
   background: #006c66;
   padding: 16px 20px;
+  width: 100% !important;
+  box-sizing: border-box;
+}
+
+.text-large {
+}
+
+.text-medium {
+}
+
+.text-small {
 }
 
 .styled-box {
@@ -709,9 +761,10 @@ export default {
 
 .dropdown-select,
 .date-selector {
-  width: 150px;
+  width: 165px;
   height: 24px;
   background: whitesmoke;
+  max-width: 80%;
 }
 
 .comment-textarea {
@@ -744,5 +797,20 @@ export default {
 select:disabled {
   background: #dddddd;
 }
-</style>
 
+@media (max-width: 767px) {
+  .parent-container {
+    flex-direction: column;
+  }
+
+  .table-container,
+  .add-duty-container {
+    width: 95% !important;
+    max-width: none !important;
+    margin: 10px !important;
+  }
+  .table-container > div {
+    margin: 0px !important;
+  }
+}
+</style>

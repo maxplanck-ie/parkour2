@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start-dev": "npm install && vite build && npx serve -s dist -l 5173",
+    "start-dev": "npm install",
     "start-prod": "npm install && vite build && npx serve -s dist -l 5173"
   },
   "dependencies": {
