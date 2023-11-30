@@ -11,15 +11,15 @@
     </style>
     <p>Dear {{ pi_name }},</p>
     <p>
-        {{ full_name }} requested your approval on this experiment. <b>Please treat the link within this email message as a one-time password, scoped for the authorization of this sequencing request.</b> To approve it, click <a href={{ token_url }}>this link</a> yourself (assuming you have access to Parkour at the moment, e.g. using VPN while traveling).
+        &emsp; {{ full_name }} requested your approval on this experiment. <b>Please treat <a href={{ token_url }}>this link</a> as a one-time password, scoped for the authorization of this particular sequencing request.</b> Click on it to approve.
         <br />
-        Else, just forward -or Reply "OK"- to this email. Then {{ full_name }}, would be authenticated (log-in) within Parkour LIMS, be able click the special link themselves.
+        &emsp; If you are unable to reach Parkour2 now (e.g. using mobile phone on a train without VPN access), consider forwarding this email to anyone else within the Institute's network, they can click on it (even without an account).
         <br />
-        Afterward, processing will be started right away at the facility. <b>If you don't want to approve the sequencing request, ignore this email. Ask for any changes, and the re-sending of a new e-mail just like this one (with a new link).</b>
+        &emsp; <b>If you don't want to approve the sequencing request, ignore this email.</b> Ask {{ full_name }} for any changes, and the re-sending of a new e-mail just like this one (there's going to be a new link, invalidating the current one).
     </p>
     <hr />
     <p>{{ full_name }} wrote:</p>
-    <p>{{ message }}</p>
+    <p>&emsp; {{ message }}</p>
     <br />
     {% if records %}
         <hr />
