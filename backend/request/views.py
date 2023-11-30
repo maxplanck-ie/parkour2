@@ -1007,6 +1007,18 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.save(update_fields=["filepaths"])
         return Response({"success": True})
 
+    @action(methods=["get"], detail=True)
+    def get_metapaths(self, request, *args, **kwargs):
+        metapaths = self.get_object().metapaths
+        return JsonResponse({"success": True, "metapaths": metapaths})
+
+    @action(methods=["post"], detail=True)
+    def put_metapaths(self, request, pk=None):
+        instance = self.get_object()
+        instance.metapaths = request.data
+        instance.save(update_fields=["metapaths"])
+        return Response({"success": True})
+
     @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
     def get_poolpaths(self, request, *args, **kwargs):
         instance = self.get_object()
