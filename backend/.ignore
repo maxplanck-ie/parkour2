@@ -1,1 +1,1 @@
-static/
+static/{css,docs,js,images,fonts}
