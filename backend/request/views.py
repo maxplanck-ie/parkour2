@@ -311,12 +311,12 @@ class RequestViewSet(viewsets.ModelViewSet):
                 return False
 
         if override:
-            print("Override is true")
+            # print("Override is true")
             instance.update(sequenced=True)
             return Response({"success": True})
 
         else:
-            print("Override is false")
+            # print("Override is false")
             # print(instance.statuses)
             # check if all libraries/samples related to this requested have been sequenced
             statuses = [status for x in instance for status in x.statuses]
@@ -324,11 +324,11 @@ class RequestViewSet(viewsets.ModelViewSet):
             complete = all([checkifcomplete(x) for x in statuses])
 
             if complete:
-                print("all statuses are complete")
+                # print("all statuses are complete")
                 instance.update(sequenced=True)
                 return Response({"success": True})
             elif not complete:
-                print("there are incomplete statuses")
+                # print("there are incomplete statuses")
                 return Response({"noncomplete": True})
             else:
                 return Response({"error": "error"})
