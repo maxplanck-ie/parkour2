@@ -6,16 +6,22 @@ INSTALLED_APPS += [
     "schema_viewer",
     "debug_toolbar",
     "django_migration_linter",
+    "corsheaders",
 ]
 
 MIDDLEWARE += [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
-
 
 def show_toolbar_to_all_IPs(request):
     return True
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5174",
+]
 
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": show_toolbar_to_all_IPs,

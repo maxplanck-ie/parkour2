@@ -8,8 +8,6 @@
 -r dev.txt
 coverage[toml]==7.3.2
     # via pytest-cov
-exceptiongroup==1.2.0
-    # via pytest
 execnet==2.0.2
     # via pytest-xdist
 greenlet==3.0.1
