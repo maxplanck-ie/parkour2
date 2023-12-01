@@ -15,7 +15,13 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Prefetch
-from django.http import Http404, HttpRequest, HttpResponse, JsonResponse
+from django.http import (
+    Http404,
+    HttpRequest,
+    HttpResponse,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse
@@ -29,7 +35,7 @@ from library_sample_shared.serializers import LibraryProtocolSerializer
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from tablib import Dataset
 
@@ -627,17 +633,14 @@ class RequestViewSet(viewsets.ModelViewSet):
             if instance.user.pi.archived:
                 raise ValueError(
                     "PI: "
-                    + instance.user.pi
-                    + ", is no longer enrolled. Please ask: "
-                    + settings.ADMIN_EMAIL
-                    + " to un-archive the entry at the database."
+                    + instance.user.pi.name
+                    + ", is no longer enrolled. Please contact an admin."
                 )
             elif instance.user.pi.email == "Unset":
                 raise ValueError(
                     "PI: "
-                    + instance.user.pi
-                    + ", has no e-mail address assigned. Please contact: "
-                    + settings.ADMIN_EMAIL
+                    + instance.user.pi.name
+                    + ", has no e-mail address assigned. Please contact an admin."
                 )
             records = list(instance.libraries.all()) + list(instance.samples.all())
             for r in records:
@@ -660,32 +663,13 @@ class RequestViewSet(viewsets.ModelViewSet):
                         "full_name": instance.user.full_name,
                         "pi_name": instance.user.pi.name,
                         "message": message,
-                        "token_url": f"{url_scheme}://{url_domain}/api/requests/{instance.id}/approve?{url_query}",
+                        "token_url": f"{url_scheme}://{url_domain}/api/approve/this/?pk={instance.id}&{url_query}",
                         "records": records,
                     },
                 ),
-                from_email=instance.user.email,
+                from_email=settings.SERVER_EMAIL,
                 recipient_list=[instance.user.pi.email],
             )
-        except Exception as e:
-            error = str(e)
-            logger.exception(e)
-        return JsonResponse({"success": not error, "error": error})
-
-    @action(methods=["get"], detail=True)
-    def approve(self, request, *args, **kwargs):  # pragma: no cover
-        """Process token sent to PI."""
-        error = ""
-        instance = self.get_object()
-        try:
-            token = request.query_params.get("token")
-            if token == instance.token:
-                instance.libraries.all().update(status=1)
-                instance.samples.all().update(status=1)
-                instance.token = None
-                instance.save(update_fields=["token"])
-            else:
-                raise ValueError(f"Token mismatch.")
         except Exception as e:
             error = str(e)
             logger.exception(e)
@@ -1027,6 +1011,18 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.save(update_fields=["filepaths"])
         return Response({"success": True})
 
+    @action(methods=["get"], detail=True)
+    def get_metapaths(self, request, *args, **kwargs):
+        metapaths = self.get_object().metapaths
+        return JsonResponse({"success": True, "metapaths": metapaths})
+
+    @action(methods=["post"], detail=True)
+    def put_metapaths(self, request, pk=None):
+        instance = self.get_object()
+        instance.metapaths = request.data
+        instance.save(update_fields=["metapaths"])
+        return Response({"success": True})
+
     @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
     def get_poolpaths(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -1185,3 +1181,45 @@ def import_request(request):
             request_resource.import_data(dataset, dry_run=False)
 
     return render(request, "import.html")
+
+
+class ApproveViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = RequestSerializer
+    queryset = Request.objects.all().filter(id=0)
+
+    @action(methods=["get"], detail=False)
+    def this(self, request, *args, **kwargs):  # pragma: no cover
+        """Process token sent to PI."""
+        error = ""
+        try:
+            token = request.query_params.get("token")
+            pk = request.query_params.get("pk")
+            instance = list(Request.objects.filter(id=pk))[0]
+            if not all(s == 0 for s in instance.statuses):
+                raise ValueError(f"Not all statuses are zero: {instance.statuses}")
+            if token == instance.token:
+                instance.libraries.all().update(status=1)
+                instance.samples.all().update(status=1)
+                instance.token = None
+                instance.save(update_fields=["token"])
+            else:
+                raise ValueError(f"Token mismatch.")
+        except Exception as e:
+            error = str(e)
+            logger.exception(e)
+            return JsonResponse({"success": not error, "error": error})
+        send_mail(
+            subject=f"[ Parkour2 | seq. request was approved ] {instance.name}",
+            message="",
+            html_message=render_to_string(
+                "approved.html",
+                {
+                    "full_name": instance.user.full_name,
+                    "pi_name": instance.user.pi.name,
+                },
+            ),
+            from_email=settings.SERVER_EMAIL,
+            recipient_list=[instance.user.email, instance.user.pi.email],
+        )
+        return HttpResponseRedirect("/")

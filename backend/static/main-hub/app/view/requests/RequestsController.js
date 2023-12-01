@@ -77,7 +77,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         "-",
         {
           text: "Solicite Approval via Email",
-          hidden: !USER.can_solicite_paperless_approval,
+          hidden: !USER.paperless_approval,
           handler: function () {
             Ext.create("MainHub.view.requests.TokenWindow", {
               title: "New Email for Approval Solicitation",
@@ -128,6 +128,16 @@ Ext.define("MainHub.view.requests.RequestsController", {
           handler: function () {
             Ext.create("MainHub.view.metadataexporter.MetadataExporter", {
               request: record,
+            });
+          },
+        },
+        {
+          text: "View File Paths",
+          hidden: !USER.is_staff,
+          handler: function () {
+            Ext.create("MainHub.view.requests.FilePathsWindow", {
+              title: "File Paths",
+              record: record,
             });
           },
         },

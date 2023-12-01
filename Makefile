@@ -87,6 +87,7 @@ set-base:
 clean:
 	#@docker compose exec parkour2-django rm -f backend/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
+	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
@@ -112,7 +113,7 @@ dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Wer
 
 set-dev: hardreset-caddyfile
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
-	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
+	#@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 add-pgadmin-caddy: hardreset-caddyfile

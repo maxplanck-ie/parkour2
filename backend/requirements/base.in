@@ -19,4 +19,3 @@ bioblend
 python-docx
 python-dateutil
 tblib
-django-cors-headers

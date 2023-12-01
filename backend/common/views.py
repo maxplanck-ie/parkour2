@@ -37,7 +37,7 @@ def index(request):
                     "id": user.pk,
                     "name": user.full_name,
                     "is_staff": user.is_staff,
-                    "can_solicite_paperless_approval": user.can_solicite_paperless_approval,
+                    "paperless_approval": user.paperless_approval,
                 }
             ),
         },

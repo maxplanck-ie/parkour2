@@ -50,7 +50,7 @@ ptyprocess==0.7.0
     # via pexpect
 pure-eval==0.2.2
     # via stack-data
-pygments==2.17.1
+pygments==2.17.2
     # via
     #   ipython
     #   rich
@@ -68,7 +68,7 @@ traitlets==5.13.0
     # via
     #   ipython
     #   matplotlib-inline
-wcwidth==0.2.10
+wcwidth==0.2.12
     # via prompt-toolkit
 werkzeug==3.0.1
     # via -r backend/requirements/dev.in

@@ -70,13 +70,11 @@ INSTALLED_APPS = [
     "stats",
     "metadata_exporter",
     "drf_spectacular",
-    "corsheaders",
 ]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -166,7 +164,7 @@ AUTH_USER_MODEL = "common.User"  # authtools
 # Email config
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "mail.server.tld")
 EMAIL_SUBJECT_PREFIX = os.environ.get("EMAIL_SUBJECT_PREFIX", "[Parkour2]")
-SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@mail.server.tld")
+SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@server.tld")
 
 
 LOGGING = {
@@ -248,11 +246,6 @@ SPECTACULAR_SETTINGS = {
     "SERVE_INCLUDE_SCHEMA": False,
     # OTHER SETTINGS
 }
-
-# CORS Configuration
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
 
 # Use plain Python by default for shell_plus
 SHELL_PLUS = "plain"

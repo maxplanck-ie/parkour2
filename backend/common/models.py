@@ -106,28 +106,32 @@ class User(AbstractEmailUser):
         return membership
 
     @property
-    def can_solicite_paperless_approval(self):
+    def paperless_approval(self):
+        """
+        This will return 'True' if both PI and User email addresses share the same host
+        We'll be using email spoofing from within VM, the MTA was set by IT.
+        """
         result_user = False
         result_pi = False
         if self.pi is not None and self.pi.email != "Unset":
             if (
-                not '"' in self.pi.email
-                and self.pi.email.split("@")[1] == settings.EMAIL_HOST
+                not ('"' in self.pi.email)
+                and self.pi.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
             ):
                 result_pi = True
             if (
-                not '"' in self.email
-                and self.email.split("@")[1] == settings.EMAIL_HOST
+                not ('"' in self.email)
+                and self.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
             ):
                 result_user = True
-        return result_user and result_pi
+        return result_user and result_pi  # and not self.is_pi
 
     def __str__(self):
         this_user_email = self.email
         if not '"' in this_user_email:
             # email addresses are valid with more than one 'at' symbol, only if enquoted,
             # we avoid the following in such cases. See: https://stackoverflow.com/a/12355882
-            if this_user_email.split("@")[1] == settings.EMAIL_HOST:
+            if this_user_email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]:
                 this_user_email = this_user_email.split("@")[0] + "@~"
         if self.phone is not None:
             this_user = (

@@ -32,7 +32,7 @@ from library_sample_shared.views import (
 )
 from metadata_exporter.views import MetadataExporterViewSet
 from pooling.views import PoolingViewSet
-from request.views import RequestViewSet
+from request.views import ApproveViewSet, RequestViewSet
 from rest_framework import routers
 from sample.views import NucleicAcidTypeViewSet, SampleViewSet
 from stats.views import RunStatisticsViewSet, SequencesStatisticsViewSet
@@ -41,6 +41,7 @@ router = routers.DefaultRouter()
 
 router.register(r"duties", DutyViewSet, basename="duties")
 router.register(r"requests", RequestViewSet, basename="request")
+router.register(r"approve", ApproveViewSet, basename="approve")
 router.register(r"cost_units", CostUnitsViewSet, basename="cost-units")
 router.register(r"organisms", OrganismViewSet, basename="organism")
 router.register(r"read_lengths", ReadLengthViewSet, basename="read-length")
