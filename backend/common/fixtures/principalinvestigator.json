@@ -30,7 +30,7 @@
     "model": "common.principalinvestigator",
     "pk": 4,
     "fields": {
-      "name": "Gruen",
+      "name": "Manke",
       "organization": 2,
       "archived": false
     }
@@ -300,7 +300,7 @@
     "model": "common.principalinvestigator",
     "pk": 35,
     "fields": {
-      "name": "Deep_Sequencing_Unit",
+      "name": "DeepSeq",
       "organization": 2,
       "archived": false
     }
