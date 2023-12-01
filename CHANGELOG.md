@@ -1,6 +1,11 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
-<!-- - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at same server as the admin (`settings.SERVER_EMAIL`). -->
+??.??.??
+========
+
+- Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
+- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at same server as the admin (`settings.SERVER_EMAIL`).
+
 
 23.11.22
 ========
