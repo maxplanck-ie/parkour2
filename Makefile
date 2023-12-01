@@ -166,6 +166,7 @@ load-postgres:  ## Restore instant snapshot (sqldump) on running instance
 		--dbname=postgres --username=postgres tmp_parkour-postgres.dump \
 		1> /tmp/pg_log_out.txt 2> /tmp/pg_log_err.txt" || \
 			docker exec parkour2-postgres cat /tmp/pg_log_err.txt
+	@$(MAKE) clean
 
 load-postgres-plain:
 	@test -e ./this.sql && \
