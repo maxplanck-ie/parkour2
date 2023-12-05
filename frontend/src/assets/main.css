@@ -2,7 +2,7 @@
 
 @media (hover: hover) {
   a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+    background-color: hsla(160, 100%, 37%, 0.2) !important;
   }
 }
 
@@ -13,4 +13,58 @@
 
 .toast-body {
   font-size: 14px !important;
+}
+
+.color-white {
+  color: #ffffff !important;
+}
+
+.bg-color-white {
+  background-color: #ffffff !important;
+}
+
+.color-mpg-green {
+  color: #006c66 !important;
+}
+
+.bg-color-mpg-green {
+  background-color: #006c66 !important;
+}
+
+.color-bluish-grey {
+  color: #29485d !important;
+}
+
+.bg-color-bluish-grey {
+  background-color: #29485d !important;
+}
+
+.color-beige {
+  color: #ecebe5 !important;
+}
+
+.bg-color-beige {
+  background-color: #ecebe5 !important;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer !important;
+}
+
+.cursor-default:hover {
+  cursor: default !important;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.list-style-none {
+  list-style-type: none !important;
+  padding: 0px !important;
+  margin: 0px !important;
+}
+
+.no-focus-highlight:hover {
+  background-color: transparent !important;
 }

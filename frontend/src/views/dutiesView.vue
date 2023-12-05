@@ -56,7 +56,7 @@
             </div>
             <input
               id="search-bar"
-              style="outline: none"
+              style="width: 320px"
               class="styled-box"
               type="text"
               placeholder="Search..."
@@ -255,7 +255,7 @@
         </div>
       </div>
       <button
-        class="text-medium save-button"
+        class="text-medium save-button cursor-pointer"
         style="margin: 15px"
         @click="saveDuty()"
       >
@@ -750,7 +750,6 @@ export default {
   padding: 0px 8px;
   border: 1px solid rgb(105, 105, 105);
   background: whitesmoke;
-  outline: none;
 }
 
 .dropdown-select,
@@ -773,19 +772,13 @@ export default {
   border: 1px solid grey;
   border-radius: 5px;
   font-size: 12px;
-  outline: none;
 }
 
 .save-button {
   background: #006c66;
   border: none;
-  outline: none;
   color: white;
   padding: 6px 10px;
-}
-
-.save-button:hover {
-  cursor: pointer;
 }
 
 select:disabled {
@@ -808,3 +801,4 @@ select:disabled {
   }
 }
 </style>
+

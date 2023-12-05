@@ -9,8 +9,6 @@ Ext.define("MainHub.view.main.MainContainerWrap", {
   layout: {
     type: "hbox",
     align: "stretchmax",
-
-    // Tell the layout to animate the x/width of the child items.
     animate: true,
     animatePolicy: {
       x: true,
@@ -19,21 +17,11 @@ Ext.define("MainHub.view.main.MainContainerWrap", {
   },
 
   beforeLayout: function () {
-    // We setup some minHeights dynamically to ensure we stretch to fill the height
-    // of the viewport minus the top toolbar
-
     var me = this,
-      height = Ext.Element.getViewportHeight() - 64, // offset by topmost toolbar height
-      // We use itemId/getComponent instead of "reference" because the initial
-      // layout occurs too early for the reference to be resolved
-      navTree = me.getComponent("navigationTreeList");
+      height = Ext.Element.getViewportHeight();
 
     me.minHeight = height;
-
-    navTree.setStyle({
-      "min-height": height + "px"
-    });
-
+    me.setHeight(height);
     me.callParent(arguments);
   }
 });
