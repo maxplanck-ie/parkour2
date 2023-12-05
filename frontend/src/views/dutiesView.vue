@@ -119,7 +119,6 @@
         max-width: 320px;
         height: 800px;
         border: 1px solid #006c66;
-        box-sizing: border-box;
       "
     >
       <div
@@ -738,7 +737,6 @@ export default {
   background: #006c66;
   padding: 16px 20px;
   width: 100% !important;
-  box-sizing: border-box;
 }
 
 .styled-box {
