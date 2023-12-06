@@ -55,6 +55,7 @@
               ></font-awesome-icon>
             </div>
             <input
+              id="search-bar"
               style="outline: none"
               class="styled-box"
               type="text"
@@ -78,6 +79,7 @@
               ></font-awesome-icon>
             </div>
             <select
+              id="period-filter"
               class="styled-box"
               style="flex-shrink: 0"
               v-model="selectedFilter"

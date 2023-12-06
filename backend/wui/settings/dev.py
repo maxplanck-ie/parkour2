@@ -15,14 +15,7 @@ MIDDLEWARE += [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
-def show_toolbar_to_all_IPs(request):
-    return True
-
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174",
-]
-
+# CORS settings to enable API calls for Vue.js while development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5174",
@@ -64,3 +57,6 @@ LOGGING["loggers"] = {
         "handlers": ["rich_console"],
     },
 }
+
+def show_toolbar_to_all_IPs(request):
+    return True

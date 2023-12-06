@@ -6,6 +6,12 @@ DEBUG = True
 
 INSTALLED_APPS += [
     "django_migration_linter",
+    "corsheaders",
+]
+
+MIDDLEWARE += [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 MIGRATION_LINTER_OPTIONS = {
@@ -51,4 +57,10 @@ NOTEBOOK_ARGUMENTS += [
     "--ip",
     "0.0.0.0",
     "--allow-root",
+]
+
+# CORS settings to enable API calls for Vue.js while development
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5174",
 ]
