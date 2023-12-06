@@ -21,12 +21,13 @@ def browser_context_args(browser_context_args):
         "device_scale_factor": 2,
     }
 
+
 def test_duties_page(page: Page):
     utilities.pretest_login(page)
 
     hostName = utilities.get_host_name()
     dutiesButton = page.locator("a#dutiesBtn")
-    manageDutiesTitle = page.get_by_text('Manage Duties')
+    manageDutiesTitle = page.get_by_text("Manage Duties")
     addFacilitySelect = page.locator("select#facility")
     addMainNameSelect = page.locator("select#main_name")
     addBackupNameSelect = page.locator("select#backup_name")

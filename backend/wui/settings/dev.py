@@ -58,5 +58,6 @@ LOGGING["loggers"] = {
     },
 }
 
+
 def show_toolbar_to_all_IPs(request):
     return True

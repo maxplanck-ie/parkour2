@@ -6,6 +6,7 @@ from playwright.sync_api import Page
 testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
 testPassword = "parkour-staff"
 
+
 def get_host_name():
     isInsideContainer = nodename() == "parkour2-django"
     if isInsideContainer:
@@ -14,8 +15,9 @@ def get_host_name():
         hostName = getenvvar("HOSTNAME", "localhost")
     return hostName
 
+
 def visit_login_page(page):
-    hostName = get_host_name() 
+    hostName = get_host_name()
     page.goto("http://" + hostName + ":9980/login")
 
 
