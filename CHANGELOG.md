@@ -4,7 +4,7 @@
 ========
 
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
-- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at same server as the admin (`settings.SERVER_EMAIL`).
+- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
 
 
 23.11.22

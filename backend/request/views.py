@@ -23,6 +23,7 @@ from django.http import (
 )
 from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils import dateformat, timezone
 from django.utils.crypto import get_random_string
 from docx import Document
 from docx.enum.text import WD_BREAK
@@ -1058,7 +1059,19 @@ class ApproveViewSet(viewsets.ModelViewSet):
                 instance.libraries.all().update(status=1)
                 instance.samples.all().update(status=1)
                 instance.token = None
-                instance.save(update_fields=["token"])
+                instance.approval = {
+                    "TIMESTAMP": dateformat.format(timezone.now(), "c"),
+                    "TOKEN": token,
+                    "REMOTE_ADDR": request.META["REMOTE_ADDR"],
+                    "REMOTE_PORT": request.META["REMOTE_PORT"],
+                    "HTTP_USER_AGENT": request.headers["user-agent"],
+                    "HTTP_ACCEPT": request.headers["accept"],
+                    "HTTP_ACCEPT_ENCODING": request.headers["accept-encoding"],
+                    "HTTP_ACCEPT_LANGUAGE": request.headers["accept-language"],
+                    "HTTP_X_FORWARDED_FOR": request.headers["x-forwarded-for"],
+                    "HTTP_X_REAL_IP": request.headers["x-real-ip"],
+                }
+                instance.save(update_fields=["token", "approval"])
             else:
                 raise ValueError(f"Token mismatch.")
         except Exception as e:
