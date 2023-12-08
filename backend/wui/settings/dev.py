@@ -11,8 +11,13 @@ INSTALLED_APPS += [
 
 MIDDLEWARE += [
     "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
+
+
+def show_toolbar_to_all_IPs(request):
+    return True
 
 # CORS settings to enable API calls for Vue.js while development
 CORS_ALLOW_CREDENTIALS = True
@@ -56,7 +61,3 @@ LOGGING["loggers"] = {
         "handlers": ["rich_console"],
     },
 }
-
-
-def show_toolbar_to_all_IPs(request):
-    return True
