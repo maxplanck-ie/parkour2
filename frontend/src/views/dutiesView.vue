@@ -119,7 +119,6 @@
         max-width: 320px;
         height: 800px;
         border: 1px solid #006c66;
-        box-sizing: border-box;
       "
     >
       <div
@@ -265,23 +264,21 @@
 
 <script>
 import { AgGridVue } from "ag-grid-vue3";
-import { showNotification, handleError, getProp } from "../utils/utilities";
+import { showNotification, handleError, getProp, urlStringStartsWith } from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
 
-const CSRF_TOKEN = Cookies.get("csrftoken");
-
 const axiosRef = axios.create({
   withCredentials: true,
   headers: {
     "content-type": "application/json",
-    "X-CSRFToken": CSRF_TOKEN,
+    "X-CSRFToken": Cookies.get("csrftoken"),
   },
 });
 
-const urlPart = window.location.href.split("/vue/");
+const urlStringStart = urlStringStartsWith();
 
 export default {
   name: "Duties",
@@ -359,7 +356,7 @@ export default {
         this.gridOptions.api.hideOverlay();
       } else {
         await axiosRef
-          .post(urlPart[0] + "/api/duties/", newDuty)
+          .post(urlStringStart + "/api/duties/", newDuty)
           .then(() => {
             this.newDuty = {};
             document.getElementById("facility").value = "";
@@ -385,7 +382,7 @@ export default {
     async getDuties(refresh = false, additionalUrl = "") {
       try {
         const response = await axiosRef.get(
-          urlPart[0] +
+          urlStringStart +
             "/api/duties/" +
             (additionalUrl !== "" ? "?" + additionalUrl : "")
         );
@@ -524,7 +521,7 @@ export default {
             break;
         }
         await axiosRef
-          .patch(urlPart[0] + "/api/duties/" + String(dutyId) + "/", {
+          .patch(urlStringStart + "/api/duties/" + String(dutyId) + "/", {
             [columnName]: newValue,
           })
           .then(() => {
@@ -583,7 +580,7 @@ export default {
     },
     async getUsers() {
       await axiosRef
-        .get(urlPart[0] + "/api/duties/responsibles/")
+        .get(urlStringStart + "/api/duties/responsibles/")
         .then((response) => {
           let userList = getProp(response, "data", []);
           this.userList = userList;
@@ -740,16 +737,6 @@ export default {
   background: #006c66;
   padding: 16px 20px;
   width: 100% !important;
-  box-sizing: border-box;
-}
-
-.text-large {
-}
-
-.text-medium {
-}
-
-.text-small {
 }
 
 .styled-box {

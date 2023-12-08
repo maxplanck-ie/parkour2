@@ -20,6 +20,21 @@ def metapaths_default():
     return {"nothing": None}
 
 
+def approval_default():
+    return {
+        "TIMESTAMP": None,
+        "TOKEN": None,
+        "REMOTE_ADDR": None,
+        "REMOTE_PORT": None,
+        "HTTP_USER_AGENT": None,
+        "HTTP_ACCEPT": None,
+        "HTTP_ACCEPT_ENCODING": None,
+        "HTTP_ACCEPT_LANGUAGE": None,
+        "HTTP_FORWARDED": None,
+        "HTTP_X_FORWARDED_FOR": None,
+    }
+
+
 class FileRequest(models.Model):
     name = models.CharField("Name", max_length=200)
     file = models.FileField(upload_to="request_files/%Y/%m/%d/")
@@ -85,7 +100,10 @@ class Request(DateTimeMixin):
     archived = models.BooleanField("Archived", default=False)
 
     filepaths = models.JSONField(null=False, default=filepaths_default)
+
     metapaths = models.JSONField(null=False, default=metapaths_default)
+
+    approval = models.JSONField(null=False, default=approval_default)
 
     def __str__(self):
         return self.name

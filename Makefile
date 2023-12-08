@@ -113,7 +113,7 @@ dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Wer
 
 set-dev: hardreset-caddyfile
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
-	#@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
+	# @sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 add-pgadmin-caddy: hardreset-caddyfile
@@ -123,7 +123,7 @@ hardreset-caddyfile:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d

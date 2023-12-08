@@ -18,7 +18,7 @@ export function showNotification(content, type) {
 export function handleError(error) {
   if (error.response.status && error.response.status === 403) {
     let slices = window.location.href.split("/vue/");
-    window.location.href = slices[0] + "/login/?next=/vue/" + slices[1];
+    window.location.href = urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
   } else if (error.response) {
     showNotification("Error:" + error.response.data, "error");
     console.log("Error status:", error.response.status);
@@ -42,4 +42,13 @@ export function getProp(object, keys, defaultVal) {
     return getProp(object, keys.slice(1), defaultVal);
   }
   return object === undefined ? defaultVal : object;
+}
+
+export function urlStringStartsWith() {
+  let urlString = window.location.href.split("/vue/");
+  if (urlString[0] === "http://localhost:5174") {
+    return "http://localhost:9980";
+  } else {
+    return urlString[0];
+  }
 }

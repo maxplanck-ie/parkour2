@@ -23,7 +23,6 @@ except OSError:
 
 SECRET_KEY = os.environ.get("SECRET_KEY", "94e9206c6a0ac99409aa")
 
-
 # Allow all host headers
 ALLOWED_HOSTS = ["*"]
 
@@ -32,7 +31,6 @@ LOGIN_REDIRECT_URL = "/"
 
 # Fix FileUpload
 X_FRAME_OPTIONS = "SAMEORIGIN"
-
 
 # CSRF cookie
 CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
@@ -106,9 +104,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "wui.wsgi.application"
 
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -140,7 +136,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -149,7 +144,6 @@ TIME_ZONE = os.environ.get("TIME_ZONE", "CET")
 USE_I18N = True
 USE_TZ = True
 
-
 ADMINS = [
     (
         os.environ.get("ADMIN_NAME", "ParkourAdmin"),
@@ -157,15 +151,12 @@ ADMINS = [
     ),
 ]
 
-
 AUTH_USER_MODEL = "common.User"  # authtools
-
 
 # Email config
 EMAIL_HOST = os.environ.get("EMAIL_HOST", "mail.server.tld")
 EMAIL_SUBJECT_PREFIX = os.environ.get("EMAIL_SUBJECT_PREFIX", "[Parkour2]")
 SERVER_EMAIL = os.environ.get("SERVER_EMAIL", "something@server.tld")
-
 
 LOGGING = {
     "version": 1,
@@ -217,7 +208,6 @@ LOGGING = {
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -259,11 +249,9 @@ IPYTHON_ARGUMENTS = [
     "--debug",
 ]
 
-
 # Admin user defaults
 SETUP_ADMIN_EMAIL = os.environ.get("SETUP_ADMIN_EMAIL", "")
 SETUP_ADMIN_PASSWORD = os.environ.get("SETUP_ADMIN_PASSWORD", None)
-
 
 # Facilities
 DEEPSEQ = os.environ.get("DEEPSEQ", "DeepSeq")
