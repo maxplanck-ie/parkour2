@@ -18,12 +18,7 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
 
   initComponent: function () {
     var me = this;
-    
-    // Keep a record of the index types loaded in the relevant stores to speed
-    // up the process of checking these values
-    me.loadedIndexTypeIds = [];
-    me.viewRefreshCounter = 0;
-    
+
     me.items = [
       {
         xtype: 'basegrid',
@@ -86,67 +81,6 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
         },
         store: 'IndexGenerator',
         enableColumnHide: false,
-
-        listeners: {
-
-          boxready: function () {
-
-            // Check if indices have already been added to the index stores before and
-            // if so add them to loadedIndexTypeIds
-            [Ext.getStore('indexI7Store'), Ext.getStore('indexI5Store')].forEach(function (s) {
-              var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(s.getRange(), 'data'), 'index_type').filter(function (e) { return e })));
-              indexTypeIds.forEach(function (e) {
-                me.loadedIndexTypeIds.indexOf(e) === -1 && me.loadedIndexTypeIds.push(e);
-              })
-            })
-          },
-
-          rowdblclick: function (grid, record, element, rowIndex, e, eOpts) {
-
-            // Enable/Disable index boxes based on whether index type is set
-
-            var indexTypeId = record.get('index_type');
-            var indexI7Editor = Ext.getCmp('indexI7EditorIndexGenerator');
-            var indexI5Editor = Ext.getCmp('indexI5EditorIndexGenerator');
-
-            // Only filter index store if Index Type is set for the record
-            if (indexTypeId) {
-
-              // Enable index editors
-              indexI7Editor.enable();
-              indexI5Editor.enable();
-
-              // Filter index stores
-              var indexI7Store = Ext.getStore('indexI7Store');
-              var indexI5Store = Ext.getStore('indexI5Store');
-              [indexI7Store, indexI5Store].forEach(function(s){
-                s.clearFilter(true);
-                s.filter('index_type', indexTypeId, true);
-              })
-
-            } else {
-
-              // Disable index stores
-              indexI7Editor.disable();
-              indexI5Editor.disable();
-            }
-          },
-
-          groupexpand: function (view, node, group, e, eOpts) {
-
-            // When opening a group, load in the index stores those indices 
-            // that are present in the group, if not already added
-            var records = view.getStore().getGroups().items.filter(function(e){return e._groupKey == group})[0].getRange();
-            var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(records, 'data'), 'index_type').filter(function (e) { return e })));
-            var missingIndexTypeIds = indexTypeIds.filter(function(e) { return !me.loadedIndexTypeIds.includes(e)});
-            if (missingIndexTypeIds.length > 0) {
-              me.loadedIndexTypeIds = me.loadedIndexTypeIds.concat(missingIndexTypeIds);
-              me.addToIndexStore(Ext.getStore('indexI7Store'), missingIndexTypeIds, true, me);
-              me.addToIndexStore(Ext.getStore('indexI5Store'), missingIndexTypeIds, true, me);
-              me.addToIndexPairStore(missingIndexTypeIds);
-            }
-          }
-        },
 
         columns: [
           {
@@ -246,48 +180,6 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               store: 'GeneratorIndexTypes',
               matchFieldWidth: false,
               forceSelection: true,
-              listeners: {
-                change: function (cb, newValue, oldValue, eOpts) {
-
-                  Ext.getCmp('index-generator-grid').fireEvent('reset');
-
-                  // Reset index editors
-                  var indexI7Editor = Ext.getCmp('indexI7EditorIndexGenerator');
-                  var indexI5Editor = Ext.getCmp('indexI5EditorIndexGenerator');
-                  indexI7Editor.setValue(null);
-                  indexI5Editor.setValue(null);
-
-                  if (newValue) {
-
-                    // Enable index editors
-                    indexI7Editor.enable();
-                    indexI5Editor.enable();
-
-                    var indexI7Store = Ext.getStore('indexI7Store');
-                    var indexI5Store = Ext.getStore('indexI5Store');
-
-                    // Check if Index Type has not been retrieved before
-                    // If not add new records to store
-                    var indexGeneratorStore = Ext.getStore('IndexGenerator'); 
-                    var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(indexGeneratorStore.getRange(), 'data'), 'index_type').filter(function (e) { return e })));
-                    if (newValue && indexTypeIds.indexOf(newValue) === -1) {
-                      me.addToIndexStore(indexI7Store, [newValue], false, me);
-                      me.addToIndexStore(indexI5Store, [newValue], false, me);
-                      me.addToIndexPairStore([newValue]);
-                    }
-
-                    // Filter index stores
-                    [indexI7Store, indexI5Store].forEach(function (s) {
-                      s.clearFilter(true);
-                      s.filter('index_type', newValue, true);
-                    })
-                  } else {
-                    // Disable index editors
-                    indexI7Editor.disable();
-                    indexI5Editor.disable();
-                  }
-                }
-              }
             },
             renderer: function (value, meta) {
               var record = meta.column.getEditor().getStore().findRecord(
@@ -301,6 +193,36 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               }
 
               return val;
+            }
+          },
+          {
+            text: '# of Index Reads',
+            dataIndex: 'index_reads',
+            tooltip: 'Index Type',
+            width: 130,
+            editor: {
+              xtype: 'combobox',
+              id: 'indexReadsEditorIndexGenerator',
+              itemId: 'indexReadsEditorIndexGenerator',
+              queryMode: 'local',
+              displayField: 'label',
+              valueField: 'num',
+              store: Ext.create('Ext.data.Store', {
+                fields: [{ name: 'num', type: 'int' },
+                         { name: 'label', type: 'string' }],
+                // sorters: [{property: 'num', direction: 'DESC'}],
+                data: [
+                { num: 0, label: 'None' },
+                { num: 7, label: 'I7 only' },
+                { num: 5, label: 'I5 only' },
+                { num: 75, label: 'I7 + I5' },
+                { num: 752, label: 'I7 + I5 (Pair/UDI)' }]
+              }),
+              forceSelection: true,
+            },
+            renderer: function (value, meta, record) {
+              var item = meta.column.getEditor().getStore().findRecord('num', value);
+              return item ? item.get('label') : value;
             }
           },
           {
@@ -323,33 +245,6 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               regex: new RegExp('^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$'),
               regexText: 'Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.',
               matchFieldWidth: false,
-              listeners: {
-                change: function (cb, newValue, oldValue, eOpts) {
-
-                  if (newValue) {
-                    // Get the index record
-                    var indexTypeId = Ext.getCmp('indexTypePoolingEditor').getValue();
-                    var store = cb.store;
-                    store.clearFilter(true);
-                    store.filter('index_type', indexTypeId, true);
-                    var record = store.findRecord('index', newValue);
-
-                    // If a record is found, try to get the corresponding
-                    // i5 index and if present, set it in the i5 index cell
-                    if (record) {
-                      var indexPair = Ext.getStore('IndexPairs').findRecord('index1_id', record.id);
-                      if (indexPair) {
-                        var i5IndexStore = Ext.getStore('indexI5Store');
-                        i5IndexStore.clearFilter(true);
-                        var i5_index = i5IndexStore.findRecord('id', indexPair.get('index2_id'));
-                        if (i5_index) {
-                          Ext.getCmp('indexI5EditorIndexGenerator').setValue(i5_index.get('index'));
-                        }
-                      }
-                    }
-                  }
-                },
-              }
             },
             renderer: function (value, meta, record) {
               if (value) {
@@ -384,33 +279,6 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
               regex: new RegExp('^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$'),
               regexText: 'Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.',
               matchFieldWidth: false,
-              listeners: {
-                change: function (cb, newValue, oldValue, eOpts) {
-
-                  if (newValue) {
-                    // Get the index record
-                    var indexTypeId = Ext.getCmp('indexTypePoolingEditor').getValue();
-                    var store = cb.store;
-                    store.clearFilter(true);
-                    store.filter('index_type', indexTypeId, true);
-                    var record = store.findRecord('index', newValue);
-
-                    // If a record is found, try to get the corresponding
-                    // i7 index and if present, set it in the i7 index cell
-                    if (record) {
-                      var indexPair = Ext.getStore('IndexPairs').findRecord('index2_id', record.id);
-                      if (indexPair) {
-                        var i7IndexStore = Ext.getStore('indexI7Store');
-                        i7IndexStore.clearFilter(true);
-                        var i7_index = i7IndexStore.findRecord('id', indexPair.get('index1_id'));
-                        if (i7_index) {
-                          Ext.getCmp('indexI7EditorIndexGenerator').setValue(i7_index.get('index'));
-                        }
-                      }
-                    }
-                  }
-                },
-              }
             },
             renderer: function (value, meta, record) {
               if (value) {
@@ -1075,90 +943,5 @@ Ext.define('MainHub.view.indexgenerator.IndexGenerator', {
 
     return result;
   },
-
-  addToIndexStore: function (store, IndexTypeIds, refreshView, me) {
-
-    var startViewCounter = me.viewRefreshCounter;
-    IndexTypeIds.forEach(function (id) {
-      Ext.Ajax.request({
-        url: store.proxy.url,
-        method: 'GET',
-        timeout: 60000,
-        scope: this,
-        params: {
-          index_type_id: id
-        },
-
-        success: function (response) {
-          var obj = Ext.JSON.decode(response.responseText);
-          if (obj) {
-            // Add the id of the index type here rather than getting it via 
-            // the API, it's 10x faster
-            obj.map(function(e){e.index_type = id})
-            store.suspendEvents(false);
-            store.add(obj);
-            store.resumeEvents();
-            if (refreshView) {
-              // Only refresh the view after the last request has been completed
-              me.viewRefreshCounter++;
-              if (me.viewRefreshCounter - startViewCounter === IndexTypeIds.length * 2) {
-                Ext.getCmp('index-generator-grid').getView().refresh();
-              }
-            }
-          } else {
-            new Noty({ text: response.statusText, type: 'error' }).show();
-          }
-        },
-
-        failure: function (response) {
-          var error = response.statusText;
-          try {
-            error = Ext.JSON.decode(response.responseText).message;
-          } catch (e) { }
-          new Noty({ text: error, type: 'error' }).show();
-          console.error(response);
-        }
-      })
-    })
-
-  },
-
-  addToIndexPairStore: function (IndexTypeIds) {
-    var store = Ext.getStore('IndexPairs');
-    IndexTypeIds.forEach(function (id) {
-      Ext.Ajax.request({
-        url: store.proxy.url,
-        method: 'GET',
-        timeout: 60000,
-        scope: this,
-        params: {
-          index_type_id: id
-        },
-
-        success: function (response) {
-          var obj = Ext.JSON.decode(response.responseText);
-          if (obj) {
-            // Add the id of the index type here rather than getting it via 
-            // the API, it's 10x faster
-            store.suspendEvents(false);
-            store.add(obj);
-            store.resumeEvents();
-          } else {
-            new Noty({ text: response.statusText, type: 'error' }).show();
-          }
-        },
-
-        failure: function (response) {
-          var error = response.statusText;
-          try {
-            error = Ext.JSON.decode(response.responseText).message;
-          } catch (e) { }
-          new Noty({ text: error, type: 'error' }).show();
-          console.error(response);
-        }
-      })
-    })
-
-  }
 
 });

@@ -17,7 +17,7 @@ Ext.define('validator.IndexI5', {
         return record.get('index_reads') === null ||
             record.get('index_reads') === 0 ||
             record.get('index_reads') === 7 ||
-            (record.get('index_reads') % 5 === 0 && value !== '') ||
+            ((record.get('index_reads') % 5 === 0 || record.get('index_reads') % 2 === 0) && value !== '') ||
             'Must be present';
     }
 });

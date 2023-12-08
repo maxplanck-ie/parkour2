@@ -43,6 +43,8 @@ FROM (
                     THEN 'I7'
                 WHEN record.index_reads = 75
                     THEN 'I5 + I7'
+                WHEN record.index_reads = 752
+                    THEN 'I5 + I7'
                 ELSE NULL
             END
         ) AS "Index Reads",

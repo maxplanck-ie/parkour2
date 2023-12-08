@@ -305,18 +305,12 @@ Ext.define('MainHub.view.libraries.Libraries', {
           dataIndex: 'index_reads',
           store: Ext.create('Ext.data.Store', {
             fields: ['index_reads', 'name'],
-            data: [{
-              index_reads: 7,
-              name: 'i7',
-            },
-            {
-              index_reads: 5,
-              name: 'i5',
-            },
-            {
-              index_reads: 75,
-              name: 'i7 + i5',
-            }
+            data: [
+              {index_reads: 0, name: 'None'},
+              {index_reads: 7, name: 'i7'},
+              {index_reads: 5,  name: 'i5'},
+              {index_reads: 75, name: 'i7 + i5'},
+              {index_reads: 752, name: 'i7 + i5'},
             ]
           }),
           renderer: function (value, meta) {

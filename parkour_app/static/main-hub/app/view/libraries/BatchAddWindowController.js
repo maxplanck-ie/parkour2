@@ -30,6 +30,14 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       '#indexReadsEditor': {
         select: 'selectIndexReads'
       },
+      '#indexI7Editor': {
+        beforequery: 'filterIndexStoreChoices',
+        select: 'selectMatchingIndexInPair'
+      },
+      '#indexI5Editor': {
+        beforequery: 'filterIndexStoreChoices',
+        select: 'selectMatchingIndexInPair'
+      },
 
       // Samples only
       '#nucleicAcidTypeEditor': {
@@ -53,9 +61,13 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     }
   },
 
-
+  loadedIndexTypeIds: [],
+  viewRefreshCounter: 0,
 
   boxready: function (wnd) {
+
+    var me = this;
+
     // Bypass Selection (Library/Sample) dialog if editing
     if (wnd.mode === 'edit') {
       if (wnd.type === 'Library') {
@@ -75,6 +87,33 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         } else {
           wnd.down('#sample-card-button').click();
         }
+      }
+    }
+
+    var indexI7Store = Ext.getStore('indexI7Store');
+    var indexI5Store = Ext.getStore('indexI5Store');
+
+    // Check if indices are already present in the index stores
+    // if so, add them to loadedIndexTypeIds
+    [indexI7Store, indexI5Store].forEach(function (s) {
+      s.clearFilter(true);
+      var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(s.getRange(), 'data'), 'index_type').filter(function (e) { return e })));
+      indexTypeIds.forEach(function (e) {
+        me.loadedIndexTypeIds.indexOf(e) === -1 && me.loadedIndexTypeIds.push(e);
+      })
+    })
+
+    var records = wnd.down('grid').getStore().getRange();
+    if (records.length > 0) {
+      // If not already present, add indices and index pairs 
+      // for index types in the grid
+      var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(records, 'data'), 'index_type').filter(function (e) { return e })));
+      var missingIndexTypeIds = indexTypeIds.filter(function (e) { return !me.loadedIndexTypeIds.includes(e) });
+      if (missingIndexTypeIds.length > 0) {
+        me.loadedIndexTypeIds = me.loadedIndexTypeIds.concat(missingIndexTypeIds);
+        me._addToIndexStore(indexI7Store, missingIndexTypeIds, true, me);
+        me._addToIndexStore(indexI5Store, missingIndexTypeIds, true, me);
+        me._addToIndexPairStore(missingIndexTypeIds, null, null);
       }
     }
 
@@ -467,6 +506,8 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
         indexI7Editor.disable();
         indexI5Editor.disable();
       }
+      indexI7Editor.getStore().clearFilter(true);
+      indexI5Editor.getStore().clearFilter(true);
     }
 
     // Samples
@@ -540,6 +581,48 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
   },
 
+  filterIndexStoreChoices: function (queryPlan) {
+    var store = queryPlan.combo.store;
+    store.clearFilter(true);
+    store.filter('index_type', Ext.getCmp('indexTypeEditor').getValue(), true);
+    return true;
+  },
+
+  selectMatchingIndexInPair: function (cb, record) {
+    // If an index pair is found, try to get the corresponding
+    // i5 index and, if present, set it in the i7 index cell
+    var indexReadsId = Ext.getCmp('indexReadsEditor').getValue();
+    if (record && indexReadsId === 752) {
+      var indexEditorId = cb.id;
+      var corrIndexGenerator,
+        indexFieldId,
+        corrIndexFieldId;
+      if (indexEditorId.startsWith('indexI7')) {
+        corrIndexGenerator = Ext.getCmp('indexI5Editor');
+        indexFieldId = 'index1_id';
+        corrIndexFieldId = 'index2_id';
+      } else {
+        corrIndexGenerator = Ext.getCmp('indexI7Editor');
+        indexFieldId = 'index2_id';
+        corrIndexFieldId = 'index1_id';
+      }
+      var indexPairStore = Ext.getStore('IndexPairs');
+      var indexTypeId = Ext.getCmp('indexTypeEditor').getValue();
+      indexPairStore.clearFilter(true);
+      indexPairStore.filter('index_type', indexTypeId, true);
+      var indexPair = indexPairStore.findRecord(indexFieldId, record.id);
+      if (indexPair) {
+        var corrIndexStore = corrIndexGenerator.getStore();
+        corrIndexStore.clearFilter(true);
+        corrIndexStore.filter('index_type', indexTypeId, true);
+        var coorIndex = corrIndexStore.findRecord('id', indexPair.get(corrIndexFieldId));
+        if (coorIndex) {
+          corrIndexGenerator.setValue(coorIndex.get('index'));
+        }
+      }
+    }
+  },
+
   editRecord: function (editor, context) {
     var grid = Ext.getCmp('batch-add-grid');
     var record = context.record;
@@ -572,13 +655,12 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
       record.set('number_targeted_cells', null)
     }
 
-    // Reset Index I7 and Index I5 if # Index reads is 1 or 0
-    if (record.get('index_reads') === 1 && record.get('index_i5') !== '') {
+    // Reset Index I7 and Index I5, as relevant
+    if (record.get('index_reads') === 7) {
       record.set('index_i5', '');
-    } else if (
-      record.get('index_reads') === 0 &&
-      record.get('index_i7') !== '' &&
-      record.get('index_i5') !== ''
+    } else if (record.get('index_reads') === 5) {
+      record.set('index_i7', '');
+    } else if (record.get('index_reads') === 0
     ) {
       record.set({ index_i7: '', index_i5: '' });
     }
@@ -595,6 +677,16 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
 
     // Validate the record after editing and refresh the grid
     this.validateRecord(record);
+    
+    // Reset indexReadsStore, before refreshing view
+    var indexReadsStore = Ext.getCmp('indexReadsEditor').getStore();
+    indexReadsStore.removeAll();
+    indexReadsStore.add([{ num: 0, label: 'None' },
+    { num: 7, label: 'I7 only' },
+    { num: 5, label: 'I5 only' },
+    { num: 75, label: 'I7 + I5' },
+    { num: 752, label: 'I7 + I5 (Pair/UDI)' }])
+
     grid.getView().refresh();
   },
 
@@ -609,6 +701,7 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
   },
 
   selectIndexType: function (fld, record) {
+    var me = this;
     var indexReadsEditor = Ext.getCmp('indexReadsEditor');
     var indexI7Editor = Ext.getCmp('indexI7Editor');
     var indexI5Editor = Ext.getCmp('indexI5Editor');
@@ -616,18 +709,38 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var indexI5Store = Ext.getStore('indexI5Store');
 
     indexReadsEditor.setValue(null);
-    indexReadsEditor.getStore().removeAll();
     indexReadsEditor.enable();
 
-    for (var i = 0; i <= record.get('index_reads'); i++) {
+    var indexReadsStore = indexReadsEditor.getStore();
+    indexReadsStore.removeAll();
+    // All index types should have these
+    indexReadsStore.add([{ num: 0, label: 'None' },
+                         { num: 7, label: 'I7 only' }]);
 
-    }
-    indexReadsEditor.getStore().add({ num: 0, label: 'None' });
-    indexReadsEditor.getStore().add({ num: 7, label: 'I7 only' });
-
+    // Only dual indexing
     if (record.get('index_reads') > 1) {
-      indexReadsEditor.getStore().add({ num: 5, label: 'I5 only' })
-      indexReadsEditor.getStore().add({ num: 75, label: 'I7 + I5' })
+      indexReadsStore.add([{ num: 5, label: 'I5 only' },
+                           { num: 75, label: 'I7 + I5' }]);
+    }
+
+    // If indices and index pairs for selected Index Type 
+    // have not already been added to the relevant stores, do so
+    // If pairs exist, add a new option for indexReadsStore
+    var indexTypeId = record.get('id');
+
+    if (me.loadedIndexTypeIds.indexOf(indexTypeId) === -1) {
+      me.loadedIndexTypeIds.push(indexTypeId)
+      me._addToIndexStore(indexI7Store, [indexTypeId], false, me);
+      me._addToIndexStore(indexI5Store, [indexTypeId], false, me);
+      me._addToIndexPairStore([indexTypeId], indexReadsStore);
+    }
+    else {
+      var indexPairStore = Ext.getStore('IndexPairs');
+      indexPairStore.clearFilter(true);
+      indexPairStore.filter('index_type', indexTypeId, true);
+      if (indexPairStore.getCount() > 0) {
+        indexReadsStore.add({ num: 752, label: 'I7 + I5 (Pair/UDI)' })
+      }
     }
 
     // Remove values before loading new stores
@@ -636,35 +749,44 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     indexI7Editor.disable();
     indexI5Editor.disable();
 
-    // Reload stores
-    indexI7Store.reload({
-      params: { 'index_type_id': record.get('id') }
-    });
-    indexI5Store.reload({
-      params: { 'index_type_id': record.get('id') }
-    });
   },
 
   selectIndexReads: function (fld, record) {
     var indexI7Editor = Ext.getCmp('indexI7Editor');
     var indexI5Editor = Ext.getCmp('indexI5Editor');
 
-    if (record.get('num') === 7) {
-      indexI7Editor.enable();
-      indexI5Editor.disable();
-      indexI5Editor.setValue(null);
-    } else if (record.get('num') === 5) {
-      indexI5Editor.enable();
-      indexI7Editor.disable();
-      indexI7Editor.setValue(null);
-    } else if (record.get('num') === 75) {
-      indexI7Editor.enable();
-      indexI5Editor.enable();
+    if (record) {
+      if (record.get('num') === 7) {
+        indexI7Editor.enable();
+        indexI5Editor.disable();
+        indexI5Editor.setValue(null);
+      } else if (record.get('num') === 5) {
+        indexI5Editor.enable();
+        indexI7Editor.disable();
+        indexI7Editor.setValue(null);
+      } else if (record.get('num') === 75) {
+        indexI7Editor.enable();
+        indexI5Editor.enable();
+      } else if (record.get('num') === 752) {
+        indexI7Editor.enable();
+        indexI5Editor.enable();
+        indexI7Editor.setValue(null);
+        indexI5Editor.setValue(null);
+      } else {
+        indexI7Editor.setValue(null);
+        indexI5Editor.setValue(null);
+        indexI7Editor.disable();
+        indexI5Editor.disable();
+      }
     } else {
-      indexI7Editor.disable();
-      indexI5Editor.disable();
+      var indexReadsEditor = Ext.getCmp('indexReadsEditorIndexGenerator');
+      indexReadsEditor.fireEvent('select', indexReadsEditor,
+        indexReadsEditor.findRecordByValue(0)
+      );
       indexI7Editor.setValue(null);
       indexI5Editor.setValue(null);
+      indexI7Editor.disable();
+      indexI5Editor.disable();
     }
   },
 
@@ -774,12 +896,15 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
           displayField: 'label',
           valueField: 'num',
           store: Ext.create('Ext.data.Store', {
-            fields: [{ name: 'num', type: 'int' }, { name: 'label', type: 'string' }],
+            fields: [{ name: 'num', type: 'int' },
+                     { name: 'label', type: 'string' }],
+            // sorters: [{property: 'num', direction: 'DESC'}],
             data: [
             { num: 0, label: 'None' },
             { num: 7, label: 'I7 only' },
             { num: 5, label: 'I5 only' },
-            { num: 75, label: 'I7 + I5' },]
+            { num: 75, label: 'I7 + I5' },
+            { num: 752, label: 'I7 + I5 (Pair/UDI)' }]
           }),
           forceSelection: true
         },
@@ -1456,7 +1581,9 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     // Render indices as '{Index ID} - {Index}'
     if ((dataIndex === 'index_i7' || dataIndex === 'index_i5') && value !== '') {
       var store = meta.column.getEditor().getStore();
-      var index = store.findRecord('index', value);
+      store.clearFilter(true);
+      store.filter('index_type', record.get('index_type'), true);
+      var index = store.findRecord('index', value, 0, false, true, true);
       if (index) {
         value = index.get('name');
       }
@@ -1525,5 +1652,104 @@ Ext.define('MainHub.view.libraries.BatchAddWindowController', {
     var store = record.store;
     store.remove(record);
     gridView.refresh();
+  },
+
+  _addToIndexStore: function (store, IndexTypeIds, refreshView, me) {
+    // Add indices to store, rather than reloading it
+
+    // Use a counter to decide when to refresh view, that is when all
+    // new indices are loaded
+    var startViewCounter = me.viewRefreshCounter;
+
+    IndexTypeIds.forEach(function (id) {
+
+      Ext.Ajax.request({
+        url: store.proxy.url,
+        method: 'GET',
+        timeout: 60000,
+        scope: this,
+        params: {
+          index_type_id: id
+        },
+
+        success: function (response) {
+          var obj = Ext.JSON.decode(response.responseText);
+          if (obj) {
+            if (obj.length > 0) {
+              // Add the id of the index type here rather than getting it via 
+              // the API, it's 10x faster
+              obj.map(function (e) { e.index_type = id })
+              store.suspendEvents(false);
+              store.add(obj);
+              store.resumeEvents();
+            }
+          } else {
+            new Noty({ text: response.statusText, type: 'error' }).show();
+          }
+          if (refreshView) {
+            // Only refresh the view after the last request has been completed
+            me.viewRefreshCounter++;
+            if (me.viewRefreshCounter - startViewCounter === IndexTypeIds.length * 2) {
+              Ext.getCmp('batch-add-grid').getView().refresh();
+            }
+          }
+        },
+
+        failure: function (response) {
+          var error = response.statusText;
+          try {
+            error = Ext.JSON.decode(response.responseText).message;
+          } catch (e) { }
+          new Noty({ text: error, type: 'error' }).show();
+          console.error(response);
+        }
+      })
+    })
+  },
+
+  _addToIndexPairStore: function (IndexTypeIds, indexReadsStore) {
+
+    // Add index pairs to store, rather than reloading it
+
+    var store = Ext.getStore('IndexPairs');
+    IndexTypeIds.forEach(function (id) {
+      Ext.Ajax.request({
+        url: store.proxy.url,
+        method: 'GET',
+        timeout: 60000,
+        scope: this,
+        params: {
+          index_type_id: id
+        },
+
+        success: function (response) {
+          var obj = Ext.JSON.decode(response.responseText);
+          if (obj) {
+            if (obj.length > 0) {
+              store.suspendEvents(false);
+              store.add(obj);
+              store.resumeEvents();
+              if (indexReadsStore) {
+                // If pairs are retrived for the Index Type (= obj exists),
+                // add Index Pair option to the indexReadsStore
+                indexReadsStore.add({ num: 752, label: 'I7 + I5 (Pair/UDI)' });
+              }
+            }
+          } else {
+            new Noty({ text: response.statusText, type: 'error' }).show();
+          }
+        },
+
+        failure: function (response) {
+          var error = response.statusText;
+          try {
+            error = Ext.JSON.decode(response.responseText).message;
+          } catch (e) { }
+          new Noty({ text: error, type: 'error' }).show();
+          console.error(response);
+        }
+      })
+    })
   }
+
 });

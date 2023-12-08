@@ -66,6 +66,7 @@ class IndexGeneratorBaseSerializer(ModelSerializer):
             "library_protocol_name",
             "read_length",
             "index_type",
+            "index_reads",
             "index_i7_id",
             "index_i7",
             "index_i5_id",

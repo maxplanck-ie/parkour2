@@ -13,7 +13,8 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         edit: 'editRecord',
         itemcontextmenu: 'showMenu',
         groupcontextmenu: 'showGroupMenu',
-        reset: '_resetGeneratedIndices'
+        reset: '_resetGeneratedIndices',
+        groupexpand: 'groupExpand'
       },
       '#check-column': {
         beforecheckchange: 'beforeSelect',
@@ -27,9 +28,28 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       },
       '#generate-indices-button': {
         click: 'generateIndices'
+      },
+      '#indexTypePoolingEditor': {
+        select: 'selectIndexType'
+      },
+      '#indexReadsEditorIndexGenerator': {
+        select: 'selectIndexReads'
+      },
+      '#indexI7EditorIndexGenerator':{
+        beforequery: 'filterIndexStoreChoices',
+        select: 'selectMatchingIndexInPair'
+      },
+      '#indexI5EditorIndexGenerator':{
+        beforequery: 'filterIndexStoreChoices',
+        select: 'selectMatchingIndexInPair'
       }
     }
   },
+
+  // Keep a record of the index types loaded in the relevant stores to speed
+  // up the process of checking these values
+  loadedIndexTypeIds : [],
+  viewRefreshCounter : 0,
 
   activateView: function (view) {
     var store = view.down('grid').getStore();
@@ -38,9 +58,38 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
   },
 
   boxready: function () {
+
+    var me = this;
+
     Ext.getStore('IndexGenerator').on('load', function () {
       Ext.getCmp('pool-grid').getStore().removeAll();
     });
+
+    // Check if indices have already been added to the index stores before and
+    // if so add them to loadedIndexTypeIds
+    [Ext.getStore('indexI7Store'), Ext.getStore('indexI5Store')].forEach(function (s) {
+      s.clearFilter(true);
+      var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(s.getRange(), 'data'), 'index_type').filter(function (e) { return e })));
+      indexTypeIds.forEach(function (e) {
+        me.loadedIndexTypeIds.indexOf(e) === -1 && me.loadedIndexTypeIds.push(e);
+      })
+    })
+  },
+
+  groupExpand: function (view, node, group, e, eOpts) {
+    var me = this;
+
+    // When opening a group, load in the index/indexp pair stores 
+    // those indices that are present in the group, if not already added
+    var records = view.getStore().getGroups().items.filter(function (e) { return e._groupKey == group })[0].getRange();
+    var indexTypeIds = Array.from(new Set(Ext.pluck(Ext.pluck(records, 'data'), 'index_type').filter(function (e) { return e })));
+    var missingIndexTypeIds = indexTypeIds.filter(function (e) { return !me.loadedIndexTypeIds.includes(e) });
+    if (missingIndexTypeIds.length > 0) {
+      me.loadedIndexTypeIds = me.loadedIndexTypeIds.concat(missingIndexTypeIds);
+      me._addToIndexStore(Ext.getStore('indexI7Store'), missingIndexTypeIds, true, me);
+      me._addToIndexStore(Ext.getStore('indexI5Store'), missingIndexTypeIds, true, me);
+      me._addToIndexPairStore(missingIndexTypeIds, null);
+    }
   },
 
   toggleEditors: function (editor, context) {
@@ -52,11 +101,41 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
       return false;
     }
 
-    if (record.get('record_type') === 'Library') {
-      indexTypeEditor.disable();
+    // if (record.get('record_type') === 'Library') {
+    //   indexTypeEditor.disable();
+    // } else {
+    //   indexTypeEditor.enable();
+    // }
+
+    // Enable/Disable index boxes based on whether index type is set
+
+    var indexI7Editor = Ext.getCmp('indexI7EditorIndexGenerator');
+    var indexI5Editor = Ext.getCmp('indexI5EditorIndexGenerator');
+    var indexTypeEditor = Ext.getCmp('indexTypePoolingEditor');
+    var indexReadsEditor = Ext.getCmp('indexReadsEditorIndexGenerator');
+
+    if (record.get('index_type') !== null) {
+      if (record.get('index_reads') !== null) {
+        indexTypeEditor.fireEvent('select', indexTypeEditor,
+          indexTypeEditor.findRecordByValue(record.get('index_type'))
+        );
+
+        // Toggle IndexI7 and IndexI5
+        indexReadsEditor.fireEvent('select', indexReadsEditor,
+          indexReadsEditor.findRecordByValue(record.get('index_reads'))
+        );
+      } else {
+        indexI7Editor.disable();
+        indexI5Editor.disable();
+      }
     } else {
-      indexTypeEditor.enable();
+      indexReadsEditor.disable();
+      indexI7Editor.disable();
+      indexI5Editor.disable();
     }
+
+    indexI7Editor.getStore().clearFilter(true);
+    indexI5Editor.getStore().clearFilter(true);
   },
 
   beforeSelect: function () {
@@ -69,15 +148,177 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
     }
   },
 
+  selectIndexType: function (fld, record) {
+    var me = this;
+
+    Ext.getCmp('index-generator-grid').fireEvent('reset');
+
+    // Reset index editors
+    var indexI7Editor = Ext.getCmp('indexI7EditorIndexGenerator');
+    var indexI5Editor = Ext.getCmp('indexI5EditorIndexGenerator');
+    var indexReadsEditor = Ext.getCmp('indexReadsEditorIndexGenerator')
+    indexI7Editor.setValue(null);
+    indexI5Editor.setValue(null);
+
+    if (record) {
+      indexReadsEditor.setValue(null);
+      indexReadsEditor.enable();
+
+      var indexI7Store = Ext.getStore('indexI7Store');
+      var indexI5Store = Ext.getStore('indexI5Store');
+
+      var indexReadsStore = indexReadsEditor.getStore();
+      indexReadsStore.removeAll();
+      // All index types should have these
+      indexReadsStore.add([{ num: 0, label: 'None' },
+      { num: 7, label: 'I7 only' }]);
+
+      // Only dual indexing
+      if (record.get('index_reads') > 1) {
+        indexReadsStore.add([{ num: 5, label: 'I5 only' },
+        { num: 75, label: 'I7 + I5' }]);
+      }
+
+      // Check if Index Type has not been retrieved before
+      // If not add new records to store
+      indexTypeId = record.get('id')
+      if (me.loadedIndexTypeIds.indexOf(indexTypeId) === -1) {
+        me.loadedIndexTypeIds.push(indexTypeId)
+        me._addToIndexStore(indexI7Store, [indexTypeId], false, me);
+        me._addToIndexStore(indexI5Store, [indexTypeId], false, me);
+        me._addToIndexPairStore([indexTypeId], indexReadsStore);
+      } else {
+        var indexPairStore = Ext.getStore('IndexPairs');
+        indexPairStore.clearFilter(true);
+        indexPairStore.filter('index_type', indexTypeId, true);
+        if (indexPairStore.getCount() > 0) {
+          indexReadsStore.add({ num: 752, label: 'I7 + I5 (Pair/UDI)' })
+        }
+      }
+    } else {
+      // Disable Index Reads editor
+      indexReadsEditor.setValue(null);
+      indexI7Editor.setValue(null);
+      indexI5Editor.setValue(null);
+      indexReadsEditor.disable();
+      indexI7Editor.disable();
+      indexI5Editor.disable();
+    }
+  },
+
+  selectIndexReads: function (fld, record) {
+    var indexI7Editor = Ext.getCmp('indexI7EditorIndexGenerator');
+    var indexI5Editor = Ext.getCmp('indexI5EditorIndexGenerator');
+
+    if (record) {
+      if (record.get('num') === 7) {
+        indexI7Editor.enable();
+        indexI5Editor.disable();
+        indexI5Editor.setValue(null);
+      } else if (record.get('num') === 5) {
+        indexI5Editor.enable();
+        indexI7Editor.disable();
+        indexI7Editor.setValue(null);
+      } else if (record.get('num') === 75) {
+        indexI7Editor.enable();
+        indexI5Editor.enable();
+      } else if (record.get('num') === 752) {
+        indexI7Editor.enable();
+        indexI5Editor.enable();
+        indexI7Editor.setValue(null);
+        indexI5Editor.setValue(null);
+      } else {
+        indexI7Editor.setValue(null);
+        indexI5Editor.setValue(null);
+        indexI7Editor.disable();
+        indexI5Editor.disable();
+      }
+    } else {
+      var indexReadsEditor = Ext.getCmp('indexReadsEditorIndexGenerator');
+      indexReadsEditor.fireEvent('select', indexReadsEditor,
+        indexReadsEditor.findRecordByValue(0)
+      );
+      indexI7Editor.setValue(null);
+      indexI5Editor.setValue(null);
+      indexI7Editor.disable();
+      indexI5Editor.disable();
+    }
+  },
+
+  filterIndexStoreChoices: function (queryPlan) {
+    var store = queryPlan.combo.store;
+    store.clearFilter(true);
+    store.filter('index_type', Ext.getCmp('indexTypePoolingEditor').getValue(), true);
+    return true;
+  },
+
+  selectMatchingIndexInPair: function (cb, record) {
+    // If an index pair is found, try to get the corresponding
+    // i5 index and, if present, set it in the i7 index cell
+    var indexReadsId = Ext.getCmp('indexReadsEditorIndexGenerator').getValue();
+    if (record && indexReadsId === 752) {
+      var indexEditorId = cb.id;
+      var corrIndexGenerator,
+        indexFieldId,
+        corrIndexFieldId;
+      if (indexEditorId.startsWith('indexI7')) {
+        corrIndexGenerator = Ext.getCmp('indexI5EditorIndexGenerator');
+        indexFieldId = 'index1_id';
+        corrIndexFieldId = 'index2_id';
+      } else {
+        corrIndexGenerator = Ext.getCmp('indexI7EditorIndexGenerator');
+        indexFieldId = 'index2_id';
+        corrIndexFieldId = 'index1_id';
+      }
+      var indexPairStore = Ext.getStore('IndexPairs');
+      var indexTypeId = Ext.getCmp('indexTypePoolingEditor').getValue();
+      indexPairStore.clearFilter(true);
+      indexPairStore.filter('index_type', indexTypeId, true);
+      var indexPair = indexPairStore.findRecord(indexFieldId, record.id);
+      if (indexPair) {
+        var corrIndexStore = corrIndexGenerator.getStore();
+        corrIndexStore.clearFilter(true);
+        corrIndexStore.filter('index_type', indexTypeId, true);
+        var coorIndex = corrIndexStore.findRecord('id', indexPair.get(corrIndexFieldId));
+        if (coorIndex) {
+          corrIndexGenerator.setValue(coorIndex.get('index'));
+        }
+      }
+    }
+  },
+
   editRecord: function (editor, context) {
+
+    var record = context.record;
+
+    // Reset Index I7 and Index I5, as relevant
+    if (record.get('index_reads') === 7) {
+      record.set('index_i5', '');
+    } else if (record.get('index_reads') === 5) {
+      record.set('index_i7', '');
+    } else if (record.get('index_reads') === 0
+    ) {
+      record.set({ index_i7: '', index_i5: '' });
+    }
+
     var store = editor.grid.getStore();
     this.syncStore(store.getId(), true); // true to reload the store after the record has been edited
+
+    // Reset indexReadsStore, before refreshing view
+    var indexReadsStore = Ext.getCmp('indexReadsEditorIndexGenerator').getStore();
+    indexReadsStore.removeAll();
+    indexReadsStore.add([{ num: 0, label: 'None' },
+    { num: 7, label: 'I7 only' },
+    { num: 5, label: 'I5 only' },
+    { num: 75, label: 'I7 + I5' },
+    { num: 752, label: 'I7 + I5 (Pair/UDI)' }])
+
   },
 
   applyToAll: function (gridView, record, dataIndex) {
     var self = this;
     var store = gridView.grid.getStore();
-    var allowedColumns = ['read_length', 'index_type'];
+    var allowedColumns = ['read_length', 'index_type', 'index_reads'];
 
     if (dataIndex && allowedColumns.indexOf(dataIndex) !== -1) {
       store.each(function (item) {
@@ -87,12 +328,20 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         ) {
           if (
             dataIndex === 'read_length' ||
-            (dataIndex === 'index_type' && item.get('record_type') === 'Sample')
+            (dataIndex === 'index_type' && item.get('record_type') === 'Sample') ||
+            (dataIndex === 'index_reads' && item.get('record_type') === 'Sample')
           ) {
 
             // Set indices to null if index_type of the origin element for the action
             // differs from that of the other records
             if (dataIndex === 'index_type' && item.get('index_type') !== record.get('index_type')) {
+              item.set('index_i7', null);
+              item.set('index_i5', null)
+            }
+
+            // Set indices to null if index_reads of the origin element for the action
+            // differs from that of the other records
+            if (dataIndex === 'index_reads' && item.get('index_reads') !== record.get('index_reads')) {
               item.set('index_i7', null);
               item.set('index_i5', null)
             }
@@ -736,6 +985,34 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
           indexI5Sequence = indexI5Sequence.concat([' ', ' ',' ',' ', ' ',' ']);
         }
 
+        // If possible get coordinate
+        var coordinate = null
+        if (indexI7 && indexI5) {
+          var indexI7Store = Ext.getStore('indexI7Store');
+          var indexI5Store = Ext.getStore('indexI5Store');
+          indexI7Store.clearFilter(true);
+          indexI5Store.clearFilter(true);
+          var indexI7Record = indexI7Store.getAt(indexI7Store.findBy(function (rec, id) {
+            return rec.get('index_type') === item.get('index_type') && rec.get('index') === item.get('index_i7')
+          }));
+          var indexI5Record = indexI5Store.getAt(indexI5Store.findBy(function (rec, id) {
+            return rec.get('index_type') === item.get('index_type') && rec.get('index') === item.get('index_i5')
+          }));
+          if (indexI7Record && indexI5Record) {
+            var indexPairStore = Ext.getStore('IndexPairs');
+            indexPairStore.clearFilter(true);
+            var indexPairId = indexPairStore.findBy(function (idp, id) {
+              return idp.get('index_type') === item.get('index_type') &&
+                idp.get('index1_id') === indexI7Record.get('id') &&
+                idp.get('index2_id') === indexI5Record.get('id')
+            })
+            if (indexPairId > -1) {
+              var indexPair = indexPairStore.getAt(indexPairId);
+              coordinate = Ext.String.format('{0}{1}', indexPair.get("char_coord"), indexPair.get("num_coord"));
+            }
+          }
+        }
+
         var data = {
           pk: item.get('pk'),
           name: item.get('name'),
@@ -746,7 +1023,8 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
           index_i7_id: item.get('index_i7_id'),
           index_i5_id: item.get('index_i5_id'),
           index_i7: { index: indexI7 },
-          index_i5: { index: indexI5 }
+          index_i5: { index: indexI5 },
+          coordinate: coordinate,
         };
 
         for (var i = 0; i < 12; i++) {
@@ -769,6 +1047,106 @@ Ext.define('MainHub.view.indexgenerator.IndexGeneratorController', {
         item.set('selected', false);
       }
     }
+  },
+
+  _addToIndexStore: function (store, IndexTypeIds, refreshView, me) {
+    // Add indices to store, rather than reloading it
+
+    // Use a counter to decide when to refresh view, that is when all
+    // new indices are loaded
+    var startViewCounter = me.viewRefreshCounter;
+
+    IndexTypeIds.forEach(function (id) {
+
+      Ext.Ajax.request({
+        url: store.proxy.url,
+        method: 'GET',
+        timeout: 60000,
+        scope: this,
+        params: {
+          index_type_id: id
+        },
+
+        success: function (response) {
+          var obj = Ext.JSON.decode(response.responseText);
+          if (obj) {
+            if (obj.length > 0) {
+              // Add the id of the index type here rather than getting it via 
+              // the API, it's 10x faster
+              obj.map(function (e) { e.index_type = id })
+              store.suspendEvents(false);
+              store.add(obj);
+              store.resumeEvents();
+            }
+          }
+          else {
+            new Noty({ text: response.statusText, type: 'error' }).show();
+          }
+          if (refreshView) {
+            // Only refresh the view after the last request has been completed
+            me.viewRefreshCounter++;
+            if (me.viewRefreshCounter - startViewCounter === IndexTypeIds.length * 2) {
+              Ext.getCmp('index-generator-grid').getView().refresh();
+            }
+          }
+        },
+
+        failure: function (response) {
+          var error = response.statusText;
+          try {
+            error = Ext.JSON.decode(response.responseText).message;
+          } catch (e) { }
+          new Noty({ text: error, type: 'error' }).show();
+          console.error(response);
+        }
+      })
+    })
+  },
+
+  _addToIndexPairStore: function (IndexTypeIds, indexReadsStore) {
+
+    // Add index pairs to store, rather than reloading it
+
+    var store = Ext.getStore('IndexPairs');
+    IndexTypeIds.forEach(function (id) {
+      Ext.Ajax.request({
+        url: store.proxy.url,
+        method: 'GET',
+        timeout: 60000,
+        scope: this,
+        params: {
+          index_type_id: id
+        },
+
+        success: function (response) {
+          var obj = Ext.JSON.decode(response.responseText);
+          if (obj) {
+            if (obj.length > 0) {
+              store.suspendEvents(false);
+              store.add(obj);
+              store.resumeEvents();
+              if (indexReadsStore) {
+                // If pairs are retrived for the Index Type (= obj exists),
+                // add Index Pair option to the indexReadsStore
+                indexReadsStore.add({ num: 752, label: 'I7 + I5 (Pair/UDI)' });
+              }
+            }
+          }
+          else {
+            new Noty({ text: response.statusText, type: 'error' }).show();
+          }
+        },
+
+        failure: function (response) {
+          var error = response.statusText;
+          try {
+            error = Ext.JSON.decode(response.responseText).message;
+          } catch (e) { }
+          new Noty({ text: error, type: 'error' }).show();
+          console.error(response);
+        }
+      })
+    })
   }
-  
+
 });
