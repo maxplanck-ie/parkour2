@@ -91,8 +91,8 @@ class IndexPairInline(admin.TabularInline):
     extra = 2
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        args = resolve(request.path_info).args
-        index_type_id = args[0] if args else None
+        kw_args = resolve(request.path_info).kwargs
+        index_type_id = kw_args.get('object_id', None)
 
         if db_field.name == "index1":
             kwargs["queryset"] = IndexI7.objects.filter(
