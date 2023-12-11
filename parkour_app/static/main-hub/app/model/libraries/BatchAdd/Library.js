@@ -62,6 +62,7 @@ Ext.define('MainHub.model.libraries.BatchAdd.Library', {
         index_type: 'presence',
         index_reads: 'presence',
         index_i7: 'indexI7',
-        index_i5: 'indexI5'
+        index_i5: 'indexI5',
+        amplification_cycles: 'greaterthanzero'
     }
 });
