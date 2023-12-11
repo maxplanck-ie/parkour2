@@ -11,7 +11,6 @@ INSTALLED_APPS += [
 
 MIDDLEWARE += [
     "corsheaders.middleware.CorsMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 MIGRATION_LINTER_OPTIONS = {
