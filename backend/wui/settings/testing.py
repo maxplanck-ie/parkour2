@@ -4,50 +4,14 @@ from .base import *
 
 DEBUG = True
 
-
-# Application definition
-INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    "authtools",
-    "rest_framework",
-    "django_admin_listfilter_dropdown",
-    "django_extensions",
-    "import_export",
-    "django_linear_migrations",
-    "common",
-    "library_sample_shared",
-    "library",
-    "sample",
-    "request",
-    "incoming_libraries",
-    "index_generator",
-    "library_preparation",
-    "pooling",
-    "flowcell",
-    "report",
-    "invoicing",
-    "usage",
-    "stats",
-    "metadata_exporter",
-    "drf_spectacular",
+INSTALLED_APPS += [
+    "django_migration_linter",
     "corsheaders",
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE += [
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "extra.middleware.ErrorMiddleware",
 ]
 
 MIGRATION_LINTER_OPTIONS = {
