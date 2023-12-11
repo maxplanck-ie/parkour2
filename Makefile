@@ -217,7 +217,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod deploy-django clean  ## Re-deploy and run Backend tests
+djtest: down set-testing deploy-django clean  ## Re-deploy and run Backend tests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing:
