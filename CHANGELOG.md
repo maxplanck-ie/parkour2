@@ -1,4 +1,22 @@
+> Versioning is by dates (in `yy.mm.dd` format).
+
 ??.??.??
+========
+
+- Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
+- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
+
+
+23.11.22
+========
+
+- Updated all dependencies.
+- Subfolders were re-arranged. Basically, the old frontend (ExtJS), its tests (playwright), and the Django Project (`./parkour_app`) are now under `./backend`. Meanwhile, there's a new frontend under development, using ViteJS; and it's under `./frontend` subfolder. Also, there's a new Dockerfile, and container, for it.
+- A new column (`Pool Paths`) was added tot he 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
+- Staff users will find a new calendar icon that takes them to 'Duties', our first module using the new VueJS framework. Over there, we'll be keeping track of our rotations as to who is responsible of what (e.g. X person from Bioinformatics Facility is in charge of processing the short-read sequence data for ~3 months).
+
+
+23.11.02
 ========
 
 Breaking changes:
@@ -7,7 +25,7 @@ Breaking changes:
 - Removed the \[broken\] import and export functionality at IndexPairs. Instead, we have a custom bulk import button now that works exclusively with plate coordinates. This may be a temporal solution until we work out the rough edges with the extension custom import (foreingkeywidget)
 - Removed `DJANGO_SETTINGS_MODULE` from `misc/parkour.env`, given that it's implemented as part of the Docker build stages. To be clear, if you don't remove it there, the hardcoded value will overrule over the docker-compose switch that we are using for makefile rules `dev`, etc.
 - Breaking changes for backup locations! `./rsnapshot` was moved under `./misc`, so the config files will be there.. that's not much of an issue. Yet, the backups subfolder (or symlink) will need to be adjusted manually.
-- `/media_dump` is no longer a symbolic link. We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).
+- `/media_dump` is no longer a symbolic link. ~~We're now actually using it for each update (the docker volume recycling trick we were relying on stopped working in latest docker versions).~~ EDIT: seems like it does work, but we're keeping this change; at least for now.
 
 Non-breaking changes:
 
@@ -23,8 +41,8 @@ Non-breaking changes:
 - Renamed rules `import-migras` to `put-old-migras`, `export-migras` to `tar-old-migras`, and `restore-migras` to `put-new-migras`. This is to avoid confusion with `import-pgdb`, where importing means bringing file from prod VM.
 - Rule `import-pgdb` now brings migration files (to reproduce database schema) by default (if available).
 - The `<URL>/api/samples/<id>` doesn't fail anymore if no `pk` was given.
-- Added an EmailField to PrincipalInvestigator. This field is used in the 'paperless approval' feature (see next point.)
-- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their pi's email address at `settings.EMAIL_HOST` (that means, we can rely on the email spoofing as in the 'compose email' menu that staff users already had).
+- Added an EmailField to PrincipalInvestigator. This field is going to be used in the 'paperless approval' feature (see next release.)
+- Added new endpoint, `<URL>/api/requests/<id>/get_poolpaths/`, returns a dictionary with records' barcode as keys and pool names as values, to easily find where each sample (or lib) was loaded.
 
 23.09.20
 ========

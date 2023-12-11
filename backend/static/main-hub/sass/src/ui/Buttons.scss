@@ -1,0 +1,159 @@
+// TODO-me: fix `ui: 'header'`
+@include extjs-button-small-ui(
+    $ui: 'header',
+    $color: #999,
+    $glyph-color: #919191,
+    $background-color: transparent,
+    $border-width: 0
+);
+
+@include extjs-button-medium-ui(
+    $ui: 'menu-button',
+    $color: #999,
+    $glyph-color: #919191,
+    $background-color: transparent,
+    $border-width: 0,
+    $padding: 0
+);
+
+@include extjs-button-medium-ui(
+    $ui: 'menu-button-green',
+    $color: #999,
+    $glyph-color: lighten(#66bb6a, 25%),
+    $background-color: transparent,
+    $border-width: 0,
+    $padding: 0
+);
+.x-btn-over .x-btn-icon-el-menu-button-green-medium {
+    color: #66bb6a;
+}
+
+@include extjs-button-medium-ui(
+    $ui: 'menu-button-red',
+    $color: #999,
+    $glyph-color: lighten(#ef5350, 25%),
+    $background-color: transparent,
+    $border-width: 0,
+    $padding: 0
+);
+.x-btn-over .x-btn-icon-el-menu-button-red-medium {
+    color: #ef5350;
+}
+
+@include extjs-button-medium-ui(
+    $ui: 'menu-button-yellow',
+    $color: #999,
+    $glyph-color: lighten(#ffc107, 25%),
+    $background-color: transparent,
+    $border-width: 0,
+    $padding: 0
+);
+.x-btn-over .x-btn-icon-el-menu-button-yellow-medium {
+    color: #ffc107;
+}
+
+@include extjs-button-small-ui(
+    $ui: 'soft-blue',
+    $background-color: $color-soft-blue,
+    $border-color: darken($color-soft-blue, 5%)
+);
+@include extjs-button-large-ui(
+    $ui: 'soft-blue',
+    $line-height: 34px,
+    $background-color: $color-soft-blue,
+    $border-color: darken($color-soft-blue, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'soft-blue',
+    $background-color: $color-soft-blue,
+    $border-color: darken($color-soft-blue, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'soft-cyan',
+    $background-color: $color-soft-cyan,
+    $border-color: darken($color-soft-cyan, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'soft-cyan',
+    $background-color: $color-soft-cyan,
+    $border-color: darken($color-soft-cyan, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'soft-green',
+    $background-color: $color-soft-green,
+    $border-color:darken($color-soft-green, 5%)
+);
+@include extjs-button-large-ui(
+    $ui: 'soft-green',
+    $line-height: 34px,
+    $background-color: $color-soft-green,
+    $border-color:darken($color-soft-green, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'soft-green',
+    $background-color: $color-soft-green,
+    $border-color:darken($color-soft-green, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'soft-red',
+    $background-color: $color-soft-red,
+    $border-color:darken($color-soft-red, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'soft-red',
+    $background-color: $color-soft-red,
+    $border-color:darken($color-soft-red, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'soft-purple',
+    $background-color: $color-soft-purple,
+    $border-color:darken($color-soft-purple, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'soft-purple',
+    $background-color: $color-soft-purple,
+    $border-color:darken($color-soft-purple, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'gray',
+    $background-color: $color-gray,
+    $border-color:darken($color-gray, 5%)
+);
+@include extjs-button-large-ui(
+    $ui: 'gray',
+    $line-height: 34px,
+    $background-color: $color-gray,
+    $border-color:darken($color-gray, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'gray',
+    $background-color: $color-gray,
+    $border-color:darken($color-gray, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'green',
+    $background-color: $color-green,
+    $border-color:darken($color-green, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'green',
+    $background-color: $color-green,
+    $border-color:darken($color-green, 5%)
+);
+
+@include extjs-button-small-ui(
+    $ui: 'blue',
+    $background-color: $color-blue,
+    $border-color:darken($color-blue, 5%)
+);
+@include extjs-button-toolbar-small-ui(
+    $ui: 'blue',
+    $background-color: $color-blue,
+    $border-color:darken($color-blue, 5%)
+);

@@ -1,0 +1,40 @@
+.lane .x-autocontainer-innerCt {
+    background-color: #f5f5f5;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.lane .x-autocontainer-innerCt:hover {
+    background-color: #ececec;
+}
+
+.lane .x-autocontainer-innerCt.lane-loaded  {
+    background-color: #c8e6c9;
+}
+
+.lane .x-autocontainer-innerCt.lane-loaded:hover  {
+    background-color: #a5d6a7;
+}
+
+.lane .x-autocontainer-innerCt.lane-hover {
+    background-color: #fff9c4;
+}
+
+tr.pool-disabled,
+tr.pool-disabled > td.x-grid-item-focused {
+    color: #bdbdbd;
+}
+
+#flowcell-result {
+    float: right;
+}
+
+tr.pool-ready,
+tr.pool-ready .x-grid-item-focused {
+    color: #388e3c;
+}
+
+tr.pool-not-ready,
+tr.pool-not-ready .x-grid-item-focused {
+    color: #c62828;
+}

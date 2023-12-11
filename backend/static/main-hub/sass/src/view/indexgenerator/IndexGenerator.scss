@@ -1,0 +1,46 @@
+.pooling-grid .nucleotide .x-grid-cell-inner {
+    text-align: center !important;
+}
+
+.pooling-grid .nucleotide-header {
+    text-align: center;
+}
+
+.x-grid-row-summary .x-grid-cell.problematic-cycle {
+    background-color: #ef5350 !important;
+    font-weight: bold;
+    color: #fff;
+}
+
+.x-grid-row-summary .x-grid-cell.problematic-cycle .x-grid-cell-inner {
+    text-align: center !important;
+}
+
+.summary-green {
+    color: #388e3c;
+    font-weight: bold;
+}
+
+.summary-red {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.x-item-disabled {
+  &.x-boundlist-item {
+    color: #8c8c8c;
+    cursor: default;
+  }
+  &.x-boundlist-item-over {
+    background: inherit;
+    border-color: white;
+  }
+}
+
+/* grayed out combobox item */
+
+.obsolete2 {
+  color: lightgray;
+  background-color: whitesmoke;
+  font-style: italic;
+}

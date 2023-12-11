@@ -22,6 +22,7 @@ check-rootdir:
 
 set-prod:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_prod#' docker-compose.yml
+	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
 
 deploy-django: deploy-network deploy-containers
 
@@ -42,7 +43,7 @@ check-templates:
 
 update-extjs:
 	@which sencha > /dev/null \
-		&& cd ./parkour_app/static/main-hub \
+		&& cd ./backend/static/main-hub \
 		&& OPENSSL_CONF=/dev/null sencha app build development \
 		|| echo "Warning: Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
 
@@ -83,8 +84,9 @@ set-base:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
-	#@docker compose exec parkour2-django rm -f parkour_app/logs/*.log
+	#@docker compose exec parkour2-django rm -f backend/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile > /dev/null
+	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
@@ -98,7 +100,7 @@ prune:
 	@echo "Warning: Removing EVERY docker container, image and volume (even those unrelated to parkour2!)"
 	@sleep 10s && docker system prune -a -f --volumes
 
-clearpy:
+clearpy:  ## Removes some files, created by 'prod' deployment and owned by root. TODO: we should probably have to check duties/static/dist (buildDir from vite.cfg.js); among other directories like backend/.pytest_cache ... gotta check.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
@@ -110,16 +112,17 @@ dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Wer
 
 set-dev: hardreset-caddyfile
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_dev#' docker-compose.yml
+	# @sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1dev"\]#' frontend.Dockerfile
 	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 add-pgadmin-caddy: hardreset-caddyfile
 	@echo -e "\nhttp://*:9981 {\n\thandle {\n\t\treverse_proxy parkour2-pgadmin:8080\n\t}\n\tlog\n}" >> misc/Caddyfile
 
 hardreset-caddyfile:
-	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}\n" > misc/Caddyfile
+	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -284,7 +287,7 @@ models:
 	@docker cp parkour2-django:/tmp_models.A4.pdf models_poster_using_A4.pdf
 	@docker cp parkour2-django:/tmp_models.pdf models_A4_preview.pdf
 
-show_urls:
+show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
 compile:
@@ -295,7 +298,11 @@ compile:
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi -d parkour_app/requirements/
+	@pip-compile-multi -d backend/requirements/
+
+ncu:
+	# @npm install -g npm-check-updates
+	@cd frontend && ncu -u
 
 get-pin:
 	@docker compose logs parkour2-django | grep PIN | cut -d':' -f2 | uniq
@@ -340,30 +347,30 @@ reload-json-dev: down prep4json dev migrasync load-db-json restore-prep4json
 reload-json-ez: down prep4json dev-easy migrasync load-db-json restore-prep4json
 
 prep4json:
-	@rm -f parkour_app/library_preparation/apps.py
-	@rm -f parkour_app/library_preparation/signals.py
-	@rm -f parkour_app/pooling/apps.py
-	@rm -f parkour_app/pooling/signals.py
+	@rm -f backend/library_preparation/apps.py
+	@rm -f backend/library_preparation/signals.py
+	@rm -f backend/pooling/apps.py
+	@rm -f backend/pooling/signals.py
 
 restore-prep4json:
-	@git restore -W parkour_app/library_preparation/apps.py
-	@git restore -W parkour_app/library_preparation/signals.py
-	@git restore -W parkour_app/pooling/apps.py
-	@git restore -W parkour_app/pooling/signals.py
+	@git restore -W backend/library_preparation/apps.py
+	@git restore -W backend/library_preparation/signals.py
+	@git restore -W backend/pooling/apps.py
+	@git restore -W backend/pooling/signals.py
 
 # reload-json-prod: down prep4json dev migrasync load-db-json restore-prep4json-prod
 
 # restore-prep4json-prod:
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/apps.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/library_preparation/signals.py ${VM_PROD}:~/parkour2/parkour_app/library_preparation/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/apps.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
-# 	@scp -i ~/.ssh/parkour2 ~/parkour2/parkour_app/pooling/signals.py ${VM_PROD}:~/parkour2/parkour_app/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/library_preparation/apps.py ${VM_PROD}:~/parkour2/backend/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/library_preparation/signals.py ${VM_PROD}:~/parkour2/backend/library_preparation/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/pooling/apps.py ${VM_PROD}:~/parkour2/backend/pooling/
+# 	@scp -i ~/.ssh/parkour2 ~/parkour2/backend/pooling/signals.py ${VM_PROD}:~/parkour2/backend/pooling/
 
 rm-migras:
-	@rm -rf parkour_app/**/migrations/*
+	@rm -rf backend/**/migrations/*
 
 tar-old-migras:
-	@find ./parkour_app/*/ -path '**/migrations' \
+	@find ./backend/*/ -path '**/migrations' \
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
@@ -376,7 +383,7 @@ dev-ez: dev-easy db-migras
 db-migras: put-old-migras db put-new-migras  ## Useful after 'git checkout <tag> && tar-old-migras && git switch -'
 
 put-new-migras:
-	@git restore -W parkour_app/**/migrations/
+	@git restore -W backend/**/migrations/
 	@$(MAKE) migrate
 
 load-fixtures-migras: put-old-migras apply-migrations

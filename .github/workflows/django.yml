@@ -56,7 +56,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r parkour_app/requirements/prod.txt
+          pip install -r backend/requirements/prod.txt
 
 
       - name: Verify migrations
@@ -65,7 +65,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          python parkour_app/manage.py makemigrations --no-input --check --dry-run
+          python backend/manage.py makemigrations --no-input --check --dry-run
 
 
       - name: Validate templates
@@ -74,7 +74,7 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          python parkour_app/manage.py validate_templates
+          python backend/manage.py validate_templates
 
 
       - name: Run unittests
@@ -83,5 +83,5 @@ jobs:
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
-          python parkour_app/manage.py test parkour_app --parallel
+          python backend/manage.py test backend --parallel
 

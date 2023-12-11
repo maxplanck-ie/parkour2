@@ -1,0 +1,13 @@
+@import 'RequestsCommon';
+
+.x-grid-cell-inner-row-expander {
+    padding-bottom: 5px;
+}
+
+.request-attachments-expander {
+    cursor: pointer;
+}
+
+.attached-file-link a {
+    color: #757575;
+}

@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - name: Playwright rule
         run: |
           make playwright
       - uses: actions/upload-artifact@v3
@@ -28,6 +28,6 @@ jobs:
           name: test-suite-report
           # if-no-files-found: ignore  ## default: warn
           path: |
-            parkour_app/playwright/videos/
-            parkour_app/playwright/results/
+            backend/frontend_testing_suite/videos/
+            backend/frontend_testing_suite/results/
           retention-days: 30
