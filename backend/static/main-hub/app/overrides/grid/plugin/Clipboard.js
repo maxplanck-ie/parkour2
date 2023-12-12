@@ -58,8 +58,9 @@ Ext.define("MainHub.overrides.grid.plugin.Clipboard", {
               } // Index Type != 'Other'
 
               if (
-                (indexReads === 1 && dataIndex !== "index_i7") ||
-                (indexReads === 2 &&
+                (indexReads === 7 && dataIndex !== "index_i7") ||
+                (indexReads === 5 && dataIndex !== "index_i5") ||
+                (indexReads > 7 &&
                   dataIndex !== "index_i7" &&
                   dataIndex !== "index_i5")
               ) {
