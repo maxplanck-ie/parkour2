@@ -33,6 +33,8 @@ def approval_default():
         "HTTP_ACCEPT_LANGUAGE": None,
         "HTTP_FORWARDED": None,
         "HTTP_X_FORWARDED_FOR": None,
+        "OIDC_ID": None,
+        "EMAIL": None
     }
 
 

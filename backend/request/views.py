@@ -516,7 +516,21 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.approval_user = request.user
             instance.approval_time = timezone.now()
             instance.token = None
-            instance.save(update_fields=["token", "approval_user", "approval_time"])
+            instance.approval = {
+                    "TIMESTAMP": dateformat.format(instance.approval_time, "c"),
+                    "TOKEN": token,
+                    "REMOTE_ADDR": request.META.get["REMOTE_ADDR"],
+                    "REMOTE_PORT": request.META.get["REMOTE_PORT"],
+                    "HTTP_USER_AGENT": request.headers.get["user-agent"],
+                    "HTTP_ACCEPT": request.headers.get["accept"],
+                    "HTTP_ACCEPT_ENCODING": request.headers.get["accept-encoding"],
+                    "HTTP_ACCEPT_LANGUAGE": request.headers.get["accept-language"],
+                    "HTTP_X_FORWARDED_FOR": request.headers.get["x-forwarded-for"],
+                    "HTTP_X_REAL_IP": request.headers.get["x-real-ip"],
+                    "OIDC_ID": request.user.oidc_id,
+                    "EMAIL": request.user.email
+                }
+            instance.save(update_fields=["token", "approval", "approval_user", "approval_time"])
 
             email_recipients = [instance.pi.email, instance.user.email]
             if request.user.email not in email_recipients:
