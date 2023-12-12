@@ -1,18 +1,25 @@
 from django.conf import settings
 from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import ModelSerializer, SerializerMethodField
+from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 
 from .models import FileRequest, Request
 
 
 class RequestSerializer(ModelSerializer):
     user_full_name = SerializerMethodField()
+    pi_name = SerializerMethodField()
+    bioinformatician_name = SerializerMethodField()
+    handler_name = SerializerMethodField()
+    pool_size_user_name = SerializerMethodField()
+    cost_unit_name = SerializerMethodField()
     restrict_permissions = SerializerMethodField()
     deep_seq_request_name = SerializerMethodField()
     deep_seq_request_path = SerializerMethodField()
+    approval_user_name = SerializerMethodField()
     completed = SerializerMethodField()
     files = SerializerMethodField()
     number_of_samples = SerializerMethodField()
+    description = CharField(allow_blank=True)
 
     class Meta:
         model = Request
@@ -21,22 +28,53 @@ class RequestSerializer(ModelSerializer):
             "name",
             "user",
             "user_full_name",
+            "pi",
+            "pi_name",
+            "bioinformatician",
+            "bioinformatician_name",
+            "handler",
+            "handler_name",
+            "pool_size_user",
+            "pool_size_user_name",
             "create_time",
             "cost_unit",
+            "cost_unit_name",
             "description",
+            "pooled_libraries",
+            "pooled_libraries_concentration_user",
+            "pooled_libraries_volume_user",
+            "pooled_libraries_fragment_size_user",
             "total_sequencing_depth",
             "restrict_permissions",
             "completed",
             "deep_seq_request_name",
             "deep_seq_request_path",
+            "approval_user_name",
+            "approval_time",
             "files",
             "sequenced",
+            "invoice_date",
             "number_of_samples",
             "filepaths",
         )
 
     def get_user_full_name(self, obj):
         return obj.user.full_name
+
+    def get_pi_name(self, obj):
+        return str(obj.pi)
+    
+    def get_bioinformatician_name(self, obj):
+        return str(obj.bioinformatician)
+
+    def get_handler_name(self, obj):
+        return str(obj.handler) if obj.handler else None
+
+    def get_pool_size_user_name(self, obj):
+        return str(obj.pool_size_user)
+
+    def get_cost_unit_name(self, obj):
+        return obj.cost_unit.name if obj.cost_unit else 'None'
 
     def get_number_of_samples(self, obj):
         return len(obj.statuses)
@@ -62,6 +100,9 @@ class RequestSerializer(ModelSerializer):
             else ""
         )
 
+    def get_approval_user_name(self, obj):
+        return str(obj.approval_user)
+
     def get_files(self, obj):
         files = [
             {
@@ -77,12 +118,13 @@ class RequestSerializer(ModelSerializer):
         internal_value = super().to_internal_value(data)
 
         records = data.get("records", [])
-        if not records:
-            raise ValidationError(
-                {
-                    "records": ["No libraries or samples are provided."],
-                }
-            )
+        # Disable checking if libraries/samples are present for now, NZ
+        # if not records:
+        #     raise ValidationError(
+        #         {
+        #             "records": ["No libraries or samples are provided."],
+        #         }
+        #     )
 
         files = data.get("files", [])
 

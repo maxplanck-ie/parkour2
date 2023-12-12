@@ -6,21 +6,41 @@ from django.db import models
 from library.models import Library
 from sample.models import Sample
 
+from math import log, floor
+from decimal import Decimal
 
 class PoolSize(models.Model):
-    multiplier = models.PositiveSmallIntegerField("Multiplier", default=1)
-    size = models.PositiveSmallIntegerField("Size")
+    sequencer = models.ForeignKey('flowcell.Sequencer',
+                                  verbose_name='Sequencer',
+                                  null=True,
+                                  on_delete=models.SET_NULL)
+    size = models.PositiveSmallIntegerField("Size (in million reads)")
+    lanes = models.PositiveSmallIntegerField("Number of Lanes")
+    cycles = models.PositiveSmallIntegerField("Number of cycles")
+    read_lengths = models.ManyToManyField('library_sample_shared.ReadLength', verbose_name='read lengths', related_name='pool_size',)
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
-        ordering = ["multiplier", "size"]
+        ordering = ["sequencer", "size", "cycles"]
+        constraints = [
+            models.UniqueConstraint(fields=['sequencer', 'size', 'cycles', 'lanes', 'archived'],
+                                    name='unique_pool_size')
+        ]
 
     def __str__(self):
-        return f"{self.multiplier}x{self.size}"
+        size = Decimal(self.size)
+        prefixes = ['M', 'G', 'T', 'P']
+        k = Decimal(1000)
+        magnitude = int(floor(log(size, k)))
+        return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}, {self.cycles}c"
 
     @property
     def name(self):
-        return f"{self.multiplier}x{self.size}"
+        return self.__str__()
+
+    @property
+    def multiplier(self):
+        return self.lanes
 
 
 def get_sentinel_user():
@@ -28,7 +48,7 @@ def get_sentinel_user():
 
 
 class Pool(DateTimeMixin):
-    name = models.CharField("Name", max_length=100, blank=True)
+    name = models.CharField("Name", max_length=100, blank=True, unique=True)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name="User",
@@ -63,7 +83,7 @@ class Pool(DateTimeMixin):
         created = self.pk is None
         super().save(*args, **kwargs)
 
-        if created:
+        if created and not self.name:
             # Update the pool name after receiving a Pool id
             self.name = f"Pool_{self.pk}"
             self.save()

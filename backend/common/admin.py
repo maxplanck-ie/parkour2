@@ -1,6 +1,6 @@
 from authtools.admin import NamedUserAdmin
-from authtools.forms import UserCreationForm
-from common.models import CostUnit, Duty, Organization, PrincipalInvestigator
+from authtools.forms import UserCreationForm, UserChangeForm
+from common.models import CostUnit, Organization, OIDCGroup, Duty
 from django import forms
 from django.conf import settings
 from django.contrib import admin
@@ -11,6 +11,9 @@ from django.utils.crypto import get_random_string
 from django.utils.encoding import force_str
 from django.utils.translation import gettext as _
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import GroupAdmin
+from django.core.exceptions import PermissionDenied
 
 User = get_user_model()
 
@@ -73,18 +76,25 @@ class ArchivedFilter(DefaultListFilter):
 
 class CostUnitInline(admin.TabularInline):
     model = CostUnit
+    fields = ('name', 'organization', 'archived',)
     extra = 1
 
+@admin.register(CostUnit)
+class CostUnitAdmin(admin.ModelAdmin):
 
-@admin.register(PrincipalInvestigator)
-class PrincipalInvestigatorAdmin(admin.ModelAdmin):
-    list_display = ("name", "organization", "archived")
-    search_fields = (
-        "name",
-        "organization__name",
-    )
-    list_filter = ("organization", ArchivedFilter)
-    inlines = [CostUnitInline]
+    def has_module_permission(self, request):
+        return False
+
+
+class OIDCGroupInline(admin.TabularInline):
+    model = OIDCGroup
+    extra = 1
+
+@admin.register(OIDCGroup)
+class OIDCGroupAdmin(admin.ModelAdmin):
+
+    def has_module_permission(self, request):
+        return False
 
     actions = (
         "mark_as_archived",
@@ -102,30 +112,19 @@ class PrincipalInvestigatorAdmin(admin.ModelAdmin):
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    pass
+
+    def has_module_permission(self, request):
+        return False
 
 
-@admin.register(CostUnit)
-class CostUnitAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "pi",
-    )
-    search_fields = (
-        "name",
-        "pi__name",
-        "pi__organization__name",
-    )
-    list_filter = (
-        ("pi", RelatedDropdownFilter),
-        ("pi__organization", RelatedDropdownFilter),
-        (ArchivedFilter),
-    )
+class CheckUserEmailExtension:
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
 
-    actions = (
-        "mark_as_archived",
-        "mark_as_non_archived",
-    )
+        if email:
+            if 'imb.de' in email:
+                raise forms.ValidationError("Use the full email extension imb-mainz.de, not just imb.de")
+        return email
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
@@ -136,7 +135,7 @@ class CostUnitAdmin(admin.ModelAdmin):
         queryset.update(archived=False)
 
 
-class UserCreationForm(UserCreationForm):
+class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
     """
     A UserCreationForm with optional password inputs.
     """
@@ -158,8 +157,14 @@ class UserCreationForm(UserCreationForm):
         return password2
 
 
+class UserChangeForm(UserChangeForm, CheckUserEmailExtension):
+    pass
+
+
 @admin.register(User)
 class UserAdmin(NamedUserAdmin):
+    inlines = [CostUnitInline, OIDCGroupInline]
+    form = UserChangeForm
     add_form = UserCreationForm
     add_fieldsets = (
         (
@@ -174,6 +179,7 @@ class UserAdmin(NamedUserAdmin):
                     "first_name",
                     "last_name",
                     "email",
+                    "is_pi",
                 ),
             },
         ),
@@ -191,11 +197,12 @@ class UserAdmin(NamedUserAdmin):
         "first_name",
         "last_name",
         "email",
-        "phone",
-        "organization",
-        "pi",
-        "cost_units",
-        "is_staff",
+        "organizations",
+        "pis",
+        "pi_status",
+        "staff_status",
+        'bioinformatician_status',
+        'user_groups'
     )
 
     search_fields = (
@@ -203,75 +210,181 @@ class UserAdmin(NamedUserAdmin):
         "last_name",
         "email",
         "phone",
-        "organization__name",
-        "pi__name",
-        "cost_unit__name",
+        "costunit__organization__name",
+        "pi__last_name",
     )
 
     list_filter = (
         "is_staff",
-        "organization",
-        ("pi", RelatedDropdownFilter),
+        "costunit__organization__name",
     )
     list_display_links = (
         "first_name",
         "last_name",
         "email",
     )
-    filter_horizontal = (
-        "cost_unit",
+    autocomplete_fields = (
         "groups",
+        "pi",
+    )
+    filter_horizontal = (
         "user_permissions",
     )
 
-    fieldsets = (
-        (
-            None,
-            {
-                "fields": (
-                    "first_name",
-                    "last_name",
-                    "email",
-                    "password",
-                ),
-            },
-        ),
-        (
-            "Personal info",
-            {
-                "fields": (
-                    "phone",
-                    "organization",
-                    "pi",
-                    "cost_unit",
-                ),
-            },
-        ),
-        (
-            "Permissions",
-            {
-                "fields": (
-                    "is_active",
-                    "is_pi",
-                    "is_staff",
-                    "is_superuser",
-                    "groups",
-                    "user_permissions",
-                ),
-            },
-        ),
-        (
-            "Other",
-            {
-                "fields": ("last_login",),
-            },
-        ),
-    )
+    def pis(self, obj):
+        return ", ".join(sorted([pi.full_name for pi in obj.pi.all()]))
 
-    def cost_units(self, obj):
-        cost_units = obj.cost_unit.all().values_list("name", flat=True)
-        return ", ".join(sorted(cost_units))
+    def pi_status(self, obj):
+        return obj.is_pi
+    pi_status.boolean = True
+    pi_status.short_description = "PI?"
+    pi_status.admin_order_field = 'is_pi'
 
+    def staff_status(self, obj):
+        return obj.is_staff
+    staff_status.boolean = True
+    staff_status.short_description = "Staff?"
+    staff_status.admin_order_field = 'is_staff'
+
+    def bioinformatician_status(self, obj):
+        return obj.is_bioinformatician
+    bioinformatician_status.boolean = True
+    bioinformatician_status.short_description = "BioInfo?"
+    bioinformatician_status.admin_order_field = 'is_bioinformatician'
+
+    def organizations(self, obj):
+        try:
+            return ', '.join(obj.costunit_set.all().
+                             order_by('organization__name').
+                             values_list('organization__name', flat=True).
+                             distinct())
+        except:
+            return ''
+        
+    def user_groups (self, obj):
+        """ Pass a user's group membership to a custom column """
+        return ', '.join(obj.groups.values_list('name', flat=True))
+    user_groups.short_description = 'Groups'
+
+    def add_view(self, request, extra_context=None):
+        self.inlines = []
+        return super().add_view(request)
+
+    def change_view(self, request, object_id, extra_context=None):
+        
+        self.inlines = []
+        user_fields = []
+
+        obj = self.model.objects.get(id=object_id)
+        if obj.is_pi:
+            self.inlines = [CostUnitInline, OIDCGroupInline]
+
+        # Prevent modification of 'system' users. System users are those whose
+        # email ends in example.com
+        if obj.email.lower().endswith('example.com'):
+            raise PermissionDenied
+
+        if request.user.is_superuser:
+            self.fieldsets = (
+                (
+                    None,
+                    {
+                        "fields": (
+                            "first_name",
+                            "last_name",
+                            "email",
+                            "password",
+                        ),
+                    },
+                ),
+                (
+                    "Personal info",
+                    {
+                        "fields": (
+                            "phone",
+                            "is_pi",
+                            "pi",
+                        ),
+                    },
+                ),
+                (
+                    "Permissions",
+                    {
+                        "fields": (
+                            "is_active",
+                            "is_staff",
+                            "is_bioinformatician",
+                            "is_superuser",
+                            "groups",
+                            "user_permissions",
+                        ),
+                    },
+                ),
+                (
+                    "Other",
+                    {
+                        "fields": ("last_login",),
+                    },
+                ),
+            )
+        else:
+            user_fields = ["first_name", "last_name", "email"]
+            user_fields = user_fields + ['password'] if obj.has_usable_password() else user_fields
+            self.fieldsets = (
+                (
+                    None,
+                    {
+                        "fields": user_fields
+                    },
+                ),
+                (
+                    "Personal info",
+                    {
+                        "fields": (
+                            "phone",
+                            "is_pi",
+                            "pi",
+                        ),
+                    },
+                ),
+                (
+                    "Permissions",
+                    {
+                        "fields": (
+                            "is_active",
+                            "is_staff",
+                            "is_bioinformatician",
+                            "groups",
+                        ),
+                    },
+                ),
+                (
+                    "Other",
+                    {
+                        "fields": ("last_login",),
+                    },
+                ),
+            )
+        
+        # If this is an "OpenID" user do not allow first/last names
+        # and email to be changed
+        if obj.oidc_id:
+            self.readonly_fields = user_fields
+
+        return super().change_view(request, object_id)
+
+    def get_search_results(self, request, queryset, search_term):
+
+        queryset, use_distinct = super(UserAdmin, self).get_search_results(request, queryset, search_term)
+
+        if request.GET.get('field_name', '') == 'pi':
+            return queryset.filter(is_pi=True), use_distinct
+
+        # Excluse 'system' users from the changelist view
+        queryset = queryset.exclude(email__iendswith='example.com')
+
+        return queryset, use_distinct
+    
     def save_model(self, request, obj, form, change):
         if not change and (
             not form.cleaned_data["password1"] or not obj.has_usable_password()
@@ -298,7 +411,7 @@ class UserAdmin(NamedUserAdmin):
                 )
 
 
-@admin.register(Duty)
+# @admin.register(Duty)
 class DutyAdmin(admin.ModelAdmin):
     list_display = (
         "main_name",
@@ -327,3 +440,12 @@ class DutyAdmin(admin.ModelAdmin):
 
 
 # admin.site.unregister(User)
+
+admin.site.unregister(Group)
+@admin.register(Group)
+class CustomGroupAdmin(GroupAdmin):
+    
+    def has_module_permission(self, request):
+        if not request.user.is_superuser:
+            return False
+        return True

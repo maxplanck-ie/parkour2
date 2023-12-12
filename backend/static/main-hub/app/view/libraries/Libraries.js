@@ -90,9 +90,59 @@ Ext.define("MainHub.view.libraries.Libraries", {
             margin: "0 20 0 0",
             items: [
               {
+                name: "asBioinformatician",
+                boxLabel:
+                  '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
+                checked: false,
+                id: "as-bioinformatician-libraries-samples-checkbox",
+                margin: "0 15 0 0",
+                cls: "grid-header-checkbox",
+                hidden: !USER.is_bioinformatician,
+                listeners: {
+                  change: function (checkbox, newValue, oldValue, eOpts) {
+                    if (newValue) {
+                      Ext.getStore(
+                        "librariesStore"
+                      ).getProxy().extraParams.asBioinformatician = "True";
+                      Ext.getStore("librariesStore").load();
+                    } else {
+                      Ext.getStore(
+                        "librariesStore"
+                      ).getProxy().extraParams.asBioinformatician = "False";
+                      Ext.getStore("librariesStore").load();
+                    }
+                  },
+                },
+              },
+              {
+                name: "asHandler",
+                boxLabel:
+                  '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+                checked: false,
+                id: "as-handler-libraries-samples-checkbox",
+                margin: "0 15 0 0",
+                cls: "grid-header-checkbox",
+                hidden: !USER.is_staff,
+                listeners: {
+                  change: function (checkbox, newValue, oldValue, eOpts) {
+                    if (newValue) {
+                      Ext.getStore(
+                        "librariesStore"
+                      ).getProxy().extraParams.asHandler = "True";
+                      Ext.getStore("librariesStore").load();
+                    } else {
+                      Ext.getStore(
+                        "librariesStore"
+                      ).getProxy().extraParams.asHandler = "False";
+                      Ext.getStore("librariesStore").load();
+                    }
+                  },
+                },
+              },
+              {
                 name: "showAll",
-                boxLabel: "Show all",
-                boxLabelAlign: "before",
+                boxLabel:
+                  '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show All</span>',
                 checked: true,
                 id: "showAlllr",
                 margin: "0 15 0 0",
@@ -277,6 +327,26 @@ Ext.define("MainHub.view.libraries.Libraries", {
             dataIndex: "concentration",
           },
           {
+            text: "qPCR (nM)",
+            tooltip: "qPCR Result",
+            dataIndex: "qpcr_result",
+          },
+          {
+            text: "F/S",
+            tooltip: "Concentration Determined by",
+            dataIndex: "concentration_method",
+            width: 50,
+            renderer: function (value, meta) {
+              if (meta.record.get("leaf")) {
+                var store = Ext.getStore("concentrationMethodsStore");
+                var record = store.findRecord("id", value);
+                var name = record.get("name");
+                meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
+                return name.charAt(0);
+              }
+            },
+          },
+          {
             text: "RQN",
             tooltip: "RNA Quality",
             dataIndex: "rna_quality",
@@ -299,6 +369,26 @@ Ext.define("MainHub.view.libraries.Libraries", {
             text: "Index Reads",
             tooltip: "# of Index Reads",
             dataIndex: "index_reads",
+            store: Ext.create("Ext.data.Store", {
+              fields: ["index_reads", "name"],
+              data: [
+                { index_reads: 0, name: "None" },
+                { index_reads: 7, name: "i7" },
+                { index_reads: 5, name: "i5" },
+                { index_reads: 75, name: "i7 + i5" },
+                { index_reads: 752, name: "i7 + i5" },
+              ],
+            }),
+            renderer: function (value, meta) {
+              if (value) {
+                return (
+                  meta.column.store
+                    .findRecord("index_reads", value)
+                    .get("name") || value
+                );
+              }
+              return value;
+            },
           },
           {
             text: "I7",
@@ -320,11 +410,11 @@ Ext.define("MainHub.view.libraries.Libraries", {
             tooltip: "Sequencing Depth",
             dataIndex: "sequencing_depth",
           },
-          // {
-          //   text: 'Amplification',
-          //   tooltip: 'Amplification Cycles',
-          //   dataIndex: 'amplification_cycles'
-          // },
+          {
+            text: "Amplification",
+            tooltip: "Amplification Cycles",
+            dataIndex: "amplification_cycles",
+          },
           // {
           //   text: 'Equal nucl.',
           //   tooltip: 'Equal Representation of Nucleotides',
@@ -333,26 +423,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
           //   renderer: function (value, meta) {
           //     if (meta.record.get('leaf')) {
           //       return value ? 'Yes' : 'No';
-          //     }
-          //   }
-          // },
-          // {
-          //   text: 'qPCR (nM)',
-          //   tooltip: 'qPCR Result',
-          //   dataIndex: 'qpcr_result'
-          // },
-          // {
-          //   text: 'F/S',
-          //   tooltip: 'Concentration Determined by',
-          //   dataIndex: 'concentration_method',
-          //   width: 50,
-          //   renderer: function (value, meta) {
-          //     if (meta.record.get('leaf')) {
-          //       var store = Ext.getStore('concentrationMethodsStore');
-          //       var record = store.findRecord('id', value);
-          //       var name = record.get('name');
-          //       meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
-          //       return name.charAt(0);
           //     }
           //   }
           // },

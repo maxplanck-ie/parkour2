@@ -19,4 +19,14 @@ urlpatterns = [
         views.LibraryTypesUsage.as_view(),
         name="library-types-usage",
     ),
+    re_path(
+        "report/",
+        views.UsageReport.as_view(),
+        name="usage-report",
+    ),
+    re_path(
+        "db_data/",
+        views.DbData.as_view(),
+        name="db-data",
+    ),
 ]

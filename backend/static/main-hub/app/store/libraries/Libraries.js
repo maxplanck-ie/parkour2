@@ -9,10 +9,12 @@ Ext.define("MainHub.store.libraries.Libraries", {
   proxy: {
     type: "ajax",
     url: "/api/libraries_and_samples/",
-    noCache: false, // to remove param "_dc",
+    noCache: false, //to remove param "_dc",
     reader: "json",
     extraParams: {
       showAll: "True",
+      asBioinformatician: "False",
+      asHandler: "False",
     },
   },
 

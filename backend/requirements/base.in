@@ -8,7 +8,8 @@ django-monthfield
 django-extensions
 django-import-export
 django-linear-migrations
-gunicorn
+mozilla-django-oidc
+django-constance[database]
 psycopg2-binary
 dj-database-url
 xlwt

@@ -1,7 +1,6 @@
 import json
 import tempfile
 
-from common.models import Organization, PrincipalInvestigator
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.contrib.auth import get_user_model
@@ -17,7 +16,7 @@ User = get_user_model()
 
 
 def create_request(user, save=True):
-    request = Request(user=user, description=get_random_name())
+    request = Request(user=user, name=get_random_name(), description=get_random_name())
     if save:
         request.save()
     return request
@@ -28,35 +27,35 @@ def create_request(user, save=True):
 
 class TestRequestModel(TestCase):
     def setUp(self):
-        self.org = Organization(name=get_random_name())
-        self.org.save()
 
-        self.pi = PrincipalInvestigator(
-            name=get_random_name(),
-            organization=self.org,
+        self.pi = User.objects.create_user(
+            first_name="Greatest",
+            last_name="Pie",
+            email="greatest.pie@bar.io",
+            password="pie-pie",
+            is_pi=True
         )
-        self.pi.save()
 
         self.user = User.objects.create_user(
             first_name="Foo",
             last_name="Bar",
             email="foo@bar.io",
             password="foo-foo",
-            organization=self.org,
-            pi=self.pi,
         )
+        self.user.pi.add(self.pi)
 
     def test_create_request(self):
         request = create_request(self.user)
         self.assertEqual(str(request), request.name)
-        self.assertEqual(
-            request.name,
-            "{}_{}_{}".format(
-                request.pk,
-                self.user.last_name,
-                self.user.pi.name,
-            ),
-        )
+        # Drop this assertion because a user has to enter their own request's name
+        # self.assertEqual(
+        #     request.name,
+        #     "{}_{}_{}".format(
+        #         request.pk,
+        #         self.user.last_name,
+        #         self.user.pi.name,
+        #     ),
+        # )
 
     def test_delete_request(self):
         """
@@ -162,7 +161,7 @@ class TestRequests(BaseTestCase):
 
         requests = [x["name"] for x in response.json()["results"]]
         self.assertIn(request1.name, requests)
-        self.assertIn(request2.name, requests)
+        self.assertNotIn(request2.name, requests)
         self.assertNotIn(request3.name, requests)
 
     def test_single_request(self):
@@ -207,27 +206,28 @@ class TestRequests(BaseTestCase):
         self.assertTrue(response.json()["success"])
         self.assertEqual(Library.objects.get(pk=library.pk).request.filter().count(), 1)
 
-    def test_create_request_no_records(self):
-        """
-        Ensure error is thrown if no records are provided when
-        creating a new request.
-        """
-        response = self.client.post(
-            "/api/requests/",
-            {
-                "data": json.dumps(
-                    {
-                        "description": get_random_name(),
-                        "records": [],
-                        # 'files': [],
-                    }
-                )
-            },
-        )
-        data = response.json()
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(data["success"])
-        self.assertEqual(data["message"], "Invalid payload.")
+    # NZ disable this for now, since we allow adding no libraries/samples
+    # def test_create_request_no_records(self):
+    #     """
+    #     Ensure error is thrown if no records are provided when
+    #     creating a new request.
+    #     """
+    #     response = self.client.post(
+    #         "/api/requests/",
+    #         {
+    #             "data": json.dumps(
+    #                 {
+    #                     "description": get_random_name(),
+    #                     "records": [],
+    #                     # 'files': [],
+    #                 }
+    #             )
+    #         },
+    #     )
+    #     data = response.json()
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertFalse(data["success"])
+    #     self.assertEqual(data["message"], "Invalid payload.")
 
     def test_update_request(self):
         """Ensure update request behaves correctly."""
@@ -265,29 +265,30 @@ class TestRequests(BaseTestCase):
         self.assertEqual(updated_request.description, new_description)
         self.assertIn(sample, updated_request.samples.all())
 
-    def test_update_request_no_records(self):
-        """
-        Ensure error is thrown if no records are provided when
-        updating a request.
-        """
-        request = create_request(self.user)
-        library = create_library(get_random_name())
-        request.libraries.add(library)
+    # NZ disable this for now, since we allow adding no libraries/samples
+    # def test_update_request_no_records(self):
+    #     """
+    #     Ensure error is thrown if no records are provided when
+    #     updating a request.
+    #     """
+    #     request = create_request(self.user)
+    #     library = create_library(get_random_name())
+    #     request.libraries.add(library)
 
-        response = self.client.post(
-            f"/api/requests/{request.pk}/edit/",
-            {
-                "data": json.dumps(
-                    {
-                        "description": get_random_name(),
-                        "records": [],
-                        # 'files': [],
-                    }
-                ),
-            },
-        )
-        self.assertEqual(response.status_code, 400)
-        self.assertFalse(response.json()["success"])
+    #     response = self.client.post(
+    #         f"/api/requests/{request.pk}/edit/",
+    #         {
+    #             "data": json.dumps(
+    #                 {
+    #                     "description": get_random_name(),
+    #                     "records": [],
+    #                     # 'files': [],
+    #                 }
+    #             ),
+    #         },
+    #     )
+    #     self.assertEqual(response.status_code, 400)
+    #     self.assertFalse(response.json()["success"])
 
     def test_update_request_invalid_id(self):
         """Ensure error is thrown if the id does not exist."""
@@ -310,13 +311,18 @@ class TestRequests(BaseTestCase):
         """Ensure delete request behaves correctly."""
         request = create_request(self.user)
         response = self.client.delete(f"/api/requests/{request.pk}/")
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {"success": True})
 
     def test_delete_request_invalid_id(self):
         """Ensure error is thrown if the id does not exist."""
         response = self.client.delete("/api/requests/-1/")
         self.assertEqual(response.status_code, 404)
-
+        self.assertJSONEqual(response.content,
+                             {"success": False,
+                              "message": 'The request could not be deleted.'})
+    
     def test_get_records(self):
         """Ensure get request's records behaves correctly."""
         request = create_request(self.user)

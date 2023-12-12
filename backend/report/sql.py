@@ -31,10 +31,23 @@ FROM (
         record.name AS "Name",
         record.barcode AS "Barcode",
         record.status AS "Status",
-        record.concentration AS "Concentration",
+        record.concentration AS "Concentration (User)",
+        record.sample_volume_user AS "Sample Volume (User)",
         record.sequencing_depth AS "Sequencing Depth",
         record.equal_representation_nucleotides AS "Equal Representation of Nucleotides",
-        record.index_reads AS "Index Reads",
+        (
+            CASE
+                WHEN record.index_reads = 5
+                    THEN 'I5'
+                WHEN record.index_reads = 7
+                    THEN 'I7'
+                WHEN record.index_reads = 75
+                    THEN 'I5 + I7'
+                WHEN record.index_reads = 752
+                    THEN 'I5 + I7'
+                ELSE NULL
+            END
+        ) AS "Index Reads",
         record.index_i7 AS "Index I7",
         record.index_i5 AS "Index I5",
         record.amplification_cycles AS "Amplification Cycles",
@@ -43,6 +56,7 @@ FROM (
         record.sample_volume_facility AS "Sample Volume (Facility)",
         record.amount_facility AS "Amount (Facility)",
         record.size_distribution_facility AS "Size Distribution (Facility)",
+        record.source AS "Source",
 
         (
             SELECT concat(i.prefix, i.number)
@@ -69,6 +83,10 @@ FROM (
 
         r.name AS "Request",
         concat(u.first_name, ' ', u.last_name) AS "User",
+        concat(bu.first_name, ' ', bu.last_name) AS "Bioinformatician",
+        concat(piu.first_name, ' ', piu.last_name) AS "PI",
+        cu.name AS "Cost Unit",
+        org.name AS "Organization",
         lp.name AS "Library Protocol",
         lt.name AS "Library Type",
         o.name AS "Organism",
@@ -78,7 +96,13 @@ FROM (
         cmf.name AS "Concentration Method (Facility)",
         pooling.concentration_c1 AS "Concentration C1",
         p.name AS "Pool",
-        concat(psize.multiplier, 'x', psize.size) AS "Pool Size",
+        (
+            CASE
+                WHEN psize IS NOT NULL
+                THEN concat(psize.lanes, '×', psize.size, 'M') 
+                ELSE NULL
+            END
+        ) AS "Sequencing Kit",
 
 
         /* Sample-specific fields */
@@ -94,6 +118,18 @@ FROM (
 
     LEFT JOIN auth_user as u
         ON r.user_id = u.id
+
+    LEFT JOIN auth_user as bu
+        ON r.bioinformatician_id = bu.id
+
+    LEFT JOIN auth_user as piu
+        ON r.pi_id = piu.id
+
+    LEFT JOIN common_costunit as cu
+        ON r.cost_unit_id = cu.id
+
+    LEFT JOIN common_organization as org
+        ON cu.organization_id = org.id
 
     LEFT JOIN library_sample_shared_libraryprotocol as lp
         ON record.library_protocol_id = lp.id
@@ -149,8 +185,10 @@ LEFT JOIN (
         ON l.id = fl.lane_id
     LEFT JOIN flowcell_flowcell as f
         ON fl.flowcell_id = f.id
+    LEFT JOIN index_generator_poolsize as psize
+        ON p.size_id = psize.id
     LEFT JOIN flowcell_sequencer AS s
-        ON f.sequencer_id = s.id
+        ON psize.sequencer_id = s.id
     GROUP BY record.id, f.create_time::date
 ) t2 ON t1_id = t2_id
 """

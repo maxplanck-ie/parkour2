@@ -45,22 +45,118 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                   },
                   items: [
                     {
-                      id: "sequencer-field",
-                      itemId: "sequencer-field",
+                      id: "sequencing-kit-field",
+                      itemId: "sequencing-kit-field",
                       queryMode: "local",
                       displayField: "name",
                       valueField: "id",
-                      name: "sequencer",
-                      fieldLabel: "Sequencer",
-                      emptyText: "Sequencer",
-                      store: "sequencersStore",
+                      name: "sequencing_kit",
+                      fieldLabel: "Sequencing Kit",
+                      emptyText: "Sequencing Kit",
+                      store: "PoolSizes",
                       forceSelection: true,
+                      labelWidth: 120,
                     },
                     {
                       xtype: "textfield",
                       name: "flowcell_id",
                       fieldLabel: "Flowcell ID",
                       emptyText: "Flowcell ID",
+                      labelWidth: 120,
+                      regex: /^[A-Za-z0-9]+$/,
+                      regexText: "Only A-Z a-z and 0-9 are allowed",
+                    },
+                    {
+                      xtype: "textfield",
+                      name: "run_name",
+                      fieldLabel: "Run name",
+                      emptyText: "Run name",
+                      labelWidth: 120,
+                      regex: /^[A-Za-z0-9_]+$/,
+                      regexText: "Only A-Z a-z 0-9 and _ are allowed",
+                    },
+                    {
+                      xtype: "fieldcontainer",
+                      layout: "hbox",
+                      labelWidth: 120,
+                      fieldLabel: "Read cycles",
+                      labelSeparator: "",
+                      items: [
+                        {
+                          xtype: "numberfield",
+                          name: "read1_cycles",
+                          fieldLabel:
+                            '<span data-qtip="Read 1 cycles">R1</span>',
+                          labelWidth: 20,
+                          width: 115,
+                          value: 1,
+                          minValue: 1,
+                        },
+                        {
+                          xtype: "numberfield",
+                          name: "read2_cycles",
+                          fieldLabel:
+                            '<span data-qtip="Read 2 cycles">R2</span>',
+                          labelWidth: 20,
+                          width: 115,
+                          padding: "0 0 0 10px",
+                          value: 0,
+                        },
+                      ],
+                    },
+                    {
+                      xtype: "fieldcontainer",
+                      layout: "hbox",
+                      labelWidth: 120,
+                      fieldLabel: "Index cycles",
+                      labelSeparator: "",
+                      items: [
+                        {
+                          xtype: "numberfield",
+                          name: "index1_cycles",
+                          fieldLabel:
+                            '<span data-qtip="Index 1 cycles">I1</span>',
+                          labelWidth: 20,
+                          width: 115,
+                          value: 0,
+                          maxValue: 10,
+                        },
+                        {
+                          xtype: "numberfield",
+                          name: "index2_cycles",
+                          fieldLabel:
+                            '<span data-qtip="Index 2 cycles">I2</span>',
+                          labelWidth: 20,
+                          width: 115,
+                          padding: "0 0 0 10px",
+                          value: 0,
+                          maxValue: 10,
+                        },
+                      ],
+                    },
+                    {
+                      xtype: "combobox",
+                      name: "library_prep_kits",
+                      fieldLabel: "Library prep kits",
+                      emptyText: "Library prep kits",
+                      labelWidth: 120,
+                      store: Ext.create("Ext.data.Store", {
+                        fields: ["name"],
+                        data: [
+                          {
+                            name: "ILMNStrandedTotalRNA",
+                          },
+                          {
+                            name: "ILMNStrandedmRNA",
+                          },
+                        ],
+                      }),
+                      queryMode: "local",
+                      displayField: "name",
+                      valueField: "name",
+                      value: "",
+                      forceSelection: false,
+                      allowBlank: true,
                     },
                   ],
                 },
@@ -158,7 +254,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                     var size = pool.get("pool_size") - pool.get("loaded");
                     return size === 0
                       ? size
-                      : size + "x" + poolSize.get("size");
+                      : size + "×" + poolSize.get("size") + "M";
                   },
                 },
               ],

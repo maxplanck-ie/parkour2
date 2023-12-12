@@ -10,7 +10,7 @@ def get_deleted_org():
 
 
 def get_deleted_pi():
-    return PrincipalInvestigator.objects.get_or_create(name="deleted PI")[0]
+    return User.objects.get_or_create(name="deleted PI")[0]
 
 
 class Organization(models.Model):
@@ -21,31 +21,31 @@ class Organization(models.Model):
         return self.name
 
 
-class PrincipalInvestigator(models.Model):
-    name = models.CharField("Name", max_length=100)
+class OrganizationMixin(models.Model):
+
     organization = models.ForeignKey(
-        Organization, on_delete=models.SET(get_deleted_org)
+        Organization,
+        verbose_name="Organization",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=False,
     )
-    email = models.EmailField("E-Mail Address", default="Unset")
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
-        verbose_name = "Principal Investigator"
-        verbose_name_plural = "Principal Investigators"
-        ordering = ["organization__name", "name"]
-
-    def __str__(self):
-        return f"{self.name} ({self.organization.name})"
+        abstract = True
 
 
-class CostUnit(models.Model):
+class CostUnit(OrganizationMixin, models.Model):
     name = models.CharField("Name", max_length=100)
-    archived = models.BooleanField("Archived", default=False)
     pi = models.ForeignKey(
-        PrincipalInvestigator,
+        'User',
         verbose_name="Principal Investigator",
         on_delete=models.SET(get_deleted_pi),
     )
+
+    archived = models.BooleanField("Archived", default=False)
+
 
     class Meta:
         verbose_name = "Cost Unit"
@@ -53,31 +53,53 @@ class CostUnit(models.Model):
         ordering = ["name"]
 
     def __str__(self):
-        return f"{self.name} ({self.pi.organization.name}: {self.pi.name})"
+        return f"{self.name} ({self.organization})"
+
+
+class OIDCGroup (models.Model):
+    name = models.CharField("Name", max_length=200, unique=True)
+    pi = models.ForeignKey(
+        'User',
+        verbose_name="Principal Investigator",
+        on_delete=models.SET(get_deleted_pi),
+    )
+
+    class Meta:
+        verbose_name = "OpenID Group"
+        verbose_name_plural = "OpenID Groups"
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+        
+        # Force group names to lower case
+        self.name = self.name.strip().lower()
+
+        super(OIDCGroup, self).save(force_insert, force_update, using, update_fields)
 
 
 class User(AbstractEmailUser):
     first_name = models.CharField("First name", max_length=50)
     last_name = models.CharField("Last name", max_length=50)
     phone = models.CharField("Phone", max_length=50, null=True, blank=True)
+    oidc_id = models.CharField("OIDC ID", max_length=255, null=True, unique=True, default=None, blank=True)
+    is_bioinformatician = models.BooleanField(
+        'Bioinformatician status',
+        help_text='Designates whether a user is a bioinformatician.',
+        default=False)
+    is_pi = models.BooleanField(
+        'Principal Investigator status',
+        help_text='Designates whether a user is a Principal Investigator.',
+        default=False)
 
-    organization = models.ForeignKey(
-        Organization,
-        verbose_name="Organization",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
-
-    pi = models.ForeignKey(
-        PrincipalInvestigator,
+    pi = models.ManyToManyField(
+        'self',
         verbose_name="Principal Investigator",
-        on_delete=models.SET_NULL,
-        null=True,
+        symmetrical=False,
         blank=True,
     )
-
-    is_pi = models.BooleanField("PI Account", default=False)
 
     cost_unit = models.ManyToManyField(
         CostUnit,
@@ -95,51 +117,45 @@ class User(AbstractEmailUser):
 
     @property
     def facility(self):
-        if self.pi is None:
-            membership = None
-        elif self.pi.name == settings.BIOINFO:
-            membership = "Bioinfo"
-        elif self.pi.name == settings.DEEPSEQ:
-            membership = "DeepSeq"
-        else:
-            membership = None
-        return membership
+        # if self.pi is None:
+        #     membership = None
+        # elif self.pi.name == settings.BIOINFO:
+        #     membership = "Bioinfo"
+        # elif self.pi.name == settings.DEEPSEQ:
+        #     membership = "DeepSeq"
+        # else:
+        #     membership = None
+        # return membership
+
+        # For IMB'S fork of Parkour, this is irrelevant
+        return None
 
     @property
-    def paperless_approval(self):
-        """
-        This will return 'True' if both PI and User email addresses share the same host
-        We'll be using email spoofing from within VM, the MTA was set by IT.
-        """
-        result_user = False
-        result_pi = False
-        if self.pi is not None and self.pi.email != "Unset":
-            if (
-                not ('"' in self.pi.email)
-                and self.pi.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
-            ):
-                result_pi = True
-            if (
-                not ('"' in self.email)
-                and self.email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]
-            ):
-                result_user = True
-        return result_user and result_pi  # and not self.is_pi
+    def can_solicite_paperless_approval(self):
+        # result_user = False
+        # result_pi = False
+        # if self.pi is not None and self.pi.email != "Unset":
+        #     if (
+        #         not '"' in self.pi.email
+        #         and self.pi.email.split("@")[1] == settings.EMAIL_HOST
+        #     ):
+        #         result_pi = True
+        #     if (
+        #         not '"' in self.email
+        #         and self.email.split("@")[1] == settings.EMAIL_HOST
+        #     ):
+        #         result_user = True
+        # return result_user and result_pi
+
+        # For IMB'S fork of Parkour, this is irrelevant 
+        return False
 
     def __str__(self):
-        this_user_email = self.email
-        if not '"' in this_user_email:
-            # email addresses are valid with more than one 'at' symbol, only if enquoted,
-            # we avoid the following in such cases. See: https://stackoverflow.com/a/12355882
-            if this_user_email.split("@")[1] == settings.SERVER_EMAIL.split("@")[1]:
-                this_user_email = this_user_email.split("@")[0] + "@~"
-        if self.phone is not None:
-            this_user = (
-                f"{self.first_name} {self.last_name} ({self.phone} | {this_user_email})"
-            )
-        else:
-            this_user = f"{self.first_name} {self.last_name} ({this_user_email})"
-        return this_user
+        return f"{self.first_name} {self.last_name}"
+    
+    @property
+    def member_of_bcf(self):
+        return self.groups.filter(name=settings.BIOINFO).exists()
 
 
 class Duty(models.Model):

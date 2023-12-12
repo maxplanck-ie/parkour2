@@ -18,6 +18,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
 
   initComponent: function () {
     var me = this;
+
     me.items = [
       {
         xtype: "basegrid",
@@ -31,6 +32,42 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           title: "Libraries and Samples for Pooling",
           items: [
             {
+              xtype: "checkbox",
+              boxLabel:
+                '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+              itemId: "as-handler-index-generator-checkbox",
+              margin: "0 15 0 0",
+              cls: "grid-header-checkbox",
+              checked: false,
+              listeners: {
+                change: function (cb, newValue, oldValue, eOpts) {
+                  var grid = cb.up("#index-generator-grid");
+                  var gridGrouping = grid.view.getFeature(
+                    "index-generator-grid-grouping"
+                  );
+                  if (newValue) {
+                    grid.store.getProxy().extraParams.asHandler = "True";
+                    grid.store.load({
+                      callback: function (records, operation, success) {
+                        if (success) {
+                          gridGrouping.expandAll();
+                        }
+                      },
+                    });
+                  } else {
+                    grid.store.getProxy().extraParams.asHandler = "False";
+                    grid.store.load({
+                      callback: function (records, operation, success) {
+                        if (success) {
+                          gridGrouping.collapseAll();
+                        }
+                      },
+                    });
+                  }
+                },
+              },
+            },
+            {
               xtype: "combobox",
               id: "poolSizeCb",
               itemId: "poolSizeCb",
@@ -40,9 +77,9 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               valueField: "id",
               forceSelection: true,
               cls: "panel-header-combobox",
-              fieldLabel: "Pool Size",
-              labelWidth: 65,
-              width: 170,
+              fieldLabel: '<span data-qtip="Sequencing kit">Seq. Kit</span>',
+              labelWidth: 50,
+              width: 285,
             },
           ],
         },
@@ -56,7 +93,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             dataIndex: "selected",
             resizable: false,
             tdCls: "no-dirty",
-            width: 35,
+            width: 36,
           },
           {
             text: "Name",
@@ -146,14 +183,10 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               forceSelection: true,
             },
             renderer: function (value, meta) {
-              var record = Ext.getStore("GeneratorIndexTypes").findRecord(
-                "id",
-                value,
-                0,
-                false,
-                true,
-                true
-              );
+              var record = meta.column
+                .getEditor()
+                .getStore()
+                .findRecord("id", value, 0, false, true, true);
               var val = "";
 
               if (record) {
@@ -165,14 +198,130 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             },
           },
           {
+            text: "# of Index Reads",
+            dataIndex: "index_reads",
+            tooltip: "Index Type",
+            width: 130,
+            editor: {
+              xtype: "combobox",
+              id: "indexReadsEditorIndexGenerator",
+              itemId: "indexReadsEditorIndexGenerator",
+              queryMode: "local",
+              displayField: "label",
+              valueField: "num",
+              store: Ext.create("Ext.data.Store", {
+                fields: [
+                  { name: "num", type: "int" },
+                  { name: "label", type: "string" },
+                ],
+                // sorters: [{property: 'num', direction: 'DESC'}],
+                data: [
+                  { num: 0, label: "None" },
+                  { num: 7, label: "I7 only" },
+                  { num: 5, label: "I5 only" },
+                  { num: 75, label: "I7 + I5" },
+                  { num: 752, label: "I7 + I5 (Pair/UDI)" },
+                ],
+              }),
+              forceSelection: true,
+            },
+            renderer: function (value, meta, record) {
+              var item = meta.column
+                .getEditor()
+                .getStore()
+                .findRecord("num", value);
+              return item ? item.get("label") : value;
+            },
+          },
+          {
             text: "Index I7",
             dataIndex: "index_i7",
             width: 100,
+            editor: {
+              xtype: "combobox",
+              id: "indexI7EditorIndexGenerator",
+              itemId: "indexI7EditorIndexGenerator",
+              queryMode: "local",
+              displayField: "name",
+              displayTpl: Ext.create(
+                "Ext.XTemplate",
+                '<tpl for=".">',
+                "{index}",
+                "</tpl>"
+              ),
+              valueField: "index",
+              store: "indexI7Store",
+              regex: new RegExp(
+                "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+              ),
+              regexText:
+                "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+              matchFieldWidth: false,
+            },
+            renderer: function (value, meta, record) {
+              if (value) {
+                var store = meta.column.getEditor().getStore();
+                store.clearFilter(true);
+                store.filter("index_type", record.get("index_type"), true);
+                var index = store.findRecord(
+                  "index",
+                  value,
+                  0,
+                  false,
+                  true,
+                  true
+                );
+                if (index) {
+                  value = index.get("name");
+                }
+              }
+              return value;
+            },
           },
           {
             text: "Index I5",
             dataIndex: "index_i5",
             width: 100,
+            editor: {
+              xtype: "combobox",
+              id: "indexI5EditorIndexGenerator",
+              itemId: "indexI5EditorIndexGenerator",
+              queryMode: "local",
+              displayField: "name",
+              displayTpl: Ext.create(
+                "Ext.XTemplate",
+                '<tpl for=".">',
+                "{index}",
+                "</tpl>"
+              ),
+              valueField: "index",
+              store: "indexI5Store",
+              regex: new RegExp(
+                "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+              ),
+              regexText:
+                "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
+              matchFieldWidth: false,
+            },
+            renderer: function (value, meta, record) {
+              if (value) {
+                var store = meta.column.getEditor().getStore();
+                store.clearFilter(true);
+                store.filter("index_type", record.get("index_type"), true);
+                var index = store.findRecord(
+                  "index",
+                  value,
+                  0,
+                  false,
+                  true,
+                  true
+                );
+                if (index) {
+                  value = index.get("name");
+                }
+              }
+              return value;
+            },
           },
         ],
 
@@ -184,7 +333,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           },
           {
             ptype: "rowediting",
-            clicksToEdit: 1,
+            clicksToEdit: 2,
           },
         ],
 
@@ -193,12 +342,16 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
         features: [
           {
             ftype: "grouping",
+            id: "index-generator-grid-grouping",
             startCollapsed: true,
             groupHeaderTpl: [
-              "<strong>Request: {children:this.getName}</strong> (Total Sequencing Depth: {children:this.getTotalDepth} M, No. Samples/Libraries: {children:this.getCount})",
+              "<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M, Seq. Kit: {children:this.getPoolSize})",
               {
                 getName: function (children) {
                   return children[0].get("request_name");
+                },
+                isPooled: function (children) {
+                  return children[0].get("pooled_libraries") ? "Pool, " : "";
                 },
                 getTotalDepth: function (children) {
                   return Ext.sum(
@@ -207,6 +360,9 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 },
                 getCount: function (children) {
                   return children.length;
+                },
+                getPoolSize: function (children) {
+                  return children[0].get("pool_size_user_name");
                 },
               },
             ],
@@ -218,6 +374,12 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
         id: "pool-grid",
         itemId: "pool-grid",
         cls: "pooling-grid",
+        baseColours: {
+          sequencerChemistry: 0,
+          green: [],
+          red: [],
+          black: [],
+        },
         header: {
           title: "Pool",
           height: 56,
@@ -233,7 +395,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               cls: "panel-header-combobox",
               fieldLabel: "Start Coordinate",
               labelWidth: 110,
-              width: 550,
+              width: 200,
               margin: "0 15px 0 0",
               hidden: true,
             },
@@ -305,12 +467,21 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             dataIndex: "index_i7_id",
             width: 90,
             summaryRenderer: function () {
-              var totalSequencingDepth = Ext.getCmp("pool-grid")
+              var grid = Ext.getCmp("pool-grid");
+              var sequencerChemistry = grid.baseColours.sequencerChemistry;
+              var labels = "";
+
+              if (sequencerChemistry === 2) {
+                labels =
+                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>';
+              } else if (sequencerChemistry === 4) {
+                labels =
+                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>';
+              }
+              var totalSequencingDepth = grid
                 .getStore()
                 .sum("sequencing_depth");
-              return totalSequencingDepth > 0
-                ? '<span class="summary-green">green:</span><br><span class="summary-red">red:</span>'
-                : "";
+              return totalSequencingDepth > 0 ? labels : "";
             },
           },
           {
@@ -320,7 +491,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "2",
@@ -329,7 +500,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "3",
@@ -338,7 +509,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "4",
@@ -347,7 +518,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "5",
@@ -356,7 +527,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "6",
@@ -365,7 +536,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "7",
@@ -374,7 +545,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "8",
@@ -383,7 +554,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "9",
@@ -392,7 +563,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "10",
@@ -401,7 +572,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "11",
@@ -410,7 +581,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "12",
@@ -419,18 +590,27 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "Index I5 ID",
             dataIndex: "index_i5_id",
             summaryRenderer: function () {
-              var totalSequencingDepth = Ext.getCmp("pool-grid")
+              var grid = Ext.getCmp("pool-grid");
+              var sequencerChemistry = grid.baseColours.sequencerChemistry;
+              var labels = "";
+
+              if (sequencerChemistry === 2) {
+                labels =
+                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>';
+              } else if (sequencerChemistry === 4) {
+                labels =
+                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>';
+              }
+              var totalSequencingDepth = grid
                 .getStore()
                 .sum("sequencing_depth");
-              return totalSequencingDepth > 0
-                ? '<span class="summary-green">green:</span><br><span class="summary-red">red:</span>'
-                : "";
+              return totalSequencingDepth > 0 ? labels : "";
             },
             width: 90,
           },
@@ -441,7 +621,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "2",
@@ -450,7 +630,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "3",
@@ -459,7 +639,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "4",
@@ -468,7 +648,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "5",
@@ -477,7 +657,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "6",
@@ -486,7 +666,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "7",
@@ -495,7 +675,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "8",
@@ -504,7 +684,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "9",
@@ -513,7 +693,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "10",
@@ -522,7 +702,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "11",
@@ -531,7 +711,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
           {
             text: "12",
@@ -540,35 +720,143 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             renderer: me.renderNucleotide,
             summaryType: me.calculateColorDiversity,
             summaryRenderer: me.renderSummary,
-            width: 55,
+            width: 36,
           },
         ],
         store: [],
-        bbar: [
+        dockedItems: [
           {
-            xtype: "button",
-            id: "generate-indices-button",
-            itemId: "generate-indices-button",
-            iconCls: "fa fa-cogs fa-lg",
-            text: "Generate Indices",
-            disabled: true,
+            xtype: "toolbar",
+            dock: "top",
+            items: [
+              {
+                xtype: "combobox",
+                id: "sequencerChemistryCb",
+                store: Ext.create("Ext.data.Store", {
+                  fields: ["sequencerChemistry", "name"],
+                  data: [
+                    {
+                      sequencerChemistry: 0,
+                      name: "N/A",
+                      tooltip: "None",
+                    },
+                    {
+                      sequencerChemistry: 2,
+                      name: "2-ch",
+                      tooltip: "Illumina 2-channel SBS technology",
+                    },
+                    {
+                      sequencerChemistry: 4,
+                      name: "4-ch",
+                      tooltip: "Illumina 4-channel SBS technology",
+                    },
+                  ],
+                }),
+                queryMode: "local",
+                displayField: "name",
+                valueField: "sequencerChemistry",
+                value: 0,
+                forceSelection: true,
+                allowBlank: false,
+                fieldLabel: "Chemistry",
+                labelWidth: 65,
+                width: 150,
+                disabled: true,
+                listeners: {
+                  change: function (cb, newValue, oldValue, eOpts) {
+                    var poolGrid = Ext.getCmp("pool-grid");
+                    poolGrid.baseColours = me.getBaseColours(newValue);
+                    Ext.getCmp("index-generator-grid").fireEvent("reset");
+                    poolGrid.getView().refresh();
+                  },
+                },
+                listConfig: {
+                  getInnerTpl: function () {
+                    return '<span data-qtip="{tooltip}">{name}</span>';
+                  },
+                },
+              },
+              {
+                xtype: "tbseparator",
+              },
+              {
+                xtype: "numberfield",
+                id: "minHammingDistanceBox",
+                fieldLabel:
+                  '<span data-qtip="Minimum Hamming distance">Min. HD</span>',
+                allowBlank: false,
+                disabled: true,
+                minValue: 1,
+                maxValue: 5,
+                value: 3,
+                labelWidth: 55,
+                width: 125,
+                listeners: {
+                  change: function (cb, newValue, oldValue, eOpts) {
+                    var grid = Ext.getCmp("index-generator-grid");
+                    grid.fireEvent("reset");
+                    Ext.getCmp("pool-grid").getView().refresh();
+                  },
+                },
+              },
+              "->",
+              {
+                xtype: "button",
+                id: "generate-indices-button",
+                itemId: "generate-indices-button",
+                iconCls: "fa fa-cogs fa-lg",
+                text: "Generate Indices",
+                disabled: true,
+              },
+
+              /* for future:
+                {
+                  xtype: 'button',
+                  itemId: 'download-index-list-button',
+                  text: 'Download Index List (csv)',
+                  iconCls: 'fa fa-file-excel-o fa-lg'
+                },
+                */
+            ],
           },
-          /* for future:
           {
-            xtype: 'button',
-            itemId: 'download-index-list-button',
-            text: 'Download Index List (csv)',
-            iconCls: 'fa fa-file-excel-o fa-lg'
-          },
-          */
-          "->",
-          {
-            xtype: "button",
-            id: "save-pool-button",
-            itemId: "save-pool-button",
-            iconCls: "fa fa-floppy-o fa-lg",
-            text: "Save Pool",
-            disabled: true,
+            xtype: "toolbar",
+            dock: "bottom",
+            items: [
+              {
+                xtype: "textfield",
+                id: "pool_name",
+                fieldLabel: "Pool name",
+                itemId: "pool-name",
+                text: "Pool name",
+                labelWidth: 70,
+                width: 200,
+                maxLength: 5,
+                enforceMaxLength: true,
+                allowBlank: false,
+                regex: /^[A-Z]+$/,
+                regexText: "Only A-Z are allowed",
+                msgTarget: "side",
+                disabled: true,
+              },
+              "->",
+              {
+                xtype: "button",
+                id: "save-pool-button",
+                itemId: "save-pool-button",
+                iconCls: "fa fa-floppy-o fa-lg",
+                text: "Save Pool",
+                disabled: true,
+              },
+              {
+                xtype: "button",
+                id: "save-pool-ignore-errors-button",
+                itemId: "save-pool-ignore-errors-button",
+                iconCls: "fa fa-floppy-o fa-lg",
+                text: "Ignore error(s) and Save Pool",
+                disabled: true,
+              },
+            ],
           },
         ],
       },
@@ -577,40 +865,88 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
     me.callParent(arguments);
   },
 
+  getBaseColours: function (sequencerChemistry) {
+    sequencerChemistry = sequencerChemistry ? sequencerChemistry : 0;
+
+    var baseColoursBySequencerChemistry = [
+      {
+        sequencerChemistry: 0,
+        green: [],
+        red: [],
+        black: [],
+      },
+      {
+        sequencerChemistry: 2,
+        green: ["A", "T"],
+        red: ["A", "C"],
+        black: ["G"],
+      },
+      {
+        sequencerChemistry: 4,
+        green: ["G", "T"],
+        red: ["A", "C"],
+        black: [],
+      },
+    ];
+
+    return baseColoursBySequencerChemistry.find(function (o) {
+      return o.sequencerChemistry === sequencerChemistry;
+    });
+  },
+
   renderNucleotide: function (val, meta) {
-    if (val === "G" || val === "T") {
-      meta.tdStyle = "background-color:#dcedc8";
-    } else if (val === "A" || val === "C") {
-      meta.tdStyle = "background-color:#ef9a9a";
-    }
+    var baseColours = this.baseColours;
     meta.tdCls = "nucleotide";
+
+    if (baseColours.green.includes(val) & baseColours.red.includes(val)) {
+      meta.tdStyle += "background-color:#fffacd;";
+      return val;
+    } else if (baseColours.green.includes(val)) {
+      meta.tdStyle += "background-color:#dcedc8;";
+      return val;
+    } else if (baseColours.red.includes(val)) {
+      meta.tdStyle += "background-color:#ef9a9a;";
+      return val;
+    }
+
+    meta.tdStyle = "";
     return val;
   },
 
   calculateColorDiversity: function (records, values) {
-    var diversity = { green: 0, red: 0 };
+    var baseColours = Ext.getCmp("pool-grid").baseColours;
+
+    var diversity = { green: 0, red: 0, black: 0 };
 
     for (var i = 0; i < values.length; i++) {
       var nuc = values[i];
       if (nuc && nuc !== " ") {
-        if (nuc === "G" || nuc === "T") {
+        if (baseColours.green.includes(nuc)) {
           diversity.green += records[i].get("sequencing_depth");
-        } else if (nuc === "A" || nuc === "C") {
+        }
+        if (baseColours.red.includes(nuc)) {
           diversity.red += records[i].get("sequencing_depth");
+        }
+        if (baseColours.black.includes(nuc)) {
+          diversity.black += records[i].get("sequencing_depth");
         }
       }
     }
-
     return diversity;
   },
 
   renderSummary: function (value, summaryData, dataIndex, meta) {
     var grid = Ext.getCmp("pool-grid");
+    var sequencerChemistry = grid.baseColours.sequencerChemistry;
     var store = grid.getStore();
     var result = "";
     var totalSequencingDepth = 0;
+    meta.tdCls = "summary-colours";
 
-    if (store.getCount() > 1 && (value.green > 0 || value.red > 0)) {
+    if (
+      store.getCount() > 1 &&
+      (value.green > 0 || value.red > 0 || value.black > 0)
+    ) {
       if (dataIndex.split("_")[1] === "i7") {
         // Consider only non empty Index I7 indices
         store.each(function (record) {
@@ -631,12 +967,25 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
         ((value.green / totalSequencingDepth) * 100).toFixed(0)
       );
       var red = parseInt(((value.red / totalSequencingDepth) * 100).toFixed(0));
+      var black = parseInt(
+        ((value.black / totalSequencingDepth) * 100).toFixed(0)
+      );
 
-      result = Ext.String.format("{0}%<br/>{1}%", green, red);
+      if (sequencerChemistry === 4) {
+        result = Ext.String.format("{0}<br/>{1}", green, red);
+      } else if (sequencerChemistry === 2) {
+        result = Ext.String.format("{0}<br/>{1}<br/>{2}", green, red, black);
+      }
 
-      if ((green < 20 && red > 80) || (red < 20 && green > 80)) {
-        meta.tdCls = "problematic-cycle";
-        result += "<br/>!";
+      if (sequencerChemistry !== 0) {
+        if (
+          (green < 20 && red > 80) ||
+          (red < 20 && green > 80) ||
+          black > 80
+        ) {
+          meta.tdCls = "problematic-cycle";
+          result += "<br/>!";
+        }
       }
     }
 

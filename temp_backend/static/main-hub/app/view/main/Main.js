@@ -46,7 +46,7 @@ Ext.define('MainHub.view.main.Main', {
                     xtype: 'component',
                     reference: 'logo',
                     cls: 'main-logo',
-                    html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div class="title">Parkour LIMS</div></div>',
+                    html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div id="header-title" class="title">Parkour LIMS</div></div>',
                     width: 300,
                     // Set the width of this element based on that of the navigationTreeList
                     listeners: { beforerender: function (cmp) { cmp.width = cmp.up().up().down('#navigationTreeList').getWidth() } }

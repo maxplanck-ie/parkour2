@@ -10,9 +10,25 @@ Ext.define("MainHub.model.invoicing.BillingPeriod", {
       name: "value",
       type: "auto",
     },
+  ],
+
+  hasMany: {
+    model: "ReportUrl",
+    name: "report_urls",
+  },
+});
+
+Ext.define("ReportUrl", {
+  extend: "Ext.data.Model",
+  fields: [
     {
-      name: "report_url",
+      name: "organization_id",
+      type: "int",
+    },
+    {
+      name: "url",
       type: "string",
     },
   ],
+  belongsTo: "MainHub.model.invoicing.BillingPeriod",
 });

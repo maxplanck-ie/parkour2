@@ -15,4 +15,8 @@ Ext.define("MainHub.store.flowcell.PoolInfo", {
     limitParam: false, // to remove param "limit"
     noCache: false, // to remove param "_dc"
   },
+
+  extraParams: {
+    asHandler: "False",
+  },
 });

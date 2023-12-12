@@ -8,6 +8,7 @@ from django.conf import settings
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.db.models import Q
 
 from .models import (
     ConcentrationMethod,
@@ -18,6 +19,7 @@ from .models import (
     LibraryType,
     Organism,
     ReadLength,
+    IndexPair
 )
 from .serializers import (
     ConcentrationMethodSerializer,
@@ -28,6 +30,7 @@ from .serializers import (
     LibraryTypeSerializer,
     OrganismSerializer,
     ReadLengthSerializer,
+    IndexPairSerialzer
 )
 
 Request = apps.get_model("request", "Request")
@@ -74,10 +77,37 @@ class OrganismViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 class ReadLengthViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of read lengths."""
 
-    # queryset = ReadLength.objects.all()
-    queryset = ReadLength.objects.filter(archived=False)
     serializer_class = ReadLengthSerializer
 
+    def get_queryset(self):
+
+        request_id = int(self.request.query_params.get("request_id", 0))
+        pool_size_user_id = int(self.request.query_params.get("pool_size_user", 0))
+        set_read_lengths = ReadLength.objects.none()
+
+        try:
+
+            if not (request_id or pool_size_user_id):
+                raise Exception
+
+            # Get reads that have already been added
+            request = Request.objects.filter(id=request_id).first()
+            if request:
+                set_read_length_ids = set(list(request.libraries.values_list('read_length', flat=True)) +
+                                        list(request.samples.values_list('read_length', flat=True)))
+                set_read_lengths = ReadLength.objects.filter(id__in=set_read_length_ids)
+
+            # Filter choices based on sequencing kit selected and lengths already present
+            if pool_size_user_id:
+                choices = ReadLength.objects.filter(pool_size__id=pool_size_user_id, archived=False)
+            else:
+                raise Exception
+
+        except:
+
+            choices = ReadLength.objects.filter(archived=False)
+        
+        return sorted((choices | set_read_lengths).distinct(), key= lambda e: [int(n) for n in e.name.split('x')])
 
 class ReadLengthInvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ReadLength.objects.all().filter(archived=False)
@@ -96,6 +126,23 @@ class IndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 
     queryset = IndexType.objects.filter(archived=False).order_by("name")
     serializer_class = IndexTypeSerializer
+
+
+class IndexPairViewSet(viewsets.ReadOnlyModelViewSet):
+    """Get the list of index pairs."""
+
+    queryset = IndexPair.objects.filter(archived=False)
+    serializer_class = IndexPairSerialzer
+
+    def get_queryset(self):
+        queryset = super(IndexPairViewSet, self).get_queryset()
+        index_type = self.request.query_params.get("index_type_id", None)
+        if index_type is not None:
+            try:
+                queryset = queryset.filter(index_type=index_type)
+            except ValueError:
+                queryset = []
+        return queryset
 
 
 class IndexViewSet(viewsets.ViewSet):
@@ -192,6 +239,7 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
     # TODO: add pagination
     def list(self, request):
         """Get the list of all libraries or samples."""
+        
         data = []
 
         request_id = request.query_params.get("request_id", None)
@@ -206,11 +254,11 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
                 Request.objects.all().filter(archived=False).order_by("-create_time")
             )
 
-        if not request.user.is_staff:
-            if not request.user.is_pi:
-                queryset = request_queryset.filter(user=request.user)
+        if not (self.request.user.is_staff or self.request.user.member_of_bcf):
+            if self.request.user.is_pi:
+                request_queryset = request_queryset.filter(pi=self.request.user)
             else:
-                queryset = retrieve_group_items(request, request_queryset)
+                request_queryset = request_queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
         for request_obj in request_queryset:
             # TODO: sort by item['barcode'][3:]
@@ -361,3 +409,12 @@ class LibrarySampleBaseViewSet(viewsets.ModelViewSet):
 
     def _get_model_name_plural(self):
         return self._get_model()._meta.verbose_name_plural.lower()
+
+    def destroy(self, request, pk=None, *args, **kwargs):
+        # A ripoff of https://stackoverflow.com/a/52700398/4222260
+
+        try:
+            super(LibrarySampleBaseViewSet, self).destroy(request, pk, *args, **kwargs)
+            return Response({"success": True}, 200)
+        except:
+            return Response({"success": False, "message": 'The record could not be deleted.'}, 404)

@@ -1,0 +1,27 @@
+[
+    {
+        "model": "common.user",
+        "pk": null,
+        "fields": {
+            "password": "!MVThzA3O4eCa50RZv2AtXypGlEzjxlNxDahatdTI",
+            "last_login": null,
+            "is_superuser": false,
+            "email": "other.bioinformatician@example.com",
+            "is_staff": false,
+            "is_active": false,
+            "date_joined": "2023-02-27T13:15:33.726Z",
+            "first_name": "Other",
+            "last_name": "(e.g. external, many; specify in Description)",
+            "phone": null,
+            "oidc_id": null,
+            "is_bioinformatician": true,
+            "is_pi": false,
+            "groups": [
+                2
+            ],
+            "user_permissions": [],
+            "pi": [],
+            "cost_unit": []
+        }
+    }
+]

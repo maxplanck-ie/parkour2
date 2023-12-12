@@ -12,7 +12,7 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 
-from .index_generator import IndexGenerator
+from .index_generator import IndexGenerator, check_min_hamming_distance
 from .models import Pool, PoolSize
 from .serializers import (
     IndexGeneratorLibrarySerializer,
@@ -70,7 +70,7 @@ class GeneratorIndexTypeViewSet(MoveOtherMixin, viewsets.ReadOnlyModelViewSet):
 class PoolSizeViewSet(viewsets.ReadOnlyModelViewSet):
     """Get the list of pool sizes."""
 
-    queryset = PoolSize.objects.all().filter(archived=False)
+    queryset = PoolSize.objects.all().filter(archived=False, sequencer__archived=False)
     serializer_class = PoolSizeSerializer
 
 
@@ -147,6 +147,9 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             Prefetch("samples", queryset=samples_qs),
         )
 
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(handler=request.user)
+
         serializer = IndexGeneratorSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         data = sorted(data, key=lambda x: x["barcode"][3:])
@@ -159,6 +162,8 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         samples = json.loads(request.data.get("samples", "[]"))
         start_coord = request.data.get("start_coord", None)
         direction = request.data.get("direction", None)
+        sequencer_chemistry = json.loads(request.data.get("sequencer_chemistry", "{}"))
+        min_hamming_distance =  int(request.data.get("min_hamming_distance", 3))
 
         try:
             index_generator = IndexGenerator(
@@ -166,6 +171,8 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                 samples,
                 start_coord,
                 direction,
+                sequencer_chemistry,
+                min_hamming_distance
             )
             data = index_generator.generate()
         except Exception as e:
@@ -180,8 +187,11 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
         object and a Pooling object for each added library/sample.
         """
         pool_size_id = request.data.get("pool_size_id", None)
+        pool_name = request.data.get("pool_name", "")
+        ignore_errors = True if request.data.get("ignore_errors", False) == 'true' else False
         libraries = json.loads(request.data.get("libraries", "[]"))
         samples = json.loads(request.data.get("samples", "[]"))
+        min_hamming_distance = int(request.data.get("min_hamming_distance", 3))
 
         try:
             if not any(libraries) and not any(samples):
@@ -192,7 +202,9 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             except (ValueError, PoolSize.DoesNotExist):
                 raise ValueError("Invalid Pool Size id.")
 
-            pool = Pool(user=request.user, size=pool_size)
+            pool = Pool(user=request.user,
+                        size=pool_size,
+                        name=pool_name)
             pool.save()
 
             library_ids = [x["pk"] for x in libraries]
@@ -204,6 +216,13 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
             )
             if len(pairs) != len(set(pairs)):
                 raise ValueError("Some of the indices are not unique.")
+            
+            # Check that the minimum Hamming distance is met
+            for idx in ['index_i7', 'index_i5']:
+                indices = [x[idx] for x in libraries + samples]
+                min_hamming_distance = check_min_hamming_distance(set(indices), min_hamming_distance) if not all('' == s for s in indices) else True
+                if not min_hamming_distance:
+                    raise ValueError(f"The required minimum Hamming distance has not been met for {idx.replace('_', '')}")
 
             try:
                 for s in samples:
@@ -224,13 +243,25 @@ class IndexGeneratorViewSet(viewsets.ViewSet, LibrarySampleMultiEditMixin):
                     sample.save(update_fields=["index_i7", "index_i5"])
 
             except ValueError as e:
-                pool.delete()
+                
+                if not ignore_errors:
+                    pool.delete()
                 raise e
 
         except Exception as e:
-            return Response({"success": False, "message": str(e)}, 400)
 
-        pool.libraries.add(*library_ids)
+            # Get error message to check if it arises out of a non unique 
+            # key on saving a pool
+            error_message = e.args[0] if 0 < len(e.args) else ''
+
+            if not ignore_errors or ('unique constraint' and 'index_generator_pool' in error_message):
+                return Response({"success": False, "message": str(e)}, 400)
+            else:
+                pass
+
+        # Add samples before libraries so that in the update_libraries_create_pooling_obj
+        # signal checking for the presence of samples in the pool is meaningful
         pool.samples.add(*sample_ids)
+        pool.libraries.add(*library_ids)
 
         return Response({"success": True})

@@ -15,6 +15,10 @@ Ext.define("MainHub.model.invoicing.Request", {
       type: "auto",
     },
     {
+      name: "pool_size",
+      type: "auto",
+    },
+    {
       name: "flowcell",
       type: "auto",
     },

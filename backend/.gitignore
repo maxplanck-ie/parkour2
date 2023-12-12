@@ -66,3 +66,12 @@ docs/_build/
 # PyCharm
 .idea
 
+# Django
+manage.py
+
+# VS code
+.vscode/
+*.code-workspace
+
+# Others
+.env

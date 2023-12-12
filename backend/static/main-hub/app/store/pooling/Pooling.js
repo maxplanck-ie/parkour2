@@ -26,6 +26,9 @@ Ext.define("MainHub.store.pooling.Pooling", {
       successProperty: "success",
       messageProperty: "message",
     },
+    extraParams: {
+      asHandler: "False",
+    },
     writer: {
       type: "json",
       rootProperty: "data",

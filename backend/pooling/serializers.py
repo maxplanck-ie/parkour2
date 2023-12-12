@@ -38,6 +38,7 @@ class PoolingBaseSerializer(ModelSerializer):
     record_type = SerializerMethodField()
     request = SerializerMethodField()
     request_name = SerializerMethodField()
+    request_pooled_libraries = SerializerMethodField()
     concentration_c1 = SerializerMethodField()
     concentration_library = SerializerMethodField()
     mean_fragment_size = SerializerMethodField()
@@ -55,6 +56,7 @@ class PoolingBaseSerializer(ModelSerializer):
             "barcode",
             "request",
             "request_name",
+            "request_pooled_libraries",
             "sequencing_depth",
             "concentration_c1",
             "concentration_library",
@@ -81,6 +83,9 @@ class PoolingBaseSerializer(ModelSerializer):
 
     def get_request_name(self, obj):
         return self._get_request(obj).get("name", None)
+
+    def get_request_pooled_libraries(self, obj):
+        return self._get_request(obj).get("pooled_libraries", None)
 
     def get_concentration_c1(self, obj):
         pooling_object = self._get_pooling_object(obj)
@@ -188,8 +193,7 @@ class PoolSerializer(ModelSerializer):
         return obj.name
 
     def get_pool_size(self, obj):
-        size = obj.size
-        return f"{size.multiplier}x{size.size}"
+        return str(obj.size)
 
     def get_libraries(self, obj):
         serializer = PoolingLibrarySerializer(

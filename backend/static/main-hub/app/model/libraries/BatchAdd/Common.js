@@ -25,6 +25,37 @@ Ext.define("validator.GreaterThanZero", {
   },
 });
 
+Ext.define("validator.Concentration", {
+  extend: "Ext.data.validator.Validator",
+  alias: "data.validator.concentration",
+  validate: function (value, record) {
+    var isValid = true;
+    var natId = record.get("nucleic_acid_type");
+
+    // If natId is defined, it is a sample
+    // otherwise it is a library
+
+    if (natId) {
+      // Sample
+      var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
+        "id",
+        record.get("nucleic_acid_type")
+      );
+
+      if (nat && !nat.get("single_cell") && value === null) {
+        isValid = false;
+      }
+    } else {
+      // Library
+      if (value === null) {
+        isValid = false;
+      }
+    }
+
+    return isValid || "Must be present";
+  },
+});
+
 Ext.define("MainHub.model.libraries.BatchAdd.Common", {
   extend: "Ext.data.Model",
 
@@ -49,6 +80,11 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       type: "float",
       name: "sequencing_depth",
       defaultValue: null,
+    },
+    {
+      name: "sample_volume_user",
+      type: "float",
+      allowNull: true,
     },
     {
       type: "float",
@@ -84,6 +120,10 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     },
     {
       type: "string",
+      name: "source",
+    },
+    {
+      type: "string",
       name: "comments",
     },
     {
@@ -110,11 +150,12 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     ],
     library_protocol: "presence",
     library_type: "presence",
-    concentration: "presence",
+    concentration: "concentration",
     read_length: "presence",
     sequencing_depth: "greaterthanzero",
-    // amplification_cycles: 'presence',
-    // concentration_method: 'presence',
+    amplification_cycles: "presence",
+    concentration_method: "concentration",
     organism: "presence",
+    source: "presence",
   },
 });

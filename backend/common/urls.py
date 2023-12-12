@@ -27,4 +27,5 @@ urlpatterns = [
         auth_views.PasswordResetConfirmView.as_view(success_url="/login/"),
         name="password_reset_confirm",
     ),
+    path('oidc/', include('mozilla_django_oidc.urls')),
 ]

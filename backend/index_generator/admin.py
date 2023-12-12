@@ -62,6 +62,9 @@ class PoolAdmin(admin.ModelAdmin):
         "size__multiplier",
         "size__size",
     )
+    autocomplete_fields = (
+        "user",
+    )
     list_filter = ("size", ArchivedFilter)
     inlines = [LibraryInline, SampleInline]
     exclude = (
@@ -83,7 +86,9 @@ class PoolAdmin(admin.ModelAdmin):
         queryset.update(archived=False)
 
 
-@admin.register(PoolSize)
+# Do not show in 'main' admin anymore, now used as inline for
+# lane capacity/size of Sequencer
+# @admin.register(PoolSize)
 class PoolSizeAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
     list_filter = (ArchivedFilter,)

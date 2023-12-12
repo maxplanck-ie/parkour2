@@ -8,7 +8,11 @@ from .models import NucleicAcidType, Sample
 
 @admin.register(NucleicAcidType)
 class NucleicAcidTypeAdmin(admin.ModelAdmin):
-    list_display = ("name", "archived")
+    list_display = (
+        "name",
+        "type",
+        "single_cell",
+        "archived")
 
     list_filter = ("type", ArchivedFilter)
 
@@ -84,9 +88,11 @@ class SampleAdmin(admin.ModelAdmin):
                     "library_protocol",
                     "library_type",
                     "nucleic_acid_type",
+                    "sample_volume_user",
                     "concentration",
                     "concentration_method",
                     "organism",
+                    "source",
                     "read_length",
                     "sequencing_depth",
                     "equal_representation_nucleotides",
@@ -95,6 +101,10 @@ class SampleAdmin(admin.ModelAdmin):
                     "index_i5",
                     "rna_quality",
                     "amplification_cycles",
+                    "cell_density",
+                    "cell_viability", 
+                    "starting_number_cells",
+                    "number_targeted_cells",
                     "comments",
                 ),
             },

@@ -1,2 +1,2 @@
 // @tag full-page
-// @require /root/parkour2/backend/static/main-hub/app.js
+// @require /home/nzilio/dev_parkour/parkour/backend/static/main-hub/app.js

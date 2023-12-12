@@ -35,9 +35,59 @@ Ext.define("MainHub.view.requests.Requests", {
             margin: "0 20 0 0",
             items: [
               {
+                name: "asBioinformatician",
+                boxLabel:
+                  '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
+                checked: false,
+                id: "asBioinformatician",
+                margin: "0 15 0 0",
+                cls: "grid-header-checkbox",
+                hidden: !USER.is_bioinformatician,
+                listeners: {
+                  change: function (checkbox, newValue, oldValue, eOpts) {
+                    if (newValue) {
+                      Ext.getStore(
+                        "requestsStore"
+                      ).getProxy().extraParams.asBioinformatician = "True";
+                      Ext.getStore("requestsStore").load();
+                    } else {
+                      Ext.getStore(
+                        "requestsStore"
+                      ).getProxy().extraParams.asBioinformatician = "False";
+                      Ext.getStore("requestsStore").load();
+                    }
+                  },
+                },
+              },
+              {
+                name: "asHandler",
+                boxLabel:
+                  '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+                checked: false,
+                id: "as-handler-requests-checkbox",
+                margin: "0 15 0 0",
+                cls: "grid-header-checkbox",
+                hidden: !USER.is_staff,
+                listeners: {
+                  change: function (checkbox, newValue, oldValue, eOpts) {
+                    if (newValue) {
+                      Ext.getStore(
+                        "requestsStore"
+                      ).getProxy().extraParams.asHandler = "True";
+                      Ext.getStore("requestsStore").load();
+                    } else {
+                      Ext.getStore(
+                        "requestsStore"
+                      ).getProxy().extraParams.asHandler = "False";
+                      Ext.getStore("requestsStore").load();
+                    }
+                  },
+                },
+              },
+              {
                 name: "showAll",
-                boxLabel: "Show all",
-                boxLabelAlign: "before",
+                boxLabel:
+                  '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show All</span>',
                 checked: true,
                 id: "showAll",
 
@@ -85,11 +135,18 @@ Ext.define("MainHub.view.requests.Requests", {
         stripeRows: false,
       },
       store: "requestsStore",
+      plugins: "gridfilters",
       sortableColumns: false,
       enableColumnMove: false,
 
       columns: {
         items: [
+          {
+            text: "ID",
+            dataIndex: "pk",
+            width: 70,
+            minWidth: 70,
+          },
           {
             text: "Name",
             dataIndex: "name",
@@ -98,23 +155,39 @@ Ext.define("MainHub.view.requests.Requests", {
           {
             text: "User",
             dataIndex: "user_full_name",
-            hidden: !USER.is_staff,
+            hidden: !(USER.is_staff || USER.member_of_bcf || USER.is_pi),
             flex: 1,
+          },
+          {
+            text: "PI",
+            dataIndex: "pi_name",
+            hidden: !(USER.is_staff || USER.member_of_bcf),
+            flex: 1,
+          },
+          {
+            text: "Cost Unit",
+            dataIndex: "cost_unit_name",
+            hidden: !(USER.is_staff || USER.member_of_bcf),
+            width: 80,
+            width: 80,
           },
           {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer("d.m.Y"),
-            flex: 1,
+            width: 100,
+            minWidth: 100,
           },
           {
-            text: "Total Sequencing Depth (M)",
+            text: "Total seq. depth (M)",
             dataIndex: "total_sequencing_depth",
-            flex: 1,
+            width: 150,
+            minWidth: 150,
           },
           {
             text: "Description",
             dataIndex: "description",
+            hidden: true,
             flex: 1,
             renderer: function (value, meta) {
               var val = Ext.util.Format.htmlEncode(value);
@@ -123,9 +196,16 @@ Ext.define("MainHub.view.requests.Requests", {
             },
           },
           {
-            text: "Number of samples and libraries",
+            text: "# samples/libraries",
             dataIndex: "number_of_samples",
+            width: 140,
+            minWidth: 140,
+          },
+          {
+            text: "Handler",
+            dataIndex: "handler_name",
             flex: 1,
+            hidden: !(USER.is_staff || USER.member_of_bcf),
           },
         ],
       },
@@ -133,7 +213,11 @@ Ext.define("MainHub.view.requests.Requests", {
         // Open Request Window by double clicking row
         itemdblclick: function (dv, record, item, index, e) {
           Ext.create("MainHub.view.requests.RequestWindow", {
-            title: record.get("name"),
+            title: Ext.String.format(
+              "{0} - {1}",
+              record.get("pk"),
+              record.get("name")
+            ),
             mode: "edit",
             record: record,
           }).show();

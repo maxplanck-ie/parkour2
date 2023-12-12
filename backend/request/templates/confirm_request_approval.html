@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        body {
+            background: url("{% static 'images/login-page-background.jpg' %}") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
+        }
+    </style>
+{% endblock css %}
+
+{% block extrahead %}
+<script>
+    setTimeout(function(){
+       window.location.href = '/';
+    }, 5000);
+ </script>
+{% endblock extrahead %}
+
+{% block title %}Parkour LIMS | Login{% endblock title %}
+
+{% block content %}
+
+
+<div id="login-form" class="form-signin">
+    <h2 class="form-signin-heading">Parkour</h2>
+    <h4>The request has been approved</h4>
+    <p style="padding-top:20px">If you are not automatically redirected to your account in 5 s, click <a href="'/">here!</a></p>
+
+</div>
+
+{% endblock %}

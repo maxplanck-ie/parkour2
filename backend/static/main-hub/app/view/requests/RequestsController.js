@@ -48,7 +48,11 @@ Ext.define("MainHub.view.requests.RequestsController", {
           text: "View",
           handler: function () {
             Ext.create("MainHub.view.requests.RequestWindow", {
-              title: record.get("name"),
+              title: Ext.String.format(
+                "{0} - {1}",
+                record.get("pk"),
+                record.get("name")
+              ),
               mode: "edit",
               record: record,
             }).show();
@@ -75,37 +79,50 @@ Ext.define("MainHub.view.requests.RequestsController", {
           },
         },
         "-",
+        // {
+        //   text: 'Download Request Form',
+        //   tooltip: 'Download deep sequencing request form',
+        //   disabled: !(deepSeqReqPath === ''),
+        //   handler: function () {
+        //     var url = Ext.String.format(
+        //       'api/requests/{0}/download_deep_sequencing_request/', requestId
+        //     );
+        //     var downloadForm = Ext.create('Ext.form.Panel', { standardSubmit: true });
+        //     downloadForm.submit({ url: url, method: 'GET' });
+        //   }
+        // },
+        // {
+        //   text: 'Upload Signed Request',
+        //   tooltip: 'Upload signed request form to complete the submission',
+        //   disabled: !(deepSeqReqPath === ''),
+        //   handler: function () {
+        //     me.uploadSignedRequest(requestId);
+        //   }
+        // },
         {
-          text: "Solicite Approval via Email",
-          hidden: !USER.paperless_approval,
+          text: "Request approval from PI",
+          hidden: USER.is_pi || deepSeqReqPath !== "",
+          disabled: !(deepSeqReqPath === ""),
           handler: function () {
-            Ext.create("MainHub.view.requests.TokenWindow", {
-              title: "New Email for Approval Solicitation",
-              record: record,
-            });
+            me.requestApproval(record, "False");
           },
         },
         {
-          text: "Download Request Form",
-          tooltip: "Download deep sequencing request form",
+          text: deepSeqReqPath === "" ? "Approve" : "Approved",
+          hidden: !(USER.is_pi || USER.is_staff) && deepSeqReqPath === "",
           disabled: !(deepSeqReqPath === ""),
           handler: function () {
-            var url = Ext.String.format(
-              "api/requests/{0}/download_deep_sequencing_request/",
-              requestId
-            );
-            var downloadForm = Ext.create("Ext.form.Panel", {
-              standardSubmit: true,
+            Ext.Msg.show({
+              title: "Approve request",
+              message: "Are you sure you want to approve this request?",
+              buttons: Ext.Msg.YESNO,
+              icon: Ext.Msg.QUESTION,
+              fn: function (btn) {
+                if (btn === "yes") {
+                  me.approve(record, "False");
+                }
+              },
             });
-            downloadForm.submit({ url: url, method: "GET" });
-          },
-        },
-        {
-          text: "Upload Signed Request",
-          tooltip: "Upload signed request form to complete the submission",
-          disabled: !(deepSeqReqPath === ""),
-          handler: function () {
-            me.uploadSignedRequest(requestId);
           },
         },
         {
@@ -153,7 +170,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         },
         {
           text: "Mark as complete",
-          hidden: !USER.is_staff,
+          hidden: !(USER.is_staff || USER.member_of_bcf),
           handler: function () {
             Ext.Msg.show({
               title: "Mark request as complete",
@@ -216,7 +233,90 @@ Ext.define("MainHub.view.requests.RequestsController", {
       },
 
       failure: function (response) {
-        new Noty({ text: response.statusText, type: "error" }).show();
+        var responseText = response.responseText
+          ? Ext.JSON.decode(response.responseText)
+          : null;
+        responseText = responseText.message
+          ? responseText.message
+          : "Unknown error.";
+        responseText = response.statusText ? response.statusText : responseText;
+        new Noty({ text: responseText, type: "error" }).show();
+        console.error(response);
+      },
+    });
+  },
+
+  approve: function (record, admin_override) {
+    var me = this;
+    Ext.Ajax.request({
+      url: Ext.String.format("api/requests/{0}/approve/", record.get("pk")),
+      method: "GET",
+      scope: me,
+      params: {
+        data: Ext.JSON.encode({
+          override: admin_override,
+        }),
+      },
+      success: function (response) {
+        var obj = Ext.JSON.decode(response.responseText);
+
+        if (obj.success) {
+          Ext.getStore("requestsStore").reload();
+          new Noty({ text: "Request has been approved" }).show();
+        } else {
+          var message = obj.error ? obj.error : "Unknown error.";
+          new Noty({ text: message, type: "error" }).show();
+        }
+      },
+
+      failure: function (response) {
+        var responseText = response.responseText
+          ? Ext.JSON.decode(response.responseText)
+          : null;
+        responseText = responseText.message
+          ? responseText.message
+          : "Unknown error.";
+        responseText = response.statusText ? response.statusText : responseText;
+        new Noty({ text: responseText, type: "error" }).show();
+        console.error(response);
+      },
+    });
+  },
+
+  requestApproval: function (record, admin_override) {
+    var me = this;
+    Ext.Ajax.request({
+      url: Ext.String.format(
+        "api/requests/{0}/request_approval/",
+        record.get("pk")
+      ),
+      method: "GET",
+      scope: me,
+      params: {
+        data: Ext.JSON.encode({
+          override: admin_override,
+        }),
+      },
+      success: function (response) {
+        var obj = Ext.JSON.decode(response.responseText);
+
+        if (obj.success) {
+          Ext.getStore("requestsStore").reload();
+          new Noty({ text: "Approval has been successfully requested" }).show();
+        } else {
+          new Noty({ text: obj.message, type: "error" }).show();
+        }
+      },
+
+      failure: function (response) {
+        var responseText = response.responseText
+          ? Ext.JSON.decode(response.responseText)
+          : null;
+        responseText = responseText.message
+          ? responseText.message
+          : "Unknown error.";
+        responseText = response.statusText ? response.statusText : responseText;
+        new Noty({ text: responseText, type: "error" }).show();
         console.error(response);
       },
     });
@@ -233,14 +333,15 @@ Ext.define("MainHub.view.requests.RequestsController", {
 
         if (obj.success) {
           Ext.getStore("requestsStore").reload();
-          new Noty({ text: "Request has been deleted!" }).show();
+          new Noty({ text: "The request has been deleted!" }).show();
         } else {
           new Noty({ text: obj.message, type: "error" }).show();
         }
       },
 
       failure: function (response) {
-        new Noty({ text: response.statusText, type: "error" }).show();
+        var obj = Ext.JSON.decode(response.responseText);
+        new Noty({ text: obj.message, type: "error" }).show();
         console.error(response);
       },
     });

@@ -26,6 +26,7 @@ class IncomingLibrariesViewSet(LibrarySampleMultiEditMixin, viewsets.ViewSet):
 
     def list(self, request):
         """Get the list of all incoming libraries and samples."""
+
         libraries_qs = Library.objects.select_related(
             "library_protocol",
             "concentration_method",
@@ -44,6 +45,9 @@ class IncomingLibrariesViewSet(LibrarySampleMultiEditMixin, viewsets.ViewSet):
             )
             .order_by("-create_time")
         )
+
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(handler=request.user)
 
         serializer = RequestSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))

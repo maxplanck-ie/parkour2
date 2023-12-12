@@ -26,6 +26,9 @@ Ext.define("MainHub.store.indexgenerator.IndexGenerator", {
       successProperty: "success",
       messageProperty: "error",
     },
+    extraParams: {
+      asHandler: "False",
+    },
     writer: {
       type: "json",
       rootProperty: "data",

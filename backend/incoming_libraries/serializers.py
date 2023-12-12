@@ -1,4 +1,5 @@
 from django.apps import apps
+from django.utils import timezone
 from rest_framework.serializers import (
     CharField,
     IntegerField,
@@ -20,6 +21,7 @@ class BaseListSerializer(ListSerializer):
 
         # Perform updates
         ret = []
+        requests = Request.objects.none()
         for obj_id, data in data_mapping.items():
             obj = object_mapping.get(obj_id, None)
             if obj is not None:
@@ -30,7 +32,14 @@ class BaseListSerializer(ListSerializer):
                         obj.status = -2
                     elif data["quality_check"] == "failed":
                         obj.status = -1
+                requests = requests | obj.request.all()
                 ret.append(self.child.update(obj, data))
+        
+        # Set request submitted time, if it wasn't set
+        # before moving them to the next stage
+        requests.filter(samples_submitted_time__isnull=True).distinct().\
+                 update(samples_submitted_time=timezone.now())
+        
         return ret
 
 
@@ -48,6 +57,7 @@ class BaseSerializer(ModelSerializer):
             "barcode",
             "record_type",
             "library_protocol",
+            "sample_volume_user",
             "concentration",
             "concentration_method",
             "dilution_factor",
@@ -65,6 +75,7 @@ class BaseSerializer(ModelSerializer):
             "name": {"required": False},
             "barcode": {"required": False},
             "library_protocol": {"required": False},
+            "sample_volume_user": {"required": False},
             "concentration": {"required": False},
             "concentration_method": {"required": False},
             "sequencing_depth": {"required": False},
@@ -131,6 +142,7 @@ class RequestSerializer(ModelSerializer):
             "samples_submitted",
             "libraries",
             "samples",
+            "pooled_libraries"
         )
 
     def get_request(self, obj):
@@ -155,6 +167,7 @@ class RequestSerializer(ModelSerializer):
                                 "request": data["request"],
                                 "request_name": data["request_name"],
                                 "samples_submitted": data["samples_submitted"],
+                                "pooled_libraries": data['pooled_libraries'],
                             },
                             **x,
                         },

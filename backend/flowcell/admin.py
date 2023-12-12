@@ -2,6 +2,7 @@ from common.admin import ArchivedFilter
 from django.conf import settings
 from django.contrib import admin
 from flowcell.models import Flowcell, Sequencer
+from index_generator.models import PoolSize
 
 
 class LaneInline(admin.TabularInline):
@@ -54,9 +55,18 @@ class LaneInline(admin.TabularInline):
         return False
 
 
+class PoolSizeInline(admin.TabularInline):
+    model = PoolSize
+    fields = ('lanes', 'size', 'cycles', 'read_lengths', 'archived',)
+    ordering = ('lanes', 'size', 'cycles',)
+    autocomplete_fields = ('read_lengths',)
+    extra = 1
+    verbose_name = 'Sequencing kit' # PoolSize as Sequencing kit
+    verbose_name_plural = 'Sequencing kits'
+
 @admin.register(Sequencer)
 class SequencerAdmin(admin.ModelAdmin):
-    list_display = ("name", "lanes", "lane_capacity", "archived")
+    list_display = ("name", "archived")
 
     list_filter = (ArchivedFilter,)
 
@@ -64,6 +74,7 @@ class SequencerAdmin(admin.ModelAdmin):
         "mark_as_archived",
         "mark_as_non_archived",
     )
+    inlines = [PoolSizeInline]
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
@@ -76,9 +87,12 @@ class SequencerAdmin(admin.ModelAdmin):
 
 @admin.register(Flowcell)
 class FlowcellAdmin(admin.ModelAdmin):
-    list_display = ("flowcell_id", "sequencer", "archived")
-    # search_fields = ('flowcell_id', 'sequencer',)
-    list_filter = ("sequencer", ArchivedFilter)
+    list_display = (
+        "flowcell_id",
+        "pool_size",
+        "archived"
+    )
+    list_filter = ("pool_size", ArchivedFilter)
     exclude = (
         "lanes",
         "requests",

@@ -49,7 +49,7 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
   plugins: [
     {
       ptype: "rowediting",
-      clicksToEdit: 1,
+      clicksToEdit: 2,
     },
   ],
 });

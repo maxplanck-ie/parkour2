@@ -18,7 +18,7 @@ class RunsSerializer(ModelSerializer):
         )
 
     def get_sequencer(self, obj):
-        return obj.sequencer.name
+        return obj.pool_size.sequencer.name
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -82,7 +82,7 @@ class SequencesSerializer(ModelSerializer):
         )
 
     def get_sequencer(self, obj):
-        return obj.sequencer.name
+        return obj.pool_size.sequencer.name
 
     def to_representation(self, instance):
         data = super().to_representation(instance)

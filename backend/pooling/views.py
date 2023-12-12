@@ -37,6 +37,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     sample_model = Sample
     library_serializer = PoolingLibrarySerializer
     sample_serializer = PoolingSampleSerializer
+    serializer_class = PoolSerializer
 
     def get_queryset(self):
         libraries_qs = (
@@ -104,6 +105,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             .values(
                 "pk",
                 "name",
+                "pooled_libraries",
                 "libraries__id",
                 "samples__id",
             )
@@ -116,6 +118,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 requests_map[item["libraries__id"], "Library"] = {
                     "pk": item["pk"],
                     "name": item["name"],
+                    "pooled_libraries": item["pooled_libraries"],
                 }
             if item["samples__id"]:
                 requests_map[item["samples__id"], "Sample"] = {
@@ -190,6 +193,8 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     def list(self, request):
         """Get the list of all pooling objects."""
         queryset = self.get_queryset()
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(Q(libraries__request__handler=request.user) | Q(samples__request__handler=request.user))
         serializer = PoolSerializer(
             queryset, many=True, context=self.get_context(queryset)
         )

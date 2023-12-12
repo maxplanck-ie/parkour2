@@ -18,6 +18,11 @@ Ext.define("MainHub.store.statistics.Sequences", {
     noCache: false, // to remove param "_dc",
   },
 
+  extraParams: {
+    asHandler: "False",
+    asBioinformatician: "False",
+  },
+
   getId: function () {
     return "SequencesStatistics";
   },
