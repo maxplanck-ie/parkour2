@@ -36,7 +36,7 @@ Ext.define("MainHub.view.requests.Requests", {
             items: [
               {
                 name: "showAll",
-                boxLabel: "Show all",
+                boxLabel: "Show All",
                 boxLabelAlign: "before",
                 checked: true,
                 id: "showAll",
