@@ -34,6 +34,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             xtype: "button",
             itemId: "load-button",
             text: "Load",
+            iconCls: "x-fa fa-plus",
+            style: {
+              border: "1px solid #ffffffbe !important",
+            },
           },
         ],
       },

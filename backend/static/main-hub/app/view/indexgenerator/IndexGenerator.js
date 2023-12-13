@@ -41,6 +41,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               forceSelection: true,
               cls: "panel-header-combobox",
               emptyText: "Pool Size",
+              editable: false,
               width: 110,
             },
           ],
