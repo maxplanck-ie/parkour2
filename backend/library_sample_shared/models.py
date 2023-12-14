@@ -354,6 +354,7 @@ class GenericLibrarySample(DateTimeMixin):
         ConcentrationMethod,
         verbose_name="Concentration Method",
         on_delete=models.SET(get_removed_concentrationmethod),
+        null=True
     )
 
     equal_representation_nucleotides = models.BooleanField(
