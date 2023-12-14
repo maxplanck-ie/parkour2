@@ -797,15 +797,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     this.validateRecord(record);
 
     // Reset indexReadsStore, before refreshing view
-    var indexReadsStore = Ext.getCmp("indexReadsEditor").getStore();
-    indexReadsStore.removeAll();
-    indexReadsStore.add([
-      { num: 0, label: "None" },
-      { num: 7, label: "I7 only" },
-      { num: 5, label: "I5 only" },
-      { num: 75, label: "I7 + I5" },
-      { num: 752, label: "I7 + I5 (Pair/UDI)" },
-    ]);
+    if (Ext.getCmp("indexReadsEditor")) {
+      var indexReadsStore = Ext.getCmp("indexReadsEditor").getStore();
+      indexReadsStore.removeAll();
+      indexReadsStore.add([
+        { num: 0, label: "None" },
+        { num: 7, label: "I7 only" },
+        { num: 5, label: "I5 only" },
+        { num: 75, label: "I7 + I5" },
+        { num: 752, label: "I7 + I5 (Pair/UDI)" },
+      ]);
+    }
 
     grid.getView().refresh();
   },
