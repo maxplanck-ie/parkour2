@@ -164,7 +164,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     if (request && request.invoice_date) {
       var invoiceDate = new Date(request.invoice_date);
       var invoiceDateBox = wnd.down("#invoice-date");
-      invoiceDateBox.setValue(Ext.Date.format(invoiceDate, "d.m.Y"));
+      invoiceDateBox.setValue(invoiceDate);
     }
 
     // Reload Read Lengths for specific request
