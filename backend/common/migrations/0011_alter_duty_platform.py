@@ -4,15 +4,23 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('common', '0010_principalinvestigator_email'),
+        ("common", "0010_principalinvestigator_email"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='duty',
-            name='platform',
-            field=models.CharField(choices=[('short', 'Short'), ('long', 'Long'), ('shortlong', 'Short + Long')], default='short', max_length=15, verbose_name='Platform'),
+            model_name="duty",
+            name="platform",
+            field=models.CharField(
+                choices=[
+                    ("short", "Short"),
+                    ("long", "Long"),
+                    ("shortlong", "Short + Long"),
+                ],
+                default="short",
+                max_length=15,
+                verbose_name="Platform",
+            ),
         ),
     ]
