@@ -134,10 +134,64 @@ Ext.define("MainHub.view.libraries.Libraries", {
             ],
           },
           {
-            xtype: "textfield",
-            itemId: "searchField",
+            xtype: "combobox",
+            id: "statusCombobox",
+            itemId: "statusCombobox",
+            queryMode: "local",
+            displayField: "name",
+            valueField: "id",
+            cls: "panel-header-combobox",
+            emptyText: "Status",
+            width: 110,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 200,
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: Ext.create("Ext.data.Store", {
+              fields: ["id", "name"],
+              data: [
+                { id: "all", name: "All" },
+                { id: "quality-check-failed", name: "Quality Check Failed" },
+                {
+                  id: "quality-check-compromised",
+                  name: "Quality Check Compromised",
+                },
+                {
+                  id: "quality-check-approved",
+                  name: "Quality Check Approved",
+                },
+                { id: "pending-submission", name: "Pending Submission" },
+                { id: "submission-completed", name: "Submission Completed" },
+                { id: "library-prepared", name: "Library Prepared" },
+                { id: "library-pooled", name: "Library Pooled" },
+                { id: "sequencing", name: "Sequencing" },
+                { id: "completed", name: "Completed" },
+              ],
+            }),
+            listeners: {
+              change: function (combo, newValue, oldValue, eOpts) {
+                console.log("Selected value:", newValue);
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField)
+                ).width;
+                combo.setWidth(textWidth + 55);
+              },
+            },
+          },
+          {
+            xtype: "parkoursearchfield",
+            itemId: "search-field",
             emptyText: "Search",
-            width: 200,
+            width: 250,
+            listeners: {
+              change: function (newValue, oldValue) {
+                console.log("Selected value:", newValue.value);
+              },
+            },
           },
         ],
       },

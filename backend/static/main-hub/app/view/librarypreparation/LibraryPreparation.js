@@ -23,10 +23,10 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
         title: "Preparation",
         items: [
           {
-            xtype: "textfield",
+            xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 200,
+            width: 250,
           },
         ],
       },
