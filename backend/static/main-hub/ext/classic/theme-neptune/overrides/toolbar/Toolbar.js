@@ -1,6 +1,6 @@
-Ext.define('Ext.theme.neptune.toolbar.Toolbar', {
-    override: 'Ext.toolbar.Toolbar',
+Ext.define("Ext.theme.neptune.toolbar.Toolbar", {
+  override: "Ext.toolbar.Toolbar",
 
-    usePlainButtons: false,
-    border: false
+  usePlainButtons: false,
+  border: false,
 });

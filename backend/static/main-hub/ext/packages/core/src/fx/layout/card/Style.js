@@ -1,112 +1,108 @@
 /**
  * @private
  */
-Ext.define('Ext.fx.layout.card.Style', {
+Ext.define("Ext.fx.layout.card.Style", {
+  extend: "Ext.fx.layout.card.Abstract",
 
-    extend: 'Ext.fx.layout.card.Abstract',
+  requires: ["Ext.fx.Animation"],
 
-    requires: [
-        'Ext.fx.Animation'
-    ],
-
-    config: {
-        inAnimation: {
-            before: {
-                visibility: null
-            },
-            preserveEndState: false,
-            replacePrevious: true
-        },
-
-        outAnimation: {
-            preserveEndState: false,
-            replacePrevious: true
-        }
+  config: {
+    inAnimation: {
+      before: {
+        visibility: null,
+      },
+      preserveEndState: false,
+      replacePrevious: true,
     },
 
-    constructor: function(config) {
-        var inAnimation, outAnimation;
-
-        this.callParent([config]);
-
-        this.endAnimationCounter = 0;
-
-        inAnimation = this.getInAnimation();
-        outAnimation = this.getOutAnimation();
-
-        inAnimation.on('animationend', 'incrementEnd', this);
-        outAnimation.on('animationend', 'incrementEnd', this);
+    outAnimation: {
+      preserveEndState: false,
+      replacePrevious: true,
     },
+  },
 
-    updateDirection: function(direction) {
-        this.getInAnimation().setDirection(direction);
-        this.getOutAnimation().setDirection(direction);
-    },
+  constructor: function (config) {
+    var inAnimation, outAnimation;
 
-    updateDuration: function(duration) {
-        this.getInAnimation().setDuration(duration);
-        this.getOutAnimation().setDuration(duration);
-    },
+    this.callParent([config]);
 
-    updateReverse: function(reverse) {
-        this.getInAnimation().setReverse(reverse);
-        this.getOutAnimation().setReverse(reverse);
-    },
+    this.endAnimationCounter = 0;
 
-    incrementEnd: function() {
-        this.endAnimationCounter++;
+    inAnimation = this.getInAnimation();
+    outAnimation = this.getOutAnimation();
 
-        if (this.endAnimationCounter > 1) {
-            this.endAnimationCounter = 0;
-            this.fireEvent('animationend', this);
-        }
-    },
+    inAnimation.on("animationend", "incrementEnd", this);
+    outAnimation.on("animationend", "incrementEnd", this);
+  },
 
-    applyInAnimation: function(animation, inAnimation) {
-        return Ext.factory(animation, Ext.fx.Animation, inAnimation);
-    },
+  updateDirection: function (direction) {
+    this.getInAnimation().setDirection(direction);
+    this.getOutAnimation().setDirection(direction);
+  },
 
-    applyOutAnimation: function(animation, outAnimation) {
-        return Ext.factory(animation, Ext.fx.Animation, outAnimation);
-    },
+  updateDuration: function (duration) {
+    this.getInAnimation().setDuration(duration);
+    this.getOutAnimation().setDuration(duration);
+  },
 
-    updateInAnimation: function(animation) {
-        animation.setScope(this);
-    },
+  updateReverse: function (reverse) {
+    this.getInAnimation().setReverse(reverse);
+    this.getOutAnimation().setReverse(reverse);
+  },
 
-    updateOutAnimation: function(animation) {
-        animation.setScope(this);
-    },
+  incrementEnd: function () {
+    this.endAnimationCounter++;
 
-    onActiveItemChange: function(cardLayout, newItem, oldItem, controller) {
-        var inElement, outElement,
-            inAnimation, outAnimation;
-
-        if (newItem && oldItem && oldItem.isPainted()) {
-            inAnimation = this.getInAnimation();
-            outAnimation = this.getOutAnimation();
-            
-            inElement = newItem.renderElement;
-            outElement = oldItem.renderElement;
-
-            inAnimation.setElement(inElement);
-            outAnimation.setElement(outElement);
-
-            outAnimation.setOnEnd(function() {
-                controller.resume();
-            });
-
-            inElement.dom.style.setProperty('visibility', 'hidden', 'important');
-            newItem.show();
-
-            Ext.Animator.run([outAnimation, inAnimation]);
-            controller.pause();
-        }
-    },
-
-    destroy:  function () {
-        Ext.destroy(this.getInAnimation(), this.getOutAnimation());
-
-        this.callParent();
+    if (this.endAnimationCounter > 1) {
+      this.endAnimationCounter = 0;
+      this.fireEvent("animationend", this);
     }
+  },
+
+  applyInAnimation: function (animation, inAnimation) {
+    return Ext.factory(animation, Ext.fx.Animation, inAnimation);
+  },
+
+  applyOutAnimation: function (animation, outAnimation) {
+    return Ext.factory(animation, Ext.fx.Animation, outAnimation);
+  },
+
+  updateInAnimation: function (animation) {
+    animation.setScope(this);
+  },
+
+  updateOutAnimation: function (animation) {
+    animation.setScope(this);
+  },
+
+  onActiveItemChange: function (cardLayout, newItem, oldItem, controller) {
+    var inElement, outElement, inAnimation, outAnimation;
+
+    if (newItem && oldItem && oldItem.isPainted()) {
+      inAnimation = this.getInAnimation();
+      outAnimation = this.getOutAnimation();
+
+      inElement = newItem.renderElement;
+      outElement = oldItem.renderElement;
+
+      inAnimation.setElement(inElement);
+      outAnimation.setElement(outElement);
+
+      outAnimation.setOnEnd(function () {
+        controller.resume();
+      });
+
+      inElement.dom.style.setProperty("visibility", "hidden", "important");
+      newItem.show();
+
+      Ext.Animator.run([outAnimation, inAnimation]);
+      controller.pause();
+    }
+  },
+
+  destroy: function () {
+    Ext.destroy(this.getInAnimation(), this.getOutAnimation());
+
+    this.callParent();
+  },
 });

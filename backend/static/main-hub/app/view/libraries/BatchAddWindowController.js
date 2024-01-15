@@ -282,7 +282,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           else if (dataIndex === "rna_quality") {
             var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
               "id",
-              item.get("nucleic_acid_type")
+              item.get("nucleic_acid_type"),
             );
 
             if (nat && nat.get("type") === "RNA") {
@@ -332,14 +332,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           indexTypeEditor.fireEvent(
             "select",
             indexTypeEditor,
-            indexTypeEditor.findRecordByValue(record.get("index_type"))
+            indexTypeEditor.findRecordByValue(record.get("index_type")),
           );
 
           // Toggle IndexI7 and IndexI5
           indexReadsEditor.fireEvent(
             "select",
             indexReadsEditor,
-            indexReadsEditor.findRecordByValue(record.get("index_reads"))
+            indexReadsEditor.findRecordByValue(record.get("index_reads")),
           );
         } else {
           indexI7Editor.disable();
@@ -372,7 +372,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       // Toggle RNA Quality
       var nat = nucleicAcidTypesStore.findRecord(
         "id",
-        record.get("nucleic_acid_type")
+        record.get("nucleic_acid_type"),
       );
       if (nat && nat.get("type") === "RNA") {
         rnaQualityEditor.enable();
@@ -415,7 +415,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     // Reset RNA Quality if Nucleic Acid Type has changed
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
-      record.get("nucleic_acid_type")
+      record.get("nucleic_acid_type"),
     );
     if (
       nat !== null &&
@@ -611,7 +611,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             "Ext.XTemplate",
             '<tpl for=".">',
             "{index}",
-            "</tpl>"
+            "</tpl>",
           ),
           valueField: "index",
           store: "indexI7Store",
@@ -637,7 +637,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             "Ext.XTemplate",
             '<tpl for=".">',
             "{index}",
-            "</tpl>"
+            "</tpl>",
           ),
           valueField: "index",
           store: "indexI5Store",
@@ -964,7 +964,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     } else {
       url = Ext.String.format(
         "api/requests/{0}/edit/",
-        requestWnd.record.get("pk")
+        requestWnd.record.get("pk"),
       );
     }
 

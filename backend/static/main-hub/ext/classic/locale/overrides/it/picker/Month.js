@@ -1,6 +1,6 @@
 Ext.define("Ext.locale.it.picker.Month", {
-    override: "Ext.picker.Month",
+  override: "Ext.picker.Month",
 
-    okText: 'OK',
-    cancelText: 'Annulla'
+  okText: "OK",
+  cancelText: "Annulla",
 });

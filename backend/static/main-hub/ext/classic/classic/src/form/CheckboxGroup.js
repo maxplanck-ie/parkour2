@@ -16,9 +16,9 @@
  *
  * The default layout for CheckboxGroup makes it easy to arrange the checkboxes into
  * columns; see the {@link #columns} and {@link #vertical} config documentation for details. You may also
- * use a completely different layout by setting the {@link #cfg-layout} to one of the 
- * other supported layout types; for instance you may wish to use a custom arrangement 
- * of hbox and vbox containers. In that case the checkbox components at any depth will 
+ * use a completely different layout by setting the {@link #cfg-layout} to one of the
+ * other supported layout types; for instance you may wish to use a custom arrangement
+ * of hbox and vbox containers. In that case the checkbox components at any depth will
  * still be managed by the CheckboxGroup's validation.
  *
  *     @example
@@ -45,9 +45,11 @@
  *         }]
  *     });
  */
-Ext.define('Ext.form.CheckboxGroup', {
-    extend:'Ext.form.FieldContainer',
-    xtype: 'checkboxgroup',
+Ext.define(
+  "Ext.form.CheckboxGroup",
+  {
+    extend: "Ext.form.FieldContainer",
+    xtype: "checkboxgroup",
 
     /**
      * @property {Boolean} isCheckboxGroup
@@ -58,13 +60,13 @@ Ext.define('Ext.form.CheckboxGroup', {
     isCheckboxGroup: true,
 
     mixins: {
-        field: 'Ext.form.field.Field'
+      field: "Ext.form.field.Field",
     },
-    
+
     requires: [
-        'Ext.layout.container.CheckboxGroup',
-        'Ext.form.field.Checkbox',
-        'Ext.form.field.Base'
+      "Ext.layout.container.CheckboxGroup",
+      "Ext.form.field.Checkbox",
+      "Ext.form.field.Base",
     ],
 
     /**
@@ -91,7 +93,7 @@ Ext.define('Ext.form.CheckboxGroup', {
      *   values will be calculated as a percentage of the remaining space. Float values do not have to add up to 1
      *   (100%) although if you want the controls to take up the entire field container you should do so.
      */
-    columns : 'auto',
+    columns: "auto",
 
     /**
      * @cfg {Boolean} vertical
@@ -100,95 +102,100 @@ Ext.define('Ext.form.CheckboxGroup', {
      * columns as even as possible. The default value is false, so that controls will be added to columns one at a time,
      * completely filling each row left to right before starting on the next row.
      */
-    vertical : false,
+    vertical: false,
 
     /**
      * @cfg {Boolean} allowBlank
      * False to validate that at least one item in the group is checked. If no items are selected at
      * validation time, {@link #blankText} will be used as the error text.
      */
-    allowBlank : true,
+    allowBlank: true,
 
     //<locale>
     /**
      * @cfg {String} blankText
      * Error text to display if the {@link #allowBlank} validation fails
      */
-    blankText : "You must select at least one item in this group",
+    blankText: "You must select at least one item in this group",
     //</locale>
 
-    defaultType : 'checkboxfield',
+    defaultType: "checkboxfield",
 
-    defaultBindProperty: 'value',
-
-    /**
-     * @private
-     */
-    groupCls : Ext.baseCSSPrefix + 'form-check-group',
+    defaultBindProperty: "value",
 
     /**
      * @private
      */
-    extraFieldBodyCls: Ext.baseCSSPrefix + 'form-checkboxgroup-body',
+    groupCls: Ext.baseCSSPrefix + "form-check-group",
 
-    layout: 'checkboxgroup',
+    /**
+     * @private
+     */
+    extraFieldBodyCls: Ext.baseCSSPrefix + "form-checkboxgroup-body",
 
-    componentCls: Ext.baseCSSPrefix + 'form-checkboxgroup',
-    
-    ariaRole: 'group',
-    ariaEl: 'containerEl',
+    layout: "checkboxgroup",
+
+    componentCls: Ext.baseCSSPrefix + "form-checkboxgroup",
+
+    ariaRole: "group",
+    ariaEl: "containerEl",
 
     // containerEl is a div, it cannot be referenced by a <label for="...">
     // We set aria-labelledby on the containerEl instead
     skipLabelForAttribute: true,
-    
+
     // Checkbox and radio groups start as valid
     ariaRenderAttributes: {
-        'aria-invalid': false
+      "aria-invalid": false,
     },
 
-    initComponent: function() {
-        var me = this;
-        
-        me.name = me.name || me.id;
-        
-        me.callParent();
-        me.initField();
+    initComponent: function () {
+      var me = this;
+
+      me.name = me.name || me.id;
+
+      me.callParent();
+      me.initField();
     },
-    
-    initRenderData: function() {
-        var me = this,
-            data, ariaAttr, boxes, i, len, ids;
-        
-        data = me.callParent();
-        
-        // ariaEl is yet a string
-        data.inputId = me.id + '-' + me.ariaEl;
-        
-        ariaAttr = data.ariaAttributes;
-        
-        if (ariaAttr) {
-            if (!ariaAttr['aria-labelledby']) {
-                ariaAttr['aria-labelledby'] = me.id + '-labelTextEl';
-            }
+
+    initRenderData: function () {
+      var me = this,
+        data,
+        ariaAttr,
+        boxes,
+        i,
+        len,
+        ids;
+
+      data = me.callParent();
+
+      // ariaEl is yet a string
+      data.inputId = me.id + "-" + me.ariaEl;
+
+      ariaAttr = data.ariaAttributes;
+
+      if (ariaAttr) {
+        if (!ariaAttr["aria-labelledby"]) {
+          ariaAttr["aria-labelledby"] = me.id + "-labelTextEl";
         }
-        
-        return data;
+      }
+
+      return data;
     },
-    
+
     /**
      * Initializes the field's value based on the initial config. If the {@link #value} config is specified then we use
      * that to set the value; otherwise we initialize the originalValue by querying the values of all sub-checkboxes
      * after they have been initialized.
      * @protected
      */
-    initValue: function() {
-        var me = this,
-            valueCfg = me.value;
-        me.originalValue = me.lastValue = valueCfg || me.getValue();
-        if (valueCfg) {
-            me.setValue(valueCfg);
-        }
+    initValue: function () {
+      var me = this,
+        valueCfg = me.value;
+      me.originalValue = me.lastValue = valueCfg || me.getValue();
+      if (valueCfg) {
+        me.setValue(valueCfg);
+      }
     },
 
     /**
@@ -196,52 +203,53 @@ Ext.define('Ext.form.CheckboxGroup', {
      * @param {Object} field The field being added
      * @protected
      */
-    onAdd: function(field) {
-        var me = this,
-            items,
-            len, i;
+    onAdd: function (field) {
+      var me = this,
+        items,
+        len,
+        i;
 
-        if (field.isCheckbox) {
-            // Checkboxes and especially Radio buttons MUST have similar name
-            // if they belong to a group but also must allow explicit override.
-            if (field.name == null) {
-                field.name = me.name;
-            }
-            
-            me.mon(field, 'change', me.checkChange, me);
+      if (field.isCheckbox) {
+        // Checkboxes and especially Radio buttons MUST have similar name
+        // if they belong to a group but also must allow explicit override.
+        if (field.name == null) {
+          field.name = me.name;
         }
-        else if (field.isContainer) {
-            items = field.items.items;
-            for (i = 0, len = items.length; i < len; i++) {
-                me.onAdd(items[i]);
-            }
+
+        me.mon(field, "change", me.checkChange, me);
+      } else if (field.isContainer) {
+        items = field.items.items;
+        for (i = 0, len = items.length; i < len; i++) {
+          me.onAdd(items[i]);
         }
-        me.callParent(arguments);
+      }
+      me.callParent(arguments);
     },
 
-    onRemove: function(item) {
-        var me = this,
-            items,
-            len, i;
+    onRemove: function (item) {
+      var me = this,
+        items,
+        len,
+        i;
 
-        if (item.isCheckbox) {
-            me.mun(item, 'change', me.checkChange, me);
-        } else if (item.isContainer) {
-            items = item.items.items;
-            for (i = 0, len = items.length; i < len; i++) {
-                me.onRemove(items[i]);
-            }
+      if (item.isCheckbox) {
+        me.mun(item, "change", me.checkChange, me);
+      } else if (item.isContainer) {
+        items = item.items.items;
+        for (i = 0, len = items.length; i < len; i++) {
+          me.onRemove(items[i]);
         }
-        me.callParent(arguments);
+      }
+      me.callParent(arguments);
     },
 
-     /**
-      * @private
-      * The group value is a complex object, compare using object serialization
-      */
-    isEqual: function(value1, value2) {
-        var toQueryString = Ext.Object.toQueryString;
-        return toQueryString(value1) === toQueryString(value2);
+    /**
+     * @private
+     * The group value is a complex object, compare using object serialization
+     */
+    isEqual: function (value1, value2) {
+      var toQueryString = Ext.Object.toQueryString;
+      return toQueryString(value1) === toQueryString(value2);
     },
 
     /**
@@ -249,12 +257,12 @@ Ext.define('Ext.form.CheckboxGroup', {
      * is set to false and no items are checked.
      * @return {String[]} Array of all validation errors
      */
-    getErrors: function() {
-        var errors = [];
-        if (!this.allowBlank && Ext.isEmpty(this.getChecked())) {
-            errors.push(this.blankText);
-        }
-        return errors;
+    getErrors: function () {
+      var errors = [];
+      if (!this.allowBlank && Ext.isEmpty(this.getChecked())) {
+        errors.push(this.blankText);
+      }
+      return errors;
     },
 
     /**
@@ -262,8 +270,8 @@ Ext.define('Ext.form.CheckboxGroup', {
      * Returns all checkbox components within the container
      * @param {String} [query] An additional query to add to the selector.
      */
-    getBoxes: function(query) {
-        return this.query('[isCheckbox]' + (query||''));
+    getBoxes: function (query) {
+      return this.query("[isCheckbox]" + (query || ""));
     },
 
     /**
@@ -272,46 +280,46 @@ Ext.define('Ext.form.CheckboxGroup', {
      * @param {Function} fn The function to call
      * @param {Object} [scope] scope object
      */
-    eachBox: function(fn, scope) {
-        Ext.Array.forEach(this.getBoxes(), fn, scope || this);
+    eachBox: function (fn, scope) {
+      Ext.Array.forEach(this.getBoxes(), fn, scope || this);
     },
 
     /**
      * Returns an Array of all checkboxes in the container which are currently checked
      * @return {Ext.form.field.Checkbox[]} Array of Ext.form.field.Checkbox components
      */
-    getChecked: function() {
-        return this.getBoxes('[checked]');
+    getChecked: function () {
+      return this.getBoxes("[checked]");
     },
 
     /**
      * @private
      */
-    isDirty: function(){
-        var boxes = this.getBoxes(),
-            b ,
-            bLen  = boxes.length;
+    isDirty: function () {
+      var boxes = this.getBoxes(),
+        b,
+        bLen = boxes.length;
 
-        for (b = 0; b < bLen; b++) {
-            if (boxes[b].isDirty()) {
-                return true;
-            }
+      for (b = 0; b < bLen; b++) {
+        if (boxes[b].isDirty()) {
+          return true;
         }
+      }
     },
 
     /**
      * @private
      */
-    setReadOnly: function(readOnly) {
-        var boxes = this.getBoxes(),
-            b,
-            bLen  = boxes.length;
+    setReadOnly: function (readOnly) {
+      var boxes = this.getBoxes(),
+        b,
+        bLen = boxes.length;
 
-        for (b = 0; b < bLen; b++) {
-            boxes[b].setReadOnly(readOnly);
-        }
+      for (b = 0; b < bLen; b++) {
+        boxes[b].setReadOnly(readOnly);
+      }
 
-        this.readOnly = readOnly;
+      this.readOnly = readOnly;
     },
 
     /**
@@ -319,41 +327,40 @@ Ext.define('Ext.form.CheckboxGroup', {
      * loaded values and clears any validation messages.
      * See {@link Ext.form.Basic}.{@link Ext.form.Basic#trackResetOnLoad trackResetOnLoad}
      */
-    reset: function() {
-        var me = this,
-            hadError = me.hasActiveError(),
-            preventMark = me.preventMark;
-        me.preventMark = true;
-        me.batchChanges(function() {
-            var boxes = me.getBoxes(),
-                b,
-                bLen  = boxes.length;
-
-            for (b = 0; b < bLen; b++) {
-                boxes[b].reset();
-            }
-        });
-        me.preventMark = preventMark;
-        me.unsetActiveError();
-        if (hadError) {
-            me.updateLayout();
-        }
-    },
-
-    resetOriginalValue: function(){
-        var me    = this,
-            boxes = me.getBoxes(),
-            b,
-            bLen  = boxes.length;
+    reset: function () {
+      var me = this,
+        hadError = me.hasActiveError(),
+        preventMark = me.preventMark;
+      me.preventMark = true;
+      me.batchChanges(function () {
+        var boxes = me.getBoxes(),
+          b,
+          bLen = boxes.length;
 
         for (b = 0; b < bLen; b++) {
-            boxes[b].resetOriginalValue();
+          boxes[b].reset();
         }
-
-        me.originalValue = me.getValue();
-        me.checkDirty();
+      });
+      me.preventMark = preventMark;
+      me.unsetActiveError();
+      if (hadError) {
+        me.updateLayout();
+      }
     },
 
+    resetOriginalValue: function () {
+      var me = this,
+        boxes = me.getBoxes(),
+        b,
+        bLen = boxes.length;
+
+      for (b = 0; b < bLen; b++) {
+        boxes[b].resetOriginalValue();
+      }
+
+      me.originalValue = me.getValue();
+      me.checkDirty();
+    },
 
     /**
      * Sets the value(s) of all checkboxes in the group. The expected format is an Object of name-value pairs
@@ -407,37 +414,37 @@ Ext.define('Ext.form.CheckboxGroup', {
      * @param {Object} value The mapping of checkbox names to values.
      * @return {Ext.form.CheckboxGroup} this
      */
-    setValue: function(value) {
-        var me    = this,
-            boxes = me.getBoxes(),
-            b,
-            bLen  = boxes.length,
-            box, name,
-            cbValue;
+    setValue: function (value) {
+      var me = this,
+        boxes = me.getBoxes(),
+        b,
+        bLen = boxes.length,
+        box,
+        name,
+        cbValue;
 
-        me.batchChanges(function() {
-            Ext.suspendLayouts();
-            for (b = 0; b < bLen; b++) {
-                box = boxes[b];
-                name = box.getName();
-                cbValue = false;
+      me.batchChanges(function () {
+        Ext.suspendLayouts();
+        for (b = 0; b < bLen; b++) {
+          box = boxes[b];
+          name = box.getName();
+          cbValue = false;
 
-                if (value) {
-                    if (Ext.isArray(value[name])) {
-                        cbValue = Ext.Array.contains(value[name], box.inputValue);
-                    } else {
-                        // single value, let the checkbox's own setValue handle conversion
-                        cbValue = value[name];
-                    }
-                }
-
-                box.setValue(cbValue);
+          if (value) {
+            if (Ext.isArray(value[name])) {
+              cbValue = Ext.Array.contains(value[name], box.inputValue);
+            } else {
+              // single value, let the checkbox's own setValue handle conversion
+              cbValue = value[name];
             }
-            Ext.resumeLayouts(true);
-        });
-        return me;
-    },
+          }
 
+          box.setValue(cbValue);
+        }
+        Ext.resumeLayouts(true);
+      });
+      return me;
+    },
 
     /**
      * Returns an object containing the values of all checked checkboxes within the group. Each key-value pair in the
@@ -452,76 +459,83 @@ Ext.define('Ext.form.CheckboxGroup', {
      * with other field components and with the {@link #setValue} argument signature. If you need the old behavior in
      * Ext 4+, use the {@link #getChecked} method instead.
      */
-    getValue: function() {
-        var values = {},
-            boxes  = this.getBoxes(),
-            b,
-            bLen   = boxes.length,
-            box, name, inputValue, bucket;
+    getValue: function () {
+      var values = {},
+        boxes = this.getBoxes(),
+        b,
+        bLen = boxes.length,
+        box,
+        name,
+        inputValue,
+        bucket;
 
-        for (b = 0; b < bLen; b++) {
-            box        = boxes[b];
-            name       = box.getName();
-            inputValue = box.inputValue;
+      for (b = 0; b < bLen; b++) {
+        box = boxes[b];
+        name = box.getName();
+        inputValue = box.inputValue;
 
-            if (box.getValue()) {
-                if (values.hasOwnProperty(name)) {
-                    bucket = values[name];
-                    if (!Ext.isArray(bucket)) {
-                        bucket = values[name] = [bucket];
-                    }
-                    bucket.push(inputValue);
-                } else {
-                    values[name] = inputValue;
-                }
+        if (box.getValue()) {
+          if (values.hasOwnProperty(name)) {
+            bucket = values[name];
+            if (!Ext.isArray(bucket)) {
+              bucket = values[name] = [bucket];
             }
+            bucket.push(inputValue);
+          } else {
+            values[name] = inputValue;
+          }
         }
+      }
 
-        return values;
+      return values;
     },
 
     /*
      * Don't return any data for submit; the form will get the info from the individual checkboxes themselves.
      */
-    getSubmitData: function() {
-        return null;
+    getSubmitData: function () {
+      return null;
     },
 
     /*
      * Don't return any data for the model; the form will get the info from the individual checkboxes themselves.
      */
-    getModelData: function() {
-        return null;
+    getModelData: function () {
+      return null;
     },
 
-    validate: function() {
-        var me = this,
-            errors,
-            isValid,
-            wasValid;
+    validate: function () {
+      var me = this,
+        errors,
+        isValid,
+        wasValid;
 
-        if (me.disabled) {
-            isValid = true;
+      if (me.disabled) {
+        isValid = true;
+      } else {
+        errors = me.getErrors();
+        isValid = Ext.isEmpty(errors);
+        wasValid = me.wasValid;
+        if (isValid) {
+          me.unsetActiveError();
         } else {
-            errors = me.getErrors();
-            isValid = Ext.isEmpty(errors);
-            wasValid = me.wasValid;
-            if (isValid) {
-                me.unsetActiveError();
-            } else {
-                me.setActiveError(errors);
-            }
+          me.setActiveError(errors);
         }
-        if (isValid !== wasValid) {
-            me.wasValid = isValid;
-            me.fireEvent('validitychange', me, isValid);
-            me.updateLayout();
-        }
+      }
+      if (isValid !== wasValid) {
+        me.wasValid = isValid;
+        me.fireEvent("validitychange", me, isValid);
+        me.updateLayout();
+      }
 
-        return isValid;
-    }
-},
-function() {
-    this.borrow(Ext.form.field.Base, ['markInvalid', 'clearInvalid', 'setError']);
-});
-
+      return isValid;
+    },
+  },
+  function () {
+    this.borrow(Ext.form.field.Base, [
+      "markInvalid",
+      "clearInvalid",
+      "setError",
+    ]);
+  },
+);

@@ -2,7 +2,7 @@
  * This class describes a size determination strategy or algorithm used by the layout
  * system. There are special instances of this class stored as static properties to
  * avoid needless object instantiation. These instances should be treated as readonly.
- * 
+ *
  *  * `calculated`
  *  * `configured`
  *  * `constrainedMax`
@@ -19,41 +19,44 @@
  *
  * @private
  */
-Ext.define('Ext.layout.SizeModel', {
+Ext.define(
+  "Ext.layout.SizeModel",
+  {
     constructor: function (config) {
-        var me = this,
-            SizeModel = me.self,
-            sizeModelsArray = SizeModel.sizeModelsArray,
-            name;
+      var me = this,
+        SizeModel = me.self,
+        sizeModelsArray = SizeModel.sizeModelsArray,
+        name;
 
-        Ext.apply(me, config);
+      Ext.apply(me, config);
 
-        me[name = me.name] = true; // set the one special flag that matches our name
+      me[(name = me.name)] = true; // set the one special flag that matches our name
 
-        me.fixed = !(me.auto = me.natural || me.shrinkWrap);
+      me.fixed = !(me.auto = me.natural || me.shrinkWrap);
 
-        /**
-         * @property {Number} ordinal
-         * The 0-based ordinal for this `SizeModel` instance.
-         * @readonly
-         */
-        sizeModelsArray[me.ordinal = sizeModelsArray.length] =
-            SizeModel[name] =
-            SizeModel.sizeModels[name] = me;
+      /**
+       * @property {Number} ordinal
+       * The 0-based ordinal for this `SizeModel` instance.
+       * @readonly
+       */
+      sizeModelsArray[(me.ordinal = sizeModelsArray.length)] =
+        SizeModel[name] =
+        SizeModel.sizeModels[name] =
+          me;
     },
 
     statics: {
-        /**
-         * An array of all SizeModel instances.
-         * @private
-         */
-        sizeModelsArray: [],
+      /**
+       * An array of all SizeModel instances.
+       * @private
+       */
+      sizeModelsArray: [],
 
-        /**
-         * An object containing all SizeModel instances keyed by `name`.
-         * @private
-         */
-        sizeModels: {}
+      /**
+       * An object containing all SizeModel instances keyed by `name`.
+       * @private
+       */
+      sizeModels: {},
     },
 
     /**
@@ -152,110 +155,125 @@ Ext.define('Ext.layout.SizeModel', {
      * @property {String} names.height The height property name (e.g., 'minHeight').
      * @readonly
      */
-    names: null
-},
-function () {
+    names: null,
+  },
+  function () {
     var SizeModel = this,
-        sizeModelsArray = SizeModel.sizeModelsArray,
-        i, j, n, pairs, sizeModel;
+      sizeModelsArray = SizeModel.sizeModelsArray,
+      i,
+      j,
+      n,
+      pairs,
+      sizeModel;
 
     //-------------------------------------------------------------------------------
     // These are the 4 fundamental size models.
 
-    new SizeModel({ // jshint ignore:line
-        name: 'calculated'
+    new SizeModel({
+      // jshint ignore:line
+      name: "calculated",
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'configured',
-        names: { width: 'width', height: 'height' }
+    new SizeModel({
+      // jshint ignore:line
+      name: "configured",
+      names: { width: "width", height: "height" },
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'natural'
+    new SizeModel({
+      // jshint ignore:line
+      name: "natural",
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'shrinkWrap'
+    new SizeModel({
+      // jshint ignore:line
+      name: "shrinkWrap",
     });
 
     //-------------------------------------------------------------------------------
     // These are the size models are flavors of the above but with some extra detail
     // about their dynamic use.
 
-    new SizeModel({ // jshint ignore:line
-        name: 'calculatedFromConfigured',
-        configured: true,
-        calculatedFrom: true,
-        names: { width: 'width', height: 'height' }
+    new SizeModel({
+      // jshint ignore:line
+      name: "calculatedFromConfigured",
+      configured: true,
+      calculatedFrom: true,
+      names: { width: "width", height: "height" },
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'calculatedFromNatural',
-        natural: true,
-        calculatedFrom: true
+    new SizeModel({
+      // jshint ignore:line
+      name: "calculatedFromNatural",
+      natural: true,
+      calculatedFrom: true,
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'calculatedFromShrinkWrap',
-        shrinkWrap: true,
-        calculatedFrom: true
+    new SizeModel({
+      // jshint ignore:line
+      name: "calculatedFromShrinkWrap",
+      shrinkWrap: true,
+      calculatedFrom: true,
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'constrainedMax',
-        configured: true,
-        constrained: true,
-        names: { width: 'maxWidth', height: 'maxHeight' }
+    new SizeModel({
+      // jshint ignore:line
+      name: "constrainedMax",
+      configured: true,
+      constrained: true,
+      names: { width: "maxWidth", height: "maxHeight" },
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'constrainedMin',
-        configured: true,
-        constrained: true,
-        names: { width: 'minWidth', height: 'minHeight' }
+    new SizeModel({
+      // jshint ignore:line
+      name: "constrainedMin",
+      configured: true,
+      constrained: true,
+      names: { width: "minWidth", height: "minHeight" },
     });
 
-    new SizeModel({ // jshint ignore:line
-        name: 'constrainedDock',
-        configured: true,
-        constrained: true,
-        constrainedByMin: true,
-        names: { width: 'dockConstrainedWidth', height: 'dockConstrainedHeight' }
+    new SizeModel({
+      // jshint ignore:line
+      name: "constrainedDock",
+      configured: true,
+      constrained: true,
+      constrainedByMin: true,
+      names: { width: "dockConstrainedWidth", height: "dockConstrainedHeight" },
     });
 
     for (i = 0, n = sizeModelsArray.length; i < n; ++i) {
-        sizeModel = sizeModelsArray[i];
+      sizeModel = sizeModelsArray[i];
 
-        /**
-         * An array of objects indexed by the {@link #ordinal} of a height `SizeModel` on
-         * a width `SizeModel` to yield an object describing both height and width size
-         * models.
-         * 
-         * Used like this:
-         *
-         *      widthModel.pairsByHeightOrdinal[heightModel.ordinal]
-         *
-         * This provides a reusable object equivalent to the following:
-         * 
-         *      {
-         *          width: widthModel,
-         *          height: heightModel
-         *      }
-         *
-         * @property {Object[]} pairsByHeightOrdinal
-         * @property {Ext.layout.SizeModel} pairsByHeightOrdinal.width The `SizeModel` for
-         * the width.
-         * @property {Ext.layout.SizeModel} pairsByHeightOrdinal.height The `SizeModel` for
-         * the height.
-         */
-        sizeModel.pairsByHeightOrdinal = pairs = [];
+      /**
+       * An array of objects indexed by the {@link #ordinal} of a height `SizeModel` on
+       * a width `SizeModel` to yield an object describing both height and width size
+       * models.
+       *
+       * Used like this:
+       *
+       *      widthModel.pairsByHeightOrdinal[heightModel.ordinal]
+       *
+       * This provides a reusable object equivalent to the following:
+       *
+       *      {
+       *          width: widthModel,
+       *          height: heightModel
+       *      }
+       *
+       * @property {Object[]} pairsByHeightOrdinal
+       * @property {Ext.layout.SizeModel} pairsByHeightOrdinal.width The `SizeModel` for
+       * the width.
+       * @property {Ext.layout.SizeModel} pairsByHeightOrdinal.height The `SizeModel` for
+       * the height.
+       */
+      sizeModel.pairsByHeightOrdinal = pairs = [];
 
-        for (j = 0; j < n; ++j) {
-            pairs.push({
-                width: sizeModel,
-                height: sizeModelsArray[j]
-            });
-        }
+      for (j = 0; j < n; ++j) {
+        pairs.push({
+          width: sizeModel,
+          height: sizeModelsArray[j],
+        });
+      }
     }
-});
+  },
+);

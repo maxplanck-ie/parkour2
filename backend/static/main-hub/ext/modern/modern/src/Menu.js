@@ -33,139 +33,138 @@
  *
  * The {@link #defaultType} of a Menu item is a {@link Ext.Button button}.
  */
-Ext.define('Ext.Menu', {
-    extend: 'Ext.Sheet',
-    xtype: 'menu',
-    requires: ['Ext.Button'],
+Ext.define("Ext.Menu", {
+  extend: "Ext.Sheet",
+  xtype: "menu",
+  requires: ["Ext.Button"],
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    baseCls: Ext.baseCSSPrefix + 'menu',
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  baseCls: Ext.baseCSSPrefix + "menu",
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    left: 0,
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  left: 0,
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    right: 0,
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  right: 0,
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    bottom: 0,
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  bottom: 0,
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    height: 'auto',
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  height: "auto",
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    width: 'auto',
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  width: "auto",
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    defaultType: 'button',
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  defaultType: "button",
 
-    /**
-     * @hide
-     */
-    showAnimation: null,
+  /**
+   * @hide
+   */
+  showAnimation: null,
 
-    /**
-     * @hide
-     */
-    hideAnimation: null,
+  /**
+   * @hide
+   */
+  hideAnimation: null,
 
-    /**
-     * @hide
-     */
-    centered: false,
+  /**
+   * @hide
+   */
+  centered: false,
 
-    /**
-     * @hide
-     */
-    modal: true,
+  /**
+   * @hide
+   */
+  modal: true,
 
-    /**
-     * @hide
-     */
-    hidden: true,
+  /**
+   * @hide
+   */
+  hidden: true,
 
-    /**
-     * @hide
-     */
-    hideOnMaskTap: true,
+  /**
+   * @hide
+   */
+  hideOnMaskTap: true,
 
-    /**
-     * @hide
-     */
-    translatable: {
-        translationMethod: null
-    },
+  /**
+   * @hide
+   */
+  translatable: {
+    translationMethod: null,
+  },
 
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
-    },
+  layout: {
+    type: "vbox",
+    align: "stretch",
+  },
 
-    floated: true,
+  floated: true,
 
-    hide: function() {
-        var me = this,
-            parent = me.parent;
+  hide: function () {
+    var me = this,
+      parent = me.parent;
 
-        if (parent && parent.isViewport && me.$side && !me.viewportIsHiding) {
-            me.viewportIsHiding = true;
-            parent.hideMenu(me.$side, true);
-        } else {
-            me.viewportIsHiding = false;
-            me.callParent();
-        }
-    },
-
-    constructor: function() {
-        this.config.translatable.translationMethod = 'csstransform';
-        this.callParent(arguments);
-    },
-
-    updateUi: function(newUi, oldUi) {
-        this.callParent(arguments);
-
-        if (newUi != oldUi && Ext.theme.is.Blackberry) {
-            if (newUi == 'context') {
-                this.innerElement.swapCls('x-vertical', 'x-horizontal');
-            }
-            else if (newUi == 'application') {
-                this.innerElement.swapCls('x-horizontal', 'x-vertical');
-            }
-        }
-    },
-
-    updateHideOnMaskTap : function(hide) {
-        if (!this.isFloated()) {
-            var mask = this.getModal();
-
-            if (mask) {
-                mask[hide ? 'on' : 'un']('tap', this.onMaskTap, this);
-            }
-        }
-    },
-
-    onMaskTap: function() {
-        Ext.Viewport.hideMenu(this.$side);
+    if (parent && parent.isViewport && me.$side && !me.viewportIsHiding) {
+      me.viewportIsHiding = true;
+      parent.hideMenu(me.$side, true);
+    } else {
+      me.viewportIsHiding = false;
+      me.callParent();
     }
+  },
+
+  constructor: function () {
+    this.config.translatable.translationMethod = "csstransform";
+    this.callParent(arguments);
+  },
+
+  updateUi: function (newUi, oldUi) {
+    this.callParent(arguments);
+
+    if (newUi != oldUi && Ext.theme.is.Blackberry) {
+      if (newUi == "context") {
+        this.innerElement.swapCls("x-vertical", "x-horizontal");
+      } else if (newUi == "application") {
+        this.innerElement.swapCls("x-horizontal", "x-vertical");
+      }
+    }
+  },
+
+  updateHideOnMaskTap: function (hide) {
+    if (!this.isFloated()) {
+      var mask = this.getModal();
+
+      if (mask) {
+        mask[hide ? "on" : "un"]("tap", this.onMaskTap, this);
+      }
+    }
+  },
+
+  onMaskTap: function () {
+    Ext.Viewport.hideMenu(this.$side);
+  },
 });

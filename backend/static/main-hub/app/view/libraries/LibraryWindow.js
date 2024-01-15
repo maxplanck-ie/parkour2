@@ -203,7 +203,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     "Ext.XTemplate",
                     '<tpl for=".">',
                     "{index}",
-                    "</tpl>"
+                    "</tpl>",
                   ),
                   valueField: "index",
                   name: "index_i7",
@@ -213,7 +213,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 1 (I7) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 1 (I7)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$",
                   ),
                   regexText:
                     "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
@@ -228,7 +228,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     "Ext.XTemplate",
                     '<tpl for=".">',
                     "{index}",
-                    "</tpl>"
+                    "</tpl>",
                   ),
                   valueField: "index",
                   name: "index_i5",
@@ -238,7 +238,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                     'Index 2 (I5) <sup><strong><span class="field-tooltip" tooltip-text="Select from predefined list; make sure the displayed index is the sequence used for barcoding. Or enter sequence of index used for barcoding (typically 6 nucleotides)">[?]</span></strong></sup>',
                   emptyText: "Index 2 (I5)",
                   regex: new RegExp(
-                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$"
+                    "^(?=(?:.{6}|.{8}|.{10}|.{12}|.{24})$)[ATCG]+$",
                   ),
                   regexText:
                     "Only A, T, C and G (uppercase) are allowed. Index length must be 6, 8, 10, 12 or 24.",
@@ -459,7 +459,7 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   displayField: "name",
                   displayTpl: Ext.create(
                     "Ext.XTemplate",
-                    '<tpl for=".">{value}</tpl>'
+                    '<tpl for=".">{value}</tpl>',
                   ),
                   name: "rna_quality",
                   fieldLabel:

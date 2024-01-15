@@ -34,7 +34,7 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
     form.submit({
       url: Ext.String.format(
         "api/requests/{0}/send_email/",
-        wnd.record.get("pk")
+        wnd.record.get("pk"),
       ),
       params: form.getFieldValues(),
       success: function (f, action) {

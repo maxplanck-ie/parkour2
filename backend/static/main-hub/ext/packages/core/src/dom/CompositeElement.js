@@ -19,26 +19,25 @@
  *      // or
  *      els.setWidth(100).hide(true);
  */
-Ext.define('Ext.dom.CompositeElement', {
-    alternateClassName: 'Ext.CompositeElement',
+Ext.define("Ext.dom.CompositeElement", {
+  alternateClassName: "Ext.CompositeElement",
 
-    extend: 'Ext.dom.CompositeElementLite',
+  extend: "Ext.dom.CompositeElementLite",
 
-    isLite: false,
+  isLite: false,
 
-    /**
-     * @private
-     */
-    getElement: function(el) {
-        // In this case just return it, since we already have a reference to it
-        return el;
-    },
+  /**
+   * @private
+   */
+  getElement: function (el) {
+    // In this case just return it, since we already have a reference to it
+    return el;
+  },
 
-    /**
-     * @private
-     */
-    transformElement: function(el) {
-        return Ext.get(el);
-    }
-
+  /**
+   * @private
+   */
+  transformElement: function (el) {
+    return Ext.get(el);
+  },
 });

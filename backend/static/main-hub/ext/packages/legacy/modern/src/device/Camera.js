@@ -29,24 +29,24 @@
  *
  * @mixins Ext.device.camera.Abstract
  */
-Ext.define('Ext.device.Camera', {
-    singleton: true,
+Ext.define("Ext.device.Camera", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.camera.Cordova',
-        'Ext.device.camera.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.camera.Cordova",
+    "Ext.device.camera.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.camera.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.camera.Simulator');
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.camera.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.camera.Simulator");
+  },
 });

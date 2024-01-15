@@ -7,27 +7,27 @@
  *
  * @deprecated 5.0 Use `Ext.data.Validation` instead.
  */
-Ext.define('Ext.data.Error', {
-    isError: true,
+Ext.define("Ext.data.Error", {
+  isError: true,
 
-    $configPrefixed: false, // compat
+  $configPrefixed: false, // compat
 
-    config: {
-        /**
-         * @cfg {String} field
-         * The name of the field this error belongs to.
-         */
-        field: null,
+  config: {
+    /**
+     * @cfg {String} field
+     * The name of the field this error belongs to.
+     */
+    field: null,
 
-        /**
-         * @cfg {String} message
-         * The message containing the description of the error.
-         */
-        message: ''
-    },
+    /**
+     * @cfg {String} message
+     * The message containing the description of the error.
+     */
+    message: "",
+  },
 
-    constructor: function(config) {
-        this.initConfig(config);
-        this.msg = this.message; // compat
-    }
+  constructor: function (config) {
+    this.initConfig(config);
+    this.msg = this.message; // compat
+  },
 });

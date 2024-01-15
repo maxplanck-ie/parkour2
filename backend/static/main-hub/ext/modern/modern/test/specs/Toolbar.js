@@ -1,69 +1,63 @@
-describe('Ext.Toolbar', function() {
-    var toolbar;
-    
-    function createToolbar(config) {
-        config = Ext.apply({
-            
-        }, config);
+describe("Ext.Toolbar", function () {
+  var toolbar;
 
-        toolbar = Ext.create('Ext.Toolbar', config);
-    };
+  function createToolbar(config) {
+    config = Ext.apply({}, config);
 
-    afterEach(function() {
-        if (toolbar) {
-            toolbar.destroy();
-        }
-        
-        toolbar = null;
-    });
+    toolbar = Ext.create("Ext.Toolbar", config);
+  }
 
-    // deprecated
-    describe('deprecated configurations + methods', function() {
+  afterEach(function () {
+    if (toolbar) {
+      toolbar.destroy();
+    }
 
-    }); 
-    // end deprecated
+    toolbar = null;
+  });
 
-    // configs
-    describe("configurations", function() {
-        describe("title", function() {
-            describe("configuration", function() {
-                describe("with string", function() {
-                    beforeEach(function() {
-                        createToolbar({title:'test'});
-                    });
+  // deprecated
+  describe("deprecated configurations + methods", function () {});
+  // end deprecated
 
-                    it("should create a title instance", function() {
-                        expect(toolbar.getTitle() instanceof Ext.Title).toBeTruthy();
-                    });
+  // configs
+  describe("configurations", function () {
+    describe("title", function () {
+      describe("configuration", function () {
+        describe("with string", function () {
+          beforeEach(function () {
+            createToolbar({ title: "test" });
+          });
 
-                    it("should have the correct title", function() {
-                        expect(toolbar.getTitle().getTitle()).toEqual('test');
-                    });
-                });
+          it("should create a title instance", function () {
+            expect(toolbar.getTitle() instanceof Ext.Title).toBeTruthy();
+          });
 
-                describe("with config", function() {
-                    beforeEach(function() {
-                        createToolbar({
-                            title: {
-                                title: 'test'
-                            }
-                        });
-                    });
-
-                    it("should create a title instance", function() {
-                        expect(toolbar.getTitle() instanceof Ext.Title).toBeTruthy();
-                    });
-
-                    it("should have the correct title", function() {
-                        expect(toolbar.getTitle().getTitle()).toEqual('test');
-                    });
-                });
-            });
-
-            describe("method", function() {
-                
-            });
+          it("should have the correct title", function () {
+            expect(toolbar.getTitle().getTitle()).toEqual("test");
+          });
         });
+
+        describe("with config", function () {
+          beforeEach(function () {
+            createToolbar({
+              title: {
+                title: "test",
+              },
+            });
+          });
+
+          it("should create a title instance", function () {
+            expect(toolbar.getTitle() instanceof Ext.Title).toBeTruthy();
+          });
+
+          it("should have the correct title", function () {
+            expect(toolbar.getTitle().getTitle()).toEqual("test");
+          });
+        });
+      });
+
+      describe("method", function () {});
     });
-    // end configs
+  });
+  // end configs
 });

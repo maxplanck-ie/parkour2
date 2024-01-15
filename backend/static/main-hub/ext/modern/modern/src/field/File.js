@@ -21,75 +21,75 @@
  *         ]
  *     });
  */
-Ext.define('Ext.field.File', {
-    extend: 'Ext.field.Field',
-    xtype : 'filefield',
-    requires: ["Ext.field.FileInput"],
+Ext.define("Ext.field.File", {
+  extend: "Ext.field.Field",
+  xtype: "filefield",
+  requires: ["Ext.field.FileInput"],
+
+  /**
+   * @event change
+   * Fires when a file has been selected
+   * @param {Ext.field.File} this This field
+   * @param {Mixed} newValue The new value
+   * @param {Mixed} oldValue The original value
+   */
+
+  config: {
+    component: {
+      xtype: "fileinput",
+      fastFocus: false,
+    },
+  },
+
+  proxyConfig: {
+    name: null,
+    value: null,
+    files: null,
 
     /**
-     * @event change
-     * Fires when a file has been selected
-     * @param {Ext.field.File} this This field
-     * @param {Mixed} newValue The new value
-     * @param {Mixed} oldValue The original value
+     * @cfg {Boolean} multiple Allow selection of multiple files
+     *
+     * @accessor
      */
-
-    config : {
-        component: {
-            xtype : 'fileinput',
-            fastFocus: false
-        }
-    },
-
-    proxyConfig: {
-        name: null,
-        value: null,
-        files:null,
-
-        /**
-         * @cfg {Boolean} multiple Allow selection of multiple files
-         *
-         * @accessor
-         */
-        multiple: false,
-
-        /**
-         * @cfg {String} accept File input accept attribute documented here (http://www.w3schools.com/tags/att_input_accept.asp)
-         * Also can be simple strings -- e.g. audio, video, image
-         *
-         * @accessor
-         */
-        accept: null,
-        /**
-         * @cfg {String} capture File input capture attribute. Accepts values such as "camera", "camcorder", "microphone"
-         *
-         * @accessor
-         */
-        capture: null
-    },
-
-    classCls: Ext.baseCSSPrefix + 'filefield',
+    multiple: false,
 
     /**
-     * @private
+     * @cfg {String} accept File input accept attribute documented here (http://www.w3schools.com/tags/att_input_accept.asp)
+     * Also can be simple strings -- e.g. audio, video, image
+     *
+     * @accessor
      */
-    isFile: true,
-
+    accept: null,
     /**
-     * @private
+     * @cfg {String} capture File input capture attribute. Accepts values such as "camera", "camcorder", "microphone"
+     *
+     * @accessor
      */
-    initialize: function() {
-        var me = this;
+    capture: null,
+  },
 
-        me.callParent();
+  classCls: Ext.baseCSSPrefix + "filefield",
 
-        me.getComponent().on({
-            scope: this,
-            change      : 'onChange'
-        });
-    },
+  /**
+   * @private
+   */
+  isFile: true,
 
-    onChange: function(me, value, startValue) {
-        me.fireEvent('change', this, value, startValue);
-    }
+  /**
+   * @private
+   */
+  initialize: function () {
+    var me = this;
+
+    me.callParent();
+
+    me.getComponent().on({
+      scope: this,
+      change: "onChange",
+    });
+  },
+
+  onChange: function (me, value, startValue) {
+    me.fireEvent("change", this, value, startValue);
+  },
 });

@@ -5,21 +5,21 @@
  * This class is instantiated by {@link Ext.data.Store stores} and {@link Ext.data.Model records} and should
  * not need to be instantiated in user code.
  */
-Ext.define('Ext.data.operation.Update', {
-    extend: 'Ext.data.operation.Operation',
-    alias: 'data.operation.update',
-    
-    action: 'update',
+Ext.define("Ext.data.operation.Update", {
+  extend: "Ext.data.operation.Operation",
+  alias: "data.operation.update",
 
-    isUpdateOperation: true,
+  action: "update",
 
-    order: 20,
+  isUpdateOperation: true,
 
-    config: {
-        recordCreator: Ext.identityFn
-    },
-    
-    doExecute: function() {
-        return this.getProxy().update(this);
-    }
+  order: 20,
+
+  config: {
+    recordCreator: Ext.identityFn,
+  },
+
+  doExecute: function () {
+    return this.getProxy().update(this);
+  },
 });

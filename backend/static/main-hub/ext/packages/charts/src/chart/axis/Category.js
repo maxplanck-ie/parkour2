@@ -11,7 +11,7 @@
  *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -67,18 +67,18 @@
  * In this example with set the category axis to the bottom of the surface, bound the axis to
  * the `name` property and set as title "Sample Values".
  */
-Ext.define('Ext.chart.axis.Category', {
-    requires: [
-        'Ext.chart.axis.layout.CombineDuplicate',
-        'Ext.chart.axis.segmenter.Names'
-    ],
-    extend: 'Ext.chart.axis.Axis',
-    alias: 'axis.category',
-    type: 'category',
+Ext.define("Ext.chart.axis.Category", {
+  requires: [
+    "Ext.chart.axis.layout.CombineDuplicate",
+    "Ext.chart.axis.segmenter.Names",
+  ],
+  extend: "Ext.chart.axis.Axis",
+  alias: "axis.category",
+  type: "category",
 
-    config: {
-        layout: 'combineDuplicate',
+  config: {
+    layout: "combineDuplicate",
 
-        segmenter: 'names'
-    }
+    segmenter: "names",
+  },
 });

@@ -1,131 +1,131 @@
 describe("Ext.util.Cache", function () {
-    var evicted = [],
-        cache;
+  var evicted = [],
+    cache;
 
-    function dump () {
-        var a = [],
-            i = 0;
+  function dump() {
+    var a = [],
+      i = 0;
 
-        cache.each(function (key, value) {
-            a.push(key + '=' + value);
-            ++i;
-        });
-
-        a.unshift(i);
-        return a.join(',');
-    }
-
-    beforeEach(function () {
-        evicted.length = 0;
-
-        cache = new Ext.util.Cache({
-            maxSize: 3,
-
-            evict: function (key, value) {
-                evicted.push('evict:' + key + '=' + value);
-            },
-
-            miss: function (key) {
-                return '{' + key + '}';
-            }
-        });
+    cache.each(function (key, value) {
+      a.push(key + "=" + value);
+      ++i;
     });
 
-    it('should add entries until maxSize', function () {
-        expect(cache.count).toBe(0);
-        expect(dump()).toBe('0');
+    a.unshift(i);
+    return a.join(",");
+  }
 
-        var a = cache.get('a');
+  beforeEach(function () {
+    evicted.length = 0;
 
-        expect(a).toBe('{a}');
-        expect(cache.count).toBe(1);
-        expect(dump()).toBe('1,a={a}');
+    cache = new Ext.util.Cache({
+      maxSize: 3,
 
-        var b = cache.get('b');
+      evict: function (key, value) {
+        evicted.push("evict:" + key + "=" + value);
+      },
 
-        expect(b).toBe('{b}');
-        expect(cache.count).toBe(2);
-        expect(dump()).toBe('2,b={b},a={a}');
-
-        var c = cache.get('c');
-
-        expect(c).toBe('{c}');
-        expect(cache.count).toBe(3);
-        expect(dump()).toBe('3,c={c},b={b},a={a}');
+      miss: function (key) {
+        return "{" + key + "}";
+      },
     });
+  });
 
-    it('should reorder entries', function () {
-        var a = cache.get('a');
-        var b = cache.get('b');
-        var c = cache.get('c');
+  it("should add entries until maxSize", function () {
+    expect(cache.count).toBe(0);
+    expect(dump()).toBe("0");
 
-        expect(cache.count).toBe(3);
-        expect(evicted.length).toBe(0);
+    var a = cache.get("a");
 
-        var b2 = cache.get('b');
+    expect(a).toBe("{a}");
+    expect(cache.count).toBe(1);
+    expect(dump()).toBe("1,a={a}");
 
-        expect(evicted.length).toBe(0);
-        expect(b2).toBe(b);
-        expect(cache.count).toBe(3);
-        expect(dump()).toBe('3,b={b},c={c},a={a}');
-    });
+    var b = cache.get("b");
 
-    it('should remove oldest entry after maxSize', function () {
-        var a = cache.get('a');
-        var b = cache.get('b');
-        var c = cache.get('c');
-        // full
+    expect(b).toBe("{b}");
+    expect(cache.count).toBe(2);
+    expect(dump()).toBe("2,b={b},a={a}");
 
-        expect(cache.count).toBe(3);
-        expect(evicted.length).toBe(0);
+    var c = cache.get("c");
 
-        var d = cache.get('d');
+    expect(c).toBe("{c}");
+    expect(cache.count).toBe(3);
+    expect(dump()).toBe("3,c={c},b={b},a={a}");
+  });
 
-        expect(evicted).toEqual([ 'evict:a={a}' ]);
-        expect(d).toBe('{d}');
-        expect(cache.count).toBe(3);
-        expect(dump()).toBe('3,d={d},c={c},b={b}');
-    });
+  it("should reorder entries", function () {
+    var a = cache.get("a");
+    var b = cache.get("b");
+    var c = cache.get("c");
 
-    it('should remove everything on clear', function () {
-        var a = cache.get('a');
-        var b = cache.get('b');
-        var c = cache.get('c');
-        // full
+    expect(cache.count).toBe(3);
+    expect(evicted.length).toBe(0);
 
-        expect(cache.count).toBe(3);
+    var b2 = cache.get("b");
 
-        cache.clear();
-        expect(cache.count).toBe(0);
-        expect(dump()).toBe('0');
-    });
+    expect(evicted.length).toBe(0);
+    expect(b2).toBe(b);
+    expect(cache.count).toBe(3);
+    expect(dump()).toBe("3,b={b},c={c},a={a}");
+  });
 
-    it('should evict everything on clear', function () {
-        var a = cache.get('a');
-        var b = cache.get('b');
-        var c = cache.get('c');
-        // full
+  it("should remove oldest entry after maxSize", function () {
+    var a = cache.get("a");
+    var b = cache.get("b");
+    var c = cache.get("c");
+    // full
 
-        expect(cache.count).toBe(3);
+    expect(cache.count).toBe(3);
+    expect(evicted.length).toBe(0);
 
-        cache.clear();
-        expect(evicted.length).toBe(3);
-        expect(evicted).toEqual([ 'evict:c={c}', 'evict:b={b}', 'evict:a={a}' ]);
-    });
+    var d = cache.get("d");
 
-    it('should evict everything on destroy', function () {
-        var a = cache.get('a');
-        var b = cache.get('b');
-        var c = cache.get('c');
-        // full
+    expect(evicted).toEqual(["evict:a={a}"]);
+    expect(d).toBe("{d}");
+    expect(cache.count).toBe(3);
+    expect(dump()).toBe("3,d={d},c={c},b={b}");
+  });
 
-        expect(cache.count).toBe(3);
+  it("should remove everything on clear", function () {
+    var a = cache.get("a");
+    var b = cache.get("b");
+    var c = cache.get("c");
+    // full
 
-        cache.destroy();
-        expect(cache.count).toBe(0);
-        expect(dump()).toBe('0');
+    expect(cache.count).toBe(3);
 
-        expect(evicted.length).toBe(3);
-        expect(evicted).toEqual([ 'evict:c={c}', 'evict:b={b}', 'evict:a={a}' ]);
-    });
+    cache.clear();
+    expect(cache.count).toBe(0);
+    expect(dump()).toBe("0");
+  });
+
+  it("should evict everything on clear", function () {
+    var a = cache.get("a");
+    var b = cache.get("b");
+    var c = cache.get("c");
+    // full
+
+    expect(cache.count).toBe(3);
+
+    cache.clear();
+    expect(evicted.length).toBe(3);
+    expect(evicted).toEqual(["evict:c={c}", "evict:b={b}", "evict:a={a}"]);
+  });
+
+  it("should evict everything on destroy", function () {
+    var a = cache.get("a");
+    var b = cache.get("b");
+    var c = cache.get("c");
+    // full
+
+    expect(cache.count).toBe(3);
+
+    cache.destroy();
+    expect(cache.count).toBe(0);
+    expect(dump()).toBe("0");
+
+    expect(evicted.length).toBe(3);
+    expect(evicted).toEqual(["evict:c={c}", "evict:b={b}", "evict:a={a}"]);
+  });
 });

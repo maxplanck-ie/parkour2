@@ -1,15 +1,13 @@
 /**
  * This class is used as a base class from which to derive Models used in Trees.
  */
-Ext.define('Ext.data.TreeModel', {
-    extend: 'Ext.data.Model',
-    requires: [
-        'Ext.data.NodeInterface'
-    ],
+Ext.define(
+  "Ext.data.TreeModel",
+  {
+    extend: "Ext.data.Model",
+    requires: ["Ext.data.NodeInterface"],
 
-    mixins: [
-        'Ext.mixin.Queryable'
-    ],
+    mixins: ["Ext.mixin.Queryable"],
 
     /**
      * @cfg {String} [childType]
@@ -49,18 +47,19 @@ Ext.define('Ext.data.TreeModel', {
      *
      */
 
-     getRefItems: function() {
-         return this.childNodes;
-     },
+    getRefItems: function () {
+      return this.childNodes;
+    },
 
-     getRefOwner: function() {
-         return this.parentNode;
-     },
+    getRefOwner: function () {
+      return this.parentNode;
+    },
 
     statics: {
-        defaultProxy: 'memory'
-    }
-},
-function () {
+      defaultProxy: "memory",
+    },
+  },
+  function () {
     Ext.data.NodeInterface.decorate(this);
-});
+  },
+);

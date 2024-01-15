@@ -1,20 +1,17 @@
 /**
  */
-Ext.define('Ext.data.field.Number', {
-    extend: 'Ext.data.field.Integer',
+Ext.define("Ext.data.field.Number", {
+  extend: "Ext.data.field.Integer",
 
-    alias: [
-        'data.field.float',
-        'data.field.number'
-    ],
+  alias: ["data.field.float", "data.field.number"],
 
-    isIntegerField: false,
-    isNumberField: true,
-    numericType: 'float',
+  isIntegerField: false,
+  isNumberField: true,
+  numericType: "float",
 
-    getNumber: Ext.identityFn,
+  getNumber: Ext.identityFn,
 
-    parse: function(v) {
-        return parseFloat(String(v).replace(this.stripRe, ''));
-    }
+  parse: function (v) {
+    return parseFloat(String(v).replace(this.stripRe, ""));
+  },
 });

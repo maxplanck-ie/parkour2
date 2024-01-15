@@ -1,17 +1,17 @@
-Ext.define('Ext.table.Cell', {
-    extend: 'Ext.Container',
+Ext.define("Ext.table.Cell", {
+  extend: "Ext.Container",
 
-    xtype: 'tablecell',
+  xtype: "tablecell",
 
-    config: {
-        baseCls: 'x-table-cell'
-    },
+  config: {
+    baseCls: "x-table-cell",
+  },
 
-    getElementConfig: function() {
-        var config = this.callParent();
+  getElementConfig: function () {
+    var config = this.callParent();
 
-        config.children.length = 0;
+    config.children.length = 0;
 
-        return config;
-    }
+    return config;
+  },
 });

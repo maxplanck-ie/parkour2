@@ -20,106 +20,106 @@
  *         }]
  *     });
  */
-Ext.define('Ext.menu.Separator', {
-    extend: 'Ext.menu.Item',
-    alias: 'widget.menuseparator',
-    
-    focusable: false,
+Ext.define("Ext.menu.Separator", {
+  extend: "Ext.menu.Item",
+  alias: "widget.menuseparator",
 
-    /**
-     * @cfg {String} activeCls
-     * @private
-     */
+  focusable: false,
 
-    /**
-     * @cfg {Boolean} canActivate
-     * @private
-     */
-    canActivate: false,
+  /**
+   * @cfg {String} activeCls
+   * @private
+   */
 
-    /**
-     * @cfg {Boolean} clickHideDelay
-     * @private
-     */
+  /**
+   * @cfg {Boolean} canActivate
+   * @private
+   */
+  canActivate: false,
 
-    /**
-     * @cfg {Boolean} destroyMenu
-     * @private
-     */
+  /**
+   * @cfg {Boolean} clickHideDelay
+   * @private
+   */
 
-    /**
-     * @cfg {Boolean} disabledCls
-     * @private
-     */
+  /**
+   * @cfg {Boolean} destroyMenu
+   * @private
+   */
 
-    /**
-     * @cfg {String} href
-     * @private
-     */
+  /**
+   * @cfg {Boolean} disabledCls
+   * @private
+   */
 
-    /**
-     * @cfg {String} hrefTarget
-     * @private
-     */
+  /**
+   * @cfg {String} href
+   * @private
+   */
 
-    /**
-     * @cfg {Boolean} hideOnClick
-     * @private
-     */
-    hideOnClick: false,
+  /**
+   * @cfg {String} hrefTarget
+   * @private
+   */
 
-    /**
-     * @cfg {String} icon
-     * @private
-     */
+  /**
+   * @cfg {Boolean} hideOnClick
+   * @private
+   */
+  hideOnClick: false,
 
-    /**
-     * @cfg {String} iconCls
-     * @private
-     */
+  /**
+   * @cfg {String} icon
+   * @private
+   */
 
-    /**
-     * @cfg {Object} menu
-     * @private
-     */
+  /**
+   * @cfg {String} iconCls
+   * @private
+   */
 
-    /**
-     * @cfg {String} menuAlign
-     * @private
-     */
+  /**
+   * @cfg {Object} menu
+   * @private
+   */
 
-    /**
-     * @cfg {Number} menuExpandDelay
-     * @private
-     */
+  /**
+   * @cfg {String} menuAlign
+   * @private
+   */
 
-    /**
-     * @cfg {Number} menuHideDelay
-     * @private
-     */
+  /**
+   * @cfg {Number} menuExpandDelay
+   * @private
+   */
 
-    /**
-     * @cfg {Boolean} plain
-     * @private
-     */
-    plain: true,
+  /**
+   * @cfg {Number} menuHideDelay
+   * @private
+   */
 
-    /**
-     * @cfg {String} separatorCls
-     * The CSS class used by the separator item to show the incised line.
-     */
-    separatorCls: Ext.baseCSSPrefix + 'menu-item-separator',
+  /**
+   * @cfg {Boolean} plain
+   * @private
+   */
+  plain: true,
 
-    /**
-     * @cfg {String} text
-     * @private
-     */
-    text: '&#160;',
-    
-    ariaRole: 'separator',
+  /**
+   * @cfg {String} separatorCls
+   * The CSS class used by the separator item to show the incised line.
+   */
+  separatorCls: Ext.baseCSSPrefix + "menu-item-separator",
 
-    beforeRender: function() {
-        this.addCls(this.separatorCls);
-        this.callParent();
-    }
+  /**
+   * @cfg {String} text
+   * @private
+   */
+  text: "&#160;",
+
+  ariaRole: "separator",
+
+  beforeRender: function () {
+    this.addCls(this.separatorCls);
+    this.callParent();
+  },
 });

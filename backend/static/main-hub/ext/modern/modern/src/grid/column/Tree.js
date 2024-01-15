@@ -1,14 +1,14 @@
 /**
 
  */
-Ext.define('Ext.grid.column.Tree', {
-    extend: 'Ext.grid.column.Column',
+Ext.define("Ext.grid.column.Tree", {
+  extend: "Ext.grid.column.Column",
 
-    xtype: 'treecolumn',
+  xtype: "treecolumn",
 
-    config: {
-        cell: {
-            xtype: 'treecell'
-        }
-    }
+  config: {
+    cell: {
+      xtype: "treecell",
+    },
+  },
 });
