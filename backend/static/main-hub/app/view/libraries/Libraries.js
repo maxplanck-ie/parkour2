@@ -11,6 +11,13 @@ Ext.define("MainHub.view.libraries.Libraries", {
   anchor: "100% -1",
   layout: "fit",
 
+  initComponent: function () {
+    this.searchString = "";
+    this.statusFilter = "all";
+
+    this.callParent(arguments);
+  },
+
   items: [
     {
       xtype: "treepanel",
@@ -145,7 +152,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 110,
             matchFieldWidth: false,
             listConfig: {
-              width: 200,
+              width: 220,
             },
             editable: false,
             style: { marginRight: "15px" },
@@ -187,9 +194,42 @@ Ext.define("MainHub.view.libraries.Libraries", {
             itemId: "search-field",
             emptyText: "Search",
             width: 250,
+            scope: this,
             listeners: {
-              change: function (newValue, oldValue) {
-                console.log("Selected value:", newValue.value);
+              change: function (grid, newValue, oldValue) {
+                this.searchString = newValue.value;
+                //grid.getView().mask("Loading...");
+                console.log("Selected value:", this.searchString);
+                  Ext.Ajax.request({
+                    url: Ext.String.format(
+                      "api/libraries_and_samples/?showAll=True&node=root"
+                    ),
+                    method: "GET",
+                    scope: this,
+                    disableCaching: false,
+                    success: function (response) {
+                      // var librariesStore = Ext.getStore("librariesStore");
+                      // var responseObject = Ext.JSON.decode(response.responseText);
+                      // var parentNode = librariesStore.data.map[requestId];
+                      // parentNode.childNodes.map(function (element) {
+                      //   var pools = (
+                      //     responseObject.poolpaths[element.data.barcode] || []
+                      //   ).toString();
+                      //   element.set("pool", pools);
+                      //   element.commit();
+                      //   return element;
+                      // });
+                      //gird.getView().unmask();
+                    },
+                    failure: function (response) {
+                      new Noty({
+                        text: response.statusText,
+                        type: "error",
+                      }).show();
+                      console.error(response);
+                      //grid.getView().unmask();
+                    },
+                  });
               },
             },
           },
