@@ -3,6 +3,10 @@
 ??.??.??
 ========
 
+- Playwright tests for the new frontend, Vue.js for duties. (#86)
+- Minor cosmetic changes, and a new search bar for Libraries and Samples. (#87)
+- Added new option "Short + Long" in the Platform field for duties, both in the table as well as the add duties section. (#89)
+- Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
 - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
 
