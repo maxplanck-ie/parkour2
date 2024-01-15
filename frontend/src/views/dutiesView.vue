@@ -236,8 +236,9 @@
             @change="updateDutyObject"
           >
             <option value="">Select</option>
-            <option value="long">Long</option>
             <option value="short">Short</option>
+            <option value="long">Long</option>
+            <option value="shortlong">Short + Long</option>
           </select>
         </div>
       </div>
@@ -266,7 +267,12 @@
 
 <script>
 import { AgGridVue } from "ag-grid-vue3";
-import { showNotification, handleError, getProp, urlStringStartsWith } from "../utils/utilities";
+import {
+  showNotification,
+  handleError,
+  getProp,
+  urlStringStartsWith,
+} from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
@@ -427,8 +433,10 @@ export default {
               getProp(element, "end_date", "") &&
               moment(getProp(element, "end_date", "")).format("YYYY-MM-DD"),
             platform:
-              String(getProp(element, "platform", "-"))[0].toUpperCase() +
-              String(getProp(element, "platform", "-")).slice(1),
+              String(getProp(element, "platform", "-")) === "shortlong"
+                ? "Short + Long"
+                : String(getProp(element, "platform", "-"))[0].toUpperCase() +
+                  String(getProp(element, "platform", "-")).slice(1),
             comment: getProp(element, "comment", ""),
           });
         });
@@ -516,7 +524,10 @@ export default {
             newValue = moment(newValue);
             break;
           case "platform":
-            newValue = String(newValue).toLowerCase();
+            newValue =
+              newValue === "Short + Long"
+                ? "shortlong"
+                : String(newValue).toLowerCase();
             break;
           case "comment":
             newValue = newValue.trim();
@@ -696,13 +707,12 @@ export default {
           editable: true,
           cellEditor: "agSelectCellEditor",
           cellEditorParams: {
-            values: ["Long", "Short"],
+            values: ["Short", "Long", "Short + Long"],
             valueListGap: 0,
           },
           cellRenderer: (data) => {
-            return data
-              ? data.value[0].toUpperCase() + data.value.slice(1)
-              : "-";
+            if (data.value === "shortlong") return "Short + Long";
+            else return data.value[0].toUpperCase() + data.value.slice(1);
           },
         },
         {
