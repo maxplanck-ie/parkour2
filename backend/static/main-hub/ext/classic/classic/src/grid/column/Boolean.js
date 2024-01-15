@@ -33,63 +33,64 @@
  *         renderTo: Ext.getBody()
  *     });
  */
-Ext.define('Ext.grid.column.Boolean', {
-    extend: 'Ext.grid.column.Column',
-    alias: ['widget.booleancolumn'],
-    alternateClassName: 'Ext.grid.BooleanColumn',
+Ext.define("Ext.grid.column.Boolean", {
+  extend: "Ext.grid.column.Column",
+  alias: ["widget.booleancolumn"],
+  alternateClassName: "Ext.grid.BooleanColumn",
 
-    //<locale>
-    /**
-     * @cfg {String} trueText
-     * The string returned by the renderer when the column value is not falsey.
-     */
-    trueText: 'true',
-    //</locale>
+  //<locale>
+  /**
+   * @cfg {String} trueText
+   * The string returned by the renderer when the column value is not falsey.
+   */
+  trueText: "true",
+  //</locale>
 
-    //<locale>
-    /**
-     * @cfg {String} falseText
-     * The string returned by the renderer when the column value is falsey (but not undefined).
-     */
-    falseText: 'false',
-    //</locale>
+  //<locale>
+  /**
+   * @cfg {String} falseText
+   * The string returned by the renderer when the column value is falsey (but not undefined).
+   */
+  falseText: "false",
+  //</locale>
 
-    /**
-     * @cfg {String} undefinedText
-     * The string returned by the renderer when the column value is undefined.
-     */
-    undefinedText: '&#160;',
+  /**
+   * @cfg {String} undefinedText
+   * The string returned by the renderer when the column value is undefined.
+   */
+  undefinedText: "&#160;",
 
-    defaultFilterType: 'boolean',
+  defaultFilterType: "boolean",
 
-    /**
-     * @cfg {Object} renderer
-     * @hide
-     */
+  /**
+   * @cfg {Object} renderer
+   * @hide
+   */
 
-    /**
-     * @cfg {Object} scope
-     * @hide
-     */
+  /**
+   * @cfg {Object} scope
+   * @hide
+   */
 
-     /**
-     * @cfg {Boolean} producesHTML
-     * @inheritdoc
-     */
-    producesHTML: false,
+  /**
+   * @cfg {Boolean} producesHTML
+   * @inheritdoc
+   */
+  producesHTML: false,
 
-    defaultRenderer: function(value){
-        if (value === undefined) {
-            return this.undefinedText;
-        }
-
-        if (!value || value === 'false') {
-            return this.falseText;
-        }
-        return this.trueText;
-    },
-
-    updater: function(cell, value) {
-        Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML = Ext.grid.column.Boolean.prototype.defaultRenderer.call(this, value);
+  defaultRenderer: function (value) {
+    if (value === undefined) {
+      return this.undefinedText;
     }
+
+    if (!value || value === "false") {
+      return this.falseText;
+    }
+    return this.trueText;
+  },
+
+  updater: function (cell, value) {
+    Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
+      Ext.grid.column.Boolean.prototype.defaultRenderer.call(this, value);
+  },
 });

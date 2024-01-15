@@ -1,22 +1,24 @@
-Ext.define('Ext.table.Table', {
-    extend: 'Ext.Container',
+Ext.define("Ext.table.Table", {
+  extend: "Ext.Container",
 
-    requires: ['Ext.table.Row'],
+  requires: ["Ext.table.Row"],
 
-    xtype: 'table',
+  xtype: "table",
 
-    config: {
-        baseCls: 'x-table',
-        defaultType: 'tablerow'
-    },
+  config: {
+    baseCls: "x-table",
+    defaultType: "tablerow",
+  },
 
-    cachedConfig: {
-        fixedLayout: false
-    },
+  cachedConfig: {
+    fixedLayout: false,
+  },
 
-    fixedLayoutCls: 'x-table-fixed',
+  fixedLayoutCls: "x-table-fixed",
 
-    updateFixedLayout: function(fixedLayout) {
-        this.innerElement[fixedLayout ? 'addCls' : 'removeCls'](this.fixedLayoutCls);
-    }
+  updateFixedLayout: function (fixedLayout) {
+    this.innerElement[fixedLayout ? "addCls" : "removeCls"](
+      this.fixedLayoutCls,
+    );
+  },
 });

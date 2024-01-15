@@ -75,161 +75,160 @@
  *        ]
  *     );
  */
-Ext.define('Ext.grid.plugin.MultiSelection', {
-    extend: 'Ext.Component',
-    alias: ['plugin.multiselection', 'plugin.gridmultiselection'],
+Ext.define("Ext.grid.plugin.MultiSelection", {
+  extend: "Ext.Component",
+  alias: ["plugin.multiselection", "plugin.gridmultiselection"],
 
-    config: {
-        /**
-         * @private
-         */
-        grid: null,
+  config: {
+    /**
+     * @private
+     */
+    grid: null,
 
-        /**
-         * The default settings for the selection column.  You may create your
-         * own selectionColumn config within your plugin object in order to:
-         *
-         * + Change column width
-         * + Show the selectionColumn by default
-         * + Change the default cls or cellCls
-         * + Etc.
-         */
-        selectionColumn: {
-            width: 60,
-            xtype: 'selectioncolumn',
-            align: 'center',
-            cell: {
-                xtype: 'checkcell'
-            },
-            ignore: true,
-            hidden: true
-        },
-
-        /**
-         * Determines whether or not the trigger button is show when the grid is loaded.
-         * This most commonly be set to false if you wanted to have the selectionColumn
-         * shown 100% of the time instead of hidden by default. You could show the {@link #selectionColumn}
-         * by modifying its hidden value to be false.
-         */
-        useTriggerButton: true,
-
-        /**
-         * The text of the button used to display the {@link #selectionColumn}.
-         */
-        triggerText: 'Select',
-
-        /**
-         * The text of the button used to cancel the {@link #selectionColumn}.
-         */
-        cancelText: 'Cancel',
-
-        /**
-         * The text of the button used to delete selected rows.
-         */
-        deleteText: 'Delete'
+    /**
+     * The default settings for the selection column.  You may create your
+     * own selectionColumn config within your plugin object in order to:
+     *
+     * + Change column width
+     * + Show the selectionColumn by default
+     * + Change the default cls or cellCls
+     * + Etc.
+     */
+    selectionColumn: {
+      width: 60,
+      xtype: "selectioncolumn",
+      align: "center",
+      cell: {
+        xtype: "checkcell",
+      },
+      ignore: true,
+      hidden: true,
     },
 
-    checkedCls: Ext.baseCSSPrefix + 'checked',
+    /**
+     * Determines whether or not the trigger button is show when the grid is loaded.
+     * This most commonly be set to false if you wanted to have the selectionColumn
+     * shown 100% of the time instead of hidden by default. You could show the {@link #selectionColumn}
+     * by modifying its hidden value to be false.
+     */
+    useTriggerButton: true,
 
-    init: function(grid) {
-        var selectionColumn = this.getSelectionColumn();
+    /**
+     * The text of the button used to display the {@link #selectionColumn}.
+     */
+    triggerText: "Select",
 
-        this.setGrid(grid);
+    /**
+     * The text of the button used to cancel the {@link #selectionColumn}.
+     */
+    cancelText: "Cancel",
 
-        var titleBar = grid.getTitleBar();
+    /**
+     * The text of the button used to delete selected rows.
+     */
+    deleteText: "Delete",
+  },
 
-        if (this.getUseTriggerButton() && titleBar && titleBar.getTitle()) {
-            this.triggerButton = titleBar.add({
-                align: 'right',
-                xtype: 'button',
-                text: this.getTriggerText()
-            });
+  checkedCls: Ext.baseCSSPrefix + "checked",
 
-            this.triggerButton.on({
-                tap: 'onTriggerButtonTap',
-                scope: this
-            });
-        } else {
-            grid.setMode('MULTI');
-        }
+  init: function (grid) {
+    var selectionColumn = this.getSelectionColumn();
 
-        grid.config.columns.unshift(selectionColumn);
-    },
+    this.setGrid(grid);
 
-    onTriggerButtonTap: function() {
-        if (this.getSelectionColumn().isHidden()) {
-            this.enterSelectionMode();
-        }
-        else {
-            this.deleteSelectedRecords();
-            this.getGrid().deselectAll();
-        }
-    },
+    var titleBar = grid.getTitleBar();
 
-    enterSelectionMode: function() {
-        this.triggerButton.setText(this.getDeleteText());
-        this.triggerButton.setUi('decline');
+    if (this.getUseTriggerButton() && titleBar && titleBar.getTitle()) {
+      this.triggerButton = titleBar.add({
+        align: "right",
+        xtype: "button",
+        text: this.getTriggerText(),
+      });
 
-        this.cancelButton = this.getGrid().getTitleBar().add({
-            align: 'right',
-            xtype: 'button',
-            ui: 'action',
-            text: this.getCancelText(),
-            scope: this
-        });
-        this.cancelButton.on({
-            tap: 'exitSelectionMode',
-            scope: this
-        });
-        this.getSelectionColumn().show();
-
-        this.getGrid().setMode('MULTI');
-    },
-
-    exitSelectionMode: function() {
-        this.cancelButton.destroy();
-        this.triggerButton.setText(this.getTriggerText());
-        this.triggerButton.setUi(null);
-        this.getSelectionColumn().hide();
-        this.getGrid().setMode('SINGLE');
-        this.getGrid().deselectAll();
-    },
-
-    deleteSelectedRecords: function() {
-        this.getGrid().getStore().remove(this.getGrid().getSelection());
-    },
-
-    applySelectionColumn: function(column) {
-        if (column && !column.isComponent) {
-            column = Ext.factory(column, Ext.grid.Column);
-        }
-
-        return column;
-    },
-
-    updateSelectionColumn: function(column, oldColumn) {
-        var grid = this.getGrid();
-
-        if (grid) {
-            if (oldColumn) {
-                grid.removeColumn(oldColumn);
-            }
-
-            if (column) {
-                grid.insertColumn(0, column);
-            }
-        }
-    },
-
-    updateGrid: function(grid, oldGrid) {
-        if (oldGrid) {
-            oldGrid.removeColumn(this.getSelectionColumn());
-        }
-
-        if (grid) {
-            if (!grid.isConfiguring) {
-                grid.insertColumn(0, this.getSelectionColumn());
-            }
-        }
+      this.triggerButton.on({
+        tap: "onTriggerButtonTap",
+        scope: this,
+      });
+    } else {
+      grid.setMode("MULTI");
     }
+
+    grid.config.columns.unshift(selectionColumn);
+  },
+
+  onTriggerButtonTap: function () {
+    if (this.getSelectionColumn().isHidden()) {
+      this.enterSelectionMode();
+    } else {
+      this.deleteSelectedRecords();
+      this.getGrid().deselectAll();
+    }
+  },
+
+  enterSelectionMode: function () {
+    this.triggerButton.setText(this.getDeleteText());
+    this.triggerButton.setUi("decline");
+
+    this.cancelButton = this.getGrid().getTitleBar().add({
+      align: "right",
+      xtype: "button",
+      ui: "action",
+      text: this.getCancelText(),
+      scope: this,
+    });
+    this.cancelButton.on({
+      tap: "exitSelectionMode",
+      scope: this,
+    });
+    this.getSelectionColumn().show();
+
+    this.getGrid().setMode("MULTI");
+  },
+
+  exitSelectionMode: function () {
+    this.cancelButton.destroy();
+    this.triggerButton.setText(this.getTriggerText());
+    this.triggerButton.setUi(null);
+    this.getSelectionColumn().hide();
+    this.getGrid().setMode("SINGLE");
+    this.getGrid().deselectAll();
+  },
+
+  deleteSelectedRecords: function () {
+    this.getGrid().getStore().remove(this.getGrid().getSelection());
+  },
+
+  applySelectionColumn: function (column) {
+    if (column && !column.isComponent) {
+      column = Ext.factory(column, Ext.grid.Column);
+    }
+
+    return column;
+  },
+
+  updateSelectionColumn: function (column, oldColumn) {
+    var grid = this.getGrid();
+
+    if (grid) {
+      if (oldColumn) {
+        grid.removeColumn(oldColumn);
+      }
+
+      if (column) {
+        grid.insertColumn(0, column);
+      }
+    }
+  },
+
+  updateGrid: function (grid, oldGrid) {
+    if (oldGrid) {
+      oldGrid.removeColumn(this.getSelectionColumn());
+    }
+
+    if (grid) {
+      if (!grid.isConfiguring) {
+        grid.insertColumn(0, this.getSelectionColumn());
+      }
+    }
+  },
 });

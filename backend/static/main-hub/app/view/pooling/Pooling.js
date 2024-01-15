@@ -196,7 +196,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
               },
               getRealPoolSize: function (children) {
                 return Ext.sum(
-                  Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth")
+                  Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth"),
                 );
               },
               getPoolSize: function (children) {

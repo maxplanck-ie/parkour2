@@ -9,7 +9,7 @@
  *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -76,22 +76,22 @@
  * to be transparent/ignored.
  *
  */
-Ext.define('Ext.chart.axis.Numeric', {
-    extend: 'Ext.chart.axis.Axis',
-    type: 'numeric',
-    alias: [
-        'axis.numeric',
-        'axis.radial' // legacy charts compatibility
-    ],
-    requires: [
-        'Ext.chart.axis.layout.Continuous',
-        'Ext.chart.axis.segmenter.Numeric'
-    ],
-    config: {
-        layout: 'continuous',
+Ext.define("Ext.chart.axis.Numeric", {
+  extend: "Ext.chart.axis.Axis",
+  type: "numeric",
+  alias: [
+    "axis.numeric",
+    "axis.radial", // legacy charts compatibility
+  ],
+  requires: [
+    "Ext.chart.axis.layout.Continuous",
+    "Ext.chart.axis.segmenter.Numeric",
+  ],
+  config: {
+    layout: "continuous",
 
-        segmenter: 'numeric',
+    segmenter: "numeric",
 
-        aggregator: 'double'
-    }
+    aggregator: "double",
+  },
 });

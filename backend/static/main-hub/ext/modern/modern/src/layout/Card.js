@@ -35,118 +35,124 @@
  * so 1 corresponds to the second item). Normally you're better off using a {@link Ext.tab.Panel tab panel} or a
  * {@link Ext.carousel.Carousel carousel}.
  */
-Ext.define('Ext.layout.Card', {
-    extend: 'Ext.layout.Default',
+Ext.define("Ext.layout.Card", {
+  extend: "Ext.layout.Default",
 
-    alias: 'layout.card',
+  alias: "layout.card",
 
-    type: 'card',
+  type: "card",
 
-    isCard: true,
+  isCard: true,
 
-    /**
-     * @event activeitemchange
-     * @preventable
-     * Fires when an card is made active
-     * @param {Ext.layout.Card} this The layout instance
-     * @param {Mixed} newActiveItem The new active item
-     * @param {Mixed} oldActiveItem The old active item
-     */
-        
-    cls: Ext.baseCSSPrefix + 'layout-card',
+  /**
+   * @event activeitemchange
+   * @preventable
+   * Fires when an card is made active
+   * @param {Ext.layout.Card} this The layout instance
+   * @param {Mixed} newActiveItem The new active item
+   * @param {Mixed} oldActiveItem The old active item
+   */
 
-    itemCls: Ext.baseCSSPrefix + 'layout-card-item',
+  cls: Ext.baseCSSPrefix + "layout-card",
 
-    requires: [
-        'Ext.fx.layout.Card'
-    ],
+  itemCls: Ext.baseCSSPrefix + "layout-card-item",
 
-    /**
-     * @private
-     */
-    applyAnimation: function(animation) {
-        return new Ext.fx.layout.Card(animation);
-    },
+  requires: ["Ext.fx.layout.Card"],
 
-    /**
-     * @private
-     */
-    updateAnimation: function(animation, oldAnimation) {
-        if (animation && animation.isAnimation) {
-            animation.setLayout(this);
-        }
+  /**
+   * @private
+   */
+  applyAnimation: function (animation) {
+    return new Ext.fx.layout.Card(animation);
+  },
 
-        if (oldAnimation) {
-            oldAnimation.destroy();
-        }
-    },
-
-    setContainer: function(container) {
-        this.callParent(arguments);
-
-        container.onInitialized('onContainerInitialized', this);
-    },
-
-    onContainerInitialized: function() {
-        var me = this,
-            container = me.container,
-            firstItem = container.getInnerAt(0),
-            activeItem = container.getActiveItem();
-
-        me.callParent();
-
-        if (activeItem) {
-            activeItem.show();
-
-            if (firstItem && firstItem !== activeItem) {
-                firstItem.hide();
-            }
-        }
-
-        container.on('activeitemchange', 'onContainerActiveItemChange', me);
-    },
-
-    /**
-     * @private
-     */
-    onContainerActiveItemChange: function(container, newItem, oldItem) {
-        this.fireEventedAction('activeitemchange', [this, newItem, oldItem],
-            'doActiveItemChange', this);
-    },
-
-    onItemInnerStateChange: function(item, isInner, destroying) {
-        this.callParent(arguments);
-        var container = this.container,
-            activeItem = container.getActiveItem();
-
-        item.setLayoutSizeFlags(isInner ? container.LAYOUT_BOTH : 0);
-
-        if (isInner) {
-            if (activeItem !== container.innerIndexOf(item) && activeItem !== item && item !== container.pendingActiveItem) {
-                item.hide();
-            }
-        } else {
-            if (!destroying && !item.destroyed && item.destroying !== true) {
-                item.show();
-            }
-        }
-    },
-
-    /**
-     * @private
-     */
-    doActiveItemChange: function(me, newActiveItem, oldActiveItem) {
-        if (oldActiveItem) {
-            oldActiveItem.hide();
-        }
-
-        if (newActiveItem) {
-            newActiveItem.show();
-        }
-    },
-
-    destroy: function() {
-        Ext.destroy(this.getAnimation());
-        this.callParent();
+  /**
+   * @private
+   */
+  updateAnimation: function (animation, oldAnimation) {
+    if (animation && animation.isAnimation) {
+      animation.setLayout(this);
     }
+
+    if (oldAnimation) {
+      oldAnimation.destroy();
+    }
+  },
+
+  setContainer: function (container) {
+    this.callParent(arguments);
+
+    container.onInitialized("onContainerInitialized", this);
+  },
+
+  onContainerInitialized: function () {
+    var me = this,
+      container = me.container,
+      firstItem = container.getInnerAt(0),
+      activeItem = container.getActiveItem();
+
+    me.callParent();
+
+    if (activeItem) {
+      activeItem.show();
+
+      if (firstItem && firstItem !== activeItem) {
+        firstItem.hide();
+      }
+    }
+
+    container.on("activeitemchange", "onContainerActiveItemChange", me);
+  },
+
+  /**
+   * @private
+   */
+  onContainerActiveItemChange: function (container, newItem, oldItem) {
+    this.fireEventedAction(
+      "activeitemchange",
+      [this, newItem, oldItem],
+      "doActiveItemChange",
+      this,
+    );
+  },
+
+  onItemInnerStateChange: function (item, isInner, destroying) {
+    this.callParent(arguments);
+    var container = this.container,
+      activeItem = container.getActiveItem();
+
+    item.setLayoutSizeFlags(isInner ? container.LAYOUT_BOTH : 0);
+
+    if (isInner) {
+      if (
+        activeItem !== container.innerIndexOf(item) &&
+        activeItem !== item &&
+        item !== container.pendingActiveItem
+      ) {
+        item.hide();
+      }
+    } else {
+      if (!destroying && !item.destroyed && item.destroying !== true) {
+        item.show();
+      }
+    }
+  },
+
+  /**
+   * @private
+   */
+  doActiveItemChange: function (me, newActiveItem, oldActiveItem) {
+    if (oldActiveItem) {
+      oldActiveItem.hide();
+    }
+
+    if (newActiveItem) {
+      newActiveItem.show();
+    }
+  },
+
+  destroy: function () {
+    Ext.destroy(this.getAnimation());
+    this.callParent();
+  },
 });

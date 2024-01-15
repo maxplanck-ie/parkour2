@@ -70,132 +70,129 @@
  *
  * @since 5.0.0
  */
-Ext.define('Ext.dashboard.Part', {
-    mixins: [
-        'Ext.mixin.Factoryable',
-        'Ext.mixin.Identifiable'
-    ],
+Ext.define("Ext.dashboard.Part", {
+  mixins: ["Ext.mixin.Factoryable", "Ext.mixin.Identifiable"],
 
-    requires: [
-        'Ext.util.ObjectTemplate'
-    ],
+  requires: ["Ext.util.ObjectTemplate"],
 
-    alias: 'part.part',
+  alias: "part.part",
 
-    factoryConfig: {
-        type: 'part'
-    },
+  factoryConfig: {
+    type: "part",
+  },
 
-    isPart: true,
+  isPart: true,
 
-    /**
-     * The last assigned identifier for instances created by this `Part`.
-     * @private
-     */
-    _lastId: 0,
+  /**
+   * The last assigned identifier for instances created by this `Part`.
+   * @private
+   */
+  _lastId: 0,
 
-    config: {
-        id: null,
-
-        /**
-         * The `Dashboard` instance that owns this `part`.
-         * @property {Ext.dashboard.Panel} dashboard
-         * @readonly
-         */
-        dashboard: null,
-
-        /**
-         * @cfg {Object/Ext.util.ObjectTemplate} viewTemplate
-         * The configuration object used for creating instances of this `Part`. This is
-         * used by the `createView` method to create views.
-         */
-        viewTemplate: {
-            collapsed: '{collapsed}',
-            columnIndex: '{columnIndex}',
-            id: '{id}',
-            title: '{title}',
-            height: '{height}'
-        }
-    },
-
-    viewTemplateOptions: {
-        excludeProperties: {
-            bind: 1
-        }
-    },
-
-    valueRe: /^[{][a-z]*[}]$/i,
-
-    constructor: function (config) {
-        this.initConfig(config);
-    },
-
-    applyViewTemplate: function (template) {
-        //<debug>
-        if (!Ext.isObject(template)) {
-            Ext.raise('The viewTemplate for ' + this.$className + ' is not an Object');
-        }
-        //</debug>
-
-        return Ext.util.ObjectTemplate.create(template, this.viewTemplateOptions);
-    },
+  config: {
+    id: null,
 
     /**
-     * This method should display an appropriate edit form (probably a modal `Ext.Window`
-     * or `Ext.Msg.prompt`) to get or edit configuration for an instance of this part.
-     *
-     * See the class documentation for examples on implementing this method.
-     *
-     * @param {Ext.Component} instance The already existing view or `null` if called to
-     * configure a new instance.
-     *
-     * @param {Object} currentConfig The configuration returned from this method for the
-     * existing view (`instance`) or `null` if called to configure a new instance.
-     *
-     * @param {Function} callback The function to call passing
-     * @param {Object} callback.config The configuration that defines the instance to be
-     * created. This value is passed to `createView` and applied to the `viewTemplate`.
-     *
-     * @param {Object} scope The scope with which to call the `callback`.
-     *
-     * @method displayForm
-     * @abstract
-     * @since 5.0.0
+     * The `Dashboard` instance that owns this `part`.
+     * @property {Ext.dashboard.Panel} dashboard
+     * @readonly
      */
-    displayForm: function (instance, currentConfig, callback, scope) {
-        callback.call(scope || this, {});
-    },
+    dashboard: null,
 
     /**
-     * This method is responsible for converting a configuration object from `displayForm`
-     * into a "view" (an object that can be passed to `Ext.widget`).
-     *
-     * If you override this method it is recommended that you `callParent` to get the view
-     * produced and then edit that result. This is because there are several private
-     * properties placed on the returned configuration object.
-     *
-     *      createView: function (config) {
-     *          var view = this.callParent([config]);
-     *
-     *          // edit view
-     *
-     *          return view;
-     *      }
-     *
-     * @param {Object} config The object returned from `displayForm`.
-     * @return {Object} The view configuration object.
-     * @protected
-     * @since 5.0.0
+     * @cfg {Object/Ext.util.ObjectTemplate} viewTemplate
+     * The configuration object used for creating instances of this `Part`. This is
+     * used by the `createView` method to create views.
      */
-    createView: function (config) {
-        var me = this,
-            template = me.getViewTemplate(),
-            ret = template.apply(config);
+    viewTemplate: {
+      collapsed: "{collapsed}",
+      columnIndex: "{columnIndex}",
+      id: "{id}",
+      title: "{title}",
+      height: "{height}",
+    },
+  },
 
-        ret.dashboard = me.getDashboard();
-        ret.part = me;
-        ret._partConfig = config;
+  viewTemplateOptions: {
+    excludeProperties: {
+      bind: 1,
+    },
+  },
 
-        return ret;
+  valueRe: /^[{][a-z]*[}]$/i,
+
+  constructor: function (config) {
+    this.initConfig(config);
+  },
+
+  applyViewTemplate: function (template) {
+    //<debug>
+    if (!Ext.isObject(template)) {
+      Ext.raise(
+        "The viewTemplate for " + this.$className + " is not an Object",
+      );
     }
+    //</debug>
+
+    return Ext.util.ObjectTemplate.create(template, this.viewTemplateOptions);
+  },
+
+  /**
+   * This method should display an appropriate edit form (probably a modal `Ext.Window`
+   * or `Ext.Msg.prompt`) to get or edit configuration for an instance of this part.
+   *
+   * See the class documentation for examples on implementing this method.
+   *
+   * @param {Ext.Component} instance The already existing view or `null` if called to
+   * configure a new instance.
+   *
+   * @param {Object} currentConfig The configuration returned from this method for the
+   * existing view (`instance`) or `null` if called to configure a new instance.
+   *
+   * @param {Function} callback The function to call passing
+   * @param {Object} callback.config The configuration that defines the instance to be
+   * created. This value is passed to `createView` and applied to the `viewTemplate`.
+   *
+   * @param {Object} scope The scope with which to call the `callback`.
+   *
+   * @method displayForm
+   * @abstract
+   * @since 5.0.0
+   */
+  displayForm: function (instance, currentConfig, callback, scope) {
+    callback.call(scope || this, {});
+  },
+
+  /**
+   * This method is responsible for converting a configuration object from `displayForm`
+   * into a "view" (an object that can be passed to `Ext.widget`).
+   *
+   * If you override this method it is recommended that you `callParent` to get the view
+   * produced and then edit that result. This is because there are several private
+   * properties placed on the returned configuration object.
+   *
+   *      createView: function (config) {
+   *          var view = this.callParent([config]);
+   *
+   *          // edit view
+   *
+   *          return view;
+   *      }
+   *
+   * @param {Object} config The object returned from `displayForm`.
+   * @return {Object} The view configuration object.
+   * @protected
+   * @since 5.0.0
+   */
+  createView: function (config) {
+    var me = this,
+      template = me.getViewTemplate(),
+      ret = template.apply(config);
+
+    ret.dashboard = me.getDashboard();
+    ret.part = me;
+    ret._partConfig = config;
+
+    return ret;
+  },
 });

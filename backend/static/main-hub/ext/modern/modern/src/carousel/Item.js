@@ -1,12 +1,12 @@
 /**
  * @private
  */
-Ext.define('Ext.carousel.Item', {
-    extend: 'Ext.Decorator',
+Ext.define("Ext.carousel.Item", {
+  extend: "Ext.Decorator",
 
-    config: {
-        baseCls: Ext.baseCSSPrefix + 'carousel-item',
-        component: null,
-        translatable: true
-    }
+  config: {
+    baseCls: Ext.baseCSSPrefix + "carousel-item",
+    component: null,
+    translatable: true,
+  },
 });

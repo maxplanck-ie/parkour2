@@ -1,13 +1,13 @@
 /**
- * A layout that arranges items horizontally across a 
- * {@link Ext.container.Container Container}. This layout optionally divides available 
- * horizontal space between child {@link Ext.container.Container#cfg-items items} 
+ * A layout that arranges items horizontally across a
+ * {@link Ext.container.Container Container}. This layout optionally divides available
+ * horizontal space between child {@link Ext.container.Container#cfg-items items}
  * containing a numeric {@link Ext.Component#cfg-flex flex} configuration.
- * 
- * This layout may be used to set the heights or vertical position of child items 
- * by configuring it with the {@link #align} option.  The horizontal position of the 
+ *
+ * This layout may be used to set the heights or vertical position of child items
+ * by configuring it with the {@link #align} option.  The horizontal position of the
  * child items may be set using the {@link #pack} config.
- * 
+ *
  *     @example
  *     Ext.create('Ext.Panel', {
  *         width: 500,
@@ -32,10 +32,10 @@
  *             flex: 1
  *         }]
  *     });
- * 
- * The following example may be used to view the outcomes when combining the `align` and 
+ *
+ * The following example may be used to view the outcomes when combining the `align` and
  * `pack` configs:
- * 
+ *
  *     @example
  *     Ext.create({
  *         xtype: 'panel',
@@ -105,23 +105,23 @@
  *                 }]
  *             }]
  *         }],
- *         
+ *
  *         onToggle: function (group, button, isPressed) {
  *             var cfg = {};
- *             
+ *
  *             cfg[button.configType] = isPressed ? button.getText() : null;
  *             this.setLayout(cfg);
  *         }
  *     });
  */
-Ext.define('Ext.layout.container.HBox', {
-    extend: 'Ext.layout.container.Box',
+Ext.define("Ext.layout.container.HBox", {
+  extend: "Ext.layout.container.Box",
 
-    alias: 'layout.hbox',
+  alias: "layout.hbox",
 
-    alternateClassName: 'Ext.layout.HBoxLayout',
+  alternateClassName: "Ext.layout.HBoxLayout",
 
-    type: 'hbox',
+  type: "hbox",
 
-    vertical: false
+  vertical: false,
 });

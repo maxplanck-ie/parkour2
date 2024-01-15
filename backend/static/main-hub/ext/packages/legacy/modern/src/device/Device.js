@@ -42,7 +42,7 @@
  *             // Listen for future changes
  *             Ext.device.Device.on('schemeupdate', function(device, scheme) {
  *                 // the application was launched, closed, and then launched another from another application
- *                 // this means onReady wont be called again ('cause the application is already running in the 
+ *                 // this means onReady wont be called again ('cause the application is already running in the
  *                 // background) - but this event will be fired
  *                 alert('Applicated reopened via another application: ' + scheme.url);
  *             }, this);
@@ -68,23 +68,23 @@
  *
  * @mixins Ext.device.device.Abstract
  */
-Ext.define('Ext.device.Device', {
-    singleton: true,
+Ext.define("Ext.device.Device", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.device.Cordova',
-        'Ext.device.device.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.device.Cordova",
+    "Ext.device.device.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.device.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.device.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.device.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.device.Simulator");
+  },
 });

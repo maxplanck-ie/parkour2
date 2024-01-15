@@ -43,7 +43,7 @@ Ext.define("MainHub.store.librarypreparation.LibraryPreparation", {
                 {
                   pk: record.get("pk"),
                 },
-                record.getChanges()
+                record.getChanges(),
               );
             }
           });

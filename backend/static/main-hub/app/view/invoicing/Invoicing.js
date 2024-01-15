@@ -157,7 +157,7 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
                 var link = document.createElement("a");
                 link.href = this.reportUrl;
                 link.download = this.reportUrl.substr(
-                  this.reportUrl.lastIndexOf("/") + 1
+                  this.reportUrl.lastIndexOf("/") + 1,
                 );
                 link.click();
               },

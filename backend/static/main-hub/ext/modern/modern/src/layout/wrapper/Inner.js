@@ -1,21 +1,21 @@
 /**
  *
  */
-Ext.define('Ext.layout.wrapper.Inner', {
-    config: {
-        sizeState: null,
-        container: null
-    },
+Ext.define("Ext.layout.wrapper.Inner", {
+  config: {
+    sizeState: null,
+    container: null,
+  },
 
-    constructor: function(config) {
-        this.initConfig(config);
-    },
+  constructor: function (config) {
+    this.initConfig(config);
+  },
 
-    getElement: function() {
-        return this.getContainer().bodyElement;
-    },
+  getElement: function () {
+    return this.getContainer().bodyElement;
+  },
 
-    setInnerWrapper: Ext.emptyFn,
+  setInnerWrapper: Ext.emptyFn,
 
-    getInnerWrapper: Ext.emptyFn
+  getInnerWrapper: Ext.emptyFn,
 });

@@ -52,9 +52,11 @@
  * "flex" each item. The calculation is always based on a percentage with a spacing taken
  * into account to separate the items from each other.
  */
-Ext.define('Ext.ux.layout.ResponsiveColumn', {
-    extend: 'Ext.layout.container.Auto',
-    alias: 'layout.responsivecolumn',
+Ext.define(
+  "Ext.ux.layout.ResponsiveColumn",
+  {
+    extend: "Ext.layout.container.Auto",
+    alias: "layout.responsivecolumn",
 
     /**
      * @cfg {Object} states
@@ -87,109 +89,127 @@ Ext.define('Ext.ux.layout.ResponsiveColumn', {
      * will then activate the appropriate CSS rules to size the child items.
      */
     states: {
-        small: 1000,
-        large: 0
+      small: 1000,
+      large: 0,
     },
 
-    _responsiveCls: Ext.baseCSSPrefix + 'responsivecolumn',
+    _responsiveCls: Ext.baseCSSPrefix + "responsivecolumn",
 
     initLayout: function () {
-        this.innerCtCls += ' ' + this._responsiveCls;
-        this.callParent();
+      this.innerCtCls += " " + this._responsiveCls;
+      this.callParent();
     },
 
     beginLayout: function (ownerContext) {
-        var me = this,
-            viewportWidth = Ext.Element.getViewportWidth(),
-            states = me.states,
-            activeThreshold = Infinity,
-            innerCt = me.innerCt,
-            currentState = me._currentState,
-            name, threshold, newState;
+      var me = this,
+        viewportWidth = Ext.Element.getViewportWidth(),
+        states = me.states,
+        activeThreshold = Infinity,
+        innerCt = me.innerCt,
+        currentState = me._currentState,
+        name,
+        threshold,
+        newState;
 
-        for (name in states) {
-            threshold = states[name] || Infinity;
+      for (name in states) {
+        threshold = states[name] || Infinity;
 
-            if (viewportWidth <= threshold && threshold <= activeThreshold) {
-                activeThreshold = threshold;
-                newState = name;
-            }
+        if (viewportWidth <= threshold && threshold <= activeThreshold) {
+          activeThreshold = threshold;
+          newState = name;
         }
+      }
 
-        if (newState !== currentState) {
-            innerCt.replaceCls(currentState, newState, me._responsiveCls);
-            me._currentState = newState;
-        }
+      if (newState !== currentState) {
+        innerCt.replaceCls(currentState, newState, me._responsiveCls);
+        me._currentState = newState;
+      }
 
-        me.callParent(arguments);
+      me.callParent(arguments);
     },
 
     onAdd: function (item) {
-        this.callParent([item]);
+      this.callParent([item]);
 
-        var responsiveCls = item.responsiveCls;
+      var responsiveCls = item.responsiveCls;
 
-        if (responsiveCls) {
-            item.addCls(responsiveCls);
-        }
-    }
-},
-//--------------------------------------------------------------------------------------
-// IE8 does not support CSS calc expressions, so we have to fallback to more traditional
-// for of layout. This is very similar but much simpler than Column layout.
-//
-function (Responsive) {
+      if (responsiveCls) {
+        item.addCls(responsiveCls);
+      }
+    },
+  },
+  //--------------------------------------------------------------------------------------
+  // IE8 does not support CSS calc expressions, so we have to fallback to more traditional
+  // for of layout. This is very similar but much simpler than Column layout.
+  //
+  function (Responsive) {
     if (Ext.isIE8) {
-        Responsive.override({
-            responsiveSizePolicy: {
-                readsWidth: 0,
-                readsHeight: 0,
-                setsWidth: 1,
-                setsHeight: 0
-            },
+      Responsive.override({
+        responsiveSizePolicy: {
+          readsWidth: 0,
+          readsHeight: 0,
+          setsWidth: 1,
+          setsHeight: 0,
+        },
 
-            setsItemSize: true,
+        setsItemSize: true,
 
-            calculateItems: function (ownerContext, containerSize) {
-                var me = this,
-                    targetContext = ownerContext.targetContext,
-                    items = ownerContext.childItems,
-                    len = items.length,
-                    gotWidth = containerSize.gotWidth,
-                    contentWidth = containerSize.width,
-                    blocked, availableWidth, i, itemContext, itemMarginWidth, itemWidth;
+        calculateItems: function (ownerContext, containerSize) {
+          var me = this,
+            targetContext = ownerContext.targetContext,
+            items = ownerContext.childItems,
+            len = items.length,
+            gotWidth = containerSize.gotWidth,
+            contentWidth = containerSize.width,
+            blocked,
+            availableWidth,
+            i,
+            itemContext,
+            itemMarginWidth,
+            itemWidth;
 
-                // No parallel measurement, cannot lay out boxes.
-                if (gotWidth === false) {
-                    targetContext.domBlock(me, 'width');
-                    return false;;
-                }
-                if (!gotWidth) {
-                    // gotWidth is undefined, which means we must be width shrink wrap.
-                    // Cannot calculate item widths if we're shrink wrapping.
-                    return true;
-                }
+          // No parallel measurement, cannot lay out boxes.
+          if (gotWidth === false) {
+            targetContext.domBlock(me, "width");
+            return false;
+          }
+          if (!gotWidth) {
+            // gotWidth is undefined, which means we must be width shrink wrap.
+            // Cannot calculate item widths if we're shrink wrapping.
+            return true;
+          }
 
-                for (i = 0; i < len; ++i) {
-                    itemContext = items[i];
+          for (i = 0; i < len; ++i) {
+            itemContext = items[i];
 
-                    // The mixin encodes these in background-position syles since it is
-                    // unlikely a component will have a background-image.
-                    itemWidth = parseInt(itemContext.el.getStyle('background-position-x'), 10);
-                    itemMarginWidth = parseInt(itemContext.el.getStyle('background-position-y'), 10);
+            // The mixin encodes these in background-position syles since it is
+            // unlikely a component will have a background-image.
+            itemWidth = parseInt(
+              itemContext.el.getStyle("background-position-x"),
+              10,
+            );
+            itemMarginWidth = parseInt(
+              itemContext.el.getStyle("background-position-y"),
+              10,
+            );
 
-                    itemContext.setWidth((itemWidth / 100 * (contentWidth - itemMarginWidth)) - itemMarginWidth);
-                }
+            itemContext.setWidth(
+              (itemWidth / 100) * (contentWidth - itemMarginWidth) -
+                itemMarginWidth,
+            );
+          }
 
-                ownerContext.setContentWidth(contentWidth +
-                    ownerContext.paddingContext.getPaddingInfo().width);
+          ownerContext.setContentWidth(
+            contentWidth + ownerContext.paddingContext.getPaddingInfo().width,
+          );
 
-                return true;
-            },
+          return true;
+        },
 
-            getItemSizePolicy: function () {
-                return this.responsiveSizePolicy;
-            }
-        });
+        getItemSizePolicy: function () {
+          return this.responsiveSizePolicy;
+        },
+      });
     }
-});
+  },
+);

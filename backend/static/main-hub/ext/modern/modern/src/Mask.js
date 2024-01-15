@@ -17,79 +17,79 @@
  *     // Mask the container
  *     container.setMasked(true);
  */
-Ext.define('Ext.Mask', {
-    extend: 'Ext.Component',
-    xtype: 'mask',
-    requires: ['Ext.util.InputBlocker'],
+Ext.define("Ext.Mask", {
+  extend: "Ext.Component",
+  xtype: "mask",
+  requires: ["Ext.util.InputBlocker"],
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        baseCls: Ext.baseCSSPrefix + 'mask',
-
-        /**
-         * @cfg {Boolean} transparent True to make this mask transparent.
-         */
-        transparent: false,
-
-        /**
-         * @cfg
-         * @hide
-         */
-        top: 0,
-
-        /**
-         * @cfg
-         * @hide
-         */
-        left: 0,
-
-        /**
-         * @cfg
-         * @hide
-         */
-        right: 0,
-
-        /**
-         * @cfg
-         * @hide
-         */
-        bottom: 0
-    },
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    baseCls: Ext.baseCSSPrefix + "mask",
 
     /**
-     * @event tap
-     * A tap event fired when a user taps on this mask
-     * @param {Ext.Mask} this The mask instance
-     * @param {Ext.EventObject} e The event object
+     * @cfg {Boolean} transparent True to make this mask transparent.
      */
-    initialize: function() {
-        var me = this;
+    transparent: false,
 
-        me.callParent();
-        me.element.on('tap', 'onTap', me);
-        me.on('hide', 'onHide', me);
-    },
+    /**
+     * @cfg
+     * @hide
+     */
+    top: 0,
 
-    onHide: function(){
-        Ext.util.InputBlocker.unblockInputs();
+    /**
+     * @cfg
+     * @hide
+     */
+    left: 0,
 
-        // Oh how I loves the Android
-        if (Ext.browser.is.AndroidStock4 && Ext.os.version.getMinor() === 0) {
-            var firstChild = this.element.getFirstChild();
-            if (firstChild) {
-                firstChild.redraw();
-            }
-        }
-    },
+    /**
+     * @cfg
+     * @hide
+     */
+    right: 0,
 
-    onTap: function(e) {
-        this.fireEvent('tap', this, e);
-    },
+    /**
+     * @cfg
+     * @hide
+     */
+    bottom: 0,
+  },
 
-    updateTransparent: function(transparent) {
-        this.toggleCls(this.getBaseCls() + '-transparent', transparent);
+  /**
+   * @event tap
+   * A tap event fired when a user taps on this mask
+   * @param {Ext.Mask} this The mask instance
+   * @param {Ext.EventObject} e The event object
+   */
+  initialize: function () {
+    var me = this;
+
+    me.callParent();
+    me.element.on("tap", "onTap", me);
+    me.on("hide", "onHide", me);
+  },
+
+  onHide: function () {
+    Ext.util.InputBlocker.unblockInputs();
+
+    // Oh how I loves the Android
+    if (Ext.browser.is.AndroidStock4 && Ext.os.version.getMinor() === 0) {
+      var firstChild = this.element.getFirstChild();
+      if (firstChild) {
+        firstChild.redraw();
+      }
     }
+  },
+
+  onTap: function (e) {
+    this.fireEvent("tap", this, e);
+  },
+
+  updateTransparent: function (transparent) {
+    this.toggleCls(this.getBaseCls() + "-transparent", transparent);
+  },
 });

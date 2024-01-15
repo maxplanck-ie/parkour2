@@ -330,7 +330,7 @@ export default {
           event.target.value == "";
         this.userListFiltered = toRaw(this.userList).filter(
           (element) =>
-            element.facility === document.getElementById("facility").value
+            element.facility === document.getElementById("facility").value,
         );
         newDuty[event.target.id] = event.target.value;
         this.newDuty = newDuty;
@@ -357,7 +357,7 @@ export default {
       ) {
         showNotification(
           "Please check all the necessary fields: \n 1. Facility \n 2. Responsible Person \n 3. Backup Person \n 4. Start Date \n 5. Platform",
-          "error"
+          "error",
         );
         this.gridOptions.api.hideOverlay();
       } else {
@@ -390,7 +390,7 @@ export default {
         const response = await axiosRef.get(
           urlStringStart +
             "/api/duties/" +
-            (additionalUrl !== "" ? "?" + additionalUrl : "")
+            (additionalUrl !== "" ? "?" + additionalUrl : ""),
         );
         let fetchedRows = [];
         let userList = this.userList;
@@ -401,28 +401,28 @@ export default {
               userList.find(
                 (matcherElement) =>
                   getProp(matcherElement, "id", 0) ==
-                  getProp(element, "main_name", 0)
+                  getProp(element, "main_name", 0),
               ) || {},
               "facility",
-              "-"
+              "-",
             ),
             main_name: getProp(
               userList.find(
                 (matcherElement_1) =>
                   getProp(matcherElement_1, "id", 0) ==
-                  getProp(element, "main_name", 0)
+                  getProp(element, "main_name", 0),
               ) || {},
               "first_name",
-              "-"
+              "-",
             ),
             backup_name: getProp(
               userList.find(
                 (matcherElement_2) =>
                   getProp(matcherElement_2, "id", 0) ==
-                  getProp(element, "backup_name", 0)
+                  getProp(element, "backup_name", 0),
               ) || {},
               "first_name",
-              "-"
+              "-",
             ),
             start_date:
               getProp(element, "start_date", "") &&
@@ -500,19 +500,19 @@ export default {
           case "main_name":
             newValue = getProp(
               toRaw(this.userList).find(
-                (user) => user["first_name"] === newValue
+                (user) => user["first_name"] === newValue,
               ),
               "id",
-              0
+              0,
             );
             break;
           case "backup_name":
             newValue = getProp(
               toRaw(this.userList).find(
-                (user) => user["first_name"] === newValue
+                (user) => user["first_name"] === newValue,
               ),
               "id",
-              0
+              0,
             );
             break;
           case "start_date":
@@ -565,14 +565,18 @@ export default {
                 .toLowerCase()
                 .replace(/[^a-zA-Z0-9 ]/g, "")
                 .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
+                  event.target.value
+                    .toLowerCase()
+                    .replace(/[^a-zA-Z0-9 ]/g, ""),
                 )) ||
             (element.end_date &&
               element.end_date
                 .toLowerCase()
                 .replace(/[^a-zA-Z0-9 ]/g, "")
                 .includes(
-                  event.target.value.toLowerCase().replace(/[^a-zA-Z0-9 ]/g, "")
+                  event.target.value
+                    .toLowerCase()
+                    .replace(/[^a-zA-Z0-9 ]/g, ""),
                 )) ||
             (element.facility &&
               element.facility
@@ -585,7 +589,7 @@ export default {
             (element.comment &&
               element.comment
                 .toLowerCase()
-                .includes(event.target.value.toLowerCase()))
+                .includes(event.target.value.toLowerCase())),
         );
       }
     },

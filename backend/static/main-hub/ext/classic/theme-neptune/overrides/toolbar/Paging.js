@@ -1,6 +1,6 @@
-Ext.define('Ext.theme.neptune.toolbar.Paging', {
-    override: 'Ext.toolbar.Paging',
+Ext.define("Ext.theme.neptune.toolbar.Paging", {
+  override: "Ext.toolbar.Paging",
 
-    defaultButtonUI: 'plain-toolbar',
-    inputItemWidth: 40
+  defaultButtonUI: "plain-toolbar",
+  inputItemWidth: 40,
 });

@@ -49,7 +49,7 @@ Ext.define("MainHub.view.usage.UsageController", {
             data &&
             data.length > 0 &&
             Ext.Array.sum(
-              Ext.Array.pluck(Ext.Array.pluck(data, "data"), "data")
+              Ext.Array.pluck(Ext.Array.pluck(data, "data"), "data"),
             ) > 0
           ) {
             emptyText.hide();

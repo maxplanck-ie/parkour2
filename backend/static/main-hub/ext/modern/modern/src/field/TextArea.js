@@ -42,61 +42,61 @@
  *         placeHolder: 'Tell us about yourself...'
  *     });
  */
-Ext.define('Ext.field.TextArea', {
-    extend: 'Ext.field.Text',
-    xtype: 'textareafield',
-    requires: ['Ext.field.TextAreaInput'],
-    alternateClassName: 'Ext.form.TextArea',
+Ext.define("Ext.field.TextArea", {
+  extend: "Ext.field.Text",
+  xtype: "textareafield",
+  requires: ["Ext.field.TextAreaInput"],
+  alternateClassName: "Ext.form.TextArea",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        autoCapitalize: false,
-
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        component: {
-            xtype: 'textareainput'
-        },
-
-        /**
-         * @cfg {Number} maxRows The maximum number of lines made visible by the input.
-         * @accessor
-         */
-        maxRows: null,
-
-        clearIcon: false
-    },
-
-    classCls: Ext.baseCSSPrefix + 'textareafield',
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    autoCapitalize: false,
 
     /**
-     * @private
+     * @cfg
+     * @inheritdoc
      */
-    updateMaxRows: function(newRows) {
-        this.getComponent().setMaxRows(newRows);
-    },
-
-    updateHeight: function(height, oldHeight) {
-        this.callParent([height, oldHeight]);
-        this.getComponent().inputElement.setHeight(height);
-    },
-
-    updateWidth: function(width, oldWidth) {
-        this.callParent([width, oldWidth]);
-        this.getComponent().inputElement.setWidth(width);
+    component: {
+      xtype: "textareainput",
     },
 
     /**
-     * Called when a key has been pressed in the `<input>`
-     * @private
+     * @cfg {Number} maxRows The maximum number of lines made visible by the input.
+     * @accessor
      */
-    doKeyUp: function(me) {
-        // getValue to ensure that we are in sync with the dom
-        this.toggleClearTrigger(this.getValue());
-    }
+    maxRows: null,
+
+    clearIcon: false,
+  },
+
+  classCls: Ext.baseCSSPrefix + "textareafield",
+
+  /**
+   * @private
+   */
+  updateMaxRows: function (newRows) {
+    this.getComponent().setMaxRows(newRows);
+  },
+
+  updateHeight: function (height, oldHeight) {
+    this.callParent([height, oldHeight]);
+    this.getComponent().inputElement.setHeight(height);
+  },
+
+  updateWidth: function (width, oldWidth) {
+    this.callParent([width, oldWidth]);
+    this.getComponent().inputElement.setWidth(width);
+  },
+
+  /**
+   * Called when a key has been pressed in the `<input>`
+   * @private
+   */
+  doKeyUp: function (me) {
+    // getValue to ensure that we are in sync with the dom
+    this.toggleClearTrigger(this.getValue());
+  },
 });

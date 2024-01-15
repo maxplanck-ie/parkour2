@@ -152,7 +152,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                       0,
                       false,
                       true,
-                      true
+                      true,
                     );
 
                     var size = pool.get("pool_size") - pool.get("loaded");

@@ -12,55 +12,55 @@
  * there is a common interface that can be used without needing to refer to a specific provider instance
  * in every component.
  */
-Ext.define('Ext.state.Manager', {
-    singleton: true,
+Ext.define("Ext.state.Manager", {
+  singleton: true,
 
-    requires: ['Ext.state.Provider'],
+  requires: ["Ext.state.Provider"],
 
-    constructor: function() {
-        this.provider = new Ext.state.Provider();
-    },
-    
-    /**
-     * Configures the default state provider for your application
-     * @param {Ext.state.Provider} stateProvider The state provider to set
-     */
-    setProvider: function (stateProvider) {
-        this.provider = stateProvider;
-    },
+  constructor: function () {
+    this.provider = new Ext.state.Provider();
+  },
 
-    /**
-     * Returns the current value for a key
-     * @param {String} key The key name
-     * @param {Object} defaultValue The default value to return if the key lookup does not match
-     * @return {Object} The state data
-     */
-    get: function (key, defaultValue) {
-        return this.provider.get(key, defaultValue);
-    },
+  /**
+   * Configures the default state provider for your application
+   * @param {Ext.state.Provider} stateProvider The state provider to set
+   */
+  setProvider: function (stateProvider) {
+    this.provider = stateProvider;
+  },
 
-    /**
-     * Sets the value for a key
-     * @param {String} key The key name
-     * @param {Object} value The state data
-     */
-    set: function (key, value) {
-        this.provider.set(key, value);
-    },
+  /**
+   * Returns the current value for a key
+   * @param {String} key The key name
+   * @param {Object} defaultValue The default value to return if the key lookup does not match
+   * @return {Object} The state data
+   */
+  get: function (key, defaultValue) {
+    return this.provider.get(key, defaultValue);
+  },
 
-    /**
-     * Clears a value from the state
-     * @param {String} key The key name
-     */
-    clear: function (key) {
-        this.provider.clear(key);
-    },
+  /**
+   * Sets the value for a key
+   * @param {String} key The key name
+   * @param {Object} value The state data
+   */
+  set: function (key, value) {
+    this.provider.set(key, value);
+  },
 
-    /**
-     * Gets the currently configured state provider
-     * @return {Ext.state.Provider} The state provider
-     */
-    getProvider: function () {
-        return this.provider;
-    }
+  /**
+   * Clears a value from the state
+   * @param {String} key The key name
+   */
+  clear: function (key) {
+    this.provider.clear(key);
+  },
+
+  /**
+   * Gets the currently configured state provider
+   * @return {Ext.state.Provider} The state provider
+   */
+  getProvider: function () {
+    return this.provider;
+  },
 });

@@ -32,44 +32,45 @@
  *         renderTo: Ext.getBody()
  *     });
  */
-Ext.define('Ext.grid.column.Number', {
-    extend: 'Ext.grid.column.Column',
-    alias: ['widget.numbercolumn'],
+Ext.define("Ext.grid.column.Number", {
+  extend: "Ext.grid.column.Column",
+  alias: ["widget.numbercolumn"],
 
-    requires: ['Ext.util.Format'],
-    alternateClassName: 'Ext.grid.NumberColumn',
+  requires: ["Ext.util.Format"],
+  alternateClassName: "Ext.grid.NumberColumn",
 
-    defaultFilterType: 'number',
+  defaultFilterType: "number",
 
-    //<locale>
-    /**
-     * @cfg {String} format
-     * A formatting string as used by {@link Ext.util.Format#number} to format a numeric value for this Column.
-     */
-    format : '0,000.00',
-    //</locale>
+  //<locale>
+  /**
+   * @cfg {String} format
+   * A formatting string as used by {@link Ext.util.Format#number} to format a numeric value for this Column.
+   */
+  format: "0,000.00",
+  //</locale>
 
-    /**
-     * @cfg {Object} renderer
-     * @hide
-     */
+  /**
+   * @cfg {Object} renderer
+   * @hide
+   */
 
-    /**
-     * @cfg {Object} scope
-     * @hide
-     */
+  /**
+   * @cfg {Object} scope
+   * @hide
+   */
 
-    /**
-     * @cfg {Boolean} producesHTML
-     * @inheritdoc
-     */
-    producesHTML: false,
+  /**
+   * @cfg {Boolean} producesHTML
+   * @inheritdoc
+   */
+  producesHTML: false,
 
-    defaultRenderer: function(value) {
-        return Ext.util.Format.number(value, this.format);
-    },
+  defaultRenderer: function (value) {
+    return Ext.util.Format.number(value, this.format);
+  },
 
-    updater: function(cell, value) {
-        Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML = Ext.grid.column.Number.prototype.defaultRenderer.call(this, value);
-    }
+  updater: function (cell, value) {
+    Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
+      Ext.grid.column.Number.prototype.defaultRenderer.call(this, value);
+  },
 });

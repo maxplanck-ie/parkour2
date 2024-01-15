@@ -47,7 +47,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
       0,
       false,
       true,
-      true
+      true,
     );
     if (sequencer) {
       var numLanes = sequencer.get("lanes");
@@ -144,7 +144,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
       0,
       false,
       true,
-      true
+      true,
     );
 
     // Initialize 'click' event
@@ -192,7 +192,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           0,
           false,
           true,
-          true
+          true,
         );
         var poolSize = Ext.getStore("PoolSizes").findRecord(
           "id",
@@ -200,7 +200,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           0,
           false,
           true,
-          true
+          true,
         );
         var laneId = $(target).attr("id").replace("-innerCt", "");
         var proto = Ext.dd.DropZone.prototype;
@@ -223,7 +223,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           0,
           false,
           true,
-          true
+          true,
         );
         var poolSize = Ext.getStore("PoolSizes").findRecord(
           "id",
@@ -231,7 +231,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           0,
           false,
           true,
-          true
+          true,
         );
         var laneId = $(target).attr("id").replace("-innerCt", "");
         var laneName = $(target).text();
@@ -252,7 +252,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
             message = Ext.String.format(
               "Pool with size {0} cannot be fit on a lane with capacity {1}.",
               poolSize.get("size"),
-              sequencer.get("lane_capacity")
+              sequencer.get("lane_capacity"),
             );
             new Noty({ text: message, type: "warning" }).show();
             return false;
@@ -288,7 +288,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           if (!isTargetingSelf(laneId, pool)) {
             message = Ext.String.format(
               "{0} is already loaded. Please unload it and try again.",
-              laneName
+              laneName,
             );
 
             new Noty({ text: message, type: "warning" }).show();
@@ -325,7 +325,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
       0,
       false,
       true,
-      true
+      true,
     );
 
     // Update (increase) Pool Loaded amount
@@ -407,7 +407,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
                 for (var i = 0; i < obj.errors[field].length; i++) {
                   error += Ext.String.format(
                     "<li>{0}</li>",
-                    obj.errors[field][i]
+                    obj.errors[field][i],
                   );
                 }
                 error += "</ul>";

@@ -25,12 +25,12 @@
  * session is ended (e.g. by closing the browser) then all data in a SessionStorageProxy are lost. Browser restarts
  * don't affect the {@link Ext.data.proxy.LocalStorage} - the data are preserved.
  */
-Ext.define('Ext.data.proxy.SessionStorage', {
-    extend: 'Ext.data.proxy.WebStorage',
-    alias: 'proxy.sessionstorage',
-    alternateClassName: 'Ext.data.SessionStorageProxy',
-    
-    getStorageObject: function() {
-        return window.sessionStorage;
-    }
+Ext.define("Ext.data.proxy.SessionStorage", {
+  extend: "Ext.data.proxy.WebStorage",
+  alias: "proxy.sessionstorage",
+  alternateClassName: "Ext.data.SessionStorageProxy",
+
+  getStorageObject: function () {
+    return window.sessionStorage;
+  },
 });

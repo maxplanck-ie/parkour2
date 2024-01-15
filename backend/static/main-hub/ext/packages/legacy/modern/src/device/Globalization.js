@@ -8,22 +8,22 @@
  *
  * http://docs.phonegap.com/en/2.6.0/cordova_globalization_globalization.md.html
  */
-Ext.define('Ext.device.Globalization', {
-    singleton: true,
+Ext.define("Ext.device.Globalization", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.globalization.Cordova',
-        'Ext.device.globalization.Simulator'
-    ],
+  requires: [
+    "Ext.device.globalization.Cordova",
+    "Ext.device.globalization.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.globalization.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.globalization.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.globalization.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.globalization.Simulator");
+  },
 });

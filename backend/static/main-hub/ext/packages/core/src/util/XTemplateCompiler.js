@@ -1,7 +1,7 @@
 /**
  * This class compiles the XTemplate syntax into a function object. The function is used
  * like so:
- * 
+ *
  *      function (out, values, parent, xindex, xcount) {
  *          // out is the output array to store results
  *          // values, parent, xindex and xcount have their historical meaning
@@ -9,8 +9,10 @@
  *
  * @private
  */
-Ext.define('Ext.util.XTemplateCompiler', {
-    extend: 'Ext.util.XTemplateParser',
+Ext.define(
+  "Ext.util.XTemplateCompiler",
+  {
+    extend: "Ext.util.XTemplateParser",
 
     // Chrome really likes "new Function" to realize the code block (as in it is
     // 2x-3x faster to call it than using eval), but Firefox chokes on it badly.
@@ -23,201 +25,206 @@ Ext.define('Ext.util.XTemplateCompiler', {
     useIndex: Ext.isIE8m,
 
     useFormat: true,
-    
+
     propNameRe: /^[\w\d\$]*$/,
 
     compile: function (tpl) {
-        var me = this,
-            code = me.generate(tpl);
+      var me = this,
+        code = me.generate(tpl);
 
-        // When using "new Function", we have to pass our "Ext" variable to it in order to
-        // support sandboxing. If we did not, the generated function would use the global
-        // "Ext", not the "Ext" from our sandbox (scope chain).
-        //
-        return me.useEval ? me.evalTpl(code) : (new Function('Ext', code))(Ext);
+      // When using "new Function", we have to pass our "Ext" variable to it in order to
+      // support sandboxing. If we did not, the generated function would use the global
+      // "Ext", not the "Ext" from our sandbox (scope chain).
+      //
+      return me.useEval ? me.evalTpl(code) : new Function("Ext", code)(Ext);
     },
 
     generate: function (tpl) {
-        var me = this,
-            // note: Ext here is properly sandboxed
-            definitions = 'var fm=Ext.util.Format,ts=Object.prototype.toString;',
-            code;
+      var me = this,
+        // note: Ext here is properly sandboxed
+        definitions = "var fm=Ext.util.Format,ts=Object.prototype.toString;",
+        code;
 
-        // Track how many levels we use, so that we only "var" each level's variables once
-        me.maxLevel = 0;
+      // Track how many levels we use, so that we only "var" each level's variables once
+      me.maxLevel = 0;
 
-        me.body = [
-            'var c0=values, a0=' + me.createArrayTest(0) + ', p0=parent, n0=xcount, i0=xindex, k0, v;\n'
-        ];
-        if (me.definitions) {
-            if (typeof me.definitions === 'string') {
-                me.definitions = [me.definitions, definitions ];
-            } else {
-                me.definitions.push(definitions);
-            }
+      me.body = [
+        "var c0=values, a0=" +
+          me.createArrayTest(0) +
+          ", p0=parent, n0=xcount, i0=xindex, k0, v;\n",
+      ];
+      if (me.definitions) {
+        if (typeof me.definitions === "string") {
+          me.definitions = [me.definitions, definitions];
         } else {
-            me.definitions = [ definitions ];
+          me.definitions.push(definitions);
         }
-        me.switches = [];
+      } else {
+        me.definitions = [definitions];
+      }
+      me.switches = [];
 
-        me.parse(tpl);
+      me.parse(tpl);
 
-        me.definitions.push(
-            (me.useEval ? '$=' : 'return') + ' function (' + me.fnArgs + ') {',
-                me.body.join(''),
-            '}'
-        );
+      me.definitions.push(
+        (me.useEval ? "$=" : "return") + " function (" + me.fnArgs + ") {",
+        me.body.join(""),
+        "}",
+      );
 
-        code = me.definitions.join('\n');
+      code = me.definitions.join("\n");
 
-        // Free up the arrays.
-        me.definitions.length = me.body.length = me.switches.length = 0;
-        delete me.definitions;
-        delete me.body;
-        delete me.switches;
+      // Free up the arrays.
+      me.definitions.length = me.body.length = me.switches.length = 0;
+      delete me.definitions;
+      delete me.body;
+      delete me.switches;
 
-        return code;
+      return code;
     },
 
     //-----------------------------------
     // XTemplateParser callouts
 
     doText: function (text) {
-        var me = this,
-            out = me.body;
+      var me = this,
+        out = me.body;
 
-        text = text.replace(me.aposRe, "\\'").replace(me.newLineRe, '\\n');
-        if (me.useIndex) {
-            out.push('out[out.length]=\'', text, '\'\n');
-        } else {
-            out.push('out.push(\'', text, '\')\n');
-        }
+      text = text.replace(me.aposRe, "\\'").replace(me.newLineRe, "\\n");
+      if (me.useIndex) {
+        out.push("out[out.length]='", text, "'\n");
+      } else {
+        out.push("out.push('", text, "')\n");
+      }
     },
 
     doExpr: function (expr) {
-        var out = this.body;
-        out.push('if ((v=' + expr + ') != null) out');
+      var out = this.body;
+      out.push("if ((v=" + expr + ") != null) out");
 
-        // Coerce value to string using concatenation of an empty string literal.
-        // See http://jsperf.com/tostringvscoercion/5
-        if (this.useIndex) {
-             out.push('[out.length]=v+\'\'\n');
-        } else {
-             out.push('.push(v+\'\')\n');
-        }
+      // Coerce value to string using concatenation of an empty string literal.
+      // See http://jsperf.com/tostringvscoercion/5
+      if (this.useIndex) {
+        out.push("[out.length]=v+''\n");
+      } else {
+        out.push(".push(v+'')\n");
+      }
     },
 
     doTag: function (tag) {
-        var expr = this.parseTag(tag);
-        if (expr) {
-            this.doExpr(expr);
-        } else {
-            // if we cannot match on tagRe handle as plain text
-            this.doText('{' + tag + '}');
-        }
+      var expr = this.parseTag(tag);
+      if (expr) {
+        this.doExpr(expr);
+      } else {
+        // if we cannot match on tagRe handle as plain text
+        this.doText("{" + tag + "}");
+      }
     },
 
     doElse: function () {
-        this.body.push('} else {\n');
+      this.body.push("} else {\n");
     },
 
     doEval: function (text) {
-        this.body.push(text, '\n');
+      this.body.push(text, "\n");
     },
 
     doIf: function (action, actions) {
-        var me = this;
+      var me = this;
 
-        // If it's just a propName, use it directly in the if
-        if (action === '.') {
-            me.body.push('if (values) {\n');
-        } else if (me.propNameRe.test(action)) {
-            me.body.push('if (', me.parseTag(action), ') {\n');
-        }
-        // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
-        else {
-            me.body.push('if (', me.addFn(action), me.callFn, ') {\n');
-        }
-        if (actions.exec) {
-            me.doExec(actions.exec);
-        }
+      // If it's just a propName, use it directly in the if
+      if (action === ".") {
+        me.body.push("if (values) {\n");
+      } else if (me.propNameRe.test(action)) {
+        me.body.push("if (", me.parseTag(action), ") {\n");
+      }
+      // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
+      else {
+        me.body.push("if (", me.addFn(action), me.callFn, ") {\n");
+      }
+      if (actions.exec) {
+        me.doExec(actions.exec);
+      }
     },
 
     doElseIf: function (action, actions) {
-        var me = this;
+      var me = this;
 
-        // If it's just a propName, use it directly in the else if
-        if (action === '.') {
-            me.body.push('else if (values) {\n');
-        } else if (me.propNameRe.test(action)) {
-            me.body.push('} else if (', me.parseTag(action), ') {\n');
-        }
-        // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
-        else {
-            me.body.push('} else if (', me.addFn(action), me.callFn, ') {\n');
-        }
-        if (actions.exec) {
-            me.doExec(actions.exec);
-        }
+      // If it's just a propName, use it directly in the else if
+      if (action === ".") {
+        me.body.push("else if (values) {\n");
+      } else if (me.propNameRe.test(action)) {
+        me.body.push("} else if (", me.parseTag(action), ") {\n");
+      }
+      // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
+      else {
+        me.body.push("} else if (", me.addFn(action), me.callFn, ") {\n");
+      }
+      if (actions.exec) {
+        me.doExec(actions.exec);
+      }
     },
 
     doSwitch: function (action) {
-        var me = this,
-            key;
+      var me = this,
+        key;
 
-        // If it's just a propName, use it directly in the switch
-        if (action === '.' || action === '#') {
-            key = action === '.' ? 'values' : 'xindex';
-            me.body.push('switch (', key, ') {\n');
-        } else if (me.propNameRe.test(action)) {
-            me.body.push('switch (', me.parseTag(action), ') {\n');
-        }
-        // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
-        else {
-            me.body.push('switch (', me.addFn(action), me.callFn, ') {\n');
-        }
-        me.switches.push(0);
+      // If it's just a propName, use it directly in the switch
+      if (action === "." || action === "#") {
+        key = action === "." ? "values" : "xindex";
+        me.body.push("switch (", key, ") {\n");
+      } else if (me.propNameRe.test(action)) {
+        me.body.push("switch (", me.parseTag(action), ") {\n");
+      }
+      // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
+      else {
+        me.body.push("switch (", me.addFn(action), me.callFn, ") {\n");
+      }
+      me.switches.push(0);
     },
 
     doCase: function (action) {
-        var me = this,
-            cases = Ext.isArray(action) ? action : [action],
-            n = me.switches.length - 1,
-            match, i;
+      var me = this,
+        cases = Ext.isArray(action) ? action : [action],
+        n = me.switches.length - 1,
+        match,
+        i;
 
-        if (me.switches[n]) {
-            me.body.push('break;\n');
-        } else {
-            me.switches[n]++;
-        }
+      if (me.switches[n]) {
+        me.body.push("break;\n");
+      } else {
+        me.switches[n]++;
+      }
 
-        for (i = 0, n = cases.length; i < n; ++i) {
-            match = me.intRe.exec(cases[i]);
-            cases[i] = match ? match[1] : ("'" + cases[i].replace(me.aposRe,"\\'") + "'");
-        }
+      for (i = 0, n = cases.length; i < n; ++i) {
+        match = me.intRe.exec(cases[i]);
+        cases[i] = match
+          ? match[1]
+          : "'" + cases[i].replace(me.aposRe, "\\'") + "'";
+      }
 
-        me.body.push('case ', cases.join(': case '), ':\n');
+      me.body.push("case ", cases.join(": case "), ":\n");
     },
 
     doDefault: function () {
-        var me = this,
-            n = me.switches.length - 1;
+      var me = this,
+        n = me.switches.length - 1;
 
-        if (me.switches[n]) {
-            me.body.push('break;\n');
-        } else {
-            me.switches[n]++;
-        }
+      if (me.switches[n]) {
+        me.body.push("break;\n");
+      } else {
+        me.switches[n]++;
+      }
 
-        me.body.push('default:\n');
+      me.body.push("default:\n");
     },
 
     doEnd: function (type, actions) {
-        var me = this,
-            L = me.level-1;
+      var me = this,
+        L = me.level - 1;
 
-        if (type == 'for' || type == 'foreach') {
-            /*
+      if (type == "for" || type == "foreach") {
+        /*
             To exit a for or foreach loop we must restore the outer loop's context. The
             code looks like this (which goes with that produced by doFor or doForEach):
 
@@ -231,36 +238,46 @@ Ext.define('Ext.util.XTemplateCompiler', {
                     xcount = n1;
                     xindex = i1
             */
-            if (actions.exec) {
-                me.doExec(actions.exec);
-            }
-
-            me.body.push('}\n');
-            me.body.push('parent=p',L,';values=r',L+1,';xcount=n'+L+';xindex=i',L,'+1;xkey=k',L,';\n');
-        } else if (type == 'if' || type == 'switch') {
-            me.body.push('}\n');
+        if (actions.exec) {
+          me.doExec(actions.exec);
         }
+
+        me.body.push("}\n");
+        me.body.push(
+          "parent=p",
+          L,
+          ";values=r",
+          L + 1,
+          ";xcount=n" + L + ";xindex=i",
+          L,
+          "+1;xkey=k",
+          L,
+          ";\n",
+        );
+      } else if (type == "if" || type == "switch") {
+        me.body.push("}\n");
+      }
     },
 
     doFor: function (action, actions) {
-        var me = this,
-            s,
-            L = me.level,
-            up = L-1,
-            parentAssignment;
+      var me = this,
+        s,
+        L = me.level,
+        up = L - 1,
+        parentAssignment;
 
-        // If it's just a propName, use it directly in the switch
-        if (action === '.') {
-            s = 'values';
-        } else if (me.propNameRe.test(action)) {
-            s = me.parseTag(action);
-        }
-        // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
-        else {
-            s = me.addFn(action) + me.callFn;
-        }
+      // If it's just a propName, use it directly in the switch
+      if (action === ".") {
+        s = "values";
+      } else if (me.propNameRe.test(action)) {
+        s = me.parseTag(action);
+      }
+      // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
+      else {
+        s = me.addFn(action) + me.callFn;
+      }
 
-        /*
+      /*
         We are trying to produce a block of code that looks like below. We use the nesting
         level to uniquely name the control variables.
 
@@ -302,53 +319,120 @@ Ext.define('Ext.util.XTemplateCompiler', {
         is handled by doEnd).
         */
 
-        // Declare the vars for a particular level only if we have not already declared them.
-        if (me.maxLevel < L) {
-            me.maxLevel = L;
-            me.body.push('var ');
-        }
-        
-        if (action == '.') {
-            parentAssignment = 'c' + L;
-        } else {
-            parentAssignment = 'a' + up + '?c' + up + '[i' + up + ']:c' + up;
-        }
-        
-        me.body.push('i',L,'=0,n', L, '=0,c',L,'=',s,',a',L,'=', me.createArrayTest(L),',r',L,'=values,p',L,',k',L,';\n',
-            'p',L,'=parent=',parentAssignment,'\n',
-            'if (c',L,'){if(a',L,'){n', L,'=c', L, '.length;}else if (c', L, '.isMixedCollection){c',L,'=c',L,'.items;n',L,'=c',L,'.length;}else if(c',L,'.isStore){c',L,'=c',L,'.data.items;n',L,'=c',L,'.length;}else{c',L,'=[c',L,'];n',L,'=1;}}\n',
-            'for (xcount=n',L,';i',L,'<n'+L+';++i',L,'){\n',
-            'values=c',L,'[i',L,']');
-        if (actions.propName) {
-            me.body.push('.', actions.propName);
-        }
-        me.body.push('\n',
-            'xindex=i',L,'+1\n');
-        
-        if (actions.between) {
-            me.body.push('if(xindex>1){ out.push("',actions.between,'"); } \n');
-        }
+      // Declare the vars for a particular level only if we have not already declared them.
+      if (me.maxLevel < L) {
+        me.maxLevel = L;
+        me.body.push("var ");
+      }
+
+      if (action == ".") {
+        parentAssignment = "c" + L;
+      } else {
+        parentAssignment = "a" + up + "?c" + up + "[i" + up + "]:c" + up;
+      }
+
+      me.body.push(
+        "i",
+        L,
+        "=0,n",
+        L,
+        "=0,c",
+        L,
+        "=",
+        s,
+        ",a",
+        L,
+        "=",
+        me.createArrayTest(L),
+        ",r",
+        L,
+        "=values,p",
+        L,
+        ",k",
+        L,
+        ";\n",
+        "p",
+        L,
+        "=parent=",
+        parentAssignment,
+        "\n",
+        "if (c",
+        L,
+        "){if(a",
+        L,
+        "){n",
+        L,
+        "=c",
+        L,
+        ".length;}else if (c",
+        L,
+        ".isMixedCollection){c",
+        L,
+        "=c",
+        L,
+        ".items;n",
+        L,
+        "=c",
+        L,
+        ".length;}else if(c",
+        L,
+        ".isStore){c",
+        L,
+        "=c",
+        L,
+        ".data.items;n",
+        L,
+        "=c",
+        L,
+        ".length;}else{c",
+        L,
+        "=[c",
+        L,
+        "];n",
+        L,
+        "=1;}}\n",
+        "for (xcount=n",
+        L,
+        ";i",
+        L,
+        "<n" + L + ";++i",
+        L,
+        "){\n",
+        "values=c",
+        L,
+        "[i",
+        L,
+        "]",
+      );
+      if (actions.propName) {
+        me.body.push(".", actions.propName);
+      }
+      me.body.push("\n", "xindex=i", L, "+1\n");
+
+      if (actions.between) {
+        me.body.push('if(xindex>1){ out.push("', actions.between, '"); } \n');
+      }
     },
 
     doForEach: function (action, actions) {
-        var me = this,
-            s,
-            L = me.level,
-            up = L-1,
-            parentAssignment;
+      var me = this,
+        s,
+        L = me.level,
+        up = L - 1,
+        parentAssignment;
 
-        // If it's just a propName, use it directly in the switch
-        if (action === '.') {
-            s = 'values';
-        } else if (me.propNameRe.test(action)) {
-            s = me.parseTag(action);
-        }
-        // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
-        else {
-            s = me.addFn(action) + me.callFn;
-        }
+      // If it's just a propName, use it directly in the switch
+      if (action === ".") {
+        s = "values";
+      } else if (me.propNameRe.test(action)) {
+        s = me.parseTag(action);
+      }
+      // Otherwise, it must be an expression, and needs to be returned from an fn which uses with(values)
+      else {
+        s = me.addFn(action) + me.callFn;
+      }
 
-        /*
+      /*
         We are trying to produce a block of code that looks like below. We use the nesting
         level to uniquely name the control variables.
 
@@ -376,179 +460,239 @@ Ext.define('Ext.util.XTemplateCompiler', {
         is handled by doEnd).
         */
 
-        // Declare the vars for a particular level only if we have not already declared them.
-        if (me.maxLevel < L) {
-            me.maxLevel = L;
-            me.body.push('var ');
-        }
-        
-        if (action == '.') {
-            parentAssignment = 'c' + L;
-        } else {
-            parentAssignment = 'a' + up + '?c' + up + '[i' + up + ']:c' + up;
-        }
-        
-        me.body.push('i',L,'=-1,n',L,'=0,c',L,'=',s,',a',L,'=',me.createArrayTest(L),',r',L,'=values,p',L,',k',L,';\n',
-            'p',L,'=parent=',parentAssignment,'\n',
-            'for(k',L,' in c',L,'){\n',
-                'xindex=++i',L,'+1;\n',
-                'xkey=k',L,';\n',
-                'values=c',L,'[k',L,'];');
-        if (actions.propName) {
-            me.body.push('.', actions.propName);
-        }
-        
-        if (actions.between) {
-            me.body.push('if(xindex>1){ out.push("',actions.between,'"); } \n');
-        }
+      // Declare the vars for a particular level only if we have not already declared them.
+      if (me.maxLevel < L) {
+        me.maxLevel = L;
+        me.body.push("var ");
+      }
+
+      if (action == ".") {
+        parentAssignment = "c" + L;
+      } else {
+        parentAssignment = "a" + up + "?c" + up + "[i" + up + "]:c" + up;
+      }
+
+      me.body.push(
+        "i",
+        L,
+        "=-1,n",
+        L,
+        "=0,c",
+        L,
+        "=",
+        s,
+        ",a",
+        L,
+        "=",
+        me.createArrayTest(L),
+        ",r",
+        L,
+        "=values,p",
+        L,
+        ",k",
+        L,
+        ";\n",
+        "p",
+        L,
+        "=parent=",
+        parentAssignment,
+        "\n",
+        "for(k",
+        L,
+        " in c",
+        L,
+        "){\n",
+        "xindex=++i",
+        L,
+        "+1;\n",
+        "xkey=k",
+        L,
+        ";\n",
+        "values=c",
+        L,
+        "[k",
+        L,
+        "];",
+      );
+      if (actions.propName) {
+        me.body.push(".", actions.propName);
+      }
+
+      if (actions.between) {
+        me.body.push('if(xindex>1){ out.push("', actions.between, '"); } \n');
+      }
     },
 
-    createArrayTest: ('isArray' in Array) ? function(L) {
-        return 'Array.isArray(c' + L + ')';
-    } : function(L) {
-        return 'ts.call(c' + L + ')==="[object Array]"';
-    },
+    createArrayTest:
+      "isArray" in Array
+        ? function (L) {
+            return "Array.isArray(c" + L + ")";
+          }
+        : function (L) {
+            return "ts.call(c" + L + ')==="[object Array]"';
+          },
 
     doExec: function (action, actions) {
-        var me = this,
-            name = 'f' + me.definitions.length,
-            guards = me.guards[me.strict ? 0 : 1];
+      var me = this,
+        name = "f" + me.definitions.length,
+        guards = me.guards[me.strict ? 0 : 1];
 
-        me.definitions.push('function ' + name + '(' + me.fnArgs + ') {',
-                            guards.doTry,
-                            ' var $v = values; with($v) {',
-                            '  ' + action,
-                            ' }',
-                            guards.doCatch,
-                      '}');
+      me.definitions.push(
+        "function " + name + "(" + me.fnArgs + ") {",
+        guards.doTry,
+        " var $v = values; with($v) {",
+        "  " + action,
+        " }",
+        guards.doCatch,
+        "}",
+      );
 
-        me.body.push(name + me.callFn + '\n');
+      me.body.push(name + me.callFn + "\n");
     },
 
     //-----------------------------------
     // Internal
 
-    guards: [{
-        doTry: '',
-        doCatch: ''
-    }, {
-        doTry: 'try { ',
-        doCatch: ' } catch(e) {\n' +
-            //<debug>
-            'Ext.log.warn("XTemplate evaluation exception: " + e.message);\n' +
-            //</debug>
-            '}'
-    }],
+    guards: [
+      {
+        doTry: "",
+        doCatch: "",
+      },
+      {
+        doTry: "try { ",
+        doCatch:
+          " } catch(e) {\n" +
+          //<debug>
+          'Ext.log.warn("XTemplate evaluation exception: " + e.message);\n' +
+          //</debug>
+          "}",
+      },
+    ],
 
     addFn: function (body) {
-        var me = this,
-            name = 'f' + me.definitions.length,
-            guards = me.guards[me.strict ? 0 : 1];
+      var me = this,
+        name = "f" + me.definitions.length,
+        guards = me.guards[me.strict ? 0 : 1];
 
-        if (body === '.') {
-            me.definitions.push('function ' + name + '(' + me.fnArgs + ') {',
-                            ' return values',
-                       '}');
-        } else if (body === '..') {
-            me.definitions.push('function ' + name + '(' + me.fnArgs + ') {',
-                            ' return parent',
-                       '}');
-        } else {
-            me.definitions.push('function ' + name + '(' + me.fnArgs + ') {',
-                            guards.doTry,
-                            ' var $v = values; with($v) {',
-                            '  return(' + body + ')',
-                            ' }',
-                            guards.doCatch,
-                       '}');
-        }
+      if (body === ".") {
+        me.definitions.push(
+          "function " + name + "(" + me.fnArgs + ") {",
+          " return values",
+          "}",
+        );
+      } else if (body === "..") {
+        me.definitions.push(
+          "function " + name + "(" + me.fnArgs + ") {",
+          " return parent",
+          "}",
+        );
+      } else {
+        me.definitions.push(
+          "function " + name + "(" + me.fnArgs + ") {",
+          guards.doTry,
+          " var $v = values; with($v) {",
+          "  return(" + body + ")",
+          " }",
+          guards.doCatch,
+          "}",
+        );
+      }
 
-        return name;
+      return name;
     },
 
     parseTag: function (tag) {
-        var me = this,
-            m = me.tagRe.exec(tag),
-            name, format, args, math, v;
+      var me = this,
+        m = me.tagRe.exec(tag),
+        name,
+        format,
+        args,
+        math,
+        v;
 
-        if (!m) {
-            return null;
-        }
+      if (!m) {
+        return null;
+      }
 
-        name = m[1];
-        format = m[2];
-        args = m[3];
-        math = m[4];
+      name = m[1];
+      format = m[2];
+      args = m[3];
+      math = m[4];
 
-        // name = "." - Just use the values object.
-        if (name == '.') {
-            // filter to not include arrays/objects/nulls
-            if (!me.validTypes) {
-                me.definitions.push('var validTypes={string:1,number:1,boolean:1};');
-                me.validTypes = true;
-            }
-            v = 'validTypes[typeof values] || ts.call(values) === "[object Date]" ? values : ""';
+      // name = "." - Just use the values object.
+      if (name == ".") {
+        // filter to not include arrays/objects/nulls
+        if (!me.validTypes) {
+          me.definitions.push("var validTypes={string:1,number:1,boolean:1};");
+          me.validTypes = true;
         }
-        // name = "#" - Use the xindex
-        else if (name == '#') {
-            v = 'xindex';
-        }
-        // name = "$" - Use the xkey
-        else if (name == '$') {
-            v = 'xkey';
-        }
-        else if (name.substr(0, 7) == "parent.") {
-            v = name;
-        }
-        // compound Javascript property name (e.g., "foo.bar")
-        else if (isNaN(name) && name.indexOf('-') == -1 && name.indexOf('.') != -1) {
-            v = "values." + name;
-        }
-        // number or a '-' in it or a single word (maybe a keyword): use array notation
-        // (http://jsperf.com/string-property-access/4)
-        else {    
-            v = "values['" + name + "']";
-        }
+        v =
+          'validTypes[typeof values] || ts.call(values) === "[object Date]" ? values : ""';
+      }
+      // name = "#" - Use the xindex
+      else if (name == "#") {
+        v = "xindex";
+      }
+      // name = "$" - Use the xkey
+      else if (name == "$") {
+        v = "xkey";
+      } else if (name.substr(0, 7) == "parent.") {
+        v = name;
+      }
+      // compound Javascript property name (e.g., "foo.bar")
+      else if (
+        isNaN(name) &&
+        name.indexOf("-") == -1 &&
+        name.indexOf(".") != -1
+      ) {
+        v = "values." + name;
+      }
+      // number or a '-' in it or a single word (maybe a keyword): use array notation
+      // (http://jsperf.com/string-property-access/4)
+      else {
+        v = "values['" + name + "']";
+      }
 
-        if (math) {
-            v = '(' + v + math + ')';
-        }
+      if (math) {
+        v = "(" + v + math + ")";
+      }
 
-        if (format && me.useFormat) {
-            args = args ? ',' + args : "";
-            if (format.substr(0, 5) != "this.") {
-                format = "fm." + format + '(';
-            } else {
-                format += '(';
-            }
+      if (format && me.useFormat) {
+        args = args ? "," + args : "";
+        if (format.substr(0, 5) != "this.") {
+          format = "fm." + format + "(";
         } else {
-            return v;
+          format += "(";
         }
+      } else {
+        return v;
+      }
 
-        return format + v + args + ')';
+      return format + v + args + ")";
     },
 
     /**
      * @private
      */
     evalTpl: function ($) {
-
-        // We have to use eval to realize the code block and capture the inner func we also
-        // don't want a deep scope chain. We only do this in Firefox and it is also unhappy
-        // with eval containing a return statement, so instead we assign to "$" and return
-        // that. Because we use "eval", we are automatically sandboxed properly.
-        eval($);
-        return $;
+      // We have to use eval to realize the code block and capture the inner func we also
+      // don't want a deep scope chain. We only do this in Firefox and it is also unhappy
+      // with eval containing a return statement, so instead we assign to "$" and return
+      // that. Because we use "eval", we are automatically sandboxed properly.
+      eval($);
+      return $;
     },
 
     newLineRe: /\r\n|\r|\n/g,
     aposRe: /[']/g,
-    intRe:  /^\s*(\d+)\s*$/,
-    tagRe:  /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/
-
-}, function () {
+    intRe: /^\s*(\d+)\s*$/,
+    tagRe:
+      /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/,
+  },
+  function () {
     var proto = this.prototype;
 
-    proto.fnArgs = 'out,values,parent,xindex,xcount,xkey';
-    proto.callFn = '.call(this,' + proto.fnArgs + ')';
-});
+    proto.fnArgs = "out,values,parent,xindex,xcount,xkey";
+    proto.callFn = ".call(this," + proto.fnArgs + ")";
+  },
+);

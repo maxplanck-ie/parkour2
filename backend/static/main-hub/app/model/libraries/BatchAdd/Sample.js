@@ -7,7 +7,7 @@ Ext.define("validator.RNAQuality", {
 
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
-      record.get("nucleic_acid_type")
+      record.get("nucleic_acid_type"),
     );
 
     if (nat && nat.get("type") === "RNA" && value === null) {

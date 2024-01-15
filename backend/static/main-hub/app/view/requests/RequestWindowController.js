@@ -56,7 +56,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       if (request.deep_seq_request_path !== "") {
         $("#uploaded-request-file")
           .html(
-            '<a href="javascript:void(0)" class="uploaded-request-link">uploaded</a>'
+            '<a href="javascript:void(0)" class="uploaded-request-link">uploaded</a>',
           )
           .on("click", function () {
             var link = document.createElement("a");
@@ -146,7 +146,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
               title: "Delete record",
               message: Ext.String.format(
                 'Are you sure you want to delete "{0}"?',
-                selectedItemName
+                selectedItemName,
               ),
               buttons: Ext.Msg.YESNO,
               icon: Ext.Msg.QUESTION,
@@ -326,7 +326,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     } else {
       url = Ext.String.format(
         "api/requests/{0}/edit/",
-        wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get("pk")
+        wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get("pk"),
       );
     }
 

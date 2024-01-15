@@ -86,7 +86,7 @@ Ext.define("MainHub.Application", {
         if (choice === "yes") {
           window.location.reload();
         }
-      }
+      },
     );
   },
 });

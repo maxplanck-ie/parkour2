@@ -9,7 +9,7 @@
  *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -84,52 +84,51 @@
  * axis to show the current values of the elements.
  *
  */
-Ext.define('Ext.chart.series.Scatter', {
+Ext.define("Ext.chart.series.Scatter", {
+  extend: "Ext.chart.series.Cartesian",
 
-    extend: 'Ext.chart.series.Cartesian',
+  alias: "series.scatter",
 
-    alias: 'series.scatter',
+  type: "scatter",
+  seriesType: "scatterSeries",
 
-    type: 'scatter',
-    seriesType: 'scatterSeries',
+  requires: ["Ext.chart.series.sprite.Scatter"],
 
-    requires: [
-        'Ext.chart.series.sprite.Scatter'
-    ],
-
-    config: {
-        itemInstancing: {
-            fx: {
-                customDurations: {
-                    translationX: 0,
-                    translationY: 0
-                }
-            }
-        }
+  config: {
+    itemInstancing: {
+      fx: {
+        customDurations: {
+          translationX: 0,
+          translationY: 0,
+        },
+      },
     },
+  },
 
-    themeMarkerCount: function() {
-        return 1;
-    },
+  themeMarkerCount: function () {
+    return 1;
+  },
 
-    applyMarker: function (marker, oldMarker) {
-        this.getItemInstancing();
-        this.setItemInstancing(marker);
-        return this.callParent(arguments);
-    },
+  applyMarker: function (marker, oldMarker) {
+    this.getItemInstancing();
+    this.setItemInstancing(marker);
+    return this.callParent(arguments);
+  },
 
-    provideLegendInfo: function (target) {
-        var me = this,
-            style = me.getMarkerStyleByIndex(0),
-            fill = style.fillStyle;
+  provideLegendInfo: function (target) {
+    var me = this,
+      style = me.getMarkerStyleByIndex(0),
+      fill = style.fillStyle;
 
-        target.push({
-            name: me.getTitle() || me.getYField() || me.getId(),
-            mark: (Ext.isObject(fill) ? fill.stops && fill.stops[0].color : fill) || style.strokeStyle || 'black',
-            disabled: me.getHidden(),
-            series: me.getId(),
-            index: 0
-        });
-    }
+    target.push({
+      name: me.getTitle() || me.getYField() || me.getId(),
+      mark:
+        (Ext.isObject(fill) ? fill.stops && fill.stops[0].color : fill) ||
+        style.strokeStyle ||
+        "black",
+      disabled: me.getHidden(),
+      series: me.getId(),
+      index: 0,
+    });
+  },
 });
-

@@ -16,166 +16,165 @@
  *          }
  *      });
  */
-Ext.define('Ext.ux.colorpick.Field', {
-    extend: 'Ext.form.field.Picker',
-    xtype: 'colorfield',
+Ext.define("Ext.ux.colorpick.Field", {
+  extend: "Ext.form.field.Picker",
+  xtype: "colorfield",
 
-    mixins: [
-        'Ext.ux.colorpick.Selection'
-    ],
+  mixins: ["Ext.ux.colorpick.Selection"],
 
-    requires: [
-        'Ext.window.Window',
-        'Ext.ux.colorpick.Selector',
-        'Ext.ux.colorpick.ColorUtils',
-        'Ext.layout.container.Fit'
-    ],
+  requires: [
+    "Ext.window.Window",
+    "Ext.ux.colorpick.Selector",
+    "Ext.ux.colorpick.ColorUtils",
+    "Ext.layout.container.Fit",
+  ],
 
-    editable: false,
+  editable: false,
 
-    matchFieldWidth: false, // picker is usually wider than field
+  matchFieldWidth: false, // picker is usually wider than field
 
-    // "Color Swatch" shown on the left of the field
-    beforeBodyEl: [
-        '<div class="' + Ext.baseCSSPrefix + 'colorpicker-field-swatch">' +
-            '<div id="{id}-swatchEl" data-ref="swatchEl" class="' + Ext.baseCSSPrefix +
-                    'colorpicker-field-swatch-inner"></div>' +
-        '</div>'
-    ],
+  // "Color Swatch" shown on the left of the field
+  beforeBodyEl: [
+    '<div class="' +
+      Ext.baseCSSPrefix +
+      'colorpicker-field-swatch">' +
+      '<div id="{id}-swatchEl" data-ref="swatchEl" class="' +
+      Ext.baseCSSPrefix +
+      'colorpicker-field-swatch-inner"></div>' +
+      "</div>",
+  ],
 
-    cls: Ext.baseCSSPrefix + 'colorpicker-field',
-    childEls: [
-        'swatchEl'
-    ],
+  cls: Ext.baseCSSPrefix + "colorpicker-field",
+  childEls: ["swatchEl"],
 
-    config: {
-        /**
-         * @cfg {Object} popup
-         * This object configures the popup window and colorselector component displayed
-         * when this button is clicked. Applications should not need to configure this.
-         * @private
-         */
-        popup: {
-            lazy: true,
-            $value: {
-                xtype: 'window',
-                closeAction: 'hide',
-                referenceHolder: true,
-                minWidth: 540,
-                minHeight: 200,
-                layout: 'fit',
-                header: false,
-                resizable: true,
-                items: {
-                    xtype: 'colorselector',
-                    reference: 'selector',
-                    showPreviousColor: true,
-                    showOkCancelButtons: true
-                }
-            }
-        }
-    },
-
+  config: {
     /**
-     * @event change
-     * Fires when a color is selected.
-     * @param {Ext.ux.colorpick.Field} this
-     * @param {String} color The value of the selected color as per specified {@link #format}.
-     * @param {String} previousColor The previous color value.
+     * @cfg {Object} popup
+     * This object configures the popup window and colorselector component displayed
+     * when this button is clicked. Applications should not need to configure this.
+     * @private
      */
-
-    // NOTE: Since much of the logic of a picker class is overriding methods from the
-    // base class, we don't bother to split out the small remainder as a controller.
-
-    afterRender: function () {
-        this.callParent();
-
-        this.updateValue(this.value);
+    popup: {
+      lazy: true,
+      $value: {
+        xtype: "window",
+        closeAction: "hide",
+        referenceHolder: true,
+        minWidth: 540,
+        minHeight: 200,
+        layout: "fit",
+        header: false,
+        resizable: true,
+        items: {
+          xtype: "colorselector",
+          reference: "selector",
+          showPreviousColor: true,
+          showOkCancelButtons: true,
+        },
+      },
     },
+  },
 
-    // override as required by parent pickerfield
-    createPicker: function() {
-        var me = this,
-            popup = me.getPopup(),
-            picker;
+  /**
+   * @event change
+   * Fires when a color is selected.
+   * @param {Ext.ux.colorpick.Field} this
+   * @param {String} color The value of the selected color as per specified {@link #format}.
+   * @param {String} previousColor The previous color value.
+   */
 
-        // the window will actually be shown and will house the picker
-        me.colorPickerWindow = popup = Ext.create(popup);
-        me.colorPicker = picker = popup.lookupReference('selector');
+  // NOTE: Since much of the logic of a picker class is overriding methods from the
+  // base class, we don't bother to split out the small remainder as a controller.
 
-        picker.setFormat(me.getFormat());
-        picker.setColor(me.getColor());
-        picker.on({
-            ok: 'onColorPickerOK',
-            cancel: 'onColorPickerCancel',
-            scope: me
-        });
+  afterRender: function () {
+    this.callParent();
 
-        popup.on({
-            close: 'onColorPickerCancel',
-            scope: me
-        });
+    this.updateValue(this.value);
+  },
 
-        return me.colorPickerWindow;
-    },
+  // override as required by parent pickerfield
+  createPicker: function () {
+    var me = this,
+      popup = me.getPopup(),
+      picker;
 
-    // When the Ok button is clicked on color picker, preserve the previous value
-    onColorPickerOK: function (colorPicker) {
-        this.setColor(colorPicker.getColor());
+    // the window will actually be shown and will house the picker
+    me.colorPickerWindow = popup = Ext.create(popup);
+    me.colorPicker = picker = popup.lookupReference("selector");
 
-        this.collapse();
-    },
+    picker.setFormat(me.getFormat());
+    picker.setColor(me.getColor());
+    picker.on({
+      ok: "onColorPickerOK",
+      cancel: "onColorPickerCancel",
+      scope: me,
+    });
 
-    onColorPickerCancel: function () {
-        this.collapse();
-    },
+    popup.on({
+      close: "onColorPickerCancel",
+      scope: me,
+    });
 
-    onExpand: function () {
-        var color = this.getColor();
+    return me.colorPickerWindow;
+  },
 
-        this.colorPicker.setPreviousColor(color);
-    },
+  // When the Ok button is clicked on color picker, preserve the previous value
+  onColorPickerOK: function (colorPicker) {
+    this.setColor(colorPicker.getColor());
 
-    // Expects value formatted as per "format" config
-    setValue: function(color) {
-        var me = this,
-            c = me.applyValue(color);
+    this.collapse();
+  },
 
-        me.callParent([c]);
+  onColorPickerCancel: function () {
+    this.collapse();
+  },
 
-        // always update in case opacity changes, even if value doesn't have it
-        // to handle "hex6" non-opacity type of format
-        me.updateValue(c);
-    },
+  onExpand: function () {
+    var color = this.getColor();
 
-    // Sets this.format and color picker's setFormat()
-    updateFormat: function(format) {
-        var cp = this.colorPicker;
+    this.colorPicker.setPreviousColor(color);
+  },
 
-        if (cp) {
-            cp.setFormat(format);
-        }
-    },
+  // Expects value formatted as per "format" config
+  setValue: function (color) {
+    var me = this,
+      c = me.applyValue(color);
 
-    updateValue: function (color) {
-        var me = this,
-            c;
+    me.callParent([c]);
 
-        // If the "value" is changed, update "color" as well. Since these are always
-        // tracking each other, we guard against the case where we are being updated
-        // *because* "color" is being set.
-        if (!me.syncing) {
-            me.syncing = true;
-            me.setColor(color);
-            me.syncing = false;
-        }
+    // always update in case opacity changes, even if value doesn't have it
+    // to handle "hex6" non-opacity type of format
+    me.updateValue(c);
+  },
 
-        c = me.getColor();
+  // Sets this.format and color picker's setFormat()
+  updateFormat: function (format) {
+    var cp = this.colorPicker;
 
-        Ext.ux.colorpick.ColorUtils.setBackground(me.swatchEl, c);
-
-        if (me.colorPicker) {
-            me.colorPicker.setColor(c);
-        }
+    if (cp) {
+      cp.setFormat(format);
     }
+  },
+
+  updateValue: function (color) {
+    var me = this,
+      c;
+
+    // If the "value" is changed, update "color" as well. Since these are always
+    // tracking each other, we guard against the case where we are being updated
+    // *because* "color" is being set.
+    if (!me.syncing) {
+      me.syncing = true;
+      me.setColor(color);
+      me.syncing = false;
+    }
+
+    c = me.getColor();
+
+    Ext.ux.colorpick.ColorUtils.setBackground(me.swatchEl, c);
+
+    if (me.colorPicker) {
+      me.colorPicker.setColor(c);
+    }
+  },
 });
