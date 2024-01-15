@@ -13,81 +13,81 @@
  * @protected
  * @since 6.2.0
  */
-Ext.define('Ext.mixin.Pluggable', function (Pluggable) {
-    var EMPTY = [];
+Ext.define("Ext.mixin.Pluggable", function (Pluggable) {
+  var EMPTY = [];
 
-return {
+  return {
     config: {
-        /**
-         * @cfg {Object/String/Object[]/String[]} plugins
-         * An object or array of objects that will provide custom functionality for this
-         * component. If a string is provided or a string is one of the elements of the
-         * array, that string is treated as the `type` alias. For example, "listpaging"
-         * is the type alias for `Ext.plugin.ListPaging`. The full alias includes the
-         * "plugin." prefix (i.e., 'plugin.listpaging').
-         *
-         * Plugins should derive from `Ext.plugin.Abstract` but this is not required. The
-         * only requirement for a valid plugin is that it contain an `init()` method that
-         * accepts a reference to the owning component.
-         *
-         * When a component is created, if any plugins are available, the component will
-         * call the `{@link Ext.plugin.Abstract#method-init init}` method on each plugin,
-         * passing a reference to itself. Each plugin can then call methods or respond to
-         * events on the component as needed to provide its functionality.
-         *
-         * ## Example code
-         *
-         * A plugin by alias:
-         *
-         *      var list = Ext.create({
-         *          xtype: 'list',
-         *          itemTpl: '<div class="item">{title}</div>',
-         *          store: 'Items',
-         *
-         *          plugins: 'listpaging'
-         *      });
-         *
-         * Multiple plugins by alias:
-         *
-         *      var list = Ext.create({
-         *          xtype: 'list',
-         *          itemTpl: '<div class="item">{title}</div>',
-         *          store: 'Items',
-         *
-         *          plugins: ['listpaging', 'pullrefresh']
-         *      });
-         *
-         * Single plugin by class name with config options:
-         *
-         *      var list = Ext.create({
-         *          xtype: 'list',
-         *          itemTpl: '<div class="item">{title}</div>',
-         *          store: 'Items',
-         *
-         *          plugins: {
-         *              type: 'listpaging',
-         *              autoPaging: true
-         *          }
-         *      });
-         *
-         * Multiple plugins by type and class name with config options:
-         *
-         *      var list = Ext.create({
-         *          xtype: 'list',
-         *          itemTpl: '<div class="item">{title}</div>',
-         *          store: 'Items',
-         *
-         *          plugins: [{
-         *              xclass: 'Ext.plugin.PullRefresh',
-         *              pullRefreshText: 'Pull to refresh...'
-         *          }, {
-         *              type: 'listpaging',
-         *              autoPaging: true
-         *          }]
-         *      });
-         *
-         */
-        plugins: null
+      /**
+       * @cfg {Object/String/Object[]/String[]} plugins
+       * An object or array of objects that will provide custom functionality for this
+       * component. If a string is provided or a string is one of the elements of the
+       * array, that string is treated as the `type` alias. For example, "listpaging"
+       * is the type alias for `Ext.plugin.ListPaging`. The full alias includes the
+       * "plugin." prefix (i.e., 'plugin.listpaging').
+       *
+       * Plugins should derive from `Ext.plugin.Abstract` but this is not required. The
+       * only requirement for a valid plugin is that it contain an `init()` method that
+       * accepts a reference to the owning component.
+       *
+       * When a component is created, if any plugins are available, the component will
+       * call the `{@link Ext.plugin.Abstract#method-init init}` method on each plugin,
+       * passing a reference to itself. Each plugin can then call methods or respond to
+       * events on the component as needed to provide its functionality.
+       *
+       * ## Example code
+       *
+       * A plugin by alias:
+       *
+       *      var list = Ext.create({
+       *          xtype: 'list',
+       *          itemTpl: '<div class="item">{title}</div>',
+       *          store: 'Items',
+       *
+       *          plugins: 'listpaging'
+       *      });
+       *
+       * Multiple plugins by alias:
+       *
+       *      var list = Ext.create({
+       *          xtype: 'list',
+       *          itemTpl: '<div class="item">{title}</div>',
+       *          store: 'Items',
+       *
+       *          plugins: ['listpaging', 'pullrefresh']
+       *      });
+       *
+       * Single plugin by class name with config options:
+       *
+       *      var list = Ext.create({
+       *          xtype: 'list',
+       *          itemTpl: '<div class="item">{title}</div>',
+       *          store: 'Items',
+       *
+       *          plugins: {
+       *              type: 'listpaging',
+       *              autoPaging: true
+       *          }
+       *      });
+       *
+       * Multiple plugins by type and class name with config options:
+       *
+       *      var list = Ext.create({
+       *          xtype: 'list',
+       *          itemTpl: '<div class="item">{title}</div>',
+       *          store: 'Items',
+       *
+       *          plugins: [{
+       *              xclass: 'Ext.plugin.PullRefresh',
+       *              pullRefreshText: 'Pull to refresh...'
+       *          }, {
+       *              type: 'listpaging',
+       *              autoPaging: true
+       *          }]
+       *      });
+       *
+       */
+      plugins: null,
     },
 
     /**
@@ -107,18 +107,18 @@ return {
      * @since 6.2.0
      */
     addPlugin: function (plugin) {
-        var me = this,
-            plugins = me.getPlugins();
+      var me = this,
+        plugins = me.getPlugins();
 
-        if (plugins) {
-            plugin = me.createPlugin(plugin);
-            plugin.init(me);
-            plugins.push(plugin);
-        } else {
-            me.setPlugins(plugin);
-        }
+      if (plugins) {
+        plugin = me.createPlugin(plugin);
+        plugin.init(me);
+        plugins.push(plugin);
+      } else {
+        me.setPlugins(plugin);
+      }
 
-        return plugin;
+      return plugin;
     },
 
     /**
@@ -131,7 +131,7 @@ return {
      * @since 6.2.0
      */
     destroyPlugin: function (plugin) {
-        return this.removePlugin(plugin, true);
+      return this.removePlugin(plugin, true);
     },
 
     /**
@@ -155,21 +155,23 @@ return {
      * @since 6.2.0
      */
     findPlugin: function (type) {
-        var plugins = this.getPlugins(),
-            n = plugins && plugins.length,
-            i, plugin, ret;
+      var plugins = this.getPlugins(),
+        n = plugins && plugins.length,
+        i,
+        plugin,
+        ret;
 
-        for (i = 0; i < n && !ret; i++) {
-            plugin = plugins[i];
+      for (i = 0; i < n && !ret; i++) {
+        plugin = plugins[i];
 
-            // Classic used ptype forever, so support it too but Core/Modern just use
-            // type.
-            if (plugin.type === type || plugin.ptype === type) {
-                ret = plugin;
-            }
+        // Classic used ptype forever, so support it too but Core/Modern just use
+        // type.
+        if (plugin.type === type || plugin.ptype === type) {
+          ret = plugin;
         }
+      }
 
-        return ret || null;
+      return ret || null;
     },
 
     /**
@@ -195,20 +197,22 @@ return {
      * @since 6.2.0
      */
     getPlugin: function (id) {
-        var plugins = this.getPlugins(),
-            n = plugins && plugins.length,
-            i, plugin, ret;
+      var plugins = this.getPlugins(),
+        n = plugins && plugins.length,
+        i,
+        plugin,
+        ret;
 
-        for (i = 0; i < n && !ret; i++) {
-            plugin = plugins[i];
+      for (i = 0; i < n && !ret; i++) {
+        plugin = plugins[i];
 
-            // Classic used pluginId, so support it too but Core/Modern just use id.
-            if (plugin.id === id || plugin.pluginId === id) {
-                ret = plugin;
-            }
+        // Classic used pluginId, so support it too but Core/Modern just use id.
+        if (plugin.id === id || plugin.pluginId === id) {
+          ret = plugin;
         }
+      }
 
-        return ret || null;
+      return ret || null;
     },
 
     /**
@@ -222,167 +226,172 @@ return {
      * @since 6.2.0
      */
     removePlugin: function (plugin, destroy) {
-        var plugins = this.getPlugins(),
-            i = plugins && plugins.length || 0,
-            p;
+      var plugins = this.getPlugins(),
+        i = (plugins && plugins.length) || 0,
+        p;
 
-        while (i-- > 0) {
-            p = plugins[i];
+      while (i-- > 0) {
+        p = plugins[i];
 
-            if (p === plugin || p.id === plugin) {
-                plugins.splice(i, 1);
+        if (p === plugin || p.id === plugin) {
+          plugins.splice(i, 1);
 
-                if (destroy) {
-                    if (p.destroy) {
-                        p.destroy();
-                    }
-                } else if (p.detachCmp) {
-                    p.detachCmp();
-                    if (p.setCmp) {
-                        p.setCmp(null);
-                    }
-                }
-
-                break;
+          if (destroy) {
+            if (p.destroy) {
+              p.destroy();
             }
+          } else if (p.detachCmp) {
+            p.detachCmp();
+            if (p.setCmp) {
+              p.setCmp(null);
+            }
+          }
 
-            p = null;
+          break;
         }
 
-        return p;
+        p = null;
+      }
+
+      return p;
     },
 
     privates: {
-        statics: {
-            idSeed: 0
-        },
+      statics: {
+        idSeed: 0,
+      },
 
-        /**
-         * Creates a particular plugin type if defined in the `plugins` configuration.
-         * @param {String} type The `type` of the plugin.
-         * @return {Ext.plugin.Abstract} The plugin that was created.
-         * @private
-         * @since 6.2.0
-         */
-        activatePlugin: function (type) {
-            var me = this,
-                config = me.initialConfig,
-                plugins = config && config.plugins,
-                ret = null,
-                i, p;
-            
-            if (plugins) {
-                plugins = EMPTY.concat(plugins); // we need an array we can modify
-    
-                for (i = plugins.length; i-- > 0; ) {
-                    p = plugins[i];
+      /**
+       * Creates a particular plugin type if defined in the `plugins` configuration.
+       * @param {String} type The `type` of the plugin.
+       * @return {Ext.plugin.Abstract} The plugin that was created.
+       * @private
+       * @since 6.2.0
+       */
+      activatePlugin: function (type) {
+        var me = this,
+          config = me.initialConfig,
+          plugins = config && config.plugins,
+          ret = null,
+          i,
+          p;
 
-                    if (p === type || p.type === type) {
-                        me.initialConfig = config = Ext.apply({}, config);
-                        config.plugins = plugins; // switch over to our copy
-    
-                        // Put the instance in the plugins array so it will be included in
-                        // the applyPlugins loop for normal processing of plugins.
-                        plugins[i] = ret = me.createPlugin(p);
-                        break;
-                    }
-                }
+        if (plugins) {
+          plugins = EMPTY.concat(plugins); // we need an array we can modify
+
+          for (i = plugins.length; i-- > 0; ) {
+            p = plugins[i];
+
+            if (p === type || p.type === type) {
+              me.initialConfig = config = Ext.apply({}, config);
+              config.plugins = plugins; // switch over to our copy
+
+              // Put the instance in the plugins array so it will be included in
+              // the applyPlugins loop for normal processing of plugins.
+              plugins[i] = ret = me.createPlugin(p);
+              break;
             }
-            
-            return ret;
-        },
-
-        /**
-         * Applier for the `plugins` config property.
-         * @param {String[]/Object[]/Ext.plugin.Abstract[]} plugins The new plugins to use.
-         * @param {Ext.plugin.Abstract[]} oldPlugins The existing plugins in use.
-         * @private
-         */
-        applyPlugins: function (plugins, oldPlugins) {
-            var me = this,
-                oldCount = oldPlugins && oldPlugins.length || 0,
-                count, i, plugin;
-    
-            // Ensure we have an array if we got a single thing or a copy of the array
-            // if we got an array.
-            plugins = plugins ? EMPTY.concat(plugins) : null;
-            count = plugins && plugins.length || 0;
-
-            // We need to destroy() old plugins that aren't being brought forward in
-            // the new array...
-            //
-            for (i = 0; i < oldCount; ++i) {
-                oldPlugins[i].$dead = true; // so paint the old ones
-            }
-
-            // Pass #1 (For historical reasons): Create all of the plugins. Prior versions
-            // did this pass first then called init() so we preserve the timings and do
-            // the same.
-            //
-            for (i = 0; i < count; ++i) {
-                plugins[i] = me.createPlugin(plugins[i]); // ensure we have an instance
-            }
-
-            // Pass #2: Initialize the plugins that have not been and clear $dead for
-            // any returning for the next round.
-            //
-            for (i = 0; i < count; ++i) {
-                plugin = plugins[i];
-
-                if (plugin.$dead) { // if (it was in oldPlugins)
-                    delete plugin.$dead;  // unpaint it (it's a keeper)
-                } else {
-                    plugin.init(me);  // this one is new to the party
-                }
-            }
-
-            // Now we can teardown any plugins that aren't coming back.
-            //
-            for (i = 0; i < oldCount; ++i) {
-                if ((plugin = oldPlugins[i]).$dead) {
-                    delete plugin.$dead;
-                    Ext.destroy(plugin);
-                }
-            }
-
-            return plugins;
-        },
-    
-        /**
-         * Converts the provided type or config object into a plugin instance.
-         * @param {String/Object/Ext.plugin.Abstract} config The plugin type, config
-         * object or instance.
-         * @return {Ext.plugin.Abstract}
-         * @private
-         */
-        createPlugin: function (config) {
-            if (typeof config === 'string') {
-                config = {
-                    type: config
-                };
-            }
-    
-            var ret = config;
-    
-            if (!config.isInstance) {
-                // The owner may be needed by plugin's initConfig so provide it:
-                config.cmp = this;
-    
-                ret = Ext.factory(config, null, null, 'plugin');
-    
-                // Cleanup the user's config object:
-                delete config.cmp;
-            }
-
-            if (!ret.id) {
-                ret.id = ++Pluggable.idSeed;
-            }
-    
-            if (ret.setCmp) {
-                ret.setCmp(this);
-            }
-    
-            return ret;
+          }
         }
-    }
-}});
+
+        return ret;
+      },
+
+      /**
+       * Applier for the `plugins` config property.
+       * @param {String[]/Object[]/Ext.plugin.Abstract[]} plugins The new plugins to use.
+       * @param {Ext.plugin.Abstract[]} oldPlugins The existing plugins in use.
+       * @private
+       */
+      applyPlugins: function (plugins, oldPlugins) {
+        var me = this,
+          oldCount = (oldPlugins && oldPlugins.length) || 0,
+          count,
+          i,
+          plugin;
+
+        // Ensure we have an array if we got a single thing or a copy of the array
+        // if we got an array.
+        plugins = plugins ? EMPTY.concat(plugins) : null;
+        count = (plugins && plugins.length) || 0;
+
+        // We need to destroy() old plugins that aren't being brought forward in
+        // the new array...
+        //
+        for (i = 0; i < oldCount; ++i) {
+          oldPlugins[i].$dead = true; // so paint the old ones
+        }
+
+        // Pass #1 (For historical reasons): Create all of the plugins. Prior versions
+        // did this pass first then called init() so we preserve the timings and do
+        // the same.
+        //
+        for (i = 0; i < count; ++i) {
+          plugins[i] = me.createPlugin(plugins[i]); // ensure we have an instance
+        }
+
+        // Pass #2: Initialize the plugins that have not been and clear $dead for
+        // any returning for the next round.
+        //
+        for (i = 0; i < count; ++i) {
+          plugin = plugins[i];
+
+          if (plugin.$dead) {
+            // if (it was in oldPlugins)
+            delete plugin.$dead; // unpaint it (it's a keeper)
+          } else {
+            plugin.init(me); // this one is new to the party
+          }
+        }
+
+        // Now we can teardown any plugins that aren't coming back.
+        //
+        for (i = 0; i < oldCount; ++i) {
+          if ((plugin = oldPlugins[i]).$dead) {
+            delete plugin.$dead;
+            Ext.destroy(plugin);
+          }
+        }
+
+        return plugins;
+      },
+
+      /**
+       * Converts the provided type or config object into a plugin instance.
+       * @param {String/Object/Ext.plugin.Abstract} config The plugin type, config
+       * object or instance.
+       * @return {Ext.plugin.Abstract}
+       * @private
+       */
+      createPlugin: function (config) {
+        if (typeof config === "string") {
+          config = {
+            type: config,
+          };
+        }
+
+        var ret = config;
+
+        if (!config.isInstance) {
+          // The owner may be needed by plugin's initConfig so provide it:
+          config.cmp = this;
+
+          ret = Ext.factory(config, null, null, "plugin");
+
+          // Cleanup the user's config object:
+          delete config.cmp;
+        }
+
+        if (!ret.id) {
+          ret.id = ++Pluggable.idSeed;
+        }
+
+        if (ret.setCmp) {
+          ret.setCmp(this);
+        }
+
+        return ret;
+      },
+    },
+  };
+});

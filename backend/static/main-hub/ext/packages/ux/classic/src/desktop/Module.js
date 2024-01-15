@@ -5,15 +5,15 @@
  * http://www.sencha.com/license
  */
 
-Ext.define('Ext.ux.desktop.Module', {
-    mixins: {
-        observable: 'Ext.util.Observable'
-    },
+Ext.define("Ext.ux.desktop.Module", {
+  mixins: {
+    observable: "Ext.util.Observable",
+  },
 
-    constructor: function (config) {
-        this.mixins.observable.constructor.call(this, config);
-        this.init();
-    },
+  constructor: function (config) {
+    this.mixins.observable.constructor.call(this, config);
+    this.init();
+  },
 
-    init: Ext.emptyFn
+  init: Ext.emptyFn,
 });

@@ -3,91 +3,93 @@
  *
  * @private
  */
-Ext.define('Ext.theme.blackberry.MenuButton', {
-    extend: 'Ext.Button',
-    requires: ['Ext.theme.blackberry.ContextMenu'],
+Ext.define("Ext.theme.blackberry.MenuButton", {
+  extend: "Ext.Button",
+  requires: ["Ext.theme.blackberry.ContextMenu"],
 
-    config: {
-        /**
-         * @hide
-         */
-        ui: 'tab',
-
-        /**
-         * @hide
-         */
-        cls: 'menu',
-
-        menuConfig: {},
-
-        menuItems: [],
-
-        /**
-         * @hide
-         */
-        menuSide: 'right',
-
-        /**
-         * @hide
-         */
-        menuCover: false,
-
-        /**
-         * @hide
-         */
-        menuCls: null,
-
-        /**
-         * @hide
-         */
-        listeners: {
-            tap: 'onTap'
-        }
-    },
+  config: {
+    /**
+     * @hide
+     */
+    ui: "tab",
 
     /**
-     * @private
-     * Used to show the menu associated with this button
+     * @hide
      */
-    onTap: function(e) {
-        var me = this,
-            cls = Ext.baseCSSPrefix + 'open',
-            menu = this.$menu;
+    cls: "menu",
 
-        if (menu) {
-            menu.destroy();
-        }
+    menuConfig: {},
 
-        me.element.addCls(cls);
+    menuItems: [],
 
-        me.$menu = menu = new Ext.theme.blackberry.ContextMenu(Ext.apply({}, me.getMenuConfig(), {
-            cls: me.getMenuCls(),
-            items: me.getMenuItems(),
-            listeners: {
-                scope: me,
-                hide: function() {
-                    if (me.$menu) {
-                        me.element.removeCls(cls);
-                        Ext.Viewport.removeMenu(me.getMenuSide());
-                        me.$menu.destroy();
-                    }
-                }
-            }
-        }));
+    /**
+     * @hide
+     */
+    menuSide: "right",
 
-        menu.on({
-            scope: me,
-            tap: me.onMenuButtonTap,
-            delegate: 'button'
-        });
+    /**
+     * @hide
+     */
+    menuCover: false,
 
-        Ext.Viewport.setMenu(menu, {
-            side: me.getMenuSide(),
-            cover: me.getMenuCover()
-        });
+    /**
+     * @hide
+     */
+    menuCls: null,
 
-        Ext.Viewport.showMenu(me.getMenuSide());
+    /**
+     * @hide
+     */
+    listeners: {
+      tap: "onTap",
     },
+  },
 
-    onMenuButtonTap: Ext.emptyFn
+  /**
+   * @private
+   * Used to show the menu associated with this button
+   */
+  onTap: function (e) {
+    var me = this,
+      cls = Ext.baseCSSPrefix + "open",
+      menu = this.$menu;
+
+    if (menu) {
+      menu.destroy();
+    }
+
+    me.element.addCls(cls);
+
+    me.$menu = menu = new Ext.theme.blackberry.ContextMenu(
+      Ext.apply({}, me.getMenuConfig(), {
+        cls: me.getMenuCls(),
+        items: me.getMenuItems(),
+        listeners: {
+          scope: me,
+          hide: function () {
+            if (me.$menu) {
+              me.element.removeCls(cls);
+              Ext.Viewport.removeMenu(me.getMenuSide());
+              me.$menu.destroy();
+            }
+          },
+        },
+      }),
+    );
+
+    menu.on({
+      scope: me,
+      tap: me.onMenuButtonTap,
+      delegate: "button",
+    });
+
+    Ext.Viewport.setMenu(menu, {
+      side: me.getMenuSide(),
+      cover: me.getMenuCover(),
+    });
+
+    Ext.Viewport.showMenu(me.getMenuSide());
+  },
+
+  onMenuButtonTap: Ext.emptyFn,
 });

@@ -32,38 +32,38 @@
  *         width: 400
  *     });
  */
-Ext.define('Ext.grid.column.Boolean', {
-    extend: 'Ext.grid.column.Column',
+Ext.define("Ext.grid.column.Boolean", {
+  extend: "Ext.grid.column.Column",
 
-    requires: ['Ext.grid.cell.Boolean'],
+  requires: ["Ext.grid.cell.Boolean"],
 
-    xtype: 'booleancolumn',
+  xtype: "booleancolumn",
 
-    config: {
-        /**
-         * @cfg {String} trueText
-         * The string returned by the renderer when the column value is not falsey.
-         */
-        trueText: null,
+  config: {
+    /**
+     * @cfg {String} trueText
+     * The string returned by the renderer when the column value is not falsey.
+     */
+    trueText: null,
 
-        /**
-         * @cfg {String} falseText
-         * The string returned by the renderer when the column value is falsey (but not undefined).
-         */
-        falseText: null,
+    /**
+     * @cfg {String} falseText
+     * The string returned by the renderer when the column value is falsey (but not undefined).
+     */
+    falseText: null,
 
-        /**
-         * @cfg {String} undefinedText
-         * The string returned by the renderer when the column value is undefined.
-         */
-        undefinedText: null,
+    /**
+     * @cfg {String} undefinedText
+     * The string returned by the renderer when the column value is undefined.
+     */
+    undefinedText: null,
 
-        defaultEditor: {
-            xtype: 'checkboxfield'
-        },
+    defaultEditor: {
+      xtype: "checkboxfield",
+    },
 
-        cell: {
-            xtype: 'booleancell'
-        }
-    }
+    cell: {
+      xtype: "booleancell",
+    },
+  },
 });

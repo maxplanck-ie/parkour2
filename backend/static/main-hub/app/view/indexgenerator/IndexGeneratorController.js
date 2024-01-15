@@ -185,7 +185,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
           null,
           {
             multipleSelect: true,
-          }
+          },
         );
       }
     });
@@ -297,14 +297,14 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       grid.setTitle(
         Ext.String.format(
           "Pool (total size: {0} M)",
-          grid.getStore().sum("sequencing_depth")
-        )
+          grid.getStore().sum("sequencing_depth"),
+        ),
       );
       Ext.getCmp("save-pool-button").enable();
 
       var recordTypes = Ext.pluck(
         Ext.Array.pluck(store.data.items, "data"),
-        "record_type"
+        "record_type",
       );
       if (recordTypes.indexOf("Sample") > -1) {
         Ext.getCmp("generate-indices-button").enable();
@@ -317,7 +317,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         0,
         false,
         true,
-        true
+        true,
       );
       if (indexType && indexType.get("format") === "plate") {
         startCoordinate.show();
@@ -588,7 +588,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         0,
         false,
         true,
-        true
+        true,
       );
       var recordIndexType = indexTypesStore.findRecord(
         "id",
@@ -596,7 +596,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         0,
         false,
         true,
-        true
+        true,
       );
 
       // Same Read Length
@@ -654,7 +654,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       0,
       false,
       true,
-      true
+      true,
     );
     var poolSize =
       store.sum("sequencing_depth") + record.get("sequencing_depth");

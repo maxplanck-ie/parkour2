@@ -1,211 +1,211 @@
-describe("Ext.app.route.Route", function() {
-    var actionExecuted = false,
-        beforeExecuted = false,
-        numArgs        = 0,
-        numBeforeArgs  = 0,
-        token          = 'foo/bar',
-        controller;
+describe("Ext.app.route.Route", function () {
+  var actionExecuted = false,
+    beforeExecuted = false,
+    numArgs = 0,
+    numBeforeArgs = 0,
+    token = "foo/bar",
+    controller;
 
-    beforeEach(function () {
-        controller = new Ext.app.Controller({
-            beforeHandleRoute : function() {
-                numBeforeArgs  += arguments.length;
-                beforeExecuted = true;
+  beforeEach(function () {
+    controller = new Ext.app.Controller({
+      beforeHandleRoute: function () {
+        numBeforeArgs += arguments.length;
+        beforeExecuted = true;
 
-                var action = arguments[arguments.length - 1];
+        var action = arguments[arguments.length - 1];
 
-                action.resume();
-            },
+        action.resume();
+      },
 
-            beforeHandleRouteBlock : function() {
-                numBeforeArgs  += arguments.length;
-                beforeExecuted = true;
+      beforeHandleRouteBlock: function () {
+        numBeforeArgs += arguments.length;
+        beforeExecuted = true;
 
-                var action = arguments[arguments.length - 1];
+        var action = arguments[arguments.length - 1];
 
-                action.stop(); //stop the current route
-            },
+        action.stop(); //stop the current route
+      },
 
-            handleRoute : function() {
-                numArgs        = arguments.length;
-                actionExecuted = true;
-            }
-        });
+      handleRoute: function () {
+        numArgs = arguments.length;
+        actionExecuted = true;
+      },
+    });
+  });
+
+  afterEach(function () {
+    controller = null;
+    actionExecuted = false;
+    beforeExecuted = false;
+    numArgs = 0;
+    numBeforeArgs = 0;
+  });
+
+  describe("should recognize tokens", function () {
+    it("recognize 'foo/bar'", function () {
+      var route = new Ext.app.route.Route({
+        controller: controller,
+        action: "handleRoute",
+        url: "foo/bar",
+      });
+
+      expect(route.recognize(token)).toBeTruthy();
     });
 
-    afterEach(function () {
-        controller     = null;
-        actionExecuted = false;
-        beforeExecuted = false;
-        numArgs        = 0;
-        numBeforeArgs  = 0;
+    describe("optional parameters", function () {
+      it("recognize 'foo/:id'", function () {
+        //:id is a param
+        var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          url: "foo/:id",
+        });
+
+        expect(route.recognize("foo/123")).toBeTruthy();
+      });
+
+      it("recognize 'foo/:id' using condition for :id", function () {
+        var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          url: "foo:id",
+          conditions: {
+            //makes :id param optional
+            ":id": "(?:(?:/){1}([%a-zA-Z0-9-_s,]+))?",
+          },
+        });
+
+        expect(route.recognize("foo/123")).toBeTruthy();
+      });
+    });
+  });
+
+  describe("should fire action", function () {
+    it("fires action", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          url: "foo/bar",
+        }),
+        args = route.recognize(token);
+
+      route.execute(token, args);
+
+      expect(actionExecuted).toEqual(true);
     });
 
-    describe("should recognize tokens", function() {
-        it("recognize 'foo/bar'", function() {
-            var route = new Ext.app.route.Route({
-                controller : controller,
-                action     : 'handleRoute',
-                url        : 'foo/bar'
-            });
+    it("fires using caseInsensitve", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          url: "foo/bar",
+          caseInsensitive: true,
+        }),
+        args = route.recognize("FoO/bAr");
 
-            expect(route.recognize(token)).toBeTruthy();
-        });
+      route.execute(token, args);
 
-        describe("optional parameters", function() {
-            it("recognize 'foo/:id'", function() {
-                //:id is a param
-                var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    url        : 'foo/:id'
-                });
+      expect(actionExecuted).toEqual(true);
+    });
+  });
 
-                expect(route.recognize('foo/123')).toBeTruthy();
-            });
+  describe("handle before action", function () {
+    it("show continue action execution", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          before: "beforeHandleRoute",
+          url: "foo/bar",
+        }),
+        args = route.recognize(token);
 
-            it("recognize 'foo/:id' using condition for :id", function () {
-                var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    url        : 'foo:id',
-                    conditions : {
-                        //makes :id param optional
-                        ':id' : '(?:(?:/){1}([%a-zA-Z0-9\-\_\s,]+))?'
-                    }
-                });
+      route.execute(token, args);
 
-                expect(route.recognize('foo/123')).toBeTruthy();
-            });
-        });
+      expect(beforeExecuted && actionExecuted).toEqual(true);
     });
 
-    describe("should fire action", function() {
-        it("fires action", function () {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    url        : 'foo/bar'
-                }),
-                args = route.recognize(token);
+    it("show block action execution", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          before: "beforeHandleRouteBlock",
+          url: "foo/bar",
+        }),
+        args = route.recognize(token);
 
-            route.execute(token, args);
+      route.execute(token, args);
 
-            expect(actionExecuted).toEqual(true);
-        });
+      expect(beforeExecuted && !actionExecuted).toEqual(true);
+    });
+  });
 
-        it("fires using caseInsensitve", function() {
-            var route = new Ext.app.route.Route({
-                    controller      : controller,
-                    action          : 'handleRoute',
-                    url             : 'foo/bar',
-                    caseInsensitive : true
-                }),
-                args = route.recognize('FoO/bAr');
+  it("should execute callback in route.execute call", function () {
+    var route = new Ext.app.route.Route({
+        controller: controller,
+        action: "handleRoute",
+        url: "foo/bar",
+      }),
+      args = route.recognize(token),
+      localCallbackExecuted = false;
 
-            route.execute(token, args);
-
-            expect(actionExecuted).toEqual(true);
-        });
+    route.execute(token, args, function () {
+      localCallbackExecuted = true;
     });
 
-    describe("handle before action", function () {
-        it("show continue action execution", function () {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    before     : 'beforeHandleRoute',
-                    url        : 'foo/bar'
-                }),
-                args  = route.recognize(token);
+    expect(localCallbackExecuted).toEqual(true);
+  });
 
-            route.execute(token, args);
+  describe("number of arguments", function () {
+    it("with a before action", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          before: "beforeHandleRoute",
+          url: "foo/:bar",
+        }),
+        args = route.recognize(token);
 
-            expect(beforeExecuted && actionExecuted).toEqual(true);
-        });
+      route.execute(token, args);
 
-        it("show block action execution", function () {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    before     : 'beforeHandleRouteBlock',
-                    url        : 'foo/bar'
-                }),
-                args = route.recognize(token);
-
-            route.execute(token, args);
-
-            expect(beforeExecuted && !actionExecuted).toEqual(true);
-        });
+      expect(numBeforeArgs + numArgs).toBe(3);
     });
 
-    it("should execute callback in route.execute call", function() {
-        var route                 = new Ext.app.route.Route({
-                controller : controller,
-                action     : 'handleRoute',
-                url        : 'foo/bar'
-            }),
-            args                  = route.recognize(token),
-            localCallbackExecuted = false;
+    it("without a before action", function () {
+      var route = new Ext.app.route.Route({
+          controller: controller,
+          action: "handleRoute",
+          url: "foo/:bar",
+        }),
+        args = route.recognize(token);
 
-        route.execute(token, args, function() {
-            localCallbackExecuted = true;
-        });
+      route.execute(token, args);
 
-        expect(localCallbackExecuted).toEqual(true);
+      expect(numBeforeArgs + numArgs).toBe(1);
+    });
+  });
+
+  describe("controller activity", function () {
+    it("should not recognize if the controller is inactive", function () {
+      var route = new Ext.app.route.Route({
+        controller: controller,
+        action: "handleRoute",
+        url: "foo/:bar",
+      });
+
+      controller.deactivate();
+      expect(route.recognize(token)).toBe(false);
     });
 
-    describe("number of arguments", function() {
-        it("with a before action", function() {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    before     : 'beforeHandleRoute',
-                    url        : 'foo/:bar'
-                }),
-                args = route.recognize(token);
+    it("should recognize if the controller is inactive & the allowInactive flag is set", function () {
+      var route = new Ext.app.route.Route({
+        controller: controller,
+        action: "handleRoute",
+        url: "foo/:bar",
+        allowInactive: true,
+      });
 
-            route.execute(token, args);
-
-            expect(numBeforeArgs + numArgs).toBe(3);
-        });
-
-        it("without a before action", function() {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    url        : 'foo/:bar'
-                }),
-                args = route.recognize(token);
-
-            route.execute(token, args);
-
-            expect(numBeforeArgs + numArgs).toBe(1);
-        });
+      controller.deactivate();
+      expect(route.recognize(token)).not.toBe(false);
     });
-    
-    describe("controller activity", function() {
-        it("should not recognize if the controller is inactive", function() {
-            var route = new Ext.app.route.Route({
-                    controller : controller,
-                    action     : 'handleRoute',
-                    url        : 'foo/:bar'
-                });
-
-            controller.deactivate();
-            expect(route.recognize(token)).toBe(false);
-        });
-        
-        it("should recognize if the controller is inactive & the allowInactive flag is set", function() {
-            var route = new Ext.app.route.Route({
-                    controller   : controller,
-                    action       : 'handleRoute',
-                    url          : 'foo/:bar',
-                    allowInactive: true
-                });
-
-            controller.deactivate();
-            expect(route.recognize(token)).not.toBe(false);
-        });
-    });
+  });
 });

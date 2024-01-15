@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.windows.field.Toggle', {
-    override: 'Ext.field.Toggle',
+Ext.define("Ext.theme.windows.field.Toggle", {
+  override: "Ext.field.Toggle",
 
-    config: {
-        labelAlign: 'left'
-    }
+  config: {
+    labelAlign: "left",
+  },
 });

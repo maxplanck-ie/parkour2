@@ -12,32 +12,30 @@
  *             url: 'some/url'
  *         }
  *     });
- *     
+ *
  * For a detailed tutorial on using AMF data see the [AMF Guide](#/guide/amf).
  *
- * **Note: **  _This functionality is only available with the purchase of 
- * Sencha Complete.  For more information about using this class, please visit 
+ * **Note: **  _This functionality is only available with the purchase of
+ * Sencha Complete.  For more information about using this class, please visit
  * our [Sencha Complete](https://www.sencha.com/products/complete/) product page._
  *
  */
-Ext.define('Ext.data.amf.Proxy', {
-    extend: 'Ext.data.proxy.Ajax',
+Ext.define("Ext.data.amf.Proxy", {
+  extend: "Ext.data.proxy.Ajax",
 
-    alias: 'proxy.amf',
+  alias: "proxy.amf",
 
-    requires: [
-        'Ext.data.amf.Reader'
-    ],
+  requires: ["Ext.data.amf.Reader"],
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    binary: true,
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  binary: true,
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    reader: 'amf'
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  reader: "amf",
 });

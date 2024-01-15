@@ -5,31 +5,31 @@
  *
  * @since 6.0.0
  */
-Ext.define('Ext.list.RootTreeItem', {
-    extend: 'Ext.list.AbstractTreeItem',
+Ext.define("Ext.list.RootTreeItem", {
+  extend: "Ext.list.AbstractTreeItem",
 
-    /**
-     * This property is `true` to allow type checking for this or derived class.
-     * @property {Boolean} isRootListItem
-     * @readonly
-     */
-    isRootListItem: true,
+  /**
+   * This property is `true` to allow type checking for this or derived class.
+   * @property {Boolean} isRootListItem
+   * @readonly
+   */
+  isRootListItem: true,
 
-    element: {
-        reference: 'element',
-        tag: 'ul',
-        cls: Ext.baseCSSPrefix + 'treelist-root-container'
-    },
+  element: {
+    reference: "element",
+    tag: "ul",
+    cls: Ext.baseCSSPrefix + "treelist-root-container",
+  },
 
-    insertItem: function (item, refItem) {
-        if (refItem) {
-            item.element.insertBefore(refItem.element);
-        } else {
-            this.element.appendChild(item.element);
-        }
-    },
-
-    isToggleEvent: function (e) {
-        return false;
+  insertItem: function (item, refItem) {
+    if (refItem) {
+      item.element.insertBefore(refItem.element);
+    } else {
+      this.element.appendChild(item.element);
     }
+  },
+
+  isToggleEvent: function (e) {
+    return false;
+  },
 });

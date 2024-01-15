@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.windows.field.Checkbox', {
-    override: 'Ext.field.Checkbox',
+Ext.define("Ext.theme.windows.field.Checkbox", {
+  override: "Ext.field.Checkbox",
 
-    config: {
-        labelAlign: 'left'
-    }
+  config: {
+    labelAlign: "left",
+  },
 });

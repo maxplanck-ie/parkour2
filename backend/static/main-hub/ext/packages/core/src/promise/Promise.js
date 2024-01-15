@@ -45,15 +45,15 @@
  *
  * @since 6.0.0
  */
-Ext.define('Ext.promise.Promise', function (ExtPromise) {
+Ext.define(
+  "Ext.promise.Promise",
+  function (ExtPromise) {
     var Deferred;
 
-return {
-    requires: [
-        'Ext.promise.Deferred'
-    ],
+    return {
+      requires: ["Ext.promise.Deferred"],
 
-    statics: {
+      statics: {
         /**
          * @property CancellationError
          * @static
@@ -64,8 +64,8 @@ return {
         CancellationError: Ext.global.CancellationError || Error,
 
         _ready: function () {
-            // Our requires are met, so we can cache Ext.promise.Deferred
-            Deferred = Ext.promise.Deferred;
+          // Our requires are met, so we can cache Ext.promise.Deferred
+          Deferred = Ext.promise.Deferred;
         },
 
         /**
@@ -86,50 +86,65 @@ return {
          * @private
          */
         all: function (promisesOrValues) {
-            //<debug>
-            if (!(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))) {
-                Ext.raise('Invalid parameter: expected an Array or Promise of an Array.');
-            }
-            //</debug>
+          //<debug>
+          if (
+            !(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))
+          ) {
+            Ext.raise(
+              "Invalid parameter: expected an Array or Promise of an Array.",
+            );
+          }
+          //</debug>
 
-            return ExtPromise.when(promisesOrValues).then(function (promisesOrValues) {
-                var deferred = new Deferred(),
-                    remainingToResolve = promisesOrValues.length,
-                    results = new Array(remainingToResolve),
-                    index, promiseOrValue, resolve, i, len;
+          return ExtPromise.when(promisesOrValues).then(
+            function (promisesOrValues) {
+              var deferred = new Deferred(),
+                remainingToResolve = promisesOrValues.length,
+                results = new Array(remainingToResolve),
+                index,
+                promiseOrValue,
+                resolve,
+                i,
+                len;
 
-                if (!remainingToResolve) {
-                    deferred.resolve(results);
+              if (!remainingToResolve) {
+                deferred.resolve(results);
+              } else {
+                resolve = function (item, index) {
+                  return ExtPromise.when(item).then(
+                    function (value) {
+                      results[index] = value;
+
+                      if (!--remainingToResolve) {
+                        deferred.resolve(results);
+                      }
+
+                      return value;
+                    },
+                    function (reason) {
+                      return deferred.reject(reason);
+                    },
+                  );
+                };
+
+                for (
+                  index = i = 0, len = promisesOrValues.length;
+                  i < len;
+                  index = ++i
+                ) {
+                  promiseOrValue = promisesOrValues[index];
+
+                  if (index in promisesOrValues) {
+                    resolve(promiseOrValue, index);
+                  } else {
+                    remainingToResolve--;
+                  }
                 }
-                else {
-                    resolve = function (item, index) {
-                        return ExtPromise.when(item).then (function (value) {
-                            results[index] = value;
+              }
 
-                            if (!--remainingToResolve) {
-                                deferred.resolve(results);
-                            }
-
-                            return value;
-                        }, function (reason) {
-                            return deferred.reject(reason);
-                        });
-                    };
-
-                    for (index = i = 0, len = promisesOrValues.length; i < len; index = ++i) {
-                        promiseOrValue = promisesOrValues[index];
-
-                        if (index in promisesOrValues) {
-                            resolve(promiseOrValue, index);
-                        }
-                        else {
-                            remainingToResolve--;
-                        }
-                    }
-                }
-
-                return deferred.promise;
-            });
+              return deferred.promise;
+            },
+          );
         },
 
         /**
@@ -143,8 +158,11 @@ return {
          * @private
          */
         is: function (value) {
-            return value != null && (typeof value === 'object' || Ext.isFunction(value)) &&
-                Ext.isFunction(value.then);
+          return (
+            value != null &&
+            (typeof value === "object" || Ext.isFunction(value)) &&
+            Ext.isFunction(value.then)
+          );
         },
 
         /**
@@ -153,9 +171,9 @@ return {
          * @private
          */
         rethrowError: function (error) {
-            Ext.asap(function () {
-                throw error;
-            });
+          Ext.asap(function () {
+            throw error;
+          });
         },
 
         /**
@@ -176,236 +194,249 @@ return {
          * @private
          */
         when: function (value) {
-            var deferred = new Ext.promise.Deferred();
+          var deferred = new Ext.promise.Deferred();
 
-            deferred.resolve(value);
+          deferred.resolve(value);
 
-            return deferred.promise;
-        }
-    },
+          return deferred.promise;
+        },
+      },
 
-    /**
-     * @property {Ext.promise.Deferred} Reference to this promise's
-     * `{@link Ext.promise.Deferred Deferred}` instance.
-     *
-     * @readonly
-     * @private
-     */
-    owner: null,
+      /**
+       * @property {Ext.promise.Deferred} Reference to this promise's
+       * `{@link Ext.promise.Deferred Deferred}` instance.
+       *
+       * @readonly
+       * @private
+       */
+      owner: null,
 
-    /**
-     * NOTE: {@link Ext.promise.Deferred Deferreds} are the mechanism used to create new
-     * Promises.
-     * @param {Ext.promise.Deferred} owner The owning `Deferred` instance.
-     *
-     * @private
-     */
-    constructor: function (owner) {
+      /**
+       * NOTE: {@link Ext.promise.Deferred Deferreds} are the mechanism used to create new
+       * Promises.
+       * @param {Ext.promise.Deferred} owner The owning `Deferred` instance.
+       *
+       * @private
+       */
+      constructor: function (owner) {
         this.owner = owner;
-    },
+      },
 
-    /**
-     * Attaches onFulfilled and onRejected callbacks that will be notified when the future
-     * value becomes available.
-     *
-     * Those callbacks can subsequently transform the value that was fulfilled or the error
-     * that was rejected. Each call to `then` returns a new Promise of that transformed
-     * value; i.e., a Promise that is fulfilled with the callback return value or rejected
-     * with any error thrown by the callback.
-     *
-     * @param {Function} onFulfilled Optional callback to execute to transform a
-     * fulfillment value.
-     * @param {Function} onRejected Optional callback to execute to transform a rejection
-     * reason.
-     * @param {Function} onProgress Optional callback function to be called with progress
-     * updates.
-     * @param {Object} scope Optional scope for the callback(s).
-     * @return {Ext.promise.Promise} Promise that is fulfilled with the callback return
-     * value or rejected with any error thrown by the callback.
-     */
-    then: function (onFulfilled, onRejected, onProgress, scope) {
+      /**
+       * Attaches onFulfilled and onRejected callbacks that will be notified when the future
+       * value becomes available.
+       *
+       * Those callbacks can subsequently transform the value that was fulfilled or the error
+       * that was rejected. Each call to `then` returns a new Promise of that transformed
+       * value; i.e., a Promise that is fulfilled with the callback return value or rejected
+       * with any error thrown by the callback.
+       *
+       * @param {Function} onFulfilled Optional callback to execute to transform a
+       * fulfillment value.
+       * @param {Function} onRejected Optional callback to execute to transform a rejection
+       * reason.
+       * @param {Function} onProgress Optional callback function to be called with progress
+       * updates.
+       * @param {Object} scope Optional scope for the callback(s).
+       * @return {Ext.promise.Promise} Promise that is fulfilled with the callback return
+       * value or rejected with any error thrown by the callback.
+       */
+      then: function (onFulfilled, onRejected, onProgress, scope) {
         var ref;
 
         if (arguments.length === 1 && Ext.isObject(arguments[0])) {
-            ref = arguments[0];
-            onFulfilled = ref.success;
-            onRejected = ref.failure;
-            onProgress = ref.progress;
-            scope = ref.scope;
+          ref = arguments[0];
+          onFulfilled = ref.success;
+          onRejected = ref.failure;
+          onProgress = ref.progress;
+          scope = ref.scope;
         }
 
         if (scope) {
-            if (onFulfilled) {
-                onFulfilled = Ext.Function.bind(onFulfilled, scope);
-            }
-            
-            if (onRejected) {
-                onRejected = Ext.Function.bind(onRejected, scope);
-            }
-            
-            if (onProgress) {
-                onProgress = Ext.Function.bind(onProgress, scope);
-            }
+          if (onFulfilled) {
+            onFulfilled = Ext.Function.bind(onFulfilled, scope);
+          }
+
+          if (onRejected) {
+            onRejected = Ext.Function.bind(onRejected, scope);
+          }
+
+          if (onProgress) {
+            onProgress = Ext.Function.bind(onProgress, scope);
+          }
         }
 
         return this.owner.then(onFulfilled, onRejected, onProgress);
-    },
+      },
 
-    /**
-     * Attaches an onRejected callback that will be notified if this Promise is rejected.
-     *
-     * The callback can subsequently transform the reason that was rejected. Each call to
-     * `otherwise` returns a new Promise of that transformed value; i.e., a Promise that
-     * is resolved with the original resolved value, or resolved with the callback return
-     * value or rejected with any error thrown by the callback.
-     *
-     * @param {Function} onRejected Callback to execute to transform a rejection reason.
-     * @param {Object} scope Optional scope for the callback.
-     * @return {Ext.promise.Promise} Promise of the transformed future value.
-     */
-    otherwise: function (onRejected, scope) {
+      /**
+       * Attaches an onRejected callback that will be notified if this Promise is rejected.
+       *
+       * The callback can subsequently transform the reason that was rejected. Each call to
+       * `otherwise` returns a new Promise of that transformed value; i.e., a Promise that
+       * is resolved with the original resolved value, or resolved with the callback return
+       * value or rejected with any error thrown by the callback.
+       *
+       * @param {Function} onRejected Callback to execute to transform a rejection reason.
+       * @param {Object} scope Optional scope for the callback.
+       * @return {Ext.promise.Promise} Promise of the transformed future value.
+       */
+      otherwise: function (onRejected, scope) {
         var ref;
 
         if (arguments.length === 1 && Ext.isObject(arguments[0])) {
-            ref = arguments[0];
-            onRejected = ref.fn;
-            scope = ref.scope;
+          ref = arguments[0];
+          onRejected = ref.fn;
+          scope = ref.scope;
         }
 
         if (scope != null) {
-            onRejected = Ext.Function.bind(onRejected, scope);
+          onRejected = Ext.Function.bind(onRejected, scope);
         }
 
         return this.owner.then(null, onRejected);
-    },
+      },
 
-    /**
-     * Attaches an onCompleted callback that will be notified when this Promise is completed.
-     *
-     * Similar to `finally` in `try... catch... finally`.
-     *
-     * NOTE: The specified callback does not affect the resulting Promise's outcome; any
-     * return value is ignored and any Error is rethrown.
-     *
-     * @param {Function} onCompleted Callback to execute when the Promise is resolved or
-     * rejected.
-     * @param {Object} scope Optional scope for the callback.
-     * @return {Ext.promise.Promise} A new "pass-through" Promise that is resolved with
-     * the original value or rejected with the original reason.
-     */
-    always: function (onCompleted, scope) {
+      /**
+       * Attaches an onCompleted callback that will be notified when this Promise is completed.
+       *
+       * Similar to `finally` in `try... catch... finally`.
+       *
+       * NOTE: The specified callback does not affect the resulting Promise's outcome; any
+       * return value is ignored and any Error is rethrown.
+       *
+       * @param {Function} onCompleted Callback to execute when the Promise is resolved or
+       * rejected.
+       * @param {Object} scope Optional scope for the callback.
+       * @return {Ext.promise.Promise} A new "pass-through" Promise that is resolved with
+       * the original value or rejected with the original reason.
+       */
+      always: function (onCompleted, scope) {
         var ref;
 
         if (arguments.length === 1 && Ext.isObject(arguments[0])) {
-            ref = arguments[0];
-            onCompleted = ref.fn;
-            scope = ref.scope;
+          ref = arguments[0];
+          onCompleted = ref.fn;
+          scope = ref.scope;
         }
 
         if (scope != null) {
-            onCompleted = Ext.Function.bind(onCompleted, scope);
+          onCompleted = Ext.Function.bind(onCompleted, scope);
         }
 
-        return this.owner.then(function (value) {
+        return this.owner.then(
+          function (value) {
             try {
-                onCompleted();
+              onCompleted();
+            } catch (e) {
+              ExtPromise.rethrowError(e);
             }
-            catch (e) {
-                ExtPromise.rethrowError(e);
-            }
-            
-            return value;
-        }, function (reason) {
-            try {
-                onCompleted();
-            }
-            catch (e) {
-                ExtPromise.rethrowError(e);
-            }
-            
-            throw reason;
-        });
-    },
 
-    /**
-     * Terminates a Promise chain, ensuring that unhandled rejections will be rethrown as
-     * Errors.
-     *
-     * One of the pitfalls of interacting with Promise-based APIs is the tendency for
-     * important errors to be silently swallowed unless an explicit rejection handler is
-     * specified.
-     *
-     * For example:
-     *
-     *      promise.then(function () {
-     *          // logic in your callback throws an error and it is interpreted as a
-     *          // rejection. throw new Error("Boom!");
-     *      });
-     *
-     *      // The Error was not handled by the Promise chain and is silently swallowed.
-     *
-     * This problem can be addressed by terminating the Promise chain with the done()
-     * method:
-     *
-     *      promise.then(function () {
-     *          // logic in your callback throws an error and it is interpreted as a
-     *          // rejection. throw new Error("Boom!");
-     *      }).done();
-     *
-     *     // The Error was not handled by the Promise chain and is rethrown by done() on
-     *     // the next tick.
-     *
-     * The `done()` method ensures that any unhandled rejections are rethrown as Errors.
-     */
-    done: function () {
+            return value;
+          },
+          function (reason) {
+            try {
+              onCompleted();
+            } catch (e) {
+              ExtPromise.rethrowError(e);
+            }
+
+            throw reason;
+          },
+        );
+      },
+
+      /**
+       * Terminates a Promise chain, ensuring that unhandled rejections will be rethrown as
+       * Errors.
+       *
+       * One of the pitfalls of interacting with Promise-based APIs is the tendency for
+       * important errors to be silently swallowed unless an explicit rejection handler is
+       * specified.
+       *
+       * For example:
+       *
+       *      promise.then(function () {
+       *          // logic in your callback throws an error and it is interpreted as a
+       *          // rejection. throw new Error("Boom!");
+       *      });
+       *
+       *      // The Error was not handled by the Promise chain and is silently swallowed.
+       *
+       * This problem can be addressed by terminating the Promise chain with the done()
+       * method:
+       *
+       *      promise.then(function () {
+       *          // logic in your callback throws an error and it is interpreted as a
+       *          // rejection. throw new Error("Boom!");
+       *      }).done();
+       *
+       *     // The Error was not handled by the Promise chain and is rethrown by done() on
+       *     // the next tick.
+       *
+       * The `done()` method ensures that any unhandled rejections are rethrown as Errors.
+       */
+      done: function () {
         this.owner.then(null, ExtPromise.rethrowError);
-    },
+      },
 
-    /**
-     * Cancels this Promise if it is still pending, triggering a rejection with a
-     * `{@link #CancellationError}` that will propagate to any Promises originating from
-     * this Promise.
-     *
-     * NOTE: Cancellation only propagates to Promises that branch from the target Promise.
-     * It does not traverse back up to parent branches, as this would reject nodes from
-     * which other Promises may have branched, causing unintended side-effects.
-     *
-     * @param {Error} reason Cancellation reason.
-     */
-    cancel: function (reason) {
+      /**
+       * Cancels this Promise if it is still pending, triggering a rejection with a
+       * `{@link #CancellationError}` that will propagate to any Promises originating from
+       * this Promise.
+       *
+       * NOTE: Cancellation only propagates to Promises that branch from the target Promise.
+       * It does not traverse back up to parent branches, as this would reject nodes from
+       * which other Promises may have branched, causing unintended side-effects.
+       *
+       * @param {Error} reason Cancellation reason.
+       */
+      cancel: function (reason) {
         if (reason == null) {
-            reason = null;
+          reason = null;
         }
-        
-        this.owner.reject(new this.self.CancellationError(reason));
-    },
 
-    /**
-     * Logs the resolution or rejection of this Promise with the specified category and
-     * optional identifier. Messages are logged via all registered custom logger functions.
-     *
-     * @param {String} identifier An optional identifier to incorporate into the
-     * resulting log entry.
-     *
-     * @return {Ext.promise.Promise} A new "pass-through" Promise that is resolved with
-     * the original value or rejected with the original reason.
-     */
-    log: function (identifier) {
+        this.owner.reject(new this.self.CancellationError(reason));
+      },
+
+      /**
+       * Logs the resolution or rejection of this Promise with the specified category and
+       * optional identifier. Messages are logged via all registered custom logger functions.
+       *
+       * @param {String} identifier An optional identifier to incorporate into the
+       * resulting log entry.
+       *
+       * @return {Ext.promise.Promise} A new "pass-through" Promise that is resolved with
+       * the original value or rejected with the original reason.
+       */
+      log: function (identifier) {
         if (identifier == null) {
-            identifier = '';
+          identifier = "";
         }
-        
-        return this.owner.then(function (value) {
-            Ext.log("" + (identifier || 'Promise') + " resolved with value: " + value);
-            
+
+        return this.owner.then(
+          function (value) {
+            Ext.log(
+              "" + (identifier || "Promise") + " resolved with value: " + value,
+            );
+
             return value;
-        }, function (reason) {
-            Ext.log("" + (identifier || 'Promise') + " rejected with reason: " + reason);
-            
+          },
+          function (reason) {
+            Ext.log(
+              "" +
+                (identifier || "Promise") +
+                " rejected with reason: " +
+                reason,
+            );
+
             throw reason;
-        });
-    }
-}},
-function (ExtPromise) {
+          },
+        );
+      },
+    };
+  },
+  function (ExtPromise) {
     ExtPromise._ready();
-});
+  },
+);

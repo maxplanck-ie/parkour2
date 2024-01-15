@@ -38,20 +38,20 @@
  *
  * @mixins Ext.device.accelerometer.Abstract
  */
-Ext.define('Ext.device.Accelerometer', {
-    singleton: true,
+Ext.define("Ext.device.Accelerometer", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.accelerometer.Cordova',
-        'Ext.device.accelerometer.Simulator'
-    ],
+  requires: [
+    "Ext.device.accelerometer.Cordova",
+    "Ext.device.accelerometer.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView && browserEnv.Cordova) {
-            return Ext.create('Ext.device.accelerometer.Cordova');
-        }
-
-        return Ext.create('Ext.device.accelerometer.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView && browserEnv.Cordova) {
+      return Ext.create("Ext.device.accelerometer.Cordova");
     }
+
+    return Ext.create("Ext.device.accelerometer.Simulator");
+  },
 });

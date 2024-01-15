@@ -1,10 +1,10 @@
-Ext.define('Ext.table.Row', {
-    extend: 'Ext.table.Cell',
+Ext.define("Ext.table.Row", {
+  extend: "Ext.table.Cell",
 
-    xtype: 'tablerow',
+  xtype: "tablerow",
 
-    config: {
-        baseCls: 'x-table-row',
-        defaultType: 'tablecell'
-    }
+  config: {
+    baseCls: "x-table-row",
+    defaultType: "tablecell",
+  },
 });

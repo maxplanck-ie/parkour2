@@ -7,14 +7,14 @@
  * data type (integer). This means that these values can typically be deserialized by a
  * server and then recognized as provisionally generated.
  */
-Ext.define('Ext.data.identifier.Negative', {
-    extend: 'Ext.data.identifier.Sequential',
+Ext.define("Ext.data.identifier.Negative", {
+  extend: "Ext.data.identifier.Sequential",
 
-    alias: 'data.identifier.negative',
+  alias: "data.identifier.negative",
 
-    config: {
-        increment: -1,
+  config: {
+    increment: -1,
 
-        seed: -1
-    }
+    seed: -1,
+  },
 });

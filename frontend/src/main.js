@@ -24,7 +24,7 @@ library.add(
   faChalkboardUser,
   faMagnifyingGlass,
   faCalendarPlus,
-  faCalendarDays
+  faCalendarDays,
 );
 
 app.use(router);

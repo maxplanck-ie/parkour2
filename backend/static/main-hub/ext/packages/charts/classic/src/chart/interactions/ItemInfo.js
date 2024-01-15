@@ -22,54 +22,52 @@
  *         }]
  *     });
  */
-Ext.define('Ext.chart.interactions.ItemInfo', {
+Ext.define("Ext.chart.interactions.ItemInfo", {
+  extend: "Ext.chart.interactions.Abstract",
 
-    extend: 'Ext.chart.interactions.Abstract',
+  type: "iteminfo",
+  alias: "interaction.iteminfo",
 
-    type: 'iteminfo',
-    alias: 'interaction.iteminfo',
+  /**
+   * @event show
+   * Fires when the info panel is shown.
+   * @param {Ext.chart.interactions.ItemInfo} this The interaction instance
+   * @param {Object} item The item whose info is being displayed
+   * @param {Ext.Panel} panel The panel for displaying the info
+   */
 
+  config: {
     /**
-     * @event show
-     * Fires when the info panel is shown.
-     * @param {Ext.chart.interactions.ItemInfo} this The interaction instance
-     * @param {Object} item The item whose info is being displayed
-     * @param {Ext.Panel} panel The panel for displaying the info
+     * @cfg {Object} extjsGestures
+     * Defines the gestures that should trigger the item info panel to be displayed in ExtJS.
      */
-
-    config: {
-        /**
-         * @cfg {Object} extjsGestures
-         * Defines the gestures that should trigger the item info panel to be displayed in ExtJS.
-         */
-        extjsGestures: {
-            'start' : { event: 'click',      handler: 'onInfoGesture'},
-            'move'  : { event: 'mousemove',  handler: 'onInfoGesture'},
-            'end'   : { event: 'mouseleave', handler: 'onInfoGesture'}
-        }
-
-        // TODO:ps The trigger above should be 'itemclick', not 'click'.
+    extjsGestures: {
+      start: { event: "click", handler: "onInfoGesture" },
+      move: { event: "mousemove", handler: "onInfoGesture" },
+      end: { event: "mouseleave", handler: "onInfoGesture" },
     },
 
-    item: null,
+    // TODO:ps The trigger above should be 'itemclick', not 'click'.
+  },
 
-    onInfoGesture: function (e, element) {
-        var me = this,
-            item = me.getItemForEvent(e),
-            tooltip = item && item.series.tooltip;
+  item: null,
 
-        if (tooltip) {
-            tooltip.onMouseMove.call(tooltip, e);            
-        }
-        if (item !== me.item) {
-            if (item) {
-                item.series.showTip(item);
-            } else {
-                me.item.series.hideTip(me.item);
-            }
-            me.item = item;
-        }
-        return false;
+  onInfoGesture: function (e, element) {
+    var me = this,
+      item = me.getItemForEvent(e),
+      tooltip = item && item.series.tooltip;
+
+    if (tooltip) {
+      tooltip.onMouseMove.call(tooltip, e);
     }
-
+    if (item !== me.item) {
+      if (item) {
+        item.series.showTip(item);
+      } else {
+        me.item.series.hideTip(me.item);
+      }
+      me.item = item;
+    }
+    return false;
+  },
 });

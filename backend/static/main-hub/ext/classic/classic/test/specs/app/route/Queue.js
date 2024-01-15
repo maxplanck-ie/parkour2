@@ -1,72 +1,75 @@
-describe("Ext.app.route.Queue", function() {
-    var token  = 'foo/bar',
-        routes = [],
-        controller, queue;
+describe("Ext.app.route.Queue", function () {
+  var token = "foo/bar",
+    routes = [],
+    controller,
+    queue;
 
-    beforeEach(function () {
-        controller = new Ext.app.Controller({
-            handleFooBar : function() {}
-        });
-        queue      = new Ext.app.route.Queue({
-            token : token
-        });
-        routes     = [
-            new Ext.app.route.Route({
-                url        : 'foo/bar',
-                controller : controller,
-                action     : 'handleFooBar'
-            }),
-            new Ext.app.route.Route({
-                url        : 'foo/bar',
-                controller : controller,
-                action     : 'handleFooBar'
-            })
-        ];
+  beforeEach(function () {
+    controller = new Ext.app.Controller({
+      handleFooBar: function () {},
     });
-
-    afterEach(function() {
-        controller = null;
-        queue      = null;
-        routes     = [];
+    queue = new Ext.app.route.Queue({
+      token: token,
     });
+    routes = [
+      new Ext.app.route.Route({
+        url: "foo/bar",
+        controller: controller,
+        action: "handleFooBar",
+      }),
+      new Ext.app.route.Route({
+        url: "foo/bar",
+        controller: controller,
+        action: "handleFooBar",
+      }),
+    ];
+  });
 
-    it("should create queue MixedCollection", function() {
-        expect(queue.queue).toBeDefined();
-    });
+  afterEach(function () {
+    controller = null;
+    queue = null;
+    routes = [];
+  });
 
-    it("should queue route", function() {
-        var i      = 0,
-            length = routes.length,
-            route, args;
+  it("should create queue MixedCollection", function () {
+    expect(queue.queue).toBeDefined();
+  });
 
-        for (; i < length; i++) {
-            route = routes[i];
-            args  = route.recognize(token);
+  it("should queue route", function () {
+    var i = 0,
+      length = routes.length,
+      route,
+      args;
 
-            if (args) {
-                queue.queueAction(route, args);
-            }
-        }
+    for (; i < length; i++) {
+      route = routes[i];
+      args = route.recognize(token);
 
-        expect(queue.queue.length).toEqual(2);
-    });
+      if (args) {
+        queue.queueAction(route, args);
+      }
+    }
 
-    it("should run the queue", function() {
-        var i      = 0,
-            length = routes.length,
-            route, args;
+    expect(queue.queue.length).toEqual(2);
+  });
 
-        for (; i < length; i++) {
-            route = routes[i];
-            args  = route.recognize(token);
+  it("should run the queue", function () {
+    var i = 0,
+      length = routes.length,
+      route,
+      args;
 
-            if (args) {
-                queue.queueAction(route, args);
-            }
-        }
+    for (; i < length; i++) {
+      route = routes[i];
+      args = route.recognize(token);
 
-        queue.runQueue();
+      if (args) {
+        queue.queueAction(route, args);
+      }
+    }
 
-        expect(queue.queue.length).toEqual(0);
-    });
+    queue.runQueue();
+
+    expect(queue.queue.length).toEqual(0);
+  });
 });

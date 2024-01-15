@@ -33,26 +33,26 @@
  * user interacts with the component. Check out the {@link Ext.field.Text} docs to see the additional functionality
  * available.
  */
-Ext.define('Ext.field.Url', {
-    extend: 'Ext.field.Text',
-    xtype: 'urlfield',
-    alternateClassName: 'Ext.form.Url',
+Ext.define("Ext.field.Url", {
+  extend: "Ext.field.Text",
+  xtype: "urlfield",
+  alternateClassName: "Ext.form.Url",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        autoCapitalize: false,
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    autoCapitalize: false,
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        component: {
-	        type: 'url'
-	    }
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    component: {
+      type: "url",
     },
+  },
 
-    classCls: Ext.baseCSSPrefix + 'urlfield'
+  classCls: Ext.baseCSSPrefix + "urlfield",
 });

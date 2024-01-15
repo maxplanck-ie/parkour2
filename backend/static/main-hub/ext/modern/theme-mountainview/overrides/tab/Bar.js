@@ -1,9 +1,9 @@
-Ext.define('Ext.theme.mountainview.tab.Bar', {
-    override: 'Ext.tab.Bar',
+Ext.define("Ext.theme.mountainview.tab.Bar", {
+  override: "Ext.tab.Bar",
 
-    config: {
-        defaults: {
-            flex: 1
-        }
-    }
+  config: {
+    defaults: {
+      flex: 1,
+    },
+  },
 });

@@ -3,14 +3,16 @@
  * {@link Ext.view.View dataview} and all subclasses.
  * @private
  */
-Ext.define('Ext.mixin.Selectable', {
-    extend: 'Ext.Mixin',
+Ext.define(
+  "Ext.mixin.Selectable",
+  {
+    extend: "Ext.Mixin",
 
     mixinConfig: {
-        id: 'selectable',
-        after: {
-            updateStore: 'updateStore'
-        }
+      id: "selectable",
+      after: {
+        updateStore: "updateStore",
+      },
     },
 
     /**
@@ -29,185 +31,184 @@ Ext.define('Ext.mixin.Selectable', {
      */
 
     config: {
-        /**
-         * @cfg {Boolean} disableSelection `true` to disable selection.
-         * This configuration will lock the selection model that the DataView uses.
-         * @accessor
-         */
-        disableSelection: null,
+      /**
+       * @cfg {Boolean} disableSelection `true` to disable selection.
+       * This configuration will lock the selection model that the DataView uses.
+       * @accessor
+       */
+      disableSelection: null,
 
-        /**
-         * @cfg {String} mode
-         * Modes of selection.
-         * Valid values are `'SINGLE'`, `'SIMPLE'`, and `'MULTI'`.
-         * @accessor
-         */
-        mode: 'SINGLE',
+      /**
+       * @cfg {String} mode
+       * Modes of selection.
+       * Valid values are `'SINGLE'`, `'SIMPLE'`, and `'MULTI'`.
+       * @accessor
+       */
+      mode: "SINGLE",
 
-        /**
-         * @cfg {Boolean} allowDeselect
-         * Allow users to deselect a record in a DataView, List or Grid. Only applicable when the Selectable's `mode` is
-         * `'SINGLE'`.
-         * @accessor
-         */
-        allowDeselect: false,
+      /**
+       * @cfg {Boolean} allowDeselect
+       * Allow users to deselect a record in a DataView, List or Grid. Only applicable when the Selectable's `mode` is
+       * `'SINGLE'`.
+       * @accessor
+       */
+      allowDeselect: false,
 
-        /**
-         * @cfg {Ext.data.Model} lastSelected
-         * @private
-         * @accessor
-         */
-        lastSelected: null,
+      /**
+       * @cfg {Ext.data.Model} lastSelected
+       * @private
+       * @accessor
+       */
+      lastSelected: null,
 
-        /**
-         * @cfg {Ext.data.Model} lastFocused
-         * @private
-         * @accessor
-         */
-        lastFocused: null,
+      /**
+       * @cfg {Ext.data.Model} lastFocused
+       * @private
+       * @accessor
+       */
+      lastFocused: null,
 
-        /**
-         * @cfg {Boolean} deselectOnContainerClick `true` to deselect current selection when the container body is
-         * clicked.
-         * @accessor
-         */
-        deselectOnContainerClick: true,
+      /**
+       * @cfg {Boolean} deselectOnContainerClick `true` to deselect current selection when the container body is
+       * clicked.
+       * @accessor
+       */
+      deselectOnContainerClick: true,
 
-        /**
-         * @cfg {Ext.data.Model} selection
-         * The selected record.
-         */
-        selection: null,
+      /**
+       * @cfg {Ext.data.Model} selection
+       * The selected record.
+       */
+      selection: null,
 
-        twoWayBindable: {
-            selection: 1
-        },
+      twoWayBindable: {
+        selection: 1,
+      },
 
-        publishes: {
-            selection: 1
-        }
+      publishes: {
+        selection: 1,
+      },
     },
 
     modes: {
-        SINGLE: true,
-        SIMPLE: true,
-        MULTI: true
+      SINGLE: true,
+      SIMPLE: true,
+      MULTI: true,
     },
 
     selectableEventHooks: {
-        add: 'onSelectionStoreAdd',
-        remove: 'onSelectionStoreRemove',
-        update: 'onSelectionStoreUpdate',
-        clear: {
-            fn: 'onSelectionStoreClear',
-            priority: 1000
-        },
-        load: 'refreshSelection',
-        refresh: 'refreshSelection'
+      add: "onSelectionStoreAdd",
+      remove: "onSelectionStoreRemove",
+      update: "onSelectionStoreUpdate",
+      clear: {
+        fn: "onSelectionStoreClear",
+        priority: 1000,
+      },
+      load: "refreshSelection",
+      refresh: "refreshSelection",
     },
 
-    constructor: function() {
-        this.selected = new Ext.util.MixedCollection();
-        this.callParent(arguments);
+    constructor: function () {
+      this.selected = new Ext.util.MixedCollection();
+      this.callParent(arguments);
     },
 
-    initSelectable: function() {
-        this.publishState('selection', this.getSelection());
-    },
-
-    /**
-     * @private
-     */
-    applyMode: function(mode) {
-        mode = mode ? mode.toUpperCase() : 'SINGLE';
-        // set to mode specified unless it doesnt exist, in that case
-        // use single.
-        return this.modes[mode] ? mode : 'SINGLE';
+    initSelectable: function () {
+      this.publishState("selection", this.getSelection());
     },
 
     /**
      * @private
      */
-    updateStore: function(newStore, oldStore) {
-        var me = this,
-            bindEvents = Ext.apply({}, me.selectableEventHooks, { scope: me });
+    applyMode: function (mode) {
+      mode = mode ? mode.toUpperCase() : "SINGLE";
+      // set to mode specified unless it doesnt exist, in that case
+      // use single.
+      return this.modes[mode] ? mode : "SINGLE";
+    },
 
-        if (oldStore && Ext.isObject(oldStore) && oldStore.isStore) {
-            if (oldStore.autoDestroy) {
-                oldStore.destroy();
-            } else {
-                oldStore.un(bindEvents);
-            }
-        }
+    /**
+     * @private
+     */
+    updateStore: function (newStore, oldStore) {
+      var me = this,
+        bindEvents = Ext.apply({}, me.selectableEventHooks, { scope: me });
 
-        if (newStore) {
-            newStore.on(bindEvents);
-            me.refreshSelection();
+      if (oldStore && Ext.isObject(oldStore) && oldStore.isStore) {
+        if (oldStore.autoDestroy) {
+          oldStore.destroy();
+        } else {
+          oldStore.un(bindEvents);
         }
+      }
+
+      if (newStore) {
+        newStore.on(bindEvents);
+        me.refreshSelection();
+      }
     },
 
     /**
      * Selects all records.
      * @param {Boolean} silent `true` to suppress all select events.
      */
-    selectAll: function(silent) {
-        var me = this,
-            selections = me.getStore().getRange();
+    selectAll: function (silent) {
+      var me = this,
+        selections = me.getStore().getRange();
 
-        me.select(selections, true, silent);
+      me.select(selections, true, silent);
     },
 
     /**
      * Deselects all records.
      */
-    deselectAll: function(supress) {
-        var me = this,
-            selections = me.getStore().getRange();
+    deselectAll: function (supress) {
+      var me = this,
+        selections = me.getStore().getRange();
 
-        me.deselect(selections, supress);
+      me.deselect(selections, supress);
 
-        me.selected.clear();
-        me.setLastSelected(null);
-        me.setLastFocused(null);
+      me.selected.clear();
+      me.setLastSelected(null);
+      me.setLastFocused(null);
     },
 
-    updateSelection: function(selection) {
-        if (this.changingSelection) {
-            return;
-        }
+    updateSelection: function (selection) {
+      if (this.changingSelection) {
+        return;
+      }
 
-        if (selection) {
-            this.select(selection);
-        } else {
-            this.deselectAll();
-        }
+      if (selection) {
+        this.select(selection);
+      } else {
+        this.deselectAll();
+      }
     },
 
     // Provides differentiation of logic between MULTI, SIMPLE and SINGLE
     // selection modes.
-    selectWithEvent: function(record) {
-        var me = this,
-            isSelected = me.isSelected(record);
-        switch (me.getMode()) {
-            case 'MULTI':
-            case 'SIMPLE':
-                if (isSelected) {
-                    me.deselect(record);
-                }
-                else {
-                    me.select(record, true);
-                }
-                break;
-            case 'SINGLE':
-                if (me.getAllowDeselect() && isSelected) {
-                    // if allowDeselect is on and this record isSelected, deselect it
-                    me.deselect(record);
-                } else {
-                    // select the record and do NOT maintain existing selections
-                    me.select(record, false);
-                }
-                break;
-        }
+    selectWithEvent: function (record) {
+      var me = this,
+        isSelected = me.isSelected(record);
+      switch (me.getMode()) {
+        case "MULTI":
+        case "SIMPLE":
+          if (isSelected) {
+            me.deselect(record);
+          } else {
+            me.select(record, true);
+          }
+          break;
+        case "SINGLE":
+          if (me.getAllowDeselect() && isSelected) {
+            // if allowDeselect is on and this record isSelected, deselect it
+            me.deselect(record);
+          } else {
+            // select the record and do NOT maintain existing selections
+            me.select(record, false);
+          }
+          break;
+      }
     },
 
     /**
@@ -217,27 +218,28 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Number} endRecord The index of the last row in the range.
      * @param {Boolean} [keepExisting] `true` to retain existing selections.
      */
-    selectRange: function(startRecord, endRecord, keepExisting) {
-        var me = this,
-            store = me.getStore(),
-            records = [],
-            tmp, i;
+    selectRange: function (startRecord, endRecord, keepExisting) {
+      var me = this,
+        store = me.getStore(),
+        records = [],
+        tmp,
+        i;
 
-        if (me.getDisableSelection()) {
-            return;
-        }
+      if (me.getDisableSelection()) {
+        return;
+      }
 
-        // swap values
-        if (startRecord > endRecord) {
-            tmp = endRecord;
-            endRecord = startRecord;
-            startRecord = tmp;
-        }
+      // swap values
+      if (startRecord > endRecord) {
+        tmp = endRecord;
+        endRecord = startRecord;
+        startRecord = tmp;
+      }
 
-        for (i = startRecord; i <= endRecord; i++) {
-            records.push(store.getAt(i));
-        }
-        this.doMultiSelect(records, keepExisting);
+      for (i = startRecord; i <= endRecord; i++) {
+        records.push(store.getAt(i));
+      }
+      this.doMultiSelect(records, keepExisting);
     },
 
     /**
@@ -246,100 +248,100 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Boolean} keepExisting If `true`, the existing selection will be added to (if not, the old selection is replaced).
      * @param {Boolean} suppressEvent If `true`, the `select` event will not be fired.
      */
-    select: function(records, keepExisting, suppressEvent) {
-        var me = this,
-            record;
+    select: function (records, keepExisting, suppressEvent) {
+      var me = this,
+        record;
 
-        if (me.getDisableSelection()) {
-            return;
-        }
+      if (me.getDisableSelection()) {
+        return;
+      }
 
-        if (typeof records === "number") {
-            records = [me.getStore().getAt(records)];
-        }
+      if (typeof records === "number") {
+        records = [me.getStore().getAt(records)];
+      }
 
-        if (!records) {
-            return;
-        }
+      if (!records) {
+        return;
+      }
 
-        if (me.getMode() == "SINGLE" && records) {
-            record = records.length ? records[0] : records;
-            me.doSingleSelect(record, suppressEvent);
-        } else {
-            me.doMultiSelect(records, keepExisting, suppressEvent);
-        }
+      if (me.getMode() == "SINGLE" && records) {
+        record = records.length ? records[0] : records;
+        me.doSingleSelect(record, suppressEvent);
+      } else {
+        me.doMultiSelect(records, keepExisting, suppressEvent);
+      }
     },
 
     /**
      * Selects a single record.
      * @private
      */
-    doSingleSelect: function(record, suppressEvent) {
-        var me = this,
-            selected = me.selected;
+    doSingleSelect: function (record, suppressEvent) {
+      var me = this,
+        selected = me.selected;
 
-        if (me.getDisableSelection()) {
-            return;
-        }
+      if (me.getDisableSelection()) {
+        return;
+      }
 
-        // already selected.
-        // should we also check beforeselect?
-        if (me.isSelected(record)) {
-            return;
-        }
+      // already selected.
+      // should we also check beforeselect?
+      if (me.isSelected(record)) {
+        return;
+      }
 
-        if (selected.getCount() > 0) {
-            me.deselect(me.getLastSelected(), suppressEvent);
-        }
+      if (selected.getCount() > 0) {
+        me.deselect(me.getLastSelected(), suppressEvent);
+      }
 
-        selected.add(record);
-        me.setLastSelected(record);
-        me.onItemSelect(record, suppressEvent);
-        me.setLastFocused(record);
+      selected.add(record);
+      me.setLastSelected(record);
+      me.onItemSelect(record, suppressEvent);
+      me.setLastFocused(record);
 
-        if (!suppressEvent) {
-            me.fireSelectionChange([record]);
-        }
+      if (!suppressEvent) {
+        me.fireSelectionChange([record]);
+      }
     },
 
     /**
      * Selects a set of multiple records.
      * @private
      */
-    doMultiSelect: function(records, keepExisting, suppressEvent) {
-        if (records === null || this.getDisableSelection()) {
-            return;
-        }
-        records = !Ext.isArray(records) ? [records] : records;
+    doMultiSelect: function (records, keepExisting, suppressEvent) {
+      if (records === null || this.getDisableSelection()) {
+        return;
+      }
+      records = !Ext.isArray(records) ? [records] : records;
 
-        var me = this,
-            selected = me.selected,
-            ln = records.length,
-            change = false,
-            i = 0,
-            record;
+      var me = this,
+        selected = me.selected,
+        ln = records.length,
+        change = false,
+        i = 0,
+        record;
 
-        if (!keepExisting && selected.getCount() > 0) {
-            change = true;
-            me.deselect(me.getSelections(), true);
+      if (!keepExisting && selected.getCount() > 0) {
+        change = true;
+        me.deselect(me.getSelections(), true);
+      }
+      for (; i < ln; i++) {
+        record = records[i];
+        if (keepExisting && me.isSelected(record)) {
+          continue;
         }
-        for (; i < ln; i++) {
-            record = records[i];
-            if (keepExisting && me.isSelected(record)) {
-                continue;
-            }
-            change = true;
-            me.setLastSelected(record);
-            selected.add(record);
-            if (!suppressEvent) {
-                me.setLastFocused(record);
-            }
+        change = true;
+        me.setLastSelected(record);
+        selected.add(record);
+        if (!suppressEvent) {
+          me.setLastFocused(record);
+        }
 
-            me.onItemSelect(record, suppressEvent);
-        }
-        if (change && !suppressEvent) {
-            this.fireSelectionChange(records);
-        }
+        me.onItemSelect(record, suppressEvent);
+      }
+      if (change && !suppressEvent) {
+        this.fireSelectionChange(records);
+      }
     },
 
     /**
@@ -347,43 +349,43 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Number/Array/Ext.data.Model} records The record(s) to deselect. Can also be a number to reference by index.
      * @param {Boolean} suppressEvent If `true` the `deselect` event will not be fired.
      */
-    deselect: function(records, suppressEvent) {
-        var me = this;
+    deselect: function (records, suppressEvent) {
+      var me = this;
 
-        if (me.getDisableSelection()) {
-            return;
+      if (me.getDisableSelection()) {
+        return;
+      }
+
+      records = Ext.isArray(records) ? records : [records];
+
+      var selected = me.selected,
+        change = false,
+        i = 0,
+        store = me.getStore(),
+        ln = records.length,
+        record;
+
+      for (; i < ln; i++) {
+        record = records[i];
+
+        if (typeof record === "number") {
+          record = store.getAt(record);
         }
 
-        records = Ext.isArray(records) ? records : [records];
-
-        var selected = me.selected,
-            change   = false,
-            i        = 0,
-            store    = me.getStore(),
-            ln       = records.length,
-            record;
-
-        for (; i < ln; i++) {
-            record = records[i];
-
-            if (typeof record === 'number') {
-                record = store.getAt(record);
-            }
-
-            if (selected.remove(record)) {
-                if (me.getLastSelected() == record) {
-                    me.setLastSelected(selected.last());
-                }
-                change = true;
-            }
-            if (record) {
-                me.onItemDeselect(record, suppressEvent);
-            }
+        if (selected.remove(record)) {
+          if (me.getLastSelected() == record) {
+            me.setLastSelected(selected.last());
+          }
+          change = true;
         }
-
-        if (change && !suppressEvent) {
-            me.fireSelectionChange(records);
+        if (record) {
+          me.onItemDeselect(record, suppressEvent);
         }
+      }
+
+      if (change && !suppressEvent) {
+        me.fireSelectionChange(records);
+      }
     },
 
     /**
@@ -392,25 +394,25 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Ext.data.Record} newRecord
      * @param {Ext.data.Record} oldRecord
      */
-    updateLastFocused: function(newRecord, oldRecord) {
-        this.onLastFocusChanged(oldRecord, newRecord);
+    updateLastFocused: function (newRecord, oldRecord) {
+      this.onLastFocusChanged(oldRecord, newRecord);
     },
 
-    fireSelectionChange: function(records) {
-        var me = this;
+    fireSelectionChange: function (records) {
+      var me = this;
 
-        me.changingSelection = true;
-        me.setSelection(me.getLastSelected() || null);
-        me.changingSelection = false;
-        me.fireAction('selectionchange', [me, records], 'getSelections');
+      me.changingSelection = true;
+      me.setSelection(me.getLastSelected() || null);
+      me.changingSelection = false;
+      me.fireAction("selectionchange", [me, records], "getSelections");
     },
 
     /**
      * Returns the currently selected records.
      * @return {Ext.data.Model[]} The selected records.
      */
-    getSelections: function() {
-        return this.selected.getRange();
+    getSelections: function () {
+      return this.selected.getRange();
     },
 
     /**
@@ -418,75 +420,77 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Ext.data.Model/Number} record The record or index of the record to check.
      * @return {Boolean}
      */
-    isSelected: function(record) {
-        record = Ext.isNumber(record) ? this.getStore().getAt(record) : record;
-        return this.selected.indexOf(record) !== -1;
+    isSelected: function (record) {
+      record = Ext.isNumber(record) ? this.getStore().getAt(record) : record;
+      return this.selected.indexOf(record) !== -1;
     },
 
     /**
      * Returns `true` if there is a selected record.
      * @return {Boolean}
      */
-    hasSelection: function() {
-        return this.selected.getCount() > 0;
+    hasSelection: function () {
+      return this.selected.getCount() > 0;
     },
 
     /**
      * @private
      */
-    refreshSelection: function() {
-        var me = this,
-            selections = me.getSelections();
+    refreshSelection: function () {
+      var me = this,
+        selections = me.getSelections();
 
-        me.deselectAll(true);
-        if (selections.length) {
-            me.select(selections, false, true);
-        }
+      me.deselectAll(true);
+      if (selections.length) {
+        me.select(selections, false, true);
+      }
     },
 
     // prune records from the SelectionModel if
     // they were selected at the time they were
     // removed.
-    onSelectionStoreRemove: function(store, records) {
-        var me = this,
-            selected = me.selected,
-            ln = records.length,
-            removed, record, i;
+    onSelectionStoreRemove: function (store, records) {
+      var me = this,
+        selected = me.selected,
+        ln = records.length,
+        removed,
+        record,
+        i;
 
-        if (me.getDisableSelection()) {
-            return;
-        }
+      if (me.getDisableSelection()) {
+        return;
+      }
 
-        for (i = 0; i < ln; i++) {
-            record = records[i];
-            if (selected.remove(record)) {
-                if (me.getLastSelected() == record) {
-                    me.setLastSelected(null);
-                }
-                if (me.getLastFocused() == record) {
-                    me.setLastFocused(null);
-                }
-                removed = removed || [];
-                removed.push(record);
-            }
+      for (i = 0; i < ln; i++) {
+        record = records[i];
+        if (selected.remove(record)) {
+          if (me.getLastSelected() == record) {
+            me.setLastSelected(null);
+          }
+          if (me.getLastFocused() == record) {
+            me.setLastFocused(null);
+          }
+          removed = removed || [];
+          removed.push(record);
         }
+      }
 
-        if (removed) {
-            me.fireSelectionChange([removed]);
-        }
+      if (removed) {
+        me.fireSelectionChange([removed]);
+      }
     },
 
-    onSelectionStoreClear: function(store) {
-        var records = store.getData().items;
-        this.onSelectionStoreRemove(store, records);
+    onSelectionStoreClear: function (store) {
+      var records = store.getData().items;
+      this.onSelectionStoreRemove(store, records);
     },
 
     /**
      * Returns the number of selections.
      * @return {Number}
      */
-    getSelectionCount: function() {
-        return this.selected.getCount();
+    getSelectionCount: function () {
+      return this.selected.getCount();
     },
 
     onSelectionStoreAdd: Ext.emptyFn,
@@ -494,8 +498,9 @@ Ext.define('Ext.mixin.Selectable', {
     onItemSelect: Ext.emptyFn,
     onItemDeselect: Ext.emptyFn,
     onLastFocusChanged: Ext.emptyFn,
-    onEditorKey: Ext.emptyFn
-}, function() {
+    onEditorKey: Ext.emptyFn,
+  },
+  function () {
     /**
      * Selects a record instance by record instance or index.
      * @member Ext.mixin.Selectable
@@ -505,7 +510,6 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Boolean} suppressEvent Set to `false` to not fire a select event.
      * @deprecated 2.0.0 Please use {@link #select} instead.
      */
-
     /**
      * Deselects a record instance by record instance or index.
      * @member Ext.mixin.Selectable
@@ -514,7 +518,6 @@ Ext.define('Ext.mixin.Selectable', {
      * @param {Boolean} suppressEvent Set to `false` to not fire a deselect event.
      * @deprecated 2.0.0 Please use {@link #deselect} instead.
      */
-
     /**
      * Returns the selection mode currently used by this Selectable.
      * @member Ext.mixin.Selectable
@@ -522,7 +525,6 @@ Ext.define('Ext.mixin.Selectable', {
      * @return {String} The current mode.
      * @deprecated 2.0.0 Please use {@link #getMode} instead.
      */
-
     /**
      * Returns the array of previously selected items.
      * @member Ext.mixin.Selectable
@@ -530,7 +532,6 @@ Ext.define('Ext.mixin.Selectable', {
      * @return {Array} The previous selection.
      * @deprecated 2.0.0
      */
-
     /**
      * Returns `true` if the Selectable is currently locked.
      * @member Ext.mixin.Selectable
@@ -538,21 +539,18 @@ Ext.define('Ext.mixin.Selectable', {
      * @return {Boolean} True if currently locked
      * @deprecated 2.0.0 Please use {@link #getDisableSelection} instead.
      */
-
     /**
      * This was an internal function accidentally exposed in 1.x and now deprecated. Calling it has no effect
      * @member Ext.mixin.Selectable
      * @method setLastFocused
      * @deprecated 2.0.0
      */
-
     /**
      * Deselects any currently selected records and clears all stored selections.
      * @member Ext.mixin.Selectable
      * @method clearSelections
      * @deprecated 2.0.0 Please use {@link #deselectAll} instead.
      */
-
     /**
      * Returns the number of selections.
      * @member Ext.mixin.Selectable
@@ -560,10 +558,10 @@ Ext.define('Ext.mixin.Selectable', {
      * @return {Number}
      * @deprecated 2.0.0 Please use {@link #getSelectionCount} instead.
      */
-
     /**
      * @cfg {Boolean} locked
      * @inheritdoc Ext.mixin.Selectable#disableSelection
      * @deprecated 2.0.0 Please use {@link #disableSelection} instead.
      */
-});
+  },
+);

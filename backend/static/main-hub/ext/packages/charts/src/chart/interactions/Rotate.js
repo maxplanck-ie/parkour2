@@ -36,168 +36,170 @@
  *         }
  *     });
  */
-Ext.define('Ext.chart.interactions.Rotate', {
-    extend: 'Ext.chart.interactions.Abstract',
+Ext.define("Ext.chart.interactions.Rotate", {
+  extend: "Ext.chart.interactions.Abstract",
 
-    type: 'rotate',
+  type: "rotate",
 
-    alias: 'interaction.rotate',
+  alias: "interaction.rotate",
 
+  /**
+   * @event rotate
+   * Fires on every tick of the rotation
+   * @param {Ext.chart.interactions.Rotate} this This interaction.
+   * @param {Number} angle The new current rotation angle.
+   */
+
+  /**
+   * @event rotationEnd
+   * Fires after a user finishes the rotation
+   * @param {Ext.chart.interactions.Rotate} this This interaction.
+   * @param {Number} angle The new current rotation angle.
+   */
+
+  config: {
     /**
-     * @event rotate
-     * Fires on every tick of the rotation
-     * @param {Ext.chart.interactions.Rotate} this This interaction.
-     * @param {Number} angle The new current rotation angle.
-     */
-
-    /**
-     * @event rotationEnd
-     * Fires after a user finishes the rotation
-     * @param {Ext.chart.interactions.Rotate} this This interaction.
-     * @param {Number} angle The new current rotation angle.
-     */
-
-    config: {
-        /**
-         * @cfg {String} gesture
-         * Defines the gesture type that will be used to rotate the chart. Currently only
-         * supports `pinch` for two-finger rotation and `drag` for single-finger rotation.
-         * @private
-         */
-        gesture: 'rotate',
-
-        gestures: {
-            rotate: 'onRotate',
-            rotateend: 'onRotate',
-            dragstart: 'onGestureStart',
-            drag: 'onGesture',
-            dragend: 'onGestureEnd'
-        },
-
-        /**
-         * @cfg {Number} rotation
-         * Saves the current rotation of the series. Accepts negative values and values > 360 ( / 180 * Math.PI)
-         * @private
-         */
-        rotation: 0
-    },
-
-    oldRotations: null,
-
-    getAngle: function(e) {
-        var me = this,
-            chart = me.getChart(),
-            xy = chart.getEventXY(e),
-            center = chart.getCenter();
-
-        return Math.atan2(
-            xy[1] - center[1],
-            xy[0] - center[0]
-        );
-    },
-
-    getRadius: function (e) {
-        return this.getChart().getRadius();
-    },
-
-    getEventRadius: function(e) {
-        var me = this,
-            chart = me.getChart(),
-            xy = chart.getEventXY(e),
-            center = chart.getCenter(),
-            dx = xy[0] - center[0],
-            dy = xy[1] - center[1];
-
-        return Math.sqrt(dx * dx + dy * dy);
-    },
-
-    onGestureStart: function(e) {
-        var me = this,
-            radius = me.getRadius(e),
-            eventRadius = me.getEventRadius(e);
-
-        e.claimGesture();
-
-        if (radius >= eventRadius) {
-            me.lockEvents('drag');
-            me.angle = me.getAngle(e);
-            me.oldRotations = {};
-            return false;
-        }
-    },
-
-    onGesture: function(e) {
-        var me = this,
-            angle = me.getAngle(e) - me.angle;
-
-        if (me.getLocks().drag === me) {
-            me.doRotateTo(angle, true);
-            return false;
-        }
-    },
-
-    /**
+     * @cfg {String} gesture
+     * Defines the gesture type that will be used to rotate the chart. Currently only
+     * supports `pinch` for two-finger rotation and `drag` for single-finger rotation.
      * @private
      */
-    doRotateTo: function(angle, relative, animate) {
-        var me = this,
-            chart = me.getChart(),
-            axes = chart.getAxes(),
-            series = chart.getSeries(),
-            oldRotations = me.oldRotations,
-            axis, seriesItem, oldRotation,
-            i, ln;
+    gesture: "rotate",
 
-        if (!animate) {
-            chart.suspendAnimation();
-        }
-
-        for (i = 0, ln = axes.length; i < ln; i++) {
-            axis = axes[i];
-            oldRotation = oldRotations[axis.getId()] || (oldRotations[axis.getId()] = axis.getRotation());
-            axis.setRotation( angle + (relative ? oldRotation : 0) );
-        }
-
-        for (i = 0, ln = series.length; i < ln; i++) {
-            seriesItem = series[i];
-            oldRotation = oldRotations[seriesItem.getId()] || (oldRotations[seriesItem.getId()] = seriesItem.getRotation());
-            seriesItem.setRotation( angle + (relative ? oldRotation : 0) );
-        }
-
-        me.setRotation(angle + (relative ? oldRotation : 0));
-
-        me.fireEvent('rotate', me, me.getRotation());
-
-        me.sync();
-        if (!animate) {
-            chart.resumeAnimation();
-        }
+    gestures: {
+      rotate: "onRotate",
+      rotateend: "onRotate",
+      dragstart: "onGestureStart",
+      drag: "onGesture",
+      dragend: "onGestureEnd",
     },
 
     /**
-     * Rotates a polar chart about its center point to the specified angle.
-     * @param {Number} angle The angle to rotate to.
-     * @param {Boolean} [relative=false] Whether the rotation is relative to the current angle or not.
-     * @param {Boolean} [animate=false] Whether to animate the rotation or not.
+     * @cfg {Number} rotation
+     * Saves the current rotation of the series. Accepts negative values and values > 360 ( / 180 * Math.PI)
+     * @private
      */
-    rotateTo: function (angle, relative, animate) {
-        this.doRotateTo(angle, relative, animate);
-        this.oldRotations = {};
-    },
+    rotation: 0,
+  },
 
-    onGestureEnd: function(e) {
-        var me = this;
-        if (me.getLocks().drag === me) {
-            me.onGesture(e);
-            me.unlockEvents('drag');
+  oldRotations: null,
 
-            me.fireEvent('rotationEnd', me, me.getRotation());
+  getAngle: function (e) {
+    var me = this,
+      chart = me.getChart(),
+      xy = chart.getEventXY(e),
+      center = chart.getCenter();
 
-            return false;
-        }
-    },
+    return Math.atan2(xy[1] - center[1], xy[0] - center[0]);
+  },
 
-    onRotate: function(e) {
+  getRadius: function (e) {
+    return this.getChart().getRadius();
+  },
 
+  getEventRadius: function (e) {
+    var me = this,
+      chart = me.getChart(),
+      xy = chart.getEventXY(e),
+      center = chart.getCenter(),
+      dx = xy[0] - center[0],
+      dy = xy[1] - center[1];
+
+    return Math.sqrt(dx * dx + dy * dy);
+  },
+
+  onGestureStart: function (e) {
+    var me = this,
+      radius = me.getRadius(e),
+      eventRadius = me.getEventRadius(e);
+
+    e.claimGesture();
+
+    if (radius >= eventRadius) {
+      me.lockEvents("drag");
+      me.angle = me.getAngle(e);
+      me.oldRotations = {};
+      return false;
     }
+  },
+
+  onGesture: function (e) {
+    var me = this,
+      angle = me.getAngle(e) - me.angle;
+
+    if (me.getLocks().drag === me) {
+      me.doRotateTo(angle, true);
+      return false;
+    }
+  },
+
+  /**
+   * @private
+   */
+  doRotateTo: function (angle, relative, animate) {
+    var me = this,
+      chart = me.getChart(),
+      axes = chart.getAxes(),
+      series = chart.getSeries(),
+      oldRotations = me.oldRotations,
+      axis,
+      seriesItem,
+      oldRotation,
+      i,
+      ln;
+
+    if (!animate) {
+      chart.suspendAnimation();
+    }
+
+    for (i = 0, ln = axes.length; i < ln; i++) {
+      axis = axes[i];
+      oldRotation =
+        oldRotations[axis.getId()] ||
+        (oldRotations[axis.getId()] = axis.getRotation());
+      axis.setRotation(angle + (relative ? oldRotation : 0));
+    }
+
+    for (i = 0, ln = series.length; i < ln; i++) {
+      seriesItem = series[i];
+      oldRotation =
+        oldRotations[seriesItem.getId()] ||
+        (oldRotations[seriesItem.getId()] = seriesItem.getRotation());
+      seriesItem.setRotation(angle + (relative ? oldRotation : 0));
+    }
+
+    me.setRotation(angle + (relative ? oldRotation : 0));
+
+    me.fireEvent("rotate", me, me.getRotation());
+
+    me.sync();
+    if (!animate) {
+      chart.resumeAnimation();
+    }
+  },
+
+  /**
+   * Rotates a polar chart about its center point to the specified angle.
+   * @param {Number} angle The angle to rotate to.
+   * @param {Boolean} [relative=false] Whether the rotation is relative to the current angle or not.
+   * @param {Boolean} [animate=false] Whether to animate the rotation or not.
+   */
+  rotateTo: function (angle, relative, animate) {
+    this.doRotateTo(angle, relative, animate);
+    this.oldRotations = {};
+  },
+
+  onGestureEnd: function (e) {
+    var me = this;
+    if (me.getLocks().drag === me) {
+      me.onGesture(e);
+      me.unlockEvents("drag");
+
+      me.fireEvent("rotationEnd", me, me.getRotation());
+
+      return false;
+    }
+  },
+
+  onRotate: function (e) {},
 });

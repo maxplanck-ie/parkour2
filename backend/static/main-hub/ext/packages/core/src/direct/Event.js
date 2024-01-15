@@ -4,32 +4,32 @@
  * The event class is essentially just a data structure
  * to hold a Direct response.
  */
-Ext.define('Ext.direct.Event', {
-    alias: 'direct.event',
+Ext.define("Ext.direct.Event", {
+  alias: "direct.event",
 
-    status: true,
+  status: true,
 
-    /**
-     * Creates new Event.
-     * @param {Object} [config] Config object.
-     */
-    constructor: function(config) {
-        Ext.apply(this, config);
-    },
-    
-    /**
-     * Return the name for this event.
-     * @return {String} The name of event
-     */
-    getName: function() {
-        return this.name;
-    },
+  /**
+   * Creates new Event.
+   * @param {Object} [config] Config object.
+   */
+  constructor: function (config) {
+    Ext.apply(this, config);
+  },
 
-    /**
-     * Return the raw data for this event.
-     * @return {Mixed} The data from the event
-     */
-    getData: function() {
-        return this.data;
-    }
+  /**
+   * Return the name for this event.
+   * @return {String} The name of event
+   */
+  getName: function () {
+    return this.name;
+  },
+
+  /**
+   * Return the raw data for this event.
+   * @return {Mixed} The data from the event
+   */
+  getData: function () {
+    return this.data;
+  },
 });

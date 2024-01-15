@@ -197,179 +197,179 @@
  *         });
  *     }
  */
-Ext.define('Ext.util.Animate', {
-    mixinId: 'animate',
+Ext.define("Ext.util.Animate", {
+  mixinId: "animate",
 
-    requires: [
-        'Ext.fx.Manager',
-        'Ext.fx.Anim'
-    ],
+  requires: ["Ext.fx.Manager", "Ext.fx.Anim"],
 
-    isAnimate: true,
+  isAnimate: true,
 
-    /**
-     * Performs custom animation on this object.
-     *
-     * This method is applicable to both the {@link Ext.Component Component} class and the {@link Ext.draw.sprite.Sprite Sprite}
-     * class. It performs animated transitions of certain properties of this object over a specified timeline.
-     *
-     * ### Animating a {@link Ext.Component Component}
-     *
-     * When animating a Component, the following properties may be specified in `from`, `to`, and `keyframe` objects:
-     *
-     *   - `x` - The Component's page X position in pixels.
-     *
-     *   - `y` - The Component's page Y position in pixels
-     *
-     *   - `left` - The Component's `left` value in pixels.
-     *
-     *   - `top` - The Component's `top` value in pixels.
-     *
-     *   - `width` - The Component's `width` value in pixels.
-     *
-     *   - `height` - The Component's `height` value in pixels.
-     *
-     * The following property may be set on the animation config root:
-     *
-     *   - `dynamic` - Specify as true to update the Component's layout (if it is a Container) at every frame of the animation.
-     *     *Use sparingly as laying out on every intermediate size change is an expensive operation.*
-     *
-     * For example, to animate a Window to a new size, ensuring that its internal layout and any shadow is correct:
-     *
-     *     myWindow = Ext.create('Ext.window.Window', {
-     *         title: 'Test Component animation',
-     *         width: 500,
-     *         height: 300,
-     *         layout: {
-     *             type: 'hbox',
-     *             align: 'stretch'
-     *         },
-     *         items: [{
-     *             title: 'Left: 33%',
-     *             margin: '5 0 5 5',
-     *             flex: 1
-     *         }, {
-     *             title: 'Left: 66%',
-     *             margin: '5 5 5 5',
-     *             flex: 2
-     *         }]
-     *     });
-     *     myWindow.show();
-     *     myWindow.header.el.on('click', function() {
-     *         myWindow.animate({
-     *             to: {
-     *                 width: (myWindow.getWidth() == 500) ? 700 : 500,
-     *                 height: (myWindow.getHeight() == 300) ? 400 : 300
-     *             }
-     *         });
-     *     });
-     *
-     * For performance reasons, by default, the internal layout is only updated when the Window reaches its final `"to"`
-     * size. If dynamic updating of the Window's child Components is required, then configure the animation with
-     * `dynamic: true` and the two child items will maintain their proportions during the animation.
-     *
-     * @param {Object} config  Configuration for {@link Ext.fx.Anim}.
-     * Note that the {@link Ext.fx.Anim#to to} config is required.
-     * @return {Object} this
-     */
-    animate: function(animObj) {
-        var me = this;
-        if (Ext.fx.Manager.hasFxBlock(me.id)) {
-            return me;
-        }
-        Ext.fx.Manager.queueFx(new Ext.fx.Anim(me.anim(animObj)));
-        return this;
-    },
-
-    /**
-     * @private
-     * Process the passed fx configuration.
-     */
-    anim: function(config) {
-        if (!Ext.isObject(config)) {
-            return (config) ? {} : false;
-        }
-
-        var me = this;
-
-        if (config.stopAnimation) {
-            me.stopAnimation();
-        }
-
-        Ext.applyIf(config, Ext.fx.Manager.getFxDefaults(me.id));
-
-        return Ext.apply({
-            target: me,
-            paused: true
-        }, config);
-    },
-
-    /**
-     * @private
-     * Get animation properties
-     */
-    getAnimationProps: function() {
-        var me = this,
-            layout = me.layout;
-
-        return layout && layout.animate ? layout.animate : {};
-    },
-
-    /**
-     * Stops any running effects and clears this object's internal effects queue if it contains any additional effects
-     * that haven't started yet.
-     * @deprecated 4.0 Replaced by {@link #stopAnimation}
-     * @return {Ext.dom.Element} The Element
-     * @method
-     */
-    stopFx: Ext.Function.alias(Ext.util.Animate, 'stopAnimation'),
-
-    /**
-     * Stops any running effects and clears this object's internal effects queue if it contains any additional effects
-     * that haven't started yet.
-     * @return {Ext.dom.Element} The Element
-     */
-    stopAnimation: function(/* private */ suppressEvent) {
-        Ext.fx.Manager.stopAnimation(this.id, suppressEvent);
-        return this;
-    },
-
-    /**
-     * Ensures that all effects queued after syncFx is called on this object are run concurrently. This is the opposite
-     * of {@link #sequenceFx}.
-     * @return {Object} this
-     */
-    syncFx: function() {
-        Ext.fx.Manager.setFxDefaults(this.id, {
-            concurrent: true
-        });
-        return this;
-    },
-
-    /**
-     * Ensures that all effects queued after sequenceFx is called on this object are run in sequence. This is the
-     * opposite of {@link #syncFx}.
-     * @return {Object} this
-     */
-    sequenceFx: function() {
-        Ext.fx.Manager.setFxDefaults(this.id, {
-            concurrent: false
-        });
-        return this;
-    },
-
-    /**
-     * @deprecated 4.0 Replaced by {@link #getActiveAnimation}
-     * @inheritdoc Ext.util.Animate#getActiveAnimation
-     * @method
-     */
-    hasActiveFx: Ext.Function.alias(Ext.util.Animate, 'getActiveAnimation'),
-
-    /**
-     * Returns the current animation if this object has any effects actively running or queued, else returns false.
-     * @return {Ext.fx.Anim/Boolean} Anim if element has active effects, else false
-     */
-    getActiveAnimation: function() {
-        return Ext.fx.Manager.getActiveAnimation(this.id);
+  /**
+   * Performs custom animation on this object.
+   *
+   * This method is applicable to both the {@link Ext.Component Component} class and the {@link Ext.draw.sprite.Sprite Sprite}
+   * class. It performs animated transitions of certain properties of this object over a specified timeline.
+   *
+   * ### Animating a {@link Ext.Component Component}
+   *
+   * When animating a Component, the following properties may be specified in `from`, `to`, and `keyframe` objects:
+   *
+   *   - `x` - The Component's page X position in pixels.
+   *
+   *   - `y` - The Component's page Y position in pixels
+   *
+   *   - `left` - The Component's `left` value in pixels.
+   *
+   *   - `top` - The Component's `top` value in pixels.
+   *
+   *   - `width` - The Component's `width` value in pixels.
+   *
+   *   - `height` - The Component's `height` value in pixels.
+   *
+   * The following property may be set on the animation config root:
+   *
+   *   - `dynamic` - Specify as true to update the Component's layout (if it is a Container) at every frame of the animation.
+   *     *Use sparingly as laying out on every intermediate size change is an expensive operation.*
+   *
+   * For example, to animate a Window to a new size, ensuring that its internal layout and any shadow is correct:
+   *
+   *     myWindow = Ext.create('Ext.window.Window', {
+   *         title: 'Test Component animation',
+   *         width: 500,
+   *         height: 300,
+   *         layout: {
+   *             type: 'hbox',
+   *             align: 'stretch'
+   *         },
+   *         items: [{
+   *             title: 'Left: 33%',
+   *             margin: '5 0 5 5',
+   *             flex: 1
+   *         }, {
+   *             title: 'Left: 66%',
+   *             margin: '5 5 5 5',
+   *             flex: 2
+   *         }]
+   *     });
+   *     myWindow.show();
+   *     myWindow.header.el.on('click', function() {
+   *         myWindow.animate({
+   *             to: {
+   *                 width: (myWindow.getWidth() == 500) ? 700 : 500,
+   *                 height: (myWindow.getHeight() == 300) ? 400 : 300
+   *             }
+   *         });
+   *     });
+   *
+   * For performance reasons, by default, the internal layout is only updated when the Window reaches its final `"to"`
+   * size. If dynamic updating of the Window's child Components is required, then configure the animation with
+   * `dynamic: true` and the two child items will maintain their proportions during the animation.
+   *
+   * @param {Object} config  Configuration for {@link Ext.fx.Anim}.
+   * Note that the {@link Ext.fx.Anim#to to} config is required.
+   * @return {Object} this
+   */
+  animate: function (animObj) {
+    var me = this;
+    if (Ext.fx.Manager.hasFxBlock(me.id)) {
+      return me;
     }
+    Ext.fx.Manager.queueFx(new Ext.fx.Anim(me.anim(animObj)));
+    return this;
+  },
+
+  /**
+   * @private
+   * Process the passed fx configuration.
+   */
+  anim: function (config) {
+    if (!Ext.isObject(config)) {
+      return config ? {} : false;
+    }
+
+    var me = this;
+
+    if (config.stopAnimation) {
+      me.stopAnimation();
+    }
+
+    Ext.applyIf(config, Ext.fx.Manager.getFxDefaults(me.id));
+
+    return Ext.apply(
+      {
+        target: me,
+        paused: true,
+      },
+      config,
+    );
+  },
+
+  /**
+   * @private
+   * Get animation properties
+   */
+  getAnimationProps: function () {
+    var me = this,
+      layout = me.layout;
+
+    return layout && layout.animate ? layout.animate : {};
+  },
+
+  /**
+   * Stops any running effects and clears this object's internal effects queue if it contains any additional effects
+   * that haven't started yet.
+   * @deprecated 4.0 Replaced by {@link #stopAnimation}
+   * @return {Ext.dom.Element} The Element
+   * @method
+   */
+  stopFx: Ext.Function.alias(Ext.util.Animate, "stopAnimation"),
+
+  /**
+   * Stops any running effects and clears this object's internal effects queue if it contains any additional effects
+   * that haven't started yet.
+   * @return {Ext.dom.Element} The Element
+   */
+  stopAnimation: function (/* private */ suppressEvent) {
+    Ext.fx.Manager.stopAnimation(this.id, suppressEvent);
+    return this;
+  },
+
+  /**
+   * Ensures that all effects queued after syncFx is called on this object are run concurrently. This is the opposite
+   * of {@link #sequenceFx}.
+   * @return {Object} this
+   */
+  syncFx: function () {
+    Ext.fx.Manager.setFxDefaults(this.id, {
+      concurrent: true,
+    });
+    return this;
+  },
+
+  /**
+   * Ensures that all effects queued after sequenceFx is called on this object are run in sequence. This is the
+   * opposite of {@link #syncFx}.
+   * @return {Object} this
+   */
+  sequenceFx: function () {
+    Ext.fx.Manager.setFxDefaults(this.id, {
+      concurrent: false,
+    });
+    return this;
+  },
+
+  /**
+   * @deprecated 4.0 Replaced by {@link #getActiveAnimation}
+   * @inheritdoc Ext.util.Animate#getActiveAnimation
+   * @method
+   */
+  hasActiveFx: Ext.Function.alias(Ext.util.Animate, "getActiveAnimation"),
+
+  /**
+   * Returns the current animation if this object has any effects actively running or queued, else returns false.
+   * @return {Ext.fx.Anim/Boolean} Anim if element has active effects, else false
+   */
+  getActiveAnimation: function () {
+    return Ext.fx.Manager.getActiveAnimation(this.id);
+  },
 });

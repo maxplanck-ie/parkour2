@@ -1,22 +1,22 @@
 /**
- * {@link Ext.Audio} is a simple class which provides a container for the 
+ * {@link Ext.Audio} is a simple class which provides a container for the
  * [HTML5 Audio element](http://developer.mozilla.org/en-US/docs/Using_HTML5_audio_and_video).
  *
  * ## Recommended File Types/Compression:
- * 
+ *
  * * Uncompressed WAV and AIF audio
  * * MP3 audio
  * * AAC-LC
  * * HE-AAC audio
  *
  * ## Notes
- * 
- * On Android devices, the audio tags controls do not show. You must use the {@link #method-play}, 
+ *
+ * On Android devices, the audio tags controls do not show. You must use the {@link #method-play},
  * {@link #method-pause}, and {@link #toggle} methods to control the audio (example below).
  *
  * ## Examples
  *
- * This example shows the use of the {@link Ext.Audio} component in a fullscreen container--change 
+ * This example shows the use of the {@link Ext.Audio} component in a fullscreen container--change
  * the url: item for the location of an audio file--note that the audio starts on page load:
  *
  *     @example preview
@@ -86,60 +86,62 @@
  *         ]
  *     });
  */
-Ext.define('Ext.Audio', {
-    extend: 'Ext.Media',
-    xtype : 'audio',
+Ext.define("Ext.Audio", {
+  extend: "Ext.Media",
+  xtype: "audio",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        cls: Ext.baseCSSPrefix + 'audio'
-
-        /**
-         * @cfg {String} url
-         * The location of the audio to play.
-         *
-         * ### Recommended file types are:
-         * * Uncompressed WAV and AIF audio
-         * * MP3 audio
-         * * AAC-LC
-         * * HE-AAC audio
-         * @accessor
-         */
-    },
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    cls: Ext.baseCSSPrefix + "audio",
 
     /**
-     * @private
+     * @cfg {String} url
+     * The location of the audio to play.
+     *
+     * ### Recommended file types are:
+     * * Uncompressed WAV and AIF audio
+     * * MP3 audio
+     * * AAC-LC
+     * * HE-AAC audio
+     * @accessor
      */
-    onActivate: function() {
-        var me = this;
+  },
 
-        me.callParent();
+  /**
+   * @private
+   */
+  onActivate: function () {
+    var me = this;
 
-        if (Ext.os.is.Phone) {
-            me.element.show();
-        }
+    me.callParent();
+
+    if (Ext.os.is.Phone) {
+      me.element.show();
+    }
+  },
+
+  /**
+   * @private
+   */
+  onDeactivate: function () {
+    var me = this;
+
+    me.callParent();
+
+    if (Ext.os.is.Phone) {
+      me.element.hide();
+    }
+  },
+
+  template: [
+    {
+      reference: "media",
+      preload: "auto",
+      tag: "audio",
+      cls: Ext.baseCSSPrefix + "component",
     },
-
-    /**
-     * @private
-     */
-    onDeactivate: function() {
-        var me = this;
-
-        me.callParent();
-
-        if (Ext.os.is.Phone) {
-            me.element.hide();
-        }
-    },
-
-    template: [{
-        reference: 'media',
-        preload: 'auto',
-        tag: 'audio',
-        cls: Ext.baseCSSPrefix + 'component'
-    }]
+  ],
 });

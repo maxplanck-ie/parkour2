@@ -20,17 +20,17 @@
  *
  * This will result in a toast message, which displays in the default location of bottom right in your viewport.
  *
- * You may expand upon this simple example with the following parameters: 
+ * You may expand upon this simple example with the following parameters:
  *
  *      Ext.toast(message, title, align, iconCls);
  *
- * For example, the following toast will appear top-middle in your viewport.  It will display 
- * the 'Data Saved' message with a title of 'Title'  
+ * For example, the following toast will appear top-middle in your viewport.  It will display
+ * the 'Data Saved' message with a title of 'Title'
  *
  *      Ext.toast('Data Saved', 'Title', 't')
  *
- * It should be noted that the toast's width is determined by the message's width. 
- * If you need to set a specific width, or any of the other available configurations for your toast, 
+ * It should be noted that the toast's width is determined by the message's width.
+ * If you need to set a specific width, or any of the other available configurations for your toast,
  * you can create the toast object as seen below:
  *
  *      Ext.toast({
@@ -43,14 +43,16 @@
  * This component is derived from the excellent work of a Sencha community member, Eirik
  * Lorentsen.
  */
-Ext.define('Ext.window.Toast', {
-    extend: 'Ext.window.Window',
+Ext.define(
+  "Ext.window.Toast",
+  {
+    extend: "Ext.window.Window",
 
-    xtype: 'toast',
-    
+    xtype: "toast",
+
     isToast: true,
 
-    cls: Ext.baseCSSPrefix + 'toast',
+    cls: Ext.baseCSSPrefix + "toast",
 
     bodyPadding: 10,
     autoClose: true,
@@ -76,13 +78,13 @@ Ext.define('Ext.window.Toast', {
 
     /**
      * @cfg {"br"/"bl"/"tr"/"tl"/"t"/"l"/"b"/"r"} [align]
-     * Specifies the basic alignment of the toast message with its {@link #anchor}. This 
-     * controls many aspects of the toast animation as well. For fine grain control of 
-     * the final placement of the toast and its `anchor` you may set 
+     * Specifies the basic alignment of the toast message with its {@link #anchor}. This
+     * controls many aspects of the toast animation as well. For fine grain control of
+     * the final placement of the toast and its `anchor` you may set
      * {@link #anchorAlign} as well.
-     * 
+     *
      * Possible values:
-     * 
+     *
      *  - br - bottom-right
      *  - bl - bottom-left
      *  - tr - top-right
@@ -92,7 +94,7 @@ Ext.define('Ext.window.Toast', {
      *  - b  - bottom
      *  - r  - right
      */
-    align: 't',
+    align: "t",
 
     alwaysOnTop: true,
 
@@ -103,7 +105,7 @@ Ext.define('Ext.window.Toast', {
      * also sets defaults for various other properties. This config controls only the
      * final position of the toast.
      */
-    
+
     /**
      * @cfg {Boolean} [animate=true]
      * Set this to `false` to make toasts appear and disappear without animation.
@@ -120,13 +122,13 @@ Ext.define('Ext.window.Toast', {
     paddingX: 30,
     paddingY: 10,
 
-    slideInAnimation: 'easeIn',
-    slideBackAnimation: 'bounceOut',
+    slideInAnimation: "easeIn",
+    slideBackAnimation: "bounceOut",
     slideInDuration: 500,
     slideBackDuration: 500,
     hideDuration: 500,
     autoCloseDelay: 3000,
-    
+
     /**
      * @cfg {Boolean} [stickOnClick]
      * This config will prevent the Toast from closing when you click on it. If this is set to `true`,
@@ -148,524 +150,532 @@ Ext.define('Ext.window.Toast', {
     xPos: 0,
     yPos: 0,
 
-    constructor: function(config) {
-        config = config || {};
-        if (config.animate === undefined) {
-            config.animate = Ext.isBoolean(this.animate) ? this.animate : Ext.enableFx;
-        }
-        this.enableAnimations = config.animate;
-        delete config.animate;
+    constructor: function (config) {
+      config = config || {};
+      if (config.animate === undefined) {
+        config.animate = Ext.isBoolean(this.animate)
+          ? this.animate
+          : Ext.enableFx;
+      }
+      this.enableAnimations = config.animate;
+      delete config.animate;
 
-        this.callParent([config]);
+      this.callParent([config]);
     },
 
-    initComponent: function() {
-        var me = this;
+    initComponent: function () {
+      var me = this;
 
-        // Close tool is not really helpful to sight impaired users
-        // when Toast window is set to auto-close on timeout; however
-        // if it's forced, respect that.
-        if (me.autoClose && me.closable == null) {
-            me.closable = false;
-        }
-        
-        me.updateAlignment(me.align);
-        me.setAnchor(me.anchor);
-        me.callParent();
+      // Close tool is not really helpful to sight impaired users
+      // when Toast window is set to auto-close on timeout; however
+      // if it's forced, respect that.
+      if (me.autoClose && me.closable == null) {
+        me.closable = false;
+      }
+
+      me.updateAlignment(me.align);
+      me.setAnchor(me.anchor);
+      me.callParent();
     },
 
-    onRender: function() {
-        var me = this;
+    onRender: function () {
+      var me = this;
 
-        me.callParent(arguments);
+      me.callParent(arguments);
 
-        me.el.hover(me.onMouseEnter, me.onMouseLeave, me);
+      me.el.hover(me.onMouseEnter, me.onMouseLeave, me);
 
-        // Mousedown outside of this, when visible, hides it immediately
-        if (me.closeOnMouseDown) {
-            Ext.getDoc().on('mousedown', me.onDocumentMousedown, me);
-        }
+      // Mousedown outside of this, when visible, hides it immediately
+      if (me.closeOnMouseDown) {
+        Ext.getDoc().on("mousedown", me.onDocumentMousedown, me);
+      }
     },
 
     /*
      * These properties are keyed by "align" and set defaults for various configs.
      */
     alignmentProps: {
+      br: {
+        paddingFactorX: -1,
+        paddingFactorY: -1,
+        siblingAlignment: "br-br",
+        anchorAlign: "tr-br",
+      },
+      bl: {
+        paddingFactorX: 1,
+        paddingFactorY: -1,
+        siblingAlignment: "bl-bl",
+        anchorAlign: "tl-bl",
+      },
+
+      tr: {
+        paddingFactorX: -1,
+        paddingFactorY: 1,
+        siblingAlignment: "tr-tr",
+        anchorAlign: "br-tr",
+      },
+      tl: {
+        paddingFactorX: 1,
+        paddingFactorY: 1,
+        siblingAlignment: "tl-tl",
+        anchorAlign: "bl-tl",
+      },
+
+      b: {
+        paddingFactorX: 0,
+        paddingFactorY: -1,
+        siblingAlignment: "b-b",
+        useXAxis: 0,
+        anchorAlign: "t-b",
+      },
+      t: {
+        paddingFactorX: 0,
+        paddingFactorY: 1,
+        siblingAlignment: "t-t",
+        useXAxis: 0,
+        anchorAlign: "b-t",
+      },
+      l: {
+        paddingFactorX: 1,
+        paddingFactorY: 0,
+        siblingAlignment: "l-l",
+        useXAxis: 1,
+        anchorAlign: "r-l",
+      },
+      r: {
+        paddingFactorX: -1,
+        paddingFactorY: 0,
+        siblingAlignment: "r-r",
+        useXAxis: 1,
+        anchorAlign: "l-r",
+      },
+
+      /*
+       * These properties take priority over the above and applied only when useXAxis
+       * is set to true. Again these are keyed by "align".
+       */
+      x: {
         br: {
-            paddingFactorX: -1,
-            paddingFactorY: -1,
-            siblingAlignment: "br-br",
-            anchorAlign: "tr-br"
+          anchorAlign: "bl-br",
         },
         bl: {
-            paddingFactorX: 1,
-            paddingFactorY: -1,
-            siblingAlignment: "bl-bl",
-            anchorAlign: "tl-bl"
+          anchorAlign: "br-bl",
         },
-
         tr: {
-            paddingFactorX: -1,
-            paddingFactorY: 1,
-            siblingAlignment: "tr-tr",
-            anchorAlign: "br-tr"
+          anchorAlign: "tl-tr",
         },
         tl: {
-            paddingFactorX: 1,
-            paddingFactorY: 1,
-            siblingAlignment: "tl-tl",
-            anchorAlign: "bl-tl"
+          anchorAlign: "tr-tl",
         },
-
-        b: {
-            paddingFactorX: 0,
-            paddingFactorY: -1,
-            siblingAlignment: "b-b",
-            useXAxis: 0,
-            anchorAlign: "t-b"
-        },
-        t: {
-            paddingFactorX: 0,
-            paddingFactorY: 1,
-            siblingAlignment: "t-t",
-            useXAxis: 0,
-            anchorAlign: "b-t"
-        },
-        l: {
-            paddingFactorX: 1,
-            paddingFactorY: 0,
-            siblingAlignment: "l-l",
-            useXAxis: 1,
-            anchorAlign: "r-l"
-        },
-        r: {
-            paddingFactorX: -1,
-            paddingFactorY: 0,
-            siblingAlignment: "r-r",
-            useXAxis: 1,
-            anchorAlign: "l-r"
-        },
-
-        /*
-         * These properties take priority over the above and applied only when useXAxis
-         * is set to true. Again these are keyed by "align".
-         */
-        x: {
-            br: {
-                anchorAlign: "bl-br"
-            },
-            bl: {
-                anchorAlign: "br-bl"
-            },
-            tr: {
-                anchorAlign: "tl-tr"
-            },
-            tl: {
-                anchorAlign: "tr-tl"
-            }
-        }
+      },
     },
 
     updateAlignment: function (align) {
-        var me = this,
-            alignmentProps = me.alignmentProps,
-            props = alignmentProps[align],
-            xprops = alignmentProps.x[align];
+      var me = this,
+        alignmentProps = me.alignmentProps,
+        props = alignmentProps[align],
+        xprops = alignmentProps.x[align];
 
-        if (xprops && me.useXAxis) {
-            Ext.applyIf(me, xprops);
-        }
+      if (xprops && me.useXAxis) {
+        Ext.applyIf(me, xprops);
+      }
 
-        Ext.applyIf(me, props);
+      Ext.applyIf(me, props);
     },
 
     getXposAlignedToAnchor: function () {
-        var me = this,
-            align = me.align,
-            anchor = me.anchor,
-            anchorEl = anchor && anchor.el,
-            el = me.el,
-            xPos = 0;
+      var me = this,
+        align = me.align,
+        anchor = me.anchor,
+        anchorEl = anchor && anchor.el,
+        el = me.el,
+        xPos = 0;
 
-        // Avoid error messages if the anchor does not have a dom element
-        if (anchorEl && anchorEl.dom) {
-            if (!me.useXAxis) {
-                // Element should already be aligned vertically
-                xPos = el.getLeft();
-            }
-            // Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
-            // as the anchor but is still 0 px high. Before rendering the viewport.
-            else if (align === 'br' || align === 'tr' || align === 'r') {
-                xPos += anchorEl.getAnchorXY('r')[0];
-                xPos -= (el.getWidth() + me.paddingX);
-            } else {
-                xPos += anchorEl.getAnchorXY('l')[0];
-                xPos += me.paddingX;
-            }
+      // Avoid error messages if the anchor does not have a dom element
+      if (anchorEl && anchorEl.dom) {
+        if (!me.useXAxis) {
+          // Element should already be aligned vertically
+          xPos = el.getLeft();
         }
+        // Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
+        // as the anchor but is still 0 px high. Before rendering the viewport.
+        else if (align === "br" || align === "tr" || align === "r") {
+          xPos += anchorEl.getAnchorXY("r")[0];
+          xPos -= el.getWidth() + me.paddingX;
+        } else {
+          xPos += anchorEl.getAnchorXY("l")[0];
+          xPos += me.paddingX;
+        }
+      }
 
-        return xPos;
+      return xPos;
     },
 
     getYposAlignedToAnchor: function () {
-        var me = this,
-            align = me.align,
-            anchor = me.anchor,
-            anchorEl = anchor && anchor.el,
-            el = me.el,
-            yPos = 0;
+      var me = this,
+        align = me.align,
+        anchor = me.anchor,
+        anchorEl = anchor && anchor.el,
+        el = me.el,
+        yPos = 0;
 
-        // Avoid error messages if the anchor does not have a dom element
-        if (anchorEl && anchorEl.dom) {
-            if (me.useXAxis) {
-                // Element should already be aligned horizontally
-                yPos = el.getTop();
-            }
-            // Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
-            // as the anchor but is still 0 px high. Before rendering the viewport.
-            else if (align === 'br' || align === 'bl' || align === 'b') {
-                yPos += anchorEl.getAnchorXY('b')[1];
-                yPos -= (el.getHeight() + me.paddingY);
-            } else {
-                yPos += anchorEl.getAnchorXY('t')[1];
-                yPos += me.paddingY;
-            }
+      // Avoid error messages if the anchor does not have a dom element
+      if (anchorEl && anchorEl.dom) {
+        if (me.useXAxis) {
+          // Element should already be aligned horizontally
+          yPos = el.getTop();
         }
+        // Using getAnchorXY instead of getTop/getBottom should give a correct placement when document is used
+        // as the anchor but is still 0 px high. Before rendering the viewport.
+        else if (align === "br" || align === "bl" || align === "b") {
+          yPos += anchorEl.getAnchorXY("b")[1];
+          yPos -= el.getHeight() + me.paddingY;
+        } else {
+          yPos += anchorEl.getAnchorXY("t")[1];
+          yPos += me.paddingY;
+        }
+      }
 
-        return yPos;
+      return yPos;
     },
 
     getXposAlignedToSibling: function (sibling) {
-        var me = this,
-            align = me.align,
-            el = me.el,
-            xPos;
+      var me = this,
+        align = me.align,
+        el = me.el,
+        xPos;
 
-        if (!me.useXAxis) {
-            xPos = el.getLeft();
-        } else if (align === 'tl' || align === 'bl' || align === 'l') {
-            // Using sibling's width when adding
-            xPos = (sibling.xPos + sibling.el.getWidth() + sibling.spacing);
-        } else {
-            // Using own width when subtracting
-            xPos = (sibling.xPos - el.getWidth() - me.spacing);
-        }
+      if (!me.useXAxis) {
+        xPos = el.getLeft();
+      } else if (align === "tl" || align === "bl" || align === "l") {
+        // Using sibling's width when adding
+        xPos = sibling.xPos + sibling.el.getWidth() + sibling.spacing;
+      } else {
+        // Using own width when subtracting
+        xPos = sibling.xPos - el.getWidth() - me.spacing;
+      }
 
-        return xPos;
+      return xPos;
     },
 
     getYposAlignedToSibling: function (sibling) {
-        var me = this,
-            align = me.align,
-            el = me.el,
-            yPos;
+      var me = this,
+        align = me.align,
+        el = me.el,
+        yPos;
 
-        if (me.useXAxis) {
-            yPos = el.getTop();
-        } else if (align === 'tr' || align === 'tl' || align === 't') {
-            // Using sibling's width when adding
-            yPos = (sibling.yPos + sibling.el.getHeight() + sibling.spacing);
-        } else {
-            // Using own width when subtracting
-            yPos = (sibling.yPos - el.getHeight() - sibling.spacing);
-        }
+      if (me.useXAxis) {
+        yPos = el.getTop();
+      } else if (align === "tr" || align === "tl" || align === "t") {
+        // Using sibling's width when adding
+        yPos = sibling.yPos + sibling.el.getHeight() + sibling.spacing;
+      } else {
+        // Using own width when subtracting
+        yPos = sibling.yPos - el.getHeight() - sibling.spacing;
+      }
 
-        return yPos;
+      return yPos;
     },
 
     getToasts: function () {
-        var anchor = this.anchor,
-            alignment = this.anchorAlign,
-            activeToasts = anchor.activeToasts || (anchor.activeToasts = {});
+      var anchor = this.anchor,
+        alignment = this.anchorAlign,
+        activeToasts = anchor.activeToasts || (anchor.activeToasts = {});
 
-        return activeToasts[alignment] || (activeToasts[alignment] = []);
+      return activeToasts[alignment] || (activeToasts[alignment] = []);
     },
 
     setAnchor: function (anchor) {
-        var me = this,
-            Toast;
+      var me = this,
+        Toast;
 
-        me.anchor = anchor = ((typeof anchor === 'string') ? Ext.getCmp(anchor) : anchor);
+      me.anchor = anchor =
+        typeof anchor === "string" ? Ext.getCmp(anchor) : anchor;
 
-        // If no anchor is provided or found, then the static object is used and the el
-        // property pointed to the body document.
-        if (!anchor) {
-            Toast = Ext.window.Toast;
+      // If no anchor is provided or found, then the static object is used and the el
+      // property pointed to the body document.
+      if (!anchor) {
+        Toast = Ext.window.Toast;
 
-            me.anchor = Toast.bodyAnchor || (Toast.bodyAnchor = {
-                el: Ext.getBody()
-            });
-        }
+        me.anchor =
+          Toast.bodyAnchor ||
+          (Toast.bodyAnchor = {
+            el: Ext.getBody(),
+          });
+      }
     },
 
     beforeShow: function () {
-        var me = this;
+      var me = this;
 
-        if (me.stickOnClick) {
-            me.body.on('click', function () {
-                me.cancelAutoClose();
-            });
+      if (me.stickOnClick) {
+        me.body.on("click", function () {
+          me.cancelAutoClose();
+        });
+      }
+
+      if (me.autoClose) {
+        if (!me.closeTask) {
+          me.closeTask = new Ext.util.DelayedTask(me.doAutoClose, me);
         }
+      }
 
-        if (me.autoClose) {
-            if (!me.closeTask) {
-                me.closeTask = new Ext.util.DelayedTask(me.doAutoClose, me);
-            }
-        }
-
-        // Shunting offscreen to avoid flicker
-        me.el.setX(-10000);
-        me.el.setOpacity(1);
+      // Shunting offscreen to avoid flicker
+      me.el.setX(-10000);
+      me.el.setOpacity(1);
     },
 
     afterShow: function () {
-        var me = this,
-            el = me.el,
-            activeToasts, sibling, length, xy;
+      var me = this,
+        el = me.el,
+        activeToasts,
+        sibling,
+        length,
+        xy;
 
-        me.callParent(arguments);
+      me.callParent(arguments);
 
-        activeToasts = me.getToasts();
-        length = activeToasts.length;
-        sibling = length && activeToasts[length - 1];
+      activeToasts = me.getToasts();
+      length = activeToasts.length;
+      sibling = length && activeToasts[length - 1];
 
-        if (sibling) {
-            el.alignTo(sibling.el, me.siblingAlignment, [0, 0]);
+      if (sibling) {
+        el.alignTo(sibling.el, me.siblingAlignment, [0, 0]);
 
-            me.xPos = me.getXposAlignedToSibling(sibling);
-            me.yPos = me.getYposAlignedToSibling(sibling);
-        }
-        else {
-            el.alignTo(me.anchor.el, me.anchorAlign,
-                            [ (me.paddingX * me.paddingFactorX),
-                              (me.paddingY * me.paddingFactorY) ], false);
+        me.xPos = me.getXposAlignedToSibling(sibling);
+        me.yPos = me.getYposAlignedToSibling(sibling);
+      } else {
+        el.alignTo(
+          me.anchor.el,
+          me.anchorAlign,
+          [me.paddingX * me.paddingFactorX, me.paddingY * me.paddingFactorY],
+          false,
+        );
 
-            me.xPos = me.getXposAlignedToAnchor();
-            me.yPos = me.getYposAlignedToAnchor();
-        }
+        me.xPos = me.getXposAlignedToAnchor();
+        me.yPos = me.getYposAlignedToAnchor();
+      }
 
-        Ext.Array.include(activeToasts, me);
+      Ext.Array.include(activeToasts, me);
 
-        if (me.enableAnimations) {
-            // Repeating from coordinates makes sure the windows does not flicker
-            // into the center of the viewport during animation
-            xy = el.getXY();
-            el.animate({
-                from: {
-                    x: xy[0],
-                    y: xy[1]
-                },
-                to: {
-                    x: me.xPos,
-                    y: me.yPos,
-                    opacity: 1
-                },
-                easing: me.slideInAnimation,
-                duration: me.slideInDuration,
-                dynamic: true,
-                callback: me.afterPositioned,
-                scope: me
-            });
-        }
-        else {
-            me.setLocalXY(me.xPos, me.yPos);
-            me.afterPositioned();
-        }
+      if (me.enableAnimations) {
+        // Repeating from coordinates makes sure the windows does not flicker
+        // into the center of the viewport during animation
+        xy = el.getXY();
+        el.animate({
+          from: {
+            x: xy[0],
+            y: xy[1],
+          },
+          to: {
+            x: me.xPos,
+            y: me.yPos,
+            opacity: 1,
+          },
+          easing: me.slideInAnimation,
+          duration: me.slideInDuration,
+          dynamic: true,
+          callback: me.afterPositioned,
+          scope: me,
+        });
+      } else {
+        me.setLocalXY(me.xPos, me.yPos);
+        me.afterPositioned();
+      }
     },
 
-    afterPositioned: function() {
-        var me = this;
-        
-        // This method can be called from afteranimation event being fired
-        // during destruction sequence.
-        if (!me.destroying && !me.destroyed && me.autoClose) {
-            me.closeTask.delay(me.autoCloseDelay);
-        }
+    afterPositioned: function () {
+      var me = this;
+
+      // This method can be called from afteranimation event being fired
+      // during destruction sequence.
+      if (!me.destroying && !me.destroyed && me.autoClose) {
+        me.closeTask.delay(me.autoCloseDelay);
+      }
     },
 
-    onDocumentMousedown: function(e) {
-        if (this.isVisible() && !this.owns(e.getTarget())) {
-            this.hide();
-        }
+    onDocumentMousedown: function (e) {
+      if (this.isVisible() && !this.owns(e.getTarget())) {
+        this.hide();
+      }
     },
 
     slideBack: function () {
-        var me = this,
-            anchor = me.anchor,
-            anchorEl = anchor && anchor.el,
-            el = me.el,
-            activeToasts = me.getToasts(),
-            index = Ext.Array.indexOf(activeToasts, me);
+      var me = this,
+        anchor = me.anchor,
+        anchorEl = anchor && anchor.el,
+        el = me.el,
+        activeToasts = me.getToasts(),
+        index = Ext.Array.indexOf(activeToasts, me);
 
-        // Not animating the element if it already started to hide itself or if the anchor is not present in the dom
-        if (!me.isHiding && el && el.dom && anchorEl && anchorEl.isVisible()) {
-            if (index) {
-                me.xPos = me.getXposAlignedToSibling(activeToasts[index - 1]);
-                me.yPos = me.getYposAlignedToSibling(activeToasts[index - 1]);
-            }
-            else {
-                me.xPos = me.getXposAlignedToAnchor();
-                me.yPos = me.getYposAlignedToAnchor();
-            }
-
-            me.stopAnimation();
-            
-            if (me.enableAnimations) {
-                el.animate({
-                    to: {
-                        x: me.xPos,
-                        y: me.yPos
-                    },
-                    easing: me.slideBackAnimation,
-                    duration: me.slideBackDuration,
-                    dynamic: true
-                });
-            }
+      // Not animating the element if it already started to hide itself or if the anchor is not present in the dom
+      if (!me.isHiding && el && el.dom && anchorEl && anchorEl.isVisible()) {
+        if (index) {
+          me.xPos = me.getXposAlignedToSibling(activeToasts[index - 1]);
+          me.yPos = me.getYposAlignedToSibling(activeToasts[index - 1]);
+        } else {
+          me.xPos = me.getXposAlignedToAnchor();
+          me.yPos = me.getYposAlignedToAnchor();
         }
+
+        me.stopAnimation();
+
+        if (me.enableAnimations) {
+          el.animate({
+            to: {
+              x: me.xPos,
+              y: me.yPos,
+            },
+            easing: me.slideBackAnimation,
+            duration: me.slideBackDuration,
+            dynamic: true,
+          });
+        }
+      }
     },
 
     update: function () {
-        var me = this;
+      var me = this;
 
-        if (me.isVisible()) {
-            me.isHiding = true;
-            me.hide();
-            //TODO offer a way to just update and reposition after layout
-        }
+      if (me.isVisible()) {
+        me.isHiding = true;
+        me.hide();
+        //TODO offer a way to just update and reposition after layout
+      }
 
-        me.callParent(arguments);
+      me.callParent(arguments);
 
-        me.show();
+      me.show();
     },
 
-    cancelAutoClose: function() {
-        var closeTask = this.closeTask;
+    cancelAutoClose: function () {
+      var closeTask = this.closeTask;
 
-        if (closeTask) {
-            closeTask.cancel();
-        }
+      if (closeTask) {
+        closeTask.cancel();
+      }
     },
 
     doAutoClose: function () {
-        var me = this;
+      var me = this;
 
-        if (!(me.stickWhileHover && me.mouseIsOver)) {
-            // Close immediately
-            me.close();
-        } else {
-            // Delayed closing when mouse leaves the component.
-            me.closeOnMouseOut = true;
-        }
+      if (!(me.stickWhileHover && me.mouseIsOver)) {
+        // Close immediately
+        me.close();
+      } else {
+        // Delayed closing when mouse leaves the component.
+        me.closeOnMouseOut = true;
+      }
     },
-    
-    doDestroy: function() {
-        this.removeFromAnchor();
-        this.cancelAutoClose();
-        this.callParent();
+
+    doDestroy: function () {
+      this.removeFromAnchor();
+      this.cancelAutoClose();
+      this.callParent();
     },
 
     onMouseEnter: function () {
-        this.mouseIsOver = true;
+      this.mouseIsOver = true;
     },
 
     onMouseLeave: function () {
-        var me = this;
+      var me = this;
 
-        me.mouseIsOver = false;
+      me.mouseIsOver = false;
 
-        if (me.closeOnMouseOut) {
-            me.closeOnMouseOut = false;
-            me.close();
-        }
+      if (me.closeOnMouseOut) {
+        me.closeOnMouseOut = false;
+        me.close();
+      }
     },
 
     removeFromAnchor: function () {
-        var me = this,
-            activeToasts, index;
+      var me = this,
+        activeToasts,
+        index;
 
-        if (me.anchor) {
-            activeToasts = me.getToasts();
-            index = Ext.Array.indexOf(activeToasts, me);
-            if (index !== -1) {
-                Ext.Array.erase(activeToasts, index, 1);
+      if (me.anchor) {
+        activeToasts = me.getToasts();
+        index = Ext.Array.indexOf(activeToasts, me);
+        if (index !== -1) {
+          Ext.Array.erase(activeToasts, index, 1);
 
-                // Slide "down" all activeToasts "above" the hidden one
-                for (;index < activeToasts.length; index++) {
-                    activeToasts[index].slideBack();
-                }
-            }
+          // Slide "down" all activeToasts "above" the hidden one
+          for (; index < activeToasts.length; index++) {
+            activeToasts[index].slideBack();
+          }
         }
+      }
     },
 
     getFocusEl: Ext.emptyFn,
 
     hide: function () {
-        var me = this,
-            el = me.el;
+      var me = this,
+        el = me.el;
+
+      me.cancelAutoClose();
+
+      if (me.isHiding) {
+        if (!me.isFading) {
+          me.callParent(arguments);
+          me.isHiding = false;
+        }
+      } else {
+        // Must be set right away in case of double clicks on the close button
+        me.isHiding = true;
+        me.isFading = true;
 
         me.cancelAutoClose();
-        
-        if (me.isHiding) {
-            if (!me.isFading) {
-                me.callParent(arguments);
-                me.isHiding = false;
-            }
-        }
-        else {
-            // Must be set right away in case of double clicks on the close button
-            me.isHiding = true;
-            me.isFading = true;
 
-            me.cancelAutoClose();
+        if (el) {
+          if (me.enableAnimations && !me.destroying && !me.destroyed) {
+            el.fadeOut({
+              opacity: 0,
+              easing: "easeIn",
+              duration: me.hideDuration,
+              listeners: {
+                scope: me,
+                afteranimate: function () {
+                  var me = this;
 
-            if (el) {
-                if (me.enableAnimations && !me.destroying && !me.destroyed) {
-                    el.fadeOut({
-                        opacity: 0,
-                        easing: 'easeIn',
-                        duration: me.hideDuration,
-                        listeners: {
-                            scope: me,
-                            afteranimate: function() {
-                                var me = this;
-                                
-                                me.isFading = false;
-                                
-                                if (!me.destroying && !me.destroyed) {
-                                    me.hide(me.animateTarget, me.doClose, me);
-                                }
-                            }
-                        }
-                    });
-                }
-                else {
-                    me.isFading = false;
+                  me.isFading = false;
+
+                  if (!me.destroying && !me.destroyed) {
                     me.hide(me.animateTarget, me.doClose, me);
-                }
-            }
+                  }
+                },
+              },
+            });
+          } else {
+            me.isFading = false;
+            me.hide(me.animateTarget, me.doClose, me);
+          }
         }
+      }
 
-        return me;
-    }
-},
-function (Toast) {
+      return me;
+    },
+  },
+  function (Toast) {
     Ext.toast = function (message, title, align, iconCls) {
-        var config = message,
-            toast;
+      var config = message,
+        toast;
 
-        if (Ext.isString(message)) {
-            config = {
-                title: title,
-                html: message,
-                iconCls: iconCls
-            };
-            if (align) {
-                config.align = align;
-            }
+      if (Ext.isString(message)) {
+        config = {
+          title: title,
+          html: message,
+          iconCls: iconCls,
+        };
+        if (align) {
+          config.align = align;
         }
+      }
 
-        toast = new Toast(config);
-        toast.show();
-        return toast;
+      toast = new Toast(config);
+      toast.show();
+      return toast;
     };
-});
+  },
+);

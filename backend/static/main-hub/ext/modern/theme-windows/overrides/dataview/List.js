@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.windows.dataview.List', {
-    override: 'Ext.dataview.List',
+Ext.define("Ext.theme.windows.dataview.List", {
+  override: "Ext.dataview.List",
 
-    config: {
-        itemHeight: 44
-    }
+  config: {
+    itemHeight: 44,
+  },
 });

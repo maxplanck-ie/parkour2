@@ -1,12 +1,12 @@
 /**
  * @private
  */
-Ext.define('Ext.fx.animation.SlideOut', {
-    extend: 'Ext.fx.animation.Slide',
-    alias: ['animation.slideOut'],
+Ext.define("Ext.fx.animation.SlideOut", {
+  extend: "Ext.fx.animation.Slide",
+  alias: ["animation.slideOut"],
 
-    config: {
-        // @hide
-        out: true
-    }
+  config: {
+    // @hide
+    out: true,
+  },
 });

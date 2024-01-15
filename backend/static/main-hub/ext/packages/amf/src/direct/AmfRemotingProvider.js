@@ -79,30 +79,29 @@ product.getProducts((function(provider, response) {
  * <p>Calling the server is done the same way as for the AMFX-based definition.</p>
 
  */
-Ext.define('Ext.direct.AmfRemotingProvider', {
-    
-    /* Begin Definitions */
-   
-    alias: 'direct.amfremotingprovider',
-    
-    extend: 'Ext.direct.Provider', 
-    
-    requires: [
-        'Ext.util.MixedCollection', 
-        'Ext.util.DelayedTask', 
-        'Ext.direct.Transaction',
-        'Ext.direct.RemotingMethod',
-        'Ext.data.amf.XmlEncoder',
-        'Ext.data.amf.XmlDecoder',
-        'Ext.data.amf.Encoder',
-        'Ext.data.amf.Packet',
-        'Ext.data.amf.RemotingMessage',
-        'Ext.direct.ExceptionEvent'
-    ],
-   
-    /* End Definitions */
-   
-   /**
+Ext.define("Ext.direct.AmfRemotingProvider", {
+  /* Begin Definitions */
+
+  alias: "direct.amfremotingprovider",
+
+  extend: "Ext.direct.Provider",
+
+  requires: [
+    "Ext.util.MixedCollection",
+    "Ext.util.DelayedTask",
+    "Ext.direct.Transaction",
+    "Ext.direct.RemotingMethod",
+    "Ext.data.amf.XmlEncoder",
+    "Ext.data.amf.XmlDecoder",
+    "Ext.data.amf.Encoder",
+    "Ext.data.amf.Packet",
+    "Ext.data.amf.RemotingMessage",
+    "Ext.direct.ExceptionEvent",
+  ],
+
+  /* End Definitions */
+
+  /**
      * @cfg {Object} actions
      * Object literal defining the server side actions and methods. For example, if
      * the Provider is configured with:
@@ -150,305 +149,323 @@ TestAction.multiply(
      * arguments (2 and 4).  The "multiply" method should return the value 8 which will be
      * available as the <tt>result</tt> in the example above. 
      */
-    
-    /**
-     * @cfg {String/Object} namespace
-     * Namespace for the Remoting Provider (defaults to the browser global scope of <i>window</i>).
-     * Explicitly specify the namespace Object, or specify a String to have a
-     * {@link Ext#namespace namespace created} implicitly.
-     */
-    
-    /**
-     * @cfg {String} url
-     * <b>Required</b>. The URL to connect to the Flex remoting server (LCDS, BlazeDS, etc).
-     * This should include the /messagebroker/amf suffix as defined in the services-config.xml and remoting-config.xml files.
-     */
-    
-    /**
-     * @cfg {String} endpoint
-     * <b>Requred</b>. This is the channel id defined in services-config.xml on the server (e.g. my-amf or my-http).
-     */
 
-    /**
-     * @cfg {String} enableUrlEncode
-     * Specify which param will hold the arguments for the method.
-     * Defaults to <tt>'data'</tt>.
-     */
-    
-    /**
-     * @cfg {String} binary
-     * If true, use AMF binary encoding instead of AMFX XML-based encoding. Note that on some browsers, this will load a flash plugin to handle binary communication with the server. Important: If using binary encoding with older browsers, see notes in {@link Ext.data.flash.BinaryXhr BinaryXhr} regarding packaging the Flash plugin for use in older browsers.
-     */
-    binary: false,
-    
-    /**
-     * @cfg {Number} maxRetries
-     * Number of times to re-attempt delivery on failure of a call.
-     */
-    maxRetries: 1,
-    
-    /**
-     * @cfg {Number} timeout
-     * The timeout to use for each request.
-     */
-    timeout: undefined,
+  /**
+   * @cfg {String/Object} namespace
+   * Namespace for the Remoting Provider (defaults to the browser global scope of <i>window</i>).
+   * Explicitly specify the namespace Object, or specify a String to have a
+   * {@link Ext#namespace namespace created} implicitly.
+   */
 
-    /**
-     * @event beforecall
-     * Fires immediately before the client-side sends off the RPC call.
-     * By returning false from an event handler you can prevent the call from
-     * executing.
-     * @param {Ext.direct.AmfRemotingProvider} provider
-     * @param {Ext.direct.Transaction} transaction
-     * @param {Object} meta The meta data
-     */            
-            
-    /**
-     * @event call
-     * Fires immediately after the request to the server-side is sent. This does
-     * NOT fire after the response has come back from the call.
-     * @param {Ext.direct.AmfRemotingProvider} provider
-     * @param {Ext.direct.Transaction} transaction
-     * @param {Object} meta The meta data
-     */            
-    
-    constructor : function(config){
-        var me = this;
-        me.callParent(arguments);
-        me.namespace = (Ext.isString(me.namespace)) ? Ext.ns(me.namespace) : me.namespace || window;
-        me.transactions = new Ext.util.MixedCollection();
-        me.callBuffer = [];
-    },
+  /**
+   * @cfg {String} url
+   * <b>Required</b>. The URL to connect to the Flex remoting server (LCDS, BlazeDS, etc).
+   * This should include the /messagebroker/amf suffix as defined in the services-config.xml and remoting-config.xml files.
+   */
 
-    /**
-     * Initialize the API
-     * @private
-     */
-    initAPI : function(){
-        var actions = this.actions,
-            namespace = this.namespace,
-            action,
-            cls,
-            methods,
-            i,
-            len,
-            method;
-        
-        for (action in actions) {
-            if (actions.hasOwnProperty(action)) {
-                cls = namespace[action];
-                if (!cls) {
-                    cls = namespace[action] = {};
-                }
-                methods = actions[action];
-                
-                for (i = 0, len = methods.length; i < len; ++i) {
-                    method = new Ext.direct.RemotingMethod(methods[i]);
-                    cls[method.name] = this.createHandler(action, method);
-                }
-            }
+  /**
+   * @cfg {String} endpoint
+   * <b>Requred</b>. This is the channel id defined in services-config.xml on the server (e.g. my-amf or my-http).
+   */
+
+  /**
+   * @cfg {String} enableUrlEncode
+   * Specify which param will hold the arguments for the method.
+   * Defaults to <tt>'data'</tt>.
+   */
+
+  /**
+   * @cfg {String} binary
+   * If true, use AMF binary encoding instead of AMFX XML-based encoding. Note that on some browsers, this will load a flash plugin to handle binary communication with the server. Important: If using binary encoding with older browsers, see notes in {@link Ext.data.flash.BinaryXhr BinaryXhr} regarding packaging the Flash plugin for use in older browsers.
+   */
+  binary: false,
+
+  /**
+   * @cfg {Number} maxRetries
+   * Number of times to re-attempt delivery on failure of a call.
+   */
+  maxRetries: 1,
+
+  /**
+   * @cfg {Number} timeout
+   * The timeout to use for each request.
+   */
+  timeout: undefined,
+
+  /**
+   * @event beforecall
+   * Fires immediately before the client-side sends off the RPC call.
+   * By returning false from an event handler you can prevent the call from
+   * executing.
+   * @param {Ext.direct.AmfRemotingProvider} provider
+   * @param {Ext.direct.Transaction} transaction
+   * @param {Object} meta The meta data
+   */
+
+  /**
+   * @event call
+   * Fires immediately after the request to the server-side is sent. This does
+   * NOT fire after the response has come back from the call.
+   * @param {Ext.direct.AmfRemotingProvider} provider
+   * @param {Ext.direct.Transaction} transaction
+   * @param {Object} meta The meta data
+   */
+
+  constructor: function (config) {
+    var me = this;
+    me.callParent(arguments);
+    me.namespace = Ext.isString(me.namespace)
+      ? Ext.ns(me.namespace)
+      : me.namespace || window;
+    me.transactions = new Ext.util.MixedCollection();
+    me.callBuffer = [];
+  },
+
+  /**
+   * Initialize the API
+   * @private
+   */
+  initAPI: function () {
+    var actions = this.actions,
+      namespace = this.namespace,
+      action,
+      cls,
+      methods,
+      i,
+      len,
+      method;
+
+    for (action in actions) {
+      if (actions.hasOwnProperty(action)) {
+        cls = namespace[action];
+        if (!cls) {
+          cls = namespace[action] = {};
         }
-    },
-    
-    /**
-     * Create a handler function for a direct call.
-     * @private
-     * @param {String} action The action the call is for
-     * @param {Object} method The details of the method
-     * @return {Function} A JS function that will kick off the call
-     */
-    createHandler : function(action, method){
-        var me = this,
-            handler;
-        
-        if (!method.formHandler) {
-            handler = function(){
-                me.configureRequest(action, method, Array.prototype.slice.call(arguments, 0));
-            };
+        methods = actions[action];
+
+        for (i = 0, len = methods.length; i < len; ++i) {
+          method = new Ext.direct.RemotingMethod(methods[i]);
+          cls[method.name] = this.createHandler(action, method);
+        }
+      }
+    }
+  },
+
+  /**
+   * Create a handler function for a direct call.
+   * @private
+   * @param {String} action The action the call is for
+   * @param {Object} method The details of the method
+   * @return {Function} A JS function that will kick off the call
+   */
+  createHandler: function (action, method) {
+    var me = this,
+      handler;
+
+    if (!method.formHandler) {
+      handler = function () {
+        me.configureRequest(
+          action,
+          method,
+          Array.prototype.slice.call(arguments, 0),
+        );
+      };
+    } else {
+      handler = function (form, callback, scope) {
+        me.configureFormRequest(action, method, form, callback, scope);
+      };
+    }
+    handler.directCfg = {
+      action: action,
+      method: method,
+    };
+    return handler;
+  },
+
+  isConnected: function () {
+    return !!this.connected;
+  },
+
+  connect: function () {
+    var me = this;
+
+    if (me.url) {
+      // Generate a unique ID for this client
+      me.clientId = Ext.data.amf.XmlEncoder.generateFlexUID();
+      me.initAPI();
+      me.connected = true;
+      me.fireEvent("connect", me);
+      me.DSId = null;
+    } else if (!me.url) {
+      //<debug>
+      Ext.raise("Error initializing RemotingProvider, no url configured.");
+      //</debug>
+    }
+  },
+
+  disconnect: function () {
+    var me = this;
+
+    if (me.connected) {
+      me.connected = false;
+      me.fireEvent("disconnect", me);
+    }
+  },
+
+  /**
+   * Run any callbacks related to the transaction.
+   * @private
+   * @param {Ext.direct.Transaction} transaction The transaction
+   * @param {Ext.direct.Event} event The event
+   */
+  runCallback: function (transaction, event) {
+    var success = !!event.status,
+      funcName = success ? "success" : "failure",
+      callback,
+      result;
+    if (transaction && transaction.callback) {
+      callback = transaction.callback;
+      result = Ext.isDefined(event.result) ? event.result : event.data;
+
+      if (Ext.isFunction(callback)) {
+        callback(result, event, success);
+      } else {
+        Ext.callback(callback[funcName], callback.scope, [
+          result,
+          event,
+          success,
+        ]);
+        Ext.callback(callback.callback, callback.scope, [
+          result,
+          event,
+          success,
+        ]);
+      }
+    }
+  },
+
+  /**
+   * React to the ajax request being completed
+   * @private
+   */
+  onData: function (options, success, response) {
+    var me = this,
+      i = 0,
+      len,
+      events,
+      event,
+      transaction,
+      transactions;
+
+    if (success) {
+      events = me.createEvents(response);
+      for (len = events.length; i < len; ++i) {
+        event = events[i];
+        transaction = me.getTransaction(event);
+        me.fireEvent("data", me, event);
+        if (transaction) {
+          me.runCallback(transaction, event, true);
+          Ext.direct.Manager.removeTransaction(transaction);
+        }
+      }
+    } else {
+      transactions = [].concat(options.transaction);
+      for (len = transactions.length; i < len; ++i) {
+        transaction = me.getTransaction(transactions[i]);
+        if (transaction && transaction.retryCount < me.maxRetries) {
+          transaction.retry();
         } else {
-            handler = function(form, callback, scope){
-                me.configureFormRequest(action, method, form, callback, scope);
-            };
+          event = new Ext.direct.ExceptionEvent({
+            data: null,
+            transaction: transaction,
+            code: Ext.direct.Manager.exceptions.TRANSPORT,
+            message: "Unable to connect to the server.",
+            xhr: response,
+          });
+          me.fireEvent("data", me, event);
+          if (transaction) {
+            me.runCallback(transaction, event, false);
+            Ext.direct.Manager.removeTransaction(transaction);
+          }
         }
-        handler.directCfg = {
-            action: action,
-            method: method
-        };
-        return handler;
-    },
-    
-    isConnected: function(){
-        return !!this.connected;
-    },
+      }
+    }
+  },
 
-    connect: function(){
-        var me = this;
-        
-        if (me.url) {
-            // Generate a unique ID for this client
-            me.clientId = Ext.data.amf.XmlEncoder.generateFlexUID();
-            me.initAPI();
-            me.connected = true;
-            me.fireEvent('connect', me);
-            me.DSId = null;
-        } else if(!me.url) {
-            //<debug>
-            Ext.raise('Error initializing RemotingProvider, no url configured.');
-            //</debug>
-        }
-    },
+  /**
+   * Get transaction from XHR options
+   * @private
+   * @param {Object} options The options sent to the Ajax request
+   * @return {Ext.direct.Transaction} The transaction, null if not found
+   */
+  getTransaction: function (options) {
+    return options && options.tid
+      ? Ext.direct.Manager.getTransaction(options.tid)
+      : null;
+  },
 
-    disconnect: function(){
-        var me = this;
-        
-        if (me.connected) {
-            me.connected = false;
-            me.fireEvent('disconnect', me);
-        }
-    },
-    
-    /**
-     * Run any callbacks related to the transaction.
-     * @private
-     * @param {Ext.direct.Transaction} transaction The transaction
-     * @param {Ext.direct.Event} event The event
-     */
-    runCallback: function(transaction, event){
-        var success = !!event.status,
-            funcName = success ? 'success' : 'failure',
-            callback,
-            result;
-        if (transaction && transaction.callback) {
-            callback = transaction.callback;
-            result = Ext.isDefined(event.result) ? event.result : event.data;
-            
-            if (Ext.isFunction(callback)) {
-                callback(result, event, success);
-            } else {
-                Ext.callback(callback[funcName], callback.scope, [result, event, success]);
-                Ext.callback(callback.callback, callback.scope, [result, event, success]);
-            }
-        }
-    },
-    
-    /**
-     * React to the ajax request being completed
-     * @private
-     */
-    onData: function(options, success, response){
-        var me = this,
-            i = 0,
-            len,
-            events,
-            event,
-            transaction,
-            transactions;
-        
-        if (success) {
-            events = me.createEvents(response);
-            for (len = events.length; i < len; ++i) {
-                event = events[i];
-                transaction = me.getTransaction(event);
-                me.fireEvent('data', me, event);
-                if (transaction) {
-                    me.runCallback(transaction, event, true);
-                    Ext.direct.Manager.removeTransaction(transaction);
-                }
-            }
-        } else {
-            transactions = [].concat(options.transaction);
-            for (len = transactions.length; i < len; ++i) {
-                transaction = me.getTransaction(transactions[i]);
-                if (transaction && transaction.retryCount < me.maxRetries) {
-                    transaction.retry();
-                } else {
-                    event = new Ext.direct.ExceptionEvent({
-                        data: null,
-                        transaction: transaction,
-                        code: Ext.direct.Manager.exceptions.TRANSPORT,
-                        message: 'Unable to connect to the server.',
-                        xhr: response
-                    });
-                    me.fireEvent('data', me, event);
-                    if (transaction) {
-                        me.runCallback(transaction, event, false);
-                        Ext.direct.Manager.removeTransaction(transaction);
-                    }
-                }
-            }
-        }
-    },
-    
-    /**
-     * Get transaction from XHR options
-     * @private
-     * @param {Object} options The options sent to the Ajax request
-     * @return {Ext.direct.Transaction} The transaction, null if not found
-     */
-    getTransaction: function(options){
-        return options && options.tid ? Ext.direct.Manager.getTransaction(options.tid) : null;
-    },
-    
-    /**
-     * Configure a direct request
-     * @private
-     * @param {String} action The action being executed
-     * @param {Object} method The method being executed
-     */
-    configureRequest: function(action, method, args){
-        var me = this,
-            callData = method.getCallData(args),
-            data = callData.data, 
-            callback = callData.callback, 
-            scope = callData.scope,
-            transaction;
+  /**
+   * Configure a direct request
+   * @private
+   * @param {String} action The action being executed
+   * @param {Object} method The method being executed
+   */
+  configureRequest: function (action, method, args) {
+    var me = this,
+      callData = method.getCallData(args),
+      data = callData.data,
+      callback = callData.callback,
+      scope = callData.scope,
+      transaction;
 
-        transaction = new Ext.direct.Transaction({
-            provider: me,
-            args: args,
-            action: action,
-            method: method.name,
-            data: data,
-            callback: scope && Ext.isFunction(callback) ? Ext.Function.bind(callback, scope) : callback
-        });
+    transaction = new Ext.direct.Transaction({
+      provider: me,
+      args: args,
+      action: action,
+      method: method.name,
+      data: data,
+      callback:
+        scope && Ext.isFunction(callback)
+          ? Ext.Function.bind(callback, scope)
+          : callback,
+    });
 
-        if (me.fireEvent('beforecall', me, transaction, method) !== false) {
-            Ext.direct.Manager.addTransaction(transaction);
-            me.queueTransaction(transaction);
-            me.fireEvent('call', me, transaction, method);
-        }
-    },
-    
-    /**
-     * Gets the Flex remoting message info for a transaction
-     * @private
-     * @param {Ext.direct.Transaction} transaction The transaction
-     * @return {Object} The Flex remoting message structure ready to encode in an AMFX RemoteMessage
-     */
-    getCallData: function(transaction){
-        if (this.binary) {
-            return {
-                targetUri: transaction.action + "." + transaction.method,
-                responseUri: '/' + transaction.id,
-                body: transaction.data || []
-            };
-        } else {
-            return new Ext.data.amf.RemotingMessage( 
-                              {
-                                  body: transaction.data || [],
-                                  clientId: this.clientId,
-                                  destination: transaction.action,
-                                  headers: {
-                                      DSEndpoint: this.endpoint,
-                                      DSId: this.DSId || "nil" // if unknown yet, use "nil"
-                                  },
-                                  messageId: Ext.data.amf.XmlEncoder.generateFlexUID(transaction.id), // encode as first 4 bytes of UID
-                                  operation: transaction.method,
-                                  timestamp: 0,
-                                  timeToLive: 0
-                              });
-        }
-        /*
+    if (me.fireEvent("beforecall", me, transaction, method) !== false) {
+      Ext.direct.Manager.addTransaction(transaction);
+      me.queueTransaction(transaction);
+      me.fireEvent("call", me, transaction, method);
+    }
+  },
+
+  /**
+   * Gets the Flex remoting message info for a transaction
+   * @private
+   * @param {Ext.direct.Transaction} transaction The transaction
+   * @return {Object} The Flex remoting message structure ready to encode in an AMFX RemoteMessage
+   */
+  getCallData: function (transaction) {
+    if (this.binary) {
+      return {
+        targetUri: transaction.action + "." + transaction.method,
+        responseUri: "/" + transaction.id,
+        body: transaction.data || [],
+      };
+    } else {
+      return new Ext.data.amf.RemotingMessage({
+        body: transaction.data || [],
+        clientId: this.clientId,
+        destination: transaction.action,
+        headers: {
+          DSEndpoint: this.endpoint,
+          DSId: this.DSId || "nil", // if unknown yet, use "nil"
+        },
+        messageId: Ext.data.amf.XmlEncoder.generateFlexUID(transaction.id), // encode as first 4 bytes of UID
+        operation: transaction.method,
+        timestamp: 0,
+        timeToLive: 0,
+      });
+    }
+    /*
          return {
          action: transaction.action,
          method: transaction.method,
@@ -457,117 +474,117 @@ TestAction.multiply(
          tid: transaction.id
          };
          */
-    },
-    
-    /**
-     * Sends a request to the server
-     * @private
-     * @param {Object/Array} data The data to send
-     */
-    sendRequest : function(data){
-        var me = this,
-            request = {
-                url: me.url,
-                callback: me.onData,
-                scope: me,
-                transaction: data,
-                timeout: me.timeout
-            }, callData,
-            i = 0,
-            len,
-            params,
-            encoder,
-            amfMessages = [],
-            amfHeaders = [];
-        
+  },
 
-        // prepare AMFX messages
-        if (Ext.isArray(data)) {
-            //<debug>
-            if (!me.binary) {
-                Ext.raise("Mutltiple messages in the same call are not supported in AMFX");
-            }
-            //</debug>
-            for (len = data.length; i < len; ++i) {
-                amfMessages.push(me.getCallData(data[i]));
-            }
-        } else {
-            amfMessages.push(me.getCallData(data));
-        }
-        
-        if (me.binary) {
-            encoder = new Ext.data.amf.Encoder( {format: 0}); // AMF message sending always uses AMF0
-            // encode packet
-            encoder.writeAmfPacket(amfHeaders, amfMessages);
-            request.binaryData = encoder.bytes;
-            request.binary = true; // Binary response
-            request.headers = {'Content-Type': 'application/x-amf'};
-        } else {
-            encoder = new Ext.data.amf.XmlEncoder();
-            // encode packet
-            encoder.writeAmfxRemotingPacket(amfMessages[0]);
-            request.xmlData = encoder.body;
-        }
-        
-        
-        // prepare Ajax request
-        Ext.Ajax.request(request);
+  /**
+   * Sends a request to the server
+   * @private
+   * @param {Object/Array} data The data to send
+   */
+  sendRequest: function (data) {
+    var me = this,
+      request = {
+        url: me.url,
+        callback: me.onData,
+        scope: me,
+        transaction: data,
+        timeout: me.timeout,
+      },
+      callData,
+      i = 0,
+      len,
+      params,
+      encoder,
+      amfMessages = [],
+      amfHeaders = [];
 
-    },
-    
-    /**
-     * Add a new transaction to the queue
-     * @private
-     * @param {Ext.direct.Transaction} transaction The transaction
-     */
-    queueTransaction: function(transaction){
-        var me = this,
-            enableBuffer = false; // no queueing for AMFX
-        
-        if (transaction.form) {
-            me.sendFormRequest(transaction);
-            return;
-        }
-        
-        me.callBuffer.push(transaction);
-        if (enableBuffer) {
-            if (!me.callTask) {
-                me.callTask = new Ext.util.DelayedTask(me.combineAndSend, me);
-            }
-            me.callTask.delay(Ext.isNumber(enableBuffer) ? enableBuffer : 10);
-        } else {
-            me.combineAndSend();
-        }
-    },
-    
-    /**
-     * Combine any buffered requests and send them off
-     * @private
-     */
-    combineAndSend : function(){
-        var buffer = this.callBuffer,
-            len = buffer.length;
-        
-        if (len > 0) {
-            this.sendRequest(len == 1 ? buffer[0] : buffer);
-            this.callBuffer = [];
-        }
-    },
-    
-    /**
-     * Configure a form submission request
-     * @private
-     * @param {String} action The action being executed
-     * @param {Object} method The method being executed
-     * @param {HTMLElement} form The form being submitted
-     * @param {Function} callback (optional) A callback to run after the form submits
-     * @param {Object} scope (optional) A scope to execute the callback in
-     */
-    configureFormRequest : function(action, method, form, callback, scope){
-        //<debug>
-        Ext.raise("Form requests are not supported for AmfRemoting");
-        //</debug>
-        /*
+    // prepare AMFX messages
+    if (Ext.isArray(data)) {
+      //<debug>
+      if (!me.binary) {
+        Ext.raise(
+          "Mutltiple messages in the same call are not supported in AMFX",
+        );
+      }
+      //</debug>
+      for (len = data.length; i < len; ++i) {
+        amfMessages.push(me.getCallData(data[i]));
+      }
+    } else {
+      amfMessages.push(me.getCallData(data));
+    }
+
+    if (me.binary) {
+      encoder = new Ext.data.amf.Encoder({ format: 0 }); // AMF message sending always uses AMF0
+      // encode packet
+      encoder.writeAmfPacket(amfHeaders, amfMessages);
+      request.binaryData = encoder.bytes;
+      request.binary = true; // Binary response
+      request.headers = { "Content-Type": "application/x-amf" };
+    } else {
+      encoder = new Ext.data.amf.XmlEncoder();
+      // encode packet
+      encoder.writeAmfxRemotingPacket(amfMessages[0]);
+      request.xmlData = encoder.body;
+    }
+
+    // prepare Ajax request
+    Ext.Ajax.request(request);
+  },
+
+  /**
+   * Add a new transaction to the queue
+   * @private
+   * @param {Ext.direct.Transaction} transaction The transaction
+   */
+  queueTransaction: function (transaction) {
+    var me = this,
+      enableBuffer = false; // no queueing for AMFX
+
+    if (transaction.form) {
+      me.sendFormRequest(transaction);
+      return;
+    }
+
+    me.callBuffer.push(transaction);
+    if (enableBuffer) {
+      if (!me.callTask) {
+        me.callTask = new Ext.util.DelayedTask(me.combineAndSend, me);
+      }
+      me.callTask.delay(Ext.isNumber(enableBuffer) ? enableBuffer : 10);
+    } else {
+      me.combineAndSend();
+    }
+  },
+
+  /**
+   * Combine any buffered requests and send them off
+   * @private
+   */
+  combineAndSend: function () {
+    var buffer = this.callBuffer,
+      len = buffer.length;
+
+    if (len > 0) {
+      this.sendRequest(len == 1 ? buffer[0] : buffer);
+      this.callBuffer = [];
+    }
+  },
+
+  /**
+   * Configure a form submission request
+   * @private
+   * @param {String} action The action being executed
+   * @param {Object} method The method being executed
+   * @param {HTMLElement} form The form being submitted
+   * @param {Function} callback (optional) A callback to run after the form submits
+   * @param {Object} scope (optional) A scope to execute the callback in
+   */
+  configureFormRequest: function (action, method, form, callback, scope) {
+    //<debug>
+    Ext.raise("Form requests are not supported for AmfRemoting");
+    //</debug>
+    /*
          var me = this,
          transaction = new Ext.direct.Transaction({
          provider: me,
@@ -603,18 +620,18 @@ TestAction.multiply(
          me.sendFormRequest(transaction);
          }
          */
-    },
-    
-    /**
-     * Sends a form request
-     * @private
-     * @param {Ext.direct.Transaction} transaction The transaction to send
-     */
-    sendFormRequest: function(transaction){
-        //<debug>
-        Ext.raise("Form requests are not supported for AmfRemoting");
-        //</debug>
-        /*
+  },
+
+  /**
+   * Sends a form request
+   * @private
+   * @param {Ext.direct.Transaction} transaction The transaction to send
+   */
+  sendFormRequest: function (transaction) {
+    //<debug>
+    Ext.raise("Form requests are not supported for AmfRemoting");
+    //</debug>
+    /*
          Ext.Ajax.request({
          url: this.url,
          params: transaction.params,
@@ -625,31 +642,31 @@ TestAction.multiply(
          transaction: transaction
          });
          */
-    },
+  },
 
-    /**
-     * Creates a set of events based on the XHR response
-     * @private
-     * @param {Object} response The XHR response
-     * @return {Ext.direct.Event[]} An array of Ext.direct.Event
-     */
-    createEvents: function(response){
-        var data = null,
-            rawBytes = [],
-            events = [],
-            event,
-            i = 0,
-            len,
-            decoder;
-        try {
-            if (this.binary) {
-                decoder = new Ext.data.amf.Packet();
-                data = decoder.decode(response.responseBytes);
-            } else {
-                decoder = new Ext.data.amf.XmlDecoder();
-                data = decoder.readAmfxMessage(response.responseText);
-            }
-            /*
+  /**
+   * Creates a set of events based on the XHR response
+   * @private
+   * @param {Object} response The XHR response
+   * @return {Ext.direct.Event[]} An array of Ext.direct.Event
+   */
+  createEvents: function (response) {
+    var data = null,
+      rawBytes = [],
+      events = [],
+      event,
+      i = 0,
+      len,
+      decoder;
+    try {
+      if (this.binary) {
+        decoder = new Ext.data.amf.Packet();
+        data = decoder.decode(response.responseBytes);
+      } else {
+        decoder = new Ext.data.amf.XmlDecoder();
+        data = decoder.readAmfxMessage(response.responseText);
+      }
+      /*
              // This won't be sent back unless we use a ping message, so ignore for now
              // if we don't have the server ID yet, check for it here
              if (!this.DSId) {
@@ -658,70 +675,70 @@ TestAction.multiply(
              }
              }
              */
-        } catch(e) {
-
-            event = new Ext.direct.ExceptionEvent({
-                data: e,
-                xhr: response,
-                code: Ext.direct.Manager.exceptions.PARSE,
-                message: 'Error parsing AMF response: \n\n ' + data
-            });
-            return [event];
-        }
-
-        if (this.binary) {
-            for (i=0; i < data.messages.length; i++) {
-                events.push(this.createEvent(data.messages[i]));
-            }
-        } else {
-            // AMFX messages have one response per message
-            events.push(this.createEvent(data));
-        }
-        return events;
-    },
-
-    /**
-     * Create an event from an AMFX response object
-     * @param {Object} response The AMFX response object
-     * @return {Ext.direct.Event} The event
-     */
-    createEvent: function(response){
-        // Check targetUri to identify transaction ID and status
-        var status = response.targetURI.split("/"),
-            tid,
-            event,
-            data, statusIndex,
-            me = this;
-        if (me.binary) {
-            tid = status[1];
-            statusIndex = 2;
-        } else {
-            tid = Ext.data.amf.XmlDecoder.decodeTidFromFlexUID(response.message.correlationId);
-            statusIndex = 1;
-        }
-        // construct data structure
-        if (status[statusIndex] == "onStatus") {
-            // The call failed
-            data = {
-                tid: tid,
-                data: (me.binary ? response.body : response.message)
-            };
-            event = Ext.create('direct.exception', data);
-        } else if(status[statusIndex] == "onResult") {
-            // Call succeeded
-            data = {
-                tid: tid,
-                data: (me.binary ? response.body : response.message.body)
-            };
-            event = Ext.create('direct.rpc', data);
-        } else {
-            //<debug>
-            Ext.raise("Unknown AMF return status: " + status[statusIndex]);
-            //</debug>
-        }
-        
-        return event;
+    } catch (e) {
+      event = new Ext.direct.ExceptionEvent({
+        data: e,
+        xhr: response,
+        code: Ext.direct.Manager.exceptions.PARSE,
+        message: "Error parsing AMF response: \n\n " + data,
+      });
+      return [event];
     }
 
-    
+    if (this.binary) {
+      for (i = 0; i < data.messages.length; i++) {
+        events.push(this.createEvent(data.messages[i]));
+      }
+    } else {
+      // AMFX messages have one response per message
+      events.push(this.createEvent(data));
+    }
+    return events;
+  },
+
+  /**
+   * Create an event from an AMFX response object
+   * @param {Object} response The AMFX response object
+   * @return {Ext.direct.Event} The event
+   */
+  createEvent: function (response) {
+    // Check targetUri to identify transaction ID and status
+    var status = response.targetURI.split("/"),
+      tid,
+      event,
+      data,
+      statusIndex,
+      me = this;
+    if (me.binary) {
+      tid = status[1];
+      statusIndex = 2;
+    } else {
+      tid = Ext.data.amf.XmlDecoder.decodeTidFromFlexUID(
+        response.message.correlationId,
+      );
+      statusIndex = 1;
+    }
+    // construct data structure
+    if (status[statusIndex] == "onStatus") {
+      // The call failed
+      data = {
+        tid: tid,
+        data: me.binary ? response.body : response.message,
+      };
+      event = Ext.create("direct.exception", data);
+    } else if (status[statusIndex] == "onResult") {
+      // Call succeeded
+      data = {
+        tid: tid,
+        data: me.binary ? response.body : response.message.body,
+      };
+      event = Ext.create("direct.rpc", data);
+    } else {
+      //<debug>
+      Ext.raise("Unknown AMF return status: " + status[statusIndex]);
+      //</debug>
+    }
+
+    return event;
+  },
 });
