@@ -62,8 +62,8 @@ repos:
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.2"]
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: "v4.0.0-alpha.8"
-    hooks:
-      - id: prettier
-        types_or: [json, css, javascript, vue]
+  # repo: https://github.com/pre-commit/mirrors-prettier
+  # rev: "v4.0.0-alpha.8"
+  # hooks:
+  #   - id: prettier
+  #     types_or: [json, css, javascript, vue]
