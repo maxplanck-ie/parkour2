@@ -1,4 +1,5 @@
 backend/static/js
+backend/static/main-hub/resources
 backend/static/main-hub/build
 backend/static/main-hub/.sencha
 backend/static/main-hub/ext
