@@ -62,7 +62,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
               title: "Delete Request",
               message: Ext.String.format(
                 'Are you sure you want to delete the request "{0}"?',
-                record.get("name")
+                record.get("name"),
               ),
               buttons: Ext.Msg.YESNO,
               icon: Ext.Msg.QUESTION,
@@ -92,7 +92,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
           handler: function () {
             var url = Ext.String.format(
               "api/requests/{0}/download_deep_sequencing_request/",
-              requestId
+              requestId,
             );
             var downloadForm = Ext.create("Ext.form.Panel", {
               standardSubmit: true,
@@ -113,7 +113,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
           handler: function () {
             var url = Ext.String.format(
               "api/requests/{0}/download_complete_report/",
-              requestId
+              requestId,
             );
             var downloadForm = Ext.create("Ext.form.Panel", {
               standardSubmit: true,
@@ -159,7 +159,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
               title: "Mark request as complete",
               message: Ext.String.format(
                 'Are you sure you want to mark request "{0} as complete?',
-                record.get("name")
+                record.get("name"),
               ),
               buttons: Ext.Msg.YESNO,
               icon: Ext.Msg.QUESTION,
@@ -180,7 +180,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
     Ext.Ajax.request({
       url: Ext.String.format(
         "api/requests/{0}/mark_as_complete/",
-        record.get("pk")
+        record.get("pk"),
       ),
       method: "POST",
       scope: me,
@@ -200,7 +200,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
           Ext.Msg.show({
             title: "Mark request as complete",
             message: Ext.String.format(
-              "There are unsequenced libraries/samples related to this request. Do you want to mark it as complete anyway?"
+              "There are unsequenced libraries/samples related to this request. Do you want to mark it as complete anyway?",
             ),
             buttons: Ext.Msg.YESNO,
             icon: Ext.Msg.QUESTION,
@@ -249,7 +249,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
   uploadSignedRequest: function (requestId) {
     var url = Ext.String.format(
       "api/requests/{0}/upload_deep_sequencing_request/",
-      requestId
+      requestId,
     );
 
     Ext.create("Ext.ux.FileUploadWindow", {

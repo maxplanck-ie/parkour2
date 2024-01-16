@@ -31,7 +31,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             requestId !== "root" &&
             Ext.Ajax.request({
               url: Ext.String.format(
-                "api/requests/" + requestId + "/get_poolpaths/"
+                "api/requests/" + requestId + "/get_poolpaths/",
               ),
               method: "GET",
               scope: this,
@@ -91,7 +91,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             items: [
               {
                 name: "showAll",
-                boxLabel: "Show all",
+                boxLabel: "Show All",
                 boxLabelAlign: "before",
                 checked: true,
                 id: "showAlllr",
@@ -102,12 +102,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "librariesStore"
+                        "librariesStore",
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("librariesStore").load();
                     } else {
                       Ext.getStore(
-                        "librariesStore"
+                        "librariesStore",
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
@@ -119,6 +119,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 itemId: "showLibrariesCheckbox",
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
                 hidden: true,
               },
@@ -126,6 +127,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 boxLabel: "Show Samples",
                 itemId: "showSamplesCheckbox",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
                 hidden: true,
               },
@@ -136,7 +138,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
             itemId: "searchField",
             emptyText: "Search",
             width: 200,
-            hidden: true,
           },
         ],
       },
@@ -166,7 +167,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   "<strong>Request: {0}</strong> (#: {1}, Total Depth: {2})",
                   value,
                   record.get("total_records_count"),
-                  record.get("total_sequencing_depth")
+                  record.get("total_sequencing_depth"),
                 );
               }
             },

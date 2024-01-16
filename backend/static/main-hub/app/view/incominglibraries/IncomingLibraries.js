@@ -37,12 +37,14 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 itemId: "show-libraries-checkbox",
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
               },
               {
                 boxLabel: "Show Samples",
                 itemId: "show-samples-checkbox",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
               },
             ],
@@ -285,7 +287,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               displayField: "name",
               displayTpl: Ext.create(
                 "Ext.XTemplate",
-                '<tpl for=".">{value}</tpl>'
+                '<tpl for=".">{value}</tpl>',
               ),
               store: "rnaQualityStore",
               regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
@@ -335,8 +337,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 return Ext.Array.sum(
                   Ext.Array.pluck(
                     Ext.Array.pluck(children, "data"),
-                    "sequencing_depth"
-                  )
+                    "sequencing_depth",
+                  ),
                 );
               },
               getChecked: function (children) {

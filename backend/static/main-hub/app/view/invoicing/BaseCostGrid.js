@@ -14,8 +14,8 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
           Ext.String.format(
             "{0}/admin/invoicing/{1}/",
             window.location.origin,
-            this.up("panel").configUrl
-          )
+            this.up("panel").configUrl,
+          ),
         );
       },
     },

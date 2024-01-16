@@ -36,7 +36,7 @@ Ext.define("MainHub.view.requests.Requests", {
             items: [
               {
                 name: "showAll",
-                boxLabel: "Show all",
+                boxLabel: "Show All",
                 boxLabelAlign: "before",
                 checked: true,
                 id: "showAll",
@@ -48,12 +48,12 @@ Ext.define("MainHub.view.requests.Requests", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "requestsStore"
+                        "requestsStore",
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("requestsStore").load();
                     } else {
                       Ext.getStore(
-                        "requestsStore"
+                        "requestsStore",
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("requestsStore").load();
                     }
@@ -94,6 +94,15 @@ Ext.define("MainHub.view.requests.Requests", {
             text: "Name",
             dataIndex: "name",
             flex: 1,
+            renderer: function (value, meta) {
+              var boldValue =
+                "<b>" + Ext.util.Format.htmlEncode(value) + "</b>";
+              meta.tdAttr =
+                'data-qtip="' +
+                Ext.util.Format.htmlEncode(value) +
+                '" data-qwidth=300';
+              return boldValue;
+            },
           },
           {
             text: "User",
@@ -123,7 +132,7 @@ Ext.define("MainHub.view.requests.Requests", {
             },
           },
           {
-            text: "Number of samples and libraries",
+            text: "Number of Samples and Libraries",
             dataIndex: "number_of_samples",
             flex: 1,
           },
@@ -155,7 +164,7 @@ Ext.define("MainHub.view.requests.Requests", {
             '<span class="attached-file-link">',
             '<a href="{path}" download>{name}</a>',
             "</span><br/>",
-            "</tpl>"
+            "</tpl>",
           ),
         },
       ],

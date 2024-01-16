@@ -1,64 +1,69 @@
 ci:
-    autofix_commit_msg: |
-        [pre-commit] fixes from hooks
-    autofix_prs: true
-    autoupdate_branch: 'develop'
-    autoupdate_commit_msg: 'pre-commit.ci autoupdate'
-    autoupdate_schedule: quarterly
-    skip: []
-    submodules: false
+  autofix_commit_msg: |
+    [pre-commit] fixes from hooks
+  autofix_prs: true
+  autoupdate_branch: "develop"
+  autoupdate_commit_msg: "pre-commit.ci autoupdate"
+  autoupdate_schedule: quarterly
+  skip: []
+  submodules: false
 
 repos:
--   repo: local
+  - repo: local
     hooks:
-    -   id: set-base-docker
+      - id: set-base-docker
         name: set-base-docker
         entry: /usr/bin/make
         language: script
         pass_filenames: false
         files: docker-compose\.yml
-        args: ['set-base']
-    -   id: hardreset-caddyfile
+        args: ["set-base"]
+      - id: hardreset-caddyfile
         name: hardreset-caddyfile
         entry: /usr/bin/make
         language: script
         pass_filenames: false
         files: misc/Caddyfile
-        args: ['hardreset-caddyfile']
-    -   id: hardreset-envfile
+        args: ["hardreset-caddyfile"]
+      - id: hardreset-envfile
         name: hardreset-envfile
         entry: /usr/bin/make
         language: script
         pass_filenames: false
         files: misc/parkour.env
-        args: ['hardreset-envfile']
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.4.0
+        args: ["hardreset-envfile"]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
     hooks:
-    -   id: trailing-whitespace
+      - id: trailing-whitespace
         types: [python]
-    -   id: end-of-file-fixer
+      - id: end-of-file-fixer
         types: [python]
-    -   id: check-merge-conflict
+      - id: check-merge-conflict
         types: [python]
--   repo: https://github.com/pycqa/isort
-    rev: 5.12.0
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
     hooks:
-    -   id: isort
+      - id: isort
         args: [--profile, "black"]
--   repo: https://github.com/psf/black
+  - repo: https://github.com/psf/black
     rev: 23.9.1
     hooks:
-    -   id: black
+      - id: black
         language_version: python3
-        entry: black --target-version=py311  # 3.11
--   repo: https://github.com/asottile/pyupgrade
-    rev: v3.13.0
+        entry: black --target-version=py311 # 3.11
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v3.15.0
     hooks:
-    -   id: pyupgrade
-        args: [--py311-plus]  # 3.11
--   repo: https://github.com/adamchainz/django-upgrade
+      - id: pyupgrade
+        args: [--py311-plus] # 3.11
+  - repo: https://github.com/adamchainz/django-upgrade
     rev: 1.15.0
     hooks:
-    -   id: django-upgrade
+      - id: django-upgrade
         args: [--target-version, "4.2"]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: "v4.0.0-alpha.8"
+    hooks:
+      - id: prettier
+        types_or: [json, css, javascript, vue]

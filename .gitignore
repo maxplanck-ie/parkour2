@@ -19,3 +19,4 @@ models.dot
 backend/frontend_testing_suite/results/**/trace.zip
 .*_cache/
 *.ignore
+node_modules/

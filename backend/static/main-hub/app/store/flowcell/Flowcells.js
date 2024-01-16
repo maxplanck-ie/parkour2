@@ -43,7 +43,7 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
                 {
                   pk: record.get("pk"),
                 },
-                record.getChanges()
+                record.getChanges(),
               );
             }
           });

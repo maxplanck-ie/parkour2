@@ -1,26 +1,26 @@
 [
-    {
-        "fields": {
-            "library_protocol": 4,
-            "price": "55.16"
-        },
-        "model": "invoicing.librarypreparationcosts",
-        "pk": 1
+  {
+    "fields": {
+      "library_protocol": 4,
+      "price": "55.16"
     },
-    {
-        "fields": {
-            "library_protocol": 5,
-            "price": "53.88"
-        },
-        "model": "invoicing.librarypreparationcosts",
-        "pk": 8
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "library_protocol": 5,
+      "price": "53.88"
     },
-    {
-        "fields": {
-            "library_protocol": 9,
-            "price": "151.14"
-        },
-        "model": "invoicing.librarypreparationcosts",
-        "pk": 9
-    }
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 8
+  },
+  {
+    "fields": {
+      "library_protocol": 9,
+      "price": "151.14"
+    },
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 9
+  }
 ]

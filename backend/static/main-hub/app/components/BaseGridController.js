@@ -358,7 +358,7 @@ Ext.define("MainHub.components.BaseGridController", {
   _showEditableColumnsMessage: function (gridView, allowedColumns) {
     var columns = this._findColumnsByDataIndex(
       gridView.getGridColumns(),
-      allowedColumns
+      allowedColumns,
     );
     var columnNames = Ext.Array.pluck(columns, "text")
       .map(function (name) {
@@ -372,7 +372,7 @@ Ext.define("MainHub.components.BaseGridController", {
 
     var message = Ext.String.format(
       "Only the following columns are editable:<br/><ul>{0}</ul>",
-      columnNames
+      columnNames,
     );
 
     new Noty({ text: message, type: "warning" }).show();

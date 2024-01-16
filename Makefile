@@ -292,7 +292,10 @@ models:
 show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
-compile:
+maintenance:
+	@pre-commit autoupdate
+
+compile: maintenance
 	# @test -d ./env_dev || \
 	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	# @if [[ :$PATH: == *:"env_dev":* ]] ; then

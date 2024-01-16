@@ -114,7 +114,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
               "select",
               libraryProtocolField,
               libraryProtocolField.findRecordByValue(record.library_protocol),
-              true
+              true,
             );
           }
         },
@@ -126,7 +126,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       organismField.fireEvent(
         "select",
         organismField,
-        organismField.findRecordByValue(record.organism)
+        organismField.findRecordByValue(record.organism),
       );
 
       // Set Index Type
@@ -136,7 +136,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         "select",
         indexType,
         indexType.findRecordByValue(record.index_type),
-        true
+        true,
       );
 
       // Set Concentration Method
@@ -145,7 +145,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       concentrationMethodField.fireEvent(
         "select",
         concentrationMethodField,
-        concentrationMethodField.findRecordByValue(record.concentration_method)
+        concentrationMethodField.findRecordByValue(record.concentration_method),
       );
 
       // Set Read Length
@@ -154,7 +154,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       readLengthField.fireEvent(
         "select",
         readLengthField,
-        readLengthField.findRecordByValue(record.readLengthId)
+        readLengthField.findRecordByValue(record.readLengthId),
       );
 
       Ext.getCmp("addWndBtn").setConfig("text", "Save");
@@ -187,7 +187,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
           record.get("typicalApplication") +
           "<br>" +
           "<strong>Comments: </strong>" +
-          record.get("comments")
+          record.get("comments"),
       );
     } else {
       libraryProtocolInfo.hide();
@@ -212,7 +212,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             libraryTypeField.fireEvent(
               "select",
               libraryTypeField,
-              libraryTypeField.findRecordByValue(record.library_type)
+              libraryTypeField.findRecordByValue(record.library_type),
             );
           }
         }
@@ -247,7 +247,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         "select",
         indexReadsField,
         indexReadsField.findRecordByValue(wndRecord.index_reads),
-        setInitialValues
+        setInitialValues,
       );
     }
 
@@ -325,7 +325,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         "select",
         nucleicAcidTypeField,
         nucleicAcidTypeField.findRecordByValue(record.nucleic_acid_type),
-        true
+        true,
       );
 
       // Set organism
@@ -334,20 +334,20 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       organismSampleField.fireEvent(
         "select",
         organismSampleField,
-        organismSampleField.findRecordByValue(record.organism)
+        organismSampleField.findRecordByValue(record.organism),
       );
 
       // Set concentration method
       var concentrationSampleMethodField = Ext.getCmp(
-        "concentrationSampleMethodField"
+        "concentrationSampleMethodField",
       );
       concentrationSampleMethodField.select(record.concentration_method);
       concentrationSampleMethodField.fireEvent(
         "select",
         concentrationSampleMethodField,
         concentrationSampleMethodField.findRecordByValue(
-          record.concentration_method
-        )
+          record.concentration_method,
+        ),
       );
 
       // Set read length
@@ -356,7 +356,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       readLengthSampleField.fireEvent(
         "select",
         readLengthSampleField,
-        readLengthSampleField.findRecordByValue(record.readLengthId)
+        readLengthSampleField.findRecordByValue(record.readLengthId),
       );
 
       Ext.getCmp("addWndBtn").setConfig("text", "Save");
@@ -401,7 +401,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             sampleProtocolField.fireEvent(
               "select",
               sampleProtocolField,
-              sampleProtocolField.findRecordByValue(libraryProtocolId)
+              sampleProtocolField.findRecordByValue(libraryProtocolId),
             );
           }
         }
@@ -433,7 +433,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
           record.get("typicalApplication") +
           "<br>" +
           "<strong>Comments: </strong>" +
-          record.get("comments")
+          record.get("comments"),
       );
     } else {
       sampleProtocolInfo.hide();
@@ -458,7 +458,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             sampleTypeField.fireEvent(
               "select",
               sampleTypeField,
-              sampleTypeField.findRecordByValue(record.library_type)
+              sampleTypeField.findRecordByValue(record.library_type),
             );
           }
         }
