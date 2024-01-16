@@ -21,13 +21,11 @@ Ext.define("MainHub.view.usage.ChartBase", {
     //     var panel = this.up("panel");
     //     var polar = panel.down("polar");
     //     var cartesian = panel.down("cartesian");
-
     //     if (polar) {
     //       polar.download({
     //         filename: panel.title,
     //       });
     //     }
-
     //     if (cartesian) {
     //       cartesian.download({
     //         filename: panel.title,

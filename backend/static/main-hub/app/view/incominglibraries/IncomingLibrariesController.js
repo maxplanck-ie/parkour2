@@ -53,7 +53,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
         0,
         false,
         true,
-        true
+        true,
       );
 
       if (nat !== null && nat.get("type") === "RNA") {
@@ -81,7 +81,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
       var amountFacility = this._calculateAmount(
         values.dilution_factor,
         values.concentration_facility,
-        values.sample_volume_facility
+        values.sample_volume_facility,
       );
       record.set("amount_facility", amountFacility);
     }
@@ -132,7 +132,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
               var amountFacility = self._calculateAmount(
                 dilutionFactor,
                 concentrationFacility,
-                sampleVolumeFacility
+                sampleVolumeFacility,
               );
               item.set("amount_facility", amountFacility);
             }

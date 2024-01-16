@@ -151,7 +151,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 0,
                 false,
                 true,
-                true
+                true,
               );
               var val = "";
 
@@ -201,7 +201,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 },
                 getTotalDepth: function (children) {
                   return Ext.sum(
-                    Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth")
+                    Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth"),
                   );
                 },
                 getCount: function (children) {
@@ -627,7 +627,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
       }
 
       var green = parseInt(
-        ((value.green / totalSequencingDepth) * 100).toFixed(0)
+        ((value.green / totalSequencingDepth) * 100).toFixed(0),
       );
       var red = parseInt(((value.red / totalSequencingDepth) * 100).toFixed(0));
 

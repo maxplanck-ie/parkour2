@@ -44,7 +44,7 @@ Ext.define("MainHub.store.incominglibraries.IncomingLibraries", {
                   pk: record.get("pk"),
                   record_type: record.get("record_type"),
                 },
-                record.getChanges()
+                record.getChanges(),
               );
             }
           });

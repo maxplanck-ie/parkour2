@@ -92,7 +92,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
         {
           text: Ext.String.format(
             "Delete Selected ({0})",
-            selectedSamples.length
+            selectedSamples.length,
           ),
           handler: function () {
             store.remove(selectedSamples);
@@ -259,7 +259,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       downloadForm.submit({
         url: Ext.String.format(
           "api/metadata_exporter/{0}/download/",
-          requestId
+          requestId,
         ),
         params: params,
       });
@@ -300,7 +300,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
 
         failure: function (response) {
           console.log(
-            "server-side failure with status code " + response.status
+            "server-side failure with status code " + response.status,
           );
           wnd.setLoading(false);
         },
@@ -365,7 +365,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterController", {
       meta.tdCls += " invalid-record";
       meta.tdAttr = Ext.String.format(
         'data-qtip="{0}"',
-        record.get("errors")[dataIndex]
+        record.get("errors")[dataIndex],
       );
     }
 

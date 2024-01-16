@@ -76,7 +76,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     proxy.api.update = Ext.String.format(
       "{0}{1}/",
       proxy.api.read,
-      context.record.get("id")
+      context.record.get("id"),
     );
 
     store.sync({
@@ -153,7 +153,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       return Ext.String.format(
         "{0}: {1}",
         item.flowcell_id,
-        item.sequencer_name
+        item.sequencer_name,
       );
     });
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', items.join("<br/>"));
@@ -172,7 +172,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       "</ul>",
       "</li>",
       "</tpl>",
-      "</ul>"
+      "</ul>",
     );
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', tpl.apply(value));
 
@@ -199,7 +199,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       0,
       false,
       true,
-      true
+      true,
     );
     var name = record.get("name");
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);

@@ -54,7 +54,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     ) {
       var nM = this._calculateNM(
         values.concentration_library,
-        values.mean_fragment_size
+        values.mean_fragment_size,
       );
       record.set("nM", nM);
     }
@@ -97,7 +97,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
             if (concentrationLibrary && meanFragmentSize) {
               var nM = self._calculateNM(
                 concentrationLibrary,
-                meanFragmentSize
+                meanFragmentSize,
               );
               item.set("nM", nM);
             }

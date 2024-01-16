@@ -1,26 +1,26 @@
 [
-    {
-        "fields": {
-            "price": "22.00",
-            "sequencer": 1
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 1
+  {
+    "fields": {
+      "price": "22.00",
+      "sequencer": 1
     },
-    {
-        "fields": {
-            "price": "620.00",
-            "sequencer": 2
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 2
+    "model": "invoicing.fixedcosts",
+    "pk": 1
+  },
+  {
+    "fields": {
+      "price": "620.00",
+      "sequencer": 2
     },
-    {
-        "fields": {
-            "price": "620.00",
-            "sequencer": 3
-        },
-        "model": "invoicing.fixedcosts",
-        "pk": 3
-    }
+    "model": "invoicing.fixedcosts",
+    "pk": 2
+  },
+  {
+    "fields": {
+      "price": "620.00",
+      "sequencer": 3
+    },
+    "model": "invoicing.fixedcosts",
+    "pk": 3
+  }
 ]

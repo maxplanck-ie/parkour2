@@ -10,23 +10,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8
-      ],
-      "requests": [
-        2,
-        3,
-        4,
-        5,
-        6
-      ]
+      "lanes": [1, 2, 3, 4, 5, 6, 7, 8],
+      "requests": [2, 3, 4, 5, 6]
     }
   },
   {
@@ -40,12 +25,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        9
-      ],
-      "requests": [
-        7
-      ]
+      "lanes": [9],
+      "requests": [7]
     }
   },
   {
@@ -59,12 +40,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        10
-      ],
-      "requests": [
-        10
-      ]
+      "lanes": [10],
+      "requests": [10]
     }
   },
   {
@@ -78,12 +55,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        11
-      ],
-      "requests": [
-        8
-      ]
+      "lanes": [11],
+      "requests": [8]
     }
   },
   {
@@ -97,12 +70,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        12
-      ],
-      "requests": [
-        2
-      ]
+      "lanes": [12],
+      "requests": [2]
     }
   },
   {
@@ -116,12 +85,8 @@
       "matrix": null,
       "sequences": null,
       "archived": false,
-      "lanes": [
-        13
-      ],
-      "requests": [
-        2
-      ]
+      "lanes": [13],
+      "requests": [2]
     }
   }
 ]
