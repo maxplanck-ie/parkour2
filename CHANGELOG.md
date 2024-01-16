@@ -3,6 +3,7 @@
 ??.??.??
 ========
 
+- Upgraded Python dependencies.
 - Enabled pre-commit hook to run a new linter (prettier).
 - Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
