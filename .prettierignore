@@ -1,10 +1,12 @@
-backend/static/main-hub/bootstrap.json*
-backend/static/main-hub/build
 backend/static/js
+backend/static/main-hub/build
 backend/static/main-hub/.sencha
 backend/static/main-hub/ext
 backend/static/main-hub/sass
+backend/static/main-hub/bootstrap.json*
 **/*.html
+**/*.min.css
+**/*.min.js
 frontend/node_modules
 frontend/package-lock.json
 frontend/dist
