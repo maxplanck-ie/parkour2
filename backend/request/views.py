@@ -519,14 +519,14 @@ class RequestViewSet(viewsets.ModelViewSet):
             instance.approval = {
                     "TIMESTAMP": dateformat.format(instance.approval_time, "c"),
                     "TOKEN": token,
-                    "REMOTE_ADDR": request.META.get["REMOTE_ADDR"],
-                    "REMOTE_PORT": request.META.get["REMOTE_PORT"],
-                    "HTTP_USER_AGENT": request.headers.get["user-agent"],
-                    "HTTP_ACCEPT": request.headers.get["accept"],
-                    "HTTP_ACCEPT_ENCODING": request.headers.get["accept-encoding"],
-                    "HTTP_ACCEPT_LANGUAGE": request.headers.get["accept-language"],
-                    "HTTP_X_FORWARDED_FOR": request.headers.get["x-forwarded-for"],
-                    "HTTP_X_REAL_IP": request.headers.get["x-real-ip"],
+                    "REMOTE_ADDR": request.META.get("REMOTE_ADDR"),
+                    "REMOTE_PORT": request.META.get("REMOTE_PORT"),
+                    "HTTP_USER_AGENT": request.headers.get("user-agent"),
+                    "HTTP_ACCEPT": request.headers.get("accept"),
+                    "HTTP_ACCEPT_ENCODING": request.headers.get("accept-encoding"),
+                    "HTTP_ACCEPT_LANGUAGE": request.headers.get("accept-language"),
+                    "HTTP_X_FORWARDED_FOR": request.headers.get("x-forwarded-for"),
+                    "HTTP_X_REAL_IP": request.headers.get("x-real-ip"),
                     "OIDC_ID": request.user.oidc_id,
                     "EMAIL": request.user.email
                 }
@@ -560,7 +560,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         except Exception as e:
 
             logger.exception(e)
-            return Response({"success": False, 'detail': e}, 400)
+            return Response({"success": False, 'detail': str(e)}, 400)
 
     @action(methods=["get"], detail=True)
     def request_approval(self, request, pk=None):
