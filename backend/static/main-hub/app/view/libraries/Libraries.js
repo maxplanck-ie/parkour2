@@ -13,7 +13,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
   initComponent: function () {
     this.searchString = "";
-    this.statusFilter = "all";
+    this.statusFilter = "";
 
     this.callParent(arguments);
   },
@@ -38,7 +38,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             requestId !== "root" &&
             Ext.Ajax.request({
               url: Ext.String.format(
-                "api/requests/" + requestId + "/get_poolpaths/",
+                "api/requests/" + requestId + "/get_poolpaths/"
               ),
               method: "GET",
               scope: this,
@@ -109,12 +109,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("librariesStore").load();
                     } else {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
@@ -178,14 +178,53 @@ Ext.define("MainHub.view.libraries.Libraries", {
               ],
             }),
             listeners: {
+              scope: this,
               change: function (combo, newValue, oldValue, eOpts) {
-                console.log("Selected value:", newValue);
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.statusFilter = newValue;
                 var selectedRecord = combo.findRecordByValue(newValue);
                 var textWidth = Ext.util.TextMetrics.measure(
                   combo.inputEl,
                   selectedRecord.get(combo.displayField)
                 ).width;
                 combo.setWidth(textWidth + 55);
+                var apiString = "";
+                apiString +=
+                  this.statusFilter && this.statusFilter !== "all"
+                    ? "&statusFilter=" + this.statusFilter
+                    : "";
+                apiString += this.searchString
+                  ? "&searchString=" + this.searchString
+                  : "";
+                Ext.Ajax.request({
+                  url: Ext.String.format(
+                    "api/libraries_and_samples/?showAll=True&node=root" +
+                      apiString
+                  ),
+                  method: "GET",
+                  disableCaching: false,
+                  success: function (response) {
+                    // var librariesStore = Ext.getStore("librariesStore");
+                    // var responseObject = Ext.JSON.decode(response.responseText);
+                    // var newData = responseObject.children;
+                    // console.log("librariesStore", librariesStore.getData());
+                    // librariesStore.setData(librariesStore.getData());
+                    // console.log("librariesStore", librariesStore.getData());
+                    // librariesStore.setData(responseObject.children);
+                    // console.log("librariesStore", librariesStore.getData());
+                    // console.log("responseObject", responseObject.children);
+                    grid.getView().unmask();
+                  },
+                  failure: function (response) {
+                    new Noty({
+                      text: response.statusText,
+                      type: "error",
+                    }).show();
+                    console.error(response);
+                    grid.getView().unmask();
+                  },
+                });
               },
             },
           },
@@ -194,42 +233,45 @@ Ext.define("MainHub.view.libraries.Libraries", {
             itemId: "search-field",
             emptyText: "Search",
             width: 250,
-            scope: this,
             listeners: {
-              change: function (grid, newValue, oldValue) {
-                this.searchString = newValue.value;
-                //grid.getView().mask("Loading...");
-                console.log("Selected value:", this.searchString);
-                  Ext.Ajax.request({
-                    url: Ext.String.format(
-                      "api/libraries_and_samples/?showAll=True&node=root"
-                    ),
-                    method: "GET",
-                    scope: this,
-                    disableCaching: false,
-                    success: function (response) {
-                      // var librariesStore = Ext.getStore("librariesStore");
-                      // var responseObject = Ext.JSON.decode(response.responseText);
-                      // var parentNode = librariesStore.data.map[requestId];
-                      // parentNode.childNodes.map(function (element) {
-                      //   var pools = (
-                      //     responseObject.poolpaths[element.data.barcode] || []
-                      //   ).toString();
-                      //   element.set("pool", pools);
-                      //   element.commit();
-                      //   return element;
-                      // });
-                      //gird.getView().unmask();
-                    },
-                    failure: function (response) {
-                      new Noty({
-                        text: response.statusText,
-                        type: "error",
-                      }).show();
-                      console.error(response);
-                      //grid.getView().unmask();
-                    },
-                  });
+              scope: this,
+              change: function (field, newValue, oldValue) {
+                var grid = field.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.searchString = newValue;
+                var apiString = "";
+                apiString +=
+                  this.statusFilter && this.statusFilter !== "all"
+                    ? "&statusFilter=" + this.statusFilter
+                    : "";
+                apiString += this.searchString
+                  ? "&searchString=" + this.searchString
+                  : "";
+                Ext.Ajax.request({
+                  url: Ext.String.format(
+                    "api/libraries_and_samples/?showAll=True&node=root" +
+                      apiString
+                  ),
+                  method: "GET",
+                  disableCaching: false,
+                  success: function (response) {
+                    // var librariesStore = Ext.getStore("librariesStore");
+                    // var responseObject = Ext.JSON.decode(response.responseText);
+                    // var newData = responseObject.children;
+                    // librariesStore.loadData(newData);
+                    // console.log("librariesStore", librariesStore);
+                    // console.log("responseObject", responseObject.children);
+                    grid.getView().unmask();
+                  },
+                  failure: function (response) {
+                    new Noty({
+                      text: response.statusText,
+                      type: "error",
+                    }).show();
+                    console.error(response);
+                    grid.getView().unmask();
+                  },
+                });
               },
             },
           },
@@ -261,7 +303,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   "<strong>Request: {0}</strong> (#: {1}, Total Depth: {2})",
                   value,
                   record.get("total_records_count"),
-                  record.get("total_sequencing_depth"),
+                  record.get("total_sequencing_depth")
                 );
               }
             },
