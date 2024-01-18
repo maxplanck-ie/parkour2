@@ -3,6 +3,13 @@
 ??.??.??
 ========
 
+Breaking changes:
+
+- Dropped support for Python 3.9 (no more CI tests, which were [broken via dependencies](https://github.com/maxplanck-ie/parkour2/actions/runs/7543943036/job/20536098669#step:8:99)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway.
+
+Non-breaking changes:
+
+- Added support for Python 3.12 (CI tests are passing), consider this experimental.
 - Upgraded Python dependencies.
 - Enabled pre-commit hook to run a new linter (prettier).
 - Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
