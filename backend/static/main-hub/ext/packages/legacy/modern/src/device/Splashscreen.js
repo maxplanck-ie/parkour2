@@ -9,22 +9,22 @@
  *
  * http://docs.phonegap.com/en/2.6.0/cordova_splashscreen_splashscreen.md.html#Splashscreen
  */
-Ext.define('Ext.device.Splashscreen', {
-    singleton: true,
+Ext.define("Ext.device.Splashscreen", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.splashscreen.Cordova',
-        'Ext.device.splashscreen.Simulator'
-    ],
+  requires: [
+    "Ext.device.splashscreen.Cordova",
+    "Ext.device.splashscreen.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.splashscreen.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.splashscreen.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.splashscreen.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.splashscreen.Simulator");
+  },
 });

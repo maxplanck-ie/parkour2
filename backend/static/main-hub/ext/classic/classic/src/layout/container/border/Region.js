@@ -3,8 +3,10 @@
  * `Ext.layout.container.Border` class requires this override so that the added functions
  * are only included in a build when `border` layout is used.
  */
-Ext.define('Ext.layout.container.border.Region', {
-    override: 'Ext.Component',
+Ext.define(
+  "Ext.layout.container.border.Region",
+  {
+    override: "Ext.Component",
 
     /**
      * This method is called by the `Ext.layout.container.Border` class when instances are
@@ -14,32 +16,32 @@ Ext.define('Ext.layout.container.border.Region', {
      * @private
      */
     initBorderRegion: function () {
-        var me = this;
+      var me = this;
 
-        if (!me._borderRegionInited) {
-            me._borderRegionInited = true;
+      if (!me._borderRegionInited) {
+        me._borderRegionInited = true;
 
-            // Now that border regions can have dynamic region/weight, these need to be
-            // saved to state as they change:
-            me.addStateEvents(['changeregion', 'changeweight']);
+        // Now that border regions can have dynamic region/weight, these need to be
+        // saved to state as they change:
+        me.addStateEvents(["changeregion", "changeweight"]);
 
-            // We override getState on the instance for a couple reasons. Firstly, since
-            // there are very few border regions in an application, the overhead here is
-            // not a concern. Secondly, if this method were on the prototype it would
-            // impact all components.
-            Ext.override(me, {
-                getState: function () {
-                    var state = me.callParent();
+        // We override getState on the instance for a couple reasons. Firstly, since
+        // there are very few border regions in an application, the overhead here is
+        // not a concern. Secondly, if this method were on the prototype it would
+        // impact all components.
+        Ext.override(me, {
+          getState: function () {
+            var state = me.callParent();
 
-                    // Now that border regions can have dynamic region/weight, these need to be saved
-                    // to state:
-                    state = me.addPropertyToState(state, 'region');
-                    state = me.addPropertyToState(state, 'weight');
+            // Now that border regions can have dynamic region/weight, these need to be saved
+            // to state:
+            state = me.addPropertyToState(state, "region");
+            state = me.addPropertyToState(state, "weight");
 
-                    return state;
-                }
-            });
-        }
+            return state;
+          },
+        });
+      }
     },
 
     /**
@@ -49,8 +51,8 @@ Ext.define('Ext.layout.container.border.Region', {
      * @private
      */
     getOwningBorderContainer: function () {
-        var layout = this.getOwningBorderLayout();
-        return layout && layout.owner;
+      var layout = this.getOwningBorderLayout();
+      return layout && layout.owner;
     },
 
     /**
@@ -60,9 +62,9 @@ Ext.define('Ext.layout.container.border.Region', {
      * @private
      */
     getOwningBorderLayout: function () {
-        // the ownerLayot (if set) may or may not be a border layout
-        var layout = this.ownerLayout;
-        return (layout && layout.isBorderLayout) ? layout : null;
+      // the ownerLayot (if set) may or may not be a border layout
+      var layout = this.ownerLayout;
+      return layout && layout.isBorderLayout ? layout : null;
     },
 
     /**
@@ -73,93 +75,95 @@ Ext.define('Ext.layout.container.border.Region', {
      * @return {String} The previous value of the `region` property.
      */
     setRegion: function (region) {
-        var me = this,
-            borderLayout,
-            old = me.region;
+      var me = this,
+        borderLayout,
+        old = me.region;
 
-        //<debug>
-        if (typeof region !== 'string') {
-            // This method used to be basically the same as setBox, so check for an
-            // accidental use of the old signature.
-            Ext.raise('Use setBox to set the size or position of a component.');
-        }
-        //</debug>
+      //<debug>
+      if (typeof region !== "string") {
+        // This method used to be basically the same as setBox, so check for an
+        // accidental use of the old signature.
+        Ext.raise("Use setBox to set the size or position of a component.");
+      }
+      //</debug>
 
-        if (region !== old) {
-            borderLayout = me.getOwningBorderLayout();
-            if (borderLayout) {
-                var regionFlags = borderLayout.regionFlags[region],
-                    placeholder = me.placeholder,
-                    splitter = me.splitter,
-                    owner = borderLayout.owner,
-                    regionMeta = borderLayout.regionMeta,
-                    collapsed = me.collapsed || me.floated,
-                    delta, items, index;
+      if (region !== old) {
+        borderLayout = me.getOwningBorderLayout();
+        if (borderLayout) {
+          var regionFlags = borderLayout.regionFlags[region],
+            placeholder = me.placeholder,
+            splitter = me.splitter,
+            owner = borderLayout.owner,
+            regionMeta = borderLayout.regionMeta,
+            collapsed = me.collapsed || me.floated,
+            delta,
+            items,
+            index;
 
-                if (me.fireEventArgs('beforechangeregion', [me, region]) === false) {
-                    return old;
+          if (me.fireEventArgs("beforechangeregion", [me, region]) === false) {
+            return old;
+          }
+          Ext.suspendLayouts();
+
+          me.region = region;
+          Ext.apply(me, regionFlags);
+
+          if (me.updateCollapseTool) {
+            me.updateCollapseTool();
+          }
+
+          if (splitter) {
+            // splitter.region = region; -- we don't set "region" on splitters!
+            Ext.apply(splitter, regionFlags);
+            splitter.updateOrientation();
+
+            items = owner.items;
+            index = items.indexOf(me);
+            if (index >= 0) {
+              delta = regionMeta[region].splitterDelta;
+              if (items.getAt(index + delta) !== splitter) {
+                // splitter is not where we expect it, so move it there
+                items.remove(splitter);
+                index = items.indexOf(me); // could have changed
+                if (delta > 0) {
+                  ++index;
                 }
-                Ext.suspendLayouts();
+                // else, insert at index and splitter will be before the item
+                items.insert(index, splitter);
 
-                me.region = region;
-                Ext.apply(me, regionFlags);
-
-                if (me.updateCollapseTool) {
-                    me.updateCollapseTool();
-                }
-
-                if (splitter) {
-                    // splitter.region = region; -- we don't set "region" on splitters!
-                    Ext.apply(splitter, regionFlags);
-                    splitter.updateOrientation();
-
-                    items = owner.items;
-                    index = items.indexOf(me);
-                    if (index >= 0) {
-                        delta = regionMeta[region].splitterDelta;
-                        if (items.getAt(index + delta) !== splitter) {
-                            // splitter is not where we expect it, so move it there
-                            items.remove(splitter);
-                            index = items.indexOf(me);  // could have changed
-                            if (delta > 0) {
-                                ++index;
-                            }
-                            // else, insert at index and splitter will be before the item
-                            items.insert(index, splitter);
-
-                            // Now that the splitter is in the right place in me.items,
-                            // the layout will fix up the DOM childNode to be at the same
-                            // index as well.
-                        }
-                    }
-                }
-                if (placeholder) {
-                    // The collapsed item is potentially remembering wrong things (for
-                    // example, if it was collapsed as a West region and changed to be
-                    // North). The only simple answer here is to expand/collapse the
-                    // item (w/o animation).
-                    if (collapsed) {
-                        me.expand(false);
-                    }
-
-                    owner.remove(placeholder);
-                    me.placeholder = null; // force creation of a new placeholder
-
-                    if (collapsed) {
-                        me.collapse(null, false);
-                    }
-                }
-
-                owner.updateLayout();
-                Ext.resumeLayouts(true);
-
-                me.fireEventArgs('changeregion', [me, old]);
-            } else {
-                me.region = region; // maybe not added yet
+                // Now that the splitter is in the right place in me.items,
+                // the layout will fix up the DOM childNode to be at the same
+                // index as well.
+              }
             }
-        }
+          }
+          if (placeholder) {
+            // The collapsed item is potentially remembering wrong things (for
+            // example, if it was collapsed as a West region and changed to be
+            // North). The only simple answer here is to expand/collapse the
+            // item (w/o animation).
+            if (collapsed) {
+              me.expand(false);
+            }
 
-        return old;
+            owner.remove(placeholder);
+            me.placeholder = null; // force creation of a new placeholder
+
+            if (collapsed) {
+              me.collapse(null, false);
+            }
+          }
+
+          owner.updateLayout();
+          Ext.resumeLayouts(true);
+
+          me.fireEventArgs("changeregion", [me, old]);
+        } else {
+          me.region = region; // maybe not added yet
+        }
+      }
+
+      return old;
     },
 
     /**
@@ -169,31 +173,32 @@ Ext.define('Ext.layout.container.border.Region', {
      * @return {Number} The previous value of the `weight` property.
      */
     setWeight: function (weight) {
-        var me = this,
-            ownerCt = me.getOwningBorderContainer(),
-            placeholder = me.placeholder,
-            old = me.weight;
+      var me = this,
+        ownerCt = me.getOwningBorderContainer(),
+        placeholder = me.placeholder,
+        old = me.weight;
 
-        if (weight !== old) {
-            if (me.fireEventArgs('beforechangeweight', [me, weight]) !== false) {
-                me.weight = weight;
-                if (placeholder) {
-                    placeholder.weight = weight;
-                }
-                if (ownerCt) {
-                    ownerCt.updateLayout();
-                }
-                me.fireEventArgs('changeweight', [me, old]);
-            }
+      if (weight !== old) {
+        if (me.fireEventArgs("beforechangeweight", [me, weight]) !== false) {
+          me.weight = weight;
+          if (placeholder) {
+            placeholder.weight = weight;
+          }
+          if (ownerCt) {
+            ownerCt.updateLayout();
+          }
+          me.fireEventArgs("changeweight", [me, old]);
         }
+      }
 
-        return old;
-    }
-},
-function (Component) {
+      return old;
+    },
+  },
+  function (Component) {
     var proto = Component.prototype;
 
     // Aliases for v4 compat
     proto.setBorderRegion = proto.setRegion;
     proto.setRegionWeight = proto.setWeight;
-});
+  },
+);

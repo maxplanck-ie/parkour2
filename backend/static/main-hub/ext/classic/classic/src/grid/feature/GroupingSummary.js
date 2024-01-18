@@ -84,20 +84,18 @@
  *         }]
  *     });
  */
-Ext.define('Ext.grid.feature.GroupingSummary', {
+Ext.define("Ext.grid.feature.GroupingSummary", {
+  extend: "Ext.grid.feature.Grouping",
 
-    extend: 'Ext.grid.feature.Grouping',
+  alias: "feature.groupingsummary",
 
-    alias: 'feature.groupingsummary',
+  showSummaryRow: true,
 
-    showSummaryRow: true,
-
-    vetoEvent: function (record, row, rowIndex, e){
-        var result = this.callParent(arguments);
-        if (result !== false && e.getTarget(this.summaryRowSelector)) {
-            result = false;
-        }
-        return result;
+  vetoEvent: function (record, row, rowIndex, e) {
+    var result = this.callParent(arguments);
+    if (result !== false && e.getTarget(this.summaryRowSelector)) {
+      result = false;
     }
+    return result;
+  },
 });
-

@@ -6,10 +6,10 @@
  *
  * @since 5.1.0
  */
-Ext.define('Ext.util.CSV', {
-    extend: 'Ext.util.DelimitedValue',
+Ext.define("Ext.util.CSV", {
+  extend: "Ext.util.DelimitedValue",
 
-    singleton: true,
+  singleton: true,
 
-    delimiter: ','
+  delimiter: ",",
 });

@@ -34,23 +34,23 @@
  *
  * @mixins Ext.device.geolocation.Abstract
  */
-Ext.define('Ext.device.Geolocation', {
-    singleton: true,
+Ext.define("Ext.device.Geolocation", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.geolocation.Cordova',
-        'Ext.device.geolocation.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.geolocation.Cordova",
+    "Ext.device.geolocation.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.geolocation.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.geolocation.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.geolocation.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.geolocation.Simulator");
+  },
 });

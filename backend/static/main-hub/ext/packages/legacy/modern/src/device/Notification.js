@@ -33,24 +33,24 @@
  *
  * @mixins Ext.device.notification.Abstract
  */
-Ext.define('Ext.device.Notification', {
-    singleton: true,
+Ext.define("Ext.device.Notification", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.notification.Cordova',
-        'Ext.device.notification.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.notification.Cordova",
+    "Ext.device.notification.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.notification.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.notification.Simulator');
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.notification.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.notification.Simulator");
+  },
 });

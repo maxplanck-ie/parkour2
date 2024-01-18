@@ -5,7 +5,9 @@
  * is more likely you will want to use one of the component classes that import this mixin, such as
  * {@link Ext.data.Store} or {@link Ext.data.TreeStore}.
  */
-Ext.define("Ext.util.Sortable", {
+Ext.define(
+  "Ext.util.Sortable",
+  {
     /**
      * @property {Boolean} isSortable
      * `true` in this class to identify an object as an instantiated Sortable, or subclass thereof.
@@ -16,19 +18,19 @@ Ext.define("Ext.util.Sortable", {
     $configStrict: false,
 
     config: {
-        /**
-         * @cfg {Ext.util.Sorter[]/Object[]} sorters
-         * The initial set of {@link Ext.util.Sorter Sorters}.
-         *
-         *     sorters: [{
-         *         property: 'age',
-         *         direction: 'DESC'
-         *     }, {
-         *         property: 'firstName',
-         *         direction: 'ASC'
-         *     }]
-         */
-        sorters: null
+      /**
+       * @cfg {Ext.util.Sorter[]/Object[]} sorters
+       * The initial set of {@link Ext.util.Sorter Sorters}.
+       *
+       *     sorters: [{
+       *         property: 'age',
+       *         direction: 'DESC'
+       *     }, {
+       *         property: 'firstName',
+       *         direction: 'ASC'
+       *     }]
+       */
+      sorters: null,
     },
 
     /**
@@ -37,9 +39,7 @@ Ext.define("Ext.util.Sortable", {
      */
     defaultSortDirection: "ASC",
 
-    requires: [
-        'Ext.util.Sorter'
-    ],
+    requires: ["Ext.util.Sorter"],
 
     /**
      * @event beforesort
@@ -62,28 +62,30 @@ Ext.define("Ext.util.Sortable", {
     multiSortLimit: 3,
 
     statics: {
-        /**
-         * Creates a single comparator function which encapsulates the passed Sorter array.
-         * @param {Ext.util.Sorter[]} sorters The sorter set for which to create a comparator function
-         * @return {Function} a function, which when passed two comparable objects returns the result
-         * of the whole sorter comparator functions.
-         */
-        createComparator: function(sorters) {
-            return sorters && sorters.length ? function(r1, r2) {
-                var result = sorters[0].sort(r1, r2),
-                    length = sorters.length,
-                    i = 1;
+      /**
+       * Creates a single comparator function which encapsulates the passed Sorter array.
+       * @param {Ext.util.Sorter[]} sorters The sorter set for which to create a comparator function
+       * @return {Function} a function, which when passed two comparable objects returns the result
+       * of the whole sorter comparator functions.
+       */
+      createComparator: function (sorters) {
+        return sorters && sorters.length
+          ? function (r1, r2) {
+              var result = sorters[0].sort(r1, r2),
+                length = sorters.length,
+                i = 1;
 
-                // While we have not established a comparison value,
-                // loop through subsequent sorters asking for a comparison value
-                for (; !result && i < length; i++) {
-                    result = sorters[i].sort.call(sorters[i], r1, r2);
-                }
-                return result;
-            }: function() {
-                return 0;
+              // While we have not established a comparison value,
+              // loop through subsequent sorters asking for a comparison value
+              for (; !result && i < length; i++) {
+                result = sorters[i].sort.call(sorters[i], r1, r2);
+              }
+              return result;
+            }
+          : function () {
+              return 0;
             };
-        }
+      },
     },
 
     /**
@@ -91,15 +93,16 @@ Ext.define("Ext.util.Sortable", {
      * The property in each item that contains the data to sort.
      */
 
-    applySorters: function(sorters) {
-        var me = this,
-            sortersCollection = me.getSorters() || new Ext.util.MixedCollection(false, Ext.returnId);
+    applySorters: function (sorters) {
+      var me = this,
+        sortersCollection =
+          me.getSorters() || new Ext.util.MixedCollection(false, Ext.returnId);
 
-        // We have been configured with a non-default value.
-        if (sorters) {
-            sortersCollection.addAll(me.decodeSorters(sorters));
-        }
-        return sortersCollection;
+      // We have been configured with a non-default value.
+      if (sorters) {
+        sortersCollection.addAll(me.decodeSorters(sorters));
+      }
+      return sortersCollection;
     },
 
     /**
@@ -152,91 +155,89 @@ Ext.define("Ext.util.Sortable", {
      * * `append` : This means that the new sorter becomes the last sorter.
      * @return {Ext.util.Sorter[]} The new sorters.
      */
-    sort: function(sorters, direction, insertionPosition, doSort) {
-        var me = this,
-            sorter,
-            overFlow,
-            currentSorters = me.getSorters();
+    sort: function (sorters, direction, insertionPosition, doSort) {
+      var me = this,
+        sorter,
+        overFlow,
+        currentSorters = me.getSorters();
 
-        if (!currentSorters) {
-            me.setSorters(null);
-            currentSorters = me.getSorters();
-        }
+      if (!currentSorters) {
+        me.setSorters(null);
+        currentSorters = me.getSorters();
+      }
 
-        if (Ext.isArray(sorters)) {
-            doSort = insertionPosition;
-            insertionPosition = direction;
-        }
-        else if (Ext.isObject(sorters)) {
-            sorters = [sorters];
-            doSort = insertionPosition;
-            insertionPosition = direction;
-        }
-        else if (Ext.isString(sorters)) {
-            sorter = currentSorters.get(sorters);
+      if (Ext.isArray(sorters)) {
+        doSort = insertionPosition;
+        insertionPosition = direction;
+      } else if (Ext.isObject(sorters)) {
+        sorters = [sorters];
+        doSort = insertionPosition;
+        insertionPosition = direction;
+      } else if (Ext.isString(sorters)) {
+        sorter = currentSorters.get(sorters);
 
-            if (!sorter) {
-                sorter = {
-                    property : sorters,
-                    direction: direction
-                };
+        if (!sorter) {
+          sorter = {
+            property: sorters,
+            direction: direction,
+          };
+        } else if (direction == null) {
+          sorter.toggle();
+        } else {
+          sorter.setDirection(direction);
+        }
+        sorters = [sorter];
+      }
+
+      if (sorters && sorters.length) {
+        sorters = me.decodeSorters(sorters);
+
+        switch (insertionPosition) {
+          // multi sorting means always inserting the specified sorters
+          // at the top.
+          // If we are asked to sort by what is already the primary sorter
+          // then toggle its direction.
+          case "multi":
+            // Insert the new sorter at the beginning.
+            currentSorters.insert(0, sorters[0]);
+
+            // If we now are oversize, trim our sorters collection
+            overFlow = currentSorters.getCount() - me.multiSortLimit;
+            if (overFlow > 0) {
+              currentSorters.removeRange(me.multiSortLimit, overFlow);
             }
-            else if (direction == null) {
-                sorter.toggle();
-            }
-            else {
-                sorter.setDirection(direction);
-            }
-            sorters = [sorter];
+            break;
+          case "prepend":
+            currentSorters.insert(0, sorters);
+            break;
+          case "append":
+            currentSorters.addAll(sorters);
+            break;
+          case undefined:
+          case null:
+          case "replace":
+            currentSorters.clear();
+            currentSorters.addAll(sorters);
+            break;
+          default:
+            //<debug>
+            Ext.raise(
+              'Sorter insertion point must be "multi", "prepend", "append" or "replace"',
+            );
+          //</debug>
         }
+      }
 
-        if (sorters && sorters.length) {
-            sorters = me.decodeSorters(sorters);
-
-            switch (insertionPosition) {
-                // multi sorting means always inserting the specified sorters
-                // at the top.
-                // If we are asked to sort by what is already the primary sorter
-                // then toggle its direction.
-                case "multi":
-                    // Insert the new sorter at the beginning.
-                    currentSorters.insert(0, sorters[0]);
-
-                    // If we now are oversize, trim our sorters collection
-                    overFlow = currentSorters.getCount() - me.multiSortLimit;
-                    if (overFlow > 0) {
-                        currentSorters.removeRange(me.multiSortLimit, overFlow);
-                    }
-                    break;
-                case "prepend" :
-                    currentSorters.insert(0, sorters);
-                    break;
-                case "append" :
-                    currentSorters.addAll(sorters);
-                    break;
-                case undefined:
-                case null:
-                case "replace":
-                    currentSorters.clear();
-                    currentSorters.addAll(sorters);
-                    break;
-                default:
-                    //<debug>
-                    Ext.raise('Sorter insertion point must be "multi", "prepend", "append" or "replace"');
-                    //</debug>
-            }
+      if (doSort !== false) {
+        me.fireEvent("beforesort", me, sorters);
+        me.onBeforeSort(sorters);
+        if (me.getSorterCount()) {
+          // Sort using a generated sorter function which combines all of the Sorters passed
+          me.doSort(me.generateComparator());
         }
+      }
 
-        if (doSort !== false) {
-            me.fireEvent('beforesort', me, sorters);
-            me.onBeforeSort(sorters);
-            if (me.getSorterCount()) {
-                // Sort using a generated sorter function which combines all of the Sorters passed
-                me.doSort(me.generateComparator());
-            }
-        }
-
-        return sorters;
+      return sorters;
     },
 
     /**
@@ -246,8 +247,8 @@ Ext.define("Ext.util.Sortable", {
      * May be overridden in subclasses. {@link Ext.data.Store Store} in particlar overrides
      * this because its groupers must contribute to the sorter count so that the sort method above executes doSort.
      */
-    getSorterCount: function( ){
-        return this.getSorters().items.length;
+    getSorterCount: function () {
+      return this.getSorters().items.length;
     },
 
     /**
@@ -257,13 +258,15 @@ Ext.define("Ext.util.Sortable", {
      * If there are no {@link #cfg-sorters} defined, it returns a function which returns `0` meaning
      * that no sorting will occur.
      */
-    generateComparator: function() {
-        var sorters = this.getSorters().getRange();
-        return sorters.length ? this.createComparator(sorters) : this.emptyComparator;
+    generateComparator: function () {
+      var sorters = this.getSorters().getRange();
+      return sorters.length
+        ? this.createComparator(sorters)
+        : this.emptyComparator;
     },
 
-    emptyComparator: function(){
-        return 0;
+    emptyComparator: function () {
+      return 0;
     },
 
     onBeforeSort: Ext.emptyFn,
@@ -274,58 +277,62 @@ Ext.define("Ext.util.Sortable", {
      * @param {Object[]} sorters The sorters array
      * @return {Ext.util.Sorter[]} Array of Ext.util.Sorter objects
      */
-    decodeSorters: function(sorters) {
-        if (!Ext.isArray(sorters)) {
-            if (sorters === undefined) {
-                sorters = [];
-            } else {
-                sorters = [sorters];
-            }
+    decodeSorters: function (sorters) {
+      if (!Ext.isArray(sorters)) {
+        if (sorters === undefined) {
+          sorters = [];
+        } else {
+          sorters = [sorters];
         }
+      }
 
-        var length = sorters.length,
-            Sorter = Ext.util.Sorter,
-            model = this.getModel ? this.getModel() : this.model,
-            field,
-            config, i;
+      var length = sorters.length,
+        Sorter = Ext.util.Sorter,
+        model = this.getModel ? this.getModel() : this.model,
+        field,
+        config,
+        i;
 
-        for (i = 0; i < length; i++) {
-            config = sorters[i];
+      for (i = 0; i < length; i++) {
+        config = sorters[i];
 
-            if (!(config instanceof Sorter)) {
-                if (Ext.isString(config)) {
-                    config = {
-                        property: config
-                    };
-                }
+        if (!(config instanceof Sorter)) {
+          if (Ext.isString(config)) {
+            config = {
+              property: config,
+            };
+          }
 
-                Ext.applyIf(config, {
-                    root     : this.sortRoot,
-                    direction: "ASC"
-                });
+          Ext.applyIf(config, {
+            root: this.sortRoot,
+            direction: "ASC",
+          });
 
-                //support for 3.x style sorters where a function can be defined as 'fn'
-                if (config.fn) {
-                    config.sorterFn = config.fn;
-                }
+          //support for 3.x style sorters where a function can be defined as 'fn'
+          if (config.fn) {
+            config.sorterFn = config.fn;
+          }
 
-                //support a function to be passed as a sorter definition
-                if (typeof config == 'function') {
-                    config = {
-                        sorterFn: config
-                    };
-                }
+          //support a function to be passed as a sorter definition
+          if (typeof config == "function") {
+            config = {
+              sorterFn: config,
+            };
+          }
 
-                // ensure sortType gets pushed on if necessary
-                if (model && !config.transform) {
-                    field = model.getField(config.property);
-                    config.transform = field && field.sortType !== Ext.identityFn ? field.sortType : undefined;
-                }
-                sorters[i] = new Ext.util.Sorter(config);
-            }
+          // ensure sortType gets pushed on if necessary
+          if (model && !config.transform) {
+            field = model.getField(config.property);
+            config.transform =
+              field && field.sortType !== Ext.identityFn
+                ? field.sortType
+                : undefined;
+          }
+          sorters[i] = new Ext.util.Sorter(config);
         }
+      }
 
-        return sorters;
+      return sorters;
     },
 
     /**
@@ -334,21 +341,23 @@ Ext.define("Ext.util.Sortable", {
      * @protected
      * @return {Ext.util.Sorter} The sorter, null if none exist
      */
-    getFirstSorter: function(){
-        var sorters = this.getSorters().items,
-            len = sorters.length,
-            i = 0,
-            sorter;
+    getFirstSorter: function () {
+      var sorters = this.getSorters().items,
+        len = sorters.length,
+        i = 0,
+        sorter;
 
-        for (; i < len; ++i) {
-            sorter = sorters[i];
-            if (!sorter.isGrouper) {
-                return sorter;
-            }
+      for (; i < len; ++i) {
+        sorter = sorters[i];
+        if (!sorter.isGrouper) {
+          return sorter;
         }
-        return null;
-    }
-}, function() {
+      }
+      return null;
+    },
+  },
+  function () {
     // Reference the static implementation in prototype
     this.prototype.createComparator = this.createComparator;
-});
+  },
+);

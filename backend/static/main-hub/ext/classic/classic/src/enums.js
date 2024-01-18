@@ -21,4 +21,3 @@
  * @enum [Ext.enums.Feature=feature.*]
  * Enumeration of all ftypes.
  */
-

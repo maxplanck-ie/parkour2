@@ -20,6 +20,7 @@ def show_toolbar_to_all_IPs(request):
     return True
 
 
+# CORS settings to enable API calls for Vue.js while development
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5174",

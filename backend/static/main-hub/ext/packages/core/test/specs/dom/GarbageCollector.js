@@ -1,80 +1,83 @@
-describe("Ext.dom.GarbageCollector", function() {
-    var skipGarbageCollection;
+describe("Ext.dom.GarbageCollector", function () {
+  var skipGarbageCollection;
 
-    beforeEach(function() {
-        skipGarbageCollection = Ext.dom.Element.prototype.skipGarbageCollection;
-        Ext.dom.Element.prototype.skipGarbageCollection = false;
-    });
+  beforeEach(function () {
+    skipGarbageCollection = Ext.dom.Element.prototype.skipGarbageCollection;
+    Ext.dom.Element.prototype.skipGarbageCollection = false;
+  });
 
-    afterEach(function() {
-        Ext.dom.Element.prototype.skipGarbageCollection = skipGarbageCollection;
-    });
+  afterEach(function () {
+    Ext.dom.Element.prototype.skipGarbageCollection = skipGarbageCollection;
+  });
 
-    it("should collect an orphan element", function() {
-        var el = Ext.get(document.createElement('div')),
-            id = el.id;
+  it("should collect an orphan element", function () {
+    var el = Ext.get(document.createElement("div")),
+      id = el.id;
 
-        expect(id in Ext.cache).toBe(true);
+    expect(id in Ext.cache).toBe(true);
 
-        spyOn(el, 'clearListeners').andCallThrough();
+    spyOn(el, "clearListeners").andCallThrough();
 
-        Ext.dom.GarbageCollector.collect();
+    Ext.dom.GarbageCollector.collect();
 
-        expect(el.clearListeners).toHaveBeenCalled();
-        expect(id in Ext.cache).toBe(false);
-        
-        // Element is already destroyed warning is expected
-        spyOn(Ext.Logger, 'warn');
-        
-        el.destroy();
-    });
+    expect(el.clearListeners).toHaveBeenCalled();
+    expect(id in Ext.cache).toBe(false);
 
-    it("should not collect an element that is in the body", function() {
-        var el = Ext.get(document.createElement('div')),
-            id = el.id;
+    // Element is already destroyed warning is expected
+    spyOn(Ext.Logger, "warn");
 
-        Ext.getBody().appendChild(el);
+    el.destroy();
+  });
 
-        spyOn(el, 'clearListeners').andCallThrough();
+  it("should not collect an element that is in the body", function () {
+    var el = Ext.get(document.createElement("div")),
+      id = el.id;
 
-        Ext.dom.GarbageCollector.collect();
+    Ext.getBody().appendChild(el);
 
-        expect(el.clearListeners).not.toHaveBeenCalled();
-        expect(id in Ext.cache).toBe(true);
+    spyOn(el, "clearListeners").andCallThrough();
 
-        el.destroy();
-    });
+    Ext.dom.GarbageCollector.collect();
 
-    (Ext.getDetachedBody ? it : xit)("should not collect an element that is in the detached body", function() {
-        var el = Ext.get(document.createElement('div')),
-            id = el.id;
+    expect(el.clearListeners).not.toHaveBeenCalled();
+    expect(id in Ext.cache).toBe(true);
 
-        Ext.getDetachedBody().appendChild(el);
+    el.destroy();
+  });
 
-        spyOn(el, 'clearListeners').andCallThrough();
+  (Ext.getDetachedBody ? it : xit)(
+    "should not collect an element that is in the detached body",
+    function () {
+      var el = Ext.get(document.createElement("div")),
+        id = el.id;
 
-        Ext.dom.GarbageCollector.collect();
+      Ext.getDetachedBody().appendChild(el);
 
-        expect(el.clearListeners).not.toHaveBeenCalled();
-        expect(id in Ext.cache).toBe(true);
+      spyOn(el, "clearListeners").andCallThrough();
 
-        el.destroy();
-    });
+      Ext.dom.GarbageCollector.collect();
 
-    it("should return the ids of collected elements", function() {
-        var ids, el2;
+      expect(el.clearListeners).not.toHaveBeenCalled();
+      expect(id in Ext.cache).toBe(true);
 
-        Ext.Element.create({ id: 'one' });
-        el2 = Ext.getBody().createChild({ id: 'two' });
-        Ext.Element.create({ tag: 'a', id: 'three' });
+      el.destroy();
+    },
+  );
 
-        ids = Ext.dom.GarbageCollector.collect();
+  it("should return the ids of collected elements", function () {
+    var ids, el2;
 
-        expect(ids instanceof Array).toBe(true);
-        expect(Ext.Array.contains(ids, 'DIV#one')).toBe(true);
-        expect(Ext.Array.contains(ids, 'DIV#two')).toBe(false);
-        expect(Ext.Array.contains(ids, 'A#three')).toBe(true);
+    Ext.Element.create({ id: "one" });
+    el2 = Ext.getBody().createChild({ id: "two" });
+    Ext.Element.create({ tag: "a", id: "three" });
 
-        el2.destroy();
-    });
+    ids = Ext.dom.GarbageCollector.collect();
+
+    expect(ids instanceof Array).toBe(true);
+    expect(Ext.Array.contains(ids, "DIV#one")).toBe(true);
+    expect(Ext.Array.contains(ids, "DIV#two")).toBe(false);
+    expect(Ext.Array.contains(ids, "A#three")).toBe(true);
+
+    el2.destroy();
+  });
 });

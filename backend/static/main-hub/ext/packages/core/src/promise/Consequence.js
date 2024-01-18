@@ -28,7 +28,8 @@
  * @since 6.0.0
  * @private
  */
-Ext.define('Ext.promise.Consequence', function(Consequence) { return {
+Ext.define("Ext.promise.Consequence", function (Consequence) {
+  return {
     /**
      * @property {Ext.promise.Promise}
      * Promise of the future value of this Consequence.
@@ -70,14 +71,14 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
      * @param {Function} onFulfilled Callback to execute to transform a fulfillment value.
      * @param {Function} onRejected Callback to execute to transform a rejection reason.
      */
-    constructor: function(onFulfilled, onRejected, onProgress) {
-        var me = this;
+    constructor: function (onFulfilled, onRejected, onProgress) {
+      var me = this;
 
-        me.onFulfilled = onFulfilled;
-        me.onRejected = onRejected;
-        me.onProgress = onProgress;
-        me.deferred = new Ext.promise.Deferred();
-        me.promise = me.deferred.promise;
+      me.onFulfilled = onFulfilled;
+      me.onRejected = onRejected;
+      me.onProgress = onProgress;
+      me.deferred = new Ext.promise.Deferred();
+      me.promise = me.deferred.promise;
     },
 
     /**
@@ -86,19 +87,19 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
      * @param {String} action Completion action (i.e. fulfill or reject).
      * @param {Mixed} value Fulfillment value or rejection reason.
      */
-    trigger: function(action, value) {
-        var me = this,
-            deferred = me.deferred;
+    trigger: function (action, value) {
+      var me = this,
+        deferred = me.deferred;
 
-        switch (action) {
-            case 'fulfill':
-                me.propagate(value, me.onFulfilled, deferred, deferred.resolve);
-                break;
+      switch (action) {
+        case "fulfill":
+          me.propagate(value, me.onFulfilled, deferred, deferred.resolve);
+          break;
 
-            case 'reject':
-                me.propagate(value, me.onRejected, deferred, deferred.reject);
-                break;
-        }
+        case "reject":
+          me.propagate(value, me.onRejected, deferred, deferred.reject);
+          break;
+      }
     },
 
     /**
@@ -106,12 +107,12 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
      *
      * @param {Mixed} value Progress value.
      */
-    update: function(progress) {
-        if (Ext.isFunction(this.onProgress)) {
-            progress = this.onProgress(progress);
-        }
-        
-        this.deferred.update(progress);
+    update: function (progress) {
+      if (Ext.isFunction(this.onProgress)) {
+        progress = this.onProgress(progress);
+      }
+
+      this.deferred.update(progress);
     },
 
     /**
@@ -127,20 +128,18 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
      *
      * @private
      */
-    propagate: function(value, callback, deferred, deferredMethod) {
-        if (Ext.isFunction(callback)) {
-            this.schedule(function() {
-                try {
-                    deferred.resolve(callback(value));
-                }
-                catch (e) {
-                    deferred.reject(e);
-                }
-            });
-        }
-        else {
-            deferredMethod.call(this.deferred, value);
-        }
+    propagate: function (value, callback, deferred, deferredMethod) {
+      if (Ext.isFunction(callback)) {
+        this.schedule(function () {
+          try {
+            deferred.resolve(callback(value));
+          } catch (e) {
+            deferred.reject(e);
+          }
+        });
+      } else {
+        deferredMethod.call(this.deferred, value);
+      }
     },
 
     /**
@@ -151,49 +150,52 @@ Ext.define('Ext.promise.Consequence', function(Consequence) { return {
      *
      * @private
      */
-    schedule: function(callback) {
-        var n = Consequence.queueSize++;
+    schedule: function (callback) {
+      var n = Consequence.queueSize++;
 
-        Consequence.queue[n] = callback;
+      Consequence.queue[n] = callback;
 
-        if (!n) { // if (queue was empty)
-            Ext.asap(Consequence.dispatch);
-        }
+      if (!n) {
+        // if (queue was empty)
+        Ext.asap(Consequence.dispatch);
+      }
     },
 
     statics: {
-        /**
-         * @property {Function[]} queue The queue of callbacks pending. This array is never
-         * shrunk to reduce GC thrash but instead its elements will be set to `null`.
-         *
-         * @private
-         */
-        queue: new Array(10000),
+      /**
+       * @property {Function[]} queue The queue of callbacks pending. This array is never
+       * shrunk to reduce GC thrash but instead its elements will be set to `null`.
+       *
+       * @private
+       */
+      queue: new Array(10000),
 
-        /**
-         * @property {Number} queueSize The number of callbacks in the `queue`.
-         *
-         * @private
-         */
-        queueSize: 0,
+      /**
+       * @property {Number} queueSize The number of callbacks in the `queue`.
+       *
+       * @private
+       */
+      queueSize: 0,
 
-        /**
-         * This method drains the callback queue and calls each callback in order.
-         *
-         * @private
-         */
-        dispatch: function() {
-            var queue = Consequence.queue,
-                fn, i;
+      /**
+       * This method drains the callback queue and calls each callback in order.
+       *
+       * @private
+       */
+      dispatch: function () {
+        var queue = Consequence.queue,
+          fn,
+          i;
 
-            // The queue could grow on each call, so we cannot cache queueSize here.
-            for (i = 0; i < Consequence.queueSize; ++i) {
-                fn = queue[i];
-                queue[i] = null; // release our reference on the callback
-                fn();
-            }
-
-            Consequence.queueSize = 0;
+        // The queue could grow on each call, so we cannot cache queueSize here.
+        for (i = 0; i < Consequence.queueSize; ++i) {
+          fn = queue[i];
+          queue[i] = null; // release our reference on the callback
+          fn();
         }
-    }
-}});
+
+        Consequence.queueSize = 0;
+      },
+    },
+  };
+});

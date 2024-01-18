@@ -167,3 +167,4 @@ xlwt==1.3.0
     #   tablib
 yarl==1.9.4
     # via aiohttp
+setuptools

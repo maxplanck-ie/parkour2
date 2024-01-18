@@ -21,26 +21,29 @@
  * displaying it.
  * @return {Object}
  */
-Ext.define('Ext.grid.property.Property', {
-    extend: 'Ext.data.Model',
+Ext.define("Ext.grid.property.Property", {
+  extend: "Ext.data.Model",
 
-    alternateClassName: 'Ext.PropGridProperty',
+  alternateClassName: "Ext.PropGridProperty",
 
-    fields: [{
-        name: 'name',
-        type: 'string'
-    }, {
-        name: 'value'
-    }],
-    idProperty: 'name',
+  fields: [
+    {
+      name: "name",
+      type: "string",
+    },
+    {
+      name: "value",
+    },
+  ],
+  idProperty: "name",
 
-    constructor: function(data, value) {
-        if (!Ext.isObject(data)) {
-            data = {
-                name: data,
-                value: value
-            };
-        }
-        this.callParent([data]);
+  constructor: function (data, value) {
+    if (!Ext.isObject(data)) {
+      data = {
+        name: data,
+        value: value,
+      };
     }
+    this.callParent([data]);
+  },
 });

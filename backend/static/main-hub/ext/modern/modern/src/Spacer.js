@@ -113,34 +113,33 @@ You can also insert multiple {@link Ext.Spacer}'s:
         ]
     });
  */
-Ext.define('Ext.Spacer', {
-    extend: 'Ext.Component',
-    alias : 'widget.spacer',
+Ext.define("Ext.Spacer", {
+  extend: "Ext.Component",
+  alias: "widget.spacer",
 
-    config: {
-        /**
-         * @cfg {Number} flex
-         * The flex value of this spacer. This defaults to 1, if no width has been set.
-         * @accessor
-         */
-        
-        /**
-         * @cfg {Number} width
-         * The width of this spacer. If this is set, the value of {@link #flex} will be ignored.
-         * @accessor
-         */
-    },
-
+  config: {
     /**
-     * @private
+     * @cfg {Number} flex
+     * The flex value of this spacer. This defaults to 1, if no width has been set.
+     * @accessor
      */
-    constructor: function(config) {
-        config = config || {};
+    /**
+     * @cfg {Number} width
+     * The width of this spacer. If this is set, the value of {@link #flex} will be ignored.
+     * @accessor
+     */
+  },
 
-        if (!config.width) {
-            config.flex = 1;
-        }
+  /**
+   * @private
+   */
+  constructor: function (config) {
+    config = config || {};
 
-        this.callParent([config]);
+    if (!config.width) {
+      config.flex = 1;
     }
+
+    this.callParent([config]);
+  },
 });

@@ -92,64 +92,64 @@
  *
  * @private
  */
-Ext.define('Ext.parse.Tokenizer', function (Tokenizer) {
-    var flyweights = (Tokenizer.flyweights = []),
-        BOOLEAN = { literal: true, boolean: true },
-        ERROR = { error: true },
-        IDENT = { ident: true },
-        LITERAL = { literal: true },
-        NULL = { literal: true, nil: true },
-        NUMBER = { literal: true, number: true },
-        STRING = { literal: true, string: true };
+Ext.define("Ext.parse.Tokenizer", function (Tokenizer) {
+  var flyweights = (Tokenizer.flyweights = []),
+    BOOLEAN = { literal: true, boolean: true },
+    ERROR = { error: true },
+    IDENT = { ident: true },
+    LITERAL = { literal: true },
+    NULL = { literal: true, nil: true },
+    NUMBER = { literal: true, number: true },
+    STRING = { literal: true, string: true };
 
-return {
-    extend: 'Ext.util.Fly',
+  return {
+    extend: "Ext.util.Fly",
 
     isTokenizer: true,
 
     statics: {
-        BOOLEAN: BOOLEAN,
-        ERROR: ERROR,
-        IDENT: IDENT,
-        LITERAL: LITERAL,
-        NULL: NULL,
-        NUMBER: NUMBER,
-        STRING: STRING
+      BOOLEAN: BOOLEAN,
+      ERROR: ERROR,
+      IDENT: IDENT,
+      LITERAL: LITERAL,
+      NULL: NULL,
+      NUMBER: NUMBER,
+      STRING: STRING,
     },
 
     config: {
-        /**
-         * @cfg {Object} keywords
-         * A map of keywords that should be mapped to other token types. By default the
-         * `null`, `true` and `false` keywords are mapped to their respective literal
-         * value tokens.
-         */
-        keywords: {
-            'null':  { type: 'literal', is: NULL,    value: null },
-            'false': { type: 'literal', is: BOOLEAN, value: false },
-            'true':  { type: 'literal', is: BOOLEAN, value: true }
-        },
+      /**
+       * @cfg {Object} keywords
+       * A map of keywords that should be mapped to other token types. By default the
+       * `null`, `true` and `false` keywords are mapped to their respective literal
+       * value tokens.
+       */
+      keywords: {
+        null: { type: "literal", is: NULL, value: null },
+        false: { type: "literal", is: BOOLEAN, value: false },
+        true: { type: "literal", is: BOOLEAN, value: true },
+      },
 
-        /**
-         * @cfg {Object} operators
-         * A map of operators and their names. The keys are the operator text and the
-         * name (the values) are placed in the token's `is` object as `true`.
-         */
-        operators: {
-            '+': 'plus',
-            '-': 'minus',
-            '*': 'multiply',
-            '/': 'divide',
-            '!': 'bang',
-            ',': 'comma',
-            ':': 'colon',
-            '[': 'arrayOpen',
-            ']': 'arrayClose',
-            '{': 'curlyOpen',
-            '}': 'curlyClose',
-            '(': 'parenOpen',
-            ')': 'parenClose'
-        }
+      /**
+       * @cfg {Object} operators
+       * A map of operators and their names. The keys are the operator text and the
+       * name (the values) are placed in the token's `is` object as `true`.
+       */
+      operators: {
+        "+": "plus",
+        "-": "minus",
+        "*": "multiply",
+        "/": "divide",
+        "!": "bang",
+        ",": "comma",
+        ":": "colon",
+        "[": "arrayOpen",
+        "]": "arrayClose",
+        "{": "curlyOpen",
+        "}": "curlyClose",
+        "(": "parenOpen",
+        ")": "parenClose",
+      },
     },
 
     /**
@@ -171,9 +171,9 @@ return {
     index: -1,
 
     constructor: function (config) {
-        this.operators = {};
+      this.operators = {};
 
-        this.initConfig(config);
+      this.initConfig(config);
     },
 
     /**
@@ -186,11 +186,11 @@ return {
      * @return {Object} The next token in the stream (now consumed).
      */
     next: function () {
-        var token = this.peek();
+      var token = this.peek();
 
-        this.head = undefined;  // indicates that more parsing is needed (see peek)
+      this.head = undefined; // indicates that more parsing is needed (see peek)
 
-        return token;
+      return token;
     },
 
     /**
@@ -226,30 +226,30 @@ return {
      * `curlyOpen`, `curlyClose`, `parentOpen` and `parenClose`).
      */
     peek: function () {
-        var me = this,
-            error = me.error,
-            token = me.head;
+      var me = this,
+        error = me.error,
+        token = me.head;
 
-        if (error) {
-            return error;
-        }
+      if (error) {
+        return error;
+      }
 
-        if (token === undefined) {
-            me.head = token = me.advance();
-        }
+      if (token === undefined) {
+        me.head = token = me.advance();
+      }
 
-        return token;
+      return token;
     },
 
     /**
      * Returns this flyweight instance to the flyweight pool for reuse.
      */
     release: function () {
-        this.reset();
+      this.reset();
 
-        if (flyweights.length < Tokenizer.flyPoolSize) {
-            flyweights.push(this);
-        }
+      if (flyweights.length < Tokenizer.flyPoolSize) {
+        flyweights.push(this);
+      }
     },
 
     /**
@@ -261,61 +261,67 @@ return {
      * @returns {Ext.parse.Tokenizer}
      */
     reset: function (text, pos, end) {
-        var me = this;
+      var me = this;
 
-        me.error = null;
-        me.head = undefined;
-        me.index = -1;
-        me.text = text || null;
-        me.pos = pos || 0;
-        me.end = (text && end == null) ? text.length : end;
+      me.error = null;
+      me.head = undefined;
+      me.index = -1;
+      me.text = text || null;
+      me.pos = pos || 0;
+      me.end = text && end == null ? text.length : end;
 
-        return me;
+      return me;
     },
 
     privates: {
-        digitRe: /[0-9]/,
-        identFirstRe: /[a-z_$]/i,
-        identRe: /[0-9a-z_$]/i,
-        spaceRe: /[ \t]/,
+      digitRe: /[0-9]/,
+      identFirstRe: /[a-z_$]/i,
+      identRe: /[0-9a-z_$]/i,
+      spaceRe: /[ \t]/,
 
-        /**
-         * The index one beyond the last character of the input text. This defaults to
-         * the `text.length`.
-         * @property {Number} end
-         * @readonly
-         */
-        end: 0,
+      /**
+       * The index one beyond the last character of the input text. This defaults to
+       * the `text.length`.
+       * @property {Number} end
+       * @readonly
+       */
+      end: 0,
 
-        /**
-         * The current token at the head of the token stream. This will be `undefined`
-         * if the next token must be parsed from `text`. It is `null` if there are no
-         * more tokens.
-         * @property {Object} head
-         * @readonly
-         */
-        head: undefined,
+      /**
+       * The current token at the head of the token stream. This will be `undefined`
+       * if the next token must be parsed from `text`. It is `null` if there are no
+       * more tokens.
+       * @property {Object} head
+       * @readonly
+       */
+      head: undefined,
 
-        /**
-         * The current character position in the `text` from which the next token will
-         * be parsed.
-         * @property {Number} pos
-         * @readonly
-         */
-        pos: 0,
+      /**
+       * The current character position in the `text` from which the next token will
+       * be parsed.
+       * @property {Number} pos
+       * @readonly
+       */
+      pos: 0,
 
-        /**
-         * The text to be tokenized.
-         * @property {String} text
-         * @readonly
-         */
-        text: null,
+      /**
+       * The text to be tokenized.
+       * @property {String} text
+       * @readonly
+       */
+      text: null,
 
-        applyOperators: function (ops) {
-            var operators = this.operators,
-                block, c, def, i, len, name, op;
+      applyOperators: function (ops) {
+        var operators = this.operators,
+          block,
+          c,
+          def,
+          i,
+          len,
+          name,
+          op;
 
-            /*
+        /*
              Builds a map one character at a time (i.e., a "trie"):
 
                 operators: {
@@ -328,310 +334,312 @@ return {
                     }
                 }
              */
-            for (op in ops) {
-                block = operators;
-                name = ops[op];
-                len = op.length;
+        for (op in ops) {
+          block = operators;
+          name = ops[op];
+          len = op.length;
 
-                for (i = 0; i < len; ++i) {
-                    c = op.charAt(i);
-                    block = block[c] || (block[c] = {});
-                }
+          for (i = 0; i < len; ++i) {
+            c = op.charAt(i);
+            block = block[c] || (block[c] = {});
+          }
 
-                if (name) {
-                    block.token = def = {
-                        type: 'operator',
-                        value: op,
-                        is: { operator: true }
-                    };
-
-                    def.is[name] = true;
-                } else {
-                    block.token = null;
-                }
-            }
-        },
-
-        /**
-         * Parses and returns the next token from `text` starting at `pos`.
-         * @return {Object} The next token
-         */
-        advance: function () {
-            var me = this,
-                spaceRe = me.spaceRe,
-                text = me.text,
-                length = me.end,
-                c;
-
-            while (me.pos < length) {
-                c = text.charAt(me.pos);
-
-                if (spaceRe.test(c)) {
-                    ++me.pos;  // consume the whitespace
-                    continue;
-                }
-
-                me.index = me.pos;
-                return me.parse(c);
-            }
-
-            return null;
-        },
-
-        /**
-         * Parses the current token that starts with the provided character `c` and
-         * located at the current `pos` in the `text`.
-         * @param {String} c The current character.
-         * @return {Object} The next token
-         */
-        parse: function (c) {
-            var me = this,
-                digitRe = me.digitRe,
-                text = me.text,
-                length = me.end,
-                ret;
-
-            // Handle ".123"
-            if ( c === '.' && me.pos+1 < length) {
-                if (digitRe.test(text.charAt(me.pos+1))) {
-                    ret = me.parseNumber();
-                }
-            }
-
-            if (!ret && me.operators[c]) {
-                ret = me.parseOperator(c);
-            }
-
-            if (!ret) {
-                if (c === '"' || c === "'") {
-                    ret = me.parseString();
-                }
-                else if (digitRe.test(c)) {
-                    ret = me.parseNumber();
-                }
-                else if (me.identFirstRe.test(c)) {
-                    ret = me.parseIdent();
-                }
-                else {
-                    ret = me.syntaxError('Unexpected character');
-                }
-            }
-
-            return ret;
-        },
-
-        /**
-         * Parses the next identifier token.
-         * @return {Object} The next token.
-         */
-        parseIdent: function () {
-            var me = this,
-                identRe = me.identRe,
-                keywords = me.getKeywords(),
-                includeDots = !me.operators['.'],
-                text = me.text,
-                start = me.pos,
-                end = start,
-                length = me.end,
-                prev = 0,
-                c, value;
-
-            while (end < length) {
-                c = text.charAt(end);
-
-                if (includeDots && c === '.') {
-                    if (prev === '.') {
-                        return me.syntaxError(end, 'Unexpected dot operator');
-                    }
-                    ++end;
-                }
-                else if (identRe.test(c)) {
-                    ++end;
-                }
-                else {
-                    break;
-                }
-
-                prev = c;
-            }
-
-            if (prev === '.') {
-                return me.syntaxError(end - 1, 'Unexpected dot operator');
-            }
-
-            value = text.substring(start, me.pos = end);
-
-            return (keywords && keywords[value]) || {
-                type: 'ident',
-                is: IDENT,
-                value: value
-            };
-        },
-
-        /**
-         * Parses the next number literal token.
-         * @return {Object} The next token.
-         */
-        parseNumber: function () {
-            var me = this,
-                digitRe = me.digitRe,
-                text = me.text,
-                start = me.pos,
-                length = me.end,
-                c, decimal, exp, token;
-
-            while (me.pos < length) {
-                c = text.charAt(me.pos);
-
-                if (c === '-' || c === '+') {
-                    if (me.pos !== start) {
-                        return me.syntaxError(start, 'Invalid number');
-                    }
-                    ++me.pos;
-                }
-                else if (c === '.') {
-                    if (decimal) {
-                        break;
-                    }
-                    decimal = true;
-                    ++me.pos;
-                }
-                else if (c === 'e' || c === 'E') {
-                    if (exp) {
-                        break;
-                    }
-
-                    decimal = exp = true; // exp from here on, no decimal allowed
-
-                    c = text.charAt(++me.pos); // consume E and peek ahead
-
-                    if (c === '-' || c === '+') {
-                        ++me.pos;  // keep the exp sign
-                    }
-                }
-                else if (digitRe.test(c)) {
-                    ++me.pos;
-                }
-                else {
-                    break;
-                }
-            }
-
-            token = {
-                type: 'literal',
-                is: NUMBER,
-                // Beware parseFloat as it will stop parsing and return what it could
-                // parse. For example parseFloat('1x') == 1 whereas +'1x' == NaN.
-                value: +text.substring(start, me.pos)
+          if (name) {
+            block.token = def = {
+              type: "operator",
+              value: op,
+              is: { operator: true },
             };
 
-            if (!isFinite(token.value)) {
-                token = me.syntaxError(start, 'Invalid number');
-            }
-
-            return token;
-        },
-
-        parseOperator: function (c) {
-            var me = this,
-                block = me.operators,
-                text = me.text,
-                length = me.end,
-                end = me.pos,
-                match, matchEnd, token;
-
-            while (block[c]) {
-                block = block[c];
-                token = block.token;
-                ++end;
-
-                if (token) {
-                    match = token;
-                    matchEnd = end;
-                }
-
-                if (end < length) {
-                    c = text.charAt(end);
-                } else {
-                    break;
-                }
-            }
-
-            if (match) {
-                me.pos = matchEnd;
-            }
-
-            return match;
-        },
-
-        /**
-         * Parses the next string literal token.
-         * @return {Object} The next token.
-         */
-        parseString: function () {
-            var me = this,
-                text = me.text,
-                pos = me.pos,
-                start = pos,
-                length = me.end,
-                str = '',
-                c, closed, quote;
-
-            quote = text.charAt(pos++);
-
-            while (pos < length) {
-                c = text.charAt(pos++);
-
-                if (c === quote) {
-                    closed = true;
-                    break;
-                }
-                if (c === '\\' && pos < length) {
-                    c = text.charAt(pos++);
-                }
-
-                // Processing escapes means we cannot use substring() to pick up the
-                // text as a single chunk...
-                str += c;
-            }
-            
-            me.pos = pos;
-            
-            if (!closed) {
-                return me.syntaxError(start, 'Unterminated string');
-            }
-
-            return {
-                type: 'literal',
-                is: STRING,
-                value: str
-            };
-        },
-
-        /**
-         * This method is called when a syntax error is encountered. It updates `error`
-         * and returns the error token.
-         * @param {Number} at The index of the syntax error (optional).
-         * @param {String} message The error message.
-         * @return {Object} The error token.
-         */
-        syntaxError: function (at, message) {
-            if (typeof at === 'string') {
-                message = at;
-                at = this.pos;
-            }
-
-            var suffix = (at == null) ? '' : (' (at index ' + at + ')'),
-                error = new Error(message + suffix);
-
-            error.type = 'error';
-            error.is = ERROR;
-
-            if (suffix) {
-                error.at = at;
-            }
-
-            return this.error = error;
+            def.is[name] = true;
+          } else {
+            block.token = null;
+          }
         }
-    }
-}});
+      },
+
+      /**
+       * Parses and returns the next token from `text` starting at `pos`.
+       * @return {Object} The next token
+       */
+      advance: function () {
+        var me = this,
+          spaceRe = me.spaceRe,
+          text = me.text,
+          length = me.end,
+          c;
+
+        while (me.pos < length) {
+          c = text.charAt(me.pos);
+
+          if (spaceRe.test(c)) {
+            ++me.pos; // consume the whitespace
+            continue;
+          }
+
+          me.index = me.pos;
+          return me.parse(c);
+        }
+
+        return null;
+      },
+
+      /**
+       * Parses the current token that starts with the provided character `c` and
+       * located at the current `pos` in the `text`.
+       * @param {String} c The current character.
+       * @return {Object} The next token
+       */
+      parse: function (c) {
+        var me = this,
+          digitRe = me.digitRe,
+          text = me.text,
+          length = me.end,
+          ret;
+
+        // Handle ".123"
+        if (c === "." && me.pos + 1 < length) {
+          if (digitRe.test(text.charAt(me.pos + 1))) {
+            ret = me.parseNumber();
+          }
+        }
+
+        if (!ret && me.operators[c]) {
+          ret = me.parseOperator(c);
+        }
+
+        if (!ret) {
+          if (c === '"' || c === "'") {
+            ret = me.parseString();
+          } else if (digitRe.test(c)) {
+            ret = me.parseNumber();
+          } else if (me.identFirstRe.test(c)) {
+            ret = me.parseIdent();
+          } else {
+            ret = me.syntaxError("Unexpected character");
+          }
+        }
+
+        return ret;
+      },
+
+      /**
+       * Parses the next identifier token.
+       * @return {Object} The next token.
+       */
+      parseIdent: function () {
+        var me = this,
+          identRe = me.identRe,
+          keywords = me.getKeywords(),
+          includeDots = !me.operators["."],
+          text = me.text,
+          start = me.pos,
+          end = start,
+          length = me.end,
+          prev = 0,
+          c,
+          value;
+
+        while (end < length) {
+          c = text.charAt(end);
+
+          if (includeDots && c === ".") {
+            if (prev === ".") {
+              return me.syntaxError(end, "Unexpected dot operator");
+            }
+            ++end;
+          } else if (identRe.test(c)) {
+            ++end;
+          } else {
+            break;
+          }
+
+          prev = c;
+        }
+
+        if (prev === ".") {
+          return me.syntaxError(end - 1, "Unexpected dot operator");
+        }
+
+        value = text.substring(start, (me.pos = end));
+
+        return (
+          (keywords && keywords[value]) || {
+            type: "ident",
+            is: IDENT,
+            value: value,
+          }
+        );
+      },
+
+      /**
+       * Parses the next number literal token.
+       * @return {Object} The next token.
+       */
+      parseNumber: function () {
+        var me = this,
+          digitRe = me.digitRe,
+          text = me.text,
+          start = me.pos,
+          length = me.end,
+          c,
+          decimal,
+          exp,
+          token;
+
+        while (me.pos < length) {
+          c = text.charAt(me.pos);
+
+          if (c === "-" || c === "+") {
+            if (me.pos !== start) {
+              return me.syntaxError(start, "Invalid number");
+            }
+            ++me.pos;
+          } else if (c === ".") {
+            if (decimal) {
+              break;
+            }
+            decimal = true;
+            ++me.pos;
+          } else if (c === "e" || c === "E") {
+            if (exp) {
+              break;
+            }
+
+            decimal = exp = true; // exp from here on, no decimal allowed
+
+            c = text.charAt(++me.pos); // consume E and peek ahead
+
+            if (c === "-" || c === "+") {
+              ++me.pos; // keep the exp sign
+            }
+          } else if (digitRe.test(c)) {
+            ++me.pos;
+          } else {
+            break;
+          }
+        }
+
+        token = {
+          type: "literal",
+          is: NUMBER,
+          // Beware parseFloat as it will stop parsing and return what it could
+          // parse. For example parseFloat('1x') == 1 whereas +'1x' == NaN.
+          value: +text.substring(start, me.pos),
+        };
+
+        if (!isFinite(token.value)) {
+          token = me.syntaxError(start, "Invalid number");
+        }
+
+        return token;
+      },
+
+      parseOperator: function (c) {
+        var me = this,
+          block = me.operators,
+          text = me.text,
+          length = me.end,
+          end = me.pos,
+          match,
+          matchEnd,
+          token;
+
+        while (block[c]) {
+          block = block[c];
+          token = block.token;
+          ++end;
+
+          if (token) {
+            match = token;
+            matchEnd = end;
+          }
+
+          if (end < length) {
+            c = text.charAt(end);
+          } else {
+            break;
+          }
+        }
+
+        if (match) {
+          me.pos = matchEnd;
+        }
+
+        return match;
+      },
+
+      /**
+       * Parses the next string literal token.
+       * @return {Object} The next token.
+       */
+      parseString: function () {
+        var me = this,
+          text = me.text,
+          pos = me.pos,
+          start = pos,
+          length = me.end,
+          str = "",
+          c,
+          closed,
+          quote;
+
+        quote = text.charAt(pos++);
+
+        while (pos < length) {
+          c = text.charAt(pos++);
+
+          if (c === quote) {
+            closed = true;
+            break;
+          }
+          if (c === "\\" && pos < length) {
+            c = text.charAt(pos++);
+          }
+
+          // Processing escapes means we cannot use substring() to pick up the
+          // text as a single chunk...
+          str += c;
+        }
+
+        me.pos = pos;
+
+        if (!closed) {
+          return me.syntaxError(start, "Unterminated string");
+        }
+
+        return {
+          type: "literal",
+          is: STRING,
+          value: str,
+        };
+      },
+
+      /**
+       * This method is called when a syntax error is encountered. It updates `error`
+       * and returns the error token.
+       * @param {Number} at The index of the syntax error (optional).
+       * @param {String} message The error message.
+       * @return {Object} The error token.
+       */
+      syntaxError: function (at, message) {
+        if (typeof at === "string") {
+          message = at;
+          at = this.pos;
+        }
+
+        var suffix = at == null ? "" : " (at index " + at + ")",
+          error = new Error(message + suffix);
+
+        error.type = "error";
+        error.is = ERROR;
+
+        if (suffix) {
+          error.at = at;
+        }
+
+        return (this.error = error);
+      },
+    },
+  };
+});

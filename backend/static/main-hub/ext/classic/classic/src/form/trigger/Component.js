@@ -3,45 +3,45 @@
  * Ext.Widget Widget}.
  * @private
  */
-Ext.define('Ext.form.trigger.Component', {
-    extend: 'Ext.form.trigger.Trigger',
-    alias: 'trigger.component',
+Ext.define("Ext.form.trigger.Component", {
+  extend: "Ext.form.trigger.Trigger",
+  alias: "trigger.component",
 
-    cls: Ext.baseCSSPrefix + 'form-trigger-cmp',
+  cls: Ext.baseCSSPrefix + "form-trigger-cmp",
 
-    /**
-     * @cfg {Object/Ext.Component/Ext.Widget} component A config object for a Component or Widget,
-     * or an already instantiated Component or Widget.
-     */
+  /**
+   * @cfg {Object/Ext.Component/Ext.Widget} component A config object for a Component or Widget,
+   * or an already instantiated Component or Widget.
+   */
 
-    /**
-     * @property {Ext.Component/Ext.Widget} component The component or widget
-     * @readonly
-     */
+  /**
+   * @property {Ext.Component/Ext.Widget} component The component or widget
+   * @readonly
+   */
 
-    onFieldRender: function() {
-        var me = this,
-            component = me.component;
+  onFieldRender: function () {
+    var me = this,
+      component = me.component;
 
-        me.callParent();
+    me.callParent();
 
-        if (!component.isComponent && !component.isWidget) {
-            component = Ext.widget(component);
-        }
-
-        me.component = component;
-
-        component.render(me.el);
-    },
-
-    destroy: function() {
-        var component = this.component;
-
-        if (component.isComponent || component.isWidget) {
-            component.destroy();
-        }
-
-        this.component = null;
-        this.callParent();
+    if (!component.isComponent && !component.isWidget) {
+      component = Ext.widget(component);
     }
+
+    me.component = component;
+
+    component.render(me.el);
+  },
+
+  destroy: function () {
+    var component = this.component;
+
+    if (component.isComponent || component.isWidget) {
+      component.destroy();
+    }
+
+    this.component = null;
+    this.callParent();
+  },
 });

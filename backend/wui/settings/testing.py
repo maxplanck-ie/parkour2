@@ -1,11 +1,37 @@
 from .base import *
 
-## These are the same as in dev.py but without Django-debug-toolbar
-
 DEBUG = True
 
+## These are the same as in prod.py
+
+REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
+    "rest_framework.renderers.JSONRenderer",
+]
+
+NOTEBOOK_ARGUMENTS += [
+    "--ip",
+    "0.0.0.0",
+    "--allow-root",
+]
+
+## These are the same as in dev.py BUT without Django-debug-toolbar
+
 INSTALLED_APPS += [
+    "schema_viewer",
     "django_migration_linter",
+    "corsheaders",
+]
+
+MIDDLEWARE += [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+]
+
+
+# CORS settings to enable API calls for Vue.js while development
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5174",
 ]
 
 MIGRATION_LINTER_OPTIONS = {
@@ -40,15 +66,3 @@ LOGGING["loggers"] = {
         "handlers": ["rich_console"],
     },
 }
-
-## These are the same as in prod.py
-
-REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = [
-    "rest_framework.renderers.JSONRenderer",
-]
-
-NOTEBOOK_ARGUMENTS += [
-    "--ip",
-    "0.0.0.0",
-    "--allow-root",
-]

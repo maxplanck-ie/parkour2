@@ -32,23 +32,26 @@
  *
  * An object literal of this form could also be used as the {@link #cfg-data} config option.
  */
-Ext.define('Ext.data.JsonStore',  {
-    extend: 'Ext.data.Store',
-    alias: 'store.json',
-    requires: [
-        'Ext.data.proxy.Ajax',
-        'Ext.data.reader.Json',
-        'Ext.data.writer.Json'
-    ],
+Ext.define("Ext.data.JsonStore", {
+  extend: "Ext.data.Store",
+  alias: "store.json",
+  requires: [
+    "Ext.data.proxy.Ajax",
+    "Ext.data.reader.Json",
+    "Ext.data.writer.Json",
+  ],
 
-    constructor: function(config) {
-        config = Ext.apply({
-            proxy: {
-                type  : 'ajax',
-                reader: 'json',
-                writer: 'json'
-            }
-        }, config);
-        this.callParent([config]);
-    }
+  constructor: function (config) {
+    config = Ext.apply(
+      {
+        proxy: {
+          type: "ajax",
+          reader: "json",
+          writer: "json",
+        },
+      },
+      config,
+    );
+    this.callParent([config]);
+  },
 });

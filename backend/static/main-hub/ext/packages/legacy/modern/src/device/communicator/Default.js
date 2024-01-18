@@ -63,122 +63,132 @@
  * callback references, the same old ids will simply be reused, which guarantee the best possible
  * performance for a large amount of repetitive calls.
  */
-Ext.define('Ext.device.communicator.Default', {
+Ext.define("Ext.device.communicator.Default", {
+  SERVER_URL: "http://localhost:3000", // Change this to the correct server URL
 
-    SERVER_URL: 'http://localhost:3000', // Change this to the correct server URL
+  callbackDataMap: {},
 
-    callbackDataMap: {},
+  callbackIdMap: {},
 
-    callbackIdMap: {},
+  idSeed: 0,
 
-    idSeed: 0,
+  globalScopeId: "0",
 
-    globalScopeId: '0',
+  generateId: function () {
+    return String(++this.idSeed);
+  },
 
-    generateId: function() {
-        return String(++this.idSeed);
-    },
+  getId: function (object) {
+    var id = object.$callbackId;
 
-    getId: function(object) {
-        var id = object.$callbackId;
-
-        if (!id) {
-            object.$callbackId = id = this.generateId();
-        }
-
-        return id;
-    },
-
-    getCallbackId: function(callback, scope) {
-        var idMap = this.callbackIdMap,
-            dataMap = this.callbackDataMap,
-            id, scopeId, callbackId, data;
-
-        if (!scope) {
-            scopeId = this.globalScopeId;
-        } else if (scope.isIdentifiable) {
-            scopeId = scope.getId();
-        } else {
-            scopeId = this.getId(scope);
-        }
-
-        callbackId = this.getId(callback);
-
-        if (!idMap[scopeId]) {
-            idMap[scopeId] = {};
-        }
-
-        if (!idMap[scopeId][callbackId]) {
-            id = this.generateId();
-            data = {
-                callback: callback,
-                scope: scope
-            };
-
-            idMap[scopeId][callbackId] = id;
-            dataMap[id] = data;
-        }
-
-        return idMap[scopeId][callbackId];
-    },
-
-    getCallbackData: function(id) {
-        return this.callbackDataMap[id];
-    },
-
-    invoke: function(id, args) {
-        var data = this.getCallbackData(id);
-
-        data.callback.apply(data.scope, args);
-    },
-
-    send: function(args) {
-        var callbacks, scope, name, callback;
-
-        if (!args) {
-            args = {};
-        } else if (args.callbacks) {
-            callbacks = args.callbacks;
-            scope = args.scope;
-
-            delete args.callbacks;
-            delete args.scope;
-
-            for (name in callbacks) {
-                if (callbacks.hasOwnProperty(name)) {
-                    callback = callbacks[name];
-
-                    if (typeof callback == 'function') {
-                        args[name] = this.getCallbackId(callback, scope);
-                    }
-                }
-            }
-        }
-
-        args.__source = document.location.href;
-
-        var result = this.doSend(args);
-
-        return (result && result.length > 0) ? JSON.parse(result) : null;
-    },
-
-    doSend: function(args) {
-        var xhr = new XMLHttpRequest();
-
-        xhr.open('GET', this.SERVER_URL + '?' + Ext.Object.toQueryString(args) + '&_dc=' + new Date().getTime(), false);
-
-        // wrap the request in a try/catch block so we can check if any errors are thrown and attempt to call any
-        // failure/callback functions if defined
-        try {
-            xhr.send(null);
-
-            return xhr.responseText;
-        } catch(e) {
-            if (args.failure) {
-                this.invoke(args.failure);
-            } else if (args.callback) {
-                this.invoke(args.callback);
-            }
-        }
+    if (!id) {
+      object.$callbackId = id = this.generateId();
     }
+
+    return id;
+  },
+
+  getCallbackId: function (callback, scope) {
+    var idMap = this.callbackIdMap,
+      dataMap = this.callbackDataMap,
+      id,
+      scopeId,
+      callbackId,
+      data;
+
+    if (!scope) {
+      scopeId = this.globalScopeId;
+    } else if (scope.isIdentifiable) {
+      scopeId = scope.getId();
+    } else {
+      scopeId = this.getId(scope);
+    }
+
+    callbackId = this.getId(callback);
+
+    if (!idMap[scopeId]) {
+      idMap[scopeId] = {};
+    }
+
+    if (!idMap[scopeId][callbackId]) {
+      id = this.generateId();
+      data = {
+        callback: callback,
+        scope: scope,
+      };
+
+      idMap[scopeId][callbackId] = id;
+      dataMap[id] = data;
+    }
+
+    return idMap[scopeId][callbackId];
+  },
+
+  getCallbackData: function (id) {
+    return this.callbackDataMap[id];
+  },
+
+  invoke: function (id, args) {
+    var data = this.getCallbackData(id);
+
+    data.callback.apply(data.scope, args);
+  },
+
+  send: function (args) {
+    var callbacks, scope, name, callback;
+
+    if (!args) {
+      args = {};
+    } else if (args.callbacks) {
+      callbacks = args.callbacks;
+      scope = args.scope;
+
+      delete args.callbacks;
+      delete args.scope;
+
+      for (name in callbacks) {
+        if (callbacks.hasOwnProperty(name)) {
+          callback = callbacks[name];
+
+          if (typeof callback == "function") {
+            args[name] = this.getCallbackId(callback, scope);
+          }
+        }
+      }
+    }
+
+    args.__source = document.location.href;
+
+    var result = this.doSend(args);
+
+    return result && result.length > 0 ? JSON.parse(result) : null;
+  },
+
+  doSend: function (args) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open(
+      "GET",
+      this.SERVER_URL +
+        "?" +
+        Ext.Object.toQueryString(args) +
+        "&_dc=" +
+        new Date().getTime(),
+      false,
+    );
+
+    // wrap the request in a try/catch block so we can check if any errors are thrown and attempt to call any
+    // failure/callback functions if defined
+    try {
+      xhr.send(null);
+
+      return xhr.responseText;
+    } catch (e) {
+      if (args.failure) {
+        this.invoke(args.failure);
+      } else if (args.callback) {
+        this.invoke(args.callback);
+      }
+    }
+  },
 });

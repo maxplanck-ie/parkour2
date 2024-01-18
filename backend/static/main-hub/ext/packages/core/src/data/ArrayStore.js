@@ -29,39 +29,34 @@
  *
  * An object literal of this form could also be used as the {@link #cfg-data} config option.
  */
-Ext.define('Ext.data.ArrayStore', {
-    extend: 'Ext.data.Store',
-    alias: 'store.array',
+Ext.define("Ext.data.ArrayStore", {
+  extend: "Ext.data.Store",
+  alias: "store.array",
 
-    alternateClassName: [
-        'Ext.data.SimpleStore'
-    ],
+  alternateClassName: ["Ext.data.SimpleStore"],
 
-    requires: [
-        'Ext.data.proxy.Memory',
-        'Ext.data.reader.Array'
-    ],
+  requires: ["Ext.data.proxy.Memory", "Ext.data.reader.Array"],
 
-    config: {
-        proxy: {
-            type: 'memory',
-            reader: 'array'
-        }
+  config: {
+    proxy: {
+      type: "memory",
+      reader: "array",
     },
+  },
 
-    loadData: function (data, append) {
-        if (this.expandData) {
-            var r = [],
-                i = 0,
-                ln = data.length;
+  loadData: function (data, append) {
+    if (this.expandData) {
+      var r = [],
+        i = 0,
+        ln = data.length;
 
-            for (; i < ln; i++) {
-                r[r.length] = [data[i]];
-            }
+      for (; i < ln; i++) {
+        r[r.length] = [data[i]];
+      }
 
-            data = r;
-        }
-
-        this.callParent([data, append]);
+      data = r;
     }
+
+    this.callParent([data, append]);
+  },
 });

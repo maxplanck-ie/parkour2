@@ -2,121 +2,126 @@
  * A private utility class used by Ext.Carousel to create indicators.
  * @private
  */
-Ext.define('Ext.carousel.Indicator', {
-    extend: 'Ext.Component',
-    xtype: 'carouselindicator',
+Ext.define("Ext.carousel.Indicator", {
+  extend: "Ext.Component",
+  xtype: "carouselindicator",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        baseCls: Ext.baseCSSPrefix + 'carousel-indicator',
-
-        direction: 'horizontal'
-    },
-
+  config: {
     /**
-     * @event previous
-     * Fires when this indicator is tapped on the left half
-     * @param {Ext.carousel.Indicator} this
+     * @cfg
+     * @inheritdoc
      */
+    baseCls: Ext.baseCSSPrefix + "carousel-indicator",
 
-    /**
-     * @event next
-     * Fires when this indicator is tapped on the right half
-     * @param {Ext.carousel.Indicator} this
-     */
+    direction: "horizontal",
+  },
 
-    initialize: function() {
-        this.callParent();
+  /**
+   * @event previous
+   * Fires when this indicator is tapped on the left half
+   * @param {Ext.carousel.Indicator} this
+   */
 
-        this.indicators = [];
+  /**
+   * @event next
+   * Fires when this indicator is tapped on the right half
+   * @param {Ext.carousel.Indicator} this
+   */
 
-        this.element.on({
-            tap: 'onTap',
-            scope: this
-        });
-    },
+  initialize: function () {
+    this.callParent();
 
-    updateDirection: function(newDirection, oldDirection) {
-        var baseCls = this.getBaseCls();
+    this.indicators = [];
 
-        this.element.replaceCls(oldDirection, newDirection, baseCls);
+    this.element.on({
+      tap: "onTap",
+      scope: this,
+    });
+  },
 
-        if (newDirection === 'horizontal') {
-            this.setBottom(0);
-            this.setRight(null);
-        }
-        else {
-            this.setRight(0);
-            this.setBottom(null);
-        }
-    },
+  updateDirection: function (newDirection, oldDirection) {
+    var baseCls = this.getBaseCls();
 
-    addIndicator: function() {
-        this.indicators.push(this.element.createChild({
-            tag: 'span'
-        }));
-    },
+    this.element.replaceCls(oldDirection, newDirection, baseCls);
 
-    removeIndicator: function() {
-        var indicators = this.indicators;
-
-        if (indicators.length > 0) {
-            indicators.pop().destroy();
-        }
-    },
-
-    setActiveIndex: function(index) {
-        var indicators = this.indicators,
-            currentActiveIndex = this.activeIndex,
-            currentActiveItem = indicators[currentActiveIndex],
-            activeItem = indicators[index],
-            baseCls = this.getBaseCls();
-
-        if (currentActiveItem) {
-            currentActiveItem.removeCls(baseCls, null, 'active');
-        }
-
-        if (activeItem) {
-            activeItem.addCls(baseCls, null, 'active');
-        }
-
-        this.activeIndex = index;
-
-        return this;
-    },
-
-    /**
-     * @private
-     */
-    onTap: function(e) {
-        var touch = e.touch,
-            box = this.element.getBox(),
-            centerX = box.left + (box.width / 2),
-            centerY = box.top + (box.height / 2),
-            direction = this.getDirection();
-
-        if ((direction === 'horizontal' && touch.pageX >= centerX) || (direction === 'vertical' && touch.pageY >= centerY)) {
-            this.fireEvent('next', this);
-        }
-        else {
-            this.fireEvent('previous', this);
-        }
-    },
-
-    doDestroy: function() {
-        var indicators = this.indicators,
-            i, ln, indicator;
-
-        for (i = 0,ln = indicators.length; i < ln; i++) {
-            indicator = indicators[i];
-            indicator.destroy();
-        }
-
-        indicators.length = 0;
-
-        this.callParent();
+    if (newDirection === "horizontal") {
+      this.setBottom(0);
+      this.setRight(null);
+    } else {
+      this.setRight(0);
+      this.setBottom(null);
     }
+  },
+
+  addIndicator: function () {
+    this.indicators.push(
+      this.element.createChild({
+        tag: "span",
+      }),
+    );
+  },
+
+  removeIndicator: function () {
+    var indicators = this.indicators;
+
+    if (indicators.length > 0) {
+      indicators.pop().destroy();
+    }
+  },
+
+  setActiveIndex: function (index) {
+    var indicators = this.indicators,
+      currentActiveIndex = this.activeIndex,
+      currentActiveItem = indicators[currentActiveIndex],
+      activeItem = indicators[index],
+      baseCls = this.getBaseCls();
+
+    if (currentActiveItem) {
+      currentActiveItem.removeCls(baseCls, null, "active");
+    }
+
+    if (activeItem) {
+      activeItem.addCls(baseCls, null, "active");
+    }
+
+    this.activeIndex = index;
+
+    return this;
+  },
+
+  /**
+   * @private
+   */
+  onTap: function (e) {
+    var touch = e.touch,
+      box = this.element.getBox(),
+      centerX = box.left + box.width / 2,
+      centerY = box.top + box.height / 2,
+      direction = this.getDirection();
+
+    if (
+      (direction === "horizontal" && touch.pageX >= centerX) ||
+      (direction === "vertical" && touch.pageY >= centerY)
+    ) {
+      this.fireEvent("next", this);
+    } else {
+      this.fireEvent("previous", this);
+    }
+  },
+
+  doDestroy: function () {
+    var indicators = this.indicators,
+      i,
+      ln,
+      indicator;
+
+    for (i = 0, ln = indicators.length; i < ln; i++) {
+      indicator = indicators[i];
+      indicator.destroy();
+    }
+
+    indicators.length = 0;
+
+    this.callParent();
+  },
 });

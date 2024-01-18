@@ -31,30 +31,27 @@
  *         width: 400
  *     });
  */
-Ext.define('Ext.grid.column.Number', {
-    extend: 'Ext.grid.column.Column',
+Ext.define("Ext.grid.column.Number", {
+  extend: "Ext.grid.column.Column",
 
-    requires: [
-        'Ext.util.Format',
-        'Ext.grid.cell.Number'
-    ],
+  requires: ["Ext.util.Format", "Ext.grid.cell.Number"],
 
-    xtype: 'numbercolumn',
+  xtype: "numbercolumn",
 
-    config: {
-        /**
-         * @cfg {String} format
-         * A format string as used by {@link Ext.util.Format#number} to format values
-         * for this column.
-         */
-        format: null,
+  config: {
+    /**
+     * @cfg {String} format
+     * A format string as used by {@link Ext.util.Format#number} to format values
+     * for this column.
+     */
+    format: null,
 
-        defaultEditor: {
-            xtype: 'numberfield'
-        },
+    defaultEditor: {
+      xtype: "numberfield",
+    },
 
-        cell: {
-            xtype: 'numbercell'
-        }
-    }
+    cell: {
+      xtype: "numbercell",
+    },
+  },
 });

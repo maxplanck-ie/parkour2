@@ -63,18 +63,18 @@
  *
  * @since 6.0.0
  */
-Ext.define('Ext.Promise', function () {
+Ext.define(
+  "Ext.Promise",
+  function () {
     var Polyfiller;
 
-return {
-    requires: [
-        'Ext.promise.Promise'
-    ],
+    return {
+      requires: ["Ext.promise.Promise"],
 
-    statics: {
+      statics: {
         _ready: function () {
-            // We can cache this now that our requires are met
-            Polyfiller = Ext.promise.Promise;
+          // We can cache this now that our requires are met
+          Polyfiller = Ext.promise.Promise;
         },
 
         /**
@@ -91,14 +91,14 @@ return {
          * @static
          */
         all: function () {
-            return Polyfiller.all.apply(Polyfiller, arguments);
+          return Polyfiller.all.apply(Polyfiller, arguments);
         },
 
         race: function () {
-            //TODO
-            //<debug>
-            Ext.raise("Not implemented");
-            //</debug>
+          //TODO
+          //<debug>
+          Ext.raise("Not implemented");
+          //</debug>
         },
 
         /**
@@ -110,11 +110,11 @@ return {
          * @static
          */
         reject: function (reason) {
-            var deferred = new Ext.promise.Deferred();
+          var deferred = new Ext.promise.Deferred();
 
-            deferred.reject(reason);
+          deferred.reject(reason);
 
-            return deferred.promise;
+          return deferred.promise;
         },
 
         /**
@@ -130,28 +130,30 @@ return {
          * @static
          */
         resolve: function (value) {
-            var deferred = new Ext.promise.Deferred();
+          var deferred = new Ext.promise.Deferred();
 
-            deferred.resolve(value);
+          deferred.resolve(value);
 
-            return deferred.promise;
-        }
-    },
+          return deferred.promise;
+        },
+      },
 
-    constructor: function (action) {
+      constructor: function (action) {
         var deferred = new Ext.promise.Deferred();
 
         action(deferred.resolve.bind(deferred), deferred.reject.bind(deferred));
 
         return deferred.promise;
-    }
-}},
-function (ExtPromise) {
+      },
+    };
+  },
+  function (ExtPromise) {
     var P = Ext.global.Promise;
 
     if (P && P.resolve) {
-        Ext.Promise = P;
+      Ext.Promise = P;
     } else {
-        ExtPromise._ready();
+      ExtPromise._ready();
     }
-});
+  },
+);

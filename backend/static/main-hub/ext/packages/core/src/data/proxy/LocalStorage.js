@@ -55,12 +55,12 @@
  * It's important to supply this unique ID as it cannot be reliably determined otherwise. If no id is provided but the
  * attached store has a storeId, the storeId will be used. If neither option is presented the proxy will throw an error.
  */
-Ext.define('Ext.data.proxy.LocalStorage', {
-    extend: 'Ext.data.proxy.WebStorage',
-    alias: 'proxy.localstorage',
-    alternateClassName: 'Ext.data.LocalStorageProxy',
-    
-    getStorageObject: function() {
-        return window.localStorage;
-    }
+Ext.define("Ext.data.proxy.LocalStorage", {
+  extend: "Ext.data.proxy.WebStorage",
+  alias: "proxy.localstorage",
+  alternateClassName: "Ext.data.LocalStorageProxy",
+
+  getStorageObject: function () {
+    return window.localStorage;
+  },
 });
