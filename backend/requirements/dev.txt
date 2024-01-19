@@ -72,3 +72,5 @@ wcwidth==0.2.13
     # via prompt-toolkit
 werkzeug==3.0.1
     # via -r backend/requirements/dev.in
+
+# The following packages are considered to be unsafe in a requirements file:
