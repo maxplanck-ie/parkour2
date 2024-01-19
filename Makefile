@@ -304,7 +304,7 @@ compile:
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi -d backend/requirements/
+	@pip-compile-multi --allow-unsafe -d backend/requirements/
 
 ncu:
 	# @npm install -g npm-check-updates
