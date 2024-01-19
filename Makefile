@@ -300,6 +300,7 @@ compile:
 	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
 	# 	source ./env_dev/bin/activate && echo "venv activated!"
+	# 	pip install --upgrade pip wheel setuptools pip-compile-multi
 	# else
 	# 	exit 1
 	# fi
