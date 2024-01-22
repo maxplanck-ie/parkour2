@@ -201,7 +201,7 @@ class Request(DateTimeMixin):
 
     @property
     def total_sequencing_depth(self):
-        return sum(x.sequencing_depth for x in self.records)
+        return round(sum(x.sequencing_depth for x in self.records), 2)
 
     @property
     def total_records_count(self):
