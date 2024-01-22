@@ -235,7 +235,7 @@ class TestPoolSizeModel(BaseTestCase):
         self.size.save()
 
     def test_name(self):
-        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.lanes}×{self.size.size}M, {self.size.cycles}c")
+        self.assertEqual(str(self.size), f"{self.size.sequencer} - {self.size.short_name}")
 
 
 # Views

@@ -14,6 +14,7 @@ class PoolSize(models.Model):
                                   verbose_name='Sequencer',
                                   null=True,
                                   on_delete=models.SET_NULL)
+    short_name = models.CharField("Name", max_length=20, blank=False)
     size = models.PositiveSmallIntegerField("Size (in million reads)")
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
     cycles = models.PositiveSmallIntegerField("Number of cycles")
@@ -28,11 +29,12 @@ class PoolSize(models.Model):
         ]
 
     def __str__(self):
-        size = Decimal(self.size)
-        prefixes = ['M', 'G', 'T', 'P']
-        k = Decimal(1000)
-        magnitude = int(floor(log(size, k)))
-        return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}, {self.cycles}c"
+        # size = Decimal(self.size)
+        # prefixes = ['M', 'G', 'T', 'P']
+        # k = Decimal(1000)
+        # magnitude = int(floor(log(size, k)))
+        # return f"{self.sequencer} - {self.lanes}×{size / k**Decimal(magnitude)}{prefixes[magnitude]}, {self.cycles}c"
+        return  f"{self.sequencer} - {self.short_name}"
 
     @property
     def name(self):

@@ -57,7 +57,7 @@ class LaneInline(admin.TabularInline):
 
 class PoolSizeInline(admin.TabularInline):
     model = PoolSize
-    fields = ('lanes', 'size', 'cycles', 'read_lengths', 'archived',)
+    fields = ('name', 'lanes', 'size', 'cycles', 'read_lengths', 'archived',)
     ordering = ('lanes', 'size', 'cycles',)
     autocomplete_fields = ('read_lengths',)
     extra = 1

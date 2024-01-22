@@ -123,12 +123,19 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                   queryMode: "local",
                   valueField: "id",
                   displayField: "name",
-                  fieldLabel:
-                    '<span data-qtip="Sequencer - # lanes × # reads, # cycles">Seq. Kit</span>',
+                  fieldLabel: 'Seq. Kit',
                   emptyText: "Sequencing kit",
                   allowBlank: false,
                   forceSelection: true,
                   store: "PoolSizes",
+                  listConfig: {
+                    itemTpl:
+                    '<span data-qtip="' +
+                    '{[values.multiplier ? "# lanes: " + values.multiplier + "&lt;br /&gt;" : ""]}' +
+                    '{[values.size ? "# M reads: " + values.size.toLocaleString() + "&lt;br /&gt;" : ""]}' +
+                    '{[values.cycles ? "# cycles: " + values.cycles : ""]}' +
+                    '">{name}</span>'
+                  },
                   listeners: {
                     change: function (cb) {
                       // Reload Read Lengths for specific request

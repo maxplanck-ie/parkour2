@@ -26,6 +26,7 @@ class PoolSizeSerializer(ModelSerializer):
             "name",
             "multiplier",
             "size",
+            "cycles",
             "sequencer",
         )
 
