@@ -345,10 +345,13 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             id: "index-generator-grid-grouping",
             startCollapsed: true,
             groupHeaderTpl: [
-              "<strong>Request: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M, Seq. Kit: {children:this.getPoolSize})",
+              "<strong>Request {children:this.getRequestId}: {children:this.getName}</strong> (#: {children:this.getCount}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M, Seq. Kit: {children:this.getPoolSize})",
               {
                 getName: function (children) {
                   return children[0].get("request_name");
+                },
+                getRequestId: function (children) {
+                  return children[0].get("request");
                 },
                 isPooled: function (children) {
                   return children[0].get("pooled_libraries") ? "Pool, " : "";

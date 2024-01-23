@@ -433,7 +433,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             '<input type="checkbox" class="group-checkbox" {children:this.getChecked}>',
             "</span>",
             // '<div data-qtip="{children:this.getTooltip}" class="incoming-libraries-group-header">',
-            "<strong>Request: {children:this.getName}</strong> ",
+            "<strong>Request {children:this.getRequestId}: {children:this.getName}</strong> ",
             "(#: {rows.length}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M)",
             // '</div>',
             {
@@ -456,6 +456,9 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               isPooled: function (children) {
                 return children[0].get("pooled_libraries") ? "Pool, " : "";
               },
+              getRequestId: function(children) {
+                return children[0].get("request");
+              }
               // getTooltip: function (children) {
               //   var totalDepth = Ext.Array.sum(Ext.Array.pluck(Ext.Array.pluck(
               //     children, 'data'), 'sequencing_depth'));

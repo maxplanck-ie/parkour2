@@ -383,6 +383,7 @@ class PoolInfoBaseSerializer(ModelSerializer):
     record_type = SerializerMethodField()
     protocol_name = SerializerMethodField()
     request_name = SerializerMethodField()
+    request_pk = SerializerMethodField()
 
     class Meta:
         fields = (
@@ -391,6 +392,7 @@ class PoolInfoBaseSerializer(ModelSerializer):
             "record_type",
             "protocol_name",
             "request_name",
+            "request_pk",
         )
 
     def get_record_type(self, obj):
@@ -401,6 +403,9 @@ class PoolInfoBaseSerializer(ModelSerializer):
 
     def get_request_name(self, obj):
         return obj.request.get().name
+
+    def get_request_pk(self, obj):
+        return obj.request.get().pk
 
 
 class PoolInfoLibrarySerializer(PoolInfoBaseSerializer):
