@@ -263,6 +263,7 @@ class TestLibraries(BaseTestCase):
                             "amplification_cycles": 1,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -370,6 +371,7 @@ class TestLibraries(BaseTestCase):
                             "amplification_cycles": 2,
                             "index_reads": 0,
                             "mean_fragment_size": 2,
+                            "concentration_method": 0,
                         },
                     ]
                 )

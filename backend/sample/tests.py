@@ -256,6 +256,7 @@ class TestSamples(BaseTestCase):
                             "name": self._get_random_name(),
                             "concentration": 1.0,
                             "sequencing_depth": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -355,6 +356,7 @@ class TestSamples(BaseTestCase):
                             "sample_id": sample2.pk,
                             "concentration": 1.0,
                             "sequencing_depth": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )

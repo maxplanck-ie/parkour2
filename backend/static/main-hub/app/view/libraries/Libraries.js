@@ -338,7 +338,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             dataIndex: "concentration_method",
             width: 50,
             renderer: function (value, meta) {
-              if (meta.record.get("leaf")) {
+              if (meta.record.get("leaf") && value > 0) {
                 var store = Ext.getStore("concentrationMethodsStore");
                 var record = store.findRecord("id", value);
                 var name = record.get("name");
