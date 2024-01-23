@@ -1,5 +1,5 @@
-Ext.define('Ext.theme.neptune.tip.ToolTip', {
-    override: 'Ext.tip.ToolTip',
+Ext.define("Ext.theme.neptune.tip.ToolTip", {
+  override: "Ext.tip.ToolTip",
 
-    bodyBorder: false
+  bodyBorder: false,
 });

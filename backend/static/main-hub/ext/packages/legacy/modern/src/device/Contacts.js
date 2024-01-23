@@ -30,22 +30,19 @@
  * @mixins Ext.device.contacts.Sencha
  * @mixins Ext.device.contacts.Cordova
  */
-Ext.define('Ext.device.Contacts', {
-    singleton: true,
+Ext.define("Ext.device.Contacts", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.contacts.Cordova'
-    ],
+  requires: ["Ext.device.Communicator", "Ext.device.contacts.Cordova"],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.contacts.Cordova');
-            }
-        }
-        return Ext.create('Ext.device.contacts.Abstract');
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.contacts.Cordova");
+      }
     }
+    return Ext.create("Ext.device.contacts.Abstract");
+  },
 });

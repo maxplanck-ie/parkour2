@@ -36,25 +36,23 @@
  * as the user interacts with the component. Check out the {@link Ext.field.Text} docs to see the additional
  * functionality available.
  */
-Ext.define('Ext.field.Search', {
-    extend: 'Ext.field.Text',
-    xtype: 'searchfield',
-    alternateClassName: 'Ext.form.Search',
-    
-    requires: [
-        'Ext.field.trigger.Search'
-    ],
+Ext.define("Ext.field.Search", {
+  extend: "Ext.field.Text",
+  xtype: "searchfield",
+  alternateClassName: "Ext.form.Search",
 
-    component: {
-        type: 'search'
+  requires: ["Ext.field.trigger.Search"],
+
+  component: {
+    type: "search",
+  },
+
+  triggers: {
+    search: {
+      type: "search",
+      side: "left",
     },
+  },
 
-    triggers: {
-        search: {
-            type: 'search',
-            side: 'left'
-        }
-    },
-
-    classCls: Ext.baseCSSPrefix + 'searchfield'
+  classCls: Ext.baseCSSPrefix + "searchfield",
 });

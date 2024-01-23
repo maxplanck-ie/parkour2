@@ -30,50 +30,50 @@
  * because the {@link #defaultType} is set to {@link Ext.Button button}.x
  *
  */
-Ext.define('Ext.ActionSheet', {
-    extend: 'Ext.Sheet',
-    alias : 'widget.actionsheet',
+Ext.define("Ext.ActionSheet", {
+  extend: "Ext.Sheet",
+  alias: "widget.actionsheet",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        baseCls: Ext.baseCSSPrefix + 'sheet-action',
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    baseCls: Ext.baseCSSPrefix + "sheet-action",
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        left: 0,
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    left: 0,
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        right: 0,
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    right: 0,
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        bottom: 0,
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    bottom: 0,
 
-        // @hide
-        centered: false,
+    // @hide
+    centered: false,
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        height: 'auto',
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    height: "auto",
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        defaultType: 'button'
-    },
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    defaultType: "button",
+  },
 
-    layout: 'vbox'
+  layout: "vbox",
 });

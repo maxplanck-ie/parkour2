@@ -32,20 +32,17 @@
  *
  * @mixins Ext.device.compass.Abstract
  */
-Ext.define('Ext.device.Compass', {
-    singleton: true,
+Ext.define("Ext.device.Compass", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.compass.Cordova',
-        'Ext.device.compass.Simulator'
-    ],
+  requires: ["Ext.device.compass.Cordova", "Ext.device.compass.Simulator"],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
-        if (browserEnv.WebView && browserEnv.Cordova) {
-            return Ext.create('Ext.device.compass.Cordova');
-        }
-
-        return Ext.create('Ext.device.compass.Simulator');
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
+    if (browserEnv.WebView && browserEnv.Cordova) {
+      return Ext.create("Ext.device.compass.Cordova");
     }
+
+    return Ext.create("Ext.device.compass.Simulator");
+  },
 });

@@ -7,7 +7,9 @@ ENV \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
     LC_TIME=en_DK.UTF-8 \
-    TZ="Europe/Berlin"
+    TZ="Europe/Berlin" \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_ROOT_USER_ACTION=ignore
 
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \

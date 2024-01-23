@@ -7,25 +7,28 @@
  * and the appropriate target will be created.
  */
 
-Ext.define('Ext.fx.target.CompositeSprite', {
+Ext.define("Ext.fx.target.CompositeSprite", {
+  /* Begin Definitions */
 
-    /* Begin Definitions */
+  extend: "Ext.fx.target.Sprite",
 
-    extend: 'Ext.fx.target.Sprite',
+  /* End Definitions */
 
-    /* End Definitions */
+  getAttr: function (attr, val) {
+    var out = [],
+      sprites = [].concat(this.target.items),
+      length = sprites.length,
+      i,
+      sprite;
 
-    getAttr: function(attr, val) {
-        var out     = [],
-            sprites = [].concat(this.target.items),
-            length  = sprites.length,
-            i, sprite;
-
-        for (i = 0; i < length; i++) {
-            sprite = sprites[i];
-            out.push([sprite, val !== undefined ? val : this.getFromPrim(sprite, attr)]);
-        }
-
-        return out;
+    for (i = 0; i < length; i++) {
+      sprite = sprites[i];
+      out.push([
+        sprite,
+        val !== undefined ? val : this.getFromPrim(sprite, attr),
+      ]);
     }
+
+    return out;
+  },
 });

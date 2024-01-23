@@ -1,12 +1,12 @@
 /**
  * @class Ext.chart.series.CandleStick
  * @extends Ext.chart.series.Cartesian
- * 
+ *
  * Creates a candlestick or OHLC Chart.
  *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -92,39 +92,38 @@
  *        }
  *     });
  */
-Ext.define('Ext.chart.series.CandleStick', {
-    extend: 'Ext.chart.series.Cartesian',
-    requires: ['Ext.chart.series.sprite.CandleStick'],
-    alias: 'series.candlestick',
-    type: 'candlestick',
-    seriesType: 'candlestickSeries',
-    config: {
-        /**
-         * @cfg {String} openField
-         * The store record field name that represents the opening value of the given period.
-         */
-        openField: null,
-        /**
-         * @cfg {String} highField
-         * The store record field name that represents the highest value of the time interval represented.
-         */
-        highField: null,
-        /**
-         * @cfg {String} lowField
-         * The store record field name that represents the lowest value of the time interval represented.
-         */
-        lowField: null,
-        /**
-         * @cfg {String} closeField
-         * The store record field name that represents the closing value of the given period.
-         */
-        closeField: null
-    },
+Ext.define("Ext.chart.series.CandleStick", {
+  extend: "Ext.chart.series.Cartesian",
+  requires: ["Ext.chart.series.sprite.CandleStick"],
+  alias: "series.candlestick",
+  type: "candlestick",
+  seriesType: "candlestickSeries",
+  config: {
+    /**
+     * @cfg {String} openField
+     * The store record field name that represents the opening value of the given period.
+     */
+    openField: null,
+    /**
+     * @cfg {String} highField
+     * The store record field name that represents the highest value of the time interval represented.
+     */
+    highField: null,
+    /**
+     * @cfg {String} lowField
+     * The store record field name that represents the lowest value of the time interval represented.
+     */
+    lowField: null,
+    /**
+     * @cfg {String} closeField
+     * The store record field name that represents the closing value of the given period.
+     */
+    closeField: null,
+  },
 
-    fieldCategoryY: ['Open', 'High', 'Low', 'Close'],
+  fieldCategoryY: ["Open", "High", "Low", "Close"],
 
-    themeColorCount: function() {
-        return 2;
-    }
-
+  themeColorCount: function () {
+    return 2;
+  },
 });

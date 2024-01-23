@@ -35,53 +35,54 @@
  *         renderTo: Ext.getBody()
  *     });
  */
-Ext.define('Ext.grid.column.Date', {
-    extend: 'Ext.grid.column.Column',
-    alias: ['widget.datecolumn'],
-    requires: ['Ext.Date'],
-    alternateClassName: 'Ext.grid.DateColumn',
+Ext.define("Ext.grid.column.Date", {
+  extend: "Ext.grid.column.Column",
+  alias: ["widget.datecolumn"],
+  requires: ["Ext.Date"],
+  alternateClassName: "Ext.grid.DateColumn",
 
-    isDateColumn: true,
+  isDateColumn: true,
 
-    defaultFilterType: 'date',
+  defaultFilterType: "date",
 
-    /**
-     * @cfg {String} format
-     * A formatting string as used by {@link Ext.Date#format} to format a Date for this Column.
-     *
-     * Defaults to the default date from {@link Ext.Date#defaultFormat} which itself my be overridden
-     * in a locale file.
-     */
+  /**
+   * @cfg {String} format
+   * A formatting string as used by {@link Ext.Date#format} to format a Date for this Column.
+   *
+   * Defaults to the default date from {@link Ext.Date#defaultFormat} which itself my be overridden
+   * in a locale file.
+   */
 
-    /**
-     * @cfg {Object} renderer
-     * @hide
-     */
+  /**
+   * @cfg {Object} renderer
+   * @hide
+   */
 
-    /**
-     * @cfg {Object} scope
-     * @hide
-     */
+  /**
+   * @cfg {Object} scope
+   * @hide
+   */
 
-    /**
-     * @cfg {Boolean} producesHTML
-     * @inheritdoc
-     */
-    producesHTML: false,
+  /**
+   * @cfg {Boolean} producesHTML
+   * @inheritdoc
+   */
+  producesHTML: false,
 
-    initComponent: function(){
-        if (!this.format) {
-            this.format = Ext.Date.defaultFormat;
-        }
-
-        this.callParent(arguments);
-    },
-
-    defaultRenderer: function(value){
-        return Ext.util.Format.date(value, this.format);
-    },
-
-    updater: function(cell, value) {
-        Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML = Ext.grid.column.Date.prototype.defaultRenderer.call(this, value);
+  initComponent: function () {
+    if (!this.format) {
+      this.format = Ext.Date.defaultFormat;
     }
+
+    this.callParent(arguments);
+  },
+
+  defaultRenderer: function (value) {
+    return Ext.util.Format.date(value, this.format);
+  },
+
+  updater: function (cell, value) {
+    Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
+      Ext.grid.column.Date.prototype.defaultRenderer.call(this, value);
+  },
 });

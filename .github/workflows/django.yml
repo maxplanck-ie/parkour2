@@ -32,7 +32,7 @@ jobs:
     strategy:
       max-parallel: 4
       matrix:
-        python-version: [3.9, '3.10', 3.11]
+        python-version: ['3.10', 3.11, 3.12]
     services:
       postgres:
         env:
@@ -79,9 +79,10 @@ jobs:
 
       - name: Run unittests
         env:
-          DJANGO_SETTINGS_MODULE: wui.settings.prod
+          DJANGO_SETTINGS_MODULE: wui.settings.testing
           DATABASE_URL: postgres://postgres:${{ secrets.POSTGRES_PASSWORD }}@127.0.0.1:${{ job.services.postgres.ports['5432'] }}/postgres
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
         run: |
+          pip install -r backend/requirements/testing.txt
           python backend/manage.py test backend --parallel
 

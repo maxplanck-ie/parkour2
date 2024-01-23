@@ -1,11 +1,11 @@
 /**
- * A layout that arranges items vertically down a 
- * {@link Ext.container.Container Container}. This layout optionally divides available 
- * vertical space between child {@link Ext.container.Container#cfg-items items} 
+ * A layout that arranges items vertically down a
+ * {@link Ext.container.Container Container}. This layout optionally divides available
+ * vertical space between child {@link Ext.container.Container#cfg-items items}
  * containing a numeric {@link Ext.Component#cfg-flex flex} configuration.
  *
- * This layout may also be used to set the widths of child items by configuring it with 
- * the {@link #align} option.  The vertical position of the child items may be set using 
+ * This layout may also be used to set the widths of child items by configuring it with
+ * the {@link #align} option.  The vertical position of the child items may be set using
  * the {@link #pack} config.
  *
  *     @example
@@ -36,10 +36,10 @@
  *             flex: 4
  *         }]
  *     });
- * 
- * The following example may be used to view the outcomes when combining the `align` and 
+ *
+ * The following example may be used to view the outcomes when combining the `align` and
  * `pack` configs:
- * 
+ *
  *     @example
  *     Ext.create({
  *         xtype: 'panel',
@@ -56,7 +56,7 @@
  *         }, {
  *             text: 'Three'
  *         }],
- *         
+ *
  *         dockedItems: [{
  *             xtype: 'toolbar',
  *             dock: 'top',
@@ -110,23 +110,23 @@
  *                 }]
  *             }]
  *         }],
- *         
+ *
  *         onToggle: function (group, button, isPressed) {
  *             var cfg = {};
- *             
+ *
  *             cfg[button.configType] = isPressed ? button.getText() : null;
  *             this.setLayout(cfg);
  *         }
  *     });
  */
-Ext.define('Ext.layout.container.VBox', {
-    extend: 'Ext.layout.container.Box',
+Ext.define("Ext.layout.container.VBox", {
+  extend: "Ext.layout.container.Box",
 
-    alias: 'layout.vbox',
+  alias: "layout.vbox",
 
-    alternateClassName: 'Ext.layout.VBoxLayout',
+  alternateClassName: "Ext.layout.VBoxLayout",
 
-    type: 'vbox',
+  type: "vbox",
 
-    vertical: true
+  vertical: true,
 });

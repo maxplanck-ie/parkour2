@@ -2,110 +2,118 @@
  * A Traversable mixin.
  * @private
  */
-Ext.define('Ext.mixin.Progressable', {
-    extend: 'Ext.Mixin',
-    isProgressable: true,
+Ext.define("Ext.mixin.Progressable", {
+  extend: "Ext.Mixin",
+  isProgressable: true,
 
-    mixinConfig: {
-        id: 'progressable'
-    },
+  mixinConfig: {
+    id: "progressable",
+  },
 
-    config: {
-
-        /**
-         * @cfg {Number} minProgressInput
-         * Minimum input value for this indicator
-         */
-        minProgressInput: 0,
-
-        /**
-         * @cfg {Number} maxProgressInput
-         * Maximum input value for this indicator
-         */
-        maxProgressInput: 1,
-
-        /**
-         * @cfg {Number} minProgressOutput
-         * Minimum output value for this indicator
-         */
-        minProgressOutput: 0,
-
-        /**
-         * @cfg {Number} maxProgressOutput
-         * Maximum output value for this indicator
-         */
-        maxProgressOutput: 100,
-
-        /**
-         * @cfg {Boolean} dynamic
-         *
-         * When false this indicator will only receive progressStart and progressEnd commands, no progressUpdate commands will be sent.
-         *
-         */
-        dynamic: true,
-
-        /**
-         * @cfg {String} state
-         *
-         * Current state of the progressIndicator. Should be used for switching progress states like download to upload.
-         */
-        state: null
-    },
+  config: {
+    /**
+     * @cfg {Number} minProgressInput
+     * Minimum input value for this indicator
+     */
+    minProgressInput: 0,
 
     /**
-     * @private
+     * @cfg {Number} maxProgressInput
+     * Maximum input value for this indicator
      */
-    _progressActive: false,
-    _progress: 0,
-    _rawProgress: 0,
+    maxProgressInput: 1,
 
-    onStartProgress: Ext.emptyFn,
-    onUpdateProgress: Ext.emptyFn,
-    onEndProgress: Ext.emptyFn,
+    /**
+     * @cfg {Number} minProgressOutput
+     * Minimum output value for this indicator
+     */
+    minProgressOutput: 0,
 
-    startProgress: function() {
-        if (!this._progressActive) {
-            this._progressActive = true;
-            this.onStartProgress();
-            this.updateProgress(this.getMinProgressInput());
-        }
-    },
+    /**
+     * @cfg {Number} maxProgressOutput
+     * Maximum output value for this indicator
+     */
+    maxProgressOutput: 100,
 
-    updateProgress: function(value, state) {
-        if(state && state != this.getState()) this.setState(state);
-        if(value > this.getMaxProgressInput()) value = this.getMaxProgressInput();
-        if(value < this.getMinProgressInput()) value = this.getMinProgressInput();
+    /**
+     * @cfg {Boolean} dynamic
+     *
+     * When false this indicator will only receive progressStart and progressEnd commands, no progressUpdate commands will be sent.
+     *
+     */
+    dynamic: true,
 
-        var mappedValue = this.mapValues(value, this.getMinProgressInput(), this.getMaxProgressInput(), this.getMinProgressOutput(), this.getMaxProgressOutput());
-        this._progress = mappedValue;
-        this._rawProgress = value;
+    /**
+     * @cfg {String} state
+     *
+     * Current state of the progressIndicator. Should be used for switching progress states like download to upload.
+     */
+    state: null,
+  },
 
-        if(this.getDynamic()) {
-            this.onUpdateProgress(mappedValue);
-        }
-    },
+  /**
+   * @private
+   */
+  _progressActive: false,
+  _progress: 0,
+  _rawProgress: 0,
 
-    endProgress: function() {
-        if (this._progressActive) {
-            this._progressActive = false;
-            this.updateProgress(this.getMaxProgressInput());
-            this.onEndProgress()
-        }
-    },
+  onStartProgress: Ext.emptyFn,
+  onUpdateProgress: Ext.emptyFn,
+  onEndProgress: Ext.emptyFn,
 
-    mapValues: function(value, inputMin, inputMax, outputMin, outputMax) {
-        return (value - inputMin) / (inputMax - inputMin) * (outputMax - outputMin) + outputMin;
-    },
-
-    setProgress: function(value) {
-        this.updateProgress(value);
-    },
-
-    getProgress: function() {
-        return this._progress
-    },
-
-    getRawProgress: function() {
-        return this._rawProgress;
+  startProgress: function () {
+    if (!this._progressActive) {
+      this._progressActive = true;
+      this.onStartProgress();
+      this.updateProgress(this.getMinProgressInput());
     }
+  },
+
+  updateProgress: function (value, state) {
+    if (state && state != this.getState()) this.setState(state);
+    if (value > this.getMaxProgressInput()) value = this.getMaxProgressInput();
+    if (value < this.getMinProgressInput()) value = this.getMinProgressInput();
+
+    var mappedValue = this.mapValues(
+      value,
+      this.getMinProgressInput(),
+      this.getMaxProgressInput(),
+      this.getMinProgressOutput(),
+      this.getMaxProgressOutput(),
+    );
+    this._progress = mappedValue;
+    this._rawProgress = value;
+
+    if (this.getDynamic()) {
+      this.onUpdateProgress(mappedValue);
+    }
+  },
+
+  endProgress: function () {
+    if (this._progressActive) {
+      this._progressActive = false;
+      this.updateProgress(this.getMaxProgressInput());
+      this.onEndProgress();
+    }
+  },
+
+  mapValues: function (value, inputMin, inputMax, outputMin, outputMax) {
+    return (
+      ((value - inputMin) / (inputMax - inputMin)) * (outputMax - outputMin) +
+      outputMin
+    );
+  },
+
+  setProgress: function (value) {
+    this.updateProgress(value);
+  },
+
+  getProgress: function () {
+    return this._progress;
+  },
+
+  getRawProgress: function () {
+    return this._rawProgress;
+  },
 });

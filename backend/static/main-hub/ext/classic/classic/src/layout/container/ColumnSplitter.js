@@ -1,32 +1,30 @@
 /**
  */
-Ext.define('Ext.layout.container.ColumnSplitter', {
-    extend: 'Ext.resizer.Splitter',
-    xtype: 'columnsplitter',
+Ext.define("Ext.layout.container.ColumnSplitter", {
+  extend: "Ext.resizer.Splitter",
+  xtype: "columnsplitter",
 
-    requires: [
-        'Ext.layout.container.ColumnSplitterTracker'
-    ],
+  requires: ["Ext.layout.container.ColumnSplitterTracker"],
 
-    isSplitter: true,
+  isSplitter: true,
 
-    synthetic  : true,
+  synthetic: true,
 
-    cls : Ext.baseCSSPrefix + 'splitter-vertical',
+  cls: Ext.baseCSSPrefix + "splitter-vertical",
 
-    orientation: 'vertical',
+  orientation: "vertical",
 
-    collapseDirection: 'left',
+  collapseDirection: "left",
 
-    trackerClass: 'Ext.layout.container.ColumnSplitterTracker',
+  trackerClass: "Ext.layout.container.ColumnSplitterTracker",
 
-    width: 7,
+  width: 7,
 
-    height: 1,
+  height: 1,
 
-    getTrackerConfig: function () {
-        var tracker = this.callParent();
-        tracker.xclass = this.trackerClass;
-        return tracker;
-    }
+  getTrackerConfig: function () {
+    var tracker = this.callParent();
+    tracker.xclass = this.trackerClass;
+    return tracker;
+  },
 });

@@ -1,26 +1,25 @@
-Ext.define('Ext.scroll.TableScroller', {
-    extend: 'Ext.scroll.Scroller',
-    alias: 'scroller.table',
+Ext.define("Ext.scroll.TableScroller", {
+  extend: "Ext.scroll.Scroller",
+  alias: "scroller.table",
 
-    config: {
-        lockingScroller: null
-    },
+  config: {
+    lockingScroller: null,
+  },
 
-    private: {
-        doScrollTo: function(x, y, animate) {
-            var lockingScroller;
+  private: {
+    doScrollTo: function (x, y, animate) {
+      var lockingScroller;
 
-            if (y != null) {
-                lockingScroller = this.getLockingScroller();
+      if (y != null) {
+        lockingScroller = this.getLockingScroller();
 
-                if (lockingScroller) {
-                    lockingScroller.doScrollTo(null, y, animate);
-                    y = null;
-                }
-            }
-
-            this.callParent([x, y, animate]);
+        if (lockingScroller) {
+          lockingScroller.doScrollTo(null, y, animate);
+          y = null;
         }
-    }
+      }
 
+      this.callParent([x, y, animate]);
+    },
+  },
 });

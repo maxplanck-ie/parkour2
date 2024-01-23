@@ -3,22 +3,22 @@
  *
  * @mixins Ext.device.capture.Abstract
  */
-Ext.define('Ext.device.Capture', {
-    singleton: true,
+Ext.define("Ext.device.Capture", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.capture.Cordova',
-        'Ext.device.capture.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.capture.Cordova",
+    "Ext.device.capture.Simulator",
+  ],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView && browserEnv.Cordova) {
-            return Ext.create('Ext.device.capture.Cordova');
-        }
-
-        return Ext.create('Ext.device.capture.Simulator');
+    if (browserEnv.WebView && browserEnv.Cordova) {
+      return Ext.create("Ext.device.capture.Cordova");
     }
+
+    return Ext.create("Ext.device.capture.Simulator");
+  },
 });

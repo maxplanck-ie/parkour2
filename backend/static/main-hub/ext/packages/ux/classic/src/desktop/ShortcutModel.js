@@ -10,14 +10,18 @@
  * @extends Ext.data.Model
  * This model defines the minimal set of fields for desktop shortcuts.
  */
-Ext.define('Ext.ux.desktop.ShortcutModel', {
-    extend: 'Ext.data.Model',
-    fields: [{
-        name: 'name',
-        convert: Ext.String.createVarName
-    }, {
-        name: 'iconCls'
-    }, {
-        name: 'module'
-    }]
+Ext.define("Ext.ux.desktop.ShortcutModel", {
+  extend: "Ext.data.Model",
+  fields: [
+    {
+      name: "name",
+      convert: Ext.String.createVarName,
+    },
+    {
+      name: "iconCls",
+    },
+    {
+      name: "module",
+    },
+  ],
 });

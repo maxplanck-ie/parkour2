@@ -33,30 +33,27 @@
  *         width: 450
  *     });
  */
-Ext.define('Ext.grid.column.Date', {
-    extend: 'Ext.grid.column.Column',
+Ext.define("Ext.grid.column.Date", {
+  extend: "Ext.grid.column.Column",
 
-    requires: [
-        'Ext.Date',
-        'Ext.grid.cell.Date'
-    ],
+  requires: ["Ext.Date", "Ext.grid.cell.Date"],
 
-    xtype: 'datecolumn',
+  xtype: "datecolumn",
 
-    config: {
-        /**
-         * @cfg {String} format (required)
-         * A format string as used by {@link Ext.Date#format} to format values for this
-         * column.
-         */
-        format: null,
+  config: {
+    /**
+     * @cfg {String} format (required)
+     * A format string as used by {@link Ext.Date#format} to format values for this
+     * column.
+     */
+    format: null,
 
-        defaultEditor: {
-            xtype: 'datepickerfield'
-        },
+    defaultEditor: {
+      xtype: "datepickerfield",
+    },
 
-        cell: {
-            xtype: 'datecell'
-        }
-    }
+    cell: {
+      xtype: "datecell",
+    },
+  },
 });

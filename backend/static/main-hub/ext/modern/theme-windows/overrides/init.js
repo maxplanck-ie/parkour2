@@ -1,2 +1,2 @@
-Ext.namespace('Ext.theme.is').Windows = true;
-Ext.theme.name = 'Windows';
+Ext.namespace("Ext.theme.is").Windows = true;
+Ext.theme.name = "Windows";

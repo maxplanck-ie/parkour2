@@ -35,18 +35,18 @@
  * A single entity (`A`) has a relationship with many (`B`) entities. An example of this is
  * an ecommerce system `User` can have many `Order` entities.
  *
- * This can be defined using `Ext.data.schema.ManyToOne` for keyed associations, or 
+ * This can be defined using `Ext.data.schema.ManyToOne` for keyed associations, or
  * `Ext.data.schema.HasMany` for keyless associations.
- * 
+ *
  * ## One To One
  *
  * A less common form of Many To One, a single entity (`A`) has a relationship with at most 1 entity (`B`). This is often
  * used when partitioning data. For example a `User` may have a single `UserInfo` object that stores extra
  * metadata about the user.
  *
- * This can be defined using `Ext.data.schema.OneToOne` for keyed associations, or 
+ * This can be defined using `Ext.data.schema.OneToOne` for keyed associations, or
  * `Ext.data.schema.HasOne` for keyless associations.
- * 
+ *
  * ## Many To Many
  *
  * An entity (`A`) may have a have a relationship with many (`B`) entities. That (`B`) entity may also
@@ -55,7 +55,7 @@
  *
  * This can be defined using `Ext.data.schema.ManyToMany`. Many To Many relationships are readonly unless used with
  * a `Ext.data.Session`.
- *     
+ *
  *
  * # Keyed vs Keyless Associations
  *
@@ -65,7 +65,7 @@
  *
  * A keyed association relies on a field in the model matching the id of another model. Membership is driven by the key.
  * This is the type of relationship that is typically used in a relational database.
- * This is declared using the ||reference|| configuration on a model field. An example of this can be seen 
+ * This is declared using the ||reference|| configuration on a model field. An example of this can be seen
  * above for `User/Order`.
  *
  * # Keyless associations
@@ -101,7 +101,7 @@
  * predictable naming structure.
  *
  * Using the example code above, there will be 3 generated methods:
- * + `User` will have an `orders()` function that returns a `Ext.data.Store` of`Orders`. 
+ * + `User` will have an `orders()` function that returns a `Ext.data.Store` of`Orders`.
  * + `Order` will have a `getUser` method which will return a `User` Model.
  * + `Order` will have a `setUser` method that will accept a `User` model or a key value.
  *
@@ -163,7 +163,7 @@
  * associated data as part of a bind statement. For example:
  * + `{user.orders}` binds to the orders store for a user.
  * + `{order.user.name}` binds to the name of the user taken from the order.
- * 
+ *
  *
  * # Association Concepts
  *
@@ -186,7 +186,7 @@
  *                 type: 'Thread',
  *                 role: 'discussion',
  *                 inverse: 'comments'
- *                 
+ *
  *             }
  *         }]
  *     });
@@ -196,9 +196,9 @@
  *
  * ## Generated Methods
  *
- * Associations generate methods to allow reading and manipulation on associated data. 
- * 
- * On records that have a "to many" relationship, a single methods that returns a `Ext.data.Store` is created. 
+ * Associations generate methods to allow reading and manipulation on associated data.
+ *
+ * On records that have a "to many" relationship, a single methods that returns a `Ext.data.Store` is created.
  * See {@link #storeGetter}. On records that have a "to one" relationship, 2 methods are generated, a
  * {@link #recordGetter getter} and a {@link #recordSetter setter}.
  *
@@ -226,163 +226,162 @@
  * Referring to model names in associations depends on their {@link Ext.data.Model#entityName}. See
  * the "Relative Naming" section in the `Ext.data.schema.Schema` documentation.
  */
-Ext.define('Ext.data.schema.Association', {
-    requires: [
-        'Ext.data.schema.Role'
-    ],
+Ext.define("Ext.data.schema.Association", {
+  requires: ["Ext.data.schema.Role"],
 
-    isOneToOne: false,
-    isManyToOne: false,
-    isManyToMany: false,
+  isOneToOne: false,
+  isManyToOne: false,
+  isManyToMany: false,
 
-    /**
-     * @method storeGetter
-     * ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
-     *
-     * Gets a store configured with the model of the "many" record.
-     * @param {Object/Function} [options] The options for the getter, or a callback function to execute. If specified as
-     * a function, it will act as the `callback` option.
-     *
-     * @param {Boolean} [options.reload] `true` to force the store to reload from the server.
-     *
-     * @param {Object} [options.scope] The `this` reference for the callback. Defaults to the record.
-     * 
-     * @param {Function} [options.success] A function to execute when the store loads successfully.
-     * If the store has already loaded, this will be called immediately and the `Operation` will be `null`.
-     * The success is passed the following parameters:
-     * @param {Ext.data.Store} [options.success.store] The store.
-     * @param {Ext.data.operation.Operation} [options.success.operation] The operation. `null` if no load occurred.
-     *
-     * @param {Function} [options.failure] A function to execute when the store load fails.
-     * If the store has already loaded, this will not be called.
-     * The failure is passed the following parameters:
-     * @param {Ext.data.Store} [options.failure.store] The store.
-     * @param {Ext.data.operation.Operation} [options.failure.operation] The operation
-     * 
-     * @param {Function} [options.callback] A function to execute when the store loads, whether it is successful
-     * or failed. If the store has already loaded, this will be called immediately and the `Operation` will be `null`.
-     * The callback is passed the following parameters:
-     * @param {Ext.data.Store} [options.callback.store] The store.
-     * @param {Ext.data.operation.Operation} [options.callback.operation] The operation. `null` if no load occurred.
-     * @param {Boolean} [options.callback.success] `true` if the load was successful. If already loaded this
-     * will always be true.
-     *
-     * @param {Object} [scope] The `this` reference for the callback. Defaults to the record.
-     *
-     * @return {Ext.data.Store} The store.
-     */
-    
-    /**
-     * @method recordGetter
-     * ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
-     *
-     * Gets a model of the "one" type.
-     * @param {Object/Function} [options] The options for the getter, or a callback function to execute. If specified as
-     * a function, it will act as the `callback` option.
-     *
-     * @param {Boolean} [options.reload] `true` to force the record to reload from the server.
-     *
-     * @param {Object} [options.scope] The `this` reference for the callback. Defaults to the record.
-     * 
-     * @param {Function} [options.success] A function to execute when the record loads successfully.
-     * If the record has already loaded, this will be called immediately and the `Operation` will be `null`.
-     * The success is passed the following parameters:
-     * @param {Ext.data.Model} [options.success.record] The record.
-     * @param {Ext.data.operation.Operation} [options.success.operation] The operation. `null` if no load occurred.
-     *
-     * @param {Function} [options.failure] A function to execute when the record load fails.
-     * If the record has already loaded, this will not be called.
-     * The failure is passed the following parameters:
-     * @param {Ext.data.Model} [options.failure.record] The record.
-     * @param {Ext.data.operation.Operation} [options.failure.operation] The operation
-     * 
-     * @param {Function} [options.callback] A function to execute when the record loads, whether it is successful
-     * or failed. If the record has already loaded, this will be called immediately and the `Operation` will be `null`.
-     * The callback is passed the following parameters:
-     * @param {Ext.data.Model} [options.callback.record] The record.
-     * @param {Ext.data.operation.Operation} [options.callback.operation] The operation. `null` if no load occurred.
-     * @param {Boolean} [options.callback.success] `true` if the load was successful. If already loaded this
-     * will always be true.
-     * 
-     * @param {Object} [scope] The `this` reference for the callback. Defaults to the record.
-     * @return {Ext.data.Model} The record. `null` if the reference has been previously specified as empty.
-     */
-    
-    /**
-     * @method recordSetter ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
-     *
-     * Sets a model of the "one" type.
-     * @param {Ext.data.Model/Object} value The value to set. This can be a model instance, a key value (if a keyed association) or `null`
-     * to clear the value.
-     *
-     * @param {Object/Function} [options] Options to handle callback. If specified as
-     * a function, it will act as the `callback` option. If specified as an object, the params are the same as
-     * {@link Ext.data.Model#save}. If  options is specified, {@link Ext.data.Model#save} will be called on this record.
-     */
+  /**
+   * @method storeGetter
+   * ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
+   *
+   * Gets a store configured with the model of the "many" record.
+   * @param {Object/Function} [options] The options for the getter, or a callback function to execute. If specified as
+   * a function, it will act as the `callback` option.
+   *
+   * @param {Boolean} [options.reload] `true` to force the store to reload from the server.
+   *
+   * @param {Object} [options.scope] The `this` reference for the callback. Defaults to the record.
+   *
+   * @param {Function} [options.success] A function to execute when the store loads successfully.
+   * If the store has already loaded, this will be called immediately and the `Operation` will be `null`.
+   * The success is passed the following parameters:
+   * @param {Ext.data.Store} [options.success.store] The store.
+   * @param {Ext.data.operation.Operation} [options.success.operation] The operation. `null` if no load occurred.
+   *
+   * @param {Function} [options.failure] A function to execute when the store load fails.
+   * If the store has already loaded, this will not be called.
+   * The failure is passed the following parameters:
+   * @param {Ext.data.Store} [options.failure.store] The store.
+   * @param {Ext.data.operation.Operation} [options.failure.operation] The operation
+   *
+   * @param {Function} [options.callback] A function to execute when the store loads, whether it is successful
+   * or failed. If the store has already loaded, this will be called immediately and the `Operation` will be `null`.
+   * The callback is passed the following parameters:
+   * @param {Ext.data.Store} [options.callback.store] The store.
+   * @param {Ext.data.operation.Operation} [options.callback.operation] The operation. `null` if no load occurred.
+   * @param {Boolean} [options.callback.success] `true` if the load was successful. If already loaded this
+   * will always be true.
+   *
+   * @param {Object} [scope] The `this` reference for the callback. Defaults to the record.
+   *
+   * @return {Ext.data.Store} The store.
+   */
 
-    /**
-     * @cfg {String} name
-     * The name of this association.
-     */
+  /**
+   * @method recordGetter
+   * ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
+   *
+   * Gets a model of the "one" type.
+   * @param {Object/Function} [options] The options for the getter, or a callback function to execute. If specified as
+   * a function, it will act as the `callback` option.
+   *
+   * @param {Boolean} [options.reload] `true` to force the record to reload from the server.
+   *
+   * @param {Object} [options.scope] The `this` reference for the callback. Defaults to the record.
+   *
+   * @param {Function} [options.success] A function to execute when the record loads successfully.
+   * If the record has already loaded, this will be called immediately and the `Operation` will be `null`.
+   * The success is passed the following parameters:
+   * @param {Ext.data.Model} [options.success.record] The record.
+   * @param {Ext.data.operation.Operation} [options.success.operation] The operation. `null` if no load occurred.
+   *
+   * @param {Function} [options.failure] A function to execute when the record load fails.
+   * If the record has already loaded, this will not be called.
+   * The failure is passed the following parameters:
+   * @param {Ext.data.Model} [options.failure.record] The record.
+   * @param {Ext.data.operation.Operation} [options.failure.operation] The operation
+   *
+   * @param {Function} [options.callback] A function to execute when the record loads, whether it is successful
+   * or failed. If the record has already loaded, this will be called immediately and the `Operation` will be `null`.
+   * The callback is passed the following parameters:
+   * @param {Ext.data.Model} [options.callback.record] The record.
+   * @param {Ext.data.operation.Operation} [options.callback.operation] The operation. `null` if no load occurred.
+   * @param {Boolean} [options.callback.success] `true` if the load was successful. If already loaded this
+   * will always be true.
+   *
+   * @param {Object} [scope] The `this` reference for the callback. Defaults to the record.
+   * @return {Ext.data.Model} The record. `null` if the reference has been previously specified as empty.
+   */
 
-    /**
-     * @property {Object} owner
-     * Points at either `left` or `right` objects if one is the owning party in this
-     * association or is `null` if there is no owner.
-     * @readonly
-     */
-    owner: null,
+  /**
+   * @method recordSetter ** This is not a real method, it is placeholder documentation for a generated method on a `Ext.data.Model`. **
+   *
+   * Sets a model of the "one" type.
+   * @param {Ext.data.Model/Object} value The value to set. This can be a model instance, a key value (if a keyed association) or `null`
+   * to clear the value.
+   *
+   * @param {Object/Function} [options] Options to handle callback. If specified as
+   * a function, it will act as the `callback` option. If specified as an object, the params are the same as
+   * {@link Ext.data.Model#save}. If  options is specified, {@link Ext.data.Model#save} will be called on this record.
+   */
 
-    /**
-     * @property {Ext.Class} definedBy
-     * @readonly
-     */
+  /**
+   * @cfg {String} name
+   * The name of this association.
+   */
 
-    /**
-     * @property {Ext.data.field.Field} field
-     * @readonly
-     */
-    field: null,
+  /**
+   * @property {Object} owner
+   * Points at either `left` or `right` objects if one is the owning party in this
+   * association or is `null` if there is no owner.
+   * @readonly
+   */
+  owner: null,
 
-    /**
-     * @property {Ext.data.schema.Schema} schema
-     * @readonly
-     */
+  /**
+   * @property {Ext.Class} definedBy
+   * @readonly
+   */
 
-    /**
-     * @property {Boolean} nullable
-     * @readonly
-     */
+  /**
+   * @property {Ext.data.field.Field} field
+   * @readonly
+   */
+  field: null,
 
-    /**
-     * @property {Ext.data.schema.Role} left
-     * @readonly
-     */
+  /**
+   * @property {Ext.data.schema.Schema} schema
+   * @readonly
+   */
 
-    /**
-     * @property {Ext.data.schema.Role} right
-     * @readonly
-     */
+  /**
+   * @property {Boolean} nullable
+   * @readonly
+   */
 
-    constructor: function (config) {
-        var me = this,
-            left, right;
+  /**
+   * @property {Ext.data.schema.Role} left
+   * @readonly
+   */
 
-        Ext.apply(me, config);
+  /**
+   * @property {Ext.data.schema.Role} right
+   * @readonly
+   */
 
-        me.left = left = new me.Left(me, me.left);
-        me.right = right = new me.Right(me, me.right);
+  constructor: function (config) {
+    var me = this,
+      left,
+      right;
 
-        left.inverse = right;
-        right.inverse = left;
-    },
-    
-    hasField: function() {
-        return !!this.field;    
-    },
-    
-    getFieldName: function() {
-        var field = this.field;
-        return field ? field.name : '';
-    }
+    Ext.apply(me, config);
+
+    me.left = left = new me.Left(me, me.left);
+    me.right = right = new me.Right(me, me.right);
+
+    left.inverse = right;
+    right.inverse = left;
+  },
+
+  hasField: function () {
+    return !!this.field;
+  },
+
+  getFieldName: function () {
+    var field = this.field;
+    return field ? field.name : "";
+  },
 });

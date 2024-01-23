@@ -38,15 +38,15 @@
  *                 console.log('No pressed');
  *             } else {
  *                 console.log('Cancel pressed');
- *             } 
+ *             }
  *         }
  *     });
- * 
- * Showing Ext.Msg while it's already shown will cause the visible instance to be 
- * overwritten with the newly passed config.  While this may be the desired outcome, you 
- * can also create a new MessageBox that can exist alongside the Ext.Msg 
+ *
+ * Showing Ext.Msg while it's already shown will cause the visible instance to be
+ * overwritten with the newly passed config.  While this may be the desired outcome, you
+ * can also create a new MessageBox that can exist alongside the Ext.Msg
  * singleton instance.
- * 
+ *
  *     @example
  *     var myMsg = Ext.create('Ext.window.MessageBox', {
  *         // set closeAction to 'destroy' if this instance is not
@@ -56,92 +56,94 @@
  *         title: 'Custom MessageBox Instance',
  *         message: 'I can exist along with Ext.Msg'
  *     });
- *     
+ *
  *     Ext.Msg.alert('Overlapping', 'Ext.Msg instance');
  */
-Ext.define('Ext.window.MessageBox', {
-    extend: 'Ext.window.Window',
+Ext.define(
+  "Ext.window.MessageBox",
+  {
+    extend: "Ext.window.Window",
 
     requires: [
-        'Ext.toolbar.Toolbar',
-        'Ext.form.field.Text',
-        'Ext.form.field.TextArea',
-        'Ext.button.Button',
-        'Ext.layout.container.Anchor',
-        'Ext.layout.container.HBox',
-        'Ext.ProgressBar'
+      "Ext.toolbar.Toolbar",
+      "Ext.form.field.Text",
+      "Ext.form.field.TextArea",
+      "Ext.button.Button",
+      "Ext.layout.container.Anchor",
+      "Ext.layout.container.HBox",
+      "Ext.ProgressBar",
     ],
 
-    alias: 'widget.messagebox',
+    alias: "widget.messagebox",
 
     /**
      * @property
      * Button config that displays a single OK button
      */
-    OK : 1,
+    OK: 1,
     /**
      * @property
      * Button config that displays a single Yes button
      */
-    YES : 2,
+    YES: 2,
     /**
      * @property
      * Button config that displays a single No button
      */
-    NO : 4,
+    NO: 4,
     /**
      * @property
      * Button config that displays a single Cancel button
      */
-    CANCEL : 8,
+    CANCEL: 8,
     /**
      * @property
      * Button config that displays OK and Cancel buttons
      */
-    OKCANCEL : 9,
+    OKCANCEL: 9,
     /**
      * @property
      * Button config that displays Yes and No buttons
      */
-    YESNO : 6,
+    YESNO: 6,
     /**
      * @property
      * Button config that displays Yes, No and Cancel buttons
      */
-    YESNOCANCEL : 14,
+    YESNOCANCEL: 14,
     /**
      * @property
      * The CSS class that provides the INFO icon image
      */
-    INFO : Ext.baseCSSPrefix + 'message-box-info',
+    INFO: Ext.baseCSSPrefix + "message-box-info",
     /**
      * @property
      * The CSS class that provides the WARNING icon image
      */
-    WARNING : Ext.baseCSSPrefix + 'message-box-warning',
+    WARNING: Ext.baseCSSPrefix + "message-box-warning",
     /**
      * @property
      * The CSS class that provides the QUESTION icon image
      */
-    QUESTION : Ext.baseCSSPrefix + 'message-box-question',
+    QUESTION: Ext.baseCSSPrefix + "message-box-question",
     /**
      * @property
      * The CSS class that provides the ERROR icon image
      */
-    ERROR : Ext.baseCSSPrefix + 'message-box-error',
+    ERROR: Ext.baseCSSPrefix + "message-box-error",
 
     // hide it by offsets. Windows are hidden on render by default.
-    hideMode: 'offsets',
-    closeAction: 'hide',
+    hideMode: "offsets",
+    closeAction: "hide",
     resizable: false,
     scrollable: true,
-    title: '&#160;',
+    title: "&#160;",
 
     defaultMinWidth: 250,
     defaultMaxWidth: 600,
     defaultMinHeight: 110,
     defaultMaxHeight: 500,
-    
+
     // Forcibly set these to null on the prototype to override anything set higher in
     // the hierarchy
     minWidth: null,
@@ -150,11 +152,14 @@ Ext.define('Ext.window.MessageBox', {
     maxHeight: null,
     constrain: true,
 
-    cls: [Ext.baseCSSPrefix + 'message-box', Ext.baseCSSPrefix + 'hidden-offsets'],
+    cls: [
+      Ext.baseCSSPrefix + "message-box",
+      Ext.baseCSSPrefix + "hidden-offsets",
+    ],
 
     layout: {
-        type: 'vbox',
-        align: 'stretch'
+      type: "vbox",
+      align: "stretch",
     },
 
     // We want to shrinkWrap around all docked items
@@ -164,13 +169,13 @@ Ext.define('Ext.window.MessageBox', {
      * @property
      * The default height in pixels of the message box's multiline textarea if displayed.
      */
-    defaultTextHeight : 75,
+    defaultTextHeight: 75,
     /**
      * @property
      * The minimum width in pixels of the message box if it is a progress-style dialog.  This is useful
      * for setting a different minimum width than text-only dialogs may need.
      */
-    minProgressWidth : 250,
+    minProgressWidth: 250,
     /**
      * @property
      * The minimum width in pixels of the message box if it is a prompt dialog.  This is useful
@@ -188,459 +193,467 @@ Ext.define('Ext.window.MessageBox', {
      *     Ext.window.MessageBox.buttonText.yes = "oui"; //french
      */
     buttonText: {
-        ok: 'OK',
-        yes: 'Yes',
-        no: 'No',
-        cancel: 'Cancel'
+      ok: "OK",
+      yes: "Yes",
+      no: "No",
+      cancel: "Cancel",
     },
     //</locale>
 
-    buttonIds: [
-        'ok', 'yes', 'no', 'cancel'
-    ],
+    buttonIds: ["ok", "yes", "no", "cancel"],
 
     //<locale type="object">
     titleText: {
-        confirm: 'Confirm',
-        prompt: 'Prompt',
-        wait: 'Loading...',
-        alert: 'Attention'
+      confirm: "Confirm",
+      prompt: "Prompt",
+      wait: "Loading...",
+      alert: "Attention",
     },
     //</locale>
 
-    baseIconCls: Ext.baseCSSPrefix + 'message-box-icon',
-    
-    ariaRole: 'alertdialog',
+    baseIconCls: Ext.baseCSSPrefix + "message-box-icon",
 
-    makeButton: function(btnIdx) {
-        var btnId = this.buttonIds[btnIdx];
-        return new Ext.button.Button({
-            handler: this.btnCallback,
-            itemId: btnId,
-            scope: this,
-            text: this.buttonText[btnId],
-            minWidth: 75
+    ariaRole: "alertdialog",
+
+    makeButton: function (btnIdx) {
+      var btnId = this.buttonIds[btnIdx];
+      return new Ext.button.Button({
+        handler: this.btnCallback,
+        itemId: btnId,
+        scope: this,
+        text: this.buttonText[btnId],
+        minWidth: 75,
+      });
+    },
+
+    btnCallback: function (btn, event) {
+      var me = this,
+        value,
+        field;
+
+      // If this is caused by a keydown event (eg: SPACE on a Button), then the
+      // hide will throw focus back to the previously focused element which will
+      // then recieve an unexpected keyup event.
+      // So defer callback handling until the upcoming keyup event.
+      if (event && event.type === "keydown" && !event.isSpecialKey()) {
+        event.getTarget(null, null, true).on({
+          keyup: function (e) {
+            me.btnCallback(btn, e);
+          },
+          single: true,
         });
+        return;
+      }
+
+      if (me.cfg.prompt || me.cfg.multiline) {
+        if (me.cfg.multiline) {
+          field = me.textArea;
+        } else {
+          field = me.textField;
+        }
+        value = field.getValue();
+        field.reset();
+      }
+
+      // Component.onHide blurs the active element if the Component contains the active element
+      me.hide();
+      me.userCallback(btn.itemId, value, me.cfg);
     },
 
-    btnCallback: function(btn, event) {
-        var me = this,
-            value,
-            field;
+    hide: function () {
+      var me = this,
+        cls = me.cfg ? me.cfg.cls : "";
 
-        // If this is caused by a keydown event (eg: SPACE on a Button), then the
-        // hide will throw focus back to the previously focused element which will
-        // then recieve an unexpected keyup event.
-        // So defer callback handling until the upcoming keyup event.
-        if (event && event.type === 'keydown' && !event.isSpecialKey()) {
-            event.getTarget(null, null, true).on({
-                keyup: function(e) {
-                    me.btnCallback(btn, e);
-                },
-                single: true
-            });
-            return;
-        }
-
-        if (me.cfg.prompt || me.cfg.multiline) {
-            if (me.cfg.multiline) {
-                field = me.textArea;
-            } else {
-                field = me.textField;
-            }
-            value = field.getValue();
-            field.reset();
-        }
-
-        // Component.onHide blurs the active element if the Component contains the active element
-        me.hide();
-        me.userCallback(btn.itemId, value, me.cfg);
-    },
-
-    hide: function() {
-        var me = this,
-            cls = me.cfg ? me.cfg.cls : '';
-
-        me.progressBar.reset();
-        if (cls) {
-            me.removeCls(cls);
-        }
-        me.callParent(arguments);
+      me.progressBar.reset();
+      if (cls) {
+        me.removeCls(cls);
+      }
+      me.callParent(arguments);
     },
 
     /**
      * @private
      */
-    constructor: function(cfg) {
-        var me = this;
+    constructor: function (cfg) {
+      var me = this;
 
-        me.callParent(arguments);
+      me.callParent(arguments);
 
-        // set the default min/max/Width/Height to the initially configured min/max/Width/Height
-        // so that it will be used as the default when reconfiguring.
-        me.minWidth = me.defaultMinWidth = (me.minWidth || me.defaultMinWidth);
-        me.maxWidth = me.defaultMaxWidth = (me.maxWidth || me.defaultMaxWidth);
-        me.minHeight = me.defaultMinHeight = (me.minHeight || me.defaultMinHeight);
-        me.maxHeight = me.defaultMaxHeight = (me.maxHeight || me.defaultMaxHeight);
+      // set the default min/max/Width/Height to the initially configured min/max/Width/Height
+      // so that it will be used as the default when reconfiguring.
+      me.minWidth = me.defaultMinWidth = me.minWidth || me.defaultMinWidth;
+      me.maxWidth = me.defaultMaxWidth = me.maxWidth || me.defaultMaxWidth;
+      me.minHeight = me.defaultMinHeight = me.minHeight || me.defaultMinHeight;
+      me.maxHeight = me.defaultMaxHeight = me.maxHeight || me.defaultMaxHeight;
     },
 
-    initComponent: function(cfg) {
-        var me = this,
-            baseId = me.id,
-            i, button;
+    initComponent: function (cfg) {
+      var me = this,
+        baseId = me.id,
+        i,
+        button;
 
-        // A title or iconCls could have been passed in the config to the constructor.
-        me.title = me.title || '&#160;';
-        me.iconCls = me.iconCls || '';
+      // A title or iconCls could have been passed in the config to the constructor.
+      me.title = me.title || "&#160;";
+      me.iconCls = me.iconCls || "";
 
-        me.topContainer = new Ext.container.Container({
-            layout: 'hbox',
-            padding: 10,
-            style: {
-                overflow: 'hidden'
-            },
-            items: [
-                me.iconComponent = new Ext.Component({
-                    cls: me.baseIconCls
-                }),
-                me.promptContainer = new Ext.container.Container({
-                    flex: 1,
-                    layout: {
-                        type: 'vbox',
-                        align: 'stretch'
-                    },
-                    items: [
-                        me.msg = new Ext.Component({
-                            id: baseId + '-msg',
-                            cls: me.baseCls + '-text'
-                        }),
-                        me.textField = new Ext.form.field.Text({
-                            id: baseId + '-textfield',
-                            enableKeyEvents: true,
-                            ariaAttributes: {
-                                'aria-labelledby': me.msg.id
-                            },
-                            listeners: {
-                                keydown: me.onPromptKey,
-                                scope: me
-                            }
-                        }),
-                        me.textArea = new Ext.form.field.TextArea({
-                            id: baseId + '-textarea',
-                            height: 75,
-                            ariaAttributes: {
-                                'aria-labelledby': me.msg.id
-                            }
-                        })
-                    ]
-                })
-            ]
-        });
-        
-        me.progressBar = new Ext.ProgressBar({
-            id: baseId + '-progressbar',
-            margin: '0 10 10 10'
-        });
-
-        me.items = [me.topContainer, me.progressBar];
-
-        // Create the buttons based upon passed bitwise config
-        me.msgButtons = [];
-        for (i = 0; i < 4; i++) {
-            button = me.makeButton(i);
-            me.msgButtons[button.itemId] = button;
-            me.msgButtons.push(button);
-        }
-        me.bottomTb = new Ext.toolbar.Toolbar({
-            id: baseId + '-toolbar',
-            ui: 'footer',
-            dock: 'bottom',
-            enableFocusableContainer: false,
-            ariaRole: null,
+      me.topContainer = new Ext.container.Container({
+        layout: "hbox",
+        padding: 10,
+        style: {
+          overflow: "hidden",
+        },
+        items: [
+          (me.iconComponent = new Ext.Component({
+            cls: me.baseIconCls,
+          })),
+          (me.promptContainer = new Ext.container.Container({
+            flex: 1,
             layout: {
-                pack: 'center'
+              type: "vbox",
+              align: "stretch",
             },
             items: [
-                me.msgButtons[0],
-                me.msgButtons[1],
-                me.msgButtons[2],
-                me.msgButtons[3]
-            ]
-        });
-        me.dockedItems = [me.bottomTb];
-        me.on('close', me.onClose, me);
-        me.callParent();
+              (me.msg = new Ext.Component({
+                id: baseId + "-msg",
+                cls: me.baseCls + "-text",
+              })),
+              (me.textField = new Ext.form.field.Text({
+                id: baseId + "-textfield",
+                enableKeyEvents: true,
+                ariaAttributes: {
+                  "aria-labelledby": me.msg.id,
+                },
+                listeners: {
+                  keydown: me.onPromptKey,
+                  scope: me,
+                },
+              })),
+              (me.textArea = new Ext.form.field.TextArea({
+                id: baseId + "-textarea",
+                height: 75,
+                ariaAttributes: {
+                  "aria-labelledby": me.msg.id,
+                },
+              })),
+            ],
+          })),
+        ],
+      });
+
+      me.progressBar = new Ext.ProgressBar({
+        id: baseId + "-progressbar",
+        margin: "0 10 10 10",
+      });
+
+      me.items = [me.topContainer, me.progressBar];
+
+      // Create the buttons based upon passed bitwise config
+      me.msgButtons = [];
+      for (i = 0; i < 4; i++) {
+        button = me.makeButton(i);
+        me.msgButtons[button.itemId] = button;
+        me.msgButtons.push(button);
+      }
+      me.bottomTb = new Ext.toolbar.Toolbar({
+        id: baseId + "-toolbar",
+        ui: "footer",
+        dock: "bottom",
+        enableFocusableContainer: false,
+        ariaRole: null,
+        layout: {
+          pack: "center",
+        },
+        items: [
+          me.msgButtons[0],
+          me.msgButtons[1],
+          me.msgButtons[2],
+          me.msgButtons[3],
+        ],
+      });
+      me.dockedItems = [me.bottomTb];
+      me.on("close", me.onClose, me);
+      me.callParent();
     },
-    
-    afterRender: function() {
-        var me = this;
-        
-        me.callParent(arguments);
-        
-        // These fields do not have a visible label, we're using message component instead.
-        // Input elements have aria-labelledby pointing to the message component's id;
-        // "for" attributes on the labelEl are redundant and get in the way.
-        me.textField.labelEl.dom.removeAttribute('for');
-        me.textArea.labelEl.dom.removeAttribute('for');
+
+    afterRender: function () {
+      var me = this;
+
+      me.callParent(arguments);
+
+      // These fields do not have a visible label, we're using message component instead.
+      // Input elements have aria-labelledby pointing to the message component's id;
+      // "for" attributes on the labelEl are redundant and get in the way.
+      me.textField.labelEl.dom.removeAttribute("for");
+      me.textArea.labelEl.dom.removeAttribute("for");
     },
 
-    onClose: function() {
-        var btn = this.msgButtons[3];
+    onClose: function () {
+      var btn = this.msgButtons[3];
 
-        if (btn) {
-            this.btnCallback(btn);
-        }
+      if (btn) {
+        this.btnCallback(btn);
+      }
     },
 
-    onPromptKey: function(textField, e) {
-        var me = this;
+    onPromptKey: function (textField, e) {
+      var me = this;
 
-        if (e.keyCode === e.RETURN || e.keyCode === 10) {
-            if (me.msgButtons.ok.isVisible()) {
-                me.msgButtons.ok.handler.call(me, me.msgButtons.ok);
-            } else if (me.msgButtons.yes.isVisible()) {
-                me.msgButtons.yes.handler.call(me, me.msgButtons.yes);
-            }
+      if (e.keyCode === e.RETURN || e.keyCode === 10) {
+        if (me.msgButtons.ok.isVisible()) {
+          me.msgButtons.ok.handler.call(me, me.msgButtons.ok);
+        } else if (me.msgButtons.yes.isVisible()) {
+          me.msgButtons.yes.handler.call(me, me.msgButtons.yes);
         }
+      }
     },
 
-    reconfigure: function(cfg) {
-        var me = this,
-            buttons = 0,
-            hideToolbar = true,
-            oldButtonText = me.buttonText,
-            resizer = me.resizer,
-            header = me.header,
-            headerCfg = header && !header.isHeader,
-            message = cfg && (cfg.message || cfg.msg),
-            buttonTips = cfg.buttonTips,
-            title, iconCls, resizeTracker, width, height, i, textArea,
-            textField, msg, progressBar, msgButtons, wait, tool;
+    reconfigure: function (cfg) {
+      var me = this,
+        buttons = 0,
+        hideToolbar = true,
+        oldButtonText = me.buttonText,
+        resizer = me.resizer,
+        header = me.header,
+        headerCfg = header && !header.isHeader,
+        message = cfg && (cfg.message || cfg.msg),
+        buttonTips = cfg.buttonTips,
+        title,
+        iconCls,
+        resizeTracker,
+        width,
+        height,
+        i,
+        textArea,
+        textField,
+        msg,
+        progressBar,
+        msgButtons,
+        wait,
+        tool;
 
-        // Restore default buttonText before reconfiguring.
-        me.updateButtonText();
+      // Restore default buttonText before reconfiguring.
+      me.updateButtonText();
 
-        me.cfg = cfg = cfg || {};
+      me.cfg = cfg = cfg || {};
 
-        wait = cfg.wait;
-        if (cfg.width) {
-            width = cfg.width;
+      wait = cfg.wait;
+      if (cfg.width) {
+        width = cfg.width;
+      }
+
+      if (cfg.height) {
+        height = cfg.height;
+      }
+
+      me.minWidth = cfg.minWidth || me.defaultMinWidth;
+      me.maxWidth = cfg.maxWidth || me.defaultMaxWidth;
+      me.minHeight = cfg.minHeight || me.defaultMinHeight;
+      me.maxHeight = cfg.maxHeight || me.defaultMaxHeight;
+      if ("maskClickAction" in cfg) {
+        me.maskClickAction = cfg.maskClickAction;
+      } else {
+        delete me.maskClickAction;
+      }
+
+      if (resizer) {
+        resizeTracker = resizer.resizeTracker;
+        resizer.minWidth = resizeTracker.minWidth = me.minWidth;
+        resizer.maxWidth = resizeTracker.maxWidth = me.maxWidth;
+        resizer.minHeight = resizeTracker.minHeight = me.minHeight;
+        resizer.maxHeight = resizeTracker.maxHeight = me.maxHeight;
+      }
+
+      // Previous default is rarely going to be valid
+      delete me.defaultFocus;
+
+      if (cfg.defaultFocus) {
+        me.defaultFocus = cfg.defaultFocus;
+      }
+
+      // clear any old animateTarget
+      me.animateTarget = cfg.animateTarget || undefined;
+
+      // Defaults to modal
+      me.modal = cfg.modal !== false;
+
+      // Show the title/icon if a title/iconCls config was passed in the config
+      // to either the constructor or the show() method. Note that anything
+      // passed in the config should win.
+      //
+      // Note that if there is no title/iconCls in the config, check the headerCfg
+      // and default to the instance properties. This works because there are default
+      // values defined in initComponent.
+      if (cfg.title != null) {
+        title = cfg.title;
+      } else if (headerCfg && header.title != null) {
+        title = header.title;
+      } else {
+        title = me.title;
+      }
+
+      if (cfg.iconCls != null) {
+        iconCls = cfg.iconCls;
+      } else if (headerCfg && header.iconCls != null) {
+        iconCls = header.iconCls;
+      } else {
+        iconCls = me.iconCls;
+      }
+
+      me.setTitle(title);
+      me.setIconCls(iconCls);
+
+      // Extract button configs
+      if (Ext.isObject(cfg.buttons)) {
+        me.buttonText = cfg.buttons;
+        buttons = 0;
+      } else {
+        me.buttonText = cfg.buttonText || me.buttonText;
+        buttons = Ext.isNumber(cfg.buttons) ? cfg.buttons : 0;
+      }
+
+      Ext.each(me.buttonIds, function (buttonId) {
+        me.msgButtons[buttonId].setTooltip(
+          (buttonTips && buttonTips[buttonId]) || null,
+        );
+      });
+
+      // Apply custom-configured buttonText
+      // Infer additional buttons from the specified property names in the buttonText object
+      buttons = buttons | me.updateButtonText();
+
+      // Restore buttonText. Next run of reconfigure will restore to prototype's buttonText
+      me.buttonText = oldButtonText;
+
+      // During the on render, or size resetting layouts, and in subsequent hiding and showing, we need to
+      // suspend layouts, and flush at the end when the Window's children are at their final visibility.
+      Ext.suspendLayouts();
+      me.width = me.height = null;
+      if (width || height) {
+        if (width) {
+          me.setWidth(width);
         }
 
-        if (cfg.height) {
-            height = cfg.height;
+        if (height) {
+          me.setHeight(height);
+        }
+      }
+      if (!me.rendered) {
+        me.render(Ext.getBody());
+      }
+
+      // Hide or show the close tool
+      me.closable = cfg.closable !== false && !wait;
+
+      // We need to redefine `header` because me.setIconCls() could create a Header instance.
+      header = me.header;
+
+      if (header) {
+        tool = header.child("[type=close]");
+
+        if (tool) {
+          tool.setVisible(me.closable);
         }
 
-        me.minWidth = cfg.minWidth || me.defaultMinWidth;
-        me.maxWidth = cfg.maxWidth || me.defaultMaxWidth;
-        me.minHeight = cfg.minHeight || me.defaultMinHeight;
-        me.maxHeight = cfg.maxHeight || me.defaultMaxHeight;
-        if ('maskClickAction' in cfg) {
-            me.maskClickAction = cfg.maskClickAction;
+        // Hide or show the header
+        if (!cfg.title && !me.closable && !cfg.iconCls) {
+          header.hide();
         } else {
-            delete me.maskClickAction;
+          header.show();
         }
+      }
 
-        if (resizer) {
-            resizeTracker = resizer.resizeTracker;
-            resizer.minWidth = resizeTracker.minWidth = me.minWidth;
-            resizer.maxWidth = resizeTracker.maxWidth = me.maxWidth;
-            resizer.minHeight = resizeTracker.minHeight = me.minHeight;
-            resizer.maxHeight = resizeTracker.maxHeight = me.maxHeight;
-        }
+      // Default to dynamic drag: drag the window, not a ghost
+      me.liveDrag = !cfg.proxyDrag;
 
-        // Previous default is rarely going to be valid
-        delete me.defaultFocus;
-        
-        if (cfg.defaultFocus) {
-            me.defaultFocus = cfg.defaultFocus;
-        }
+      // wrap the user callback
+      me.userCallback = Ext.Function.bindCallback(
+        cfg.callback || cfg.fn || Ext.emptyFn,
+        cfg.scope || Ext.global,
+      );
 
-        // clear any old animateTarget
-        me.animateTarget = cfg.animateTarget || undefined;
+      // Hide or show the icon Component
+      me.setIcon(cfg.icon);
 
-        // Defaults to modal
-        me.modal = cfg.modal !== false;
+      // Hide or show the message area
+      msg = me.msg;
+      if (message) {
+        msg.setHtml(message);
+        msg.show();
 
-        // Show the title/icon if a title/iconCls config was passed in the config
-        // to either the constructor or the show() method. Note that anything
-        // passed in the config should win.
-        //
-        // Note that if there is no title/iconCls in the config, check the headerCfg
-        // and default to the instance properties. This works because there are default
-        // values defined in initComponent.
-        if (cfg.title != null) {
-            title = cfg.title;
-        }
-        else if (headerCfg && header.title != null) {
-            title = header.title;
-        }
-        else {
-            title = me.title;
-        }
-        
-        if (cfg.iconCls != null) {
-            iconCls = cfg.iconCls;
-        }
-        else if (headerCfg && header.iconCls != null) {
-            iconCls = header.iconCls;
-        }
-        else {
-            iconCls = me.iconCls;
-        }
-        
-        me.setTitle(title);
-        me.setIconCls(iconCls);
+        // As per WAI-ARIA spec, the alertdialog element should point to message element
+        // via aria-describedby attribute.
+        me.ariaEl.dom.setAttribute("aria-describedby", msg.id);
+      } else {
+        msg.hide();
+        me.ariaEl.dom.removeAttribute("aria-describedby");
+      }
 
-        // Extract button configs
-        if (Ext.isObject(cfg.buttons)) {
-            me.buttonText = cfg.buttons;
-            buttons = 0;
+      // Hide or show the input field
+      textArea = me.textArea;
+      textField = me.textField;
+      if (cfg.prompt || cfg.multiline) {
+        me.multiline = cfg.multiline;
+
+        if (cfg.multiline) {
+          textArea.setValue(cfg.value);
+          textArea.setHeight(cfg.defaultTextHeight || me.defaultTextHeight);
+          textArea.show();
+          textField.hide();
+          me.defaultFocus = textArea;
         } else {
-            me.buttonText = cfg.buttonText || me.buttonText;
-            buttons = Ext.isNumber(cfg.buttons) ? cfg.buttons : 0;
+          textField.setValue(cfg.value);
+          textArea.hide();
+          textField.show();
+          me.defaultFocus = textField;
         }
 
-        Ext.each(me.buttonIds, function (buttonId) {
-            me.msgButtons[buttonId].setTooltip((buttonTips && buttonTips[buttonId]) || null);
-        });
+        // When either input field is displayed, it will reference the message component's
+        // element via aria-labelledby. In such cases we need to remove aria-describedby
+        // from the window ariaEl to avoid the message being announced twice.
+        me.ariaEl.dom.removeAttribute("aria-describedby");
+      } else {
+        textArea.hide();
+        textField.hide();
+      }
 
-        // Apply custom-configured buttonText
-        // Infer additional buttons from the specified property names in the buttonText object
-        buttons = buttons | me.updateButtonText();
+      // Hide or show the progress bar
+      progressBar = me.progressBar;
+      if (cfg.progress || wait) {
+        progressBar.show();
+        me.updateProgress(0, cfg.progressText);
+        me.defaultFocus = progressBar;
 
-        // Restore buttonText. Next run of reconfigure will restore to prototype's buttonText
-        me.buttonText = oldButtonText;
-
-        // During the on render, or size resetting layouts, and in subsequent hiding and showing, we need to
-        // suspend layouts, and flush at the end when the Window's children are at their final visibility.
-        Ext.suspendLayouts();
-        me.width = me.height = null;
-        if (width || height) {
-            if (width) {
-                me.setWidth(width);
-            }
-
-            if (height) {
-                me.setHeight(height);
-            }
+        if (wait) {
+          progressBar.wait(wait === true ? cfg.waitConfig : wait);
         }
-        if (!me.rendered) {
-            me.render(Ext.getBody());
-        }
+      } else {
+        progressBar.hide();
+      }
 
-        // Hide or show the close tool
-        me.closable = cfg.closable !== false && !wait;
+      // Hide or show buttons depending on flag value sent.
+      msgButtons = me.msgButtons;
+      for (i = 0; i < 4; i++) {
+        if (buttons & Math.pow(2, i)) {
+          // Default to focus on the first visible button if focus not already set
+          if (!me.defaultFocus) {
+            me.defaultFocus = msgButtons[i];
+          }
 
-        // We need to redefine `header` because me.setIconCls() could create a Header instance.
-        header = me.header;
-
-        if (header) {
-            tool = header.child('[type=close]');
-            
-            if (tool) {
-                tool.setVisible(me.closable);
-            }
-
-            // Hide or show the header
-            if (!cfg.title && !me.closable && !cfg.iconCls) {
-                header.hide();
-            } else {
-                header.show();
-            }
-        }
-
-        // Default to dynamic drag: drag the window, not a ghost
-        me.liveDrag = !cfg.proxyDrag;
-
-        // wrap the user callback
-        me.userCallback = Ext.Function.bindCallback(cfg.callback ||cfg.fn || Ext.emptyFn,
-            cfg.scope || Ext.global);
-
-        // Hide or show the icon Component
-        me.setIcon(cfg.icon);
-
-        // Hide or show the message area
-        msg = me.msg;
-        if (message) {
-            msg.setHtml(message);
-            msg.show();
-            
-            // As per WAI-ARIA spec, the alertdialog element should point to message element
-            // via aria-describedby attribute.
-            me.ariaEl.dom.setAttribute('aria-describedby', msg.id);
+          msgButtons[i].show();
+          hideToolbar = false;
         } else {
-            msg.hide();
-            me.ariaEl.dom.removeAttribute('aria-describedby');
+          msgButtons[i].hide();
         }
+      }
 
-        // Hide or show the input field
-        textArea = me.textArea;
-        textField = me.textField;
-        if (cfg.prompt || cfg.multiline) {
-            me.multiline = cfg.multiline;
-            
-            if (cfg.multiline) {
-                textArea.setValue(cfg.value);
-                textArea.setHeight(cfg.defaultTextHeight || me.defaultTextHeight);
-                textArea.show();
-                textField.hide();
-                me.defaultFocus = textArea;
-            }
-            else {
-                textField.setValue(cfg.value);
-                textArea.hide();
-                textField.show();
-                me.defaultFocus = textField;
-            }
-            
-            // When either input field is displayed, it will reference the message component's
-            // element via aria-labelledby. In such cases we need to remove aria-describedby
-            // from the window ariaEl to avoid the message being announced twice.
-            me.ariaEl.dom.removeAttribute('aria-describedby');
-        } else {
-            textArea.hide();
-            textField.hide();
-        }
-
-        // Hide or show the progress bar
-        progressBar = me.progressBar;
-        if (cfg.progress || wait) {
-            progressBar.show();
-            me.updateProgress(0, cfg.progressText);
-            me.defaultFocus = progressBar;
-            
-            if (wait) {
-                progressBar.wait(wait === true ? cfg.waitConfig : wait);
-            }
-        } else {
-            progressBar.hide();
-        }
-
-        // Hide or show buttons depending on flag value sent.
-        msgButtons = me.msgButtons;
-        for (i = 0; i < 4; i++) {
-            if (buttons & Math.pow(2, i)) {
-
-                // Default to focus on the first visible button if focus not already set
-                if (!me.defaultFocus) {
-                    me.defaultFocus = msgButtons[i];
-                }
-                
-                msgButtons[i].show();
-                hideToolbar = false;
-            } else {
-                msgButtons[i].hide();
-            }
-        }
-
-        // Hide toolbar if no buttons to show
-        if (hideToolbar) {
-            me.bottomTb.hide();
-        } else {
-            me.bottomTb.show();
-        }
-        Ext.resumeLayouts(true);
+      // Hide toolbar if no buttons to show
+      if (hideToolbar) {
+        me.bottomTb.hide();
+      } else {
+        me.bottomTb.show();
+      }
+      Ext.resumeLayouts(true);
     },
 
     /**
@@ -648,27 +661,28 @@ Ext.define('Ext.window.MessageBox', {
      * Set button text according to current buttonText property object
      * @return {Number} The buttons bitwise flag based upon the button IDs specified in the buttonText property.
      */
-    updateButtonText: function() {
-        var me = this,
-            buttonText = me.buttonText,
-            buttons = 0,
-            btnId,
-            btn;
+    updateButtonText: function () {
+      var me = this,
+        buttonText = me.buttonText,
+        buttons = 0,
+        btnId,
+        btn;
 
-        for (btnId in buttonText) {
-            if (buttonText.hasOwnProperty(btnId)) {
-                btn = me.msgButtons[btnId];
-                if (btn) {
-                    if (me.cfg && me.cfg.buttonText) {
-                        buttons = buttons | Math.pow(2, Ext.Array.indexOf(me.buttonIds, btnId));
-                    }
-                    if (btn.text !== buttonText[btnId]) {
-                        btn.setText(buttonText[btnId]);
-                    }
-                }
+      for (btnId in buttonText) {
+        if (buttonText.hasOwnProperty(btnId)) {
+          btn = me.msgButtons[btnId];
+          if (btn) {
+            if (me.cfg && me.cfg.buttonText) {
+              buttons =
+                buttons | Math.pow(2, Ext.Array.indexOf(me.buttonIds, btnId));
             }
+            if (btn.text !== buttonText[btnId]) {
+              btn.setText(buttonText[btnId]);
+            }
+          }
         }
-        return buttons;
+      }
+      return buttons;
     },
 
     /**
@@ -774,7 +788,7 @@ Ext.define('Ext.window.MessageBox', {
      *
      * @param {String} [config.iconCls]
      * The standard {@link Ext.window.Window#iconCls} to add an optional header icon (defaults to '')
-     * 
+     *
      * @param {String} [config.defaultFocus]
      * The button to focus when showing the dialog. If not specified, defaults to
      * the first visible button.
@@ -836,44 +850,46 @@ Ext.define('Ext.window.MessageBox', {
      *
      * @return {Ext.window.MessageBox} this
      */
-    show: function(cfg) {
-        var me = this,
-            visibleFocusables;
+    show: function (cfg) {
+      var me = this,
+        visibleFocusables;
 
-        cfg = cfg || {};
+      cfg = cfg || {};
 
-        // If called during global layout suspension, make the call after layout resumption
-        if (Ext.Component.layoutSuspendCount) {
-            Ext.on({
-                resumelayouts: function() {
-                    me.show(cfg);
-                },
-                single: true
-            });
-            return me;
-        }
-
-        me.reconfigure(cfg);
-        if (cfg.cls) {
-            me.addCls(cfg.cls);
-        }
-
-        // Do not steal focus from anything that may be focused if the MessageBox has no visible focusable
-        // items. For example, a "wait" message box should not get focus.
-        visibleFocusables = me.query('textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])');
-        me.preventFocusOnActivate = !visibleFocusables.length;
-
-        me.callParent();
+      // If called during global layout suspension, make the call after layout resumption
+      if (Ext.Component.layoutSuspendCount) {
+        Ext.on({
+          resumelayouts: function () {
+            me.show(cfg);
+          },
+          single: true,
+        });
         return me;
+      }
+
+      me.reconfigure(cfg);
+      if (cfg.cls) {
+        me.addCls(cfg.cls);
+      }
+
+      // Do not steal focus from anything that may be focused if the MessageBox has no visible focusable
+      // items. For example, a "wait" message box should not get focus.
+      visibleFocusables = me.query(
+        "textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])",
+      );
+      me.preventFocusOnActivate = !visibleFocusables.length;
+
+      me.callParent();
+      return me;
     },
 
-    onShow: function() {
-        this.callParent(arguments);
-        this.center();
+    onShow: function () {
+      this.callParent(arguments);
+      this.center();
     },
 
-    updateText: function(text) {
-        this.msg.setHtml(text);
+    updateText: function (text) {
+      this.msg.setHtml(text);
     },
 
     /**
@@ -892,27 +908,30 @@ Ext.define('Ext.window.MessageBox', {
      * @param {Number} [height] The height of the icon. If not specified, the default is used
      * @return {Ext.window.MessageBox} this
      */
-    setIcon : function(icon, width, height) {
-        var me = this,
-            iconCmp = me.iconComponent,
-            cls = me.messageIconCls;
+    setIcon: function (icon, width, height) {
+      var me = this,
+        iconCmp = me.iconComponent,
+        cls = me.messageIconCls;
 
-        if (cls) {
-            iconCmp.removeCls(cls);
-        }
+      if (cls) {
+        iconCmp.removeCls(cls);
+      }
 
-        if (icon) {
-            iconCmp.show();
-            if (width || height) {
-                iconCmp.setSize(width || iconCmp.getWidth(), height || iconCmp.getHeight());
-            }
-            iconCmp.addCls(Ext.baseCSSPrefix + 'dlg-icon');
-            iconCmp.addCls(me.messageIconCls = icon);
-        } else {
-            iconCmp.removeCls(Ext.baseCSSPrefix + 'dlg-icon');
-            iconCmp.hide();
+      if (icon) {
+        iconCmp.show();
+        if (width || height) {
+          iconCmp.setSize(
+            width || iconCmp.getWidth(),
+            height || iconCmp.getHeight(),
+          );
         }
-        return me;
+        iconCmp.addCls(Ext.baseCSSPrefix + "dlg-icon");
+        iconCmp.addCls((me.messageIconCls = icon));
+      } else {
+        iconCmp.removeCls(Ext.baseCSSPrefix + "dlg-icon");
+        iconCmp.hide();
+      }
+      return me;
     },
 
     /**
@@ -926,18 +945,18 @@ Ext.define('Ext.window.MessageBox', {
      * so that any existing body text will not get overwritten by default unless a new value is passed in)
      * @return {Ext.window.MessageBox} this
      */
-    updateProgress : function(value, progressText, message){
-        this.progressBar.updateProgress(value, progressText);
-        if (message){
-            this.updateText(message);
-        }
-        return this;
+    updateProgress: function (value, progressText, message) {
+      this.progressBar.updateProgress(value, progressText);
+      if (message) {
+        this.updateText(message);
+      }
+      return this;
     },
 
-    onEsc: function() {
-        if (this.closable !== false) {
-            this.callParent(arguments);
-        }
+    onEsc: function () {
+      if (this.closable !== false) {
+        this.callParent(arguments);
+      }
     },
 
     /**
@@ -953,18 +972,18 @@ Ext.define('Ext.window.MessageBox', {
      * @param {Object} [scope=window] The scope (`this` reference) in which the callback is executed.
      * @return {Ext.window.MessageBox} this
      */
-    confirm: function(cfg, message, fn, scope) {
-        if (Ext.isString(cfg)) {
-            cfg = {
-                title: cfg,
-                icon: this.QUESTION,
-                message: message,
-                buttons: this.YESNO,
-                callback: fn,
-                scope: scope
-            };
-        }
-        return this.show(cfg);
+    confirm: function (cfg, message, fn, scope) {
+      if (Ext.isString(cfg)) {
+        cfg = {
+          title: cfg,
+          icon: this.QUESTION,
+          message: message,
+          buttons: this.YESNO,
+          callback: fn,
+          scope: scope,
+        };
+      }
+      return this.show(cfg);
     },
 
     /**
@@ -983,21 +1002,21 @@ Ext.define('Ext.window.MessageBox', {
      * @param {String} [value=''] Default value of the text input element
      * @return {Ext.window.MessageBox} this
      */
-    prompt: function(title, message, fn, scope, multiline, value) {
-        if (Ext.isString(title)) {
-            title = {
-                prompt: true,
-                title: title,
-                minWidth: this.minPromptWidth,
-                message: message,
-                buttons: this.OKCANCEL,
-                callback: fn,
-                scope: scope,
-                multiline: multiline,
-                value: value
-            };
-        }
-        return this.show(title);
+    prompt: function (title, message, fn, scope, multiline, value) {
+      if (Ext.isString(title)) {
+        title = {
+          prompt: true,
+          title: title,
+          minWidth: this.minPromptWidth,
+          message: message,
+          buttons: this.OKCANCEL,
+          callback: fn,
+          scope: scope,
+          multiline: multiline,
+          value: value,
+        };
+      }
+      return this.show(title);
     },
 
     /**
@@ -1010,19 +1029,19 @@ Ext.define('Ext.window.MessageBox', {
      * @param {Object} [config] A {@link Ext.ProgressBar#wait} config object
      * @return {Ext.window.MessageBox} this
      */
-    wait: function(message, title, config) {
-        if (Ext.isString(message)) {
-            message = {
-                title : title,
-                message : message,
-                closable: false,
-                wait: true,
-                modal: true,
-                minWidth: this.minProgressWidth,
-                waitConfig: config
-            };
-        }
-        return this.show(message);
+    wait: function (message, title, config) {
+      if (Ext.isString(message)) {
+        message = {
+          title: title,
+          message: message,
+          closable: false,
+          wait: true,
+          modal: true,
+          minWidth: this.minProgressWidth,
+          waitConfig: config,
+        };
+      }
+      return this.show(message);
     },
 
     /**
@@ -1038,18 +1057,18 @@ Ext.define('Ext.window.MessageBox', {
      * @param {Object} [scope=window] The scope (<code>this</code> reference) in which the callback is executed.
      * @return {Ext.window.MessageBox} this
      */
-    alert: function(title, message, fn, scope) {
-        if (Ext.isString(title)) {
-            title = {
-                title: title,
-                message: message,
-                buttons: this.OK,
-                fn: fn,
-                scope: scope,
-                minWidth: this.minWidth
-            };
-        }
-        return this.show(title);
+    alert: function (title, message, fn, scope) {
+      if (Ext.isString(title)) {
+        title = {
+          title: title,
+          message: message,
+          buttons: this.OK,
+          fn: fn,
+          scope: scope,
+          minWidth: this.minWidth,
+        };
+      }
+      return this.show(title);
     },
 
     /**
@@ -1063,18 +1082,19 @@ Ext.define('Ext.window.MessageBox', {
      * @param {String} [progressText=''] The text to display inside the progress bar
      * @return {Ext.window.MessageBox} this
      */
-    progress: function(title, message, progressText) {
-        if (Ext.isString(title)) {
-            title = {
-                title: title,
-                message: message,
-                progress: true,
-                progressText: progressText
-            };
-        }
-        return this.show(title);
-    }
-}, function(MessageBox) {
+    progress: function (title, message, progressText) {
+      if (Ext.isString(title)) {
+        title = {
+          title: title,
+          message: message,
+          progress: true,
+          progressText: progressText,
+        };
+      }
+      return this.show(title);
+    },
+  },
+  function (MessageBox) {
     /**
      * @class Ext.MessageBox
      * @alternateClassName Ext.Msg
@@ -1084,7 +1104,8 @@ Ext.define('Ext.window.MessageBox', {
      */
     // We want to defer creating Ext.MessageBox and Ext.Msg instances
     // until overrides have been applied.
-    Ext.onInternalReady(function() {
-        Ext.MessageBox = Ext.Msg = new MessageBox();
+    Ext.onInternalReady(function () {
+      Ext.MessageBox = Ext.Msg = new MessageBox();
     });
-});
+  },
+);

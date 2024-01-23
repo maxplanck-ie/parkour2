@@ -5,9 +5,9 @@
  * It provides mixins with the ability to "hook" class methods of the classes in to which
  * they are mixed. For example, consider the `destroy` method pattern. If a mixin class
  * had cleanup requirements, it would need to be called as part of `destroy`.
- * 
+ *
  * Starting with a basic class we might have:
- * 
+ *
  *      Ext.define('Foo.bar.Base', {
  *          destroy: function () {
  *              console.log('B');
@@ -31,13 +31,13 @@
  * To see how using this class help, start with a "normal" mixin class that also needs to
  * cleanup its resources. These mixins must be called explicitly by the classes that use
  * them. For example:
- * 
+ *
  *      Ext.define('Foo.bar.Util', {
  *          destroy: function () {
  *              console.log('U');
  *          }
  *      });
- * 
+ *
  *      Ext.define('Foo.bar.Derived', {
  *          extend: 'Foo.bar.Base',
  *
@@ -63,11 +63,11 @@
  * This class is designed to solve the above in simpler and more reliable way.
  *
  * ## mixinConfig
- * 
+ *
  * Using `mixinConfig` the mixin class can provide "before" or "after" hooks that do not
  * involve the derived class implementation. This also means the derived class cannot
  * adjust parameters to the hook methods.
- * 
+ *
  *      Ext.define('Foo.bar.Util', {
  *          extend: 'Ext.Mixin',
  *
@@ -76,12 +76,12 @@
  *                  destroy: 'destroyUtil'
  *              }
  *          },
- *          
+ *
  *          destroyUtil: function () {
  *              console.log('U');
  *          }
  *      });
- * 
+ *
  *      Ext.define('Foo.bar.Class', {
  *          mixins: {
  *              util: 'Foo.bar.Util'
@@ -96,9 +96,9 @@
  *
  *      obj.destroy();
  *      // logs D then U
- * 
+ *
  *  If the destruction should occur in the other order, you can use `before`:
- * 
+ *
  *      Ext.define('Foo.bar.Util', {
  *          extend: 'Ext.Mixin',
  *
@@ -107,12 +107,12 @@
  *                  destroy: 'destroyUtil'
  *              }
  *          },
- *          
+ *
  *          destroyUtil: function () {
  *              console.log('U');
  *          }
  *      });
- * 
+ *
  *      Ext.define('Foo.bar.Class', {
  *          mixins: {
  *              util: 'Foo.bar.Util'
@@ -207,123 +207,132 @@
  *
  * @protected
  */
-Ext.define('Ext.Mixin', function (Mixin) { return {
-
+Ext.define("Ext.Mixin", function (Mixin) {
+  return {
     statics: {
-        addHook: function (hookFn, targetClass, methodName, mixinClassPrototype) {
-            var isFunc = Ext.isFunction(hookFn),
-                hook = function () {
-                    var a = arguments,
-                        fn = isFunc ? hookFn : mixinClassPrototype[hookFn],
-                        result = this.callParent(a);
-                    fn.apply(this, a);
-                    return result;
-                },
-                existingFn = targetClass.hasOwnProperty(methodName) &&
-                             targetClass[methodName];
+      addHook: function (hookFn, targetClass, methodName, mixinClassPrototype) {
+        var isFunc = Ext.isFunction(hookFn),
+          hook = function () {
+            var a = arguments,
+              fn = isFunc ? hookFn : mixinClassPrototype[hookFn],
+              result = this.callParent(a);
+            fn.apply(this, a);
+            return result;
+          },
+          existingFn =
+            targetClass.hasOwnProperty(methodName) && targetClass[methodName];
 
-            if (isFunc) {
-                hookFn.$previous = Ext.emptyFn; // no callParent for these guys
-            }
-
-            hook.$name = methodName;
-            hook.$owner = targetClass.self;
-
-            if (existingFn) {
-                hook.$previous = existingFn.$previous;
-                existingFn.$previous = hook;
-            } else {
-                targetClass[methodName] = hook;
-            }
+        if (isFunc) {
+          hookFn.$previous = Ext.emptyFn; // no callParent for these guys
         }
+
+        hook.$name = methodName;
+        hook.$owner = targetClass.self;
+
+        if (existingFn) {
+          hook.$previous = existingFn.$previous;
+          existingFn.$previous = hook;
+        } else {
+          targetClass[methodName] = hook;
+        }
+      },
     },
 
-    onClassExtended: function(cls, data) {
-        var mixinConfig = data.mixinConfig,
-            hooks = data.xhooks,
-            superclass = cls.superclass,
-            onClassMixedIn = data.onClassMixedIn,
+    onClassExtended: function (cls, data) {
+      var mixinConfig = data.mixinConfig,
+        hooks = data.xhooks,
+        superclass = cls.superclass,
+        onClassMixedIn = data.onClassMixedIn,
+        parentMixinConfig,
+        befores,
+        afters,
+        extended;
+
+      if (hooks) {
+        // Legacy way
+        delete data.xhooks;
+        (mixinConfig || (data.mixinConfig = mixinConfig = {})).on = hooks;
+      }
+
+      if (mixinConfig) {
+        parentMixinConfig = superclass.mixinConfig;
+
+        if (parentMixinConfig) {
+          data.mixinConfig = mixinConfig = Ext.merge(
+            {},
             parentMixinConfig,
-            befores, afters, extended;
-
-        if (hooks) {
-            // Legacy way
-            delete data.xhooks;
-            (mixinConfig || (data.mixinConfig = mixinConfig = {})).on = hooks;
+            mixinConfig,
+          );
         }
 
-        if (mixinConfig) {
-            parentMixinConfig = superclass.mixinConfig;
+        data.mixinId = mixinConfig.id;
 
-            if (parentMixinConfig) {
-                data.mixinConfig = mixinConfig = Ext.merge({}, parentMixinConfig, mixinConfig);
-            }
-
-            data.mixinId = mixinConfig.id;
-
-            //<debug>
-            if (mixinConfig.beforeHooks) {
-                Ext.raise('Use of "beforeHooks" is deprecated - use "before" instead');
-            }
-            if (mixinConfig.hooks) {
-                Ext.raise('Use of "hooks" is deprecated - use "after" instead');
-            }
-            if (mixinConfig.afterHooks) {
-                Ext.raise('Use of "afterHooks" is deprecated - use "after" instead');
-            }
-            //</debug>
-
-            befores = mixinConfig.before;
-            afters = mixinConfig.after;
-            hooks = mixinConfig.on;
-            extended = mixinConfig.extended;
+        //<debug>
+        if (mixinConfig.beforeHooks) {
+          Ext.raise(
+            'Use of "beforeHooks" is deprecated - use "before" instead',
+          );
         }
-
-        if (befores || afters || hooks || extended) {
-            // Note: tests are with Ext.Class
-            data.onClassMixedIn = function (targetClass) {
-                var mixin = this.prototype,
-                    targetProto = targetClass.prototype,
-                    key;
-
-                if (befores) {
-                    Ext.Object.each(befores, function (key, value) {
-                        targetClass.addMember(key, function () {
-                            if (mixin[value].apply(this, arguments) !== false) {
-                                return this.callParent(arguments);
-                            }
-                        });
-                    });
-                }
-
-                if (afters) {
-                    Ext.Object.each(afters, function (key, value) {
-                        targetClass.addMember(key, function () {
-                            var ret = this.callParent(arguments);
-                            mixin[value].apply(this, arguments);
-                            return ret;
-                        });
-                    });
-                }
-
-                if (hooks) {
-                    for (key in hooks) {
-                        Mixin.addHook(hooks[key], targetProto, key, mixin);
-                    }
-                }
-
-                if (extended) {
-                    targetClass.onExtended(function () {
-                        var args = Ext.Array.slice(arguments, 0);
-                        args.unshift(targetClass);
-                        return extended.apply(this, args);
-                    }, this);
-                }
-
-                if (onClassMixedIn) {
-                    onClassMixedIn.apply(this, arguments);
-                }
-            };
+        if (mixinConfig.hooks) {
+          Ext.raise('Use of "hooks" is deprecated - use "after" instead');
         }
-    }
-};});
+        if (mixinConfig.afterHooks) {
+          Ext.raise('Use of "afterHooks" is deprecated - use "after" instead');
+        }
+        //</debug>
+
+        befores = mixinConfig.before;
+        afters = mixinConfig.after;
+        hooks = mixinConfig.on;
+        extended = mixinConfig.extended;
+      }
+
+      if (befores || afters || hooks || extended) {
+        // Note: tests are with Ext.Class
+        data.onClassMixedIn = function (targetClass) {
+          var mixin = this.prototype,
+            targetProto = targetClass.prototype,
+            key;
+
+          if (befores) {
+            Ext.Object.each(befores, function (key, value) {
+              targetClass.addMember(key, function () {
+                if (mixin[value].apply(this, arguments) !== false) {
+                  return this.callParent(arguments);
+                }
+              });
+            });
+          }
+
+          if (afters) {
+            Ext.Object.each(afters, function (key, value) {
+              targetClass.addMember(key, function () {
+                var ret = this.callParent(arguments);
+                mixin[value].apply(this, arguments);
+                return ret;
+              });
+            });
+          }
+
+          if (hooks) {
+            for (key in hooks) {
+              Mixin.addHook(hooks[key], targetProto, key, mixin);
+            }
+          }
+
+          if (extended) {
+            targetClass.onExtended(function () {
+              var args = Ext.Array.slice(arguments, 0);
+              args.unshift(targetClass);
+              return extended.apply(this, args);
+            }, this);
+          }
+
+          if (onClassMixedIn) {
+            onClassMixedIn.apply(this, arguments);
+          }
+        };
+      }
+    },
+  };
+});

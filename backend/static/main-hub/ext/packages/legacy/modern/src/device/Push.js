@@ -34,23 +34,20 @@
  *
  * @mixins Ext.device.push.Abstract
  */
-Ext.define('Ext.device.Push', {
-    singleton: true,
+Ext.define("Ext.device.Push", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.push.Cordova'
-    ],
+  requires: ["Ext.device.Communicator", "Ext.device.push.Cordova"],
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView) {
-           if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.push.Cordova');
-            }
-        }
-
-        return Ext.create('Ext.device.push.Abstract');
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.push.Cordova");
+      }
     }
+
+    return Ext.create("Ext.device.push.Abstract");
+  },
 });

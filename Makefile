@@ -219,7 +219,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod deploy-django clean  ## Re-deploy and run Backend tests
+djtest: down set-testing deploy-django clean  ## Re-deploy and run Backend tests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing:
@@ -292,18 +292,21 @@ models:
 show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
-maintenance:
+maintenance: compile precomitupd ncu
+
+precomitupd:
 	@pre-commit autoupdate
 
-compile: maintenance
+compile:
 	# @test -d ./env_dev || \
 	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
 	# 	source ./env_dev/bin/activate && echo "venv activated!"
+	# 	pip install --upgrade pip wheel setuptools pip-compile-multi
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi -d backend/requirements/
+	@pip-compile-multi --allow-unsafe -d backend/requirements/
 
 ncu:
 	# @npm install -g npm-check-updates

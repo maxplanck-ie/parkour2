@@ -11,159 +11,182 @@
  *
  * When the drag ends, its `endDrag` method will be called if implemented.
  */
-Ext.define('Ext.util.ComponentDragger', {
-    extend: 'Ext.dd.DragTracker',
+Ext.define("Ext.util.ComponentDragger", {
+  extend: "Ext.dd.DragTracker",
 
-    /**
-     * @cfg {Boolean} constrain
-     * Specify as `true` to constrain the Component to within the bounds of the {@link #constrainTo} region.
-     */
+  /**
+   * @cfg {Boolean} constrain
+   * Specify as `true` to constrain the Component to within the bounds of the {@link #constrainTo} region.
+   */
 
-    /**
-     * @cfg {String/Ext.dom.Element} delegate
-     * A CSS selector which identifies child elements within the Component's encapsulating
-     * Element which are the drag handles. This limits dragging to only begin when the matching elements are
-     * mousedowned.
-     *
-     * This may also be a specific child element within the Component's encapsulating element to use as the drag handle.
-     */
+  /**
+   * @cfg {String/Ext.dom.Element} delegate
+   * A CSS selector which identifies child elements within the Component's encapsulating
+   * Element which are the drag handles. This limits dragging to only begin when the matching elements are
+   * mousedowned.
+   *
+   * This may also be a specific child element within the Component's encapsulating element to use as the drag handle.
+   */
 
-    /**
-     * @cfg {Boolean} constrainDelegate
-     * Specify as `true` to constrain the drag handles within the {@link #constrainTo} region.
-     */
-    
-    /**
-     * @cfg {Boolean} [liveDrag=false]
-     * @member Ext.Component
-     * True to drag the component itself.  Else a lightweight version of the component
-     * will be shown (_using the component's ghost() method_).
-     * 
-     * **Note:** This config is only relevant when used with dragging implemented via
-     * {@link Ext.util.ComponentDragger}.
-     */
+  /**
+   * @cfg {Boolean} constrainDelegate
+   * Specify as `true` to constrain the drag handles within the {@link #constrainTo} region.
+   */
 
-    autoStart: 500,
+  /**
+   * @cfg {Boolean} [liveDrag=false]
+   * @member Ext.Component
+   * True to drag the component itself.  Else a lightweight version of the component
+   * will be shown (_using the component's ghost() method_).
+   *
+   * **Note:** This config is only relevant when used with dragging implemented via
+   * {@link Ext.util.ComponentDragger}.
+   */
 
-    /**
-     * Creates new ComponentDragger.
-     * @param {Object} comp The Component to provide dragging for.
-     * @param {Object} [config] Config object
-     */
-    constructor: function(comp, config) {
-        this.comp = comp;
-        this.initialConstrainTo = config.constrainTo;
-        this.callParent([ config ]);
-    },
+  autoStart: 500,
 
-    onStart: function(e) {
-        var me = this,
-            comp = me.comp;
+  /**
+   * Creates new ComponentDragger.
+   * @param {Object} comp The Component to provide dragging for.
+   * @param {Object} [config] Config object
+   */
+  constructor: function (comp, config) {
+    this.comp = comp;
+    this.initialConstrainTo = config.constrainTo;
+    this.callParent([config]);
+  },
 
-        // ComponentDragger is always dragging the component.
-        // The superclass uses the delegated handle as the
-        // drag target and the target's start region.
-        me.dragTarget = me.el;
-        me.startRegion = me.el.getRegion();
+  onStart: function (e) {
+    var me = this,
+      comp = me.comp;
 
-        // Cache the start [X, Y] array
-        me.startPosition = comp.getXY();
+    // ComponentDragger is always dragging the component.
+    // The superclass uses the delegated handle as the
+    // drag target and the target's start region.
+    me.dragTarget = me.el;
+    me.startRegion = me.el.getRegion();
 
-        // If client Component has a ghost method to show a lightweight version of itself
-        // then use that as a drag proxy unless configured to liveDrag.
-        if (comp.ghost && !comp.liveDrag) {
-             me.proxy = comp.ghost();
-        }
+    // Cache the start [X, Y] array
+    me.startPosition = comp.getXY();
 
-        // Set the constrainTo Region before we start dragging.
-        if (me.constrain || me.constrainDelegate) {
-            me.constrainTo = me.calculateConstrainRegion();
-        }
-
-        if (comp.beginDrag) {
-            comp.beginDrag();
-        }
-        // Logic to drag components on top of iframes
-        if (comp.el.shim) {
-            Ext.dom.Element.maskIframes();
-        }
-    },
-
-    calculateConstrainRegion: function() {
-        var me = this,
-            comp = me.comp,
-            constrainTo = me.initialConstrainTo || me.comp.el.dom.parentNode,
-            constraintInsets = comp.constraintInsets,
-            constrainEl,
-            delegateRegion,
-            elRegion,
-            dragEl = me.proxy ? me.proxy.el : comp.el,
-            shadow = dragEl.shadow,
-            shadowSize = (shadow && !me.constrainDelegate && comp.constrainShadow && !shadow.disabled) ? shadow.getShadowSize() : 0;
-
-        // The configured constrainTo might be a Region or an element
-        if (!(constrainTo instanceof Ext.util.Region)) {
-            constrainEl = Ext.fly(constrainTo);
-            // draggable components are constrained to the area inside the borders of
-            // their floatParent, but not inside the padding
-            constrainTo = constrainEl.getConstrainRegion();
-        } else {
-            // Create a clone so we don't modify the original
-            constrainTo = constrainTo.copy();
-        }
-
-        // Apply constraintInsets
-        if (constraintInsets) {
-            constraintInsets = Ext.isObject(constraintInsets) ? constraintInsets : Ext.Element.parseBox(constraintInsets);
-            constrainTo.adjust(constraintInsets.top, constraintInsets.right, constraintInsets.bottom, constraintInsets.left);
-        }
-
-        // Reduce the constrain region to allow for shadow
-        if (shadowSize) {
-            constrainTo.adjust(shadowSize[0], -shadowSize[1], -shadowSize[2], shadowSize[3]);
-        }
-
-        // If they only want to constrain the *delegate* to within the constrain region,
-        // adjust the region to be larger based on the insets of the delegate from the outer
-        // edges of the Component.
-        if (me.constrainDelegate) {
-            delegateRegion = Ext.fly(me.handle).getRegion();
-            elRegion = dragEl.getRegion();
-
-            constrainTo.adjust(
-                elRegion.top - delegateRegion.top,
-                elRegion.right - delegateRegion.right,
-                elRegion.bottom - delegateRegion.bottom,
-                elRegion.left - delegateRegion.left
-            );
-        }
-        return constrainTo;
-    },
-
-    // Move either the ghost Component or the target Component to its new position on drag
-    onDrag: function(e) {
-        var me = this,
-            comp = (me.proxy && !me.comp.liveDrag) ? me.proxy : me.comp,
-            offset = me.getOffset(me.constrain || me.constrainDelegate ? 'dragTarget' : null);
-
-        comp.setPagePosition(me.startPosition[0] + offset[0], me.startPosition[1] + offset[1]);
-    },
-
-    onEnd: function(e) {
-        var comp = this.comp;
-        if (comp.destroyed || comp.destroying) {
-            return;
-        }
-        
-        if (this.proxy && !comp.liveDrag) {
-            comp.unghost();
-        }
-        if (comp.endDrag) {
-            comp.endDrag();
-        }
-        // Logic to drag components on top of iframes
-        if (comp.el.shim) {
-            Ext.dom.Element.unmaskIframes();
-        }
+    // If client Component has a ghost method to show a lightweight version of itself
+    // then use that as a drag proxy unless configured to liveDrag.
+    if (comp.ghost && !comp.liveDrag) {
+      me.proxy = comp.ghost();
     }
+
+    // Set the constrainTo Region before we start dragging.
+    if (me.constrain || me.constrainDelegate) {
+      me.constrainTo = me.calculateConstrainRegion();
+    }
+
+    if (comp.beginDrag) {
+      comp.beginDrag();
+    }
+    // Logic to drag components on top of iframes
+    if (comp.el.shim) {
+      Ext.dom.Element.maskIframes();
+    }
+  },
+
+  calculateConstrainRegion: function () {
+    var me = this,
+      comp = me.comp,
+      constrainTo = me.initialConstrainTo || me.comp.el.dom.parentNode,
+      constraintInsets = comp.constraintInsets,
+      constrainEl,
+      delegateRegion,
+      elRegion,
+      dragEl = me.proxy ? me.proxy.el : comp.el,
+      shadow = dragEl.shadow,
+      shadowSize =
+        shadow &&
+        !me.constrainDelegate &&
+        comp.constrainShadow &&
+        !shadow.disabled
+          ? shadow.getShadowSize()
+          : 0;
+
+    // The configured constrainTo might be a Region or an element
+    if (!(constrainTo instanceof Ext.util.Region)) {
+      constrainEl = Ext.fly(constrainTo);
+      // draggable components are constrained to the area inside the borders of
+      // their floatParent, but not inside the padding
+      constrainTo = constrainEl.getConstrainRegion();
+    } else {
+      // Create a clone so we don't modify the original
+      constrainTo = constrainTo.copy();
+    }
+
+    // Apply constraintInsets
+    if (constraintInsets) {
+      constraintInsets = Ext.isObject(constraintInsets)
+        ? constraintInsets
+        : Ext.Element.parseBox(constraintInsets);
+      constrainTo.adjust(
+        constraintInsets.top,
+        constraintInsets.right,
+        constraintInsets.bottom,
+        constraintInsets.left,
+      );
+    }
+
+    // Reduce the constrain region to allow for shadow
+    if (shadowSize) {
+      constrainTo.adjust(
+        shadowSize[0],
+        -shadowSize[1],
+        -shadowSize[2],
+        shadowSize[3],
+      );
+    }
+
+    // If they only want to constrain the *delegate* to within the constrain region,
+    // adjust the region to be larger based on the insets of the delegate from the outer
+    // edges of the Component.
+    if (me.constrainDelegate) {
+      delegateRegion = Ext.fly(me.handle).getRegion();
+      elRegion = dragEl.getRegion();
+
+      constrainTo.adjust(
+        elRegion.top - delegateRegion.top,
+        elRegion.right - delegateRegion.right,
+        elRegion.bottom - delegateRegion.bottom,
+        elRegion.left - delegateRegion.left,
+      );
+    }
+    return constrainTo;
+  },
+
+  // Move either the ghost Component or the target Component to its new position on drag
+  onDrag: function (e) {
+    var me = this,
+      comp = me.proxy && !me.comp.liveDrag ? me.proxy : me.comp,
+      offset = me.getOffset(
+        me.constrain || me.constrainDelegate ? "dragTarget" : null,
+      );
+
+    comp.setPagePosition(
+      me.startPosition[0] + offset[0],
+      me.startPosition[1] + offset[1],
+    );
+  },
+
+  onEnd: function (e) {
+    var comp = this.comp;
+    if (comp.destroyed || comp.destroying) {
+      return;
+    }
+
+    if (this.proxy && !comp.liveDrag) {
+      comp.unghost();
+    }
+    if (comp.endDrag) {
+      comp.endDrag();
+    }
+    // Logic to drag components on top of iframes
+    if (comp.el.shim) {
+      Ext.dom.Element.unmaskIframes();
+    }
+  },
 });

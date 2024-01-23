@@ -17,76 +17,77 @@
  *
  * @private
  */
-Ext.define('Ext.dom.ButtonElement', {
-    extend: 'Ext.dom.Element',
+Ext.define("Ext.dom.ButtonElement", {
+  extend: "Ext.dom.Element",
 
-    setSize: function(width, height, animate) {
-        var me = this,
-            component = me.component;
+  setSize: function (width, height, animate) {
+    var me = this,
+      component = me.component;
 
-        me.callParent([width, height, animate]);
+    me.callParent([width, height, animate]);
 
+    component.btnWrap.setStyle(
+      "table-layout",
+      !width || width === "auto" ? "" : "fixed",
+    );
+
+    component.btnEl.setStyle(
+      "height",
+      !height || height === "auto" ? "" : "auto",
+    );
+
+    return me;
+  },
+
+  setStyle: function (prop, value) {
+    var me = this,
+      component = me.component,
+      width,
+      height;
+
+    me.callParent([prop, value]);
+
+    if (prop) {
+      if (prop === "width" || (typeof prop !== "string" && "width" in prop)) {
+        width = value || prop.width;
         component.btnWrap.setStyle(
-            'table-layout',
-            (!width || width === 'auto') ? '' : 'fixed'
+          "table-layout",
+          !width || width === "auto" ? "" : "fixed",
         );
+      }
+
+      if (prop === "height" || (typeof prop !== "string" && "height" in prop)) {
+        height = value || prop.height;
 
         component.btnEl.setStyle(
-            'height',
-            (!height || height === 'auto') ? '' : 'auto'
+          "height",
+          !height || height === "auto" ? "" : "auto",
         );
-
-        return me;
-    },
-
-    setStyle: function(prop, value) {
-        var me = this,
-            component = me.component,
-            width, height;
-
-        me.callParent([prop, value]);
-
-        if (prop) {
-            if (prop === 'width' || (typeof prop !== 'string' && 'width' in prop)) {
-                width = value || prop.width;
-                component.btnWrap.setStyle(
-                    'table-layout',
-                    (!width || width === 'auto') ? '' : 'fixed'
-                );
-            }
-
-            if (prop === 'height' || (typeof prop !== 'string' && 'height' in prop)) {
-                height = value || prop.height;
-
-                component.btnEl.setStyle(
-                    'height',
-                    (!height || height === 'auto') ? '' : 'auto'
-                );
-            }
-        }
-        
-        return me;
-    },
-
-    setHeight: function(height, animate) {
-        this.callParent([height, animate]);
-
-        this.component.btnEl.setStyle(
-            'height',
-            (!height || height === 'auto') ? '' : 'auto'
-        );
-
-        return this;
-    },
-
-    setWidth: function(width, animate) {
-        this.callParent([width, animate]);
-
-        this.component.btnWrap.setStyle(
-            'table-layout',
-            (!width || width === 'auto') ? '' : 'fixed'
-        );
-
-        return this;
+      }
     }
+
+    return me;
+  },
+
+  setHeight: function (height, animate) {
+    this.callParent([height, animate]);
+
+    this.component.btnEl.setStyle(
+      "height",
+      !height || height === "auto" ? "" : "auto",
+    );
+
+    return this;
+  },
+
+  setWidth: function (width, animate) {
+    this.callParent([width, animate]);
+
+    this.component.btnWrap.setStyle(
+      "table-layout",
+      !width || width === "auto" ? "" : "fixed",
+    );
+
+    return this;
+  },
 });

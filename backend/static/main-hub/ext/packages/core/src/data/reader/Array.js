@@ -33,46 +33,46 @@ var myReader = new Ext.data.reader.Array({
  * Create a new ArrayReader
  * @param {Object} meta Metadata configuration options.
  */
-Ext.define('Ext.data.reader.Array', {
-    extend: 'Ext.data.reader.Json',
-    alternateClassName: 'Ext.data.ArrayReader',
-    alias : 'reader.array',
+Ext.define("Ext.data.reader.Array", {
+  extend: "Ext.data.reader.Json",
+  alternateClassName: "Ext.data.ArrayReader",
+  alias: "reader.array",
 
-    // For Array Reader, methods in the base which use these properties must not see the defaults
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        totalProperty: undefined,
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        successProperty: undefined
-        
-        /**
-         * @cfg {Boolean} preserveRawData
-         * @hide
-         */
-    },
-    
-    createFieldAccessor: function(field) {
-        // In the absence of a mapping property, use the original ordinal position
-        // at which the Model inserted the field into its collection.
-        var oldMap = field.mapping, 
-            index = field.hasMapping() ? oldMap : field.ordinal,
-            result;
+  // For Array Reader, methods in the base which use these properties must not see the defaults
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    totalProperty: undefined,
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    successProperty: undefined,
 
-        // Temporarily overwrite the mapping and use the superclass method.
-        field.mapping = index;
-        result = this.callParent(arguments);
-        field.mapping = oldMap;
-        return result;
-    },
-    
-    getModelData: function(raw) {
-        // Can't preserve raw data here
-        return {};
-    }
+    /**
+     * @cfg {Boolean} preserveRawData
+     * @hide
+     */
+  },
+
+  createFieldAccessor: function (field) {
+    // In the absence of a mapping property, use the original ordinal position
+    // at which the Model inserted the field into its collection.
+    var oldMap = field.mapping,
+      index = field.hasMapping() ? oldMap : field.ordinal,
+      result;
+
+    // Temporarily overwrite the mapping and use the superclass method.
+    field.mapping = index;
+    result = this.callParent(arguments);
+    field.mapping = oldMap;
+    return result;
+  },
+
+  getModelData: function (raw) {
+    // Can't preserve raw data here
+    return {};
+  },
 });

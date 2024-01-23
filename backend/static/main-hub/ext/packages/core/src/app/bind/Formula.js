@@ -147,226 +147,233 @@
  * to these properties will be destroyed. This means the `get` method (and hence the value
  * of `xy`) will only be executed/calculated once.
  */
-Ext.define('Ext.app.bind.Formula', {
-    extend: 'Ext.util.Schedulable',
+Ext.define("Ext.app.bind.Formula", {
+  extend: "Ext.util.Schedulable",
 
-    requires: [
-        'Ext.util.LruCache'
-    ],
+  requires: ["Ext.util.LruCache"],
 
-    statics: {
-        getFormulaParser: function(name) {
-            var cache = this.formulaCache,
-                parser, s;
+  statics: {
+    getFormulaParser: function (name) {
+      var cache = this.formulaCache,
+        parser,
+        s;
 
-            if (!cache) {
-                cache = this.formulaCache = new Ext.util.LruCache({
-                    maxSize: 20
-                });
-            }
+      if (!cache) {
+        cache = this.formulaCache = new Ext.util.LruCache({
+          maxSize: 20,
+        });
+      }
 
-            parser = cache.get(name);
-            if (!parser) {
-                // Unescaped: [^\.a-z0-9_]NAMEHERE\(\s*(['"])(.*?)\1\s*\)
-                s = '[^\\.a-z0-9_]' + name + '\\(\\s*([\'"])(.*?)\\1\\s*\\)';
-                parser = new RegExp(s, 'gi');
-                cache.add(name, parser);
-            }
-            return parser;
-        }
+      parser = cache.get(name);
+      if (!parser) {
+        // Unescaped: [^\.a-z0-9_]NAMEHERE\(\s*(['"])(.*?)\1\s*\)
+        s = "[^\\.a-z0-9_]" + name + "\\(\\s*(['\"])(.*?)\\1\\s*\\)";
+        parser = new RegExp(s, "gi");
+        cache.add(name, parser);
+      }
+      return parser;
     },
+  },
 
-    isFormula: true,
+  isFormula: true,
 
-    calculation: null,
+  calculation: null,
 
-    explicit: false,
+  explicit: false,
 
-    /**
-     * @cfg {Object} [bind]
-     * An explicit bind request to produce data to provide the `get` function. If this is
-     * specified, the result of this bind is the first argument to `get`. If not given,
-     * then `get` receives a getter function that can retrieve bind expressions. For details on what can
-     * be specified for this property see `{@link Ext.app.ViewModel#bind}`.
-     * @since 5.0.0
-     */
+  /**
+   * @cfg {Object} [bind]
+   * An explicit bind request to produce data to provide the `get` function. If this is
+   * specified, the result of this bind is the first argument to `get`. If not given,
+   * then `get` receives a getter function that can retrieve bind expressions. For details on what can
+   * be specified for this property see `{@link Ext.app.ViewModel#bind}`.
+   * @since 5.0.0
+   */
 
-    /**
-     * @cfg {Function} get
-     * The function to call to calculate the formula's value. The `get` method executes
-     * with a `this` pointer of the `ViewModel` and receives a getter function or the result of a configured `bind`.
-     * @since 5.0.0
-     */
+  /**
+   * @cfg {Function} get
+   * The function to call to calculate the formula's value. The `get` method executes
+   * with a `this` pointer of the `ViewModel` and receives a getter function or the result of a configured `bind`.
+   * @since 5.0.0
+   */
 
-    /**
-     * @cfg {Function} [set]
-     * If provided this method allows a formula to be set. This method is typically called
-     * when `{@link Ext.app.bind.Binding#setValue}` is called. The `set` method executes
-     * with a `this` pointer of the `ViewModel`. Whatever values need to be updated can
-     * be set by calling `{@link Ext.app.ViewModel#set}`.
-     * @since 5.0.0
-     */
-    set: null,
+  /**
+   * @cfg {Function} [set]
+   * If provided this method allows a formula to be set. This method is typically called
+   * when `{@link Ext.app.bind.Binding#setValue}` is called. The `set` method executes
+   * with a `this` pointer of the `ViewModel`. Whatever values need to be updated can
+   * be set by calling `{@link Ext.app.ViewModel#set}`.
+   * @since 5.0.0
+   */
+  set: null,
 
-    /**
-     * @cfg {Boolean} [single=false]
-     * This option instructs the binding to call its `destroy` method immediately after
-     * delivering the initial value.
-     * @since 5.0.0
-     */
-    single: false,
+  /**
+   * @cfg {Boolean} [single=false]
+   * This option instructs the binding to call its `destroy` method immediately after
+   * delivering the initial value.
+   * @since 5.0.0
+   */
+  single: false,
 
-    argumentNamesRe: /^function\s*\(\s*([^,\)\s]+)/,
+  argumentNamesRe: /^function\s*\(\s*([^,\)\s]+)/,
 
-    constructor: function (stub, formula) {
-        var me = this,
-            owner = stub.owner,
-            bindTo, expressions, getter, options;
+  constructor: function (stub, formula) {
+    var me = this,
+      owner = stub.owner,
+      bindTo,
+      expressions,
+      getter,
+      options;
 
-        me.owner = owner;
-        me.stub = stub;
+    me.owner = owner;
+    me.stub = stub;
 
-        me.callParent();
+    me.callParent();
 
-        if (formula instanceof Function) {
-            me.get = getter = formula;
-        } else {
-            me.get = getter = formula.get;
-            me.set = formula.set;
-            expressions = formula.bind;
+    if (formula instanceof Function) {
+      me.get = getter = formula;
+    } else {
+      me.get = getter = formula.get;
+      me.set = formula.set;
+      expressions = formula.bind;
 
-            if (formula.single) {
-                me.single = formula.single;
-            }
+      if (formula.single) {
+        me.single = formula.single;
+      }
 
-            if (expressions) {
-                bindTo = expressions.bindTo;
+      if (expressions) {
+        bindTo = expressions.bindTo;
 
-                if (bindTo) {
-                    options = Ext.apply({}, expressions);
-                    delete options.bindTo;
-                    expressions = bindTo;
-                }
-            }
+        if (bindTo) {
+          options = Ext.apply({}, expressions);
+          delete options.bindTo;
+          expressions = bindTo;
         }
-
-        //<debug>
-        if (!getter) {
-            Ext.raise('Must specify a getter method for a formula');
-        }
-        //</debug>
-
-        if (expressions) {
-            me.explicit = true;
-        } else {
-            expressions = getter.$expressions || me.parseFormula(getter);
-        }
-
-        me.binding = owner.bind(expressions, me.onChange, me, options);
-    },
-
-    destroy: function () {
-        var me = this,
-            binding = me.binding,
-            stub = me.stub;
-
-        if (binding) {
-            binding.destroy();
-            me.binding = null;
-        }
-
-        if (stub) {
-            stub.formula = null;
-        }
-
-        me.callParent();
-
-        // Save for last because this is used to remove us from the Scheduler
-        me.getterFn = me.owner = null;
-    },
-
-    getFullName: function () {
-        return this.fullName ||
-              (this.fullName = this.stub.getFullName() + '=' + this.callParent() + ')');
-    },
-
-    getRawValue: function () {
-        return this.calculation;
-    },
-
-    onChange: function () {
-        if (!this.scheduled) {
-            this.schedule();
-        }
-    },
-
-    parseFormula: function (formula) {
-        var str = formula.toString(),
-            expressions = {
-                $literal: true
-            },
-            match, getterProp, formulaRe, expr;
-
-        match = this.argumentNamesRe.exec(str);
-        getterProp = match ? match[1] : 'get';
-        formulaRe = Ext.app.bind.Formula.getFormulaParser(getterProp);
-
-        while ((match = formulaRe.exec(str))) {
-            expr = match[2];
-            expressions[expr] = expr;
-        }
-
-        expressions.$literal = true;
-
-        // We store the parse results on the function object because we might reuse the
-        // formula function (typically when a ViewModel class is created a 2nd+ time).
-        formula.$expressions = expressions;
-
-        return expressions;
-    },
-
-    react: function () {
-        var me = this,
-            owner = me.owner,
-            data = me.binding.lastValue,
-            getterFn = me.getterFn,
-            arg;
-
-        if (me.explicit) {
-            arg = data;
-        } else {
-            arg = owner.getFormulaFn(data);
-        }
-        me.settingValue = true;
-        me.stub.set(me.calculation = me.get.call(owner, arg));
-        me.settingValue = false;
-
-        if (me.single) {
-            me.destroy();
-        }
-    },
-
-    setValue: function(value) {
-        this.set.call(this.stub.owner, value);
-    },
-
-    privates: {
-        getScheduler: function () {
-            var owner = this.owner;
-            return owner && owner.getScheduler();
-        },
-        
-        sort: function () {
-            var me = this,
-                binding = me.binding;
-
-            // Our binding may be single:true
-            if (!binding.destroyed) {
-                me.scheduler.sortItem(binding);
-            }
-
-            // Schedulable#sort === emptyFn
-            //me.callParent();
-        }
+      }
     }
+
+    //<debug>
+    if (!getter) {
+      Ext.raise("Must specify a getter method for a formula");
+    }
+    //</debug>
+
+    if (expressions) {
+      me.explicit = true;
+    } else {
+      expressions = getter.$expressions || me.parseFormula(getter);
+    }
+
+    me.binding = owner.bind(expressions, me.onChange, me, options);
+  },
+
+  destroy: function () {
+    var me = this,
+      binding = me.binding,
+      stub = me.stub;
+
+    if (binding) {
+      binding.destroy();
+      me.binding = null;
+    }
+
+    if (stub) {
+      stub.formula = null;
+    }
+
+    me.callParent();
+
+    // Save for last because this is used to remove us from the Scheduler
+    me.getterFn = me.owner = null;
+  },
+
+  getFullName: function () {
+    return (
+      this.fullName ||
+      (this.fullName = this.stub.getFullName() + "=" + this.callParent() + ")")
+    );
+  },
+
+  getRawValue: function () {
+    return this.calculation;
+  },
+
+  onChange: function () {
+    if (!this.scheduled) {
+      this.schedule();
+    }
+  },
+
+  parseFormula: function (formula) {
+    var str = formula.toString(),
+      expressions = {
+        $literal: true,
+      },
+      match,
+      getterProp,
+      formulaRe,
+      expr;
+
+    match = this.argumentNamesRe.exec(str);
+    getterProp = match ? match[1] : "get";
+    formulaRe = Ext.app.bind.Formula.getFormulaParser(getterProp);
+
+    while ((match = formulaRe.exec(str))) {
+      expr = match[2];
+      expressions[expr] = expr;
+    }
+
+    expressions.$literal = true;
+
+    // We store the parse results on the function object because we might reuse the
+    // formula function (typically when a ViewModel class is created a 2nd+ time).
+    formula.$expressions = expressions;
+
+    return expressions;
+  },
+
+  react: function () {
+    var me = this,
+      owner = me.owner,
+      data = me.binding.lastValue,
+      getterFn = me.getterFn,
+      arg;
+
+    if (me.explicit) {
+      arg = data;
+    } else {
+      arg = owner.getFormulaFn(data);
+    }
+    me.settingValue = true;
+    me.stub.set((me.calculation = me.get.call(owner, arg)));
+    me.settingValue = false;
+
+    if (me.single) {
+      me.destroy();
+    }
+  },
+
+  setValue: function (value) {
+    this.set.call(this.stub.owner, value);
+  },
+
+  privates: {
+    getScheduler: function () {
+      var owner = this.owner;
+      return owner && owner.getScheduler();
+    },
+
+    sort: function () {
+      var me = this,
+        binding = me.binding;
+
+      // Our binding may be single:true
+      if (!binding.destroyed) {
+        me.scheduler.sortItem(binding);
+      }
+
+      // Schedulable#sort === emptyFn
+      //me.callParent();
+    },
+  },
 });

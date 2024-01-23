@@ -1,44 +1,44 @@
-Ext.define('Ext.theme.triton.form.field.Checkbox', {
-    override: 'Ext.form.field.Checkbox',
-    
-    compatibility: Ext.isIE8,
+Ext.define("Ext.theme.triton.form.field.Checkbox", {
+  override: "Ext.form.field.Checkbox",
 
-    initComponent: function() {
-        this.callParent();
+  compatibility: Ext.isIE8,
 
-        Ext.on({
-            show: 'onGlobalShow',
-            scope: this
-        });
-    },
-    
-    onFocus: function(e) {
-        var focusClsEl;
-        
-        this.callParent([e]);
-        
-        focusClsEl = this.getFocusClsEl();
-        
-        if (focusClsEl) {
-            focusClsEl.syncRepaint();
-        }
-    },
-    
-    onBlur: function(e) {
-        var focusClsEl;
-        
-        this.callParent([e]);
-        
-        focusClsEl = this.getFocusClsEl();
-        
-        if (focusClsEl) {
-            focusClsEl.syncRepaint();
-        }
-    },
+  initComponent: function () {
+    this.callParent();
 
-    onGlobalShow: function(cmp) {
-        if (cmp.isAncestor(this)) {
-            this.getFocusClsEl().syncRepaint();
-        }
+    Ext.on({
+      show: "onGlobalShow",
+      scope: this,
+    });
+  },
+
+  onFocus: function (e) {
+    var focusClsEl;
+
+    this.callParent([e]);
+
+    focusClsEl = this.getFocusClsEl();
+
+    if (focusClsEl) {
+      focusClsEl.syncRepaint();
     }
+  },
+
+  onBlur: function (e) {
+    var focusClsEl;
+
+    this.callParent([e]);
+
+    focusClsEl = this.getFocusClsEl();
+
+    if (focusClsEl) {
+      focusClsEl.syncRepaint();
+    }
+  },
+
+  onGlobalShow: function (cmp) {
+    if (cmp.isAncestor(this)) {
+      this.getFocusClsEl().syncRepaint();
+    }
+  },
 });

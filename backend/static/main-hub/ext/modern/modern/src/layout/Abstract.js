@@ -1,57 +1,57 @@
 /**
  *
  */
-Ext.define('Ext.layout.Abstract', {
-    mixins: ['Ext.mixin.Observable'],
-    
-    isLayout: true,
+Ext.define("Ext.layout.Abstract", {
+  mixins: ["Ext.mixin.Observable"],
 
-    constructor: function(config) {
-        this.initialConfig = config;
-    },
+  isLayout: true,
 
-    //<debug>
-    isCompatible: function (layout) {
-        if (!layout) {
-            return true;
-        }
+  constructor: function (config) {
+    this.initialConfig = config;
+  },
 
-        if (layout.isInstance) {
-            return false;
-        }
+  //<debug>
+  isCompatible: function (layout) {
+    if (!layout) {
+      return true;
+    }
 
-        var type = Ext.isString(layout) ? layout : layout.type,
-            alias = this.alias;
+    if (layout.isInstance) {
+      return false;
+    }
 
-        if (!alias || !type) {
-            return false;
-        }
+    var type = Ext.isString(layout) ? layout : layout.type,
+      alias = this.alias;
 
-        return alias.indexOf('layout.' + type) > -1;
-    },
-    //</debug>
+    if (!alias || !type) {
+      return false;
+    }
 
-    setContainer: function(container) {
-        var me = this;
+    return alias.indexOf("layout." + type) > -1;
+  },
+  //</debug>
 
-        me.container = container;
+  setContainer: function (container) {
+    var me = this;
 
-        me.mixins.observable.constructor.call(me, me.initialConfig);
+    me.container = container;
 
-        return me;
-    },
+    me.mixins.observable.constructor.call(me, me.initialConfig);
 
-    onItemAdd: Ext.emptyFn,
+    return me;
+  },
 
-    onItemRemove: Ext.emptyFn,
+  onItemAdd: Ext.emptyFn,
 
-    onItemMove: Ext.emptyFn,
+  onItemRemove: Ext.emptyFn,
 
-    onItemCenteredChange: Ext.emptyFn,
+  onItemMove: Ext.emptyFn,
 
-    onItemPositionedChange: Ext.emptyFn,
+  onItemCenteredChange: Ext.emptyFn,
 
-    onItemDockedChange: Ext.emptyFn,
+  onItemPositionedChange: Ext.emptyFn,
 
-    onItemInnerStateChange: Ext.emptyFn
+  onItemDockedChange: Ext.emptyFn,
+
+  onItemInnerStateChange: Ext.emptyFn,
 });

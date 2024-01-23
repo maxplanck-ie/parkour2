@@ -1,51 +1,55 @@
-Ext.define('Ext.ux.FileUploadWindow', {
-  extend: 'Ext.window.Window',
-  alias: 'widget.fileuploadwindow',
+Ext.define("Ext.ux.FileUploadWindow", {
+  extend: "Ext.window.Window",
+  alias: "widget.fileuploadwindow",
 
-  title: 'Upload file',
+  title: "Upload file",
   width: 450,
   modal: true,
   autoShow: true,
 
-  fileFieldName: 'file',
+  fileFieldName: "file",
 
   initComponent: function () {
     var me = this;
 
-    me.items = [{
-      xtype: 'form',
-      items: [{
-        xtype: 'filefield',
-        name: me.fileFieldName,
-        fieldLabel: 'File',
-        labelWidth: 50,
-        buttonText: 'Select',
-        allowBlank: false,
-        width: 413,
-        margin: 15,
-        listeners: {
-          change: function (fld, value) {
-            fld.setRawValue(value.replace(/C:\\fakepath\\/g, ''));
-          }
-        }
-      }]
-    }];
+    me.items = [
+      {
+        xtype: "form",
+        items: [
+          {
+            xtype: "filefield",
+            name: me.fileFieldName,
+            fieldLabel: "File",
+            labelWidth: 50,
+            buttonText: "Select",
+            allowBlank: false,
+            width: 413,
+            margin: 15,
+            listeners: {
+              change: function (fld, value) {
+                fld.setRawValue(value.replace(/C:\\fakepath\\/g, ""));
+              },
+            },
+          },
+        ],
+      },
+    ];
 
     me.buttons = [
       {
-        text: 'Upload',
+        text: "Upload",
         handler: function () {
-          this.up('window').onFileUpload();
-        }
+          this.up("window").onFileUpload();
+        },
       },
       {
-        text: 'Cancel',
+        text: "Cancel",
         handler: function () {
-          this.up('window').close();
-        }
-      }
+          this.up("window").close();
+        },
+      },
     ];
 
     this.callParent(arguments);
-  }
+  },
 });

@@ -169,101 +169,107 @@
  *         ]
  *     });
  */
-Ext.define('Ext.form.field.Radio', {
-    extend:'Ext.form.field.Checkbox',
-    alias: ['widget.radiofield', 'widget.radio'],
-    alternateClassName: 'Ext.form.Radio',
-    requires: ['Ext.form.RadioManager'],
+Ext.define("Ext.form.field.Radio", {
+  extend: "Ext.form.field.Checkbox",
+  alias: ["widget.radiofield", "widget.radio"],
+  alternateClassName: "Ext.form.Radio",
+  requires: ["Ext.form.RadioManager"],
 
-    /**
-     * @property {Boolean} isRadio
-     * The value `true` to identify an object as an instance of this or derived class.
-     * @readonly
-     */
-    isRadio: true,
+  /**
+   * @property {Boolean} isRadio
+   * The value `true` to identify an object as an instance of this or derived class.
+   * @readonly
+   */
+  isRadio: true,
 
-    /**
-     * @cfg {String} uncheckedValue
-     * @private
-     */
+  /**
+   * @cfg {String} uncheckedValue
+   * @private
+   */
 
-    inputType: 'radio',
-    
-    formId: null,
+  inputType: "radio",
 
-    /**
-     * If this radio is part of a group, it will return the selected value
-     * @return {String}
-     */
-    getGroupValue: function() {
-        var selected = this.getManager().getChecked(this.name, this.getFormId());
-        return selected ? selected.inputValue : null;
-    },
+  formId: null,
 
-    onRemoved: function() {
-        this.callParent(arguments);
-        this.formId = null;
-    },
+  /**
+   * If this radio is part of a group, it will return the selected value
+   * @return {String}
+   */
+  getGroupValue: function () {
+    var selected = this.getManager().getChecked(this.name, this.getFormId());
+    return selected ? selected.inputValue : null;
+  },
 
-    /**
-     * Sets either the checked/unchecked status of this Radio, or, if a string value is passed, checks a sibling Radio
-     * of the same name whose value is the value specified.
-     * @param {String/Boolean} value Checked value, or the value of the sibling radio button to check.
-     * @return {Ext.form.field.Radio} this
-     */
-    setValue: function(value) {
-        var me = this,
-            active;
+  onRemoved: function () {
+    this.callParent(arguments);
+    this.formId = null;
+  },
 
-        if (Ext.isBoolean(value)) {
-            me.callParent(arguments);
-        } else {
-            active = me.getManager().getWithValue(me.name, value, me.getFormId()).getAt(0);
-            if (active) {
-                active.setValue(true);
-            }
-        }
+  /**
+   * Sets either the checked/unchecked status of this Radio, or, if a string value is passed, checks a sibling Radio
+   * of the same name whose value is the value specified.
+   * @param {String/Boolean} value Checked value, or the value of the sibling radio button to check.
+   * @return {Ext.form.field.Radio} this
+   */
+  setValue: function (value) {
+    var me = this,
+      active;
 
-        return me;
-    },
-
-    /**
-     * Returns the submit value for the checkbox which can be used when submitting forms.
-     * @return {Boolean/Object} True if checked, null if not.
-     */
-    getSubmitValue: function() {
-        return this.checked ? this.inputValue : null;
-    },
-
-    onChange: function(newVal, oldVal) {
-        var me = this,
-            ownerCt = me.ownerCt,
-            r, rLen, radio, radios;
-
-        me.callParent(arguments);
-        
-        // Standard compliant browsers only fire change event on the radio button
-        // that became checked so we need to update other buttons in the group.
-        // See also IE8 override.
-        if (newVal) {
-            radios = me.getManager().getByName(me.name, me.getFormId()).items;
-            rLen = radios.length;
-
-            for (r = 0; r < rLen; r++) {
-                radio = radios[r];
-
-                if (radio !== me) {
-                    radio.updateValueFromDom();
-                }
-            }
-        }
-
-        if (ownerCt && ownerCt.isRadioGroup && ownerCt.simpleValue) {
-            ownerCt.checkChange();
-        }
-    },
-
-    getManager: function() {
-        return Ext.form.RadioManager;
+    if (Ext.isBoolean(value)) {
+      me.callParent(arguments);
+    } else {
+      active = me
+        .getManager()
+        .getWithValue(me.name, value, me.getFormId())
+        .getAt(0);
+      if (active) {
+        active.setValue(true);
+      }
     }
+
+    return me;
+  },
+
+  /**
+   * Returns the submit value for the checkbox which can be used when submitting forms.
+   * @return {Boolean/Object} True if checked, null if not.
+   */
+  getSubmitValue: function () {
+    return this.checked ? this.inputValue : null;
+  },
+
+  onChange: function (newVal, oldVal) {
+    var me = this,
+      ownerCt = me.ownerCt,
+      r,
+      rLen,
+      radio,
+      radios;
+
+    me.callParent(arguments);
+
+    // Standard compliant browsers only fire change event on the radio button
+    // that became checked so we need to update other buttons in the group.
+    // See also IE8 override.
+    if (newVal) {
+      radios = me.getManager().getByName(me.name, me.getFormId()).items;
+      rLen = radios.length;
+
+      for (r = 0; r < rLen; r++) {
+        radio = radios[r];
+
+        if (radio !== me) {
+          radio.updateValueFromDom();
+        }
+      }
+    }
+
+    if (ownerCt && ownerCt.isRadioGroup && ownerCt.simpleValue) {
+      ownerCt.checkChange();
+    }
+  },
+
+  getManager: function () {
+    return Ext.form.RadioManager;
+  },
 });

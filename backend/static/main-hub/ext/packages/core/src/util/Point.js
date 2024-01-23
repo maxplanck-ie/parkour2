@@ -4,56 +4,59 @@
  *
  *     var point = Ext.util.Point.fromEvent(e);
  */
-Ext.define('Ext.util.Point', {
-    extend: 'Ext.util.Region',
+Ext.define(
+  "Ext.util.Point",
+  {
+    extend: "Ext.util.Region",
 
     isPoint: true,
 
     radianToDegreeConstant: 180 / Math.PI,
-    
+
     origin: { x: 0, y: 0 },
 
     statics: {
-        /**
-         * Returns a new instance of {@link Ext.util.Point} based on the `pageX` / `pageY` values of the given event.
-         * @static
-         * @param {Event} e The event.
-         * @return {Ext.util.Point}
-         */
-        fromEvent: function(e) {
-            var changedTouches = e.changedTouches,
-                touch = (changedTouches && changedTouches.length > 0) ? changedTouches[0] : e;
+      /**
+       * Returns a new instance of {@link Ext.util.Point} based on the `pageX` / `pageY` values of the given event.
+       * @static
+       * @param {Event} e The event.
+       * @return {Ext.util.Point}
+       */
+      fromEvent: function (e) {
+        var changedTouches = e.changedTouches,
+          touch =
+            changedTouches && changedTouches.length > 0 ? changedTouches[0] : e;
 
-            return this.fromTouch(touch);
-        },
+        return this.fromTouch(touch);
+      },
 
-        /**
-         * Returns a new instance of {@link Ext.util.Point} based on the `pageX` / `pageY` values of the given touch.
-         * @static
-         * @param {Event} touch
-         * @return {Ext.util.Point}
-         */
-        fromTouch: function(touch) {
-            return new this(touch.pageX, touch.pageY);
-        },
+      /**
+       * Returns a new instance of {@link Ext.util.Point} based on the `pageX` / `pageY` values of the given touch.
+       * @static
+       * @param {Event} touch
+       * @return {Ext.util.Point}
+       */
+      fromTouch: function (touch) {
+        return new this(touch.pageX, touch.pageY);
+      },
 
-        /**
-         * Returns a new point from an object that has `x` and `y` properties, if that object is not an instance
-         * of {@link Ext.util.Point}. Otherwise, returns the given point itself.
-         * @param {Object} object
-         * @return {Ext.util.Point}
-         */
-        from: function(object) {
-            if (!object) {
-                return new this(0, 0);
-            }
-
-            if (!(object instanceof this)) {
-                return new this(object.x, object.y);
-            }
-
-            return object;
+      /**
+       * Returns a new point from an object that has `x` and `y` properties, if that object is not an instance
+       * of {@link Ext.util.Point}. Otherwise, returns the given point itself.
+       * @param {Object} object
+       * @return {Ext.util.Point}
+       */
+      from: function (object) {
+        if (!object) {
+          return new this(0, 0);
         }
+
+        if (!(object instanceof this)) {
+          return new this(object.x, object.y);
+        }
+
+        return object;
+      },
     },
 
     /**
@@ -61,24 +64,24 @@ Ext.define('Ext.util.Point', {
      * @param {Number} [x=0] X coordinate.
      * @param {Number} [y=0] Y coordinate.
      */
-    constructor: function(x, y) {
-        if (x == null) {
-            x = 0;
-        }
+    constructor: function (x, y) {
+      if (x == null) {
+        x = 0;
+      }
 
-        if (y == null) {
-            y = 0;
-        }
+      if (y == null) {
+        y = 0;
+      }
 
-        this.callParent([y, x, y, x]);
+      this.callParent([y, x, y, x]);
     },
 
     /**
      * Copy a new instance of this point.
      * @return {Ext.util.Point} The new point.
      */
-    clone: function() {
-        return new this.self(this.x, this.y);
+    clone: function () {
+      return new this.self(this.x, this.y);
     },
 
     /**
@@ -86,8 +89,8 @@ Ext.define('Ext.util.Point', {
      * @deprecated 2.0.0 Please use {@link #clone} instead.
      * @return {Ext.util.Point} The new point.
      */
-    copy: function() {
-        return this.clone.apply(this, arguments);
+    copy: function () {
+      return this.clone.apply(this, arguments);
     },
 
     /**
@@ -95,11 +98,11 @@ Ext.define('Ext.util.Point', {
      * @param {Ext.util.Point/Object} point.
      * @return {Ext.util.Point} This point.
      */
-    copyFrom: function(point) {
-        this.x = point.x;
-        this.y = point.y;
+    copyFrom: function (point) {
+      this.x = point.x;
+      this.y = point.y;
 
-        return this;
+      return this;
     },
 
     /**
@@ -107,8 +110,8 @@ Ext.define('Ext.util.Point', {
      * useful for debugging.
      * @return {String} For example `Point[12,8]`.
      */
-    toString: function() {
-        return "Point[" + this.x + "," + this.y + "]";
+    toString: function () {
+      return "Point[" + this.x + "," + this.y + "]";
     },
 
     /**
@@ -117,8 +120,8 @@ Ext.define('Ext.util.Point', {
      * of {@link Ext.util.Point} or an object with `x` and `y` properties.
      * @return {Boolean} Returns whether they are equivalent.
      */
-    equals: function(point) {
-        return (this.x === point.x && this.y === point.y);
+    equals: function (point) {
+      return this.x === point.x && this.y === point.y;
     },
 
     /**
@@ -128,18 +131,22 @@ Ext.define('Ext.util.Point', {
      * @param {Object/Number} threshold Can be either an object with `x` and `y` properties or a number.
      * @return {Boolean}
      */
-    isCloseTo: function(point, threshold) {
-        if (typeof threshold == 'number') {
-            return this.getDistanceTo(point) <= threshold;
-        }
+    isCloseTo: function (point, threshold) {
+      if (typeof threshold == "number") {
+        return this.getDistanceTo(point) <= threshold;
+      }
 
-        var x = point.x,
-            y = point.y,
-            thresholdX = threshold.x,
-            thresholdY = threshold.y;
+      var x = point.x,
+        y = point.y,
+        thresholdX = threshold.x,
+        thresholdY = threshold.y;
 
-        return (this.x <= x + thresholdX && this.x >= x - thresholdX &&
-                this.y <= y + thresholdY && this.y >= y - thresholdY);
+      return (
+        this.x <= x + thresholdX &&
+        this.x >= x - thresholdX &&
+        this.y <= y + thresholdY &&
+        this.y >= y - thresholdY
+      );
     },
 
     /**
@@ -147,8 +154,8 @@ Ext.define('Ext.util.Point', {
      * @deprecated 2.0.0 Please use {@link #isCloseTo} instead.
      * @return {Boolean}
      */
-    isWithin: function() {
-        return this.isCloseTo.apply(this, arguments);
+    isWithin: function () {
+      return this.isCloseTo.apply(this, arguments);
     },
 
     /**
@@ -157,11 +164,11 @@ Ext.define('Ext.util.Point', {
      * The rectangle to check that this Point is within.
      * @return {Boolean}
      */
-    isContainedBy: function(region) {
-        if (!(region instanceof Ext.util.Region)) {
-            region = Ext.get(region.el || region).getRegion();
-        }
-        return region.contains(this);
+    isContainedBy: function (region) {
+      if (!(region instanceof Ext.util.Region)) {
+        region = Ext.get(region.el || region).getRegion();
+      }
+      return region.contains(this);
     },
 
     /**
@@ -171,41 +178,45 @@ Ext.define('Ext.util.Point', {
      * of Ext.util.Point or an object with `x` and `y` properties.
      * @return {Boolean}
      */
-    roundedEquals: function(point) {
-        if (!point || typeof point !== 'object') {
-            point = this.origin;
-        }
+    roundedEquals: function (point) {
+      if (!point || typeof point !== "object") {
+        point = this.origin;
+      }
 
-        return (Math.round(this.x) === Math.round(point.x) &&
-                Math.round(this.y) === Math.round(point.y));
+      return (
+        Math.round(this.x) === Math.round(point.x) &&
+        Math.round(this.y) === Math.round(point.y)
+      );
     },
 
-    getDistanceTo: function(point) {
-        if (!point || typeof point !== 'object') {
-            point = this.origin;
-        }
+    getDistanceTo: function (point) {
+      if (!point || typeof point !== "object") {
+        point = this.origin;
+      }
 
-        var deltaX = this.x - point.x,
-            deltaY = this.y - point.y;
+      var deltaX = this.x - point.x,
+        deltaY = this.y - point.y;
 
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     },
 
-    getAngleTo: function(point) {
-        if (!point || typeof point !== 'object') {
-            point = this.origin;
-        }
+    getAngleTo: function (point) {
+      if (!point || typeof point !== "object") {
+        point = this.origin;
+      }
 
-        var deltaX = this.x - point.x,
-            deltaY = this.y - point.y;
+      var deltaX = this.x - point.x,
+        deltaY = this.y - point.y;
 
-        return Math.atan2(deltaY, deltaX) * this.radianToDegreeConstant;
-    }
-}, function() {
+      return Math.atan2(deltaY, deltaX) * this.radianToDegreeConstant;
+    },
+  },
+  function () {
     /**
      * @method
      * Alias for {@link #translateBy}
      * @inheritdoc Ext.util.Region#translateBy
      */
     this.prototype.translate = this.prototype.translateBy;
-});
+  },
+);

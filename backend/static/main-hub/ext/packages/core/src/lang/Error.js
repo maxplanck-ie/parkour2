@@ -68,135 +68,140 @@
  *
  * @class Ext.Error
  */
-(function() {
-// @define Ext.lang.Error
-// @define Ext.Error
-// @require Ext
+(function () {
+  // @define Ext.lang.Error
+  // @define Ext.Error
+  // @require Ext
 
-    function toString() {
-        var me = this,
-            cls = me.sourceClass,
-            method = me.sourceMethod,
-            msg = me.msg;
+  function toString() {
+    var me = this,
+      cls = me.sourceClass,
+      method = me.sourceMethod,
+      msg = me.msg;
 
-        if (method) {
-            if (msg) {
-                method += '(): ';
-                method += msg;
-            } else {
-                method += '()';
-            }
-        }
-
-        if (cls) {
-            method = method ? (cls + '.' + method) : cls;
-        }
-        
-        return method || msg || '';
+    if (method) {
+      if (msg) {
+        method += "(): ";
+        method += msg;
+      } else {
+        method += "()";
+      }
     }
 
-    Ext.Error = function(config) {
-        if (Ext.isString(config)) {
-            config = { msg: config };
+    if (cls) {
+      method = method ? cls + "." + method : cls;
+    }
+
+    return method || msg || "";
+  }
+
+  Ext.Error = function (config) {
+    if (Ext.isString(config)) {
+      config = { msg: config };
+    }
+
+    var error = new Error();
+
+    Ext.apply(error, config);
+
+    error.message = error.message || error.msg; // 'message' is standard ('msg' is non-standard)
+    // note: the above does not work in old WebKit (me.message is readonly) (Safari 4)
+
+    error.toString = toString;
+
+    return error;
+  };
+
+  Ext.apply(Ext.Error, {
+    /**
+     * @property {Boolean} ignore
+     * Static flag that can be used to globally disable error reporting to the browser if set to true
+     * (defaults to false). Note that if you ignore Ext errors it's likely that some other code may fail
+     * and throw a native JavaScript error thereafter, so use with caution. In most cases it will probably
+     * be preferable to supply a custom error {@link #handle handling} function instead.
+     *
+     * Example usage:
+     *
+     *     Ext.Error.ignore = true;
+     *
+     * @static
+     */
+    ignore: false,
+
+    /**
+     * This method is called internally by {@link Ext#raise}. Application code should
+     * call {@link Ext#raise} instead of calling this method directly.
+     *
+     * @static
+     * @deprecated 6.0.0 Use {@link Ext#raise} instead.
+     */
+    raise: function (err) {
+      err = err || {};
+      if (Ext.isString(err)) {
+        err = { msg: err };
+      }
+
+      var me = this,
+        method = me.raise.caller,
+        msg,
+        name;
+
+      if (method === Ext.raise) {
+        method = method.caller;
+      }
+      if (method) {
+        if (!err.sourceMethod && (name = method.$name)) {
+          err.sourceMethod = name;
         }
-
-        var error = new Error();
-
-        Ext.apply(error, config);
-
-        error.message = error.message || error.msg; // 'message' is standard ('msg' is non-standard)
-        // note: the above does not work in old WebKit (me.message is readonly) (Safari 4)
-
-        error.toString = toString;
-
-        return error;
-    };
-
-    Ext.apply(Ext.Error, {
-        /**
-         * @property {Boolean} ignore
-         * Static flag that can be used to globally disable error reporting to the browser if set to true
-         * (defaults to false). Note that if you ignore Ext errors it's likely that some other code may fail
-         * and throw a native JavaScript error thereafter, so use with caution. In most cases it will probably
-         * be preferable to supply a custom error {@link #handle handling} function instead.
-         *
-         * Example usage:
-         *
-         *     Ext.Error.ignore = true;
-         *
-         * @static
-         */
-        ignore: false,
-
-        /**
-         * This method is called internally by {@link Ext#raise}. Application code should
-         * call {@link Ext#raise} instead of calling this method directly.
-         *
-         * @static
-         * @deprecated 6.0.0 Use {@link Ext#raise} instead.
-         */
-        raise: function(err) {
-            err = err || {};
-            if (Ext.isString(err)) {
-                err = { msg: err };
-            }
-
-            var me = this,
-                method = me.raise.caller,
-                msg, name;
-
-            if (method === Ext.raise) {
-                method = method.caller;
-            }
-            if (method) {
-                if (!err.sourceMethod && (name = method.$name)) {
-                    err.sourceMethod = name;
-                }
-                if (!err.sourceClass && (name = method.$owner) && (name = name.$className)) {
-                    err.sourceClass = name;
-                }
-            }
-
-            if (me.handle(err) !== true) {
-                msg = toString.call(err);
-
-                //<debug>
-                Ext.log({
-                    msg: msg,
-                    level: 'error',
-                    dump: err,
-                    stack: true
-                });
-                //</debug>
-
-                throw new Ext.Error(err);
-            }
-        },
-
-        /**
-         * Globally handle any Ext errors that may be raised, optionally providing custom logic to
-         * handle different errors individually. Return true from the function to bypass throwing the
-         * error to the browser, otherwise the error will be thrown and execution will halt.
-         *
-         * Example usage:
-         *
-         *     Ext.Error.handle = function(err) {
-         *         if (err.someProperty == 'NotReallyAnError') {
-         *             // maybe log something to the application here if applicable
-         *             return true;
-         *         }
-         *         // any non-true return value (including none) will cause the error to be thrown
-         *     }
-         *
-         * @param {Object} err The error being raised. It will contain any attributes that were originally
-         * raised with it, plus properties about the method and class from which the error originated
-         * (if raised from a class that uses the Class System).
-         * @static
-         */
-        handle: function () {
-            return this.ignore;
+        if (
+          !err.sourceClass &&
+          (name = method.$owner) &&
+          (name = name.$className)
+        ) {
+          err.sourceClass = name;
         }
-    });
+      }
+
+      if (me.handle(err) !== true) {
+        msg = toString.call(err);
+
+        //<debug>
+        Ext.log({
+          msg: msg,
+          level: "error",
+          dump: err,
+          stack: true,
+        });
+        //</debug>
+
+        throw new Ext.Error(err);
+      }
+    },
+
+    /**
+     * Globally handle any Ext errors that may be raised, optionally providing custom logic to
+     * handle different errors individually. Return true from the function to bypass throwing the
+     * error to the browser, otherwise the error will be thrown and execution will halt.
+     *
+     * Example usage:
+     *
+     *     Ext.Error.handle = function(err) {
+     *         if (err.someProperty == 'NotReallyAnError') {
+     *             // maybe log something to the application here if applicable
+     *             return true;
+     *         }
+     *         // any non-true return value (including none) will cause the error to be thrown
+     *     }
+     *
+     * @param {Object} err The error being raised. It will contain any attributes that were originally
+     * raised with it, plus properties about the method and class from which the error originated
+     * (if raised from a class that uses the Class System).
+     * @static
+     */
+    handle: function () {
+      return this.ignore;
+    },
+  });
 })();
 
 /**
@@ -207,19 +212,25 @@
  * @private
  */
 Ext.deprecated = function (suggestion) {
-    //<debug>
-    if (!suggestion) {
-        suggestion = '';
-    }
+  //<debug>
+  if (!suggestion) {
+    suggestion = "";
+  }
 
-    function fail () {
-        Ext.raise('The method "' + fail.$owner.$className + '.' + fail.$name +
-                  '" has been removed. ' + suggestion);
-    }
+  function fail() {
+    Ext.raise(
+      'The method "' +
+        fail.$owner.$className +
+        "." +
+        fail.$name +
+        '" has been removed. ' +
+        suggestion,
+    );
+  }
 
-    return fail;
-    //</debug>
-    return Ext.emptyFn;
+  return fail;
+  //</debug>
+  return Ext.emptyFn;
 };
 
 /**
@@ -256,7 +267,7 @@ Ext.deprecated = function (suggestion) {
  * @member Ext
  */
 Ext.raise = function () {
-    Ext.Error.raise.apply(Ext.Error, arguments);
+  Ext.Error.raise.apply(Ext.Error, arguments);
 };
 
 /*
@@ -266,39 +277,39 @@ Ext.raise = function () {
  */
 //<debug>
 (function () {
-    if (typeof window === 'undefined') {
-        return; // build system or some such environment...
-    }
+  if (typeof window === "undefined") {
+    return; // build system or some such environment...
+  }
 
-    var last = 0,
-        // This method is called to notify the user of the current error status.
-        notify = function() {
-            var cnt = Ext.log && Ext.log.counters,
-                n = cnt && (cnt.error + cnt.warn + cnt.info + cnt.log),
-                msg;
+  var last = 0,
+    // This method is called to notify the user of the current error status.
+    notify = function () {
+      var cnt = Ext.log && Ext.log.counters,
+        n = cnt && cnt.error + cnt.warn + cnt.info + cnt.log,
+        msg;
 
-            // Put log counters to the status bar (for most browsers):
-            if (n && last !== n) {
-                msg = [];
-                if (cnt.error) {
-                    msg.push('Errors: ' + cnt.error);
-                }
-                if (cnt.warn) {
-                    msg.push('Warnings: ' + cnt.warn);
-                }
-                if (cnt.info) {
-                    msg.push('Info: ' + cnt.info);
-                }
-                if (cnt.log) {
-                    msg.push('Log: ' + cnt.log);
-                }
-                window.status = '*** ' + msg.join(' -- ');
-                last = n;
-            }
-        };
+      // Put log counters to the status bar (for most browsers):
+      if (n && last !== n) {
+        msg = [];
+        if (cnt.error) {
+          msg.push("Errors: " + cnt.error);
+        }
+        if (cnt.warn) {
+          msg.push("Warnings: " + cnt.warn);
+        }
+        if (cnt.info) {
+          msg.push("Info: " + cnt.info);
+        }
+        if (cnt.log) {
+          msg.push("Log: " + cnt.log);
+        }
+        window.status = "*** " + msg.join(" -- ");
+        last = n;
+      }
+    };
 
-    // window.onerror sounds ideal but it prevents the built-in error dialog from doing
-    // its (better) thing.
-    setInterval(notify, 1000);
-}());
+  // window.onerror sounds ideal but it prevents the built-in error dialog from doing
+  // its (better) thing.
+  setInterval(notify, 1000);
+})();
 //</debug>

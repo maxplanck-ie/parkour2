@@ -125,205 +125,204 @@
  * must be set to "text/xml" or "application/xml". This is very important - the XmlReader will not work correctly
  * otherwise.
  */
-Ext.define('Ext.data.reader.Xml', {
-    extend: 'Ext.data.reader.Reader',
-    requires: [
-        'Ext.dom.Query'
-    ],
-    alternateClassName: 'Ext.data.XmlReader',
-    alias : 'reader.xml',
+Ext.define("Ext.data.reader.Xml", {
+  extend: "Ext.data.reader.Reader",
+  requires: ["Ext.dom.Query"],
+  alternateClassName: "Ext.data.XmlReader",
+  alias: "reader.xml",
 
-    config: {
-        /**
-        * @cfg {String} record (required)
-        * The DomQuery path to the repeated element which contains record information.
-        *
-        * By default, the elements which match the selector may be nested at any level
-        * below the {@link #rootProperty}
-        *
-        * If this Reader is being used by a {@link Ext.data.TreeStore TreeStore} to read tree-structured data,
-        * then only first generation child nodes of the root element must be selected, so the record selector must be
-        * specified with a more specific selector which will not select all descendants. For example:
-        *
-        *    record: '>node'
-        *
-        */
-        record: '',
-
-        /**
-        * @cfg {String} namespace
-        * A namespace prefix that will be prepended to the field name when reading a
-        * field from an XML node.  Take, for example, the following Model:
-        * 
-        *     Ext.define('Foo', {
-        *         extend: 'Ext.data.Model',
-        *         fields: ['bar', 'baz']
-        *     });
-        *     
-        * The reader would need to be configured with a namespace of 'n' in order to read XML
-        * data in the following format:
-        * 
-        *     <foo>
-        *         <n:bar>bar</n:bar>
-        *         <n:baz>baz</n:baz>
-        *     </foo>
-        */
-        namespace: ''
-    },
+  config: {
+    /**
+     * @cfg {String} record (required)
+     * The DomQuery path to the repeated element which contains record information.
+     *
+     * By default, the elements which match the selector may be nested at any level
+     * below the {@link #rootProperty}
+     *
+     * If this Reader is being used by a {@link Ext.data.TreeStore TreeStore} to read tree-structured data,
+     * then only first generation child nodes of the root element must be selected, so the record selector must be
+     * specified with a more specific selector which will not select all descendants. For example:
+     *
+     *    record: '>node'
+     *
+     */
+    record: "",
 
     /**
-     * @private
-     * Creates a function to return some particular key of data from a response. The totalProperty and
-     * successProperty are treated as special cases for type casting, everything else is just a simple selector.
-     * @param {String} key
-     * @return {Function}
+     * @cfg {String} namespace
+     * A namespace prefix that will be prepended to the field name when reading a
+     * field from an XML node.  Take, for example, the following Model:
+     *
+     *     Ext.define('Foo', {
+     *         extend: 'Ext.data.Model',
+     *         fields: ['bar', 'baz']
+     *     });
+     *
+     * The reader would need to be configured with a namespace of 'n' in order to read XML
+     * data in the following format:
+     *
+     *     <foo>
+     *         <n:bar>bar</n:bar>
+     *         <n:baz>baz</n:baz>
+     *     </foo>
      */
-    createAccessor: function(expr) {
-        if (Ext.isEmpty(expr)) {
-            return Ext.emptyFn;
-        }
+    namespace: "",
+  },
 
-        if (Ext.isFunction(expr)) {
-            return expr;
-        }
-
-        return function(root) {
-            return this.getNodeValue(Ext.DomQuery.selectNode(expr, root));
-        };
-    },
-
-    getNodeValue: function(node) {
-        if (node) {
-            // overcome a limitation of maximum textnode size
-            // http://reference.sitepoint.com/javascript/Node/normalize
-            // https://developer.mozilla.org/En/DOM/Node.normalize
-            if (typeof node.normalize === 'function') {
-                node.normalize();
-            }
-            node = node.firstChild;
-            if (node) {
-                return node.nodeValue;
-            }
-        }
-        return undefined;
-    },
-
-    getResponseData: function(response) {
-        var xml = response.responseXML,
-            error = 'XML data not found in the response'; 
-
-        if (!xml) {
-            Ext.Logger.warn(error);
-            return this.createReadError(error);       
-        }
-
-        return xml;
-    },
-
-    /**
-     * Normalizes the data object.
-     * @param {Object} data The raw data object
-     * @return {Object} The documentElement property of the data object if present, or the same object if not.
-     */
-    getData: function(data) {
-        return data.documentElement || data;
-    },
-
-    /**
-     * @private
-     * Given an XML object, returns the Element that represents the root as configured by the Reader's meta data.
-     * @param {Object} data The XML data object
-     * @return {XMLElement} The root node element
-     */
-    getRoot: function(data) {
-        var nodeName = data.nodeName,
-            root     = this.getRootProperty();
-
-        if (!root || (nodeName && nodeName == root)) {
-            return data;
-        } else if (Ext.DomQuery.isXml(data)) {
-            // This fix ensures we have XML data
-            // Related to TreeStore calling getRoot with the root node, which isn't XML
-            // Probably should be resolved in TreeStore at some point
-            return Ext.DomQuery.selectNode(root, data);
-        }
-    },
-
-    /**
-     * @private
-     * We're just preparing the data for the superclass by pulling out the record nodes we want.
-     * @param {XMLElement} root The XML root node
-     * @param {Object} [readOptions] See {@link #read} for details.
-     * @return {Ext.data.Model[]} The records
-     */
-    extractData: function(root, readOptions) {
-        var recordName = this.getRecord();
-
-        //<debug>
-        if (!recordName) {
-            Ext.raise('Record is a required parameter');
-        }
-        //</debug>
-
-        if (recordName !== root.nodeName) {
-            root = Ext.DomQuery.select(recordName, root);
-        } else {
-            root = [root];
-        }
-        return this.callParent([root, readOptions]);
-    },
-
-    /**
-     * Parses an XML document and returns a ResultSet containing the model instances.
-     * @param {Object} doc Parsed XML document
-     * @param {Object} [readOptions] See {@link #read} for details.
-     * @return {Ext.data.ResultSet} The parsed result set
-     */
-    readRecords: function(doc, readOptions, /* private */ internalReadOptions) {
-        // it's possible that we get passed an array here by associations.
-        // Make sure we strip that out (see Ext.data.reader.Reader#readAssociated)
-        if (Ext.isArray(doc)) {
-            doc = doc[0];
-        }
-
-        return this.callParent([doc, readOptions, internalReadOptions]);
-    },
-
-    /**
-     * @private
-     * Returns an accessor function for the passed Field from an XML element using either the Field's mapping, or
-     * its ordinal position in the fields collection as the index.
-     * This is used by buildExtractors to create optimized on extractor function which converts raw data into model instances.
-     */
-    createFieldAccessor: function(field) {
-        var me = this,
-            namespace = me.getNamespace(),
-            selector, result;
-
-        selector = field.mapping || ((namespace ? namespace + '|' : '') + field.name); 
-
-        if (typeof selector === 'function') {
-            result = function(raw) {
-                return field.mapping(raw, me);
-            };
-        } else {
-            result = function(raw) {
-                return me.getNodeValue(Ext.DomQuery.selectNode(selector, raw));
-            };
-        }
-        return result;
-    },
-    
-    deprecated: {
-        '5.1.1': {
-            properties: {
-                /**
-                 * @property {Object} xmlData
-                 * Copy of {@link #rawData}.
-                 * @deprecated 5.1.1 Removed in Ext JS 5.0. Use {@link #rawData} instead.
-                 */
-                xmlData: null
-            }
-        }
+  /**
+   * @private
+   * Creates a function to return some particular key of data from a response. The totalProperty and
+   * successProperty are treated as special cases for type casting, everything else is just a simple selector.
+   * @param {String} key
+   * @return {Function}
+   */
+  createAccessor: function (expr) {
+    if (Ext.isEmpty(expr)) {
+      return Ext.emptyFn;
     }
+
+    if (Ext.isFunction(expr)) {
+      return expr;
+    }
+
+    return function (root) {
+      return this.getNodeValue(Ext.DomQuery.selectNode(expr, root));
+    };
+  },
+
+  getNodeValue: function (node) {
+    if (node) {
+      // overcome a limitation of maximum textnode size
+      // http://reference.sitepoint.com/javascript/Node/normalize
+      // https://developer.mozilla.org/En/DOM/Node.normalize
+      if (typeof node.normalize === "function") {
+        node.normalize();
+      }
+      node = node.firstChild;
+      if (node) {
+        return node.nodeValue;
+      }
+    }
+    return undefined;
+  },
+
+  getResponseData: function (response) {
+    var xml = response.responseXML,
+      error = "XML data not found in the response";
+
+    if (!xml) {
+      Ext.Logger.warn(error);
+      return this.createReadError(error);
+    }
+
+    return xml;
+  },
+
+  /**
+   * Normalizes the data object.
+   * @param {Object} data The raw data object
+   * @return {Object} The documentElement property of the data object if present, or the same object if not.
+   */
+  getData: function (data) {
+    return data.documentElement || data;
+  },
+
+  /**
+   * @private
+   * Given an XML object, returns the Element that represents the root as configured by the Reader's meta data.
+   * @param {Object} data The XML data object
+   * @return {XMLElement} The root node element
+   */
+  getRoot: function (data) {
+    var nodeName = data.nodeName,
+      root = this.getRootProperty();
+
+    if (!root || (nodeName && nodeName == root)) {
+      return data;
+    } else if (Ext.DomQuery.isXml(data)) {
+      // This fix ensures we have XML data
+      // Related to TreeStore calling getRoot with the root node, which isn't XML
+      // Probably should be resolved in TreeStore at some point
+      return Ext.DomQuery.selectNode(root, data);
+    }
+  },
+
+  /**
+   * @private
+   * We're just preparing the data for the superclass by pulling out the record nodes we want.
+   * @param {XMLElement} root The XML root node
+   * @param {Object} [readOptions] See {@link #read} for details.
+   * @return {Ext.data.Model[]} The records
+   */
+  extractData: function (root, readOptions) {
+    var recordName = this.getRecord();
+
+    //<debug>
+    if (!recordName) {
+      Ext.raise("Record is a required parameter");
+    }
+    //</debug>
+
+    if (recordName !== root.nodeName) {
+      root = Ext.DomQuery.select(recordName, root);
+    } else {
+      root = [root];
+    }
+    return this.callParent([root, readOptions]);
+  },
+
+  /**
+   * Parses an XML document and returns a ResultSet containing the model instances.
+   * @param {Object} doc Parsed XML document
+   * @param {Object} [readOptions] See {@link #read} for details.
+   * @return {Ext.data.ResultSet} The parsed result set
+   */
+  readRecords: function (doc, readOptions, /* private */ internalReadOptions) {
+    // it's possible that we get passed an array here by associations.
+    // Make sure we strip that out (see Ext.data.reader.Reader#readAssociated)
+    if (Ext.isArray(doc)) {
+      doc = doc[0];
+    }
+
+    return this.callParent([doc, readOptions, internalReadOptions]);
+  },
+
+  /**
+   * @private
+   * Returns an accessor function for the passed Field from an XML element using either the Field's mapping, or
+   * its ordinal position in the fields collection as the index.
+   * This is used by buildExtractors to create optimized on extractor function which converts raw data into model instances.
+   */
+  createFieldAccessor: function (field) {
+    var me = this,
+      namespace = me.getNamespace(),
+      selector,
+      result;
+
+    selector = field.mapping || (namespace ? namespace + "|" : "") + field.name;
+
+    if (typeof selector === "function") {
+      result = function (raw) {
+        return field.mapping(raw, me);
+      };
+    } else {
+      result = function (raw) {
+        return me.getNodeValue(Ext.DomQuery.selectNode(selector, raw));
+      };
+    }
+    return result;
+  },
+
+  deprecated: {
+    "5.1.1": {
+      properties: {
+        /**
+         * @property {Object} xmlData
+         * Copy of {@link #rawData}.
+         * @deprecated 5.1.1 Removed in Ext JS 5.0. Use {@link #rawData} instead.
+         */
+        xmlData: null,
+      },
+    },
+  },
 });

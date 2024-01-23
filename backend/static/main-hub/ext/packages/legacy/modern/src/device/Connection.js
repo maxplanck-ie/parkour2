@@ -33,28 +33,28 @@
  *
  * @mixins Ext.device.connection.Abstract
  */
-Ext.define('Ext.device.Connection', {
-    singleton: true,
+Ext.define("Ext.device.Connection", {
+  singleton: true,
 
-    requires: [
-        'Ext.device.Communicator',
-        'Ext.device.connection.Cordova',
-        'Ext.device.connection.Simulator'
-    ],
+  requires: [
+    "Ext.device.Communicator",
+    "Ext.device.connection.Cordova",
+    "Ext.device.connection.Simulator",
+  ],
 
-    /**
-     * @event onlinechange
-     * @inheritdoc Ext.device.connection.Sencha#onlinechange
-     */
+  /**
+   * @event onlinechange
+   * @inheritdoc Ext.device.connection.Sencha#onlinechange
+   */
 
-    constructor: function() {
-        var browserEnv = Ext.browser.is;
+  constructor: function () {
+    var browserEnv = Ext.browser.is;
 
-        if (browserEnv.WebView) {
-            if (browserEnv.Cordova) {
-                return Ext.create('Ext.device.connection.Cordova');
-            }
-        }
-        return Ext.create('Ext.device.connection.Simulator');
+    if (browserEnv.WebView) {
+      if (browserEnv.Cordova) {
+        return Ext.create("Ext.device.connection.Cordova");
+      }
     }
+    return Ext.create("Ext.device.connection.Simulator");
+  },
 });

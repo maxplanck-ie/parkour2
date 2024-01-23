@@ -56,85 +56,85 @@
  * See the {@link Ext.dd.DropZone DropZone} documentation for details about building a DropZone which cooperates with
  * this DragZone.
  */
-Ext.define('Ext.dd.DragZone', {
-    extend: 'Ext.dd.DragSource',
+Ext.define("Ext.dd.DragZone", {
+  extend: "Ext.dd.DragSource",
 
-    /**
-     * Creates new DragZone.
-     * @param {String/HTMLElement/Ext.dom.Element} el The container element or ID of it.
-     * @param {Object} config
-     */
-    constructor: function(el, config) {
-        var me = this,
-            scroll;
-        
-        me.callParent([el, config]);
-        
-        scroll = me.containerScroll;
-        
-        if (scroll) {
-            el = me.scrollEl || el;
-            el = Ext.get(el);
-            if (Ext.isObject(scroll)) {
-                el.ddScrollConfig = scroll;
-            }
-            Ext.dd.ScrollManager.register(el);
-        }
-    },
+  /**
+   * Creates new DragZone.
+   * @param {String/HTMLElement/Ext.dom.Element} el The container element or ID of it.
+   * @param {Object} config
+   */
+  constructor: function (el, config) {
+    var me = this,
+      scroll;
 
-    /**
-     * @cfg {Object/Boolean} containerScroll
-     * True to register this container with the Scrollmanager for auto scrolling during drag operations.
-     * A {@link Ext.dd.ScrollManager} configuration may also be passed.
-     */
-    
-    /**
-     * @cfg {String/HTMLElement/Ext.dom.Element} scrollEl
-     * An element to register with the ScrollManager if {@link #containerScroll}
-     * is set. Defaults to the drag element.
-     */
+    me.callParent([el, config]);
 
-    /**
-     * Called when a mousedown occurs in this container. Looks in {@link Ext.dd.Registry} for a valid target to drag
-     * based on the mouse down. Override this method to provide your own lookup logic (e.g. finding a child by class
-     * name). Make sure your returned object has a "ddel" attribute (with an HTML Element) for other functions to work.
-     * @param {Event} e The mouse down event
-     * @return {Object} The dragData
-     */
-    getDragData : function(e){
-        return Ext.dd.Registry.getHandleFromEvent(e);
-    },
+    scroll = me.containerScroll;
 
-    /**
-     * Called once drag threshold has been reached to initialize the proxy element. By default, it clones the
-     * this.dragData.ddel
-     * @param {Number} x The x position of the click on the dragged object
-     * @param {Number} y The y position of the click on the dragged object
-     * @return {Boolean} true to continue the drag, false to cancel
-     * @template
-     */
-    onInitDrag : function(x, y){
-        this.proxy.update(this.dragData.ddel.cloneNode(true));
-        this.onStartDrag(x, y);
-        return true;
-    },
-
-    /**
-     * Called before a repair of an invalid drop to get the XY to animate to. By default returns the XY of
-     * this.dragData.ddel
-     * @param {Event} e The mouse up event
-     * @return {Number[]} The xy location (e.g. `[100, 200]`)
-     * @template
-     */
-    getRepairXY : function(e){
-        return Ext.fly(this.dragData.ddel).getXY();
-    },
-
-    destroy: function() {
-        if (this.containerScroll) {
-            Ext.dd.ScrollManager.unregister(this.scrollEl || this.el);
-        }
-
-        this.callParent();
+    if (scroll) {
+      el = me.scrollEl || el;
+      el = Ext.get(el);
+      if (Ext.isObject(scroll)) {
+        el.ddScrollConfig = scroll;
+      }
+      Ext.dd.ScrollManager.register(el);
     }
+  },
+
+  /**
+   * @cfg {Object/Boolean} containerScroll
+   * True to register this container with the Scrollmanager for auto scrolling during drag operations.
+   * A {@link Ext.dd.ScrollManager} configuration may also be passed.
+   */
+
+  /**
+   * @cfg {String/HTMLElement/Ext.dom.Element} scrollEl
+   * An element to register with the ScrollManager if {@link #containerScroll}
+   * is set. Defaults to the drag element.
+   */
+
+  /**
+   * Called when a mousedown occurs in this container. Looks in {@link Ext.dd.Registry} for a valid target to drag
+   * based on the mouse down. Override this method to provide your own lookup logic (e.g. finding a child by class
+   * name). Make sure your returned object has a "ddel" attribute (with an HTML Element) for other functions to work.
+   * @param {Event} e The mouse down event
+   * @return {Object} The dragData
+   */
+  getDragData: function (e) {
+    return Ext.dd.Registry.getHandleFromEvent(e);
+  },
+
+  /**
+   * Called once drag threshold has been reached to initialize the proxy element. By default, it clones the
+   * this.dragData.ddel
+   * @param {Number} x The x position of the click on the dragged object
+   * @param {Number} y The y position of the click on the dragged object
+   * @return {Boolean} true to continue the drag, false to cancel
+   * @template
+   */
+  onInitDrag: function (x, y) {
+    this.proxy.update(this.dragData.ddel.cloneNode(true));
+    this.onStartDrag(x, y);
+    return true;
+  },
+
+  /**
+   * Called before a repair of an invalid drop to get the XY to animate to. By default returns the XY of
+   * this.dragData.ddel
+   * @param {Event} e The mouse up event
+   * @return {Number[]} The xy location (e.g. `[100, 200]`)
+   * @template
+   */
+  getRepairXY: function (e) {
+    return Ext.fly(this.dragData.ddel).getXY();
+  },
+
+  destroy: function () {
+    if (this.containerScroll) {
+      Ext.dd.ScrollManager.unregister(this.scrollEl || this.el);
+    }
+
+    this.callParent();
+  },
 });

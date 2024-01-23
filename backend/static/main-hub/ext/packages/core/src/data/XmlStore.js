@@ -50,25 +50,28 @@ var store = new Ext.data.XmlStore({
  * <p><b>Note:</b> This class accepts all of the configuration options of
  * <b>{@link Ext.data.reader.Xml XmlReader}</b>.</p>
  */
-Ext.define('Ext.data.XmlStore', {
-    extend: 'Ext.data.Store',
-    alias: 'store.xml',
+Ext.define("Ext.data.XmlStore", {
+  extend: "Ext.data.Store",
+  alias: "store.xml",
 
-    requires: [
-        'Ext.data.proxy.Ajax',
-        'Ext.data.reader.Xml',
-        'Ext.data.writer.Xml'
-    ],
-    
-    constructor: function(config){
-        config = Ext.apply({
-            proxy: {
-                type: 'ajax',
-                reader: 'xml',
-                writer: 'xml'
-            }
-        }, config);
+  requires: [
+    "Ext.data.proxy.Ajax",
+    "Ext.data.reader.Xml",
+    "Ext.data.writer.Xml",
+  ],
 
-        this.callParent([config]);
-    }
+  constructor: function (config) {
+    config = Ext.apply(
+      {
+        proxy: {
+          type: "ajax",
+          reader: "xml",
+          writer: "xml",
+        },
+      },
+      config,
+    );
+
+    this.callParent([config]);
+  },
 });

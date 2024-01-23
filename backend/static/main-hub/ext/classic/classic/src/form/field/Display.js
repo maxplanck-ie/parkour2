@@ -32,170 +32,170 @@
  *         }]
  *     });
  */
-Ext.define('Ext.form.field.Display', {
-    extend:'Ext.form.field.Base',
-    alias: 'widget.displayfield',
-    requires: ['Ext.util.Format', 'Ext.XTemplate'],
-    alternateClassName: ['Ext.form.DisplayField', 'Ext.form.Display'],
-    
-    fieldSubTpl: [
-        '<div id="{id}" data-ref="inputEl" role="textbox" aria-readonly="true"',
-        ' aria-labelledby="{cmpId}-labelEl" {inputAttrTpl}',
-        ' tabindex="<tpl if="tabIdx != null">{tabIdx}<tpl else>-1</tpl>"',
-        '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>', 
-        ' class="{fieldCls} {fieldCls}-{ui}">{value}</div>',
-        {
-            compiled: true,
-            disableFormats: true
-        }
-    ],
-    
-    // We have the ARIA markup pre-rendered so we don't want it to be applied
-    ariaRole: undefined,
-    
-    focusable: false,
+Ext.define("Ext.form.field.Display", {
+  extend: "Ext.form.field.Base",
+  alias: "widget.displayfield",
+  requires: ["Ext.util.Format", "Ext.XTemplate"],
+  alternateClassName: ["Ext.form.DisplayField", "Ext.form.Display"],
 
-    // Display fields are divs not real input fields, so rendering
-    // "for" attribute in the label does not do any good.
-    skipLabelForAttribute: true,
-
-    /**
-     * @cfg {Boolean} readOnly
-     * @private
-     */
-    readOnly: true,
-
-    /**
-     * @cfg {String} [fieldCls="x-form-display-field"]
-     * The default CSS class for the field.
-     */
-    fieldCls: Ext.baseCSSPrefix + 'form-display-field',
-
-    fieldBodyCls: Ext.baseCSSPrefix + 'form-display-field-body',
-
-    /**
-     * @cfg {Boolean} htmlEncode
-     * True to escape HTML in text when rendering it.
-     */
-    htmlEncode: false,
-    
-    /**
-     * @cfg {Function} renderer
-     * A function to transform the raw value for display in the field.
-     * 
-     *     Ext.create('Ext.form.Panel', {
-     *         renderTo: document.body,
-     *         width: 175,
-     *         bodyPadding: 10,
-     *         title: 'Final Score',
-     *         items: [{
-     *             xtype: 'displayfield',
-     *             fieldLabel: 'Grade',
-     *             name: 'final_grade',
-     *             value: 68,
-     *             renderer: function (value, field) {
-     *                 var color = (value < 70) ? 'red' : 'black';
-     *                 return '<span style="color:' + color + ';">' + value + '</span>';
-     *             }
-     *         }]
-     *     });
-     * 
-     * @param {Object} value The raw field {@link #value}
-     * @param {Ext.form.field.Display} field The display field
-     * @return {String} displayValue The HTML string to be rendered
-     */
-    
-    /**
-     * @cfg {Object} scope
-     * The scope to execute the {@link #renderer} function. Defaults to this.
-     */
-
-    noWrap: false,
-    
-    /**
-     * @cfg {Boolean} validateOnChange
-     * @private
-     */
-    validateOnChange: false,
-
-    initEvents: Ext.emptyFn,
-
-    submitValue: false,
-
-    getValue: function() {
-        return this.value;
+  fieldSubTpl: [
+    '<div id="{id}" data-ref="inputEl" role="textbox" aria-readonly="true"',
+    ' aria-labelledby="{cmpId}-labelEl" {inputAttrTpl}',
+    ' tabindex="<tpl if="tabIdx != null">{tabIdx}<tpl else>-1</tpl>"',
+    '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
+    ' class="{fieldCls} {fieldCls}-{ui}">{value}</div>',
+    {
+      compiled: true,
+      disableFormats: true,
     },
-    
-    valueToRaw: function(value) {
-        if (value || value === 0 || value === false) {
-            return value;
-        } else {
-            return '';
-        }
-    },
-    
-    isDirty: function(){
-        return false;
-    },
+  ],
 
-    isValid: Ext.returnTrue,
+  // We have the ARIA markup pre-rendered so we don't want it to be applied
+  ariaRole: undefined,
 
-    validate: Ext.returnTrue,
+  focusable: false,
 
-    getRawValue: function() {
-        return this.rawValue;
-    },
+  // Display fields are divs not real input fields, so rendering
+  // "for" attribute in the label does not do any good.
+  skipLabelForAttribute: true,
 
-    setRawValue: function(value) {
-        var me = this;
-            
-        value = Ext.valueFrom(value, '');
-        me.rawValue = value;
-        if (me.rendered) {
-            me.inputEl.dom.innerHTML = me.getDisplayValue();
-            me.updateLayout();
-        }
-        return value;
-    },
+  /**
+   * @cfg {Boolean} readOnly
+   * @private
+   */
+  readOnly: true,
 
-    /**
-     * @private
-     * Format the value to display.
-     */
-    getDisplayValue: function() {
-        var me = this,
-            value = this.getRawValue(),
-            display;
-        if (me.renderer) {
-             display = me.renderer.call(me.scope || me, value, me);
-        } else {
-             display = me.htmlEncode ? Ext.util.Format.htmlEncode(value) : value;
-        }
-        return display;
-    },
-        
-    getSubTplData: function(fieldData) {
-        var ret = this.callParent(arguments);
+  /**
+   * @cfg {String} [fieldCls="x-form-display-field"]
+   * The default CSS class for the field.
+   */
+  fieldCls: Ext.baseCSSPrefix + "form-display-field",
 
-        ret.value = this.getDisplayValue();
+  fieldBodyCls: Ext.baseCSSPrefix + "form-display-field-body",
 
-        return ret;
+  /**
+   * @cfg {Boolean} htmlEncode
+   * True to escape HTML in text when rendering it.
+   */
+  htmlEncode: false,
+
+  /**
+   * @cfg {Function} renderer
+   * A function to transform the raw value for display in the field.
+   *
+   *     Ext.create('Ext.form.Panel', {
+   *         renderTo: document.body,
+   *         width: 175,
+   *         bodyPadding: 10,
+   *         title: 'Final Score',
+   *         items: [{
+   *             xtype: 'displayfield',
+   *             fieldLabel: 'Grade',
+   *             name: 'final_grade',
+   *             value: 68,
+   *             renderer: function (value, field) {
+   *                 var color = (value < 70) ? 'red' : 'black';
+   *                 return '<span style="color:' + color + ';">' + value + '</span>';
+   *             }
+   *         }]
+   *     });
+   *
+   * @param {Object} value The raw field {@link #value}
+   * @param {Ext.form.field.Display} field The display field
+   * @return {String} displayValue The HTML string to be rendered
+   */
+
+  /**
+   * @cfg {Object} scope
+   * The scope to execute the {@link #renderer} function. Defaults to this.
+   */
+
+  noWrap: false,
+
+  /**
+   * @cfg {Boolean} validateOnChange
+   * @private
+   */
+  validateOnChange: false,
+
+  initEvents: Ext.emptyFn,
+
+  submitValue: false,
+
+  getValue: function () {
+    return this.value;
+  },
+
+  valueToRaw: function (value) {
+    if (value || value === 0 || value === false) {
+      return value;
+    } else {
+      return "";
     }
+  },
 
-    /**
-     * @cfg {String} inputType
-     * @private
-     */
-    /**
-     * @cfg {Boolean} disabled
-     * @private
-     */
-    /**
-     * @cfg {Number} checkChangeEvents
-     * @private
-     */
-    /**
-     * @cfg {Number} checkChangeBuffer
-     * @private
-     */
+  isDirty: function () {
+    return false;
+  },
+
+  isValid: Ext.returnTrue,
+
+  validate: Ext.returnTrue,
+
+  getRawValue: function () {
+    return this.rawValue;
+  },
+
+  setRawValue: function (value) {
+    var me = this;
+
+    value = Ext.valueFrom(value, "");
+    me.rawValue = value;
+    if (me.rendered) {
+      me.inputEl.dom.innerHTML = me.getDisplayValue();
+      me.updateLayout();
+    }
+    return value;
+  },
+
+  /**
+   * @private
+   * Format the value to display.
+   */
+  getDisplayValue: function () {
+    var me = this,
+      value = this.getRawValue(),
+      display;
+    if (me.renderer) {
+      display = me.renderer.call(me.scope || me, value, me);
+    } else {
+      display = me.htmlEncode ? Ext.util.Format.htmlEncode(value) : value;
+    }
+    return display;
+  },
+
+  getSubTplData: function (fieldData) {
+    var ret = this.callParent(arguments);
+
+    ret.value = this.getDisplayValue();
+
+    return ret;
+  },
+
+  /**
+   * @cfg {String} inputType
+   * @private
+   */
+  /**
+   * @cfg {Boolean} disabled
+   * @private
+   */
+  /**
+   * @cfg {Number} checkChangeEvents
+   * @private
+   */
+  /**
+   * @cfg {Number} checkChangeBuffer
+   * @private
+   */
 });

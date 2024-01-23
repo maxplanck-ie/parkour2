@@ -1,56 +1,54 @@
 /**
  * This class has been deprecated. Use `Ext.data.schema.Schema` instead.
  */
-Ext.define('Ext.data.ModelManager', {
-    alternateClassName: 'Ext.ModelMgr',
+Ext.define("Ext.data.ModelManager", {
+  alternateClassName: "Ext.ModelMgr",
 
-    requires: [
-        'Ext.data.schema.Schema'
-    ],
-    
-    singleton: true,
+  requires: ["Ext.data.schema.Schema"],
 
-    deprecated: {
-        5: {
-            methods: {
-                clear: null,
+  singleton: true,
 
-                create: function (data, name, id) {
-                    var T = name;
+  deprecated: {
+    5: {
+      methods: {
+        clear: null,
 
-                    if (!T.isEntity) {
-                        T = this.getModel(name || data.name);
-                    }
+        create: function (data, name, id) {
+          var T = name;
 
-                    return T.createWithId(id, data);
-                },
+          if (!T.isEntity) {
+            T = this.getModel(name || data.name);
+          }
 
-                each: function(fn, scope) {
-                    Ext.data.Model.schema.eachEntity(fn, scope);
-                },
+          return T.createWithId(id, data);
+        },
 
-                get: function(name) {
-                    return this.getModel(name);
-                },
+        each: function (fn, scope) {
+          Ext.data.Model.schema.eachEntity(fn, scope);
+        },
 
-                getCount: function() {
-                    return Ext.data.Model.schema.entityCount;
-                },
+        get: function (name) {
+          return this.getModel(name);
+        },
 
-                /**
-                 * Returns the {@link Ext.data.Model} class for a given model name
-                 * @param {String/Object} id The classname of the model or the model class itself.
-                 * @return {Ext.data.Model} a model class.
-                 * @deprecated Use {@link Ext.data.schema.Schema#lookupEntity} instead.
-                 */
-                getModel: function (id) {
-                    return Ext.data.schema.Schema.lookupEntity(id);
-                },
+        getCount: function () {
+          return Ext.data.Model.schema.entityCount;
+        },
 
-                isRegistered: function(name) {
-                    return !!this.getModel(name);
-                }
-            }
-        }
-    }
+        /**
+         * Returns the {@link Ext.data.Model} class for a given model name
+         * @param {String/Object} id The classname of the model or the model class itself.
+         * @return {Ext.data.Model} a model class.
+         * @deprecated Use {@link Ext.data.schema.Schema#lookupEntity} instead.
+         */
+        getModel: function (id) {
+          return Ext.data.schema.Schema.lookupEntity(id);
+        },
+
+        isRegistered: function (name) {
+          return !!this.getModel(name);
+        },
+      },
+    },
+  },
 });

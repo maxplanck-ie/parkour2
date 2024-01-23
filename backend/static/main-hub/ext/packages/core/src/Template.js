@@ -44,28 +44,30 @@
  * - For a list of available format functions, see {@link Ext.util.Format}.
  * - `disableFormats` reduces `{@link #apply}` time when no formatting is required.
  */
-Ext.define('Ext.Template', {
-// @define Ext.String.format
-// @define Ext.util.Format.format
-    
+Ext.define(
+  "Ext.Template",
+  {
+    // @define Ext.String.format
+    // @define Ext.util.Format.format
+
     requires: [
-        //'Ext.dom.Helper',
-        'Ext.util.Format'
+      //'Ext.dom.Helper',
+      "Ext.util.Format",
     ],
 
     inheritableStatics: {
-        /**
-         * Creates a template from the passed element's value (_display:none_ textarea, preferred) or innerHTML.
-         * @param {String/HTMLElement} el A DOM element or its id
-         * @param {Object} config (optional) Config object
-         * @return {Ext.Template} The created template
-         * @static
-         * @inheritable
-         */
-        from: function(el, config) {
-            el = Ext.getDom(el);
-            return new this(el.value || el.innerHTML, config || '');
-        }
+      /**
+       * Creates a template from the passed element's value (_display:none_ textarea, preferred) or innerHTML.
+       * @param {String/HTMLElement} el A DOM element or its id
+       * @param {Object} config (optional) Config object
+       * @return {Ext.Template} The created template
+       * @static
+       * @inheritable
+       */
+      from: function (el, config) {
+        el = Ext.getDom(el);
+        return new this(el.value || el.innerHTML, config || "");
+      },
     },
 
     // Chrome really likes "new Function" to realize the code block (as in it is
@@ -77,44 +79,44 @@ Ext.define('Ext.Template', {
 
     /**
      * Creates new template.
-     * 
+     *
      * @param {String...} html List of strings to be concatenated into template.
      * Alternatively an array of strings can be given, but then no config object may be passed.
      * @param {Object} config (optional) Config object
      */
-    constructor: function(html) {
-        var me = this,
-            args = arguments,
-            buffer = [],
-            i,
-            length = args.length,
-            value;
+    constructor: function (html) {
+      var me = this,
+        args = arguments,
+        buffer = [],
+        i,
+        length = args.length,
+        value;
 
-        me.initialConfig = {};
-        
-        // Allow an array to be passed here so we can
-        // pass an array of strings and an object
-        // at the end
-        if (length === 1 && Ext.isArray(html)) {
-            args = html;
-            length = args.length;
+      me.initialConfig = {};
+
+      // Allow an array to be passed here so we can
+      // pass an array of strings and an object
+      // at the end
+      if (length === 1 && Ext.isArray(html)) {
+        args = html;
+        length = args.length;
+      }
+
+      if (length > 1) {
+        for (i = 0; i < length; i++) {
+          value = args[i];
+          if (typeof value === "object") {
+            Ext.apply(me.initialConfig, value);
+            Ext.apply(me, value);
+          } else {
+            buffer.push(value);
+          }
         }
+      } else {
+        buffer.push(html);
+      }
 
-        if (length > 1) {
-            for (i = 0; i < length; i++) {
-                value = args[i];
-                if (typeof value === 'object') {
-                    Ext.apply(me.initialConfig, value);
-                    Ext.apply(me, value);
-                } else {
-                    buffer.push(value);
-                }
-            }
-        } else {
-            buffer.push(html);
-        }
-
-        me.html = buffer.join('');
+      me.html = buffer.join("");
     },
 
     /**
@@ -160,7 +162,8 @@ Ext.define('Ext.Template', {
      * Numeric index or (name followed by optional formatting function and args)
      * @private
      */
-    tokenRe: /\{(?:(?:(\d+)|([a-z_][\w\-]*))(?::([a-z_\.]+)(?:\(([^\)]*?)?\))?)?)\}/gi,
+    tokenRe:
+      /\{(?:(?:(\d+)|([a-z_][\w\-]*))(?::([a-z_\.]+)(?:\(([^\)]*?)?\))?)?)\}/gi,
 
     /**
      * Returns an HTML fragment of this template with the specified values applied.
@@ -177,61 +180,62 @@ Ext.define('Ext.Template', {
      *
      * @return {String} The HTML fragment
      */
-    apply: function(values) {
-        var me = this;
+    apply: function (values) {
+      var me = this;
 
-        if (me.compiled) {
-            if (!me.fn) {
-                me.compile();
-            }
-            return me.fn(values).join('');
+      if (me.compiled) {
+        if (!me.fn) {
+          me.compile();
         }
+        return me.fn(values).join("");
+      }
 
-        return me.evaluate(values);
+      return me.evaluate(values);
     },
 
     /**
      * @private
      * Do not create the substitution closure on every apply call
      */
-    evaluate: function(values) {
-        var me = this,
-            useFormat = !me.disableFormats,
-            fm = Ext.util.Format,
-            tpl = me;
+    evaluate: function (values) {
+      var me = this,
+        useFormat = !me.disableFormats,
+        fm = Ext.util.Format,
+        tpl = me;
 
-        function fn(match, index, name, formatFn, args) {
-            // Calculate the correct name extracted from the {}
-            // Certain browser pass unmatched parameters as undefined, some as an empty string.
-            if (name == null || name === '') {
-                name = index;
-            }
-            if (formatFn && useFormat) {
-                if (args) {
-                    args = [values[name]].concat(Ext.functionFactory('return ['+ args +'];')());
-                } else {
-                    args = [values[name]];
-                }
-
-                // Caller used '{0:this.bold}'. Create a call to tpl member function
-                if (formatFn.substr(0, 5) === "this.") {
-                    return tpl[formatFn.substr(5)].apply(tpl, args);
-                }
-                // Caller used '{0:number("0.00")}'. Create a call to Ext.util.Format function
-                else if (fm[formatFn]) {
-                    return fm[formatFn].apply(fm, args);
-                }
-                // Caller used '{0:someRandomText}'. We must return it unchanged
-                else {
-                    return match;
-                }
-            }
-            else {
-                return values[name] !== undefined ? values[name] : "";
-            }
+      function fn(match, index, name, formatFn, args) {
+        // Calculate the correct name extracted from the {}
+        // Certain browser pass unmatched parameters as undefined, some as an empty string.
+        if (name == null || name === "") {
+          name = index;
         }
+        if (formatFn && useFormat) {
+          if (args) {
+            args = [values[name]].concat(
+              Ext.functionFactory("return [" + args + "];")(),
+            );
+          } else {
+            args = [values[name]];
+          }
 
-        return me.html.replace(me.tokenRe, fn);
+          // Caller used '{0:this.bold}'. Create a call to tpl member function
+          if (formatFn.substr(0, 5) === "this.") {
+            return tpl[formatFn.substr(5)].apply(tpl, args);
+          }
+          // Caller used '{0:number("0.00")}'. Create a call to Ext.util.Format function
+          else if (fm[formatFn]) {
+            return fm[formatFn].apply(fm, args);
+          }
+          // Caller used '{0:someRandomText}'. We must return it unchanged
+          else {
+            return match;
+          }
+        } else {
+          return values[name] !== undefined ? values[name] : "";
+        }
+      }
+
+      return me.html.replace(me.tokenRe, fn);
     },
 
     /**
@@ -240,19 +244,19 @@ Ext.define('Ext.Template', {
      * @param {Array} out The array to which output is pushed.
      * @return {Array} The given out array.
      */
-    applyOut: function(values, out) {
-        var me = this;
+    applyOut: function (values, out) {
+      var me = this;
 
-        if (me.compiled) {
-            if (!me.fn) {
-                me.compile();
-            }
-            out.push.apply(out, me.fn(values));
-        } else {
-            out.push(me.apply(values));
+      if (me.compiled) {
+        if (!me.fn) {
+          me.compile();
         }
+        out.push.apply(out, me.fn(values));
+      } else {
+        out.push(me.apply(values));
+      }
 
-        return out;
+      return out;
     },
 
     /**
@@ -262,7 +266,7 @@ Ext.define('Ext.Template', {
      * @inheritdoc Ext.Template#apply
      */
     applyTemplate: function () {
-        return this.apply.apply(this, arguments);
+      return this.apply.apply(this, arguments);
     },
 
     /**
@@ -271,12 +275,12 @@ Ext.define('Ext.Template', {
      * @param {Boolean} compile (optional) True to compile the template.
      * @return {Ext.Template} this
      */
-    set: function(html, compile) {
-        var me = this;
-        me.html = html;
-        me.compiled = !!compile;
-        me.fn = null;
-        return me;
+    set: function (html, compile) {
+      var me = this;
+      me.html = html;
+      me.compiled = !!compile;
+      me.fn = null;
+      return me;
     },
 
     compileARe: /\\/g,
@@ -287,66 +291,72 @@ Ext.define('Ext.Template', {
      * Compiles the template into an internal function, eliminating the RegEx overhead.
      * @return {Ext.Template} this
      */
-    compile: function() {
-        var me = this,
-            code;
+    compile: function () {
+      var me = this,
+        code;
 
-        code = me.html.replace(me.compileARe, '\\\\').replace(me.compileBRe, '\\n').
-                       replace(me.compileCRe, "\\'").replace(me.tokenRe, me.regexReplaceFn.bind(me));
-        code = (this.disableFormats !== true ? 'var fm=Ext.util.Format;' : '') +
-                (me.useEval ? '$=' : 'return') +
-                " function(v){return ['" + code + "'];};";
+      code = me.html
+        .replace(me.compileARe, "\\\\")
+        .replace(me.compileBRe, "\\n")
+        .replace(me.compileCRe, "\\'")
+        .replace(me.tokenRe, me.regexReplaceFn.bind(me));
+      code =
+        (this.disableFormats !== true ? "var fm=Ext.util.Format;" : "") +
+        (me.useEval ? "$=" : "return") +
+        " function(v){return ['" +
+        code +
+        "'];};";
 
-        me.fn  = me.useEval ? me.evalCompiled(code) : (new Function('Ext', code))(Ext); // jshint ignore:line
-        me.compiled = true;
-        return me;
+      me.fn = me.useEval
+        ? me.evalCompiled(code)
+        : new Function("Ext", code)(Ext); // jshint ignore:line
+      me.compiled = true;
+      return me;
     },
 
     /**
      * @private
      */
-    evalCompiled: function($) {
-
-        // We have to use eval to realize the code block and capture the inner func we also
-        // don't want a deep scope chain. We only do this in Firefox and it is also unhappy
-        // with eval containing a return statement, so instead we assign to "$" and return
-        // that. Because we use "eval", we are automatically sandboxed properly.
-        eval($); // jshint ignore:line
-        return $;
+    evalCompiled: function ($) {
+      // We have to use eval to realize the code block and capture the inner func we also
+      // don't want a deep scope chain. We only do this in Firefox and it is also unhappy
+      // with eval containing a return statement, so instead we assign to "$" and return
+      // that. Because we use "eval", we are automatically sandboxed properly.
+      eval($); // jshint ignore:line
+      return $;
     },
 
     regexReplaceFn: function (match, index, name, formatFn, args) {
-        // Calculate the correct expression to use to index into the values object/array
-        // index may be a numeric string, or a quoted alphanumeric string.
-        // Certain browser pass unmatched parameters as undefined, some as an empty string.
-        if (index == null || index === '') {
-            index = '"' + name + '"';
-        }
-        // If we are being used as a formatter for Ext.String.format, we must skip the string itself in the argument list.
-        // Doing this enables String.format to omit the Array slice call.
-        else if (this.stringFormat) {
-            index = parseInt(index) + 1;
-        }
-        if (formatFn && this.disableFormats !== true) {
-            args = args ? ',' + args: "";
+      // Calculate the correct expression to use to index into the values object/array
+      // index may be a numeric string, or a quoted alphanumeric string.
+      // Certain browser pass unmatched parameters as undefined, some as an empty string.
+      if (index == null || index === "") {
+        index = '"' + name + '"';
+      }
+      // If we are being used as a formatter for Ext.String.format, we must skip the string itself in the argument list.
+      // Doing this enables String.format to omit the Array slice call.
+      else if (this.stringFormat) {
+        index = parseInt(index) + 1;
+      }
+      if (formatFn && this.disableFormats !== true) {
+        args = args ? "," + args : "";
 
-            // Caller used '{0:this.bold}'. Create a call to member function
-            if (formatFn.substr(0, 5) === "this.") {
-                formatFn = formatFn + '(';
-            }
-            // Caller used '{0:number("0.00")}'. Create a call to Ext.util.Format function
-            else if (Ext.util.Format[formatFn]) {
-                formatFn = "fm." + formatFn + '(';
-            }
-            // Caller used '{0:someRandomText}'. We must pass it through unchanged
-            else {
-                return match;
-            }
-            return "'," + formatFn + "v[" + index + "]" + args + "),'";
+        // Caller used '{0:this.bold}'. Create a call to member function
+        if (formatFn.substr(0, 5) === "this.") {
+          formatFn = formatFn + "(";
         }
+        // Caller used '{0:number("0.00")}'. Create a call to Ext.util.Format function
+        else if (Ext.util.Format[formatFn]) {
+          formatFn = "fm." + formatFn + "(";
+        }
+        // Caller used '{0:someRandomText}'. We must pass it through unchanged
         else {
-            return "',v[" + index + "] == undefined ? '' : v[" + index + "],'";
+          return match;
         }
+        return "'," + formatFn + "v[" + index + "]" + args + "),'";
+      } else {
+        return "',v[" + index + "] == undefined ? '' : v[" + index + "],'";
+      }
     },
 
     /**
@@ -357,8 +367,8 @@ Ext.define('Ext.Template', {
      * @param {Boolean} returnElement (optional) true to return a Ext.Element.
      * @return {HTMLElement/Ext.dom.Element} The new node or Element
      */
-    insertFirst: function(el, values, returnElement) {
-        return this.doInsert('afterBegin', el, values, returnElement);
+    insertFirst: function (el, values, returnElement) {
+      return this.doInsert("afterBegin", el, values, returnElement);
     },
 
     /**
@@ -369,8 +379,8 @@ Ext.define('Ext.Template', {
      * @param {Boolean} returnElement (optional) true to return a Ext.Element.
      * @return {HTMLElement/Ext.dom.Element} The new node or Element
      */
-    insertBefore: function(el, values, returnElement) {
-        return this.doInsert('beforeBegin', el, values, returnElement);
+    insertBefore: function (el, values, returnElement) {
+      return this.doInsert("beforeBegin", el, values, returnElement);
     },
 
     /**
@@ -381,8 +391,8 @@ Ext.define('Ext.Template', {
      * @param {Boolean} returnElement (optional) true to return a Ext.Element.
      * @return {HTMLElement/Ext.dom.Element} The new node or Element
      */
-    insertAfter: function(el, values, returnElement) {
-        return this.doInsert('afterEnd', el, values, returnElement);
+    insertAfter: function (el, values, returnElement) {
+      return this.doInsert("afterEnd", el, values, returnElement);
     },
 
     /**
@@ -395,13 +405,17 @@ Ext.define('Ext.Template', {
      * @param {Boolean} returnElement (optional) true to return an Ext.Element.
      * @return {HTMLElement/Ext.dom.Element} The new node or Element
      */
-    append: function(el, values, returnElement) {
-        return this.doInsert('beforeEnd', el, values, returnElement);
+    append: function (el, values, returnElement) {
+      return this.doInsert("beforeEnd", el, values, returnElement);
     },
 
-    doInsert: function(where, el, values, returnElement) {
-        var newNode = Ext.DomHelper.insertHtml(where, Ext.getDom(el), this.apply(values));
-        return returnElement ? Ext.get(newNode) : newNode;
+    doInsert: function (where, el, values, returnElement) {
+      var newNode = Ext.DomHelper.insertHtml(
+        where,
+        Ext.getDom(el),
+        this.apply(values),
+      );
+      return returnElement ? Ext.get(newNode) : newNode;
     },
 
     /**
@@ -412,33 +426,37 @@ Ext.define('Ext.Template', {
      * @param {Boolean} returnElement (optional) true to return a Ext.Element.
      * @return {HTMLElement/Ext.dom.Element} The new node or Element
      */
-    overwrite: function(el, values, returnElement) {
-        var newNode = Ext.DomHelper.overwrite(Ext.getDom(el), this.apply(values));
-        return returnElement ? Ext.get(newNode) : newNode;
-    }
-}, function(Template){
-    
+    overwrite: function (el, values, returnElement) {
+      var newNode = Ext.DomHelper.overwrite(Ext.getDom(el), this.apply(values));
+      return returnElement ? Ext.get(newNode) : newNode;
+    },
+  },
+  function (Template) {
     var formatRe = /\{\d+\}/,
-        generateFormatFn = function(format) {
-            // Generate a function which substitutes value tokens
-            if (formatRe.test(format)) {
-                format = new Template(format, formatTplConfig);
-                return function() {
-                    return format.apply(arguments);
-                };
-            }
-            // No value tokens
-            else {
-                return function() {
-                    return format;
-                };
-            }
-        },
-        // Flags for the template compile process.
-        // stringFormat means that token 0 consumes argument 1 etc.
-        // So that String.format does not have to slice the argument list.
-        formatTplConfig = { useFormat: false, compiled: true, stringFormat: true },
-        formatFns = {};
+      generateFormatFn = function (format) {
+        // Generate a function which substitutes value tokens
+        if (formatRe.test(format)) {
+          format = new Template(format, formatTplConfig);
+          return function () {
+            return format.apply(arguments);
+          };
+        }
+        // No value tokens
+        else {
+          return function () {
+            return format;
+          };
+        }
+      },
+      // Flags for the template compile process.
+      // stringFormat means that token 0 consumes argument 1 etc.
+      // So that String.format does not have to slice the argument list.
+      formatTplConfig = {
+        useFormat: false,
+        compiled: true,
+        stringFormat: true,
+      },
+      formatFns = {};
 
     /**
      * Alias for {@link Ext.String#format}.
@@ -461,12 +479,14 @@ Ext.define('Ext.Template', {
      * @return {String} The formatted string.
      * @member Ext.String
      */
-    Ext.String.format = Ext.util.Format.format = function(format) {
-        var formatFn = formatFns[format] || (formatFns[format] = generateFormatFn(format));
-        return formatFn.apply(this, arguments);
+    Ext.String.format = Ext.util.Format.format = function (format) {
+      var formatFn =
+        formatFns[format] || (formatFns[format] = generateFormatFn(format));
+      return formatFn.apply(this, arguments);
     };
-    
-    Ext.String.formatEncode = function() {
-        return Ext.String.htmlEncode(Ext.String.format.apply(this, arguments));
-    }
-});
+
+    Ext.String.formatEncode = function () {
+      return Ext.String.htmlEncode(Ext.String.format.apply(this, arguments));
+    };
+  },
+);

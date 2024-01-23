@@ -38,31 +38,26 @@
  * user interacts with the component. Check out the {@link Ext.field.Text} docs to see the additional functionality
  * available.
  */
-Ext.define('Ext.field.Email', {
-    extend: 'Ext.field.Text',
-    alternateClassName: 'Ext.form.Email',
-    xtype: 'emailfield',
+Ext.define("Ext.field.Email", {
+  extend: "Ext.field.Text",
+  alternateClassName: "Ext.form.Email",
+  xtype: "emailfield",
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        component: {
-	        type: 'email'
-	    },
-
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        autoCapitalize: false
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    component: {
+      type: "email",
     },
 
-    classCls: Ext.baseCSSPrefix + 'emailfield'
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    autoCapitalize: false,
+  },
+
+  classCls: Ext.baseCSSPrefix + "emailfield",
 });
-
-
-
-
-
