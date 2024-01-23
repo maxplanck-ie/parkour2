@@ -160,6 +160,16 @@ class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
 class UserChangeForm(UserChangeForm, CheckUserEmailExtension):
     pass
 
+class PiFilter(SimpleListFilter):
+    title = 'PI' # or use _('country') for translated title
+    parameter_name = 'pi'
+    template = 'dropdown_filter.html'
+
+    def lookups(self, request, model_admin):
+        return [(pi.id, str(pi)) for pi in User.objects.filter(is_pi=True)] 
+
+    def queryset(self, request, queryset):
+        return queryset.filter(pi__id=self.value())
 
 @admin.register(User)
 class UserAdmin(NamedUserAdmin):
@@ -216,7 +226,11 @@ class UserAdmin(NamedUserAdmin):
 
     list_filter = (
         "is_staff",
-        "costunit__organization__name",
+        "costunit__organization",
+        'is_pi',
+        'is_bioinformatician',
+        "groups",
+        PiFilter
     )
     list_display_links = (
         "first_name",
