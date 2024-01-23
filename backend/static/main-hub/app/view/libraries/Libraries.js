@@ -43,7 +43,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 parentNode.childNodes.map(function (element) {
                   var pools = (
                     responseObject.poolpaths[element.data.barcode] || []
-                  ).toString();
+                  ).join(', ');
                   element.set("pool", pools);
                   element.commit();
                   return element;
@@ -289,12 +289,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
             },
           },
           {
-            text: "Pool Paths",
+            text: "Pool Name(s)",
             dataIndex: "pool",
             resizable: false,
             menuDisabled: true,
             hideable: false,
-            width: 95,
+            width: 105,
             renderer: function (value, meta) {
               return meta.record.getPoolPaths();
             },
