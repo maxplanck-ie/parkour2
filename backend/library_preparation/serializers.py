@@ -32,6 +32,8 @@ class LibraryPreparationListSerializer(ListSerializer):
                 if "quality_check" in data.keys():
                     if data["quality_check"] == "passed":
                         obj.sample.status = 3
+                    elif data["quality_check"] == "compromised":
+                        obj.status = -2
                     elif data["quality_check"] == "failed":
                         obj.sample.status = -1
                     obj.sample.save(update_fields=["status"])

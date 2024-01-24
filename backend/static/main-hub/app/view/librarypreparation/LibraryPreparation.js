@@ -68,7 +68,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
       },
 
       customConfig: {
-        qualityCheckMenuOptions: ["passed", "failed"],
+        qualityCheckMenuOptions: ["passed", "compromised", "failed"],
       },
 
       columns: {
