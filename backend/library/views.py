@@ -27,7 +27,9 @@ class LibrarySampleTree(viewsets.ViewSet):
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
-        libraries_qs = self.filter_and_search(libraries_qs, search_string, status_filter)
+        libraries_qs = self.filter_and_search(
+            libraries_qs, search_string, status_filter
+        )
         samples_qs = self.filter_and_search(samples_qs, search_string, status_filter)
 
         queryset = (
@@ -74,8 +76,12 @@ class LibrarySampleTree(viewsets.ViewSet):
                 "organism",
             )
 
-            libraries_qs = self.filter_and_search(libraries_qs, search_string, status_filter)
-            samples_qs = self.filter_and_search(samples_qs, search_string, status_filter)
+            libraries_qs = self.filter_and_search(
+                libraries_qs, search_string, status_filter
+            )
+            samples_qs = self.filter_and_search(
+                samples_qs, search_string, status_filter
+            )
 
             queryset = (
                 Request.objects.filter(archived=False, pk=request_id)
@@ -96,25 +102,36 @@ class LibrarySampleTree(viewsets.ViewSet):
             serializer = RequestChildrenNodesSerializer(queryset)
 
             try:
-                return Response({
+                return Response(
+                    {
                         "success": True,
                         "children": serializer.data["children"],
-                    })
+                    }
+                )
             except KeyError:
-                return Response({
+                return Response(
+                    {
                         "success": False,
                         "children": [],
-                    },400)
+                    },
+                    400,
+                )
         else:
             queryset = self.get_queryset(show_all, search_string, status_filter)
             serializer = RequestParentNodeSerializer(queryset, many=True)
-            filtered_data = [item for item in serializer.data if item["total_records_count"] != 0]  # Remove empty rows of requests
+            filtered_data = [
+                item for item in serializer.data if item["total_records_count"] != 0
+            ]  # Remove empty rows of requests
 
             return Response({"success": True, "children": filtered_data})
 
     def filter_and_search(self, queryset, search_string, status_filter):
         if search_string:
-            search_fields = ["name__icontains", "barcode__icontains", "request__name__icontains"]
+            search_fields = [
+                "name__icontains",
+                "barcode__icontains",
+                "request__name__icontains",
+            ]
             search_filters = [Q(**{field: search_string}) for field in search_fields]
             queryset = queryset.filter(reduce(operator.or_, search_filters))
 
@@ -122,6 +139,7 @@ class LibrarySampleTree(viewsets.ViewSet):
             queryset = queryset.filter(status=int(status_filter))
 
         return queryset
+
 
 class LibraryViewSet(LibrarySampleBaseViewSet):
     serializer_class = LibrarySerializer
