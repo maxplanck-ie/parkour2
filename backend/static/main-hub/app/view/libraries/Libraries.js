@@ -38,7 +38,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             requestId !== "root" &&
             Ext.Ajax.request({
               url: Ext.String.format(
-                "api/requests/" + requestId + "/get_poolpaths/",
+                "api/requests/" + requestId + "/get_poolpaths/"
               ),
               method: "GET",
               scope: this,
@@ -109,12 +109,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("librariesStore").load();
                     } else {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
@@ -160,21 +160,21 @@ Ext.define("MainHub.view.libraries.Libraries", {
               fields: ["id", "name"],
               data: [
                 { id: "all", name: "All" },
-                { id: "quality-check-failed", name: "Quality Check Failed" },
+                { id: "0", name: "Pending Submission" },
+                { id: "1", name: "Submission Completed" },
                 {
-                  id: "quality-check-compromised",
-                  name: "Quality Check Compromised",
-                },
-                {
-                  id: "quality-check-approved",
+                  id: "2",
                   name: "Quality Check Approved",
                 },
-                { id: "pending-submission", name: "Pending Submission" },
-                { id: "submission-completed", name: "Submission Completed" },
-                { id: "library-prepared", name: "Library Prepared" },
-                { id: "library-pooled", name: "Library Pooled" },
-                { id: "sequencing", name: "Sequencing" },
-                { id: "completed", name: "Completed" },
+                { id: "3", name: "Library Prepared" },
+                { id: "4", name: "Library Pooled" },
+                { id: "5", name: "Sequencing" },
+                { id: "6", name: "Completed" },
+                { id: "-1", name: "Quality Check Failed" },
+                {
+                  id: "-2",
+                  name: "Quality Check Compromised",
+                },
               ],
             }),
             listeners: {
@@ -186,7 +186,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 var selectedRecord = combo.findRecordByValue(newValue);
                 var textWidth = Ext.util.TextMetrics.measure(
                   combo.inputEl,
-                  selectedRecord.get(combo.displayField),
+                  selectedRecord.get(combo.displayField)
                 ).width;
                 combo.setWidth(textWidth + 55);
                 var librariesStore = Ext.getStore("librariesStore");
@@ -219,39 +219,43 @@ Ext.define("MainHub.view.libraries.Libraries", {
           {
             xtype: "parkoursearchfield",
             itemId: "search-field",
-            emptyText: "Search",
+            emptyText: "Search Barcode, Library or Sample",
             width: 250,
             listeners: {
               scope: this,
-              change: function (field, newValue, oldValue) {
-                var grid = field.up("treepanel");
-                grid.getView().mask("Loading...");
-                this.searchString = newValue;
-                var librariesStore = Ext.getStore("librariesStore");
-                var extraParams = {
-                  showAll: "True",
-                };
-                if (this.statusFilter && this.statusFilter !== "all") {
-                  extraParams.statusFilter = this.statusFilter;
-                }
-                if (this.searchString) {
-                  extraParams.searchString = this.searchString;
-                }
-                librariesStore.getProxy().setExtraParams(extraParams);
-                librariesStore.load({
-                  callback: function (records, operation, success) {
-                    if (!success) {
-                      new Noty({
-                        text:
-                          operation.getError() ||
-                          "Error occurred while searching.",
-                        type: "error",
-                      }).show();
-                    }
-                    grid.getView().unmask();
-                  },
-                });
-              },
+              change: Ext.Function.createBuffered(
+                function (field, newValue, oldValue) {
+                  var grid = field.up("treepanel");
+                  grid.getView().mask("Loading...");
+                  this.searchString = newValue;
+                  var librariesStore = Ext.getStore("librariesStore");
+                  var extraParams = {
+                    showAll: "True",
+                  };
+                  if (this.statusFilter && this.statusFilter !== "all") {
+                    extraParams.statusFilter = this.statusFilter;
+                  }
+                  if (this.searchString) {
+                    extraParams.searchString = this.searchString;
+                  }
+                  librariesStore.getProxy().setExtraParams(extraParams);
+                  librariesStore.load({
+                    callback: function (records, operation, success) {
+                      if (!success) {
+                        new Noty({
+                          text:
+                            operation.getError() ||
+                            "Error occurred while searching.",
+                          type: "error",
+                        }).show();
+                      }
+                      grid.getView().unmask();
+                    },
+                  });
+                },
+                500,
+                this
+              ),
             },
           },
         ],
@@ -282,7 +286,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   "<strong>Request: {0}</strong> (#: {1}, Total Depth: {2})",
                   value,
                   record.get("total_records_count"),
-                  record.get("total_sequencing_depth"),
+                  record.get("total_sequencing_depth")
                 );
               }
             },
@@ -305,15 +309,15 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 } else if (value === -2) {
                   statusClass += "quality-check-compromised";
                   meta.tdAttr = 'data-qtip="Quality check compromised"';
-                } else if (value === 2) {
-                  statusClass += "quality-check-approved";
-                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 0) {
                   statusClass += "pending-submission";
                   meta.tdAttr = 'data-qtip="Pending submission"';
                 } else if (value === 1) {
                   statusClass += "submission-completed";
                   meta.tdAttr = 'data-qtip="Submission completed"';
+                } else if (value === 2) {
+                  statusClass += "quality-check-approved";
+                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 3) {
                   statusClass += "library-prepared";
                   meta.tdAttr = 'data-qtip="Library prepared"';
