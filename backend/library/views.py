@@ -1,11 +1,11 @@
 import logging
+import operator
+from functools import reduce
 
 from common.utils import retrieve_group_items
 from django.apps import apps
+from django.db.models import Prefetch, Q
 from library_sample_shared.views import LibrarySampleBaseViewSet
-from django.db.models import Q, Prefetch
-from functools import reduce
-import operator
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -124,7 +124,9 @@ class LibrarySampleTree(viewsets.ViewSet):
                 )
 
         serializer = RequestParentNodeSerializer(queryset, many=True)
-        filtered_data = [item for item in serializer.data if item['total_records_count'] != 0]  # Remove empty rows of requests
+        filtered_data = [
+            item for item in serializer.data if item["total_records_count"] != 0
+        ]  # Remove empty rows of requests
         return Response({"success": True, "children": filtered_data})
 
 
