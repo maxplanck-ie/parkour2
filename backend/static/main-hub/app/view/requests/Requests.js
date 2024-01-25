@@ -66,7 +66,7 @@ Ext.define("MainHub.view.requests.Requests", {
             store: "requestsStore",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 250,
+            width: 320,
           },
           {
             xtype: "button",

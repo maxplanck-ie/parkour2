@@ -28,7 +28,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             itemId: "search-field",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 250,
+            width: 320,
           },
           {
             xtype: "button",

@@ -26,7 +26,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 250,
+            width: 320,
           },
         ],
       },

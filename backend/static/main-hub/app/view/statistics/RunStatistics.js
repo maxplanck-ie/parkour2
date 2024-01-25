@@ -31,7 +31,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             store: "RunStatistics",
             emptyText: "Search",
             paramName: "pool",
-            width: 250,
+            width: 320,
           },
         ],
       },

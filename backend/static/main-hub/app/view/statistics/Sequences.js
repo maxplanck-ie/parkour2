@@ -28,7 +28,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             xtype: "parkoursearchfield",
             store: "SequencesStatistics",
             emptyText: "Search",
-            width: 250,
+            width: 320,
           },
         ],
       },

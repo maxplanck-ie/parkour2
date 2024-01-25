@@ -27,7 +27,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 250,
+            width: 320,
           },
         ],
       },

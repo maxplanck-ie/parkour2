@@ -23,18 +23,12 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
-    def get_queryset(self, showAll=True, searchString=None, statusFilter=None):
+    def get_queryset(self, show_all=True, search_string=None, status_filter=None):
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
-        if searchString:
-            searchFields = ["name__icontains", "barcode__icontains"]
-            search_filters = [Q(**{field: searchString}) for field in searchFields]
-            libraries_qs = libraries_qs.filter(reduce(operator.or_, search_filters))
-            samples_qs = samples_qs.filter(reduce(operator.or_, search_filters))
-        if statusFilter:
-            libraries_qs = libraries_qs.filter(status=int(statusFilter))
-            samples_qs = samples_qs.filter(status=int(statusFilter))
+        libraries_qs = self.filter_and_search(libraries_qs, search_string, status_filter)
+        samples_qs = self.filter_and_search(samples_qs, search_string, status_filter)
 
         queryset = (
             Request.objects.filter(archived=False)
@@ -45,7 +39,8 @@ class LibrarySampleTree(viewsets.ViewSet):
             .only("name")
             .order_by("-create_time")
         )
-        if not showAll:
+
+        if not show_all:
             queryset = queryset.filter(sequenced=False)
         if not self.request.user.is_staff:
             if not self.request.user.is_pi:
@@ -57,12 +52,11 @@ class LibrarySampleTree(viewsets.ViewSet):
 
     def list(self, request):
         """Get the list of libraries and samples."""
-        showAll = request.query_params.get("showAll")
-        searchString = request.query_params.get("searchString")
-        statusFilter = request.query_params.get("statusFilter")
-        request_id = request.query_params.get("node", None)
 
-        queryset = self.get_queryset(showAll, searchString, statusFilter)
+        show_all = request.query_params.get("showAll") or False
+        search_string = request.query_params.get("searchString")
+        status_filter = request.query_params.get("statusFilter")
+        request_id = request.query_params.get("node", None)
 
         if request_id and request_id != "root":
             libraries_qs = Library.objects.all().select_related(
@@ -80,14 +74,8 @@ class LibrarySampleTree(viewsets.ViewSet):
                 "organism",
             )
 
-            if searchString:
-                searchFields = ["name__icontains", "barcode__icontains"]
-                search_filters = [Q(**{field: searchString}) for field in searchFields]
-                libraries_qs = libraries_qs.filter(reduce(operator.or_, search_filters))
-                samples_qs = samples_qs.filter(reduce(operator.or_, search_filters))
-            if statusFilter:
-                libraries_qs = libraries_qs.filter(status=int(statusFilter))
-                samples_qs = samples_qs.filter(status=int(statusFilter))
+            libraries_qs = self.filter_and_search(libraries_qs, search_string, status_filter)
+            samples_qs = self.filter_and_search(samples_qs, search_string, status_filter)
 
             queryset = (
                 Request.objects.filter(archived=False, pk=request_id)
@@ -108,27 +96,32 @@ class LibrarySampleTree(viewsets.ViewSet):
             serializer = RequestChildrenNodesSerializer(queryset)
 
             try:
-                return Response(
-                    {
+                return Response({
                         "success": True,
                         "children": serializer.data["children"],
-                    }
-                )
+                    })
             except KeyError:
-                return Response(
-                    {
+                return Response({
                         "success": False,
                         "children": [],
-                    },
-                    400,
-                )
+                    },400)
+        else:
+            queryset = self.get_queryset(show_all, search_string, status_filter)
+            serializer = RequestParentNodeSerializer(queryset, many=True)
+            filtered_data = [item for item in serializer.data if item["total_records_count"] != 0]  # Remove empty rows of requests
 
-        serializer = RequestParentNodeSerializer(queryset, many=True)
-        filtered_data = [
-            item for item in serializer.data if item["total_records_count"] != 0
-        ]  # Remove empty rows of requests
-        return Response({"success": True, "children": filtered_data})
+            return Response({"success": True, "children": filtered_data})
 
+    def filter_and_search(self, queryset, search_string, status_filter):
+        if search_string:
+            search_fields = ["name__icontains", "barcode__icontains", "request__name__icontains"]
+            search_filters = [Q(**{field: search_string}) for field in search_fields]
+            queryset = queryset.filter(reduce(operator.or_, search_filters))
+
+        if status_filter:
+            queryset = queryset.filter(status=int(status_filter))
+
+        return queryset
 
 class LibraryViewSet(LibrarySampleBaseViewSet):
     serializer_class = LibrarySerializer
