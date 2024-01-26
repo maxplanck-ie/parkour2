@@ -40,7 +40,6 @@ Ext.define("MainHub.view.requests.Requests", {
                 boxLabelAlign: "before",
                 checked: true,
                 id: "showAll",
-
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: false,
@@ -62,19 +61,21 @@ Ext.define("MainHub.view.requests.Requests", {
               },
             ],
           },
-
           {
             xtype: "searchfield",
             store: "requestsStore",
             emptyText: "Search",
-            margin: "0 10px 0 0",
-            width: 250,
+            margin: "0 15px 0 0",
+            width: 320,
           },
-
           {
             xtype: "button",
             itemId: "add-request-button",
             cls: "pl-add-request-button",
+            iconCls: "x-fa fa-plus",
+            style: {
+              border: "1px solid #ffffffbe !important",
+            },
             text: "Add",
           },
         ],
