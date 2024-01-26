@@ -24,16 +24,20 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
         title: "Load Flowcells",
         items: [
           {
-            xtype: "textfield",
+            xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 200,
+            width: 320,
           },
           {
             xtype: "button",
             itemId: "load-button",
             text: "Load",
+            iconCls: "x-fa fa-plus",
+            style: {
+              border: "1px solid #ffffffbe !important",
+            },
           },
         ],
       },

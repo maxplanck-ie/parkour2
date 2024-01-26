@@ -10,6 +10,7 @@ Breaking changes:
 
 Non-breaking changes:
 
+- Added a statuses filter and search functionality for 'Libraries & Samples' staff UI. (#93)
 - Added support for Python 3.12 (CI tests are passing), consider this experimental.
 - Upgraded Python dependencies.
 - Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)

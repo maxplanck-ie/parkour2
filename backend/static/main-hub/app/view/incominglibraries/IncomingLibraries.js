@@ -50,10 +50,10 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             ],
           },
           {
-            xtype: "textfield",
+            xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 200,
+            width: 320,
           },
         ],
       },

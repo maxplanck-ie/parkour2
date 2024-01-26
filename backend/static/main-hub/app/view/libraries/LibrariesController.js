@@ -76,10 +76,6 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       showLibraries = el.up().items.items[0].getValue();
       showSamples = value;
       searchQuery = el.up("header").down("textfield").getValue();
-    } else if (el.itemId == "searchField") {
-      showLibraries = el.up().down("fieldcontainer").items.items[0].getValue();
-      showSamples = el.up().down("fieldcontainer").items.items[1].getValue();
-      searchQuery = value;
     }
 
     var showFilter = Ext.util.Filter({

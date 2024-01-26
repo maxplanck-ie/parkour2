@@ -11,6 +11,13 @@ Ext.define("MainHub.view.libraries.Libraries", {
   anchor: "100% -1",
   layout: "fit",
 
+  initComponent: function () {
+    this.searchString = "";
+    this.statusFilter = "";
+
+    this.callParent(arguments);
+  },
+
   items: [
     {
       xtype: "treepanel",
@@ -134,10 +141,122 @@ Ext.define("MainHub.view.libraries.Libraries", {
             ],
           },
           {
-            xtype: "textfield",
-            itemId: "searchField",
+            xtype: "combobox",
+            id: "statusCombobox",
+            itemId: "statusCombobox",
+            queryMode: "local",
+            displayField: "name",
+            valueField: "id",
+            cls: "panel-header-combobox",
+            emptyText: "Status",
+            width: 110,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 220,
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: Ext.create("Ext.data.Store", {
+              fields: ["id", "name"],
+              data: [
+                { id: "all", name: "All Statuses" },
+                { id: "0", name: "Pending Submission" },
+                { id: "1", name: "Submission Completed" },
+                {
+                  id: "2",
+                  name: "Quality Check Approved",
+                },
+                { id: "3", name: "Library Prepared" },
+                { id: "4", name: "Library Pooled" },
+                { id: "5", name: "Sequencing" },
+                { id: "6", name: "Completed" },
+                { id: "-1", name: "Quality Check Failed" },
+                {
+                  id: "-2",
+                  name: "Quality Check Compromised",
+                },
+              ],
+            }),
+            listeners: {
+              scope: this,
+              change: function (combo, newValue, oldValue, eOpts) {
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.statusFilter = newValue;
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField),
+                ).width;
+                combo.setWidth(textWidth + 55);
+                var librariesStore = Ext.getStore("librariesStore");
+                var extraParams = {
+                  showAll: "True",
+                };
+                if (this.statusFilter && this.statusFilter !== "all") {
+                  extraParams.statusFilter = this.statusFilter;
+                }
+                if (this.searchString) {
+                  extraParams.searchString = this.searchString;
+                }
+                librariesStore.getProxy().setExtraParams(extraParams);
+                librariesStore.load({
+                  callback: function (records, operation, success) {
+                    if (!success) {
+                      new Noty({
+                        text:
+                          operation.getError() ||
+                          "Error occurred while setting the filter.",
+                        type: "error",
+                      }).show();
+                    }
+                    grid.getView().unmask();
+                  },
+                });
+              },
+            },
+          },
+          {
+            xtype: "parkoursearchfield",
+            itemId: "search-field",
             emptyText: "Search",
-            width: 200,
+            width: 320,
+            listeners: {
+              scope: this,
+              change: Ext.Function.createBuffered(
+                function (field, newValue, oldValue) {
+                  var grid = field.up("treepanel");
+                  grid.getView().mask("Loading...");
+                  this.searchString = newValue;
+                  var librariesStore = Ext.getStore("librariesStore");
+                  var extraParams = {
+                    showAll: "True",
+                  };
+                  if (this.statusFilter && this.statusFilter !== "all") {
+                    extraParams.statusFilter = this.statusFilter;
+                  }
+                  if (this.searchString) {
+                    extraParams.searchString = this.searchString;
+                  }
+                  librariesStore.getProxy().setExtraParams(extraParams);
+                  librariesStore.load({
+                    callback: function (records, operation, success) {
+                      if (!success) {
+                        new Noty({
+                          text:
+                            operation.getError() ||
+                            "Error occurred while searching.",
+                          type: "error",
+                        }).show();
+                      }
+                      grid.getView().unmask();
+                    },
+                  });
+                },
+                500,
+                this,
+              ),
+            },
           },
         ],
       },
@@ -190,15 +309,15 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 } else if (value === -2) {
                   statusClass += "quality-check-compromised";
                   meta.tdAttr = 'data-qtip="Quality check compromised"';
-                } else if (value === 2) {
-                  statusClass += "quality-check-approved";
-                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 0) {
                   statusClass += "pending-submission";
                   meta.tdAttr = 'data-qtip="Pending submission"';
                 } else if (value === 1) {
                   statusClass += "submission-completed";
                   meta.tdAttr = 'data-qtip="Submission completed"';
+                } else if (value === 2) {
+                  statusClass += "quality-check-approved";
+                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 3) {
                   statusClass += "library-prepared";
                   meta.tdAttr = 'data-qtip="Library prepared"';

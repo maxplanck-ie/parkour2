@@ -24,10 +24,10 @@ Ext.define("MainHub.view.pooling.Pooling", {
         title: "Pooling",
         items: [
           {
-            xtype: "textfield",
+            xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 200,
+            width: 320,
           },
         ],
       },
