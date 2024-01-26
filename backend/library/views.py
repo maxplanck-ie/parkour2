@@ -23,6 +23,22 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
+    def filter_and_search(self, queryset, search_string, status_filter):
+        """Helper function for both get_queryset and list action"""
+        if search_string:
+            search_fields = [
+                "name__icontains",
+                "barcode__icontains",
+                "request__name__icontains",
+            ]
+            search_filters = [Q(**{field: search_string}) for field in search_fields]
+            queryset = queryset.filter(reduce(operator.or_, search_filters))
+
+        if status_filter:
+            queryset = queryset.filter(status=int(status_filter))
+
+        return queryset
+
     def get_queryset(self, show_all=True, search_string=None, status_filter=None):
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
@@ -121,24 +137,9 @@ class LibrarySampleTree(viewsets.ViewSet):
             serializer = RequestParentNodeSerializer(queryset, many=True)
             filtered_data = [
                 item for item in serializer.data if item["total_records_count"] != 0
-            ]  # Remove empty rows of requests
+            ]  # omit rows (requests) that would be empty upon expanding (clicking plus sign)
 
             return Response({"success": True, "children": filtered_data})
-
-    def filter_and_search(self, queryset, search_string, status_filter):
-        if search_string:
-            search_fields = [
-                "name__icontains",
-                "barcode__icontains",
-                "request__name__icontains",
-            ]
-            search_filters = [Q(**{field: search_string}) for field in search_fields]
-            queryset = queryset.filter(reduce(operator.or_, search_filters))
-
-        if status_filter:
-            queryset = queryset.filter(status=int(status_filter))
-
-        return queryset
 
 
 class LibraryViewSet(LibrarySampleBaseViewSet):
