@@ -281,3 +281,20 @@ class DutyViewSet(viewsets.ModelViewSet):
     #         )
     #     duty_instance.delete()
     #     return Response({"res": "Object deleted!"}, status=status.HTTP_200_OK)
+
+
+@login_required
+def user_details(request):
+    user = request.user
+    data = {
+        "DEBUG": settings.DEBUG,
+        "USER": json.dumps(
+            {
+                "id": user.pk,
+                "name": user.full_name,
+                "is_staff": user.is_staff,
+                "paperless_approval": user.paperless_approval,
+            }
+        ),
+    }
+    return JsonResponse(data)
