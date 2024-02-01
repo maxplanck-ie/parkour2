@@ -3,7 +3,7 @@
 ??.??.??
 =======
 
-- WIP
+- Fixed a misconfiguration with Django that interfered with the URL shared to PIs for Paperless/ Electronic Approval of sequencing requests. (`7a85900`)
 
 24.01.31
 ========
