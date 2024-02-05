@@ -14,7 +14,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "#": {
         activate: "activateView",
       },
-      parkourmonthpicker: {
+      parkourmonthpicker: { // to check
         select: "selectMonth",
       },
       "#flowcells-grid": {
@@ -48,19 +48,38 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     },
   },
 
+  // to check to define start and end date global variables and have default values according to views.py and set in UI too
+
   activateView: function (view) {
-    var monthPicker = view.down("parkourmonthpicker");
-    monthPicker.fireEvent("select", monthPicker, monthPicker.getValue());
+    var startMonthPicker = view.down("start-month-picker"); // to check
+    var endMonthPicker = view.down("end-month-picker"); // to check
+    startMonthPicker.fireEvent("select", startMonthPicker, startMonthPicker.getValue(), "start");
+    endMonthPicker.fireEvent("select", endMonthPicker, endMonthPicker.getValue(), "end");
   },
 
-  selectMonth: function (df, value) {
+  selectMonth: function (df, value, criteria) {
     var grid = df.up("grid");
+    var params = {};
+
+    if (criteria = "start"){
+      params = {
+        endYear: this.endYear,
+        endMonth: this.endMonth,
+        startYear: value.getFullYear(),
+        startMonth: value.getMonth() + 1,
+      }
+    }
+    else if (criteria = "end"){
+      params = {
+        endYear: value.getFullYear(),
+        endMonth: value.getMonth() + 1,
+        startYear: this.startYear,
+        startMonth: this.startMonth,
+      }
+    }
 
     grid.getStore().reload({
-      params: {
-        year: value.getFullYear(),
-        month: value.getMonth() + 1,
-      },
+      params: params,
       callback: function () {
         grid.getView().features[0].collapseAll();
       },

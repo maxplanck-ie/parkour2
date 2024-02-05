@@ -134,12 +134,24 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
     def list(self, request, *args, **kwargs):
         today = timezone.datetime.today()
-        year = request.query_params.get("year", today.year)
-        month = request.query_params.get("month", today.month)
 
-        queryset = self.get_queryset().filter(
-            create_time__year=year,
-            create_time__month=month,
+        default_start_date = today # to check today -1 month start
+        default_end_date = today # to check today month end
+
+        start_year = request.query_params.get("startYear", default_start_date.year)
+        start_month = request.query_params.get("startMonth", default_start_date.month)
+        end_year = request.query_params.get("endYear", default_end_date.year)
+        end_month = request.query_params.get("endMonth", default_end_date.month)
+
+        #  if start_year and end_year:
+        #     queryset_var = self.queryset.filter(
+        #         Q(start_date__gte=start_date_var, start_date__lte=end_date_var)
+        #         | Q(start_date__gte=start_date_var, end_date__isnull=True)
+        #     )
+
+        queryset = self.get_queryset().filter( # to check
+            create_time__year=start_year,
+            create_time__month=start_month,
         )
 
         serializer = FlowcellListSerializer(queryset, many=True)

@@ -185,6 +185,13 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           items: [
             {
               xtype: "parkourmonthpicker",
+              itemId: "start-month-picker",
+              fieldLabel: "Start Month", // to check
+            },
+            {
+              xtype: "parkourmonthpicker",
+              itemId: "end-month-picker",
+              fieldLabel: "End Month", // to check
             },
           ],
         },
