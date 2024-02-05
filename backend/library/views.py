@@ -23,7 +23,9 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
-    def filter_and_search(self, queryset, search_string, status_filter, library_protocol_filter):
+    def filter_and_search(
+        self, queryset, search_string, status_filter, library_protocol_filter
+    ):
         """Helper function for both get_queryset and list action"""
         if search_string:
             search_fields = [
@@ -38,18 +40,28 @@ class LibrarySampleTree(viewsets.ViewSet):
             queryset = queryset.filter(status=int(status_filter))
 
         if library_protocol_filter:
-            queryset = queryset.filter(library_protocol=int(library_protocol_filter)) # to check
+            queryset = queryset.filter(
+                library_protocol=int(library_protocol_filter)
+            )  # to check
 
         return queryset
 
-    def get_queryset(self, show_all=True, search_string=None, status_filter=None, library_protocol_filter=None):
+    def get_queryset(
+        self,
+        show_all=True,
+        search_string=None,
+        status_filter=None,
+        library_protocol_filter=None,
+    ):
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
         libraries_qs = self.filter_and_search(
             libraries_qs, search_string, status_filter, library_protocol_filter
         )
-        samples_qs = self.filter_and_search(samples_qs, search_string, status_filter, library_protocol_filter)
+        samples_qs = self.filter_and_search(
+            samples_qs, search_string, status_filter, library_protocol_filter
+        )
 
         queryset = (
             Request.objects.filter(archived=False)
@@ -137,7 +149,9 @@ class LibrarySampleTree(viewsets.ViewSet):
                     400,
                 )
         else:
-            queryset = self.get_queryset(show_all, search_string, status_filter, library_protocol_filter)
+            queryset = self.get_queryset(
+                show_all, search_string, status_filter, library_protocol_filter
+            )
             serializer = RequestParentNodeSerializer(queryset, many=True)
             filtered_data = [
                 item for item in serializer.data if item["total_records_count"] != 0

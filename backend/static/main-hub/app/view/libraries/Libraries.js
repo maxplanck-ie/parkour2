@@ -39,7 +39,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             requestId !== "root" &&
             Ext.Ajax.request({
               url: Ext.String.format(
-                "api/requests/" + requestId + "/get_poolpaths/"
+                "api/requests/" + requestId + "/get_poolpaths/",
               ),
               method: "GET",
               scope: this,
@@ -110,12 +110,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "librariesStore"
+                        "librariesStore",
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("librariesStore").load();
                     } else {
                       Ext.getStore(
-                        "librariesStore"
+                        "librariesStore",
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
@@ -187,7 +187,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 var selectedRecord = combo.findRecordByValue(newValue);
                 var textWidth = Ext.util.TextMetrics.measure(
                   combo.inputEl,
-                  selectedRecord.get(combo.displayField)
+                  selectedRecord.get(combo.displayField),
                 ).width;
                 combo.setWidth(textWidth + 55);
                 var librariesStore = Ext.getStore("librariesStore");
@@ -247,7 +247,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 var selectedRecord = combo.findRecordByValue(newValue);
                 var textWidth = Ext.util.TextMetrics.measure(
                   combo.inputEl,
-                  selectedRecord.get(combo.displayField)
+                  selectedRecord.get(combo.displayField),
                 ).width;
                 combo.setWidth(textWidth + 55);
                 var librariesStore = Ext.getStore("librariesStore");
@@ -323,7 +323,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   });
                 },
                 500,
-                this
+                this,
               ),
             },
           },
@@ -355,7 +355,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   "<strong>Request: {0}</strong> (#: {1}, Total Depth: {2})",
                   value,
                   record.get("total_records_count"),
-                  record.get("total_sequencing_depth")
+                  record.get("total_sequencing_depth"),
                 );
               }
             },
