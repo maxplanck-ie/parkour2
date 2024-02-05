@@ -14,6 +14,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
   initComponent: function () {
     this.searchString = "";
     this.statusFilter = "";
+    this.libraryProtocolFilter = "";
 
     this.callParent(arguments);
   },
@@ -38,7 +39,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             requestId !== "root" &&
             Ext.Ajax.request({
               url: Ext.String.format(
-                "api/requests/" + requestId + "/get_poolpaths/",
+                "api/requests/" + requestId + "/get_poolpaths/"
               ),
               method: "GET",
               scope: this,
@@ -109,12 +110,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   change: function (checkbox, newValue, oldValue, eOpts) {
                     if (newValue) {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "True";
                       Ext.getStore("librariesStore").load();
                     } else {
                       Ext.getStore(
-                        "librariesStore",
+                        "librariesStore"
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
@@ -186,7 +187,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 var selectedRecord = combo.findRecordByValue(newValue);
                 var textWidth = Ext.util.TextMetrics.measure(
                   combo.inputEl,
-                  selectedRecord.get(combo.displayField),
+                  selectedRecord.get(combo.displayField)
                 ).width;
                 combo.setWidth(textWidth + 55);
                 var librariesStore = Ext.getStore("librariesStore");
@@ -195,6 +196,70 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 };
                 if (this.statusFilter && this.statusFilter !== "all") {
                   extraParams.statusFilter = this.statusFilter;
+                }
+                if (this.libraryProtocolFilter) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
+                }
+                if (this.searchString) {
+                  extraParams.searchString = this.searchString;
+                }
+                librariesStore.getProxy().setExtraParams(extraParams);
+                librariesStore.load({
+                  callback: function (records, operation, success) {
+                    if (!success) {
+                      new Noty({
+                        text:
+                          operation.getError() ||
+                          "Error occurred while setting the filter.",
+                        type: "error",
+                      }).show();
+                    }
+                    grid.getView().unmask();
+                  },
+                });
+              },
+            },
+          },
+          {
+            xtype: "combobox",
+            id: "libraryProtocolCombobox",
+            itemId: "libraryProtocolCombobox",
+            queryMode: "local",
+            displayField: "name", // to check (search #)
+            valueField: "id", // to check
+            cls: "panel-header-combobox",
+            emptyText: "Library Protocol",
+            width: 110,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 220,
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: "libraryProtocolsStore",
+            listeners: {
+              scope: this,
+              change: function (combo, newValue, oldValue, eOpts) {
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.libraryProtocolFilter = newValue;
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField)
+                ).width;
+                combo.setWidth(textWidth + 55);
+                var librariesStore = Ext.getStore("librariesStore");
+                var extraParams = {
+                  showAll: "True",
+                };
+                if (this.statusFilter && this.statusFilter !== "all") {
+                  extraParams.statusFilter = this.statusFilter;
+                }
+                if (this.libraryProtocolFilter) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
                 }
                 if (this.searchString) {
                   extraParams.searchString = this.searchString;
@@ -235,6 +300,10 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   if (this.statusFilter && this.statusFilter !== "all") {
                     extraParams.statusFilter = this.statusFilter;
                   }
+                  if (this.libraryProtocolFilter) {
+                    extraParams.libraryProtocolFilter =
+                      this.libraryProtocolFilter;
+                  }
                   if (this.searchString) {
                     extraParams.searchString = this.searchString;
                   }
@@ -254,7 +323,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   });
                 },
                 500,
-                this,
+                this
               ),
             },
           },
@@ -286,7 +355,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   "<strong>Request: {0}</strong> (#: {1}, Total Depth: {2})",
                   value,
                   record.get("total_records_count"),
-                  record.get("total_sequencing_depth"),
+                  record.get("total_sequencing_depth")
                 );
               }
             },
