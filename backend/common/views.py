@@ -298,3 +298,7 @@ def user_details(request):
         ),
     }
     return JsonResponse(data)
+
+
+def danke(request):
+    return render(request, "danke.html")

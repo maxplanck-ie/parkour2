@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block css %}
+    <style>
+        body {
+          background-color: #c85838;
+        }
+        h2 {
+          color: white;
+          text-align: center;
+        }
+        img {
+          width: 50%;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+        div {
+          height: 600px;
+          position: relative;
+        }
+    </style>
+{% endblock css %}
+
+{% block title %}
+    Parkour LIMS | Seq. Request Approved!
+{% endblock title %}
+
+{% block content %}
+    <div id="danke">
+        <h2>The sequencing request was approved succesfully!</h2>
+        <img src={% static 'images/danke.gif' %}>
+    </div>
+{% endblock %}

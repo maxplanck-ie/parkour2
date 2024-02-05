@@ -1091,4 +1091,4 @@ class ApproveViewSet(viewsets.ModelViewSet):
             from_email=settings.SERVER_EMAIL,
             recipient_list=[instance.user.email, instance.user.pi.email],
         )
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/danke")
