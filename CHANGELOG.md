@@ -4,6 +4,8 @@
 =======
 
 - Fixed a misconfiguration with Django that interfered with the URL shared to PIs for Paperless/ Electronic Approval of sequencing requests. (`7a85900`)
+- new URL: `/api_user_details` (not really an api endpoint), gives some basic user data to upcoming frontend (VueJS).
+- new URL: `/danke` (users are redirected after seq. request approval)
 
 24.01.31
 ========
