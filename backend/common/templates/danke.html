@@ -4,22 +4,30 @@
 {% block css %}
     <style>
         body {
-          background-color: #c85838;
-        }
-        h2 {
-          color: white;
-          text-align: center;
-        }
-        img {
-          width: 50%;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+            background:
+    linear-gradient(
+          rgba(0, 0, 0, 0.2), 
+          rgba(0, 0, 0, 0.2)
+        ),
+    url("{% static 'images/danke.jpg' %}") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            background-size: cover;
         }
         div {
-          height: 600px;
-          position: relative;
+          color: white;
+          text-align: center;
+          background: linear-gradient(to top, transparent 0%, black 100%);
+        }
+
+        
+        .body:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
         }
     </style>
 {% endblock css %}
@@ -29,8 +37,13 @@
 {% endblock title %}
 
 {% block content %}
-    <div id="danke">
-        <h2>The sequencing request was approved succesfully!</h2>
-        <img src={% static 'images/danke.gif' %}>
+    <div>
+    <br /><br /><br /><br /><br />
+    <h2>Thank you!</h2>
+    <br />
+    <h3>The request was approved succesfully. <br />
+        Sequencing will start as soon as possible, and notification e-mails were sent. <br />
+        <br />If you didn't intend to approve it, please contact: DeepSeq@ie-freiburg.mpg.de</h3>
+    <br /><br /><br /><br /><br /><br /><br />
     </div>
 {% endblock %}
