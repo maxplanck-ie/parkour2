@@ -40,9 +40,7 @@ class LibrarySampleTree(viewsets.ViewSet):
             queryset = queryset.filter(status=int(status_filter))
 
         if library_protocol_filter:
-            queryset = queryset.filter(
-                library_protocol=int(library_protocol_filter)
-            )
+            queryset = queryset.filter(library_protocol=int(library_protocol_filter))
 
         return queryset
 
