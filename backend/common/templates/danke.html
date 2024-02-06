@@ -3,32 +3,19 @@
 
 {% block css %}
     <style>
-        body {
-            background:
-    linear-gradient(
-          rgba(0, 0, 0, 0.2), 
-          rgba(0, 0, 0, 0.2)
-        ),
-    url("{% static 'images/danke.jpg' %}") no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            background-size: cover;
-        }
-        div {
-          color: white;
-          text-align: center;
-          background: linear-gradient(to top, transparent 0%, black 100%);
-        }
-
-        
-        .body:after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
+    body {
+        background:
+        linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+        url("{% static 'images/danke.jpg' %}") no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+    }
+    div {
+      color: white;
+      text-align: center;
+      background: linear-gradient(to top, transparent 0%, black 100%);
+    }
     </style>
 {% endblock css %}
 
