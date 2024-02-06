@@ -13,7 +13,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
   initComponent: function () {
     this.searchString = "";
-    this.statusFilter = "";
+    this.statusFilter = "all";
+    this.libraryProtocolFilter = -1;
 
     this.callParent(arguments);
   },
@@ -149,7 +150,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             valueField: "id",
             cls: "panel-header-combobox",
             emptyText: "Status",
-            width: 110,
+            width: 100,
             matchFieldWidth: false,
             listConfig: {
               width: 220,
@@ -169,7 +170,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 { id: "3", name: "Library Prepared" },
                 { id: "4", name: "Library Pooled" },
                 { id: "5", name: "Sequencing" },
-                { id: "6", name: "Completed" },
+                { id: "6", name: "Delivered" },
                 { id: "-1", name: "Quality Check Failed" },
                 {
                   id: "-2",
@@ -195,6 +196,81 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 };
                 if (this.statusFilter && this.statusFilter !== "all") {
                   extraParams.statusFilter = this.statusFilter;
+                }
+                if (
+                  this.libraryProtocolFilter &&
+                  this.libraryProtocolFilter !== -1
+                ) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
+                }
+                if (this.searchString) {
+                  extraParams.searchString = this.searchString;
+                }
+                librariesStore.getProxy().setExtraParams(extraParams);
+                librariesStore.load({
+                  callback: function (records, operation, success) {
+                    if (!success) {
+                      new Noty({
+                        text:
+                          operation.getError() ||
+                          "Error occurred while setting the filter.",
+                        type: "error",
+                      }).show();
+                    }
+                    grid.getView().unmask();
+                  },
+                });
+              },
+            },
+          },
+          {
+            xtype: "combobox",
+            id: "libraryProtocolCombobox",
+            itemId: "libraryProtocolCombobox",
+            queryMode: "local",
+            displayField: "name",
+            valueField: "id",
+            cls: "panel-header-combobox",
+            emptyText: "Library Protocol",
+            width: 160,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 300,
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: "libraryProtocolsStore",
+            listeners: {
+              scope: this,
+              expand: function (combo) {
+                combo
+                  .getStore()
+                  .insert(0, { id: -1, name: "All Library Protocols" });
+              },
+              change: function (combo, newValue, oldValue, eOpts) {
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.libraryProtocolFilter = newValue;
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField),
+                ).width;
+                combo.setWidth(textWidth > 220 ? 220 : textWidth + 55);
+                var librariesStore = Ext.getStore("librariesStore");
+                var extraParams = {
+                  showAll: "True",
+                };
+                if (this.statusFilter && this.statusFilter !== "all") {
+                  extraParams.statusFilter = this.statusFilter;
+                }
+                if (
+                  this.libraryProtocolFilter &&
+                  this.libraryProtocolFilter !== -1
+                ) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
                 }
                 if (this.searchString) {
                   extraParams.searchString = this.searchString;
@@ -234,6 +310,13 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   };
                   if (this.statusFilter && this.statusFilter !== "all") {
                     extraParams.statusFilter = this.statusFilter;
+                  }
+                  if (
+                    this.libraryProtocolFilter &&
+                    this.libraryProtocolFilter !== -1
+                  ) {
+                    extraParams.libraryProtocolFilter =
+                      this.libraryProtocolFilter;
                   }
                   if (this.searchString) {
                     extraParams.searchString = this.searchString;
@@ -328,8 +411,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   statusClass += "sequencing";
                   meta.tdAttr = 'data-qtip="Sequencing"';
                 } else if (value === 6) {
-                  statusClass += "completed";
-                  meta.tdAttr = 'data-qtip="Completed"';
+                  statusClass += "delivered";
+                  meta.tdAttr = 'data-qtip="Delivered"';
                 }
                 return '<div class="' + statusClass + '"></div>';
               }
