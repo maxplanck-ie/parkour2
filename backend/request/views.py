@@ -1005,8 +1005,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
         for i in range(len(instance.statuses)):
-            s = instance.statuses[i]
-            if s == 5:  # Sequencing
+            if instance.statuses[i] == 5:  # Sequencing
                 instance.statuses[i] += 1  # Delivered
         instance.filepaths = request.data
         instance.save(update_fields=["filepaths"])
