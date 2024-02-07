@@ -1008,7 +1008,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             if instance.statuses[i] == 5:  # Sequencing
                 instance.statuses[i] += 1  # Delivered
         instance.filepaths = request.data
-        instance.save(update_fields=["filepaths"])
+        instance.save(update_fields=["filepaths", "statuses"])
         return Response({"success": True})
 
     @action(methods=["get"], detail=True)
