@@ -26,6 +26,10 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
       successProperty: "success",
       messageProperty: "message",
     },
+    extraParams: {
+      start: "",
+      end: "",
+    },
     writer: {
       type: "json",
       rootProperty: "data",
@@ -43,7 +47,7 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
                 {
                   pk: record.get("pk"),
                 },
-                record.getChanges(),
+                record.getChanges()
               );
             }
           });

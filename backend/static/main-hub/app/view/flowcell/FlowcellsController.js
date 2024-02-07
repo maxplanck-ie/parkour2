@@ -14,7 +14,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "#": {
         activate: "activateView",
       },
-      parkourmonthpicker: { // to check
+      parkourmonthpicker: {
         select: "selectMonth",
       },
       "#flowcells-grid": {
@@ -48,43 +48,51 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     },
   },
 
-  // to check to define start and end date global variables and have default values according to views.py and set in UI too
-
   activateView: function (view) {
-    var startMonthPicker = view.down("start-month-picker"); // to check
-    var endMonthPicker = view.down("end-month-picker"); // to check
-    startMonthPicker.fireEvent("select", startMonthPicker, startMonthPicker.getValue(), "start");
-    endMonthPicker.fireEvent("select", endMonthPicker, endMonthPicker.getValue(), "end");
+    var startMonthPicker = view.down("#start-month-picker");
+    var endMonthPicker = view.down("#end-month-picker");
+
+    var currentDate = new Date();
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.YEAR, 1);
+    var defaultEndDate = currentDate;
+
+    startMonthPicker.setValue(defaultStartDate);
+    endMonthPicker.setValue(defaultEndDate);
+
+    startMonthPicker.fireEvent(
+      "select",
+      startMonthPicker,
+      defaultStartDate,
+      "start"
+    );
+    endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
   },
 
   selectMonth: function (df, value, criteria) {
     var grid = df.up("grid");
-    var params = {};
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
 
-    if (criteria = "start"){
-      params = {
-        endYear: this.endYear,
-        endMonth: this.endMonth,
-        startYear: value.getFullYear(),
-        startMonth: value.getMonth() + 1,
-      }
+    if (criteria === "start") {
+        var startOfMonth = Ext.Date.getFirstDateOfMonth(value);
+        var endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
+    } else if (criteria === "end") {
+        var startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
+        var endOfMonth = Ext.Date.getLastDateOfMonth(value);
     }
-    else if (criteria = "end"){
-      params = {
-        endYear: value.getFullYear(),
-        endMonth: value.getMonth() + 1,
-        startYear: this.startYear,
-        startMonth: this.startMonth,
-      }
-    }
+
+    var start = Ext.Date.format(startOfMonth, "d.m.Y");
+    var end = Ext.Date.format(endOfMonth, "d.m.Y");
+
+    grid.getStore().getProxy().setExtraParam("start", start);
+    grid.getStore().getProxy().setExtraParam("end", end);
 
     grid.getStore().reload({
-      params: params,
-      callback: function () {
-        grid.getView().features[0].collapseAll();
-      },
+        callback: function () {
+            grid.getView().features[0].collapseAll();
+        },
     });
-  },
+},
 
   selectRecord: function (cb, rowIndex, checked, record) {
     // Don't select lanes from a different flowcell
