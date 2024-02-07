@@ -1004,11 +1004,14 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["post"], detail=True, permission_classes=[IsAdminUser])
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
-        for i in range(len(instance.statuses)):
-            if instance.statuses[i] == 5:  # Sequencing
-                instance.statuses[i] += 1  # Delivered
         instance.filepaths = request.data
-        instance.save(update_fields=["filepaths", "statuses"])
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        for r in records:
+            # 'Sequencing' -> 'Delivered'
+            if r.status == 5:
+                r.status += 1
+                r.save()
+        instance.save(update_fields=["filepaths"])
         return Response({"success": True})
 
     @action(methods=["get"], detail=True)
