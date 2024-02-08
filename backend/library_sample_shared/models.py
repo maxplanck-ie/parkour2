@@ -217,8 +217,8 @@ class LibraryProtocol(models.Model):
     name = models.CharField("Name", max_length=150)
     type = models.CharField(
         "Type",
-        max_length=3,
-        choices=(("DNA", "DNA"), ("RNA", "RNA")),
+        max_length=5,
+        choices=(("DNA", "DNA"), ("RNA", "RNA"), ("Cells", "Cells")),
         default="DNA",
     )
     provider = models.CharField("Provider", max_length=150)
