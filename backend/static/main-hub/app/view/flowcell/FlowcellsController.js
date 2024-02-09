@@ -69,28 +69,35 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
   },
 
   selectMonth: function (df, value, criteria) {
+    if (!criteria) {
+        criteria = df.itemId === 'start-month-picker' ? 'start' : 'end';
+    }
+
     var grid = df.up("grid");
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
 
+    var startOfMonth, endOfMonth;
+
     if (criteria === "start") {
-        var startOfMonth = Ext.Date.getFirstDateOfMonth(value);
-        var endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
+      startOfMonth = Ext.Date.getFirstDateOfMonth(value);
+      endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
     } else if (criteria === "end") {
-        var startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
-        var endOfMonth = Ext.Date.getLastDateOfMonth(value);
+      startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
+      endOfMonth = Ext.Date.getLastDateOfMonth(value);
     }
 
     var start = Ext.Date.format(startOfMonth, "d.m.Y");
     var end = Ext.Date.format(endOfMonth, "d.m.Y");
 
-    grid.getStore().getProxy().setExtraParam("start", start);
-    grid.getStore().getProxy().setExtraParam("end", end);
+    var store = grid.getStore();
+    store.getProxy().setExtraParam("start", start);
+    store.getProxy().setExtraParam("end", end);
 
-    grid.getStore().reload({
-        callback: function () {
-            grid.getView().features[0].collapseAll();
-        },
+    store.reload({
+      callback: function () {
+        grid.getView().features[0].collapseAll();
+      },
     });
 },
 

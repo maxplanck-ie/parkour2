@@ -26,10 +26,6 @@ Ext.define("MainHub.store.flowcell.Flowcells", {
       successProperty: "success",
       messageProperty: "message",
     },
-    extraParams: {
-      start: "",
-      end: "",
-    },
     writer: {
       type: "json",
       rootProperty: "data",
