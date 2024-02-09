@@ -24,6 +24,22 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
         title: "Load Flowcells",
         items: [
           {
+            xtype: "parkourmonthpicker",
+            itemId: "start-month-picker",
+            fieldLabel: "From",
+            labelWidth: 37,
+            labelStyle: "color: white;",
+            margin: "0 15px 0 0",
+          },
+          {
+            xtype: "parkourmonthpicker",
+            itemId: "end-month-picker",
+            fieldLabel: "To",
+            labelWidth: 20,
+            labelStyle: "color: white;",
+            margin: "0 15px 0 0",
+          },
+          {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
@@ -179,15 +195,6 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
       ],
 
       dockedItems: [
-        {
-          xtype: "toolbar",
-          dock: "top",
-          items: [
-            {
-              xtype: "parkourmonthpicker",
-            },
-          ],
-        },
         {
           xtype: "toolbar",
           dock: "bottom",

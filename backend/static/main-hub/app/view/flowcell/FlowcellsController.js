@@ -49,18 +49,52 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
   },
 
   activateView: function (view) {
-    var monthPicker = view.down("parkourmonthpicker");
-    monthPicker.fireEvent("select", monthPicker, monthPicker.getValue());
+    var startMonthPicker = view.down("#start-month-picker");
+    var endMonthPicker = view.down("#end-month-picker");
+
+    var currentDate = new Date();
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.YEAR, 1);
+    var defaultEndDate = currentDate;
+
+    startMonthPicker.setValue(defaultStartDate);
+    endMonthPicker.setValue(defaultEndDate);
+
+    startMonthPicker.fireEvent(
+      "select",
+      startMonthPicker,
+      defaultStartDate,
+      "start",
+    );
+    endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
   },
 
-  selectMonth: function (df, value) {
-    var grid = df.up("grid");
+  selectMonth: function (df, value, criteria) {
+    if (!criteria) {
+      criteria = df.itemId === "start-month-picker" ? "start" : "end";
+    }
 
-    grid.getStore().reload({
-      params: {
-        year: value.getFullYear(),
-        month: value.getMonth() + 1,
-      },
+    var grid = df.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var startOfMonth, endOfMonth;
+
+    if (criteria === "start") {
+      startOfMonth = Ext.Date.getFirstDateOfMonth(value);
+      endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
+    } else if (criteria === "end") {
+      startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
+      endOfMonth = Ext.Date.getLastDateOfMonth(value);
+    }
+
+    var start = Ext.Date.format(startOfMonth, "d.m.Y");
+    var end = Ext.Date.format(endOfMonth, "d.m.Y");
+
+    var store = grid.getStore();
+    store.getProxy().setExtraParam("start", start);
+    store.getProxy().setExtraParam("end", end);
+
+    store.reload({
       callback: function () {
         grid.getView().features[0].collapseAll();
       },

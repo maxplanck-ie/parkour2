@@ -6,6 +6,7 @@ import unicodedata
 
 from common.mixins import MultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
+from dateutil.relativedelta import relativedelta
 from django.apps import apps
 from django.conf import settings
 from django.db.models import F, Prefetch, Q
@@ -134,12 +135,24 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
     def list(self, request, *args, **kwargs):
         today = timezone.datetime.today()
-        year = request.query_params.get("year", today.year)
-        month = request.query_params.get("month", today.month)
+
+        default_start_date = today - relativedelta(years=1)
+        default_end_date = (
+            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        )
+
+        start_date_param = request.query_params.get(
+            "start", default_start_date.strftime("%d.%m.%Y")
+        )
+        end_date_param = request.query_params.get(
+            "end", default_end_date.strftime("%d.%m.%Y")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
+        end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
 
         queryset = self.get_queryset().filter(
-            create_time__year=year,
-            create_time__month=month,
+            create_time__gte=start_date, create_time__lte=end_date
         )
 
         serializer = FlowcellListSerializer(queryset, many=True)
