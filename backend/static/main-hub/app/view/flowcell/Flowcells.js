@@ -101,7 +101,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             renderer: function (value) {
               return Ext.String.format(
                 '<a href="javascript:void(0)" class="pool-name">{0}</a>',
-                value
+                value,
               );
             },
           },

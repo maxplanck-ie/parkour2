@@ -63,14 +63,14 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "select",
       startMonthPicker,
       defaultStartDate,
-      "start"
+      "start",
     );
     endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
   },
 
   selectMonth: function (df, value, criteria) {
     if (!criteria) {
-        criteria = df.itemId === 'start-month-picker' ? 'start' : 'end';
+      criteria = df.itemId === "start-month-picker" ? "start" : "end";
     }
 
     var grid = df.up("grid");
@@ -99,7 +99,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
         grid.getView().features[0].collapseAll();
       },
     });
-},
+  },
 
   selectRecord: function (cb, rowIndex, checked, record) {
     // Don't select lanes from a different flowcell

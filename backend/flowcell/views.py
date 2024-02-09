@@ -137,17 +137,22 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         today = timezone.datetime.today()
 
         default_start_date = today - relativedelta(years=1)
-        default_end_date = today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        default_end_date = (
+            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        )
 
-        start_date_param = request.query_params.get("start", default_start_date.strftime("%d.%m.%Y"))
-        end_date_param = request.query_params.get("end", default_end_date.strftime("%d.%m.%Y"))
+        start_date_param = request.query_params.get(
+            "start", default_start_date.strftime("%d.%m.%Y")
+        )
+        end_date_param = request.query_params.get(
+            "end", default_end_date.strftime("%d.%m.%Y")
+        )
 
         start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
         end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
 
         queryset = self.get_queryset().filter(
-            create_time__gte=start_date,
-            create_time__lte=end_date
+            create_time__gte=start_date, create_time__lte=end_date
         )
 
         serializer = FlowcellListSerializer(queryset, many=True)
