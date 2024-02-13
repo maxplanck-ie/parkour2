@@ -4,7 +4,8 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
 
   requires: [
     "MainHub.view.invoicing.BaseCostGrid",
-    "MainHub.view.invoicing.InvoicingController"
+    "MainHub.components.MonthPicker",
+    "MainHub.view.invoicing.InvoicingController",
   ],
 
   controller: "invoicing",
@@ -29,7 +30,24 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
 
       header: {
         title: "Invoicing",
-        height: 56
+        height: 56,
+        items: [
+          {
+            xtype: "parkourmonthpicker",
+            itemId: "start-month-picker",
+            fieldLabel: "From",
+            labelWidth: 37,
+            labelStyle: "color: white;",
+            margin: "0 15px 0 0",
+          },
+          {
+            xtype: "parkourmonthpicker",
+            itemId: "end-month-picker",
+            fieldLabel: "To",
+            labelWidth: 20,
+            labelStyle: "color: white;",
+          },
+        ],
       },
 
       store: "Invoicing",
@@ -46,7 +64,16 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             text: "Request",
             dataIndex: "request",
             minWidth: 250,
-            locked: true
+            renderer: function (value, meta) {
+              var boldValue =
+                "<b>" + Ext.util.Format.htmlEncode(value) + "</b>";
+              meta.tdAttr =
+                'data-qtip="' +
+                Ext.util.Format.htmlEncode(value) +
+                '" data-qwidth=300';
+              return boldValue;
+            },
+            locked: true,
           },
           {
             text: "Cost Unit",
@@ -135,19 +162,18 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
           xtype: "toolbar",
           dock: "top",
           items: [
-            {
-              xtype: "combobox",
-              itemId: "billing-period-combobox",
-              fieldLabel: "Select Billing Period",
-              store: "BillingPeriods",
-              queryMode: "local",
-              valueField: "value",
-              displayField: "name",
-              forceSelection: true,
-              labelWidth: 130,
-              width: 300
-            },
-            "-",
+            // {
+            //   xtype: "combobox",
+            //   itemId: "billing-period-combobox",
+            //   fieldLabel: "Select Billing Period",
+            //   store: "BillingPeriods",
+            //   queryMode: "local",
+            //   valueField: "value",
+            //   displayField: "name",
+            //   forceSelection: true,
+            //   labelWidth: 130,
+            //   width: 300,
+            // },
             {
               itemId: "view-uploaded-report-button",
               text: "View Uploaded Report",
