@@ -169,18 +169,20 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
           xtype: "toolbar",
           dock: "top",
           items: [
-            // {
-            //   xtype: "combobox",
-            //   itemId: "billing-period-combobox",
-            //   fieldLabel: "Select Billing Period",
-            //   store: "BillingPeriods",
-            //   queryMode: "local",
-            //   valueField: "value",
-            //   displayField: "name",
-            //   forceSelection: true,
-            //   labelWidth: 130,
-            //   width: 300,
-            // },
+            {
+              itemId: "view-uploaded-report-button",
+              text: "View Uploaded Report",
+              reportUrl: "",
+              hidden: true,
+              handler: function () {
+                var link = document.createElement("a");
+                link.href = this.reportUrl;
+                link.download = this.reportUrl.substr(
+                  this.reportUrl.lastIndexOf("/") + 1
+                );
+                link.click();
+              }
+            }
           ]
         },
         {
@@ -188,10 +190,9 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
           dock: "bottom",
           items: [
             {
-              itemId: "view-uploaded-report-button",
               text: "View Reports",
+              itemId: "view-uploaded-report-button",
               iconCls: "fa fa-search fa-lg"
-              // handler: function () {}
             },
             {
               text: "Upload Report",
