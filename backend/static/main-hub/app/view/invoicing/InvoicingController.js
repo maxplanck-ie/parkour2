@@ -9,9 +9,12 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       "#": {
         activate: "activateView"
       },
-      "#billing-period-combobox": {
-        select: "selectBillingPeriod"
+      parkourmonthpicker: {
+        select: "selectMonth",
       },
+      // "#billing-period-combobox": {
+      //   select: "selectBillingPeriod",
+      // },
       "#invoicing-grid": {
         resize: "resize"
       },
@@ -28,17 +31,35 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   activateView: function (view) {
-    var billingPeriodCb = view.down("#billing-period-combobox");
-    billingPeriodCb.getStore().reload({
-      callback: function (records) {
-        if (records && records.length > 0) {
-          var lastRecord = records[records.length - 1];
-          billingPeriodCb.select(lastRecord);
-          billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
-          billingPeriodCb.cancelFocus();
-        }
-      }
-    });
+    // var billingPeriodCb = view.down("#billing-period-combobox");
+    var startMonthPicker = view.down("#start-month-picker");
+    var endMonthPicker = view.down("#end-month-picker");
+
+    var currentDate = new Date();
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.YEAR, 1);
+    var defaultEndDate = currentDate;
+
+    startMonthPicker.setValue(defaultStartDate);
+    endMonthPicker.setValue(defaultEndDate);
+
+    startMonthPicker.fireEvent(
+      "select",
+      startMonthPicker,
+      defaultStartDate,
+      "start"
+    );
+    endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
+
+    // billingPeriodCb.getStore().reload({
+    //   callback: function (records) {
+    //     if (records && records.length > 0) {
+    //       var lastRecord = records[records.length - 1];
+    //       billingPeriodCb.select(lastRecord);
+    //       billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
+    //       billingPeriodCb.cancelFocus();
+    //     }
+    //   },
+    // });
 
     // Load cost stores
     view.down("#fixed-costs-grid").getStore().reload();
@@ -46,28 +67,56 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     view.down("#sequencing-costs-grid").getStore().reload();
   },
 
+  selectMonth: function (df, value, criteria) {
+    if (!criteria) {
+      criteria = df.itemId === "start-month-picker" ? "start" : "end";
+    }
+
+    var grid = df.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var startOfMonth, endOfMonth;
+
+    if (criteria === "start") {
+      startOfMonth = Ext.Date.getFirstDateOfMonth(value);
+      endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
+    } else if (criteria === "end") {
+      startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
+      endOfMonth = Ext.Date.getLastDateOfMonth(value);
+    }
+
+    var start = Ext.Date.format(startOfMonth, "d.m.Y");
+    var end = Ext.Date.format(endOfMonth, "d.m.Y");
+
+    var store = grid.getStore();
+    store.getProxy().setExtraParam("start", start);
+    store.getProxy().setExtraParam("end", end);
+    store.reload({});
+  },
+
   resize: function (el) {
     el.setHeight(Ext.Element.getViewportHeight() - 64);
   },
 
-  selectBillingPeriod: function (cb, record) {
-    var uploadedReportBtn = cb.up().down("#view-uploaded-report-button");
-    var reportUrl = record.get("report_url");
+  // selectBillingPeriod: function (cb, record) {
+  //   var uploadedReportBtn = cb.up().down("#view-uploaded-report-button");
+  //   var reportUrl = record.get("report_url");
 
-    Ext.getStore("Invoicing").reload({
-      params: {
-        year: record.get("value")[0],
-        month: record.get("value")[1]
-      }
-    });
+  //   Ext.getStore("Invoicing").reload({
+  //     params: {
+  //       year: record.get("value")[0],
+  //       month: record.get("value")[1],
+  //     },
+  //   });
 
-    if (reportUrl !== "") {
-      uploadedReportBtn.reportUrl = reportUrl;
-      uploadedReportBtn.show();
-    } else {
-      uploadedReportBtn.hide();
-    }
-  },
+  //   if (reportUrl !== "") {
+  //     uploadedReportBtn.reportUrl = reportUrl;
+  //     uploadedReportBtn.show();
+  //   } else {
+  //     uploadedReportBtn.hide();
+  //   }
+  // },
 
   editPrice: function (editor, context) {
     var store = editor.grid.getStore();

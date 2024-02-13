@@ -51,8 +51,21 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         today = timezone.datetime.today()
-        year = self.request.query_params.get("year", today.year)
-        month = self.request.query_params.get("month", today.month)
+
+        default_start_date = today - relativedelta(years=1)
+        default_end_date = (
+            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        )
+
+        start_date_param = self.request.query_params.get(
+            "start", default_start_date.strftime("%d.%m.%Y")
+        )
+        end_date_param = self.request.query_params.get(
+            "end", default_end_date.strftime("%d.%m.%Y")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
+        end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
 
         flowcell_qs = (
             Flowcell.objects.select_related(
@@ -80,9 +93,10 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Request.objects.filter(
-                flowcell__create_time__year=year,
-                flowcell__create_time__month=month,
+            Request.objects
+            .filter(
+                flowcell__create_time__gte=start_date,
+                flowcell__create_time__lte=end_date,
                 sequenced=True,
                 archived=False,
             )
@@ -180,10 +194,23 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     def download(self, request):
         """Download Invoicing Report."""
         today = timezone.datetime.today()
-        year = self.request.query_params.get("year", today.year)
-        month = int(self.request.query_params.get("month", today.month))
 
-        filename = f"Invoicing_Report_{calendar.month_name[month]}_{year}.xls"
+        default_start_date = today - relativedelta(years=1)
+        default_end_date = (
+            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        )
+
+        start_date_param = self.request.query_params.get(
+            "start", default_start_date.strftime("%d.%m.%Y")
+        )
+        end_date_param = self.request.query_params.get(
+            "end", default_end_date.strftime("%d.%m.%Y")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%m.%Y")
+        end_date = timezone.datetime.strptime(end_date_param, "%m.%Y")
+
+        filename = f"Invoicing_Report_{start_date}_{end_date}.xls"
         response = HttpResponse(content_type="application/ms-excel")
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
