@@ -14,7 +14,7 @@ class PoolSize(models.Model):
                                   verbose_name='Sequencer',
                                   null=True,
                                   on_delete=models.SET_NULL)
-    short_name = models.CharField("Name", max_length=20, blank=False)
+    short_name = models.CharField("Name", max_length=30, blank=False)
     size = models.PositiveSmallIntegerField("Size (in million reads)")
     lanes = models.PositiveSmallIntegerField("Number of Lanes")
     cycles = models.PositiveSmallIntegerField("Number of cycles")
