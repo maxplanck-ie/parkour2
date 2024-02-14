@@ -9,6 +9,7 @@
 - new URL: `/api_user_details` (not really an api endpoint), gives some basic user data to upcoming frontend (VueJS).
 - new URL: `/danke` (users are redirected after seq. request approval)
 - new library protocol types for single cell sequencing.
+- `put-old-migras` and `sweep` rules are more robust now.
 
 24.01.31
 ========
