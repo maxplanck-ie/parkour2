@@ -90,10 +90,10 @@ clean:
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
-		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/latest.sqldump | sed 's/.*\(db_.*\.sqldump\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 	@find ./misc -ctime +7 -name migras_\*.tar.gz \
-		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/migras.tar.gz | sed 's/.*\(migras_.*\.tar\.gz\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 
 prune:
@@ -380,8 +380,11 @@ tar-old-migras:
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
-put-old-migras: rm-migras
-	@[[ -f misc/migras.tar.gz ]] && tar xzf misc/migras.tar.gz
+put-old-migras:
+	@[[ -f misc/migras.tar.gz ]] && \
+		$(MAKE) rm-migras && \
+		tar xzf misc/migras.tar.gz || \
+		ls -l misc/migras.tar.gz
 
 dev-migras: dev db-migras
 dev-ez: dev-easy db-migras
