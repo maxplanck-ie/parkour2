@@ -384,7 +384,7 @@ put-old-migras:
 	@[[ -f misc/migras.tar.gz ]] && \
 		$(MAKE) rm-migras && \
 		tar xzf misc/migras.tar.gz || \
-		ls -l misc/migras.tar.gz
+		{ echo -n 'Symlink seems to be broken, '; ls -L misc/migras.tar.gz; exit 1; }
 
 dev-migras: dev db-migras
 dev-ez: dev-easy db-migras
