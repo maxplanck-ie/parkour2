@@ -38,14 +38,14 @@ describe("Ext.chart.series.Series", function () {
               {
                 name: "metric one",
                 name2: "metric 1",
-                data1: 14,
+                data1: 14
               },
               {
                 name: "metric two",
                 name2: "metric 2",
-                data1: 16,
-              },
-            ],
+                data1: 16
+              }
+            ]
           },
           series: {
             id: "mySeries",
@@ -54,10 +54,10 @@ describe("Ext.chart.series.Series", function () {
             angleField: "data1",
             label: {
               field: "name",
-              display: "rotate",
+              display: "rotate"
             },
-            donut: 30,
-          },
+            donut: 30
+          }
         });
       });
 
@@ -74,7 +74,7 @@ describe("Ext.chart.series.Series", function () {
         expect(label.get(1).text).toBe("metric two");
 
         series.setLabel({
-          field: "name2",
+          field: "name2"
         });
 
         expect(label.get(0).text).toBe("metric 1");
@@ -93,28 +93,28 @@ describe("Ext.chart.series.Series", function () {
     }
 
     var scopeObject = {
-      setTestScope: setTestScope,
+      setTestScope: setTestScope
     };
 
     var store = Ext.create("Ext.data.Store", {
       fields: ["x", "y"],
       data: [
         { x: 0, y: 0 },
-        { x: 1, y: 1 },
-      ],
+        { x: 1, y: 1 }
+      ]
     });
 
     var seriesConfig = {
       type: "bar",
       xField: "x",
-      yField: "y",
+      yField: "y"
     };
 
     function createContainer(options) {
       var config = {
         width: 400,
         height: 400,
-        layout: "fit",
+        layout: "fit"
       };
       Ext.apply(config, options);
       var container = Ext.create("Ext.container.Container", config);
@@ -124,14 +124,14 @@ describe("Ext.chart.series.Series", function () {
 
     function createController() {
       return Ext.create("Ext.app.ViewController", {
-        setTestScope: setTestScope,
+        setTestScope: setTestScope
       });
     }
 
     function createChart(options) {
       var config = {
         store: store,
-        series: seriesConfig,
+        series: seriesConfig
       };
       Ext.apply(config, options);
       var chart = Ext.create("Ext.chart.CartesianChart", config);
@@ -148,9 +148,9 @@ describe("Ext.chart.series.Series", function () {
         listeners: {
           test: {
             fn: "setTestScope",
-            scope: listenerScope,
-          },
-        },
+            scope: listenerScope
+          }
+        }
       });
     }
 
@@ -163,7 +163,7 @@ describe("Ext.chart.series.Series", function () {
           containerController = createController();
           chart = createChart();
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
           series = chart.getSeries()[0];
@@ -178,7 +178,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -187,7 +187,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -196,7 +196,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to chart container controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(containerController);
@@ -216,7 +216,7 @@ describe("Ext.chart.series.Series", function () {
           testScope = undefined;
           chartController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer();
           container.add(chart);
@@ -232,7 +232,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -241,7 +241,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -250,7 +250,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to chart controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(chartController);
@@ -271,10 +271,10 @@ describe("Ext.chart.series.Series", function () {
           chartController = createController();
           containerController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
           series = chart.getSeries()[0];
@@ -289,7 +289,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -298,7 +298,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -307,7 +307,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to chart controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(chartController);
@@ -340,7 +340,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -349,7 +349,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -358,7 +358,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should fail", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           expect(function () {
             series.fireEvent("test", series);
@@ -379,7 +379,7 @@ describe("Ext.chart.series.Series", function () {
           testScope = undefined;
           chart = createChart();
           container = createContainer({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container.add(chart);
           series = chart.getSeries()[0];
@@ -394,7 +394,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -403,7 +403,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -412,7 +412,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should fail", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           expect(function () {
             series.fireEvent("test", series);
@@ -434,7 +434,7 @@ describe("Ext.chart.series.Series", function () {
           chartController = createController();
           chart = createChart({
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           series = chart.getSeries()[0];
           series.setTestScope = setTestScope;
@@ -447,7 +447,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -456,7 +456,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -465,7 +465,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(chartController);
@@ -485,7 +485,7 @@ describe("Ext.chart.series.Series", function () {
           testScope = undefined;
           chartController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           series = chart.getSeries()[0];
           series.setTestScope = setTestScope;
@@ -498,7 +498,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -507,7 +507,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -516,7 +516,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(chartController);
@@ -535,7 +535,7 @@ describe("Ext.chart.series.Series", function () {
         beforeEach(function () {
           testScope = undefined;
           chart = createChart({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container = createContainer();
           container.add(chart);
@@ -551,7 +551,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'this' should refer to the series", function () {
           series.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(series);
@@ -560,7 +560,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           series.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           series.fireEvent("test", series);
           expect(testScope).toBe(scopeObject);
@@ -569,7 +569,7 @@ describe("Ext.chart.series.Series", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           series.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           expect(function () {
             series.fireEvent("test", series);
@@ -594,10 +594,10 @@ describe("Ext.chart.series.Series", function () {
           testScope = undefined;
           containerController = createController();
           chart = createChart({
-            series: [],
+            series: []
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
         });
@@ -644,7 +644,7 @@ describe("Ext.chart.series.Series", function () {
           chartController = createController();
           chart = createChart({
             series: [],
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer();
           container.add(chart);
@@ -693,10 +693,10 @@ describe("Ext.chart.series.Series", function () {
           containerController = createController();
           chart = createChart({
             series: [],
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
         });
@@ -741,7 +741,7 @@ describe("Ext.chart.series.Series", function () {
         beforeEach(function () {
           testScope = undefined;
           chart = createChart({
-            series: [],
+            series: []
           });
           container = createContainer();
           container.add(chart);
@@ -788,10 +788,10 @@ describe("Ext.chart.series.Series", function () {
         beforeEach(function () {
           testScope = undefined;
           chart = createChart({
-            series: [],
+            series: []
           });
           container = createContainer({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container.add(chart);
         });
@@ -840,7 +840,7 @@ describe("Ext.chart.series.Series", function () {
           chart = createChart({
             series: [],
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -885,7 +885,7 @@ describe("Ext.chart.series.Series", function () {
           chartController = createController();
           chart = createChart({
             series: [],
-            controller: chartController,
+            controller: chartController
           });
         });
 
@@ -931,7 +931,7 @@ describe("Ext.chart.series.Series", function () {
           chart = createChart({
             series: [],
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container = createContainer();
           container.add(chart);
@@ -994,27 +994,27 @@ describe("Ext.chart.series.Series", function () {
               xfield: "",
               a: 10,
               b: 20,
-              c: 30,
-            },
-          ],
+              c: 30
+            }
+          ]
         },
         axes: [
           {
             type: "numeric",
             position: "left",
-            fields: ["a", "b", "c"],
+            fields: ["a", "b", "c"]
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: {
           type: "bar",
           stacked: true,
           xField: "xfield",
-          yField: ["a", "b", "c"],
-        },
+          yField: ["a", "b", "c"]
+        }
       }).destroy();
       proto.coordinateData = originalMethod;
 
@@ -1032,33 +1032,33 @@ describe("Ext.chart.series.Series", function () {
               xfield: "A",
               a: 10,
               b: 20,
-              c: 30,
+              c: 30
             },
             {
               xfield: "B",
               a: 30,
               b: 20,
-              c: 10,
-            },
-          ],
+              c: 10
+            }
+          ]
         },
         axes: [
           {
             type: "numeric",
             position: "left",
-            fields: ["a", "b", "c"],
+            fields: ["a", "b", "c"]
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: {
           type: "bar",
           stacked: true,
           xField: "xfield",
-          yField: ["a", "b", "c"],
-        },
+          yField: ["a", "b", "c"]
+        }
       });
 
       // Series create 3 bar series sprites (Ext.chart.series.sprite.Bar - marker holder)
@@ -1091,29 +1091,29 @@ describe("Ext.chart.series.Series", function () {
             {
               x: 0,
               y1: 1,
-              y2: 2,
+              y2: 2
             },
             {
               x: 1,
               y1: 5,
-              y2: 4,
+              y2: 4
             },
             {
               x: 2,
               y1: 2,
-              y2: 3,
-            },
-          ],
+              y2: 3
+            }
+          ]
         },
         axes: [
           {
             type: "numeric",
-            position: "left",
+            position: "left"
           },
           {
             type: "category",
-            position: "bottom",
-          },
+            position: "bottom"
+          }
         ],
         series: [
           {
@@ -1121,20 +1121,20 @@ describe("Ext.chart.series.Series", function () {
             xField: "x",
             yField: "y1",
             marker: {
-              type: "square",
+              type: "square"
             },
-            showMarkers: false,
+            showMarkers: false
           },
           {
             type: "line",
             xField: "x",
             yField: "y2",
             marker: {
-              type: "arrow",
+              type: "arrow"
             },
-            showMarkers: true,
-          },
-        ],
+            showMarkers: true
+          }
+        ]
       });
       chart.performLayout();
       series = chart.getSeries();

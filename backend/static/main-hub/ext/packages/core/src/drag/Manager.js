@@ -45,11 +45,11 @@ Ext.define("Ext.drag.Manager", {
       scope: this,
       dragenter: {
         capture: true,
-        fn: "onNativeDragEnter",
+        fn: "onNativeDragEnter"
       },
       dragleave: "onNativeDragLeave",
       dragover: "onNativeDragOver",
-      drop: "onNativeDrop",
+      drop: "onNativeDrop"
     });
   },
 
@@ -334,6 +334,6 @@ Ext.define("Ext.drag.Manager", {
       }
 
       delete this.targets[target.getId()];
-    },
-  },
+    }
+  }
 });

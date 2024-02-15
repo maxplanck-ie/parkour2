@@ -7,7 +7,7 @@ Ext.define("validator.RNAQuality", {
 
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
-      record.get("nucleic_acid_type"),
+      record.get("nucleic_acid_type")
     );
 
     if (nat && nat.get("type") === "RNA" && value === null) {
@@ -15,7 +15,7 @@ Ext.define("validator.RNAQuality", {
     }
 
     return isValid || "Must be present";
-  },
+  }
 });
 
 Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
@@ -26,18 +26,18 @@ Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
       type: "int",
       name: "nucleic_acid_type",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "float",
       name: "rna_quality",
       allowNull: true,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
 
   validators: {
     nucleic_acid_type: "presence",
-    rna_quality: "rnaquality",
-  },
+    rna_quality: "rnaquality"
+  }
 });

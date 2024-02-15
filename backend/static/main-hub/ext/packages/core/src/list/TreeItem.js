@@ -12,7 +12,7 @@ Ext.define("Ext.list.TreeItem", {
   expandedCls: Ext.baseCSSPrefix + "treelist-item-expanded",
   floatedCls: [
     Ext.Widget.prototype.floatedCls,
-    Ext.baseCSSPrefix + "treelist-item-floated",
+    Ext.baseCSSPrefix + "treelist-item-floated"
   ],
   floatedToolCls: Ext.baseCSSPrefix + "treelist-item-tool-floated",
   leafCls: Ext.baseCSSPrefix + "treelist-item-leaf",
@@ -39,7 +39,7 @@ Ext.define("Ext.list.TreeItem", {
      * element fills from left-to-right of the line.
      * @since 6.0.1
      */
-    rowCls: null,
+    rowCls: null
   },
 
   /**
@@ -66,30 +66,30 @@ Ext.define("Ext.list.TreeItem", {
             children: [
               {
                 reference: "iconElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-icon",
+                cls: Ext.baseCSSPrefix + "treelist-item-icon"
               },
               {
                 reference: "textElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-text",
+                cls: Ext.baseCSSPrefix + "treelist-item-text"
               },
               {
                 reference: "expanderElement",
-                cls: Ext.baseCSSPrefix + "treelist-item-expander",
-              },
-            ],
-          },
-        ],
+                cls: Ext.baseCSSPrefix + "treelist-item-expander"
+              }
+            ]
+          }
+        ]
       },
       {
         reference: "itemContainer",
         tag: "ul",
-        cls: Ext.baseCSSPrefix + "treelist-container",
+        cls: Ext.baseCSSPrefix + "treelist-container"
       },
       {
         reference: "toolElement",
-        cls: Ext.baseCSSPrefix + "treelist-item-tool",
-      },
-    ],
+        cls: Ext.baseCSSPrefix + "treelist-item-tool"
+      }
+    ]
   },
 
   constructor: function (config) {
@@ -160,16 +160,16 @@ Ext.define("Ext.list.TreeItem", {
         Ext.merge(
           {
             from: {
-              height: height,
+              height: height
             },
             to: {
-              height: 0,
+              height: 0
             },
             callback: me.nodeCollapseDone,
-            scope: me,
+            scope: me
           },
-          animation,
-        ),
+          animation
+        )
       );
     }
   },
@@ -205,13 +205,13 @@ Ext.define("Ext.list.TreeItem", {
         Ext.merge(
           {
             to: {
-              height: height,
+              height: height
             },
             callback: me.nodeExpandDone,
-            scope: me,
+            scope: me
           },
-          animation,
-        ),
+          animation
+        )
       );
     }
   },
@@ -360,6 +360,6 @@ Ext.define("Ext.list.TreeItem", {
     updateIndent: function (value, oldValue) {
       this.syncIndent();
       this.callParent([value, oldValue]);
-    },
-  },
+    }
+  }
 });

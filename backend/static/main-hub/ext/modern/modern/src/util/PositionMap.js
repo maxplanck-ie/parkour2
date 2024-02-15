@@ -3,7 +3,7 @@
  */
 Ext.define("Ext.util.PositionMap", {
   config: {
-    minimumHeight: null,
+    minimumHeight: null
   },
 
   constructor: function (config) {
@@ -26,7 +26,7 @@ Ext.define("Ext.util.PositionMap", {
 
     me.adjustments = {
       indices: [],
-      heights: {},
+      heights: {}
     };
 
     if (minimumHeight === null) {
@@ -104,7 +104,7 @@ Ext.define("Ext.util.PositionMap", {
     this.offset += difference;
     this.adjustments = {
       indices: [],
-      heights: {},
+      heights: {}
     };
     return true;
   },
@@ -143,5 +143,5 @@ Ext.define("Ext.util.PositionMap", {
       }
     }
     return start;
-  },
+  }
 });

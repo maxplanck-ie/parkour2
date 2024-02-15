@@ -4,15 +4,15 @@ Ext.define("MainHub.model.libraries.SampleNucleicAcidType", {
   fields: [
     {
       type: "int",
-      name: "id",
+      name: "id"
     },
     {
       type: "string",
-      name: "name",
+      name: "name"
     },
     {
       type: "string",
-      name: "type",
-    },
-  ],
+      name: "type"
+    }
+  ]
 });

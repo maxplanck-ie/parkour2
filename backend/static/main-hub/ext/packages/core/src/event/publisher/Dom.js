@@ -26,7 +26,7 @@ Ext.define(
       animationend: 1,
       resize: 1,
       focus: 1,
-      blur: 1,
+      blur: 1
     },
 
     // The following events do not bubble, and cannot be "captured".  The only way to
@@ -48,7 +48,7 @@ Ext.define(
       // Scroll can be captured, but it is listed here as one of directEvents instead of
       // captureEvents because in some browsers capturing the scroll event does not work
       // if the window object itself fired the scroll event.
-      scroll: 1,
+      scroll: 1
     },
 
     /**
@@ -74,7 +74,7 @@ Ext.define(
       MSPointerOver: 1,
       MSPointerOut: 1,
       MSPointerEnter: 1,
-      MSPointerLeave: 1,
+      MSPointerLeave: 1
     },
 
     /**
@@ -93,7 +93,7 @@ Ext.define(
      */
     blockedCompatibilityMouseEvents: {
       mouseenter: 1,
-      mouseleave: 1,
+      mouseleave: 1
     },
 
     constructor: function () {
@@ -166,7 +166,7 @@ Ext.define(
       this.target.addEventListener(
         eventName,
         this.onDelegatedEvent,
-        !!this.captureEvents[eventName],
+        !!this.captureEvents[eventName]
       );
     },
 
@@ -175,7 +175,7 @@ Ext.define(
       this.target.removeEventListener(
         eventName,
         this.onDelegatedEvent,
-        !!this.captureEvents[eventName],
+        !!this.captureEvents[eventName]
       );
     },
 
@@ -183,7 +183,7 @@ Ext.define(
       element.dom.addEventListener(
         eventName,
         capture ? this.onDirectCaptureEvent : this.onDirectEvent,
-        capture,
+        capture
       );
     },
 
@@ -191,7 +191,7 @@ Ext.define(
       element.dom.removeEventListener(
         eventName,
         capture ? this.onDirectCaptureEvent : this.onDirectEvent,
-        capture,
+        capture
       );
     },
 
@@ -335,7 +335,7 @@ Ext.define(
         //<debug>
         if (e instanceof Array) {
           Ext.raise(
-            "Propagation targets must be supplied when publishing an array of events.",
+            "Propagation targets must be supplied when publishing an array of events."
           );
         }
         //</debug>
@@ -730,7 +730,7 @@ Ext.define(
         self.lastTouchStartX =
         self.lastTouchStartY =
           undefined;
-    },
+    }
   },
   function (Dom) {
     var doc = document,
@@ -760,5 +760,5 @@ Ext.define(
     }
 
     Dom.instance = new Dom();
-  },
+  }
 );

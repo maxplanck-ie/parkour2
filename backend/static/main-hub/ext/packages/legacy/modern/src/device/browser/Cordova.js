@@ -20,5 +20,5 @@ Ext.define("Ext.device.browser.Cordova", {
     }
 
     this._window.close();
-  },
+  }
 });

@@ -8,13 +8,13 @@ Ext.define("Ext.view.NavigationModel", {
   mixins: [
     "Ext.util.Observable",
     "Ext.mixin.Factoryable",
-    "Ext.util.StoreHolder",
+    "Ext.util.StoreHolder"
   ],
 
   alias: "view.navigation.default",
 
   config: {
-    store: null,
+    store: null
   },
 
   /**
@@ -74,7 +74,7 @@ Ext.define("Ext.view.NavigationModel", {
       // We focus on click if the mousedown handler did not focus because it was a translated "touchstart" event.
       itemclick: me.onItemClick,
       itemcontextmenu: me.onItemMouseDown,
-      scope: me,
+      scope: me
     };
   },
 
@@ -104,9 +104,9 @@ Ext.define("Ext.view.NavigationModel", {
         ctrl: true,
         // Need a separate function because we don't want the key
         // events passed on to selectAll (causes event suppression).
-        handler: me.onSelectAllKeyPress,
+        handler: me.onSelectAllKeyPress
       },
-      scope: me,
+      scope: me
     });
   },
 
@@ -166,7 +166,7 @@ Ext.define("Ext.view.NavigationModel", {
     keyEvent,
     suppressEvent,
     preventNavigation,
-    preventFocus,
+    preventFocus
   ) {
     var me = this,
       view = me.view,
@@ -181,7 +181,7 @@ Ext.define("Ext.view.NavigationModel", {
       if (typeof recordIndex === "number") {
         newRecordIndex = Math.max(
           Math.min(recordIndex, dataSource.getCount() - 1),
-          0,
+          0
         );
         newRecord = dataSource.getAt(recordIndex);
       }
@@ -373,7 +373,7 @@ Ext.define("Ext.view.NavigationModel", {
       keyEvent.record,
       keyEvent.item,
       keyEvent.recordIndex,
-      keyEvent,
+      keyEvent
     );
   },
 
@@ -392,7 +392,7 @@ Ext.define("Ext.view.NavigationModel", {
       previousItem: me.previousItem,
       recordIndex: me.recordIndex,
       record: me.record,
-      item: me.item,
+      item: me.item
     });
   },
 
@@ -401,5 +401,5 @@ Ext.define("Ext.view.NavigationModel", {
     Ext.destroy(this.viewListeners, this.keyNav);
 
     this.callParent();
-  },
+  }
 });

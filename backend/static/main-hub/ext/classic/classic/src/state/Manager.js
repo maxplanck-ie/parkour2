@@ -62,5 +62,5 @@ Ext.define("Ext.state.Manager", {
    */
   getProvider: function () {
     return this.provider;
-  },
+  }
 });

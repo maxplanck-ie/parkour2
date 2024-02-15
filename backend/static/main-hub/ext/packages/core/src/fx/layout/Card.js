@@ -10,7 +10,7 @@ Ext.define("Ext.fx.layout.Card", {
     "Ext.fx.layout.card.Flip",
     "Ext.fx.layout.card.Pop",
     //        'Ext.fx.layout.card.Cube',
-    "Ext.fx.layout.card.Scroll",
+    "Ext.fx.layout.card.Scroll"
   ],
 
   constructor: function (config) {
@@ -42,5 +42,5 @@ Ext.define("Ext.fx.layout.Card", {
     }
 
     return Ext.factory(config, defaultClass);
-  },
+  }
 });

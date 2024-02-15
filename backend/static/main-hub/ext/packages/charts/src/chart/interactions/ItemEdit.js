@@ -59,14 +59,14 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
     gestures: {
       dragstart: "onDragStart",
       drag: "onDrag",
-      dragend: "onDragEnd",
+      dragend: "onDragEnd"
     },
 
     cursors: {
       ewResize: "ew-resize",
       nsResize: "ns-resize",
-      move: "move",
-    },
+      move: "move"
+    }
 
     /**
      * @private
@@ -101,7 +101,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
         shrinkWrapDock: true,
         autoHide: true,
         trackMouse: true,
-        mouseOffset: [20, 20],
+        mouseOffset: [20, 20]
       });
 
       tooltip = new Ext.tip.ToolTip(config);
@@ -220,7 +220,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       radius: instance.radius,
       fillStyle: "none",
       lineDash: [4, 4],
-      zIndex: 100,
+      zIndex: 100
     };
     Ext.apply(style, me.getStyle());
 
@@ -231,7 +231,7 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
     me.target = {
       index: item.index,
       yField: item.field,
-      yValue: (positionY - matrix.getDY()) / matrix.getYY(),
+      yValue: (positionY - matrix.getDY()) / matrix.getYY()
     };
 
     params = [
@@ -239,8 +239,8 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       {
         target: me.target,
         style: style,
-        item: item,
-      },
+        item: item
+      }
     ];
     changes = Ext.callback(renderer, null, params, 0, chart);
     if (changes) {
@@ -298,19 +298,19 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       r: instance.r,
       fillStyle: "none",
       lineDash: [4, 4],
-      zIndex: 100,
+      zIndex: 100
     };
     Ext.apply(style, me.getStyle());
 
     me.target = {
       index: item.index,
       yField: item.field,
-      yValue: (positionY - matrix.getDY()) / matrix.getYY(),
+      yValue: (positionY - matrix.getDY()) / matrix.getYY()
     };
     if (isEditableX) {
       Ext.apply(me.target, {
         xField: item.series.getXField(),
-        xValue: (positionX - matrix.getDX()) / matrix.getXX(),
+        xValue: (positionX - matrix.getDX()) / matrix.getXX()
       });
     }
 
@@ -319,8 +319,8 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       {
         target: me.target,
         style: style,
-        item: item,
-      },
+        item: item
+      }
     ];
     changes = Ext.callback(renderer, null, params, 0, chart);
     if (changes) {
@@ -375,12 +375,12 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
       record = store.getAt(target.index);
       if (target.yField) {
         record.set(target.yField, target.yValue, {
-          convert: false,
+          convert: false
         });
       }
       if (target.xField) {
         record.set(target.xField, target.xValue, {
-          convert: false,
+          convert: false
         });
       }
       if (target.yField || target.xField) {
@@ -404,5 +404,5 @@ Ext.define("Ext.chart.interactions.ItemEdit", {
 
     Ext.destroy(tooltip);
     this.callParent();
-  },
+  }
 });

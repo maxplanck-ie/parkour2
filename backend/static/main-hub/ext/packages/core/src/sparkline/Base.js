@@ -104,7 +104,7 @@ Ext.define(
       "Ext.XTemplate",
       "Ext.sparkline.CanvasCanvas",
       "Ext.sparkline.VmlCanvas",
-      "Ext.util.Color",
+      "Ext.util.Color"
     ],
 
     cachedConfig: {
@@ -160,14 +160,14 @@ Ext.define(
        *
        * The implemented subclases all define their own `tipTpl`, but it can be overridden.
        */
-      tipTpl: null,
+      tipTpl: null
     },
 
     config: {
       /**
        * @cfg {Number[]} values An array of numbers which define the chart.
        */
-      values: null,
+      values: null
     },
 
     element: {
@@ -175,17 +175,17 @@ Ext.define(
       reference: "element",
       style: {
         display: "inline-block",
-        verticalAlign: "top",
+        verticalAlign: "top"
       },
       listeners: {
         mouseenter: "onMouseEnter",
         mouseleave: "onMouseLeave",
-        mousemove: "onMouseMove",
+        mousemove: "onMouseMove"
       },
       // Create canvas zero sized so that it does not affect the containing element's initial layout
       // https://sencha.jira.com/browse/EXTJSIV-10145
       width: 0,
-      height: 0,
+      height: 0
     },
 
     defaultBindProperty: "values",
@@ -222,14 +222,14 @@ Ext.define(
             if (proto[applierName]) {
               proto[applierName] = Ext.Function.createSequence(
                 proto[applierName],
-                configApplier,
+                configApplier
               );
             } else {
               proto[applierName] = configApplier;
             }
           }
         }
-      },
+      }
     },
 
     constructor: function (config) {
@@ -328,7 +328,7 @@ Ext.define(
       me.width = width;
       if (me.height == null && measurer) {
         me.setHeight(
-          parseInt(measurer.getCachedStyle(dom.parentNode, "line-height"), 10),
+          parseInt(measurer.getCachedStyle(dom.parentNode, "line-height"), 10)
         );
       }
     },
@@ -408,7 +408,7 @@ Ext.define(
         offset = me.canvas.el.getXY();
         region = me.getRegion(
           me.currentPageXY[0] - offset[0],
-          me.currentPageXY[1] - offset[1],
+          me.currentPageXY[1] - offset[1]
         );
 
         if (region != null && me.isValidRegion(region, values)) {
@@ -485,7 +485,7 @@ Ext.define(
         if (!fields[j].isNull || !me.getTooltipSkipNull()) {
           Ext.apply(fields[j], {
             prefix: me.getTooltipPrefix(),
-            suffix: me.getTooltipSuffix(),
+            suffix: me.getTooltipSuffix()
           });
           entries.push(tipTpl.apply(fields[j]));
         }
@@ -530,8 +530,8 @@ Ext.define(
         return region < values.length;
       },
 
-      showTip: Ext.privateFn,
-    },
+      showTip: Ext.privateFn
+    }
   },
   function (SparklineBase) {
     var proto = SparklineBase.prototype;
@@ -561,7 +561,7 @@ Ext.define(
         listeners: {
           mouseenter: "onMouseEnter",
           mouseleave: "onMouseLeave",
-          mousemove: "onMouseMove",
+          mousemove: "onMouseMove"
         },
         style: {
           display: "inline-block",
@@ -570,7 +570,7 @@ Ext.define(
           margin: "0px",
           padding: "0px",
           verticalAlign: "top",
-          cursor: "default",
+          cursor: "default"
         },
         children: [
           {
@@ -578,10 +578,10 @@ Ext.define(
             reference: "groupEl",
             coordorigin: "0 0",
             coordsize: "0 0",
-            style: "position:absolute;width:0;height:0;pointer-events:none",
-          },
-        ],
+            style: "position:absolute;width:0;height:0;pointer-events:none"
+          }
+        ]
       };
     }
-  },
+  }
 );

@@ -16,11 +16,11 @@ Ext.define("Ext.drag.proxy.None", {
 
   factoryConfig: {
     aliasPrefix: "drag.proxy.",
-    type: "dragproxy",
+    type: "dragproxy"
   },
 
   config: {
-    source: null,
+    source: null
   },
 
   constructor: function (config) {
@@ -84,6 +84,6 @@ Ext.define("Ext.drag.proxy.None", {
      */
     adjustCursorOffset: function (info, pos) {
       return pos;
-    },
-  },
+    }
+  }
 });

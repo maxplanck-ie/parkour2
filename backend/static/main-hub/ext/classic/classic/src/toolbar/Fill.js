@@ -30,5 +30,5 @@ Ext.define("Ext.toolbar.Fill", {
    * `true` in this class to identify an object as an instantiated Fill, or subclass thereof.
    */
   isFill: true,
-  flex: 1,
+  flex: 1
 });

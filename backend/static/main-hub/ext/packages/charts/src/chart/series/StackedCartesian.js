@@ -38,7 +38,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
     /**
      * @cfg {Array} hidden
      */
-    hidden: [],
+    hidden: []
   },
 
   spriteAnimationCount: 0,
@@ -208,7 +208,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
 
   updateLabelOverflowPadding: function (labelOverflowPadding) {
     this.getLabel().setAttributes({
-      labelOverflowPadding: labelOverflowPadding,
+      labelOverflowPadding: labelOverflowPadding
     });
   },
 
@@ -289,7 +289,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
               record: store.getData().items[index],
               // Handle the case where we're stacked but a single segment
               field: typeof yField === "string" ? yField : yField[i],
-              sprite: sprite,
+              sprite: sprite
             };
             return item;
           }
@@ -336,7 +336,7 @@ Ext.define("Ext.chart.series.StackedCartesian", {
           "black",
         disabled: hidden[i],
         series: me.getId(),
-        index: i,
+        index: i
       });
     }
   },
@@ -353,5 +353,5 @@ Ext.define("Ext.chart.series.StackedCartesian", {
     if (this.spriteAnimationCount === 0) {
       this.fireEvent("animationend");
     }
-  },
+  }
 });

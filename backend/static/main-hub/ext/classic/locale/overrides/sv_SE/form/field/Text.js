@@ -4,5 +4,5 @@ Ext.define("Ext.locale.sv_SE.form.field.Text", {
   maxLengthText: "Största tillåtna längd för detta fält är {0}",
   blankText: "Detta fält är obligatoriskt",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });

@@ -84,7 +84,7 @@
     /* Sanity check - you just know it will happen */
     if (!(this instanceof FixedColumns)) {
       alert(
-        "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword.",
+        "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword."
       );
       return;
     }
@@ -145,7 +145,7 @@
        * Is the document layout right-to-left
        * @type boolean
        */
-      rtl: $(dtSettings.nTable).css("direction") === "rtl",
+      rtl: $(dtSettings.nTable).css("direction") === "rtl"
     };
 
     /**
@@ -212,7 +212,7 @@
           wrapper: null,
           head: null,
           body: null,
-          foot: null,
+          foot: null
         },
 
         /**
@@ -223,8 +223,8 @@
           wrapper: null,
           head: null,
           body: null,
-          foot: null,
-        },
+          foot: null
+        }
       },
 
       /**
@@ -256,7 +256,7 @@
            *  @type     node
            *  @default  null
            */
-          footer: null,
+          footer: null
         },
 
         /**
@@ -283,9 +283,9 @@
            *  @type     node
            *  @default  null
            */
-          footer: null,
-        },
-      },
+          footer: null
+        }
+      }
     };
 
     if (dtSettings._oFixedColumns) {
@@ -303,7 +303,7 @@
         function () {
           that._fnConstruct(init);
         },
-        "FixedColumns",
+        "FixedColumns"
       );
     } else {
       this._fnConstruct(init);
@@ -427,7 +427,7 @@
           return [
             row,
             colIdx,
-            inst.oApi._fnVisibleToColumnIndex(this.s.dt, colIdx),
+            inst.oApi._fnVisibleToColumnIndex(this.s.dt, colIdx)
           ];
         }
       }
@@ -458,7 +458,7 @@
           "FixedColumns " +
             FixedColumns.VERSION +
             " required DataTables 1.8.0 or later. " +
-            "Please upgrade your DataTables installation",
+            "Please upgrade your DataTables installation"
         );
         return;
       }
@@ -469,7 +469,7 @@
           1,
           "FixedColumns is not needed (no " +
             "x-scrolling in DataTables enabled), so no action will be taken. Use 'FixedHeader' for " +
-            "column fixing when scrolling is not enabled",
+            "column fixing when scrolling is not enabled"
         );
         return;
       }
@@ -480,7 +480,7 @@
       /* Set up the DOM as we need it and cache nodes */
       var classes = this.s.dt.oClasses;
       this.dom.grid.dt = $(this.s.dt.nTable).parents(
-        "div." + classes.sScrollWrapper,
+        "div." + classes.sScrollWrapper
       )[0];
       this.dom.scroller = $("div." + classes.sScrollBody, this.dom.grid.dt)[0];
 
@@ -618,7 +618,7 @@
               that._fnGridLayout(that);
               that._fnDraw(true);
             }
-          },
+          }
         )
         .on("select.dt.DTFC deselect.dt.DTFC", function (e, dt, type, indexes) {
           if (e.namespace === "dt") {
@@ -746,7 +746,7 @@
           '<div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>' +
           "</div>" +
           "</div>" +
-          "</div>",
+          "</div>"
       )[0];
       var nLeft = nSWrapper.childNodes[0];
       var nRight = nSWrapper.childNodes[1];
@@ -800,7 +800,7 @@
       if (this.s.rtl) {
         $("div.DTFC_RightHeadBlocker", nSWrapper).css({
           left: -oOverflow.bar + "px",
-          right: "",
+          right: ""
         });
       }
     },
@@ -911,7 +911,7 @@
       var out = {
         x: false,
         y: false,
-        bar: this.s.dt.oScroll.iBarWidth,
+        bar: this.s.dt.oScroll.iBarWidth
       };
 
       if (nTable.offsetWidth > nTableScrollBody.clientWidth) {
@@ -941,14 +941,14 @@
         this.s.fnDrawCallback.call(
           this,
           this.dom.clone.left,
-          this.dom.clone.right,
+          this.dom.clone.right
         );
       }
 
       /* Event triggering */
       $(this).trigger("draw.dtfc", {
         leftClone: this.dom.clone.left,
-        rightClone: this.dom.clone.right,
+        rightClone: this.dom.clone.right
       });
     },
 
@@ -1037,12 +1037,12 @@
 
             aRow.push({
               cell: nClone,
-              unique: aoOriginal[i][j].unique,
+              unique: aoOriginal[i][j].unique
             });
           } else {
             aRow.push({
               cell: aClones[iCloned],
-              unique: aoOriginal[i][j].unique,
+              unique: aoOriginal[i][j].unique
             });
           }
         }
@@ -1125,9 +1125,9 @@
               function () {
                 this.className = $(
                   "span.DataTables_sort_icon",
-                  aoCloneLayout[i][j].cell,
+                  aoCloneLayout[i][j].cell
                 )[0].className;
-              },
+              }
             );
           }
         }
@@ -1205,7 +1205,7 @@
               nClone.setAttribute("data-dt-row", i);
               nClone.setAttribute(
                 "data-dt-column",
-                dt.oApi._fnVisibleToColumnIndex(dt, iColumn),
+                dt.oApi._fnVisibleToColumnIndex(dt, iColumn)
               );
               n.appendChild(nClone);
             }
@@ -1339,7 +1339,7 @@
         rootOriginal = original.getElementsByTagName(nodeName)[0],
         rootClone = clone.getElementsByTagName(nodeName)[0],
         jqBoxHack = $(">" + nodeName + ">tr:eq(0)", original).children(
-          ":first",
+          ":first"
         ),
         iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
         anOriginal = this._fnGetTrNodes(rootOriginal),
@@ -1385,7 +1385,7 @@
             left: 0,
             height: 10,
             width: 50,
-            overflow: "scroll",
+            overflow: "scroll"
           })
           .appendTo("body");
 
@@ -1398,7 +1398,7 @@
       }
 
       return _firefoxScroll;
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1476,7 +1476,7 @@
      *          "heightMatch": "auto"
      *      } );
      */
-    sHeightMatch: "semiauto",
+    sHeightMatch: "semiauto"
   };
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1553,7 +1553,7 @@
       return {
         row: rowIdx,
         column: this.column.index("toData", columnIdx),
-        columnVisible: columnIdx,
+        columnVisible: columnIdx
       };
     } else {
       return this.cell(cell).index();

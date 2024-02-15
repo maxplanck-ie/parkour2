@@ -29,7 +29,7 @@
 Ext.define("Ext.util.MixedCollection", {
   extend: "Ext.util.AbstractMixedCollection",
   mixins: {
-    sortable: "Ext.util.Sortable",
+    sortable: "Ext.util.Sortable"
   },
 
   /**
@@ -89,7 +89,7 @@ Ext.define("Ext.util.MixedCollection", {
       c[c.length] = {
         key: keys[i],
         value: items[i],
-        index: i,
+        index: i
       };
     }
 
@@ -212,7 +212,7 @@ Ext.define("Ext.util.MixedCollection", {
           var v1 = String(a).toUpperCase(),
             v2 = String(b).toUpperCase();
           return v1 > v2 ? 1 : v1 < v2 ? -1 : 0;
-        },
+        }
     );
-  },
+  }
 });

@@ -12,7 +12,7 @@ describe("Ext.grid.column.Check", function () {
       xtype: "checkcolumn",
       text: "Checked",
       dataIndex: "val",
-      invert: invert,
+      invert: invert
     };
   }
 
@@ -21,21 +21,21 @@ describe("Ext.grid.column.Check", function () {
       model: spec.CheckColumnModel,
       data: data || [
         {
-          val: true,
+          val: true
         },
         {
-          val: true,
+          val: true
         },
         {
-          val: false,
+          val: false
         },
         {
-          val: true,
+          val: true
         },
         {
-          val: false,
-        },
-      ],
+          val: false
+        }
+      ]
     });
 
     if (!columns) {
@@ -48,10 +48,10 @@ describe("Ext.grid.column.Check", function () {
           width: 200,
           renderTo: Ext.getBody(),
           store: store,
-          columns: columns,
+          columns: columns
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     view = grid.getView();
     col = grid.getColumnManager().getFirst();
@@ -66,7 +66,7 @@ describe("Ext.grid.column.Check", function () {
   function getCell(rowIdx) {
     return grid.getView().getCellInclusive({
       row: rowIdx,
-      column: 0,
+      column: 0
     });
   }
 
@@ -86,7 +86,7 @@ describe("Ext.grid.column.Check", function () {
   beforeEach(function () {
     Ext.define("spec.CheckColumnModel", {
       extend: "Ext.data.Model",
-      fields: ["val"],
+      fields: ["val"]
     });
   });
 
@@ -178,12 +178,12 @@ describe("Ext.grid.column.Check", function () {
             {
               xtype: "templatecolumn",
               dataIndex: "val",
-              tpl: "{val}",
-            },
+              tpl: "{val}"
+            }
           ]);
           triggerCellMouseEvent("click", 0);
           expect(grid.getSelectionModel().isSelected(store.getAt(0))).toBe(
-            true,
+            true
           );
         });
 
@@ -194,12 +194,12 @@ describe("Ext.grid.column.Check", function () {
           makeGrid([
             cfg,
             {
-              dataIndex: "val",
-            },
+              dataIndex: "val"
+            }
           ]);
           triggerCellMouseEvent("click", 0);
           expect(grid.getSelectionModel().isSelected(store.getAt(0))).toBe(
-            true,
+            true
           );
         });
       });
@@ -214,12 +214,12 @@ describe("Ext.grid.column.Check", function () {
             {
               xtype: "templatecolumn",
               dataIndex: "val",
-              tpl: "{val}",
-            },
+              tpl: "{val}"
+            }
           ]);
           triggerCellMouseEvent("click", 0);
           expect(grid.getSelectionModel().isSelected(store.getAt(0))).toBe(
-            false,
+            false
           );
         });
 
@@ -230,12 +230,12 @@ describe("Ext.grid.column.Check", function () {
           makeGrid([
             cfg,
             {
-              dataIndex: "val",
-            },
+              dataIndex: "val"
+            }
           ]);
           triggerCellMouseEvent("click", 0);
           expect(grid.getSelectionModel().isSelected(store.getAt(0))).toBe(
-            false,
+            false
           );
         });
       });
@@ -333,9 +333,9 @@ describe("Ext.grid.column.Check", function () {
           listeners: {
             headercheckchange: function () {
               ready = true;
-            },
-          },
-        },
+            }
+          }
+        }
       ]);
 
       // Wait for the header state to be synched.
@@ -349,7 +349,7 @@ describe("Ext.grid.column.Check", function () {
       col.on({
         headercheckchange: function () {
           headercheckchangeCount++;
-        },
+        }
       });
 
       // Test selecting all
@@ -387,7 +387,7 @@ describe("Ext.grid.column.Check", function () {
         },
         headercheckchange: function () {
           headercheckchangeCalled = true;
-        },
+        }
       });
 
       // Test vetoing of selecting all
@@ -413,7 +413,7 @@ describe("Ext.grid.column.Check", function () {
       col.on({
         headercheckchange: function () {
           headercheckchangeCount++;
-        },
+        }
       });
 
       // Rows 2 and 4 are unchecked. Header should start unchecked.

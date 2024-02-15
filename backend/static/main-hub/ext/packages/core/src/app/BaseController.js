@@ -281,7 +281,7 @@ Ext.define("Ext.app.BaseController", {
      *     }
      */
     routes: null,
-    before: null,
+    before: null
   },
 
   /**
@@ -369,7 +369,7 @@ Ext.define("Ext.app.BaseController", {
 
         if (Ext.isString(config)) {
           config = {
-            action: config,
+            action: config
           };
         }
 
@@ -385,7 +385,7 @@ Ext.define("Ext.app.BaseController", {
               url +
               '") and in the before object property also in the "' +
               me.self.getName() +
-              '" controller. Will use the before method in the route and disregard the one in the before property.',
+              '" controller. Will use the before method in the route and disregard the one in the before property.'
           );
         }
         //</debug>
@@ -617,5 +617,5 @@ Ext.define("Ext.app.BaseController", {
       Ext.app.route.Router.onStateChange(token);
     }
     return ret;
-  },
+  }
 });

@@ -23,7 +23,7 @@ Ext.onReady(function () {
       "Σεπτέμβριος",
       "Οκτώβριος",
       "Νοέμβριος",
-      "Δεκέμβριος",
+      "Δεκέμβριος"
     ];
 
     Ext.Date.shortMonthNames = [
@@ -38,7 +38,7 @@ Ext.onReady(function () {
       "Σεπ",
       "Οκτ",
       "Νοέ",
-      "Δεκ",
+      "Δεκ"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -57,7 +57,7 @@ Ext.onReady(function () {
       Sep: 8,
       Oct: 9,
       Nov: 10,
-      Dec: 11,
+      Dec: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -73,7 +73,7 @@ Ext.onReady(function () {
       "Τετάρτη",
       "Πέμπτη",
       "Παρασκευή",
-      "Σάββατο",
+      "Σάββατο"
     ];
   }
 
@@ -83,35 +83,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // Greek Euro
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.el_GR.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.el_GR.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} Επιλεγμένες σειρές",
+  dragText: "{0} Επιλεγμένες σειρές"
 });
 
 Ext.define("Ext.locale.el_GR.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Κλείστε το tab",
+  closeText: "Κλείστε το tab"
 });
 
 Ext.define("Ext.locale.el_GR.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Το περιεχόμενο του πεδίου δεν είναι αποδεκτό",
+  invalidText: "Το περιεχόμενο του πεδίου δεν είναι αποδεκτό"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.el_GR.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Μεταφόρτωση δεδομένων...",
+  loadingText: "Μεταφόρτωση δεδομένων..."
 });
 
 Ext.define("Ext.locale.el_GR.picker.Date", {
@@ -125,7 +125,7 @@ Ext.define("Ext.locale.el_GR.picker.Date", {
   prevText: "Προηγούμενος Μήνας (Control + Αριστερό Βέλος)",
   monthYearText: "Επιλογή Μηνός (Control + Επάνω/Κάτω Βέλος για μεταβολή ετών)",
   todayTip: "{0} (ΠΛήκτρο Διαστήματος)",
-  format: "d/m/y",
+  format: "d/m/y"
 });
 
 Ext.define("Ext.locale.el_GR.toolbar.Paging", {
@@ -138,7 +138,7 @@ Ext.define("Ext.locale.el_GR.toolbar.Paging", {
   lastText: "Τελευταία Σελίδα",
   refreshText: "Ανανέωση",
   displayMsg: "Εμφάνιση {0} - {1} από {2}",
-  emptyMsg: "Δεν υπάρχουν δεδομένα",
+  emptyMsg: "Δεν υπάρχουν δεδομένα"
 });
 
 Ext.define("Ext.locale.el_GR.form.field.Text", {
@@ -147,14 +147,14 @@ Ext.define("Ext.locale.el_GR.form.field.Text", {
   maxLengthText: "Το μεγαλύτερο αποδεκτό μήκος για το πεδίο είναι {0}",
   blankText: "Το πεδίο είναι υποχρεωτικό",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.el_GR.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Η μικρότερη τιμή του πεδίου είναι {0}",
   maxText: "Η μεγαλύτερη τιμή του πεδίου είναι {0}",
-  nanText: "{0} δεν είναι αποδεκτός αριθμός",
+  nanText: "{0} δεν είναι αποδεκτός αριθμός"
 });
 
 Ext.define("Ext.locale.el_GR.form.field.Date", {
@@ -165,20 +165,20 @@ Ext.define("Ext.locale.el_GR.form.field.Date", {
   maxText: "Η ημερομηνία αυτού του πεδίου πρέπει να είναι πριν την {0}",
   invalidText:
     "{0} δεν είναι έγκυρη ημερομηνία - πρέπει να είναι στη μορφή {1}",
-  format: "d/m/y",
+  format: "d/m/y"
 });
 
 Ext.define(
   "Ext.locale.el_GR.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Μεταφόρτωση δεδομένων...",
+      loadingText: "Μεταφόρτωση δεδομένων..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.el_GR.form.field.VTypes", {
@@ -187,14 +187,14 @@ Ext.define("Ext.locale.el_GR.form.field.VTypes", {
     'Το πεδίο δέχεται μόνο διευθύνσεις Email σε μορφή "user@example.com"',
   urlText: 'Το πεδίο δέχεται μόνο URL σε μορφή "http:/' + '/www.example.com"',
   alphaText: "Το πεδίο δέχεται μόνο χαρακτήρες και _",
-  alphanumText: "Το πεδίο δέχεται μόνο χαρακτήρες, αριθμούς και _",
+  alphanumText: "Το πεδίο δέχεται μόνο χαρακτήρες, αριθμούς και _"
 });
 
 Ext.define(
   "Ext.locale.el_GR.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Δώστε τη διεύθυνση (URL) για το σύνδεσμο (link):",
+    createLinkText: "Δώστε τη διεύθυνση (URL) για το σύνδεσμο (link):"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -202,76 +202,76 @@ Ext.define(
         bold: {
           title: "Έντονα (Ctrl+B)",
           text: "Κάνετε το προεπιλεγμένο κείμενο έντονο.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Πλάγια (Ctrl+I)",
           text: "Κάνετε το προεπιλεγμένο κείμενο πλάγιο.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Υπογράμμιση (Ctrl+U)",
           text: "Υπογραμμίζετε το προεπιλεγμένο κείμενο.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Μεγέθυνση κειμένου",
           text: "Μεγαλώνετε τη γραμματοσειρά.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Σμίκρυνση κειμένου",
           text: "Μικραίνετε τη γραμματοσειρά.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Χρώμα Φόντου Κειμένου",
           text: "Αλλάζετε το χρώμα στο φόντο του προεπιλεγμένου κειμένου.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Χρώμα Γραμματοσειράς",
           text: "Αλλάζετε το χρώμα στη γραμματοσειρά του προεπιλεγμένου κειμένου.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Αριστερή Στοίχιση Κειμένου",
           text: "Στοιχίζετε το κείμενο στα αριστερά.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Κεντράρισμα Κειμένου",
           text: "Στοιχίζετε το κείμενο στο κέντρο.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Δεξιά Στοίχιση Κειμένου",
           text: "Στοιχίζετε το κείμενο στα δεξιά.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Εισαγωγή Λίστας Κουκίδων",
           text: "Ξεκινήστε μια λίστα με κουκίδες.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Εισαγωγή Λίστας Αρίθμησης",
           text: "Ξεκινήστε μια λίστα με αρίθμηση.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Hyperlink",
           text: "Μετατρέπετε το προεπιλεγμένο κείμενο σε Link.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Επεξεργασία Κώδικα",
           text: "Μεταβαίνετε στη λειτουργία επεξεργασίας κώδικα.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.el_GR.grid.header.Container", {
@@ -280,21 +280,21 @@ Ext.define("Ext.locale.el_GR.grid.header.Container", {
   sortDescText: "Φθίνουσα ταξινόμηση",
   lockText: "Κλείδωμα στήλης",
   unlockText: "Ξεκλείδωμα στήλης",
-  columnsText: "Στήλες",
+  columnsText: "Στήλες"
 });
 
 Ext.define("Ext.locale.el_GR.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Καμμία)",
   groupByText: "Ομαδοποίηση βάσει αυτού του πεδίου",
-  showGroupsText: "Να εμφανίζεται στις ομάδες",
+  showGroupsText: "Να εμφανίζεται στις ομάδες"
 });
 
 Ext.define("Ext.locale.el_GR.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Όνομα",
   valueText: "Περιεχόμενο",
-  dateFormat: "d/m/Y",
+  dateFormat: "d/m/Y"
 });
 
 Ext.define("Ext.locale.el_GR.window.MessageBox", {
@@ -303,11 +303,11 @@ Ext.define("Ext.locale.el_GR.window.MessageBox", {
     ok: "OK",
     cancel: "Άκυρο",
     yes: "Ναι",
-    no: "Όχι",
-  },
+    no: "Όχι"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.el_GR.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

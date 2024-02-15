@@ -5,9 +5,9 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "loadData",
-      },
-    },
+        boxready: "loadData"
+      }
+    }
   },
 
   loadData: function (wnd) {
@@ -15,7 +15,7 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindowController", {
       .down("grid")
       .getStore()
       .load({
-        url: Ext.String.format("api/pools/{0}/", wnd.pool),
+        url: Ext.String.format("api/pools/{0}/", wnd.pool)
       });
-  },
+  }
 });

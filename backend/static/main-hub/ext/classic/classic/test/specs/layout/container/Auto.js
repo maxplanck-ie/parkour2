@@ -19,9 +19,9 @@ describe("Ext.layout.container.Auto", function () {
         var child = Ext.apply(
             {
               xtype: "component",
-              style: "margin: 4px; line-height: 20px;",
+              style: "margin: 4px; line-height: 20px;"
             },
-            childConfig,
+            childConfig
           ),
           parent = Ext.apply(
             {
@@ -29,9 +29,9 @@ describe("Ext.layout.container.Auto", function () {
               xtype: "panel",
               shrinkWrap: shrinkWrap || 2,
               bodyPadding: "6",
-              items: [child],
+              items: [child]
             },
-            parentConfig,
+            parentConfig
           );
 
         panel = Ext.widget(parent);
@@ -44,7 +44,7 @@ describe("Ext.layout.container.Auto", function () {
       describe("configured width and height", function () {
         var parentConfig = {
           height: 100,
-          width: 100,
+          width: 100
         };
 
         describe("naturally widthed child with long text", function () {
@@ -105,7 +105,7 @@ describe("Ext.layout.container.Auto", function () {
             makeContainer(parentConfig, {
               xtype: "panel",
               shrinkWrap: 3,
-              html: '<div style="width:20px;height:20px;"></div>',
+              html: '<div style="width:20px;height:20px;"></div>'
             });
           });
 
@@ -123,7 +123,7 @@ describe("Ext.layout.container.Auto", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { autoScroll: true },
-              parentConfig,
+              parentConfig
             );
 
             describe("large vertical, no horizontal", function () {
@@ -192,7 +192,7 @@ describe("Ext.layout.container.Auto", function () {
               beforeEach(function () {
                 makeContainer(overflowParentConfig, {
                   height: 180,
-                  width: 180,
+                  width: 180
                 });
               });
 
@@ -209,7 +209,7 @@ describe("Ext.layout.container.Auto", function () {
               beforeEach(function () {
                 makeContainer(overflowParentConfig, {
                   height: 180,
-                  width: 79 - scrollbarWidth,
+                  width: 79 - scrollbarWidth
                 });
               });
 
@@ -226,7 +226,7 @@ describe("Ext.layout.container.Auto", function () {
               beforeEach(function () {
                 makeContainer(overflowParentConfig, {
                   height: 79 - scrollbarWidth,
-                  width: 180,
+                  width: 180
                 });
               });
 
@@ -244,7 +244,7 @@ describe("Ext.layout.container.Auto", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow-x:auto;overflow-y:scroll;" },
-              parentConfig,
+              parentConfig
             );
             // TODO
           });
@@ -253,7 +253,7 @@ describe("Ext.layout.container.Auto", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow-x:scroll;overflow-y:auto;" },
-              parentConfig,
+              parentConfig
             );
 
             // TODO
@@ -263,7 +263,7 @@ describe("Ext.layout.container.Auto", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow:scroll;" },
-              parentConfig,
+              parentConfig
             );
 
             // TODO
@@ -274,7 +274,7 @@ describe("Ext.layout.container.Auto", function () {
           describe("overflow hidden", function () {
             beforeEach(function () {
               makeContainer(parentConfig, {
-                style: "height: 50%; width: 50%;",
+                style: "height: 50%; width: 50%;"
               });
             });
 
@@ -291,12 +291,12 @@ describe("Ext.layout.container.Auto", function () {
             var overflowParentConfig = Ext.apply(
               {},
               { style: "overflow:scroll;" },
-              parentConfig,
+              parentConfig
             );
 
             beforeEach(function () {
               makeContainer(overflowParentConfig, {
-                style: "height: 50%; width: 50%;",
+                style: "height: 50%; width: 50%;"
               });
             });
 
@@ -314,7 +314,7 @@ describe("Ext.layout.container.Auto", function () {
       describe("configured height, shrink wrap width", function () {
         var parentConfig = {
           height: 100,
-          shrinkWrap: 1,
+          shrinkWrap: 1
         };
 
         describe("auto width child with text", function () {
@@ -349,7 +349,7 @@ describe("Ext.layout.container.Auto", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { bodyStyle: "overflow:auto;" },
-            parentConfig,
+            parentConfig
           );
 
           describe("vertical", function () {
@@ -372,7 +372,7 @@ describe("Ext.layout.container.Auto", function () {
 
       describe("configured width, shrink wrap height", function () {
         var parentConfig = {
-          width: 100,
+          width: 100
         };
 
         describe("naturally widthed child with long text", function () {
@@ -449,7 +449,7 @@ describe("Ext.layout.container.Auto", function () {
             makeContainer(parentConfig, {
               xtype: "panel",
               shrinkWrap: 3,
-              html: '<div style="width:20px;height:20px;"></div>',
+              html: '<div style="width:20px;height:20px;"></div>'
             });
           });
 
@@ -470,7 +470,7 @@ describe("Ext.layout.container.Auto", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { bodyStyle: "overflow:auto;" },
-            parentConfig,
+            parentConfig
           );
 
           describe("horizontal", function () {
@@ -493,7 +493,7 @@ describe("Ext.layout.container.Auto", function () {
 
       describe("shrink wrap width and height", function () {
         var parentConfig = {
-          shrinkWrap: 3,
+          shrinkWrap: 3
         };
 
         describe("auto width child with text", function () {
@@ -547,9 +547,9 @@ describe("Ext.layout.container.Auto", function () {
                 xtype: "component",
                 margin: 5,
                 height: 90,
-                style: childStyle,
-              },
-            ],
+                style: childStyle
+              }
+            ]
           });
         }
 

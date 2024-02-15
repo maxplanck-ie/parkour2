@@ -21,5 +21,5 @@ Ext.define("Ext.view.TagKeyNav", {
 
     // Allow propagating to the field
     return true;
-  },
+  }
 });

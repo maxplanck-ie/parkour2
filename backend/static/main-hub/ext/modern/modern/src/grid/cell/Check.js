@@ -14,7 +14,7 @@ Ext.define("Ext.grid.cell.Check", {
      * @cfg {Boolean} disabled
      * Whether or not this component is disabled
      */
-    disabled: null,
+    disabled: null
   },
 
   innerTemplate: [
@@ -22,9 +22,9 @@ Ext.define("Ext.grid.cell.Check", {
       reference: "checkboxElement",
       classList: [
         Ext.baseCSSPrefix + "checkbox-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
   ],
 
   classCls: Ext.baseCSSPrefix + "checkcell",
@@ -101,7 +101,7 @@ Ext.define("Ext.grid.cell.Check", {
           recordIndex,
           checked,
           record,
-          e,
+          e
         ) !== false
       ) {
         if (me.getColumn().getStopSelection()) {
@@ -116,5 +116,5 @@ Ext.define("Ext.grid.cell.Check", {
         }
       }
     }
-  },
+  }
 });

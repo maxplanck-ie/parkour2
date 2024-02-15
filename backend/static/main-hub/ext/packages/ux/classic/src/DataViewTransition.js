@@ -10,7 +10,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
    */
   defaults: {
     duration: 750,
-    idProperty: "id",
+    idProperty: "id"
   },
 
   /**
@@ -45,11 +45,11 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
             element.id = element.dom.id = Ext.util.Format.format(
               "{0}-{1}",
               dataview.id,
-              dataview.store.getAt(index).get(idProperty),
+              dataview.store.getAt(index).get(idProperty)
             );
           }, this);
       },
-      dataview,
+      dataview
     );
 
     /**
@@ -90,10 +90,10 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
               remove: false,
               duration: duration,
               opacity: 0,
-              useDisplay: true,
+              useDisplay: true
             });
           },
-          this,
+          this
         );
 
         //store is empty
@@ -116,7 +116,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
         //make sure the correct styles are applied to the parent element
         parentEl.applyStyles({
           display: "block",
-          position: "relative",
+          position: "relative"
         });
 
         //stores the current top and left values for each element (discovered below)
@@ -141,10 +141,10 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
                 el.getX() -
                 parentEl.getX() -
                 el.getMargin("l") -
-                parentEl.getPadding("l"),
+                parentEl.getPadding("l")
             };
           },
-          this,
+          this
         );
 
         //set absolute positioning on all DataView items. We need to set position, left and
@@ -161,7 +161,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
 
               //we set the width here to make ListViews work correctly. This is not needed for DataViews
               width: el.getWidth(!Ext.isIE || Ext.isStrict),
-              height: el.getHeight(!Ext.isIE || Ext.isStrict),
+              height: el.getHeight(!Ext.isIE || Ext.isStrict)
             });
           }
         });
@@ -181,12 +181,12 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
 
             newPositions[id] = {
               top: top,
-              left: left,
+              left: left
             };
 
             index++;
           },
-          this,
+          this
         );
 
         //do the movements
@@ -202,7 +202,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
             for (var id in newPositions) {
               Ext.fly(dataviewID + "-" + id).applyStyles({
                 top: newPositions[id].top + "px",
-                left: newPositions[id].left + "px",
+                left: newPositions[id].left + "px"
               });
             }
 
@@ -226,7 +226,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
 
               Ext.fly(dataviewID + "-" + id).applyStyles({
                 top: midTop + "px",
-                left: midLeft + "px",
+                left: midLeft + "px"
               });
             }
           }
@@ -235,7 +235,7 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
         var task = {
           run: doAnimate,
           interval: 20,
-          scope: this,
+          scope: this
         };
 
         Ext.TaskManager.start(task);
@@ -255,24 +255,24 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
           added,
           function (id, item) {
             Ext.fly(
-              this.dataviewID + "-" + item.get(this.idProperty),
+              this.dataviewID + "-" + item.get(this.idProperty)
             ).applyStyles({
               top: newPositions[item.get(this.idProperty)].top + "px",
-              left: newPositions[item.get(this.idProperty)].left + "px",
+              left: newPositions[item.get(this.idProperty)].left + "px"
             });
 
             Ext.fly(this.dataviewID + "-" + item.get(this.idProperty)).animate({
               remove: false,
               duration: duration,
-              opacity: 1,
+              opacity: 1
             });
           },
-          this,
+          this
         );
 
         this.cacheStoreData(store);
       },
-      this,
+      this
     );
   },
 
@@ -358,5 +358,5 @@ Ext.ux.DataViewTransition = Ext.extend(Object, {
     }, this);
 
     return remaining;
-  },
+  }
 });

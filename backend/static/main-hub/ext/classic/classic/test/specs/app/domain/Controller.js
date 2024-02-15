@@ -5,7 +5,7 @@ describe("Ext.app.domain.Controller", function () {
     Ext.define("spec.AliasController", {
       extend: "Ext.app.Controller",
       alias: "controller.test",
-      namespace: "spec",
+      namespace: "spec"
     });
 
     ctrlFoo = new Ext.app.Controller({ id: "foo" });
@@ -25,9 +25,9 @@ describe("Ext.app.domain.Controller", function () {
     ctrlFoo.listen({
       controller: {
         "#bar": {
-          foo: handlerFoo,
-        },
-      },
+          foo: handlerFoo
+        }
+      }
     });
 
     ctrlBar.fireEvent("FOO");
@@ -40,9 +40,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "#bar": {
-            foo: handlerFoo,
-          },
-        },
+            foo: handlerFoo
+          }
+        }
       });
 
       ctrlBar.fireEvent("foo");
@@ -54,12 +54,12 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "#foo": {
-            bar: handlerFoo,
+            bar: handlerFoo
           },
           "#bar": {
-            bar: handlerBar,
-          },
-        },
+            bar: handlerBar
+          }
+        }
       });
 
       ctrlFoo.fireEvent("bar");
@@ -75,9 +75,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           test: {
-            custom: handlerFoo,
-          },
-        },
+            custom: handlerFoo
+          }
+        }
       });
       ctrlTest.fireEvent("custom");
       expect(handlerFoo).toHaveBeenCalled();
@@ -87,9 +87,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           other: {
-            custom: handlerFoo,
-          },
-        },
+            custom: handlerFoo
+          }
+        }
       });
       ctrlTest.fireEvent("custom");
       expect(handlerFoo).not.toHaveBeenCalled();
@@ -100,7 +100,7 @@ describe("Ext.app.domain.Controller", function () {
     var app;
     beforeEach(function () {
       app = new Ext.app.Application({
-        name: "ControllerDomainSpec",
+        name: "ControllerDomainSpec"
       });
     });
 
@@ -118,9 +118,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "#": {
-            custom: handlerFoo,
-          },
-        },
+            custom: handlerFoo
+          }
+        }
       });
       app.fireEvent("custom");
       expect(handlerFoo).toHaveBeenCalled();
@@ -130,9 +130,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "#": {
-            custom: handlerFoo,
-          },
-        },
+            custom: handlerFoo
+          }
+        }
       });
       ctrlBar.fireEvent("custom");
       expect(handlerFoo).not.toHaveBeenCalled();
@@ -144,9 +144,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "*": {
-            baz: handlerFoo,
-          },
-        },
+            baz: handlerFoo
+          }
+        }
       });
 
       ctrlBar.fireEvent("baz");
@@ -158,9 +158,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "*": {
-            qux: handlerFoo,
-          },
-        },
+            qux: handlerFoo
+          }
+        }
       });
 
       ctrlFoo.fireEvent("qux");
@@ -172,9 +172,9 @@ describe("Ext.app.domain.Controller", function () {
       ctrlFoo.listen({
         controller: {
           "*": {
-            fred: handlerFoo,
-          },
-        },
+            fred: handlerFoo
+          }
+        }
       });
 
       ctrlBar.fireEvent("fred", "foo", ["bar", "baz"]);

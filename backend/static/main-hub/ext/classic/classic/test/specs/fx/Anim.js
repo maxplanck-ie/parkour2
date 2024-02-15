@@ -14,7 +14,7 @@ describe("Ext.fx.Anim", function () {
     beforeEach(function () {
       spyOn(Ext.fx.Manager, "addAnim"); //avoid animation start
       anim = new Ext.fx.Anim({
-        target: target,
+        target: target
       });
     });
 
@@ -67,11 +67,11 @@ describe("Ext.fx.Anim", function () {
         target: target,
         duration: 1,
         from: {
-          opacity: 0,
+          opacity: 0
         },
         to: {
-          opacity: 1,
-        },
+          opacity: 1
+        }
       });
     });
 
@@ -83,10 +83,10 @@ describe("Ext.fx.Anim", function () {
       runs(function () {
         expect(Ext.fx.Anim.prototype.fireEvent).toHaveBeenCalledWith(
           "beforeanimate",
-          anim,
+          anim
         );
         expect(Ext.fx.Anim.prototype.fireEvent.calls[1].args[0]).toEqual(
-          "afteranimate",
+          "afteranimate"
         );
         expect(Ext.fx.Anim.prototype.fireEvent.calls[1].args[1]).toEqual(anim);
       });
@@ -99,11 +99,11 @@ describe("Ext.fx.Anim", function () {
         target: target,
         duration: 1,
         from: {
-          opacity: 0,
+          opacity: 0
         },
         to: {
-          opacity: 1,
-        },
+          opacity: 1
+        }
       });
 
       waitsFor(function () {
@@ -127,11 +127,11 @@ describe("Ext.fx.Anim", function () {
           target: target,
           duration: 1,
           from: {
-            color: "#000000",
+            color: "#000000"
           },
           to: {
-            color: "#f1c101",
-          },
+            color: "#f1c101"
+          }
         });
 
         waitsFor(function () {
@@ -158,11 +158,11 @@ describe("Ext.fx.Anim", function () {
           target: target,
           duration: 1,
           from: {
-            color: "#000000",
+            color: "#000000"
           },
           to: {
-            color: "#fc0",
-          },
+            color: "#fc0"
+          }
         });
       });
 

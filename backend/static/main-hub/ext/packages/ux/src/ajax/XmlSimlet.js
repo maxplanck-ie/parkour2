@@ -20,7 +20,7 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
     "</tpl>",
     "    </{parent.record}>\n",
     "</tpl>",
-    "</{root}>",
+    "</{root}>"
   ],
 
   doGet: function (ctx) {
@@ -36,7 +36,7 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
         reader: reader,
         fields: model && model.fields,
         root: reader && reader.getRootProperty(),
-        record: reader && reader.record,
+        record: reader && reader.record
       },
       tpl,
       xml,
@@ -92,5 +92,5 @@ Ext.define("Ext.ux.ajax.XmlSimlet", {
       buffer.push("</", recordProperty, ">");
     });
     buffer.push("</", rootProperty, ">");
-  },
+  }
 });

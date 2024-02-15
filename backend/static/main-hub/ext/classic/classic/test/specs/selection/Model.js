@@ -11,7 +11,7 @@ describe("Ext.selection.Model", function () {
     Ext.define("spec.Model", {
       extend: "Ext.data.Model",
 
-      fields: ["id", "name"],
+      fields: ["id", "name"]
     });
   });
 
@@ -25,16 +25,16 @@ describe("Ext.selection.Model", function () {
     var i;
 
     store = new Ext.data.Store({
-      model: spec.Model,
+      model: spec.Model
     });
 
     if (Ext.isObject(mode)) {
       Ext.applyIf(mode, {
-        mode: defaultMode,
+        mode: defaultMode
       });
     } else {
       mode = {
-        mode: mode || defaultMode || fallbackMode,
+        mode: mode || defaultMode || fallbackMode
       };
     }
 
@@ -45,7 +45,7 @@ describe("Ext.selection.Model", function () {
       for (i = 0; i < data; ++i) {
         store.add({
           id: i + 1,
-          name: "Name " + (i + 1),
+          name: "Name " + (i + 1)
         });
       }
     }
@@ -872,7 +872,7 @@ describe("Ext.selection.Model", function () {
       spyOn(selModel, "selectRange");
 
       selModel.selectWithEvent(store.getAt(4), {
-        shiftKey: true,
+        shiftKey: true
       });
 
       expect(selModel.selectRange).not.toHaveBeenCalled();
@@ -1247,8 +1247,8 @@ describe("Ext.selection.Model", function () {
         record: store.getAt(0),
         recordIndex: 0,
         keyEvent: new Ext.event.Event({
-          charCode: Ext.event.Event.UP,
-        }),
+          charCode: Ext.event.Event.UP
+        })
       });
       expectSelected(0);
     });
@@ -1261,8 +1261,8 @@ describe("Ext.selection.Model", function () {
         record: store.getAt(lastIndex),
         recordIndex: lastIndex,
         keyEvent: new Ext.event.Event({
-          charCode: Ext.event.Event.DOWN,
-        }),
+          charCode: Ext.event.Event.DOWN
+        })
       });
       expectSelected(lastIndex);
     });
@@ -1277,10 +1277,10 @@ describe("Ext.selection.Model", function () {
     }
 
     var shift = {
-        shiftKey: true,
+        shiftKey: true
       },
       ctrl = {
-        ctrlKey: true,
+        ctrlKey: true
       };
 
     describe("SINGLE", function () {
@@ -1520,7 +1520,7 @@ describe("Ext.selection.Model", function () {
         selModel.on({
           select: spy,
           deselect: spy,
-          selectionchange: spy,
+          selectionchange: spy
         });
         rec.set("name", "zzzzzz");
         expect(spy).not.toHaveBeenCalled();
@@ -1535,7 +1535,7 @@ describe("Ext.selection.Model", function () {
         selModel.on({
           select: spy,
           deselect: spy,
-          selectionchange: spy,
+          selectionchange: spy
         });
         store.insert(0, rec);
         expect(spy).not.toHaveBeenCalled();
@@ -1552,12 +1552,12 @@ describe("Ext.selection.Model", function () {
         store.loadData([
           {
             id: 1,
-            name: "Foo",
+            name: "Foo"
           },
           {
             id: 2,
-            name: "Bar",
-          },
+            name: "Bar"
+          }
         ]);
 
         rec = selModel.getSelection()[0];
@@ -1575,12 +1575,12 @@ describe("Ext.selection.Model", function () {
         store.loadData([
           {
             id: 1,
-            name: "Foo",
+            name: "Foo"
           },
           {
             id: 2,
-            name: "Bar",
-          },
+            name: "Bar"
+          }
         ]);
 
         rec = selModel.getSelection()[0];
@@ -1596,12 +1596,12 @@ describe("Ext.selection.Model", function () {
         store.loadData([
           {
             id: 1,
-            name: "Foo",
+            name: "Foo"
           },
           {
             id: 2,
-            name: "Bar",
-          },
+            name: "Bar"
+          }
         ]);
 
         rec = selModel.getLastSelected();
@@ -1614,11 +1614,11 @@ describe("Ext.selection.Model", function () {
         expect(function () {
           store.loadData([
             {
-              name: "Foo",
+              name: "Foo"
             },
             {
-              name: "Bar",
-            },
+              name: "Bar"
+            }
           ]);
         }).not.toThrow();
 
@@ -1631,11 +1631,11 @@ describe("Ext.selection.Model", function () {
         select(1);
         store.loadData([
           {
-            id: 101,
+            id: 101
           },
           {
-            id: 102,
-          },
+            id: 102
+          }
         ]);
         expect(selModel.getSelection()).toEqual([]);
       });
@@ -1644,11 +1644,11 @@ describe("Ext.selection.Model", function () {
         select([get(0), get(1)]);
         store.loadData([
           {
-            id: 1,
+            id: 1
           },
           {
-            id: 102,
-          },
+            id: 102
+          }
         ]);
         var selection = selModel.getSelection();
         expect(selection).toEqual([store.getById(1)]);
@@ -1660,8 +1660,8 @@ describe("Ext.selection.Model", function () {
         selModel.on("deselect", spy);
         store.loadData([
           {
-            id: 101,
-          },
+            id: 101
+          }
         ]);
         expect(spy).not.toHaveBeenCalled();
       });
@@ -1671,8 +1671,8 @@ describe("Ext.selection.Model", function () {
         selModel.on("selectionchange", spy);
         store.loadData([
           {
-            id: 101,
-          },
+            id: 101
+          }
         ]);
         expect(spy.callCount).toBe(1);
       });
@@ -1682,11 +1682,11 @@ describe("Ext.selection.Model", function () {
         selModel.on("selectionchange", spy);
         store.loadData([
           {
-            id: 1,
+            id: 1
           },
           {
-            id: 2,
-          },
+            id: 2
+          }
         ]);
         expect(spy).not.toHaveBeenCalled();
       });
@@ -1702,11 +1702,11 @@ describe("Ext.selection.Model", function () {
         var rec = selModel.getSelection()[0];
         store.loadData([
           {
-            id: 101,
+            id: 101
           },
           {
-            id: 102,
-          },
+            id: 102
+          }
         ]);
         expect(selModel.getSelection()).toEqual([rec]);
       });
@@ -1717,11 +1717,11 @@ describe("Ext.selection.Model", function () {
         selModel.on("deselect", spy);
         store.loadData([
           {
-            id: 101,
+            id: 101
           },
           {
-            id: 102,
-          },
+            id: 102
+          }
         ]);
         expect(spy).not.toHaveBeenCalled();
       });
@@ -1974,13 +1974,13 @@ describe("Ext.selection.Model", function () {
         data: data || [
           {
             id: 101,
-            name: "Foo",
+            name: "Foo"
           },
           {
             id: 102,
-            name: "Bar",
-          },
-        ],
+            name: "Bar"
+          }
+        ]
       });
       return other;
     }
@@ -1999,9 +1999,9 @@ describe("Ext.selection.Model", function () {
           makeOtherStore([
             {
               id: 1,
-              name: "Foo",
-            },
-          ]),
+              name: "Foo"
+            }
+          ])
         );
         var last = selModel.getLastSelected();
         expect(last).not.toBe(old);
@@ -2019,25 +2019,25 @@ describe("Ext.selection.Model", function () {
           makeOtherStore([
             {
               id: 1,
-              name: "A",
+              name: "A"
             },
             {
               id: 2,
-              name: "B",
+              name: "B"
             },
             {
               id: 3,
-              name: "C",
+              name: "C"
             },
             {
               id: 4,
-              name: "D",
+              name: "D"
             },
             {
               id: 5,
-              name: "E",
-            },
-          ]),
+              name: "E"
+            }
+          ])
         );
 
         var selection = selModel.getSelection();
@@ -2056,21 +2056,21 @@ describe("Ext.selection.Model", function () {
           makeOtherStore([
             {
               id: 1,
-              name: "A",
+              name: "A"
             },
             {
               id: 2,
-              name: "B",
+              name: "B"
             },
             {
               id: 3,
-              name: "C",
+              name: "C"
             },
             {
               id: 5,
-              name: "E",
-            },
-          ]),
+              name: "E"
+            }
+          ])
         );
 
         var selection = selModel.getSelection();
@@ -2090,25 +2090,25 @@ describe("Ext.selection.Model", function () {
           makeOtherStore([
             {
               id: 1,
-              name: "A",
+              name: "A"
             },
             {
               id: 2,
-              name: "B",
+              name: "B"
             },
             {
               id: 3,
-              name: "C",
+              name: "C"
             },
             {
               id: 4,
-              name: "D",
+              name: "D"
             },
             {
               id: 5,
-              name: "E",
-            },
-          ]),
+              name: "E"
+            }
+          ])
         );
         expect(spy).not.toHaveBeenCalled();
       });
@@ -2122,21 +2122,21 @@ describe("Ext.selection.Model", function () {
           makeOtherStore([
             {
               id: 1,
-              name: "A",
+              name: "A"
             },
             {
               id: 2,
-              name: "B",
+              name: "B"
             },
             {
               id: 3,
-              name: "C",
+              name: "C"
             },
             {
               id: 5,
-              name: "E",
-            },
-          ]),
+              name: "E"
+            }
+          ])
         );
         expect(spy.callCount).toBe(1);
       });

@@ -23,10 +23,10 @@ describe("Ext.slider.Tip", function () {
             maxValue: 100,
             useTips: false,
             plugins: [tip],
-            animate: false,
+            animate: false
           },
-          config,
-        ),
+          config
+        )
       );
 
       thumb0 = slider.thumbs[0];
@@ -72,7 +72,7 @@ describe("Ext.slider.Tip", function () {
     it("should align the tip to t-b?", function () {
       expect(tipXY[0] < thumbXY[0]).toBe(true);
       expect(tipXY[0] + tipSize.width > thumbXY[0] + thumbSize.width).toBe(
-        true,
+        true
       );
       expect(tipXY[1] - tip.offsets[1] + tipSize.height).toBe(thumbXY[1]);
     });

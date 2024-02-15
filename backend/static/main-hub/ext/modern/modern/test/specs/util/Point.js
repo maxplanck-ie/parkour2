@@ -35,7 +35,7 @@ describe("Ext.util.Point", function () {
       it("should copy x and y value to the current instance", function () {
         point.copyFrom({
           x: 300,
-          y: 400,
+          y: 400
         });
 
         expect(point.x).toBe(300);
@@ -48,8 +48,8 @@ describe("Ext.util.Point", function () {
         expect(
           point.equals({
             x: 100,
-            y: 200,
-          }),
+            y: 200
+          })
         ).toBe(true);
       });
 
@@ -57,15 +57,15 @@ describe("Ext.util.Point", function () {
         expect(
           point.equals({
             x: 101,
-            y: 200,
-          }),
+            y: 200
+          })
         ).toBe(false);
 
         expect(
           point.equals({
             x: 100,
-            y: 200.1,
-          }),
+            y: 200.1
+          })
         ).toBe(false);
       });
     });
@@ -76,10 +76,10 @@ describe("Ext.util.Point", function () {
           point.isWithin(
             {
               x: 108,
-              y: 194,
+              y: 194
             },
-            10,
-          ),
+            10
+          )
         ).toBe(true);
       });
 
@@ -88,10 +88,10 @@ describe("Ext.util.Point", function () {
           point.isWithin(
             {
               x: 108.1,
-              y: 194,
+              y: 194
             },
-            10,
-          ),
+            10
+          )
         ).toBe(false);
       });
     });
@@ -108,7 +108,7 @@ describe("Ext.util.Point", function () {
       it("should return true if point.x=100.3 and point.y=199.7", function () {
         var compare = {
           x: 100.3,
-          y: 199.7,
+          y: 199.7
         };
 
         expect(point.roundedEquals(compare)).toBe(true);
@@ -117,7 +117,7 @@ describe("Ext.util.Point", function () {
       it("should return true if point.x=100.6 and point.y=199.7", function () {
         var compare = {
           x: 100.6,
-          y: 199.7,
+          y: 199.7
         };
 
         expect(point.roundedEquals(compare)).toBe(false);

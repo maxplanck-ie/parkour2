@@ -6,7 +6,7 @@ Ext.define("Ext.util.AbstractMixedCollection", {
   requires: ["Ext.util.Filter"],
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -46,7 +46,7 @@ Ext.define("Ext.util.AbstractMixedCollection", {
       }
       me.initialConfig = {
         allowFunctions: me.allowFunctions,
-        getKey: me.getKey,
+        getKey: me.getKey
       };
     }
 
@@ -408,7 +408,7 @@ Ext.define("Ext.util.AbstractMixedCollection", {
   find: function () {
     if (Ext.isDefined(Ext.global.console)) {
       Ext.global.console.warn(
-        "Ext.util.MixedCollection: find has been deprecated. Use findBy instead.",
+        "Ext.util.MixedCollection: find has been deprecated. Use findBy instead."
       );
     }
     return this.findBy.apply(this, arguments);
@@ -1059,8 +1059,8 @@ Ext.define("Ext.util.AbstractMixedCollection", {
           property: property,
           value: value,
           anyMatch: anyMatch,
-          caseSensitive: caseSensitive,
-        }),
+          caseSensitive: caseSensitive
+        })
       );
     } else if (Ext.isArray(property) || property instanceof Ext.util.Filter) {
       filters = filters.concat(property);
@@ -1128,7 +1128,7 @@ Ext.define("Ext.util.AbstractMixedCollection", {
         return o && value.test(o[property]);
       },
       null,
-      start,
+      start
     );
   },
 
@@ -1203,5 +1203,5 @@ Ext.define("Ext.util.AbstractMixedCollection", {
     // If the flag is not set in this object, we know that the clone will not need it either.
     copy.useLinearSearch = me.useLinearSearch;
     return copy;
-  },
+  }
 });

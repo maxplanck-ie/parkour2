@@ -7,7 +7,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
     "Ext.toolbar.TextItem",
     "Ext.form.field.Checkbox",
     "Ext.form.field.Text",
-    "Ext.ux.statusbar.StatusBar",
+    "Ext.ux.statusbar.StatusBar"
   ],
 
   /**
@@ -69,23 +69,23 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
           change: {
             fn: me.onTextFieldChange,
             scope: this,
-            buffer: 500,
-          },
-        },
+            buffer: 500
+          }
+        }
       },
       {
         xtype: "button",
         text: "&lt;",
         tooltip: "Find Previous Row",
         handler: me.onPreviousClick,
-        scope: me,
+        scope: me
       },
       {
         xtype: "button",
         text: "&gt;",
         tooltip: "Find Next Row",
         handler: me.onNextClick,
-        scope: me,
+        scope: me
       },
       "-",
       {
@@ -93,7 +93,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
         hideLabel: true,
         margin: "0 0 0 4px",
         handler: me.regExpToggle,
-        scope: me,
+        scope: me
       },
       "Regular expression",
       {
@@ -101,14 +101,14 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
         hideLabel: true,
         margin: "0 0 0 4px",
         handler: me.caseSensitiveToggle,
-        scope: me,
+        scope: me
       },
-      "Case sensitive",
+      "Case sensitive"
     ];
 
     me.bbar = new Ext.ux.StatusBar({
       defaultText: me.defaultStatusText,
-      name: "searchStatusBar",
+      name: "searchStatusBar"
     });
 
     me.callParent(arguments);
@@ -132,7 +132,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
     tr,
     rowIndex,
     e,
-    eOpts,
+    eOpts
   ) {
     if (e.getKey() === e.S) {
       e.preventDefault();
@@ -167,7 +167,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
       } catch (error) {
         me.statusBar.setStatus({
           text: error.message,
-          iconCls: "x-status-error",
+          iconCls: "x-status-error"
         });
         return null;
       }
@@ -196,7 +196,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
     // reset the statusbar
     me.statusBar.setStatus({
       text: me.defaultStatusText,
-      iconCls: "",
+      iconCls: ""
     });
 
     me.searchValue = me.getSearchValue();
@@ -206,7 +206,7 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
     if (me.searchValue !== null) {
       me.searchRegExp = new RegExp(
         me.getSearchValue(),
-        "g" + (me.caseSensitive ? "" : "i"),
+        "g" + (me.caseSensitive ? "" : "i")
       );
 
       me.store.each(function (record, idx) {
@@ -231,13 +231,13 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
                   if (!seen) {
                     me.matches.push({
                       record: record,
-                      column: column,
+                      column: column
                     });
                     seen = true;
                   }
                   return '<span class="' + me.matchCls + '">' + m + "</span>";
                 },
-                me,
+                me
               );
               // restore protected tags
               Ext.each(matches, function (match) {
@@ -258,9 +258,9 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
           text: Ext.String.format(
             "{0} match{1} found.",
             count,
-            count === 1 ? "es" : "",
+            count === 1 ? "es" : ""
           ),
-          iconCls: "x-status-valid",
+          iconCls: "x-status-valid"
         });
       }
     }
@@ -327,6 +327,6 @@ Ext.define("Ext.ux.LiveSearchGridPanel", {
       var pos = this.matches[this.currentIndex];
       this.getNavigationModel().setPosition(pos.record, pos.column);
       this.getSelectionModel().select(pos.record);
-    },
-  },
+    }
+  }
 });

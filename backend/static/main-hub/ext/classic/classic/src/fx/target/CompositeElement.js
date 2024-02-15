@@ -80,5 +80,5 @@ Ext.define("Ext.fx.target.CompositeElement", {
 
   remove: function () {
     this.target.destroy();
-  },
+  }
 });

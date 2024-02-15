@@ -25,9 +25,9 @@ Ext.testHelper = {
         pageX: 0,
         pageY: 0,
         identifier: 0,
-        point: new Ext.util.Point(touch.pageX || 0, touch.pageY || 0),
+        point: new Ext.util.Point(touch.pageX || 0, touch.pageY || 0)
       },
-      touch || {},
+      touch || {}
     );
   },
 
@@ -42,9 +42,9 @@ Ext.testHelper = {
         changedTouches: [],
         targetTouches: [],
         pageX: 0,
-        pageY: 0,
+        pageY: 0
       },
-      event || {},
+      event || {}
     );
 
     touchEvent.touches = this.createTouchList(touchEvent.touches);
@@ -130,27 +130,27 @@ Ext.testHelper = {
     start: "pointerdown",
     move: "pointermove",
     end: "pointerup",
-    cancel: "pointercancel",
+    cancel: "pointercancel"
   },
 
   msPointerEvents: {
     start: "MSPointerDown",
     move: "MSPointerMove",
     end: "MSPointerUp",
-    cancel: "MSPointerCancel",
+    cancel: "MSPointerCancel"
   },
 
   touchEvents: {
     start: "touchstart",
     move: "touchmove",
     end: "touchend",
-    cancel: "touchcancel",
+    cancel: "touchcancel"
   },
 
   mouseEvents: {
     start: "mousedown",
     move: "mousemove",
-    end: "mouseup",
+    end: "mouseup"
   },
 
   fireEvent: function (type, target, cfg) {
@@ -196,7 +196,7 @@ Ext.testHelper = {
         false,
         false,
         false,
-        pointerType,
+        pointerType
       );
     } else if (pointerType === "mouse") {
       jasmine.fireMouseEvent(
@@ -204,7 +204,7 @@ Ext.testHelper = {
         this.mouseEvents[type],
         (cfg.x || 0) - scroll.left,
         (cfg.y || 0) - scroll.top,
-        cfg.button ? cfg.button : 0,
+        cfg.button ? cfg.button : 0
       );
     } else if (document.createTouch) {
       activeTouches = this.activeTouches || (this.activeTouches = {});
@@ -212,7 +212,7 @@ Ext.testHelper = {
       touch = activeTouches[cfg.id] = {
         identifier: cfg.id,
         pageX: cfg.x,
-        pageY: cfg.y,
+        pageY: cfg.y
       };
 
       if (type === "end" || type === "cancel") {
@@ -259,5 +259,5 @@ Ext.testHelper = {
   // jazzman automatically invokes this method after each spec
   reset: function () {
     this.activeTouches = null;
-  },
+  }
 };

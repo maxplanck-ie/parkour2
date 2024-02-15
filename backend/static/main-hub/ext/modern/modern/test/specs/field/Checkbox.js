@@ -21,15 +21,15 @@ describe("Ext.field.Checkbox", function () {
                   xtype: "radiofield",
                   itemId: "status1",
                   name: "status",
-                  value: "Open",
+                  value: "Open"
                 },
                 {
                   xtype: "radiofield",
                   itemId: "status2",
                   name: "status",
-                  value: "Closed",
-                },
-              ],
+                  value: "Closed"
+                }
+              ]
             },
             {
               xtype: "fieldset",
@@ -39,17 +39,17 @@ describe("Ext.field.Checkbox", function () {
                   xtype: "radiofield",
                   itemId: "status3",
                   name: "status",
-                  value: "In Progress",
+                  value: "In Progress"
                 },
                 {
                   xtype: "radiofield",
                   itemId: "status4",
                   name: "status",
-                  value: "Pending",
-                },
-              ],
-            },
-          ],
+                  value: "Pending"
+                }
+              ]
+            }
+          ]
         },
         {
           xtype: "formpanel",
@@ -61,13 +61,13 @@ describe("Ext.field.Checkbox", function () {
                 {
                   xtype: "textfield",
                   itemId: "status5",
-                  name: "status",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+                  name: "status"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     });
     container.renderTo(Ext.getBody());
   }
@@ -83,15 +83,15 @@ describe("Ext.field.Checkbox", function () {
               xtype: "radiofield",
               itemId: "status1",
               name: "status",
-              value: "Open",
+              value: "Open"
             },
             {
               xtype: "radiofield",
               itemId: "status2",
               name: "status",
-              value: "Closed",
-            },
-          ],
+              value: "Closed"
+            }
+          ]
         },
         {
           xtype: "fieldset",
@@ -100,11 +100,11 @@ describe("Ext.field.Checkbox", function () {
             {
               xtype: "textfield",
               itemId: "status5",
-              name: "status",
-            },
-          ],
-        },
-      ],
+              name: "status"
+            }
+          ]
+        }
+      ]
     });
     container.renderTo(Ext.getBody());
   }
@@ -118,7 +118,7 @@ describe("Ext.field.Checkbox", function () {
         var vm;
         makeField({
           reference: "fooField",
-          viewModel: {},
+          viewModel: {}
         });
         vm = field.getViewModel();
         vm.notify();
@@ -130,7 +130,7 @@ describe("Ext.field.Checkbox", function () {
         makeField({
           reference: "fooField",
           checked: true,
-          viewModel: {},
+          viewModel: {}
         });
         vm = field.getViewModel();
         vm.notify();
@@ -190,7 +190,7 @@ describe("Ext.field.Checkbox", function () {
           "radiofield",
           "radiofield",
           "radiofield",
-          "radiofield",
+          "radiofield"
         ]);
       });
     });

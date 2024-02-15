@@ -110,7 +110,7 @@ Ext.define("Ext.data.proxy.Rest", {
     create: "POST",
     read: "GET",
     update: "PUT",
-    destroy: "DELETE",
+    destroy: "DELETE"
   },
 
   slashRe: /\/$/,
@@ -145,8 +145,8 @@ Ext.define("Ext.data.proxy.Rest", {
       create: "POST",
       read: "GET",
       update: "PUT",
-      destroy: "DELETE",
-    },
+      destroy: "DELETE"
+    }
   },
 
   /**
@@ -198,5 +198,5 @@ Ext.define("Ext.data.proxy.Rest", {
 
   isValidId: function (id) {
     return id || id === 0;
-  },
+  }
 });

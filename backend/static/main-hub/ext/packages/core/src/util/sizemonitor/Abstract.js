@@ -13,7 +13,7 @@ Ext.define("Ext.util.sizemonitor.Abstract", {
 
     scope: null,
 
-    args: [],
+    args: []
   },
 
   width: null,
@@ -32,7 +32,7 @@ Ext.define("Ext.util.sizemonitor.Abstract", {
       height: 0,
       contentWidth: 0,
       contentHeight: 0,
-      flag: 0,
+      flag: 0
     };
 
     this.initElement();
@@ -143,5 +143,5 @@ Ext.define("Ext.util.sizemonitor.Abstract", {
     me.refresh = null;
 
     me.callParent();
-  },
+  }
 });

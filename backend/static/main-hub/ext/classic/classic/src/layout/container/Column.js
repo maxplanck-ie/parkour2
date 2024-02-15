@@ -83,7 +83,7 @@ Ext.define("Ext.layout.container.Column", {
     readsWidth: 0,
     readsHeight: 1,
     setsWidth: 1,
-    setsHeight: 0,
+    setsHeight: 0
   },
 
   createsInnerCt: true,
@@ -200,11 +200,11 @@ Ext.define("Ext.layout.container.Column", {
       }
 
       ownerContext.setContentWidth(
-        contentWidth + ownerContext.paddingContext.getPaddingInfo().width,
+        contentWidth + ownerContext.paddingContext.getPaddingInfo().width
       );
     }
 
     // we registered all the values that block this calculation, so abort now if blocked...
     return !blocked;
-  },
+  }
 });

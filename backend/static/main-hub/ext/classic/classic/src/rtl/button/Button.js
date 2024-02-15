@@ -16,5 +16,5 @@ Ext.define("Ext.rtl.button.Button", {
     }
 
     return region;
-  },
+  }
 });

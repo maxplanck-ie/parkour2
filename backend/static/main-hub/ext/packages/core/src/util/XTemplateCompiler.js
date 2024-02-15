@@ -51,7 +51,7 @@ Ext.define(
       me.body = [
         "var c0=values, a0=" +
           me.createArrayTest(0) +
-          ", p0=parent, n0=xcount, i0=xindex, k0, v;\n",
+          ", p0=parent, n0=xcount, i0=xindex, k0, v;\n"
       ];
       if (me.definitions) {
         if (typeof me.definitions === "string") {
@@ -69,7 +69,7 @@ Ext.define(
       me.definitions.push(
         (me.useEval ? "$=" : "return") + " function (" + me.fnArgs + ") {",
         me.body.join(""),
-        "}",
+        "}"
       );
 
       code = me.definitions.join("\n");
@@ -252,7 +252,7 @@ Ext.define(
           L,
           "+1;xkey=k",
           L,
-          ";\n",
+          ";\n"
         );
       } else if (type == "if" || type == "switch") {
         me.body.push("}\n");
@@ -402,7 +402,7 @@ Ext.define(
         L,
         "[i",
         L,
-        "]",
+        "]"
       );
       if (actions.propName) {
         me.body.push(".", actions.propName);
@@ -512,7 +512,7 @@ Ext.define(
         L,
         "[k",
         L,
-        "];",
+        "];"
       );
       if (actions.propName) {
         me.body.push(".", actions.propName);
@@ -544,7 +544,7 @@ Ext.define(
         "  " + action,
         " }",
         guards.doCatch,
-        "}",
+        "}"
       );
 
       me.body.push(name + me.callFn + "\n");
@@ -556,7 +556,7 @@ Ext.define(
     guards: [
       {
         doTry: "",
-        doCatch: "",
+        doCatch: ""
       },
       {
         doTry: "try { ",
@@ -565,8 +565,8 @@ Ext.define(
           //<debug>
           'Ext.log.warn("XTemplate evaluation exception: " + e.message);\n' +
           //</debug>
-          "}",
-      },
+          "}"
+      }
     ],
 
     addFn: function (body) {
@@ -578,13 +578,13 @@ Ext.define(
         me.definitions.push(
           "function " + name + "(" + me.fnArgs + ") {",
           " return values",
-          "}",
+          "}"
         );
       } else if (body === "..") {
         me.definitions.push(
           "function " + name + "(" + me.fnArgs + ") {",
           " return parent",
-          "}",
+          "}"
         );
       } else {
         me.definitions.push(
@@ -594,7 +594,7 @@ Ext.define(
           "  return(" + body + ")",
           " }",
           guards.doCatch,
-          "}",
+          "}"
         );
       }
 
@@ -687,12 +687,12 @@ Ext.define(
     aposRe: /[']/g,
     intRe: /^\s*(\d+)\s*$/,
     tagRe:
-      /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/,
+      /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/
   },
   function () {
     var proto = this.prototype;
 
     proto.fnArgs = "out,values,parent,xindex,xcount,xkey";
     proto.callFn = ".call(this," + proto.fnArgs + ")";
-  },
+  }
 );

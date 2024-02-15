@@ -34,8 +34,8 @@ Ext.define("Ext.ux.DataView.DragSelector", {
       render: {
         fn: this.onRender,
         scope: this,
-        single: true,
-      },
+        single: true
+      }
     });
   },
 
@@ -58,7 +58,7 @@ Ext.define("Ext.ux.DataView.DragSelector", {
       onBeforeStart: this.onBeforeStart,
       onStart: this.onStart.bind(this),
       onDrag: this.onDrag.bind(this),
-      onEnd: Ext.Function.createDelayed(this.onEnd, 100, this),
+      onEnd: Ext.Function.createDelayed(this.onEnd, 100, this)
     });
 
     /**
@@ -136,7 +136,7 @@ Ext.define("Ext.ux.DataView.DragSelector", {
       top: minY,
       left: minX,
       right: minX + width,
-      bottom: minY + height,
+      bottom: minY + height
     });
 
     dragRegion.constrainTo(bodyRegion);
@@ -179,7 +179,7 @@ Ext.define("Ext.ux.DataView.DragSelector", {
     if (!this.proxy) {
       this.proxy = this.dataview.getEl().createChild({
         tag: "div",
-        cls: "x-view-selector",
+        cls: "x-view-selector"
       });
     }
     return this.proxy;
@@ -198,5 +198,5 @@ Ext.define("Ext.ux.DataView.DragSelector", {
       regions.push(node.getRegion());
     });
     this.bodyRegion = dataview.getEl().getRegion();
-  },
+  }
 });

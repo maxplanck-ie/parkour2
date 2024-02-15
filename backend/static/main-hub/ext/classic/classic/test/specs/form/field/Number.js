@@ -5,7 +5,7 @@ describe("Ext.form.field.Number", function () {
     makeComponent = function (config) {
       config = config || {};
       Ext.applyIf(config, {
-        name: "test",
+        name: "test"
       });
       component = new Ext.form.field.Number(config);
     };
@@ -46,12 +46,12 @@ describe("Ext.form.field.Number", function () {
     });
     it("should have minText = 'The minimum value for this field is {0}'", function () {
       expect(component.minText).toEqual(
-        "The minimum value for this field is {0}",
+        "The minimum value for this field is {0}"
       );
     });
     it("should have maxText = 'The maximum value for this field is {0}'", function () {
       expect(component.maxText).toEqual(
-        "The maximum value for this field is {0}",
+        "The maximum value for this field is {0}"
       );
     });
     it("should have nanText = '{0} is not a valid number'", function () {
@@ -100,7 +100,7 @@ describe("Ext.form.field.Number", function () {
         renderTo: Ext.getBody(),
         minValue: 1,
         maxValue: 100,
-        value: 50,
+        value: 50
       });
     });
 
@@ -121,7 +121,7 @@ describe("Ext.form.field.Number", function () {
     it("should set the minValue property to the argument", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        minValue: -10,
+        minValue: -10
       });
       component.setMinValue(-5);
       expect(component.minValue).toEqual(-5);
@@ -129,7 +129,7 @@ describe("Ext.form.field.Number", function () {
     it("should default a non-numeric argument to NEGATIVE_INFINITY", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        minValue: -10,
+        minValue: -10
       });
       component.setMinValue("foobar");
       expect(component.minValue).toEqual(Number.NEGATIVE_INFINITY);
@@ -139,7 +139,7 @@ describe("Ext.form.field.Number", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         minValue: 0,
-        autoStripChars: true,
+        autoStripChars: true
       });
       var maskRe = component.maskRe,
         stripCharsRe = component.stripCharsRe;
@@ -152,7 +152,7 @@ describe("Ext.form.field.Number", function () {
     it("should update aria-valuemin", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        minValue: -10,
+        minValue: -10
       });
 
       component.setMinValue(-1);
@@ -165,7 +165,7 @@ describe("Ext.form.field.Number", function () {
     beforeEach(function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        maxValue: 10,
+        maxValue: 10
       });
     });
 
@@ -193,7 +193,7 @@ describe("Ext.form.field.Number", function () {
 
     it("should be null if configured with an invalid value", function () {
       makeComponent({
-        value: "foo",
+        value: "foo"
       });
       expect(component.getValue()).toBeNull();
     });
@@ -201,7 +201,7 @@ describe("Ext.form.field.Number", function () {
     it("should set the field value to the parsed value on blur", function () {
       makeComponent({
         inputType: "text", //forcing to text, otherwise chrome ignores the whole value if it contains non-numeric chars
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       jasmine.focusAndWait(component);
       runs(function () {
@@ -216,7 +216,7 @@ describe("Ext.form.field.Number", function () {
     it("should remove aria-valuenow", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        value: 10,
+        value: 10
       });
 
       component.setValue("fubar");
@@ -228,7 +228,7 @@ describe("Ext.form.field.Number", function () {
   describe("respecting allowDecimals", function () {
     it("should round any decimals when allowDecimals is false", function () {
       makeComponent({
-        allowDecimals: false,
+        allowDecimals: false
       });
 
       component.setValue(1.2345);
@@ -243,7 +243,7 @@ describe("Ext.form.field.Number", function () {
 
     it("should round any decimals when decimalPrecision is 0", function () {
       makeComponent({
-        decimalPrecision: 0,
+        decimalPrecision: 0
       });
 
       component.setValue(3.14);
@@ -255,7 +255,7 @@ describe("Ext.form.field.Number", function () {
 
     it("should round values correctly", function () {
       makeComponent({
-        decimalPrecision: 3,
+        decimalPrecision: 3
       });
 
       component.setValue(3.14159);
@@ -271,7 +271,7 @@ describe("Ext.form.field.Number", function () {
     it("should parse values containing the separator", function () {
       makeComponent({
         decimalSeparator: ",",
-        decimalPrecision: 2,
+        decimalPrecision: 2
       });
 
       component.setValue("1,3");
@@ -289,7 +289,7 @@ describe("Ext.form.field.Number", function () {
     it("should use the locale separator by default", function () {
       makeComponent({
         decimalSeparator: ",",
-        value: 0.4,
+        value: 0.4
       });
       expect(component.getSubmitValue()).toBe("0,4");
     });
@@ -298,14 +298,14 @@ describe("Ext.form.field.Number", function () {
       makeComponent({
         decimalSeparator: ",",
         value: 0.4,
-        submitLocaleSeparator: false,
+        submitLocaleSeparator: false
       });
       expect(component.getSubmitValue()).toBe("0.4");
     });
 
     it("should have no effect if we specify no custom separator", function () {
       makeComponent({
-        value: 0.4,
+        value: 0.4
       });
       expect(component.getSubmitValue()).toBe("0.4");
     });
@@ -315,15 +315,15 @@ describe("Ext.form.field.Number", function () {
     it("should have an error when the number is outside the bounds", function () {
       makeComponent({
         minValue: 5,
-        maxValue: 30,
+        maxValue: 30
       });
 
       expect(component.getErrors(3)).toContain(
-        "The minimum value for this field is 5",
+        "The minimum value for this field is 5"
       );
 
       expect(component.getErrors(100)).toContain(
-        "The maximum value for this field is 30",
+        "The maximum value for this field is 30"
       );
 
       expect(component.getErrors(7.2)).toEqual([]);
@@ -339,7 +339,7 @@ describe("Ext.form.field.Number", function () {
 
     it("should have an error if the value is negative and minValue is 0", function () {
       makeComponent({
-        minValue: 0,
+        minValue: 0
       });
 
       expect(component.getErrors(-3)).toContain("The value cannot be negative");
@@ -351,7 +351,7 @@ describe("Ext.form.field.Number", function () {
       makeComponent({
         autoStripChars: true,
         inputType: "text", //forcing to text, since chrome doesn't allow setting non-numeric chars in number field
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -378,7 +378,7 @@ describe("Ext.form.field.Number", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         maxLength: 2,
-        enforceMaxLength: true,
+        enforceMaxLength: true
       });
     });
     it("should enforce the max length when spinning up", function () {
@@ -401,7 +401,7 @@ describe("Ext.form.field.Number", function () {
           renderTo: Ext.getBody(),
           value: 5,
           step: 2,
-          maxValue: 8,
+          maxValue: 8
         });
       });
 
@@ -438,7 +438,7 @@ describe("Ext.form.field.Number", function () {
           renderTo: Ext.getBody(),
           value: 5,
           step: 2,
-          minValue: 2,
+          minValue: 2
         });
       });
 
@@ -507,15 +507,15 @@ describe("Ext.form.field.Number", function () {
         rawToValue: function (rawValue) {
           return Ext.form.field.Number.prototype.rawToValue.call(
             this,
-            rawValue / 2,
+            rawValue / 2
           );
         },
         valueToRaw: function (value) {
           return Ext.form.field.Number.prototype.valueToRaw.call(
             this,
-            value * 2,
+            value * 2
           );
-        },
+        }
       });
       component.setValue(50);
       jasmine.focusAndWait(component);
@@ -532,7 +532,7 @@ describe("Ext.form.field.Number", function () {
         renderTo: Ext.getBody(),
         viewModel: {},
         decimalPrecision: 4,
-        bind: "{val}",
+        bind: "{val}"
       });
 
       var vm = component.getViewModel();

@@ -126,7 +126,7 @@ Ext.define("Ext.dataview.component.Container", {
       mouseover: "onItemMouseOver",
       mouseout: "onItemMouseOut",
       delegate: "> ." + Ext.baseCSSPrefix + "dataitem",
-      scope: this,
+      scope: this
     });
   },
 
@@ -146,7 +146,7 @@ Ext.define("Ext.dataview.component.Container", {
     item.on({
       touchmove: "onItemTouchMove",
       scope: me,
-      single: true,
+      single: true
     });
 
     me.fireEvent("itemtouchstart", me, item, me.indexOf(item), e);
@@ -166,7 +166,7 @@ Ext.define("Ext.dataview.component.Container", {
 
     item.un({
       touchmove: "onItemTouchMove",
-      scope: me,
+      scope: me
     });
 
     me.fireEvent("itemtouchend", me, item, me.indexOf(item), e);
@@ -314,7 +314,7 @@ Ext.define("Ext.dataview.component.Container", {
         record: record,
         itemCls: dataview.getItemCls(),
         defaults: itemConfig,
-        dataview: dataview,
+        dataview: dataview
       };
     return Ext.merge(dataItemConfig, itemConfig);
   },
@@ -354,5 +354,5 @@ Ext.define("Ext.dataview.component.Container", {
       itemCache[i].destroy();
     }
     this.callParent();
-  },
+  }
 });

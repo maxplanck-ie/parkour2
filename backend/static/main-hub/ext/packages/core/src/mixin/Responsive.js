@@ -74,8 +74,8 @@ Ext.define("Ext.mixin.Responsive", function (Responsive) {
       id: "responsive",
 
       after: {
-        destroy: "destroy",
-      },
+        destroy: "destroy"
+      }
     },
 
     config: {
@@ -153,13 +153,13 @@ Ext.define("Ext.mixin.Responsive", function (Responsive) {
             if (!mixinClass || !(rule in ret)) {
               ret[rule] = {
                 fn: null, // created on first evaluation of this rule
-                config: newValue[rule],
+                config: newValue[rule]
               };
             }
           }
 
           return ret;
-        },
+        }
       },
 
       /**
@@ -215,8 +215,8 @@ Ext.define("Ext.mixin.Responsive", function (Responsive) {
 
         merge: function (newValue, oldValue, target, mixinClass) {
           return this.mergeNew(newValue, oldValue, target, mixinClass);
-        },
-      },
+        }
+      }
     },
 
     /**
@@ -428,7 +428,7 @@ Ext.define("Ext.mixin.Responsive", function (Responsive) {
           }
 
           context[Ext.dom.Element.getOrientation()] = true;
-        },
+        }
       }, // private static
 
       //--------------------------------------------------------------------------
@@ -578,7 +578,7 @@ Ext.define("Ext.mixin.Responsive", function (Responsive) {
       updateResponsiveState: function () {
         var config = this.getResponsiveState();
         this.setConfig(config);
-      },
-    }, // private
+      }
+    } // private
   };
 });

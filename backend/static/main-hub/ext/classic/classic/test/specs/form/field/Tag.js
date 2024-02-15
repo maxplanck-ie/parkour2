@@ -8,7 +8,7 @@ describe("Ext.form.field.Tag", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["display", "value"],
+    fields: ["display", "value"]
   });
 
   // There's no simple way to simulate user typing, so going
@@ -27,7 +27,7 @@ describe("Ext.form.field.Tag", function () {
       // Need these two properties so that this object quacks
       // in correct ways to onFieldMutation.
       DELETE: Ext.event.Event.DELETE,
-      BACKSPACE: Ext.event.Event.BACKSPACE,
+      BACKSPACE: Ext.event.Event.BACKSPACE
     });
   }
 
@@ -50,7 +50,7 @@ describe("Ext.form.field.Tag", function () {
     for (i = 1; i <= rows; ++i) {
       data.push({
         display: "Item" + i,
-        value: i,
+        value: i
       });
     }
     return data;
@@ -67,7 +67,7 @@ describe("Ext.form.field.Tag", function () {
     return new Ext.data.Store({
       model: Model,
       data: data,
-      storeId: id,
+      storeId: id
     });
   }
 
@@ -82,10 +82,10 @@ describe("Ext.form.field.Tag", function () {
           renderTo: Ext.getBody(),
           displayField: "display",
           valueField: "value",
-          queryMode: "local",
+          queryMode: "local"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -163,10 +163,10 @@ describe("Ext.form.field.Tag", function () {
         {
           store: {
             model: Model,
-            data: [{}],
-          },
+            data: [{}]
+          }
         },
-        null,
+        null
       );
       expect(tagField.getStore().getCount()).toBe(1);
       // So it gets destroyed
@@ -177,9 +177,9 @@ describe("Ext.form.field.Tag", function () {
       store = makeStore(1, "foo");
       makeField(
         {
-          store: "foo",
+          store: "foo"
         },
-        null,
+        null
       );
       expect(tagField.getStore()).toBe(store);
     });
@@ -195,14 +195,14 @@ describe("Ext.form.field.Tag", function () {
   describe("setting values", function () {
     it("should default to null with multiSelect: false", function () {
       makeField({
-        multiSelect: false,
+        multiSelect: false
       });
       expect(tagField.getValue()).toBeNull();
     });
 
     it("should default to [] with multiSelect: true", function () {
       makeField({
-        multiSelect: true,
+        multiSelect: true
       });
       expect(tagField.getValue()).toEqual([]);
     });
@@ -215,21 +215,21 @@ describe("Ext.form.field.Tag", function () {
 
       it("should return an empty array if value is configured as null", function () {
         makeField({
-          value: null,
+          value: null
         });
         expectValue([]);
       });
 
       it("should accept a single value", function () {
         makeField({
-          value: 3,
+          value: 3
         });
         expectValue([3]);
       });
 
       it("should accept an array of values", function () {
         makeField({
-          value: [2, 5, 11],
+          value: [2, 5, 11]
         });
         expectValue([2, 5, 11]);
       });
@@ -238,9 +238,9 @@ describe("Ext.form.field.Tag", function () {
         var s = makeStore();
         makeField(
           {
-            value: s.getAt(9),
+            value: s.getAt(9)
           },
-          s,
+          s
         );
         expectValue([10]);
       });
@@ -249,16 +249,16 @@ describe("Ext.form.field.Tag", function () {
         var s = makeStore();
         makeField(
           {
-            value: [s.getAt(4), s.getAt(8), s.getAt(13)],
+            value: [s.getAt(4), s.getAt(8), s.getAt(13)]
           },
-          s,
+          s
         );
         expectValue([5, 9, 14]);
       });
 
       it("should retain the order", function () {
         makeField({
-          value: [10, 6, 8, 7, 4, 5],
+          value: [10, 6, 8, 7, 4, 5]
         });
         expectValue([10, 6, 8, 7, 4, 5]);
       });
@@ -268,12 +268,12 @@ describe("Ext.form.field.Tag", function () {
       it("should be able to set the value via the viewmodel", function () {
         var vm = new Ext.app.ViewModel({
           data: {
-            value: [1, 2],
-          },
+            value: [1, 2]
+          }
         });
         makeField({
           viewModel: vm,
-          bind: "{value}",
+          bind: "{value}"
         });
         vm.notify();
         expectValue([1, 2]);
@@ -290,7 +290,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should clear a value when setting null", function () {
         makeFieldWithSpy({
-          value: 3,
+          value: 3
         });
         tagField.setValue(null);
         expectValue([]);
@@ -336,7 +336,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should write over existing values", function () {
         makeFieldWithSpy({
-          value: [1, 3, 5, 7],
+          value: [1, 3, 5, 7]
         });
         tagField.setValue([2, 4, 6, 8]);
         expectValue([2, 4, 6, 8]);
@@ -375,7 +375,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should append to the existing values", function () {
         makeFieldWithSpy({
-          value: [7, 4, 12],
+          value: [7, 4, 12]
         });
         tagField.addValue([3]);
         expectValue([7, 4, 12, 3]);
@@ -384,7 +384,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should leave existing values in place", function () {
         makeFieldWithSpy({
-          value: [7, 4, 12],
+          value: [7, 4, 12]
         });
         tagField.addValue([7]);
         expectValue([7, 4, 12]);
@@ -393,7 +393,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should only append non-existent values", function () {
         makeFieldWithSpy({
-          value: [7, 4, 12],
+          value: [7, 4, 12]
         });
         tagField.addValue([7, 3]);
         expectValue([7, 4, 12, 3]);
@@ -404,7 +404,7 @@ describe("Ext.form.field.Tag", function () {
     describe("removeValue", function () {
       it("should be able to remove a value", function () {
         makeFieldWithSpy({
-          value: [1],
+          value: [1]
         });
         tagField.removeValue(1);
         expectValue([]);
@@ -413,7 +413,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should be able to remove an array of values", function () {
         makeFieldWithSpy({
-          value: [3, 6, 7],
+          value: [3, 6, 7]
         });
         tagField.removeValue([3, 6, 7]);
         expectValue([]);
@@ -422,7 +422,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should accept a single record", function () {
         makeFieldWithSpy({
-          value: [16],
+          value: [16]
         });
         tagField.removeValue(store.getAt(15));
         expectValue([]);
@@ -431,7 +431,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should accept an array of records", function () {
         makeFieldWithSpy({
-          value: [2, 6],
+          value: [2, 6]
         });
         tagField.removeValue([store.getAt(1), store.getAt(5)]);
         expectValue([]);
@@ -440,7 +440,7 @@ describe("Ext.form.field.Tag", function () {
 
       it("should ignore not selected values", function () {
         makeFieldWithSpy({
-          value: [18, 3, 14],
+          value: [18, 3, 14]
         });
         tagField.removeValue(1);
         expectValue([18, 3, 14]);
@@ -575,7 +575,7 @@ describe("Ext.form.field.Tag", function () {
 
         it("should use the the displayField by default", function () {
           makeField({
-            value: [1, 4, 6],
+            value: [1, 4, 6]
           });
           expectContent(1, "Item1");
           expectContent(4, "Item4");
@@ -588,16 +588,16 @@ describe("Ext.form.field.Tag", function () {
             data: [
               {
                 display: "Foo<div></div>Bar",
-                value: 1,
-              },
-            ],
+                value: 1
+              }
+            ]
           });
 
           makeField(
             {
-              value: [1],
+              value: [1]
             },
-            store,
+            store
           );
           expectContent(1, "Foo&lt;div&gt;&lt;/div&gt;Bar");
         });
@@ -605,7 +605,7 @@ describe("Ext.form.field.Tag", function () {
         it("should accept a custom tpl", function () {
           makeField({
             value: [1],
-            labelTpl: "Prefix{display}{value}",
+            labelTpl: "Prefix{display}{value}"
           });
           expectContent(1, "PrefixItem11");
         });
@@ -616,17 +616,17 @@ describe("Ext.form.field.Tag", function () {
             data: [
               {
                 display: "Foo<div></div>Bar",
-                value: 1,
-              },
-            ],
+                value: 1
+              }
+            ]
           });
 
           makeField(
             {
               value: [1],
-              labelTpl: "Prefix{display}{value}",
+              labelTpl: "Prefix{display}{value}"
             },
-            store,
+            store
           );
           expectContent(1, "PrefixFoo&lt;div&gt;&lt;/div&gt;Bar1");
         });
@@ -640,7 +640,7 @@ describe("Ext.form.field.Tag", function () {
 
         it("should default to nothing", function () {
           makeField({
-            value: [1, 4, 6],
+            value: [1, 4, 6]
           });
           expectTip(1, "");
           expectTip(4, "");
@@ -650,7 +650,7 @@ describe("Ext.form.field.Tag", function () {
         it("should accept a tpl", function () {
           makeField({
             value: [1],
-            tipTpl: "Prefix{display}{value}",
+            tipTpl: "Prefix{display}{value}"
           });
           expectTip(1, "PrefixItem11");
         });
@@ -661,17 +661,17 @@ describe("Ext.form.field.Tag", function () {
             data: [
               {
                 display: "Foo<div></div>Bar",
-                value: 1,
-              },
-            ],
+                value: 1
+              }
+            ]
           });
 
           makeField(
             {
               value: [1],
-              tipTpl: "Prefix{display}{value}",
+              tipTpl: "Prefix{display}{value}"
             },
-            store,
+            store
           );
           // The getAttribute call will 'de-encode' this for us
           expectTip(1, "PrefixFoo<div></div>Bar1");
@@ -684,7 +684,7 @@ describe("Ext.form.field.Tag", function () {
 
       beforeEach(function () {
         makeFieldWithSpy({
-          value: [6, 4, 10, 13, 2],
+          value: [6, 4, 10, 13, 2]
         });
       });
 
@@ -965,7 +965,7 @@ describe("Ext.form.field.Tag", function () {
     describe("mouse interaction", function () {
       beforeEach(function () {
         makeFieldWithSpy({
-          value: [6, 4, 10, 13, 2],
+          value: [6, 4, 10, 13, 2]
         });
       });
 
@@ -995,17 +995,17 @@ describe("Ext.form.field.Tag", function () {
           makeField({
             store: {
               model: Model,
-              data: makeData(10),
+              data: makeData(10)
             },
             displayField: "display",
             valueField: "display",
             queryMode: "local",
-            renderTo: null,
+            renderTo: null
           });
 
           store = new Ext.data.Store({
             model: Model,
-            data: makeData(10),
+            data: makeData(10)
           });
 
           grid = Ext.widget("grid", {
@@ -1013,22 +1013,22 @@ describe("Ext.form.field.Tag", function () {
             store: store,
             columns: [
               {
-                dataIndex: "value",
+                dataIndex: "value"
               },
               {
                 dataIndex: "display",
                 width: 150,
-                editor: tagField,
-              },
+                editor: tagField
+              }
             ],
             selModel: "cellmodel",
             plugins: {
               ptype: "cellediting",
-              clicksToEdit: 1,
+              clicksToEdit: 1
             },
             height: 200,
             width: 500,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           grid.editingPlugin.startEdit(store.getAt(4), grid.columns[1]);
@@ -1048,7 +1048,7 @@ describe("Ext.form.field.Tag", function () {
   describe("pinList", function () {
     it("should keep the list open when selecting from the list with pinList: true", function () {
       makeField({
-        pinList: true,
+        pinList: true
       });
       tagField.expand();
       tagField.getPicker().select(0);
@@ -1057,7 +1057,7 @@ describe("Ext.form.field.Tag", function () {
 
     it("should collapse the list when selecting from the list with pinList: false", function () {
       makeField({
-        pinList: false,
+        pinList: false
       });
       tagField.expand();
       tagField.getPicker().select(0);
@@ -1070,7 +1070,7 @@ describe("Ext.form.field.Tag", function () {
       it("should not expand when clicking on an item", function () {
         makeField({
           triggerOnClick: true,
-          value: [1],
+          value: [1]
         });
         clickTag(1);
         expect(tagField.isExpanded).toBe(false);
@@ -1079,7 +1079,7 @@ describe("Ext.form.field.Tag", function () {
       it("should expand when clicking on an empty area", function () {
         makeField({
           triggerOnClick: true,
-          value: [1],
+          value: [1]
         });
         jasmine.fireMouseEvent(tagField.inputEl, "click");
         expect(tagField.isExpanded).toBe(true);
@@ -1090,7 +1090,7 @@ describe("Ext.form.field.Tag", function () {
       it("should not expand when clicking on an item", function () {
         makeField({
           triggerOnClick: false,
-          value: [1],
+          value: [1]
         });
         clickTag(1);
         expect(tagField.isExpanded).toBe(false);
@@ -1099,7 +1099,7 @@ describe("Ext.form.field.Tag", function () {
       it("should not expand when clicking on an empty area", function () {
         makeField({
           triggerOnClick: false,
-          value: [1],
+          value: [1]
         });
         jasmine.fireMouseEvent(tagField.inputEl, "click");
         expect(tagField.isExpanded).toBe(false);
@@ -1112,7 +1112,7 @@ describe("Ext.form.field.Tag", function () {
       it("should put each item on a new line", function () {
         makeField({
           value: 1,
-          stacked: true,
+          stacked: true
         });
         var height = tagField.getHeight();
         tagField.addValue(2);
@@ -1134,7 +1134,7 @@ describe("Ext.form.field.Tag", function () {
       it("should decrease the height when removing items", function () {
         makeField({
           value: [1, 2, 3, 4, 5],
-          stacked: true,
+          stacked: true
         });
 
         var height = tagField.getHeight();
@@ -1159,7 +1159,7 @@ describe("Ext.form.field.Tag", function () {
       it("should put multiple items per rows", function () {
         makeField({
           value: 1,
-          stacked: false,
+          stacked: false
         });
         var height = tagField.getHeight();
         tagField.addValue([2, 3]);
@@ -1170,11 +1170,11 @@ describe("Ext.form.field.Tag", function () {
         makeField({
           value: 1,
           stacked: false,
-          width: 400,
+          width: 400
         });
         var tagWidth = Ext.fly(getTag(1)).getWidth(),
           toWrap = Math.floor(
-            (tagField.itemList.getWidth() - tagWidth) / tagWidth,
+            (tagField.itemList.getWidth() - tagWidth) / tagWidth
           ),
           height = tagField.getHeight(),
           i;
@@ -1191,7 +1191,7 @@ describe("Ext.form.field.Tag", function () {
     it("should filter the list when configured with values", function () {
       makeField({
         filterPickList: true,
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       tagField.expand();
       var valueStore = tagField.valueStore,
@@ -1209,7 +1209,7 @@ describe("Ext.form.field.Tag", function () {
 
     it("should filter the list when setting the value", function () {
       makeField({
-        filterPickList: true,
+        filterPickList: true
       });
       tagField.expand();
       var rec16 = store.getAt(16);
@@ -1225,7 +1225,7 @@ describe("Ext.form.field.Tag", function () {
     it("should filter the list when adding a value", function () {
       makeField({
         filterPickList: true,
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       tagField.expand();
       var valueStore = tagField.valueStore,
@@ -1251,7 +1251,7 @@ describe("Ext.form.field.Tag", function () {
     it("should filter the list when removing a value", function () {
       makeField({
         filterPickList: true,
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       tagField.expand();
       var rec0 = tagField.valueStore.getAt(0);
@@ -1269,7 +1269,7 @@ describe("Ext.form.field.Tag", function () {
       var picker;
 
       makeField({
-        filterPickList: true,
+        filterPickList: true
       });
       tagField.expand();
       picker = tagField.getPicker();
@@ -1291,13 +1291,13 @@ describe("Ext.form.field.Tag", function () {
     it("should add a new record when ENTER is pressed if createNewOnEnter", function () {
       makeField({
         createNewOnEnter: true,
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       tagField.inputEl.dom.value = "200";
       jasmine.fireKeyEvent(
         tagField.inputEl.dom,
         "keyup",
-        Ext.event.Event.ENTER,
+        Ext.event.Event.ENTER
       );
       var v = tagField.getValue();
 
@@ -1309,7 +1309,7 @@ describe("Ext.form.field.Tag", function () {
     it("should add a new record on blur if createNewOnBlur", function () {
       makeField({
         createNewOnBlur: true,
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       tagField.focus();
       jasmine.waitForFocus(tagField);
@@ -1335,7 +1335,7 @@ describe("Ext.form.field.Tag", function () {
   describe("allowBlank: false", function () {
     beforeEach(function () {
       makeField({
-        allowBlank: false,
+        allowBlank: false
       });
     });
 
@@ -1355,7 +1355,7 @@ describe("Ext.form.field.Tag", function () {
     it("should narrow the list as you type and maintain the autoSelected item", function () {
       // Already values in the field.
       makeField({
-        value: 1,
+        value: 1
       });
       var item2 = store.getAt(store.find("display", "Item2"));
 
@@ -1363,7 +1363,7 @@ describe("Ext.form.field.Tag", function () {
 
       // First item is the positioned item
       expect(tagField.getPicker().getNavigationModel().getRecord()).toBe(
-        store.getAt(0),
+        store.getAt(0)
       );
 
       doTyping("Item2");
@@ -1376,7 +1376,7 @@ describe("Ext.form.field.Tag", function () {
       // Item2 must be the positioned item
       runs(function () {
         expect(tagField.getPicker().getNavigationModel().getRecord()).toBe(
-          item2,
+          item2
         );
       });
     });
@@ -1387,7 +1387,7 @@ describe("Ext.form.field.Tag", function () {
       var value;
 
       makeField({
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       doTyping("foo");
 
@@ -1404,7 +1404,7 @@ describe("Ext.form.field.Tag", function () {
       var value;
 
       makeField({
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
       doTyping("I");
 
@@ -1430,7 +1430,7 @@ describe("Ext.form.field.Tag", function () {
     it("should publish the height correctly when the set width in the container will cause wrapping while collapsed", function () {
       makeField({
         renderTo: null,
-        flex: 1,
+        flex: 1
       });
 
       var p = new Ext.panel.Panel({
@@ -1440,7 +1440,7 @@ describe("Ext.form.field.Tag", function () {
         collapsed: true,
         renderTo: Ext.getBody(),
         layout: "hbox",
-        items: tagField,
+        items: tagField
       });
       tagField.setValue([1, 4, 7, 9]);
       p.expand(false);
@@ -1452,7 +1452,7 @@ describe("Ext.form.field.Tag", function () {
   describe("picker position", function () {
     it("should realign the picker when adding a value causing the field to grow in height", function () {
       makeField({
-        width: 100,
+        width: 100
       });
 
       var picker = tagField.getPicker();
@@ -1472,7 +1472,7 @@ describe("Ext.form.field.Tag", function () {
     it("should realign the picker when removing a value causing the field to shrink in height", function () {
       makeField({
         width: 100,
-        value: [1, 2],
+        value: [1, 2]
       });
 
       var picker = tagField.getPicker();
@@ -1497,10 +1497,10 @@ describe("Ext.form.field.Tag", function () {
           filterPickList: true,
           store: [
             [1, "Foo"],
-            [2, "Bar"],
-          ],
+            [2, "Bar"]
+          ]
         },
-        null,
+        null
       );
       clickListItem(tagField.getStore().getAt(0));
       expect(function () {
@@ -1511,7 +1511,7 @@ describe("Ext.form.field.Tag", function () {
     it("should not throw an exception when destroying with an active ownerCt", function () {
       makeField({
         filterPickList: true,
-        renderTo: null,
+        renderTo: null
       });
 
       var panel = new Ext.Panel({
@@ -1526,10 +1526,10 @@ describe("Ext.form.field.Tag", function () {
             listeners: {
               beforedestroy: function (container) {
                 tagField.destroy();
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
 
       clickListItem(tagField.getStore().getAt(0));
@@ -1557,11 +1557,11 @@ describe("Ext.form.field.Tag", function () {
               [6, "Roo"],
               [7, "Utz"],
               [8, "Grr"],
-              [9, "Pff"],
+              [9, "Pff"]
             ],
-            width: 100,
+            width: 100
           },
-          null,
+          null
         );
 
         for (i = 0; i < 10; i++) {
@@ -1587,11 +1587,11 @@ describe("Ext.form.field.Tag", function () {
             [6, "Roo"],
             [7, "Utz"],
             [8, "Grr"],
-            [9, "Pff"],
+            [9, "Pff"]
           ],
-          width: 100,
+          width: 100
         },
-        null,
+        null
       );
 
       for (i = 0; i < 10; i++) {
@@ -1607,8 +1607,8 @@ describe("Ext.form.field.Tag", function () {
       makeField(null, {
         fields: ["display", "value"],
         proxy: {
-          type: "ajax",
-        },
+          type: "ajax"
+        }
       });
       var proxy = tagField.getStore().getProxy();
       tagField.destroy();
@@ -1629,7 +1629,7 @@ describe("Ext.form.field.Tag", function () {
       expect(selectSpy.callCount).toBe(1);
       expect(selectSpy.mostRecentCall.args).toEqual([
         tagField,
-        [store.getAt(0)],
+        [store.getAt(0)]
       ]);
 
       // Select item 1
@@ -1637,7 +1637,7 @@ describe("Ext.form.field.Tag", function () {
       expect(selectSpy.callCount).toBe(2);
       expect(selectSpy.mostRecentCall.args).toEqual([
         tagField,
-        [store.getAt(0), store.getAt(1)],
+        [store.getAt(0), store.getAt(1)]
       ]);
 
       // Deselect item 1
@@ -1645,7 +1645,7 @@ describe("Ext.form.field.Tag", function () {
       expect(selectSpy.callCount).toBe(3);
       expect(selectSpy.mostRecentCall.args).toEqual([
         tagField,
-        [store.getAt(0)],
+        [store.getAt(0)]
       ]);
 
       // Deselect item 0
@@ -1658,7 +1658,7 @@ describe("Ext.form.field.Tag", function () {
   describe("ARIA", function () {
     beforeEach(function () {
       makeField({
-        value: [1, 4, 7],
+        value: [1, 4, 7]
       });
     });
 
@@ -1668,7 +1668,7 @@ describe("Ext.form.field.Tag", function () {
 
         expect(tagField.picker.ariaEl).toHaveAttr(
           "aria-label",
-          tagField.ariaAvailableListLabel,
+          tagField.ariaAvailableListLabel
         );
       });
 
@@ -1681,7 +1681,7 @@ describe("Ext.form.field.Tag", function () {
 
         expect(tagField).toHaveAttr(
           "aria-owns",
-          id + "-inputEl " + id + "-picker " + id + "-ariaList",
+          id + "-inputEl " + id + "-picker " + id + "-ariaList"
         );
       });
 
@@ -1694,7 +1694,7 @@ describe("Ext.form.field.Tag", function () {
 
         expect(tagField.inputEl).toHaveAttr(
           "aria-describedby",
-          id + "-selectedText " + id + "-ariaStatusEl " + id + "-ariaHelpEl",
+          id + "-selectedText " + id + "-ariaStatusEl " + id + "-ariaHelpEl"
         );
       });
     });
@@ -1768,7 +1768,7 @@ describe("Ext.form.field.Tag", function () {
 
           it("should have CSS class", function () {
             expect(Ext.fly(nodes[0]).hasCls("x-tagfield-arialist-item")).toBe(
-              true,
+              true
             );
           });
 

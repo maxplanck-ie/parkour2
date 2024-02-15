@@ -12,5 +12,5 @@ Ext.define("Ext.rtl.event.Event", {
       }
     }
     return xy;
-  },
+  }
 });

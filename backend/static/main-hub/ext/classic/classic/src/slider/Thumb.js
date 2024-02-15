@@ -31,7 +31,7 @@ Ext.define("Ext.slider.Thumb", {
       /**
        * @cfg {Boolean} constrain True to constrain the thumb so that it cannot overlap its siblings
        */
-      constrain: false,
+      constrain: false
     });
     me.callParent([config]);
   },
@@ -69,7 +69,7 @@ Ext.define("Ext.slider.Thumb", {
       style: style,
       id: me.id,
       cls: me.cls,
-      role: "presentation",
+      role: "presentation"
     };
   },
 
@@ -106,7 +106,7 @@ Ext.define("Ext.slider.Thumb", {
         from: from,
         to: to,
         scope: me,
-        callback: me.onAnimComplete,
+        callback: me.onAnimComplete
       };
       if (animate !== true) {
         Ext.apply(animCfg, animate);
@@ -157,7 +157,7 @@ Ext.define("Ext.slider.Thumb", {
       onDrag: me.onDrag.bind(me),
       onEnd: me.onDragEnd.bind(me),
       tolerance: 3,
-      autoStart: 300,
+      autoStart: 300
     });
 
     me.el.hover(me.addOverCls, me.removeOverCls, me);
@@ -293,5 +293,5 @@ Ext.define("Ext.slider.Thumb", {
     }
     me.el = me.tracker = me.anim = Ext.destroy(me.el, me.tracker);
     me.callParent();
-  },
+  }
 });

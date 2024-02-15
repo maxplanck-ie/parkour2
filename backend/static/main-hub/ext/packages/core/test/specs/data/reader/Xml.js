@@ -45,7 +45,7 @@ describe("Ext.data.reader.Xml", function () {
         } else {
           return DQ.jsSelect.call(this, path, root, type);
         }
-      },
+      }
     };
   });
 
@@ -65,16 +65,16 @@ describe("Ext.data.reader.Xml", function () {
     beforeEach(function () {
       Model = Ext.define("spec.Xml", {
         extend: "Ext.data.Model",
-        fields: ["name"],
+        fields: ["name"]
       });
 
       xml = getXml(
-        "<dog><name>Utley</name></dog><dog><name>Molly</name></dog>",
+        "<dog><name>Utley</name></dog><dog><name>Molly</name></dog>"
       );
 
       reader = new Ext.data.reader.Xml({
         model: "spec.Xml",
-        record: "dog",
+        record: "dog"
       });
     });
 
@@ -103,12 +103,12 @@ describe("Ext.data.reader.Xml", function () {
 
   describe("copyFrom", function () {
     var Model = Ext.define(null, {
-      extend: "Ext.data.Model",
+      extend: "Ext.data.Model"
     });
 
     it("should copy the model", function () {
       var reader = new Ext.data.reader.Xml({
-        model: Model,
+        model: Model
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
@@ -118,7 +118,7 @@ describe("Ext.data.reader.Xml", function () {
     it("should copy the record", function () {
       var reader = new Ext.data.reader.Xml({
         model: Model,
-        record: "foo",
+        record: "foo"
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
@@ -132,7 +132,7 @@ describe("Ext.data.reader.Xml", function () {
       var reader = new Ext.data.reader.Xml({
         model: Model,
         totalProperty: "aTotal",
-        record: "foo",
+        record: "foo"
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
@@ -146,7 +146,7 @@ describe("Ext.data.reader.Xml", function () {
       var reader = new Ext.data.reader.Xml({
         model: Model,
         successProperty: "aSuccess",
-        record: "foo",
+        record: "foo"
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
@@ -160,7 +160,7 @@ describe("Ext.data.reader.Xml", function () {
       var reader = new Ext.data.reader.Xml({
         model: Model,
         messageProperty: "aMessage",
-        record: "foo",
+        record: "foo"
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
@@ -174,16 +174,14 @@ describe("Ext.data.reader.Xml", function () {
       var reader = new Ext.data.reader.Xml({
         model: Model,
         rootProperty: "aRoot",
-        record: "foo",
+        record: "foo"
       });
       var copy = new Ext.data.reader.Xml();
       copy.copyFrom(reader);
       expect(copy.getRootProperty()).toBe("aRoot");
 
       var result = reader.read(
-        getXml(
-          "<notRoot><foo /><foo /><foo /></notRoot><aRoot><foo /></aRoot>",
-        ),
+        getXml("<notRoot><foo /><foo /><foo /></notRoot><aRoot><foo /></aRoot>")
       );
       expect(result.getCount()).toBe(1);
     });
@@ -196,17 +194,17 @@ describe("Ext.data.reader.Xml", function () {
     function createReader(cfg) {
       Ext.define("spec.FooXmlTest", {
         extend: "Ext.data.Model",
-        fields: ["field"],
+        fields: ["field"]
       });
 
       cfg = cfg || {};
       reader = new Ext.data.reader.Xml(
         Ext.apply(
           {
-            model: "spec.FooXmlTest",
+            model: "spec.FooXmlTest"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -222,10 +220,10 @@ describe("Ext.data.reader.Xml", function () {
         successProperty: function () {
           actual = this;
           return true;
-        },
+        }
       });
       reader.getSuccess({
-        success: true,
+        success: true
       });
       expect(actual).toBe(reader);
     });
@@ -238,14 +236,14 @@ describe("Ext.data.reader.Xml", function () {
 
       it("should have no getTotal method if the totalProperty isn't specified", function () {
         createReader({
-          totalProperty: "",
+          totalProperty: ""
         });
         expect(reader.getTotal).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          totalProperty: "foo",
+          totalProperty: "foo"
         });
         expect(reader.getTotal(getXml("<foo>17</foo>"))).toBe("17");
       });
@@ -254,28 +252,28 @@ describe("Ext.data.reader.Xml", function () {
         createReader({
           totalProperty: function (root) {
             return this.getNodeValue(root.firstChild.childNodes[2]);
-          },
+          }
         });
         expect(
           reader.getTotal(
-            getXml("<node1>1</node1><node2>2</node2><node3>3</node3>"),
-          ),
+            getXml("<node1>1</node1><node2>2</node2><node3>3</node3>")
+          )
         ).toBe("3");
       });
 
       xit("should be able to use some xpath", function () {
         createReader({
-          totalProperty: "foo/bar",
+          totalProperty: "foo/bar"
         });
         expect(reader.getTotal(getXml("<foo><bar>18</bar></foo>"))).toBe("18");
       });
 
       xit("should support attribute reading", function () {
         createReader({
-          totalProperty: "@total",
+          totalProperty: "@total"
         });
         expect(
-          reader.getTotal(parseXml('<node total="11" />').firstChild),
+          reader.getTotal(parseXml('<node total="11" />').firstChild)
         ).toBe("11");
       });
     });
@@ -284,20 +282,20 @@ describe("Ext.data.reader.Xml", function () {
       it("should default to success", function () {
         createReader();
         expect(reader.getSuccess(getXml("<success>true</success>"))).toBe(
-          "true",
+          "true"
         );
       });
 
       it("should have no getSuccess method if the successProperty isn't specified", function () {
         createReader({
-          successProperty: "",
+          successProperty: ""
         });
         expect(reader.getSuccess).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          successProperty: "foo",
+          successProperty: "foo"
         });
         expect(reader.getSuccess(getXml("<foo>false</foo>"))).toBe("false");
       });
@@ -306,32 +304,32 @@ describe("Ext.data.reader.Xml", function () {
         createReader({
           successProperty: function (root) {
             return this.getNodeValue(root.firstChild.childNodes[0]);
-          },
+          }
         });
         expect(
           reader.getSuccess(
             getXml(
-              "<node1>true</node1><node2>false</node2><node3>false</node3>",
-            ),
-          ),
+              "<node1>true</node1><node2>false</node2><node3>false</node3>"
+            )
+          )
         ).toBe("true");
       });
 
       xit("should be able to use some xpath", function () {
         createReader({
-          successProperty: "a/node/path",
+          successProperty: "a/node/path"
         });
         expect(
-          reader.getSuccess(getXml("<a><node><path>false</path></node></a>")),
+          reader.getSuccess(getXml("<a><node><path>false</path></node></a>"))
         ).toBe("false");
       });
 
       xit("should support attribute reading", function () {
         createReader({
-          totalProperty: "@success",
+          totalProperty: "@success"
         });
         expect(
-          reader.getTotal(parseXml('<node success="true" />').firstChild),
+          reader.getTotal(parseXml('<node success="true" />').firstChild)
         ).toBe("true");
       });
     });
@@ -344,14 +342,14 @@ describe("Ext.data.reader.Xml", function () {
 
       it("should have no getMessage method if the messageProperty isn't specified", function () {
         createReader({
-          messageProperty: "",
+          messageProperty: ""
         });
         expect(reader.getMessage).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          messageProperty: "foo",
+          messageProperty: "foo"
         });
         expect(reader.getMessage(getXml("<foo>a msg</foo>"))).toBe("a msg");
       });
@@ -360,53 +358,53 @@ describe("Ext.data.reader.Xml", function () {
         createReader({
           messageProperty: function (root) {
             return this.getNodeValue(root.firstChild.childNodes[1]);
-          },
+          }
         });
         expect(
           reader.getMessage(
-            getXml("<node1>msg1</node1><node2>msg2</node2><node3>msg3</node3>"),
-          ),
+            getXml("<node1>msg1</node1><node2>msg2</node2><node3>msg3</node3>")
+          )
         ).toBe("msg2");
       });
 
       xit("should be able to use some xpath", function () {
         createReader({
-          messageProperty: "some/nodes",
+          messageProperty: "some/nodes"
         });
         expect(
-          reader.getMessage(getXml("<some><nodes>message here</nodes></some>")),
+          reader.getMessage(getXml("<some><nodes>message here</nodes></some>"))
         ).toBe("message here");
       });
 
       xit("should support attribute reading", function () {
         createReader({
-          totalProperty: "@message",
+          totalProperty: "@message"
         });
         expect(
           reader.getTotal(
-            parseXml('<node message="attribute msg" />').firstChild,
-          ),
+            parseXml('<node message="attribute msg" />').firstChild
+          )
         ).toBe("attribute msg");
       });
     });
 
     describe("fields", function () {
       var rawOptions = {
-        recordCreator: Ext.identityFn,
+        recordCreator: Ext.identityFn
       };
       function createReader(fields, readerCfg) {
         Ext.define("spec.XmlFieldTest", {
           extend: "Ext.data.Model",
-          fields: fields,
+          fields: fields
         });
         reader = new Ext.data.reader.Xml(
           Ext.apply(
             {
               model: "spec.XmlFieldTest",
-              record: "root",
+              record: "root"
             },
-            readerCfg,
-          ),
+            readerCfg
+          )
         );
       }
 
@@ -427,13 +425,13 @@ describe("Ext.data.reader.Xml", function () {
         createReader([
           {
             name: "field",
-            mapping: "other",
-          },
+            mapping: "other"
+          }
         ]);
         var result = reader
           .readRecords(
             getXml("<field>val</field><other>real value</other>").firstChild,
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("real value");
@@ -443,8 +441,8 @@ describe("Ext.data.reader.Xml", function () {
         createReader([
           {
             name: "field",
-            mapping: "some.nested.property",
-          },
+            mapping: "some.nested.property"
+          }
         ]);
         var result = reader
           .readRecords(getXml("<foo>val</foo>").firstChild, rawOptions)
@@ -458,13 +456,13 @@ describe("Ext.data.reader.Xml", function () {
             name: "field",
             mapping: function (root) {
               return reader.getNodeValue(root.childNodes[1]);
-            },
-          },
+            }
+          }
         ]);
         var result = reader
           .readRecords(
             getXml("<node1>a</node1><node2>b</node2><node3>c</node3>"),
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("b");
@@ -474,13 +472,13 @@ describe("Ext.data.reader.Xml", function () {
         createReader([
           {
             name: "field",
-            mapping: "some/xpath/here",
-          },
+            mapping: "some/xpath/here"
+          }
         ]);
         var result = reader
           .readRecords(
             getXml("<some><xpath><here>a value</here></xpath></some>"),
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("a value");
@@ -490,13 +488,13 @@ describe("Ext.data.reader.Xml", function () {
         createReader([
           {
             name: "field",
-            mapping: "@other",
-          },
+            mapping: "@other"
+          }
         ]);
         var result = reader
           .readRecords(
             parseXml('<node other="attr value" />').firstChild,
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("attr value");
@@ -507,7 +505,7 @@ describe("Ext.data.reader.Xml", function () {
         var result = reader
           .readRecords(
             getXml('<n:field xmlns:n="nns">val</n:field>').firstChild,
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("val");
@@ -517,15 +515,15 @@ describe("Ext.data.reader.Xml", function () {
         createReader([
           {
             name: "field",
-            mapping: "m|other",
-          },
+            mapping: "m|other"
+          }
         ]);
         var result = reader
           .readRecords(
             getXml(
-              '<n:field xmlns:n="nns">val</n:field><m:other xmlns:m="mns">real value</m:other>',
+              '<n:field xmlns:n="nns">val</n:field><m:other xmlns:m="mns">real value</m:other>'
             ).firstChild,
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe("real value");
@@ -542,8 +540,8 @@ describe("Ext.data.reader.Xml", function () {
         fields: [
           { name: "id", mapping: "idProp", type: "int" },
           { name: "name", mapping: "FullName", type: "string" },
-          { name: "email", mapping: "@email", type: "string" },
-        ],
+          { name: "email", mapping: "@email", type: "string" }
+        ]
       });
 
       reader = new Ext.data.reader.Xml({
@@ -552,7 +550,7 @@ describe("Ext.data.reader.Xml", function () {
         messageProperty: "messageProp",
         successProperty: "successProp",
         model: "spec.XmlReader",
-        record: "user",
+        record: "user"
       });
 
       ajaxResponse = new MockAjax();
@@ -569,7 +567,7 @@ describe("Ext.data.reader.Xml", function () {
         "<FullName>Ed Spencer</FullName>",
         "</user>",
         "</data>",
-        "</results>",
+        "</results>"
       ].join("");
 
       ajaxResponse.complete({
@@ -577,8 +575,8 @@ describe("Ext.data.reader.Xml", function () {
         statusText: "OK",
         responseText: responseText,
         responseHeaders: {
-          "Content-type": "application/xml",
-        },
+          "Content-type": "application/xml"
+        }
       });
 
       readData = reader.read(ajaxResponse);
@@ -672,13 +670,13 @@ describe("Ext.data.reader.Xml", function () {
         "</order>",
         "</orders>",
         "</user>",
-        "</users>",
+        "</users>"
       ].join("");
 
       ajaxResponse.complete({
         status: 200,
         statusText: "OK",
-        responseText: responseText,
+        responseText: responseText
       });
 
       Ext.define("spec.User", {
@@ -691,9 +689,9 @@ describe("Ext.data.reader.Xml", function () {
           type: "rest",
           reader: {
             type: "xml",
-            root: "users",
-          },
-        },
+            root: "users"
+          }
+        }
       });
 
       Ext.define("spec.Order", {
@@ -703,7 +701,7 @@ describe("Ext.data.reader.Xml", function () {
         hasMany: {
           model: "spec.OrderItem",
           name: "orderItems",
-          associationKey: "order_items",
+          associationKey: "order_items"
         },
         belongsTo: "spec.User",
 
@@ -712,9 +710,9 @@ describe("Ext.data.reader.Xml", function () {
           reader: {
             type: "xml",
             root: "orders",
-            record: "order",
-          },
-        },
+            record: "order"
+          }
+        }
       });
 
       Ext.define("spec.OrderItem", {
@@ -726,8 +724,8 @@ describe("Ext.data.reader.Xml", function () {
           {
             model: "spec.Product",
             getterName: "getProduct",
-            associationKey: "product",
-          },
+            associationKey: "product"
+          }
         ],
 
         proxy: {
@@ -735,9 +733,9 @@ describe("Ext.data.reader.Xml", function () {
           reader: {
             type: "xml",
             root: "order_items",
-            record: "order_item",
-          },
-        },
+            record: "order_item"
+          }
+        }
       });
 
       Ext.define("spec.Product", {
@@ -750,9 +748,9 @@ describe("Ext.data.reader.Xml", function () {
           type: "memory",
           reader: {
             type: "xml",
-            record: "product",
-          },
-        },
+            record: "product"
+          }
+        }
       });
 
       createReader = function (config) {
@@ -760,8 +758,8 @@ describe("Ext.data.reader.Xml", function () {
           Ext.apply({}, config, {
             model: "spec.User",
             root: "users",
-            record: "user",
-          }),
+            record: "user"
+          })
         );
       };
     });
@@ -822,25 +820,25 @@ describe("Ext.data.reader.Xml", function () {
         "<users><success>true</success><user><name>Ben</name><location>Boston</location></user><user><name>Mike</name><location>Redwood City</location></user><user><name>Nick</name><location>Kansas City</location></user></users>",
       goodResponse = {
         responseText: "something",
-        responseXML: parseXml(xml),
+        responseXML: parseXml(xml)
       },
       badResponse = {
         responseText: "something",
-        responseXML: null,
+        responseXML: null
       };
 
     beforeEach(function () {
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name", "location"],
+        fields: ["name", "location"]
       });
 
       reader = new Ext.data.reader.Xml({
         record: "user",
         model: "spec.User",
         listeners: {
-          exception: function (reader, response, errorMsg, eOpts) {},
-        },
+          exception: function (reader, response, errorMsg, eOpts) {}
+        }
       });
 
       spyOn(reader, "readRecords").andCallThrough();

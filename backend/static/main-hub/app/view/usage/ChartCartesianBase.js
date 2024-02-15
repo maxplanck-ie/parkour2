@@ -15,7 +15,7 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
     "#B276B2",
     "#DECF3F",
     "#F15854",
-    "#4D4D4D",
+    "#4D4D4D"
   ],
 
   // colors: [
@@ -37,12 +37,12 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
     top: 40,
     left: 40,
     right: 40,
-    bottom: 30,
+    bottom: 30
   },
 
   legend: {
     type: "sprite",
-    docked: "right",
+    docked: "right"
   },
 
   axes: [
@@ -52,12 +52,12 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
       fields: ["name"],
       label: {
         rotate: {
-          degrees: -45,
-        },
+          degrees: -45
+        }
       },
       style: {
-        strokeStyle: "#ccc",
-      },
+        strokeStyle: "#ccc"
+      }
     },
     {
       type: "numeric",
@@ -66,21 +66,21 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
       fields: ["data"],
       minimum: 0,
       style: {
-        strokeStyle: "#ccc",
+        strokeStyle: "#ccc"
       },
       listeners: {
         rangechange: function (axis, range) {
           var store = axis.getChart().getStore();
           axis.onAxisRangeChange(axis, store);
-        },
+        }
       },
       onAxisRangeChange: function (axis, store) {
         var maxValue = store.max("data");
         if (maxValue !== undefined) {
           axis.setMaximum(maxValue);
         }
-      },
-    },
+      }
+    }
   ],
 
   series: [
@@ -94,9 +94,9 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
         renderer: function (toolTip, record, ctx) {
           var name = ctx.field.charAt(0).toUpperCase() + ctx.field.slice(1);
           toolTip.setHtml(name + ": " + record.get(ctx.field));
-        },
-      },
-    },
+        }
+      }
+    }
   ],
 
   listeners: {
@@ -109,8 +109,8 @@ Ext.define("MainHub.view.usage.ChartCartesianBase", {
       }
 
       store.on({
-        datachanged: onAxisRangeChange,
+        datachanged: onAxisRangeChange
       });
-    },
-  },
+    }
+  }
 });

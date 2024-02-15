@@ -447,7 +447,7 @@
       bRegex,
       bSmart,
       bShowGlobal,
-      bCaseInsensitive,
+      bCaseInsensitive
     ) {
       var api = this.api(true);
 
@@ -851,7 +851,7 @@
           null,
           0,
           "Non-table node initialisation (" + this.nodeName + ")",
-          2,
+          2
         );
         return;
       }
@@ -917,7 +917,7 @@
       var oSettings = $.extend(true, {}, DataTable.models.oSettings, {
         sDestroyWidth: $this[0].style.width,
         sInstance: sId,
-        sTableId: sId,
+        sTableId: sId
       });
       oSettings.nTable = this;
       oSettings.oApi = _that.internal;
@@ -959,7 +959,7 @@
         "bAutoWidth",
         "bSortClasses",
         "bServerSide",
-        "bDeferRender",
+        "bDeferRender"
       ]);
       _fnMap(oSettings, oInit, [
         "asStripeClasses",
@@ -985,13 +985,13 @@
         ["iCookieDuration", "iStateDuration"], // backwards compat
         ["oSearch", "oPreviousSearch"],
         ["aoSearchCols", "aoPreSearchCols"],
-        ["iDisplayLength", "_iDisplayLength"],
+        ["iDisplayLength", "_iDisplayLength"]
       ]);
       _fnMap(oSettings.oScroll, oInit, [
         ["sScrollX", "sX"],
         ["sScrollXInner", "sXInner"],
         ["sScrollY", "sY"],
-        ["bScrollCollapse", "bCollapse"],
+        ["bScrollCollapse", "bCollapse"]
       ]);
       _fnMap(oSettings.oLanguage, oInit, "fnInfoCallback");
 
@@ -1002,13 +1002,13 @@
         oSettings,
         "aoStateSaveParams",
         oInit.fnStateSaveParams,
-        "user",
+        "user"
       );
       _fnCallbackReg(
         oSettings,
         "aoStateLoadParams",
         oInit.fnStateLoadParams,
-        "user",
+        "user"
       );
       _fnCallbackReg(oSettings, "aoStateLoaded", oInit.fnStateLoaded, "user");
       _fnCallbackReg(oSettings, "aoRowCallback", oInit.fnRowCallback, "user");
@@ -1016,26 +1016,26 @@
         oSettings,
         "aoRowCreatedCallback",
         oInit.fnCreatedRow,
-        "user",
+        "user"
       );
       _fnCallbackReg(
         oSettings,
         "aoHeaderCallback",
         oInit.fnHeaderCallback,
-        "user",
+        "user"
       );
       _fnCallbackReg(
         oSettings,
         "aoFooterCallback",
         oInit.fnFooterCallback,
-        "user",
+        "user"
       );
       _fnCallbackReg(oSettings, "aoInitComplete", oInit.fnInitComplete, "user");
       _fnCallbackReg(
         oSettings,
         "aoPreDrawCallback",
         oInit.fnPreDrawCallback,
-        "user",
+        "user"
       );
 
       oSettings.rowIdFn = _fnGetObjectDataFn(oInit.rowId);
@@ -1086,7 +1086,7 @@
           error: function () {
             // Error occurred loading language file, continue on as best we can
             _fnInitialise(oSettings);
-          },
+          }
         });
         bInitHandedOff = true;
       }
@@ -1106,7 +1106,7 @@
           true,
           $.map(stripeClasses, function (el, i) {
             return rowOne.hasClass(el);
-          }),
+          })
         ) !== -1
       ) {
         $("tbody tr", this).removeClass(stripeClasses.join(" "));
@@ -1147,7 +1147,7 @@
         aoColumnsInit,
         function (iCol, oDef) {
           _fnColumnOptions(oSettings, iCol, oDef);
-        },
+        }
       );
 
       /* HTML5 attribute detection - build an mData object automatically if the
@@ -1172,7 +1172,7 @@
                   _: i + ".display",
                   sort: sort !== null ? i + ".@data-" + sort : undefined,
                   type: sort !== null ? i + ".@data-" + sort : undefined,
-                  filter: filter !== null ? i + ".@data-" + filter : undefined,
+                  filter: filter !== null ? i + ".@data-" + filter : undefined
                 };
 
                 _fnColumnOptions(oSettings, i);
@@ -1215,7 +1215,7 @@
               _fnCallbackFire(oSettings, null, "order", [
                 oSettings,
                 aSort,
-                sortedColumns,
+                sortedColumns
               ]);
               _fnSortAria(oSettings);
             }
@@ -1234,7 +1234,7 @@
               _fnSortingClasses(oSettings);
             }
           },
-          "sc",
+          "sc"
         );
 
         /*
@@ -1368,10 +1368,10 @@
         "\\",
         "$",
         "^",
-        "-",
+        "-"
       ].join("|\\") +
       ")",
-    "g",
+    "g"
   );
 
   // http://en.wikipedia.org/wiki/Foreign_exchange_market
@@ -1648,7 +1648,7 @@
      */
     escapeRegex: function (val) {
       return val.replace(_re_escape_regex, "\\$1");
-    },
+    }
   };
 
   /**
@@ -1854,7 +1854,7 @@
           left: $(window).scrollLeft() * -1, // allow for scrolling
           height: 1,
           width: 1,
-          overflow: "hidden",
+          overflow: "hidden"
         })
         .append(
           $("<div/>")
@@ -1863,14 +1863,14 @@
               top: 1,
               left: 1,
               width: 100,
-              overflow: "scroll",
+              overflow: "scroll"
             })
             .append(
               $("<div/>").css({
                 width: "100%",
-                height: 10,
-              }),
-            ),
+                height: 10
+              })
+            )
         )
         .appendTo("body");
 
@@ -1955,7 +1955,7 @@
       sTitle: oDefaults.sTitle ? oDefaults.sTitle : nTh ? nTh.innerHTML : "",
       aDataSort: oDefaults.aDataSort ? oDefaults.aDataSort : [iCol],
       mData: oDefaults.mData ? oDefaults.mData : iCol,
-      idx: iCol,
+      idx: iCol
     });
     oSettings.aoColumns.push(oCol);
 
@@ -2324,7 +2324,7 @@
     var iRow = oSettings.aoData.length;
     var oData = $.extend(true, {}, DataTable.models.oRow, {
       src: nTr ? "dom" : "data",
-      idx: iRow,
+      idx: iRow
     });
 
     oData._aData = aDataIn;
@@ -2419,7 +2419,7 @@
     var cellData = col.fnGetData(rowData, type, {
       settings: settings,
       row: rowIdx,
-      col: colIdx,
+      col: colIdx
     });
 
     if (cellData === undefined) {
@@ -2435,7 +2435,7 @@
             rowIdx +
             ", column " +
             colIdx,
-          4,
+          4
         );
         settings.iDrawError = draw;
       }
@@ -2477,7 +2477,7 @@
     col.fnSetData(rowData, val, {
       settings: settings,
       row: rowIdx,
-      col: colIdx,
+      col: colIdx
     });
   }
 
@@ -2575,7 +2575,7 @@
               // is used to join the strings together, otherwise an array is returned
               var join = arrayNotation[0].substring(
                 1,
-                arrayNotation[0].length - 1,
+                arrayNotation[0].length - 1
               );
               data = join === "" ? out : out.join(join);
 
@@ -2798,7 +2798,7 @@
         settings,
         row,
         colIdx,
-        colIdx === undefined ? undefined : row._aData,
+        colIdx === undefined ? undefined : row._aData
       ).data;
     } else {
       // Reading from data object, update the DOM
@@ -2943,7 +2943,7 @@
 
     return {
       data: d,
-      cells: tds,
+      cells: tds
     };
   }
   /**
@@ -2987,7 +2987,7 @@
         nTd = nTrIn ? anTds[i] : document.createElement(oCol.sCellType);
         nTd._DT_CellIndex = {
           row: iRow,
-          column: i,
+          column: i
         };
 
         cells.push(nTd);
@@ -3019,7 +3019,7 @@
             _fnGetCellData(oSettings, iRow, i),
             rowData,
             iRow,
-            i,
+            i
           );
         }
       }
@@ -3027,7 +3027,7 @@
       _fnCallbackFire(oSettings, "aoRowCreatedCallback", null, [
         nTr,
         rowData,
-        iRow,
+        iRow
       ]);
     }
 
@@ -3249,7 +3249,7 @@
   function _fnDraw(oSettings) {
     /* Provide a pre-callback function which can be used to cancel the draw is false is returned */
     var aPreDraw = _fnCallbackFire(oSettings, "aoPreDrawCallback", "preDraw", [
-      oSettings,
+      oSettings
     ]);
     if ($.inArray(false, aPreDraw) !== -1) {
       _fnProcessingDisplay(oSettings, false);
@@ -3323,7 +3323,7 @@
           nRow,
           aoData._aData,
           iRowCount,
-          j,
+          j
         ]);
 
         anRows.push(nRow);
@@ -3339,13 +3339,13 @@
       }
 
       anRows[0] = $("<tr/>", {
-        class: iStripes ? asStripeClasses[0] : "",
+        class: iStripes ? asStripeClasses[0] : ""
       }).append(
         $("<td />", {
           valign: "top",
           colSpan: _fnVisbleColumns(oSettings),
-          class: oSettings.oClasses.sRowEmpty,
-        }).html(sZero),
+          class: oSettings.oClasses.sRowEmpty
+        }).html(sZero)
       )[0];
     }
 
@@ -3355,7 +3355,7 @@
       _fnGetDataMaster(oSettings),
       iDisplayStart,
       iDisplayEnd,
-      aiDisplay,
+      aiDisplay
     ]);
 
     _fnCallbackFire(oSettings, "aoFooterCallback", "footer", [
@@ -3363,7 +3363,7 @@
       _fnGetDataMaster(oSettings),
       iDisplayStart,
       iDisplayEnd,
-      aiDisplay,
+      aiDisplay
     ]);
 
     var body = $(oSettings.nTBody);
@@ -3431,7 +3431,7 @@
     var insert = $("<div/>", {
       id: oSettings.sTableId + "_wrapper",
       class:
-        classes.sWrapper + (oSettings.nTFoot ? "" : " " + classes.sNoFooter),
+        classes.sWrapper + (oSettings.nTFoot ? "" : " " + classes.sNoFooter)
     });
 
     oSettings.nHolding = holding[0];
@@ -3598,7 +3598,7 @@
             for (k = 0; k < iRowspan; k++) {
               aLayout[i + k][iColShifted + l] = {
                 cell: nCell,
-                unique: bUnique,
+                unique: bUnique
               };
               aLayout[i + k].nTr = nTr;
             }
@@ -3682,7 +3682,7 @@
       _fnCallbackFire(oSettings, null, "xhr", [
         oSettings,
         json,
-        oSettings.jqXHR,
+        oSettings.jqXHR
       ]);
       fn(json);
     };
@@ -3723,7 +3723,7 @@
         var ret = _fnCallbackFire(oSettings, null, "xhr", [
           oSettings,
           null,
-          oSettings.jqXHR,
+          oSettings.jqXHR
         ]);
 
         if ($.inArray(true, ret) === -1) {
@@ -3735,7 +3735,7 @@
         }
 
         _fnProcessingDisplay(oSettings, false);
-      },
+      }
     };
 
     // Store the data submitted for the API
@@ -3754,14 +3754,14 @@
           return { name: key, value: val };
         }),
         callback,
-        oSettings,
+        oSettings
       );
     } else if (oSettings.sAjaxSource || typeof ajax === "string") {
       // DataTables 1.9- compatibility
       oSettings.jqXHR = $.ajax(
         $.extend(baseAjax, {
-          url: ajax || oSettings.sAjaxSource,
-        }),
+          url: ajax || oSettings.sAjaxSource
+        })
       );
     } else if ($.isFunction(ajax)) {
       // Is a function - let the caller define what needs to be done
@@ -3842,8 +3842,8 @@
       length: displayLength,
       search: {
         value: preSearch.sSearch,
-        regex: preSearch.bRegex,
-      },
+        regex: preSearch.bRegex
+      }
     };
 
     for (i = 0; i < columnCount; i++) {
@@ -3858,8 +3858,8 @@
         orderable: column.bSortable,
         search: {
           value: columnSearch.sSearch,
-          regex: columnSearch.bRegex,
-        },
+          regex: columnSearch.bRegex
+        }
       });
 
       param("mDataProp_" + i, dataProp);
@@ -3996,7 +3996,7 @@
 
     var filter = $("<div/>", {
       id: !features.f ? tableId + "_filter" : null,
-      class: classes.sFilter,
+      class: classes.sFilter
     }).append($("<label/>").append(str));
 
     var searchFn = function () {
@@ -4010,7 +4010,7 @@
           sSearch: val,
           bRegex: previousSearch.bRegex,
           bSmart: previousSearch.bSmart,
-          bCaseInsensitive: previousSearch.bCaseInsensitive,
+          bCaseInsensitive: previousSearch.bCaseInsensitive
         });
 
         // Need to redraw, without resorting
@@ -4031,7 +4031,7 @@
       .attr("placeholder", language.sSearchPlaceholder)
       .on(
         "keyup.DT search.DT input.DT paste.DT cut.DT",
-        searchDelay ? _fnThrottle(searchFn, searchDelay) : searchFn,
+        searchDelay ? _fnThrottle(searchFn, searchDelay) : searchFn
       )
       .on("keypress.DT", function (e) {
         /* Prevent form submission */
@@ -4092,7 +4092,7 @@
         iForce,
         fnRegex(oInput),
         oInput.bSmart,
-        oInput.bCaseInsensitive,
+        oInput.bCaseInsensitive
       );
       fnSaveFilter(oInput);
 
@@ -4104,7 +4104,7 @@
           i,
           fnRegex(aoPrevSearch[i]),
           aoPrevSearch[i].bSmart,
-          aoPrevSearch[i].bCaseInsensitive,
+          aoPrevSearch[i].bCaseInsensitive
         );
       }
 
@@ -4165,7 +4165,7 @@
     colIdx,
     regex,
     smart,
-    caseInsensitive,
+    caseInsensitive
   ) {
     if (searchStr === "") {
       return;
@@ -4178,7 +4178,7 @@
       searchStr,
       regex,
       smart,
-      caseInsensitive,
+      caseInsensitive
     );
 
     for (var i = 0; i < display.length; i++) {
@@ -4368,7 +4368,7 @@
       search: obj.sSearch,
       smart: obj.bSmart,
       regex: obj.bRegex,
-      caseInsensitive: obj.bCaseInsensitive,
+      caseInsensitive: obj.bCaseInsensitive
     };
   }
 
@@ -4384,7 +4384,7 @@
       sSearch: obj.search,
       bSmart: obj.smart,
       bRegex: obj.regex,
-      bCaseInsensitive: obj.caseInsensitive,
+      bCaseInsensitive: obj.caseInsensitive
     };
   }
 
@@ -4399,14 +4399,14 @@
       nodes = settings.aanFeatures.i,
       n = $("<div/>", {
         class: settings.oClasses.sInfo,
-        id: !nodes ? tid + "_info" : null,
+        id: !nodes ? tid + "_info" : null
       });
 
     if (!nodes) {
       // Update display on each draw
       settings.aoDrawCallback.push({
         fn: _fnUpdateInfo,
-        sName: "information",
+        sName: "information"
       });
 
       n.attr("role", "status").attr("aria-live", "polite");
@@ -4455,7 +4455,7 @@
         end,
         max,
         total,
-        out,
+        out
       );
     }
 
@@ -4478,11 +4478,11 @@
       .replace(/_TOTAL_/g, formatter.call(settings, vis))
       .replace(
         /_PAGE_/g,
-        formatter.call(settings, all ? 1 : Math.ceil(start / len)),
+        formatter.call(settings, all ? 1 : Math.ceil(start / len))
       )
       .replace(
         /_PAGES_/g,
-        formatter.call(settings, all ? 1 : Math.ceil(vis / len)),
+        formatter.call(settings, all ? 1 : Math.ceil(vis / len))
       );
   }
 
@@ -4566,7 +4566,7 @@
             _fnProcessingDisplay(settings, false);
             _fnInitComplete(settings, json);
           },
-          settings,
+          settings
         );
       } else {
         _fnProcessingDisplay(settings, false);
@@ -4622,7 +4622,7 @@
     var select = $("<select/>", {
       name: tableId + "_length",
       "aria-controls": tableId,
-      class: classes.sLengthSelect,
+      class: classes.sLengthSelect
     });
 
     for (var i = 0, ien = lengths.length; i < ien; i++) {
@@ -4630,7 +4630,7 @@
         typeof language[i] === "number"
           ? settings.fnFormatNumber(language[i])
           : language[i],
-        lengths[i],
+        lengths[i]
       );
     }
 
@@ -4642,7 +4642,7 @@
     div
       .children()
       .append(
-        settings.oLanguage.sLengthMenu.replace("_MENU_", select[0].outerHTML),
+        settings.oLanguage.sLengthMenu.replace("_MENU_", select[0].outerHTML)
       );
 
     // Can't use `select` variable as user might provide their own and the
@@ -4713,14 +4713,14 @@
                 i,
                 buttons,
                 page,
-                pages,
+                pages
               );
             }
           } else {
             plugin.fnUpdate(settings, redraw);
           }
         },
-        sName: "pagination",
+        sName: "pagination"
       });
     }
 
@@ -4790,7 +4790,7 @@
   function _fnFeatureHtmlProcessing(settings) {
     return $("<div/>", {
       id: !settings.aanFeatures.r ? settings.sTableId + "_processing" : null,
-      class: settings.oClasses.sProcessing,
+      class: settings.oClasses.sProcessing
     })
       .html(settings.oLanguage.sProcessing)
       .insertBefore(settings.nTable)[0];
@@ -4869,31 +4869,31 @@
             overflow: "hidden",
             position: "relative",
             border: 0,
-            width: scrollX ? size(scrollX) : "100%",
+            width: scrollX ? size(scrollX) : "100%"
           })
           .append(
             $(_div, { class: classes.sScrollHeadInner })
               .css({
                 "box-sizing": "content-box",
-                width: scroll.sXInner || "100%",
+                width: scroll.sXInner || "100%"
               })
               .append(
                 headerClone
                   .removeAttr("id")
                   .css("margin-left", 0)
                   .append(captionSide === "top" ? caption : null)
-                  .append(table.children("thead")),
-              ),
-          ),
+                  .append(table.children("thead"))
+              )
+          )
       )
       .append(
         $(_div, { class: classes.sScrollBody })
           .css({
             position: "relative",
             overflow: "auto",
-            width: size(scrollX),
+            width: size(scrollX)
           })
-          .append(table),
+          .append(table)
       );
 
     if (footer) {
@@ -4902,7 +4902,7 @@
           .css({
             overflow: "hidden",
             border: 0,
-            width: scrollX ? size(scrollX) : "100%",
+            width: scrollX ? size(scrollX) : "100%"
           })
           .append(
             $(_div, { class: classes.sScrollFootInner }).append(
@@ -4910,9 +4910,9 @@
                 .removeAttr("id")
                 .css("margin-left", 0)
                 .append(captionSide === "bottom" ? caption : null)
-                .append(table.children("tfoot")),
-            ),
-          ),
+                .append(table.children("tfoot"))
+            )
+          )
       );
     }
 
@@ -4936,7 +4936,7 @@
 
     $(scrollBody).css(
       scrollY && scroll.bCollapse ? "max-height" : "height",
-      scrollY,
+      scrollY
     );
 
     settings.nScrollHead = scrollHead;
@@ -4946,7 +4946,7 @@
     // On redraw - align columns
     settings.aoDrawCallback.push({
       fn: _fnScrollDraw,
-      sName: "scrolling",
+      sName: "scrolling"
     });
 
     return scroller[0];
@@ -5392,8 +5392,8 @@
               margin: 0,
               padding: 0,
               border: 0,
-              height: 1,
-            }),
+              height: 1
+            })
           );
         }
       }
@@ -5429,9 +5429,9 @@
                 left: 0,
                 height: 1,
                 right: 0,
-                overflow: "hidden",
+                overflow: "hidden"
               }
-            : {},
+            : {}
         )
         .append(tmpTable)
         .appendTo(tableContainer);
@@ -5501,7 +5501,7 @@
           "resize.DT-" + oSettings.sInstance,
           _fnThrottle(function () {
             _fnAdjustColumnSizing(oSettings);
-          }),
+          })
         );
       };
 
@@ -5665,7 +5665,7 @@
         if (nestedSort[i]._idx === undefined) {
           nestedSort[i]._idx = $.inArray(
             nestedSort[i][1],
-            aoColumns[iCol].asSorting,
+            aoColumns[iCol].asSorting
           );
         }
 
@@ -5675,7 +5675,7 @@
           dir: nestedSort[i][1],
           index: nestedSort[i]._idx,
           type: sType,
-          formatter: DataTable.ext.type.order[sType + "-pre"],
+          formatter: DataTable.ext.type.order[sType + "-pre"]
         });
       }
     }
@@ -5855,7 +5855,7 @@
         if (aSort.length > 0 && aSort[0].col == i) {
           th.setAttribute(
             "aria-sort",
-            aSort[0].dir == "asc" ? "ascending" : "descending",
+            aSort[0].dir == "asc" ? "ascending" : "descending"
           );
           nextSort = asSorting[aSort[0].index + 1] || asSorting[0];
         } else {
@@ -6006,7 +6006,7 @@
 
         // Remove column sorting
         $(_pluck(settings.aoData, "anCells", colIdx)).removeClass(
-          sortClass + (i < 2 ? i + 1 : 3),
+          sortClass + (i < 2 ? i + 1 : 3)
         );
       }
 
@@ -6015,7 +6015,7 @@
         colIdx = sort[i].src;
 
         $(_pluck(settings.aoData, "anCells", colIdx)).addClass(
-          sortClass + (i < 2 ? i + 1 : 3),
+          sortClass + (i < 2 ? i + 1 : 3)
         );
       }
     }
@@ -6036,7 +6036,7 @@
         settings.oInstance,
         settings,
         idx,
-        _fnColumnIndexToVisible(settings, idx),
+        _fnColumnIndexToVisible(settings, idx)
       );
     }
 
@@ -6081,14 +6081,14 @@
       columns: $.map(settings.aoColumns, function (col, i) {
         return {
           visible: col.bVisible,
-          search: _fnSearchToCamel(settings.aoPreSearchCols[i]),
+          search: _fnSearchToCamel(settings.aoPreSearchCols[i])
         };
-      }),
+      })
     };
 
     _fnCallbackFire(settings, "aoStateSaveParams", "stateSaveParams", [
       settings,
-      state,
+      state
     ]);
 
     settings.oSavedState = state;
@@ -6117,7 +6117,7 @@
         settings,
         "aoStateLoadParams",
         "stateLoadParams",
-        [settings, s],
+        [settings, s]
       );
       if ($.inArray(false, abStateLoad) !== -1) {
         callback();
@@ -6193,7 +6193,7 @@
     var state = settings.fnStateLoadCallback.call(
       settings.oInstance,
       settings,
-      loaded,
+      loaded
     );
 
     if (state !== undefined) {
@@ -6372,7 +6372,7 @@
     if (fn) {
       oSettings[sStore].push({
         fn: fn,
-        sName: sName,
+        sName: sName
       });
     }
   }
@@ -6655,7 +6655,7 @@
     this.selector = {
       rows: null,
       cols: null,
-      opts: null,
+      opts: null
     };
 
     _Api.extend(this, this, __apiStruct);
@@ -6883,7 +6883,7 @@
       return new _Api(this.context, _unique(this));
     },
 
-    unshift: __arrayProto.unshift,
+    unshift: __arrayProto.unshift
   });
 
   _Api.extend = function (scope, obj, ext) {
@@ -6992,7 +6992,7 @@
           name: key,
           val: {},
           methodExt: [],
-          propExt: [],
+          propExt: []
         };
         struct.push(src);
       }
@@ -7008,7 +7008,7 @@
   _Api.registerPlural = _api_registerPlural = function (
     pluralName,
     singularName,
-    val,
+    val
   ) {
     _Api.register(pluralName, val);
 
@@ -7093,7 +7093,7 @@
       function (ctx) {
         return ctx.nTable;
       },
-      1,
+      1
     );
   });
 
@@ -7103,7 +7103,7 @@
       function (ctx) {
         return ctx.nTBody;
       },
-      1,
+      1
     );
   });
 
@@ -7113,7 +7113,7 @@
       function (ctx) {
         return ctx.nTHead;
       },
-      1,
+      1
     );
   });
 
@@ -7123,7 +7123,7 @@
       function (ctx) {
         return ctx.nTFoot;
       },
-      1,
+      1
     );
   });
 
@@ -7136,9 +7136,9 @@
         function (ctx) {
           return ctx.nTableWrapper;
         },
-        1,
+        1
       );
-    },
+    }
   );
 
   /**
@@ -7225,7 +7225,7 @@
       length: len,
       recordsTotal: settings.fnRecordsTotal(),
       recordsDisplay: visRecords,
-      serverSide: _fnDataSource(settings) === "ssp",
+      serverSide: _fnDataSource(settings) === "ssp"
     };
   });
 
@@ -7459,9 +7459,9 @@
       {
         search: "none",
         order: "current",
-        page: "all",
+        page: "all"
       },
-      opts,
+      opts
     );
   };
 
@@ -7654,7 +7654,7 @@
       function (settings) {
         return __row_selector(settings, selector, opts);
       },
-      1,
+      1
     );
 
     // Want argument shifting here and in __row_selector?
@@ -7670,7 +7670,7 @@
       function (settings, row) {
         return settings.aoData[row].nTr || undefined;
       },
-      1,
+      1
     );
   });
 
@@ -7681,7 +7681,7 @@
       function (settings, rows) {
         return _pluck_order(settings.aoData, rows, "_aData");
       },
-      1,
+      1
     );
   });
 
@@ -7692,7 +7692,7 @@
         var r = settings.aoData[row];
         return type === "search" ? r._aFilterData : r._aSortData;
       },
-      1,
+      1
     );
   });
 
@@ -7703,7 +7703,7 @@
       return this.iterator("row", function (settings, row) {
         _fnInvalidate(settings, row, src);
       });
-    },
+    }
   );
 
   _api_registerPlural("rows().indexes()", "row().index()", function () {
@@ -7712,7 +7712,7 @@
       function (settings, row) {
         return row;
       },
-      1,
+      1
     );
   });
 
@@ -7808,7 +7808,7 @@
 
         return out;
       },
-      1,
+      1
     );
 
     // Return an Api.rows() extended instance, so rows().nodes() etc can be used
@@ -8044,37 +8044,37 @@
   _api_register(
     [
       _child_obj + ".show()",
-      _child_mth + ".show()", // only when `child()` was called with parameters (without
+      _child_mth + ".show()" // only when `child()` was called with parameters (without
     ],
     function (show) {
       // it returns an object and this method is not executed)
       __details_display(this, true);
       return this;
-    },
+    }
   );
 
   _api_register(
     [
       _child_obj + ".hide()",
-      _child_mth + ".hide()", // only when `child()` was called with parameters (without
+      _child_mth + ".hide()" // only when `child()` was called with parameters (without
     ],
     function () {
       // it returns an object and this method is not executed)
       __details_display(this, false);
       return this;
-    },
+    }
   );
 
   _api_register(
     [
       _child_obj + ".remove()",
-      _child_mth + ".remove()", // only when `child()` was called with parameters (without
+      _child_mth + ".remove()" // only when `child()` was called with parameters (without
     ],
     function () {
       // it returns an object and this method is not executed)
       __details_remove(this);
       return this;
-    },
+    }
   );
 
   _api_register(_child_obj + ".isShown()", function () {
@@ -8131,7 +8131,7 @@
         return [
           selInt >= 0
             ? selInt // Count from left
-            : columns.length + selInt, // Count from right (+ because its a negative value)
+            : columns.length + selInt // Count from right (+ because its a negative value)
         ];
       }
 
@@ -8266,7 +8266,7 @@
       function (settings) {
         return __column_selector(settings, selector, opts);
       },
-      1,
+      1
     );
 
     // Want argument shifting here and in _row_selector?
@@ -8285,9 +8285,9 @@
         function (settings, column) {
           return settings.aoColumns[column].nTh;
         },
-        1,
+        1
       );
-    },
+    }
   );
 
   _api_registerPlural(
@@ -8299,9 +8299,9 @@
         function (settings, column) {
           return settings.aoColumns[column].nTf;
         },
-        1,
+        1
       );
-    },
+    }
   );
 
   _api_registerPlural("columns().data()", "column().data()", function () {
@@ -8314,7 +8314,7 @@
       function (settings, column) {
         return settings.aoColumns[column].mData;
       },
-      1,
+      1
     );
   });
 
@@ -8326,10 +8326,10 @@
           settings.aoData,
           rows,
           type === "search" ? "_aFilterData" : "_aSortData",
-          column,
+          column
         );
       },
-      1,
+      1
     );
   });
 
@@ -8339,7 +8339,7 @@
       function (settings, column, i, j, rows) {
         return _pluck_order(settings.aoData, rows, "anCells", column);
       },
-      1,
+      1
     );
   });
 
@@ -8362,7 +8362,7 @@
             settings,
             column,
             vis,
-            calc,
+            calc
           ]);
         });
 
@@ -8372,7 +8372,7 @@
       }
 
       return ret;
-    },
+    }
   );
 
   _api_registerPlural(
@@ -8386,9 +8386,9 @@
             ? _fnColumnIndexToVisible(settings, column)
             : column;
         },
-        1,
+        1
       );
-    },
+    }
   );
 
   _api_register("columns.adjust()", function () {
@@ -8397,7 +8397,7 @@
       function (settings) {
         _fnAdjustColumnSizing(settings);
       },
-      1,
+      1
     );
   });
 
@@ -8439,7 +8439,7 @@
           for (j = 0; j < columns; j++) {
             o = {
               row: row,
-              column: j,
+              column: j
             };
 
             if (fnSelector) {
@@ -8450,7 +8450,7 @@
                 s(
                   o,
                   _fnGetCellData(settings, row, j),
-                  host.anCells ? host.anCells[j] : null,
+                  host.anCells ? host.anCells[j] : null
                 )
               ) {
                 a.push(o);
@@ -8477,7 +8477,7 @@
           return {
             // use a new object, in case someone changes the values
             row: el._DT_CellIndex.row,
-            column: el._DT_CellIndex.column,
+            column: el._DT_CellIndex.column
           };
         })
         .toArray();
@@ -8494,8 +8494,8 @@
         ? [
             {
               row: host.data("dt-row"),
-              column: host.data("dt-column"),
-            },
+              column: host.data("dt-column")
+            }
           ]
         : [];
     };
@@ -8543,20 +8543,20 @@
           for (j = 0, jen = columns[idx].length; j < jen; j++) {
             a.push({
               row: rows[idx][i],
-              column: columns[idx][j],
+              column: columns[idx][j]
             });
           }
         }
 
         return a;
       },
-      1,
+      1
     );
 
     $.extend(cells.selector, {
       cols: columnSelector,
       rows: rowSelector,
-      opts: opts,
+      opts: opts
     });
 
     return cells;
@@ -8570,7 +8570,7 @@
 
         return data && data.anCells ? data.anCells[column] : undefined;
       },
-      1,
+      1
     );
   });
 
@@ -8580,7 +8580,7 @@
       function (settings, row, column) {
         return _fnGetCellData(settings, row, column);
       },
-      1,
+      1
     );
   });
 
@@ -8592,7 +8592,7 @@
       function (settings, row, column) {
         return settings.aoData[row][type][column];
       },
-      1,
+      1
     );
   });
 
@@ -8602,7 +8602,7 @@
       function (settings, row, column) {
         return _fnGetCellData(settings, row, column, type);
       },
-      1,
+      1
     );
   });
 
@@ -8613,10 +8613,10 @@
         return {
           row: row,
           column: column,
-          columnVisible: _fnColumnIndexToVisible(settings, column),
+          columnVisible: _fnColumnIndexToVisible(settings, column)
         };
       },
-      1,
+      1
     );
   });
 
@@ -8627,7 +8627,7 @@
       return this.iterator("cell", function (settings, row, column) {
         _fnInvalidate(settings, row, src, column);
       });
-    },
+    }
   );
 
   _api_register("cell()", function (rowSelector, columnSelector, opts) {
@@ -8767,9 +8767,9 @@
           sSearch: input + "",
           bRegex: regex === null ? false : regex,
           bSmart: smart === null ? true : smart,
-          bCaseInsensitive: caseInsen === null ? true : caseInsen,
+          bCaseInsensitive: caseInsen === null ? true : caseInsen
         }),
-        1,
+        1
       );
     });
   });
@@ -8795,12 +8795,12 @@
           sSearch: input + "",
           bRegex: regex === null ? false : regex,
           bSmart: smart === null ? true : smart,
-          bCaseInsensitive: caseInsen === null ? true : caseInsen,
+          bCaseInsensitive: caseInsen === null ? true : caseInsen
         });
 
         _fnFilterComplete(settings, settings.oPreviousSearch, 1);
       });
-    },
+    }
   );
 
   /*
@@ -8957,8 +8957,8 @@
     return $(
       [].concat(
         jqRows.filter(selector).toArray(),
-        jqRows.find(selector).toArray(),
-      ),
+        jqRows.find(selector).toArray()
+      )
     );
   });
 
@@ -9059,7 +9059,7 @@
           " " +
           classes.sSortableDesc +
           " " +
-          classes.sSortableNone,
+          classes.sSortableNone
       );
 
       // Add the TR elements back into the table in their original order
@@ -9123,12 +9123,12 @@
           api[type](
             arg1,
             type === "cell" ? arg2 : opts,
-            type === "cell" ? opts : undefined,
+            type === "cell" ? opts : undefined
           ),
           arg1,
           arg2,
           arg3,
-          arg4,
+          arg4
         );
       });
     });
@@ -9217,7 +9217,7 @@
      *  @type boolean
      *  @default true
      */
-    bSmart: true,
+    bSmart: true
   };
 
   /**
@@ -9315,7 +9315,7 @@
      *  @default -1
      *  @private
      */
-    idx: -1,
+    idx: -1
   };
 
   /**
@@ -9559,7 +9559,7 @@
      *  @type string
      *  @default null
      */
-    sWidthOrig: null,
+    sWidthOrig: null
   };
 
   /*
@@ -10634,8 +10634,8 @@
             ? sessionStorage
             : localStorage
           ).getItem(
-            "DataTables_" + settings.sInstance + "_" + location.pathname,
-          ),
+            "DataTables_" + settings.sInstance + "_" + location.pathname
+          )
         );
       } catch (e) {}
     },
@@ -10736,7 +10736,7 @@
           : localStorage
         ).setItem(
           "DataTables_" + settings.sInstance + "_" + location.pathname,
-          JSON.stringify(data),
+          JSON.stringify(data)
         );
       } catch (e) {}
     },
@@ -10960,7 +10960,7 @@
          *      } );
          *    } );
          */
-        sSortDescending: ": activate to sort column descending",
+        sSortDescending: ": activate to sort column descending"
       },
 
       /**
@@ -11056,7 +11056,7 @@
          *      } );
          *    } );
          */
-        sPrevious: "Previous",
+        sPrevious: "Previous"
       },
 
       /**
@@ -11397,7 +11397,7 @@
        *      } );
        *    } );
        */
-      sZeroRecords: "No matching records found",
+      sZeroRecords: "No matching records found"
     },
 
     /**
@@ -11672,7 +11672,7 @@
      *
      *  @name DataTable.defaults.rowId
      */
-    rowId: "DT_RowId",
+    rowId: "DT_RowId"
   };
 
   _fnHungarianMap(DataTable.defaults);
@@ -12519,7 +12519,7 @@
      *      } );
      *    } );
      */
-    sWidth: null,
+    sWidth: null
   };
 
   _fnHungarianMap(DataTable.defaults.column);
@@ -12660,7 +12660,7 @@
        * set a default use {@link DataTable.defaults}.
        *  @type boolean
        */
-      bStateSave: null,
+      bStateSave: null
     },
 
     /**
@@ -12711,7 +12711,7 @@
        * set a default use {@link DataTable.defaults}.
        *  @type string
        */
-      sY: null,
+      sY: null
     },
 
     /**
@@ -12726,7 +12726,7 @@
        *  @type function
        *  @default null
        */
-      fnInfoCallback: null,
+      fnInfoCallback: null
     },
 
     /**
@@ -12763,7 +12763,7 @@
        *  @type integer
        *  @default 0
        */
-      barWidth: 0,
+      barWidth: 0
     },
 
     ajax: null,
@@ -13418,7 +13418,7 @@
      *  @type string
      *  @default null
      */
-    rowId: null,
+    rowId: null
   };
 
   /**
@@ -13608,7 +13608,7 @@
     selector: {
       cell: [],
       column: [],
-      row: [],
+      row: []
     },
 
     /**
@@ -13637,7 +13637,7 @@
        *  @type boolean
        *  @default null
        */
-      ajax: null,
+      ajax: null
     },
 
     /**
@@ -13689,7 +13689,7 @@
 
     renderer: {
       pageButton: {},
-      header: {},
+      header: {}
     },
 
     /**
@@ -13889,7 +13889,7 @@
        *      }
        *    } );
        */
-      order: {},
+      order: {}
     },
 
     /**
@@ -13933,7 +13933,7 @@
      *  @type string
      *  @deprecated Since v1.10
      */
-    sVersion: DataTable.version,
+    sVersion: DataTable.version
   };
 
   //
@@ -13948,7 +13948,7 @@
     aoFeatures: _ext.feature,
     oApi: _ext.internal,
     oStdClasses: _ext.classes,
-    oPagination: _ext.pager,
+    oPagination: _ext.pager
   });
 
   $.extend(DataTable.ext.classes, {
@@ -14013,7 +14013,7 @@
     sSortJUIWrapper: "",
     sSortIcon: "",
     sJUIHeader: "",
-    sJUIFooter: "",
+    sJUIFooter: ""
   });
 
   var extPagination = DataTable.ext.pager;
@@ -14075,7 +14075,7 @@
     _numbers: _numbers,
 
     // Number of number buttons (including ellipsis) to show. _Must be odd!_
-    numbers_length: 7,
+    numbers_length: 7
   });
 
   $.extend(true, DataTable.ext.renderer, {
@@ -14099,7 +14099,7 @@
 
             if ($.isArray(button)) {
               var inner = $("<" + (button.DT_el || "div") + "/>").appendTo(
-                container,
+                container
               );
               attach(inner, button);
             } else {
@@ -14155,7 +14155,7 @@
                   id:
                     idx === 0 && typeof button === "string"
                       ? settings.sTableId + "_" + button
-                      : null,
+                      : null
                 })
                   .html(btnDisplay)
                   .appendTo(container);
@@ -14188,8 +14188,8 @@
             .find("[data-dt-idx=" + activeEl + "]")
             .focus();
         }
-      },
-    },
+      }
+    }
   });
 
   // Built in type detection. See model.ext.aTypes for information about
@@ -14237,7 +14237,7 @@
       return _empty(d) || (typeof d === "string" && d.indexOf("<") !== -1)
         ? "html"
         : null;
-    },
+    }
   ]);
 
   // Filter formatting functions. See model.ext.ofnSearch for information about
@@ -14262,7 +14262,7 @@
         : typeof data === "string"
           ? data.replace(_re_new_lines, " ")
           : data;
-    },
+    }
   });
 
   var __numericReplace = function (d, decimalPlace, re1, re2) {
@@ -14317,9 +14317,9 @@
             d,
             decimalPlace,
             _re_html,
-            _re_formatted_numeric,
+            _re_formatted_numeric
           );
-        },
+        }
       },
       function (key, fn) {
         // Add the ordering method
@@ -14329,7 +14329,7 @@
         if (key.match(/^html\-/)) {
           _ext.type.search[key + decimalPlace] = _ext.type.search.html;
         }
-      },
+      }
     );
   }
 
@@ -14370,7 +14370,7 @@
 
     "string-desc": function (x, y) {
       return x < y ? 1 : x > y ? -1 : 0;
-    },
+    }
   });
 
   // Numeric sorting types - order doesn't matter here
@@ -14400,16 +14400,16 @@
                   " " +
                   classes.sSortAsc +
                   " " +
-                  classes.sSortDesc,
+                  classes.sSortDesc
               )
               .addClass(
                 columns[colIdx] == "asc"
                   ? classes.sSortAsc
                   : columns[colIdx] == "desc"
                     ? classes.sSortDesc
-                    : column.sSortingClass,
+                    : column.sSortingClass
               );
-          },
+          }
         );
       },
 
@@ -14419,8 +14419,8 @@
           .append(cell.contents())
           .append(
             $("<span/>").addClass(
-              classes.sSortIcon + " " + column.sSortingClassJUI,
-            ),
+              classes.sSortIcon + " " + column.sSortingClassJUI
+            )
           )
           .appendTo(cell);
 
@@ -14441,7 +14441,7 @@
                   ? classes.sSortAsc
                   : columns[colIdx] == "desc"
                     ? classes.sSortDesc
-                    : column.sSortingClass,
+                    : column.sSortingClass
               );
 
             cell
@@ -14455,19 +14455,19 @@
                   " " +
                   classes.sSortJUIAscAllowed +
                   " " +
-                  classes.sSortJUIDescAllowed,
+                  classes.sSortJUIDescAllowed
               )
               .addClass(
                 columns[colIdx] == "asc"
                   ? classes.sSortJUIAsc
                   : columns[colIdx] == "desc"
                     ? classes.sSortJUIDesc
-                    : column.sSortingClassJUI,
+                    : column.sSortingClassJUI
               );
-          },
+          }
         );
-      },
-    },
+      }
+    }
   });
 
   /*
@@ -14542,15 +14542,15 @@
             floatPart +
             (postfix || "")
           );
-        },
+        }
       };
     },
 
     text: function () {
       return {
-        display: __htmlEscapeEntities,
+        display: __htmlEscapeEntities
       };
-    },
+    }
   };
 
   /*
@@ -14567,7 +14567,7 @@
   function _fnExternApiFunc(fn) {
     return function () {
       var args = [_fnSettingsFromNode(this[DataTable.ext.iApiIndex])].concat(
-        Array.prototype.slice.call(arguments),
+        Array.prototype.slice.call(arguments)
       );
       return DataTable.ext.internal[fn].apply(this, args);
     };
@@ -14669,7 +14669,7 @@
     _fnRenderer: _fnRenderer,
     _fnDataSource: _fnDataSource,
     _fnRowAttributes: _fnRowAttributes,
-    _fnCalculateEnd: function () {}, // Used by a lot of plug-ins, but redundant
+    _fnCalculateEnd: function () {} // Used by a lot of plug-ins, but redundant
     // in 1.10, so this dead-end function is
     // added to prevent errors
   });
@@ -14909,7 +14909,7 @@
       "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
       "<'row'<'col-sm-12'tr>>" +
       "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    renderer: "bootstrap",
+    renderer: "bootstrap"
   });
 
   /* Default class modification */
@@ -14917,7 +14917,7 @@
     sWrapper: "dataTables_wrapper form-inline dt-bootstrap",
     sFilterInput: "form-control input-sm",
     sLengthSelect: "form-control input-sm",
-    sProcessing: "dataTables_processing panel panel-default",
+    sProcessing: "dataTables_processing panel panel-default"
   });
 
   /* Bootstrap paging button renderer */
@@ -14927,7 +14927,7 @@
     idx,
     buttons,
     page,
-    pages,
+    pages
   ) {
     var api = new DataTable.Api(settings);
     var classes = settings.oClasses;
@@ -14996,7 +14996,7 @@
               id:
                 idx === 0 && typeof button === "string"
                   ? settings.sTableId + "_" + button
-                  : null,
+                  : null
             })
               .append(
                 $("<a>", {
@@ -15004,8 +15004,8 @@
                   "aria-controls": settings.sTableId,
                   "aria-label": aria[button],
                   "data-dt-idx": counter,
-                  tabindex: settings.iTabIndex,
-                }).html(btnDisplay),
+                  tabindex: settings.iTabIndex
+                }).html(btnDisplay)
               )
               .appendTo(container);
 
@@ -15031,7 +15031,7 @@
 
     attach(
       $(host).empty().html('<ul class="pagination"/>').children("ul"),
-      buttons,
+      buttons
     );
 
     if (activeEl !== undefined) {
@@ -15130,7 +15130,7 @@
     /* Sanity check - you just know it will happen */
     if (!(this instanceof FixedColumns)) {
       alert(
-        "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword.",
+        "FixedColumns warning: FixedColumns must be initialised with the 'new' keyword."
       );
       return;
     }
@@ -15191,7 +15191,7 @@
        * Is the document layout right-to-left
        * @type boolean
        */
-      rtl: $(dtSettings.nTable).css("direction") === "rtl",
+      rtl: $(dtSettings.nTable).css("direction") === "rtl"
     };
 
     /**
@@ -15258,7 +15258,7 @@
           wrapper: null,
           head: null,
           body: null,
-          foot: null,
+          foot: null
         },
 
         /**
@@ -15269,8 +15269,8 @@
           wrapper: null,
           head: null,
           body: null,
-          foot: null,
-        },
+          foot: null
+        }
       },
 
       /**
@@ -15302,7 +15302,7 @@
            *  @type     node
            *  @default  null
            */
-          footer: null,
+          footer: null
         },
 
         /**
@@ -15329,9 +15329,9 @@
            *  @type     node
            *  @default  null
            */
-          footer: null,
-        },
-      },
+          footer: null
+        }
+      }
     };
 
     if (dtSettings._oFixedColumns) {
@@ -15349,7 +15349,7 @@
         function () {
           that._fnConstruct(init);
         },
-        "FixedColumns",
+        "FixedColumns"
       );
     } else {
       this._fnConstruct(init);
@@ -15473,7 +15473,7 @@
           return [
             row,
             colIdx,
-            inst.oApi._fnVisibleToColumnIndex(this.s.dt, colIdx),
+            inst.oApi._fnVisibleToColumnIndex(this.s.dt, colIdx)
           ];
         }
       }
@@ -15504,7 +15504,7 @@
           "FixedColumns " +
             FixedColumns.VERSION +
             " required DataTables 1.8.0 or later. " +
-            "Please upgrade your DataTables installation",
+            "Please upgrade your DataTables installation"
         );
         return;
       }
@@ -15515,7 +15515,7 @@
           1,
           "FixedColumns is not needed (no " +
             "x-scrolling in DataTables enabled), so no action will be taken. Use 'FixedHeader' for " +
-            "column fixing when scrolling is not enabled",
+            "column fixing when scrolling is not enabled"
         );
         return;
       }
@@ -15526,7 +15526,7 @@
       /* Set up the DOM as we need it and cache nodes */
       var classes = this.s.dt.oClasses;
       this.dom.grid.dt = $(this.s.dt.nTable).parents(
-        "div." + classes.sScrollWrapper,
+        "div." + classes.sScrollWrapper
       )[0];
       this.dom.scroller = $("div." + classes.sScrollBody, this.dom.grid.dt)[0];
 
@@ -15664,7 +15664,7 @@
               that._fnGridLayout(that);
               that._fnDraw(true);
             }
-          },
+          }
         )
         .on("select.dt.DTFC deselect.dt.DTFC", function (e, dt, type, indexes) {
           if (e.namespace === "dt") {
@@ -15792,7 +15792,7 @@
           '<div class="DTFC_RightFootBlocker DTFC_Blocker" style="position:absolute; top:0; bottom:0;"></div>' +
           "</div>" +
           "</div>" +
-          "</div>",
+          "</div>"
       )[0];
       var nLeft = nSWrapper.childNodes[0];
       var nRight = nSWrapper.childNodes[1];
@@ -15846,7 +15846,7 @@
       if (this.s.rtl) {
         $("div.DTFC_RightHeadBlocker", nSWrapper).css({
           left: -oOverflow.bar + "px",
-          right: "",
+          right: ""
         });
       }
     },
@@ -15957,7 +15957,7 @@
       var out = {
         x: false,
         y: false,
-        bar: this.s.dt.oScroll.iBarWidth,
+        bar: this.s.dt.oScroll.iBarWidth
       };
 
       if (nTable.offsetWidth > nTableScrollBody.clientWidth) {
@@ -15987,14 +15987,14 @@
         this.s.fnDrawCallback.call(
           this,
           this.dom.clone.left,
-          this.dom.clone.right,
+          this.dom.clone.right
         );
       }
 
       /* Event triggering */
       $(this).trigger("draw.dtfc", {
         leftClone: this.dom.clone.left,
-        rightClone: this.dom.clone.right,
+        rightClone: this.dom.clone.right
       });
     },
 
@@ -16083,12 +16083,12 @@
 
             aRow.push({
               cell: nClone,
-              unique: aoOriginal[i][j].unique,
+              unique: aoOriginal[i][j].unique
             });
           } else {
             aRow.push({
               cell: aClones[iCloned],
-              unique: aoOriginal[i][j].unique,
+              unique: aoOriginal[i][j].unique
             });
           }
         }
@@ -16171,9 +16171,9 @@
               function () {
                 this.className = $(
                   "span.DataTables_sort_icon",
-                  aoCloneLayout[i][j].cell,
+                  aoCloneLayout[i][j].cell
                 )[0].className;
-              },
+              }
             );
           }
         }
@@ -16251,7 +16251,7 @@
               nClone.setAttribute("data-dt-row", i);
               nClone.setAttribute(
                 "data-dt-column",
-                dt.oApi._fnVisibleToColumnIndex(dt, iColumn),
+                dt.oApi._fnVisibleToColumnIndex(dt, iColumn)
               );
               n.appendChild(nClone);
             }
@@ -16385,7 +16385,7 @@
         rootOriginal = original.getElementsByTagName(nodeName)[0],
         rootClone = clone.getElementsByTagName(nodeName)[0],
         jqBoxHack = $(">" + nodeName + ">tr:eq(0)", original).children(
-          ":first",
+          ":first"
         ),
         iBoxHack = jqBoxHack.outerHeight() - jqBoxHack.height(),
         anOriginal = this._fnGetTrNodes(rootOriginal),
@@ -16431,7 +16431,7 @@
             left: 0,
             height: 10,
             width: 50,
-            overflow: "scroll",
+            overflow: "scroll"
           })
           .appendTo("body");
 
@@ -16444,7 +16444,7 @@
       }
 
       return _firefoxScroll;
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -16522,7 +16522,7 @@
      *          "heightMatch": "auto"
      *      } );
      */
-    sHeightMatch: "semiauto",
+    sHeightMatch: "semiauto"
   };
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -16599,7 +16599,7 @@
       return {
         row: rowIdx,
         column: this.column.index("toData", columnIdx),
-        columnVisible: columnIdx,
+        columnVisible: columnIdx
       };
     } else {
       return this.cell(cell).index();
@@ -16716,7 +16716,7 @@
         tfootHeight: 0,
         theadHeight: 0,
         windowHeight: $(window).height(),
-        visible: true,
+        visible: true
       },
       headerMode: null,
       footerMode: null,
@@ -16724,9 +16724,9 @@
       namespace: ".dtfc" + _instCounter++,
       scrollLeft: {
         header: -1,
-        footer: -1,
+        footer: -1
       },
-      enable: true,
+      enable: true
     };
 
     this.dom = {
@@ -16737,13 +16737,13 @@
       header: {
         host: null,
         floating: null,
-        placeholder: null,
+        placeholder: null
       },
       footer: {
         host: null,
         floating: null,
-        placeholder: null,
-      },
+        placeholder: null
+      }
     };
 
     this.dom.header.host = this.dom.thead.parent();
@@ -16861,7 +16861,7 @@
         "column-reorder.dt.dtfc column-visibility.dt.dtfc draw.dt.dtfc column-sizing.dt.dtfc",
         function () {
           that.update();
-        },
+        }
       );
 
       dt.on("destroy.dtfc", function () {
@@ -16944,7 +16944,7 @@
         $(name, to).each(function (i) {
           $(this).css({
             width: toWidths[i],
-            minWidth: toWidths[i],
+            minWidth: toWidths[i]
           });
         });
       };
@@ -16974,7 +16974,7 @@
       ) {
         $("th, td", el).css({
           width: "",
-          minWidth: "",
+          minWidth: ""
         });
       } else if (el && item === "header") {
         $("th, td", el).css("min-width", "");
@@ -17193,7 +17193,7 @@
 
         this._horizontal("footer", windowLeft);
       }
-    },
+    }
   });
 
   /**
@@ -17212,7 +17212,7 @@
     header: true,
     footer: false,
     headerOffset: 0,
-    footerOffset: 0,
+    footerOffset: 0
   };
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -17400,7 +17400,7 @@
     /* Sanity check - you just know it will happen */
     if (!(this instanceof Scroller)) {
       alert(
-        "Scroller warning: Scroller must be initialised with the 'new' keyword.",
+        "Scroller warning: Scroller must be initialised with the 'new' keyword."
       );
       return;
     }
@@ -17505,13 +17505,13 @@
          *  @type     int
          *  @default  0
          */
-        viewport: null,
+        viewport: null
       },
 
       topRowFloat: 0,
       scrollDrawDiff: null,
       loaderVisible: false,
-      forceReposition: false,
+      forceReposition: false
     };
 
     // @todo The defaults should extend a `c` property and the internal settings
@@ -17531,7 +17531,7 @@
       force: document.createElement("div"),
       scroller: null,
       table: null,
-      loader: null,
+      loader: null
     };
 
     // Attach the instance to the DataTables instance so it can be accessed in
@@ -17677,7 +17677,7 @@
         this.s.ani = ani;
         $(this.dom.scroller).animate(
           {
-            scrollTop: px,
+            scrollTop: px
           },
           function () {
             // This needs to happen after the animation has completed and
@@ -17685,7 +17685,7 @@
             setTimeout(function () {
               that.s.ani = false;
             }, 25);
-          },
+          }
         );
       } else {
         $(this.dom.scroller).scrollTop(px);
@@ -17736,7 +17736,7 @@
         // If collapsed (no height) use the max-height parameter
         if (!heights.viewport) {
           heights.viewport = this._parseHeight(
-            $(this.dom.scroller).css("max-height"),
+            $(this.dom.scroller).css("max-height")
           );
         }
 
@@ -17767,13 +17767,13 @@
           this.fnPixelsToRow(
             iScrollTop + this.s.heights.viewport,
             false,
-            this.s.ani,
-          ),
+            this.s.ani
+          )
         );
 
       return {
         start: Math.floor(this.fnPixelsToRow(iScrollTop, false, this.s.ani)),
-        end: iTotal < iPossibleEnd ? iTotal - 1 : iPossibleEnd - 1,
+        end: iTotal < iPossibleEnd ? iTotal - 1 : iPossibleEnd - 1
       };
     },
 
@@ -17794,7 +17794,7 @@
         this.s.dt.oApi._fnLog(
           this.s.dt,
           0,
-          "Pagination must be enabled for Scroller",
+          "Pagination must be enabled for Scroller"
         );
         return;
       }
@@ -17809,7 +17809,7 @@
 
       this.dom.scroller = $(
         "div." + this.s.dt.oClasses.sScrollBody,
-        this.s.dt.nTableWrapper,
+        this.s.dt.nTableWrapper
       )[0];
       this.dom.scroller.appendChild(this.dom.force);
       this.dom.scroller.style.position = "relative";
@@ -17827,7 +17827,7 @@
         this.dom.loader = $(
           '<div class="dataTables_processing DTS_Loading">' +
             this.s.dt.oLanguage.sLoadingRecords +
-            "</div>",
+            "</div>"
         ).css("display", "none");
 
         $(this.dom.scroller.parentNode)
@@ -17867,7 +17867,7 @@
             that._fnDrawCallback.call(that);
           }
         },
-        sName: "Scroller",
+        sName: "Scroller"
       });
 
       /* On resize, update the information element, since the number of rows shown might change */
@@ -17895,7 +17895,7 @@
             oData.iScrollerTopRow = that.s.topRowFloat;
           }
         },
-        "Scroller_State",
+        "Scroller_State"
       );
 
       if (this.s.dt.oLoadedState) {
@@ -17923,7 +17923,7 @@
           that.dom.table.style.position = "";
           that.dom.table.style.top = "";
           that.dom.table.style.left = "";
-        },
+        }
       });
     },
 
@@ -17979,7 +17979,7 @@
         iScrollTop > this.s.redrawBottom
       ) {
         var preRows = Math.ceil(
-          ((this.s.displayBuffer - 1) / 2) * this.s.viewportRows,
+          ((this.s.displayBuffer - 1) / 2) * this.s.viewportRows
         );
 
         if (
@@ -17990,7 +17990,7 @@
           iTopRow =
             parseInt(
               this._domain("physicalToVirtual", iScrollTop) / heights.row,
-              10,
+              10
             ) - preRows;
           this.s.topRowFloat =
             this._domain("physicalToVirtual", iScrollTop) / heights.row;
@@ -18122,7 +18122,7 @@
     _parseHeight: function (cssHeight) {
       var height;
       var matches = /^([+-]?(?:\d+(?:\.\d+)?|\.\d+))(px|em|rem|vh)$/.exec(
-        cssHeight,
+        cssHeight
       );
 
       if (matches === null) {
@@ -18181,7 +18181,7 @@
         // Domain scaled in the middle
         iScrollTop = this._domain(
           "virtualToPhysical",
-          this.s.topRowFloat * heights.row,
+          this.s.topRowFloat * heights.row
         );
       }
 
@@ -18325,7 +18325,7 @@
           dt.oClasses.sScrollBody +
           '"></div>' +
           "</div>" +
-          "</div>",
+          "</div>"
       );
 
       // Want 3 rows in the sizing table so :first-child and :last-child
@@ -18366,7 +18366,7 @@
         language = dt.oLanguage,
         iScrollTop = this.dom.scroller.scrollTop,
         iStart = Math.floor(
-          this.fnPixelsToRow(iScrollTop, false, this.s.ani) + 1,
+          this.fnPixelsToRow(iScrollTop, false, this.s.ani) + 1
         ),
         iMax = dt.fnRecordsTotal(),
         iTotal = dt.fnRecordsDisplay(),
@@ -18374,8 +18374,8 @@
           this.fnPixelsToRow(
             iScrollTop + this.s.heights.viewport,
             false,
-            this.s.ani,
-          ),
+            this.s.ani
+          )
         ),
         iEnd = iTotal < iPossibleEnd ? iTotal : iPossibleEnd,
         sStart = dt.fnFormatNumber(iStart),
@@ -18416,7 +18416,7 @@
           " " +
           language.sInfoFiltered.replace(
             "_MAX_",
-            dt.fnFormatNumber(dt.fnRecordsTotal()),
+            dt.fnFormatNumber(dt.fnRecordsTotal())
           ) +
           language.sInfoPostFix;
       }
@@ -18430,7 +18430,7 @@
           iEnd,
           iMax,
           iTotal,
-          sOut,
+          sOut
         );
       }
 
@@ -18443,7 +18443,7 @@
 
       // DT doesn't actually (yet) trigger this event, but it will in future
       $(dt.nTable).triggerHandler("info.dt");
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -18576,7 +18576,7 @@
      *        }
      *    } );
      */
-    loadingIndicator: false,
+    loadingIndicator: false
   };
 
   Scroller.oDefaults = Scroller.defaults;
@@ -18612,11 +18612,11 @@
         new Scroller(oDTSettings, opts);
       },
       cFeature: "S",
-      sFeature: "Scroller",
+      sFeature: "Scroller"
     });
   } else {
     alert(
-      "Warning: Scroller requires DataTables 1.10.0 or greater - www.datatables.net/download",
+      "Warning: Scroller requires DataTables 1.10.0 or greater - www.datatables.net/download"
     );
   }
 
@@ -18660,7 +18660,7 @@
         return ctx[0].oScroller.fnRowToPixels(rowIdx, intParse, virtual);
       }
       // undefined
-    },
+    }
   );
 
   // Undocumented and deprecated - is it actually useful at all?
@@ -18673,7 +18673,7 @@
         return ctx[0].oScroller.fnPixelsToRow(pixels, intParse, virtual);
       }
       // undefined
-    },
+    }
   );
 
   // Undocumented and deprecated - use `row().scrollTo()` instead

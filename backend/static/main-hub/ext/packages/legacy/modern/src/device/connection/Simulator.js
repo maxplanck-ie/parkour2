@@ -8,5 +8,5 @@ Ext.define("Ext.device.connection.Simulator", {
     this._online = navigator.onLine;
     this._type = Ext.device.Connection.UNKNOWN;
     return this._online;
-  },
+  }
 });

@@ -63,10 +63,10 @@ Ext.define("Ext.util.Draggable", {
      */
     initialOffset: {
       x: 0,
-      y: 0,
+      y: 0
     },
 
-    translatable: {},
+    translatable: {}
   },
 
   DIRECTION_BOTH: "both",
@@ -77,7 +77,7 @@ Ext.define("Ext.util.Draggable", {
 
   defaultConstraint: {
     min: { x: -Infinity, y: -Infinity },
-    max: { x: Infinity, y: Infinity },
+    max: { x: Infinity, y: Infinity }
   },
 
   containerWidth: 0,
@@ -101,7 +101,7 @@ Ext.define("Ext.util.Draggable", {
 
     this.offset = {
       x: 0,
-      y: 0,
+      y: 0
     };
 
     this.elementListeners = {
@@ -114,7 +114,7 @@ Ext.define("Ext.util.Draggable", {
       // high priority ensures that these listeners run before user listeners
       // so that draggable state is correct in user handlers
       priority: 2000,
-      scope: this,
+      scope: this
     };
 
     if (config && config.element) {
@@ -145,7 +145,7 @@ Ext.define("Ext.util.Draggable", {
     if (typeof initialOffset == "number") {
       initialOffset = {
         x: initialOffset,
-        y: initialOffset,
+        y: initialOffset
       };
     }
 
@@ -167,7 +167,7 @@ Ext.define("Ext.util.Draggable", {
     translatable = Ext.factory(
       translatable,
       Ext.util.Translatable,
-      currentInstance,
+      currentInstance
     );
     if (translatable) {
       translatable.setElement(this.getElement());
@@ -224,9 +224,8 @@ Ext.define("Ext.util.Draggable", {
       min: { x: 0, y: 0 },
       max: {
         x: this.containerWidth - this.width - borders.beforeX - borders.afterX,
-        y:
-          this.containerHeight - this.height - borders.beforeY - borders.afterY,
-      },
+        y: this.containerHeight - this.height - borders.beforeY - borders.afterY
+      }
     };
   },
 
@@ -248,7 +247,7 @@ Ext.define("Ext.util.Draggable", {
           // for resize on the same element.  For example, slider listens to
           // resize on its element and expects that the draggable thumbs have
           // already had their draggable instances refreshed.
-          priority: 2000,
+          priority: 2000
         });
       }
     }
@@ -329,14 +328,14 @@ Ext.define("Ext.util.Draggable", {
       "dragstart",
       [me, e, offset.x, offset.y],
       me.initDragStart,
-      me,
+      me
     );
   },
 
   initDragStart: function (me, e, offsetX, offsetY) {
     this.dragStartOffset = {
       x: offsetX,
-      y: offsetY,
+      y: offsetY
     };
 
     this.isDragging = true;
@@ -354,7 +353,7 @@ Ext.define("Ext.util.Draggable", {
     this.fireAction(
       "drag",
       [this, e, startOffset.x + e.deltaX, startOffset.y + e.deltaY],
-      this.doDrag,
+      this.doDrag
     );
   },
 
@@ -454,5 +453,5 @@ Ext.define("Ext.util.Draggable", {
     }
 
     me.callParent();
-  },
+  }
 });

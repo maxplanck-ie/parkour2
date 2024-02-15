@@ -9,7 +9,7 @@ Ext.define("Ext.dashboard.DropZone", {
     vthresh: 75,
     hthresh: -1,
     animate: true,
-    increment: 200,
+    increment: 200
   },
 
   containerScroll: true,
@@ -45,7 +45,7 @@ Ext.define("Ext.dashboard.DropZone", {
         panel: data.panel,
         rawEvent: e,
         source: dd,
-        status: this.dropAllowed,
+        status: this.dropAllowed
       },
       t,
       ht,
@@ -142,7 +142,7 @@ Ext.define("Ext.dashboard.DropZone", {
           if (aboveItem) {
             dd.panelProxy.moveProxy(
               aboveItem.el.dom.parentNode,
-              aboveItem.el.dom,
+              aboveItem.el.dom
             );
           } else {
             dd.panelProxy.moveProxy(colEl.dom, null);
@@ -159,14 +159,14 @@ Ext.define("Ext.dashboard.DropZone", {
             over.beforeAfter > 0
               ? colWidth - width - colEl.getPadding("lr") + "px"
               : "",
-          "margin-top": "7px",
+          "margin-top": "7px"
         });
       } else {
         padding = dashboard.body.getPadding("lr");
         proxyProxy.setStyle({
           float: "left",
           clear: "left",
-          margin: "0 7px 0 7px",
+          margin: "0 7px 0 7px"
         });
         proxyProxy.setWidth(dashboard.body.getWidth() - padding);
 
@@ -191,7 +191,7 @@ Ext.define("Ext.dashboard.DropZone", {
 
     return (
       Ext.Array.from(
-        dashboard.query(">dashboard-column[rowIndex=" + rowIndex + "]"),
+        dashboard.query(">dashboard-column[rowIndex=" + rowIndex + "]")
       ).length < maxColumns
     );
   },
@@ -287,5 +287,5 @@ Ext.define("Ext.dashboard.DropZone", {
     if (hasListeners.drop) {
       dashboard.fireEvent("drop", over);
     }
-  },
+  }
 });

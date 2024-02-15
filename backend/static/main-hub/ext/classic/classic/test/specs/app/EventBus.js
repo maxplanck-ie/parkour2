@@ -15,10 +15,10 @@ describe("Ext.app.EventBus", function () {
       eventbus.control(
         {
           componentBar: {
-            eventBaz: handler,
-          },
+            eventBaz: handler
+          }
         },
-        ctrl,
+        ctrl
       );
 
       expect(cmpDomain.bus.eventbaz.componentBar.ctrl).toBeDefined();
@@ -29,11 +29,11 @@ describe("Ext.app.EventBus", function () {
         {
           controller: {
             "#controllerQux": {
-              eventFred: handler,
-            },
-          },
+              eventFred: handler
+            }
+          }
         },
-        ctrl,
+        ctrl
       );
 
       expect(ctrlDomain.bus.eventfred["#controllerQux"].ctrl).toBeDefined();

@@ -34,5 +34,5 @@ Ext.define("Ext.fx.target.Target", {
 
   remove: function () {
     Ext.destroy(this.target);
-  },
+  }
 });

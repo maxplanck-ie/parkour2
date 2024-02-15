@@ -14,5 +14,5 @@ Ext.define("Ext.device.storage.HTML5.SQLStatement", {
     this.arguments = config.arguments;
     this.success = config.success;
     this.failure = config.failure;
-  },
+  }
 });

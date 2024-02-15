@@ -69,5 +69,5 @@ Ext.define("Ext.device.camera.Cordova", {
     }
 
     this.getPicture(onSuccess, onError, options);
-  },
+  }
 });

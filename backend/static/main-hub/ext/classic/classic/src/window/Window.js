@@ -340,7 +340,7 @@ Ext.define("Ext.window.Window", {
 
   // Buffer this so we don't recreate the same object
   isRootCfg: {
-    isRoot: true,
+    isRoot: true
   },
 
   /**
@@ -359,7 +359,7 @@ Ext.define("Ext.window.Window", {
 
   keyMap: {
     scope: "this",
-    ESC: "onEsc",
+    ESC: "onEsc"
   },
 
   /**
@@ -494,7 +494,7 @@ Ext.define("Ext.window.Window", {
     }
     Ext.apply(state, {
       size: maximized ? me.restoreSize : me.getSize(),
-      pos: pos,
+      pos: pos
     });
     return state;
   },
@@ -513,7 +513,7 @@ Ext.define("Ext.window.Window", {
           width: state.size.width,
           height: state.size.height,
           x: state.pos[0],
-          y: state.pos[1],
+          y: state.pos[1]
         });
       }
     }
@@ -528,7 +528,7 @@ Ext.define("Ext.window.Window", {
     if (me.header) {
       me.header.on({
         scope: me,
-        click: me.onHeaderClick,
+        click: me.onHeaderClick
       });
     }
 
@@ -536,7 +536,7 @@ Ext.define("Ext.window.Window", {
     if (me.maximizable) {
       me.header.on({
         scope: me,
-        dblclick: me.toggleMaximize,
+        dblclick: me.toggleMaximize
       });
     }
   },
@@ -598,14 +598,14 @@ Ext.define("Ext.window.Window", {
       tools.push({
         type: "minimize",
         handler: "minimize",
-        scope: me,
+        scope: me
       });
     }
     if (me.maximizable) {
       tools.push({
         type: "maximize",
         handler: "toggleMaximize",
-        scope: me,
+        scope: me
       });
     }
 
@@ -823,7 +823,7 @@ Ext.define("Ext.window.Window", {
       if (!me.hasSavedRestore) {
         restore = me.restoreSize = {
           width: width ? width : null,
-          height: height ? height : null,
+          height: height ? height : null
         };
 
         // If we're not positioned yet, default back to 0,0
@@ -873,9 +873,9 @@ Ext.define("Ext.window.Window", {
                   if (!initial) {
                     me.fireEvent("maximize", me);
                   }
-                },
+                }
               }
-            : null),
+            : null)
       );
       if (!animate) {
         me.maximizing = false;
@@ -930,9 +930,9 @@ Ext.define("Ext.window.Window", {
                   me.el.enableShadow(null, true);
                   me.maximized = false;
                   me.fireEvent("restore", me);
-                },
+                }
               }
-            : null),
+            : null)
       );
 
       // Unset old position/sizing
@@ -1107,7 +1107,7 @@ Ext.define("Ext.window.Window", {
         nextFocus;
 
       nodes = el.findTabbableElements({
-        skipSelf: true,
+        skipSelf: true
       });
 
       // Tabbables might include two tab guards, so remove them
@@ -1149,6 +1149,6 @@ Ext.define("Ext.window.Window", {
       if (nextFocus) {
         nextFocus.focus();
       }
-    },
-  },
+    }
+  }
 });

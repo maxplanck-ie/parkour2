@@ -18,7 +18,7 @@ Ext.define("Ext.list.RootTreeItem", {
   element: {
     reference: "element",
     tag: "ul",
-    cls: Ext.baseCSSPrefix + "treelist-root-container",
+    cls: Ext.baseCSSPrefix + "treelist-root-container"
   },
 
   insertItem: function (item, refItem) {
@@ -31,5 +31,5 @@ Ext.define("Ext.list.RootTreeItem", {
 
   isToggleEvent: function (e) {
     return false;
-  },
+  }
 });

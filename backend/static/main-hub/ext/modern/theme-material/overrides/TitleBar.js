@@ -3,6 +3,6 @@ Ext.define("Ext.theme.material.TitleBar", {
 
   config: {
     titleAlign: "left",
-    defaultButtonUI: "alt",
-  },
+    defaultButtonUI: "alt"
+  }
 });

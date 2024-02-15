@@ -4,7 +4,7 @@ Ext.define("MainHub.model.invoicing.LibraryPreparationCost", {
   fields: [
     {
       name: "library_protocol",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

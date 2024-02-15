@@ -265,7 +265,7 @@ Ext.define("Ext.grid.plugin.CellEditing", {
     me.mon(grid, {
       columnresize: me.cancelEdit,
       columnmove: me.cancelEdit,
-      scope: me,
+      scope: me
     });
   },
 
@@ -483,7 +483,7 @@ Ext.define("Ext.grid.plugin.CellEditing", {
    */
   startEdit: function (record, columnHeader) {
     this.startEditByPosition(
-      new Ext.grid.CellContext(this.view).setPosition(record, columnHeader),
+      new Ext.grid.CellContext(this.view).setPosition(record, columnHeader)
     );
   },
 
@@ -545,10 +545,10 @@ Ext.define("Ext.grid.plugin.CellEditing", {
             {
               floating: true,
               editorId: editorId,
-              field: editor,
+              field: editor
             },
-            editor.editorCfg,
-          ),
+            editor.editorCfg
+          )
         );
       }
 
@@ -701,7 +701,7 @@ Ext.define("Ext.grid.plugin.CellEditing", {
     if (!position.isCellContext) {
       position = new Ext.grid.CellContext(me.view).setPosition(
         position.row,
-        me.grid.getColumnManager().getColumns()[position.column],
+        me.grid.getColumnManager().getColumns()[position.column]
       );
     }
 
@@ -741,5 +741,5 @@ Ext.define("Ext.grid.plugin.CellEditing", {
       // Enter actionable mode at the requested position
       return me.grid.setActionableMode(true, position);
     }
-  },
+  }
 });

@@ -11,8 +11,8 @@ describe("Ext.slider.Single", function () {
     beforeEach(function () {
       viewModel = new Ext.app.ViewModel({
         data: {
-          val: 20,
-        },
+          val: 20
+        }
       });
       data = viewModel.getData();
     });
@@ -27,10 +27,10 @@ describe("Ext.slider.Single", function () {
             renderTo: Ext.getBody(),
             width: 200,
             height: 20,
-            animate: false,
+            animate: false
           },
-          config,
-        ),
+          config
+        )
       );
 
       notify();
@@ -53,7 +53,7 @@ describe("Ext.slider.Single", function () {
 
     it("should not update viewModel on setValue incomplete", function () {
       makeSlider({
-        publishOnComplete: true,
+        publishOnComplete: true
       });
 
       slider.setValue(50);
@@ -64,7 +64,7 @@ describe("Ext.slider.Single", function () {
 
     it("should update viewModel on setValue complete", function () {
       makeSlider({
-        publishOnComplete: true,
+        publishOnComplete: true
       });
 
       slider.setValue(50, undefined, true);
@@ -75,7 +75,7 @@ describe("Ext.slider.Single", function () {
 
     it("should update viewModel on setValue when publishOnComplete:false", function () {
       makeSlider({
-        publishOnComplete: false,
+        publishOnComplete: false
       });
 
       slider.setValue(50);

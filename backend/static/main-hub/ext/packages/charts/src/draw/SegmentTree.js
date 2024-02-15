@@ -3,7 +3,7 @@
  */
 Ext.define("Ext.draw.SegmentTree", {
   config: {
-    strategy: "double",
+    strategy: "double"
   },
 
   /**
@@ -49,7 +49,7 @@ Ext.define("Ext.draw.SegmentTree", {
         [extDate.YEAR, 1, "y1", "mo3"],
         [extDate.YEAR, 5, "y5", "y1"],
         [extDate.YEAR, 10, "y10", "y5"],
-        [extDate.YEAR, 100, "y100", "y10"],
+        [extDate.YEAR, 100, "y100", "y10"]
       ],
       unitIdx,
       currentUnit,
@@ -155,7 +155,7 @@ Ext.define("Ext.draw.SegmentTree", {
     dataOpen,
     dataHigh,
     dataLow,
-    dataClose,
+    dataClose
   ) {
     var offset = 0,
       lastOffset,
@@ -265,7 +265,7 @@ Ext.define("Ext.draw.SegmentTree", {
         minY: minY,
         maxX: maxX,
         maxY: maxY,
-        close: close,
+        close: close
       },
       i;
 
@@ -283,7 +283,7 @@ Ext.define("Ext.draw.SegmentTree", {
     }
 
     result.map = {
-      original: [0, length],
+      original: [0, length]
     };
     if (length) {
       this[this.getStrategy()](
@@ -293,7 +293,7 @@ Ext.define("Ext.draw.SegmentTree", {
         dataOpen,
         dataHigh,
         dataLow,
-        dataClose,
+        dataClose
       );
     }
     return result;
@@ -386,7 +386,7 @@ Ext.define("Ext.draw.SegmentTree", {
         dataOpen,
         dataHigh,
         dataLow,
-        dataClose,
+        dataClose
       );
     }
   },
@@ -428,16 +428,16 @@ Ext.define("Ext.draw.SegmentTree", {
     }
     minIdx = Math.max(
       this.binarySearchMin(this.cache, result[0], result[1], min),
-      result[0],
+      result[0]
     );
     maxIdx = Math.min(
       this.binarySearchMax(this.cache, result[0], result[1], max) + 1,
-      result[1],
+      result[1]
     );
     return {
       data: this.cache,
       start: minIdx,
-      end: maxIdx,
+      end: maxIdx
     };
-  },
+  }
 });

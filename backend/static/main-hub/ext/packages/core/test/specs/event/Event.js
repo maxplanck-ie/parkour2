@@ -6,10 +6,10 @@ describe("Ext.event.Event", function () {
     e = new E(
       Ext.apply(
         {
-          type: "keydown",
+          type: "keydown"
         },
-        config,
-      ),
+        config
+      )
     );
 
     return e;
@@ -39,10 +39,10 @@ describe("Ext.event.Event", function () {
                   {
                     type: type,
                     keyCode: keyCode,
-                    charCode: charCode,
+                    charCode: charCode
                   },
-                  keyOptions,
-                ),
+                  keyOptions
+                )
               );
               expect(e.isSpecialKey()).toBe(result);
             });
@@ -105,7 +105,7 @@ describe("Ext.event.Event", function () {
             [false, '"', 222, 0, { shiftKey: true }],
             [false, "{", 219, 0, { shiftKey: true }],
             [false, "}", 220, 0, { shiftKey: true }],
-            [false, "_", 173, 0, { shiftKey: true }],
+            [false, "_", 173, 0, { shiftKey: true }]
           ];
 
           return {
@@ -163,10 +163,10 @@ describe("Ext.event.Event", function () {
               [false, '"', 0, 34, { shiftKey: true }],
               [false, "{", 0, 123, { shiftKey: true }],
               [false, "}", 0, 125, { shiftKey: true }],
-              [false, "_", 0, 95, { shiftKey: true }],
-            ],
+              [false, "_", 0, 95, { shiftKey: true }]
+            ]
           };
-        })(),
+        })()
       );
     } else {
       makeKeySuite(
@@ -222,7 +222,7 @@ describe("Ext.event.Event", function () {
             [false, '"', 222, 0, { shiftKey: true }],
             [false, "{", 219, 0, { shiftKey: true }],
             [false, "}", 220, 0, { shiftKey: true }],
-            [false, "_", 189, 0, { shiftKey: true }],
+            [false, "_", 189, 0, { shiftKey: true }]
           ];
 
           return {
@@ -280,10 +280,10 @@ describe("Ext.event.Event", function () {
               [false, '"', 34, 34, { shiftKey: true }],
               [false, "{", 123, 123, { shiftKey: true }],
               [false, "}", 125, 125, { shiftKey: true }],
-              [false, "_", 95, 95, { shiftKey: true }],
-            ],
+              [false, "_", 95, 95, { shiftKey: true }]
+            ]
           };
-        })(),
+        })()
       );
     }
   });
@@ -307,10 +307,10 @@ describe("Ext.event.Event", function () {
                       {
                         type: type,
                         keyCode: keyCode,
-                        charCode: charCode,
+                        charCode: charCode
                       },
-                      keyOptions,
-                    ),
+                      keyOptions
+                    )
                   );
                   expect(e.isNavKeyPress(scrollableOnly)).toBe(result);
                 });
@@ -374,7 +374,7 @@ describe("Ext.event.Event", function () {
                 [false, '"', 222, 0, { shiftKey: true }],
                 [false, "{", 219, 0, { shiftKey: true }],
                 [false, "}", 220, 0, { shiftKey: true }],
-                [false, "_", 173, 0, { shiftKey: true }],
+                [false, "_", 173, 0, { shiftKey: true }]
               ];
 
               return {
@@ -432,10 +432,10 @@ describe("Ext.event.Event", function () {
                   [false, '"', 0, 34, { shiftKey: true }],
                   [false, "{", 0, 123, { shiftKey: true }],
                   [false, "}", 0, 125, { shiftKey: true }],
-                  [false, "_", 0, 95, { shiftKey: true }],
-                ],
+                  [false, "_", 0, 95, { shiftKey: true }]
+                ]
               };
-            })(),
+            })()
           );
         } else {
           makeKeySuite(
@@ -491,7 +491,7 @@ describe("Ext.event.Event", function () {
                 [false, '"', 222, 0, { shiftKey: true }],
                 [false, "{", 219, 0, { shiftKey: true }],
                 [false, "}", 220, 0, { shiftKey: true }],
-                [false, "_", 189, 0, { shiftKey: true }],
+                [false, "_", 189, 0, { shiftKey: true }]
               ];
 
               return {
@@ -549,10 +549,10 @@ describe("Ext.event.Event", function () {
                   [false, '"', 34, 34, { shiftKey: true }],
                   [false, "{", 123, 123, { shiftKey: true }],
                   [false, "}", 125, 125, { shiftKey: true }],
-                  [false, "_", 95, 95, { shiftKey: true }],
-                ],
+                  [false, "_", 95, 95, { shiftKey: true }]
+                ]
               };
-            })(),
+            })()
           );
         }
       });
@@ -602,7 +602,7 @@ describe("Ext.event.Event", function () {
           mousedown: function (e) {
             event = e;
           },
-          delegated: false,
+          delegated: false
         });
       });
 

@@ -49,7 +49,7 @@ Ext.define("Ext.grid.locking.HeaderContainer", {
     "statesave",
     "beforestatesave",
     "staterestore",
-    "beforestaterestore",
+    "beforestaterestore"
   ],
 
   constructor: function (lockable) {
@@ -68,7 +68,7 @@ Ext.define("Ext.grid.locking.HeaderContainer", {
         new Ext.grid.ColumnManager(
           true,
           lockedGrid.headerCt,
-          normalGrid.headerCt,
+          normalGrid.headerCt
         );
 
     lockedGrid.columnManager.rootColumns =
@@ -78,17 +78,17 @@ Ext.define("Ext.grid.locking.HeaderContainer", {
         new Ext.grid.ColumnManager(
           false,
           lockedGrid.headerCt,
-          normalGrid.headerCt,
+          normalGrid.headerCt
         );
 
     // Relay *all* events from the two HeaderContainers
     me.lockedEventRelayers = me.relayEvents(
       lockedGrid.headerCt,
-      me.headerCtRelayEvents,
+      me.headerCtRelayEvents
     );
     me.normalEventRelayers = me.relayEvents(
       normalGrid.headerCt,
-      me.headerCtRelayEvents,
+      me.headerCtRelayEvents
     );
   },
 
@@ -192,5 +192,5 @@ Ext.define("Ext.grid.locking.HeaderContainer", {
 
     topGrid.lockedGrid.headerCt.enable();
     topGrid.normalGrid.headerCt.enable();
-  },
+  }
 });

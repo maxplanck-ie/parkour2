@@ -98,7 +98,7 @@ Ext.define("Ext.list.AbstractTreeItem", {
      * @cfg {Boolean} selectedParent
      * `true` if this item contains the {@link #selected} item in the tree.
      */
-    selectedParent: false,
+    selectedParent: false
   },
 
   config: {
@@ -145,14 +145,14 @@ Ext.define("Ext.list.AbstractTreeItem", {
      */
     text: {
       lazy: true,
-      $value: "",
+      $value: ""
     },
 
     /**
      * @cfg {String} textProperty
      * The property from the {@link #node} to map for the {@link #text} config.
      */
-    textProperty: "text",
+    textProperty: "text"
   },
 
   updateNode: function (node) {
@@ -495,7 +495,7 @@ Ext.define("Ext.list.AbstractTreeItem", {
           node: node,
           tree: owner,
           select: node.get("selectable") !== false && me.isSelectionEvent(e),
-          toggle: me.isToggleEvent(e),
+          toggle: me.isToggleEvent(e)
         };
 
       /**
@@ -556,6 +556,6 @@ Ext.define("Ext.list.AbstractTreeItem", {
      */
     updateOwner: function (owner) {
       this.parent = owner;
-    },
-  },
+    }
+  }
 });

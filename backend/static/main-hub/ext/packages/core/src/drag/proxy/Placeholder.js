@@ -37,7 +37,7 @@ Ext.define("Ext.drag.proxy.Placeholder", {
      * A class to add to this proxy when over a
      * valid {@link Ext.drag.Target target}.
      */
-    validCls: "",
+    validCls: ""
   },
 
   placeholderCls: Ext.baseCSSPrefix + "drag-proxy-placeholder",
@@ -62,13 +62,13 @@ Ext.define("Ext.drag.proxy.Placeholder", {
     if (!el) {
       me.element = el = Ext.getBody().createChild({
         cls: me.getCls(),
-        html: me.getHtml(),
+        html: me.getHtml()
       });
       el.addCls(me.placeholderCls);
 
       el.setTouchAction({
         panX: false,
-        panY: false,
+        panY: false
       });
     }
     el.show();
@@ -90,7 +90,7 @@ Ext.define("Ext.drag.proxy.Placeholder", {
       // Otherwise do the reverse
       el.replaceCls(
         valid ? invalidCls : validCls,
-        valid ? validCls : invalidCls,
+        valid ? validCls : invalidCls
       );
     } else {
       el.removeCls([invalidCls, validCls]);
@@ -166,6 +166,6 @@ Ext.define("Ext.drag.proxy.Placeholder", {
           el.addCls(cls);
         }
       }
-    },
-  },
+    }
+  }
 });

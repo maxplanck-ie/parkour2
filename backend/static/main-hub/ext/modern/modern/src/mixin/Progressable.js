@@ -7,7 +7,7 @@ Ext.define("Ext.mixin.Progressable", {
   isProgressable: true,
 
   mixinConfig: {
-    id: "progressable",
+    id: "progressable"
   },
 
   config: {
@@ -48,7 +48,7 @@ Ext.define("Ext.mixin.Progressable", {
      *
      * Current state of the progressIndicator. Should be used for switching progress states like download to upload.
      */
-    state: null,
+    state: null
   },
 
   /**
@@ -80,7 +80,7 @@ Ext.define("Ext.mixin.Progressable", {
       this.getMinProgressInput(),
       this.getMaxProgressInput(),
       this.getMinProgressOutput(),
-      this.getMaxProgressOutput(),
+      this.getMaxProgressOutput()
     );
     this._progress = mappedValue;
     this._rawProgress = value;
@@ -115,5 +115,5 @@ Ext.define("Ext.mixin.Progressable", {
 
   getRawProgress: function () {
     return this._rawProgress;
-  },
+  }
 });

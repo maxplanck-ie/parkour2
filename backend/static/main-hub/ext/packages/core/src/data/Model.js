@@ -210,7 +210,7 @@ Ext.define(
       "Ext.data.validator.Validator",
       "Ext.data.schema.Schema",
       "Ext.data.identifier.Generator",
-      "Ext.data.identifier.Sequential",
+      "Ext.data.identifier.Sequential"
     ],
     uses: ["Ext.data.Validation"],
 
@@ -302,7 +302,7 @@ Ext.define(
       var dataId = data[idProperty];
       if (session && !session.isSession) {
         Ext.raise(
-          'Bad Model constructor argument 2 - "session" is not a Session',
+          'Bad Model constructor argument 2 - "session" is not a Session'
         );
       }
       //</debug>
@@ -334,7 +334,7 @@ Ext.define(
               me.fieldsMap[idProperty].type +
               " field converter for the " +
               idProperty +
-              " field",
+              " field"
           );
         }
         //</debug>
@@ -816,7 +816,7 @@ Ext.define(
           data: Ext.apply({}, me.data),
           generation: me.generation,
           modified: modified && Ext.apply({}, modified),
-          previousValues: previousValues && Ext.apply({}, previousValues),
+          previousValues: previousValues && Ext.apply({}, previousValues)
         };
       }
     },
@@ -969,7 +969,7 @@ Ext.define(
 
     _rejectOptions: {
       convert: false,
-      silent: true,
+      silent: true
     },
 
     /**
@@ -1982,7 +1982,7 @@ Ext.define(
         // Do the id check after set since converters may have run
         if (doIdCheck && me.getId() !== id) {
           Ext.raise(
-            "Invalid record id returned for " + id + "@" + me.entityName,
+            "Invalid record id returned for " + id + "@" + me.entityName
           );
         }
         //</debug>
@@ -2420,7 +2420,7 @@ Ext.define(
           if (!proxy || !proxy.isProxy) {
             if (typeof proxy === "string") {
               proxy = {
-                type: proxy,
+                type: proxy
               };
             }
             // We have nothing or a config for the proxy. Get some defaults from
@@ -2541,7 +2541,7 @@ Ext.define(
 
         rec.load(options);
         return rec;
-      },
+      }
     },
 
     deprecated: {
@@ -2596,32 +2596,32 @@ Ext.define(
               Ext.Array.remove(stores, item);
               me.store = stores[0] || null;
             }
-          },
+          }
         },
         properties: {
-          persistenceProperty: null,
+          persistenceProperty: null
         },
         inheritableStatics: {
           methods: {
-            setFields: null,
-          },
-        },
-      },
+            setFields: null
+          }
+        }
+      }
     },
 
     //-------------------------------------------------------------------------
     privates: {
       _commitOptions: {
-        commit: true,
+        commit: true
       },
       _getChangesOptions: {
-        changes: true,
+        changes: true
       },
       _getAssociatedOptions: {
-        associated: true,
+        associated: true
       },
       _getNotAssociatedOptions: {
-        associated: false,
+        associated: false
       },
 
       /**
@@ -2939,7 +2939,7 @@ Ext.define(
             Ext.raise(
               cls.$className +
                 " has circular field dependencies: " +
-                topoStack.join(" --> "),
+                topoStack.join(" --> ")
             );
           }
 
@@ -2949,7 +2949,7 @@ Ext.define(
                 ": Field " +
                 topoStack[topoStack.length - 1] +
                 " cannot depend on depends-less field " +
-                field.name,
+                field.name
             );
           }
 
@@ -2967,12 +2967,12 @@ Ext.define(
                   ": Field " +
                   field.name +
                   " depends on undefined field " +
-                  dep[i],
+                  dep[i]
               );
             }
             //</debug>
             (targetField.dependents || (targetField.dependents = [])).push(
-              field,
+              field
             );
 
             if (!targetField.rank) {
@@ -3115,7 +3115,7 @@ Ext.define(
               ordinal = fields.length;
               field = new Field({
                 name: versionProperty,
-                type: "int",
+                type: "int"
               });
               fields[ordinal] = field;
               fieldOrdinals[versionProperty] = ordinal;
@@ -3158,7 +3158,7 @@ Ext.define(
             delete data.validations;
             Ext.log.warn(
               (cls.$className || "Ext.data.Model") +
-                ": validations has been deprecated. Please use validators instead.",
+                ": validations has been deprecated. Please use validators instead."
             );
           }
           //</debug>
@@ -3290,7 +3290,7 @@ Ext.define(
           //<debug>
           if (data.idgen) {
             Ext.log.warn(
-              "Ext.data.Model: idgen has been deprecated. Please use identifier instead.",
+              "Ext.data.Model: idgen has been deprecated. Please use identifier instead."
             );
           }
           //</debug>
@@ -3327,7 +3327,7 @@ Ext.define(
             }
             cls.identifier = Ext.Factory.dataIdentifier({
               type: "sequential",
-              prefix: generatorPrefix + "-",
+              prefix: generatorPrefix + "-"
             });
           }
         },
@@ -3444,7 +3444,7 @@ Ext.define(
                   ec,
                   ";\n" + "    }\n" + "    ",
                   expr,
-                  " = v;",
+                  " = v;"
                 );
               } else if (convert) {
                 // no defaultValue
@@ -3460,7 +3460,7 @@ Ext.define(
                   expr,
                   ",e);\n" + "    if (v !== undefined) {\n" + "        ",
                   expr,
-                  " = v;\n" + "    }\n",
+                  " = v;\n" + "    }\n"
                 );
               } else if (hasDefValue) {
                 // no convert
@@ -3480,7 +3480,7 @@ Ext.define(
                   fs,
                   ".defaultValue",
                   ec,
-                  ";\n" + "    }\n",
+                  ";\n" + "    }\n"
                 );
               }
             }
@@ -3501,9 +3501,9 @@ Ext.define(
           factory = new Function("$fields", "Ext", code);
 
           return factory(fields, Ext);
-        },
-      }, // static
-    }, // privates
+        }
+      } // static
+    } // privates
   },
   function () {
     var Model = this,
@@ -3598,5 +3598,5 @@ Ext.define(
 
       cls.proxyConfig = proxy;
     });
-  },
+  }
 );

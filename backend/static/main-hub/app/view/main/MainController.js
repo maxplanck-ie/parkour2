@@ -5,13 +5,13 @@ Ext.define("MainHub.view.main.MainController", {
   listen: {
     controller: {
       "#": {
-        unmatchedroute: "onRouteChange",
-      },
-    },
+        unmatchedroute: "onRouteChange"
+      }
+    }
   },
 
   routes: {
-    ":node": "onRouteChange",
+    ":node": "onRouteChange"
   },
 
   lastView: null,
@@ -90,7 +90,7 @@ Ext.define("MainHub.view.main.MainController", {
             navigationList.setMicro(true);
             navigationList.el.removeCls("nav-tree-animating");
           },
-          single: true,
+          single: true
         });
       }
     }
@@ -128,7 +128,7 @@ Ext.define("MainHub.view.main.MainController", {
       newView = Ext.create({
         xtype: view,
         routeId: hashTag, // for existingItem search later
-        hideMode: "offsets",
+        hideMode: "offsets"
       });
     }
 
@@ -172,5 +172,5 @@ Ext.define("MainHub.view.main.MainController", {
     if (store.getCount() > 0) {
       me.setCurrentView(id);
     }
-  },
+  }
 });

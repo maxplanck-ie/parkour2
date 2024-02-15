@@ -42,7 +42,7 @@ describe("Ext.Sheet", function () {
           centered: true,
           right: 0,
           stretchY: true,
-          width: 400,
+          width: 400
         });
         spyOn(sheet, "translate");
         sheet.show();

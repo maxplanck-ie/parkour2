@@ -86,15 +86,15 @@ Ext.define("Ext.tab.Panel", {
       type: "card",
       animation: {
         type: "slide",
-        direction: "left",
-      },
+        direction: "left"
+      }
     },
 
     /**
      * @cfg cls
      * @inheritdoc
      */
-    cls: Ext.baseCSSPrefix + "tabpanel",
+    cls: Ext.baseCSSPrefix + "tabpanel"
 
     /**
      * @cfg {Boolean/String/Object} scrollable
@@ -113,13 +113,13 @@ Ext.define("Ext.tab.Panel", {
     this.on({
       beforeactivetabchange: "doTabChange",
       delegate: "> tabbar",
-      scope: this,
+      scope: this
     });
 
     this.on({
       disabledchange: "onItemDisabledChange",
       delegate: "> component",
-      scope: this,
+      scope: this
     });
   },
 
@@ -211,7 +211,7 @@ Ext.define("Ext.tab.Panel", {
     if (config) {
       Ext.applyIf(config, {
         ui: this.getUi(),
-        docked: this.getTabBarPosition(),
+        docked: this.getTabBarPosition()
       });
     }
 
@@ -298,7 +298,7 @@ Ext.define("Ext.tab.Panel", {
     if (!currentTabInstance && !tabConfig.title && !tabConfig.iconCls) {
       if (!tabConfig.title && !tabConfig.iconCls) {
         Ext.Logger.error(
-          "Adding a card to a tab container without specifying any tab configuration",
+          "Adding a card to a tab container without specifying any tab configuration"
         );
       }
     }
@@ -353,5 +353,5 @@ Ext.define("Ext.tab.Panel", {
       me.setTabBar(null);
       delete me.removingTabBar;
     }
-  },
+  }
 });

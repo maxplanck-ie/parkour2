@@ -12,9 +12,9 @@ describe("Ext.util.Focusable", function () {
         tabIndex: 0,
         getFocusEl: function () {
           return this.el;
-        },
+        }
       },
-      config,
+      config
     );
   }
 
@@ -32,10 +32,10 @@ describe("Ext.util.Focusable", function () {
         {
           renderTo: Ext.getBody(),
           width: 100,
-          height: 200,
+          height: 200
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -56,7 +56,7 @@ describe("Ext.util.Focusable", function () {
       it("should not render tabindex attribute when tabIndex property is undefined", function () {
         makeComponent({
           focusable: undefined,
-          tabIndex: undefined,
+          tabIndex: undefined
         });
 
         expect(c).not.toHaveAttr("tabIndex");
@@ -65,7 +65,7 @@ describe("Ext.util.Focusable", function () {
       it("should not render tabindex attribute when tabIndex property is defined", function () {
         makeComponent({
           focusable: undefined,
-          tabIndex: 0,
+          tabIndex: 0
         });
 
         expect(c).not.toHaveAttr("tabIndex");
@@ -76,7 +76,7 @@ describe("Ext.util.Focusable", function () {
       it("should not render tabindex attribute when tabIndex property is undefined", function () {
         makeComponent({
           focusable: true,
-          tabIndex: undefined,
+          tabIndex: undefined
         });
 
         expect(c).not.toHaveAttr("tabIndex");
@@ -85,7 +85,7 @@ describe("Ext.util.Focusable", function () {
       it("should render tabindex attribute when tabIndex property is defined", function () {
         makeComponent({
           focusable: true,
-          tabIndex: 0,
+          tabIndex: 0
         });
 
         expect(c).toHaveAttr("tabIndex", "0");
@@ -98,7 +98,7 @@ describe("Ext.util.Focusable", function () {
       describe("not rendered", function () {
         beforeEach(function () {
           makeComponent({
-            renderTo: undefined,
+            renderTo: undefined
           });
         });
 
@@ -156,9 +156,9 @@ describe("Ext.util.Focusable", function () {
             renderTo: undefined,
             items: [
               stdComponent({
-                renderTo: undefined,
-              }),
-            ],
+                renderTo: undefined
+              })
+            ]
           });
         });
 
@@ -179,12 +179,12 @@ describe("Ext.util.Focusable", function () {
             items: [
               stdComponent({
                 renderTo: undefined,
-                itemId: "foo",
-              }),
+                itemId: "foo"
+              })
             ],
 
             focusable: true,
-            tabIndex: 0,
+            tabIndex: 0
           });
 
           fooCmp = container.down("#foo");
@@ -283,8 +283,8 @@ describe("Ext.util.Focusable", function () {
                 container.add(
                   stdComponent({
                     renderTo: undefined,
-                    itemId: "foo",
-                  }),
+                    itemId: "foo"
+                  })
                 );
 
                 expect(container.isFocusable(true)).toBe(true);
@@ -306,7 +306,7 @@ describe("Ext.util.Focusable", function () {
     beforeEach(function () {
       makeComponent({
         renderTo: undefined,
-        tabIndex: 42,
+        tabIndex: 42
       });
     });
 
@@ -334,7 +334,7 @@ describe("Ext.util.Focusable", function () {
     beforeEach(function () {
       makeComponent({
         renderTo: undefined,
-        tabIndex: 43,
+        tabIndex: 43
       });
     });
 
@@ -379,13 +379,13 @@ describe("Ext.util.Focusable", function () {
         items: [
           makeComponent({
             renderTo: undefined,
-            tabIndex: 1,
-          }),
+            tabIndex: 1
+          })
         ],
 
         getFocusEl: function () {
           return this.child();
-        },
+        }
       });
     });
 
@@ -406,14 +406,14 @@ describe("Ext.util.Focusable", function () {
     beforeEach(function () {
       makeComponent({
         renderTpl: [
-          '<div id="{id}-focusClsEl" data-ref="focusClsEl">foo</div>',
+          '<div id="{id}-focusClsEl" data-ref="focusClsEl">foo</div>'
         ],
 
         childEls: ["focusClsEl"],
 
         getFocusClsEl: function () {
           return this.focusClsEl;
-        },
+        }
       });
 
       focusAndWait(c);
@@ -459,7 +459,7 @@ describe("Ext.util.Focusable", function () {
     beforeEach(function () {
       makeComponent({
         autoEl: "button",
-        focusCls: "focus",
+        focusCls: "focus"
       });
     });
 
@@ -471,7 +471,7 @@ describe("Ext.util.Focusable", function () {
           return c.el.hasCls(focusCls);
         },
         "CSS class to be added",
-        100,
+        100
       );
 
       runs(function () {
@@ -489,7 +489,7 @@ describe("Ext.util.Focusable", function () {
         focusable: true,
         getFocusEl: function () {
           return this.el;
-        },
+        }
       });
 
       spyOn(Ext.focusTask, "delay");
@@ -516,14 +516,14 @@ describe("Ext.util.Focusable", function () {
           items: [
             stdComponent({
               itemId: "foo",
-              renderTo: undefined,
+              renderTo: undefined
             }),
 
             stdComponent({
               itemId: "bar",
-              renderTo: undefined,
-            }),
-          ],
+              renderTo: undefined
+            })
+          ]
         });
 
         fooCmp = container.down("#foo");
@@ -681,7 +681,7 @@ describe("Ext.util.Focusable", function () {
       beforeEach(function () {
         makeContainer({
           defaultFocus: "foo",
-          items: [stdComponent({ itemId: "foo" })],
+          items: [stdComponent({ itemId: "foo" })]
         });
 
         delegate = container.down("#foo");
@@ -710,7 +710,7 @@ describe("Ext.util.Focusable", function () {
           focusable: true,
           tabIndex: 0,
           defaultFocus: "bar",
-          items: [stdComponent({ itemId: "bar" })],
+          items: [stdComponent({ itemId: "bar" })]
         });
 
         delegate = container.down("#bar");
@@ -745,7 +745,7 @@ describe("Ext.util.Focusable", function () {
     describe("focusEl outside of component DOM", function () {
       beforeEach(function () {
         c = new Ext.form.field.File({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         c.disableTabbing();
@@ -773,7 +773,7 @@ describe("Ext.util.Focusable", function () {
         items: [
           {
             xtype: "textfield",
-            id: "textfield1",
+            id: "textfield1"
           },
           {
             xtype: "fieldset",
@@ -781,10 +781,10 @@ describe("Ext.util.Focusable", function () {
             items: [
               {
                 xtype: "textfield",
-                id: "textfield2",
-              },
-            ],
-          },
+                id: "textfield2"
+              }
+            ]
+          }
         ],
 
         bbar: {
@@ -796,15 +796,15 @@ describe("Ext.util.Focusable", function () {
             {
               xtype: "button",
               id: "button1",
-              text: "Button 1",
+              text: "Button 1"
             },
             {
               xtype: "button",
               id: "button2",
-              text: "Button 2",
-            },
-          ],
-        },
+              text: "Button 2"
+            }
+          ]
+        }
       });
 
       fieldset = panel.down("#fieldset");
@@ -938,9 +938,9 @@ describe("Ext.util.Focusable", function () {
     beforeEach(function () {
       container = new Ext.Container({
         items: {
-          xtype: "textfield",
+          xtype: "textfield"
         },
-        renderTo: document.body,
+        renderTo: document.body
       });
 
       cmp = container.child();

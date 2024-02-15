@@ -121,7 +121,7 @@ Ext.define("Ext.util.Sorter", {
      * property is specified, e.g. when adding a custom sorter function we will generate
      * a random id.
      */
-    id: undefined,
+    id: undefined
   },
 
   statics: {
@@ -156,7 +156,7 @@ Ext.define("Ext.util.Sorter", {
 
         return nextFn && nextFn(lhs, rhs);
       };
-    },
+    }
   },
 
   /**
@@ -264,7 +264,7 @@ Ext.define("Ext.util.Sorter", {
       result = {
         root: me.getRoot(),
         property: me.getProperty(),
-        direction: me.getDirection(),
+        direction: me.getDirection()
       };
 
     // Do not use getId() which will create an identifier if we have none.
@@ -284,7 +284,7 @@ Ext.define("Ext.util.Sorter", {
   serialize: function () {
     return {
       property: this.getProperty(),
-      direction: this.getDirection(),
+      direction: this.getDirection()
     };
-  },
+  }
 });

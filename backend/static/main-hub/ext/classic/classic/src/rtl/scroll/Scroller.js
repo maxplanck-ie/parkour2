@@ -9,7 +9,7 @@ Ext.define("Ext.rtl.scroll.Scroller", {
      * {@link Ext.Component#rtl rtl} state
      * @member Ext.scroll.Scroller
      */
-    rtl: null,
+    rtl: null
   },
 
   // Empty updater - workaround for https://sencha.jira.com/browse/EXTJS-14574
@@ -42,6 +42,6 @@ Ext.define("Ext.rtl.scroll.Scroller", {
       } else {
         this.callParent([x, y]);
       }
-    },
-  },
+    }
+  }
 });

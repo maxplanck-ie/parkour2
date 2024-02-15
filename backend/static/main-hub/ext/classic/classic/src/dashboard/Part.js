@@ -78,7 +78,7 @@ Ext.define("Ext.dashboard.Part", {
   alias: "part.part",
 
   factoryConfig: {
-    type: "part",
+    type: "part"
   },
 
   isPart: true,
@@ -109,14 +109,14 @@ Ext.define("Ext.dashboard.Part", {
       columnIndex: "{columnIndex}",
       id: "{id}",
       title: "{title}",
-      height: "{height}",
-    },
+      height: "{height}"
+    }
   },
 
   viewTemplateOptions: {
     excludeProperties: {
-      bind: 1,
-    },
+      bind: 1
+    }
   },
 
   valueRe: /^[{][a-z]*[}]$/i,
@@ -129,7 +129,7 @@ Ext.define("Ext.dashboard.Part", {
     //<debug>
     if (!Ext.isObject(template)) {
       Ext.raise(
-        "The viewTemplate for " + this.$className + " is not an Object",
+        "The viewTemplate for " + this.$className + " is not an Object"
       );
     }
     //</debug>
@@ -194,5 +194,5 @@ Ext.define("Ext.dashboard.Part", {
     ret._partConfig = config;
 
     return ret;
-  },
+  }
 });

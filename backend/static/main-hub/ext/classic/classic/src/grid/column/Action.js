@@ -386,7 +386,7 @@ Ext.define("Ext.grid.column.Action", {
     rowIdx,
     colIdx,
     store,
-    view,
+    view
   ) {
     var me = this,
       scope = me.origScope || me,
@@ -424,7 +424,7 @@ Ext.define("Ext.grid.column.Action", {
               item.scope || me.origScope,
               [view, rowIdx, colIdx, item, record],
               0,
-              me,
+              me
             )
           : false);
       tooltip =
@@ -435,7 +435,7 @@ Ext.define("Ext.grid.column.Action", {
               item.scope || me.origScope,
               arguments,
               0,
-              me,
+              me
             )
           : null);
       altText = item.getAltText
@@ -444,7 +444,7 @@ Ext.define("Ext.grid.column.Action", {
             item.scope || me.origScope,
             arguments,
             0,
-            me,
+            me
           )
         : item.altText || me.altText;
 
@@ -494,7 +494,7 @@ Ext.define("Ext.grid.column.Action", {
               item.scope || me.origScope,
               arguments,
               undefined,
-              me,
+              me
             )
           : item.iconCls || me.iconCls || "") +
         '"' +
@@ -525,7 +525,7 @@ Ext.define("Ext.grid.column.Action", {
         null,
         null,
         dataSource,
-        view,
+        view
       );
   },
 
@@ -595,7 +595,7 @@ Ext.define("Ext.grid.column.Action", {
     cellIndex,
     e,
     record,
-    row,
+    row
   ) {
     var me = this,
       target = e.getTarget(),
@@ -631,7 +631,7 @@ Ext.define("Ext.grid.column.Action", {
               item.scope || me.origScope,
               [view, recordIndex, cellIndex, item, record],
               0,
-              me,
+              me
             )
           : false);
 
@@ -645,7 +645,7 @@ Ext.define("Ext.grid.column.Action", {
             item.scope || me.origScope,
             [view, recordIndex, cellIndex, item, e, record, row],
             undefined,
-            me,
+            me
           );
 
           // Handler could possibly destroy the grid, so check we're still available.
@@ -690,6 +690,6 @@ Ext.define("Ext.grid.column.Action", {
     // Overriden method to always return a bitwise value that will result in a call to this column's updater.
     shouldUpdateCell: function () {
       return 2;
-    },
-  },
+    }
+  }
 });

@@ -18,8 +18,8 @@ describe("Ext.picker.Picker", function () {
         options: [
           { text: "First Option", value: "first" },
           { text: "Second Option", value: "second" },
-          { text: "Third Option", value: "third" },
-        ],
+          { text: "Third Option", value: "third" }
+        ]
       });
 
       picker = selectField.getPhonePicker();

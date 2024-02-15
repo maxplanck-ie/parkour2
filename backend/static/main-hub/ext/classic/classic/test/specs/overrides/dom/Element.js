@@ -7,7 +7,7 @@ describe("Ext.overrides.dom.Element", function () {
       TEXTAREA: true,
       OPTGROUP: true,
       OPTION: true,
-      FIELDSET: true,
+      FIELDSET: true
     },
     topEl,
     el,
@@ -41,7 +41,7 @@ describe("Ext.overrides.dom.Element", function () {
         return Ext.Element.getActiveElement() === dom;
       },
       desc + " to focus",
-      timeout,
+      timeout
     );
   }
 
@@ -329,7 +329,7 @@ describe("Ext.overrides.dom.Element", function () {
           "element should " + (wantFocusable ? "" : "not ") + "focus",
           function () {
             focusAndExpect(el, wantFocusable);
-          },
+          }
         );
       });
     }
@@ -342,7 +342,7 @@ describe("Ext.overrides.dom.Element", function () {
         function () {
           dom.setAttribute("tabIndex", -1);
         },
-        wantFocusable,
+        wantFocusable
       );
 
       createFocusableSpecs(
@@ -350,7 +350,7 @@ describe("Ext.overrides.dom.Element", function () {
         function () {
           dom.setAttribute("tabIndex", 0);
         },
-        wantFocusable,
+        wantFocusable
       );
 
       createFocusableSpecs(
@@ -358,7 +358,7 @@ describe("Ext.overrides.dom.Element", function () {
         function () {
           dom.setAttribute("tabIndex", 1);
         },
-        wantFocusable,
+        wantFocusable
       );
     }
 
@@ -539,7 +539,7 @@ describe("Ext.overrides.dom.Element", function () {
         createSuite("radio button", { tag: "input", type: "radio" });
         createSuite("select", {
           tag: "select",
-          cn: [{ tag: "option", value: "foo" }],
+          cn: [{ tag: "option", value: "foo" }]
         });
         createSuite("textarea", { tag: "textarea" });
 
@@ -554,14 +554,14 @@ describe("Ext.overrides.dom.Element", function () {
             height: 100,
             width: 100,
             type: "image/gif",
-            src: "resources/images/foo.gif",
+            src: "resources/images/foo.gif"
           });
 
           createSuite("object", {
             tag: "object",
             style: "height: 100px; width: 100px",
             type: "image/gif",
-            data: "resources/images/foo.gif",
+            data: "resources/images/foo.gif"
           });
         }
       });
@@ -663,14 +663,14 @@ describe("Ext.overrides.dom.Element", function () {
                 cn: [
                   {
                     tag: "td",
-                    html: "&nbsp;",
-                  },
-                ],
-              },
-            ],
+                    html: "&nbsp;"
+                  }
+                ]
+              }
+            ]
           },
           "td",
-          false,
+          false
         );
       });
     });
@@ -811,7 +811,7 @@ describe("Ext.overrides.dom.Element", function () {
                     dom.tabIndex = -42;
 
                     expect(el.isTabbable()).toBe(false);
-                  },
+                  }
                 );
 
                 it("is false with tabIndex = 0", function () {
@@ -880,7 +880,7 @@ describe("Ext.overrides.dom.Element", function () {
         createSuite("radio button", { tag: "input", type: "radio" });
         createSuite("select", {
           tag: "select",
-          cn: [{ tag: "option", value: "foo" }],
+          cn: [{ tag: "option", value: "foo" }]
         });
         createSuite("textarea", { tag: "textarea" });
 
@@ -890,7 +890,7 @@ describe("Ext.overrides.dom.Element", function () {
             tag: "object",
             style: "height: 100px; width: 100px",
             type: "image/gif",
-            data: "resources/images/foo.gif",
+            data: "resources/images/foo.gif"
           });
         }
       });
@@ -980,13 +980,13 @@ describe("Ext.overrides.dom.Element", function () {
                 cn: [
                   {
                     tag: "td",
-                    html: "&nbsp;",
-                  },
-                ],
-              },
-            ],
+                    html: "&nbsp;"
+                  }
+                ]
+              }
+            ]
           },
-          "td",
+          "td"
         );
 
         if (!Ext.isIE8) {
@@ -1032,7 +1032,7 @@ describe("Ext.overrides.dom.Element", function () {
           '<textarea id="test34" tabindex="-1">Not tabbable</textarea>',
           '<textarea id="test35" tabindex="0" disabled="1">Not tabbable</textarea>',
           '<p id="test36">Not tabbable</p>',
-          "<div>",
+          "<div>"
         ]);
       });
 
@@ -1049,7 +1049,7 @@ describe("Ext.overrides.dom.Element", function () {
 
         beforeEach(function () {
           els = el.findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
         });
 
@@ -1081,7 +1081,7 @@ describe("Ext.overrides.dom.Element", function () {
           test1 = Ext.get("test1");
           els = el.findTabbableElements({
             skipSelf: true,
-            excludeRoot: test1,
+            excludeRoot: test1
           });
         });
 
@@ -1167,7 +1167,7 @@ describe("Ext.overrides.dom.Element", function () {
             "</div>",
             "</div>",
             '<div id="window-1009-tabGuardAfterEl" tabindex="0"></div>',
-            "</div>",
+            "</div>"
           ]);
         });
 
@@ -1202,7 +1202,7 @@ describe("Ext.overrides.dom.Element", function () {
             beforeEach(function () {
               el.saveTabbableState({
                 skipSelf: false,
-                skipChildren: !deep,
+                skipChildren: !deep
               });
             });
 
@@ -1225,7 +1225,7 @@ describe("Ext.overrides.dom.Element", function () {
             it("should increment the counter", function () {
               el.saveTabbableState({
                 skipSelf: false,
-                skipChildren: !deep,
+                skipChildren: !deep
               });
 
               var counter = +el.getAttribute(counterAttr);
@@ -1243,7 +1243,7 @@ describe("Ext.overrides.dom.Element", function () {
               beforeEach(function () {
                 el.saveTabbableState({
                   skipSelf: false,
-                  skipChildren: !deep,
+                  skipChildren: !deep
                 });
                 el.restoreTabbableState();
               });
@@ -1269,11 +1269,11 @@ describe("Ext.overrides.dom.Element", function () {
               beforeEach(function () {
                 el.saveTabbableState({
                   skipSelf: false,
-                  skipChildren: !deep,
+                  skipChildren: !deep
                 });
                 el.saveTabbableState({
                   skipSelf: false,
-                  skipChildren: !deep,
+                  skipChildren: !deep
                 });
               });
 
@@ -1323,14 +1323,14 @@ describe("Ext.overrides.dom.Element", function () {
               cn: [
                 {
                   tag: "div",
-                  tabIndex: 2,
-                },
-              ],
-            },
-          ],
+                  tabIndex: 2
+                }
+              ]
+            }
+          ]
         },
         "#foo",
-        true,
+        true
       );
     });
 
@@ -1350,7 +1350,7 @@ describe("Ext.overrides.dom.Element", function () {
               beforeEach(function () {
                 el.saveTabbableState({
                   skipSelf: false,
-                  skipChildren: true,
+                  skipChildren: true
                 });
               });
 
@@ -1361,7 +1361,7 @@ describe("Ext.overrides.dom.Element", function () {
               if (deep) {
                 it("should not disable children tabbable state", function () {
                   var cn = el.findTabbableElements({
-                    skipSelf: true,
+                    skipSelf: true
                   });
 
                   expect(cn.length).toBeTruthy();
@@ -1374,13 +1374,13 @@ describe("Ext.overrides.dom.Element", function () {
                 beforeEach(function () {
                   el.saveTabbableState({
                     skipSelf: false,
-                    skipChildren: !deep,
+                    skipChildren: !deep
                   });
                 });
 
                 it("should remove children from tab order", function () {
                   var cn = el.findTabbableElements({
-                    skipSelf: true,
+                    skipSelf: true
                   });
 
                   expect(cn.length).toBe(0);
@@ -1434,13 +1434,13 @@ describe("Ext.overrides.dom.Element", function () {
                   saved =
                     el.saveTabbableState({
                       skipSelf: true,
-                      skipChildren: !deep,
+                      skipChildren: !deep
                     }) || [];
                 });
 
                 it("should have no tabbable children when saved", function () {
                   var cn = el.findTabbableElements({
-                    skipSelf: true,
+                    skipSelf: true
                   });
 
                   expect(cn.length).toBe(0);
@@ -1453,7 +1453,7 @@ describe("Ext.overrides.dom.Element", function () {
 
                   it("should have the same number of tabbable children", function () {
                     var cn = el.findTabbableElements({
-                      skipSelf: true,
+                      skipSelf: true
                     });
 
                     expect(cn.length).toBe(saved.length);
@@ -1461,7 +1461,7 @@ describe("Ext.overrides.dom.Element", function () {
 
                   it("should have the same tabbable children", function () {
                     var cn = el.findTabbableElements({
-                      skipSelf: true,
+                      skipSelf: true
                     });
 
                     for (var i = 0; i < saved.length; i++) {
@@ -1482,7 +1482,7 @@ describe("Ext.overrides.dom.Element", function () {
       createSuite("anchor with href w/ tabIndex", {
         tag: "a",
         href: "#",
-        tabIndex: 0,
+        tabIndex: 0
       });
 
       createSuite("anchor w/o href", { tag: "a", tabIndex: 0 });
@@ -1494,12 +1494,12 @@ describe("Ext.overrides.dom.Element", function () {
           cn: [
             {
               tag: "div",
-              tabIndex: 1,
-            },
-          ],
+              tabIndex: 1
+            }
+          ]
         },
         "",
-        true,
+        true
       );
 
       createSuite("button natural", { tag: "button" });
@@ -1516,9 +1516,9 @@ describe("Ext.overrides.dom.Element", function () {
         cn: [
           {
             tag: "option",
-            value: "foo",
-          },
-        ],
+            value: "foo"
+          }
+        ]
       });
       createSuite("select w/ tabIndex", {
         tag: "select",
@@ -1526,9 +1526,9 @@ describe("Ext.overrides.dom.Element", function () {
         cn: [
           {
             tag: "option",
-            value: "bar",
-          },
-        ],
+            value: "bar"
+          }
+        ]
       });
 
       createSuite("textarea natural", { tag: "textarea" });
@@ -1547,14 +1547,14 @@ describe("Ext.overrides.dom.Element", function () {
               cn: [
                 {
                   tag: "div",
-                  tabIndex: 2,
-                },
-              ],
-            },
-          ],
+                  tabIndex: 2
+                }
+              ]
+            }
+          ]
         },
         "",
-        true,
+        true
       );
 
       createSuite("span", { tag: "span", tabIndex: 0 });
@@ -1569,16 +1569,16 @@ describe("Ext.overrides.dom.Element", function () {
           cn: [
             {
               tag: "li",
-              tabIndex: 1,
+              tabIndex: 1
             },
             {
               tag: "li",
-              tabIndex: 2,
-            },
-          ],
+              tabIndex: 2
+            }
+          ]
         },
         null,
-        true,
+        true
       );
 
       createSuite(
@@ -1589,16 +1589,16 @@ describe("Ext.overrides.dom.Element", function () {
           cn: [
             {
               tag: "li",
-              tabIndex: 101,
+              tabIndex: 101
             },
             {
               tag: "li",
-              tabIndex: 102,
-            },
-          ],
+              tabIndex: 102
+            }
+          ]
         },
         null,
-        true,
+        true
       );
 
       createSuite(
@@ -1613,19 +1613,19 @@ describe("Ext.overrides.dom.Element", function () {
                 {
                   tag: "td",
                   tabIndex: 1,
-                  html: "&nbsp;",
+                  html: "&nbsp;"
                 },
                 {
                   tag: "td",
                   tabIndex: 2,
-                  html: "&nbsp;",
-                },
-              ],
-            },
-          ],
+                  html: "&nbsp;"
+                }
+              ]
+            }
+          ]
         },
         null,
-        true,
+        true
       );
     });
   });
@@ -1644,13 +1644,13 @@ describe("Ext.overrides.dom.Element", function () {
                 cn: [
                   {
                     tag: "div",
-                    id: "baz",
-                  },
-                ],
-              },
-            ],
+                    id: "baz"
+                  }
+                ]
+              }
+            ]
           },
-          "#bar",
+          "#bar"
         );
       });
 
@@ -1705,7 +1705,7 @@ describe("Ext.overrides.dom.Element", function () {
           '<div id="baz">',
           '<textarea id="qux"></textarea>',
           "</div>",
-          "</div>",
+          "</div>"
         ]);
       });
 
@@ -1720,7 +1720,7 @@ describe("Ext.overrides.dom.Element", function () {
 
         it("should save its children tabbable states", function () {
           var tabbables = el.findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
 
           expect(tabbables.length).toBe(0);
@@ -1739,7 +1739,7 @@ describe("Ext.overrides.dom.Element", function () {
 
         it("should restore its children tabbable state", function () {
           var tabbables = el.findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
 
           expect(tabbables.length).toBe(2);
@@ -1757,7 +1757,7 @@ describe("Ext.overrides.dom.Element", function () {
           '<div id="baz">',
           '<textarea id="qux"></textarea>',
           "</div>",
-          "</div>",
+          "</div>"
         ]);
 
         el = Ext.getBody();
@@ -1780,7 +1780,7 @@ describe("Ext.overrides.dom.Element", function () {
 
         it("should save its children tabbable states", function () {
           var tabbables = el.findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
 
           expect(tabbables.length).toBe(0);
@@ -1799,7 +1799,7 @@ describe("Ext.overrides.dom.Element", function () {
 
         it("should restore its children tabbable states", function () {
           var tabbables = el.findTabbableElements({
-            skipSelf: true,
+            skipSelf: true
           });
 
           expect(tabbables.length).toBe(3);
@@ -1842,7 +1842,7 @@ describe("Ext.overrides.dom.Element", function () {
             };
 
             options = {
-              foo: true,
+              foo: true
             };
 
             spyOn(element, "on");
@@ -1856,7 +1856,7 @@ describe("Ext.overrides.dom.Element", function () {
                 "mouseenter",
                 overFn,
                 fakeScope,
-                options,
+                options
               );
             });
 
@@ -1867,7 +1867,7 @@ describe("Ext.overrides.dom.Element", function () {
                 "mouseenter",
                 overFn,
                 element.dom,
-                options,
+                options
               );
             });
           });
@@ -1880,7 +1880,7 @@ describe("Ext.overrides.dom.Element", function () {
                 "mouseleave",
                 outFn,
                 fakeScope,
-                options,
+                options
               );
             });
 
@@ -1891,7 +1891,7 @@ describe("Ext.overrides.dom.Element", function () {
                 "mouseleave",
                 outFn,
                 element.dom,
-                options,
+                options
               );
             });
           });
@@ -1907,13 +1907,13 @@ describe("Ext.overrides.dom.Element", function () {
                   "-moz-transform: rotate(90deg);",
                   "-o-transform: rotate(90deg);",
                   "-ms-transform: rotate(90deg);", // IE9
-                  "transform: rotate(90deg);",
+                  "transform: rotate(90deg);"
                 ];
 
               // SASS mixin only applies filter in IE8
               if (Ext.isIE8) {
                 props.push(
-                  "filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);",
+                  "filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);"
                 );
               }
 
@@ -1922,7 +1922,7 @@ describe("Ext.overrides.dom.Element", function () {
               if (styleSheet.insertRule) {
                 styleSheet.insertRule(
                   selector + "{" + props + "}",
-                  styleSheet.cssRules.length,
+                  styleSheet.cssRules.length
                 );
               } else {
                 // IE8
@@ -2032,7 +2032,7 @@ describe("Ext.overrides.dom.Element", function () {
             });
           });
         }
-      },
+      }
     );
   }
 

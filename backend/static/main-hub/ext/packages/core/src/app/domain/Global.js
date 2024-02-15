@@ -40,5 +40,5 @@ Ext.define("Ext.app.domain.Global", {
     this.callParent([{ global: listeners }, controller]);
   },
 
-  match: Ext.returnTrue,
+  match: Ext.returnTrue
 });

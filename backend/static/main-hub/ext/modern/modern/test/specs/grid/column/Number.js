@@ -17,31 +17,31 @@ describe("Ext.grid.column.Number", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              income: 1244.246,
+              income: 1244.246
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              income: 3444.985,
+              income: 3444.985
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              income: 2474.45,
+              income: 2474.45
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              income: 244.745,
-            },
+              income: 244.745
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.grid.Grid(
@@ -53,21 +53,21 @@ describe("Ext.grid.column.Number", function () {
               header: "Income",
               dataIndex: "income",
               width: 100,
-              xtype: "numbercolumn",
+              xtype: "numbercolumn"
             },
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
-            { header: "Phone", dataIndex: "phone", width: 100 },
+            { header: "Phone", dataIndex: "phone", width: 100 }
           ],
           height: 200,
-          width: 400,
+          width: 400
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -87,7 +87,7 @@ describe("Ext.grid.column.Number", function () {
 
     Controller = Ext.define("spec.TestController", {
       extend: "Ext.app.ViewController",
-      alias: "controller.test",
+      alias: "controller.test"
     });
   });
 
@@ -111,23 +111,23 @@ describe("Ext.grid.column.Number", function () {
             header: "Income",
             dataIndex: "income",
             width: 100,
-            xtype: "numbercolumn",
-          },
+            xtype: "numbercolumn"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244.25",
+        "1,244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,444.99",
+        "3,444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474.45",
+        "2,474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
@@ -139,31 +139,31 @@ describe("Ext.grid.column.Number", function () {
             dataIndex: "income",
             width: 100,
             xtype: "numbercolumn",
-            format: "0.00",
-          },
+            format: "0.00"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1244.25",
+        "1244.25"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3444.99",
+        "3444.99"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2474.45",
+        "2474.45"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "244.75",
+        "244.75"
       );
     });
 
     it("should apply the cell format correctly from a VM", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          format: "0,000",
-        },
+          format: "0,000"
+        }
       });
 
       createGrid({
@@ -176,23 +176,23 @@ describe("Ext.grid.column.Number", function () {
             cell: {
               viewModel: vm,
               bind: {
-                format: "{format}",
-              },
-            },
-          },
+                format: "{format}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "1,244",
+        "1,244"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "3,445",
+        "3,445"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "2,474",
+        "2,474"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("245");
     });

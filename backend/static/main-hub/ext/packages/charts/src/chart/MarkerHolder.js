@@ -8,11 +8,11 @@ Ext.define("Ext.chart.MarkerHolder", {
     id: "markerHolder",
     after: {
       constructor: "constructor",
-      preRender: "preRender",
+      preRender: "preRender"
     },
     before: {
-      destroy: "destroy",
-    },
+      destroy: "destroy"
+    }
   },
 
   isMarkerHolder: true,
@@ -38,10 +38,10 @@ Ext.define("Ext.chart.MarkerHolder", {
           fn: function (name) {
             var marker = this.boundMarkers[name];
             return marker ? [marker] : marker;
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
 
   constructor: function () {
@@ -67,7 +67,7 @@ Ext.define("Ext.chart.MarkerHolder", {
           marker.getId(),
           "' is already bound under the name '",
           name,
-          "'.",
+          "'."
         );
       }
       //</debug>
@@ -181,5 +181,5 @@ Ext.define("Ext.chart.MarkerHolder", {
       marker = boundMarkers[name];
       marker.destroy();
     }
-  },
+  }
 });

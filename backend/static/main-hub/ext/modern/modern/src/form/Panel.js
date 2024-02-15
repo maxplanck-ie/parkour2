@@ -303,11 +303,11 @@ Ext.define("Ext.form.Panel", {
      *
      * If this is false we will attempt to subject the raw form inside the form panel.
      */
-    enableSubmissionForm: true,
+    enableSubmissionForm: true
   },
 
   layout: {
-    type: "vbox",
+    type: "vbox"
   },
 
   classCls: Ext.baseCSSPrefix + "formpanel",
@@ -320,7 +320,7 @@ Ext.define("Ext.form.Panel", {
       tag: "input",
       type: "submit",
       style:
-        "visibility: hidden; width: 0; height: 0; position: absolute; right: 0; bottom: 0;",
+        "visibility: hidden; width: 0; height: 0; position: absolute; right: 0; bottom: 0;"
     });
 
     return config;
@@ -335,7 +335,7 @@ Ext.define("Ext.form.Panel", {
 
     me.element.on({
       submit: "onSubmit",
-      scope: me,
+      scope: me
     });
   },
 
@@ -397,12 +397,12 @@ Ext.define("Ext.form.Panel", {
     if (newSubmitOnAction) {
       this.on({
         action: "onFieldAction",
-        scope: this,
+        scope: this
       });
     } else {
       this.un({
         action: "onFieldAction",
-        scope: this,
+        scope: this
       });
     }
   },
@@ -516,7 +516,7 @@ Ext.define("Ext.form.Panel", {
 
     var me = this,
       formValues = me.getValues(
-        me.getStandardSubmit() || !options.submitDisabled,
+        me.getStandardSubmit() || !options.submitDisabled
       ),
       form = me.element.dom || {};
 
@@ -535,9 +535,9 @@ Ext.define("Ext.form.Panel", {
         waitMsg: null,
         headers: null,
         success: null,
-        failure: null,
+        failure: null
       },
-      options || {},
+      options || {}
     );
 
     return me.fireAction(
@@ -546,7 +546,7 @@ Ext.define("Ext.form.Panel", {
       "doBeforeSubmit",
       null,
       null,
-      "after",
+      "after"
     );
   },
 
@@ -651,7 +651,7 @@ Ext.define("Ext.form.Panel", {
               options.scope || me,
               me,
               response,
-              responseText,
+              responseText
             );
           }
 
@@ -663,7 +663,7 @@ Ext.define("Ext.form.Panel", {
         if (typeof waitMsg === "string") {
           waitMsg = {
             xtype: "loadmask",
-            message: waitMsg,
+            message: waitMsg
           };
         }
 
@@ -697,7 +697,7 @@ Ext.define("Ext.form.Panel", {
               failureFn(response, data);
             }
           },
-          this,
+          this
         );
       } else {
         var request = Ext.merge(
@@ -706,9 +706,9 @@ Ext.define("Ext.form.Panel", {
             url: url,
             timeout: this.getTimeout() * 1000,
             form: form,
-            scope: me,
+            scope: me
           },
-          options,
+          options
         );
         delete request.success;
         delete request.failure;
@@ -716,9 +716,9 @@ Ext.define("Ext.form.Panel", {
         request.params = Ext.merge(me.getBaseParams() || {}, options.params);
         request.header = Ext.apply(
           {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
           },
-          options.headers || {},
+          options.headers || {}
         );
         request.callback = function (callbackOptions, success, response) {
           var me = this,
@@ -726,7 +726,7 @@ Ext.define("Ext.form.Panel", {
             responseXML = response.responseXML,
             statusResult = Ext.data.request.Ajax.parseStatus(
               response.status,
-              response,
+              response
             );
 
           if (form.$fileswap) {
@@ -737,7 +737,7 @@ Ext.define("Ext.form.Panel", {
 
               placeholder.parentNode.insertBefore(
                 original,
-                placeholder.nextSibling,
+                placeholder.nextSibling
               );
               placeholder.parentNode.removeChild(placeholder);
             });
@@ -926,7 +926,7 @@ Ext.define("Ext.form.Panel", {
       if (typeof waitMsg === "string") {
         waitMsg = {
           xtype: "loadmask",
-          message: waitMsg,
+          message: waitMsg
         };
       }
 
@@ -956,7 +956,7 @@ Ext.define("Ext.form.Panel", {
           } else {
             failureFn(response, data);
           }
-        },
+        }
       });
 
       load.apply(window, args);
@@ -968,15 +968,15 @@ Ext.define("Ext.form.Panel", {
         autoAbort: options.autoAbort,
         headers: Ext.apply(
           {
-            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+            "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
           },
-          options.headers || {},
+          options.headers || {}
         ),
         callback: function (callbackOptions, success, response) {
           var responseText = response.responseText,
             statusResult = Ext.data.request.Ajax.parseStatus(
               response.status,
-              response,
+              response
             );
 
           me.setMasked(false);
@@ -996,7 +996,7 @@ Ext.define("Ext.form.Panel", {
           } else {
             failureFn(response, responseText);
           }
-        },
+        }
       });
     }
   },
@@ -1316,7 +1316,7 @@ Ext.define("Ext.form.Panel", {
   showMask: function (cfg, target) {
     //<debug>
     Ext.Logger.warn(
-      "showMask is now deprecated. Please use Ext.form.Panel#setMasked instead",
+      "showMask is now deprecated. Please use Ext.form.Panel#setMasked instead"
     );
     //</debug>
 
@@ -1325,7 +1325,7 @@ Ext.define("Ext.form.Panel", {
     if (cfg) {
       this.setMasked({
         xtype: "loadmask",
-        message: cfg,
+        message: cfg
       });
     } else {
       this.setMasked(true);
@@ -1435,5 +1435,5 @@ Ext.define("Ext.form.Panel", {
     }
 
     return false;
-  },
+  }
 });

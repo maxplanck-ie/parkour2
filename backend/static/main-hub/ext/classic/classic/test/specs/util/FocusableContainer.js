@@ -18,7 +18,7 @@ describe("Ext.util.FocusableContainer", function () {
       // messages often display element id's, it's easier to set component
       // id here than guesstimate later.
       id: (config.text || "button") + "-" + ++autoId,
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
 
     var btn = new Ext.button.Button(config);
@@ -35,15 +35,15 @@ describe("Ext.util.FocusableContainer", function () {
         width: 1000,
         height: 50,
         style: {
-          "background-color": "green",
+          "background-color": "green"
         },
         layout: "hbox",
         defaults: {
-          xtype: "button",
+          xtype: "button"
         },
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     items = config.items;
@@ -74,7 +74,7 @@ describe("Ext.util.FocusableContainer", function () {
       renderTpl:
         "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'before'); %}</tpl>" +
         "{% this.renderContainer(out,values) %}" +
-        "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+        "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
     });
   });
 
@@ -98,23 +98,23 @@ describe("Ext.util.FocusableContainer", function () {
             {
               xtype: "button",
               itemId: "first",
-              text: "first",
+              text: "first"
             },
             {
               xtype: "button",
               itemId: "second",
               text: "second",
-              disabled: true,
+              disabled: true
             },
             {
               xtype: "button",
               itemId: "third",
               text: "third",
-              tabIndex: -10,
-            },
-          ],
+              tabIndex: -10
+            }
+          ]
         },
-        config,
+        config
       );
 
       makeContainer(config);
@@ -265,7 +265,7 @@ describe("Ext.util.FocusableContainer", function () {
           it("should have tabindex on tab guards after adding children", function () {
             fc.add([
               { xtype: "button", text: "foo" },
-              { xtype: "button", text: "bar" },
+              { xtype: "button", text: "bar" }
             ]);
 
             fc.initFocusableContainer();
@@ -338,7 +338,7 @@ describe("Ext.util.FocusableContainer", function () {
       it("should not activate tab guards after adding non-focusable child", function () {
         fc.add({
           xtype: "component",
-          html: "foo",
+          html: "foo"
         });
 
         expect(fc.tabGuardBeforeEl).not.toHaveAttr("tabIndex");
@@ -348,12 +348,12 @@ describe("Ext.util.FocusableContainer", function () {
       it("should activate tab guards after adding non-focusable and then focusable child", function () {
         fc.add({
           xtype: "component",
-          html: "foo",
+          html: "foo"
         });
 
         fc.add({
           xtype: "button",
-          text: "bar",
+          text: "bar"
         });
 
         expect(fc.tabGuardBeforeEl).toHaveAttr("tabIndex", "0");
@@ -363,7 +363,7 @@ describe("Ext.util.FocusableContainer", function () {
       it("should activate tab guards after adding focusable child", function () {
         fc.add({
           xtype: "button",
-          text: "bar",
+          text: "bar"
         });
 
         expect(fc.tabGuardBeforeEl).toHaveAttr("tabIndex", "0");
@@ -373,12 +373,12 @@ describe("Ext.util.FocusableContainer", function () {
       it("should not deactivate tab guards when adding non-focusable child after focusable", function () {
         fc.add({
           xtype: "button",
-          text: "bar",
+          text: "bar"
         });
 
         fc.add({
           xtype: "component",
-          html: "foo",
+          html: "foo"
         });
 
         expect(fc.tabGuardBeforeEl).toHaveAttr("tabIndex", "0");
@@ -392,13 +392,13 @@ describe("Ext.util.FocusableContainer", function () {
           items: [
             {
               xtype: "component",
-              html: "zumbo",
+              html: "zumbo"
             },
             {
               xtype: "button",
-              text: "throbbe",
-            },
-          ],
+              text: "throbbe"
+            }
+          ]
         });
       });
 
@@ -431,9 +431,9 @@ describe("Ext.util.FocusableContainer", function () {
         items: [
           {
             xtype: "button",
-            text: "OK",
-          },
-        ],
+            text: "OK"
+          }
+        ]
       });
     });
 
@@ -460,7 +460,7 @@ describe("Ext.util.FocusableContainer", function () {
 
       beforeEach(function () {
         makeContainer({
-          items: [{ text: "foo" }],
+          items: [{ text: "foo" }]
         });
 
         button = fc.down("button");
@@ -541,8 +541,8 @@ describe("Ext.util.FocusableContainer", function () {
       makeSuite("focusable child", {
         items: [
           { xtype: "button", text: "foo" },
-          { xtype: "button", text: "bar" },
-        ],
+          { xtype: "button", text: "bar" }
+        ]
       });
 
       makeSuite("non-focusable child", {
@@ -550,8 +550,8 @@ describe("Ext.util.FocusableContainer", function () {
           { xtype: "tbtext", text: "text1" },
           { xtype: "button", text: "foo" },
           { xtype: "button", text: "bar" },
-          { xtype: "tbtext", text: "text2" },
-        ],
+          { xtype: "tbtext", text: "text2" }
+        ]
       });
 
       makeSuite("focusable but disabled child", {
@@ -559,8 +559,8 @@ describe("Ext.util.FocusableContainer", function () {
           { xtype: "button", text: "disabled1", disabled: true },
           { xtype: "button", text: "foo" },
           { xtype: "button", text: "bar" },
-          { xtype: "button", text: "disabled2", disabled: true },
-        ],
+          { xtype: "button", text: "disabled2", disabled: true }
+        ]
       });
 
       makeSuite("focusable/disabled child when disabled are allowed", {
@@ -568,8 +568,8 @@ describe("Ext.util.FocusableContainer", function () {
         items: [
           // Can't use buttons here, they're *stubbornly* unfocusable when disabled
           { xtype: "menuitem", text: "foo", disabled: true },
-          { xtype: "menuitem", text: "bar", disabled: true },
-        ],
+          { xtype: "menuitem", text: "bar", disabled: true }
+        ]
       });
 
       makeSuite("focusable/disabled AND non-focusable child", {
@@ -579,8 +579,8 @@ describe("Ext.util.FocusableContainer", function () {
           { xtype: "button", text: "foo" },
           { xtype: "button", text: "bar" },
           { xtype: "tbtext", text: "text2" },
-          { xtype: "button", text: "disabled2", disabled: true },
-        ],
+          { xtype: "button", text: "disabled2", disabled: true }
+        ]
       });
 
       makeSuite("focusable/disabled AND non-focusable, disabled are allowed", {
@@ -589,8 +589,8 @@ describe("Ext.util.FocusableContainer", function () {
           { xtype: "tbtext", text: "text1" },
           { xtype: "menuitem", text: "foo", disabled: true },
           { xtype: "menuitem", text: "bar", disabled: true },
-          { xtype: "tbtext", text: "text2" },
-        ],
+          { xtype: "tbtext", text: "text2" }
+        ]
       });
     });
 
@@ -600,7 +600,7 @@ describe("Ext.util.FocusableContainer", function () {
       function expectToFind(whatNext, whereFrom, goingForward) {
         var child = fc.findNextFocusableChild({
           child: whereFrom,
-          step: goingForward,
+          step: goingForward
         });
 
         expect(child).toBe(whatNext);
@@ -617,8 +617,8 @@ describe("Ext.util.FocusableContainer", function () {
             { xtype: "menuitem", text: "disabled2", disabled: true },
             { xtype: "button", text: "barBtn" },
             { xtype: "tbfill" },
-            { xtype: "combobox", fieldLabel: "bar combo" },
-          ],
+            { xtype: "combobox", fieldLabel: "bar combo" }
+          ]
         });
 
         fooBtn = fc.down("button[text=fooBtn]");
@@ -886,13 +886,13 @@ describe("Ext.util.FocusableContainer", function () {
           items: [
             {
               itemId: "first",
-              text: "first",
+              text: "first"
             },
             {
               itemId: "second",
-              text: "second",
-            },
-          ],
+              text: "second"
+            }
+          ]
         });
 
         first = fc.down("#first");
@@ -920,14 +920,14 @@ describe("Ext.util.FocusableContainer", function () {
             {
               itemId: "first",
               text: "first",
-              disabled: true,
+              disabled: true
             },
             {
               itemId: "second",
               text: "second",
-              disabled: true,
-            },
-          ],
+              disabled: true
+            }
+          ]
         });
 
         first = fc.down("#first");
@@ -953,13 +953,13 @@ describe("Ext.util.FocusableContainer", function () {
           items: [
             {
               itemId: "first",
-              text: "first",
+              text: "first"
             },
             {
               itemId: "second",
-              text: "second",
-            },
-          ],
+              text: "second"
+            }
+          ]
         });
 
         first = fc.down("#first");
@@ -1236,7 +1236,7 @@ describe("Ext.util.FocusableContainer", function () {
       beforeEach(function () {
         makeContainer({
           enableFocusableContainer: false,
-          items: [{ xtype: "button", text: "foo" }],
+          items: [{ xtype: "button", text: "foo" }]
         });
 
         fooBtn = fc.down("button[text=foo]");
@@ -1259,8 +1259,8 @@ describe("Ext.util.FocusableContainer", function () {
         makeContainer({
           items: [
             { xtype: "button", text: "fooBtn" },
-            { xtype: "button", text: "barBtn" },
-          ],
+            { xtype: "button", text: "barBtn" }
+          ]
         });
 
         fooBtn = fc.down("button[text=fooBtn]");
@@ -1312,9 +1312,9 @@ describe("Ext.util.FocusableContainer", function () {
               cfg = Ext.apply(
                 {
                   xtype: "button",
-                  text: "bazBtn",
+                  text: "bazBtn"
                 },
-                cfg,
+                cfg
               );
 
               fc.insert(0, cfg);
@@ -1426,9 +1426,9 @@ describe("Ext.util.FocusableContainer", function () {
               cfg = Ext.apply(
                 {
                   xtype: "button",
-                  text: "bazBtn",
+                  text: "bazBtn"
                 },
-                cfg,
+                cfg
               );
 
               fc.insert(0, cfg);
@@ -1546,9 +1546,9 @@ describe("Ext.util.FocusableContainer", function () {
             cfg = Ext.apply(
               {
                 xtype: "button",
-                text: "bazBtn",
+                text: "bazBtn"
               },
-              cfg,
+              cfg
             );
 
             fc.insert(0, cfg);
@@ -1792,13 +1792,13 @@ describe("Ext.util.FocusableContainer", function () {
           items: [
             {
               xtype: "button",
-              text: "fooBtn",
+              text: "fooBtn"
             },
             {
               xtype: "button",
-              text: "barBtn",
-            },
-          ],
+              text: "barBtn"
+            }
+          ]
         });
 
         fooBtn = fc.down("button[text=fooBtn]");
@@ -1876,7 +1876,7 @@ describe("Ext.util.FocusableContainer", function () {
                 id: "slider-" + ++autoId,
                 value: 50,
                 width: 100,
-                animate: false,
+                animate: false
               },
               { xtype: "tbseparator" },
               { xtype: "tbfill" },
@@ -1884,8 +1884,8 @@ describe("Ext.util.FocusableContainer", function () {
               { xtype: "button", text: "barBtn" },
               { xtype: "button", text: "disabledBtn2", disabled: true },
               { xtype: "combobox", id: "barInput-" + ++autoId },
-              { xtype: "tbtext", text: "***" },
-            ],
+              { xtype: "tbtext", text: "***" }
+            ]
           });
 
           fooBtn = fc.down("button[text=fooBtn]");
@@ -2047,12 +2047,12 @@ describe("Ext.util.FocusableContainer", function () {
             beforeEach(function () {
               Ext.apply(barInput, {
                 queryMode: "local",
-                displayField: "name",
+                displayField: "name"
               });
 
               var store = new Ext.data.Store({
                 fields: ["name"],
-                data: [{ name: "foo" }],
+                data: [{ name: "foo" }]
               });
 
               barInput.setStore(store);
@@ -2089,7 +2089,7 @@ describe("Ext.util.FocusableContainer", function () {
                 id: "slider-" + ++autoId,
                 value: 50,
                 width: 100,
-                animate: false,
+                animate: false
               },
               { xtype: "tbseparator" },
               { xtype: "tbfill" },
@@ -2097,8 +2097,8 @@ describe("Ext.util.FocusableContainer", function () {
               { xtype: "button", text: "barBtn" },
               { xtype: "button", text: "disabledBtn2", disabled: true },
               { xtype: "combobox", id: "barInput-" + ++autoId },
-              { xtype: "tbtext", text: "***" },
-            ],
+              { xtype: "tbtext", text: "***" }
+            ]
           });
 
           fooBtn = fc.down("button[text=fooBtn]");
@@ -2264,12 +2264,12 @@ describe("Ext.util.FocusableContainer", function () {
           beforeEach(function () {
             Ext.apply(barInput, {
               queryMode: "local",
-              displayField: "name",
+              displayField: "name"
             });
 
             var store = new Ext.data.Store({
               fields: ["name"],
-              data: [{ name: "foo" }],
+              data: [{ name: "foo" }]
             });
 
             barInput.setStore(store);

@@ -383,5 +383,5 @@ Ext.define("Ext.data.schema.Association", {
   getFieldName: function () {
     var field = this.field;
     return field ? field.name : "";
-  },
+  }
 });

@@ -23,7 +23,7 @@ Ext.define("Ext.fx.target.Sprite", {
         return {
           x: obj.x || 0,
           y: obj.y || 0,
-          degrees: obj.degrees || 0,
+          degrees: obj.degrees || 0
         };
       case "scale":
       case "scaling":
@@ -32,14 +32,14 @@ Ext.define("Ext.fx.target.Sprite", {
           x: obj.x || 1,
           y: obj.y || 1,
           cx: obj.cx || 0,
-          cy: obj.cy || 0,
+          cy: obj.cy || 0
         };
       case "translate":
       case "translation":
         obj = sprite.attr.translation;
         return {
           x: obj.x || 0,
-          y: obj.y || 0,
+          y: obj.y || 0
         };
       default:
         return sprite.attr[attr];
@@ -50,8 +50,8 @@ Ext.define("Ext.fx.target.Sprite", {
     return [
       [
         this.target,
-        val !== undefined ? val : this.getFromPrim(this.target, attr),
-      ],
+        val !== undefined ? val : this.getFromPrim(this.target, attr)
+      ]
     ];
   },
 
@@ -81,7 +81,7 @@ Ext.define("Ext.fx.target.Sprite", {
           if (attr === "translate" || attr === "translation") {
             value = {
               x: attrs.x,
-              y: attrs.y,
+              y: attrs.y
             };
           } else if (attr === "rotate" || attr === "rotation") {
             x = attrs.x;
@@ -95,7 +95,7 @@ Ext.define("Ext.fx.target.Sprite", {
             value = {
               degrees: attrs.degrees,
               x: x,
-              y: y,
+              y: y
             };
           } else if (attr === "scale" || attr === "scaling") {
             x = attrs.x;
@@ -110,7 +110,7 @@ Ext.define("Ext.fx.target.Sprite", {
               x: x,
               y: y,
               cx: attrs.cx,
-              cy: attrs.cy,
+              cy: attrs.cy
             };
           } else if (
             attr === "width" ||
@@ -136,5 +136,5 @@ Ext.define("Ext.fx.target.Sprite", {
       spriteArr[i][0].setAttributes(spriteArr[i][1]);
     }
     this.target.redraw();
-  },
+  }
 });

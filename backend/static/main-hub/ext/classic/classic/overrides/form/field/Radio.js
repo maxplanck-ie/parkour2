@@ -34,5 +34,5 @@ Ext.define(null, {
     // since it will fire propertychange event on any change, not only false -> true.
     // This is unlike standard compliant browsers, see main class.
     this.callSuper([newValue, oldValue]);
-  },
+  }
 });

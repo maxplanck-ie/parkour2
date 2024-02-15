@@ -27,7 +27,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
 
     if (id && this.runningAnimationsData.hasOwnProperty(id)) {
       this.refreshRunningAnimationsData(Ext.get(target), [
-        e.browserEvent.propertyName,
+        e.browserEvent.propertyName
       ]);
     }
   },
@@ -42,7 +42,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
     data,
     animation,
     isInterrupted,
-    isReplaced,
+    isReplaced
   ) {
     var id = this.getElementId(element),
       runningData = this.runningAnimationsData[id],
@@ -70,14 +70,14 @@ Ext.define("Ext.fx.runner.CssTransition", {
       "animationbeforeend",
       animation,
       element,
-      isInterrupted,
+      isInterrupted
     );
     this.fireEvent(
       "animationbeforeend",
       this,
       animation,
       element,
-      isInterrupted,
+      isInterrupted
     );
 
     if (isReplaced || (!isInterrupted && !data.preserveEndState)) {
@@ -117,7 +117,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
       "transition-property": null,
       "transition-duration": null,
       "transition-timing-function": null,
-      "transition-delay": null,
+      "transition-delay": null
     };
 
     this.applyStyles(endRules);
@@ -138,7 +138,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
     element,
     propertyNames,
     interrupt,
-    replace,
+    replace
   ) {
     var id = this.getElementId(element),
       runningAnimationsData = this.runningAnimationsData,
@@ -185,7 +185,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
           session.data,
           session.animation,
           interrupt,
-          replace,
+          replace
         );
       }
 
@@ -220,7 +220,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
             element,
             session.data,
             session.animation,
-            interrupt,
+            interrupt
           );
         }
       }
@@ -238,7 +238,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
       runningAnimationsData[id] = {
         nameMap: {},
         nameList: [],
-        sessions: [],
+        sessions: []
       };
     }
 
@@ -393,7 +393,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
           if (!isLengthProperty) {
             toFormattedValue = me.getCssStyleValue(
               formattedName,
-              toFormattedValue,
+              toFormattedValue
             );
           }
 
@@ -403,7 +403,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
             if (!isLengthProperty) {
               fromFormattedValue = me.getCssStyleValue(
                 formattedName,
-                fromFormattedValue,
+                fromFormattedValue
               );
             }
 
@@ -436,7 +436,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
           element,
           Ext.Array.merge(fromPropertyNames, toPropertyNames),
           true,
-          data.replacePrevious,
+          data.replacePrevious
         );
       }
 
@@ -462,7 +462,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
         list: toPropertyNames.slice(),
         length: propertiesLength,
         data: data,
-        animation: animation,
+        animation: animation
       };
       runningSessions.push(runningSession);
 
@@ -474,7 +474,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
       if (runningNameList.length > 0) {
         fromPropertyNames = Ext.Array.difference(
           runningNameList,
-          fromPropertyNames,
+          fromPropertyNames
         );
         toPropertyNames = Ext.Array.merge(fromPropertyNames, toPropertyNames);
         elementData["transition-property"] = fromPropertyNames;
@@ -487,7 +487,7 @@ Ext.define("Ext.fx.runner.CssTransition", {
         "transition-property": toPropertyNames,
         "transition-duration": data.duration,
         "transition-timing-function": data.easing,
-        "transition-delay": data.delay,
+        "transition-delay": data.delay
       };
 
       animation.startTime = Date.now();
@@ -549,11 +549,11 @@ Ext.define("Ext.fx.runner.CssTransition", {
             this.refreshRunningAnimationsData(
               session.element,
               session.list.slice(),
-              false,
+              false
             );
           }
         }
       }
     }
-  },
+  }
 });

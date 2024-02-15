@@ -61,5 +61,5 @@ Ext.define("Ext.layout.component.field.HtmlEditor", {
     if (Ext.isGecko) {
       owner.textareaEl.dom.value = this.lastValue;
     }
-  },
+  }
 });

@@ -13,7 +13,7 @@ Ext.define("Ext.chart.grid.RadialGrid", {
     def: {
       processors: {
         startRadius: "number",
-        endRadius: "number",
+        endRadius: "number"
       },
 
       defaults: {
@@ -21,14 +21,14 @@ Ext.define("Ext.chart.grid.RadialGrid", {
         endRadius: 1,
         scalingCenterX: 0,
         scalingCenterY: 0,
-        strokeStyle: "#DDD",
+        strokeStyle: "#DDD"
       },
 
       triggers: {
         startRadius: "path,bbox",
-        endRadius: "path,bbox",
-      },
-    },
+        endRadius: "path,bbox"
+      }
+    }
   },
 
   render: function () {
@@ -40,5 +40,5 @@ Ext.define("Ext.chart.grid.RadialGrid", {
       endRadius = attr.endRadius;
     path.moveTo(startRadius, 0);
     path.lineTo(endRadius, 0);
-  },
+  }
 });

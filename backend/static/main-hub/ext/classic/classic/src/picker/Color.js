@@ -118,7 +118,7 @@ Ext.define("Ext.picker.Color", {
     "CCFFFF",
     "99CCFF",
     "CC99FF",
-    "FFFFFF",
+    "FFFFFF"
   ],
 
   /**
@@ -150,7 +150,7 @@ Ext.define("Ext.picker.Color", {
     '<a href="#" role="button" class="color-{.} {parent.itemCls}" hidefocus="on">',
     '<span class="{parent.itemCls}-inner" style="background:#{.}">&#160;</span>',
     "</a>",
-    "</tpl>",
+    "</tpl>"
   ],
 
   /**
@@ -180,7 +180,7 @@ Ext.define("Ext.picker.Color", {
     var me = this;
     return Ext.apply(me.callParent(), {
       itemCls: me.itemCls,
-      colors: me.colors,
+      colors: me.colors
     });
   },
 
@@ -195,7 +195,7 @@ Ext.define("Ext.picker.Color", {
     if (clickEvent !== "click") {
       me.mon(me.el, "click", Ext.emptyFn, me, {
         delegate: "a",
-        stopEvent: true,
+        stopEvent: true
       });
     }
   },
@@ -284,5 +284,5 @@ Ext.define("Ext.picker.Color", {
    */
   getValue: function () {
     return this.value || null;
-  },
+  }
 });

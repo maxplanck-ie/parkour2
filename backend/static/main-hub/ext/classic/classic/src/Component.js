@@ -76,7 +76,7 @@ Ext.define(
       "Ext.ComponentManager",
       "Ext.util.ProtoElement",
       "Ext.dom.CompositeElement",
-      "Ext.scroll.Scroller",
+      "Ext.scroll.Scroller"
     ],
 
     // Note that Floating must be mixed in before Positionable.
@@ -93,7 +93,7 @@ Ext.define(
       "Ext.state.Stateful",
       "Ext.util.Focusable",
       "Ext.mixin.Accessible",
-      "Ext.mixin.Keyboard",
+      "Ext.mixin.Keyboard"
     ],
 
     uses: [
@@ -109,7 +109,7 @@ Ext.define(
       "Ext.ZIndexManager",
       "Ext.util.DelayedTask",
       "Ext.resizer.Resizer",
-      "Ext.util.ComponentDragger",
+      "Ext.util.ComponentDragger"
     ],
 
     statics: {
@@ -199,7 +199,7 @@ Ext.define(
               }
 
               return result;
-            },
+            }
           });
 
           context.run();
@@ -269,7 +269,7 @@ Ext.define(
             me.flushLayouts();
           }
         }
-      },
+      }
     },
 
     // <editor-fold desc="Config">
@@ -416,7 +416,7 @@ Ext.define(
        *     // scrolls the component to 5 on the x axis and 10 on the y axis
        *     component.getScrollable().scrollTo(5, 10);
        */
-      scrollable: null,
+      scrollable: null
     },
 
     renderConfig: {
@@ -474,7 +474,7 @@ Ext.define(
        *         }
        *     });
        */
-      touchAction: null,
+      touchAction: null
     },
 
     defaultBindProperty: "html",
@@ -604,7 +604,7 @@ Ext.define(
       frameMR: { frame: "mr" },
       frameBL: { frame: "bl" },
       frameBC: { frame: "bc" },
-      frameBR: { frame: "br" },
+      frameBR: { frame: "br" }
     },
 
     /**
@@ -1731,7 +1731,7 @@ Ext.define(
           overflowY: "auto",
           x: true,
           y: true,
-          both: true,
+          both: true
         },
         // x:auto, y:false
         false: {
@@ -1739,7 +1739,7 @@ Ext.define(
           overflowY: "hidden",
           x: true,
           y: false,
-          both: false,
+          both: false
         },
         // x:auto, y:scroll
         scroll: {
@@ -1747,8 +1747,8 @@ Ext.define(
           overflowY: "scroll",
           x: true,
           y: true,
-          both: true,
-        },
+          both: true
+        }
       },
       false: {
         // x:false, y:auto
@@ -1757,7 +1757,7 @@ Ext.define(
           overflowY: "auto",
           x: false,
           y: true,
-          both: false,
+          both: false
         },
         // x:false, y:false
         false: {
@@ -1765,7 +1765,7 @@ Ext.define(
           overflowY: "hidden",
           x: false,
           y: false,
-          both: false,
+          both: false
         },
         // x:false, y:scroll
         scroll: {
@@ -1773,8 +1773,8 @@ Ext.define(
           overflowY: "scroll",
           x: false,
           y: true,
-          both: false,
-        },
+          both: false
+        }
       },
       scroll: {
         // x:scroll, y:auto
@@ -1783,7 +1783,7 @@ Ext.define(
           overflowY: "auto",
           x: true,
           y: true,
-          both: true,
+          both: true
         },
         // x:scroll, y:false
         false: {
@@ -1791,7 +1791,7 @@ Ext.define(
           overflowY: "hidden",
           x: true,
           y: false,
-          both: false,
+          both: false
         },
         // x:scroll, y:scroll
         scroll: {
@@ -1799,43 +1799,43 @@ Ext.define(
           overflowY: "scroll",
           x: true,
           y: true,
-          both: true,
-        },
+          both: true
+        }
       },
       none: {
         overflowX: "",
         overflowY: "",
         x: false,
         y: false,
-        both: false,
-      },
+        both: false
+      }
     },
 
     _scrollableCfg: {
       x: {
         x: true,
-        y: false,
+        y: false
       },
       y: {
         x: false,
-        y: true,
+        y: true
       },
       horizontal: {
         x: true,
-        y: false,
+        y: false
       },
       vertical: {
         x: false,
-        y: true,
+        y: true
       },
       both: {
         x: true,
-        y: true,
+        y: true
       },
       true: {
         x: true,
-        y: true,
-      },
+        y: true
+      }
     },
 
     validIdRe: Ext.validIdRe,
@@ -2068,7 +2068,7 @@ Ext.define(
         // element object
         config = {
           applyTo: config,
-          id: config.id || config,
+          id: config.id || config
         };
       }
 
@@ -2103,7 +2103,7 @@ Ext.define(
           if (overflowX || overflowY) {
             scrollable = {
               x: overflowX && overflowX !== "hidden" ? overflowX : false,
-              y: overflowY && overflowY !== "hidden" ? overflowY : false,
+              y: overflowY && overflowY !== "hidden" ? overflowY : false
             };
           }
         }
@@ -2191,7 +2191,7 @@ Ext.define(
       if (Ext.isDefined(me.disabledClass)) {
         if (Ext.isDefined(Ext.global.console)) {
           Ext.global.console.warn(
-            "Ext.Component: disabledClass has been deprecated. Please use disabledCls.",
+            "Ext.Component: disabledClass has been deprecated. Please use disabledCls."
           );
         }
         me.disabledCls = me.disabledClass;
@@ -2210,7 +2210,7 @@ Ext.define(
       //<debug>
       if (!this.$calledInitConfig) {
         Ext.raise(
-          "initConfig should not be called by subclasses, it will be called by Ext.Component",
+          "initConfig should not be called by subclasses, it will be called by Ext.Component"
         );
       }
       //</debug>
@@ -2373,7 +2373,7 @@ Ext.define(
         result = [
           Ext.baseCSSPrefix + uiCls,
           me.baseCls + "-" + uiCls,
-          baseClsUI,
+          baseClsUI
         ],
         childEls,
         childElName,
@@ -2411,7 +2411,7 @@ Ext.define(
         result = [
           Ext.baseCSSPrefix + uiCls,
           me.baseCls + "-" + uiCls,
-          baseClsUI,
+          baseClsUI
         ],
         childEls,
         childElName,
@@ -2453,7 +2453,7 @@ Ext.define(
 
       return {
         x: x,
-        y: y,
+        y: y
       };
     },
 
@@ -2543,13 +2543,13 @@ Ext.define(
           x: myEl.getX(),
           y: myEl.getY(),
           width: myEl.dom.offsetWidth,
-          height: myEl.dom.offsetHeight,
+          height: myEl.dom.offsetHeight
         };
         fromBox = {
           x: animateTarget.getX(),
           y: animateTarget.getY(),
           width: animateTarget.dom.offsetWidth,
-          height: animateTarget.dom.offsetHeight,
+          height: animateTarget.dom.offsetHeight
         };
 
         // Will move to front with underlying mask, and focus if necessary.
@@ -2575,8 +2575,8 @@ Ext.define(
                 me.ghostBox = null;
                 me.onShowComplete(callback, scope);
               }
-            },
-          },
+            }
+          }
         });
       } else {
         me.onShowComplete(callback, scope);
@@ -2710,7 +2710,7 @@ Ext.define(
           //<debug>
           if (!scrollableCfg) {
             Ext.raise(
-              "'" + scrollable + "' is not a valid value for 'scrollable'",
+              "'" + scrollable + "' is not a valid value for 'scrollable'"
             );
           }
           //</debug>
@@ -2735,7 +2735,7 @@ Ext.define(
 
           scrollable = Ext.scroll.Scroller.create(
             scrollable,
-            me.scrollableType,
+            me.scrollableType
           );
           scrollable.component = me;
         }
@@ -2745,7 +2745,7 @@ Ext.define(
         scrollable = oldScrollable;
         oldScrollable.setConfig({
           x: false,
-          y: false,
+          y: false
         });
       }
 
@@ -2851,7 +2851,7 @@ Ext.define(
           y: adj.y,
           anim: animate,
           hasX: hasX,
-          hasY: hasY,
+          hasY: hasY
         };
       }
 
@@ -3015,7 +3015,7 @@ Ext.define(
           me.proxyWrap,
           me.resizerComponent,
           me.scrollable,
-          me.contentEl,
+          me.contentEl
         );
       }
 
@@ -3148,7 +3148,7 @@ Ext.define(
         ret = me.mixins.componentDelegation.doFireDelegatedEvent.call(
           me,
           eventName,
-          args,
+          args
         );
       }
 
@@ -3309,7 +3309,7 @@ Ext.define(
 
       if (!me.componentLayout || !me.componentLayout.isLayout) {
         me.setComponentLayout(
-          Ext.layout.Layout.create(me.componentLayout, "autocomponent"),
+          Ext.layout.Layout.create(me.componentLayout, "autocomponent")
         );
       }
       return me.componentLayout;
@@ -3406,10 +3406,10 @@ Ext.define(
           me.loader = new Ext.ComponentLoader(
             Ext.apply(
               {
-                target: me,
+                target: me
               },
-              loader,
-            ),
+              loader
+            )
           );
         } else {
           loader.setTarget(me);
@@ -4661,7 +4661,7 @@ Ext.define(
           x: animateTarget.getX(),
           y: animateTarget.getY(),
           width: animateTarget.dom.offsetWidth,
-          height: animateTarget.dom.offsetHeight,
+          height: animateTarget.dom.offsetHeight
         };
         ghostPanel = me.ghost();
         ghostPanel.el.stopAnimation();
@@ -4676,8 +4676,8 @@ Ext.define(
                 ghostPanel.el.setSize(fromSize);
                 me.afterHide(cb, scope);
               }
-            },
-          },
+            }
+          }
         });
       } else {
         me.el.hide();
@@ -4782,7 +4782,7 @@ Ext.define(
 
       me.updateLayout({
         isRoot: false,
-        context: me._showContext,
+        context: me._showContext
       });
 
       // Constraining/containing element may have changed size while this Component was hidden
@@ -4796,7 +4796,7 @@ Ext.define(
     },
 
     _showContext: {
-      show: true,
+      show: true
     },
 
     /**
@@ -4994,7 +4994,7 @@ Ext.define(
       //<debug>
       if (!me.layoutSuspendCount) {
         Ext.log.warn(
-          "Mismatched call to resumeLayouts - layouts are currently not suspended.",
+          "Mismatched call to resumeLayouts - layouts are currently not suspended."
         );
       }
       //</debug>
@@ -5157,7 +5157,7 @@ Ext.define(
     setLoading: function (load, /*deprecated */ targetEl) {
       var me = this,
         config = {
-          target: me,
+          target: me
         };
 
       if (me.rendered) {
@@ -5243,7 +5243,7 @@ Ext.define(
     setOverflowXY: function (overflowX, overflowY) {
       this.setScrollable({
         x: overflowX && overflowX !== "hidden" ? overflowX : false,
-        y: overflowY && overflowY !== "hidden" ? overflowY : false,
+        y: overflowY && overflowY !== "hidden" ? overflowY : false
       });
 
       return this;
@@ -5326,8 +5326,8 @@ Ext.define(
                   listeners: {
                     afteranimate: Ext.Function.bind(me.afterSetPosition, me, [
                       x,
-                      y,
-                    ]),
+                      y
+                    ])
                   },
                   to: {
                     // Use local coordinates for a component
@@ -5335,11 +5335,11 @@ Ext.define(
                     // calls setPosition, which will normalize the x value to right when
                     // it's necessary
                     left: x,
-                    top: y,
-                  },
+                    top: y
+                  }
                 },
-                animate,
-              ),
+                animate
+              )
             );
           }
         } else {
@@ -5987,7 +5987,7 @@ Ext.define(
         oldMaxHeight,
         "min",
         "max-height",
-        "height",
+        "height"
       );
     },
 
@@ -6001,7 +6001,7 @@ Ext.define(
         oldMinHeight,
         "max",
         "min-height",
-        "height",
+        "height"
       );
     },
 
@@ -6145,7 +6145,7 @@ Ext.define(
         oldValue,
         constrainMethod,
         styleName,
-        sizeName,
+        sizeName
       ) {
         var me = this,
           size = me[sizeName];
@@ -6243,7 +6243,7 @@ Ext.define(
         options,
         order,
         caller,
-        manager,
+        manager
       ) {
         var me = this,
           listeners,
@@ -6299,7 +6299,7 @@ Ext.define(
               options,
               order,
               caller,
-              manager,
+              manager
             );
             return;
           }
@@ -6313,7 +6313,7 @@ Ext.define(
           options,
           order,
           caller,
-          manager,
+          manager
         );
       },
 
@@ -6324,7 +6324,7 @@ Ext.define(
           me,
           eventName,
           fn,
-          scope,
+          scope
         );
       },
 
@@ -6419,7 +6419,7 @@ Ext.define(
 
         return {
           overflowX: scrollFlags.overflowX,
-          overflowY: scrollFlags.overflowY,
+          overflowY: scrollFlags.overflowY
         };
       },
 
@@ -6444,7 +6444,7 @@ Ext.define(
           me.proxy = me.el.createProxy(
             Ext.baseCSSPrefix + "proxy-el",
             target,
-            true,
+            true
           );
         }
         return me.proxy;
@@ -6501,7 +6501,7 @@ Ext.define(
         if (Ext.isDefined(me.cmpCls)) {
           if (Ext.isDefined(Ext.global.console)) {
             Ext.global.console.warn(
-              "Ext.Component: cmpCls has been deprecated. Please use componentCls.",
+              "Ext.Component: cmpCls has been deprecated. Please use componentCls."
             );
           }
           me.componentCls = me.cmpCls;
@@ -6528,7 +6528,7 @@ Ext.define(
               ? (me.resizerComponent = new Ext.Component({
                   el: me.resizer.el,
                   rendered: true,
-                  container: me.container,
+                  container: me.container
                 }))
               : me,
           ddConfig = Ext.applyIf(
@@ -6540,9 +6540,9 @@ Ext.define(
                     (me.floatParent
                       ? me.floatParent.getTargetEl()
                       : me.container)
-                  : undefined,
+                  : undefined
             },
-            me.draggable,
+            me.draggable
           );
 
         // Add extra configs if Component is specified to be constrained
@@ -6582,7 +6582,7 @@ Ext.define(
             // into a proper style string
             targetEl.setStyle(
               "padding",
-              this.unitizeBox(padding === true ? 5 : padding),
+              this.unitizeBox(padding === true ? 5 : padding)
             );
           }
         }
@@ -6609,9 +6609,9 @@ Ext.define(
                 ? me.constrainTo ||
                   (me.floatParent ? me.floatParent.getTargetEl() : me.container)
                 : undefined,
-            handles: me.resizeHandles,
+            handles: me.resizeHandles
           },
-          resizable,
+          resizable
         );
         resizable.target = me;
         me.resizer = new Ext.resizer.Resizer(resizable);
@@ -6639,7 +6639,7 @@ Ext.define(
         if (margin != null) {
           targetEl.setStyle(
             "margin",
-            this.unitizeBox(margin === true ? 5 : margin),
+            this.unitizeBox(margin === true ? 5 : margin)
           );
         }
 
@@ -6661,7 +6661,7 @@ Ext.define(
         if (x != null) {
           targetEl.setStyle(
             me.horizontalPosProp,
-            typeof x === "number" ? x + "px" : x,
+            typeof x === "number" ? x + "px" : x
           );
         }
         if (y != null) {
@@ -6759,7 +6759,7 @@ Ext.define(
         item,
         ename,
         fn,
-        scope,
+        scope
       ) {
         var me = this,
           element = managedListener.options
@@ -6779,7 +6779,7 @@ Ext.define(
               element.un(
                 managedListener.ename,
                 managedListener.fn,
-                managedListener.scope,
+                managedListener.scope
               );
               if (!isClear) {
                 Ext.Array.remove(me.managedListeners, managedListener);
@@ -6789,7 +6789,7 @@ Ext.define(
         } else {
           return me.mixins.observable.removeManagedListenerItem.apply(
             me,
-            arguments,
+            arguments
           );
         }
       },
@@ -6887,7 +6887,7 @@ Ext.define(
         if (me.floating) {
           this.mixins.floating.constructor.call(this);
         }
-      },
+      }
     }, // private
 
     deprecated: {
@@ -6933,10 +6933,10 @@ Ext.define(
            * @inheritdoc Ext.Component#setDock
            * @deprecated 5.0 Use {@link #setDock} instead.
            */
-          setDocked: "setDock",
-        },
-      },
-    },
+          setDocked: "setDock"
+        }
+      }
+    }
   },
   function (Component) {
     var prototype = Component.prototype;
@@ -6944,17 +6944,17 @@ Ext.define(
     // event options for listeners that use the "element" event options must also include
     // event options from Ext.Element
     (prototype.$elementEventOptions = Ext.Object.chain(
-      Ext.Element.prototype.$eventOptions,
+      Ext.Element.prototype.$eventOptions
     )).element = 1;
 
     (prototype.$eventOptions = Ext.Object.chain(
-      prototype.$eventOptions,
+      prototype.$eventOptions
     )).delegate = 1;
 
     Component.createAlias({
       on: "addListener",
       prev: "previousSibling",
-      next: "nextSibling",
+      next: "nextSibling"
     });
 
     /**
@@ -7017,7 +7017,7 @@ Ext.define(
         Ext.getBody().addCls(Component.ariaHighContrastModeCls);
       }
     });
-  },
+  }
 );
 
 /* TODO

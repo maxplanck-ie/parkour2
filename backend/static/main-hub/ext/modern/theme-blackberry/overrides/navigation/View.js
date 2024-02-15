@@ -3,7 +3,7 @@ Ext.define("Ext.theme.blackberry.navigation.View", {
 
   config: {
     navigationBar: {
-      splitNavigation: true,
-    },
-  },
+      splitNavigation: true
+    }
+  }
 });

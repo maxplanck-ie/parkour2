@@ -5,7 +5,7 @@ describe("Ext.data.NodeInterface", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -17,8 +17,8 @@ describe("Ext.data.NodeInterface", function () {
       extend: "Ext.data.TreeModel",
       fields: [{ name: "text", type: "string" }],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     });
   });
 
@@ -196,8 +196,8 @@ describe("Ext.data.NodeInterface", function () {
         extend: "Ext.data.Model",
         fields: [{ name: "text", type: "string" }],
         proxy: {
-          type: "memory",
-        },
+          type: "memory"
+        }
       });
       record1 = MyModel.create({ text: "record1" });
       record2 = MyModel.create({ text: "record2" });
@@ -225,26 +225,26 @@ describe("Ext.data.NodeInterface", function () {
         isLast: true,
         depth: 0,
         index: 0,
-        parentId: null,
+        parentId: null
       });
     }
 
     beforeEach(function () {
       leftChild = new spec.TreeNode({
-        id: "left",
+        id: "left"
       });
 
       rightChild = new spec.TreeNode({
-        id: "right",
+        id: "right"
       });
 
       rootNode = new spec.TreeNode({
-        id: "root",
+        id: "root"
       });
 
       //we use this in several tests as an example node to add
       spareNode = new spec.TreeNode({
-        id: "spare",
+        id: "spare"
       });
     });
 
@@ -423,7 +423,7 @@ describe("Ext.data.NodeInterface", function () {
             oldParent,
             spareNode,
             true,
-            spy.mostRecentCall.args[3],
+            spy.mostRecentCall.args[3]
           );
         });
 
@@ -536,7 +536,7 @@ describe("Ext.data.NodeInterface", function () {
               rootNode,
               rootNode,
               0,
-              rightChild,
+              rightChild
             );
           });
 
@@ -558,7 +558,7 @@ describe("Ext.data.NodeInterface", function () {
               rootNode,
               rootNode,
               0,
-              rightChild,
+              rightChild
             );
           });
         });
@@ -602,7 +602,7 @@ describe("Ext.data.NodeInterface", function () {
           rootNode,
           leftChild,
           false,
-          spy.mostRecentCall.args[3],
+          spy.mostRecentCall.args[3]
         );
       });
 
@@ -1124,7 +1124,7 @@ describe("Ext.data.NodeInterface", function () {
               return node.getId() === "spare";
             },
             this,
-            false,
+            false
           );
 
           expect(child).toBeNull();
@@ -1136,7 +1136,7 @@ describe("Ext.data.NodeInterface", function () {
               return node.getId() === "spare";
             },
             this,
-            true,
+            true
           );
 
           expect(child).toEqual(spareNode);
@@ -1162,25 +1162,25 @@ describe("Ext.data.NodeInterface", function () {
           extend: "Ext.data.Model",
           fields: [
             { name: "lastname", type: "string" },
-            { name: "firstname", type: "string" },
-          ],
+            { name: "firstname", type: "string" }
+          ]
         });
         Ext.data.NodeInterface.decorate(spec.EmployeeTreeNode);
         node1 = new spec.EmployeeTreeNode({
           lastname: "Avins",
-          firstname: "Jamie",
+          firstname: "Jamie"
         });
         node2 = new spec.EmployeeTreeNode({
           lastname: "Dougan",
-          firstname: "Robert",
+          firstname: "Robert"
         });
         node3 = new spec.EmployeeTreeNode({
           lastname: "Ferrero",
-          firstname: "Nicolas",
+          firstname: "Nicolas"
         });
         node4 = new spec.EmployeeTreeNode({
           lastname: "Spencer",
-          firstname: "Edward",
+          firstname: "Edward"
         });
 
         rootNode.appendChild([node4, node2, node3, node1]);
@@ -1211,7 +1211,7 @@ describe("Ext.data.NodeInterface", function () {
       it("should not copy childNodes by default", function () {
         var node = new spec.TreeNode({
           text: "Text",
-          id: 1,
+          id: 1
         });
 
         var newNode = node.copy();
@@ -1243,14 +1243,14 @@ describe("Ext.data.NodeInterface", function () {
           qshowDelay: 0,
           root: false,
           text: "Text",
-          visible: true,
+          visible: true
         });
       });
 
       it("should accept a new id", function () {
         var node = new spec.TreeNode({
           text: "Text",
-          id: 1,
+          id: 1
         });
 
         var newNode = node.copy(2);
@@ -1282,32 +1282,32 @@ describe("Ext.data.NodeInterface", function () {
           qshowDelay: 0,
           root: false,
           text: "Text",
-          visible: true,
+          visible: true
         });
       });
 
       it("should clone children if deep: true is specified", function () {
         var root = new spec.TreeNode({
           id: 1,
-          text: "Root",
+          text: "Root"
         });
         var child1 = root.appendChild(
           new spec.TreeNode({
             id: 2,
-            text: "Child1",
-          }),
+            text: "Child1"
+          })
         );
         var child2 = child1.appendChild(
           new spec.TreeNode({
             id: 3,
-            text: "Child2",
-          }),
+            text: "Child2"
+          })
         );
         child2.appendChild(
           new spec.TreeNode({
             id: 4,
-            text: "Child3",
-          }),
+            text: "Child3"
+          })
         );
 
         var session,
@@ -1369,31 +1369,31 @@ describe("Ext.data.NodeInterface", function () {
     it("should create an object representation of the node", function () {
       var node = new spec.TreeNode({
           text: "Root",
-          id: 1,
+          id: 1
         }),
         c1 = node.appendChild(
           new spec.TreeNode({
             text: "C1",
-            id: 2,
-          }),
+            id: 2
+          })
         ),
         c2 = node.appendChild(
           new spec.TreeNode({
             text: "C1",
-            id: 3,
-          }),
+            id: 3
+          })
         );
       c1.appendChild(
         new spec.TreeNode({
           text: "c1.1",
-          id: 4,
-        }),
+          id: 4
+        })
       );
       c2.appendChild(
         new spec.TreeNode({
           text: "c2.1",
-          id: 5,
-        }),
+          id: 5
+        })
       );
 
       expect(node.serialize()).toEqual({
@@ -1412,9 +1412,9 @@ describe("Ext.data.NodeInterface", function () {
                 text: "c1.1",
                 id: 4,
                 parentId: 2,
-                leaf: false,
-              },
-            ],
+                leaf: false
+              }
+            ]
           },
           {
             text: "C1",
@@ -1426,17 +1426,17 @@ describe("Ext.data.NodeInterface", function () {
                 text: "c2.1",
                 id: 5,
                 parentId: 3,
-                leaf: false,
-              },
-            ],
-          },
-        ],
+                leaf: false
+              }
+            ]
+          }
+        ]
       });
     });
 
     it("should not include children if there are none", function () {
       var o = new spec.TreeNode({
-          text: "foo",
+          text: "foo"
         }),
         s = o.serialize();
 
@@ -1446,14 +1446,14 @@ describe("Ext.data.NodeInterface", function () {
 
     it("should include children if they exist", function () {
       var o = new spec.TreeNode({
-          text: "foo",
+          text: "foo"
         }),
         s;
 
       o.appendChild(
         new spec.TreeNode({
-          text: "bar",
-        }),
+          text: "bar"
+        })
       );
 
       s = o.serialize();
@@ -1483,21 +1483,21 @@ describe("Ext.data.NodeInterface", function () {
         extend: "Ext.data.TreeModel",
         fields: [
           { name: "text", type: "string" },
-          { name: "index", type: "int", persist: true, defaultValue: -1 },
+          { name: "index", type: "int", persist: true, defaultValue: -1 }
         ],
         proxy: {
-          type: "memory",
-        },
+          type: "memory"
+        }
       });
 
       var root = new spec.PersistentIndexTreeNode({
-          id: "TestRoot",
+          id: "TestRoot"
         }),
         root1 = new spec.PersistentIndexTreeNode({
-          id: "OtherTestRoot",
+          id: "OtherTestRoot"
         }),
         node = new spec.PersistentIndexTreeNode({
-          id: "node",
+          id: "node"
         }),
         node1;
       root.appendChild(node);
@@ -1506,7 +1506,7 @@ describe("Ext.data.NodeInterface", function () {
       // And the index was changed from -1 (not attached) to 0
       expect(node.modified).toEqual({
         index: -1,
-        parentId: null,
+        parentId: null
       });
 
       // Clears modified
@@ -1518,7 +1518,7 @@ describe("Ext.data.NodeInterface", function () {
       // As per discussion with Don re https://sencha.jira.com/browse/EXTJS-20602
       root1.appendChild(node);
       expect(node.modified).toEqual({
-        parentId: "TestRoot",
+        parentId: "TestRoot"
       });
 
       // Clears modified
@@ -1531,14 +1531,14 @@ describe("Ext.data.NodeInterface", function () {
       root1.removeChild(node);
       expect(node.modified).toEqual({
         lastParentId: undefined,
-        parentId: "OtherTestRoot",
+        parentId: "OtherTestRoot"
       });
 
       node = new spec.PersistentIndexTreeNode({
-        id: "node",
+        id: "node"
       });
       node1 = new spec.PersistentIndexTreeNode({
-        id: "node1",
+        id: "node1"
       });
       root.clear();
       root.appendChild([node, node1]);
@@ -1555,12 +1555,12 @@ describe("Ext.data.NodeInterface", function () {
 
       // node1 must report that its index was modified from initial value 1
       expect(node1.modified).toEqual({
-        index: 1,
+        index: 1
       });
 
       // node must report that its index was modified from initial value 0
       expect(node.modified).toEqual({
-        index: 0,
+        index: 0
       });
 
       root1.appendChild(node1);

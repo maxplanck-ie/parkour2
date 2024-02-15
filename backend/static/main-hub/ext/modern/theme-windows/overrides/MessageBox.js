@@ -4,10 +4,10 @@ Ext.define("Ext.theme.windows.MessageBox", {
   config: {
     ui: "light",
     showAnimation: {
-      type: "fadeIn",
+      type: "fadeIn"
     },
     hideAnimation: {
-      type: "fadeOut",
-    },
-  },
+      type: "fadeOut"
+    }
+  }
 });

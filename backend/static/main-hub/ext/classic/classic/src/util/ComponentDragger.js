@@ -127,7 +127,7 @@ Ext.define("Ext.util.ComponentDragger", {
         constraintInsets.top,
         constraintInsets.right,
         constraintInsets.bottom,
-        constraintInsets.left,
+        constraintInsets.left
       );
     }
 
@@ -137,7 +137,7 @@ Ext.define("Ext.util.ComponentDragger", {
         shadowSize[0],
         -shadowSize[1],
         -shadowSize[2],
-        shadowSize[3],
+        shadowSize[3]
       );
     }
 
@@ -152,7 +152,7 @@ Ext.define("Ext.util.ComponentDragger", {
         elRegion.top - delegateRegion.top,
         elRegion.right - delegateRegion.right,
         elRegion.bottom - delegateRegion.bottom,
-        elRegion.left - delegateRegion.left,
+        elRegion.left - delegateRegion.left
       );
     }
     return constrainTo;
@@ -163,12 +163,12 @@ Ext.define("Ext.util.ComponentDragger", {
     var me = this,
       comp = me.proxy && !me.comp.liveDrag ? me.proxy : me.comp,
       offset = me.getOffset(
-        me.constrain || me.constrainDelegate ? "dragTarget" : null,
+        me.constrain || me.constrainDelegate ? "dragTarget" : null
       );
 
     comp.setPagePosition(
       me.startPosition[0] + offset[0],
-      me.startPosition[1] + offset[1],
+      me.startPosition[1] + offset[1]
     );
   },
 
@@ -188,5 +188,5 @@ Ext.define("Ext.util.ComponentDragger", {
     if (comp.el.shim) {
       Ext.dom.Element.unmaskIframes();
     }
-  },
+  }
 });

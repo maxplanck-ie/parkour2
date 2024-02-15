@@ -13,8 +13,8 @@ Ext.define("Ext.rtl.view.Table", {
     'style="text-align:{align};<tpl if="style">{style}</tpl>" {ariaCellInnerAttr}>{value}</div>',
     "</td>",
     {
-      priority: 0,
-    },
+      priority: 0
+    }
   ],
 
   beforeRender: function () {
@@ -28,5 +28,5 @@ Ext.define("Ext.rtl.view.Table", {
 
   getCellPaddingAfter: function (cell) {
     return Ext.fly(cell).getPadding(this.getInherited().rtl ? "l" : "r");
-  },
+  }
 });

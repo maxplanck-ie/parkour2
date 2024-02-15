@@ -11,7 +11,7 @@ Ext.define("Ext.view.DropZone", {
     'grid-drop-indicator-left" role="presentation"></div>',
     '<div class="' +
       Ext.baseCSSPrefix +
-      'grid-drop-indicator-right" role="presentation"></div>',
+      'grid-drop-indicator-right" role="presentation"></div>'
   ].join(""),
 
   constructor: function (config) {
@@ -84,7 +84,7 @@ Ext.define("Ext.view.DropZone", {
         ownerCt: me.view,
         floating: true,
         alignOnScroll: false,
-        shadow: false,
+        shadow: false
       });
     }
     return me.indicator;
@@ -233,14 +233,14 @@ Ext.define("Ext.view.DropZone", {
             targetNode,
             data,
             me.overRecord,
-            me.currentPosition,
+            me.currentPosition
           );
         },
 
         cancelDrop: function () {
           me.invalidateDrop();
           dropHandled = true;
-        },
+        }
       },
       performOperation = false;
 
@@ -251,7 +251,7 @@ Ext.define("Ext.view.DropZone", {
         data,
         me.overRecord,
         me.currentPosition,
-        dropHandlers,
+        dropHandlers
       );
       if (dropHandlers.wait) {
         return;
@@ -270,5 +270,5 @@ Ext.define("Ext.view.DropZone", {
   destroy: function () {
     this.indicator = Ext.destroy(this.indicator);
     this.callParent();
-  },
+  }
 });

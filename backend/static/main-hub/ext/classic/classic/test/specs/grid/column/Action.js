@@ -18,7 +18,7 @@ describe("Ext.grid.column.Action", function () {
   function getCell(rowIdx, colIdx) {
     return grid.getView().getCellInclusive({
       row: rowIdx,
-      column: colIdx,
+      column: colIdx
     });
   }
 
@@ -26,7 +26,7 @@ describe("Ext.grid.column.Action", function () {
     var cell = getCell(rowIdx || 0, colIdx || 1);
 
     var items = cell.select(
-      "." + Ext.grid.column.Action.prototype.actionIconCls,
+      "." + Ext.grid.column.Action.prototype.actionIconCls
     );
 
     return items.item(itemIdx || 0);
@@ -36,7 +36,7 @@ describe("Ext.grid.column.Action", function () {
     var cell = getCell(row || 0, colIdx || 1);
     jasmine.fireMouseEvent(
       cell.down("." + Ext.grid.column.Action.prototype.actionIconCls, true),
-      type || "click",
+      type || "click"
     );
     return cell;
   }
@@ -49,13 +49,13 @@ describe("Ext.grid.column.Action", function () {
           data: [
             {
               text: "text",
-              actionCls: "x-form-clear-trigger",
-            },
+              actionCls: "x-form-clear-trigger"
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg || {},
-      ),
+        storeCfg || {}
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -65,7 +65,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -75,15 +75,15 @@ describe("Ext.grid.column.Action", function () {
               items: [
                 {
                   handler: actionHandler || Ext.emptyFn,
-                  isDisabled: Ext.emptyFn,
-                },
-              ],
-            },
+                  isDisabled: Ext.emptyFn
+                }
+              ]
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg || {},
-      ),
+        gridCfg || {}
+      )
     );
 
     view = grid.view;
@@ -115,7 +115,7 @@ describe("Ext.grid.column.Action", function () {
         columns: [
           {
             dataIndex: "text",
-            header: "Text",
+            header: "Text"
           },
           {
             xtype: "actioncolumn",
@@ -125,15 +125,15 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 handler: handlerSpy,
-                isDisabled: Ext.emptyFn,
+                isDisabled: Ext.emptyFn
               },
               {
                 handler: Ext.emptyFn,
-                isDisabled: Ext.emptyFn,
-              },
-            ],
-          },
-        ],
+                isDisabled: Ext.emptyFn
+              }
+            ]
+          }
+        ]
       });
 
       actionableSpy = spyOn(grid, "setActionableMode").andCallThrough();
@@ -223,7 +223,7 @@ describe("Ext.grid.column.Action", function () {
         columns: [
           {
             dataIndex: "text",
-            header: "Text",
+            header: "Text"
           },
           {
             xtype: "actioncolumn",
@@ -233,11 +233,11 @@ describe("Ext.grid.column.Action", function () {
               {
                 handler: function () {
                   handled = true;
-                },
-              },
-            ],
-          },
-        ],
+                }
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -262,13 +262,13 @@ describe("Ext.grid.column.Action", function () {
       columns: [
         {
           dataIndex: "text",
-          header: "Text",
+          header: "Text"
         },
         {
           xtype: "actioncolumn",
-          handler: Ext.emptyFn,
-        },
-      ],
+          handler: Ext.emptyFn
+        }
+      ]
     });
     var columns = grid.query("gridcolumn");
     expect(columns[0].sortable).toBe(true);
@@ -284,7 +284,7 @@ describe("Ext.grid.column.Action", function () {
         columns: [
           {
             dataIndex: "text",
-            header: "Text",
+            header: "Text"
           },
           {
             xtype: "actioncolumn",
@@ -293,11 +293,11 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 getClass: classSpy.andReturn("x-form-clear-trigger"),
-                handler: handlerSpy,
-              },
-            ],
-          },
-        ],
+                handler: handlerSpy
+              }
+            ]
+          }
+        ]
       });
 
       expect(classSpy.mostRecentCall.args[0]).toBe("x-form-clear-trigger");
@@ -330,11 +330,11 @@ describe("Ext.grid.column.Action", function () {
             header: "Action",
             items: [
               {
-                handler: Ext.emptyFn,
-              },
-            ],
-          },
-        ],
+                handler: Ext.emptyFn
+              }
+            ]
+          }
+        ]
       });
       triggerAction();
       expect(grid.getSelectionModel().getSelection().length).toBe(0);
@@ -351,11 +351,11 @@ describe("Ext.grid.column.Action", function () {
             header: "Action",
             items: [
               {
-                handler: Ext.emptyFn,
-              },
-            ],
-          },
-        ],
+                handler: Ext.emptyFn
+              }
+            ]
+          }
+        ]
       });
 
       triggerAction();
@@ -374,18 +374,18 @@ describe("Ext.grid.column.Action", function () {
           xtype: "actioncolumn",
           dataIndex: "actionCls",
           header: "Action",
-          itemId: "theAction",
+          itemId: "theAction"
         },
-        actionCfg,
+        actionCfg
       );
       makeGrid({
         columns: [
           {
             dataIndex: "text",
-            header: "Text",
+            header: "Text"
           },
-          actionCfg,
-        ],
+          actionCfg
+        ]
       });
       col = grid.down("#theAction");
     }
@@ -394,10 +394,10 @@ describe("Ext.grid.column.Action", function () {
       spy1 = jasmine.createSpy();
       spy2 = jasmine.createSpy();
       scope1 = {
-        foo: function () {},
+        foo: function () {}
       };
       scope2 = {
-        foo: function () {},
+        foo: function () {}
       };
       spyOn(scope1, "foo");
       spyOn(scope2, "foo");
@@ -411,7 +411,7 @@ describe("Ext.grid.column.Action", function () {
       makeHandlerGrid({
         handler: function () {
           grid.destroy();
-        },
+        }
       });
 
       expect(function () {
@@ -422,7 +422,7 @@ describe("Ext.grid.column.Action", function () {
     describe("handler priority", function () {
       it("should use a handler on the column", function () {
         makeHandlerGrid({
-          handler: spy1,
+          handler: spy1
         });
         triggerAction();
         expect(spy1).toHaveBeenCalled();
@@ -432,9 +432,9 @@ describe("Ext.grid.column.Action", function () {
         makeHandlerGrid({
           items: [
             {
-              handler: spy1,
-            },
-          ],
+              handler: spy1
+            }
+          ]
         });
         triggerAction();
         expect(spy1).toHaveBeenCalled();
@@ -445,9 +445,9 @@ describe("Ext.grid.column.Action", function () {
           handler: spy1,
           items: [
             {
-              handler: spy2,
-            },
-          ],
+              handler: spy2
+            }
+          ]
         });
         triggerAction();
         expect(spy1).not.toHaveBeenCalled();
@@ -462,9 +462,9 @@ describe("Ext.grid.column.Action", function () {
           items: [
             {
               disabled: true,
-              iconCls: "icon-pencil",
-            },
-          ],
+              iconCls: "icon-pencil"
+            }
+          ]
         });
 
         var view = grid.getView(),
@@ -483,9 +483,9 @@ describe("Ext.grid.column.Action", function () {
           items: [
             {
               disabled: true,
-              iconCls: "icon-pencil",
-            },
-          ],
+              iconCls: "icon-pencil"
+            }
+          ]
         });
 
         var view = grid.getView(),
@@ -502,7 +502,7 @@ describe("Ext.grid.column.Action", function () {
       it("should not fire if disabled dynamically", function () {
         makeHandlerGrid({
           handler: spy1,
-          items: [{}],
+          items: [{}]
         });
 
         var view = grid.getView(),
@@ -521,7 +521,7 @@ describe("Ext.grid.column.Action", function () {
     describe("scoping", function () {
       it("should default the scope to the column", function () {
         makeHandlerGrid({
-          handler: spy1,
+          handler: spy1
         });
         triggerAction();
         expect(spy1.mostRecentCall.object).toBe(col);
@@ -532,7 +532,7 @@ describe("Ext.grid.column.Action", function () {
           makeHandlerGrid({
             handler: spy1,
             scope: scope1,
-            items: [{}],
+            items: [{}]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope1);
@@ -543,9 +543,9 @@ describe("Ext.grid.column.Action", function () {
             handler: spy1,
             items: [
               {
-                scope: scope1,
-              },
-            ],
+                scope: scope1
+              }
+            ]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope1);
@@ -557,9 +557,9 @@ describe("Ext.grid.column.Action", function () {
             scope: scope1,
             items: [
               {
-                scope: scope2,
-              },
-            ],
+                scope: scope2
+              }
+            ]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope2);
@@ -572,9 +572,9 @@ describe("Ext.grid.column.Action", function () {
             scope: scope1,
             items: [
               {
-                handler: spy1,
-              },
-            ],
+                handler: spy1
+              }
+            ]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope1);
@@ -585,9 +585,9 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 handler: spy1,
-                scope: scope1,
-              },
-            ],
+                scope: scope1
+              }
+            ]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope1);
@@ -599,9 +599,9 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 handler: spy1,
-                scope: scope2,
-              },
-            ],
+                scope: scope2
+              }
+            ]
           });
           triggerAction();
           expect(spy1.mostRecentCall.object).toBe(scope2);
@@ -615,7 +615,7 @@ describe("Ext.grid.column.Action", function () {
           makeHandlerGrid({
             scope: scope1,
             handler: "foo",
-            items: [{}],
+            items: [{}]
           });
           triggerAction();
           expect(scope1.foo).toHaveBeenCalled();
@@ -626,9 +626,9 @@ describe("Ext.grid.column.Action", function () {
             handler: "foo",
             items: [
               {
-                scope: scope1,
-              },
-            ],
+                scope: scope1
+              }
+            ]
           });
           triggerAction();
           expect(scope1.foo).toHaveBeenCalled();
@@ -640,9 +640,9 @@ describe("Ext.grid.column.Action", function () {
             scope: scope1,
             items: [
               {
-                scope: scope2,
-              },
-            ],
+                scope: scope2
+              }
+            ]
           });
           triggerAction();
           expect(scope1.foo).not.toHaveBeenCalled();
@@ -656,9 +656,9 @@ describe("Ext.grid.column.Action", function () {
             scope: scope1,
             items: [
               {
-                handler: "foo",
-              },
-            ],
+                handler: "foo"
+              }
+            ]
           });
           triggerAction();
           expect(scope1.foo).toHaveBeenCalled();
@@ -669,9 +669,9 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 handler: "foo",
-                scope: scope1,
-              },
-            ],
+                scope: scope1
+              }
+            ]
           });
           triggerAction();
           expect(scope1.foo).toHaveBeenCalled();
@@ -683,9 +683,9 @@ describe("Ext.grid.column.Action", function () {
             items: [
               {
                 handler: "foo",
-                scope: scope2,
-              },
-            ],
+                scope: scope2
+              }
+            ]
           });
           triggerAction();
           expect(scope1.foo).not.toHaveBeenCalled();
@@ -696,7 +696,7 @@ describe("Ext.grid.column.Action", function () {
       describe("no scope", function () {
         it("should resolve the scope", function () {
           makeHandlerGrid({
-            handler: "foo",
+            handler: "foo"
           });
 
           col.resolveListenerScope = function () {
@@ -710,7 +710,7 @@ describe("Ext.grid.column.Action", function () {
 
     it("should pass view, rowIdx, cellIndex, item, e, record, row", function () {
       makeHandlerGrid({
-        handler: spy1,
+        handler: spy1
       });
       triggerAction();
       var args = spy1.mostRecentCall.args;
@@ -730,15 +730,15 @@ describe("Ext.grid.column.Action", function () {
         extend: "Ext.grid.column.Action",
         items: [
           {
-            iconCls: "foo",
-          },
-        ],
+            iconCls: "foo"
+          }
+        ]
       });
 
       it("should not cause an exception when not rendered", function () {
         makeGrid({
           renderTo: null,
-          columns: [new Cls()],
+          columns: [new Cls()]
         });
 
         expect(function () {
@@ -748,7 +748,7 @@ describe("Ext.grid.column.Action", function () {
 
       it("should not cause an exception when rendered", function () {
         makeGrid({
-          columns: [new Cls()],
+          columns: [new Cls()]
         });
 
         expect(function () {
@@ -760,7 +760,7 @@ describe("Ext.grid.column.Action", function () {
     describe("as a config with items on the class", function () {
       it("should not cause an exception when not rendered", function () {
         makeGrid({
-          renderTo: null,
+          renderTo: null
         });
 
         expect(function () {
@@ -825,16 +825,16 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
               dataIndex: "actionCls",
               header: "Action",
               itemTabIndex: -1,
-              items: [{}, {}],
-            },
-          ],
+              items: [{}, {}]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),
@@ -849,16 +849,16 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
               dataIndex: "actionCls",
               header: "Action",
               itemTabIndex: null,
-              items: [{}, {}],
-            },
-          ],
+              items: [{}, {}]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),
@@ -873,7 +873,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -881,11 +881,11 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               items: [
                 {
-                  tabIndex: -1,
-                },
-              ],
-            },
-          ],
+                  tabIndex: -1
+                }
+              ]
+            }
+          ]
         });
 
         var item = getActionItem(0, 1);
@@ -898,7 +898,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -906,11 +906,11 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               items: [
                 {
-                  tabIndex: null,
-                },
-              ],
-            },
-          ],
+                  tabIndex: null
+                }
+              ]
+            }
+          ]
         });
 
         var item = getActionItem(0, 1);
@@ -923,7 +923,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -931,17 +931,17 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               items: [
                 {
-                  tabIndex: null,
+                  tabIndex: null
                 },
                 {
-                  tabIndex: 42,
+                  tabIndex: 42
                 },
                 {
-                  tabIndex: -1,
-                },
-              ],
-            },
-          ],
+                  tabIndex: -1
+                }
+              ]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),
@@ -968,16 +968,16 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
               dataIndex: "actionCls",
               header: "Action",
               itemAriaRole: "bork",
-              items: [{}, {}],
-            },
-          ],
+              items: [{}, {}]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),
@@ -992,7 +992,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -1000,9 +1000,9 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               itemAriaRole: null,
               itemTabIndex: null,
-              items: [{}, {}],
-            },
-          ],
+              items: [{}, {}]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),
@@ -1017,7 +1017,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -1025,11 +1025,11 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               items: [
                 {
-                  ariaRole: "blerg",
-                },
-              ],
-            },
-          ],
+                  ariaRole: "blerg"
+                }
+              ]
+            }
+          ]
         });
 
         var item = getActionItem(0, 1);
@@ -1042,7 +1042,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -1051,11 +1051,11 @@ describe("Ext.grid.column.Action", function () {
               items: [
                 {
                   ariaRole: null,
-                  tabIndex: null,
-                },
-              ],
-            },
-          ],
+                  tabIndex: null
+                }
+              ]
+            }
+          ]
         });
 
         var item = getActionItem(0, 1);
@@ -1068,7 +1068,7 @@ describe("Ext.grid.column.Action", function () {
           columns: [
             {
               dataIndex: "text",
-              header: "Text",
+              header: "Text"
             },
             {
               xtype: "actioncolumn",
@@ -1076,17 +1076,17 @@ describe("Ext.grid.column.Action", function () {
               header: "Action",
               items: [
                 {
-                  ariaRole: null,
+                  ariaRole: null
                 },
                 {
-                  ariaRole: "",
+                  ariaRole: ""
                 },
                 {
-                  ariaRole: "throbbe",
-                },
-              ],
-            },
-          ],
+                  ariaRole: "throbbe"
+                }
+              ]
+            }
+          ]
         });
 
         var item0 = getActionItem(0, 1, 0),

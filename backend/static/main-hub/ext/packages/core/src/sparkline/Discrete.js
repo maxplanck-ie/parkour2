@@ -41,7 +41,7 @@ Ext.define("Ext.sparkline.Discrete", {
      * between {@link #chartRangeMin} and {@link #chartRangeMax} - By default chartRangeMin/Max just ensure that the chart
      * spans at least that range of values, but does not constrain it.
      */
-    chartRangeClip: false,
+    chartRangeClip: false
   },
 
   tipTpl: "{prefix}{value}{suffix}",
@@ -91,7 +91,7 @@ Ext.define("Ext.sparkline.Discrete", {
     return {
       isNull: this.values[region] === undefined,
       value: this.values[region],
-      offset: region,
+      offset: region
     };
   },
 
@@ -123,5 +123,5 @@ Ext.define("Ext.sparkline.Discrete", {
       color = me.calcHighlightColor(color);
     }
     canvas.drawLine(x, ytop, x, ytop + lineHeight, color).append();
-  },
+  }
 });

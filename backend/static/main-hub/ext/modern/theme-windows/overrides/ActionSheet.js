@@ -3,6 +3,6 @@ Ext.define("Ext.theme.windows.ActionSheet", {
 
   config: {
     top: 0,
-    bottom: null,
-  },
+    bottom: null
+  }
 });

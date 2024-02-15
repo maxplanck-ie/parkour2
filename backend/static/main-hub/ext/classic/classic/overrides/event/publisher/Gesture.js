@@ -2,7 +2,7 @@
 Ext.define(
   "Ext.overrides.event.publisher.Gesture",
   {
-    override: "Ext.event.publisher.Gesture",
+    override: "Ext.event.publisher.Gesture"
   },
   function () {
     if (Ext.isIE9m) {
@@ -23,9 +23,9 @@ Ext.define(
           // object asynchronously.  Needed for all gesture handlers because
           // they use requestAnimationFrame (see enableIEAsync for more details)
           this.callParent([Ext.event.Event.enableIEAsync(e)]);
-        },
+        }
       });
     }
-  },
+  }
 );
 //</feature>

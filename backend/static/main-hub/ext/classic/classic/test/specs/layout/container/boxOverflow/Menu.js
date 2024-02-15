@@ -12,12 +12,12 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
             {
               xtype: "checkboxfield",
               name: "check1",
-              itemId: "check1",
-            },
-          ],
+              itemId: "check1"
+            }
+          ]
         },
-        cfg || {},
-      ),
+        cfg || {}
+      )
     );
   }
 
@@ -34,11 +34,11 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
           text: "Foo",
           menu: {
             items: {
-              text: "Some Menu",
-            },
-          },
-        },
-      ],
+              text: "Some Menu"
+            }
+          }
+        }
+      ]
     });
 
     var menu = toolbar.layout.overflowHandler.menu,
@@ -86,15 +86,15 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
           {
             xtype: "checkboxfield",
             name: "check1",
-            itemId: "check1",
+            itemId: "check1"
           },
           {
             xtype: "checkboxfield",
             name: "check2",
             itemId: "check2",
-            checked: true,
-          },
-        ],
+            checked: true
+          }
+        ]
       });
 
       toolbarItems = toolbar.items;
@@ -118,16 +118,16 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
           {
             xtype: "checkboxfield",
             name: "check1",
-            itemId: "check1",
+            itemId: "check1"
           },
           {
             xtype: "checkboxfield",
             name: "check2",
             itemId: "check2",
             checked: true,
-            disabled: true,
-          },
-        ],
+            disabled: true
+          }
+        ]
       });
 
       toolbarItems = toolbar.items;
@@ -158,10 +158,10 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
             listeners: {
               click: function () {
                 wasClicked = true;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
 
       menu = toolbar.layout.overflowHandler.menu;
@@ -177,16 +177,16 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
       createToolbar({
         items: [
           {
-            text: "Item One",
+            text: "Item One"
           },
           {
             text: "Item Two",
-            overflowText: "Two",
+            overflowText: "Two"
           },
           {
-            overflowText: "Three",
-          },
-        ],
+            overflowText: "Three"
+          }
+        ]
       });
 
       overflowHandler = toolbar.layout.overflowHandler;
@@ -209,9 +209,9 @@ describe("Ext.layout.container.boxOverflow.Menu", function () {
           {
             xtype: "textfield",
             name: "text1",
-            itemId: "text1",
-          },
-        ],
+            itemId: "text1"
+          }
+        ]
       });
       overflowHandler = toolbar.layout.overflowHandler;
       master = toolbar.down("#text1");

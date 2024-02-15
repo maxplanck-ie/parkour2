@@ -71,7 +71,7 @@ Ext.define(
       "Ext.button.Button",
       "Ext.layout.container.Anchor",
       "Ext.layout.container.HBox",
-      "Ext.ProgressBar",
+      "Ext.ProgressBar"
     ],
 
     alias: "widget.messagebox",
@@ -154,12 +154,12 @@ Ext.define(
 
     cls: [
       Ext.baseCSSPrefix + "message-box",
-      Ext.baseCSSPrefix + "hidden-offsets",
+      Ext.baseCSSPrefix + "hidden-offsets"
     ],
 
     layout: {
       type: "vbox",
-      align: "stretch",
+      align: "stretch"
     },
 
     // We want to shrinkWrap around all docked items
@@ -196,7 +196,7 @@ Ext.define(
       ok: "OK",
       yes: "Yes",
       no: "No",
-      cancel: "Cancel",
+      cancel: "Cancel"
     },
     //</locale>
 
@@ -207,7 +207,7 @@ Ext.define(
       confirm: "Confirm",
       prompt: "Prompt",
       wait: "Loading...",
-      alert: "Attention",
+      alert: "Attention"
     },
     //</locale>
 
@@ -222,7 +222,7 @@ Ext.define(
         itemId: btnId,
         scope: this,
         text: this.buttonText[btnId],
-        minWidth: 75,
+        minWidth: 75
       });
     },
 
@@ -240,7 +240,7 @@ Ext.define(
           keyup: function (e) {
             me.btnCallback(btn, e);
           },
-          single: true,
+          single: true
         });
         return;
       }
@@ -301,49 +301,49 @@ Ext.define(
         layout: "hbox",
         padding: 10,
         style: {
-          overflow: "hidden",
+          overflow: "hidden"
         },
         items: [
           (me.iconComponent = new Ext.Component({
-            cls: me.baseIconCls,
+            cls: me.baseIconCls
           })),
           (me.promptContainer = new Ext.container.Container({
             flex: 1,
             layout: {
               type: "vbox",
-              align: "stretch",
+              align: "stretch"
             },
             items: [
               (me.msg = new Ext.Component({
                 id: baseId + "-msg",
-                cls: me.baseCls + "-text",
+                cls: me.baseCls + "-text"
               })),
               (me.textField = new Ext.form.field.Text({
                 id: baseId + "-textfield",
                 enableKeyEvents: true,
                 ariaAttributes: {
-                  "aria-labelledby": me.msg.id,
+                  "aria-labelledby": me.msg.id
                 },
                 listeners: {
                   keydown: me.onPromptKey,
-                  scope: me,
-                },
+                  scope: me
+                }
               })),
               (me.textArea = new Ext.form.field.TextArea({
                 id: baseId + "-textarea",
                 height: 75,
                 ariaAttributes: {
-                  "aria-labelledby": me.msg.id,
-                },
-              })),
-            ],
-          })),
-        ],
+                  "aria-labelledby": me.msg.id
+                }
+              }))
+            ]
+          }))
+        ]
       });
 
       me.progressBar = new Ext.ProgressBar({
         id: baseId + "-progressbar",
-        margin: "0 10 10 10",
+        margin: "0 10 10 10"
       });
 
       me.items = [me.topContainer, me.progressBar];
@@ -362,14 +362,14 @@ Ext.define(
         enableFocusableContainer: false,
         ariaRole: null,
         layout: {
-          pack: "center",
+          pack: "center"
         },
         items: [
           me.msgButtons[0],
           me.msgButtons[1],
           me.msgButtons[2],
-          me.msgButtons[3],
-        ],
+          me.msgButtons[3]
+        ]
       });
       me.dockedItems = [me.bottomTb];
       me.on("close", me.onClose, me);
@@ -514,7 +514,7 @@ Ext.define(
 
       Ext.each(me.buttonIds, function (buttonId) {
         me.msgButtons[buttonId].setTooltip(
-          (buttonTips && buttonTips[buttonId]) || null,
+          (buttonTips && buttonTips[buttonId]) || null
         );
       });
 
@@ -569,7 +569,7 @@ Ext.define(
       // wrap the user callback
       me.userCallback = Ext.Function.bindCallback(
         cfg.callback || cfg.fn || Ext.emptyFn,
-        cfg.scope || Ext.global,
+        cfg.scope || Ext.global
       );
 
       // Hide or show the icon Component
@@ -862,7 +862,7 @@ Ext.define(
           resumelayouts: function () {
             me.show(cfg);
           },
-          single: true,
+          single: true
         });
         return me;
       }
@@ -875,7 +875,7 @@ Ext.define(
       // Do not steal focus from anything that may be focused if the MessageBox has no visible focusable
       // items. For example, a "wait" message box should not get focus.
       visibleFocusables = me.query(
-        "textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])",
+        "textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])"
       );
       me.preventFocusOnActivate = !visibleFocusables.length;
 
@@ -922,7 +922,7 @@ Ext.define(
         if (width || height) {
           iconCmp.setSize(
             width || iconCmp.getWidth(),
-            height || iconCmp.getHeight(),
+            height || iconCmp.getHeight()
           );
         }
         iconCmp.addCls(Ext.baseCSSPrefix + "dlg-icon");
@@ -980,7 +980,7 @@ Ext.define(
           message: message,
           buttons: this.YESNO,
           callback: fn,
-          scope: scope,
+          scope: scope
         };
       }
       return this.show(cfg);
@@ -1013,7 +1013,7 @@ Ext.define(
           callback: fn,
           scope: scope,
           multiline: multiline,
-          value: value,
+          value: value
         };
       }
       return this.show(title);
@@ -1038,7 +1038,7 @@ Ext.define(
           wait: true,
           modal: true,
           minWidth: this.minProgressWidth,
-          waitConfig: config,
+          waitConfig: config
         };
       }
       return this.show(message);
@@ -1065,7 +1065,7 @@ Ext.define(
           buttons: this.OK,
           fn: fn,
           scope: scope,
-          minWidth: this.minWidth,
+          minWidth: this.minWidth
         };
       }
       return this.show(title);
@@ -1088,11 +1088,11 @@ Ext.define(
           title: title,
           message: message,
           progress: true,
-          progressText: progressText,
+          progressText: progressText
         };
       }
       return this.show(title);
-    },
+    }
   },
   function (MessageBox) {
     /**
@@ -1107,5 +1107,5 @@ Ext.define(
     Ext.onInternalReady(function () {
       Ext.MessageBox = Ext.Msg = new MessageBox();
     });
-  },
+  }
 );

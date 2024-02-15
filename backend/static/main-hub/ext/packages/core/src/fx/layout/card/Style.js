@@ -9,16 +9,16 @@ Ext.define("Ext.fx.layout.card.Style", {
   config: {
     inAnimation: {
       before: {
-        visibility: null,
+        visibility: null
       },
       preserveEndState: false,
-      replacePrevious: true,
+      replacePrevious: true
     },
 
     outAnimation: {
       preserveEndState: false,
-      replacePrevious: true,
-    },
+      replacePrevious: true
+    }
   },
 
   constructor: function (config) {
@@ -104,5 +104,5 @@ Ext.define("Ext.fx.layout.card.Style", {
     Ext.destroy(this.getInAnimation(), this.getOutAnimation());
 
     this.callParent();
-  },
+  }
 });

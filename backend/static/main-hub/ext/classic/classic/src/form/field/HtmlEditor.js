@@ -49,7 +49,7 @@
 Ext.define("Ext.form.field.HtmlEditor", {
   extend: "Ext.form.FieldContainer",
   mixins: {
-    field: "Ext.form.field.Field",
+    field: "Ext.form.field.Field"
   },
   alias: "widget.htmleditor",
   alternateClassName: "Ext.form.HtmlEditor",
@@ -62,7 +62,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
     "Ext.util.Format",
     "Ext.layout.component.field.HtmlEditor",
     "Ext.util.TaskManager",
-    "Ext.layout.container.boxOverflow.Menu",
+    "Ext.layout.container.boxOverflow.Menu"
   ],
 
   focusable: true,
@@ -85,8 +85,8 @@ Ext.define("Ext.form.field.HtmlEditor", {
     ' src="{iframeSrc}" class="{iframeCls}"></iframe>',
     "{afterIFrameTpl}",
     {
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   stretchInputElFixed: true,
@@ -133,7 +133,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
     "iframeAttrTpl",
 
     // inherited
-    "inputAttrTpl",
+    "inputAttrTpl"
   ],
 
   /**
@@ -197,7 +197,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
     "Courier New",
     "Tahoma",
     "Times New Roman",
-    "Verdana",
+    "Verdana"
   ],
   /**
    * @cfg {String} defaultValue
@@ -331,7 +331,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
 
     me.layout = {
       type: "vbox",
-      align: "stretch",
+      align: "stretch"
     };
 
     // No value set, we must report empty string
@@ -358,7 +358,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         value: me.value,
         iframeName: Ext.id(),
         iframeSrc: Ext.SSL_SECURE_URL,
-        iframeCls: Ext.baseCSSPrefix + "htmleditor-iframe",
+        iframeCls: Ext.baseCSSPrefix + "htmleditor-iframe"
       };
 
     me.getInsertionRenderData(data, me.subTplInsertions);
@@ -370,7 +370,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
       childEls: ["iframeEl", "textareaEl"],
       id: id,
       cls: Ext.baseCSSPrefix + "html-editor-input",
-      data: data,
+      data: data
     };
   },
 
@@ -406,9 +406,9 @@ Ext.define("Ext.form.field.HtmlEditor", {
           clickEvent: "mousedown",
           tooltip: tipsEnabled ? me.buttonTips[id] : undef,
           overflowText: me.buttonTips[id].title || undef,
-          tabIndex: -1,
+          tabIndex: -1
         },
-        me.buttonDefaults,
+        me.buttonDefaults
       );
     }
 
@@ -419,7 +419,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
           '<select id="{id}-selectEl" data-ref="selectEl" class="' +
             baseCSSPrefix +
             'font-select">',
-          "</select>",
+          "</select>"
         ],
         childEls: ["selectEl"],
         afterRender: function () {
@@ -446,8 +446,8 @@ Ext.define("Ext.form.field.HtmlEditor", {
             me.relayCmd("fontName", me.fontSelect.dom.value);
             me.deferFocus();
           },
-          element: "selectEl",
-        },
+          element: "selectEl"
+        }
       });
 
       items.push(fontSelectItem, "-");
@@ -461,7 +461,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
       items.push(
         "-",
         btn("increasefontsize", false, me.adjustFont),
-        btn("decreasefontsize", false, me.adjustFont),
+        btn("decreasefontsize", false, me.adjustFont)
       );
     }
 
@@ -490,15 +490,15 @@ Ext.define("Ext.form.field.HtmlEditor", {
                   handler: function (cp, color) {
                     me.relayCmd(
                       "forecolor",
-                      Ext.isWebKit || Ext.isIE ? "#" + color : color,
+                      Ext.isWebKit || Ext.isIE ? "#" + color : color
                     );
                     this.up("menu").hide();
-                  },
-                },
-              ],
-            }),
+                  }
+                }
+              ]
+            })
           },
-          me.buttonDefaults,
+          me.buttonDefaults
         ),
         Ext.merge(
           {
@@ -530,17 +530,17 @@ Ext.define("Ext.form.field.HtmlEditor", {
                         Ext.isOpera ? "hilitecolor" : "backcolor",
                         Ext.isWebKit || Ext.isIE || Ext.isOpera
                           ? "#" + color
-                          : color,
+                          : color
                       );
                     }
                     this.up("menu").hide();
-                  },
-                },
-              ],
-            }),
+                  }
+                }
+              ]
+            })
           },
-          me.buttonDefaults,
-        ),
+          me.buttonDefaults
+        )
       );
     }
 
@@ -549,7 +549,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         "-",
         btn("justifyleft"),
         btn("justifycenter"),
-        btn("justifyright"),
+        btn("justifyright")
       );
     }
 
@@ -566,7 +566,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
           "-",
           btn("sourceedit", true, function () {
             me.toggleSourceEdit(!me.sourceEditMode);
-          }),
+          })
         );
       }
     }
@@ -592,8 +592,8 @@ Ext.define("Ext.form.field.HtmlEditor", {
         click: function (e) {
           e.preventDefault();
         },
-        element: "el",
-      },
+        element: "el"
+      }
     };
   },
 
@@ -665,7 +665,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         "}</style></head><body></body></html>",
       me.iframePad,
       h,
-      me.defaultFont,
+      me.defaultFont
     );
   },
 
@@ -773,7 +773,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
     me.monitorTask = Ext.TaskManager.start({
       run: me.checkDesignMode,
       scope: me,
-      interval: 100,
+      interval: 100
     });
   },
 
@@ -803,7 +803,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
       },
       interval: 10,
       duration: 10000,
-      scope: me,
+      scope: me
     };
     Ext.TaskManager.start(task);
   },
@@ -1060,7 +1060,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
       }
       me.focusTask.delay(Ext.isNumber(delay) ? delay : 10, null, me, [
         selectText,
-        false,
+        false
       ]);
     } else {
       if (selectText) {
@@ -1112,7 +1112,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
       "background-image",
       "background-repeat",
       "background-color",
-      "color",
+      "color"
     ]);
 
     ss["background-attachment"] = "fixed"; // w3c
@@ -1141,7 +1141,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         click: fn,
         keyup: fn,
         delegated: false,
-        buffer: 100,
+        buffer: 100
       });
 
       // These events need to be relayed from the inner document (where they stop
@@ -1157,7 +1157,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         click: fn, // not sure, but just to be safe
         dblclick: fn, // not sure again
         delegated: false,
-        scope: me,
+        scope: me
       });
 
       if (Ext.isGecko) {
@@ -1188,7 +1188,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
                 ? doc.selection.createRange()
                 : null;
           },
-          me,
+          me
         );
 
         docEl.on(
@@ -1198,7 +1198,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
               me.savedSelection.select();
             }
           },
-          me,
+          me
         );
       }
 
@@ -1481,7 +1481,7 @@ Ext.define("Ext.form.field.HtmlEditor", {
         }
       },
       10,
-      this,
+      this
     );
   },
 
@@ -1713,73 +1713,73 @@ Ext.define("Ext.form.field.HtmlEditor", {
     bold: {
       title: "Bold (Ctrl+B)",
       text: "Make the selected text bold.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     italic: {
       title: "Italic (Ctrl+I)",
       text: "Make the selected text italic.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     underline: {
       title: "Underline (Ctrl+U)",
       text: "Underline the selected text.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     increasefontsize: {
       title: "Grow Text",
       text: "Increase the font size.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     decreasefontsize: {
       title: "Shrink Text",
       text: "Decrease the font size.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     backcolor: {
       title: "Text Highlight Color",
       text: "Change the background color of the selected text.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     forecolor: {
       title: "Font Color",
       text: "Change the color of the selected text.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     justifyleft: {
       title: "Align Text Left",
       text: "Align text to the left.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     justifycenter: {
       title: "Center Text",
       text: "Center text in the editor.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     justifyright: {
       title: "Align Text Right",
       text: "Align text to the right.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     insertunorderedlist: {
       title: "Bullet List",
       text: "Start a bulleted list.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     insertorderedlist: {
       title: "Numbered List",
       text: "Start a numbered list.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     createlink: {
       title: "Hyperlink",
       text: "Make the selected text a hyperlink.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
     },
     sourceedit: {
       title: "Source Edit",
       text: "Switch to source editing mode.",
-      cls: Ext.baseCSSPrefix + "html-editor-tip",
-    },
+      cls: Ext.baseCSSPrefix + "html-editor-tip"
+    }
   },
   //</locale>
 
@@ -1844,6 +1844,6 @@ Ext.define("Ext.form.field.HtmlEditor", {
 
     getFocusEl: function () {
       return this.sourceEditMode ? this.textareaEl : this.iframeEl;
-    },
-  },
+    }
+  }
 });

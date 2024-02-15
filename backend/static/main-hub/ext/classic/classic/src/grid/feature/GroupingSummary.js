@@ -97,5 +97,5 @@ Ext.define("Ext.grid.feature.GroupingSummary", {
       result = false;
     }
     return result;
-  },
+  }
 });

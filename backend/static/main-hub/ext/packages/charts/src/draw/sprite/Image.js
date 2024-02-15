@@ -9,7 +9,7 @@ Ext.define("Ext.draw.sprite.Image", {
   alias: "sprite.image",
   type: "image",
   statics: {
-    imageLoaders: {},
+    imageLoaders: {}
   },
 
   inheritableStatics: {
@@ -18,17 +18,17 @@ Ext.define("Ext.draw.sprite.Image", {
         /**
          * @cfg {String} [src=''] The image source of the sprite.
          */
-        src: "string",
+        src: "string"
         /**
          * @private
          * @cfg {Number} radius
          */
       },
       triggers: {
-        src: "src",
+        src: "src"
       },
       updaters: {
-        src: "updateSource",
+        src: "updateSource"
       },
       defaults: {
         src: "",
@@ -45,9 +45,9 @@ Ext.define("Ext.draw.sprite.Image", {
          * Otherwise the natural image height devided by the device pixel ratio
          * (for a crisp looking image) will be used as the height of the sprite.
          */
-        height: null,
-      },
-    },
+        height: null
+      }
+    }
   },
 
   updateSurface: function (surface) {
@@ -77,7 +77,7 @@ Ext.define("Ext.draw.sprite.Image", {
         image: imageLoader,
         done: false,
         pendingSprites: [me],
-        pendingSurfaces: [surface],
+        pendingSurfaces: [surface]
       };
       imageLoader.width = width;
       imageLoader.height = height;
@@ -132,7 +132,7 @@ Ext.define("Ext.draw.sprite.Image", {
         y,
         width || (image.naturalWidth || image.width) / surface.devicePixelRatio,
         height ||
-          (image.naturalHeight || image.height) / surface.devicePixelRatio,
+          (image.naturalHeight || image.height) / surface.devicePixelRatio
       );
     }
 
@@ -155,5 +155,5 @@ Ext.define("Ext.draw.sprite.Image", {
       isSeen = hasParent && !attr.hidden && attr.globalAlpha;
 
     return !!isSeen;
-  },
+  }
 });

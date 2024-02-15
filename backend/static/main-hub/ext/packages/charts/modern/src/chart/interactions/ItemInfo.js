@@ -42,7 +42,7 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
      * Defines the gestures that should trigger the item info panel to be displayed.
      */
     gestures: {
-      tap: "onInfoGesture",
+      tap: "onInfoGesture"
     },
 
     /**
@@ -60,8 +60,8 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
       hideOnMaskTap: true,
       fullscreen: false,
       hidden: false,
-      zIndex: 30,
-    },
+      zIndex: 30
+    }
   },
 
   item: null,
@@ -102,5 +102,5 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
       me.item = null;
       me.sync();
     }
-  },
+  }
 });

@@ -12,7 +12,7 @@ describe("Ext.grid.feature.RowBody", function () {
         0.31,
         0.49,
         "9/1 12:00am",
-        "Services",
+        "Services"
       ],
       ["AT&T Inc.", 31.61, -0.48, -1.54, "9/1 12:00am", "Services"],
       ["Boeing Co.", 75.43, 0.53, 0.71, "9/1 12:00am", "Manufacturing"],
@@ -24,7 +24,7 @@ describe("Ext.grid.feature.RowBody", function () {
         0.51,
         1.28,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       ["Exxon Mobil Corp", 68.1, -0.43, -0.64, "9/1 12:00am", "Manufacturing"],
       [
@@ -33,7 +33,7 @@ describe("Ext.grid.feature.RowBody", function () {
         -0.08,
         -0.23,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "General Motors Corporation",
@@ -41,7 +41,7 @@ describe("Ext.grid.feature.RowBody", function () {
         1.09,
         3.74,
         "9/1 12:00am",
-        "Automotive",
+        "Automotive"
       ],
       ["Hewlett-Packard Co.", 36.53, -0.03, -0.08, "9/1 12:00am", "Computer"],
       ["Honeywell Intl Inc", 38.77, 0.05, 0.13, "9/1 12:00am", "Manufacturing"],
@@ -52,7 +52,7 @@ describe("Ext.grid.feature.RowBody", function () {
         0.44,
         0.54,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Johnson & Johnson", 64.72, 0.06, 0.09, "9/1 12:00am", "Medical"],
       ["JP Morgan & Chase & Co", 45.73, 0.07, 0.15, "9/1 12:00am", "Finance"],
@@ -68,7 +68,7 @@ describe("Ext.grid.feature.RowBody", function () {
         0.01,
         0.02,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "United Technologies Corporation",
@@ -76,7 +76,7 @@ describe("Ext.grid.feature.RowBody", function () {
         0.55,
         0.88,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Verizon Communications", 35.57, 0.39, 1.11, "9/1 12:00am", "Services"],
       ["Wal-Mart Stores, Inc.", 45.45, 0.73, 1.63, "9/1 12:00am", "Retail"],
@@ -86,8 +86,8 @@ describe("Ext.grid.feature.RowBody", function () {
         0.24,
         0.81,
         "9/1 12:00am",
-        "Services",
-      ],
+        "Services"
+      ]
     ],
     grid,
     view,
@@ -105,15 +105,15 @@ describe("Ext.grid.feature.RowBody", function () {
         { name: "change", type: "float" },
         { name: "pctChange", type: "float" },
         { name: "lastChange", type: "date", dateFormat: "n/j h:ia" },
-        { name: "industry" },
-      ],
+        { name: "industry" }
+      ]
     });
 
     store = new Ext.data.Store({
       model: "spec.RowBodyCompany",
       data: dummyData,
       groupField: "company",
-      autoDestroy: true,
+      autoDestroy: true
     });
 
     rowBody = new Ext.grid.feature.RowBody(
@@ -128,12 +128,12 @@ describe("Ext.grid.feature.RowBody", function () {
               rowBody:
                 '<div style="padding: 1em">' + record.get("company") + "</div>",
               rowBodyCls: "my-body-class",
-              rowBodyColspan: colspan,
+              rowBodyColspan: colspan
             };
-          },
+          }
         },
-        rowBodyCfg,
-      ),
+        rowBodyCfg
+      )
     );
 
     columns = columns || [
@@ -142,7 +142,7 @@ describe("Ext.grid.feature.RowBody", function () {
         locked: locked,
         flex: locked ? undefined : 1,
         width: locked ? 200 : undefined,
-        dataIndex: "company",
+        dataIndex: "company"
       },
       { text: "Price", renderer: Ext.util.Format.usMoney, dataIndex: "price" },
       { text: "Change", dataIndex: "change" },
@@ -150,8 +150,8 @@ describe("Ext.grid.feature.RowBody", function () {
       {
         text: "Last Updated",
         renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-        dataIndex: "lastChange",
-      },
+        dataIndex: "lastChange"
+      }
     ];
 
     grid = new Ext.grid.Panel(
@@ -165,11 +165,11 @@ describe("Ext.grid.feature.RowBody", function () {
           renderTo: Ext.getBody(),
           selModel: {
             mode: "MULTI",
-            type: "rowmodel",
-          },
+            type: "rowmodel"
+          }
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.view;
@@ -186,12 +186,12 @@ describe("Ext.grid.feature.RowBody", function () {
             expanded: true,
             children: [
               { text: "book report", leaf: true },
-              { text: "algebra", leaf: true },
-            ],
+              { text: "algebra", leaf: true }
+            ]
           },
-          { text: "buy lottery tickets", leaf: true },
-        ],
-      },
+          { text: "buy lottery tickets", leaf: true }
+        ]
+      }
     });
 
     rowBody = new Ext.grid.feature.RowBody(
@@ -204,12 +204,12 @@ describe("Ext.grid.feature.RowBody", function () {
             return {
               rowBody: ">>>>>>>>>>>>>>>>>>>>> with a rowbody",
               rowBodyCls: "ok",
-              rowBodyColspan: colspan,
+              rowBodyColspan: colspan
             };
-          },
+          }
         },
-        rowBodyCfg,
-      ),
+        rowBodyCfg
+      )
     );
 
     tree = new Ext.tree.Panel(
@@ -220,10 +220,10 @@ describe("Ext.grid.feature.RowBody", function () {
           store: store,
           features: rowBody,
           rootVisible: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        treeCfg,
-      ),
+        treeCfg
+      )
     );
   }
 
@@ -262,7 +262,7 @@ describe("Ext.grid.feature.RowBody", function () {
             createGrid({
               features: [
                 {
-                  ftype: "grouping",
+                  ftype: "grouping"
                 },
                 {
                   ftype: "rowbody",
@@ -270,7 +270,7 @@ describe("Ext.grid.feature.RowBody", function () {
                     data,
                     rowIndex,
                     record,
-                    rowValues,
+                    rowValues
                   ) {
                     // Usually you would style the my-body-class in CSS file.
                     var colspan = this.view.headerCt.getColumnCount();
@@ -281,11 +281,11 @@ describe("Ext.grid.feature.RowBody", function () {
                         record.get("company") +
                         "</div>",
                       rowBodyCls: "my-body-class",
-                      rowBodyColspan: colspan,
+                      rowBodyColspan: colspan
                     };
-                  },
-                },
-              ],
+                  }
+                }
+              ]
             });
 
             viewBody = view.body;
@@ -320,10 +320,10 @@ describe("Ext.grid.feature.RowBody", function () {
                   ptype: "rowexpander",
                   rowBodyTpl: new Ext.XTemplate(
                     "<p><b>Company:</b> {company}</p>",
-                    "<p><b>Price:</b> {price}</p>",
-                  ),
-                },
-              ],
+                    "<p><b>Price:</b> {price}</p>"
+                  )
+                }
+              ]
             });
 
             viewBody = view.body;
@@ -370,7 +370,7 @@ describe("Ext.grid.feature.RowBody", function () {
         jasmine.fireMouseEvent(rowBody, "click", column0Center);
 
         expect(
-          grid.view.getCell(1, columns[0]).hasCls("x-grid-item-focused"),
+          grid.view.getCell(1, columns[0]).hasCls("x-grid-item-focused")
         ).toBe(true);
       });
 
@@ -398,7 +398,7 @@ describe("Ext.grid.feature.RowBody", function () {
           0,
           null,
           false,
-          true,
+          true
         );
 
         expect(selModel.selected.length).toBe(2);
@@ -422,9 +422,9 @@ describe("Ext.grid.feature.RowBody", function () {
               },
               rowbodycontextmenu: function () {
                 wasCalled = true;
-              },
-            },
-          },
+              }
+            }
+          }
         });
         node = grid.view.all.item(1).down("tr.x-grid-rowbody-tr", true);
       });
@@ -456,7 +456,7 @@ describe("Ext.grid.feature.RowBody", function () {
     describe("rowBefore", function () {
       it("should put the expander row before the data row", function () {
         createGrid(null, {
-          bodyBefore: true,
+          bodyBefore: true
         });
 
         // Access the first row.
@@ -494,10 +494,10 @@ describe("Ext.grid.feature.RowBody", function () {
         createGrid(
           null,
           {
-            bodyBefore: true,
+            bodyBefore: true
           },
           null,
-          true,
+          true
         );
 
         // Access the first row.
@@ -571,7 +571,7 @@ describe("Ext.grid.feature.RowBody", function () {
 
       it("should not remove the node from the treeview (animation off)", function () {
         createTree({
-          animate: false,
+          animate: false
         });
 
         view = tree.view;

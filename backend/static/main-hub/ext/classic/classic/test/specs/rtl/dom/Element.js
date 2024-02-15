@@ -11,7 +11,7 @@ describe("Ext.rtl.dom.Element", function () {
             height: "100px",
             right: "15px",
             top: "20px",
-            position: "absolute",
+            position: "absolute"
           },
           cn: [
             {
@@ -21,12 +21,12 @@ describe("Ext.rtl.dom.Element", function () {
                 right: "6px",
                 top: "7px",
                 "z-index": 10,
-                position: "absolute",
-              },
-            },
-          ],
-        },
-      ],
+                position: "absolute"
+              }
+            }
+          ]
+        }
+      ]
     });
 
     el = wrap.first().first();

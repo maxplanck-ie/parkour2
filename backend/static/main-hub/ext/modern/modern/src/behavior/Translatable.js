@@ -39,5 +39,5 @@ Ext.define("Ext.behavior.Translatable", {
     if (translatable) {
       translatable.destroy();
     }
-  },
+  }
 });

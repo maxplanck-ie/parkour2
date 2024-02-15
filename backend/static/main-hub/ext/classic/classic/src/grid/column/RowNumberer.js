@@ -100,7 +100,7 @@ Ext.define("Ext.grid.column.RowNumberer", {
     rowIdx,
     colIdx,
     dataSource,
-    view,
+    view
   ) {
     var rowspan = this.rowspan,
       page = dataSource.currentPage,
@@ -119,5 +119,5 @@ Ext.define("Ext.grid.column.RowNumberer", {
   updater: function (cell, value, record, view, dataSource) {
     Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
       this.defaultRenderer(value, null, record, null, null, dataSource, view);
-  },
+  }
 });

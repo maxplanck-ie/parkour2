@@ -27,5 +27,5 @@ Ext.define("Ext.util.translatable.CssTransform", {
     }
 
     this.callParent();
-  },
+  }
 });

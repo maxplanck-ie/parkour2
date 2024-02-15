@@ -165,7 +165,7 @@ Ext.define("Ext.chart.series.Gauge", {
     /**
      * @cfg {Boolean} wholeDisk Indicates whether to show the whole disk or only the marked part.
      */
-    wholeDisk: false,
+    wholeDisk: false
   },
 
   coordinateX: function () {
@@ -186,7 +186,7 @@ Ext.define("Ext.chart.series.Gauge", {
         startAngle: needle ? angle : 0,
         endAngle: angle,
         strokeOpacity: needle ? 1 : 0,
-        lineWidth: needle ? me.getNeedleWidth() : 0,
+        lineWidth: needle ? me.getNeedleWidth() : 0
       });
       me.doUpdateStyles();
     }
@@ -221,13 +221,13 @@ Ext.define("Ext.chart.series.Gauge", {
 
     if (sprites.length) {
       sprites[0].setAttributes({
-        strokeStyle: newColors[0],
+        strokeStyle: newColors[0]
       });
     }
 
     this.setSubStyle({
       fillStyle: newColors,
-      strokeStyle: newColors,
+      strokeStyle: newColors
     });
     this.doUpdateStyles();
   },
@@ -257,14 +257,14 @@ Ext.define("Ext.chart.series.Gauge", {
       centerX: center[0],
       centerY: center[1],
       rotationCenterX: center[0],
-      rotationCenterY: center[1],
+      rotationCenterY: center[1]
     });
     this.doUpdateStyles();
   },
 
   updateRotation: function (rotation) {
     this.setStyle({
-      rotationRads: rotation - (this.getTotalAngle() + Math.PI) / 2,
+      rotationRads: rotation - (this.getTotalAngle() + Math.PI) / 2
     });
     this.doUpdateStyles();
   },
@@ -285,7 +285,7 @@ Ext.define("Ext.chart.series.Gauge", {
 
     this.setSubStyle({
       endRho: endRhoArray,
-      startRho: (radius / 100) * donut,
+      startRho: (radius / 100) * donut
     });
     this.doUpdateStyles();
   },
@@ -321,7 +321,7 @@ Ext.define("Ext.chart.series.Gauge", {
     sprites[0].getRendererData().value = value;
     sprites[0].setAttributes({
       startAngle: needle ? angle : 0,
-      endAngle: angle,
+      endAngle: angle
     });
     me.doUpdateStyles();
   },
@@ -384,9 +384,9 @@ Ext.define("Ext.chart.series.Gauge", {
           centerY: 0,
           startRho: 0,
           endRho: 0,
-          baseRotation: 0,
-        },
-      },
+          baseRotation: 0
+        }
+      }
     };
   },
 
@@ -406,12 +406,12 @@ Ext.define("Ext.chart.series.Gauge", {
         if (typeof value === "number") {
           sectors[i] = {
             start: i > 0 ? sectors[i - 1].end : me.getMinimum(),
-            end: Math.min(value, me.getMaximum()),
+            end: Math.min(value, me.getMaximum())
           };
           if (i == sectorCount - 1 && sectors[i].end < me.getMaximum()) {
             sectors[i + 1] = {
               start: sectors[i].end,
-              end: me.getMaximum(),
+              end: me.getMaximum()
             };
           }
         } else {
@@ -433,8 +433,8 @@ Ext.define("Ext.chart.series.Gauge", {
       sectors = [
         {
           start: me.getMinimum(),
-          end: me.getMaximum(),
-        },
+          end: me.getMaximum()
+        }
       ];
     }
     return sectors;
@@ -474,16 +474,16 @@ Ext.define("Ext.chart.series.Gauge", {
       field: me.getXField(), // for backward compatibility only (deprecated in 5.5)
       angleField: me.getXField(),
       value: value,
-      series: me,
+      series: me
     };
 
     // Create needle sprite
     sprite = me.createSprite();
     sprite.setAttributes(
       {
-        zIndex: 10,
+        zIndex: 10
       },
-      true,
+      true
     );
     sprite.setRendererData(rendererData);
     sprite.setRendererIndex(spriteIndex++);
@@ -500,7 +500,7 @@ Ext.define("Ext.chart.series.Gauge", {
         fillStyle: sectors[i].color,
         strokeOpacity: 0,
         doCallout: false, // Show labels inside sectors.
-        labelOverflowPadding: -1, // Allow labels to overlap.
+        labelOverflowPadding: -1 // Allow labels to overlap.
       };
       Ext.apply(attr, sectors[i].style);
       sprite = me.createSprite();
@@ -513,5 +513,5 @@ Ext.define("Ext.chart.series.Gauge", {
 
     me.doUpdateStyles();
     return sprites;
-  },
+  }
 });

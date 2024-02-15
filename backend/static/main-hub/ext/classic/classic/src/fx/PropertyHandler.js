@@ -43,7 +43,7 @@ Ext.define(
           return {
             from: from,
             delta: (end - start) * damper,
-            units: units,
+            units: units
           };
         },
 
@@ -70,15 +70,15 @@ Ext.define(
                     end[j],
                     damper,
                     initial,
-                    attr,
-                  ),
+                    attr
+                  )
                 );
               }
               out.push([from[i][0], res]);
             } else {
               out.push([
                 from[i][0],
-                this.computeDelta(from[i][1], end, damper, initial, attr),
+                this.computeDelta(from[i][1], end, damper, initial, attr)
               ]);
             }
           }
@@ -101,25 +101,25 @@ Ext.define(
               len = val.length;
               for (; j < len; j++) {
                 res.push(
-                  val[j].from + val[j].delta * easing + (val[j].units || 0),
+                  val[j].from + val[j].delta * easing + (val[j].units || 0)
                 );
               }
               out.push([values[i][0], res]);
             } else {
               out.push([
                 values[i][0],
-                val.from + val.delta * easing + (val.units || 0),
+                val.from + val.delta * easing + (val.units || 0)
               ]);
             }
           }
           return out;
-        },
+        }
       },
       stringHandler: {
         computeDelta: function (from, end, damper, initial, attr) {
           return {
             from: from,
-            delta: end,
+            delta: end
           };
         },
 
@@ -132,7 +132,7 @@ Ext.define(
           for (i = 0; i < ln; i++) {
             out.push([
               from[i][0],
-              this.computeDelta(from[i][1], end, damper, initial, attr),
+              this.computeDelta(from[i][1], end, damper, initial, attr)
             ]);
           }
 
@@ -151,7 +151,7 @@ Ext.define(
           }
 
           return out;
-        },
+        }
       },
 
       color: {
@@ -183,7 +183,7 @@ Ext.define(
               out = {
                 red: parseInt(match[1], base),
                 green: parseInt(match[2], base),
-                blue: parseInt(match[3], base),
+                blue: parseInt(match[3], base)
               };
               break;
             }
@@ -215,8 +215,8 @@ Ext.define(
             delta: {
               red: Math.round((end.red - start.red) * damper),
               green: Math.round((end.green - start.green) * damper),
-              blue: Math.round((end.blue - start.blue) * damper),
-            },
+              blue: Math.round((end.blue - start.blue) * damper)
+            }
           };
         },
 
@@ -231,7 +231,7 @@ Ext.define(
             }
             out.push([
               start[i][0],
-              this.computeDelta(start[i][1], end, damper, initial),
+              this.computeDelta(start[i][1], end, damper, initial)
             ]);
           }
           return out;
@@ -266,14 +266,14 @@ Ext.define(
                     [
                       (from.red + Math.round(delta.red * easing)) % 256,
                       (from.green + Math.round(delta.green * easing)) % 256,
-                      (from.blue + Math.round(delta.blue * easing)) % 256,
+                      (from.blue + Math.round(delta.blue * easing)) % 256
                     ].join(",") +
                     ")";
               out.push([values[i][0], parsedString]);
             }
           }
           return out;
-        },
+        }
       },
       object: {
         interpolate: function (prop, damper) {
@@ -298,7 +298,7 @@ Ext.define(
           }
           return {
             from: from,
-            delta: delta,
+            delta: delta
           };
         },
 
@@ -313,7 +313,7 @@ Ext.define(
             }
             out.push([
               start[i][0],
-              this.computeDelta(start[i][1], end, damper, initial),
+              this.computeDelta(start[i][1], end, damper, initial)
             ]);
           }
           return out;
@@ -338,7 +338,7 @@ Ext.define(
             out.push([values[i][0], outObject]);
           }
           return out;
-        },
+        }
       },
 
       path: {
@@ -350,7 +350,7 @@ Ext.define(
           start = initial != null ? initial : from;
           return {
             from: from,
-            delta: (end - start) * damper,
+            delta: (end - start) * damper
           };
         },
 
@@ -393,8 +393,8 @@ Ext.define(
                     startPath[j][k],
                     endPath[j][k],
                     damper,
-                    initial,
-                  ),
+                    initial
+                  )
                 );
               }
               path.push(deltaPath);
@@ -424,7 +424,7 @@ Ext.define(
               pointsLn = deltaPath[j].length;
               for (k = 1; k < pointsLn; k++) {
                 calcPath.push(
-                  deltaPath[j][k].from + deltaPath[j][k].delta * easing,
+                  deltaPath[j][k].from + deltaPath[j][k].delta * easing
                 );
               }
               newPath.push(calcPath.join(","));
@@ -432,10 +432,10 @@ Ext.define(
             out.push([values[i][0], newPath.join(",")]);
           }
           return out;
-        },
-      },
+        }
+      }
       /* End Definitions */
-    },
+    }
   },
   function () {
     //set color properties to color interpolator
@@ -448,7 +448,7 @@ Ext.define(
         "borderBottomColor",
         "borderLeftColor",
         "fill",
-        "stroke",
+        "stroke"
       ],
       length = props.length,
       i = 0,
@@ -468,5 +468,5 @@ Ext.define(
       prop = props[i];
       this[prop] = this.stringHandler;
     }
-  },
+  }
 );

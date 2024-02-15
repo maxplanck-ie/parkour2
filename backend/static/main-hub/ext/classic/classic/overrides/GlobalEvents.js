@@ -22,7 +22,7 @@ Ext.define("Ext.overrides.GlobalEvents", {
           options,
           order,
           caller,
-          eventOptions,
+          eventOptions
         ) {
           var name, readyFn;
 
@@ -42,7 +42,7 @@ Ext.define("Ext.overrides.GlobalEvents", {
           if (readyFn) {
             //<debug>
             Ext.log.warn(
-              "Ext.on('ready', fn) is deprecated.  Please use Ext.onReady(fn) instead.",
+              "Ext.on('ready', fn) is deprecated.  Please use Ext.onReady(fn) instead."
             );
             //</debug>
             Ext.onReady(readyFn);
@@ -55,10 +55,10 @@ Ext.define("Ext.overrides.GlobalEvents", {
             options,
             order,
             caller,
-            eventOptions,
+            eventOptions
           ]);
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

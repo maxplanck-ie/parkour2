@@ -19,14 +19,14 @@ Ext.application({
     "MainHub.overrides.data.PageMap",
     "MainHub.overrides.Date",
     "MainHub.overrides.picker.Date",
-    "MainHub.view.main.Main",
+    "MainHub.view.main.Main"
   ],
 
   // The name of the initial view to create. With the classic toolkit this class
   // will gain a "viewport" plugin if it does not extend Ext.Viewport. With the
   // modern toolkit, the main view will be added to the Viewport.
   //
-  mainView: "MainHub.view.main.Main",
+  mainView: "MainHub.view.main.Main"
 
   //-------------------------------------------------------------------------
   // Most customizations should be made to MainHub.Application. If you need to

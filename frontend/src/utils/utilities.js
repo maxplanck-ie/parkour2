@@ -7,7 +7,7 @@ export function showNotification(content, type) {
     timeout: 3000,
     toastClassName: "toast-main",
     bodyClassName: "toast-body",
-    containerClassName: "toast-container",
+    containerClassName: "toast-container"
   };
   if (type === "info") toast.info(content, options);
   else if (type === "success") toast.success(content, options);
@@ -27,7 +27,7 @@ export function handleError(error) {
   } else if (error.request) {
     showNotification(
       "No response received. The request may have timed out.",
-      "error",
+      "error"
     );
     console.log("No response received. The request may have timed out.");
   } else {

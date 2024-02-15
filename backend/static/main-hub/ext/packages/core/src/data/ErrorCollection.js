@@ -61,13 +61,13 @@ Ext.define("Ext.data.ErrorCollection", {
     if (Ext.isString(key)) {
       obj = new Ext.data.Error({
         field: key,
-        message: value || defaultMessage,
+        message: value || defaultMessage
       });
     } else {
       if (!obj.isError) {
         obj = new Ext.data.Error({
           field: obj.field || obj.name,
-          message: obj.error || obj.message || obj.msg || defaultMessage,
+          message: obj.error || obj.message || obj.msg || defaultMessage
         });
       }
 
@@ -118,5 +118,5 @@ Ext.define("Ext.data.ErrorCollection", {
     }
 
     return values || [];
-  },
+  }
 });

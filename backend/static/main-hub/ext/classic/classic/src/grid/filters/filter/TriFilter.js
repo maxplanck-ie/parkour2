@@ -67,10 +67,9 @@ Ext.define("Ext.grid.filters.filter.TriFilter", {
       me.createFilter(
         {
           operator: "lt",
-          value:
-            !stateful && value && Ext.isDefined(value.lt) ? value.lt : null,
+          value: !stateful && value && Ext.isDefined(value.lt) ? value.lt : null
         },
-        "lt",
+        "lt"
       );
 
     filter.gt =
@@ -78,10 +77,9 @@ Ext.define("Ext.grid.filters.filter.TriFilter", {
       me.createFilter(
         {
           operator: "gt",
-          value:
-            !stateful && value && Ext.isDefined(value.gt) ? value.gt : null,
+          value: !stateful && value && Ext.isDefined(value.gt) ? value.gt : null
         },
-        "gt",
+        "gt"
       );
 
     filter.eq =
@@ -89,10 +87,9 @@ Ext.define("Ext.grid.filters.filter.TriFilter", {
       me.createFilter(
         {
           operator: "eq",
-          value:
-            !stateful && value && Ext.isDefined(value.eq) ? value.eq : null,
+          value: !stateful && value && Ext.isDefined(value.eq) ? value.eq : null
         },
-        "eq",
+        "eq"
       );
 
     me.filter = filter;
@@ -326,5 +323,5 @@ Ext.define("Ext.grid.filters.filter.TriFilter", {
     }
 
     me.preventFilterRemoval = false;
-  },
+  }
 });

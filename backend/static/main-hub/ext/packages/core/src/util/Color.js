@@ -17,7 +17,7 @@ Ext.define(
       // When assigned to the fillStyle/strokeStyle/shadowColor properties
       // of a Canvas context, those properties won't change their values.
       NONE: "none",
-      RGBA_NONE: "rgba(0, 0, 0, 0)",
+      RGBA_NONE: "rgba(0, 0, 0, 0)"
     },
 
     isColor: true,
@@ -338,7 +338,7 @@ Ext.define(
             round(me.r),
             round(me.g),
             round(me.b),
-            me.a === 0 ? 0 : me.a.toFixed(15),
+            me.a === 0 ? 0 : me.a.toFixed(15)
           ].join(", ") +
           ")"
         );
@@ -415,7 +415,7 @@ Ext.define(
       } else {
         if (Ext.util.Color.ColorList.hasOwnProperty(str.toLowerCase())) {
           return this.setFromString(
-            Ext.util.Color.ColorList[str.toLowerCase()],
+            Ext.util.Color.ColorList[str.toLowerCase()]
           );
         }
       }
@@ -427,7 +427,7 @@ Ext.define(
       this.b = b;
       this.a = a;
       return this;
-    },
+    }
   },
   function () {
     var flyColor = new this();
@@ -602,7 +602,7 @@ Ext.define(
         white: "#ffffff",
         whitesmoke: "#f5f5f5",
         yellow: "#ffff00",
-        yellowgreen: "#9acd32",
+        yellowgreen: "#9acd32"
       },
 
       /**
@@ -691,12 +691,12 @@ Ext.define(
             arguments[0],
             arguments[1],
             arguments[2],
-            arguments[3],
+            arguments[3]
           );
         } else {
           return new Ext.util.Color(0, 0, 0, 0);
         }
-      },
+      }
     });
-  },
+  }
 );

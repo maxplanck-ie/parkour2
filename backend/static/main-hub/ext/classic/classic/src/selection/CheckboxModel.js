@@ -161,7 +161,7 @@ Ext.define(
         //<debug>
         if (me.showHeaderCheckbox) {
           Ext.Error.raise(
-            "The header checkbox is not supported for SINGLE mode selection models.",
+            "The header checkbox is not supported for SINGLE mode selection models."
           );
         }
         //</debug>
@@ -185,7 +185,7 @@ Ext.define(
             lockcolumn: me.onColumnLock,
             unlockcolumn: me.onColumnUnlock,
             scope: me,
-            destroyable: true,
+            destroyable: true
           });
         }
 
@@ -208,7 +208,7 @@ Ext.define(
           me.mon(view.ownerGrid, {
             beforereconfigure: me.onBeforeReconfigure,
             reconfigure: me.onReconfigure,
-            scope: me,
+            scope: me
           });
         }
       }
@@ -291,7 +291,7 @@ Ext.define(
         }
         me.column = headerCt.add(
           checkboxIndex,
-          me.column || me.getHeaderConfig(),
+          me.column || me.getHeaderConfig()
         );
         Ext.resumeLayouts();
       }
@@ -420,7 +420,7 @@ Ext.define(
         setRecordCheck: Ext.emptyFn,
 
         // It uses our isRowSelected to test whether a row is checked
-        isRecordChecked: me.isRowSelected.bind(me),
+        isRecordChecked: me.isRowSelected.bind(me)
       };
 
       if (!me.checkOnly) {
@@ -454,7 +454,7 @@ Ext.define(
       cellIndex,
       e,
       record,
-      row,
+      row
     ) {
       var navModel = view.getNavigationModel();
 
@@ -477,7 +477,7 @@ Ext.define(
           item: e.item,
           cell: e.position.cellElement,
           columnIndex: e.position.colIdx,
-          column: e.position.column,
+          column: e.position.column
         });
       }
     },
@@ -500,7 +500,7 @@ Ext.define(
       if (!position.isCellContext) {
         position = new Ext.grid.CellContext(this.view).setPosition(
           position.row,
-          position.column,
+          position.column
         );
       }
 
@@ -643,11 +643,11 @@ Ext.define(
         } else {
           me.callParent([record, e, isSelected]);
         }
-      },
-    },
+      }
+    }
   },
   function (CheckboxModel) {
     CheckboxModel.prototype.checkSelector =
       "." + Ext.grid.column.Check.prototype.checkboxCls;
-  },
+  }
 );

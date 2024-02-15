@@ -59,7 +59,7 @@ Ext.define("Ext.fx.Animator", {
   /* Begin Definitions */
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   requires: ["Ext.fx.Manager"],
@@ -280,7 +280,7 @@ keyframes : {
       ms = duration * (attrs[i].pct / 100);
       me.timeline.push({
         duration: ms - prevMs,
-        attrs: attrs[i].attrs,
+        attrs: attrs[i].attrs
       });
     }
   },
@@ -315,7 +315,7 @@ keyframes : {
           damper: damper,
           duration: anim.duration,
           paused: true,
-          to: attrs,
+          to: attrs
         });
         anims.push(anim);
       }
@@ -332,7 +332,7 @@ keyframes : {
           function () {
             this.fireEvent("keyframe", this, ++this.keyframeStep);
           },
-          me,
+          me
         );
       }
       anims[ln - 1].on(
@@ -340,7 +340,7 @@ keyframes : {
         function () {
           this.lastFrame();
         },
-        me,
+        me
       );
     }
   },
@@ -417,5 +417,5 @@ keyframes : {
   isRunning: function () {
     // Explicitly return false, we don't want to be run continuously by the manager
     return false;
-  },
+  }
 });

@@ -22,9 +22,9 @@ describe("Ext.form.field.Text", function () {
         value: "fieldValue",
         tabIndex: 5,
         size: 12,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     // Suppress console warning about 'size' config being deprecated
@@ -92,12 +92,12 @@ describe("Ext.form.field.Text", function () {
     });
     it("should have minLengthText = 'The minimum length for this field is {0}'", function () {
       expect(component.minLengthText).toBe(
-        "The minimum length for this field is {0}",
+        "The minimum length for this field is {0}"
       );
     });
     it("should have maxLengthText = 'The maximum length for this field is {0}'", function () {
       expect(component.maxLengthText).toBe(
-        "The maximum length for this field is {0}",
+        "The maximum length for this field is {0}"
       );
     });
     it("should have selectOnFocus = falsy", function () {
@@ -129,14 +129,14 @@ describe("Ext.form.field.Text", function () {
   it("should encode the input value in the template", function () {
     makeComponent({
       renderTo: Ext.getBody(),
-      value: 'test "  <br/> test',
+      value: 'test "  <br/> test'
     });
     expect(component.inputEl.dom.value).toBe('test "  <br/> test');
   });
 
   it("should be able to set a numeric value", function () {
     makeComponent({
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     component.setValue(100);
     expect(component.getValue()).toBe("100");
@@ -148,9 +148,9 @@ describe("Ext.form.field.Text", function () {
       beforeEach(function () {
         createField({
           afterSubTpl: [
-            '<h1 id="{id}-afterSubEl" data-ref="afterSubEl">afterSubTpl</h1>',
+            '<h1 id="{id}-afterSubEl" data-ref="afterSubEl">afterSubTpl</h1>'
           ],
-          childEls: ["afterSubEl"],
+          childEls: ["afterSubEl"]
         });
       });
 
@@ -200,7 +200,7 @@ describe("Ext.form.field.Text", function () {
 
         it("should have a class of 'x-form-[inputType]'", function () {
           expect(
-            component.inputEl.hasCls("x-form-" + component.inputType),
+            component.inputEl.hasCls("x-form-" + component.inputType)
           ).toBe(true);
         });
 
@@ -214,13 +214,13 @@ describe("Ext.form.field.Text", function () {
 
         it("should have autocomplete = 'off'", function () {
           expect(component.inputEl.dom.getAttribute("autocomplete")).toEqual(
-            "off",
+            "off"
           );
         });
 
         it("should have tabindex set to the tabIndex config", function () {
           expect("" + component.inputEl.dom.getAttribute("tabIndex")).toEqual(
-            "5",
+            "5"
           );
         });
 
@@ -241,13 +241,13 @@ describe("Ext.form.field.Text", function () {
           component.destroy();
           makeComponent({
             size: 20,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.getWidth()).toBeGreaterThan(width);
           component.destroy();
           makeComponent({
             size: 5,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.getWidth()).toBeLessThan(width);
         });
@@ -257,7 +257,7 @@ describe("Ext.form.field.Text", function () {
           makeComponent({
             size: 12,
             width: 500,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.getWidth()).toBe(500);
         });
@@ -349,8 +349,8 @@ describe("Ext.form.field.Text", function () {
         it("should set aria-foo", function () {
           createField({
             ariaAttributes: {
-              "aria-foo": "bar",
-            },
+              "aria-foo": "bar"
+            }
           });
 
           expect(component).toHaveAttr("aria-foo", "bar");
@@ -362,7 +362,7 @@ describe("Ext.form.field.Text", function () {
       it("should set a default right padding", function () {
         makeComponent({
           fieldLabel: "Name",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(component.labelEl.dom.style.paddingRight).toBe("5px");
@@ -371,7 +371,7 @@ describe("Ext.form.field.Text", function () {
       it("should set the labelPad property on the field component", function () {
         makeComponent({
           fieldLabel: "Name",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(component.labelPad).toBe(5);
@@ -382,7 +382,7 @@ describe("Ext.form.field.Text", function () {
           fieldLabel: "Name",
           labelAlign: "left", //default
           labelPad: 100,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(component.labelEl.dom.style.paddingRight).toBe("100px");
@@ -393,7 +393,7 @@ describe("Ext.form.field.Text", function () {
           fieldLabel: "Name",
           labelAlign: "right",
           labelPad: 100,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(component.labelEl.dom.style.paddingRight).toBe("100px");
@@ -404,11 +404,11 @@ describe("Ext.form.field.Text", function () {
           fieldLabel: "Name",
           labelAlign: "top",
           labelPad: 20,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         expect(component.labelEl.dom.firstChild.style.paddingBottom).toBe(
-          "20px",
+          "20px"
         );
       });
     });
@@ -420,7 +420,7 @@ describe("Ext.form.field.Text", function () {
         it("should set the readOnly on the inputEl", function () {
           makeComponent({
             readOnly: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.inputEl.dom.readOnly).toBe(true);
         });
@@ -430,9 +430,9 @@ describe("Ext.form.field.Text", function () {
             readOnly: true,
             triggers: {
               foo: {},
-              bar: {},
+              bar: {}
             },
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.getTrigger("foo").hidden).toBe(true);
           expect(component.getTrigger("bar").hidden).toBe(true);
@@ -444,8 +444,8 @@ describe("Ext.form.field.Text", function () {
             readOnly: true,
             renderTo: Ext.getBody(),
             listeners: {
-              writeablechange: spy,
-            },
+              writeablechange: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -461,7 +461,7 @@ describe("Ext.form.field.Text", function () {
         it("should not set the readOnly on the inputEl", function () {
           makeComponent({
             readOnly: false,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.inputEl.dom.readOnly).toBe(false);
         });
@@ -471,9 +471,9 @@ describe("Ext.form.field.Text", function () {
             readOnly: false,
             triggers: {
               foo: {},
-              bar: {},
+              bar: {}
             },
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           expect(component.getTrigger("foo").hidden).toBe(false);
           expect(component.getTrigger("bar").hidden).toBe(false);
@@ -485,8 +485,8 @@ describe("Ext.form.field.Text", function () {
             readOnly: false,
             renderTo: Ext.getBody(),
             listeners: {
-              writeablechange: spy,
-            },
+              writeablechange: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -513,8 +513,8 @@ describe("Ext.form.field.Text", function () {
             makeComponent({
               triggers: {
                 foo: {},
-                bar: {},
-              },
+                bar: {}
+              }
             });
             component.setReadOnly(true);
             component.render(Ext.getBody());
@@ -544,7 +544,7 @@ describe("Ext.form.field.Text", function () {
         describe("readOnly: false", function () {
           it("should not set readOnly on the inputEl when rendered", function () {
             makeComponent({
-              readOnly: true,
+              readOnly: true
             });
             component.setReadOnly(false);
             component.render(Ext.getBody());
@@ -556,8 +556,8 @@ describe("Ext.form.field.Text", function () {
               readOnly: true,
               triggers: {
                 foo: {},
-                bar: {},
-              },
+                bar: {}
+              }
             });
             component.setReadOnly(false);
             component.render(Ext.getBody());
@@ -568,7 +568,7 @@ describe("Ext.form.field.Text", function () {
           it("should fire the writeablechange event", function () {
             var spy = jasmine.createSpy();
             makeComponent({
-              readOnly: true,
+              readOnly: true
             });
             component.on("writeablechange", spy);
             component.setReadOnly(false);
@@ -591,7 +591,7 @@ describe("Ext.form.field.Text", function () {
         describe("readOnly: true", function () {
           it("should set readOnly on the inputEl", function () {
             makeComponent({
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
             component.setReadOnly(true);
             expect(component.inputEl.dom.readOnly).toBe(true);
@@ -602,8 +602,8 @@ describe("Ext.form.field.Text", function () {
               renderTo: Ext.getBody(),
               triggers: {
                 foo: {},
-                bar: {},
-              },
+                bar: {}
+              }
             });
             component.setReadOnly(true);
             expect(component.getTrigger("foo").hidden).toBe(true);
@@ -613,7 +613,7 @@ describe("Ext.form.field.Text", function () {
           it("should fire the writeablechange event", function () {
             var spy = jasmine.createSpy();
             makeComponent({
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
             component.on("writeablechange", spy);
             component.setReadOnly(true);
@@ -634,7 +634,7 @@ describe("Ext.form.field.Text", function () {
           it("should not set readOnly on the inputEl when rendered", function () {
             makeComponent({
               renderTo: Ext.getBody(),
-              readOnly: true,
+              readOnly: true
             });
             component.setReadOnly(false);
             expect(component.inputEl.dom.readOnly).toBe(false);
@@ -646,8 +646,8 @@ describe("Ext.form.field.Text", function () {
               readOnly: true,
               triggers: {
                 foo: {},
-                bar: {},
-              },
+                bar: {}
+              }
             });
             component.setReadOnly(false);
             expect(component.getTrigger("foo").hidden).toBe(false);
@@ -658,7 +658,7 @@ describe("Ext.form.field.Text", function () {
             var spy = jasmine.createSpy();
             makeComponent({
               renderTo: Ext.getBody(),
-              readOnly: true,
+              readOnly: true
             });
             component.on("writeablechange", spy);
             component.setReadOnly(false);
@@ -681,7 +681,7 @@ describe("Ext.form.field.Text", function () {
       makeComponent({
         checkChangeBuffer: 0,
         readOnly: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       spyOn(component, "checkChange");
@@ -708,7 +708,7 @@ describe("Ext.form.field.Text", function () {
       it("should set the input's placeholder attribute", function () {
         makeComponent({
           emptyText: "empty",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.inputEl.dom.placeholder).toBe("empty");
         expect(component.inputEl).toHaveCls(component.emptyCls);
@@ -716,7 +716,7 @@ describe("Ext.form.field.Text", function () {
 
       it("should be able to be added with setEmptyText", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setEmptyText("Foo");
         expect(component.emptyText).toBe("Foo");
@@ -727,7 +727,7 @@ describe("Ext.form.field.Text", function () {
       it("should be able to be removed with setEmptyText", function () {
         makeComponent({
           emptyText: "Bar",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setEmptyText("");
         expect(component.emptyText).toBe("");
@@ -740,7 +740,7 @@ describe("Ext.form.field.Text", function () {
           makeComponent({
             emptyText: "empty",
             value: "Foo",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           expect(component.inputEl.dom.placeholder).toBe("empty");
@@ -752,7 +752,7 @@ describe("Ext.form.field.Text", function () {
           makeComponent({
             emptyText: "empty",
             value: "Foo",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           expect(component.inputEl).not.toHaveCls(component.emptyCls);
@@ -766,7 +766,7 @@ describe("Ext.form.field.Text", function () {
         beforeEach(function () {
           makeComponent({
             emptyText: "empty",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           label = component.placeholderLabel;
         });
@@ -792,7 +792,7 @@ describe("Ext.form.field.Text", function () {
           makeComponent({
             emptyText: "empty",
             value: "value",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -815,7 +815,7 @@ describe("Ext.form.field.Text", function () {
           makeComponent({
             emptyText: "value",
             value: "value",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -837,7 +837,7 @@ describe("Ext.form.field.Text", function () {
         describe("when value is empty", function () {
           it("should be able to add empty text", function () {
             makeComponent({
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
 
             component.setEmptyText("Foo");
@@ -849,7 +849,7 @@ describe("Ext.form.field.Text", function () {
           it("should be able to remove empty text", function () {
             makeComponent({
               emptyText: "Bar",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
 
             component.setEmptyText("");
@@ -863,7 +863,7 @@ describe("Ext.form.field.Text", function () {
           it("should be able to add empty text", function () {
             makeComponent({
               value: "value",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
 
             component.setEmptyText("Foo");
@@ -884,7 +884,7 @@ describe("Ext.form.field.Text", function () {
             makeComponent({
               emptyText: "Bar",
               value: "value",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
 
             expect(component.inputEl).not.toHaveCls(component.emptyCls);
@@ -907,7 +907,7 @@ describe("Ext.form.field.Text", function () {
       it("should ignore minLength when allowBlank is set", function () {
         makeComponent({
           minLength: 5,
-          allowBlank: true,
+          allowBlank: true
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -916,10 +916,10 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           minLength: 5,
           allowBlank: false,
-          value: "four",
+          value: "four"
         });
         expect(component.getErrors()).toContain(
-          "The minimum length for this field is 5",
+          "The minimum length for this field is 5"
         );
       });
 
@@ -927,7 +927,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           minLength: 5,
           allowBlank: false,
-          value: "more than 5",
+          value: "more than 5"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -937,17 +937,17 @@ describe("Ext.form.field.Text", function () {
       it("should have an error if the value is more than the maxLength", function () {
         makeComponent({
           maxLength: 5,
-          value: "more than 5",
+          value: "more than 5"
         });
         expect(component.getErrors()).toContain(
-          "The maximum length for this field is 5",
+          "The maximum length for this field is 5"
         );
       });
 
       it("should not have an error if the value length is less than the maxLength", function () {
         makeComponent({
           maxLength: 5,
-          value: "foo",
+          value: "foo"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -956,7 +956,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           maxLength: 5,
           enforceMaxLength: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.inputEl.dom.maxLength).toEqual(5);
       });
@@ -964,7 +964,7 @@ describe("Ext.form.field.Text", function () {
       it("should ignore enforceMaxLength if the max is the default", function () {
         makeComponent({
           enforceMaxLength: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         var dom = document.createElement("input"),
@@ -989,21 +989,21 @@ describe("Ext.form.field.Text", function () {
       it("should have no errors if allowBlank is false and the field is not empty", function () {
         makeComponent({
           allowBlank: false,
-          value: "not empty",
+          value: "not empty"
         });
         expect(component.getErrors()).toEqual([]);
       });
 
       it("should have an error if allowBlank is false and the field is empty", function () {
         makeComponent({
-          allowBlank: false,
+          allowBlank: false
         });
         expect(component.getErrors()).toContain("This field is required");
       });
 
       it("should set allowBlank to false when using allowOnlyWhitespace: false", function () {
         makeComponent({
-          allowOnlyWhitespace: false,
+          allowOnlyWhitespace: false
         });
         expect(component.allowBlank).toBe(false);
       });
@@ -1011,7 +1011,7 @@ describe("Ext.form.field.Text", function () {
       it("should not allow only whitespace when allowOnlyWhitespace: false", function () {
         makeComponent({
           allowOnlyWhitespace: false,
-          value: "     ",
+          value: "     "
         });
         expect(component.getErrors()).toContain("This field is required");
       });
@@ -1022,7 +1022,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           value: "bar",
           regex: /foo/,
-          regexText: "regex error",
+          regexText: "regex error"
         });
         expect(component.getErrors()).toContain("regex error");
       });
@@ -1030,7 +1030,7 @@ describe("Ext.form.field.Text", function () {
       it("should not have an error if the value matches the regex", function () {
         makeComponent({
           regex: /foo/,
-          regexText: "foo",
+          regexText: "foo"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -1043,7 +1043,7 @@ describe("Ext.form.field.Text", function () {
           validator: function (value) {
             return value == "foo" ? true : "error message";
           },
-          value: "bar",
+          value: "bar"
         });
         expect(component.getErrors()).toContain("error message");
       });
@@ -1054,7 +1054,7 @@ describe("Ext.form.field.Text", function () {
           validator: function (value) {
             return value == "foo" ? true : "error message";
           },
-          value: "foo",
+          value: "foo"
         });
         expect(component.getErrors()).toEqual([]);
       });
@@ -1065,7 +1065,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           allowBlank: false,
-          value: "foo",
+          value: "foo"
         });
       });
 
@@ -1093,7 +1093,7 @@ describe("Ext.form.field.Text", function () {
           renderTo: Ext.getBody(),
           allowBlank: false,
           invalidCls: "bar",
-          value: "foo",
+          value: "foo"
         });
       });
 
@@ -1116,7 +1116,7 @@ describe("Ext.form.field.Text", function () {
     it("should return true when the value is different than the original value", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        value: "foo",
+        value: "foo"
       });
       component.setValue("bar");
       expect(component.isDirty()).toBe(true);
@@ -1125,7 +1125,7 @@ describe("Ext.form.field.Text", function () {
     it("should return false when the value is equal to the original value", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        value: "foo",
+        value: "foo"
       });
       component.setValue("bar");
       component.setValue("foo");
@@ -1135,7 +1135,7 @@ describe("Ext.form.field.Text", function () {
     it("should fire the dirtychange event", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        value: "foo",
+        value: "foo"
       });
       var spy = jasmine.createSpy();
       component.on("dirtychange", spy);
@@ -1153,7 +1153,7 @@ describe("Ext.form.field.Text", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         value: "foo",
-        dirtyCls: "dirrrrrty",
+        dirtyCls: "dirrrrrty"
       });
       expect(component.el.hasCls("dirrrrrty")).toBe(false);
       component.setValue("bar");
@@ -1166,7 +1166,7 @@ describe("Ext.form.field.Text", function () {
       beforeEach(function () {
         makeComponent({
           enableKeyEvents: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
       it("should not fire the keydown event", function () {
@@ -1192,7 +1192,7 @@ describe("Ext.form.field.Text", function () {
       beforeEach(function () {
         makeComponent({
           enableKeyEvents: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
       it("should not fire the keydown event", function () {
@@ -1221,7 +1221,7 @@ describe("Ext.form.field.Text", function () {
       beforeEach(function () {
         makeComponent({
           disabled: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -1243,7 +1243,7 @@ describe("Ext.form.field.Text", function () {
     describe("disable method", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.disable();
       });
@@ -1267,7 +1267,7 @@ describe("Ext.form.field.Text", function () {
       beforeEach(function () {
         makeComponent({
           disabled: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.enable();
       });
@@ -1296,7 +1296,7 @@ describe("Ext.form.field.Text", function () {
     beforeEach(function () {
       makeComponent({
         stripCharsRe: /[B9]/gi,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.setRawValue("ab9 cB9d");
     });
@@ -1309,13 +1309,13 @@ describe("Ext.form.field.Text", function () {
       component.destroy();
       makeComponent({
         stripCharsRe: /[B9]/i,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.setRawValue(
-        "TB9hib9s iB9s testing tB9he mB9aB9sk witB9hb9ouB9tb9 tb9hb9e gB9 fB9B9lab9g",
+        "TB9hib9s iB9s testing tB9he mB9aB9sk witB9hb9ouB9tb9 tb9hb9e gB9 fB9B9lab9g"
       );
       expect(component.getValue()).toBe(
-        "This is testing the mask without the g flag",
+        "This is testing the mask without the g flag"
       );
     });
 
@@ -1363,7 +1363,7 @@ describe("Ext.form.field.Text", function () {
           grow: true,
           growMin: 30,
           growMax: 100,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -1374,7 +1374,7 @@ describe("Ext.form.field.Text", function () {
           growMin: 10,
           growMax: 300,
           renderTo: Ext.getBody(),
-          value: "abcdefghijk",
+          value: "abcdefghijk"
         });
         expect(component.getWidth()).toBeLessThan(300);
         expect(component.getWidth()).toBeGreaterThan(10);
@@ -1402,7 +1402,7 @@ describe("Ext.form.field.Text", function () {
 
       it("should not increase the width above the growMax config", function () {
         component.setValue(
-          "a really long value that would go above the growMax config",
+          "a really long value that would go above the growMax config"
         );
         var width = component.getWidth();
         expect(width).toBe(100);
@@ -1427,10 +1427,10 @@ describe("Ext.form.field.Text", function () {
           grow: true,
           growMin: 50,
           width: 150,
-          growMax: 600,
+          growMax: 600
         });
         component.setValue(
-          "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
+          "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
         );
         expect(component.getWidth()).toBe(150);
       });
@@ -1440,7 +1440,7 @@ describe("Ext.form.field.Text", function () {
           grow: true,
           growMin: 100,
           growMax: 700,
-          flex: 1,
+          flex: 1
         });
 
         var ct = new Ext.container.Container({
@@ -1448,10 +1448,10 @@ describe("Ext.form.field.Text", function () {
           layout: "hbox",
           width: 150,
           height: 150,
-          items: component,
+          items: component
         });
         component.setValue(
-          "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
+          "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"
         );
         expect(component.getWidth()).toBe(150);
         ct.destroy();
@@ -1473,7 +1473,7 @@ describe("Ext.form.field.Text", function () {
     it("should set the style of the inputEl when rendered", function () {
       makeComponent({
         fieldStyle: "border-left-color:red;",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       var borderColor = component.inputEl.getStyle("border-left-color");
       isRed(borderColor);
@@ -1481,7 +1481,7 @@ describe("Ext.form.field.Text", function () {
     describe("setFieldStyle method", function () {
       it("should apply the argument as the style of the rendered inputEl", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setFieldStyle("border-left-color:red;");
         var borderColor = component.inputEl.getStyle("border-left-color");
@@ -1503,7 +1503,7 @@ describe("Ext.form.field.Text", function () {
       it("should render a label when fieldLabel is empty", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          hideEmptyLabel: true,
+          hideEmptyLabel: true
         });
         expect(component.labelEl).not.toBeNull();
       });
@@ -1511,7 +1511,7 @@ describe("Ext.form.field.Text", function () {
       it("should render an empty label when set to false", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          hideEmptyLabel: false,
+          hideEmptyLabel: false
         });
         expect(component.labelEl).not.toBeNull();
       });
@@ -1522,7 +1522,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           hideLabel: true,
-          fieldLabel: "foo",
+          fieldLabel: "foo"
         });
         expect(component.labelEl).not.toBeNull();
       });
@@ -1531,7 +1531,7 @@ describe("Ext.form.field.Text", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           hideLabel: false,
-          fieldLabel: "foo",
+          fieldLabel: "foo"
         });
         expect(component.labelEl).not.toBeNull();
       });
@@ -1592,7 +1592,7 @@ describe("Ext.form.field.Text", function () {
       function completeRequest(data) {
         Ext.Ajax.mockComplete({
           status: 200,
-          responseText: Ext.encode(data),
+          responseText: Ext.encode(data)
         });
       }
 
@@ -1602,8 +1602,8 @@ describe("Ext.form.field.Text", function () {
         session = new Ext.data.Session({
           scheduler: {
             // Make a huge tickDelay, we'll control it by forcing ticks
-            tickDelay: 1000000,
-          },
+            tickDelay: 1000000
+          }
         });
 
         Ext.data.Model.schema.setNamespace("spec");
@@ -1620,7 +1620,7 @@ describe("Ext.form.field.Text", function () {
             { name: "phone", type: "string", convert: null },
             { name: "color", type: "string", convert: null },
             { name: "description", type: "string", convert: null },
-            { name: "initial", type: "string", convert: null },
+            { name: "initial", type: "string", convert: null }
           ],
 
           validators: {
@@ -1631,12 +1631,12 @@ describe("Ext.form.field.Text", function () {
             formatField: { type: "format", matcher: /123/ },
             email: "email",
             phone: { type: "presence", message: "Phone number required" },
-            initial: { type: "length", min: 1 },
+            initial: { type: "length", min: 1 }
           },
 
           doValidate: function () {
             //
-          },
+          }
         });
 
         panel = Ext.widget({
@@ -1645,56 +1645,56 @@ describe("Ext.form.field.Text", function () {
           modelValidation: true,
           viewModel: {
             id: "rootVM",
-            session: session,
+            session: session
           },
           defaults: {
-            xtype: "textfield",
+            xtype: "textfield"
           },
           items: [
             {
               itemId: "description",
-              bind: "{theUser.description}",
+              bind: "{theUser.description}"
             },
             {
               itemId: "last",
-              bind: "{theUser.last}",
+              bind: "{theUser.last}"
             },
             {
               itemId: "formatField",
-              bind: "{theUser.formatField}",
+              bind: "{theUser.formatField}"
             },
             {
               itemId: "color",
-              bind: "{theUser.color}",
+              bind: "{theUser.color}"
             },
             {
               itemId: "first",
-              bind: "{theUser.first}",
+              bind: "{theUser.first}"
             },
             {
               itemId: "email",
-              bind: "{theUser.email}",
+              bind: "{theUser.email}"
             },
             {
               itemId: "phone",
-              bind: "{theUser.phone}",
+              bind: "{theUser.phone}"
             },
             {
               itemId: "initial",
-              bind: "{theUser.initial}",
+              bind: "{theUser.initial}"
             },
             {
               itemId: "extraStuff",
-              bind: "{theUser.extraStuff}",
-            },
-          ],
+              bind: "{theUser.extraStuff}"
+            }
+          ]
         });
 
         viewModel = panel.getViewModel();
         scheduler = viewModel.getScheduler();
         viewModel.linkTo("theUser", {
           reference: "User",
-          id: 42,
+          id: 42
         });
       });
 
@@ -1720,7 +1720,7 @@ describe("Ext.form.field.Text", function () {
             formatField: "abc",
             email: "abc",
             initial: "X",
-            extraStuff: 42,
+            extraStuff: 42
           });
         });
 
@@ -1938,8 +1938,8 @@ describe("Ext.form.field.Text", function () {
             formulas: {
               bar: function (get) {
                 return "Brave Sir " + get("foo");
-              },
-            },
+              }
+            }
           },
           referenceHolder: true,
           defaultListenerScope: true,
@@ -1953,17 +1953,17 @@ describe("Ext.form.field.Text", function () {
               xtype: "panel",
               reference: "subPanel",
               bind: {
-                title: "Hello {bar:this.wow}!",
+                title: "Hello {bar:this.wow}!"
               },
               items: [
                 {
                   xtype: "textfield",
                   reference: "fld",
-                  bind: "{foo}",
-                },
-              ],
-            },
-          ],
+                  bind: "{foo}"
+                }
+              ]
+            }
+          ]
         });
 
         var viewModel = panel.getViewModel(),
@@ -1986,16 +1986,16 @@ describe("Ext.form.field.Text", function () {
           items: [
             {
               xtype: "checkbox",
-              reference: "chk",
+              reference: "chk"
             },
             {
               xtype: "textfield",
               reference: "textfld",
               bind: {
-                disabled: "{!chk.checked}", // notice the "!" here
-              },
-            },
-          ],
+                disabled: "{!chk.checked}" // notice the "!" here
+              }
+            }
+          ]
         });
 
         var chk = panel.lookupReference("chk");
@@ -2029,16 +2029,16 @@ describe("Ext.form.field.Text", function () {
               enableToggle: true,
               // this is here to ensure that instance config does not break
               // the class publishes
-              publishes: ["disabled"],
+              publishes: ["disabled"]
             },
             {
               xtype: "textfield",
               reference: "textfld",
               bind: {
-                disabled: "{btn.pressed}",
-              },
-            },
-          ],
+                disabled: "{btn.pressed}"
+              }
+            }
+          ]
         });
 
         var btn = panel.lookupReference("btn");
@@ -2069,14 +2069,14 @@ describe("Ext.form.field.Text", function () {
             {
               xtype: "textfield",
               reference: "textfld",
-              publishes: ["value"],
+              publishes: ["value"]
             },
             {
               xtype: "displayfield",
               reference: "display",
-              bind: "Hello {textfld.value}!",
-            },
-          ],
+              bind: "Hello {textfld.value}!"
+            }
+          ]
         });
 
         var display = panel.lookupReference("display"),
@@ -2108,14 +2108,14 @@ describe("Ext.form.field.Text", function () {
             {
               xtype: "textfield",
               reference: "txt",
-              publishes: ["value", "rawValue", "dirty"],
+              publishes: ["value", "rawValue", "dirty"]
             },
             {
               xtype: "displayfield",
               reference: "display",
-              bind: "R: {txt.rawValue} / V: {txt.value} / D: {!txt.dirty}",
-            },
-          ],
+              bind: "R: {txt.rawValue} / V: {txt.value} / D: {!txt.dirty}"
+            }
+          ]
         });
 
         var display = panel.lookupReference("display"),
@@ -2157,17 +2157,17 @@ describe("Ext.form.field.Text", function () {
               foo: {
                 cls: "foo-trigger",
                 handler: fooHandler,
-                tooltip: "foobaroo",
+                tooltip: "foobaroo"
               },
               bar: {
                 cls: "bar-trigger",
                 handler: barHandler,
-                scope: fakeScope,
-              },
-            },
+                scope: fakeScope
+              }
+            }
           },
-          cfg,
-        ),
+          cfg
+        )
       );
 
       fooTrigger = component.getTrigger("foo");
@@ -2185,10 +2185,10 @@ describe("Ext.form.field.Text", function () {
     it("should render triggers", function () {
       create();
       expect(component.triggerWrap.selectNode(".foo-trigger", false)).toBe(
-        fooEl,
+        fooEl
       );
       expect(component.triggerWrap.selectNode(".bar-trigger", false)).toBe(
-        barEl,
+        barEl
       );
     });
 
@@ -2254,9 +2254,9 @@ describe("Ext.form.field.Text", function () {
       create({
         triggers: {
           foo: {
-            weight: 1,
-          },
-        },
+            weight: 1
+          }
+        }
       });
 
       expect(barEl.next()).toBe(fooEl);
@@ -2264,7 +2264,7 @@ describe("Ext.form.field.Text", function () {
 
     it("should hide triggers on render if hideTrigger is true", function () {
       create({
-        hideTrigger: true,
+        hideTrigger: true
       });
 
       expect(fooTrigger.hidden).toBe(true);
@@ -2297,7 +2297,7 @@ describe("Ext.form.field.Text", function () {
       Ext.util.CSS.createStyleSheet(
         // make the input el have a 9px character width
         ".x-form-text { font:15px monospace;letter-spacing:0px; }",
-        "growStyleSheet",
+        "growStyleSheet"
       );
     });
 
@@ -2308,7 +2308,7 @@ describe("Ext.form.field.Text", function () {
     function getExpectedWidth() {
       var inputEl = component.inputEl,
         textMeasure = inputEl.getTextWidth(
-          inputEl.dom.value + component.growAppend,
+          inputEl.dom.value + component.growAppend
         ),
         borders =
           component.inputWrap.getBorderWidth("lr") +
@@ -2326,7 +2326,7 @@ describe("Ext.form.field.Text", function () {
       makeComponent({
         renderTo: document.body,
         grow: true,
-        growMin: 50,
+        growMin: 50
       });
 
       expect(component.getWidth()).toBe(50);
@@ -2337,7 +2337,7 @@ describe("Ext.form.field.Text", function () {
         renderTo: document.body,
         value: "mmmmmmmmmm",
         grow: true,
-        growMin: 50,
+        growMin: 50
       });
       expect(component.getWidth()).toBe(getExpectedWidth());
     });
@@ -2347,7 +2347,7 @@ describe("Ext.form.field.Text", function () {
         renderTo: document.body,
         value: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
         grow: true,
-        growMax: 200,
+        growMax: 200
       });
 
       expect(component.getWidth()).toBe(200);
@@ -2358,10 +2358,10 @@ describe("Ext.form.field.Text", function () {
         renderTo: document.body,
         grow: true,
         triggers: {
-          foo: {},
+          foo: {}
         },
         growMin: 100,
-        growMax: 200,
+        growMax: 200
       });
 
       expect(component.getWidth()).toBe(100);
@@ -2388,7 +2388,7 @@ describe("Ext.form.field.Text", function () {
     var dimensions = {
       1: "width",
       2: "height",
-      3: "width and height",
+      3: "width and height"
     };
 
     function makeLayoutSuite(shrinkWrap, autoFitErrors) {
@@ -2456,10 +2456,10 @@ describe("Ext.form.field.Text", function () {
                     '<span style="display:inline-block;width:' +
                     labelInnerWidth +
                     'px;background-color:red;box-sizing:border-box;">&nbsp;</span>',
-                  labelSeparator: "",
+                  labelSeparator: ""
                 },
-                cfg,
-              ),
+                cfg
+              )
             );
           }
 
@@ -2478,39 +2478,39 @@ describe("Ext.form.field.Text", function () {
               // https://sencha.jira.com/browse/EXTJS-12634
               (Ext.isIE8 ? xit : it)("should layout", function () {
                 create({
-                  labelAlign: labelAlign,
+                  labelAlign: labelAlign
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: labelWidth,
-                    h: height,
+                    h: height
                   },
                   ".x-form-item-label-inner": {
                     x: leftLabel
                       ? 0
                       : labelWidth - labelPadding - labelInnerWidth,
                     y: labelInnerY,
-                    w: labelInnerWidth,
+                    w: labelInnerWidth
                   },
                   bodyEl: {
                     x: labelWidth,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: labelWidth + borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -2521,7 +2521,7 @@ describe("Ext.form.field.Text", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   setError();
@@ -2529,47 +2529,47 @@ describe("Ext.form.field.Text", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: height,
+                      h: height
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: width - errorWidth,
                       y: 0,
                       w: errorWidth,
-                      h: height,
+                      h: height
                     },
                     errorEl: {
                       x: width - errorWidth + errorIconMargin,
                       y: (bodyHeight - errorIconSize) / 2,
                       w: errorIconSize,
-                      h: errorIconSize,
-                    },
+                      h: errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // https://sencha.jira.com/browse/EXTJS-12634
@@ -2578,7 +2578,7 @@ describe("Ext.form.field.Text", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   var bdWidth =
@@ -2592,38 +2592,38 @@ describe("Ext.form.field.Text", function () {
                         shrinkWidth && autoFitErrors
                           ? width - errorWidth
                           : width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: height,
+                      h: height
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bdWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bdWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: autoFitErrors ? 0 : width - errorWidth,
                       y: autoFitErrors ? 0 : 0,
                       w: autoFitErrors ? 0 : errorWidth,
-                      h: autoFitErrors ? 0 : height,
+                      h: autoFitErrors ? 0 : height
                     },
                     errorEl: {
                       x: autoFitErrors
@@ -2631,10 +2631,10 @@ describe("Ext.form.field.Text", function () {
                         : width - errorWidth + errorIconMargin,
                       y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                       w: autoFitErrors ? 0 : errorIconSize,
-                      h: autoFitErrors ? 0 : errorIconSize,
-                    },
+                      h: autoFitErrors ? 0 : errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -2643,7 +2643,7 @@ describe("Ext.form.field.Text", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -2651,47 +2651,47 @@ describe("Ext.form.field.Text", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: labelWidth,
                       y: bodyHeight,
                       w: bodyWidth,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
 
               // https://sencha.jira.com/browse/EXTJS-12634
@@ -2700,26 +2700,26 @@ describe("Ext.form.field.Text", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    hideLabel: true,
+                    hideLabel: true
                   });
 
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
-                    },
+                      h: bodyHeight
+                    }
                   });
                   expect(component.errorWrapEl).toBeNull();
-                },
+                }
               );
 
               // https://sencha.jira.com/browse/EXTJS-12634
@@ -2729,7 +2729,7 @@ describe("Ext.form.field.Text", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   setError();
@@ -2737,37 +2737,37 @@ describe("Ext.form.field.Text", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: bodyWidth,
                       y: 0,
                       w: errorWidth,
-                      h: height,
+                      h: height
                     },
                     errorEl: {
                       x: bodyWidth + errorIconMargin,
                       y: (bodyHeight - errorIconSize) / 2,
                       w: errorIconSize,
-                      h: errorIconSize,
-                    },
+                      h: errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // https://sencha.jira.com/browse/EXTJS-12634
@@ -2777,7 +2777,7 @@ describe("Ext.form.field.Text", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   var bdWidth =
@@ -2791,37 +2791,37 @@ describe("Ext.form.field.Text", function () {
                         shrinkWidth && autoFitErrors
                           ? width - errorWidth
                           : width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bdWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bdWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: autoFitErrors ? 0 : bodyWidth,
                       y: autoFitErrors ? 0 : 0,
                       w: autoFitErrors ? 0 : errorWidth,
-                      h: autoFitErrors ? 0 : height,
+                      h: autoFitErrors ? 0 : height
                     },
                     errorEl: {
                       x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                       y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                       w: autoFitErrors ? 0 : errorIconSize,
-                      h: autoFitErrors ? 0 : errorIconSize,
-                    },
+                      h: autoFitErrors ? 0 : errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -2831,7 +2831,7 @@ describe("Ext.form.field.Text", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -2839,37 +2839,37 @@ describe("Ext.form.field.Text", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
             });
           }
@@ -2883,38 +2883,38 @@ describe("Ext.form.field.Text", function () {
             function () {
               it("should layout", function () {
                 create({
-                  labelAlign: "top",
+                  labelAlign: "top"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -2922,7 +2922,7 @@ describe("Ext.form.field.Text", function () {
               it("should layout with side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -2930,51 +2930,51 @@ describe("Ext.form.field.Text", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: labelHeight,
                     w: errorWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
               it("should layout with hidden side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 width =
@@ -2987,37 +2987,37 @@ describe("Ext.form.field.Text", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: bdWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bdWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bdWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : labelHeight,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : bodyHeight,
+                    h: autoFitErrors ? 0 : bodyHeight
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
@@ -3025,15 +3025,15 @@ describe("Ext.form.field.Text", function () {
                       ? 0
                       : labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
               it("should layout with under error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -3041,73 +3041,73 @@ describe("Ext.form.field.Text", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
 
               it("should layout with hidden label", function () {
                 create({
                   labelAlign: "top",
-                  hideLabel: true,
+                  hideLabel: true
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -3116,7 +3116,7 @@ describe("Ext.form.field.Text", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -3124,35 +3124,35 @@ describe("Ext.form.field.Text", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: 0,
                     w: errorWidth,
-                    h: height,
+                    h: height
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
@@ -3160,7 +3160,7 @@ describe("Ext.form.field.Text", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 var bdWidth =
@@ -3172,35 +3172,35 @@ describe("Ext.form.field.Text", function () {
                   el: {
                     w:
                       shrinkWidth && autoFitErrors ? width - errorWidth : width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bdWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bdWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : 0,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : height,
+                    h: autoFitErrors ? 0 : height
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                     y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
@@ -3208,7 +3208,7 @@ describe("Ext.form.field.Text", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -3216,40 +3216,40 @@ describe("Ext.form.field.Text", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
-            },
+            }
           );
-        },
+        }
       );
     }
 
@@ -3264,7 +3264,7 @@ describe("Ext.form.field.Text", function () {
       // See EXTJS-12665 and https://bugs.webkit.org/show_bug.cgi?id=130239
       var field = Ext.widget({
         xtype: "textfield",
-        renderTo: document.body,
+        renderTo: document.body
       });
 
       // reflow must happen before setting width in order for the bug to occur.
@@ -3286,7 +3286,7 @@ describe("Ext.form.field.Text", function () {
       var field = Ext.widget({
         xtype: "textfield",
         renderTo: Ext.getBody(),
-        fieldLabel: '<div style="width: 30px; height: 100px;"></div>',
+        fieldLabel: '<div style="width: 30px; height: 100px;"></div>'
       });
 
       expect(field.triggerWrap.getHeight()).toBe(22);
@@ -3305,7 +3305,7 @@ describe("Ext.form.field.Text", function () {
         value: "foo",
         emptyText: "bar",
         selectOnFocus: select,
-        renderTo: document.body,
+        renderTo: document.body
       });
     }
 

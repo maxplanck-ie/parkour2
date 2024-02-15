@@ -44,15 +44,15 @@ Ext.define("Ext.field.Search", {
   requires: ["Ext.field.trigger.Search"],
 
   component: {
-    type: "search",
+    type: "search"
   },
 
   triggers: {
     search: {
       type: "search",
-      side: "left",
-    },
+      side: "left"
+    }
   },
 
-  classCls: Ext.baseCSSPrefix + "searchfield",
+  classCls: Ext.baseCSSPrefix + "searchfield"
 });

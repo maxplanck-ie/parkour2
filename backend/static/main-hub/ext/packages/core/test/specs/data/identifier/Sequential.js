@@ -34,7 +34,7 @@ describe("Ext.data.identifier.Sequential", function () {
 
     it("should generate with a prefix", function () {
       make({
-        prefix: "foo",
+        prefix: "foo"
       });
       expect(idgen.generate()).toBe("foo1");
       expect(idgen.generate()).toBe("foo2");
@@ -44,7 +44,7 @@ describe("Ext.data.identifier.Sequential", function () {
 
     it("should generate with a custom seed", function () {
       make({
-        seed: 103,
+        seed: 103
       });
       expect(idgen.generate()).toBe(103);
       expect(idgen.generate()).toBe(104);
@@ -55,7 +55,7 @@ describe("Ext.data.identifier.Sequential", function () {
     it("should generate with a custom prefix & seed", function () {
       make({
         prefix: "foo",
-        seed: 103,
+        seed: 103
       });
       expect(idgen.generate()).toBe("foo103");
       expect(idgen.generate()).toBe("foo104");

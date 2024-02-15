@@ -21,26 +21,26 @@ describe("Ext.mixin.Responsive", function () {
         landscape: {
           width: 1024,
           height: 768,
-          orientation: "landscape",
+          orientation: "landscape"
         },
         portrait: {
           width: 768,
           height: 1024,
-          orientation: "portrait",
-        },
+          orientation: "portrait"
+        }
       },
       iphone: {
         landscape: {
           width: 480,
           height: 320,
-          orientation: "landscape",
+          orientation: "landscape"
         },
         portrait: {
           width: 320,
           height: 480,
-          orientation: "portrait",
-        },
-      },
+          orientation: "portrait"
+        }
+      }
     },
     env;
 
@@ -69,36 +69,36 @@ describe("Ext.mixin.Responsive", function () {
       config: {
         title: "Hello",
         bar: null,
-        foo: null,
+        foo: null
       },
 
       responsiveFormulas: {
         small: "width < 600",
         medium: "width >= 600 && width < 800",
-        large: "width >= 800",
+        large: "width >= 800"
       },
 
       responsiveConfig: {
         small: {
-          bar: "S",
+          bar: "S"
         },
         medium: {
-          bar: "M",
+          bar: "M"
         },
         large: {
-          bar: "L",
+          bar: "L"
         },
         landscape: {
-          title: "Landscape",
+          title: "Landscape"
         },
         portrait: {
-          title: "Portrait",
-        },
+          title: "Portrait"
+        }
       },
 
       constructor: function (config) {
         this.initConfig(config);
-      },
+      }
     });
   });
 
@@ -141,7 +141,7 @@ describe("Ext.mixin.Responsive", function () {
 
     it("should init with landscape from class over instanceConfig", function () {
       instance = new Cls({
-        title: "Foo", // the responsiveConfig will win
+        title: "Foo" // the responsiveConfig will win
       });
 
       var title = instance.getTitle();
@@ -160,12 +160,12 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           wide: {
-            foo: "Wide",
+            foo: "Wide"
           },
           tall: {
-            foo: "Tall",
-          },
-        },
+            foo: "Tall"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -177,12 +177,12 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           wide: {
-            foo: "Wide",
+            foo: "Wide"
           },
           tall: {
-            foo: "Tall",
-          },
-        },
+            foo: "Tall"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -193,9 +193,9 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           landscape: {
-            title: "Landscape 2",
-          },
-        },
+            title: "Landscape 2"
+          }
+        }
       });
 
       var title = instance.getTitle();
@@ -207,9 +207,9 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           landscape: {
-            title: "Landscape 2",
-          },
-        },
+            title: "Landscape 2"
+          }
+        }
       });
 
       var title = instance.getTitle();
@@ -220,9 +220,9 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           "platform.tablet": {
-            foo: "Tablet",
-          },
-        },
+            foo: "Tablet"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -233,9 +233,9 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           tablet: {
-            foo: "Tablet",
-          },
-        },
+            foo: "Tablet"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -248,9 +248,9 @@ describe("Ext.mixin.Responsive", function () {
         responsiveConfig: {
           "platform.desktop": {
             // env is tablet so this is false
-            foo: "Desktop",
-          },
-        },
+            foo: "Desktop"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -263,9 +263,9 @@ describe("Ext.mixin.Responsive", function () {
         responsiveConfig: {
           desktop: {
             // env is tablet so this is false
-            foo: "Desktop",
-          },
-        },
+            foo: "Desktop"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -277,9 +277,9 @@ describe("Ext.mixin.Responsive", function () {
         foo: "Foo",
         responsiveConfig: {
           "platform.tablet": {
-            foo: "Tablet",
-          },
-        },
+            foo: "Tablet"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -291,9 +291,9 @@ describe("Ext.mixin.Responsive", function () {
         foo: "Foo",
         responsiveConfig: {
           tablet: {
-            foo: "Tablet",
-          },
-        },
+            foo: "Tablet"
+          }
+        }
       });
 
       var foo = instance.getFoo();
@@ -365,12 +365,12 @@ describe("Ext.mixin.Responsive", function () {
       instance = new Cls({
         responsiveConfig: {
           wide: {
-            foo: "Wide",
+            foo: "Wide"
           },
           tall: {
-            foo: "Tall",
-          },
-        },
+            foo: "Tall"
+          }
+        }
       });
 
       var foo = instance.getFoo();

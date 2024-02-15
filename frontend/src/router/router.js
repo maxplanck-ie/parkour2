@@ -12,11 +12,11 @@ const router = createRouter({
         {
           path: "duties",
           name: "Duties",
-          component: dutiesView,
-        },
-      ],
-    },
-  ],
+          component: dutiesView
+        }
+      ]
+    }
+  ]
 });
 
 router.beforeEach((to, from, next) => {

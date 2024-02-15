@@ -35,7 +35,7 @@
                 meth1: function () {},
                 resolveListenerScope: function () {
                   return null;
-                },
+                }
               };
             }
             return this.defaultScope;
@@ -62,7 +62,7 @@
               Boss.superclass.constructor.call(this, conf);
             },
 
-            doSomething: function () {},
+            doSomething: function () {}
           });
 
           bossFiredFn = jasmine.createSpy("bossFiredFn");
@@ -73,13 +73,13 @@
           bossAskFn = jasmine.createSpy("bossAskFn");
           bossAskListener = {
             fn: bossAskFn,
-            scope: fakeScope,
+            scope: fakeScope
           };
           bossListeners = {
-            ask_salary_augmentation: bossAskListener,
+            ask_salary_augmentation: bossAskListener
           };
           bossConfig = {
-            listeners: bossListeners,
+            listeners: bossListeners
           };
 
           boss = new Boss(bossConfig);
@@ -93,7 +93,7 @@
             },
             getBubbleTarget: function () {
               return this.boss;
-            },
+            }
           });
 
           employeeFiredFn = jasmine.createSpy("employeeFiredFn");
@@ -101,20 +101,20 @@
           employeeAskFn = jasmine.createSpy("employeeAskFn");
           employeeFiredListener = {
             fn: employeeFiredFn,
-            scope: fakeScope,
+            scope: fakeScope
           };
           employeeQuitListener = {
             fn: employeeQuitFn,
-            scope: fakeScope,
+            scope: fakeScope
           };
           employeeAskListener = {
             fn: employeeAskFn,
-            scope: fakeScope,
+            scope: fakeScope
           };
           employeeListeners = {
             ask_salary_augmentation: employeeAskListener,
             fired: employeeFiredListener,
-            quit: employeeQuitListener,
+            quit: employeeQuitListener
           };
 
           employeeBubbleEvents = ["ask_salary_augmentation"];
@@ -122,7 +122,7 @@
           employeeConfig = {
             listeners: employeeListeners,
             bubbleEvents: employeeBubbleEvents,
-            boss: boss,
+            boss: boss
           };
 
           // some spies used in constructor
@@ -147,16 +147,16 @@
             // Successive calls should not re-initialize anything that was already
             // initialized by the first constructor call.
             var MixinA = Ext.define(null, {
-                extend: Observable,
+                extend: Observable
               }),
               MixinB = Ext.define(null, {
-                extend: Observable,
+                extend: Observable
               }),
               Cls = Ext.define(null, {
                 mixins: {
                   mixinA: MixinA,
                   mixinB: MixinB,
-                  observable: Observable,
+                  observable: Observable
                 },
                 constructor: function (config) {
                   var initConfig = spyOn(this, "initConfig").andCallThrough(),
@@ -192,7 +192,7 @@
                   if (isMixinObservable) {
                     expect(initConfig.callCount).toBe(1);
                   }
-                },
+                }
               });
 
             new Cls({ foo: "bar" });
@@ -207,7 +207,7 @@
                   fired: function () {},
                   quit: function () {},
                   ask_salary_augmentation: function () {},
-                  destroyable: true,
+                  destroyable: true
                 });
 
               expect(newBoss.hasListeners.fired).toEqual(1);
@@ -217,7 +217,7 @@
               expect(newBoss.hasListeners.fired).toBeUndefined();
               expect(newBoss.hasListeners.quit).toBeUndefined();
               expect(
-                newBoss.hasListeners.ask_salary_augmentation,
+                newBoss.hasListeners.ask_salary_augmentation
               ).toBeUndefined();
             });
           });
@@ -229,7 +229,7 @@
                   fired: function () {},
                   quit: function () {},
                   ask_salary_augmentation: function () {},
-                  destroyable: true,
+                  destroyable: true
                 });
 
               expect(newBoss.hasListeners.fired).toEqual(1);
@@ -239,7 +239,7 @@
               expect(newBoss.hasListeners.fired).toBeUndefined();
               expect(newBoss.hasListeners.quit).toBeUndefined();
               expect(
-                newBoss.hasListeners.ask_salary_augmentation,
+                newBoss.hasListeners.ask_salary_augmentation
               ).toBeUndefined();
             });
           });
@@ -251,7 +251,7 @@
                 relayers = newBoss.relayEvents(
                   newEmployee,
                   ["fired", "quit", "ask_salary_augmentation"],
-                  "minion_",
+                  "minion_"
                 ),
                 quit = 0,
                 fired = 0,
@@ -266,14 +266,14 @@
                 },
                 minion_ask_salary_augmentation: function () {
                   ask_salary_augmentation++;
-                },
+                }
               });
 
               // Employee's events now have the relayers as listeners
               expect(newEmployee.hasListeners.fired).toEqual(1);
               expect(newEmployee.hasListeners.quit).toEqual(1);
               expect(newEmployee.hasListeners.ask_salary_augmentation).toEqual(
-                1,
+                1
               );
 
               // Fire the Employee events which should be relayed through the Boss
@@ -289,7 +289,7 @@
               expect(newEmployee.hasListeners.fired).toBeUndefined();
               expect(newEmployee.hasListeners.quit).toBeUndefined();
               expect(
-                newEmployee.hasListeners.ask_salary_augmentation,
+                newEmployee.hasListeners.ask_salary_augmentation
               ).toBeUndefined();
 
               // Fire the Employee events which should **NOT** be relayed through the Boss
@@ -309,7 +309,7 @@
             if (Observable === Ext.mixin.Observable) {
               it("should invoke initConfig", function () {
                 var Foo = Ext.define(null, {
-                  extend: Observable,
+                  extend: Observable
                 });
 
                 spyOn(Foo.prototype, "initConfig");
@@ -325,7 +325,7 @@
               it("should apply configuration if $applyConfigs is true", function () {
                 var Foo = Ext.define(null, {
                   extend: Observable,
-                  $applyConfigs: true,
+                  $applyConfigs: true
                 });
 
                 spyOn(Foo.prototype, "initConfig");
@@ -340,7 +340,7 @@
             } else {
               it("should apply configuration", function () {
                 var Foo = Ext.define(null, {
-                  extend: Observable,
+                  extend: Observable
                 });
 
                 spyOn(Foo.prototype, "initConfig");
@@ -356,7 +356,7 @@
               it("should invoke initConfig if $applyConfigs is false", function () {
                 var Foo = Ext.define(null, {
                   extend: Observable,
-                  $applyConfigs: false,
+                  $applyConfigs: false
                 });
 
                 spyOn(Foo.prototype, "initConfig");
@@ -373,7 +373,7 @@
 
           it("should append event handlers passed in configuration params", function () {
             expect(Employee.prototype.addListener).toHaveBeenCalledWith(
-              employeeListeners,
+              employeeListeners
             );
           });
 
@@ -383,7 +383,7 @@
 
           it("should enable bubble", function () {
             expect(Employee.prototype.enableBubble).toHaveBeenCalledWith(
-              employeeBubbleEvents,
+              employeeBubbleEvents
             );
           });
         });
@@ -548,7 +548,7 @@
             it("should call the handler function with passed arguments", function () {
               expect(employeeFiredFn).toHaveBeenCalledWith(
                 "I'am fired :s",
-                employeeFiredListener,
+                employeeFiredListener
               );
             });
 
@@ -589,7 +589,7 @@
                   expect(function () {
                     boss.fireEvent("fired");
                   }).toThrow(
-                    'scope: "controller" can only be specified on classes that derive from Ext.Component or Ext.Widget',
+                    'scope: "controller" can only be specified on classes that derive from Ext.Component or Ext.Widget'
                   );
                 });
               });
@@ -597,7 +597,7 @@
               describe("without default listener scope", function () {
                 it("should always fire on the passed scope", function () {
                   var o = {
-                    aMethod: function () {},
+                    aMethod: function () {}
                   };
                   var spy = spyOn(o, "aMethod");
                   boss.on("fired", "aMethod", o);
@@ -621,7 +621,7 @@
 
                 it("should favour a passed scope", function () {
                   var o = {
-                    aMethod: function () {},
+                    aMethod: function () {}
                   };
                   var spy = spyOn(o, "aMethod");
                   boss.on("fired", "aMethod", o);
@@ -638,7 +638,7 @@
 
                 it("should not cache the listener scope", function () {
                   var other = {
-                      meth1: function () {},
+                      meth1: function () {}
                     },
                     spy1 = spyOn(boss.resolveListenerScope(), "meth1"),
                     spy2 = spyOn(other, "meth1");
@@ -668,7 +668,7 @@
               beforeEach(function () {
                 singleFn = jasmine.createSpy("singleFn");
                 boss.addListener("singleevent", singleFn, fakeScope, {
-                  single: true,
+                  single: true
                 });
 
                 boss.fireEvent("singleevent", "single 1");
@@ -682,7 +682,7 @@
 
               it("should call the handler function with passed arguments", function () {
                 expect(singleFn).toHaveBeenCalledWith("single 1", {
-                  single: true,
+                  single: true
                 });
               });
 
@@ -700,7 +700,7 @@
                 var spy = spyOn(boss.resolveListenerScope(), "meth1");
 
                 boss.addListener("singleevent", "meth1", undefined, {
-                  single: true,
+                  single: true
                 });
 
                 boss.fireEvent("singleevent", "single 1");
@@ -724,16 +724,16 @@
                         {
                           bubbleEvents: ["add", "remove"],
                           xtype: "component",
-                          itemId: "bar",
+                          itemId: "bar"
                         },
                         {
                           bubbleEvents: ["add", "remove"],
                           xtype: "component",
-                          itemId: "baz",
-                        },
-                      ],
-                    },
-                  ],
+                          itemId: "baz"
+                        }
+                      ]
+                    }
+                  ]
                 });
                 callbackFn = jasmine.createSpy("callbackFn");
                 callbackFn2 = jasmine.createSpy("callbackFn2");
@@ -758,7 +758,7 @@
                 ct.on("remove", callbackFn, ct, { target: ct });
 
                 ct.getComponent("foo").on("remove", callbackFn2, ct, {
-                  target: ct,
+                  target: ct
                 });
 
                 ct.getComponent("foo").remove("baz");
@@ -771,12 +771,12 @@
                 ct.on("add", callbackFn);
 
                 ct.getComponent("foo").on("add", callbackFn2, ct, {
-                  target: ct,
+                  target: ct
                 });
 
                 ct.getComponent("foo").add({
                   xtype: "component",
-                  itemId: "test",
+                  itemId: "test"
                 });
 
                 expect(callbackFn).toHaveBeenCalled();
@@ -787,12 +787,12 @@
                 makeDefaultListenerScope(ct);
                 var spy = spyOn(ct.resolveListenerScope(), "meth1");
                 ct.on("add", "meth1", undefined, {
-                  target: ct,
+                  target: ct
                 });
 
                 ct.add({
                   xtype: "component",
-                  itemId: "test",
+                  itemId: "test"
                 });
 
                 expect(spy).toHaveBeenCalled();
@@ -805,7 +805,7 @@
               beforeEach(function () {
                 bufferFn = jasmine.createSpy("bufferFn");
                 boss.addListener("bufferevent", bufferFn, fakeScope, {
-                  buffer: 5,
+                  buffer: 5
                 });
 
                 boss.fireEvent("bufferevent", "buffer 1");
@@ -830,7 +830,7 @@
 
                 runs(function () {
                   expect(bufferFn).toHaveBeenCalledWith("buffer 3", {
-                    buffer: 5,
+                    buffer: 5
                   });
                 });
               });
@@ -861,7 +861,7 @@
                 var spy = spyOn(boss.resolveListenerScope(), "meth1");
 
                 boss.on("bufferevent", "meth1", undefined, {
-                  buffer: 5,
+                  buffer: 5
                 });
 
                 boss.fireEvent("bufferevent", "buffer 1");
@@ -884,7 +884,7 @@
               beforeEach(function () {
                 delayFn = jasmine.createSpy("delayFn");
                 boss.addListener("delayevent", delayFn, fakeScope, {
-                  delay: 5,
+                  delay: 5
                 });
 
                 boss.fireEvent("delayevent", "delay");
@@ -907,7 +907,7 @@
 
                 runs(function () {
                   expect(delayFn).toHaveBeenCalledWith("delay", {
-                    delay: 5,
+                    delay: 5
                   });
                 });
               });
@@ -928,7 +928,7 @@
                 var spy = spyOn(boss.resolveListenerScope(), "meth1");
 
                 boss.on("delayevent", "meth1", undefined, {
-                  delay: 5,
+                  delay: 5
                 });
 
                 boss.fireEvent("delayevent", "buffer 1");
@@ -948,7 +948,7 @@
 
               beforeEach(function () {
                 Ext.define("A", {
-                  extend: Observable,
+                  extend: Observable
                 });
                 a = new A();
                 result = [];
@@ -965,7 +965,7 @@
                     result.push(10);
                   },
                   null,
-                  { priority: 10 },
+                  { priority: 10 }
                 );
 
                 a.on(
@@ -973,7 +973,7 @@
                   function () {
                     result.push("u1");
                   },
-                  null,
+                  null
                 );
 
                 a.on(
@@ -982,7 +982,7 @@
                     result.push(-7);
                   },
                   null,
-                  { priority: -7 },
+                  { priority: -7 }
                 );
 
                 a.on(
@@ -991,7 +991,7 @@
                     result.push(0);
                   },
                   null,
-                  { priority: 0 },
+                  { priority: 0 }
                 );
 
                 a.on(
@@ -1000,7 +1000,7 @@
                     result.push(5);
                   },
                   null,
-                  { priority: 5 },
+                  { priority: 5 }
                 );
 
                 a.on(
@@ -1009,7 +1009,7 @@
                     result.push(-3);
                   },
                   null,
-                  { priority: -3 },
+                  { priority: -3 }
                 );
 
                 a.on("foo", function () {
@@ -1042,7 +1042,7 @@
                     result.push(-7);
                   },
                   null,
-                  { priority: -7 },
+                  { priority: -7 }
                 );
                 a.on(
                   "foo",
@@ -1050,7 +1050,7 @@
                     result.push(5);
                   },
                   null,
-                  { priority: 5 },
+                  { priority: 5 }
                 );
                 a.un("foo", f10);
                 a.on("foo", function () {
@@ -1068,7 +1068,7 @@
 
               beforeEach(function () {
                 Ext.define("A", {
-                  extend: Observable,
+                  extend: Observable
                 });
                 a = new A();
                 result = [];
@@ -1085,7 +1085,7 @@
                     result.push(101);
                   },
                   null,
-                  { priority: 101 },
+                  { priority: 101 }
                 );
 
                 a.on(
@@ -1094,7 +1094,7 @@
                     result.push("after");
                   },
                   null,
-                  { order: "after" },
+                  { order: "after" }
                 );
 
                 a.on(
@@ -1103,7 +1103,7 @@
                     result.push(-101);
                   },
                   null,
-                  { priority: -101 },
+                  { priority: -101 }
                 );
 
                 a.on(
@@ -1112,7 +1112,7 @@
                     result.push("before");
                   },
                   null,
-                  { order: "before" },
+                  { order: "before" }
                 );
 
                 a.on(
@@ -1121,7 +1121,7 @@
                     result.push("current");
                   },
                   null,
-                  { order: "current" },
+                  { order: "current" }
                 );
 
                 a.on(
@@ -1130,13 +1130,13 @@
                     result.push(0);
                   },
                   null,
-                  { priority: 0 },
+                  { priority: 0 }
                 );
 
                 a.fireEvent("foo");
 
                 expect(result.join(" ")).toBe(
-                  "101 before current 0 after -101",
+                  "101 before current 0 after -101"
                 );
               });
 
@@ -1147,7 +1147,7 @@
                     result.push(101);
                   },
                   null,
-                  { priority: 101 },
+                  { priority: 101 }
                 );
 
                 a.on(
@@ -1157,7 +1157,7 @@
                   },
                   null,
                   null,
-                  "after",
+                  "after"
                 );
 
                 a.on(
@@ -1166,7 +1166,7 @@
                     result.push(-101);
                   },
                   null,
-                  { priority: -101 },
+                  { priority: -101 }
                 );
 
                 a.on(
@@ -1176,7 +1176,7 @@
                   },
                   null,
                   null,
-                  "before",
+                  "before"
                 );
 
                 a.on(
@@ -1186,7 +1186,7 @@
                   },
                   null,
                   null,
-                  "current",
+                  "current"
                 );
 
                 a.on(
@@ -1195,13 +1195,13 @@
                     result.push(0);
                   },
                   null,
-                  { priority: 0 },
+                  { priority: 0 }
                 );
 
                 a.fireEvent("foo");
 
                 expect(result.join(" ")).toBe(
-                  "101 before current 0 after -101",
+                  "101 before current 0 after -101"
                 );
               });
             });
@@ -1353,7 +1353,7 @@
                   destroy: function () {
                     this.fireEvent("destroy", this);
                     this.callParent();
-                  },
+                  }
                 });
 
                 employee3 = new Employee();
@@ -1419,7 +1419,7 @@
             beforeEach(function () {
               listeners = {
                 fired: bossFiredFn,
-                scope: fakeScope,
+                scope: fakeScope
               };
 
               boss.addListener(listeners);
@@ -1435,7 +1435,7 @@
             it("should call the event with correct arguments", function () {
               expect(bossFiredFn).toHaveBeenCalledWith(
                 "I'am fired! (1)",
-                listeners,
+                listeners
               );
             });
 
@@ -1450,10 +1450,10 @@
             beforeEach(function () {
               firedListener = {
                 fn: bossFiredFn,
-                scope: fakeScope,
+                scope: fakeScope
               };
               listeners = {
-                fired: firedListener,
+                fired: firedListener
               };
 
               boss.addListener(listeners);
@@ -1469,7 +1469,7 @@
             it("should call the event with correct arguments", function () {
               expect(bossFiredFn).toHaveBeenCalledWith(
                 "I'am fired! (1)",
-                firedListener,
+                firedListener
               );
             });
 
@@ -1481,7 +1481,7 @@
           describe("add/remove using function name as string", function () {
             beforeEach(function () {
               fakeScope = {
-                bossFired: bossFiredFn,
+                bossFired: bossFiredFn
               };
             });
 
@@ -1615,7 +1615,7 @@
 
                 it("should call the event with correct scope", function () {
                   expect(bossFiredFn.calls[0].object).toBe(
-                    boss.resolveListenerScope(),
+                    boss.resolveListenerScope()
                   );
                 });
 
@@ -1637,11 +1637,11 @@
             it("should never call the handler", function () {
               runs(function () {
                 boss.addListener("fired", bossFiredFn, fakeScope, {
-                  buffer: 5,
+                  buffer: 5
                 });
                 boss.fireEvent("fired");
                 boss.removeListener("fired", bossFiredFn, fakeScope, {
-                  buffer: 5,
+                  buffer: 5
                 });
               });
               waits(5);
@@ -1657,7 +1657,7 @@
                 boss.addListener("fired", bossFiredFn, fakeScope, { delay: 5 });
                 boss.fireEvent("fired");
                 boss.removeListener("fired", bossFiredFn, fakeScope, {
-                  buffer: 5,
+                  buffer: 5
                 });
               });
               waits(5);
@@ -1715,14 +1715,14 @@
                   employee,
                   "fired",
                   bossFiredFn,
-                  fakeScope,
+                  fakeScope
                 );
                 employee.fireEvent("fired", "I'am fired! (1)");
                 boss.removeManagedListener(
                   employee,
                   "fired",
                   bossFiredFn,
-                  fakeScope,
+                  fakeScope
                 );
                 employee.fireEvent("fired", "I'am fired! (2)");
               });
@@ -1748,8 +1748,8 @@
                   bossFiredFn,
                   fakeScope,
                   {
-                    destroyable: true,
-                  },
+                    destroyable: true
+                  }
                 );
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -1766,7 +1766,7 @@
                   employee,
                   "fired",
                   bossFiredFn,
-                  fakeScope,
+                  fakeScope
                 );
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -1783,13 +1783,13 @@
                   employee,
                   "fired",
                   bossFiredFn,
-                  fakeScope,
+                  fakeScope
                 );
                 boss.addManagedListener(
                   employee,
                   "fired",
                   bossFired2Fn,
-                  fakeScope,
+                  fakeScope
                 );
 
                 expect(boss.managedListeners.length).toBe(2);
@@ -1806,13 +1806,13 @@
                   employee,
                   "fired",
                   bossFiredFn,
-                  fakeScope,
+                  fakeScope
                 );
                 boss.addManagedListener(
                   employee2,
                   "fired",
                   bossFired2Fn,
-                  fakeScope,
+                  fakeScope
                 );
 
                 expect(boss.managedListeners.length).toBe(2);
@@ -1833,7 +1833,7 @@
               beforeEach(function () {
                 listeners = {
                   fired: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 };
 
                 boss.addManagedListener(employee, listeners);
@@ -1849,7 +1849,7 @@
               it("should call the event with correct arguments", function () {
                 expect(bossFiredFn).toHaveBeenCalledWith(
                   "I'am fired! (1)",
-                  listeners,
+                  listeners
                 );
               });
 
@@ -1863,7 +1863,7 @@
                 var destroyer = boss.addManagedListener(employee, {
                   fired: bossFiredFn,
                   scope: fakeScope,
-                  destroyable: true,
+                  destroyable: true
                 });
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -1878,7 +1878,7 @@
               it("should remove the listener when the target observable is destroyed", function () {
                 boss.addManagedListener(employee, {
                   fired: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -1893,18 +1893,18 @@
               it("should stop tracking the managed listener if the listener is removed from the target", function () {
                 boss.addManagedListener(employee, {
                   fired: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
                 boss.addManagedListener(employee, {
                   fired: bossFired2Fn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
 
                 expect(boss.managedListeners.length).toBe(2);
 
                 employee.removeListener({
                   fired: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
 
                 expect(boss.managedListeners.length).toBe(1);
@@ -1915,11 +1915,11 @@
                 var employee2 = new Employee();
                 boss.addManagedListener(employee, {
                   fired: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
                 boss.addManagedListener(employee2, {
                   fired: bossFired2Fn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 });
 
                 expect(boss.managedListeners.length).toBe(2);
@@ -1940,10 +1940,10 @@
               beforeEach(function () {
                 firedListener = {
                   fn: bossFiredFn,
-                  scope: fakeScope,
+                  scope: fakeScope
                 };
                 listeners = {
-                  fired: firedListener,
+                  fired: firedListener
                 };
 
                 boss.addManagedListener(employee, listeners);
@@ -1959,7 +1959,7 @@
               it("should call the event with correct arguments", function () {
                 expect(bossFiredFn).toHaveBeenCalledWith(
                   "I'am fired! (1)",
-                  firedListener,
+                  firedListener
                 );
               });
 
@@ -1973,9 +1973,9 @@
                 var destroyer = boss.addManagedListener(employee, {
                   fired: {
                     fn: bossFiredFn,
-                    scope: fakeScope,
+                    scope: fakeScope
                   },
-                  destroyable: true,
+                  destroyable: true
                 });
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -1991,8 +1991,8 @@
                 boss.addManagedListener(employee, {
                   fired: {
                     fn: bossFiredFn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
                 employee.fireEvent("fired", "I'am fired! (1)");
 
@@ -2008,14 +2008,14 @@
                 boss.addManagedListener(employee, {
                   fired: {
                     fn: bossFiredFn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
                 boss.addManagedListener(employee, {
                   fired: {
                     fn: bossFired2Fn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
 
                 expect(boss.managedListeners.length).toBe(2);
@@ -2023,8 +2023,8 @@
                 employee.removeListener({
                   fired: {
                     fn: bossFiredFn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
 
                 expect(boss.managedListeners.length).toBe(1);
@@ -2036,14 +2036,14 @@
                 boss.addManagedListener(employee, {
                   fired: {
                     fn: bossFiredFn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
                 boss.addManagedListener(employee2, {
                   fired: {
                     fn: bossFired2Fn,
-                    scope: fakeScope,
-                  },
+                    scope: fakeScope
+                  }
                 });
 
                 expect(boss.managedListeners.length).toBe(2);
@@ -2060,7 +2060,7 @@
           describe("add/remove using function name as string", function () {
             beforeEach(function () {
               fakeScope = {
-                employeeFired: bossFiredFn,
+                employeeFired: bossFiredFn
               };
             });
 
@@ -2074,14 +2074,14 @@
                   employee,
                   "fired",
                   "employeeFired",
-                  fakeScope,
+                  fakeScope
                 );
                 employee.fireEvent("fired", "I'm fired! (1)");
                 boss.removeManagedListener(
                   employee,
                   "fired",
                   "employeeFired",
-                  fakeScope,
+                  fakeScope
                 );
                 employee.fireEvent("fired", "I'm fired! (2)");
               });
@@ -2111,14 +2111,14 @@
                   employee,
                   "fired",
                   "doSomething",
-                  "this",
+                  "this"
                 );
                 employee.fireEvent("fired", "I'm fired! (1)");
                 boss.removeManagedListener(
                   employee,
                   "fired",
                   "doSomething",
-                  "this",
+                  "this"
                 );
                 employee.fireEvent("fired", "I'm fired! (2)");
               });
@@ -2148,7 +2148,7 @@
                   employee,
                   "fired",
                   "doSomething",
-                  "controller",
+                  "controller"
                 );
                 expect(function () {
                   employee.fireEvent("fired", "I'm fired! (1)");
@@ -2161,13 +2161,13 @@
                   employee,
                   "fired",
                   "doSomething",
-                  "controller",
+                  "controller"
                 );
                 boss.removeManagedListener(
                   employee,
                   "fired",
                   "doSomething",
-                  "controller",
+                  "controller"
                 );
                 employee.fireEvent("fired", "I'm fired! (2)");
                 expect(bossSpy).not.toHaveBeenCalled();
@@ -2297,7 +2297,7 @@
             beforeEach(function () {
               listeners = {
                 fired: bossFiredFn,
-                scope: boss,
+                scope: boss
               };
 
               employee.addListener(listeners);
@@ -2312,7 +2312,7 @@
               employee.fireEvent("fired", "I am fired!");
               expect(bossFiredFn).toHaveBeenCalledWith(
                 "I am fired!",
-                listeners,
+                listeners
               );
             });
 
@@ -2331,14 +2331,14 @@
               // an extra listener to be sure we remove only the one
               employee.addListener({
                 fired: bossFired2Fn,
-                scope: boss,
+                scope: boss
               });
 
               expect(boss.managedListeners.length).toBe(2);
 
               employee.removeListener({
                 fired: bossFiredFn,
-                scope: boss,
+                scope: boss
               });
 
               expect(boss.managedListeners.length).toBe(1);
@@ -2349,7 +2349,7 @@
               var employee2 = new Employee();
               employee2.addListener({
                 fired: bossFired2Fn,
-                scope: boss,
+                scope: boss
               });
 
               expect(boss.managedListeners.length).toBe(2);
@@ -2368,10 +2368,10 @@
             beforeEach(function () {
               firedListener = {
                 fn: bossFiredFn,
-                scope: boss,
+                scope: boss
               };
               listeners = {
-                fired: firedListener,
+                fired: firedListener
               };
 
               employee.addListener(listeners);
@@ -2386,7 +2386,7 @@
               employee.fireEvent("fired", "I am fired!");
               expect(bossFiredFn).toHaveBeenCalledWith(
                 "I am fired!",
-                firedListener,
+                firedListener
               );
             });
 
@@ -2406,8 +2406,8 @@
               employee.addListener({
                 fired: {
                   fn: bossFired2Fn,
-                  scope: boss,
-                },
+                  scope: boss
+                }
               });
 
               expect(boss.managedListeners.length).toBe(2);
@@ -2415,8 +2415,8 @@
               employee.removeListener({
                 fired: {
                   fn: bossFiredFn,
-                  scope: boss,
-                },
+                  scope: boss
+                }
               });
 
               expect(boss.managedListeners.length).toBe(1);
@@ -2428,8 +2428,8 @@
               employee2.addListener({
                 fired: {
                   fn: bossFired2Fn,
-                  scope: boss,
-                },
+                  scope: boss
+                }
               });
 
               expect(boss.managedListeners.length).toBe(2);
@@ -2502,14 +2502,14 @@
                 foo: function () {
                   result.push(0);
                 },
-                order: "before",
+                order: "before"
               });
 
               o.on({
                 foo: function () {
                   result.push(3);
                 },
-                order: "after",
+                order: "after"
               });
             });
 
@@ -2605,7 +2605,7 @@
           it("should be an alias for addListener", function () {
             var o = new Observable(),
               listeners = {
-                foo: "onFoo",
+                foo: "onFoo"
               };
 
             spyOn(o, "addListener");
@@ -2827,7 +2827,7 @@
               it("should call the handler function with passed arguments", function () {
                 expect(bossAskFn).toHaveBeenCalledWith(
                   "I want 5%!",
-                  bossAskListener,
+                  bossAskListener
                 );
               });
 
@@ -2844,7 +2844,7 @@
               it("should call the handler function with passed arguments", function () {
                 expect(employeeAskFn).toHaveBeenCalledWith(
                   "I want 5%!",
-                  employeeAskListener,
+                  employeeAskListener
                 );
               });
 
@@ -2874,7 +2874,7 @@
               it("should call the handler function with passed arguments", function () {
                 expect(employeeAskFn).toHaveBeenCalledWith(
                   "I want 5%!",
-                  employeeAskListener,
+                  employeeAskListener
                 );
               });
 
@@ -2897,7 +2897,7 @@
             boss.fireEvent("fired", "You're fired!");
             expect(employeeFiredFn).toHaveBeenCalledWith(
               "You're fired!",
-              employeeFiredListener,
+              employeeFiredListener
             );
           });
 
@@ -2939,7 +2939,7 @@
 
               employee.relayEvents(boss, ["fired"]);
               employee.on("fired", employeeSpy.andReturn(false), null, {
-                single: true,
+                single: true
               });
               boss.on("fired", bossSpy);
               expect(boss.fireEvent("fired")).toBe(false);
@@ -2951,7 +2951,7 @@
         describe("creating relayers", function () {
           it("should call the event handler only one time", function () {
             boss.on({
-              quit: employee.createRelayer("fired"),
+              quit: employee.createRelayer("fired")
             });
             boss.fireEvent("quit", "You're fired!");
             expect(employeeFiredFn.callCount).toEqual(1);
@@ -2959,18 +2959,18 @@
 
           it("should call the event with correct arguments", function () {
             boss.on({
-              quit: employee.createRelayer("fired", [0, -1]),
+              quit: employee.createRelayer("fired", [0, -1])
             });
             boss.fireEvent("quit", "You can't fire me, I quit!");
             expect(employeeFiredFn).toHaveBeenCalledWith(
               "You can't fire me, I quit!",
-              employeeFiredListener,
+              employeeFiredListener
             );
           });
 
           it("should call the event with correct scope", function () {
             boss.on({
-              quit: employee.createRelayer("fired"),
+              quit: employee.createRelayer("fired")
             });
             boss.fireEvent("quit", "You're fired!");
             expect(employeeFiredFn.calls[0].object).toBe(fakeScope);
@@ -2978,17 +2978,17 @@
 
           it("should reference same object at same position regardless of number of function parameters", function () {
             boss.on({
-              quit: employee.createRelayer("fired", [0, -1]),
+              quit: employee.createRelayer("fired", [0, -1])
             });
             boss.on({
-              quit: employee.createRelayer("fired", [0, 2]),
+              quit: employee.createRelayer("fired", [0, 2])
             });
 
             boss.fireEvent("quit", boss, true);
             boss.fireEvent("quit", boss, true, ["bob", "chuck"], {});
 
             expect(employeeFiredFn.calls[0].args[2]).toBe(
-              employeeFiredFn.calls[1].args[2],
+              employeeFiredFn.calls[1].args[2]
             );
           });
         });
@@ -3001,7 +3001,7 @@
               },
               opts = {
                 bar: handler,
-                args: [1, 2, 3],
+                args: [1, 2, 3]
               },
               args;
 
@@ -3044,7 +3044,7 @@
             Observable.prototype.mun();
 
             expect(
-              Observable.prototype.removeManagedListener,
+              Observable.prototype.removeManagedListener
             ).toHaveBeenCalled();
           });
 
@@ -3087,7 +3087,7 @@
 
             it("should restore the original fireEvent function", function () {
               expect(boss.fireEventArgs).toEqual(
-                Observable.prototype.fireEventArgs,
+                Observable.prototype.fireEventArgs
               );
             });
           });
@@ -3099,14 +3099,14 @@
           beforeEach(function () {
             firedListener = {
               fn: bossFiredFn,
-              scope: fakeScope,
+              scope: fakeScope
             };
             firedListener2 = {
               fn: bossFired2Fn,
-              scope: fakeScope,
+              scope: fakeScope
             };
             Observable.observe(Boss, {
-              fired: firedListener,
+              fired: firedListener
             });
 
             boss1 = new Boss();
@@ -3121,7 +3121,7 @@
 
             // now listen on both the instance and the class
             boss1.on({
-              fired: firedListener2,
+              fired: firedListener2
             });
             if (boss1.hasListeners.fired) {
               boss1.fireEvent("fired", "You're Fired! (boss 3)");
@@ -3169,7 +3169,7 @@
             it("should execute handler with desired params", function () {
               expect(call.args).toEqual([
                 "You're Fired! (boss 1)",
-                firedListener,
+                firedListener
               ]);
             });
           });
@@ -3188,7 +3188,7 @@
             it("should execute handler with desired params", function () {
               expect(call.args).toEqual([
                 "You're Fired! (boss 2)",
-                firedListener,
+                firedListener
               ]);
             });
           });
@@ -3207,7 +3207,7 @@
             it("should execute handler with desired params", function () {
               expect(call.args).toEqual([
                 "You're Fired! (boss 3)",
-                firedListener,
+                firedListener
               ]);
             });
           });
@@ -3226,7 +3226,7 @@
             it("should execute handler with desired params", function () {
               expect(call.args).toEqual([
                 "You're Fired! (boss 3)",
-                firedListener2,
+                firedListener2
               ]);
             });
           });
@@ -3245,7 +3245,7 @@
             it("should execute handler with desired params", function () {
               expect(call.args).toEqual([
                 "You're Fired! (boss 4)",
-                firedListener,
+                firedListener
               ]);
             });
           });
@@ -3308,7 +3308,7 @@
                 fullName: "spec.observable." + nameCap,
                 name: nameCap,
                 lowerName: name,
-                events: baseEntry.events.concat([name]),
+                events: baseEntry.events.concat([name])
               };
 
             return entry;
@@ -3323,7 +3323,7 @@
               extend: baseEntry.T,
               constructor: function () {
                 this.callParent(arguments);
-              },
+              }
             });
 
             var mixins = {},
@@ -3334,9 +3334,9 @@
               constructor: function () {
                 this.mixins[baseEntry.lowerName].constructor.apply(
                   this,
-                  arguments,
+                  arguments
                 );
-              },
+              }
             });
 
             Observable.observe((entryE.T = spec.observable[entryE.name]));
@@ -3397,7 +3397,7 @@
                 obj.un(event, fn);
                 if (obj.hasListeners[event]) {
                   expect(T.$className + ".hasListeners." + event).toBe(
-                    "0 after",
+                    "0 after"
                   );
                 }
               });
@@ -3422,7 +3422,7 @@
 
                   if (obj.hasListeners[event]) {
                     expect(T.$className + ".hasListeners." + event).toBe(
-                      "0 before",
+                      "0 before"
                     );
                   }
 
@@ -3439,7 +3439,7 @@
                   B.un(event, fn);
                   if (obj.hasListeners[event]) {
                     expect(T.$className + ".hasListeners." + event).toBe(
-                      "0 after",
+                      "0 after"
                     );
                   }
                 });
@@ -3472,10 +3472,10 @@
                 Ext.apply(
                   {
                     mixins: [Observable],
-                    constructor: mixinCtor,
+                    constructor: mixinCtor
                   },
-                  cfg,
-                ),
+                  cfg
+                )
               );
             }
 
@@ -3484,8 +3484,8 @@
                 makeCls();
                 o = new Cls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3494,8 +3494,8 @@
               it("should fire events with listeners only on the class", function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o = new Cls();
                 o.fireEvent("foo");
@@ -3505,13 +3505,13 @@
               it("should fire events with listeners on the class & instance", function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o = new Cls({
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3523,19 +3523,19 @@
               beforeEach(function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
               });
 
               it("should fire events with listeners only on the instance", function () {
                 Sub = Ext.define(null, {
-                  extend: Cls,
+                  extend: Cls
                 });
                 o = new Sub({
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3546,8 +3546,8 @@
                 Sub = Ext.define(null, {
                   extend: Cls,
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o = new Sub();
                 o.fireEvent("foo");
@@ -3559,13 +3559,13 @@
                 Sub = Ext.define(null, {
                   extend: Cls,
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o = new Sub({
                   listeners: {
-                    foo: spy3,
-                  },
+                    foo: spy3
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3581,10 +3581,10 @@
                 null,
                 Ext.apply(
                   {
-                    extend: Observable,
+                    extend: Observable
                   },
-                  cfg,
-                ),
+                  cfg
+                )
               );
             }
 
@@ -3593,8 +3593,8 @@
                 makeCls();
                 o = new Cls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3603,8 +3603,8 @@
               it("should fire events with listeners only on the class", function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o = new Cls();
                 o.fireEvent("foo");
@@ -3614,13 +3614,13 @@
               it("should fire events with listeners on the class & instance", function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
                 o = new Cls({
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3632,19 +3632,19 @@
               beforeEach(function () {
                 makeCls({
                   listeners: {
-                    foo: spy1,
-                  },
+                    foo: spy1
+                  }
                 });
               });
 
               it("should fire events with listeners only on the instance", function () {
                 Sub = Ext.define(null, {
-                  extend: Cls,
+                  extend: Cls
                 });
                 o = new Sub({
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3655,8 +3655,8 @@
                 Sub = Ext.define(null, {
                   extend: Cls,
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o = new Sub();
                 o.fireEvent("foo");
@@ -3668,13 +3668,13 @@
                 Sub = Ext.define(null, {
                   extend: Cls,
                   listeners: {
-                    foo: spy2,
-                  },
+                    foo: spy2
+                  }
                 });
                 o = new Sub({
                   listeners: {
-                    foo: spy3,
-                  },
+                    foo: spy3
+                  }
                 });
                 o.fireEvent("foo");
                 expect(spy1).toHaveBeenCalled();
@@ -3698,7 +3698,7 @@
               type: "ParentMixin",
               listeners: {
                 foo: "parentMixinHandler",
-                scope: "this",
+                scope: "this"
               },
               constructor: function (config) {
                 this.mixins.observable.constructor.call(this, config);
@@ -3706,7 +3706,7 @@
 
               parentMixinHandler: function () {
                 result.push("parentMixin:" + this.id);
-              },
+              }
             });
 
             ChildMixin = Ext.define(null, {
@@ -3715,12 +3715,12 @@
               type: "ChildMixin",
               listeners: {
                 foo: "childMixinHandler",
-                scope: "this",
+                scope: "this"
               },
 
               childMixinHandler: function () {
                 result.push("childMixin:" + this.id);
-              },
+              }
             });
 
             ParentClass = Ext.define(null, {
@@ -3728,7 +3728,7 @@
               type: "ParentClass",
               listeners: {
                 foo: "parentClassHandler",
-                scope: "this",
+                scope: "this"
               },
 
               constructor: function (config) {
@@ -3737,7 +3737,7 @@
 
               parentClassHandler: function () {
                 result.push("parentClass:" + this.id);
-              },
+              }
             });
 
             ChildClass = Ext.define(null, {
@@ -3745,12 +3745,12 @@
               type: "ChildClass",
               listeners: {
                 foo: "childClassHandler",
-                scope: "this",
+                scope: "this"
               },
 
               childClassHandler: function () {
                 result.push("childClass:" + this.id);
-              },
+              }
             });
           });
 
@@ -3759,8 +3759,8 @@
               listeners: {
                 foo: function () {
                   result.push("childInstance:" + this.id);
-                },
-              },
+                }
+              }
             });
 
             instance.id = "theId";
@@ -3771,7 +3771,7 @@
               "childMixin:theId",
               "parentClass:theId",
               "childClass:theId",
-              "childInstance:theId",
+              "childInstance:theId"
             ]);
           });
 
@@ -3784,7 +3784,7 @@
                 this.callParent(arguments);
               },
 
-              addListener: spy,
+              addListener: spy
             });
             new Cls();
             expect(spy).not.toHaveBeenCalled();
@@ -3800,7 +3800,7 @@
                 this.mixins.observable.constructor.apply(this, arguments);
               },
 
-              addListener: spy,
+              addListener: spy
             });
 
             new Cls();
@@ -3822,7 +3822,7 @@
 
                 trigger: function () {
                   this.fireEvent("foo");
-                },
+                }
               });
             }
 
@@ -3838,8 +3838,8 @@
               defineCls({
                 foo: {
                   single: true,
-                  fn: spy,
-                },
+                  fn: spy
+                }
               });
               var o = new Cls();
               o.trigger();
@@ -3850,8 +3850,8 @@
               defineCls({
                 foo: {
                   delay: 1,
-                  fn: spy,
-                },
+                  fn: spy
+                }
               });
               var o = new Cls();
               o.trigger();
@@ -3867,8 +3867,8 @@
               defineCls({
                 foo: {
                   buffer: 1,
-                  fn: spy,
-                },
+                  fn: spy
+                }
               });
               var o = new Cls();
               o.trigger();
@@ -3912,9 +3912,9 @@
                   [this, a, b],
                   "doFoo",
                   this,
-                  false,
+                  false
                 );
-              },
+              }
             });
           });
 
@@ -3932,7 +3932,7 @@
               foo: function (sender, a, b) {
                 expect(fooArgs).not.toBe(null);
                 after = Ext.Array.slice(arguments);
-              },
+              }
             });
 
             c.foo(2, 4);
@@ -3971,7 +3971,7 @@
               foo: function (sender, a, b) {
                 expect(fooArgs !== null).toBe(true);
                 after = Ext.Array.slice(arguments);
-              },
+              }
             });
 
             c.foo(2, 4);
@@ -4001,7 +4001,7 @@
               foo: function (sender, a, b) {
                 expect(fooArgs !== null).toBe(true);
                 after = Ext.Array.slice(arguments);
-              },
+              }
             });
 
             fooRet = false;
@@ -4033,7 +4033,7 @@
               foo: function (sender, a, b) {
                 expect(fooArgs !== null).toBe(true);
                 after = Ext.Array.slice(arguments);
-              },
+              }
             });
 
             c.foo(2, 4);
@@ -4077,7 +4077,7 @@
                 mixins: [Observable],
                 constructor: function () {
                   this.mixins.observable.constructor.call(this);
-                },
+                }
               }),
               foo = new Foo();
 
@@ -4114,7 +4114,7 @@
                 test: secondListenerFn,
                 scope: secondListenerScope,
                 buffer: 50,
-                destroyable: true,
+                destroyable: true
               });
               source.on("test", function () {
                 success = true;
@@ -4132,7 +4132,7 @@
           it("should call the handler in an animationFrameListener", function () {
             var b = new Boss(),
               spy = spyOnEvent(b, "newevent", null, {
-                onFrame: true,
+                onFrame: true
               });
 
             b.fireEvent("newevent", 1);
@@ -4148,7 +4148,7 @@
             });
           });
         });
-      },
+      }
     );
   }
 

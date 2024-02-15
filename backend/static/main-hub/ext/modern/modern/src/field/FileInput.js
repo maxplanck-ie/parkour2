@@ -18,7 +18,7 @@ Ext.define("Ext.field.FileInput", {
     accept: null,
     capture: null,
     name: null,
-    multiple: false,
+    multiple: false
   },
 
   /**
@@ -28,7 +28,7 @@ Ext.define("Ext.field.FileInput", {
   captureLookup: {
     video: "camcorder",
     image: "camera",
-    audio: "microphone",
+    audio: "microphone"
   },
 
   /**
@@ -41,7 +41,7 @@ Ext.define("Ext.field.FileInput", {
 
     me.inputElement.on({
       scope: me,
-      change: "onInputChange",
+      change: "onInputChange"
     });
   },
 
@@ -167,5 +167,5 @@ Ext.define("Ext.field.FileInput", {
   applyCapture: function (value) {
     this.updateFieldAttribute("capture", value);
     return value;
-  },
+  }
 });

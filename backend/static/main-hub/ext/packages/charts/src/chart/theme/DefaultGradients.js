@@ -5,7 +5,7 @@ Ext.define("Ext.chart.theme.DefaultGradients", {
   config: {
     gradients: {
       type: "linear",
-      degrees: 90,
-    },
-  },
+      degrees: 90
+    }
+  }
 });

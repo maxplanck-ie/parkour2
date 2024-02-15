@@ -32,7 +32,7 @@ describe("Ext.direct.Manager", function () {
     it("adds provider as config object", function () {
       Manager.addProvider({
         id: "bar",
-        type: "",
+        type: ""
       });
 
       expect(Manager.getProvider("bar")).toBeDefined();
@@ -118,7 +118,7 @@ describe("Ext.direct.Manager", function () {
 
     beforeEach(function () {
       transaction = new Ext.direct.Transaction({
-        provider: provider,
+        provider: provider
       });
     });
 
@@ -169,11 +169,11 @@ describe("Ext.direct.Manager", function () {
     beforeEach(function () {
       event = new Ext.direct.Event({
         name: "foo",
-        data: { foo: "bar" },
+        data: { foo: "bar" }
       });
 
       exception = new Ext.direct.ExceptionEvent({
-        data: "bar is closed",
+        data: "bar is closed"
       });
 
       handlerFoo = jasmine.createSpy("handler foo");
@@ -234,31 +234,31 @@ describe("Ext.direct.Manager", function () {
         TestAction: [
           {
             name: "foo",
-            len: 0,
-          },
+            len: 0
+          }
         ],
         "TestAction.Foo": [
           {
             name: "bar",
-            len: 0,
-          },
+            len: 0
+          }
         ],
         "TestAction.Foo.Bar": [
           {
             name: "baz",
-            len: 0,
-          },
+            len: 0
+          }
         ],
         "TestAction.Foo.Bar.Baz": [
           {
             name: "qux",
-            len: 0,
-          },
-        ],
+            len: 0
+          }
+        ]
       },
       namespace: "Direct",
       type: "remoting",
-      url: "/router",
+      url: "/router"
     };
 
     function checkFn(fn) {
@@ -323,8 +323,8 @@ describe("Ext.direct.Manager", function () {
         alias: "direct.testprovider",
         type: "test",
         inheritableStatics: {
-          checkConfig: Ext.returnTrue,
-        },
+          checkConfig: Ext.returnTrue
+        }
       });
 
       successSpy = jasmine.createSpy("success");
@@ -333,7 +333,7 @@ describe("Ext.direct.Manager", function () {
 
       Manager.on({
         providerload: successSpy,
-        providerloaderror: failureSpy,
+        providerloaderror: failureSpy
       });
 
       callbackScope = {};
@@ -346,7 +346,7 @@ describe("Ext.direct.Manager", function () {
 
       Manager.un({
         providerload: successSpy,
-        providerloaderror: failureSpy,
+        providerloaderror: failureSpy
       });
 
       successSpy = failureSpy = callbackSpy = callbackScope = null;
@@ -364,18 +364,18 @@ describe("Ext.direct.Manager", function () {
           [
             {
               type: "test",
-              url: "test1",
+              url: "test1"
             },
             {
               type: "test",
-              url: "test2",
+              url: "test2"
             },
             {
               type: "test",
-              url: "test3",
-            },
+              url: "test3"
+            }
           ],
-          callbackSpy,
+          callbackSpy
         );
       });
 
@@ -403,10 +403,10 @@ describe("Ext.direct.Manager", function () {
         Manager.loadProvider(
           {
             type: "test",
-            url: "test",
+            url: "test"
           },
           callbackSpy,
-          callbackScope,
+          callbackScope
         );
 
         provider = Manager.providers.getAt(0);
@@ -571,7 +571,7 @@ describe("Ext.direct.Manager", function () {
                 varName: {},
                 config: { type: "test" },
                 callback: callbackSpy,
-                scope: callbackScope,
+                scope: callbackScope
               });
 
               provider = Manager.providers.getAt(0);
@@ -613,7 +613,7 @@ describe("Ext.direct.Manager", function () {
               Manager.onApiLoadSuccess({
                 url: "bar",
                 varName: "test.foo.bar",
-                config: { type: "test" },
+                config: { type: "test" }
               });
 
               provider = Manager.providers.getAt(0);
@@ -632,7 +632,7 @@ describe("Ext.direct.Manager", function () {
                 ? "ReferenceError: 'nonexistent' is undefined"
                 : Ext.isSafari
                   ? "ReferenceError: Can't find variable: nonexistent"
-                  : "ReferenceError: nonexistent is not defined",
+                  : "ReferenceError: nonexistent is not defined"
           ];
 
           beforeEach(function () {
@@ -641,7 +641,7 @@ describe("Ext.direct.Manager", function () {
               varName: "nonexistent.variable.name",
               config: { type: "test" },
               callback: callbackSpy,
-              scope: callbackScope,
+              scope: callbackScope
             });
 
             provider = Manager.providers.getAt(0);
@@ -682,7 +682,7 @@ describe("Ext.direct.Manager", function () {
           Manager.onApiLoadFailure({
             url: "fred",
             callback: callbackSpy,
-            scope: callbackScope,
+            scope: callbackScope
           });
         });
 
@@ -695,7 +695,7 @@ describe("Ext.direct.Manager", function () {
 
           expect(args).toEqual([
             "fred",
-            "Ext Direct API was not found at fred",
+            "Ext Direct API was not found at fred"
           ]);
         });
 
@@ -712,7 +712,7 @@ describe("Ext.direct.Manager", function () {
 
           expect(args).toEqual([
             "fred",
-            "Ext Direct API was not found at fred",
+            "Ext Direct API was not found at fred"
           ]);
         });
       });

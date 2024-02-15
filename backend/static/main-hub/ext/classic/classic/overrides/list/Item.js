@@ -5,7 +5,7 @@ Ext.define("Ext.overrides.list.TreeItem", {
   override: "Ext.list.TreeItem",
 
   config: {
-    floated: null,
+    floated: null
   },
 
   // Implement a setter.
@@ -98,8 +98,8 @@ Ext.define("Ext.overrides.list.TreeItem", {
           element: "el",
           click: function (e) {
             return owner.onClick(e);
-          },
-        },
+          }
+        }
       });
 
       floater.add(me);
@@ -107,6 +107,6 @@ Ext.define("Ext.overrides.list.TreeItem", {
       floater.el.alignTo(toolElement, "tr?");
 
       return floater;
-    },
-  },
+    }
+  }
 });

@@ -4,5 +4,5 @@ Ext.define("Ext.locale.es.data.validator.Presence", {
   getMessage: function () {
     var me = this;
     return me.message || me.config.message;
-  },
+  }
 });

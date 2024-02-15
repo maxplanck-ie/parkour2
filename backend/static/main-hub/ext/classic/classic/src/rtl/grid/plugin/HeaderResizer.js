@@ -62,5 +62,5 @@ Ext.define("Ext.rtl.grid.plugin.HeaderResizer", {
     } else {
       this.callParent(arguments);
     }
-  },
+  }
 });

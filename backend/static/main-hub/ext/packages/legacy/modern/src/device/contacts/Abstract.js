@@ -9,7 +9,7 @@ Ext.define("Ext.device.contacts.Abstract", {
      * @cfg {Boolean} includeImages
      * True to include images when you get the contacts store. Please beware that this can be very slow.
      */
-    includeImages: false,
+    includeImages: false
   },
 
   /**
@@ -23,16 +23,16 @@ Ext.define("Ext.device.contacts.Abstract", {
           first: "Peter",
           last: "Venkman",
           emails: {
-            work: "peter.venkman@gb.com",
-          },
+            work: "peter.venkman@gb.com"
+          }
         },
         {
           first: "Egon",
           last: "Spengler",
           emails: {
-            work: "egon.spengler@gb.com",
-          },
-        },
+            work: "egon.spengler@gb.com"
+          }
+        }
       ];
     }
 
@@ -60,7 +60,7 @@ Ext.define("Ext.device.contacts.Abstract", {
     config.callback.call(
       config.scope || this,
       config.label.toUpperCase(),
-      config.label,
+      config.label
     );
-  },
+  }
 });

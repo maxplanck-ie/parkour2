@@ -39,5 +39,5 @@ Ext.define("Ext.app.domain.Component", {
 
   match: function (target, selector) {
     return target.is(selector);
-  },
+  }
 });

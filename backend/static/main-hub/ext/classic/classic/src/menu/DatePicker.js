@@ -88,9 +88,9 @@ Ext.define("Ext.menu.DatePicker", {
           margin: 0,
           border: false,
           id: me.pickerId,
-          xtype: "datepicker",
+          xtype: "datepicker"
         },
-        me.pickerCfg,
+        me.pickerCfg
       );
     } else {
       // Need to keep this insanity for backwards compat :(
@@ -105,9 +105,9 @@ Ext.define("Ext.menu.DatePicker", {
           margin: 0,
           border: false,
           id: me.pickerId,
-          xtype: "datepicker",
+          xtype: "datepicker"
         },
-        cfg,
+        cfg
       );
     }
 
@@ -115,7 +115,7 @@ Ext.define("Ext.menu.DatePicker", {
       showSeparator: false,
       plain: true,
       bodyPadding: 0, // remove the body padding from the datepicker menu item so it looks like 3.3
-      items: [pickerConfig],
+      items: [pickerConfig]
     });
 
     me.callParent();
@@ -145,5 +145,5 @@ Ext.define("Ext.menu.DatePicker", {
 
   hidePickerOnSelect: function () {
     Ext.menu.Manager.hideAll();
-  },
+  }
 });

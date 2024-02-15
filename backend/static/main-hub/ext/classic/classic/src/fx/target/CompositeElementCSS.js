@@ -17,5 +17,5 @@ Ext.define("Ext.fx.target.CompositeElementCSS", {
   /* End Definitions */
   setAttr: function () {
     return Ext.fx.target.ElementCSS.prototype.setAttr.apply(this, arguments);
-  },
+  }
 });

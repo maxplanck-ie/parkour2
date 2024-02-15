@@ -25,7 +25,7 @@ Ext.define("Ext.fx.layout.card.ScrollReveal", {
       xy = this.calculateXY(containerSize);
       animConfig = {
         easing: this.getEasing(),
-        duration: this.getDuration(),
+        duration: this.getDuration()
       };
 
       outTranslate = outItem.setTranslatable(true).getTranslatable();
@@ -40,7 +40,7 @@ Ext.define("Ext.fx.layout.card.ScrollReveal", {
 
       outTranslate.on({
         animationend: "onOutAnimationEnd",
-        scope: this,
+        scope: this
       });
 
       outTranslate.translateAnimated({ x: xy.x, y: xy.y }, animConfig);
@@ -55,5 +55,5 @@ Ext.define("Ext.fx.layout.card.ScrollReveal", {
       .getWrapper()
       .dom.style.removeProperty("z-index"); // Remove this when we can remove translatable
     this.currentEventController.resume();
-  },
+  }
 });

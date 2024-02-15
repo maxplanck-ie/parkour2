@@ -26,17 +26,17 @@ describe("Ext.grid.filters.filter.String", function () {
             {
               name: "Homer",
               email: "homer@simpsons.com",
-              phone: "555-222-1244",
+              phone: "555-222-1244"
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
-              phone: "555-222-1254",
-            },
-          ],
+              phone: "555-222-1254"
+            }
+          ]
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -50,39 +50,39 @@ describe("Ext.grid.filters.filter.String", function () {
               dataIndex: "name",
               filter: Ext.apply(
                 {
-                  type: "string",
+                  type: "string"
                 },
-                listCfg,
+                listCfg
               ),
-              width: 100,
+              width: 100
             },
             {
               dataIndex: "email",
-              width: 100,
+              width: 100
             },
             {
               dataIndex: "phone",
               width: 100,
-              hidden: true,
-            },
+              hidden: true
+            }
           ],
 
           // We need programmatic mouseover events to be handled inline so we can test effects.
           viewConfig: {
             mouseOverOutBuffer: false,
-            deferHighlight: false,
+            deferHighlight: false
           },
           plugins: [
             {
-              ptype: "gridfilters",
-            },
+              ptype: "gridfilters"
+            }
           ],
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     plugin = grid.filters;
@@ -162,7 +162,7 @@ describe("Ext.grid.filters.filter.String", function () {
       spyOn(Ext.grid.filters.filter.String.prototype, "setValue").andCallFake(
         function () {
           endTime = new Date().getTime();
-        },
+        }
       );
     });
 
@@ -195,7 +195,7 @@ describe("Ext.grid.filters.filter.String", function () {
       // the updateBuffer config is variable.
       ms = 250;
       createGrid({
-        updateBuffer: ms,
+        updateBuffer: ms
       });
 
       initiateFilter(ms);
@@ -213,7 +213,7 @@ describe("Ext.grid.filters.filter.String", function () {
 
         expect(timer).toBeAtLeast(ms - 100);
         expect(timer).toBeLE(
-          Ext.grid.filters.filter.Base.prototype.config.updateBuffer,
+          Ext.grid.filters.filter.Base.prototype.config.updateBuffer
         );
       });
     });
@@ -249,7 +249,7 @@ describe("Ext.grid.filters.filter.String", function () {
     it("should not call through to the delegated handler when the store filter is replaced", function () {
       plugin.addFilter({
         dataIndex: "name",
-        value: "Princeton",
+        value: "Princeton"
       });
 
       store.clearFilter();
@@ -261,7 +261,7 @@ describe("Ext.grid.filters.filter.String", function () {
       // This should call the handler because the gridfilters API created the store filter.
       tearDown();
       createGrid({
-        value: "Homer",
+        value: "Homer"
       });
 
       showFilterMenu();
@@ -274,8 +274,8 @@ describe("Ext.grid.filters.filter.String", function () {
           id: "x-gridfilter-name",
           property: "name",
           operator: "like",
-          value: "Lily",
-        }),
+          value: "Lily"
+        })
       );
 
       expect(columnFilter.onFilterRemove).toHaveBeenCalled();
@@ -291,7 +291,7 @@ describe("Ext.grid.filters.filter.String", function () {
         expect(function () {
           plugin.addFilter({
             type: "string",
-            value: "ben germane",
+            value: "ben germane"
           });
         }).not.toThrow();
       });
@@ -300,7 +300,7 @@ describe("Ext.grid.filters.filter.String", function () {
         var filters, filter, basePrefix;
 
         createGrid({
-          value: "Marge",
+          value: "Marge"
         });
 
         basePrefix = columnFilter.getBaseIdPrefix();
@@ -316,7 +316,7 @@ describe("Ext.grid.filters.filter.String", function () {
         plugin.addFilter({
           type: "string",
           dataIndex: "name",
-          value: "attaboy",
+          value: "attaboy"
         });
 
         filter = filters.getAt(0);
@@ -337,14 +337,14 @@ describe("Ext.grid.filters.filter.String", function () {
           createGrid({
             active: state,
             updateBuffer: 0,
-            value: "Asbury Park",
+            value: "Asbury Park"
           });
 
           spyOn(columnFilter, "addStoreFilter");
 
           showFilterMenu();
           expect(columnFilter.addStoreFilter).not.toHaveBeenCalled();
-        },
+        }
       );
     }
 

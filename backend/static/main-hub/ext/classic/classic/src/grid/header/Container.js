@@ -24,14 +24,14 @@ Ext.define("Ext.grid.header.Container", {
     "Ext.grid.ColumnLayout",
     "Ext.grid.plugin.HeaderResizer",
     "Ext.grid.plugin.HeaderReorderer",
-    "Ext.util.KeyNav",
+    "Ext.util.KeyNav"
   ],
   uses: [
     "Ext.grid.column.Column",
     "Ext.grid.ColumnManager",
     "Ext.menu.Menu",
     "Ext.menu.CheckItem",
-    "Ext.menu.Separator",
+    "Ext.menu.Separator"
   ],
 
   mixins: ["Ext.util.FocusableContainer"],
@@ -249,7 +249,7 @@ Ext.define("Ext.grid.header.Container", {
 
         me.layout = {
           type: "container",
-          calculate: Ext.emptyFn,
+          calculate: Ext.emptyFn
         };
       }
     }
@@ -258,9 +258,9 @@ Ext.define("Ext.grid.header.Container", {
       me.layout = Ext.apply(
         {
           type: "gridcolumn",
-          align: "stretch",
+          align: "stretch"
         },
-        me.initialConfig.layout,
+        me.initialConfig.layout
       );
 
       // All HeaderContainers need to know this so that leaf Columns can adjust for cell border width if using content box model
@@ -381,7 +381,7 @@ Ext.define("Ext.grid.header.Container", {
         mousedown: me.onHeaderCtMouseDown,
         mouseover: me.onHeaderCtMouseOver,
         mouseout: me.onHeaderCtMouseOut,
-        scope: me,
+        scope: me
       };
 
       if (Ext.supports.Touch) {
@@ -427,7 +427,7 @@ Ext.define("Ext.grid.header.Container", {
                 e,
                 e.pointerType === "touch"
                   ? activeHeader.el
-                  : activeHeader.triggerEl,
+                  : activeHeader.triggerEl
               );
             } else {
               me.onHeaderClick(header, e, t);
@@ -613,7 +613,7 @@ Ext.define("Ext.grid.header.Container", {
       else {
         newCols.push({
           index: i,
-          column: col,
+          column: col
         });
       }
     }
@@ -680,7 +680,7 @@ Ext.define("Ext.grid.header.Container", {
 
       if (me._usedIDs[stateId] && me._usedIDs[stateId] !== c) {
         Ext.log.warn(
-          this.$className + " attempted to reuse an existing id: " + stateId,
+          this.$className + " attempted to reuse an existing id: " + stateId
         );
       }
 
@@ -740,7 +740,7 @@ Ext.define("Ext.grid.header.Container", {
       headerToMove,
       numColsToMove,
       headerToMove.visibleFromIdx,
-      visibleToIdx,
+      visibleToIdx
     );
   },
 
@@ -1179,8 +1179,8 @@ Ext.define("Ext.grid.header.Container", {
         listeners: {
           beforeshow: me.beforeMenuShow,
           hide: me.onMenuHide,
-          scope: me,
-        },
+          scope: me
+        }
       });
       me.fireEvent("menucreate", me, me.menu);
       if (grid) {
@@ -1210,17 +1210,17 @@ Ext.define("Ext.grid.header.Container", {
         menu.insert(insertPoint, [
           {
             itemId: "columnItemSeparator",
-            xtype: "menuseparator",
+            xtype: "menuseparator"
           },
           {
             itemId: "columnItem",
             text: me.columnsText,
             iconCls: me.menuColsIcon,
             menu: {
-              items: hideableColumns,
+              items: hideableColumns
             },
-            hideOnClick: false,
-          },
+            hideOnClick: false
+          }
         ]);
       }
     }
@@ -1250,22 +1250,22 @@ Ext.define("Ext.grid.header.Container", {
           text: me.sortAscText,
           iconCls: me.menuSortAscCls,
           handler: me.onSortAscClick,
-          scope: me,
+          scope: me
         },
         {
           itemId: "descItem",
           text: me.sortDescText,
           iconCls: me.menuSortDescCls,
           handler: me.onSortDescClick,
-          scope: me,
-        },
+          scope: me
+        }
       ];
     }
     if (hideableColumns && hideableColumns.length) {
       if (me.sortable) {
         menuItems.push({
           itemId: "columnItemSeparator",
-          xtype: "menuseparator",
+          xtype: "menuseparator"
         });
       }
       menuItems.push({
@@ -1273,7 +1273,7 @@ Ext.define("Ext.grid.header.Container", {
         text: me.columnsText,
         iconCls: me.menuColsIcon,
         menu: hideableColumns,
-        hideOnClick: false,
+        hideOnClick: false
       });
     }
     return menuItems;
@@ -1316,7 +1316,7 @@ Ext.define("Ext.grid.header.Container", {
         headerId: item.id,
         menu: item.isGroupHeader ? this.getColumnMenu(item) : undefined,
         checkHandler: this.onColumnCheckChange,
-        scope: this,
+        scope: this
       });
       menuItems.push(menuItem);
     }
@@ -1429,7 +1429,7 @@ Ext.define("Ext.grid.header.Container", {
    */
   getGridColumns: function (
     /* private - used in recursion*/ inResult,
-    hiddenAncestor,
+    hiddenAncestor
   ) {
     if (!inResult && this.gridDataColumns) {
       return this.gridDataColumns;
@@ -1617,7 +1617,7 @@ Ext.define("Ext.grid.header.Container", {
           myWidth = item.flex || defaultWidth;
           item.flex = Math.max(
             Math.ceil((myWidth / totalFlex) * availFlex),
-            minWidth,
+            minWidth
           );
           item.width = null;
         }
@@ -1713,7 +1713,7 @@ Ext.define("Ext.grid.header.Container", {
         end: me.onEndKey,
 
         space: me.onHeaderActivate,
-        enter: me.onHeaderActivate,
+        enter: me.onHeaderActivate
       });
     },
 
@@ -1774,6 +1774,6 @@ Ext.define("Ext.grid.header.Container", {
       if (storeChanged || columnsChanged) {
         me.initFocusableContainer();
       }
-    },
-  },
+    }
+  }
 });

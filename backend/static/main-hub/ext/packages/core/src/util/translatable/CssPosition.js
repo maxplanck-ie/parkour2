@@ -27,5 +27,5 @@ Ext.define("Ext.util.translatable.CssPosition", {
     domStyle.top = null;
 
     this.callParent();
-  },
+  }
 });

@@ -10,7 +10,7 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
   summaryRowCls: Ext.baseCSSPrefix + "grid-row-summary",
 
   readDataOptions: {
-    recordCreator: Ext.identityFn,
+    recordCreator: Ext.identityFn
   },
 
   // High priority rowTpl interceptor which sees summary rows early, and renders them correctly and then aborts the row rendering chain.
@@ -23,13 +23,13 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
           values.record,
           values,
           out,
-          parent,
+          parent
         );
       } else {
         this.nextTpl.applyOut(values, out, parent);
       }
     },
-    priority: 1000,
+    priority: 1000
   },
 
   /**
@@ -70,7 +70,7 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
       me.readerListeners = store.getProxy().getReader().on({
         scope: me,
         destroyable: true,
-        rawdata: me.onReaderRawData,
+        rawdata: me.onReaderRawData
       });
     }
   },
@@ -126,7 +126,7 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
             record.data[dataIndex],
             summaryData,
             dataIndex,
-            metaData,
+            metaData
           )
         : // For no summaryRenderer, return the field value in the Feature record.
           record.data[dataIndex];
@@ -150,7 +150,7 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
         itemClasses: [],
         recordIndex: -1,
         rowId: view.getRowId(summaryRecord),
-        columns: columns,
+        columns: columns
       };
 
     // Because we are using the regular row rendering pathway, temporarily swap out the renderer for the summaryRenderer
@@ -262,7 +262,7 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
       storeReader = me.view.store.getProxy().getReader();
       reader = Ext.create(
         "reader." + storeReader.type,
-        storeReader.getConfig(),
+        storeReader.getConfig()
       );
 
       // reset reader root and rebuild extractors to extract summaries data
@@ -327,5 +327,5 @@ Ext.define("Ext.grid.feature.AbstractSummary", {
     this.readerRawData = this.summaryRows = null;
 
     this.callParent();
-  },
+  }
 });

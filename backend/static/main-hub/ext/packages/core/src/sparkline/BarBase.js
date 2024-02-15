@@ -46,5 +46,5 @@ Ext.define("Ext.sparkline.BarBase", {
       me.updateDisplay();
     }
     canvas.render();
-  },
+  }
 });

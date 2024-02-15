@@ -78,7 +78,7 @@ Ext.define(
         vpath.join(", "),
         " ",
         closed,
-        'e"></svml:shape>',
+        'e"></svml:shape>'
       ].join("");
     },
 
@@ -89,7 +89,7 @@ Ext.define(
       radius,
       lineColor,
       fillColor,
-      lineWidth,
+      lineWidth
     ) {
       var circumference = radius * 2,
         stroke,
@@ -123,7 +123,7 @@ Ext.define(
         circumference,
         "px;height:",
         circumference,
-        'px"></svml:oval>',
+        'px"></svml:oval>'
       ].join("");
     },
 
@@ -135,7 +135,7 @@ Ext.define(
       startAngle,
       endAngle,
       lineColor,
-      fillColor,
+      fillColor
     ) {
       var vpath,
         width = this.pixelWidth,
@@ -193,7 +193,7 @@ Ext.define(
         startx,
         starty,
         endx,
-        endy,
+        endy
       ];
       return [
         '<svml:shape coordorigin="0 0" coordsize="',
@@ -215,7 +215,7 @@ Ext.define(
         y,
         " wa ",
         vpath.join(", "),
-        ' x e"></svml:shape>',
+        ' x e"></svml:shape>'
       ].join("");
     },
 
@@ -227,10 +227,10 @@ Ext.define(
           [x, y + height],
           [x + width, y + height],
           [x + width, y],
-          [x, y],
+          [x, y]
         ],
         lineColor,
-        fillColor,
+        fillColor
       );
     },
 
@@ -285,7 +285,7 @@ Ext.define(
 
     render: function () {
       this.group.dom.innerHTML = this.prerender.join("");
-    },
+    }
   },
   function () {
     Ext.onInternalReady(function () {
@@ -295,9 +295,9 @@ Ext.define(
         doc.namespaces.add(
           "svml",
           "urn:schemas-microsoft-com:vml",
-          "#default#VML",
+          "#default#VML"
         );
       }
     });
-  },
+  }
 );

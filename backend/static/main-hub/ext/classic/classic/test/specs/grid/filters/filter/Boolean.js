@@ -14,30 +14,30 @@ describe("Ext.grid.filters.filter.Boolean", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              adult: false,
+              adult: false
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              adult: false,
+              adult: false
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              adult: true,
+              adult: true
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              adult: true,
-            },
-          ],
+              adult: true
+            }
+          ]
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -50,25 +50,25 @@ describe("Ext.grid.filters.filter.Boolean", function () {
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
             { header: "Phone", dataIndex: "phone", width: 100 },
-            { header: "Adult", dataIndex: "adult", width: 100 },
+            { header: "Adult", dataIndex: "adult", width: 100 }
           ],
 
           // We need programmatic mouseover events to be handled inline so we can test effects.
           viewConfig: {
             mouseOverOutBuffer: false,
-            deferHighlight: false,
+            deferHighlight: false
           },
           plugins: [
             {
-              ptype: "gridfilters",
-            },
+              ptype: "gridfilters"
+            }
           ],
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
   }
 
@@ -90,15 +90,15 @@ describe("Ext.grid.filters.filter.Boolean", function () {
                 dataIndex: "adult",
                 filter: {
                   type: "boolean",
-                  value: true,
+                  value: true
                 },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
 
           expect(
-            grid.columnManager.getHeaderByDataIndex("adult").filter.active,
+            grid.columnManager.getHeaderByDataIndex("adult").filter.active
           ).toBe(true);
         });
 
@@ -111,15 +111,15 @@ describe("Ext.grid.filters.filter.Boolean", function () {
                 dataIndex: "adult",
                 filter: {
                   type: "boolean",
-                  value: false,
+                  value: false
                 },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
 
           expect(
-            grid.columnManager.getHeaderByDataIndex("adult").filter.active,
+            grid.columnManager.getHeaderByDataIndex("adult").filter.active
           ).toBe(true);
         });
 
@@ -132,15 +132,15 @@ describe("Ext.grid.filters.filter.Boolean", function () {
                 dataIndex: "adult",
                 filter: {
                   type: "boolean",
-                  value: null,
+                  value: null
                 },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
 
           expect(
-            grid.columnManager.getHeaderByDataIndex("adult").filter.active,
+            grid.columnManager.getHeaderByDataIndex("adult").filter.active
           ).toBe(true);
         });
       });
@@ -154,15 +154,15 @@ describe("Ext.grid.filters.filter.Boolean", function () {
                 header: "Adult",
                 dataIndex: "adult",
                 filter: {
-                  type: "boolean",
+                  type: "boolean"
                 },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
 
           expect(
-            grid.columnManager.getHeaderByDataIndex("adult").filter.active,
+            grid.columnManager.getHeaderByDataIndex("adult").filter.active
           ).toBe(false);
         });
 
@@ -175,15 +175,15 @@ describe("Ext.grid.filters.filter.Boolean", function () {
                 dataIndex: "adult",
                 filter: {
                   type: "boolean",
-                  value: undefined,
+                  value: undefined
                 },
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
 
           expect(
-            grid.columnManager.getHeaderByDataIndex("adult").filter.active,
+            grid.columnManager.getHeaderByDataIndex("adult").filter.active
           ).toBe(false);
         });
       });

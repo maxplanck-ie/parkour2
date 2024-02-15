@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "September",
       "Október",
       "November",
-      "December",
+      "December"
     ];
 
     Ext.Date.dayNames = [
@@ -28,7 +28,7 @@ Ext.onReady(function () {
       "Streda",
       "Štvrtok",
       "Piatok",
-      "Sobota",
+      "Sobota"
     ];
   }
 
@@ -38,35 +38,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // Slovakian Euro
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.sk.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.sk.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} označených riadkov",
+  dragText: "{0} označených riadkov"
 });
 
 Ext.define("Ext.locale.sk.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Zavrieť túto záložku",
+  closeText: "Zavrieť túto záložku"
 });
 
 Ext.define("Ext.locale.sk.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Hodnota v tomto poli je nesprávna",
+  invalidText: "Hodnota v tomto poli je nesprávna"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sk.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Nahrávam...",
+  loadingText: "Nahrávam..."
 });
 
 Ext.define("Ext.locale.sk.picker.Date", {
@@ -80,7 +80,7 @@ Ext.define("Ext.locale.sk.picker.Date", {
   prevText: "Predchádzajúci mesiac (Control+Doľava)",
   monthYearText: "Vyberte mesiac (Control+Hore/Dole pre posun rokov)",
   todayTip: "{0} (Medzerník)",
-  format: "d.m.Y",
+  format: "d.m.Y"
 });
 
 Ext.define("Ext.locale.sk.toolbar.Paging", {
@@ -93,7 +93,7 @@ Ext.define("Ext.locale.sk.toolbar.Paging", {
   lastText: "Posledná strana",
   refreshText: "Obnoviť",
   displayMsg: "Zobrazujem {0} - {1} z {2}",
-  emptyMsg: "Žiadne dáta",
+  emptyMsg: "Žiadne dáta"
 });
 
 Ext.define("Ext.locale.sk.form.field.Text", {
@@ -102,14 +102,14 @@ Ext.define("Ext.locale.sk.form.field.Text", {
   maxLengthText: "Maximálna dĺžka pre toto pole je {0}",
   blankText: "Toto pole je povinné",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.sk.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Minimálna hodnota pre toto pole je {0}",
   maxText: "Maximálna hodnota pre toto pole je {0}",
-  nanText: "{0} je nesprávne číslo",
+  nanText: "{0} je nesprávne číslo"
 });
 
 Ext.define("Ext.locale.sk.form.field.Date", {
@@ -119,20 +119,20 @@ Ext.define("Ext.locale.sk.form.field.Date", {
   minText: "Dátum v tomto poli musí byť až po {0}",
   maxText: "Dátum v tomto poli musí byť pred {0}",
   invalidText: "{0} nie je správny dátum - musí byť vo formáte {1}",
-  format: "d.m.Y",
+  format: "d.m.Y"
 });
 
 Ext.define(
   "Ext.locale.sk.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Nahrávam...",
+      loadingText: "Nahrávam..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.sk.form.field.VTypes", {
@@ -141,7 +141,7 @@ Ext.define("Ext.locale.sk.form.field.VTypes", {
     'Toto pole musí byť e-mailová adresa vo formáte "user@example.com"',
   urlText: 'Toto pole musí byť URL vo formáte "http:/' + '/www.example.com"',
   alphaText: "Toto pole može obsahovať iba písmená a znak _",
-  alphanumText: "Toto pole može obsahovať iba písmená, čísla a znak _",
+  alphanumText: "Toto pole može obsahovať iba písmená, čísla a znak _"
 });
 
 Ext.define("Ext.locale.sk.grid.header.Container", {
@@ -150,14 +150,14 @@ Ext.define("Ext.locale.sk.grid.header.Container", {
   sortDescText: "Zoradiť zostupne",
   lockText: "Zamknúť stĺpec",
   unlockText: "Odomknúť stĺpec",
-  columnsText: "Stĺpce",
+  columnsText: "Stĺpce"
 });
 
 Ext.define("Ext.locale.sk.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Názov",
   valueText: "Hodnota",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.sk.window.MessageBox", {
@@ -166,11 +166,11 @@ Ext.define("Ext.locale.sk.window.MessageBox", {
     ok: "OK",
     cancel: "Zrušiť",
     yes: "Áno",
-    no: "Nie",
-  },
+    no: "Nie"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.sk.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

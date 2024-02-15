@@ -11,7 +11,7 @@ Ext.define("Ext.ux.IFrame", {
   src: "about:blank",
 
   renderTpl: [
-    '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>',
+    '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0"></iframe>'
   ],
   childEls: ["iframeEl"],
 
@@ -30,7 +30,7 @@ Ext.define("Ext.ux.IFrame", {
   initRenderData: function () {
     return Ext.apply(this.callParent(), {
       src: this.src,
-      frameName: this.frameName,
+      frameName: this.frameName
     });
   },
 
@@ -84,7 +84,7 @@ Ext.define("Ext.ux.IFrame", {
 
       frame.src = me.src = src || me.src;
     }
-  },
+  }
 });
 
 /*

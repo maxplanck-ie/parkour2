@@ -72,14 +72,14 @@ Ext.define(
       "Ext.fx.Anim",
 
       // Overrides for Panel that provide border layout features
-      "Ext.layout.container.border.Region",
+      "Ext.layout.container.border.Region"
     ],
 
     targetCls: Ext.baseCSSPrefix + "border-layout-ct",
 
     itemCls: [
       Ext.baseCSSPrefix + "border-item",
-      Ext.baseCSSPrefix + "box-item",
+      Ext.baseCSSPrefix + "box-item"
     ],
 
     type: "border",
@@ -149,7 +149,7 @@ Ext.define(
         horizontal: true,
         posProp: "x",
         sizeProp: "width",
-        sizePropCap: "Width",
+        sizePropCap: "Width"
       },
       vert: {
         borderBegin: "north",
@@ -157,8 +157,8 @@ Ext.define(
         horizontal: false,
         posProp: "y",
         sizeProp: "height",
-        sizePropCap: "Height",
-      },
+        sizePropCap: "Height"
+      }
     },
 
     /**
@@ -201,7 +201,7 @@ Ext.define(
       south: 10,
       center: 0,
       west: -10,
-      east: -20,
+      east: -20
     },
 
     //----------------------------------
@@ -306,9 +306,9 @@ Ext.define(
       return Ext.apply(
         {
           before: isVert ? "top" : "left",
-          totalFlex: totalFlex,
+          totalFlex: totalFlex
         },
-        props,
+        props
       );
     },
 
@@ -335,7 +335,7 @@ Ext.define(
           "Border layout does not currently support shrinkWrap height. " +
             "Please specify a height on component: " +
             me.owner.id +
-            ", or use a container layout that sets the component's height.",
+            ", or use a container layout that sets the component's height."
         );
       }
       if (ownerContext.widthModel.shrinkWrap) {
@@ -343,7 +343,7 @@ Ext.define(
           "Border layout does not currently support shrinkWrap width. " +
             "Please specify a width on component: " +
             me.owner.id +
-            ", or use a container layout that sets the component's width.",
+            ", or use a container layout that sets the component's width."
         );
       }
       //</debug>
@@ -515,13 +515,13 @@ Ext.define(
         if (childContext.percentage) {
           if (childContext.isHorz) {
             size = Math.ceil(
-              (horzPercentTotal * childContext.percentage) / 100,
+              (horzPercentTotal * childContext.percentage) / 100
             );
             size = childContext.setWidth(size);
             horz.addUnflexed(size);
           } else if (childContext.isVert) {
             size = Math.ceil(
-              (vertPercentTotal * childContext.percentage) / 100,
+              (vertPercentTotal * childContext.percentage) / 100
             );
             size = childContext.setHeight(size);
             vert.addUnflexed(size);
@@ -645,7 +645,7 @@ Ext.define(
 
       if (center) {
         center["set" + axis.sizePropCap](
-          size - center.getMarginInfo()[axis.sizeProp],
+          size - center.getMarginInfo()[axis.sizeProp]
         );
         center.layoutPos[axis.posProp] = axis.begin;
       }
@@ -668,11 +668,11 @@ Ext.define(
 
         childContext.setProp(
           "x",
-          childContext.layoutPos.x + childContext.marginInfo[marginProp],
+          childContext.layoutPos.x + childContext.marginInfo[marginProp]
         );
         childContext.setProp(
           "y",
-          childContext.layoutPos.y + childContext.marginInfo.top,
+          childContext.layoutPos.y + childContext.marginInfo.top
         );
       }
     },
@@ -753,7 +753,7 @@ Ext.define(
             }
           }
         },
-        this,
+        this
       );
 
       return weight;
@@ -795,9 +795,9 @@ Ext.define(
             hidden: hidden,
             canResize: item.splitterResize !== false,
             splitterFor: item,
-            synthetic: true, // not user-defined
+            synthetic: true // not user-defined
           },
-          splitterCfg,
+          splitterCfg
         ),
         at = index + (region === "south" || region === "east" ? 0 : 1);
 
@@ -963,7 +963,7 @@ Ext.define(
       south: { splitterDelta: -1 },
 
       west: { splitterDelta: 1 },
-      east: { splitterDelta: -1 },
+      east: { splitterDelta: -1 }
     },
 
     /**
@@ -974,34 +974,34 @@ Ext.define(
       center: {
         isCenter: true,
         isHorz: false,
-        isVert: false,
+        isVert: false
       },
 
       north: {
         isCenter: false,
         isHorz: false,
         isVert: true,
-        collapseDirection: "top",
+        collapseDirection: "top"
       },
       south: {
         isCenter: false,
         isHorz: false,
         isVert: true,
-        collapseDirection: "bottom",
+        collapseDirection: "bottom"
       },
 
       west: {
         isCenter: false,
         isHorz: true,
         isVert: false,
-        collapseDirection: "left",
+        collapseDirection: "left"
       },
       east: {
         isCenter: false,
         isHorz: true,
         isVert: false,
-        collapseDirection: "right",
-      },
+        collapseDirection: "right"
+      }
     },
 
     setupSplitterNeighbors: function (items) {
@@ -1077,7 +1077,7 @@ Ext.define(
       north: ["north", "east", "west"],
       south: ["south", "east", "west"],
       east: ["east", "north", "south"],
-      west: ["west", "north", "south"],
+      west: ["west", "north", "south"]
     },
 
     sizePolicies: {
@@ -1085,20 +1085,20 @@ Ext.define(
         readsWidth: 0,
         readsHeight: 1,
         setsWidth: 1,
-        setsHeight: 0,
+        setsHeight: 0
       },
       horz: {
         readsWidth: 1,
         readsHeight: 0,
         setsWidth: 0,
-        setsHeight: 1,
+        setsHeight: 1
       },
       flexAll: {
         readsWidth: 0,
         readsHeight: 0,
         setsWidth: 1,
-        setsHeight: 1,
-      },
+        setsHeight: 1
+      }
     },
 
     getItemSizePolicy: function (item) {
@@ -1153,17 +1153,17 @@ Ext.define(
       }
 
       return me.autoSizePolicy;
-    },
+    }
   },
   function () {
     var methods = {
         addUnflexed: function (px) {
           this.flexSpace = Math.max(this.flexSpace - px, 0);
-        },
+        }
       },
       props = this.prototype.axisProps;
 
     Ext.apply(props.horz, methods);
     Ext.apply(props.vert, methods);
-  },
+  }
 );

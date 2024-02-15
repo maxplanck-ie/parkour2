@@ -9,14 +9,14 @@ Ext.define("MainHub.components.SearchField", {
       cls: Ext.baseCSSPrefix + "form-clear-trigger",
       hidden: true,
       handler: "onClearClick",
-      scope: "this",
+      scope: "this"
     },
     search: {
       weight: 1,
       cls: Ext.baseCSSPrefix + "form-search-trigger",
       handler: "onSearchClick",
-      scope: "this",
-    },
+      scope: "this"
+    }
   },
 
   initComponent: function () {
@@ -73,7 +73,7 @@ Ext.define("MainHub.components.SearchField", {
             }
           });
           return contains;
-        },
+        }
       });
 
       filters.add(me.activeFilter);
@@ -82,5 +82,5 @@ Ext.define("MainHub.components.SearchField", {
     } else {
       me.onClearClick();
     }
-  },
+  }
 });

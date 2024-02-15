@@ -10,7 +10,7 @@ describe("Ext.Object", function () {
         key1: true,
         key2: true,
         key3: true,
-        key4: true,
+        key4: true
       };
       expect(Ext.Object.getSize(o)).toBe(4);
     });
@@ -34,7 +34,7 @@ describe("Ext.Object", function () {
     it("should retain items that are not hasOwnProperty on the object", function () {
       var obj = Ext.Object.chain({
         a: 1,
-        b: 2,
+        b: 2
       });
       obj.c = 3;
       Ext.Object.clear(obj);
@@ -57,7 +57,7 @@ describe("Ext.Object", function () {
 
     it("should return false if there are properties", function () {
       var o = {
-        key1: true,
+        key1: true
       };
       expect(Ext.Object.isEmpty(o)).toBe(false);
     });
@@ -78,8 +78,8 @@ describe("Ext.Object", function () {
         getKeys({
           foo: 1,
           bar: 2,
-          baz: 3,
-        }),
+          baz: 3
+        })
       ).toEqual(["foo", "bar", "baz"]);
     });
   });
@@ -99,8 +99,8 @@ describe("Ext.Object", function () {
         getValues({
           foo: 1,
           bar: 2,
-          baz: 3,
-        }),
+          baz: 3
+        })
       ).toEqual([1, 2, 3]);
     });
   });
@@ -121,10 +121,10 @@ describe("Ext.Object", function () {
         getKey(
           {
             foo: 1,
-            bar: 2,
+            bar: 2
           },
-          3,
-        ),
+          3
+        )
       ).toBeNull();
     });
 
@@ -132,10 +132,10 @@ describe("Ext.Object", function () {
       expect(
         getKey(
           {
-            foo: 1,
+            foo: 1
           },
-          "1",
-        ),
+          "1"
+        )
       ).toBeNull();
     });
 
@@ -143,10 +143,10 @@ describe("Ext.Object", function () {
       expect(
         getKey(
           {
-            foo: 1,
+            foo: 1
           },
-          1,
-        ),
+          1
+        )
       ).toEqual("foo");
     });
 
@@ -155,10 +155,10 @@ describe("Ext.Object", function () {
         getKey(
           {
             bar: 1,
-            foo: 1,
+            foo: 1
           },
-          1,
-        ),
+          1
+        )
       ).toEqual("bar");
     });
   });
@@ -180,33 +180,33 @@ describe("Ext.Object", function () {
 
     it("should not match if the objects have different keys", function () {
       var o1 = {
-        foo: true,
+        foo: true
       };
 
       var o2 = {
-        bar: true,
+        bar: true
       };
       expect(equals(o1, o2)).toBe(false);
     });
 
     it("should not match if keys have different values", function () {
       var o1 = {
-        foo: 1,
+        foo: 1
       };
 
       var o2 = {
-        foo: 2,
+        foo: 2
       };
       expect(equals(o1, o2)).toBe(false);
     });
 
     it("should use strict equality", function () {
       var o1 = {
-        foo: 1,
+        foo: 1
       };
 
       var o2 = {
-        foo: "1",
+        foo: "1"
       };
       expect(equals(o1, o2)).toBe(false);
     });
@@ -214,12 +214,12 @@ describe("Ext.Object", function () {
     it("should match objects with the same keys/values", function () {
       var o1 = {
         foo: "value",
-        bar: true,
+        bar: true
       };
 
       var o2 = {
         foo: "value",
-        bar: true,
+        bar: true
       };
 
       expect(equals(o1, o2)).toBe(true);
@@ -228,12 +228,12 @@ describe("Ext.Object", function () {
     it("should ignore key ordering", function () {
       var o1 = {
         bar: true,
-        foo: "value",
+        foo: "value"
       };
 
       var o2 = {
         foo: "value",
-        bar: true,
+        bar: true
       };
 
       expect(equals(o1, o2)).toBe(true);
@@ -252,12 +252,12 @@ describe("Ext.Object", function () {
           {
             foo: 1,
             bar: "value",
-            baz: false,
+            baz: false
           },
           function () {
             actual = this;
           },
-          scope,
+          scope
         );
         expect(actual).toBe(scope);
       });
@@ -266,7 +266,7 @@ describe("Ext.Object", function () {
         var o = {
             foo: 1,
             bar: "value",
-            baz: false,
+            baz: false
           },
           actual;
 
@@ -282,7 +282,7 @@ describe("Ext.Object", function () {
           data = {
             foo: 1,
             bar: "value",
-            baz: false,
+            baz: false
           },
           obj;
 
@@ -306,11 +306,11 @@ describe("Ext.Object", function () {
             a: 1,
             b: 2,
             c: 3,
-            d: 4,
+            d: 4
           },
           function () {
             ++count;
-          },
+          }
         );
         expect(count).toEqual(4);
       });
@@ -322,12 +322,12 @@ describe("Ext.Object", function () {
             a: 1,
             b: 2,
             c: 3,
-            d: 4,
+            d: 4
           },
           function () {
             ++count;
             return null;
-          },
+          }
         );
         expect(count).toEqual(4);
       });
@@ -339,12 +339,12 @@ describe("Ext.Object", function () {
             a: 1,
             b: 2,
             c: 3,
-            d: 4,
+            d: 4
           },
           function (key) {
             ++count;
             return key != "b";
-          },
+          }
         );
         expect(count).toEqual(2);
       });
@@ -356,11 +356,11 @@ describe("Ext.Object", function () {
 
         Ext.Object.each(
           {
-            constructor: 42,
+            constructor: 42
           },
           function (k, v) {
             value = v;
-          },
+          }
         );
 
         expect(value).toBe(42);
@@ -371,11 +371,11 @@ describe("Ext.Object", function () {
 
         Ext.Object.each(
           {
-            toString: 42,
+            toString: 42
           },
           function (k, v) {
             value = v;
-          },
+          }
         );
 
         expect(value).toBe(42);
@@ -386,11 +386,11 @@ describe("Ext.Object", function () {
 
         Ext.Object.each(
           {
-            valueOf: 42,
+            valueOf: 42
           },
           function (k, v) {
             value = v;
-          },
+          }
         );
 
         expect(value).toBe(42);
@@ -401,11 +401,11 @@ describe("Ext.Object", function () {
 
         Ext.Object.each(
           {
-            toLocaleString: 42,
+            toLocaleString: 42
           },
           function (k, v) {
             value = v;
-          },
+          }
         );
 
         expect(value).toBe(42);
@@ -444,16 +444,16 @@ describe("Ext.Object", function () {
       it("should convert space to %20", function () {
         expect(
           toQueryString({
-            name: "foo bar",
-          }),
+            name: "foo bar"
+          })
         ).toBe("name=foo%20bar");
       });
 
       it("should convert + to %2B, not spaces", function () {
         expect(
           toQueryString({
-            name: "foo+bar",
-          }),
+            name: "foo+bar"
+          })
         ).toBe("name=foo%2Bbar");
       });
     });
@@ -463,32 +463,32 @@ describe("Ext.Object", function () {
         it("undefined", function () {
           expect(
             toQueryString({
-              foo: undefined,
-            }),
+              foo: undefined
+            })
           ).toEqual("foo=");
         });
 
         it("null", function () {
           expect(
             toQueryString({
-              foo: null,
-            }),
+              foo: null
+            })
           ).toEqual("foo=");
         });
 
         it("empty string", function () {
           expect(
             toQueryString({
-              foo: "",
-            }),
+              foo: ""
+            })
           ).toEqual("foo=");
         });
 
         it("empty array", function () {
           expect(
             toQueryString({
-              foo: "",
-            }),
+              foo: ""
+            })
           ).toEqual("foo=");
         });
 
@@ -496,8 +496,8 @@ describe("Ext.Object", function () {
           expect(
             toQueryString({
               foo: "",
-              bar: "baz",
-            }),
+              bar: "baz"
+            })
           ).toEqual("foo=&bar=baz");
         });
       });
@@ -505,8 +505,8 @@ describe("Ext.Object", function () {
       it("should separate a property/value by an =", function () {
         expect(
           toQueryString({
-            foo: 1,
-          }),
+            foo: 1
+          })
         ).toEqual("foo=1");
       });
 
@@ -514,8 +514,8 @@ describe("Ext.Object", function () {
         expect(
           toQueryString({
             foo: 1,
-            bar: 2,
-          }),
+            bar: 2
+          })
         ).toEqual("foo=1&bar=2");
       });
 
@@ -523,32 +523,32 @@ describe("Ext.Object", function () {
         var d = new Date(2011, 0, 1);
         expect(
           toQueryString({
-            foo: d,
-          }),
+            foo: d
+          })
         ).toEqual("foo=2011-01-01T00%3A00%3A00");
       });
 
       it("should url encode the key", function () {
         expect(
           toQueryString({
-            "a prop": 1,
-          }),
+            "a prop": 1
+          })
         ).toEqual("a%20prop=1");
       });
 
       it("should url encode the value", function () {
         expect(
           toQueryString({
-            prop: "$300 & 5 cents",
-          }),
+            prop: "$300 & 5 cents"
+          })
         ).toEqual("prop=%24300%20%26%205%20cents");
       });
 
       it("should encode both key and value at the same time", function () {
         expect(
           toQueryString({
-            "a prop": "$300",
-          }),
+            "a prop": "$300"
+          })
         ).toEqual("a%20prop=%24300");
       });
     });
@@ -557,8 +557,8 @@ describe("Ext.Object", function () {
       it("should support an array value", function () {
         expect(
           toQueryString({
-            foo: [1, 2, 3],
-          }),
+            foo: [1, 2, 3]
+          })
         ).toEqual("foo=1&foo=2&foo=3");
       });
 
@@ -566,8 +566,8 @@ describe("Ext.Object", function () {
         expect(
           toQueryString({
             foo: [1, 2],
-            bar: [3, 4],
-          }),
+            bar: [3, 4]
+          })
         ).toEqual("foo=1&foo=2&bar=3&bar=4");
       });
 
@@ -576,8 +576,8 @@ describe("Ext.Object", function () {
           toQueryString({
             foo: "val1",
             bar: ["val2", "val3"],
-            baz: "val4",
-          }),
+            baz: "val4"
+          })
         ).toEqual("foo=val1&bar=val2&bar=val3&baz=val4");
       });
     });
@@ -592,15 +592,15 @@ describe("Ext.Object", function () {
                 dateOfBirth: {
                   day: 1,
                   month: 2,
-                  year: 1911,
+                  year: 1911
                 },
-                hobbies: ["coding", "eating", "sleeping", [1, 2]],
+                hobbies: ["coding", "eating", "sleeping", [1, 2]]
               },
-              true,
-            ),
-          ),
+              true
+            )
+          )
         ).toEqual(
-          "username=Jacky&dateOfBirth[day]=1&dateOfBirth[month]=2&dateOfBirth[year]=1911&hobbies[0]=coding&hobbies[1]=eating&hobbies[2]=sleeping&hobbies[3][0]=1&hobbies[3][1]=2",
+          "username=Jacky&dateOfBirth[day]=1&dateOfBirth[month]=2&dateOfBirth[year]=1911&hobbies[0]=coding&hobbies[1]=eating&hobbies[2]=sleeping&hobbies[3][0]=1&hobbies[3][1]=2"
         );
       });
     });
@@ -624,16 +624,16 @@ describe("Ext.Object", function () {
         var o = {
             foo: "prop",
             tada: {
-              blah: "bleh",
-            },
+              blah: "bleh"
+            }
           },
           result = merge({}, o);
 
         expect(result).toEqual({
           foo: "prop",
           tada: {
-            blah: "bleh",
-          },
+            blah: "bleh"
+          }
         });
         expect(result).not.toBe(o);
       });
@@ -641,7 +641,7 @@ describe("Ext.Object", function () {
       it("should NOT merge an instance (the constructor of which is not Object)", function () {
         var instance = new Ext.Base(),
           o = {
-            foo: instance,
+            foo: instance
           },
           result = merge({}, o);
 
@@ -655,20 +655,20 @@ describe("Ext.Object", function () {
           merge(
             {
               prop: {
-                foo: 1,
-              },
+                foo: 1
+              }
             },
             {
               prop: {
-                bar: 2,
-              },
-            },
-          ),
+                bar: 2
+              }
+            }
+          )
         ).toEqual({
           prop: {
             foo: 1,
-            bar: 2,
-          },
+            bar: 2
+          }
         });
       });
 
@@ -676,11 +676,11 @@ describe("Ext.Object", function () {
         var o = new Ext.Base(),
           result = merge(
             {
-              prop: 1,
+              prop: 1
             },
             {
-              prop: o,
-            },
+              prop: o
+            }
           );
 
         expect(result.prop).toEqual(o);
@@ -691,14 +691,14 @@ describe("Ext.Object", function () {
         expect(
           merge(
             {
-              prop: 1,
+              prop: 1
             },
             {
-              prop: 2,
-            },
-          ),
+              prop: 2
+            }
+          )
         ).toEqual({
-          prop: 2,
+          prop: 2
         });
       });
     });
@@ -709,11 +709,11 @@ describe("Ext.Object", function () {
           merge(
             {},
             {
-              foo: 1,
-            },
-          ),
+              foo: 1
+            }
+          )
         ).toEqual({
-          foo: 1,
+          foo: 1
         });
       });
 
@@ -722,17 +722,17 @@ describe("Ext.Object", function () {
           merge(
             {},
             {
-              foo: 1,
+              foo: 1
             },
             {
-              foo: 2,
+              foo: 2
             },
             {
-              foo: 3,
-            },
-          ),
+              foo: 3
+            }
+          )
         ).toEqual({
-          foo: 3,
+          foo: 3
         });
       });
     });
@@ -740,7 +740,7 @@ describe("Ext.Object", function () {
     it("should modify and return the source", function () {
       var o = {},
         result = merge(o, {
-          foo: "bar",
+          foo: "bar"
         });
 
       expect(result.foo).toEqual("bar");
@@ -754,36 +754,36 @@ describe("Ext.Object", function () {
       dateOfBirth: {
         day: 1,
         month: 2,
-        year: 1911,
+        year: 1911
       },
-      hobbies: ["coding", "eating", "sleeping", [1, 2, 3]],
+      hobbies: ["coding", "eating", "sleeping", [1, 2, 3]]
     };
 
     it("simple key value", function () {
       expect(Ext.Object.toQueryObjects("username", "Jacky")).toEqual([
         {
           name: "username",
-          value: "Jacky",
-        },
+          value: "Jacky"
+        }
       ]);
     });
 
     it("non-recursive array", function () {
       expect(
-        Ext.Object.toQueryObjects("hobbies", ["eating", "sleeping", "coding"]),
+        Ext.Object.toQueryObjects("hobbies", ["eating", "sleeping", "coding"])
       ).toEqual([
         {
           name: "hobbies",
-          value: "eating",
+          value: "eating"
         },
         {
           name: "hobbies",
-          value: "sleeping",
+          value: "sleeping"
         },
         {
           name: "hobbies",
-          value: "coding",
-        },
+          value: "coding"
+        }
       ]);
     });
 
@@ -799,34 +799,34 @@ describe("Ext.Object", function () {
               nested: {
                 very: "very",
                 deep: {
-                  inHere: true,
-                },
-              },
-            },
+                  inHere: true
+                }
+              }
+            }
           },
-          true,
-        ),
+          true
+        )
       ).toEqual([
         {
           name: "dateOfBirth[day]",
-          value: 1,
+          value: 1
         },
         {
           name: "dateOfBirth[month]",
-          value: 2,
+          value: 2
         },
         {
           name: "dateOfBirth[year]",
-          value: 1911,
+          value: 1911
         },
         {
           name: "dateOfBirth[somethingElse][nested][very]",
-          value: "very",
+          value: "very"
         },
         {
           name: "dateOfBirth[somethingElse][nested][deep][inHere]",
-          value: true,
-        },
+          value: true
+        }
       ]);
     });
 
@@ -835,29 +835,29 @@ describe("Ext.Object", function () {
         Ext.Object.toQueryObjects(
           "hobbies",
           ["eating", "sleeping", "coding", ["even", ["more"]]],
-          true,
-        ),
+          true
+        )
       ).toEqual([
         {
           name: "hobbies[0]",
-          value: "eating",
+          value: "eating"
         },
         {
           name: "hobbies[1]",
-          value: "sleeping",
+          value: "sleeping"
         },
         {
           name: "hobbies[2]",
-          value: "coding",
+          value: "coding"
         },
         {
           name: "hobbies[3][0]",
-          value: "even",
+          value: "even"
         },
         {
           name: "hobbies[3][1][0]",
-          value: "more",
-        },
+          value: "more"
+        }
       ]);
     });
   });
@@ -868,19 +868,19 @@ describe("Ext.Object", function () {
     describe("spaces", function () {
       it("should decode %20 to space", function () {
         expect(fromQueryString("name=foo%20bar")).toEqual({
-          name: "foo bar",
+          name: "foo bar"
         });
       });
 
       it("should decode + to space", function () {
         expect(fromQueryString("name=foo+bar")).toEqual({
-          name: "foo bar",
+          name: "foo bar"
         });
       });
 
       it("should decode a mixture of %20 & + to space", function () {
         expect(fromQueryString("name=foo+bar%20baz")).toEqual({
-          name: "foo bar baz",
+          name: "foo bar baz"
         });
       });
     });
@@ -901,19 +901,19 @@ describe("Ext.Object", function () {
       it("multiple key value pairs", function () {
         expect(fromQueryString("name=Jacky&loves=food")).toEqual({
           name: "Jacky",
-          loves: "food",
+          loves: "food"
         });
       });
 
       it("multiple key value pairs with URI encoded component", function () {
         expect(
-          fromQueryString("a%20property=%24300%20%26%205%20cents"),
+          fromQueryString("a%20property=%24300%20%26%205%20cents")
         ).toEqual({ "a property": "$300 & 5 cents" });
       });
 
       it("simple array", function () {
         expect(fromQueryString("foo=1&foo=2&foo=3")).toEqual({
-          foo: ["1", "2", "3"],
+          foo: ["1", "2", "3"]
         });
       });
     });
@@ -934,43 +934,43 @@ describe("Ext.Object", function () {
       it("multiple key value pairs", function () {
         expect(fromQueryString("name=Jacky&loves=food", true)).toEqual({
           name: "Jacky",
-          loves: "food",
+          loves: "food"
         });
       });
 
       it("multiple key value pairs with URI encoded component", function () {
         expect(
-          fromQueryString("a%20property=%24300%20%26%205%20cents", true),
+          fromQueryString("a%20property=%24300%20%26%205%20cents", true)
         ).toEqual({ "a property": "$300 & 5 cents" });
       });
 
       it("simple array (last value with the same name will overwrite previous value)", function () {
         expect(fromQueryString("foo=1&foo=2&foo=3", true)).toEqual({
-          foo: "3",
+          foo: "3"
         });
       });
 
       it("simple array with empty brackets", function () {
         expect(fromQueryString("foo[]=1&foo[]=2&foo[]=3", true)).toEqual({
-          foo: ["1", "2", "3"],
+          foo: ["1", "2", "3"]
         });
       });
 
       it("simple array with non-empty brackets", function () {
         expect(fromQueryString("foo[0]=1&foo[1]=2&foo[2]=3", true)).toEqual({
-          foo: ["1", "2", "3"],
+          foo: ["1", "2", "3"]
         });
       });
 
       it("simple array with non-empty brackets and non sequential keys", function () {
         expect(
-          fromQueryString("foo[3]=1&foo[1]=2&foo[2]=3&foo[0]=0", true),
+          fromQueryString("foo[3]=1&foo[1]=2&foo[2]=3&foo[0]=0", true)
         ).toEqual({ foo: ["0", "2", "3", "1"] });
       });
 
       it("simple array with non-empty brackets and non sequential keys and holes", function () {
         expect(fromQueryString("foo[3]=1&foo[1]=2&foo[2]=3", true)).toEqual({
-          foo: [undefined, "2", "3", "1"],
+          foo: [undefined, "2", "3", "1"]
         });
       });
 
@@ -978,10 +978,10 @@ describe("Ext.Object", function () {
         expect(
           fromQueryString(
             "some[0][0]=stuff&some[0][1]=morestuff&some[0][]=otherstuff&some[1]=thingelse",
-            true,
-          ),
+            true
+          )
         ).toEqual({
-          some: [["stuff", "morestuff", "otherstuff"], "thingelse"],
+          some: [["stuff", "morestuff", "otherstuff"], "thingelse"]
         });
       });
 
@@ -989,8 +989,8 @@ describe("Ext.Object", function () {
         expect(
           fromQueryString(
             "dateOfBirth[day]=1&dateOfBirth[month]=2&dateOfBirth[year]=1911&dateOfBirth[extra][hour]=4&dateOfBirth[extra][minute]=30",
-            true,
-          ),
+            true
+          )
         ).toEqual({
           dateOfBirth: {
             day: "1",
@@ -998,9 +998,9 @@ describe("Ext.Object", function () {
             year: "1911",
             extra: {
               hour: "4",
-              minute: "30",
-            },
-          },
+              minute: "30"
+            }
+          }
         });
       });
 
@@ -1008,16 +1008,16 @@ describe("Ext.Object", function () {
         expect(
           fromQueryString(
             "username=Jacky&dateOfBirth[day]=1&dateOfBirth[month]=2&dateOfBirth[year]=1911&hobbies[0]=coding&hobbies[1]=eating&hobbies[2]=sleeping&hobbies[3][0]=nested&hobbies[3][1]=stuff",
-            true,
-          ),
+            true
+          )
         ).toEqual({
           username: "Jacky",
           dateOfBirth: {
             day: "1",
             month: "2",
-            year: "1911",
+            year: "1911"
           },
-          hobbies: ["coding", "eating", "sleeping", ["nested", "stuff"]],
+          hobbies: ["coding", "eating", "sleeping", ["nested", "stuff"]]
         });
       });
     });

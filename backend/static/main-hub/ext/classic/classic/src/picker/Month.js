@@ -27,7 +27,7 @@ Ext.define("Ext.picker.Month", {
     "Ext.XTemplate",
     "Ext.util.ClickRepeater",
     "Ext.Date",
-    "Ext.button.Button",
+    "Ext.button.Button"
   ],
   alias: "widget.monthpicker",
   alternateClassName: "Ext.MonthPicker",
@@ -72,7 +72,7 @@ Ext.define("Ext.picker.Month", {
     "Ext.DomHelper.generateMarkup(cancelBtn.getRenderTree(), out);",
     "%}</div>",
     "</tpl>",
-    "</div>",
+    "</div>"
   ],
 
   //<locale>
@@ -196,13 +196,13 @@ Ext.define("Ext.picker.Month", {
         ui: me.footerButtonUI,
         text: me.okText,
         handler: me.onOkClick,
-        scope: me,
+        scope: me
       });
       me.cancelBtn = new Ext.button.Button({
         ui: me.footerButtonUI,
         text: me.cancelText,
         handler: me.onCancelClick,
-        scope: me,
+        scope: me
       });
     }
 
@@ -240,7 +240,7 @@ Ext.define("Ext.picker.Month", {
       months: months,
       years: me.getYears(),
       showButtons: me.showButtons,
-      monthStyle: style,
+      monthStyle: style
     });
   },
 
@@ -250,7 +250,7 @@ Ext.define("Ext.picker.Month", {
       widthEl = Ext.getBody().createChild({
         cls: me.baseCls + " " + me.borderBoxCls,
         style: "position:absolute;top:-1000px;left:-1000px;",
-        html: "&nbsp;", // required for opera 11.64 to measure a width
+        html: "&nbsp;" // required for opera 11.64 to measure a width
       });
 
     me.self.prototype.width = widthEl.getWidth() + padding.left + padding.right;
@@ -278,7 +278,7 @@ Ext.define("Ext.picker.Month", {
     body.on({
       scope: me,
       click: "onBodyClick",
-      dblclick: "onBodyClick",
+      dblclick: "onBodyClick"
     });
 
     // keep a reference to the year/month elements since we'll be re-using them
@@ -286,12 +286,12 @@ Ext.define("Ext.picker.Month", {
     me.months = body.select("." + me.baseCls + "-month a");
 
     me.backRepeater = new Ext.util.ClickRepeater(me.prevEl, {
-      handler: Ext.Function.bind(me.adjustYear, me, [-me.totalYears]),
+      handler: Ext.Function.bind(me.adjustYear, me, [-me.totalYears])
     });
 
     me.prevEl.addClsOnOver(me.baseCls + "-yearnav-prev-over");
     me.nextRepeater = new Ext.util.ClickRepeater(me.nextEl, {
-      handler: Ext.Function.bind(me.adjustYear, me, [me.totalYears]),
+      handler: Ext.Function.bind(me.adjustYear, me, [me.totalYears])
     });
     me.nextEl.addClsOnOver(me.baseCls + "-yearnav-next-over");
     me.updateBody();
@@ -559,7 +559,7 @@ Ext.define("Ext.picker.Month", {
       this.backRepeater,
       this.nextRepeater,
       this.okBtn,
-      this.cancelBtn,
+      this.cancelBtn
     );
 
     this.callParent();
@@ -577,6 +577,6 @@ Ext.define("Ext.picker.Month", {
         me.okBtn.finishRender();
         me.cancelBtn.finishRender();
       }
-    },
-  },
+    }
+  }
 });

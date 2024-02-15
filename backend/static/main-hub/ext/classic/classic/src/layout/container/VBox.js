@@ -128,5 +128,5 @@ Ext.define("Ext.layout.container.VBox", {
 
   type: "vbox",
 
-  vertical: true,
+  vertical: true
 });

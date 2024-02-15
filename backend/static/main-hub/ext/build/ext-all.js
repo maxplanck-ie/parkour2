@@ -450,7 +450,7 @@ if (!Ext.window) {
           enumerableMembers: u & d,
           onCreated: G,
           onBeforeCreated: t,
-          aliases: U,
+          aliases: U
         },
         J = X.alternateClassName || [],
         S = Ext.global,
@@ -616,7 +616,7 @@ Ext.Boot =
         disableCachingParam: "_dc",
         loadDelay: false,
         preserveScripts: true,
-        charset: "UTF-8",
+        charset: "UTF-8"
       },
       q = {},
       g = /\.css(?:\?|$)/i,
@@ -627,7 +627,7 @@ Ext.Boot =
         node: !l && typeof require === "function",
         phantom:
           (window && (window._phantom || window.callPhantom)) ||
-          /PhantomJS/.test(window.navigator.userAgent),
+          /PhantomJS/.test(window.navigator.userAgent)
       },
       m = (Ext.platformTags = {}),
       a = function (s, r, u) {
@@ -709,7 +709,7 @@ Ext.Boot =
           chromeMobile: "ChromeMobile",
           chromeiOS: "ChromeiOS",
           silk: "Silk",
-          other: "Other",
+          other: "Other"
         },
         osNames: {
           ios: "iOS",
@@ -724,7 +724,7 @@ Ext.Boot =
           linux: "Linux",
           bada: "Bada",
           chromeOS: "ChromeOS",
-          other: "Other",
+          other: "Other"
         },
         browserPrefixes: {
           ie: "MSIE ",
@@ -737,7 +737,7 @@ Ext.Boot =
           webosbrowser: "wOSBrowser/",
           chromeMobile: "CrMo/",
           chromeiOS: "CriOS/",
-          silk: "Silk/",
+          silk: "Silk/"
         },
         browserPriority: [
           "edge",
@@ -750,7 +750,7 @@ Ext.Boot =
           "ie",
           "firefox",
           "safari",
-          "chrome",
+          "chrome"
         ],
         osPrefixes: {
           tizen: "(Tizen )",
@@ -761,7 +761,7 @@ Ext.Boot =
           rimTablet: "RIM Tablet OS ",
           webos: "(?:webOS|hpwOS)/",
           bada: "Bada/",
-          chromeOS: "CrOS ",
+          chromeOS: "CrOS "
         },
         fallbackOSPrefixes: { windows: "win", mac: "mac", linux: "linux" },
         devicePrefixes: { iPhone: "iPhone", iPod: "iPod", iPad: "iPad" },
@@ -1016,7 +1016,7 @@ Ext.Boot =
                 url: r,
                 done: s === null || s === "loaded" || s === "complete",
                 el: x,
-                prop: "src",
+                prop: "src"
               });
             }
           }
@@ -1220,7 +1220,7 @@ Ext.Boot =
         },
         notifyAll: function (r) {
           r.notifyRequests();
-        },
+        }
       };
     function b(r) {
       if (r.$isRequest) {
@@ -1395,7 +1395,7 @@ Ext.Boot =
             v = d.getEntry(
               t,
               { buster: x.buster, charset: x.charset },
-              w && w.canonicalPath,
+              w && w.canonicalPath
             );
             v.requests.push(x);
             r.push(v);
@@ -1497,7 +1497,7 @@ Ext.Boot =
             s(this);
           }
         }
-      },
+      }
     };
     function j(s) {
       if (s.$isEntry) {
@@ -1736,7 +1736,7 @@ Ext.Boot =
           async: false,
           complete: function (s) {
             r.onContentLoaded(s);
-          },
+          }
         });
         r.evaluate();
         r.notifyRequests();
@@ -1766,7 +1766,7 @@ Ext.Boot =
                     complete: function (t) {
                       r.onContentLoaded(t);
                       r.notifyRequests();
-                    },
+                    }
                   });
                 }
               }
@@ -1853,7 +1853,7 @@ Ext.Boot =
             s(this);
           }
         }
-      },
+      }
     };
     Ext.disableCacheBuster = function (s, t) {
       var r = new Date();
@@ -2009,7 +2009,7 @@ var Ext = Ext || {};
   }
   Ext.buildSettings = Ext.apply(
     { baseCSSPrefix: "x-" },
-    Ext.buildSettings || {},
+    Ext.buildSettings || {}
   );
   Ext.apply(Ext, {
     idSeed: 0,
@@ -2325,7 +2325,7 @@ var Ext = Ext || {};
       },
       deprecate: function (i) {
         this.log(i, "warn");
-      },
+      }
     } || {
       verbose: l,
       log: l,
@@ -2334,14 +2334,14 @@ var Ext = Ext || {};
       error: function (i) {
         throw new Error(i);
       },
-      deprecate: l,
+      deprecate: l
     },
     ariaWarn: function (i, p) {
       if (Ext.enableAria && !Ext.slicer) {
         if (!Ext.ariaWarn.first) {
           Ext.ariaWarn.first = true;
           Ext.log.warn(
-            "WAI-ARIA compatibility warnings can be suppressed by adding the following to application startup code:",
+            "WAI-ARIA compatibility warnings can be suppressed by adding the following to application startup code:"
           );
           Ext.log.warn("    Ext.ariaWarn = Ext.emptyFn;");
         }
@@ -2375,7 +2375,7 @@ var Ext = Ext || {};
         }
         return p;
       };
-    })(),
+    })()
   });
   Ext.returnTrue.$nullFn = Ext.returnId.$nullFn = true;
 })();
@@ -2438,7 +2438,7 @@ Ext.platformTags.modern = !(Ext.platformTags.classic = Ext.isClassic = true);
     },
     handle: function () {
       return this.ignore;
-    },
+    }
   });
 })();
 Ext.deprecated = function (a) {
@@ -2483,7 +2483,7 @@ Ext.Array = (function () {
         "F",
         "F",
         "F",
-        "F",
+        "F"
       );
       e = v.length;
       v.splice(13, 0, "XXX");
@@ -2988,7 +2988,7 @@ Ext.Array = (function () {
                 }
                 if (++v >= w) {
                   throw new TypeError(
-                    "Reduce of empty array with no initial value",
+                    "Reduce of empty array with no initial value"
                   );
                 }
               }
@@ -3185,7 +3185,7 @@ Ext.Array = (function () {
       },
       numericSortFn: function (u, e) {
         return u - e;
-      },
+      }
     };
   Ext.each = a.each;
   a.union = a.merge;
@@ -3342,7 +3342,7 @@ Ext.String = (function () {
         "&gt;": ">",
         "&lt;": "<",
         "&quot;": '"',
-        "&#39;": "'",
+        "&#39;": "'"
       });
     },
     urlAppend: function (r, q) {
@@ -3377,7 +3377,7 @@ Ext.String = (function () {
               u.lastIndexOf(" "),
               u.lastIndexOf("."),
               u.lastIndexOf("!"),
-              u.lastIndexOf("?"),
+              u.lastIndexOf("?")
             );
           if (q !== -1 && q >= r - 15) {
             return u.substr(0, q) + "...";
@@ -3432,7 +3432,7 @@ Ext.String = (function () {
         return q.replace(p, "").split(j);
       }
       return q || [];
-    },
+    }
   });
 })();
 Ext.String.resetCharacterEntities();
@@ -3502,7 +3502,7 @@ Ext.Date = (function () {
       "v = me.add(v, me.MINUTE, -v.getTimezoneOffset() + (sn == '+'? -1 : 1) * (hr * 60 + mn));",
       "}",
       "}",
-      "return (v != null) ? v : null;",
+      "return (v != null) ? v : null;"
     ].join("\n");
   if (!Date.prototype.toISOString) {
     Date.prototype.toISOString = function () {
@@ -3583,7 +3583,7 @@ Ext.Date = (function () {
           return new e(o * 1000);
         }
         return null;
-      },
+      }
     },
     parseRegexes: [],
     formatFunctions: {
@@ -3595,7 +3595,7 @@ Ext.Date = (function () {
       },
       timestamp: function () {
         return g.format(this, "U");
-      },
+      }
     },
     y2kYear: 50,
     MILLI: "ms",
@@ -3623,7 +3623,7 @@ Ext.Date = (function () {
       "Wednesday",
       "Thursday",
       "Friday",
-      "Saturday",
+      "Saturday"
     ],
     monthNames: [
       "January",
@@ -3637,7 +3637,7 @@ Ext.Date = (function () {
       "September",
       "October",
       "November",
-      "December",
+      "December"
     ],
     monthNumbers: {
       January: 0,
@@ -3662,7 +3662,7 @@ Ext.Date = (function () {
       November: 10,
       Nov: 10,
       December: 11,
-      Dec: 11,
+      Dec: 11
     },
     defaultFormat: "m/d/Y",
     firstDayOfWeek: 0,
@@ -3734,7 +3734,7 @@ Ext.Date = (function () {
       C: function () {
         return "m.toISOString()";
       },
-      U: "Math.round(m.getTime() / 1000)",
+      U: "Math.round(m.getTime() / 1000)"
     },
     isValid: function (p, s, n, m, t, o, r) {
       m = m || 0;
@@ -3744,7 +3744,7 @@ Ext.Date = (function () {
       var q = g.add(
         new e(p < 100 ? 100 : p, s - 1, n, m, t, o, r),
         g.YEAR,
-        p < 100 ? p - 100 : 0,
+        p < 100 ? p - 100 : 0
       );
       return (
         p === q.getFullYear() &&
@@ -3797,7 +3797,7 @@ Ext.Date = (function () {
         }
       }
       g.formatFunctions[q] = Ext.functionFactory(
-        "var m=this;return " + p.join("+"),
+        "var m=this;return " + p.join("+")
       );
     },
     createParser: function (v) {
@@ -3838,19 +3838,19 @@ Ext.Date = (function () {
       g.parseFunctions[v] = Ext.functionFactory(
         "input",
         "strict",
-        j(b, n, o.join("")),
+        j(b, n, o.join(""))
       );
     },
     parseCodes: {
       d: {
         g: 1,
         c: "d = parseInt(results[{0}], 10);\n",
-        s: "(3[0-1]|[1-2][0-9]|0[1-9])",
+        s: "(3[0-1]|[1-2][0-9]|0[1-9])"
       },
       j: {
         g: 1,
         c: "d = parseInt(results[{0}], 10);\n",
-        s: "(3[0-1]|[1-2][0-9]|[1-9])",
+        s: "(3[0-1]|[1-2][0-9]|[1-9])"
       },
       D: function () {
         for (var m = [], n = 0; n < 7; m.push(g.getShortDayName(n)), ++n) {}
@@ -3868,25 +3868,25 @@ Ext.Date = (function () {
         return {
           g: 1,
           c: "m = parseInt(me.getMonthNumber(results[{0}]), 10);\n",
-          s: "(" + g.monthNames.join("|") + ")",
+          s: "(" + g.monthNames.join("|") + ")"
         };
       },
       M: function () {
         for (var m = [], n = 0; n < 12; m.push(g.getShortMonthName(n)), ++n) {}
         return Ext.applyIf(
           { s: "(" + m.join("|") + ")" },
-          g.formatCodeToRegex("F"),
+          g.formatCodeToRegex("F")
         );
       },
       m: {
         g: 1,
         c: "m = parseInt(results[{0}], 10) - 1;\n",
-        s: "(1[0-2]|0[1-9])",
+        s: "(1[0-2]|0[1-9])"
       },
       n: {
         g: 1,
         c: "m = parseInt(results[{0}], 10) - 1;\n",
-        s: "(1[0-2]|[1-9])",
+        s: "(1[0-2]|[1-9])"
       },
       t: { g: 0, c: null, s: "(?:\\d{2})" },
       L: { g: 0, c: null, s: "(?:1|0)" },
@@ -3895,38 +3895,38 @@ Ext.Date = (function () {
       y: {
         g: 1,
         c: "var ty = parseInt(results[{0}], 10);\ny = ty > me.y2kYear ? 1900 + ty : 2000 + ty;\n",
-        s: "(\\d{2})",
+        s: "(\\d{2})"
       },
       a: {
         g: 1,
         c: "if (/(am)/i.test(results[{0}])) {\nif (!h || h == 12) { h = 0; }\n} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
         s: "(am|pm|AM|PM)",
-        calcAtEnd: true,
+        calcAtEnd: true
       },
       A: {
         g: 1,
         c: "if (/(am)/i.test(results[{0}])) {\nif (!h || h == 12) { h = 0; }\n} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
         s: "(AM|PM|am|pm)",
-        calcAtEnd: true,
+        calcAtEnd: true
       },
       g: { g: 1, c: "h = parseInt(results[{0}], 10);\n", s: "(1[0-2]|[0-9])" },
       G: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(2[0-3]|1[0-9]|[0-9])",
+        s: "(2[0-3]|1[0-9]|[0-9])"
       },
       h: { g: 1, c: "h = parseInt(results[{0}], 10);\n", s: "(1[0-2]|0[1-9])" },
       H: {
         g: 1,
         c: "h = parseInt(results[{0}], 10);\n",
-        s: "(2[0-3]|[0-1][0-9])",
+        s: "(2[0-3]|[0-1][0-9])"
       },
       i: { g: 1, c: "i = parseInt(results[{0}], 10);\n", s: "([0-5][0-9])" },
       s: { g: 1, c: "s = parseInt(results[{0}], 10);\n", s: "([0-5][0-9])" },
       u: {
         g: 1,
         c: "ms = results[{0}]; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n",
-        s: "(\\d+)",
+        s: "(\\d+)"
       },
       O: {
         g: 1,
@@ -3935,9 +3935,9 @@ Ext.Date = (function () {
           "var sn = o.substring(0,1),",
           "hr = o.substring(1,3)*1 + Math.floor(o.substring(3,5) / 60),",
           "mn = o.substring(3,5) % 60;",
-          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n",
+          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n"
         ].join("\n"),
-        s: "([+-]\\d{4})",
+        s: "([+-]\\d{4})"
       },
       P: {
         g: 1,
@@ -3946,15 +3946,15 @@ Ext.Date = (function () {
           "var sn = o.substring(0,1),",
           "hr = o.substring(1,3)*1 + Math.floor(o.substring(4,6) / 60),",
           "mn = o.substring(4,6) % 60;",
-          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n",
+          "o = ((-12 <= (hr*60 + mn)/60) && ((hr*60 + mn)/60 <= 14))? (sn + Ext.String.leftPad(hr, 2, '0') + Ext.String.leftPad(mn, 2, '0')) : null;\n"
         ].join("\n"),
-        s: "([+-]\\d{2}:\\d{2})",
+        s: "([+-]\\d{2}:\\d{2})"
       },
       T: { g: 0, c: null, s: "[A-Z]{1,5}" },
       Z: {
         g: 1,
         c: "zz = results[{0}] * 1;\nzz = (-43200 <= zz && zz <= 50400)? zz : null;\n",
-        s: "([+-]?\\d{1,5})",
+        s: "([+-]?\\d{1,5})"
       },
       c: function () {
         var o = [],
@@ -3966,7 +3966,7 @@ Ext.Date = (function () {
             g.formatCodeToRegex("i", 5),
             g.formatCodeToRegex("s", 6),
             {
-              c: "ms = results[7] || '0'; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n",
+              c: "ms = results[7] || '0'; ms = parseInt(ms, 10)/Math.pow(10, ms.length - 3);\n"
             },
             {
               c: [
@@ -3978,9 +3978,9 @@ Ext.Date = (function () {
                 "}else{",
                 g.formatCodeToRegex("O", 8).c,
                 "}",
-                "}",
-              ].join("\n"),
-            },
+                "}"
+              ].join("\n")
+            }
           ],
           p,
           n;
@@ -4010,11 +4010,11 @@ Ext.Date = (function () {
             "(Z|(?:[-+]\\d{2}(?::)?\\d{2}))?",
             ")?",
             ")?",
-            ")?",
-          ].join(""),
+            ")?"
+          ].join("")
         };
       },
-      U: { g: 1, c: "u = parseInt(results[{0}], 10);\n", s: "(-?\\d+)" },
+      U: { g: 1, c: "u = parseInt(results[{0}], 10);\n", s: "(-?\\d+)" }
     },
     dateFormat: function (m, n) {
       return g.format(m, n);
@@ -4040,7 +4040,7 @@ Ext.Date = (function () {
         .toString()
         .replace(
           /^.* (?:\((.*)\)|([A-Z]{1,5})(?:[\-+][0-9]{4})?(?: -?\d+)?)$/,
-          "$1$2",
+          "$1$2"
         )
         .replace(/[^A-Z]/g, "");
     },
@@ -4181,9 +4181,9 @@ Ext.Date = (function () {
                 m,
                 g
                   .getLastDateOfMonth(
-                    g.add(g.getFirstDateOfMonth(o), g.MONTH, r),
+                    g.add(g.getFirstDateOfMonth(o), g.MONTH, r)
                   )
-                  .getDate(),
+                  .getDate()
               );
             }
             s.setDate(m);
@@ -4196,9 +4196,9 @@ Ext.Date = (function () {
                 m,
                 g
                   .getLastDateOfMonth(
-                    g.add(g.getFirstDateOfMonth(o), g.YEAR, r),
+                    g.add(g.getFirstDateOfMonth(o), g.YEAR, r)
                   )
-                  .getDate(),
+                  .getDate()
               );
             }
             s.setDate(m);
@@ -4256,7 +4256,7 @@ Ext.Date = (function () {
         m.getUTCHours(),
         m.getUTCMinutes(),
         m.getUTCSeconds(),
-        m.getUTCMilliseconds(),
+        m.getUTCMilliseconds()
       );
     },
     localToUtc: function (m) {
@@ -4267,7 +4267,7 @@ Ext.Date = (function () {
         m.getHours(),
         m.getMinutes(),
         m.getSeconds(),
-        m.getMilliseconds(),
+        m.getMilliseconds()
       );
     },
     utc: function (r, t, n, m, p, q, o) {
@@ -4302,7 +4302,7 @@ Ext.Date = (function () {
           "getFormatCode",
           "createFormat",
           "createParser",
-          "parseCodes",
+          "parseCodes"
         ],
         t = [
           "dateFormat",
@@ -4320,7 +4320,7 @@ Ext.Date = (function () {
           "isDST",
           "clearTime",
           "add",
-          "between",
+          "between"
         ],
         n = v.length,
         m = t.length,
@@ -4418,7 +4418,7 @@ Ext.Date = (function () {
           m.setUTCMilliseconds(0);
           return n;
       }
-    },
+    }
   };
   g.parseCodes.C = g.parseCodes.c;
   return g;
@@ -4738,7 +4738,7 @@ Ext.Function = (function () {
           }
           return p[t];
         };
-      },
+      }
     };
   (Ext.asap = g
     ? function (p, o, q) {
@@ -4766,7 +4766,7 @@ Ext.Function = (function () {
             }
           },
           0,
-          true,
+          true
         );
       }),
     (Ext.asapCancel = g
@@ -4795,7 +4795,7 @@ Ext.Number = new (function () {
       DEFAULT: a,
       COUNT: Ext.applyIf({ count: true }, a),
       INCLUSIVE: Ext.applyIf({ inclusive: true }, a),
-      NOWRAP: Ext.applyIf({ wrap: false }, a),
+      NOWRAP: Ext.applyIf({ wrap: false }, a)
     },
     clipIndices: function (m, n, h) {
       h = h || a;
@@ -4926,7 +4926,7 @@ Ext.Number = new (function () {
     },
     correctFloat: function (e) {
       return parseFloat(e.toPrecision(14));
-    },
+    }
   });
   Ext.num = function () {
     return d.from.apply(this, arguments);
@@ -5020,7 +5020,7 @@ Ext.Number = new (function () {
             }
           }
           l.push(
-            encodeURIComponent(h.name) + "=" + encodeURIComponent(String(r)),
+            encodeURIComponent(h.name) + "=" + encodeURIComponent(String(r))
           );
         }
         return l.join("&");
@@ -5347,7 +5347,7 @@ Ext.Number = new (function () {
         }
         h.prototype = j;
         return h;
-      },
+      }
     });
   Ext.merge = Ext.Object.merge;
   Ext.mergeIf = Ext.Object.mergeIf;
@@ -5357,7 +5357,7 @@ Ext.apply(Ext, {
     this: { isThis: 1 },
     controller: { isController: 1 },
     self: { isSelf: 1 },
-    "self.controller": { isSelf: 1, isController: 1 },
+    "self.controller": { isSelf: 1, isController: 1 }
   },
   escapeId: (function () {
     var c = /^[a-zA-Z_][a-zA-Z0-9_\-]*$/i,
@@ -5576,7 +5576,7 @@ Ext.apply(Ext, {
       a.appendChild(d);
       Ext._scrollbarSize = b = {
         width: d.offsetWidth - d.clientWidth,
-        height: d.offsetHeight - d.clientHeight,
+        height: d.offsetHeight - d.clientHeight
       };
       a.removeChild(d);
     }
@@ -5591,7 +5591,7 @@ Ext.apply(Ext, {
         "[object Date]": "date",
         "[object Boolean]": "boolean",
         "[object Number]": "number",
-        "[object RegExp]": "regexp",
+        "[object RegExp]": "regexp"
       };
     return function (h) {
       if (h === null) {
@@ -5666,7 +5666,7 @@ Ext.apply(Ext, {
     var a = function () {};
     a.info = a.warn = a.error = Ext.emptyFn;
     return a;
-  })(),
+  })()
 });
 (function () {
   var d = [""],
@@ -5808,7 +5808,7 @@ Ext.apply(Ext, {
         j.getMinor(),
         j.getPatch(),
         j.getBuild(),
-        j.getRelease(),
+        j.getRelease()
       ];
     },
     getShortVersion: function () {
@@ -5825,12 +5825,12 @@ Ext.apply(Ext, {
     },
     ltEq: function (j) {
       return this.compareTo(j) <= 0;
-    },
+    }
   };
   Ext.apply(e, {
     aliases: {
       from: { extjs: "ext", core: "core", touch: "modern" },
-      to: { ext: ["extjs"], core: ["core"], modern: ["touch"] },
+      to: { ext: ["extjs"], core: ["core"], modern: ["touch"] }
     },
     releaseValueMap: {
       dev: -6,
@@ -5841,7 +5841,7 @@ Ext.apply(Ext, {
       rc: -3,
       "#": -2,
       p: -1,
-      pl: -1,
+      pl: -1
     },
     getComponentValue: function (j) {
       return !j ? 0 : isNaN(j) ? this.releaseValueMap[j] || j : parseInt(j, 10);
@@ -5861,7 +5861,7 @@ Ext.apply(Ext, {
         }
       }
       return j;
-    },
+    }
   });
   Ext.apply(Ext, {
     compatVersions: {},
@@ -5980,7 +5980,7 @@ Ext.apply(Ext, {
       if (e.compare(Ext.getVersion(j), l) < 1) {
         m.call(k);
       }
-    },
+    }
   });
 })();
 (function (d) {
@@ -6018,7 +6018,7 @@ Ext.Config = function (b) {
     get: "get" + a,
     set: "set" + a,
     initGet: "initGet" + a,
-    changeEvent: b.toLowerCase() + "change",
+    changeEvent: b.toLowerCase() + "change"
   };
   c.root = c;
 };
@@ -6180,7 +6180,7 @@ Ext.Config.prototype = {
     };
     c.$isDefault = true;
     return c;
-  },
+  }
 };
 (function () {
   var b = Ext.Config,
@@ -6574,7 +6574,7 @@ Ext.Config.prototype = {
         }
       }
       return e;
-    },
+    }
   };
 })();
 Ext.Base = (function (c) {
@@ -6641,7 +6641,7 @@ Ext.Base = (function (c) {
     tick: function () {
       g.timer = null;
       g.flush();
-    },
+    }
   };
   Ext.apply(i, {
     $className: "Ext.Base",
@@ -6649,7 +6649,7 @@ Ext.Base = (function (c) {
     create: function () {
       return Ext.create.apply(
         Ext,
-        [this].concat(Array.prototype.slice.call(arguments, 0)),
+        [this].concat(Array.prototype.slice.call(arguments, 0))
       );
     },
     addDeprecations: function (u) {
@@ -7084,7 +7084,7 @@ Ext.Base = (function (c) {
       };
       this.override(e);
       delete e[p];
-    }),
+    })
   });
   for (k in i) {
     if (i.hasOwnProperty(k)) {
@@ -7232,7 +7232,7 @@ Ext.Base = (function (c) {
           g.add(q);
         }
       }
-    },
+    }
   });
   d.callOverridden = d.callParent;
   return i;
@@ -7309,7 +7309,7 @@ Ext.Base = (function (c) {
       if (g) {
         this.evict(e.key, e.value);
       }
-    },
+    }
   };
   a.destroy = a.clear;
 })();
@@ -7455,7 +7455,7 @@ Ext.Base = (function (c) {
         Ext.Array.splice(g, Math.max(0, h + k), 0, i);
       }
       return this;
-    },
+    }
   });
   d.registerPreprocessor(
     "extend",
@@ -7487,7 +7487,7 @@ Ext.Base = (function (c) {
         delete k.onClassExtended;
       }
     },
-    true,
+    true
   );
   d.registerPreprocessor("privates", function (g, j) {
     var i = j.privates,
@@ -7511,7 +7511,7 @@ Ext.Base = (function (c) {
   Ext.createRuleFn = function (g) {
     return new Function(
       "$c",
-      "with($c) { try { return (" + g + "); } catch(e) { return false;}}",
+      "with($c) { try { return (" + g + "); } catch(e) { return false;}}"
     );
   };
   Ext.expressionCache = new Ext.util.Cache({ miss: Ext.createRuleFn });
@@ -7565,7 +7565,7 @@ Ext.Base = (function (c) {
     var g;
     if (!j) {
       throw new Error(
-        "[Ext.extend] Attempting to extend from a class which has not been loaded on the page.",
+        "[Ext.extend] Attempting to extend from a class which has not been loaded on the page."
       );
     }
     h.extend = j;
@@ -7575,7 +7575,7 @@ Ext.Base = (function (c) {
       "inheritableStatics",
       "mixins",
       "platformConfig",
-      "config",
+      "config"
     ];
     if (i) {
       g = new d(i, h);
@@ -7836,7 +7836,7 @@ Ext.Inventory.prototype = {
         exclude: function () {
           d.getNamesByExpression(arguments, g, true);
           return this;
-        },
+        }
       },
       a;
     for (a in e) {
@@ -7859,7 +7859,7 @@ Ext.Inventory.prototype = {
     b.prefixes = null;
     b.nameToPrefix = {};
     return b;
-  }),
+  })
 };
 Ext.ClassManager = (function (q, l, s, e, o) {
   var b = Ext.Class.makeCtor,
@@ -7972,7 +7972,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
           } else {
             w = {
               name: v.substring(u + 1),
-              parent: c.getNamespaceEntry(v.substring(0, u)),
+              parent: c.getNamespaceEntry(v.substring(0, u))
             };
           }
           i[v] = w;
@@ -8252,7 +8252,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
           y = w[x] = new Function(
             "c",
             "a",
-            "return new c(" + u.join(",") + ")",
+            "return new c(" + u.join(",") + ")"
           );
         }
         return y;
@@ -8294,7 +8294,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
           Ext.Array.splice(w, Math.max(0, u + y), 0, v);
         }
         return this;
-      },
+      }
     });
   c.registerPostprocessor(
     "alias",
@@ -8307,7 +8307,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
         this.addAlias(v, l);
       }
     },
-    ["xtype", "alias"],
+    ["xtype", "alias"]
   );
   c.registerPostprocessor("singleton", function (v, u, x, w) {
     if (x.singleton) {
@@ -8441,7 +8441,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
         u = c.lookupName(arguments[v], true);
       }
       return u;
-    },
+    }
   });
   Ext.addRootNamespaces = c.addRootNamespaces;
   Ext.createWidget = Ext.widget;
@@ -8454,7 +8454,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
       }
     },
     true,
-    "first",
+    "first"
   );
   q.registerPreprocessor(
     "alias",
@@ -8516,7 +8516,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
       }
       z.alias = u;
     },
-    ["xtype", "alias"],
+    ["xtype", "alias"]
   );
   if (Ext.manifest) {
     var g = Ext.manifest,
@@ -8562,7 +8562,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
   Ext.Function.alias,
   Array.prototype.slice,
   Ext.Array.from,
-  Ext.global,
+  Ext.global
 );
 (Ext.env || (Ext.env = {})).Browser = function (u, o) {
   var v = this,
@@ -8572,13 +8572,13 @@ Ext.ClassManager = (function (q, l, s, e, o) {
     k = v.engineNames,
     r = u.match(
       new RegExp(
-        "((?:" + Ext.Object.getValues(a).join(")|(?:") + "))([\\w\\._]+)",
-      ),
+        "((?:" + Ext.Object.getValues(a).join(")|(?:") + "))([\\w\\._]+)"
+      )
     ),
     h = u.match(
       new RegExp(
-        "((?:" + Ext.Object.getValues(b).join(")|(?:") + "))([\\w\\._]+)",
-      ),
+        "((?:" + Ext.Object.getValues(b).join(")|(?:") + "))([\\w\\._]+)"
+      )
     ),
     q = c.other,
     t = k.other,
@@ -8708,7 +8708,7 @@ Ext.ClassManager = (function (q, l, s, e, o) {
   this.setFlag(
     "Ripple",
     !!document.getElementById("tinyhippos-injected") &&
-      !Ext.isEmpty(window.top.ripple),
+      !Ext.isEmpty(window.top.ripple)
   );
   this.setFlag("WebWorks", !!window.blackberry);
   if (
@@ -8735,34 +8735,34 @@ Ext.env.Browser.prototype = {
     gecko: "Gecko",
     presto: "Presto",
     trident: "Trident",
-    other: "Other",
+    other: "Other"
   },
   enginePrefixes: {
     webkit: "AppleWebKit/",
     gecko: "Gecko/",
     presto: "Presto/",
-    trident: "Trident/",
+    trident: "Trident/"
   },
   styleDashPrefixes: {
     WebKit: "-webkit-",
     Gecko: "-moz-",
     Trident: "-ms-",
     Presto: "-o-",
-    Other: "",
+    Other: ""
   },
   stylePrefixes: {
     WebKit: "Webkit",
     Gecko: "Moz",
     Trident: "ms",
     Presto: "O",
-    Other: "",
+    Other: ""
   },
   propertyPrefixes: {
     WebKit: "webkit",
     Gecko: "moz",
     Trident: "ms",
     Presto: "o",
-    Other: "",
+    Other: ""
   },
   name: null,
   version: null,
@@ -8802,7 +8802,7 @@ Ext.env.Browser.prototype = {
     } else {
       return "csstransform";
     }
-  },
+  }
 };
 (function (a) {
   Ext.browser = new Ext.env.Browser(a, true);
@@ -8902,7 +8902,7 @@ Ext.env.OS.prototype = {
     this.is[a] = b;
     this.is[a.toLowerCase()] = b;
     return this;
-  },
+  }
 };
 (function () {
   var a = Ext.global.navigator,
@@ -9095,13 +9095,13 @@ Ext.feature = {
         var a = document.createElement("div");
         a.expandoProp = {};
         return a.cloneNode().expandoProp === a.expandoProp;
-      },
+      }
     },
     {
       name: "CSSPointerEvents",
       fn: function (a) {
         return "pointerEvents" in a.documentElement.style;
-      },
+      }
     },
     {
       name: "CSS3BoxShadow",
@@ -9111,7 +9111,7 @@ Ext.feature = {
           "WebkitBoxShadow" in a.documentElement.style ||
           "MozBoxShadow" in a.documentElement.style
         );
-      },
+      }
     },
     {
       name: "CSS3NegationSelector",
@@ -9122,20 +9122,20 @@ Ext.feature = {
           return false;
         }
         return true;
-      },
+      }
     },
     {
       name: "ClassList",
       fn: function (a) {
         return !!a.documentElement.classList;
-      },
+      }
     },
     {
       name: "Canvas",
       fn: function () {
         var a = this.getTestElement("canvas");
         return !!(a && a.getContext && a.getContext("2d"));
-      },
+      }
     },
     {
       name: "Svg",
@@ -9144,7 +9144,7 @@ Ext.feature = {
           a.createElementNS &&
           !!a.createElementNS("http://www.w3.org/2000/svg", "svg").createSVGRect
         );
-      },
+      }
     },
     {
       name: "Vml",
@@ -9155,7 +9155,7 @@ Ext.feature = {
         a = b.childNodes.length === 1;
         b.innerHTML = "";
         return a;
-      },
+      }
     },
     {
       name: "Touch",
@@ -9169,25 +9169,25 @@ Ext.feature = {
         } else {
           return Ext.supports.TouchEvents || a > 0;
         }
-      },
+      }
     },
     {
       name: "TouchEvents",
       fn: function () {
         return this.isEventSupported("touchend");
-      },
+      }
     },
     {
       name: "PointerEvents",
       fn: function () {
         return navigator.pointerEnabled;
-      },
+      }
     },
     {
       name: "MSPointerEvents",
       fn: function () {
         return navigator.msPointerEnabled;
-      },
+      }
     },
     {
       name: "Orientation",
@@ -9195,56 +9195,56 @@ Ext.feature = {
         return (
           "orientation" in window && this.isEventSupported("orientationchange")
         );
-      },
+      }
     },
     {
       name: "OrientationChange",
       fn: function () {
         return this.isEventSupported("orientationchange");
-      },
+      }
     },
     {
       name: "DeviceMotion",
       fn: function () {
         return this.isEventSupported("devicemotion");
-      },
+      }
     },
     {
       names: ["Geolocation", "GeoLocation"],
       fn: function () {
         return "geolocation" in window.navigator;
-      },
+      }
     },
     {
       name: "SqlDatabase",
       fn: function () {
         return "openDatabase" in window;
-      },
+      }
     },
     {
       name: "WebSockets",
       fn: function () {
         return "WebSocket" in window;
-      },
+      }
     },
     {
       name: "Range",
       fn: function () {
         return !!document.createRange;
-      },
+      }
     },
     {
       name: "CreateContextualFragment",
       fn: function () {
         var a = !!document.createRange ? document.createRange() : false;
         return a && !!a.createContextualFragment;
-      },
+      }
     },
     {
       name: "History",
       fn: function () {
         return "history" in window && "pushState" in window.history;
-      },
+      }
     },
     {
       name: "Css3dTransforms",
@@ -9252,43 +9252,43 @@ Ext.feature = {
         return (
           this.has("CssTransforms") && this.isStyleSupported("perspective")
         );
-      },
+      }
     },
     {
       name: "CssTransforms",
       fn: function () {
         return this.isStyleSupported("transform");
-      },
+      }
     },
     {
       name: "CssTransformNoPrefix",
       fn: function () {
         return this.isStyleSupportedWithoutPrefix("transform");
-      },
+      }
     },
     {
       name: "CssAnimations",
       fn: function () {
         return this.isStyleSupported("animationName");
-      },
+      }
     },
     {
       names: ["CssTransitions", "Transitions"],
       fn: function () {
         return this.isStyleSupported("transitionProperty");
-      },
+      }
     },
     {
       names: ["Audio", "AudioTag"],
       fn: function () {
         return !!this.getTestElement("audio").canPlayType;
-      },
+      }
     },
     {
       name: "Video",
       fn: function () {
         return !!this.getTestElement("video").canPlayType;
-      },
+      }
     },
     {
       name: "LocalStorage",
@@ -9301,7 +9301,7 @@ Ext.feature = {
           }
         } catch (a) {}
         return false;
-      },
+      }
     },
     {
       name: "XHR2",
@@ -9312,7 +9312,7 @@ Ext.feature = {
           window.XMLHttpRequest &&
           "withCredentials" in new XMLHttpRequest()
         );
-      },
+      }
     },
     {
       name: "XHRUploadProgress",
@@ -9322,13 +9322,13 @@ Ext.feature = {
           return a && "upload" in a && "onprogress" in a.upload;
         }
         return false;
-      },
+      }
     },
     {
       name: "NumericInputPlaceHolder",
       fn: function () {
         return !(Ext.browser.is.AndroidStock4 && Ext.os.version.getMinor() < 2);
-      },
+      }
     },
     {
       name: "matchesSelector",
@@ -9339,7 +9339,7 @@ Ext.feature = {
           a = "msMatchesSelector",
           c = "mozMatchesSelector";
         return b[e] ? e : b[d] ? d : b[a] ? a : b[c] ? c : null;
-      },
+      }
     },
     {
       name: "RightMargin",
@@ -9351,21 +9351,21 @@ Ext.feature = {
           a.getComputedStyle(c.firstChild.firstChild, null).marginRight !==
             "0px"
         );
-      },
+      }
     },
     {
       name: "DisplayChangeInputSelectionBug",
       fn: function () {
         var a = Ext.webKitVersion;
         return 0 < a && a < 533;
-      },
+      }
     },
     {
       name: "DisplayChangeTextAreaSelectionBug",
       fn: function () {
         var a = Ext.webKitVersion;
         return 0 < a && a < 534.24;
-      },
+      }
     },
     {
       name: "TransparentColor",
@@ -9377,7 +9377,7 @@ Ext.feature = {
           a.getComputedStyle(c.lastChild, null).backgroundColor !==
             "transparent"
         );
-      },
+      }
     },
     {
       name: "ComputedStyle",
@@ -9385,13 +9385,13 @@ Ext.feature = {
       fn: function (b, c, a) {
         a = b.defaultView;
         return a && a.getComputedStyle;
-      },
+      }
     },
     {
       name: "Float",
       fn: function (a) {
         return "cssFloat" in a.documentElement.style;
-      },
+      }
     },
     {
       name: "CSS3BorderRadius",
@@ -9403,7 +9403,7 @@ Ext.feature = {
             "MozBorderRadius",
             "WebkitBorderRadius",
             "OBorderRadius",
-            "KhtmlBorderRadius",
+            "KhtmlBorderRadius"
           ],
           c = false,
           a;
@@ -9413,7 +9413,7 @@ Ext.feature = {
           }
         }
         return c && !Ext.isIE9;
-      },
+      }
     },
     {
       name: "CSS3LinearGradient",
@@ -9431,7 +9431,7 @@ Ext.feature = {
           ("" + a.style.backgroundImage).indexOf("gradient") !== -1 &&
           !Ext.isIE9
         );
-      },
+      }
     },
     {
       name: "MouseEnterLeave",
@@ -9440,13 +9440,13 @@ Ext.feature = {
           "onmouseenter" in a.documentElement &&
           "onmouseleave" in a.documentElement
         );
-      },
+      }
     },
     {
       name: "MouseWheel",
       fn: function (a) {
         return "onmousewheel" in a.documentElement;
-      },
+      }
     },
     {
       name: "Opacity",
@@ -9456,13 +9456,13 @@ Ext.feature = {
         }
         b.firstChild.style.cssText = "opacity:0.73";
         return b.firstChild.style.opacity == "0.73";
-      },
+      }
     },
     {
       name: "Placeholder",
       fn: function (a) {
         return "placeholder" in a.createElement("input");
-      },
+      }
     },
     {
       name: "Direct2DBug",
@@ -9470,13 +9470,13 @@ Ext.feature = {
         return (
           Ext.isString(a.documentElement.style.msTransformOrigin) && Ext.isIE9m
         );
-      },
+      }
     },
     {
       name: "BoundingClientRect",
       fn: function (a) {
         return "getBoundingClientRect" in a.documentElement;
-      },
+      }
     },
     {
       name: "RotatedBoundingClientRect",
@@ -9502,7 +9502,7 @@ Ext.feature = {
           a.removeChild(d);
         }
         return b;
-      },
+      }
     },
     {
       name: "ChildContentClearedWhenSettingInnerHTML",
@@ -9514,34 +9514,34 @@ Ext.feature = {
         b = a.firstChild;
         a.innerHTML = "<div>b</div>";
         return b.innerHTML !== "a";
-      },
+      }
     },
     {
       name: "IncludePaddingInWidthCalculation",
       ready: true,
       fn: function (a, b) {
         return b.childNodes[1].firstChild.offsetWidth === 210;
-      },
+      }
     },
     {
       name: "IncludePaddingInHeightCalculation",
       ready: true,
       fn: function (a, b) {
         return b.childNodes[1].firstChild.offsetHeight === 210;
-      },
+      }
     },
     {
       name: "TextAreaMaxLength",
       fn: function (a) {
         return "maxlength" in a.createElement("textarea");
-      },
+      }
     },
     {
       name: "GetPositionPercentage",
       ready: true,
       fn: function (a, b) {
         return Ext.feature.getStyle(b.childNodes[2], "left") === "10%";
-      },
+      }
     },
     {
       name: "PercentageHeightOverflowBug",
@@ -9560,7 +9560,7 @@ Ext.feature = {
           b.innerHTML = [
             '<div style="display:table;height:100%;">',
             '<div style="width:51px;"></div>',
-            "</div>",
+            "</div>"
           ].join("");
           d.body.appendChild(b);
           if (b.firstChild.offsetHeight === 50) {
@@ -9569,7 +9569,7 @@ Ext.feature = {
           d.body.removeChild(b);
         }
         return a;
-      },
+      }
     },
     {
       name: "xOriginBug",
@@ -9581,7 +9581,7 @@ Ext.feature = {
           b = document.getElementById("b2").getBoundingClientRect(),
           a = document.getElementById("b3").getBoundingClientRect();
         return b.left !== c.left && a.right !== c.right;
-      },
+      }
     },
     {
       name: "ScrollWidthInlinePaddingBug",
@@ -9605,7 +9605,7 @@ Ext.feature = {
         }
         d.body.removeChild(b);
         return a;
-      },
+      }
     },
     {
       name: "rtlVertScrollbarOnRight",
@@ -9616,7 +9616,7 @@ Ext.feature = {
         var b = d.firstChild,
           a = b.firstChild;
         return a.offsetLeft + a.offsetWidth !== b.offsetLeft + b.offsetWidth;
-      },
+      }
     },
     {
       name: "rtlVertScrollbarOverflowBug",
@@ -9626,7 +9626,7 @@ Ext.feature = {
           '<div style="height:100px;width:100px;direction:rtl;overflow:auto"><div style="width:95px;height:200px;"></div></div>';
         var a = c.firstChild;
         return a.clientHeight === a.offsetHeight;
-      },
+      }
     },
     {
       identity: "defineProperty",
@@ -9636,7 +9636,7 @@ Ext.feature = {
           return false;
         }
         return true;
-      },
+      }
     },
     {
       identify: "nativeXhr",
@@ -9652,7 +9652,7 @@ Ext.feature = {
           }
         };
         return false;
-      },
+      }
     },
     {
       name: "SpecialKeyDownRepeat",
@@ -9664,20 +9664,20 @@ Ext.feature = {
               !(Ext.isGecko || Ext.isIE) ||
               (Ext.isOpera && Ext.operaVersion < 12)
             );
-      },
+      }
     },
     {
       name: "EmulatedMouseOver",
       fn: function () {
         return Ext.os.is.iOS;
-      },
+      }
     },
     {
       name: "Hashchange",
       fn: function () {
         var a = document.documentMode;
         return "onhashchange" in window && (a === undefined || a > 7);
-      },
+      }
     },
     {
       name: "FixedTableWidthBug",
@@ -9698,19 +9698,19 @@ Ext.feature = {
         c = b.offsetWidth;
         document.body.removeChild(b);
         return c === 50;
-      },
+      }
     },
     {
       name: "FocusinFocusoutEvents",
       fn: function () {
         return !Ext.isGecko;
-      },
+      }
     },
     {
       name: "AsyncFocusEvents",
       fn: function () {
         return (Ext.asyncFocus = !!Ext.isIE);
-      },
+      }
     },
     {
       name: "accessibility",
@@ -9755,7 +9755,7 @@ Ext.feature = {
           borderTopTolor: "#f00",
           borderRightColor: "#ff0",
           backgroundColor: "#fff",
-          backgroundImage: "url(" + Ext.BLANK_IMAGE_URL + ")",
+          backgroundImage: "url(" + Ext.BLANK_IMAGE_URL + ")"
         });
         d.alt = "";
         d.src = Ext.BLANK_IMAGE_URL;
@@ -9770,13 +9770,13 @@ Ext.feature = {
             (c === "none" || c === "url(invalid-url:)")
           ),
           BorderColors: e.borderTopColor !== e.borderRightColor,
-          LightOnDark: g(e.color) - g(e.backgroundColor) > 0,
+          LightOnDark: g(e.color) - g(e.backgroundColor) > 0
         };
         Ext.supports.HighContrastMode = !b.BackgroundImages;
         a.removeChild(i);
         i = d = null;
         return b;
-      },
+      }
     },
     {
       name: "ViewportUnits",
@@ -9796,12 +9796,12 @@ Ext.feature = {
         b = parseInt(
           (window.getComputedStyle ? getComputedStyle(g, null) : g.currentStyle)
             .width,
-          10,
+          10
         );
         a.removeChild(g);
         g = null;
         return c === b;
-      },
+      }
     },
     {
       name: "CSSVariables",
@@ -9814,7 +9814,7 @@ Ext.feature = {
         return (
           a.getPropertyValue && !!a.getPropertyValue("--x-supports-variables")
         );
-      },
+      }
     },
     {
       name: "Selectors2",
@@ -9825,7 +9825,7 @@ Ext.feature = {
         } catch (a) {
           return false;
         }
-      },
+      }
     },
     {
       name: "CSSScrollSnap",
@@ -9837,10 +9837,10 @@ Ext.feature = {
           "webkitScrollSnapType" in a ||
           "msScrollSnapType" in a
         );
-      },
+      }
     },
-    0,
-  ],
+    0
+  ]
 };
 Ext.feature.tests.pop();
 Ext.supports = {};
@@ -10017,7 +10017,7 @@ Ext.env.Ready = {
     }
     b.removeEventListener("DOMContentLoaded", a.onReadyEvent, false);
     window.removeEventListener("load", a.onReadyEvent, false);
-  },
+  }
 };
 (function () {
   var a = Ext.env.Ready;
@@ -10076,7 +10076,7 @@ Ext.env.Ready = {
         if (a.readyStatesRe.test(b)) {
           a.onReadyEvent({ type: b });
         }
-      },
+      }
     });
   }
   Ext.onDocumentReady = function (e, d, b) {
@@ -10114,13 +10114,13 @@ Ext.Loader = new (function () {
       disableCachingParam: "_dc",
       paths: a.paths,
       preserveScripts: true,
-      scriptCharset: undefined,
+      scriptCharset: undefined
     },
     o = {
       disableCaching: true,
       disableCachingParam: true,
       preserveScripts: true,
-      scriptChainDelay: "loadDelay",
+      scriptChainDelay: "loadDelay"
     };
   Ext.apply(c, {
     isInHistory: m,
@@ -10233,7 +10233,7 @@ Ext.Loader = new (function () {
           var r = c.load(v, t, s);
           c.syncModeEnabled = u;
           return r;
-        },
+        }
       });
       p.exclude(q);
       return p;
@@ -10275,14 +10275,14 @@ Ext.Loader = new (function () {
             c.checkReady();
           },
           c,
-          t,
+          t
         );
         if (!l.enabled) {
           Ext.raise(
             "Ext.Loader is not enabled, so dependencies cannot be resolved dynamically. Missing required class" +
               (t.length > 1 ? "es" : "") +
               ": " +
-              t.join(", "),
+              t.join(", ")
           );
         }
         if (x.length) {
@@ -10411,9 +10411,9 @@ Ext.Loader = new (function () {
           success: c.onLoadSuccess,
           failure: c.onLoadFailure,
           sync: c.syncModeEnabled,
-          _classNames: [],
+          _classNames: []
         },
-        t,
+        t
       );
       r.userScope = r.scope;
       r.scope = r;
@@ -10469,7 +10469,7 @@ Ext.Loader = new (function () {
           c.triggerReady();
         }
       }
-    },
+    }
   });
   Ext.require = i(c, "require");
   Ext.syncRequire = i(c, "syncRequire");
@@ -10560,7 +10560,7 @@ Ext.Loader = new (function () {
     },
     true,
     "after",
-    "className",
+    "className"
   );
   a.registerPostprocessor("uses", function (r, q, s) {
     var p = s.uses,
@@ -10604,7 +10604,7 @@ Ext.cmd.derive(
           } else {
             e[c] = g;
           }
-        },
+        }
       },
       onClassExtended: function (l, d) {
         var g = d.mixinConfig,
@@ -10670,7 +10670,7 @@ Ext.cmd.derive(
             }
           };
         }
-      },
+      }
     };
   },
   0,
@@ -10680,7 +10680,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "Mixin"],
-  0,
+  0
 );
 Ext.util = Ext.util || {};
 Ext.util.DelayedTask = function (e, d, b, i, h) {
@@ -10792,7 +10792,7 @@ Ext.cmd.derive(
               p,
               k,
               g.delegated !== false,
-              g.capture,
+              g.capture
             );
           }
           if (q) {
@@ -10802,7 +10802,7 @@ Ext.cmd.derive(
               ename: (g && g.managedName) || y.name,
               fn: n,
               scope: e,
-              options: g,
+              options: g
             });
           }
           l = true;
@@ -10820,7 +10820,7 @@ Ext.cmd.derive(
             manager: i,
             namedScope: m,
             defaultScope: m ? q || l.observable : undefined,
-            lateBound: typeof n === "string",
+            lateBound: typeof n === "string"
           },
           p = n,
           k = false,
@@ -10937,7 +10937,7 @@ Ext.cmd.derive(
                 e,
                 l,
                 s.delegated !== false,
-                s.capture,
+                s.capture
               );
             }
           }
@@ -11181,7 +11181,7 @@ Ext.cmd.derive(
           }
           return h.apply(g, arguments);
         };
-      },
+      }
     };
   },
   1,
@@ -11191,7 +11191,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Event"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Identifiable",
@@ -11249,7 +11249,7 @@ Ext.cmd.derive(
       }
       this.getId = this.getOptimizedId;
       return a;
-    },
+    }
   },
   0,
   0,
@@ -11258,7 +11258,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Identifiable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Observable",
@@ -11282,7 +11282,7 @@ Ext.cmd.derive(
         "events",
         "hasListeners",
         "managedListeners",
-        "eventedBeforeEventNames",
+        "eventedBeforeEventNames"
       ];
     c.prototype.destroy = function () {
       this.destroy = Ext.emptyFn;
@@ -11294,7 +11294,7 @@ Ext.cmd.derive(
     return {
       mixinConfig: {
         id: "observable",
-        after: { destroy: "destroyObservable" },
+        after: { destroy: "destroyObservable" }
       },
       statics: {
         releaseCapture: function (i) {
@@ -11310,7 +11310,7 @@ Ext.cmd.derive(
           k.fireEventArgs = Ext.Function.createInterceptor(
             k.fireEventArgs,
             j,
-            i,
+            i
           );
         },
         observe: function (i, j) {
@@ -11365,7 +11365,7 @@ Ext.cmd.derive(
             w[a[o]] = true;
           }
           n.prototype.$noClearOnDestroy = w;
-        },
+        }
       },
       isObservable: true,
       $vetoClearingPrototypeOnDestroy: true,
@@ -11428,7 +11428,7 @@ Ext.cmd.derive(
         args: 1,
         destroyable: 1,
         priority: 1,
-        order: 1,
+        order: 1
       },
       $orderToPriority: { before: 100, current: 0, after: -100 },
       _addDeclaredListeners: function (i) {
@@ -11459,7 +11459,7 @@ Ext.cmd.derive(
                   j.fn || j,
                   j.scope || r.scope || q,
                   j.fn ? j : i,
-                  true,
+                  true
                 );
               }
             }
@@ -11496,7 +11496,7 @@ Ext.cmd.derive(
                   q,
                   l,
                   k.fn || k,
-                  k.scope || s.scope || r,
+                  k.scope || s.scope || r
                 );
               }
             }
@@ -11578,7 +11578,7 @@ Ext.cmd.derive(
               return n.owner.fireEventArgs(n.eventName, n.args);
             }
           }
-        },
+        }
       },
       fireEventedAction: function (j, l, o, r, n) {
         var m = this,
@@ -11586,7 +11586,7 @@ Ext.cmd.derive(
           k = q[j] || (q[j] = "before" + j),
           i = Ext.apply(
             { owner: m, eventName: j, fn: o, scope: r, fnArgs: n, args: l },
-            m.$eventedController,
+            m.$eventedController
           ),
           p;
         l.push(i);
@@ -11852,7 +11852,7 @@ Ext.cmd.derive(
           return k.fireEventArgs.call(
             k,
             i,
-            j ? h.apply(arguments, j) : arguments,
+            j ? h.apply(arguments, j) : arguments
           );
         };
       },
@@ -11951,9 +11951,9 @@ Ext.cmd.derive(
         },
         _initEvent: function (i) {
           return (this.events[i] = new Ext.util.Event(this, i));
-        },
+        }
       },
-      deprecated: { "5.0": { methods: { addEvents: null } } },
+      deprecated: { "5.0": { methods: { addEvents: null } } }
     };
   },
   1,
@@ -11965,8 +11965,8 @@ Ext.cmd.derive(
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.mixin, "Observable"],
   function () {
@@ -11986,7 +11986,7 @@ Ext.cmd.derive(
               onClassMixedIn: function (j) {
                 g.call(this, j);
                 this.callParent(arguments);
-              },
+              }
             });
           } else {
             i.onClassMixedIn = function (j) {
@@ -12012,7 +12012,7 @@ Ext.cmd.derive(
         } else {
           this[h] = 1;
         }
-      },
+      }
     };
     e.HasListeners = b.HasListeners = c;
     b.createAlias({
@@ -12020,7 +12020,7 @@ Ext.cmd.derive(
       un: "removeListener",
       mon: "addManagedListener",
       mun: "removeManagedListener",
-      setListeners: "addListener",
+      setListeners: "addListener"
     });
     b.observeClass = b.observe;
     function d(n) {
@@ -12115,11 +12115,11 @@ Ext.cmd.derive(
             if (Ext.isDefined(Ext.global.console)) {
               Ext.global.console.log(i, arguments);
             }
-          },
+          }
         );
-      },
+      }
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.HashMap",
@@ -12284,7 +12284,7 @@ Ext.cmd.derive(
         }
       }
       return undefined;
-    },
+    }
   },
   1,
   0,
@@ -12294,14 +12294,14 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.util, "HashMap"],
   function (b) {
     var a = b.prototype;
     a.removeByKey = a.removeAtKey;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.AbstractManager",
@@ -12356,7 +12356,7 @@ Ext.cmd.derive(
     },
     getCount: function () {
       return this.all.getCount();
-    },
+    }
   },
   1,
   0,
@@ -12365,7 +12365,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "AbstractManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.promise.Consequence",
@@ -12436,8 +12436,8 @@ Ext.cmd.derive(
             d();
           }
           a.queueSize = 0;
-        },
-      },
+        }
+      }
     };
   },
   1,
@@ -12447,7 +12447,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.promise, "Consequence"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.promise.Deferred",
@@ -12507,7 +12507,7 @@ Ext.cmd.derive(
                   a = true;
                   c.reject(h);
                 }
-              },
+              }
             );
           } catch (g) {
             if (!a) {
@@ -12554,7 +12554,7 @@ Ext.cmd.derive(
         c.trigger(d.completionAction, d.completionValue);
       }
       d.consequences = null;
-    },
+    }
   },
   1,
   0,
@@ -12563,7 +12563,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.promise, "Deferred"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.promise.Promise",
@@ -12600,7 +12600,7 @@ Ext.cmd.derive(
                   },
                   function (p) {
                     return n.reject(p);
-                  },
+                  }
                 );
               };
               for (l = h = 0, k = e.length; h < k; l = ++h) {
@@ -12631,7 +12631,7 @@ Ext.cmd.derive(
           var c = new Ext.promise.Deferred();
           c.resolve(d);
           return c.promise;
-        },
+        }
       },
       owner: null,
       constructor: function (c) {
@@ -12697,7 +12697,7 @@ Ext.cmd.derive(
               b.rethrowError(g);
             }
             throw h;
-          },
+          }
         );
       },
       done: function () {
@@ -12721,9 +12721,9 @@ Ext.cmd.derive(
           function (d) {
             Ext.log("" + (c || "Promise") + " rejected with reason: " + d);
             throw d;
-          },
+          }
         );
-      },
+      }
     };
   },
   1,
@@ -12735,7 +12735,7 @@ Ext.cmd.derive(
   [Ext.promise, "Promise"],
   function (a) {
     a._ready();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.Promise",
@@ -12760,13 +12760,13 @@ Ext.cmd.derive(
           var b = new Ext.promise.Deferred();
           b.resolve(c);
           return b.promise;
-        },
+        }
       },
       constructor: function (c) {
         var b = new Ext.promise.Deferred();
         c(b.resolve.bind(b), b.reject.bind(b));
         return b.promise;
-      },
+      }
     };
   },
   1,
@@ -12783,7 +12783,7 @@ Ext.cmd.derive(
     } else {
       a._ready();
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.Deferred",
@@ -12813,7 +12813,7 @@ Ext.cmd.derive(
               } else {
                 throw e;
               }
-            },
+            }
           );
         },
         delay: function (d, g) {
@@ -12854,7 +12854,7 @@ Ext.cmd.derive(
                     },
                     function (r) {
                       return p.reject(r);
-                    },
+                    }
                   );
               };
               for (n = k = 0, m = h.length; k < m; n = ++k) {
@@ -12901,7 +12901,7 @@ Ext.cmd.derive(
               }
               return h.call(g, i);
             },
-            d,
+            d
           );
         },
         reduce: function (e, g, d) {
@@ -12915,7 +12915,7 @@ Ext.cmd.derive(
                     return g(n, o, k, j);
                   });
                 });
-              },
+              }
             ];
             if (h) {
               i.push(d);
@@ -12949,7 +12949,7 @@ Ext.cmd.derive(
                 return h;
               });
             },
-            [],
+            []
           );
         },
         some: function (e, d) {
@@ -13007,11 +13007,11 @@ Ext.cmd.derive(
               clearTimeout(h);
               h = null;
               e.reject(i);
-            },
+            }
           );
           return e.promise;
-        },
-      },
+        }
+      }
     };
   },
   0,
@@ -13023,7 +13023,7 @@ Ext.cmd.derive(
   [Ext, "Deferred"],
   function (a) {
     a._ready();
-  },
+  }
 );
 Ext.Factory = function (a) {
   var b = this;
@@ -13084,7 +13084,7 @@ Ext.Factory.prototype = {
   },
   clearCache: function () {
     this.cache = {};
-  },
+  }
 };
 Ext.Factory.define = function (g, d) {
   var a = Ext.Factory,
@@ -13135,7 +13135,7 @@ Ext.cmd.derive(
       if (g.create === Ext.Base.create) {
         g.create = a;
       }
-    },
+    }
   },
   0,
   0,
@@ -13144,7 +13144,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Factoryable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.request.Base",
@@ -13237,7 +13237,7 @@ Ext.cmd.derive(
             ? "transaction aborted"
             : "communication failure",
           getResponseHeader: b._getHeader,
-          getAllResponseHeaders: b._getHeaders,
+          getAllResponseHeaders: b._getHeaders
         };
         if (b.aborted) {
           a.aborted = true;
@@ -13253,8 +13253,8 @@ Ext.cmd.derive(
       },
       _getHeaders: function () {
         return this.headers;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -13265,11 +13265,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.request, "Base"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.flash.BinaryXhr",
@@ -13309,7 +13309,7 @@ Ext.cmd.derive(
           cn: [
             {
               tag: "p",
-              html: "To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed.",
+              html: "To view this page ensure that Adobe Flash Player version 11.1.0 or greater is installed."
             },
             {
               tag: "a",
@@ -13320,15 +13320,15 @@ Ext.cmd.derive(
                   src:
                     window.location.protocol +
                     "//www.adobe.com/images/shared/download_buttons/get_flash_player.gif",
-                  alt: "Get Adobe Flash player",
-                },
-              ],
-            },
-          ],
+                  alt: "Get Adobe Flash player"
+                }
+              ]
+            }
+          ]
         });
         a = [
           Ext.Loader.getPath("Ext.data.Connection"),
-          "../../../plugins/flash/swfobject.js",
+          "../../../plugins/flash/swfobject.js"
         ].join("/");
         c = "/plugins/flash/FlashPlugin.swf";
         if (Ext.flashPluginPath) {
@@ -13358,14 +13358,14 @@ Ext.cmd.derive(
               h,
               d,
               i,
-              g,
+              g
             );
           },
           onError: function () {},
-          scope: b,
+          scope: b
         });
         Ext.data.flash.BinaryXhr.flashPluginInjected = true;
-      },
+      }
     },
     readyState: 0,
     status: 0,
@@ -13437,7 +13437,7 @@ Ext.cmd.derive(
         mimeType: c.mimeType,
         requestHeaders: c.requestHeaders,
         body: c.body,
-        javascriptId: c.javascriptId,
+        javascriptId: c.javascriptId
       };
       a = Ext.data.flash.BinaryXhr.flashPlugin.postBinary(b);
     },
@@ -13476,7 +13476,7 @@ Ext.cmd.derive(
         delete Ext.data.flash.BinaryXhr.liveConnections[a.javascriptId];
       }
       a.setReadyState(c);
-    },
+    }
   },
   1,
   0,
@@ -13485,7 +13485,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.flash, "BinaryXhr"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.request.Ajax",
@@ -13520,7 +13520,7 @@ Ext.cmd.derive(
           }
         }
         return { success: e, isException: d };
-      },
+      }
     },
     start: function (e) {
       var c = this,
@@ -13692,7 +13692,7 @@ Ext.cmd.derive(
           },
           function () {
             return new ActiveXObject("Microsoft.XMLHTTP");
-          },
+          }
         ],
         c = 0,
         a = b.length,
@@ -13819,7 +13819,7 @@ Ext.cmd.derive(
         },
         getAllResponseHeaders: function () {
           return b;
-        },
+        }
       };
       if (c) {
         h.processXdrResponse(d, j);
@@ -13886,12 +13886,12 @@ Ext.cmd.derive(
           "For i = 1 to len",
           "out.push(AscB(MidB(byteArray, i, 1)))",
           "Next",
-          "End Function",
+          "End Function"
         ].join("\n");
         Ext.getHead().dom.appendChild(a);
         this.self.vbScriptInjected = true;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -13900,7 +13900,7 @@ Ext.cmd.derive(
   ["request.ajax"],
   0,
   [Ext.data.request, "Ajax"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.request.Form",
@@ -13956,7 +13956,7 @@ Ext.cmd.derive(
           method: b.method,
           encoding: b.encoding,
           enctype: b.enctype,
-          action: b.action,
+          action: b.action
         },
         a = function (h, v) {
           j = document.createElement("input");
@@ -13977,7 +13977,7 @@ Ext.cmd.derive(
         name: o,
         cls: "x-hidden-display",
         src: Ext.SSL_SECURE_URL,
-        tabIndex: -1,
+        tabIndex: -1
       });
       document.body.appendChild(s);
       if (document.frames) {
@@ -13988,7 +13988,7 @@ Ext.cmd.derive(
         method: "POST",
         enctype: d,
         encoding: d,
-        action: i || t.action,
+        action: i || t.action
       });
       if (u) {
         l = Ext.Object.fromQueryString(u) || {};
@@ -14071,7 +14071,7 @@ Ext.cmd.derive(
             c.status = 200;
           } else {
             Ext.raise(
-              "Could not acquire a suitable connection for the file upload service.",
+              "Could not acquire a suitable connection for the file upload service."
             );
           }
         } catch (g) {
@@ -14097,7 +14097,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.cleanup();
       Ext.data.request.Base.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -14106,7 +14106,7 @@ Ext.cmd.derive(
   ["request.form"],
   0,
   [Ext.data.request, "Form"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Connection",
@@ -14133,7 +14133,7 @@ Ext.cmd.derive(
       defaultHeaders: null,
       defaultPostHeader: "application/x-www-form-urlencoded; charset=UTF-8",
       useDefaultXhrHeader: true,
-      defaultXhrHeader: "XMLHttpRequest",
+      defaultXhrHeader: "XMLHttpRequest"
     },
     constructor: function (a) {
       this.mixins.observable.constructor.call(this, a);
@@ -14167,7 +14167,7 @@ Ext.cmd.derive(
         owner: e,
         options: b,
         requestOptions: a,
-        ownerConfig: e.getConfig(),
+        ownerConfig: e.getConfig()
       });
       e.requests[d.id] = d;
       e.latestId = d.id;
@@ -14244,7 +14244,7 @@ Ext.cmd.derive(
           c,
           (m.disableCachingParam || j.getDisableCachingParam()) +
             "=" +
-            new Date().getTime(),
+            new Date().getTime()
         );
       }
       if ((b == "GET" || g) && e) {
@@ -14324,7 +14324,7 @@ Ext.cmd.derive(
         (Ext.isSafari && Ext.isDefined(window.Uint8Array)) ||
         (Ext.isGecko && Ext.isDefined(window.Uint8Array))
       );
-    },
+    }
   },
   1,
   0,
@@ -14333,7 +14333,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.mixin.Observable]],
   [Ext.data, "Connection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Ajax",
@@ -14346,7 +14346,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "Ajax"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.AnimationQueue",
@@ -14534,7 +14534,7 @@ Ext.cmd.derive(
         this.invoke(b);
         this.processTaskQueue();
       }
-    },
+    }
   },
   1,
   0,
@@ -14543,7 +14543,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "AnimationQueue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.ComponentManager",
@@ -14681,7 +14681,7 @@ Ext.cmd.derive(
               target: j,
               relatedTarget: b,
               fromComponent: a,
-              toComponent: h,
+              toComponent: h
             });
           }
         }
@@ -14697,7 +14697,7 @@ Ext.cmd.derive(
             relatedTarget: j,
             target: b,
             fromComponent: a,
-            toComponent: h,
+            toComponent: h
           });
         }
       }
@@ -14740,9 +14740,9 @@ Ext.cmd.derive(
           h = h.parentNode;
         }
         return null;
-      },
+      }
     },
-    deprecated: { 5: { methods: { isRegistered: null, registerType: null } } },
+    deprecated: { 5: { methods: { isRegistered: null, registerType: null } } }
   },
   1,
   0,
@@ -14755,7 +14755,7 @@ Ext.cmd.derive(
     Ext.getCmp = function (a) {
       return Ext.ComponentManager.get(a);
     };
-  },
+  }
 );
 Ext.ns("Ext.util").Operators = {
   "=": function (b, c) {
@@ -14781,7 +14781,7 @@ Ext.ns("Ext.util").Operators = {
   },
   "~=": function (b, c) {
     return b && (" " + b + " ").indexOf(" " + c + " ") != -1;
-  },
+  }
 };
 Ext.cmd.derive(
   "Ext.util.LruCache",
@@ -14924,7 +14924,7 @@ Ext.cmd.derive(
           b.removeAtKey(b.first.key);
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -14933,7 +14933,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "LruCache"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.ComponentQuery",
@@ -14966,7 +14966,7 @@ Ext.cmd.derive(
         "r.push(c);",
         "}",
         "}",
-        "return r;",
+        "return r;"
       ].join(""),
       p = function (u, t) {
         return t.method.apply(this, [u].concat(t.args));
@@ -15106,7 +15106,7 @@ Ext.cmd.derive(
               t[1] = t[1].replace(l, "$1");
             }
             return t.slice(1);
-          },
+          }
         },
         {
           re: /^(?:\[((?:[@?$])?[\w\-]*)\s*(?:([\^$*~%!\/]?=)\s*(['"])?((?:\\\]|.)*?)\3)?(?!\\)\])/,
@@ -15129,7 +15129,7 @@ Ext.cmd.derive(
               }
             }
             return [x, u, v];
-          },
+          }
         },
         { re: /^#((?:\\\.|[\w\-])+)/, method: i },
         {
@@ -15140,9 +15140,9 @@ Ext.cmd.derive(
               t[2] = t[2].replace(l, "$1");
             }
             return t.slice(1);
-          },
+          }
         },
-        { re: /^(?:\{([^\}]+)\})/, method: o },
+        { re: /^(?:\{([^\}]+)\})/, method: o }
       ];
     g.Query = Ext.extend(Object, {
       constructor: function (t) {
@@ -15274,7 +15274,7 @@ Ext.cmd.derive(
       },
       isMultiMatch: function () {
         return this.operations.length > 1;
-      },
+      }
     });
     Ext.apply(g, {
       cache: new Ext.util.LruCache({ maxSize: 100 }),
@@ -15340,7 +15340,7 @@ Ext.cmd.derive(
               (A === "even" && "2n") ||
                 (A === "odd" && "2n+1") ||
                 (!e.test(A) && "n+" + A) ||
-                A,
+                A
             ),
             x = (u[1] || 1) - 0,
             y = u[2] - 0,
@@ -15387,7 +15387,7 @@ Ext.cmd.derive(
             }
           }
           return x;
-        },
+        }
       },
       query: function (t, A) {
         if (!t) {
@@ -15530,18 +15530,18 @@ Ext.cmd.derive(
                         "items",
                         Ext.String.format.apply(
                           Ext.String,
-                          [t].concat(H.slice(1)),
-                        ),
+                          [t].concat(H.slice(1))
+                        )
                       )
                     : C.method,
-                  args: D,
+                  args: D
                 });
                 z = z.replace(H[0], "").replace(m, "$1");
                 break;
               }
               if (B === v - 1) {
                 Ext.raise(
-                  'Invalid ComponentQuery selector: "' + arguments[0] + '"',
+                  'Invalid ComponentQuery selector: "' + arguments[0] + '"'
                 );
               }
             }
@@ -15552,7 +15552,7 @@ Ext.cmd.derive(
           }
         }
         return u;
-      },
+      }
     });
     Ext.all = function () {
       return g.query.apply(g, arguments);
@@ -15561,7 +15561,7 @@ Ext.cmd.derive(
       var t = g.query.apply(g, arguments);
       return (t && t[0]) || null;
     };
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.Evented",
@@ -15592,7 +15592,7 @@ Ext.cmd.derive(
           e[a.names.set] = a.eventedSetter || a.getEventedSetter();
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -15602,11 +15602,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext, "Evented", Ext, "EventedBase"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Positionable",
@@ -15629,7 +15629,7 @@ Ext.cmd.derive(
         d = e.el;
       return e.setXY(
         e.getAlignToXY(c, a, g),
-        d.anim && !!b ? d.anim(b) : false,
+        d.anim && !!b ? d.anim(b) : false
       );
     },
     calculateAnchorXY: function (a, e, d, b) {
@@ -15665,16 +15665,14 @@ Ext.cmd.derive(
         }
         a = Ext.get(a.el || a).getConstrainRegion();
       }
-      g = d
-        .getRegion()
-        .alignTo({
-          target: b.getRegion(),
-          inside: a,
-          minHeight: e,
-          offset: h,
-          align: c,
-          axisLock: true,
-        });
+      g = d.getRegion().alignTo({
+        target: b.getRegion(),
+        inside: a,
+        minHeight: e,
+        offset: h,
+        align: c,
+        axisLock: true
+      });
       return g;
     },
     getAnchorXY: function (b, d, c) {
@@ -15732,7 +15730,7 @@ Ext.cmd.derive(
         width: k,
         height: b,
         right: j + k,
-        bottom: g + b,
+        bottom: g + b
       };
     },
     calculateConstrainedPosition: function (h, b, l, d) {
@@ -15929,7 +15927,7 @@ Ext.cmd.derive(
           up: h,
           b: a,
           bottom: a,
-          down: a,
+          down: a
         };
       j = j.toLowerCase();
       g.setXY([e[j][0], e[j][1]], c);
@@ -15943,7 +15941,7 @@ Ext.cmd.derive(
           x: c.left,
           y: c.top,
           width: c.right - c.left,
-          height: c.bottom - c.top,
+          height: c.bottom - c.top
         };
       }
       b.constrainBox(c);
@@ -15964,7 +15962,7 @@ Ext.cmd.derive(
         e = "y" in d ? d.y : d.top;
         b = c.calculateConstrainedPosition(null, [a, e], false, [
           d.width,
-          d.height,
+          d.height
         ]);
         if (b) {
           d.x = b[0];
@@ -16100,8 +16098,8 @@ Ext.cmd.derive(
             b.removeCls(a);
           }
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -16110,7 +16108,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Positionable"],
-  0,
+  0
 );
 Ext.define("Ext.overrides.util.Positionable", {
   override: "Ext.util.Positionable",
@@ -16181,7 +16179,7 @@ Ext.define("Ext.overrides.util.Positionable", {
         x: c.left,
         y: c.top,
         width: c.right - c.left,
-        height: c.bottom - c.top,
+        height: c.bottom - c.top
       };
     }
     if (a) {
@@ -16191,20 +16189,17 @@ Ext.define("Ext.overrides.util.Positionable", {
           {
             to: c,
             listeners: {
-              afteranimate: Ext.Function.bind(b.afterSetPosition, b, [
-                c.x,
-                c.y,
-              ]),
-            },
+              afteranimate: Ext.Function.bind(b.afterSetPosition, b, [c.x, c.y])
+            }
           },
-          a,
-        ),
+          a
+        )
       );
     } else {
       arguments.callee.$previous.call(this, c);
     }
     return b;
-  },
+  }
 });
 Ext.cmd.derive(
   "Ext.dom.UnderlayPool",
@@ -16232,7 +16227,7 @@ Ext.cmd.derive(
         a[b].destroy();
       }
       this.cache = [];
-    },
+    }
   },
   1,
   0,
@@ -16241,7 +16236,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "UnderlayPool"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Underlay",
@@ -16258,7 +16253,7 @@ Ext.cmd.derive(
       return (
         this.pool ||
         (this.self.prototype.pool = new Ext.dom.UnderlayPool(
-          this.elementConfig,
+          this.elementConfig
         ))
       );
     },
@@ -16332,7 +16327,7 @@ Ext.cmd.derive(
       a.show();
       b.realign();
       b.hidden = false;
-    },
+    }
   },
   1,
   0,
@@ -16341,7 +16336,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "Underlay"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Shadow",
@@ -16388,7 +16383,7 @@ Ext.cmd.derive(
               x: 1 + a - 2 * g,
               y: 1 + a - 2 * g,
               h: g - a - 1,
-              w: g - a - 1,
+              w: g - a - 1
             };
           }
           break;
@@ -16458,7 +16453,7 @@ Ext.cmd.derive(
         this.opacity = a;
         b.setOpacity(a);
       }
-    },
+    }
   },
   1,
   0,
@@ -16467,7 +16462,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "Shadow", Ext, "Shadow"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Shim",
@@ -16482,13 +16477,13 @@ Ext.cmd.derive(
         role: "presentation",
         frameBorder: "0",
         src: Ext.SSL_SECURE_URL,
-        tabindex: "-1",
+        tabindex: "-1"
       };
     },
     getInsertionTarget: function () {
       var a = this.shadow;
       return (a && a.el) || this.target;
-    },
+    }
   },
   1,
   0,
@@ -16497,7 +16492,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "Shim"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.ElementEvent",
@@ -16615,7 +16610,7 @@ Ext.cmd.derive(
         a.resume();
       }
       Ext.util.Event.prototype.resume.call(this);
-    },
+    }
   },
   0,
   0,
@@ -16624,7 +16619,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "ElementEvent"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.publisher.Publisher",
@@ -16662,7 +16657,7 @@ Ext.cmd.derive(
           d.fire.apply(d, b);
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -16671,7 +16666,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.event.publisher, "Publisher"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Offset",
@@ -16689,7 +16684,7 @@ Ext.cmd.derive(
           return new this(a[0], a[1]);
         }
         return new this(a.x, a.y);
-      },
+      }
     },
     constructor: function (a, b) {
       this.x = a != null && !isNaN(a) ? a : 0;
@@ -16725,7 +16720,7 @@ Ext.cmd.derive(
     },
     isZero: function () {
       return this.x === 0 && this.y === 0;
-    },
+    }
   },
   3,
   0,
@@ -16734,7 +16729,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Offset"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Region",
@@ -16755,7 +16750,7 @@ Ext.cmd.derive(
         "tr-tl": "r0-l0",
         "tr-l": "r0-l50",
         "br-l": "r100-l50",
-        "br-bl": "r100-l100",
+        "br-bl": "r100-l100"
       },
       a = {
         "tl-tr": "r0-l0",
@@ -16765,7 +16760,7 @@ Ext.cmd.derive(
         "tr-tl": "l0-r0",
         "tr-l": "l0-r50",
         "br-l": "l100-r50",
-        "br-bl": "l100-r100",
+        "br-bl": "l100-r100"
       },
       j = [],
       c = new b.Offset(0, 0),
@@ -16852,7 +16847,7 @@ Ext.cmd.derive(
               Math.max(F.top, z.top),
               C,
               Math.min(F.bottom, z.bottom),
-              C,
+              C
             );
             if (z.getHeight() > E) {
               v = w.getHeight();
@@ -16872,7 +16867,7 @@ Ext.cmd.derive(
                     Math.max(F.top, z.top),
                     C,
                     Math.min(F.bottom, z.bottom),
-                    C,
+                    C
                   );
                   v = w.getHeight();
                   if (v < E) {
@@ -16891,7 +16886,7 @@ Ext.cmd.derive(
             F.anchor = r.alignTo({
               target: w,
               align: u ? "l-r" : "r-l",
-              overlap: true,
+              overlap: true
             });
             F.anchor.position = u ? "right" : "left";
           } else {
@@ -16902,7 +16897,7 @@ Ext.cmd.derive(
               B,
               Math.min(F.right, z.right),
               B,
-              Math.max(F.left, z.left),
+              Math.max(F.left, z.left)
             );
             if (z.getWidth() > E) {
               v = w.getWidth();
@@ -16922,7 +16917,7 @@ Ext.cmd.derive(
                     B,
                     Math.min(F.right, z.right),
                     B,
-                    Math.max(F.left, z.left),
+                    Math.max(F.left, z.left)
                   );
                   v = w.getWidth();
                   if (v < E) {
@@ -16941,7 +16936,7 @@ Ext.cmd.derive(
             F.anchor = r.alignTo({
               target: w,
               align: u ? "t-b" : "b-t",
-              overlap: true,
+              overlap: true
             });
             F.anchor.position = u ? "bottom" : "top";
           }
@@ -17017,7 +17012,7 @@ Ext.cmd.derive(
             myOffset: s[2],
             otherEdge: s[4],
             otherOffset: s[5],
-            constrain: v[2],
+            constrain: v[2]
           };
           if (s[3]) {
             r.myEdge = s[3][0];
@@ -17035,7 +17030,7 @@ Ext.cmd.derive(
           }
           r.position = p[r.myEdge];
           return r;
-        },
+        }
       },
       constructor: function (v, s, r, u) {
         var t = this;
@@ -17308,7 +17303,7 @@ Ext.cmd.derive(
                   allowY: v,
                   offset: u,
                   anchorHeight: x ? x.y : 0,
-                  centerOnSideChange: !!x,
+                  centerOnSideChange: !!x
                 });
               } else {
                 if (H.minWidth && F.getWidth() > t.getWidth()) {
@@ -17397,7 +17392,7 @@ Ext.cmd.derive(
                     region: G,
                     align: C[2],
                     position: C[3],
-                    distance: C[4],
+                    distance: C[4]
                   };
                 }
               }
@@ -17410,7 +17405,7 @@ Ext.cmd.derive(
                     region: G,
                     align: C[2],
                     position: C[3],
-                    distance: C[4],
+                    distance: C[4]
                   };
                 }
               }
@@ -17424,7 +17419,7 @@ Ext.cmd.derive(
                   align: C[2],
                   position: C[3],
                   distance: C[4],
-                  area: A,
+                  area: A
                 };
               }
             }
@@ -17453,7 +17448,7 @@ Ext.cmd.derive(
                   axisLock: true,
                   inside: J,
                   minHeight: s.minHeight,
-                  minWidth: s.minWidth,
+                  minWidth: s.minWidth
                 });
                 if (J.contains(C)) {
                   x.setPosition(C.x, C.y);
@@ -17497,7 +17492,7 @@ Ext.cmd.derive(
       getAnchorPoint_c: function () {
         return [
           this.x + Math.round(this.getWidth() / 2),
-          this.y + Math.round(this.getHeight() / 2),
+          this.y + Math.round(this.getHeight() / 2)
         ];
       },
       getHeight: function () {
@@ -17579,7 +17574,7 @@ Ext.cmd.derive(
       },
       getOffsetsTo: function (r) {
         return { x: this.x - r.x, y: this.y - r.y };
-      },
+      }
     };
   },
   3,
@@ -17592,7 +17587,7 @@ Ext.cmd.derive(
   function (a) {
     a.prototype.getAlignInfo = a.getAlignInfo;
     a.EMPTY = new a(0, 0, 0, 0);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Point",
@@ -17618,7 +17613,7 @@ Ext.cmd.derive(
           return new this(a.x, a.y);
         }
         return a;
-      },
+      }
     },
     constructor: function (a, b) {
       if (a == null) {
@@ -17691,7 +17686,7 @@ Ext.cmd.derive(
       var c = this.x - b.x,
         a = this.y - b.y;
       return Math.atan2(a, c) * this.radianToDegreeConstant;
-    },
+    }
   },
   3,
   0,
@@ -17702,7 +17697,7 @@ Ext.cmd.derive(
   [Ext.util, "Point"],
   function () {
     this.prototype.translate = this.prototype.translateBy;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.Event",
@@ -17733,7 +17728,7 @@ Ext.cmd.derive(
         MSPointerOut: 1,
         MSPointerCancel: 1,
         MSPointerEnter: 1,
-        MSPointerLeave: 1,
+        MSPointerLeave: 1
       },
       mouseEvents: {
         mousedown: 1,
@@ -17742,7 +17737,7 @@ Ext.cmd.derive(
         mouseover: 1,
         mouseout: 1,
         mouseenter: 1,
-        mouseleave: 1,
+        mouseleave: 1
       },
       clickEvents: { click: 1, dblclick: 1 },
       touchEvents: { touchstart: 1, touchmove: 1, touchend: 1, touchcancel: 1 },
@@ -17752,7 +17747,7 @@ Ext.cmd.derive(
         focusin: 1,
         focusout: 1,
         focusenter: 1,
-        focusleave: 1,
+        focusleave: 1
       },
       pointerTypeMap: {
         2: "touch",
@@ -17760,7 +17755,7 @@ Ext.cmd.derive(
         4: "mouse",
         touch: "touch",
         pen: "pen",
-        mouse: "mouse",
+        mouse: "mouse"
       },
       keyFlags: {
         CTRL: "ctrlKey",
@@ -17771,13 +17766,13 @@ Ext.cmd.derive(
         COMMAND: "metaKey",
         CMDORCTRL: Ext.isMac ? "metaKey" : "ctrlKey",
         COMMANDORCONTROL: Ext.isMac ? "metaKey" : "ctrlKey",
-        META: "metaKey",
+        META: "metaKey"
       },
       modifierGlyphs: {
         ctrlKey: "⌃",
         altKey: "⌥",
         metaKey: Ext.isMac ? "⌘" : "⊞",
-        shiftKey: "⇧",
+        shiftKey: "⇧"
       },
       specialKeyGlyphs: {
         BACKSPACE: "⌫",
@@ -17796,7 +17791,7 @@ Ext.cmd.derive(
         PRINT_SCREEN: "⎙",
         INSERT: "⎀",
         DELETE: "⌦",
-        CONTEXT_MENU: "☰",
+        CONTEXT_MENU: "☰"
       },
       getKeyId: function (e) {
         e = e.toUpperCase();
@@ -17825,7 +17820,7 @@ Ext.cmd.derive(
         }
         b.push(this.specialKeyGlyphs[c] || c);
         return b.join("");
-      },
+      }
     },
     constructor: function (b) {
       var i = this,
@@ -18101,7 +18096,7 @@ Ext.cmd.derive(
       }
       return b ? Ext.fly(c).contains(b) || !!(a && b === Ext.getDom(c)) : false;
     },
-    deprecated: { "4.0": { methods: { getPageX: "getX", getPageY: "getY" } } },
+    deprecated: { "4.0": { methods: { getPageX: "getX", getPageY: "getY" } } }
   },
   1,
   0,
@@ -18217,7 +18212,7 @@ Ext.cmd.derive(
             }
           }
           return h;
-        })(),
+        })()
       },
       b = {},
       e,
@@ -18232,7 +18227,7 @@ Ext.cmd.derive(
     }
     c.keyCodes = b;
     c.getTrueXY = c.getXY;
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.event.Event",
@@ -18281,7 +18276,7 @@ Ext.define(
           },
           fireEvent: function (i, g, h) {
             i.dispatchEvent(h);
-          },
+          }
         };
       } else {
         if (document.createEventObject) {
@@ -18318,7 +18313,7 @@ Ext.define(
             },
             fireEvent: function (i, g, h) {
               i.fireEvent("on" + g, h);
-            },
+            }
           };
         }
       }
@@ -18331,7 +18326,7 @@ Ext.define(
           submit: [true, true],
           reset: [true, false],
           resize: [true, false],
-          scroll: [true, false],
+          scroll: [true, false]
         },
         function (i, j) {
           var h = j[0],
@@ -18340,7 +18335,7 @@ Ext.define(
             var l = d.createHtmlEvent(i, h, g);
             d.fireEvent(m, i, l);
           };
-        },
+        }
       );
       function b(i, h) {
         var g = i !== "mousemove";
@@ -18359,7 +18354,7 @@ Ext.define(
               j.shiftKey,
               j.metaKey,
               j.button,
-              j.relatedTarget,
+              j.relatedTarget
             );
           d.fireEvent(m, i, k);
         };
@@ -18372,11 +18367,11 @@ Ext.define(
           "mouseup",
           "mouseover",
           "mousemove",
-          "mouseout",
+          "mouseout"
         ],
         function (g) {
           e[g] = b(g, 1);
-        },
+        }
       );
       Ext.Object.each(
         {
@@ -18384,7 +18379,7 @@ Ext.define(
           focusout: [true, false],
           activate: [true, true],
           focus: [false, false],
-          blur: [false, false],
+          blur: [false, false]
         },
         function (i, j) {
           var h = j[0],
@@ -18393,7 +18388,7 @@ Ext.define(
             var l = d.createUIEvent(m.ownerDocument, i, h, g, 1);
             d.fireEvent(m, i, l);
           };
-        },
+        }
       );
       if (!d) {
         e = {};
@@ -18457,10 +18452,10 @@ Ext.define(
         methods: {
           clone: function () {
             return new this.self(this.browserEvent, this);
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   function () {
     var a = this,
@@ -18486,7 +18481,7 @@ Ext.define(
               g[e] = h[e];
             }
             return g;
-          },
+          }
         },
         constructor: function (i, j, g, e) {
           var h = this;
@@ -18521,7 +18516,7 @@ Ext.define(
             }
           }
           return i.callParent([g, k, e]);
-        },
+        }
       });
       document.attachEvent("onkeydown", c);
       document.attachEvent("onkeyup", b);
@@ -18535,7 +18530,7 @@ Ext.define(
         document.addEventListener("keyup", b, true);
       }
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.publisher.Dom",
@@ -18549,7 +18544,7 @@ Ext.cmd.derive(
       animationend: 1,
       resize: 1,
       focus: 1,
-      blur: 1,
+      blur: 1
     },
     directEvents: {
       mouseenter: 1,
@@ -18565,7 +18560,7 @@ Ext.cmd.derive(
       DOMContentLoaded: 1,
       DOMFrameContentLoaded: 1,
       hashchange: 1,
-      scroll: 1,
+      scroll: 1
     },
     blockedPointerEvents: {
       pointerover: 1,
@@ -18575,7 +18570,7 @@ Ext.cmd.derive(
       MSPointerOver: 1,
       MSPointerOut: 1,
       MSPointerEnter: 1,
-      MSPointerLeave: 1,
+      MSPointerLeave: 1
     },
     blockedCompatibilityMouseEvents: { mouseenter: 1, mouseleave: 1 },
     constructor: function () {
@@ -18626,7 +18621,7 @@ Ext.cmd.derive(
       this.target.addEventListener(
         a,
         this.onDelegatedEvent,
-        !!this.captureEvents[a],
+        !!this.captureEvents[a]
       );
     },
     removeDelegatedListener: function (a) {
@@ -18634,21 +18629,21 @@ Ext.cmd.derive(
       this.target.removeEventListener(
         a,
         this.onDelegatedEvent,
-        !!this.captureEvents[a],
+        !!this.captureEvents[a]
       );
     },
     addDirectListener: function (b, c, a) {
       c.dom.addEventListener(
         b,
         a ? this.onDirectCaptureEvent : this.onDirectEvent,
-        a,
+        a
       );
     },
     removeDirectListener: function (b, c, a) {
       c.dom.removeEventListener(
         b,
         a ? this.onDirectCaptureEvent : this.onDirectEvent,
-        a,
+        a
       );
     },
     subscribe: function (c, b, g, a) {
@@ -18945,7 +18940,7 @@ Ext.cmd.derive(
         a.lastTouchStartX =
         a.lastTouchStartY =
           undefined;
-    },
+    }
   },
   1,
   0,
@@ -18968,7 +18963,7 @@ Ext.cmd.derive(
       a.target = c;
     }
     b.instance = new b();
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.event.publisher.Dom",
@@ -19038,13 +19033,13 @@ Ext.define(
             }
           }
           return this.callParent([h]);
-        },
+        }
       });
       Ext.apply(d.directEvents, d.captureEvents);
       Ext.apply(d.directEvents, { change: 1, input: 1, paste: 1 });
       d.captureEvents = {};
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.publisher.Gesture",
@@ -19077,7 +19072,7 @@ Ext.cmd.derive(
         MSPointerCancel: i,
         mousedown: h,
         mousemove: d,
-        mouseup: i,
+        mouseup: i
       };
       g.activeTouchesMap = {};
       g.activeTouches = [];
@@ -19098,7 +19093,7 @@ Ext.cmd.derive(
             "MSPointerDown",
             "MSPointerMove",
             "MSPointerUp",
-            "MSPointerCancel",
+            "MSPointerCancel"
           );
           g.mousePointerType = 4;
         } else {
@@ -19313,7 +19308,7 @@ Ext.cmd.derive(
           d = l[j] = {
             identifier: j,
             target: h,
-            targets: o.getPropagatingTargets(h),
+            targets: o.getPropagatingTargets(h)
           };
           a.push(d);
         }
@@ -19339,7 +19334,7 @@ Ext.cmd.derive(
       } else {
         Ext.event.publisher.Dom.prototype.publishDelegatedDomEvent.call(
           this,
-          b,
+          b
         );
       }
     },
@@ -19395,7 +19390,7 @@ Ext.cmd.derive(
       try {
         b.invokeRecognizers(
           b.isCancelEvent[c.type] ? "onTouchCancel" : "onTouchEnd",
-          c,
+          c
         );
       } finally {
         if (!a) {
@@ -19480,8 +19475,8 @@ Ext.cmd.derive(
             delete d[h];
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -19492,7 +19487,7 @@ Ext.cmd.derive(
   [Ext.event.publisher, "Gesture"],
   function (a) {
     a.instance = Ext.$gesturePublisher = new a();
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.event.publisher.Gesture",
@@ -19509,10 +19504,10 @@ Ext.define(
         },
         doDelegatedEvent: function (a) {
           this.callParent([Ext.event.Event.enableIEAsync(a)]);
-        },
+        }
       });
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.mixin.Templatable",
@@ -19554,7 +19549,7 @@ Ext.cmd.derive(
         b.removeAttribute(h);
         this.linkElement(a, b);
       }
-    },
+    }
   },
   0,
   0,
@@ -19563,7 +19558,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Templatable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.TaskQueue",
@@ -19649,7 +19644,7 @@ Ext.cmd.derive(
       if (c !== null) {
         this.request(c);
       }
-    },
+    }
   },
   1,
   0,
@@ -19658,7 +19653,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "TaskQueue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.sizemonitor.Abstract",
@@ -19676,7 +19671,7 @@ Ext.cmd.derive(
         height: 0,
         contentWidth: 0,
         contentHeight: 0,
-        flag: 0,
+        flag: 0
       };
       this.initElement();
       this.initConfig(a);
@@ -19756,7 +19751,7 @@ Ext.cmd.derive(
       delete b._element;
       b.refresh = null;
       b.callParent();
-    },
+    }
   },
   1,
   0,
@@ -19767,11 +19762,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Templatable.prototype.mixinId ||
         Ext.mixin.Templatable.$className,
-      Ext.mixin.Templatable,
-    ],
+      Ext.mixin.Templatable
+    ]
   ],
   [Ext.util.sizemonitor, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.sizemonitor.Scroll",
@@ -19783,15 +19778,15 @@ Ext.cmd.derive(
         classList: ["x-size-monitors", "scroll"],
         children: [
           { reference: "expandMonitor", className: "expand" },
-          { reference: "shrinkMonitor", className: "shrink" },
-        ],
+          { reference: "shrinkMonitor", className: "shrink" }
+        ]
       };
     },
     constructor: function (a) {
       this.onScroll = Ext.Function.bind(this.onScroll, this);
       Ext.util.sizemonitor.Abstract.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     bindListeners: function (b) {
@@ -19821,7 +19816,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.onScroll = null;
       Ext.util.sizemonitor.Abstract.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -19830,7 +19825,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.sizemonitor, "Scroll"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.sizemonitor.OverflowChange",
@@ -19841,7 +19836,7 @@ Ext.cmd.derive(
       this.onShrink = Ext.Function.bind(this.onShrink, this);
       Ext.util.sizemonitor.Abstract.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     getElementConfig: function () {
@@ -19852,14 +19847,14 @@ Ext.cmd.derive(
           {
             reference: "expandMonitor",
             className: "expand",
-            children: [{ reference: "expandHelper" }],
+            children: [{ reference: "expandHelper" }]
           },
           {
             reference: "shrinkMonitor",
             className: "shrink",
-            children: [{ reference: "shrinkHelper" }],
-          },
-        ],
+            children: [{ reference: "shrinkHelper" }]
+          }
+        ]
       };
     },
     bindListeners: function (b) {
@@ -19867,12 +19862,12 @@ Ext.cmd.derive(
       this.expandMonitor[a](
         Ext.browser.is.Firefox ? "underflow" : "overflowchanged",
         this.onExpand,
-        true,
+        true
       );
       this.shrinkMonitor[a](
         Ext.browser.is.Firefox ? "overflow" : "overflowchanged",
         this.onShrink,
-        true,
+        true
       );
     },
     onExpand: function (a) {
@@ -19916,7 +19911,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.onExpand = this.onShrink = null;
       Ext.util.sizemonitor.Abstract.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -19925,7 +19920,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.sizemonitor, "OverflowChange"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.SizeMonitor",
@@ -19938,7 +19933,7 @@ Ext.cmd.derive(
       } else {
         return new b.Scroll(a);
       }
-    },
+    }
   },
   1,
   0,
@@ -19947,7 +19942,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "SizeMonitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.publisher.ElementSize",
@@ -19960,7 +19955,7 @@ Ext.cmd.derive(
       this.subscribers = {};
       Ext.event.publisher.Publisher.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     subscribe: function (b) {
@@ -19975,7 +19970,7 @@ Ext.cmd.derive(
           element: b,
           callback: this.onElementResize,
           scope: this,
-          args: [b],
+          args: [b]
         });
       }
       b.on("painted", "forceRefresh", a[d]);
@@ -19996,7 +19991,7 @@ Ext.cmd.derive(
     },
     onElementResize: function (a, b) {
       Ext.TaskQueue.requestRead("fire", this, [a, "resize", [a, b]]);
-    },
+    }
   },
   1,
   0,
@@ -20007,7 +20002,7 @@ Ext.cmd.derive(
   [Ext.event.publisher, "ElementSize"],
   function (a) {
     a.instance = new a();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.paintmonitor.Abstract",
@@ -20024,7 +20019,7 @@ Ext.cmd.derive(
       this.monitorElement[a ? "addEventListener" : "removeEventListener"](
         this.eventName,
         this.onElementPainted,
-        true,
+        true
       );
     },
     applyElement: function (a) {
@@ -20035,7 +20030,7 @@ Ext.cmd.derive(
     updateElement: function (a) {
       this.monitorElement = Ext.Element.create(
         { classList: ["x-paint-monitor", this.monitorClass] },
-        true,
+        true
       );
       a.appendChild(this.monitorElement);
       a.addCls("x-paint-monitored");
@@ -20057,7 +20052,7 @@ Ext.cmd.derive(
         a.removeChild(b);
       }
       d.callParent();
-    },
+    }
   },
   1,
   0,
@@ -20066,7 +20061,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.paintmonitor, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.paintmonitor.CssAnimation",
@@ -20078,7 +20073,7 @@ Ext.cmd.derive(
       if (a.animationName === "x-paint-monitor-helper") {
         this.getCallback().apply(this.getScope(), this.getArgs());
       }
-    },
+    }
   },
   0,
   0,
@@ -20087,7 +20082,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.paintmonitor, "CssAnimation"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.PaintMonitor",
@@ -20095,7 +20090,7 @@ Ext.cmd.derive(
   {
     constructor: function (a) {
       return new Ext.util.paintmonitor.CssAnimation(a);
-    },
+    }
   },
   1,
   0,
@@ -20104,7 +20099,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "PaintMonitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.publisher.ElementPaint",
@@ -20117,7 +20112,7 @@ Ext.cmd.derive(
       this.subscribers = {};
       Ext.event.publisher.Publisher.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     subscribe: function (a) {
@@ -20132,7 +20127,7 @@ Ext.cmd.derive(
           element: a,
           callback: b.onElementPainted,
           scope: b,
-          args: [a],
+          args: [a]
         });
       }
     },
@@ -20148,7 +20143,7 @@ Ext.cmd.derive(
     },
     onElementPainted: function (a) {
       Ext.TaskQueue.requestRead("fire", this, [a, "painted", [a]]);
-    },
+    }
   },
   1,
   0,
@@ -20159,7 +20154,7 @@ Ext.cmd.derive(
   [Ext.event.publisher, "ElementPaint"],
   function (a) {
     a.instance = new a();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.dom.Element",
@@ -20201,19 +20196,19 @@ Ext.cmd.derive(
         t: "border-top-width",
         r: "border-right-width",
         b: "border-bottom-width",
-        l: "border-left-width",
+        l: "border-left-width"
       },
       af = {
         t: "padding-top",
         r: "padding-right",
         b: "padding-bottom",
-        l: "padding-left",
+        l: "padding-left"
       },
       p = {
         t: "margin-top",
         r: "margin-right",
         b: "margin-bottom",
-        l: "margin-left",
+        l: "margin-left"
       },
       J = [af.l, af.r, af.t, af.b],
       j = [z.l, z.r, z.t, z.b],
@@ -20255,7 +20250,7 @@ Ext.cmd.derive(
         text: "text",
         hidden: "hidden",
         html: "html",
-        children: "children",
+        children: "children"
       },
       Y = 0,
       ae = 0,
@@ -20547,13 +20542,13 @@ Ext.cmd.derive(
         getDocumentHeight: function () {
           return Math.max(
             !Ext.isStrict ? V.body.scrollHeight : g.scrollHeight,
-            this.getViewportHeight(),
+            this.getViewportHeight()
           );
         },
         getDocumentWidth: function () {
           return Math.max(
             !Ext.isStrict ? V.body.scrollWidth : g.scrollWidth,
-            this.getViewportWidth(),
+            this.getViewportWidth()
           );
         },
         getOrientation: function () {
@@ -20683,7 +20678,7 @@ Ext.cmd.derive(
             top: parseFloat(ap[0]) || 0,
             right: parseFloat(ap[1]) || 0,
             bottom: parseFloat(ap[2]) || 0,
-            left: parseFloat(ap[3]) || 0,
+            left: parseFloat(ap[3]) || 0
           };
         },
         parseStyles: function (an) {
@@ -20752,7 +20747,7 @@ Ext.cmd.derive(
                     au += Ext.String.format(
                       "{0}={1}&",
                       az(an),
-                      az(aB ? ao.value : ao.text),
+                      az(aB ? ao.value : ao.text)
                     );
                   }
                 }
@@ -20783,7 +20778,7 @@ Ext.cmd.derive(
             }
           }
           return e ? k.dom : Ext.get(k);
-        },
+        }
       },
       addCls: function (av, at, ax) {
         var aw = this,
@@ -20871,7 +20866,7 @@ Ext.cmd.derive(
           },
           function () {
             Ext.fly(aq).removeCls(ao);
-          },
+          }
         );
         return ap;
       },
@@ -21110,10 +21105,10 @@ Ext.cmd.derive(
                 listeners: {
                   afteranimate: function () {
                     I.attach(at).highlight();
-                  },
-                },
+                  }
+                }
               },
-              an,
+              an
             );
           } else {
             I.attach(at).highlight();
@@ -21266,7 +21261,7 @@ Ext.cmd.derive(
           beforeX: (parseFloat(an[z.l]) || 0) + (parseFloat(e[af.l]) || 0),
           afterX: (parseFloat(an[z.r]) || 0) + (parseFloat(e[af.r]) || 0),
           beforeY: (parseFloat(an[z.t]) || 0) + (parseFloat(e[af.t]) || 0),
-          afterY: (parseFloat(an[z.b]) || 0) + (parseFloat(e[af.b]) || 0),
+          afterY: (parseFloat(an[z.b]) || 0) + (parseFloat(e[af.b]) || 0)
         };
       },
       getBorders: function () {
@@ -21275,7 +21270,7 @@ Ext.cmd.derive(
           beforeX: parseFloat(e[z.l]) || 0,
           afterX: parseFloat(e[z.r]) || 0,
           beforeY: parseFloat(e[z.t]) || 0,
-          afterY: parseFloat(e[z.b]) || 0,
+          afterY: parseFloat(e[z.b]) || 0
         };
       },
       getBorderWidth: function (e) {
@@ -21711,7 +21706,7 @@ Ext.cmd.derive(
           }
           au.dom.parentNode.insertBefore(
             an.dom,
-            ax ? au.dom.nextSibling : au.dom,
+            ax ? au.dom.nextSibling : au.dom
           );
           return aq;
         }
@@ -21719,7 +21714,7 @@ Ext.cmd.derive(
         if (ao.nodeType || ao.dom) {
           aq = au.dom.parentNode.insertBefore(
             Ext.getDom(ao),
-            ax ? au.dom.nextSibling : au.dom,
+            ax ? au.dom.nextSibling : au.dom
           );
           if (!av) {
             aq = Ext.get(aq);
@@ -21850,7 +21845,7 @@ Ext.cmd.derive(
             destroy: function () {
               clearTimeout(ar);
               aq.un(an);
-            },
+            }
           };
         aq.on(an);
         return an;
@@ -22139,7 +22134,7 @@ Ext.cmd.derive(
           ao,
           an,
           "getScrollLeft",
-          "scrollTo",
+          "scrollTo"
         );
       },
       scrollTo: function (ao, aq, e) {
@@ -22892,7 +22887,7 @@ Ext.cmd.derive(
               e.call(this);
             }
           }
-        },
+        }
       },
       deprecated: {
         "5.0": {
@@ -22921,7 +22916,7 @@ Ext.cmd.derive(
                   width: av,
                   height: aq,
                   right: e,
-                  bottom: at,
+                  bottom: at
                 };
               }
             },
@@ -22934,10 +22929,10 @@ Ext.cmd.derive(
             purgeAllListeners: "clearListeners",
             removeAllListeners: "clearListeners",
             setHTML: "setHtml",
-            setTopLeft: null,
-          },
-        },
-      },
+            setTopLeft: null
+          }
+        }
+      }
     };
   },
   1,
@@ -22949,12 +22944,12 @@ Ext.cmd.derive(
     [
       Ext.util.Positionable.prototype.mixinId ||
         Ext.util.Positionable.$className,
-      Ext.util.Positionable,
+      Ext.util.Positionable
     ],
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.dom, "Element", Ext, "Element"],
   function (r) {
@@ -23103,7 +23098,7 @@ Ext.cmd.derive(
         if (K) {
           K.setOpacity(I);
         }
-      },
+      }
     };
     n.getTrueXY = n.getXY;
     Ext.select = r.select;
@@ -23164,7 +23159,7 @@ Ext.cmd.derive(
             }
           }
         }
-      },
+      }
     });
     Ext.isGarbage = function (H) {
       return (
@@ -23190,12 +23185,12 @@ Ext.cmd.derive(
           capture: true,
           delegated: false,
           delay: 1,
-          scope: r,
+          scope: r
         });
         H.on({ resize: "_onWindowResize", priority: 2000, scope: r });
       });
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Filter",
@@ -23215,7 +23210,7 @@ Ext.cmd.derive(
       operator: null,
       root: null,
       serializer: null,
-      convert: null,
+      convert: null
     },
     scope: null,
     $configStrict: false,
@@ -23265,7 +23260,7 @@ Ext.cmd.derive(
           }
         }
         return false;
-      },
+      }
     },
     constructor: function (a) {
       this.initConfig(a);
@@ -23393,8 +23388,8 @@ Ext.cmd.derive(
           }
         }
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -23492,7 +23487,7 @@ Ext.cmd.derive(
             }
           }
           return g.regex ? g.regex.test(d) : false;
-        },
+        }
       });
     b["=="] = b["="];
     b.gt = b[">"];
@@ -23501,7 +23496,7 @@ Ext.cmd.derive(
     b.le = b["<="];
     b.eq = b["="];
     b.ne = b["!="];
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Observable",
@@ -23520,7 +23515,7 @@ Ext.cmd.derive(
     a.capture = b.capture;
     a.captureArgs = b.captureArgs;
     a.observe = a.observeClass = b.observe;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.AbstractMixedCollection",
@@ -23541,7 +23536,7 @@ Ext.cmd.derive(
         }
         c.initialConfig = {
           allowFunctions: c.allowFunctions,
-          getKey: c.getKey,
+          getKey: c.getKey
         };
       }
       c.items = [];
@@ -23684,7 +23679,7 @@ Ext.cmd.derive(
     find: function () {
       if (Ext.isDefined(Ext.global.console)) {
         Ext.global.console.warn(
-          "Ext.util.MixedCollection: find has been deprecated. Use findBy instead.",
+          "Ext.util.MixedCollection: find has been deprecated. Use findBy instead."
         );
       }
       return this.findBy.apply(this, arguments);
@@ -24044,8 +24039,8 @@ Ext.cmd.derive(
             property: d,
             value: c,
             anyMatch: e,
-            caseSensitive: a,
-          }),
+            caseSensitive: a
+          })
         );
       } else {
         if (Ext.isArray(d) || d instanceof Ext.util.Filter) {
@@ -24080,7 +24075,7 @@ Ext.cmd.derive(
           return g && b.test(g[c]);
         },
         null,
-        e,
+        e
       );
     },
     findIndexBy: function (e, d, j) {
@@ -24118,7 +24113,7 @@ Ext.cmd.derive(
       b.add(a.keys, a.items);
       b.useLinearSearch = a.useLinearSearch;
       return b;
-    },
+    }
   },
   1,
   0,
@@ -24127,7 +24122,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.util, "AbstractMixedCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Sorter",
@@ -24140,7 +24135,7 @@ Ext.cmd.derive(
       root: null,
       transform: null,
       direction: "ASC",
-      id: undefined,
+      id: undefined
     },
     statics: {
       createComparator: function (b, a) {
@@ -24158,7 +24153,7 @@ Ext.cmd.derive(
           }
           return a && a(c, j);
         };
-      },
+      }
     },
     multiplier: 1,
     constructor: function (a) {
@@ -24219,7 +24214,7 @@ Ext.cmd.derive(
         a = {
           root: b.getRoot(),
           property: b.getProperty(),
-          direction: b.getDirection(),
+          direction: b.getDirection()
         };
       if (b._id) {
         a.id = b._id;
@@ -24228,7 +24223,7 @@ Ext.cmd.derive(
     },
     serialize: function () {
       return { property: this.getProperty(), direction: this.getDirection() };
-    },
+    }
   },
   1,
   0,
@@ -24237,7 +24232,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Sorter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Sortable",
@@ -24264,7 +24259,7 @@ Ext.cmd.derive(
           : function () {
               return 0;
             };
-      },
+      }
     },
     applySorters: function (c) {
       var b = this,
@@ -24401,7 +24396,7 @@ Ext.cmd.derive(
         }
       }
       return null;
-    },
+    }
   },
   0,
   0,
@@ -24412,7 +24407,7 @@ Ext.cmd.derive(
   [Ext.util, "Sortable"],
   function () {
     this.prototype.createComparator = this.createComparator;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.MixedCollection",
@@ -24422,7 +24417,7 @@ Ext.cmd.derive(
       this.initConfig();
       Ext.util.AbstractMixedCollection.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     doSort: function (a) {
@@ -24521,9 +24516,9 @@ Ext.cmd.derive(
             var g = String(d).toUpperCase(),
               e = String(c).toUpperCase();
             return g > e ? 1 : g < e ? -1 : 0;
-          },
+          }
       );
-    },
+    }
   },
   1,
   0,
@@ -24532,7 +24527,7 @@ Ext.cmd.derive(
   0,
   [["sortable", Ext.util.Sortable]],
   [Ext.util, "MixedCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.TaskRunner",
@@ -24688,7 +24683,7 @@ Ext.cmd.derive(
         d.timerId = Ext.defer(d.timerFn, e);
         d.nextExpires = b;
       }
-    },
+    }
   },
   1,
   0,
@@ -24721,11 +24716,11 @@ Ext.cmd.derive(
       },
       stop: function () {
         this.manager.stop(this);
-      },
+      }
     });
     a = b.Task.prototype;
     a.destroy = a.stop;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.fx.target.Target",
@@ -24741,7 +24736,7 @@ Ext.cmd.derive(
     },
     remove: function () {
       Ext.destroy(this.target);
-    },
+    }
   },
   1,
   0,
@@ -24750,7 +24745,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "Target"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.Element",
@@ -24838,7 +24833,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -24847,7 +24842,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "Element"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.ElementCSS",
@@ -24861,7 +24856,7 @@ Ext.cmd.derive(
           this.setStyle(Ext.supports.CSS3Prefix + "TransitionDuration", null);
           this.setStyle(
             Ext.supports.CSS3Prefix + "TransitionTimingFunction",
-            null,
+            null
           );
         },
         q = { single: true },
@@ -24884,7 +24879,7 @@ Ext.cmd.derive(
             s.attrs.push(
               k.replace(/[A-Z]/g, function (i) {
                 return "-" + i.toLowerCase();
-              }),
+              })
             );
             s.duration.push(c + "ms");
             s.easing.push(l);
@@ -24902,15 +24897,15 @@ Ext.cmd.derive(
             b = r[k][d];
             b[0].setStyle(
               Ext.supports.CSS3Prefix + "TransitionProperty",
-              e ? "" : g,
+              e ? "" : g
             );
             b[0].setStyle(
               Ext.supports.CSS3Prefix + "TransitionDuration",
-              e ? "" : c,
+              e ? "" : c
             );
             b[0].setStyle(
               Ext.supports.CSS3Prefix + "TransitionTimingFunction",
-              e ? "" : l,
+              e ? "" : l
             );
             b[0].setStyle(k, b[1]);
             if (e) {
@@ -24921,7 +24916,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -24930,7 +24925,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "ElementCSS"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.CompositeElement",
@@ -24991,7 +24986,7 @@ Ext.cmd.derive(
     },
     remove: function () {
       this.target.destroy();
-    },
+    }
   },
   1,
   0,
@@ -25000,7 +24995,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "CompositeElement"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.CompositeElementCSS",
@@ -25008,7 +25003,7 @@ Ext.cmd.derive(
   {
     setAttr: function () {
       return Ext.fx.target.ElementCSS.prototype.setAttr.apply(this, arguments);
-    },
+    }
   },
   0,
   0,
@@ -25017,7 +25012,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "CompositeElementCSS"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.Sprite",
@@ -25045,7 +25040,7 @@ Ext.cmd.derive(
     },
     getAttr: function (a, b) {
       return [
-        [this.target, b !== undefined ? b : this.getFromPrim(this.target, a)],
+        [this.target, b !== undefined ? b : this.getFromPrim(this.target, a)]
       ];
     },
     setAttr: function (m) {
@@ -25123,7 +25118,7 @@ Ext.cmd.derive(
         k[d][0].setAttributes(k[d][1]);
       }
       this.target.redraw();
-    },
+    }
   },
   0,
   0,
@@ -25132,7 +25127,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "Sprite"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.CompositeSprite",
@@ -25149,7 +25144,7 @@ Ext.cmd.derive(
         b.push([c, h !== undefined ? h : this.getFromPrim(c, a)]);
       }
       return b;
-    },
+    }
   },
   0,
   0,
@@ -25158,7 +25153,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "CompositeSprite"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.target.Component",
@@ -25186,7 +25181,7 @@ Ext.cmd.derive(
       },
       opacity: function () {
         return this.el.getStyle("opacity");
-      },
+      }
     },
     setMethods: {
       top: "setPosition",
@@ -25195,14 +25190,14 @@ Ext.cmd.derive(
       y: "setPagePosition",
       height: "setSize",
       width: "setSize",
-      opacity: "setOpacity",
+      opacity: "setOpacity"
     },
     getAttr: function (a, b) {
       return [
         [
           this.target,
-          b !== undefined ? b : this.getPropMethod[a].call(this.target),
-        ],
+          b !== undefined ? b : this.getPropMethod[a].call(this.target)
+        ]
       ];
     },
     setAttr: function (s, g, b) {
@@ -25252,7 +25247,7 @@ Ext.cmd.derive(
           if (b || q.dynamic) {
             Ext.GlobalEvents.on({
               idle: Ext.Function.bind(c.target.setSize, c.target, [u, l]),
-              single: true,
+              single: true
             });
           }
         }
@@ -25261,7 +25256,7 @@ Ext.cmd.derive(
           c.target.el.setStyle("opacity", c.opacity);
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -25270,7 +25265,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.target, "Component"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Queue",
@@ -25377,10 +25372,10 @@ Ext.cmd.derive(
           }
         },
         d,
-        { single: true },
+        { single: true }
       );
       a.push(e);
-    },
+    }
   },
   1,
   0,
@@ -25389,7 +25384,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "Queue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Manager",
@@ -25553,9 +25548,9 @@ Ext.cmd.derive(
           {
             duration: c.duration,
             easing: e && c.reverse ? c.easingFn.reverse().toCSS3() : c.easing,
-            attrs: c.runAnim(a),
-          },
-        ],
+            attrs: c.runAnim(a)
+          }
+        ]
       };
       return d;
     },
@@ -25592,7 +25587,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -25601,7 +25596,7 @@ Ext.cmd.derive(
   0,
   [["queue", Ext.fx.Queue]],
   [Ext.fx, "Manager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Animator",
@@ -25693,7 +25688,7 @@ Ext.cmd.derive(
             damper: a,
             duration: b.duration,
             paused: true,
-            to: k,
+            to: k
           });
           j.push(b);
         }
@@ -25710,7 +25705,7 @@ Ext.cmd.derive(
             function () {
               this.fireEvent("keyframe", this, ++this.keyframeStep);
             },
-            h,
+            h
           );
         }
         j[g - 1].on(
@@ -25718,7 +25713,7 @@ Ext.cmd.derive(
           function () {
             this.lastFrame();
           },
-          h,
+          h
         );
       }
     },
@@ -25773,7 +25768,7 @@ Ext.cmd.derive(
     },
     isRunning: function () {
       return false;
-    },
+    }
   },
   1,
   0,
@@ -25782,7 +25777,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.fx, "Animator"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.CubicBezier",
@@ -25852,7 +25847,7 @@ Ext.cmd.derive(
         return Ext.fx.CubicBezier.cubicBezier(1 - a, 1 - c, 1 - b, 1 - e);
       };
       return d;
-    },
+    }
   },
   0,
   0,
@@ -25861,7 +25856,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "CubicBezier"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Easing",
@@ -25945,7 +25940,7 @@ Ext.cmd.derive(
           }
         }
         return i;
-      },
+      }
     };
   },
   0,
@@ -25967,9 +25962,9 @@ Ext.cmd.derive(
       "elastic-out": a.elasticOut,
       "bounce-in": a.bounceIn,
       "bounce-out": a.bounceOut,
-      "ease-in-out": a.easeInOut,
+      "ease-in-out": a.easeInOut
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.fx.DrawPath",
@@ -26153,7 +26148,7 @@ Ext.cmd.derive(
                 p,
                 s++,
                 0,
-                ["C"].concat(Ext.Array.splice(t, 0, 6)),
+                ["C"].concat(Ext.Array.splice(t, 0, 6))
               );
             }
             Ext.Array.erase(p, s, 1);
@@ -26218,7 +26213,7 @@ Ext.cmd.derive(
           c = [
             "C",
             b.x + (b.x - (b.bx || b.x)),
-            b.y + (b.y - (b.by || b.y)),
+            b.y + (b.y - (b.by || b.y))
           ].concat(c.slice(1));
           break;
         case "T":
@@ -26382,7 +26377,7 @@ Ext.cmd.derive(
         }
         return L;
       }
-    },
+    }
   },
   0,
   0,
@@ -26391,7 +26386,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "DrawPath"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.PropertyHandler",
@@ -26474,7 +26469,7 @@ Ext.cmd.derive(
             }
           }
           return c;
-        },
+        }
       },
       stringHandler: {
         computeDelta: function (e, b, d, c, a) {
@@ -26500,7 +26495,7 @@ Ext.cmd.derive(
             b.push([a[c][0], e.delta]);
           }
           return b;
-        },
+        }
       },
       color: {
         rgbRE: /^rgb\(([0-9]+)\s*,\s*([0-9]+)\s*,\s*([0-9]+)\)$/i,
@@ -26528,7 +26523,7 @@ Ext.cmd.derive(
               g = {
                 red: parseInt(j[1], b),
                 green: parseInt(j[2], b),
-                blue: parseInt(j[3], b),
+                blue: parseInt(j[3], b)
               };
               break;
             }
@@ -26554,8 +26549,8 @@ Ext.cmd.derive(
             delta: {
               red: Math.round((a.red - g.red) * e),
               green: Math.round((a.green - g.green) * e),
-              blue: Math.round((a.blue - g.blue) * e),
-            },
+              blue: Math.round((a.blue - g.blue) * e)
+            }
           };
         },
         get: function (j, a, g, d) {
@@ -26599,14 +26594,14 @@ Ext.cmd.derive(
                     [
                       (h.red + Math.round(j.red * e)) % 256,
                       (h.green + Math.round(j.green * e)) % 256,
-                      (h.blue + Math.round(j.blue * e)) % 256,
+                      (h.blue + Math.round(j.blue * e)) % 256
                     ].join(",") +
                     ")";
               c.push([k[d][0], a]);
             }
           }
           return c;
-        },
+        }
       },
       object: {
         interpolate: function (d, b) {
@@ -26661,7 +26656,7 @@ Ext.cmd.derive(
             c.push([l[d][0], e]);
           }
           return c;
-        },
+        }
       },
       path: {
         computeDelta: function (e, a, c, b) {
@@ -26737,9 +26732,9 @@ Ext.cmd.derive(
             e.push([p[h][0], l.join(",")]);
           }
           return e;
-        },
-      },
-    },
+        }
+      }
+    }
   },
   0,
   0,
@@ -26758,7 +26753,7 @@ Ext.cmd.derive(
         "borderBottomColor",
         "borderLeftColor",
         "fill",
-        "stroke",
+        "stroke"
       ],
       c = b.length,
       a = 0,
@@ -26774,7 +26769,7 @@ Ext.cmd.derive(
       d = b[a];
       this[d] = this.stringHandler;
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.fx.Anim",
@@ -26821,7 +26816,7 @@ Ext.cmd.derive(
             +c[1],
             +c[2],
             +c[3],
-            +c[4],
+            +c[4]
           );
         }
       }
@@ -26976,7 +26971,7 @@ Ext.cmd.derive(
         this.running === true &&
         this.isAnimator !== true
       );
-    },
+    }
   },
   1,
   0,
@@ -26985,7 +26980,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.fx, "Anim"],
-  0,
+  0
 );
 Ext.enableFx = true;
 Ext.cmd.derive(
@@ -27034,7 +27029,7 @@ Ext.cmd.derive(
     hasActiveFx: Ext.Function.alias(Ext.util.Animate, "getActiveAnimation"),
     getActiveAnimation: function () {
       return Ext.fx.Manager.getActiveAnimation(this.id);
-    },
+    }
   },
   0,
   0,
@@ -27043,7 +27038,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Animate"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Fly",
@@ -27071,7 +27066,7 @@ Ext.cmd.derive(
       this.dom = null;
     },
     addListener: null,
-    removeListener: null,
+    removeListener: null
   },
   1,
   0,
@@ -27114,7 +27109,7 @@ Ext.cmd.derive(
       }
       return c;
     };
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.dom.CompositeElementLite",
@@ -27134,7 +27129,7 @@ Ext.cmd.derive(
             };
           }
         });
-      },
+      }
     },
     constructor: function (b, a) {
       if (a) {
@@ -27337,7 +27332,7 @@ Ext.cmd.derive(
     destroy: function () {
       return this.invoke("destroy", arguments);
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -27350,7 +27345,7 @@ Ext.cmd.derive(
     var a = b.prototype;
     b.importElementMethods();
     a.on = a.addListener;
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.dom.Element",
@@ -27391,7 +27386,7 @@ Ext.define(
         '<div class="{0}-br" role="presentation">',
         '<div class="{0}-bc" role="presentation"></div>',
         "</div>",
-        "</div>",
+        "</div>"
       ].join(""),
       J = /(?:<script([^>]*)?>)((\n|\r|.)*?)(?:<\/script>)/gi,
       D = /(?:<script.*?>)((\n|\r|.)*?)(?:<\/script>)/gi,
@@ -27454,7 +27449,7 @@ Ext.define(
           SELECT: true,
           TEXTAREA: true,
           HTML: Ext.isIE ? true : false,
-          BODY: Ext.isIE ? false : true,
+          BODY: Ext.isIE ? false : true
         },
         naturallyTabbableTags: {
           BUTTON: true,
@@ -27462,7 +27457,7 @@ Ext.define(
           INPUT: true,
           SELECT: true,
           TEXTAREA: true,
-          OBJECT: Ext.isIE8m ? true : false,
+          OBJECT: Ext.isIE8m ? true : false
         },
         tabbableSavedCounterAttribute: "data-tabindex-counter",
         tabbableSavedValueAttribute: "data-tabindex-value",
@@ -27471,7 +27466,7 @@ Ext.define(
             Q = Ext.supports.Float ? "cssFloat" : "styleFloat";
           }
           return r[Q] || (r[Q] = Q.replace(A, "ms-").replace(B, I));
-        },
+        }
       },
       addKeyListener: function (R, T, S) {
         var Q;
@@ -27485,7 +27480,7 @@ Ext.define(
             ctrl: R.ctrl,
             alt: R.alt,
             fn: T,
-            scope: S,
+            scope: S
           };
         }
         return new Ext.util.KeyMap(Q);
@@ -27533,7 +27528,7 @@ Ext.define(
           keyframes: Q.keyframes,
           from: Q.from || {},
           to: Ext.apply({}, Q),
-          userConfig: Q,
+          userConfig: Q
         };
         Ext.apply(T.to, Q.to);
         delete T.to.to;
@@ -27581,7 +27576,7 @@ Ext.define(
             afteranimate: "afterAnimate",
             beforeanimate: "beforeAnimate",
             scope: U,
-            single: true,
+            single: true
           });
           if (T) {
             V.on(T);
@@ -27608,8 +27603,8 @@ Ext.define(
               Q +
               "' role='presentation'>" +
               Ext.String.format(P, Q) +
-              "</div>",
-          ),
+              "</div>"
+          )
         );
         R.selectNode("." + Q + "-mc").appendChild(this.dom);
         return R;
@@ -27673,7 +27668,7 @@ Ext.define(
           top: Q,
           bottom: Q,
           "z-index": "",
-          position: "static",
+          position: "static"
         });
       },
       createProxy: function (Q, U, T) {
@@ -27766,9 +27761,9 @@ Ext.define(
                 } else {
                   T.show();
                 }
-              },
-            },
-          }),
+              }
+            }
+          })
         );
         return this;
       },
@@ -27788,10 +27783,10 @@ Ext.define(
                     T.hide();
                   }
                 }
-              },
-            },
+              }
+            }
           },
-          S,
+          S
         );
         Q.animate(S);
         return Q;
@@ -27828,8 +27823,8 @@ Ext.define(
               position: "absolute",
               "pointer-events": "none",
               "z-index": 35000,
-              border: "0px solid " + Q,
-            },
+              border: "0px solid " + Q
+            }
           });
           W = new Ext.fx.Anim({
             target: X,
@@ -27841,7 +27836,7 @@ Ext.define(
               borderWidth: 0,
               opacity: 1,
               height: aa.height,
-              width: aa.width,
+              width: aa.width
             },
             to: {
               top: aa.y - 20,
@@ -27849,8 +27844,8 @@ Ext.define(
               borderWidth: 10,
               opacity: 0,
               height: aa.height + 40,
-              width: aa.width + 40,
-            },
+              width: aa.width + 40
+            }
           });
           W.on("afteranimate", function () {
             X.destroy();
@@ -27861,7 +27856,7 @@ Ext.define(
           duration: Math.max(U.duration, 500) * 2 || 2000,
           listeners: { beforeanimate: { fn: R } },
           callback: U.callback,
-          scope: U.scope,
+          scope: U.scope
         });
         return S;
       },
@@ -27965,8 +27960,8 @@ Ext.define(
           Ext.applyIf(T || {}, {
             duration: 500,
             easing: "ease-out",
-            listeners: { beforeanimate: R },
-          }),
+            listeners: { beforeanimate: R }
+          })
         );
         return S;
       },
@@ -28019,15 +28014,15 @@ Ext.define(
               Y = Q.fn || Q;
               Y.apply(Q.scope || S.scope || l, arguments);
             }
-          },
+          }
         });
         X.animate(
           Ext.apply({}, R, {
             duration: 1000,
             easing: "ease-in",
             from: Z,
-            to: aa,
-          }),
+            to: aa
+          })
         );
         return X;
       },
@@ -28173,12 +28168,12 @@ Ext.define(
                   tag: "div",
                   role: "presentation",
                   cls: "x-mask-msg-text",
-                  html: X || "",
-                },
-              },
-            },
+                  html: X || ""
+                }
+              }
+            }
           },
-          true,
+          true
         );
         R = Ext.get(S.dom.firstChild);
         U.maskEl = S;
@@ -28215,14 +28210,14 @@ Ext.define(
               "position",
               "z-index",
               "font-size",
-              "opacity",
+              "opacity"
             ],
-            true,
+            true
           );
         U = Ext.applyIf(U || {}, {
           easing: "ease-out",
           duration: 500,
-          useDisplay: false,
+          useDisplay: false
         });
         R = function () {
           var W = Ext.fly(V, "_anim");
@@ -28234,7 +28229,7 @@ Ext.define(
             x: S.x - S.width / 2,
             y: S.y - S.height / 2,
             opacity: 0,
-            fontSize: "200%",
+            fontSize: "200%"
           };
           this.on("afteranimate", function () {
             var X = Ext.fly(V, "_anim");
@@ -28252,7 +28247,7 @@ Ext.define(
         T.animate({
           duration: U.duration,
           easing: U.easing,
-          listeners: { beforeanimate: { fn: R } },
+          listeners: { beforeanimate: { fn: R } }
         });
         return T;
       },
@@ -28474,10 +28469,10 @@ Ext.define(
                     Ext.fly(T).setVisible(false).setOpacity(1);
                   }
                 },
-                to: { opacity: U ? 1 : 0 },
+                to: { opacity: U ? 1 : 0 }
               },
-              Q,
-            ),
+              Q
+            )
           );
         }
         S.getData()[y] = U;
@@ -28562,9 +28557,9 @@ Ext.define(
               "top",
               "bottom",
               "position",
-              "z-index",
+              "z-index"
             ],
-            true,
+            true
           );
           ac.setSize(af.width, af.height);
           if (S.preserveScroll) {
@@ -28573,7 +28568,7 @@ Ext.define(
           ab = ac.wrap({
             role: "presentation",
             id: Ext.id() + "-anim-wrap-for-" + ac.dom.id,
-            style: { visibility: U ? "visible" : "hidden" },
+            style: { visibility: U ? "visible" : "hidden" }
           });
           X = ab.dom.parentNode;
           ab.setPositioning(ac.getPositioning());
@@ -28593,14 +28588,14 @@ Ext.define(
             case "t":
               ag = {
                 from: { width: af.width + "px", height: "0px" },
-                to: { width: af.width + "px", height: af.height + "px" },
+                to: { width: af.width + "px", height: af.height + "px" }
               };
               Z.bottom = "0px";
               break;
             case "l":
               ag = {
                 from: { width: "0px", height: af.height + "px" },
-                to: { width: af.width + "px", height: af.height + "px" },
+                to: { width: af.width + "px", height: af.height + "px" }
               };
               W.anchorAnimX(T);
               break;
@@ -28609,13 +28604,13 @@ Ext.define(
                 from: {
                   x: af.x + af.width,
                   width: "0px",
-                  height: af.height + "px",
+                  height: af.height + "px"
                 },
                 to: {
                   x: af.x,
                   width: af.width + "px",
-                  height: af.height + "px",
-                },
+                  height: af.height + "px"
+                }
               };
               W.anchorAnimX(T);
               break;
@@ -28624,19 +28619,19 @@ Ext.define(
                 from: {
                   y: af.y + af.height,
                   width: af.width + "px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   y: af.y,
                   width: af.width + "px",
-                  height: af.height + "px",
-                },
+                  height: af.height + "px"
+                }
               };
               break;
             case "tl":
               ag = {
                 from: { x: af.x, y: af.y, width: "0px", height: "0px" },
-                to: { width: af.width + "px", height: af.height + "px" },
+                to: { width: af.width + "px", height: af.height + "px" }
               };
               Z.bottom = "0px";
               W.anchorAnimX("l");
@@ -28647,8 +28642,8 @@ Ext.define(
                 to: {
                   y: af.y,
                   width: af.width + "px",
-                  height: af.height + "px",
-                },
+                  height: af.height + "px"
+                }
               };
               W.anchorAnimX("l");
               break;
@@ -28658,14 +28653,14 @@ Ext.define(
                   x: af.x + af.width,
                   y: af.y + af.height,
                   width: "0px",
-                  height: "0px",
+                  height: "0px"
                 },
                 to: {
                   x: af.x,
                   y: af.y,
                   width: af.width + "px",
-                  height: af.height + "px",
-                },
+                  height: af.height + "px"
+                }
               };
               W.anchorAnimX("r");
               break;
@@ -28675,8 +28670,8 @@ Ext.define(
                 to: {
                   x: af.x,
                   width: af.width + "px",
-                  height: af.height + "px",
-                },
+                  height: af.height + "px"
+                }
               };
               Z.bottom = "0px";
               W.anchorAnimX("r");
@@ -28691,8 +28686,8 @@ Ext.define(
               duration: 500,
               easing: "ease-out",
               from: U ? ag.to : ag.from,
-              to: U ? ag.from : ag.to,
-            }),
+              to: U ? ag.from : ag.to
+            })
           );
           Q.on("afteranimate", function () {
             var ah = Ext.fly(R, "_anim");
@@ -28723,7 +28718,7 @@ Ext.define(
         };
         W.animate({
           duration: S.duration ? Math.max(S.duration, 500) * 2 : 1000,
-          listeners: { beforeanimate: Y },
+          listeners: { beforeanimate: Y }
         });
         return W;
       },
@@ -28758,7 +28753,7 @@ Ext.define(
           easing: "ease-in",
           duration: 500,
           remove: false,
-          useDisplay: false,
+          useDisplay: false
         });
         R = function () {
           var Y = Ext.fly(T, "_anim"),
@@ -28777,8 +28772,8 @@ Ext.define(
             keyframes: {
               33: { opacity: 0.3 },
               66: { height: 1, y: Z[1] + W.height / 2 },
-              100: { width: 1, x: Z[0] + W.width / 2 },
-            },
+              100: { width: 1, x: Z[0] + W.width / 2 }
+            }
           });
           V.on("afteranimate", function () {
             var aa = Ext.fly(T, "_anim");
@@ -28797,7 +28792,7 @@ Ext.define(
           duration: Math.max(Q.duration, 500) * 2,
           listeners: { beforeanimate: { fn: R } },
           callback: Q.callback,
-          scope: Q.scope,
+          scope: Q.scope
         });
         return S;
       },
@@ -29046,7 +29041,7 @@ Ext.define(
             T.removeAttribute(Y);
           }
           return S;
-        },
+        }
       },
       deprecated: {
         "4.0": {
@@ -29063,8 +29058,8 @@ Ext.define(
             shift: function (Q) {
               this.animate(Q);
               return this;
-            },
-          },
+            }
+          }
         },
         4.2: {
           methods: {
@@ -29086,8 +29081,8 @@ Ext.define(
             },
             setLocation: function (Q, S, R) {
               return this.setXY([Q, S], R);
-            },
-          },
+            }
+          }
         },
         "5.0": {
           methods: {
@@ -29121,7 +29116,7 @@ Ext.define(
               if (R) {
                 return {
                   width: j.getViewportWidth(),
-                  height: j.getViewportHeight(),
+                  height: j.getViewportHeight()
                 };
               }
               T = U.getStyle(["height", "width"], true);
@@ -29133,7 +29128,7 @@ Ext.define(
               }
               return {
                 width: Q || U.getWidth(true),
-                height: S || U.getHeight(true),
+                height: S || U.getHeight(true)
               };
             },
             isBorderBox: function () {
@@ -29142,10 +29137,10 @@ Ext.define(
             isDisplayed: function () {
               return !this.isStyle("display", "none");
             },
-            focusable: "isFocusable",
-          },
-        },
-      },
+            focusable: "isFocusable"
+          }
+        }
+      }
     };
   })(),
   function () {
@@ -29199,7 +29194,7 @@ Ext.define(
           } else {
             k.filter = A;
           }
-        },
+        }
       });
     }
     if (!t.matchesSelector) {
@@ -29335,7 +29330,7 @@ Ext.define(
         x["border-" + g.toLowerCase() + "-width"] = x[y] = {
           name: y,
           styleName: "border" + g + "Style",
-          get: c,
+          get: c
         };
       }
       var i = "x-sync-repaint";
@@ -29373,7 +29368,7 @@ Ext.define(
             Ext.synchronouslyFocusing = null;
           }
           return A;
-        },
+        }
       });
     }
     Ext.apply(Ext, {
@@ -29409,7 +29404,7 @@ Ext.define(
           }
           z = null;
         }
-      },
+      }
     });
     if (Ext.isIE9m) {
       Ext.getElementById = function (A) {
@@ -29501,7 +29496,7 @@ Ext.define(
                 S.scrollWidth;
                 O.display = Q;
               }
-            },
+            }
           };
           p.setWidth = function (Q, O) {
             var S = this,
@@ -29557,7 +29552,7 @@ Ext.define(
                 }
               }
               S.style.height = R;
-            },
+            }
           };
           p.setHeight = function (N, P) {
             var Q = this.component,
@@ -29687,7 +29682,7 @@ Ext.define(
               t.DisplayChangeInputSelectionBug ||
               t.DisplayChangeTextAreaSelectionBug
                 ? A
-                : C,
+                : C
           };
         }
         if (!t.TransparentColor) {
@@ -29797,9 +29792,9 @@ Ext.define(
         Ext.getBody().addCls(z);
       },
       null,
-      { priority: 1500 },
+      { priority: 1500 }
     );
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.GlobalEvents",
@@ -29814,7 +29809,7 @@ Ext.cmd.derive(
       touchmove: 1,
       pointermove: 1,
       MSPointerMove: 1,
-      unload: 1,
+      unload: 1
     },
     constructor: function () {
       var a = this;
@@ -29825,7 +29820,7 @@ Ext.cmd.derive(
     },
     attachListeners: function () {
       Ext.get(window).on("resize", this.fireResize, this, {
-        buffer: this.resizeBuffer,
+        buffer: this.resizeBuffer
       });
       Ext.getDoc().on("mousedown", this.fireMouseDown, this);
     },
@@ -29842,7 +29837,7 @@ Ext.cmd.derive(
         d.curWidth = a;
         d.fireEvent("resize", a, c);
       }
-    },
+    }
   },
   1,
   0,
@@ -29861,7 +29856,7 @@ Ext.cmd.derive(
     Ext.fireEvent = function () {
       return a.fireEvent.apply(a, arguments);
     };
-  },
+  }
 );
 Ext.define("Ext.overrides.GlobalEvents", {
   override: "Ext.GlobalEvents",
@@ -29885,10 +29880,10 @@ Ext.define("Ext.overrides.GlobalEvents", {
             Ext.onReady(g);
           }
           this.callParent([d, h, i, j, c, b, e]);
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });
 Ext.cmd.derive(
   "Ext.Glyph",
@@ -29905,7 +29900,7 @@ Ext.cmd.derive(
         a = b.split("@");
         if (
           isNaN(
-            (b = isNaN(a[0]) ? parseInt("0" + a[0], 16) : parseInt(a[0], 10)),
+            (b = isNaN(a[0]) ? parseInt("0" + a[0], 16) : parseInt(a[0], 10))
           ) ||
           !b
         ) {
@@ -29935,9 +29930,9 @@ Ext.cmd.derive(
       return {
         fly: function (b) {
           return b.isGlyph ? b : (a || (a = new Ext.Glyph())).setGlyph(b);
-        },
+        }
       };
-    })(),
+    })()
   },
   1,
   0,
@@ -29946,7 +29941,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "Glyph"],
-  0,
+  0
 );
 Ext.USE_NATIVE_JSON = false;
 Ext.JSON = new (function () {
@@ -30009,7 +30004,7 @@ Ext.JSON = new (function () {
       "\r": "\\r",
       '"': '\\"',
       "\\": "\\\\",
-      "\v": "\\u000b",
+      "\v": "\\u000b"
     },
     charToReplace = /[\\\"\x00-\x1f\x7f-\uffff]/g,
     encodeString = function (s) {
@@ -30127,7 +30122,7 @@ Ext.JSON = new (function () {
       Ext.raise({
         sourceClass: "Ext.JSON",
         sourceMethod: "decode",
-        msg: "You're trying to decode an invalid JSON String: " + json,
+        msg: "You're trying to decode an invalid JSON String: " + json
       });
     }
   };
@@ -30160,7 +30155,7 @@ Ext.cmd.derive(
           d = g ? g === b.layout : true;
         }
         e.inheritedState = h = Ext.Object.chain(
-          i ? i.getInherited(d) : Ext.rootInheritedState,
+          i ? i.getInherited(d) : Ext.rootInheritedState
         );
         if (a) {
           e.inheritedStateInner = c = Ext.Object.chain(h);
@@ -30278,8 +30273,8 @@ Ext.cmd.derive(
         if (a.inheritedState && !b) {
           a.invalidateInheritedState();
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -30290,7 +30285,7 @@ Ext.cmd.derive(
   [Ext.mixin, "Inheritable"],
   function () {
     Ext.rootInheritedState = {};
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.mixin.Bindable",
@@ -30306,7 +30301,7 @@ Ext.cmd.derive(
         lazy: true,
         merge: function (b, a) {
           return this.mergeSets(b, a);
-        },
+        }
       },
       reference: null,
       session: { $value: null, lazy: true },
@@ -30315,9 +30310,9 @@ Ext.cmd.derive(
         lazy: true,
         merge: function (b, a) {
           return this.mergeSets(b, a);
-        },
+        }
       },
-      viewModel: { $value: null, lazy: true },
+      viewModel: { $value: null, lazy: true }
     },
     defaultBindProperty: null,
     validRefRe: /^[a-z_][a-z0-9_]*$/i,
@@ -30655,8 +30650,8 @@ Ext.cmd.derive(
         } else {
           delete c.viewModel;
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -30665,7 +30660,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Bindable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.ComponentDelegation",
@@ -30751,14 +30746,14 @@ Ext.cmd.derive(
         if (this.clearPropertiesOnDestroy) {
           this.$delegatedEvents = null;
         }
-      },
+      }
     },
     onClassMixedIn: function (a) {
       function b() {}
       a.prototype.HasListeners = a.HasListeners = b;
       b.prototype = a.hasListeners =
         new Ext.mixin.ComponentDelegation.HasDelegatedListeners();
-    },
+    }
   },
   0,
   0,
@@ -30772,7 +30767,7 @@ Ext.cmd.derive(
     b.HasDelegatedListeners = a;
     a.prototype = b.prototype.$hasDelegatedListeners =
       new Ext.mixin.Observable.HasListeners();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.mixin.Pluggable",
@@ -30920,8 +30915,8 @@ Ext.cmd.derive(
             c.setCmp(this);
           }
           return c;
-        },
-      },
+        }
+      }
     };
   },
   0,
@@ -30931,7 +30926,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Pluggable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Widget",
@@ -30946,7 +30941,7 @@ Ext.cmd.derive(
       cls: null,
       style: null,
       border: null,
-      touchAction: null,
+      touchAction: null
     },
     config: { ui: null, userCls: null },
     eventedConfig: { width: null, height: null, hidden: null },
@@ -31328,7 +31323,7 @@ Ext.cmd.derive(
               delete this[a];
               return this.addElementReference(a, b);
             },
-            configurable: true,
+            configurable: true
           });
         }
       },
@@ -31388,7 +31383,7 @@ Ext.cmd.derive(
               n,
               c,
               b,
-              e,
+              e
             );
             return;
           }
@@ -31549,8 +31544,8 @@ Ext.cmd.derive(
       },
       updateUserCls: function (b, a) {
         this.element.replaceCls(a, b);
-      },
-    },
+      }
+    }
   },
   1,
   ["widget"],
@@ -31561,30 +31556,30 @@ Ext.cmd.derive(
     [
       Ext.mixin.Inheritable.prototype.mixinId ||
         Ext.mixin.Inheritable.$className,
-      Ext.mixin.Inheritable,
+      Ext.mixin.Inheritable
     ],
     [
       Ext.mixin.Bindable.prototype.mixinId || Ext.mixin.Bindable.$className,
-      Ext.mixin.Bindable,
+      Ext.mixin.Bindable
     ],
     [
       Ext.mixin.ComponentDelegation.prototype.mixinId ||
         Ext.mixin.ComponentDelegation.$className,
-      Ext.mixin.ComponentDelegation,
+      Ext.mixin.ComponentDelegation
     ],
     [
       Ext.mixin.Pluggable.prototype.mixinId || Ext.mixin.Pluggable.$className,
-      Ext.mixin.Pluggable,
-    ],
+      Ext.mixin.Pluggable
+    ]
   ],
   [Ext, "Widget", Ext, "Gadget"],
   function (b) {
     var a = b.prototype;
     (a.$elementEventOptions = Ext.Object.chain(
-      Ext.Element.prototype.$eventOptions,
+      Ext.Element.prototype.$eventOptions
     )).element = 1;
     (a.$eventOptions = Ext.Object.chain(a.$eventOptions)).delegate = 1;
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.Widget",
@@ -31601,7 +31596,7 @@ Ext.define(
         c;
       (arguments.callee.$previous || Ext.Evented.prototype.constructor).call(
         this,
-        a,
+        a
       );
       b.getComponentLayout();
       c = b.getRenderTo();
@@ -31732,15 +31727,15 @@ Ext.define(
         (
           arguments.callee.$previous || Ext.Evented.prototype.doRemoveListener
         ).call(this, a, c, b);
-      },
-    },
+      }
+    }
   },
   function (b) {
     var a = b.prototype;
     if (Ext.isIE9m) {
       a.addElementReferenceOnDemand = a.addElementReference;
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.ProgressBase",
@@ -31756,7 +31751,7 @@ Ext.cmd.derive(
     },
     applyValue: function (a) {
       return a || 0;
-    },
+    }
   },
   0,
   0,
@@ -31765,7 +31760,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "ProgressBase"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Progress",
@@ -31776,11 +31771,11 @@ Ext.cmd.derive(
     cachedConfig: {
       baseCls: "x-progress",
       textCls: "x-progress-text",
-      cls: null,
+      cls: null
     },
     template: [
       { reference: "backgroundEl" },
-      { reference: "barEl", children: [{ reference: "textEl" }] },
+      { reference: "barEl", children: [{ reference: "textEl" }] }
     ],
     defaultBindProperty: "value",
     updateCls: function (a, c) {
@@ -31823,8 +31818,8 @@ Ext.cmd.derive(
         a.animate(
           Ext.apply(
             { from: { width: b * 100 + "%" }, to: { width: e * 100 + "%" } },
-            d.animate,
-          ),
+            d.animate
+          )
         );
       } else {
         a.setStyle("width", e * 100 + "%");
@@ -31833,7 +31828,7 @@ Ext.cmd.derive(
     updateText: function (a) {
       this.backgroundEl.setHtml(a);
       this.textEl.setHtml(a);
-    },
+    }
   },
   0,
   ["progress", "progressbarwidget"],
@@ -31843,11 +31838,11 @@ Ext.cmd.derive(
   [
     [
       Ext.ProgressBase.prototype.mixinId || Ext.ProgressBase.$className,
-      Ext.ProgressBase,
-    ],
+      Ext.ProgressBase
+    ]
   ],
   [Ext, "Progress", Ext, "ProgressBarWidget"],
-  0,
+  0
 );
 Ext.define("Ext.overrides.Progress", {
   override: "Ext.Progress",
@@ -31857,12 +31852,12 @@ Ext.define("Ext.overrides.Progress", {
     (arguments.callee.$previous || Ext.Widget.prototype.updateWidth).call(
       this,
       b,
-      a,
+      a
     );
     b -= c.element.getBorderWidth("lr");
     c.backgroundEl.setWidth(b);
     c.textEl.setWidth(b);
-  },
+  }
 });
 Ext.cmd.derive(
   "Ext.util.Format",
@@ -31948,7 +31943,7 @@ Ext.cmd.derive(
             j,
             d,
             k,
-            g || a.currencySign,
+            g || a.currencySign
           );
         } else {
           return Ext.String.format(
@@ -31956,7 +31951,7 @@ Ext.cmd.derive(
             j,
             g || a.currencySign,
             k,
-            d,
+            d
           );
         }
       },
@@ -32123,7 +32118,7 @@ Ext.cmd.derive(
             "absVal=Math.abs(v);",
             "fnum=Ext.Number.toFixed(absVal, " + h + ");",
             d,
-            ";",
+            ";"
           ];
           if (c) {
             if (h) {
@@ -32180,7 +32175,7 @@ Ext.cmd.derive(
                 d === "style"
                   ? Ext.DomHelper.generateStyles(c[d], null, true)
                   : Ext.htmlEncode(c[d]),
-                '" ',
+                '" '
               );
             }
           }
@@ -32227,7 +32222,7 @@ Ext.cmd.derive(
           top: parseInt(d[0], 10) || 0,
           right: parseInt(d[1], 10) || 0,
           bottom: parseInt(d[2], 10) || 0,
-          left: parseInt(d[3], 10) || 0,
+          left: parseInt(d[3], 10) || 0
         };
       },
       uri: function (b) {
@@ -32241,7 +32236,7 @@ Ext.cmd.derive(
         var d = b ? (typeof b === "string" ? new RegExp(b) : b) : a.wordBreakRe,
           g = (e || "").split(d);
         return g[c || 0] || "";
-      },
+      }
     };
   },
   1,
@@ -32251,7 +32246,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Format"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Template",
@@ -32261,7 +32256,7 @@ Ext.cmd.derive(
       from: function (b, a) {
         b = Ext.getDom(b);
         return new this(b.value || b.innerHTML, a || "");
-      },
+      }
     },
     useEval: Ext.isGecko,
     constructor: function (d) {
@@ -32425,7 +32420,7 @@ Ext.cmd.derive(
     overwrite: function (c, a, d) {
       var b = Ext.DomHelper.overwrite(Ext.getDom(c), this.apply(a));
       return d ? Ext.get(b) : b;
-    },
+    }
   },
   1,
   0,
@@ -32457,7 +32452,7 @@ Ext.cmd.derive(
     Ext.String.formatEncode = function () {
       return Ext.String.htmlEncode(Ext.String.format.apply(this, arguments));
     };
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.XTemplateParser",
@@ -32613,7 +32608,7 @@ Ext.cmd.derive(
       /\s*(elif|elseif|if|for|foreach|exec|switch|case|eval|between)\s*\=\s*(?:(?:"([^"]*)")|(?:'([^']*)'))\s*/g,
     propRe: /prop=(?:(?:"([^"]*)")|(?:'([^']*)'))/,
     defaultRe: /^\s*default\s*$/,
-    elseRe: /^\s*else\s*$/,
+    elseRe: /^\s*else\s*$/
   },
   1,
   0,
@@ -32622,7 +32617,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "XTemplateParser"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.XTemplateCompiler",
@@ -32645,7 +32640,7 @@ Ext.cmd.derive(
       d.body = [
         "var c0=values, a0=" +
           d.createArrayTest(0) +
-          ", p0=parent, n0=xcount, i0=xindex, k0, v;\n",
+          ", p0=parent, n0=xcount, i0=xindex, k0, v;\n"
       ];
       if (d.definitions) {
         if (typeof d.definitions === "string") {
@@ -32661,7 +32656,7 @@ Ext.cmd.derive(
       d.definitions.push(
         (d.useEval ? "$=" : "return") + " function (" + d.fnArgs + ") {",
         d.body.join(""),
-        "}",
+        "}"
       );
       c = d.definitions.join("\n");
       d.definitions.length = d.body.length = d.switches.length = 0;
@@ -32792,7 +32787,7 @@ Ext.cmd.derive(
           a,
           "+1;xkey=k",
           a,
-          ";\n",
+          ";\n"
         );
       } else {
         if (b == "if" || b == "switch") {
@@ -32895,7 +32890,7 @@ Ext.cmd.derive(
         b,
         "[i",
         b,
-        "]",
+        "]"
       );
       if (h.propName) {
         d.body.push(".", h.propName);
@@ -32969,7 +32964,7 @@ Ext.cmd.derive(
         b,
         "[k",
         b,
-        "];",
+        "];"
       );
       if (h.propName) {
         d.body.push(".", h.propName);
@@ -32997,13 +32992,13 @@ Ext.cmd.derive(
         "  " + d,
         " }",
         b.doCatch,
-        "}",
+        "}"
       );
       c.body.push(a + c.callFn + "\n");
     },
     guards: [
       { doTry: "", doCatch: "" },
-      { doTry: "try { ", doCatch: " } catch(e) {\n}" },
+      { doTry: "try { ", doCatch: " } catch(e) {\n}" }
     ],
     addFn: function (a) {
       var d = this,
@@ -33013,14 +33008,14 @@ Ext.cmd.derive(
         d.definitions.push(
           "function " + b + "(" + d.fnArgs + ") {",
           " return values",
-          "}",
+          "}"
         );
       } else {
         if (a === "..") {
           d.definitions.push(
             "function " + b + "(" + d.fnArgs + ") {",
             " return parent",
-            "}",
+            "}"
           );
         } else {
           d.definitions.push(
@@ -33030,7 +33025,7 @@ Ext.cmd.derive(
             "  return(" + a + ")",
             " }",
             c.doCatch,
-            "}",
+            "}"
           );
         }
       }
@@ -33100,7 +33095,7 @@ Ext.cmd.derive(
     aposRe: /[']/g,
     intRe: /^\s*(\d+)\s*$/,
     tagRe:
-      /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/,
+      /^([\w-\.\#\$]+)(?:\:([\w\.]*)(?:\((.*?)?\))?)?(\s?[\+\-\*\/]\s?[\d\.\+\-\*\/\(\)]+)?$/
   },
   0,
   0,
@@ -33113,7 +33108,7 @@ Ext.cmd.derive(
     var a = this.prototype;
     a.fnArgs = "out,values,parent,xindex,xcount,xkey";
     a.callFn = ".call(this," + a.fnArgs + ")";
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.XTemplate",
@@ -33133,7 +33128,7 @@ Ext.cmd.derive(
         c = new Ext.util.XTemplateCompiler({
           useFormat: g.disableFormats !== true,
           definitions: g.definitions,
-          strict: g.strict,
+          strict: g.strict
         });
         g.fn = c.compile(g.html);
       }
@@ -33170,8 +33165,8 @@ Ext.cmd.derive(
           c.owner = a;
         }
         return c || null;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -33180,7 +33175,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "XTemplate"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.EventDomain",
@@ -33365,7 +33360,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.monitoredClasses = this.bus = null;
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -33374,7 +33369,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app, "EventDomain"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.domain.Component",
@@ -33404,7 +33399,7 @@ Ext.cmd.derive(
     },
     match: function (b, a) {
       return b.is(a);
-    },
+    }
   },
   1,
   0,
@@ -33413,7 +33408,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "Component"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.ProtoElement",
@@ -33559,7 +33554,7 @@ Ext.cmd.derive(
           h.unselectable = "on";
         }
         return h;
-      },
+      }
     };
   },
   1,
@@ -33569,7 +33564,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ProtoElement"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.CompositeElement",
@@ -33582,7 +33577,7 @@ Ext.cmd.derive(
     },
     transformElement: function (a) {
       return Ext.get(a);
-    },
+    }
   },
   0,
   0,
@@ -33591,7 +33586,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "CompositeElement", Ext, "CompositeElement"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.CSS",
@@ -33683,7 +33678,7 @@ Ext.cmd.derive(
           for (g = 0; g < i; g++) {
             e[Ext.String.trim(k[g]).toLowerCase()] = {
               parentStyleSheet: l,
-              cssRule: h,
+              cssRule: h
             };
           }
         }
@@ -33781,7 +33776,7 @@ Ext.cmd.derive(
           }
           delete e[g];
         }
-      },
+      }
     };
   },
   1,
@@ -33791,7 +33786,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "CSS"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.Abstract",
@@ -33816,7 +33811,7 @@ Ext.cmd.derive(
     reset: function () {
       this.isEnded = false;
     },
-    getValue: Ext.emptyFn,
+    getValue: Ext.emptyFn
   },
   1,
   0,
@@ -33825,7 +33820,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.easing, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.Linear",
@@ -33847,7 +33842,7 @@ Ext.cmd.derive(
       } else {
         return this.getStartValue() + (a / b) * this.distance;
       }
-    },
+    }
   },
   0,
   0,
@@ -33856,7 +33851,7 @@ Ext.cmd.derive(
   ["easing.linear"],
   0,
   [Ext.fx.easing, "Linear"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.translatable.Abstract",
@@ -33866,7 +33861,7 @@ Ext.cmd.derive(
       useWrapper: null,
       easing: null,
       easingX: { duration: 300 },
-      easingY: { duration: 300 },
+      easingY: { duration: 300 }
     },
     x: 0,
     y: 0,
@@ -34050,7 +34045,7 @@ Ext.cmd.derive(
       Ext.Evented.prototype.destroy.call(this);
       a.destroying = false;
       a.destroyed = true;
-    },
+    }
   },
   1,
   0,
@@ -34059,7 +34054,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.translatable.Dom",
@@ -34074,7 +34069,7 @@ Ext.cmd.derive(
     },
     updateElement: function () {
       this.refresh();
-    },
+    }
   },
   0,
   0,
@@ -34083,7 +34078,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "Dom"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.translatable.ScrollPosition",
@@ -34103,7 +34098,7 @@ Ext.cmd.derive(
       this.y = a.getScrollTop();
       Ext.util.translatable.Dom.prototype.translateAnimated.apply(
         this,
-        arguments,
+        arguments
       );
     },
     doTranslate: function (a, c) {
@@ -34118,7 +34113,7 @@ Ext.cmd.derive(
       a.x = b.getScrollLeft();
       a.y = b.getScrollTop();
       return a;
-    },
+    }
   },
   1,
   0,
@@ -34127,7 +34122,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "ScrollPosition"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.scroll.Scroller",
@@ -34146,7 +34141,7 @@ Ext.cmd.derive(
       y: true,
       scrollElement: null,
       size: null,
-      spacerXY: null,
+      spacerXY: null
     },
     snappableCls: "x-scroller-snappable",
     elementCls: "x-scroller",
@@ -34177,7 +34172,7 @@ Ext.cmd.derive(
           this.$standardScrollElement = a;
         }
         return a ? e.documentElement : e.body;
-      },
+      }
     },
     constructor: function (a) {
       var b = this;
@@ -34230,7 +34225,7 @@ Ext.cmd.derive(
         d.scrollListener = e.on({
           scroll: d.onDomScroll,
           scope: d,
-          destroyable: true,
+          destroyable: true
         });
         return c;
       }
@@ -34405,7 +34400,7 @@ Ext.cmd.derive(
               scrollend: "doHighlight",
               scope: j,
               single: true,
-              args: [d, h],
+              args: [d, h]
             });
           }
           j.doScrollTo(a, k, b);
@@ -34543,8 +34538,8 @@ Ext.cmd.derive(
         methods: {
           getScroller: function () {
             return this;
-          },
-        },
+          }
+        }
       },
       "5.1.0": {
         methods: {
@@ -34553,9 +34548,9 @@ Ext.cmd.derive(
           },
           scrollToEnd: function (a) {
             return this.scrollTo(Infinity, Infinity, a);
-          },
-        },
-      },
+          }
+        }
+      }
     },
     privates: {
       getSpacer: function () {
@@ -34566,7 +34561,7 @@ Ext.cmd.derive(
           b = c.getElement();
           a = c._spacer = b.createChild(
             { cls: c.spacerCls, role: "presentation" },
-            b.dom.firstChild,
+            b.dom.firstChild
           );
           a.setVisibilityMode(2);
           a.hide();
@@ -34627,12 +34622,12 @@ Ext.cmd.derive(
                   left: "-10000px",
                   top: "0",
                   width: "500px",
-                  height: "500px",
+                  height: "500px"
                 },
-                cn: { cls: this.spacerCls },
+                cn: { cls: this.spacerCls }
               },
               null,
-              true,
+              true
             ),
             d = Ext.get(a.firstChild),
             g = d.dom.style;
@@ -34649,7 +34644,7 @@ Ext.cmd.derive(
           }
           d.translate(
             0,
-            (Ext.scroll.Scroller.prototype.maxSpacerTranslate = e),
+            (Ext.scroll.Scroller.prototype.maxSpacerTranslate = e)
           );
           h = e * 2;
           while (h !== e + 1) {
@@ -34702,7 +34697,7 @@ Ext.cmd.derive(
           if (a) {
             if (!this._translatable) {
               this._translatable = new Ext.util.translatable.ScrollPosition({
-                element: d,
+                element: d
               });
             }
             this._translatable.translate(k, j, a);
@@ -34791,7 +34786,7 @@ Ext.cmd.derive(
               b +
               "scroll-snap-coordinate:" +
               b +
-              "}",
+              "}"
           );
         }
       },
@@ -34980,8 +34975,8 @@ Ext.cmd.derive(
             b.doScrollTo(b.trackingScrollLeft, b.trackingScrollTop, false);
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -34992,8 +34987,8 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.scroll, "Scroller"],
   function (a) {
@@ -35014,7 +35009,7 @@ Ext.cmd.derive(
         }
       }, 100);
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Floating",
@@ -35089,7 +35084,7 @@ Ext.cmd.derive(
         h = {
           resize: { fn: i.alignOnResize, buffer: 100 },
           scope: i,
-          destroyable: true,
+          destroyable: true
         };
         if (i.alignOnScroll && !m.contains(i.el)) {
           h.scroll = i.doRealign;
@@ -35114,7 +35109,7 @@ Ext.cmd.derive(
           show: a,
           expand: a,
           added: a,
-          scope: b,
+          scope: b
         });
         b.hasHierarchyEventListeners = true;
       }
@@ -35282,7 +35277,7 @@ Ext.cmd.derive(
             a._lastAlignToPos,
             a._lastAlignToOffsets,
             false,
-            !a.fixed,
+            !a.fixed
           );
         }
       }
@@ -35384,8 +35379,8 @@ Ext.cmd.derive(
         } else {
           d.clearClip();
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -35394,7 +35389,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Floating"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.ElementContainer",
@@ -35450,8 +35445,8 @@ Ext.cmd.derive(
             }
           }
           return c;
-        },
-      },
+        }
+      }
     },
     destroy: function () {
       var c = this,
@@ -35536,8 +35531,8 @@ Ext.cmd.derive(
           }
           i[p] = l || null;
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -35546,7 +35541,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ElementContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Renderable",
@@ -35565,7 +35560,7 @@ Ext.cmd.derive(
       "BL",
       "BC",
       "BR",
-      "Table",
+      "Table"
     ],
     frameTpl: [
       "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'before'); %}</tpl>",
@@ -35590,7 +35585,7 @@ Ext.cmd.derive(
       '<tpl if="right"></div></tpl>',
       '<tpl if="left"></div></tpl>',
       "</tpl>",
-      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
     ],
     frameTableTpl: [
       "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'before'); %}</tpl>",
@@ -35618,7 +35613,7 @@ Ext.cmd.derive(
       "</tr>",
       "</tpl>",
       "</table>",
-      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
     ],
     _renderState: 0,
     ariaEl: "el",
@@ -35640,7 +35635,7 @@ Ext.cmd.derive(
       navigation: true,
       search: true,
       undefined: true,
-      null: true,
+      null: true
     },
     statics: {
       makeRenderSetter: function (a, c) {
@@ -35682,7 +35677,7 @@ Ext.cmd.derive(
         }
         delete a[l];
         e.add(d);
-      },
+      }
     },
     onClassMixedIn: function (c) {
       var a = c.override,
@@ -35778,7 +35773,7 @@ Ext.cmd.derive(
           m = g.el.getAlignToXY(
             g.alignTarget || g.floatParent.getTargetEl(),
             j,
-            b,
+            b
           );
           h.x = m[0] - h.x;
           h.y = m[1] - h.y;
@@ -35849,7 +35844,7 @@ Ext.cmd.derive(
         d = e.getFrameInfo(),
         b = {
           tag: "div",
-          tpl: d ? e.initFramingTpl(d.table) : e.initRenderTpl(),
+          tpl: d ? e.initFramingTpl(d.table) : e.initRenderTpl()
         },
         i = e.layoutTargetCls,
         g = e.protoEl,
@@ -35944,9 +35939,9 @@ Ext.cmd.derive(
           hasTabGuard: !!c.tabGuard,
           scrollerCls: c.scrollerCls,
           childElCls: "",
-          ariaEl: c.ariaEl,
+          ariaEl: c.ariaEl
         },
-        c.renderData,
+        c.renderData
       );
       if (a && !c.ariaUsesMainElement) {
         b = { role: a };
@@ -35984,7 +35979,7 @@ Ext.cmd.derive(
         g.setElement(h.getOverflowEl());
         if (Ext.isIE) {
           h.showListenerIE = Ext.on("show", h.onGlobalShow, h, {
-            destroyable: true,
+            destroyable: true
           });
         }
       }
@@ -36129,7 +36124,7 @@ Ext.cmd.derive(
             a.render(a.renderTo || document.body);
           } else {
             a.render(
-              Ext.isBoolean(a.autoRender) ? Ext.getBody() : a.autoRender,
+              Ext.isBoolean(a.autoRender) ? Ext.getBody() : a.autoRender
             );
           }
         }
@@ -36283,7 +36278,7 @@ Ext.cmd.derive(
           right: !!b.right,
           bottom: !!b.bottom,
           mcStyle: a,
-          frameElCls: "",
+          frameElCls: ""
         };
       },
       getFrameInfo: function () {
@@ -36340,7 +36335,7 @@ Ext.cmd.derive(
                 bottom: o,
                 left: b,
                 width: b + s,
-                height: k + o,
+                height: k + o
               },
               padding: {
                 top: m,
@@ -36348,8 +36343,8 @@ Ext.cmd.derive(
                 bottom: g,
                 left: n,
                 width: n + a,
-                height: m + g,
-              },
+                height: m + g
+              }
             };
           } else {
             q = false;
@@ -36369,10 +36364,10 @@ Ext.cmd.derive(
           (Ext.Component.prototype.styleProxyEl = Ext.getBody().createChild(
             {
               role: "presentation",
-              style: { position: "absolute", top: "-10000px" },
+              style: { position: "absolute", top: "-10000px" }
             },
             null,
-            true,
+            true
           ));
         a.className = b;
         return a;
@@ -36480,8 +36475,8 @@ Ext.cmd.derive(
           }
         }
       },
-      frameInfoCache: {},
-    },
+      frameInfoCache: {}
+    }
   },
   0,
   0,
@@ -36490,7 +36485,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Renderable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.state.Provider",
@@ -36611,7 +36606,7 @@ Ext.cmd.derive(
         }
       }
       return escape(b);
-    },
+    }
   },
   1,
   0,
@@ -36620,7 +36615,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.state, "Provider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.state.Manager",
@@ -36644,7 +36639,7 @@ Ext.cmd.derive(
     },
     getProvider: function () {
       return this.provider;
-    },
+    }
   },
   1,
   0,
@@ -36653,7 +36648,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.state, "Manager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.state.Stateful",
@@ -36707,7 +36702,7 @@ Ext.cmd.derive(
             scope: c,
             interval: a,
             repeat: 1,
-            fireIdleEvent: false,
+            fireIdleEvent: false
           });
         }
         c.stateTask.start();
@@ -36848,7 +36843,7 @@ Ext.cmd.derive(
         a.destroy();
         this.stateTask = null;
       }
-    },
+    }
   },
   1,
   0,
@@ -36857,7 +36852,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.state, "Stateful"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Focusable",
@@ -36937,7 +36932,7 @@ Ext.cmd.derive(
           g,
           false,
           i,
-          d,
+          d
         ]);
         return e;
       }
@@ -37295,8 +37290,8 @@ Ext.cmd.derive(
             }
           }
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -37309,7 +37304,7 @@ Ext.cmd.derive(
     if (!Ext.focusTask) {
       Ext.focusTask = new Ext.util.DelayedTask();
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.mixin.Accessible",
@@ -37344,8 +37339,8 @@ Ext.cmd.derive(
           }
         }
         return e.length ? e.join(" ") : null;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -37354,7 +37349,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Accessible"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Keyboard",
@@ -37394,9 +37389,9 @@ Ext.cmd.derive(
               }
             }
             return c;
-          },
+          }
         },
-        keyMapEnabled: null,
+        keyMapEnabled: null
       },
       keyMapTarget: "el",
       applyKeyMap: function (i, g) {
@@ -37494,7 +37489,7 @@ Ext.cmd.derive(
               destroyable: true,
               scope: c,
               keydown: "onKeyMapEvent",
-              keypress: "onKeyMapEvent",
+              keypress: "onKeyMapEvent"
             });
           }
           c._keyMapListener = e || null;
@@ -37565,9 +37560,9 @@ Ext.cmd.derive(
             }
             q.event = q.event || m._keyMapEvents[l];
             return !isNaN(c) && (q[l] = c);
-          },
-        },
-      },
+          }
+        }
+      }
     };
   },
   0,
@@ -37577,7 +37572,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Keyboard"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Component",
@@ -37624,7 +37619,7 @@ Ext.cmd.derive(
                 d.fireEvent("afterlayout");
               }
               return c;
-            },
+            }
           });
           a.run();
         }
@@ -37655,7 +37650,7 @@ Ext.cmd.derive(
             c.flushLayouts();
           }
         }
-      },
+      }
     },
     $configPrefixed: false,
     $configStrict: false,
@@ -37667,7 +37662,7 @@ Ext.cmd.derive(
       maxWidth: null,
       minHeight: null,
       minWidth: null,
-      scrollable: null,
+      scrollable: null
     },
     renderConfig: { touchAction: null },
     defaultBindProperty: "html",
@@ -37685,7 +37680,7 @@ Ext.cmd.derive(
       frameMR: { frame: "mr" },
       frameBL: { frame: "bl" },
       frameBC: { frame: "bc" },
-      frameBR: { frame: "br" },
+      frameBR: { frame: "br" }
     },
     componentLayout: "autocomponent",
     defaultAlign: "c-c",
@@ -37737,22 +37732,22 @@ Ext.cmd.derive(
           overflowY: "auto",
           x: true,
           y: true,
-          both: true,
+          both: true
         },
         false: {
           overflowX: "auto",
           overflowY: "hidden",
           x: true,
           y: false,
-          both: false,
+          both: false
         },
         scroll: {
           overflowX: "auto",
           overflowY: "scroll",
           x: true,
           y: true,
-          both: true,
-        },
+          both: true
+        }
       },
       false: {
         auto: {
@@ -37760,22 +37755,22 @@ Ext.cmd.derive(
           overflowY: "auto",
           x: false,
           y: true,
-          both: false,
+          both: false
         },
         false: {
           overflowX: "hidden",
           overflowY: "hidden",
           x: false,
           y: false,
-          both: false,
+          both: false
         },
         scroll: {
           overflowX: "hidden",
           overflowY: "scroll",
           x: false,
           y: true,
-          both: false,
-        },
+          both: false
+        }
       },
       scroll: {
         auto: {
@@ -37783,24 +37778,24 @@ Ext.cmd.derive(
           overflowY: "auto",
           x: true,
           y: true,
-          both: true,
+          both: true
         },
         false: {
           overflowX: "scroll",
           overflowY: "hidden",
           x: true,
           y: false,
-          both: false,
+          both: false
         },
         scroll: {
           overflowX: "scroll",
           overflowY: "scroll",
           x: true,
           y: true,
-          both: true,
-        },
+          both: true
+        }
       },
-      none: { overflowX: "", overflowY: "", x: false, y: false, both: false },
+      none: { overflowX: "", overflowY: "", x: false, y: false, both: false }
     },
     _scrollableCfg: {
       x: { x: true, y: false },
@@ -37808,7 +37803,7 @@ Ext.cmd.derive(
       horizontal: { x: true, y: false },
       vertical: { x: false, y: true },
       both: { x: true, y: true },
-      true: { x: true, y: true },
+      true: { x: true, y: true }
     },
     validIdRe: Ext.validIdRe,
     constructor: function (a) {
@@ -37846,7 +37841,7 @@ Ext.cmd.derive(
           if (d || b) {
             k = {
               x: d && d !== "hidden" ? d : false,
-              y: b && b !== "hidden" ? b : false,
+              y: b && b !== "hidden" ? b : false
             };
           }
         }
@@ -38071,13 +38066,13 @@ Ext.cmd.derive(
           x: h.getX(),
           y: h.getY(),
           width: h.dom.offsetWidth,
-          height: h.dom.offsetHeight,
+          height: h.dom.offsetHeight
         };
         a = {
           x: g.getX(),
           y: g.getY(),
           width: g.dom.offsetWidth,
-          height: g.dom.offsetHeight,
+          height: g.dom.offsetHeight
         };
         e.fireHierarchyEvent("show");
         c = e.ghost();
@@ -38095,8 +38090,8 @@ Ext.cmd.derive(
                 e.ghostBox = null;
                 e.onShowComplete(i, d);
               }
-            },
-          },
+            }
+          }
         });
       } else {
         e.onShowComplete(i, d);
@@ -38349,7 +38344,7 @@ Ext.cmd.derive(
           g.proxyWrap,
           g.resizerComponent,
           g.scrollable,
-          g.contentEl,
+          g.contentEl
         );
       }
       if (b) {
@@ -38509,7 +38504,7 @@ Ext.cmd.derive(
       var a = this;
       if (!a.componentLayout || !a.componentLayout.isLayout) {
         a.setComponentLayout(
-          Ext.layout.Layout.create(a.componentLayout, "autocomponent"),
+          Ext.layout.Layout.create(a.componentLayout, "autocomponent")
         );
       }
       return a.componentLayout;
@@ -39159,7 +39154,7 @@ Ext.cmd.derive(
           x: h.getX(),
           y: h.getY(),
           width: h.dom.offsetWidth,
-          height: h.dom.offsetHeight,
+          height: h.dom.offsetHeight
         };
         c = g.ghost();
         c.el.stopAnimation();
@@ -39174,8 +39169,8 @@ Ext.cmd.derive(
                 c.el.setSize(d);
                 g.afterHide(a, e);
               }
-            },
-          },
+            }
+          }
         });
       } else {
         g.el.hide();
@@ -39446,7 +39441,7 @@ Ext.cmd.derive(
     setOverflowXY: function (b, a) {
       this.setScrollable({
         x: b && b !== "hidden" ? b : false,
-        y: a && a !== "hidden" ? a : false,
+        y: a && a !== "hidden" ? a : false
       });
       return this;
     },
@@ -39497,13 +39492,13 @@ Ext.cmd.derive(
                   listeners: {
                     afteranimate: Ext.Function.bind(c.afterSetPosition, c, [
                       a,
-                      e,
-                    ]),
+                      e
+                    ])
                   },
-                  to: { left: a, top: e },
+                  to: { left: a, top: e }
                 },
-                b,
-              ),
+                b
+              )
             );
           }
         } else {
@@ -40015,7 +40010,7 @@ Ext.cmd.derive(
               o,
               b,
               a,
-              e,
+              e
             );
             return;
           }
@@ -40108,7 +40103,7 @@ Ext.cmd.derive(
         if (Ext.isDefined(b.cmpCls)) {
           if (Ext.isDefined(Ext.global.console)) {
             Ext.global.console.warn(
-              "Ext.Component: cmpCls has been deprecated. Please use componentCls.",
+              "Ext.Component: cmpCls has been deprecated. Please use componentCls."
             );
           }
           b.componentCls = b.cmpCls;
@@ -40128,7 +40123,7 @@ Ext.cmd.derive(
               ? (c.resizerComponent = new Ext.Component({
                   el: c.resizer.el,
                   rendered: true,
-                  container: c.container,
+                  container: c.container
                 }))
               : c,
           b = Ext.applyIf(
@@ -40138,9 +40133,9 @@ Ext.cmd.derive(
                 c.constrain || c.draggable.constrain
                   ? c.constrainTo ||
                     (c.floatParent ? c.floatParent.getTargetEl() : c.container)
-                  : undefined,
+                  : undefined
             },
-            c.draggable,
+            c.draggable
           );
         if (c.constrain || c.constrainDelegate) {
           b.constrain = c.constrain;
@@ -40178,9 +40173,9 @@ Ext.cmd.derive(
                 ? b.constrainTo ||
                   (b.floatParent ? b.floatParent.getTargetEl() : b.container)
                 : undefined,
-            handles: b.resizeHandles,
+            handles: b.resizeHandles
           },
-          a,
+          a
         );
         a.target = b;
         b.resizer = new Ext.resizer.Resizer(a);
@@ -40299,7 +40294,7 @@ Ext.cmd.derive(
         } else {
           return h.mixins.observable.removeManagedListenerItem.apply(
             h,
-            arguments,
+            arguments
           );
         }
       },
@@ -40367,7 +40362,7 @@ Ext.cmd.derive(
         if (b.floating) {
           this.mixins.floating.constructor.call(this);
         }
-      },
+      }
     },
     deprecated: {
       5: {
@@ -40379,10 +40374,10 @@ Ext.cmd.derive(
           },
           removeClass: "removeCls",
           forceComponentLayout: "updateLayout",
-          setDocked: "setDock",
-        },
-      },
-    },
+          setDocked: "setDock"
+        }
+      }
+    }
   },
   1,
   ["component", "box"],
@@ -40393,71 +40388,71 @@ Ext.cmd.derive(
     [
       Ext.mixin.Inheritable.prototype.mixinId ||
         Ext.mixin.Inheritable.$className,
-      Ext.mixin.Inheritable,
+      Ext.mixin.Inheritable
     ],
     [
       Ext.util.Floating.prototype.mixinId || Ext.util.Floating.$className,
-      Ext.util.Floating,
+      Ext.util.Floating
     ],
     [
       Ext.util.Positionable.prototype.mixinId ||
         Ext.util.Positionable.$className,
-      Ext.util.Positionable,
+      Ext.util.Positionable
     ],
     [
       Ext.util.Observable.prototype.mixinId || Ext.util.Observable.$className,
-      Ext.util.Observable,
+      Ext.util.Observable
     ],
     [
       Ext.mixin.ComponentDelegation.prototype.mixinId ||
         Ext.mixin.ComponentDelegation.$className,
-      Ext.mixin.ComponentDelegation,
+      Ext.mixin.ComponentDelegation
     ],
     [
       Ext.mixin.Bindable.prototype.mixinId || Ext.mixin.Bindable.$className,
-      Ext.mixin.Bindable,
+      Ext.mixin.Bindable
     ],
     [
       Ext.util.Animate.prototype.mixinId || Ext.util.Animate.$className,
-      Ext.util.Animate,
+      Ext.util.Animate
     ],
     [
       Ext.util.ElementContainer.prototype.mixinId ||
         Ext.util.ElementContainer.$className,
-      Ext.util.ElementContainer,
+      Ext.util.ElementContainer
     ],
     [
       Ext.util.Renderable.prototype.mixinId || Ext.util.Renderable.$className,
-      Ext.util.Renderable,
+      Ext.util.Renderable
     ],
     [
       Ext.state.Stateful.prototype.mixinId || Ext.state.Stateful.$className,
-      Ext.state.Stateful,
+      Ext.state.Stateful
     ],
     [
       Ext.util.Focusable.prototype.mixinId || Ext.util.Focusable.$className,
-      Ext.util.Focusable,
+      Ext.util.Focusable
     ],
     [
       Ext.mixin.Accessible.prototype.mixinId || Ext.mixin.Accessible.$className,
-      Ext.mixin.Accessible,
+      Ext.mixin.Accessible
     ],
     [
       Ext.mixin.Keyboard.prototype.mixinId || Ext.mixin.Keyboard.$className,
-      Ext.mixin.Keyboard,
-    ],
+      Ext.mixin.Keyboard
+    ]
   ],
   [Ext, "Component", Ext, "AbstractComponent"],
   function (b) {
     var a = b.prototype;
     (a.$elementEventOptions = Ext.Object.chain(
-      Ext.Element.prototype.$eventOptions,
+      Ext.Element.prototype.$eventOptions
     )).element = 1;
     (a.$eventOptions = Ext.Object.chain(a.$eventOptions)).delegate = 1;
     b.createAlias({
       on: "addListener",
       prev: "previousSibling",
-      next: "nextSibling",
+      next: "nextSibling"
     });
     Ext.resumeLayouts = function (c) {
       b.resumeLayouts(c);
@@ -40482,7 +40477,7 @@ Ext.cmd.derive(
         Ext.getBody().addCls(b.ariaHighContrastModeCls);
       }
     });
-  },
+  }
 );
 Ext.define(
   "Ext.layout.container.border.Region",
@@ -40499,7 +40494,7 @@ Ext.define(
             b = a.addPropertyToState(b, "region");
             b = a.addPropertyToState(b, "weight");
             return b;
-          },
+          }
         });
       }
     },
@@ -40590,20 +40585,20 @@ Ext.define(
         }
       }
       return a;
-    },
+    }
   },
   function (a) {
     var b = a.prototype;
     b.setBorderRegion = b.setRegion;
     b.setRegionWeight = b.setWeight;
-  },
+  }
 );
 Ext.define(
   "Ext.overrides.app.domain.Component",
   { override: "Ext.app.domain.Component" },
   function (a) {
     a.monitor(Ext.Component);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.app.EventBus",
@@ -40635,7 +40630,7 @@ Ext.cmd.derive(
       for (b in a) {
         a[b].unlisten(c);
       }
-    },
+    }
   },
   1,
   0,
@@ -40644,7 +40639,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app, "EventBus"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.domain.Global",
@@ -40660,7 +40655,7 @@ Ext.cmd.derive(
     listen: function (b, a) {
       this.callParent([{ global: b }, a]);
     },
-    match: Ext.returnTrue,
+    match: Ext.returnTrue
   },
   1,
   0,
@@ -40669,7 +40664,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "Global"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.BaseController",
@@ -40681,7 +40676,7 @@ Ext.cmd.derive(
       control: null,
       listen: null,
       routes: null,
-      before: null,
+      before: null
     },
     constructor: function (a) {
       var b = this;
@@ -40784,7 +40779,7 @@ Ext.cmd.derive(
         }
       }
       return b;
-    },
+    }
   },
   1,
   0,
@@ -40794,11 +40789,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.app, "BaseController"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.Util",
@@ -40859,10 +40854,10 @@ Ext.cmd.derive(
             }
           }
         }
-      },
+      }
     });
     Ext.getNamespace = Ext.app.getNamespace;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.CollectionKey",
@@ -40875,7 +40870,7 @@ Ext.cmd.derive(
       keyFn: null,
       property: null,
       rootProperty: null,
-      unique: true,
+      unique: true
     },
     generation: 0,
     map: null,
@@ -41037,7 +41032,7 @@ Ext.cmd.derive(
     },
     clone: function () {
       return new Ext.util.CollectionKey(this.getCurrentConfig());
-    },
+    }
   },
   1,
   0,
@@ -41048,11 +41043,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.util, "CollectionKey"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Grouper",
@@ -41104,7 +41099,7 @@ Ext.cmd.derive(
       if (!this.getGroupFn()) {
         this.setGroupFn(this.standardGroupFn);
       }
-    },
+    }
   },
   1,
   0,
@@ -41113,7 +41108,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Grouper"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Collection",
@@ -41134,7 +41129,7 @@ Ext.cmd.derive(
       multiSortLimit: 3,
       defaultSortDirection: "ASC",
       source: null,
-      trackGroups: true,
+      trackGroups: true
     },
     generation: 0,
     indices: null,
@@ -41345,8 +41340,8 @@ Ext.cmd.derive(
               root: m,
               anyMatch: e,
               caseSensitive: k,
-              exactMatch: d,
-            }),
+              exactMatch: d
+            })
           ];
         } else {
           if (o instanceof Ext.util.Filter) {
@@ -41428,7 +41423,7 @@ Ext.cmd.derive(
           return j && e.test((a ? j[a] : j)[h]);
         },
         null,
-        i,
+        i
       );
     },
     findBy: function (g, k, a) {
@@ -41604,7 +41599,7 @@ Ext.cmd.derive(
           oldIndex: h,
           newIndex: b,
           wasFiltered: o,
-          meta: n,
+          meta: n
         };
         if (c) {
           t.oldKey = m;
@@ -41800,8 +41795,8 @@ Ext.cmd.derive(
                 keys: (z = []),
                 map: v,
                 next: a,
-                replacement: r,
-              }),
+                replacement: r
+              })
             );
             if (r) {
               r.replaced = a;
@@ -42095,7 +42090,7 @@ Ext.cmd.derive(
           e += h;
         }
         return e;
-      },
+      }
     },
     _eventToMethodMap: {
       add: "onCollectionAdd",
@@ -42110,7 +42105,7 @@ Ext.cmd.derive(
       sort: "onCollectionSort",
       filter: "onCollectionFilter",
       filteradd: "onCollectionFilterAdd",
-      updatekey: "onCollectionUpdateKey",
+      updatekey: "onCollectionUpdateKey"
     },
     addObserver: function (a) {
       var b = this,
@@ -42274,7 +42269,7 @@ Ext.cmd.derive(
         g = new Ext.util.Collection({
           keyFn: d.getKey,
           extraKeys: b,
-          rootProperty: d.getRootProperty(),
+          rootProperty: d.getRootProperty()
         });
         if (d.length) {
           g.add(d.items);
@@ -42309,7 +42304,7 @@ Ext.cmd.derive(
         a.on({
           endupdate: "onEndUpdateFilters",
           scope: c,
-          priority: c.$endUpdatePriority,
+          priority: c.$endUpdatePriority
         });
         a.$filterable = c;
       }
@@ -42446,7 +42441,7 @@ Ext.cmd.derive(
         a.on({
           endupdate: "onEndUpdateSorters",
           scope: c,
-          priority: c.$endUpdatePriority,
+          priority: c.$endUpdatePriority
         });
         a.$sortable = c;
       }
@@ -42537,7 +42532,7 @@ Ext.cmd.derive(
     getGroups: function () {
       return (
         (arguments.callee.$previous || Ext.Base.prototype.getGroups).call(
-          this,
+          this
         ) || null
       );
     },
@@ -42573,7 +42568,7 @@ Ext.cmd.derive(
           this.onCollectionRefresh(b);
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -42583,8 +42578,8 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.util, "Collection"],
   function () {
@@ -42599,7 +42594,7 @@ Ext.cmd.derive(
         return this.aggregateByGroup(c, b);
       };
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.ObjectTemplate",
@@ -42611,7 +42606,7 @@ Ext.cmd.derive(
     statics: {
       create: function (b, a) {
         return b.isObjectTemplate ? b : new Ext.util.ObjectTemplate(b, a);
-      },
+      }
     },
     constructor: function (b, a) {
       Ext.apply(this, a);
@@ -42694,8 +42689,8 @@ Ext.cmd.derive(
           }
         }
         return d;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -42704,7 +42699,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ObjectTemplate"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.Role",
@@ -42737,7 +42732,7 @@ Ext.cmd.derive(
       Ext.raise(
         'Only the "many" for an association may be processed. "' +
           this.role +
-          '" is not valid.',
+          '" is not valid.'
       );
     },
     processLoad: function (b, c, a, d) {
@@ -42767,7 +42762,7 @@ Ext.cmd.derive(
           disableMetaChangeEvent: true,
           pageSize: null,
           remoteFilter: true,
-          trackRemoved: !g,
+          trackRemoved: !g
         },
         k;
       if (j) {
@@ -42776,13 +42771,13 @@ Ext.cmd.derive(
             id: i.$roleFilterId,
             property: i.inverse.field,
             value: a,
-            exactMatch: true,
-          },
+            exactMatch: true
+          }
         ];
       } else {
         if (h) {
           c.filters = [
-            { id: i.$roleFilterId, property: h, value: a, exactMatch: true },
+            { id: i.$roleFilterId, property: h, value: a, exactMatch: true }
           ];
           c.foreignKeyName = h;
         }
@@ -42797,7 +42792,7 @@ Ext.cmd.derive(
           scope: i,
           add: "onAddToMany",
           remove: "onRemoveFromMany",
-          clear: "onRemoveFromMany",
+          clear: "onRemoveFromMany"
         });
       }
       if (e) {
@@ -42877,7 +42872,7 @@ Ext.cmd.derive(
               Ext.callback(e.callback, b, c);
             },
             null,
-            { single: true },
+            { single: true }
           );
         } else {
           c = [g, null];
@@ -42920,7 +42915,7 @@ Ext.cmd.derive(
           model: d,
           rootProperty: b,
           useSimpleAccessors: e,
-          type: c.defaultReaderType,
+          type: c.defaultReaderType
         });
         a = c.reader = Ext.createByAlias("reader." + a.type, a);
       }
@@ -43086,7 +43081,7 @@ Ext.cmd.derive(
         }
         return a.save(n);
       }
-    },
+    }
   },
   1,
   0,
@@ -43095,7 +43090,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.schema, "Role"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.Association",
@@ -43122,7 +43117,7 @@ Ext.cmd.derive(
     getFieldName: function () {
       var a = this.field;
       return a ? a.name : "";
-    },
+    }
   },
   1,
   0,
@@ -43131,7 +43126,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.schema, "Association"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.OneToOne",
@@ -43201,7 +43196,7 @@ Ext.cmd.derive(
             delete a.data[c.role];
           }
         }
-      },
+      }
     }),
     Right: Ext.define(null, {
       extend: "Ext.data.schema.Role",
@@ -43317,8 +43312,8 @@ Ext.cmd.derive(
             delete h[j.role];
           }
         }
-      },
-    }),
+      }
+    })
   },
   0,
   0,
@@ -43327,7 +43322,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.schema, "OneToOne"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.ManyToOne",
@@ -43553,7 +43548,7 @@ Ext.cmd.derive(
             d[n] = c;
           }
         }
-      },
+      }
     }),
     Right: Ext.define(null, {
       extend: "Ext.data.schema.Role",
@@ -43663,8 +43658,8 @@ Ext.cmd.derive(
             delete g.data[this.role];
           }
         }
-      },
-    }),
+      }
+    })
   },
   0,
   0,
@@ -43673,7 +43668,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.schema, "ManyToOne"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.ManyToMany",
@@ -43894,7 +43889,7 @@ Ext.cmd.derive(
               g.adopt(c[e]);
             }
           }
-        },
+        }
       },
       function () {
         var a = this;
@@ -43903,14 +43898,14 @@ Ext.cmd.derive(
             Ext.data.schema.ManyToMany.prototype.Right = Ext.define(null, {
               extend: a,
               left: false,
-              side: "right",
+              side: "right"
             });
           },
           null,
-          "Ext.data.schema.ManyToMany",
+          "Ext.data.schema.ManyToMany"
         );
-      },
-    ),
+      }
+    )
   },
   0,
   0,
@@ -43919,7 +43914,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.schema, "ManyToMany"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Inflector",
@@ -43946,7 +43941,7 @@ Ext.cmd.derive(
       [/^(m)an$/i, "$1en"],
       [/(.*)(child)(ren)?$/i, "$1$2ren"],
       [/s$/i, "s"],
-      [/$/, "s"],
+      [/$/, "s"]
     ],
     singulars: [
       [/(address)$/i, "$1"],
@@ -43972,12 +43967,12 @@ Ext.cmd.derive(
       [/(^analy)ses$/i, "$1sis"],
       [
         /((a)naly|(b)a|(d)iagno|(p)arenthe|(p)rogno|(s)ynop|(t)he)ses$/i,
-        "$1$2sis",
+        "$1$2sis"
       ],
       [/([ti])a$/i, "$1um"],
       [/(n)ews$/i, "$1ews"],
       [/(p)eople$/i, "$1erson"],
-      [/s$/i, ""],
+      [/s$/i, ""]
     ],
     uncountable: [
       "sheep",
@@ -43992,7 +43987,7 @@ Ext.cmd.derive(
       "mud",
       "offspring",
       "deer",
-      "means",
+      "means"
     ],
     singular: function (b, a) {
       this.singulars.unshift([b, a]);
@@ -44066,7 +44061,7 @@ Ext.cmd.derive(
             return d + "th";
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -44107,7 +44102,7 @@ Ext.cmd.derive(
         formula: "formulae",
         nebula: "nebulae",
         vertebra: "vertebrae",
-        vita: "vitae",
+        vita: "vitae"
       },
       a;
     for (a in b) {
@@ -44116,7 +44111,7 @@ Ext.cmd.derive(
         this.singular(b[a], a);
       }
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.schema.Namer",
@@ -44242,7 +44237,7 @@ Ext.cmd.derive(
         k[e] = h;
       }
       return h;
-    },
+    }
   },
   0,
   0,
@@ -44253,11 +44248,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.schema, "Namer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.schema.Schema",
@@ -44325,7 +44320,7 @@ Ext.cmd.derive(
                             d.schema.type +
                             '" and "' +
                             b +
-                            '"',
+                            '"'
                         );
                       }
                       d = c;
@@ -44340,7 +44335,7 @@ Ext.cmd.derive(
           }
         }
         return d;
-      },
+      }
     },
     assocCount: 0,
     entityCount: 0,
@@ -44350,7 +44345,7 @@ Ext.cmd.derive(
       namer: "default",
       namespace: null,
       proxy: { type: "ajax", url: "{prefix}/{entityName}" },
-      urlPrefix: "",
+      urlPrefix: ""
     },
     onClassExtended: function (a, c) {
       var b = c.alias;
@@ -44471,15 +44466,15 @@ Ext.cmd.derive(
           type: g,
           role: b,
           field: e,
-          associationKey: c.associationKey,
+          associationKey: c.associationKey
         },
         right: {
           cls: k.cls,
           type: q,
           role: m,
           field: j,
-          associationKey: r.associationKey,
-        },
+          associationKey: r.associationKey
+        }
       });
       i.associations[o.right.role] = o.right;
       k.associations[o.left.role] = o.left;
@@ -44540,7 +44535,7 @@ Ext.cmd.derive(
         nullable: a ? !!a.allowBlank : true,
         left: { cls: q, type: m, role: h, extra: i },
         right: { cls: c.cls, type: t, role: o, extra: p },
-        meta: p,
+        meta: p
       });
       q.associations[o] = e.right;
       c.associations[h] = e.left;
@@ -44857,7 +44852,7 @@ Ext.cmd.derive(
           c.timer = d = Ext.Function.defer(
             c.processKeyChecks,
             c.getKeyCheckDelay(),
-            c,
+            c
           );
         }
       },
@@ -44892,8 +44887,8 @@ Ext.cmd.derive(
           }
         }
         c.rank = this.nextRank++;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -44904,11 +44899,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.schema, "Schema"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.AbstractStore",
@@ -44929,7 +44924,7 @@ Ext.cmd.derive(
       groupDir: "ASC",
       grouper: null,
       pageSize: 25,
-      autoSort: null,
+      autoSort: null
     },
     currentPage: 1,
     loading: false,
@@ -44972,7 +44967,7 @@ Ext.cmd.derive(
           return d.isEqual(d.get(c), a);
         },
         this,
-        b,
+        b
       );
     },
     findBy: function (b, a, c) {
@@ -44995,7 +44990,7 @@ Ext.cmd.derive(
       if (!a && b !== false) {
         this.setFilters([]);
         a = (arguments.callee.$previous || Ext.Base.prototype.getFilters).call(
-          this,
+          this
         );
       }
       return a;
@@ -45019,7 +45014,7 @@ Ext.cmd.derive(
       if (!a && b !== false) {
         this.setSorters([]);
         a = (arguments.callee.$previous || Ext.Base.prototype.getSorters).call(
-          this,
+          this
         );
       }
       return a;
@@ -45218,7 +45213,7 @@ Ext.cmd.derive(
           a.load({
             callback: function () {
               a.fireEvent("sort", a, b);
-            },
+            }
           });
         } else {
           a.fireEvent("datachanged", a);
@@ -45325,20 +45320,20 @@ Ext.cmd.derive(
           a.getData()[c ? "un" : "on"](
             "beforesort",
             a.onBeforeCollectionSort,
-            a,
+            a
           );
         }
-      },
+      }
     },
     deprecated: {
       5: {
         methods: {
           destroyStore: function () {
             this.destroy();
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   1,
   0,
@@ -45348,16 +45343,16 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
+      Ext.mixin.Observable
     ],
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data, "AbstractStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Error",
@@ -45369,7 +45364,7 @@ Ext.cmd.derive(
     constructor: function (a) {
       this.initConfig(a);
       this.msg = this.message;
-    },
+    }
   },
   1,
   0,
@@ -45378,7 +45373,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "Error"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.ErrorCollection",
@@ -45422,7 +45417,7 @@ Ext.cmd.derive(
         if (!g.isError) {
           g = new Ext.data.Error({
             field: g.field || g.name,
-            message: g.error || g.message || g.msg || a,
+            message: g.error || g.message || g.msg || a
           });
         }
         b = g.field;
@@ -45452,7 +45447,7 @@ Ext.cmd.derive(
         a = [a];
       }
       return a || [];
-    },
+    }
   },
   0,
   0,
@@ -45461,7 +45456,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "ErrorCollection", Ext.data, "Errors"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.operation.Operation",
@@ -45484,7 +45479,7 @@ Ext.cmd.derive(
       batch: null,
       recordCreator: null,
       internalCallback: null,
-      internalScope: null,
+      internalScope: null
     },
     order: 0,
     foreignKeyDirection: 1,
@@ -45650,7 +45645,7 @@ Ext.cmd.derive(
     },
     allowWrite: function () {
       return true;
-    },
+    }
   },
   1,
   0,
@@ -45659,7 +45654,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.operation, "Operation", Ext.data, "Operation"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.operation.Create",
@@ -45671,7 +45666,7 @@ Ext.cmd.derive(
     config: { recordCreator: Ext.identityFn },
     doExecute: function () {
       return this.getProxy().create(this);
-    },
+    }
   },
   0,
   0,
@@ -45680,7 +45675,7 @@ Ext.cmd.derive(
   ["data.operation.create"],
   0,
   [Ext.data.operation, "Create"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.operation.Destroy",
@@ -45707,7 +45702,7 @@ Ext.cmd.derive(
         b = this.getNameProperty() || "name";
       e[d[b]] = a.id;
       return e;
-    },
+    }
   },
   0,
   0,
@@ -45716,7 +45711,7 @@ Ext.cmd.derive(
   ["data.operation.destroy"],
   0,
   [Ext.data.operation, "Destroy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.operation.Read",
@@ -45731,7 +45726,7 @@ Ext.cmd.derive(
       start: undefined,
       limit: undefined,
       page: undefined,
-      addRecords: false,
+      addRecords: false
     },
     doExecute: function () {
       return this.getProxy().read(this);
@@ -45739,7 +45734,7 @@ Ext.cmd.derive(
     doProcess: Ext.emptyFn,
     allowWrite: function () {
       return false;
-    },
+    }
   },
   0,
   0,
@@ -45748,7 +45743,7 @@ Ext.cmd.derive(
   ["data.operation.read"],
   0,
   [Ext.data.operation, "Read"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.operation.Update",
@@ -45760,7 +45755,7 @@ Ext.cmd.derive(
     config: { recordCreator: Ext.identityFn },
     doExecute: function () {
       return this.getProxy().update(this);
-    },
+    }
   },
   0,
   0,
@@ -45769,7 +45764,7 @@ Ext.cmd.derive(
   ["data.operation.update"],
   0,
   [Ext.data.operation, "Update"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.SortTypes",
@@ -45806,7 +45801,7 @@ Ext.cmd.derive(
     asInt: function (a) {
       var b = parseInt(String(a).replace(this.stripCommasRe, ""), 10);
       return isNaN(b) ? 0 : b;
-    },
+    }
   },
   0,
   0,
@@ -45815,7 +45810,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "SortTypes"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Validator",
@@ -45828,7 +45823,7 @@ Ext.cmd.derive(
       register: function (b, a) {
         var c = this.all;
         c[b.toUpperCase()] = c[b.toLowerCase()] = c[b] = a.prototype;
-      },
+      }
     },
     onClassExtended: function (a, b) {
       if (b.type) {
@@ -45852,7 +45847,7 @@ Ext.cmd.derive(
         return new Ext.data.validator.Validator(a.validate);
       }
       return new a.self(a.getCurrentConfig());
-    },
+    }
   },
   1,
   0,
@@ -45863,13 +45858,13 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.validator, "Validator"],
   function () {
     this.register(this.prototype.type, this);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.field.Field",
@@ -46117,10 +46112,10 @@ Ext.cmd.derive(
         methods: {
           getSortDir: function () {
             return this.sortDir;
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   1,
   0,
@@ -46131,11 +46126,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.field, "Field", Ext.data, "Field"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.field.Boolean",
@@ -46154,7 +46149,7 @@ Ext.cmd.derive(
     },
     getType: function () {
       return "bool";
-    },
+    }
   },
   0,
   0,
@@ -46163,7 +46158,7 @@ Ext.cmd.derive(
   ["data.field.bool", "data.field.boolean"],
   0,
   [Ext.data.field, "Boolean"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.field.Date",
@@ -46236,7 +46231,7 @@ Ext.cmd.derive(
     },
     getType: function () {
       return "date";
-    },
+    }
   },
   0,
   0,
@@ -46245,7 +46240,7 @@ Ext.cmd.derive(
   ["data.field.date"],
   0,
   [Ext.data.field, "Date"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.field.Integer",
@@ -46285,7 +46280,7 @@ Ext.cmd.derive(
         a = Infinity;
       }
       return a;
-    },
+    }
   },
   0,
   0,
@@ -46294,7 +46289,7 @@ Ext.cmd.derive(
   ["data.field.int", "data.field.integer"],
   0,
   [Ext.data.field, "Integer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.field.Number",
@@ -46306,7 +46301,7 @@ Ext.cmd.derive(
     getNumber: Ext.identityFn,
     parse: function (a) {
       return parseFloat(String(a).replace(this.stripRe, ""));
-    },
+    }
   },
   0,
   0,
@@ -46315,7 +46310,7 @@ Ext.cmd.derive(
   ["data.field.float", "data.field.number"],
   0,
   [Ext.data.field, "Number"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.field.String",
@@ -46329,7 +46324,7 @@ Ext.cmd.derive(
     },
     getType: function () {
       return "string";
-    },
+    }
   },
   0,
   0,
@@ -46338,7 +46333,7 @@ Ext.cmd.derive(
   ["data.field.string"],
   0,
   [Ext.data.field, "String"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.identifier.Generator",
@@ -46363,8 +46358,8 @@ Ext.cmd.derive(
         a = b ? Ext.apply({}, b, a) : a;
         return new this.self(a);
       },
-      statics: { all: {} },
-    },
+      statics: { all: {} }
+    }
   },
   1,
   0,
@@ -46375,8 +46370,8 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.identifier, "Generator"],
   function () {
@@ -46388,7 +46383,7 @@ Ext.cmd.derive(
         e = g && c.all[g];
       return e || b(d);
     };
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.identifier.Sequential",
@@ -46401,7 +46396,7 @@ Ext.cmd.derive(
         c = b._prefix;
       b._seed += b._increment;
       return c !== null ? c + a : a;
-    },
+    }
   },
   0,
   0,
@@ -46410,7 +46405,7 @@ Ext.cmd.derive(
   ["data.identifier.sequential"],
   0,
   [Ext.data.identifier, "Sequential"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Model",
@@ -46506,7 +46501,7 @@ Ext.cmd.derive(
           data: Ext.apply({}, c.data),
           generation: c.generation,
           modified: b && Ext.apply({}, b),
-          previousValues: a && Ext.apply({}, a),
+          previousValues: a && Ext.apply({}, a)
         };
       }
     },
@@ -47277,7 +47272,7 @@ Ext.cmd.derive(
         d = new this(b, c);
         d.load(a);
         return d;
-      },
+      }
     },
     deprecated: {
       5: {
@@ -47324,11 +47319,11 @@ Ext.cmd.derive(
               Ext.Array.remove(a, c);
               b.store = a[0] || null;
             }
-          },
+          }
         },
         properties: { persistenceProperty: null },
-        inheritableStatics: { methods: { setFields: null } },
-      },
+        inheritableStatics: { methods: { setFields: null } }
+      }
     },
     privates: {
       _commitOptions: { commit: true },
@@ -47759,7 +47754,7 @@ Ext.cmd.derive(
             }
             a.identifier = Ext.Factory.dataIdentifier({
               type: "sequential",
-              prefix: c + "-",
+              prefix: c + "-"
             });
           }
         },
@@ -47827,7 +47822,7 @@ Ext.cmd.derive(
                   j,
                   ";\n    }\n    ",
                   p,
-                  " = v;",
+                  " = v;"
                 );
               } else {
                 if (l) {
@@ -47838,7 +47833,7 @@ Ext.cmd.derive(
                     p,
                     ",e);\n    if (v !== undefined) {\n        ",
                     p,
-                    " = v;\n    }\n",
+                    " = v;\n    }\n"
                   );
                 } else {
                   if (o) {
@@ -47852,7 +47847,7 @@ Ext.cmd.derive(
                       e,
                       ".defaultValue",
                       j,
-                      ";\n    }\n",
+                      ";\n    }\n"
                     );
                   }
                 }
@@ -47868,9 +47863,9 @@ Ext.cmd.derive(
           a = a.join("");
           d = new Function("$fields", "Ext", a);
           return d(g, Ext);
-        },
-      },
-    },
+        }
+      }
+    }
   },
   1,
   0,
@@ -47933,7 +47928,7 @@ Ext.cmd.derive(
       }
       e.proxyConfig = g;
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.ResultSet",
@@ -47948,14 +47943,14 @@ Ext.cmd.derive(
       success: false,
       records: null,
       message: null,
-      metadata: null,
+      metadata: null
     },
     constructor: function (a) {
       this.initConfig(a);
     },
     getCount: function () {
       var b = (arguments.callee.$previous || Ext.Base.prototype.getCount).call(
-          this,
+          this
         ),
         a;
       if (!b) {
@@ -47965,7 +47960,7 @@ Ext.cmd.derive(
         }
       }
       return b;
-    },
+    }
   },
   1,
   0,
@@ -47974,7 +47969,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "ResultSet"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.reader.Reader",
@@ -47993,7 +47988,7 @@ Ext.cmd.derive(
       model: null,
       proxy: null,
       transform: null,
-      keepRawData: null,
+      keepRawData: null
     },
     isReader: true,
     constructor: function (a) {
@@ -48050,7 +48045,7 @@ Ext.cmd.derive(
               count: 0,
               records: [],
               success: false,
-              message: a.msg,
+              message: a.msg
             });
           } else {
             d = this.readRecords(a, e);
@@ -48134,7 +48129,7 @@ Ext.cmd.derive(
             count: d,
             records: b,
             success: n,
-            message: p,
+            message: p
           });
     },
     extractData: function (p, g) {
@@ -48169,7 +48164,7 @@ Ext.cmd.derive(
               g,
               e,
               d.hasAssociations(e) && m.getImplicitIncludes(),
-              m.getFieldExtractorInfo(e.fieldExtractors),
+              m.getFieldExtractorInfo(e.fieldExtractors)
             );
           } else {
             k = n.extractRecord(b, g, h, q, o);
@@ -48249,7 +48244,7 @@ Ext.cmd.derive(
               b +
               "](raw); if (val !== undefined) { data['" +
               a +
-              "'] = val; }",
+              "'] = val; }"
           );
           l.push(c);
           ++b;
@@ -48258,12 +48253,7 @@ Ext.cmd.derive(
       if (e.length) {
         d = {
           extractors: l,
-          fn: new Function(
-            "raw",
-            "data",
-            "extractors",
-            "var val;" + e.join(""),
-          ),
+          fn: new Function("raw", "data", "extractors", "var val;" + e.join(""))
         };
       }
       return d;
@@ -48329,7 +48319,7 @@ Ext.cmd.derive(
         e = Ext.define(null, {
           extend: "Ext.data.Model",
           fields: b,
-          clientIdProperty: a,
+          clientIdProperty: a
         });
         g.setModel(e);
         d = g.getProxy();
@@ -48407,8 +48397,8 @@ Ext.cmd.derive(
         b.setConfig(a.getConfig());
         --b.duringInit;
         b.hasExtractors = true;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -48418,13 +48408,13 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
+      Ext.mixin.Observable
     ],
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.reader, "Reader", Ext.data, "Reader", Ext.data, "DataReader"],
   function (b) {
@@ -48435,11 +48425,11 @@ Ext.cmd.derive(
         count: 0,
         records: [],
         success: true,
-        message: "",
-      }),
+        message: ""
+      })
     });
     a.extractorCache = new Ext.util.LruCache();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.writer.Writer",
@@ -48455,7 +48445,7 @@ Ext.cmd.derive(
       dateFormat: null,
       nameProperty: "name",
       writeRecordId: true,
-      transform: null,
+      transform: null
     },
     isWriter: true,
     constructor: function (a) {
@@ -48543,7 +48533,7 @@ Ext.cmd.derive(
         }
       }
       return l;
-    },
+    }
   },
   1,
   0,
@@ -48554,11 +48544,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.data.writer, "Writer", Ext.data, "DataWriter", Ext.data, "Writer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Proxy",
@@ -48571,7 +48561,7 @@ Ext.cmd.derive(
       batchActions: true,
       model: undefined,
       reader: { type: "json" },
-      writer: { type: "json" },
+      writer: { type: "json" }
     },
     isProxy: true,
     isSynchronous: false,
@@ -48715,7 +48705,7 @@ Ext.cmd.derive(
       }
       this.pendingOperations = null;
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -48726,15 +48716,15 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
+      Ext.mixin.Factoryable
     ],
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.data.proxy, "Proxy", Ext.data, "DataProxy", Ext.data, "Proxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Client",
@@ -48742,7 +48732,7 @@ Ext.cmd.derive(
   {
     alternateClassName: "Ext.data.ClientProxy",
     isSynchronous: true,
-    clear: function () {},
+    clear: function () {}
   },
   0,
   0,
@@ -48751,7 +48741,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.proxy, "Client", Ext.data, "ClientProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Memory",
@@ -48769,8 +48759,8 @@ Ext.cmd.derive(
           } else {
             return Ext.clone(d);
           }
-        },
-      },
+        }
+      }
     },
     finishOperation: function (b) {
       var c = 0,
@@ -48804,7 +48794,7 @@ Ext.cmd.derive(
       if (g.process(j, null, null, false) !== false) {
         if (c && c.length) {
           j.setRecords(
-            (d = Ext.Array.filter(d, Ext.util.Filter.createFilterFn(c))),
+            (d = Ext.Array.filter(d, Ext.util.Filter.createFilterFn(c)))
           );
           j.setTotal(d.length);
         }
@@ -48813,7 +48803,7 @@ Ext.cmd.derive(
         }
         if (h && h.length) {
           j.setRecords(
-            (d = Ext.Array.sort(d, Ext.util.Sortable.createComparator(h))),
+            (d = Ext.Array.sort(d, Ext.util.Sortable.createComparator(h)))
           );
         }
         if (i.getEnablePaging() && b !== undefined && e !== undefined) {
@@ -48829,7 +48819,7 @@ Ext.cmd.derive(
         }
       }
     },
-    clear: Ext.emptyFn,
+    clear: Ext.emptyFn
   },
   0,
   0,
@@ -48838,7 +48828,7 @@ Ext.cmd.derive(
   ["proxy.memory"],
   0,
   [Ext.data.proxy, "Memory", Ext.data, "MemoryProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.ProxyStore",
@@ -48853,7 +48843,7 @@ Ext.cmd.derive(
       batchUpdateMode: "operation",
       sortOnLoad: true,
       trackRemoved: true,
-      asynchronousLoad: undefined,
+      asynchronousLoad: undefined
     },
     onClassExtended: function (b, d, a) {
       var c = d.model,
@@ -49087,7 +49077,7 @@ Ext.cmd.derive(
         e.isSyncing = true;
         c = c || {};
         e.proxy.batch(
-          Ext.apply(c, { operations: b, listeners: e.getBatchListeners() }),
+          Ext.apply(c, { operations: b, listeners: e.getBatchListeners() })
         );
       }
       return e;
@@ -49097,7 +49087,7 @@ Ext.cmd.derive(
         a = {
           scope: b,
           exception: b.onBatchException,
-          complete: b.onBatchComplete,
+          complete: b.onBatchComplete
         };
       if (b.batchUpdateMode === "operation") {
         a.operationcomplete = b.onBatchOperationComplete;
@@ -49138,7 +49128,7 @@ Ext.cmd.derive(
       }
       a = Ext.apply(
         { internalScope: c, internalCallback: c.onProxyLoad, scope: c },
-        b,
+        b
       );
       c.lastOptions = a;
       a = c.createOperation("read", a);
@@ -49245,7 +49235,7 @@ Ext.cmd.derive(
             scope: e,
             destroyable: true,
             beginprocessresponse: e.beginUpdate,
-            endprocessresponse: e.endUpdate,
+            endprocessresponse: e.endUpdate
           };
           if (!e.disableMetaChangeEvent) {
             c.metachange = e.onMetaChange;
@@ -49298,8 +49288,8 @@ Ext.cmd.derive(
             a.sorters = d.getRange();
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -49308,7 +49298,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "ProxyStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.LocalStore",
@@ -49328,7 +49318,7 @@ Ext.cmd.derive(
     add: function (a) {
       return this.insert(
         this.getCount(),
-        arguments.length === 1 ? a : arguments,
+        arguments.length === 1 ? a : arguments
       );
     },
     constructDataCollection: function () {
@@ -49597,8 +49587,8 @@ Ext.cmd.derive(
       },
       makeInternalKeyCfg: function () {
         return { byInternalId: { property: "internalId", rootProperty: "" } };
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -49607,7 +49597,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "LocalStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Server",
@@ -49635,9 +49625,9 @@ Ext.cmd.derive(
         create: undefined,
         read: undefined,
         update: undefined,
-        destroy: undefined,
+        destroy: undefined
       },
-      extraParams: {},
+      extraParams: {}
     },
     create: function () {
       return this.doRequest.apply(this, arguments);
@@ -49678,7 +49668,7 @@ Ext.cmd.derive(
         records: a.getRecords(),
         url: a.getUrl(),
         operation: a,
-        proxy: g,
+        proxy: g
       });
       e.setUrl(g.buildUrl(e));
       a.setRequest(e);
@@ -49700,7 +49690,7 @@ Ext.cmd.derive(
           h = e.getNullResultSet();
         } else {
           h = e.read(g.extractResponseData(c), {
-            recordCreator: b.getRecordCreator(),
+            recordCreator: b.getRecordCreator()
           });
         }
         b.process(h, d, c);
@@ -49724,7 +49714,7 @@ Ext.cmd.derive(
       b.setException({
         status: a.status,
         statusText: a.statusText,
-        response: a,
+        response: a
       });
     },
     extractResponseData: Ext.identityFn,
@@ -49819,7 +49809,7 @@ Ext.cmd.derive(
       if (b.getNoCache()) {
         a = Ext.urlAppend(
           a,
-          Ext.String.format("{0}={1}", b.getCacheString(), Ext.Date.now()),
+          Ext.String.format("{0}={1}", b.getCacheString(), Ext.Date.now())
         );
       }
       return a;
@@ -49844,7 +49834,7 @@ Ext.cmd.derive(
       Ext.data.proxy.Proxy.prototype.destroy.call(this);
       a.destroying = false;
       a.destroyed = true;
-    },
+    }
   },
   0,
   0,
@@ -49853,7 +49843,7 @@ Ext.cmd.derive(
   ["proxy.server"],
   0,
   [Ext.data.proxy, "Server", Ext.data, "ServerProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Ajax",
@@ -49865,7 +49855,7 @@ Ext.cmd.derive(
       create: "POST",
       read: "GET",
       update: "POST",
-      destroy: "POST",
+      destroy: "POST"
     },
     config: {
       binary: false,
@@ -49879,8 +49869,8 @@ Ext.cmd.derive(
         create: "POST",
         read: "GET",
         update: "POST",
-        destroy: "POST",
-      },
+        destroy: "POST"
+      }
     },
     doRequest: function (a) {
       var d = this,
@@ -49900,7 +49890,7 @@ Ext.cmd.derive(
         callback: d.createRequestCallback(c, a),
         method: h,
         useDefaultXhrHeader: d.getUseDefaultXhrHeader(),
-        disableCaching: false,
+        disableCaching: false
       });
       if (h.toUpperCase() !== "GET" && d.getParamsAsJson()) {
         g = c.getParams();
@@ -49954,7 +49944,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.lastRequest = null;
       Ext.data.proxy.Server.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -49963,7 +49953,7 @@ Ext.cmd.derive(
   ["proxy.ajax"],
   0,
   [Ext.data.proxy, "Ajax", Ext.data, "HttpProxy", Ext.data, "AjaxProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.reader.Json",
@@ -49974,7 +49964,7 @@ Ext.cmd.derive(
       record: null,
       metaProperty: "metaData",
       useSimpleAccessors: false,
-      preserveRawData: false,
+      preserveRawData: false
     },
     updateRootProperty: function () {
       this.forceBuildExtractors();
@@ -50133,8 +50123,8 @@ Ext.cmd.derive(
       copyFrom: function (a) {
         Ext.data.reader.Reader.prototype.copyFrom.call(this, a);
         this.getRoot = a.getRoot;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -50143,7 +50133,7 @@ Ext.cmd.derive(
   ["reader.json"],
   0,
   [Ext.data.reader, "Json", Ext.data, "JsonReader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.writer.Json",
@@ -50154,7 +50144,7 @@ Ext.cmd.derive(
       rootProperty: undefined,
       encode: false,
       allowSingle: true,
-      expandData: false,
+      expandData: false
     },
     getExpandedData: function (d) {
       var b = d.length,
@@ -50223,7 +50213,7 @@ Ext.cmd.derive(
         }
       }
       return e;
-    },
+    }
   },
   0,
   0,
@@ -50232,7 +50222,7 @@ Ext.cmd.derive(
   ["writer.json"],
   0,
   [Ext.data.writer, "Json", Ext.data, "JsonWriter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Group",
@@ -50240,7 +50230,7 @@ Ext.cmd.derive(
   {
     config: { groupKey: null },
     $endUpdatePriority: 2001,
-    manageSorters: false,
+    manageSorters: false
   },
   0,
   0,
@@ -50249,7 +50239,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Group"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.SorterCollection",
@@ -50287,7 +50277,7 @@ Ext.cmd.derive(
           if (Ext.isString(j)) {
             if (!(k = h.get(j))) {
               g = [
-                { property: j, direction: i || l.getDefaultSortDirection() },
+                { property: j, direction: i || l.getDefaultSortDirection() }
               ];
             } else {
               g = [k];
@@ -50295,7 +50285,7 @@ Ext.cmd.derive(
           } else {
             if (Ext.isFunction(j)) {
               g = [
-                { sorterFn: j, direction: i || l.getDefaultSortDirection() },
+                { sorterFn: j, direction: i || l.getDefaultSortDirection() }
               ];
             } else {
               g = [j];
@@ -50352,7 +50342,7 @@ Ext.cmd.derive(
       append: { append: 1 },
       multi: { multi: 1 },
       prepend: { prepend: 1 },
-      replace: { replace: 1 },
+      replace: { replace: 1 }
     },
     decodeSorter: function (i, a) {
       var g = this,
@@ -50442,7 +50432,7 @@ Ext.cmd.derive(
     },
     getOptions: function () {
       return this.$sortable || this;
-    },
+    }
   },
   1,
   0,
@@ -50451,7 +50441,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "SorterCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.FilterCollection",
@@ -50558,7 +50548,7 @@ Ext.cmd.derive(
     },
     getOptions: function () {
       return this.$filterable || this;
-    },
+    }
   },
   1,
   0,
@@ -50567,7 +50557,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "FilterCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.GroupCollection",
@@ -50774,7 +50764,7 @@ Ext.cmd.derive(
       var c = new Ext.util.Group({
         groupKey: a,
         rootProperty: this.getItemRoot(),
-        sorters: b.getSorters(),
+        sorters: b.getSorters()
       });
       return c;
     },
@@ -50825,8 +50815,8 @@ Ext.cmd.derive(
       },
       onGroupRemove: function (b, a) {
         this.destroyGroups(a.items);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -50835,7 +50825,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "GroupCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Store",
@@ -50847,7 +50837,7 @@ Ext.cmd.derive(
       clearOnPageLoad: true,
       associatedEntity: null,
       role: null,
-      session: null,
+      session: null
     },
     addRecordsOptions: { addRecords: true },
     loadCount: 0,
@@ -51268,9 +51258,9 @@ Ext.cmd.derive(
           page: d,
           start: (d - 1) * b,
           limit: b,
-          addRecords: !c.getClearOnPageLoad(),
+          addRecords: !c.getClearOnPageLoad()
         },
-        a,
+        a
       );
       c.read(a);
     },
@@ -51510,8 +51500,8 @@ Ext.cmd.derive(
           a = c.getRole().processLoad(c, b, a, c.getSession());
         }
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -51521,11 +51511,11 @@ Ext.cmd.derive(
   [
     [
       Ext.data.LocalStore.prototype.mixinId || Ext.data.LocalStore.$className,
-      Ext.data.LocalStore,
-    ],
+      Ext.data.LocalStore
+    ]
   ],
   [Ext.data, "Store"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.reader.Array",
@@ -51540,14 +51530,14 @@ Ext.cmd.derive(
       d.mapping = c;
       a = Ext.data.reader.Json.prototype.createFieldAccessor.apply(
         this,
-        arguments,
+        arguments
       );
       d.mapping = b;
       return a;
     },
     getModelData: function (a) {
       return {};
-    },
+    }
   },
   0,
   0,
@@ -51556,7 +51546,7 @@ Ext.cmd.derive(
   ["reader.array"],
   0,
   [Ext.data.reader, "Array", Ext.data, "ArrayReader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.ArrayStore",
@@ -51575,7 +51565,7 @@ Ext.cmd.derive(
         e = d;
       }
       Ext.data.Store.prototype.loadData.call(this, e, a);
-    },
+    }
   },
   0,
   0,
@@ -51584,7 +51574,7 @@ Ext.cmd.derive(
   ["store.array"],
   0,
   [Ext.data, "ArrayStore", Ext.data, "SimpleStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.StoreManager",
@@ -51593,7 +51583,7 @@ Ext.cmd.derive(
     alternateClassName: [
       "Ext.StoreMgr",
       "Ext.data.StoreMgr",
-      "Ext.StoreManager",
+      "Ext.StoreManager"
     ],
     singleton: true,
     register: function () {
@@ -51628,7 +51618,7 @@ Ext.cmd.derive(
           fields: b,
           autoDestroy: true,
           autoCreated: true,
-          expanded: e,
+          expanded: e
         });
       }
       if (Ext.isString(c)) {
@@ -51643,7 +51633,7 @@ Ext.cmd.derive(
     addEmptyStore: function () {
       var a = Ext.regStore("ext-empty-store", {
         proxy: "memory",
-        useModelWarning: false,
+        useModelWarning: false
       });
       a.isEmptyStore = true;
       this.add(a);
@@ -51651,7 +51641,7 @@ Ext.cmd.derive(
     clear: function () {
       this.callParent();
       this.addEmptyStore();
-    },
+    }
   },
   0,
   0,
@@ -51667,7 +51657,7 @@ Ext.cmd.derive(
     Ext.data,
     "StoreMgr",
     Ext,
-    "StoreManager",
+    "StoreManager"
   ],
   function () {
     Ext.regStore = function (c, b) {
@@ -51692,7 +51682,7 @@ Ext.cmd.derive(
       return Ext.data.StoreManager.lookup(a);
     };
     Ext.data.StoreManager.addEmptyStore();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.app.domain.Store",
@@ -51722,7 +51712,7 @@ Ext.cmd.derive(
         }
       }
       return a;
-    },
+    }
   },
   1,
   0,
@@ -51731,7 +51721,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "Store"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.route.Queue",
@@ -51764,7 +51754,7 @@ Ext.cmd.derive(
       } else {
         this.runQueue();
       }
-    },
+    }
   },
   1,
   0,
@@ -51773,7 +51763,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.route, "Queue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.route.Route",
@@ -51811,7 +51801,7 @@ Ext.cmd.derive(
           controller: a,
           action: d.action,
           historyUrl: c,
-          args: b,
+          args: b
         });
       }
       return false;
@@ -51894,9 +51884,9 @@ Ext.cmd.derive(
           if (d) {
             d.call(b, e);
           }
-        },
+        }
       };
-    },
+    }
   },
   1,
   0,
@@ -51905,7 +51895,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.route, "Route"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.History",
@@ -51944,7 +51934,7 @@ Ext.cmd.derive(
           fireIdleEvent: false,
           run: a.onHashChange,
           interval: 50,
-          scope: a,
+          scope: a
         });
       }
       a.ready = true;
@@ -51996,7 +51986,7 @@ Ext.cmd.derive(
     },
     getToken: function () {
       return this.ready ? this.currentToken : this.getHash();
-    },
+    }
   },
   1,
   0,
@@ -52005,7 +51995,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.util, "History", Ext, "History"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.route.Router",
@@ -52103,7 +52093,7 @@ Ext.cmd.derive(
     },
     clear: function () {
       this.routes = [];
-    },
+    }
   },
   1,
   0,
@@ -52112,7 +52102,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.route, "Router"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.Controller",
@@ -52124,7 +52114,7 @@ Ext.cmd.derive(
         view: { getter: "getView", upper: "View" },
         controller: { getter: "getController", upper: "Controller" },
         store: { getter: "getStore", upper: "Store" },
-        profile: { getter: "getProfile", upper: "Profiles" },
+        profile: { getter: "getProfile", upper: "Profiles" }
       },
       controllerRegex: /^(.*)\.controller\./,
       profileRegex: /^(.*)\.profile\./,
@@ -52219,7 +52209,7 @@ Ext.cmd.derive(
         var c = Ext.ClassManager,
           b = c.getPrefix(a);
         return b && b !== a;
-      },
+      }
     },
     models: null,
     views: null,
@@ -52229,7 +52219,7 @@ Ext.cmd.derive(
       application: null,
       refs: null,
       active: true,
-      moduleClassName: null,
+      moduleClassName: null
     },
     onClassExtended: function (b, c, a) {
       var d = a.onBeforeCreated;
@@ -52307,7 +52297,7 @@ Ext.cmd.derive(
         Ext.app.Controller.getFullName(
           this.$className,
           "controller",
-          this.$namespace,
+          this.$namespace
         ).shortName
       );
     },
@@ -52465,7 +52455,7 @@ Ext.cmd.derive(
         }
       }
       Ext.app.BaseController.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -52474,7 +52464,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app, "Controller"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.Application",
@@ -52492,7 +52482,7 @@ Ext.cmd.derive(
       mainView: { $value: null, lazy: true },
       defaultToken: null,
       glyphFontFamily: null,
-      quickTips: true,
+      quickTips: true
     },
     onClassExtended: function (i, c, h) {
       var b = Ext.app.Controller,
@@ -52516,7 +52506,7 @@ Ext.cmd.derive(
         Ext.app.setupPaths(
           a,
           "appFolder" in c ? c.appFolder : i.superclass.appFolder,
-          c.paths,
+          c.paths
         );
       }
       b.processDependencies(d, k, a, "profile", c.profiles);
@@ -52751,7 +52741,7 @@ Ext.cmd.derive(
       return Ext.Array.map(a, function (c) {
         return b.getModuleClassName(c, "profile");
       });
-    },
+    }
   },
   1,
   0,
@@ -52760,7 +52750,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app, "Application"],
-  0,
+  0
 );
 Ext.application = function (a) {
   var b = function (c) {
@@ -52847,7 +52837,7 @@ Ext.define("Ext.overrides.app.Application", {
   },
   initQuickTips: function () {
     Ext.tip.QuickTipManager.init();
-  },
+  }
 });
 Ext.cmd.derive(
   "Ext.app.Profile",
@@ -52860,7 +52850,7 @@ Ext.cmd.derive(
       controllers: [],
       models: [],
       views: [],
-      stores: [],
+      stores: []
     },
     constructor: function (a) {
       this.initConfig(a);
@@ -52934,9 +52924,9 @@ Ext.cmd.derive(
             }
             e.push(b);
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
   1,
   0,
@@ -52946,11 +52936,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.app, "Profile"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.domain.View",
@@ -52974,7 +52964,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.controller = null;
       Ext.app.EventDomain.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -52983,7 +52973,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "View"],
-  0,
+  0
 );
 Ext.define("Ext.overrides.app.domain.View", {
   override: "Ext.app.domain.View",
@@ -52992,7 +52982,7 @@ Ext.define("Ext.overrides.app.domain.View", {
       arguments.callee.$previous || Ext.app.EventDomain.prototype.constructor
     ).call(this, a);
     this.monitoredClasses.push(Ext.Component);
-  },
+  }
 });
 Ext.cmd.derive(
   "Ext.app.ViewController",
@@ -53114,8 +53104,8 @@ Ext.cmd.derive(
         if (!this.beforeInit.$nullFn) {
           this.beforeInit(a);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -53126,11 +53116,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.app, "ViewController"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Bag",
@@ -53367,7 +53357,7 @@ Ext.cmd.derive(
         }
         ++d.generation;
       }
-    },
+    }
   },
   1,
   0,
@@ -53376,7 +53366,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Bag"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Scheduler",
@@ -53639,7 +53629,7 @@ Ext.cmd.derive(
     },
     isIdle: function () {
       return !(this.busyCounter + this.lastBusyCounter);
-    },
+    }
   },
   1,
   0,
@@ -53649,11 +53639,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.util, "Scheduler"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Batch",
@@ -53786,7 +53776,7 @@ Ext.cmd.derive(
         c.fireEvent("operationcomplete", c, a);
         c.runNextOperation();
       }
-    },
+    }
   },
   1,
   0,
@@ -53795,7 +53785,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.mixin.Observable]],
   [Ext.data, "Batch"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.matrix.Slice",
@@ -53912,7 +53902,7 @@ Ext.cmd.derive(
       }
       b.notify = b.scope = b.store = b.side = b.members = null;
       b.callParent();
-    },
+    }
   },
   1,
   0,
@@ -53921,7 +53911,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.matrix, "Slice"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.matrix.Side",
@@ -53966,7 +53956,7 @@ Ext.cmd.derive(
       }
       a.inverse = a.matrix = a.role = a.slices = null;
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -53975,7 +53965,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.matrix, "Side"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.matrix.Matrix",
@@ -54022,7 +54012,7 @@ Ext.cmd.derive(
       a.right.destroy();
       a.association = a.session = a.left = a.right = null;
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -54031,7 +54021,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.matrix, "Matrix"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.session.ChangesVisitor",
@@ -54105,7 +54095,7 @@ Ext.cmd.derive(
       c = c[e] || (c[e] = {});
       c = c[j] || (c[j] = []);
       c.push(i);
-    },
+    }
   },
   1,
   0,
@@ -54114,7 +54104,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.session, "ChangesVisitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.session.ChildChangesVisitor",
@@ -54124,7 +54114,7 @@ Ext.cmd.derive(
       this.seen = {};
       Ext.data.session.ChangesVisitor.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
     },
     setupOptions: function (a) {
@@ -54135,7 +54125,7 @@ Ext.cmd.derive(
       if (
         Ext.data.session.ChangesVisitor.prototype.onDirtyRecord.apply(
           this,
-          arguments,
+          arguments
         ) !== false
       ) {
         if (!a.$source && (a.dropped || !a.phantom)) {
@@ -54160,7 +54150,7 @@ Ext.cmd.derive(
       d = j[b] || (j[b] = {});
       d = d[e] || (d[e] = []);
       d.push(Ext.apply({}, g.modified, g.data));
-    },
+    }
   },
   1,
   0,
@@ -54169,7 +54159,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.session, "ChildChangesVisitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.session.BatchVisitor",
@@ -54216,7 +54206,7 @@ Ext.cmd.derive(
         g = e[c] || (e[c] = { entity: a.self });
       g = g[b] || (g[b] = []);
       g.push(a);
-    },
+    }
   },
   1,
   0,
@@ -54225,7 +54215,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.session, "BatchVisitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Dirty",
@@ -54294,7 +54284,7 @@ Ext.cmd.derive(
         }
       }
       return e;
-    },
+    }
   },
   0,
   0,
@@ -54303,7 +54293,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Dirty"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Session",
@@ -54314,13 +54304,13 @@ Ext.cmd.derive(
       schema: "default",
       parent: null,
       autoDestroy: true,
-      crudProperties: { create: "C", read: "R", update: "U", drop: "D" },
+      crudProperties: { create: "C", read: "R", update: "U", drop: "D" }
     },
     crudOperations: [
       { type: "R", entityMethod: "readEntities" },
       { type: "C", entityMethod: "createEntities" },
       { type: "U", entityMethod: "updateEntities" },
-      { type: "D", entityMethod: "dropEntities" },
+      { type: "D", entityMethod: "dropEntities" }
     ],
     crudKeys: { C: 1, R: 1, U: 1, D: 1 },
     statics: { nextId: 1 },
@@ -54405,7 +54395,7 @@ Ext.cmd.derive(
             "A parent session already contains an entry for " +
               d.entityName +
               ": " +
-              e,
+              e
           );
         }
       }
@@ -54469,35 +54459,35 @@ Ext.cmd.derive(
     },
     onInvalidAssociationEntity: function (a, b) {
       Ext.raise(
-        "Unable to read association entity: " + this.getModelIdentifier(a, b),
+        "Unable to read association entity: " + this.getModelIdentifier(a, b)
       );
     },
     onInvalidEntityCreate: function (a, b) {
       Ext.raise(
         "Cannot create, record already not exists: " +
-          this.getModelIdentifier(a, b),
+          this.getModelIdentifier(a, b)
       );
     },
     onInvalidEntityDrop: function (a, b) {
       Ext.raise(
-        "Cannot drop, record does not exist: " + this.getModelIdentifier(a, b),
+        "Cannot drop, record does not exist: " + this.getModelIdentifier(a, b)
       );
     },
     onInvalidEntityRead: function (a, b) {
       Ext.raise(
         "Cannot read, record already not exists: " +
-          this.getModelIdentifier(a, b),
+          this.getModelIdentifier(a, b)
       );
     },
     onInvalidEntityUpdate: function (a, c, b) {
       if (b) {
         Ext.raise(
-          "Cannot update, record dropped: " + this.getModelIdentifier(a, c),
+          "Cannot update, record dropped: " + this.getModelIdentifier(a, c)
         );
       } else {
         Ext.raise(
           "Cannot update, record does not exist: " +
-            this.getModelIdentifier(a, c),
+            this.getModelIdentifier(a, c)
         );
       }
     },
@@ -54986,8 +54976,8 @@ Ext.cmd.derive(
         }
         return h;
       },
-      _setNoRefs: { refs: false },
-    },
+      _setNoRefs: { refs: false }
+    }
   },
   1,
   0,
@@ -54997,15 +54987,15 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Dirty.prototype.mixinId || Ext.mixin.Dirty.$className,
-      Ext.mixin.Dirty,
+      Ext.mixin.Dirty
     ],
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.data, "Session"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Schedulable",
@@ -55059,8 +55049,8 @@ Ext.cmd.derive(
           b.scheduled = false;
         }
       },
-      sort: function () {},
-    },
+      sort: function () {}
+    }
   },
   1,
   0,
@@ -55069,7 +55059,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Schedulable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.BaseBinding",
@@ -55139,8 +55129,8 @@ Ext.cmd.derive(
           a = Ext.isArray(c);
         }
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -55149,7 +55139,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "BaseBinding"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Binding",
@@ -55162,7 +55152,7 @@ Ext.cmd.derive(
         d.owner,
         e,
         b,
-        a,
+        a
       );
       c.stub = d;
       c.depth = d.depth;
@@ -55241,8 +55231,8 @@ Ext.cmd.derive(
       sort: function () {
         var a = this.stub;
         a.scheduler.sortItem(a);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -55251,7 +55241,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Binding"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.AbstractStub",
@@ -55424,8 +55414,8 @@ Ext.cmd.derive(
         if (a) {
           this.scheduler.sortItem(a);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -55434,7 +55424,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "AbstractStub"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Stub",
@@ -55860,7 +55850,7 @@ Ext.cmd.derive(
               b.on({
                 scope: i,
                 load: { fn: "onStoreLoad", single: true },
-                destroy: "onDestroyBound",
+                destroy: "onDestroyBound"
               });
             }
           }
@@ -55896,8 +55886,8 @@ Ext.cmd.derive(
         if (d) {
           a.sortItem(d);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -55906,7 +55896,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Stub"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.LinkStub",
@@ -55992,8 +55982,8 @@ Ext.cmd.derive(
         if (a) {
           this.scheduler.sortItem(a);
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -56002,7 +55992,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "LinkStub"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.RootStub",
@@ -56101,7 +56091,7 @@ Ext.cmd.derive(
       }
     },
     schedule: Ext.emptyFn,
-    unschedule: Ext.emptyFn,
+    unschedule: Ext.emptyFn
   },
   0,
   0,
@@ -56110,7 +56100,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "RootStub"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Multi",
@@ -56166,7 +56156,7 @@ Ext.cmd.derive(
           }
         },
         i,
-        null,
+        null
       );
       e = h.depth;
       if (!c.length || e < i.depth) {
@@ -56297,8 +56287,8 @@ Ext.cmd.derive(
     privates: {
       sort: function () {
         this.scheduler.sortItems(this.bindings);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -56307,7 +56297,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Multi"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Formula",
@@ -56328,7 +56318,7 @@ Ext.cmd.derive(
           a.add(b, d);
         }
         return d;
-      },
+      }
     },
     isFormula: true,
     calculation: null,
@@ -56453,8 +56443,8 @@ Ext.cmd.derive(
         if (!b.destroyed) {
           a.scheduler.sortItem(b);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -56463,7 +56453,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Formula"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Fly",
@@ -56477,7 +56467,7 @@ Ext.cmd.derive(
           a = b.length ? b.pop() : new c();
         a.reset.apply(a, arguments);
         return a;
-      },
+      }
     },
     release: function () {
       var c = this,
@@ -56488,7 +56478,7 @@ Ext.cmd.derive(
         a.push(c);
       }
     },
-    reset: Ext.emptyFn,
+    reset: Ext.emptyFn
   },
   0,
   0,
@@ -56497,7 +56487,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Fly"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.Tokenizer",
@@ -56520,13 +56510,13 @@ Ext.cmd.derive(
         LITERAL: b,
         NULL: e,
         NUMBER: c,
-        STRING: h,
+        STRING: h
       },
       config: {
         keywords: {
           null: { type: "literal", is: e, value: null },
           false: { type: "literal", is: d, value: false },
-          true: { type: "literal", is: d, value: true },
+          true: { type: "literal", is: d, value: true }
         },
         operators: {
           "+": "plus",
@@ -56541,8 +56531,8 @@ Ext.cmd.derive(
           "{": "curlyOpen",
           "}": "curlyClose",
           "(": "parenOpen",
-          ")": "parenClose",
-        },
+          ")": "parenClose"
+        }
       },
       error: null,
       index: -1,
@@ -56613,7 +56603,7 @@ Ext.cmd.derive(
               n.token = l = {
                 type: "operator",
                 value: q,
-                is: { operator: true },
+                is: { operator: true }
               };
               l.is[k] = true;
             } else {
@@ -56822,8 +56812,8 @@ Ext.cmd.derive(
             l.at = k;
           }
           return (this.error = l);
-        },
-      },
+        }
+      }
     };
   },
   1,
@@ -56833,7 +56823,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse, "Tokenizer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.Symbol",
@@ -56874,7 +56864,7 @@ Ext.cmd.derive(
           d.nud = a;
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -56883,7 +56873,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse, "Symbol"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.symbol.Constant",
@@ -56902,7 +56892,7 @@ Ext.cmd.derive(
       a.arity = "literal";
       a.isLiteral = true;
       return a;
-    },
+    }
   },
   1,
   0,
@@ -56911,7 +56901,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse.symbol, "Constant"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.symbol.Infix",
@@ -56927,7 +56917,7 @@ Ext.cmd.derive(
       a.arity = "binary";
       a.isBinary = true;
       return a;
-    },
+    }
   },
   0,
   0,
@@ -56936,7 +56926,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse.symbol, "Infix"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.symbol.InfixRight",
@@ -56949,7 +56939,7 @@ Ext.cmd.derive(
       a.arity = "binary";
       a.isBinary = true;
       return a;
-    },
+    }
   },
   0,
   0,
@@ -56958,7 +56948,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse.symbol, "InfixRight"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.symbol.Paren",
@@ -57003,7 +56993,7 @@ Ext.cmd.derive(
         a = b.parseExpression();
       b.advance(")");
       return a;
-    },
+    }
   },
   0,
   0,
@@ -57012,7 +57002,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse.symbol, "Paren"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.symbol.Prefix",
@@ -57027,7 +57017,7 @@ Ext.cmd.derive(
       a.arity = "unary";
       a.isUnary = true;
       return a;
-    },
+    }
   },
   0,
   0,
@@ -57036,7 +57026,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse.symbol, "Prefix"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.parse.Parser",
@@ -57063,9 +57053,9 @@ Ext.cmd.derive(
           "(end)": 0,
           "(ident)": { arity: "ident", isIdent: true, nud: a },
           "(literal)": { arity: "literal", isLiteral: true, nud: a },
-          "(": { xclass: "Ext.parse.symbol.Paren" },
+          "(": { xclass: "Ext.parse.symbol.Paren" }
         },
-        tokenizer: { keywords: null },
+        tokenizer: { keywords: null }
       },
       token: null,
       constructor: function (b) {
@@ -57217,8 +57207,8 @@ Ext.cmd.derive(
             b = new Ext.parse.Tokenizer(c);
           }
           this.tokenizer = b;
-        },
-      },
+        }
+      }
     };
   },
   1,
@@ -57228,7 +57218,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.parse, "Parser"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Parser",
@@ -57243,7 +57233,7 @@ Ext.cmd.derive(
           a.operand = b;
           a.fmt = a.parser.parseFmt();
           return a;
-        },
+        }
       },
       "?": {
         priority: 20,
@@ -57261,7 +57251,7 @@ Ext.cmd.derive(
           b.fv = e.parseExpression(0);
           b.arity = "ternary";
           return b;
-        },
+        }
       },
       "===": 40,
       "!==": 40,
@@ -57270,7 +57260,7 @@ Ext.cmd.derive(
       "<": 40,
       "<=": 40,
       ">": 40,
-      ">=": 40,
+      ">=": 40
     },
     symbols: {
       "(": {
@@ -57285,8 +57275,8 @@ Ext.cmd.derive(
           d.advance(")");
           c.priority = a;
           return b;
-        },
-      },
+        }
+      }
     },
     prefix: { "@": 0 },
     tokenizer: {
@@ -57302,8 +57292,8 @@ Ext.cmd.derive(
         ">": "gt",
         ">=": "gte",
         "&&": "and",
-        "||": "or",
-      },
+        "||": "or"
+      }
     },
     compileExpression: function (e, d) {
       var c = this,
@@ -57320,7 +57310,7 @@ Ext.cmd.derive(
       a = this.parseSlot({
         arity: "formatter",
         fmt: this.parseFmt(),
-        operand: { arity: "ident", value: "dummy" },
+        operand: { arity: "ident", value: "dummy" }
       });
       this.expect("(end)");
       return a;
@@ -57377,7 +57367,7 @@ Ext.cmd.derive(
         d.push(
           (j.useEval ? "$=" : "return") + " function (values, scope) {",
           g,
-          "}",
+          "}"
         );
         b = d.join("\n");
         k = j.useEval ? j.evalFn(b) : new Function("Ext", b)(Ext);
@@ -57451,7 +57441,7 @@ Ext.cmd.derive(
           c;
         if (b.length) {
           a.push(
-            "ret = " + e.compileFormatFn(b[0], e.compile(g.operand)) + ";",
+            "ret = " + e.compileFormatFn(b[0], e.compile(g.operand)) + ";"
           );
           for (c = 1; c < d; c++) {
             a.push("ret = " + e.compileFormatFn(b[c], "ret") + ";");
@@ -57480,7 +57470,7 @@ Ext.cmd.derive(
           if (!(a in Ext.util.Format)) {
             return this.syntaxError(
               h.at,
-              'Compile error! Invalid format specified "' + a + '"',
+              'Compile error! Invalid format specified "' + a + '"'
             );
           }
           a = "fm." + a;
@@ -57515,8 +57505,8 @@ Ext.cmd.derive(
           }
         }
         return "v" + d;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -57525,7 +57515,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Parser"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.Template",
@@ -57549,7 +57539,7 @@ Ext.cmd.derive(
       },
       getTokens: function () {
         return this.parse().getTokens();
-      },
+      }
     },
     apply: function (b, e) {
       var h = this,
@@ -57610,8 +57600,8 @@ Ext.cmd.derive(
         a.release();
         g.single = c.length === 0 && e.length === 1;
         return g;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -57620,7 +57610,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "Template"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.bind.TemplateBinding",
@@ -57700,8 +57690,8 @@ Ext.cmd.derive(
         if (a) {
           this.scheduler.sortItem(a);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -57710,7 +57700,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.bind, "TemplateBinding"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.ChainedStore",
@@ -57874,8 +57864,8 @@ Ext.cmd.derive(
       },
       loadsSynchronously: function () {
         return this.getSource().loadsSynchronously();
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -57885,11 +57875,11 @@ Ext.cmd.derive(
   [
     [
       Ext.data.LocalStore.prototype.mixinId || Ext.data.LocalStore.$className,
-      Ext.data.LocalStore,
-    ],
+      Ext.data.LocalStore
+    ]
   ],
   [Ext.data, "ChainedStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.ViewModel",
@@ -57906,7 +57896,7 @@ Ext.cmd.derive(
         $value: null,
         merge: function (d, a, c, b) {
           return this.mergeNew(d, a, c, b);
-        },
+        }
       },
       links: null,
       parent: null,
@@ -57915,7 +57905,7 @@ Ext.cmd.derive(
       schema: "default",
       session: null,
       stores: null,
-      view: null,
+      view: null
     },
     constructor: function (a) {
       this.bindings = {};
@@ -58337,8 +58327,8 @@ Ext.cmd.derive(
         }
         b.$formulaData = c;
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -58349,16 +58339,16 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
+      Ext.mixin.Factoryable
     ],
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.app, "ViewModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.domain.Controller",
@@ -58392,7 +58382,7 @@ Ext.cmd.derive(
         }
       }
       return a;
-    },
+    }
   },
   1,
   0,
@@ -58401,7 +58391,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "Controller"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.Manager",
@@ -58413,7 +58403,7 @@ Ext.cmd.derive(
       PARSE: "parse",
       DATA: "data",
       LOGIN: "login",
-      SERVER: "exception",
+      SERVER: "exception"
     },
     providerClasses: {},
     remotingMethods: {},
@@ -58485,12 +58475,12 @@ Ext.cmd.derive(
             varName: d,
             config: b,
             callback: l,
-            scope: m,
+            scope: m
           });
         },
         onError: function () {
           this.onApiLoadFailure({ url: a, callback: l, scope: m });
-        },
+        }
       });
     },
     getProvider: function (a) {
@@ -58625,8 +58615,8 @@ Ext.cmd.derive(
       },
       clearAllMethods: function () {
         this.remotingMethods = {};
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -58636,13 +58626,13 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.direct, "Manager"],
   function () {
     Ext.Direct = Ext.direct.Manager;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.direct.Provider",
@@ -58717,7 +58707,7 @@ Ext.cmd.derive(
       if (c.type) {
         Ext.direct.Manager.addProviderClass(c.type, b);
       }
-    },
+    }
   },
   1,
   0,
@@ -58727,11 +58717,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.direct, "Provider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.app.domain.Direct",
@@ -58744,7 +58734,7 @@ Ext.cmd.derive(
       var a = this;
       a.callParent();
       a.monitor(Ext.direct.Provider);
-    },
+    }
   },
   1,
   0,
@@ -58753,7 +58743,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.app.domain, "Direct"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.PageMap",
@@ -58827,7 +58817,7 @@ Ext.cmd.derive(
           return j && e.test((a ? j[a] : j)[h]);
         },
         null,
-        i,
+        i
       );
     },
     findIndex: function (h, g, i, d, c, b) {
@@ -58841,7 +58831,7 @@ Ext.cmd.derive(
           return j && e.test((a ? j[a] : j)[h]);
         },
         null,
-        i,
+        i
       );
     },
     getPageFromRecordIndex: function (a) {
@@ -58973,7 +58963,7 @@ Ext.cmd.derive(
         }
       }
       return o;
-    },
+    }
   },
   0,
   0,
@@ -58982,7 +58972,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "PageMap"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.BufferedStore",
@@ -59001,7 +58991,7 @@ Ext.cmd.derive(
       leadingBufferZone: 200,
       defaultViewSize: 100,
       viewSize: 0,
-      trackRemoved: false,
+      trackRemoved: false
     },
     applyData: function (b) {
       var a = this.data || (this.data = this.createDataCollection());
@@ -59037,7 +59027,7 @@ Ext.cmd.derive(
           rootProperty: "data",
           pageSize: b.getPageSize(),
           maxSize: b.getPurgePageCount(),
-          listeners: { clear: b.onPageMapClear, scope: b },
+          listeners: { clear: b.onPageMapClear, scope: b }
         });
       b.relayEvents(a, ["beforepageremove", "pageadd", "pageremove"]);
       b.pageRequests = {};
@@ -59231,7 +59221,7 @@ Ext.cmd.derive(
           c.grouper = new Ext.util.Grouper({
             property: b,
             direction: d || "ASC",
-            root: "data",
+            root: "data"
           });
         }
       } else {
@@ -59243,7 +59233,7 @@ Ext.cmd.derive(
       c.loadPage(1, {
         callback: function () {
           c.fireEvent("groupchange", c, c.getGrouper());
-        },
+        }
       });
     },
     getPageFromRecordIndex: function (a) {
@@ -59257,10 +59247,10 @@ Ext.cmd.derive(
             c.getData().getMaxSize() || 0,
             Math.ceil(
               (a + c.getTrailingBufferZone() + c.getLeadingBufferZone()) /
-                c.getPageSize(),
+                c.getPageSize()
             ) *
               2 +
-              b,
+              b
           )
         : 0;
     },
@@ -59275,7 +59265,7 @@ Ext.cmd.derive(
         r = m.getViewSize() || s.limit,
         j = Math.min(a, s.start + r - 1),
         k = m.getPageFromRecordIndex(
-          Math.max(n - m.getTrailingBufferZone(), 0),
+          Math.max(n - m.getTrailingBufferZone(), 0)
         ),
         q = m.getPageFromRecordIndex(a + m.getLeadingBufferZone()),
         g = m.getData(),
@@ -59324,7 +59314,7 @@ Ext.cmd.derive(
                 g.on("pageadd", d);
                 j = Math.min(j, o - 1);
                 q = m.getPageFromRecordIndex(
-                  Math.min(j + m.getLeadingBufferZone(), o - 1),
+                  Math.min(j + m.getLeadingBufferZone(), o - 1)
                 );
                 for (h = k + 1; h <= q; ++h) {
                   m.prefetchPage(h, c);
@@ -59340,7 +59330,7 @@ Ext.cmd.derive(
             }
           },
           null,
-          { single: true },
+          { single: true }
         );
         m.prefetchPage(k, c);
       }
@@ -59376,9 +59366,9 @@ Ext.cmd.derive(
             sorters: e.getSorters().items,
             grouper: e.getGrouper(),
             internalCallback: e.onProxyPrefetch,
-            internalScope: e,
+            internalScope: e
           },
-          d,
+          d
         );
         c = e.createOperation("read", d);
         c.pageMapGeneration = g.pageMapGeneration;
@@ -59548,7 +59538,7 @@ Ext.cmd.derive(
         } else {
           i = Math.min(
             Math.max(Math.floor(i - (e + d) / 2), 0),
-            a - g.pageSize,
+            a - g.pageSize
           );
           c = Math.min(Math.max(Math.ceil(c + (e + d) / 2), 0), a - 1);
         }
@@ -59570,7 +59560,7 @@ Ext.cmd.derive(
         a.clearAndLoad({
           callback: function () {
             a.fireEvent("sort", a, b);
-          },
+          }
         });
       } else {
         a.fireEvent("sort", a, b);
@@ -59589,8 +59579,8 @@ Ext.cmd.derive(
       },
       isMoving: function () {
         return false;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -59599,7 +59589,7 @@ Ext.cmd.derive(
   ["store.buffered"],
   0,
   [Ext.data, "BufferedStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Direct",
@@ -59611,7 +59601,7 @@ Ext.cmd.derive(
       paramsAsHash: true,
       directFn: undefined,
       api: undefined,
-      metadata: undefined,
+      metadata: undefined
     },
     paramOrderRe: /[\s,|]/,
     constructor: function (a) {
@@ -59684,7 +59674,7 @@ Ext.cmd.derive(
         paramsAsArray: true,
         metadata: i.getMetadata(),
         callback: i.createRequestCallback(e, d),
-        scope: i,
+        scope: i
       });
       e.setConfig({ args: h, directFn: j });
       j.apply(window, h);
@@ -59720,7 +59710,7 @@ Ext.cmd.derive(
     },
     buildUrl: function () {
       return "";
-    },
+    }
   },
   1,
   0,
@@ -59729,7 +59719,7 @@ Ext.cmd.derive(
   ["proxy.direct"],
   0,
   [Ext.data.proxy, "Direct", Ext.data, "DirectProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.DirectStore",
@@ -59742,13 +59732,13 @@ Ext.cmd.derive(
         Ext.copyTo(
           b,
           a,
-          "paramOrder,paramsAsHash,directFn,api,simpleSortMode,extraParams",
+          "paramOrder,paramsAsHash,directFn,api,simpleSortMode,extraParams"
         );
         Ext.copyTo(b.reader, a, "totalProperty,root,rootProperty,idProperty");
         a.proxy = b;
       }
       Ext.data.Store.prototype.constructor.call(this, a);
-    },
+    }
   },
   1,
   0,
@@ -59757,7 +59747,7 @@ Ext.cmd.derive(
   ["store.direct"],
   0,
   [Ext.data, "DirectStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.JsonP",
@@ -59802,7 +59792,7 @@ Ext.cmd.derive(
         failure: n.failure,
         callback: n.callback,
         callbackKey: i,
-        callbackName: l,
+        callbackName: l
       };
       if (m > 0) {
         g.timeout = Ext.defer(j.handleTimeout, m, j, [g]);
@@ -59877,7 +59867,7 @@ Ext.cmd.derive(
     },
     loadScript: function (a) {
       Ext.getHead().appendChild(a.script);
-    },
+    }
   },
   0,
   0,
@@ -59886,7 +59876,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "JsonP"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.JsonP",
@@ -59896,7 +59886,7 @@ Ext.cmd.derive(
     config: {
       callbackKey: "callback",
       recordParam: "records",
-      autoAppendParams: true,
+      autoAppendParams: true
     },
     doRequest: function (a) {
       var c = this,
@@ -59907,7 +59897,7 @@ Ext.cmd.derive(
         timeout: c.timeout,
         scope: c,
         disableCaching: false,
-        callback: c.createRequestCallback(b, a),
+        callback: c.createRequestCallback(b, a)
       });
       if (c.getAutoAppendParams()) {
         b.setParams({});
@@ -59976,7 +59966,7 @@ Ext.cmd.derive(
         d.push(Ext.encode(b[c].getData()));
       }
       return d;
-    },
+    }
   },
   0,
   0,
@@ -59985,7 +59975,7 @@ Ext.cmd.derive(
   ["proxy.jsonp", "proxy.scripttag"],
   0,
   [Ext.data.proxy, "JsonP", Ext.data, "ScriptTagProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.JsonPStore",
@@ -59994,7 +59984,7 @@ Ext.cmd.derive(
     constructor: function (a) {
       a = Ext.apply({ proxy: { type: "jsonp", reader: "json" } }, a);
       Ext.data.Store.prototype.constructor.call(this, a);
-    },
+    }
   },
   1,
   0,
@@ -60003,7 +59993,7 @@ Ext.cmd.derive(
   ["store.jsonp"],
   0,
   [Ext.data, "JsonPStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.JsonStore",
@@ -60012,10 +60002,10 @@ Ext.cmd.derive(
     constructor: function (a) {
       a = Ext.apply(
         { proxy: { type: "ajax", reader: "json", writer: "json" } },
-        a,
+        a
       );
       Ext.data.Store.prototype.constructor.call(this, a);
-    },
+    }
   },
   1,
   0,
@@ -60024,7 +60014,7 @@ Ext.cmd.derive(
   ["store.json"],
   0,
   [Ext.data, "JsonStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.ModelManager",
@@ -60057,10 +60047,10 @@ Ext.cmd.derive(
           },
           isRegistered: function (a) {
             return !!this.getModel(a);
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   0,
   0,
@@ -60069,7 +60059,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "ModelManager", Ext, "ModelMgr"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.NodeInterface",
@@ -60097,42 +60087,42 @@ Ext.cmd.derive(
             name: "parentId",
             type: e,
             defaultValue: null,
-            allowNull: c.allowNull,
+            allowNull: c.allowNull
           },
           {
             name: "index",
             type: "int",
             defaultValue: -1,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "depth",
             type: "int",
             defaultValue: 0,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "expanded",
             type: "bool",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "expandable",
             type: "bool",
             defaultValue: true,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "checked",
             type: "auto",
             defaultValue: null,
             persist: false,
-            convert: null,
+            convert: null
           },
           { name: "leaf", type: "bool", defaultValue: false },
           {
@@ -60140,127 +60130,127 @@ Ext.cmd.derive(
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "iconCls",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "icon",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "glyph",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "root",
             type: "boolean",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "isLast",
             type: "boolean",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "isFirst",
             type: "boolean",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "allowDrop",
             type: "boolean",
             defaultValue: true,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "allowDrag",
             type: "boolean",
             defaultValue: true,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "loaded",
             type: "boolean",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "loading",
             type: "boolean",
             defaultValue: false,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "href",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "hrefTarget",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "qtip",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "qtitle",
             type: "string",
             defaultValue: "",
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "qshowDelay",
             type: "int",
             defaultValue: 0,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "children",
             type: "auto",
             defaultValue: null,
             persist: false,
-            convert: null,
+            convert: null
           },
           {
             name: "visible",
             type: "boolean",
             defaultValue: true,
-            persist: false,
+            persist: false
           },
-          { name: "text", type: "string", persist: false },
+          { name: "text", type: "string", persist: false }
         ]);
       },
       getPrototypeBody: function () {
@@ -60278,7 +60268,7 @@ Ext.cmd.derive(
             collapse: true,
             beforeexpand: true,
             beforecollapse: true,
-            sort: true,
+            sort: true
           },
           b = { silent: true };
         return {
@@ -60393,7 +60383,7 @@ Ext.cmd.derive(
               u = {
                 isLast: true,
                 parentId: p.getId(),
-                depth: (p.data.depth || 0) + 1,
+                depth: (p.data.depth || 0) + 1
               },
               t,
               g = p.getTreeStore(),
@@ -60572,7 +60562,7 @@ Ext.cmd.derive(
               m = {
                 parentNode: j.parentNode,
                 previousSibling: j.previousSibling,
-                nextSibling: j.nextSibling,
+                nextSibling: j.nextSibling
               };
               o.callTreeStore("beforeNodeRemove", [[j], !!p, c]);
               j.previousSibling = j.nextSibling = j.parentNode = null;
@@ -60729,7 +60719,7 @@ Ext.cmd.derive(
               index: r,
               isFirst: r === 0,
               isLast: false,
-              depth: (n.data.depth || 0) + 1,
+              depth: (n.data.depth || 0) + 1
             });
             for (k = r + 1, j = n.childNodes.length; k < j; k++) {
               q = n.childNodes[k];
@@ -60928,7 +60918,7 @@ Ext.cmd.derive(
                 return this.get(d) == e;
               },
               null,
-              c,
+              c
             );
           },
           findChildBy: function (k, j, d) {
@@ -61043,7 +61033,7 @@ Ext.cmd.derive(
                     e.expand(c, i, d);
                   },
                   e,
-                  { single: true },
+                  { single: true }
                 );
               } else {
                 if (!e.isExpanded()) {
@@ -61066,7 +61056,7 @@ Ext.cmd.derive(
                     e.callTreeStore("onBeforeNodeExpand", [
                       e.onChildNodesAvailable,
                       e,
-                      [c, i, d],
+                      [c, i, d]
                     ]);
                     if (h) {
                       g.resumeEvent("add", "datachanged");
@@ -61189,7 +61179,7 @@ Ext.cmd.derive(
                   if (m) {
                     m = Ext.Function.createSequence(
                       h,
-                      Ext.Function.bind(m, n, [l.childNodes]),
+                      Ext.Function.bind(m, n, [l.childNodes])
                     );
                   } else {
                     m = h;
@@ -61375,11 +61365,11 @@ Ext.cmd.derive(
                 return c.split(this.spacesRe);
               }
               return c;
-            },
-          },
+            }
+          }
         };
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -61388,7 +61378,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "NodeInterface"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Queryable",
@@ -61461,8 +61451,8 @@ Ext.cmd.derive(
           }
         }
         return null;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -61471,7 +61461,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Queryable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.TreeModel",
@@ -61483,7 +61473,7 @@ Ext.cmd.derive(
     getRefOwner: function () {
       return this.parentNode;
     },
-    statics: { defaultProxy: "memory" },
+    statics: { defaultProxy: "memory" }
   },
   0,
   0,
@@ -61493,13 +61483,13 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
-    ],
+      Ext.mixin.Queryable
+    ]
   ],
   [Ext.data, "TreeModel"],
   function () {
     Ext.data.NodeInterface.decorate(this);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.NodeStore",
@@ -61510,7 +61500,7 @@ Ext.cmd.derive(
       node: null,
       recursive: false,
       rootVisible: false,
-      folderSort: false,
+      folderSort: false
     },
     implicitModel: "Ext.data.TreeModel",
     getTotalCount: function () {
@@ -61587,7 +61577,7 @@ Ext.cmd.derive(
           append: "onNodeAppend",
           insert: "onNodeInsert",
           remove: "onNodeRemove",
-          scope: a,
+          scope: a
         });
         d.unjoin(a);
       }
@@ -61596,7 +61586,7 @@ Ext.cmd.derive(
           scope: a,
           append: "onNodeAppend",
           insert: "onNodeInsert",
-          remove: "onNodeRemove",
+          remove: "onNodeRemove"
         });
         b.join(a);
         c = [];
@@ -61674,8 +61664,8 @@ Ext.cmd.derive(
           }
         }
         return c;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -61684,7 +61674,7 @@ Ext.cmd.derive(
   ["store.node"],
   0,
   [Ext.data, "NodeStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Request",
@@ -61714,7 +61704,7 @@ Ext.cmd.derive(
       records: null,
       directFn: null,
       args: null,
-      useDefaultXhrHeader: null,
+      useDefaultXhrHeader: null
     },
     constructor: function (a) {
       this.initConfig(a);
@@ -61731,7 +61721,7 @@ Ext.cmd.derive(
       var c = this.getParams() || {};
       c[a] = b;
       this.setParams(c);
-    },
+    }
   },
   1,
   0,
@@ -61740,7 +61730,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "Request"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.TreeStore",
@@ -61758,7 +61748,7 @@ Ext.cmd.derive(
       defaultRootId: "root",
       defaultRootText: "Root",
       folderSort: false,
-      pageSize: null,
+      pageSize: null
     },
     filterer: "topdown",
     lazyFill: false,
@@ -61782,7 +61772,7 @@ Ext.cmd.derive(
             name: b.defaultRootProperty,
             type: "auto",
             defaultValue: null,
-            persist: false,
+            persist: false
           });
         }
       }
@@ -61801,7 +61791,7 @@ Ext.cmd.derive(
             c.load({
               callback: function () {
                 c.fireEvent("sort", c, d);
-              },
+              }
             });
           }
         } else {
@@ -61931,7 +61921,7 @@ Ext.cmd.derive(
       this.changingProxy = true;
       (arguments.callee.$previous || Ext.data.Store.prototype.setProxy).call(
         this,
-        a,
+        a
       );
       this.changingProxy = false;
     },
@@ -61960,7 +61950,7 @@ Ext.cmd.derive(
           a.cascade({
             after: function (i) {
               i.set("visible", true, e._silentOptions);
-            },
+            }
           });
         }
         if (d) {
@@ -62026,7 +62016,7 @@ Ext.cmd.derive(
               Ext.callback(k, l || b, c);
             },
             h,
-            { single: true, priority: 1001 },
+            { single: true, priority: 1001 }
           );
         } else {
           i = h.getProxy().getReader();
@@ -62040,8 +62030,8 @@ Ext.cmd.derive(
                 b,
                 e.extractData(a, {
                   model: b.childType,
-                  recordCreator: h.recordCreator,
-                }),
+                  recordCreator: h.recordCreator
+                })
               );
             }
             c = [b.childNodes];
@@ -62059,7 +62049,7 @@ Ext.cmd.derive(
                   c.push.apply(c, g);
                 }
                 Ext.callback(k, l || b, c);
-              },
+              }
             });
             h.flushLoad();
           }
@@ -62150,20 +62140,20 @@ Ext.cmd.derive(
       return Ext.Array.filter(
         Ext.Object.getValues(this.byIdMap),
         this.filterNew,
-        this,
+        this
       );
     },
     getRejectRecords: function () {
       return Ext.Array.filter(
         Ext.Object.getValues(this.byIdMap),
         this.filterRejects,
-        this,
+        this
       );
     },
     getUpdatedRecords: function () {
       return Ext.Array.filter(
         Ext.Object.getValues(this.byIdMap),
-        this.filterUpdated,
+        this.filterUpdated
       );
     },
     beforeNodeRemove: function (d, k, j, a) {
@@ -62259,8 +62249,8 @@ Ext.cmd.derive(
             a,
             d.extractData(l, {
               model: a.childType,
-              recordCreator: h.recordCreator,
-            }),
+              recordCreator: h.recordCreator
+            })
           );
         }
       }
@@ -62335,9 +62325,9 @@ Ext.cmd.derive(
             depth: 0,
             index: 0,
             parentId: null,
-            allowDrag: false,
+            allowDrag: false
           },
-          e,
+          e
         );
         if (c && e[a] === undefined) {
           e[a] = c;
@@ -62391,7 +62381,7 @@ Ext.cmd.derive(
             isLast: true,
             depth: 0,
             index: 0,
-            parentId: null,
+            parentId: null
           });
           e.registerNode(h, true);
           h.fireEvent("append", null, h, false);
@@ -62558,9 +62548,9 @@ Ext.cmd.derive(
         {
           node: j.node || a,
           internalScope: g,
-          internalCallback: g.onProxyLoad,
+          internalCallback: g.onProxyLoad
         },
-        j,
+        j
       );
       g.lastOptions = Ext.apply({}, j);
       j.isRootLoad = e;
@@ -62940,9 +62930,9 @@ Ext.cmd.derive(
         if (b) {
           b.on("endupdate", this.onSorterEndUpdate, this);
         }
-      },
+      }
     },
-    deprecated: { 5: { properties: { tree: null } } },
+    deprecated: { 5: { properties: { tree: null } } }
   },
   1,
   0,
@@ -62951,7 +62941,7 @@ Ext.cmd.derive(
   ["store.tree"],
   0,
   [Ext.data, "TreeStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.Types",
@@ -62975,7 +62965,7 @@ Ext.cmd.derive(
           return d === undefined || d === null ? c : String(d);
         },
         sortType: a.asUCString,
-        type: "string",
+        type: "string"
       },
       INT: {
         convert: function (c) {
@@ -62989,7 +62979,7 @@ Ext.cmd.derive(
               : 0;
         },
         sortType: a.none,
-        type: "int",
+        type: "int"
       },
       FLOAT: {
         convert: function (c) {
@@ -63003,7 +62993,7 @@ Ext.cmd.derive(
               : 0;
         },
         sortType: a.none,
-        type: "float",
+        type: "float"
       },
       BOOL: {
         convert: function (c) {
@@ -63019,7 +63009,7 @@ Ext.cmd.derive(
           return c === "true" || c == 1;
         },
         sortType: a.none,
-        type: "bool",
+        type: "bool"
       },
       DATE: {
         convert: function (d) {
@@ -63038,13 +63028,13 @@ Ext.cmd.derive(
           return c ? new Date(c) : null;
         },
         sortType: a.asDate,
-        type: "date",
-      },
+        type: "date"
+      }
     });
     b.BOOLEAN = b.BOOL;
     b.INTEGER = b.INT;
     b.NUMBER = b.FLOAT;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.Validation",
@@ -63121,7 +63111,7 @@ Ext.cmd.derive(
           u.set(c);
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -63130,7 +63120,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data, "Validation"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Helper",
@@ -63147,7 +63137,7 @@ Ext.cmd.derive(
         beforebegin: i,
         afterend: e,
         afterbegin: ["AfterBegin", "firstChild"],
-        beforeend: ["BeforeEnd", "lastChild"],
+        beforeend: ["BeforeEnd", "lastChild"]
       };
     return {
       singleton: true,
@@ -63394,7 +63384,7 @@ Ext.cmd.derive(
       },
       createHtml: function (j) {
         return this.markup(j);
-      },
+      }
     };
   },
   0,
@@ -63404,7 +63394,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "Helper", Ext, "DomHelper", Ext.core, "DomHelper"],
-  0,
+  0
 );
 Ext.define(
   "Ext.overrides.dom.Helper",
@@ -63485,9 +63475,9 @@ Ext.define(
         }
         k.insertBefore(j, p);
         return j;
-      },
+      }
     };
-  })(),
+  })()
 );
 Ext.cmd.derive(
   "Ext.dom.Query",
@@ -63527,7 +63517,7 @@ Ext.cmd.derive(
         if (window.DOMParser) {
           xmlDoc = new DOMParser().parseFromString(
             xmlString,
-            "application/xml",
+            "application/xml"
           );
         } else {
           xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
@@ -63979,7 +63969,7 @@ Ext.cmd.derive(
       compile: function (path, type) {
         type = type || "select";
         var fn = [
-            "var f = function(root) {\n var mode; ++batch; var n = root || document;\n",
+            "var f = function(root) {\n var mode; ++batch; var n = root || document;\n"
           ],
           lastPath,
           matchers = DQ.matchers,
@@ -64045,7 +64035,7 @@ Ext.cmd.derive(
               Ext.raise({
                 sourceClass: "Ext.DomQuery",
                 sourceMethod: "compile",
-                msg: 'Error parsing selector. Parsing failed at "' + path + '"',
+                msg: 'Error parsing selector. Parsing failed at "' + path + '"'
               });
             }
           }
@@ -64079,7 +64069,7 @@ Ext.cmd.derive(
               Ext.raise({
                 sourceClass: "Ext.DomQuery",
                 sourceMethod: "jsSelect",
-                msg: subPath + " is not a valid selector",
+                msg: subPath + " is not a valid selector"
               });
             }
             cache.add(subPath, query);
@@ -64182,21 +64172,21 @@ Ext.cmd.derive(
           re: /^\.([\w\-\\]+)/,
           select: useClassList
             ? 'n = byClassName(n, "{1}");'
-            : 'n = byClassName(n, " {1} ");',
+            : 'n = byClassName(n, " {1} ");'
         },
         {
           re: /^\:([\w\-]+)(?:\(((?:[^\s>\/]*|.*?))\))?/,
-          select: 'n = byPseudo(n, "{1}", "{2}");',
+          select: 'n = byPseudo(n, "{1}", "{2}");'
         },
         {
           re: /^(?:([\[\{])(?:@)?([\w\-]+)\s?(?:(=|.=)\s?['"]?(.*?)["']?)?[\]\}])/,
-          select: 'n = byAttribute(n, "{2}", "{4}", "{3}", "{1}");',
+          select: 'n = byAttribute(n, "{2}", "{4}", "{3}", "{1}");'
         },
         { re: /^#([\w\-\\]+)/, select: 'n = byId(n, "{1}");' },
         {
           re: /^@([\w\-\.]+)/,
-          select: 'return {firstChild:{nodeValue:attrValue(n, "{1}")}};',
-        },
+          select: 'return {firstChild:{nodeValue:attrValue(n, "{1}")}};'
+        }
       ],
       pseudos: {
         "first-child": function (c) {
@@ -64234,7 +64224,7 @@ Ext.cmd.derive(
               (a == "even" && "2n") ||
                 (a == "odd" && "2n+1") ||
                 (!nthRe2.test(a) && "n+" + a) ||
-                a,
+                a
             ),
             f = (m[1] || 1) - 0,
             l = m[2] - 0,
@@ -64460,8 +64450,8 @@ Ext.cmd.derive(
             }
           }
           return r;
-        },
-      },
+        }
+      }
     };
   },
   0,
@@ -64473,7 +64463,7 @@ Ext.cmd.derive(
   [Ext.dom, "Query", Ext.core, "DomQuery", Ext, "DomQuery"],
   function () {
     this._init();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.reader.Xml",
@@ -64559,7 +64549,7 @@ Ext.cmd.derive(
       }
       return a;
     },
-    deprecated: { "5.1.1": { properties: { xmlData: null } } },
+    deprecated: { "5.1.1": { properties: { xmlData: null } } }
   },
   0,
   0,
@@ -64568,7 +64558,7 @@ Ext.cmd.derive(
   ["reader.xml"],
   0,
   [Ext.data.reader, "Xml", Ext.data, "XmlReader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.writer.Xml",
@@ -64579,7 +64569,7 @@ Ext.cmd.derive(
       documentRoot: "xmlData",
       defaultDocumentRoot: "xmlData",
       header: "",
-      record: "record",
+      record: "record"
     },
     selectorRe: /[^>\s]+/g,
     writeRecords: function (b, c) {
@@ -64668,7 +64658,7 @@ Ext.cmd.derive(
       }
       g.push("</", b, ">");
       return g;
-    },
+    }
   },
   0,
   0,
@@ -64677,7 +64667,7 @@ Ext.cmd.derive(
   ["writer.xml"],
   0,
   [Ext.data.writer, "Xml", Ext.data, "XmlWriter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.XmlStore",
@@ -64686,10 +64676,10 @@ Ext.cmd.derive(
     constructor: function (a) {
       a = Ext.apply(
         { proxy: { type: "ajax", reader: "xml", writer: "xml" } },
-        a,
+        a
       );
       Ext.data.Store.prototype.constructor.call(this, a);
-    },
+    }
   },
   1,
   0,
@@ -64698,7 +64688,7 @@ Ext.cmd.derive(
   ["store.xml"],
   0,
   [Ext.data, "XmlStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.identifier.Negative",
@@ -64711,7 +64701,7 @@ Ext.cmd.derive(
   ["data.identifier.negative"],
   0,
   [Ext.data.identifier, "Negative"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.identifier.Uuid",
@@ -64790,8 +64780,8 @@ Ext.cmd.derive(
           }
           return g.join("-");
         };
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -64802,7 +64792,7 @@ Ext.cmd.derive(
   [Ext.data.identifier, "Uuid"],
   function () {
     this.Global = new this({ id: "uuid" });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.data.proxy.WebStorage",
@@ -64919,7 +64909,7 @@ Ext.cmd.derive(
       }
       if (d) {
         k.setResultSet(
-          new Ext.data.ResultSet({ records: r, total: r.length, loaded: true }),
+          new Ext.data.ResultSet({ records: r, total: r.length, loaded: true })
         );
         k.setSuccessful(true);
       } else {
@@ -65152,7 +65142,7 @@ Ext.cmd.derive(
         b.isHierarchical = true;
       }
       b.idGenerator = new Ext.data.identifier.Sequential({
-        seed: c ? c + 1 : 1,
+        seed: c ? c + 1 : 1
       });
     },
     clear: function () {
@@ -65169,7 +65159,7 @@ Ext.cmd.derive(
       e.removeItem(d.getId());
       d.cache = {};
     },
-    getStorageObject: function () {},
+    getStorageObject: function () {}
   },
   1,
   0,
@@ -65178,7 +65168,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.data.proxy, "WebStorage", Ext.data, "WebStorageProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.LocalStorage",
@@ -65187,7 +65177,7 @@ Ext.cmd.derive(
     alternateClassName: "Ext.data.LocalStorageProxy",
     getStorageObject: function () {
       return window.localStorage;
-    },
+    }
   },
   0,
   0,
@@ -65196,7 +65186,7 @@ Ext.cmd.derive(
   ["proxy.localstorage"],
   0,
   [Ext.data.proxy, "LocalStorage", Ext.data, "LocalStorageProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.Rest",
@@ -65207,7 +65197,7 @@ Ext.cmd.derive(
       create: "POST",
       read: "GET",
       update: "PUT",
-      destroy: "DELETE",
+      destroy: "DELETE"
     },
     slashRe: /\/$/,
     periodRe: /\.$/,
@@ -65219,8 +65209,8 @@ Ext.cmd.derive(
         create: "POST",
         read: "GET",
         update: "PUT",
-        destroy: "DELETE",
-      },
+        destroy: "DELETE"
+      }
     },
     buildUrl: function (g) {
       var i = this,
@@ -65257,7 +65247,7 @@ Ext.cmd.derive(
     },
     isValidId: function (a) {
       return a || a === 0;
-    },
+    }
   },
   0,
   0,
@@ -65266,7 +65256,7 @@ Ext.cmd.derive(
   ["proxy.rest"],
   0,
   [Ext.data.proxy, "Rest", Ext.data, "RestProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.proxy.SessionStorage",
@@ -65275,7 +65265,7 @@ Ext.cmd.derive(
     alternateClassName: "Ext.data.SessionStorageProxy",
     getStorageObject: function () {
       return window.sessionStorage;
-    },
+    }
   },
   0,
   0,
@@ -65284,7 +65274,7 @@ Ext.cmd.derive(
   ["proxy.sessionstorage"],
   0,
   [Ext.data.proxy, "SessionStorage", Ext.data, "SessionStorageProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Bound",
@@ -65297,7 +65287,7 @@ Ext.cmd.derive(
       emptyMessage: "Must be present",
       minOnlyMessage: null,
       maxOnlyMessage: null,
-      bothOnlyMessage: null,
+      bothOnlyMessage: null
     },
     constructor: function () {
       var a = this;
@@ -65390,7 +65380,7 @@ Ext.cmd.derive(
       }
       return true;
     },
-    getValue: Ext.identityFn,
+    getValue: Ext.identityFn
   },
   1,
   0,
@@ -65399,7 +65389,7 @@ Ext.cmd.derive(
   ["data.validator.bound"],
   0,
   [Ext.data.validator, "Bound"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Format",
@@ -65411,7 +65401,7 @@ Ext.cmd.derive(
       var c = this.getMatcher(),
         a = c && c.test(b);
       return a ? a : this.getMessage();
-    },
+    }
   },
   0,
   0,
@@ -65420,7 +65410,7 @@ Ext.cmd.derive(
   ["data.validator.format"],
   0,
   [Ext.data.validator, "Format"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Email",
@@ -65430,8 +65420,8 @@ Ext.cmd.derive(
     config: {
       message: "Is not a valid email address",
       matcher:
-        /^(")?(?:[^\."])(?:(?:[\.])?(?:[\w\-!#$%&'*+\/=?\^_`{|}~]))*\1@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/,
-    },
+        /^(")?(?:[^\."])(?:(?:[\.])?(?:[\w\-!#$%&'*+\/=?\^_`{|}~]))*\1@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/
+    }
   },
   0,
   0,
@@ -65440,7 +65430,7 @@ Ext.cmd.derive(
   ["data.validator.email"],
   0,
   [Ext.data.validator, "Email"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.List",
@@ -65456,7 +65446,7 @@ Ext.cmd.derive(
         a;
       a = (e && b) || (d && !b);
       return a || this.getMessage();
-    },
+    }
   },
   0,
   0,
@@ -65465,7 +65455,7 @@ Ext.cmd.derive(
   ["data.validator.list"],
   0,
   [Ext.data.validator, "List"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Exclusion",
@@ -65473,7 +65463,7 @@ Ext.cmd.derive(
   {
     type: "exclusion",
     config: { message: "Is a value that has been excluded" },
-    inclusion: false,
+    inclusion: false
   },
   0,
   0,
@@ -65482,7 +65472,7 @@ Ext.cmd.derive(
   ["data.validator.exclusion"],
   0,
   [Ext.data.validator, "Exclusion"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Inclusion",
@@ -65490,7 +65480,7 @@ Ext.cmd.derive(
   {
     type: "inclusion",
     config: { message: "Is not in the list of acceptable values" },
-    inclusion: true,
+    inclusion: true
   },
   0,
   0,
@@ -65499,7 +65489,7 @@ Ext.cmd.derive(
   ["data.validator.inclusion"],
   0,
   [Ext.data.validator, "Inclusion"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Length",
@@ -65509,11 +65499,11 @@ Ext.cmd.derive(
     config: {
       minOnlyMessage: "Length must be at least {0}",
       maxOnlyMessage: "Length must be no more than {0}",
-      bothMessage: "Length must be between {0} and {1}",
+      bothMessage: "Length must be between {0} and {1}"
     },
     getValue: function (a) {
       return String(a).length;
-    },
+    }
   },
   0,
   0,
@@ -65522,7 +65512,7 @@ Ext.cmd.derive(
   ["data.validator.length"],
   0,
   [Ext.data.validator, "Length"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Presence",
@@ -65536,7 +65526,7 @@ Ext.cmd.derive(
         a = !(b === "");
       }
       return a ? true : this.getMessage();
-    },
+    }
   },
   0,
   0,
@@ -65545,7 +65535,7 @@ Ext.cmd.derive(
   ["data.validator.presence"],
   0,
   [Ext.data.validator, "Presence"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.data.validator.Range",
@@ -65556,7 +65546,7 @@ Ext.cmd.derive(
       minOnlyMessage: "Must be must be at least {0}",
       maxOnlyMessage: "Must be no more than than {0}",
       bothMessage: "Must be between {0} and {1}",
-      nanMessage: "Must be numeric",
+      nanMessage: "Must be numeric"
     },
     validateValue: function (a) {
       var b = Ext.data.validator.Bound.prototype.validateValue.call(this, a);
@@ -65564,7 +65554,7 @@ Ext.cmd.derive(
         b = this.getNanMessage();
       }
       return b;
-    },
+    }
   },
   0,
   0,
@@ -65573,7 +65563,7 @@ Ext.cmd.derive(
   ["data.validator.range"],
   0,
   [Ext.data.validator, "Range"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.Event",
@@ -65588,7 +65578,7 @@ Ext.cmd.derive(
     },
     getData: function () {
       return this.data;
-    },
+    }
   },
   1,
   0,
@@ -65597,7 +65587,7 @@ Ext.cmd.derive(
   ["direct.event"],
   0,
   [Ext.direct, "Event"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.RemotingEvent",
@@ -65606,7 +65596,7 @@ Ext.cmd.derive(
     getTransaction: function () {
       var a = this;
       return a.transaction || Ext.direct.Manager.getTransaction(a.tid);
-    },
+    }
   },
   0,
   0,
@@ -65615,7 +65605,7 @@ Ext.cmd.derive(
   ["direct.rpc"],
   0,
   [Ext.direct, "RemotingEvent"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.ExceptionEvent",
@@ -65628,7 +65618,7 @@ Ext.cmd.derive(
   ["direct.exception"],
   0,
   [Ext.direct, "ExceptionEvent"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.JsonProvider",
@@ -65659,7 +65649,7 @@ Ext.cmd.derive(
           data: k,
           xhr: b,
           code: Ext.direct.Manager.exceptions.PARSE,
-          message: "Error parsing json response: \n\n " + k,
+          message: "Error parsing json response: \n\n " + k
         });
         return [g];
       }
@@ -65679,11 +65669,11 @@ Ext.cmd.derive(
         return new Ext.direct.ExceptionEvent({
           data: a,
           code: Ext.direct.Manager.exceptions.DATA,
-          message: "Invalid data: event type is not specified",
+          message: "Invalid data: event type is not specified"
         });
       }
       return Ext.create("direct." + a.type, a);
-    },
+    }
   },
   0,
   0,
@@ -65692,7 +65682,7 @@ Ext.cmd.derive(
   ["direct.jsonprovider"],
   0,
   [Ext.direct, "JsonProvider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.PollingProvider",
@@ -65706,7 +65696,7 @@ Ext.cmd.derive(
       b.pollTask = Ext.TaskManager.newTask({
         run: b.runPoll,
         interval: b.interval,
-        scope: b,
+        scope: b
       });
     },
     destroy: function () {
@@ -65758,7 +65748,7 @@ Ext.cmd.derive(
           a = c.directCfg.method.getArgs({
             params: g !== undefined ? g : {},
             callback: e.onPollFn,
-            scope: e,
+            scope: e
           });
           c.apply(window, a);
         } else {
@@ -65767,7 +65757,7 @@ Ext.cmd.derive(
             callback: e.onData,
             scope: e,
             params: g,
-            headers: e.getHeaders(),
+            headers: e.getHeaders()
           };
           if (e.timeout != null) {
             d.timeout = e.timeout;
@@ -65797,7 +65787,7 @@ Ext.cmd.derive(
           data: null,
           code: Ext.direct.Manager.exceptions.TRANSPORT,
           message: "Unable to connect to the server.",
-          xhr: b,
+          xhr: b
         });
         h.fireEvent("data", h, g);
         h.fireEvent("exception", h, g);
@@ -65810,8 +65800,8 @@ Ext.cmd.derive(
     inheritableStatics: {
       checkConfig: function (a) {
         return a && a.type === "polling" && (a.url || a.pollFn);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -65820,7 +65810,7 @@ Ext.cmd.derive(
   ["direct.pollingprovider"],
   0,
   [Ext.direct, "PollingProvider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.RemotingMethod",
@@ -66000,9 +65990,9 @@ Ext.cmd.derive(
         metadata: i,
         callback: k,
         scope: l,
-        options: m,
+        options: m
       };
-    },
+    }
   },
   1,
   0,
@@ -66011,7 +66001,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.direct, "RemotingMethod"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.Transaction",
@@ -66035,7 +66025,7 @@ Ext.cmd.derive(
     },
     getProvider: function () {
       return this.provider;
-    },
+    }
   },
   1,
   0,
@@ -66044,7 +66034,7 @@ Ext.cmd.derive(
   ["direct.transaction"],
   0,
   [Ext.direct, "Transaction"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.direct.RemotingProvider",
@@ -66160,7 +66150,7 @@ Ext.cmd.derive(
             extAction: e,
             extMethod: i.name,
             extType: "rpc",
-            extUpload: String(a),
+            extUpload: String(a)
           };
           if (g.metadata) {
             h.extMetadata = Ext.JSON.encode(g.metadata);
@@ -66191,8 +66181,8 @@ Ext.cmd.derive(
           callbackOptions: b,
           callback: a,
           isForm: !!i.formHandler,
-          disableBatching: i.disableBatching,
-        },
+          disableBatching: i.disableBatching
+        }
       );
       if (b && b.timeout != null) {
         h.timeout = b.timeout;
@@ -66240,7 +66230,7 @@ Ext.cmd.derive(
         callback: h.onData,
         scope: h,
         transaction: a,
-        headers: h.getHeaders(),
+        headers: h.getHeaders()
       };
       if (a.timeout != null) {
         d.timeout = a.timeout;
@@ -66277,7 +66267,7 @@ Ext.cmd.derive(
         method: b.method,
         data: b.data,
         type: "rpc",
-        tid: b.id,
+        tid: b.id
       };
       if (b.metadata) {
         a.metadata = b.metadata;
@@ -66315,7 +66305,7 @@ Ext.cmd.derive(
             transaction: b,
             code: Ext.direct.Manager.exceptions.TRANSPORT,
             message: "Unable to connect to the server.",
-            xhr: c,
+            xhr: c
           });
         for (d = 0, e = h.length; d < e; ++d) {
           b = g.getTransaction(h[d]);
@@ -66357,8 +66347,8 @@ Ext.cmd.derive(
     inheritableStatics: {
       checkConfig: function (a) {
         return a && a.type === "remoting" && a.url && Ext.isArray(a.actions);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -66367,7 +66357,7 @@ Ext.cmd.derive(
   ["direct.remotingprovider"],
   0,
   [Ext.direct, "RemotingProvider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.GarbageCollector",
@@ -66445,7 +66435,7 @@ Ext.cmd.derive(
       if (!a.timerId) {
         a.timerId = Ext.defer(a.onTick, a.interval);
       }
-    },
+    }
   },
   1,
   0,
@@ -66454,7 +66444,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "GarbageCollector"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.TouchAction",
@@ -66485,7 +66475,7 @@ Ext.cmd.derive(
       "pinch-zoom double-tap-zoom",
       "pan-x pinch-zoom double-tap-zoom",
       "pan-y pinch-zoom double-tap-zoom",
-      "",
+      ""
     ],
     objectValues: [
       { panX: false, panY: false, pinchZoom: false, doubleTapZoom: false },
@@ -66503,7 +66493,7 @@ Ext.cmd.derive(
       { panX: false, panY: false, pinchZoom: true, doubleTapZoom: true },
       { panX: true, panY: false, pinchZoom: true, doubleTapZoom: true },
       { panX: false, panY: true, pinchZoom: true, doubleTapZoom: true },
-      { panX: true, panY: true, pinchZoom: true, doubleTapZoom: true },
+      { panX: true, panY: true, pinchZoom: true, doubleTapZoom: true }
     ],
     attributeName: "data-extTouchAction",
     constructor: function () {
@@ -66523,7 +66513,7 @@ Ext.cmd.derive(
               scope: b,
               translate: false,
               capture: true,
-              priority: 5000,
+              priority: 5000
             });
             Ext.on({ scroll: "onScroll", scope: b, destroyable: true });
           }
@@ -66757,7 +66747,7 @@ Ext.cmd.derive(
       } else {
         g.setAttribute(b, a);
       }
-    },
+    }
   },
   1,
   0,
@@ -66766,7 +66756,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "TouchAction"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Constraint",
@@ -66781,7 +66771,7 @@ Ext.cmd.derive(
       source: null,
       vertical: false,
       x: null,
-      y: null,
+      y: null
     },
     constructor: function (a) {
       this.initConfig(a);
@@ -66952,7 +66942,7 @@ Ext.cmd.derive(
             x: l.x,
             xFn: typeof l.x === "function",
             y: l.y,
-            yFn: typeof l.y === "function",
+            yFn: typeof l.y === "function"
           };
         }
         t.constrainInfo = {
@@ -66961,10 +66951,10 @@ Ext.cmd.derive(
           horizontal: t.getHorizontal(),
           x: k,
           y: j,
-          snap: l,
+          snap: l
         };
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -66975,11 +66965,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.drag, "Constraint"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Info",
@@ -67008,12 +66998,12 @@ Ext.cmd.derive(
         current: { x: g, y: d },
         delta: { x: 0, y: 0 },
         initial: { x: g, y: d },
-        offset: { x: g - l, y: d - k },
+        offset: { x: g - l, y: d - k }
       };
       j.element = {
         current: { x: l, y: k },
         delta: { x: 0, y: 0 },
-        initial: { x: l, y: k },
+        initial: { x: l, y: k }
       };
       j.proxy = {
         current: { x: l, y: k },
@@ -67021,7 +67011,7 @@ Ext.cmd.derive(
         initial: { x: l, y: k },
         element: b,
         isUnderCursor: false,
-        isElement: true,
+        isElement: true
       };
       j.types = [];
       j.data = {};
@@ -67230,8 +67220,8 @@ Ext.cmd.derive(
         if (!m && c) {
           c.setXY(a);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -67240,7 +67230,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.drag, "Info"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Item",
@@ -67295,11 +67285,11 @@ Ext.cmd.derive(
         }
         if (a) {
           b.elListeners = a.on(
-            Ext.apply({ scope: b, destroyable: true }, b.getElListeners()),
+            Ext.apply({ scope: b, destroyable: true }, b.getElListeners())
           );
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -67309,16 +67299,16 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
+      Ext.mixin.Observable
     ],
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.drag, "Item"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Manager",
@@ -67342,7 +67332,7 @@ Ext.cmd.derive(
         dragenter: { capture: true, fn: "onNativeDragEnter" },
         dragleave: "onNativeDragLeave",
         dragover: "onNativeDragOver",
-        drop: "onNativeDrop",
+        drop: "onNativeDrop"
       });
     },
     destroy: function () {
@@ -67489,8 +67479,8 @@ Ext.cmd.derive(
           return;
         }
         delete this.targets[a.getId()];
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -67499,7 +67489,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.drag, "Manager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Source",
@@ -67512,7 +67502,7 @@ Ext.cmd.derive(
       constrain: null,
       handle: null,
       proxy: "original",
-      revert: false,
+      revert: false
     },
     dragging: false,
     constructor: function (a) {
@@ -67631,7 +67621,7 @@ Ext.cmd.derive(
             dragstart: "handleDragStart",
             drag: "handleDragMove",
             dragend: "handleDragEnd",
-            dragcancel: "handleDragCancel",
+            dragcancel: "handleDragCancel"
           },
           a = this.getHandle();
         if (a) {
@@ -67684,10 +67674,10 @@ Ext.cmd.derive(
                 callback: function () {
                   a.removeCls(g.revertCls);
                   g.dragCleanup(h);
-                },
+                }
               },
-              b,
-            ),
+              b
+            )
           );
         } else {
           g.dragCleanup(h);
@@ -67776,8 +67766,8 @@ Ext.cmd.derive(
           this.isDisabled() || (!a.longpress && this.canActivateOnLongPress(a))
         );
       },
-      setup: Ext.privateFn,
-    },
+      setup: Ext.privateFn
+    }
   },
   1,
   0,
@@ -67786,7 +67776,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.drag, "Source"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.Target",
@@ -67848,7 +67838,7 @@ Ext.cmd.derive(
           dragenter: "handleNativeDragEnter",
           dragleave: "handleNativeDragLeave",
           dragover: "handleNativeDragMove",
-          drop: "handleNativeDrop",
+          drop: "handleNativeDrop"
         };
       },
       handleDrop: function (d) {
@@ -67932,8 +67922,8 @@ Ext.cmd.derive(
             c.fireEvent("drop", c, d);
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -67942,7 +67932,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.drag, "Target"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.proxy.None",
@@ -67967,8 +67957,8 @@ Ext.cmd.derive(
     privates: {
       adjustCursorOffset: function (a, b) {
         return b;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -67979,11 +67969,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.drag.proxy, "None"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.proxy.Original",
@@ -67991,7 +67981,7 @@ Ext.cmd.derive(
   {
     getElement: function (a) {
       return a.source.getElement();
-    },
+    }
   },
   0,
   0,
@@ -68000,7 +67990,7 @@ Ext.cmd.derive(
   ["drag.proxy.original"],
   0,
   [Ext.drag.proxy, "Original"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.drag.proxy.Placeholder",
@@ -68011,7 +68001,7 @@ Ext.cmd.derive(
       cursorOffset: [12, 20],
       html: null,
       invalidCls: "",
-      validCls: "",
+      validCls: ""
     },
     placeholderCls: "x-drag-proxy-placeholder",
     cleanup: function () {
@@ -68026,7 +68016,7 @@ Ext.cmd.derive(
       if (!a) {
         b.element = a = Ext.getBody().createChild({
           cls: b.getCls(),
-          html: b.getHtml(),
+          html: b.getHtml()
         });
         a.addCls(b.placeholderCls);
         a.setTouchAction({ panX: false, panY: false });
@@ -68093,8 +68083,8 @@ Ext.cmd.derive(
             c.addCls(b);
           }
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -68103,7 +68093,7 @@ Ext.cmd.derive(
   ["drag.proxy.placeholder"],
   0,
   [Ext.drag.proxy, "Placeholder"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Recognizer",
@@ -68140,7 +68130,7 @@ Ext.cmd.derive(
     reset: function () {
       this.isStarted = false;
       return false;
-    },
+    }
   },
   1,
   0,
@@ -68151,11 +68141,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.event.gesture, "Recognizer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.gesture.SingleTouch",
@@ -68166,7 +68156,7 @@ Ext.cmd.derive(
       if (a.touches.length > 1) {
         return this.cancel(a);
       }
-    },
+    }
   },
   0,
   0,
@@ -68175,7 +68165,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.event.gesture, "SingleTouch"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.gesture.DoubleTap",
@@ -68236,7 +68226,7 @@ Ext.cmd.derive(
             k.fire("doubletap", i, { touch: i.changedTouches[0], duration: g });
             return Ext.event.gesture.SingleTouch.prototype.onTouchEnd.call(
               this,
-              i,
+              i
             );
           }
         }
@@ -68261,7 +68251,7 @@ Ext.cmd.derive(
       a.startTime = a.lastTapTime = 0;
       a.lastStartPoint = a.startPoint = a.singleTapTimer = null;
       return Ext.event.gesture.SingleTouch.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -68273,7 +68263,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.doubleTap);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Drag",
@@ -68288,7 +68278,7 @@ Ext.cmd.derive(
     constructor: function () {
       Ext.event.gesture.SingleTouch.prototype.constructor.apply(
         this,
-        arguments,
+        arguments
       );
       this.initInfo();
     },
@@ -68304,7 +68294,7 @@ Ext.cmd.derive(
         direction: { x: 0, y: 0 },
         time: 0,
         previousTime: { x: 0, y: 0 },
-        longpress: false,
+        longpress: false
       };
     },
     onTouchStart: function (c) {
@@ -68474,7 +68464,7 @@ Ext.cmd.derive(
           null;
       a.initInfo();
       return Ext.event.gesture.SingleTouch.prototype.reset.call(this);
-    },
+    }
   },
   1,
   0,
@@ -68486,7 +68476,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.drag);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Swipe",
@@ -68552,7 +68542,7 @@ Ext.cmd.derive(
           touch: i,
           direction: m,
           distance: a,
-          duration: d,
+          duration: d
         });
       }
     },
@@ -68598,7 +68588,7 @@ Ext.cmd.derive(
           touch: i,
           direction: m,
           distance: a,
-          duration: d,
+          duration: d
         });
       }
       return Ext.event.gesture.SingleTouch.prototype.onTouchEnd.call(this, j);
@@ -68610,7 +68600,7 @@ Ext.cmd.derive(
       var a = this;
       a.startTime = a.isHorizontal = a.isVertical = a.startX = a.startY = null;
       return Ext.event.gesture.SingleTouch.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -68622,7 +68612,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.swipe);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.EdgeSwipe",
@@ -68633,7 +68623,7 @@ Ext.cmd.derive(
       "edgeswipe",
       "edgeswipestart",
       "edgeswipeend",
-      "edgeswipecancel",
+      "edgeswipecancel"
     ],
     config: { minDistance: 60 },
     onTouchStart: function (c) {
@@ -68715,14 +68705,14 @@ Ext.cmd.derive(
           touch: j,
           direction: o,
           distance: a,
-          duration: d,
+          duration: d
         });
       } else {
         m.fire("edgeswipe", l, {
           touch: j,
           direction: o,
           distance: a,
-          duration: d,
+          duration: d
         });
       }
     },
@@ -68735,7 +68725,7 @@ Ext.cmd.derive(
           touch: c.changedTouches[0],
           direction: a.direction,
           distance: a.distance,
-          duration: b,
+          duration: b
         });
       }
       return this.reset();
@@ -68754,7 +68744,7 @@ Ext.cmd.derive(
         a.distance =
           null;
       return Ext.event.gesture.Swipe.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -68766,7 +68756,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.edgeSwipe);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.LongPress",
@@ -68808,7 +68798,7 @@ Ext.cmd.derive(
         b = {
           touch: c.changedTouches[0],
           duration: a.getMinDuration(),
-          startDrag: a.startDrag,
+          startDrag: a.startDrag
         };
       this.fire("taphold", c, b);
       this.fire("longpress", c, b);
@@ -68819,7 +68809,7 @@ Ext.cmd.derive(
         a = this.parentEvent;
       b.doDragStart(a, true);
       Ext.event.publisher.Gesture.instance.claimRecognizer(b, a);
-    },
+    }
   },
   0,
   0,
@@ -68831,7 +68821,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.longPress);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.MultiTouch",
@@ -68856,7 +68846,7 @@ Ext.cmd.derive(
     reset: function () {
       this.isTracking = false;
       return Ext.event.gesture.Recognizer.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -68865,7 +68855,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.event.gesture, "MultiTouch"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Pinch",
@@ -68897,7 +68887,7 @@ Ext.cmd.derive(
           b.fire("pinch", d, {
             touches: c,
             distance: h,
-            scale: h / b.startDistance,
+            scale: h / b.startDistance
           });
         }
       }
@@ -68915,7 +68905,7 @@ Ext.cmd.derive(
       this.lastTouches = null;
       this.startDistance = 0;
       return Ext.event.gesture.MultiTouch.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -68927,7 +68917,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.pinch);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Rotate",
@@ -68975,7 +68965,7 @@ Ext.cmd.derive(
           j.fire("rotate", i, {
             touches: h,
             angle: c,
-            rotation: c - j.startAngle,
+            rotation: c - j.startAngle
           });
         }
         j.lastTouches = Ext.Array.clone(h);
@@ -68994,7 +68984,7 @@ Ext.cmd.derive(
       var a = this;
       a.lastTouches = a.lastAngle = a.startAngle = null;
       return Ext.event.gesture.MultiTouch.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -69006,7 +68996,7 @@ Ext.cmd.derive(
   function (a) {
     var b = Ext.manifest.gestures;
     a.instance = new a(b && b.rotate);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.gesture.Tap",
@@ -69043,7 +69033,7 @@ Ext.cmd.derive(
     reset: function () {
       this.startPoint = null;
       return Ext.event.gesture.SingleTouch.prototype.reset.call(this);
-    },
+    }
   },
   0,
   0,
@@ -69055,7 +69045,7 @@ Ext.cmd.derive(
   function (b) {
     var a = Ext.manifest.gestures;
     b.instance = new b(a && a.tap);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.event.publisher.Focus",
@@ -69128,7 +69118,7 @@ Ext.cmd.derive(
       Ext.GlobalEvents.fireEvent("focus", {
         event: h,
         toElement: c,
-        fromElement: k,
+        fromElement: k
       });
     },
     createSyntheticEvent: function (b, e, d, a) {
@@ -69137,7 +69127,7 @@ Ext.cmd.derive(
       c.relatedTarget = a;
       c.target = d;
       return c;
-    },
+    }
   },
   0,
   0,
@@ -69181,13 +69171,13 @@ Ext.cmd.derive(
             c.processFocusIn(
               d,
               b.previousActiveElement || document.body,
-              g ? d.target : document.body,
+              g ? d.target : document.body
             );
           }
-        },
+        }
       });
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.fx.State",
@@ -69243,7 +69233,7 @@ Ext.cmd.derive(
       "word-spacing": true,
       "z-index": true,
       zoom: true,
-      transform: true,
+      transform: true
     },
     constructor: function (a) {
       this.data = {};
@@ -69279,7 +69269,7 @@ Ext.cmd.derive(
           rotateY: 0,
           rotateZ: 0,
           skewX: 0,
-          skewY: 0,
+          skewY: 0
         };
       }
       if (typeof c == "string") {
@@ -69399,7 +69389,7 @@ Ext.cmd.derive(
     },
     getData: function () {
       return this.data;
-    },
+    }
   },
   1,
   0,
@@ -69408,7 +69398,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "State"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Abstract",
@@ -69435,7 +69425,7 @@ Ext.cmd.derive(
       scope: null,
       reverse: null,
       preserveEndState: false,
-      replacePrevious: true,
+      replacePrevious: true
     },
     STATE_FROM: "0%",
     STATE_TO: "100%",
@@ -69550,9 +69540,9 @@ Ext.cmd.derive(
         onBeforeStart: h.getOnBeforeStart(),
         scope: h.getScope(),
         preserveEndState: h.getPreserveEndState(),
-        replacePrevious: h.getReplacePrevious(),
+        replacePrevious: h.getReplacePrevious()
       };
-    },
+    }
   },
   1,
   0,
@@ -69561,7 +69551,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.animation, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Slide",
@@ -69576,13 +69566,13 @@ Ext.cmd.derive(
       containerBox: "auto",
       elementBox: "auto",
       isElementBoxFit: true,
-      useCssTransform: true,
+      useCssTransform: true
     },
     reverseDirectionMap: {
       up: "down",
       down: "up",
       left: "right",
-      right: "left",
+      right: "left"
     },
     applyEasing: function (a) {
       if (a === "auto") {
@@ -69674,7 +69664,7 @@ Ext.cmd.derive(
         p.set("top", j);
       }
       return Ext.fx.animation.Abstract.prototype.getData.apply(this, arguments);
-    },
+    }
   },
   0,
   0,
@@ -69683,7 +69673,7 @@ Ext.cmd.derive(
   ["animation.slide", "animation.slideIn"],
   0,
   [Ext.fx.animation, "Slide", Ext.fx.animation, "SlideIn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.SlideOut",
@@ -69696,7 +69686,7 @@ Ext.cmd.derive(
   ["animation.slideOut"],
   0,
   [Ext.fx.animation, "SlideOut"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Fade",
@@ -69707,7 +69697,7 @@ Ext.cmd.derive(
       out: false,
       before: { display: null, opacity: 0 },
       after: { opacity: null },
-      reverse: null,
+      reverse: null
     },
     updateOut: function (a) {
       var c = this.getTo(),
@@ -69719,7 +69709,7 @@ Ext.cmd.derive(
         b.set("opacity", 0);
         c.set("opacity", 1);
       }
-    },
+    }
   },
   0,
   0,
@@ -69728,7 +69718,7 @@ Ext.cmd.derive(
   ["animation.fade", "animation.fadeIn"],
   0,
   [Ext.fx.animation, "Fade", Ext.fx.animation, "FadeIn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.FadeOut",
@@ -69741,7 +69731,7 @@ Ext.cmd.derive(
   ["animation.fadeOut"],
   0,
   [Ext.fx.animation, "FadeOut"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Flip",
@@ -69800,7 +69790,7 @@ Ext.cmd.derive(
       j.setTransform({ rotateX: m, rotateY: l, scale: e });
       k.setTransform({ rotateX: g, rotateY: d, scale: a });
       return Ext.fx.animation.Abstract.prototype.getData.call(this);
-    },
+    }
   },
   0,
   0,
@@ -69809,7 +69799,7 @@ Ext.cmd.derive(
   ["animation.flip"],
   0,
   [Ext.fx.animation, "Flip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Pop",
@@ -69819,7 +69809,7 @@ Ext.cmd.derive(
     config: {
       out: false,
       before: { display: null, opacity: 0 },
-      after: { opacity: null },
+      after: { opacity: null }
     },
     getData: function () {
       var c = this.getTo(),
@@ -69837,7 +69827,7 @@ Ext.cmd.derive(
         c.setTransform({ scale: 1 });
       }
       return Ext.fx.animation.Abstract.prototype.getData.apply(this, arguments);
-    },
+    }
   },
   0,
   0,
@@ -69846,7 +69836,7 @@ Ext.cmd.derive(
   ["animation.pop", "animation.popIn"],
   0,
   [Ext.fx.animation, "Pop", Ext.fx.animation, "PopIn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.PopOut",
@@ -69859,7 +69849,7 @@ Ext.cmd.derive(
   ["animation.popOut"],
   0,
   [Ext.fx.animation, "PopOut"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Animation",
@@ -69880,7 +69870,7 @@ Ext.cmd.derive(
         a = Ext.ClassManager.getByAlias("animation." + c);
       }
       return Ext.factory(b, a);
-    },
+    }
   },
   1,
   0,
@@ -69889,7 +69879,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "Animation"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.runner.Css",
@@ -69911,7 +69901,7 @@ Ext.cmd.derive(
       "animation-iteration-count": true,
       "animation-direction": true,
       "animation-timing-function": true,
-      "animation-delay": true,
+      "animation-delay": true
     },
     lengthProperties: {
       top: true,
@@ -69950,13 +69940,13 @@ Ext.cmd.derive(
       translateZ: true,
       translate3d: true,
       x: true,
-      y: true,
+      y: true
     },
     durationProperties: {
       "transition-duration": true,
       "transition-delay": true,
       "animation-duration": true,
-      "animation-delay": true,
+      "animation-delay": true
     },
     angleProperties: {
       rotate: true,
@@ -69965,7 +69955,7 @@ Ext.cmd.derive(
       rotateZ: true,
       skew: true,
       skewX: true,
-      skewY: true,
+      skewY: true
     },
     lengthUnitRegex: /([a-z%]*)$/,
     DEFAULT_UNIT_LENGTH: "px",
@@ -69985,7 +69975,7 @@ Ext.cmd.derive(
       "skewY",
       "scaleX",
       "scaleY",
-      "scaleZ",
+      "scaleZ"
     ],
     transformMethodsNo3d: [
       "translateX",
@@ -69994,7 +69984,7 @@ Ext.cmd.derive(
       "skewX",
       "skewY",
       "scaleX",
-      "scaleY",
+      "scaleY"
     ],
     constructor: function () {
       var a = this;
@@ -70013,7 +70003,7 @@ Ext.cmd.derive(
         a = document.createElement("style");
         a.type = "text/css";
         (document.head || document.getElementsByTagName("head")[0]).appendChild(
-          a,
+          a
         );
         b = document.styleSheets;
         this.styleSheet = c = b[b.length - 1];
@@ -70178,7 +70168,7 @@ Ext.cmd.derive(
         }
       }
       return d + c;
-    },
+    }
   },
   1,
   0,
@@ -70187,7 +70177,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.runner, "Css"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.runner.CssTransition",
@@ -70209,7 +70199,7 @@ Ext.cmd.derive(
         c = a.id;
       if (c && this.runningAnimationsData.hasOwnProperty(c)) {
         this.refreshRunningAnimationsData(Ext.get(a), [
-          b.browserEvent.propertyName,
+          b.browserEvent.propertyName
         ]);
       }
     },
@@ -70264,7 +70254,7 @@ Ext.cmd.derive(
         "transition-property": null,
         "transition-duration": null,
         "transition-timing-function": null,
-        "transition-delay": null,
+        "transition-delay": null
       };
       this.applyStyles(a);
       this.fireEvent("animationallend", this, b);
@@ -70487,7 +70477,7 @@ Ext.cmd.derive(
             l,
             Ext.Array.merge(J, u),
             true,
-            I.replacePrevious,
+            I.replacePrevious
           );
         }
         n = c.nameMap;
@@ -70509,7 +70499,7 @@ Ext.cmd.derive(
           list: u.slice(),
           length: H,
           data: I,
-          animation: M,
+          animation: M
         };
         E.push(B);
         M.on("stop", "onAnimationStop", q);
@@ -70526,7 +70516,7 @@ Ext.cmd.derive(
           "transition-property": u,
           "transition-duration": I.duration,
           "transition-timing-function": I.easing,
-          "transition-delay": I.delay,
+          "transition-delay": I.delay
         };
         M.startTime = Date.now();
       }
@@ -70571,13 +70561,13 @@ Ext.cmd.derive(
               this.refreshRunningAnimationsData(
                 e.element,
                 e.list.slice(),
-                false,
+                false
               );
             }
           }
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -70586,7 +70576,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.runner, "CssTransition", Ext, "Animator"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.Runner",
@@ -70594,7 +70584,7 @@ Ext.cmd.derive(
   {
     constructor: function () {
       return new Ext.fx.runner.CssTransition();
-    },
+    }
   },
   1,
   0,
@@ -70603,7 +70593,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx, "Runner"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Cube",
@@ -70643,7 +70633,7 @@ Ext.cmd.derive(
       o.set("opacity", j);
       n.set("opacity", d);
       return Ext.fx.animation.Abstract.prototype.getData.apply(this, arguments);
-    },
+    }
   },
   0,
   0,
@@ -70652,7 +70642,7 @@ Ext.cmd.derive(
   ["animation.cube"],
   0,
   [Ext.fx.animation, "Cube"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.Wipe",
@@ -70742,7 +70732,7 @@ Ext.cmd.derive(
       m.set("mask-position-y", b);
       n.set("mask-position-x", l);
       n.set("mask-position-y", j);
-    },
+    }
   },
   0,
   0,
@@ -70751,7 +70741,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.animation, "Wipe", Ext.fx.animation, "WipeIn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.animation.WipeOut",
@@ -70764,7 +70754,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.animation, "WipeOut"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.Bounce",
@@ -70776,7 +70766,7 @@ Ext.cmd.derive(
         c = b / this.getAcceleration(),
         a = c * Math.pow(Math.E, -this.getSpringTension() * c);
       return this.getStartValue() + this.getStartVelocity() * a;
-    },
+    }
   },
   0,
   0,
@@ -70785,7 +70775,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.easing, "Bounce"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.Momentum",
@@ -70817,7 +70807,7 @@ Ext.cmd.derive(
     },
     getVelocity: function () {
       return this.getFrictionFactor() * this.velocity;
-    },
+    }
   },
   0,
   0,
@@ -70826,7 +70816,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.easing, "Momentum"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.BoundMomentum",
@@ -70838,7 +70828,7 @@ Ext.cmd.derive(
       minMomentumValue: 0,
       maxMomentumValue: 0,
       minVelocity: 0.01,
-      startVelocity: 0,
+      startVelocity: 0
     },
     applyMomentum: function (a, b) {
       return Ext.factory(a, Ext.fx.easing.Momentum, b);
@@ -70904,7 +70894,7 @@ Ext.cmd.derive(
       }
       this.lastValue = j;
       return j;
-    },
+    }
   },
   0,
   0,
@@ -70913,7 +70903,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.easing, "BoundMomentum"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.EaseIn",
@@ -70934,7 +70924,7 @@ Ext.cmd.derive(
         return a;
       }
       return g;
-    },
+    }
   },
   0,
   0,
@@ -70943,7 +70933,7 @@ Ext.cmd.derive(
   ["easing.ease-in"],
   0,
   [Ext.fx.easing, "EaseIn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.EaseOut",
@@ -70965,7 +70955,7 @@ Ext.cmd.derive(
         return i;
       }
       return j;
-    },
+    }
   },
   0,
   0,
@@ -70974,7 +70964,7 @@ Ext.cmd.derive(
   ["easing.ease-out"],
   0,
   [Ext.fx.easing, "EaseOut"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.easing.Easing",
@@ -70982,7 +70972,7 @@ Ext.cmd.derive(
   {
     constructor: function (a) {
       return Ext.factory(a, Ext.fx.easing.Linear, null, "easing");
-    },
+    }
   },
   1,
   0,
@@ -70991,7 +70981,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.easing, "Easing"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Abstract",
@@ -71034,7 +71024,7 @@ Ext.cmd.derive(
         b.fireEvent("destroy", this);
       }
       Ext.Evented.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -71043,7 +71033,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.layout.card, "Abstract"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Style",
@@ -71053,9 +71043,9 @@ Ext.cmd.derive(
       inAnimation: {
         before: { visibility: null },
         preserveEndState: false,
-        replacePrevious: true,
+        replacePrevious: true
       },
-      outAnimation: { preserveEndState: false, replacePrevious: true },
+      outAnimation: { preserveEndState: false, replacePrevious: true }
     },
     constructor: function (b) {
       var c, a;
@@ -71118,7 +71108,7 @@ Ext.cmd.derive(
     destroy: function () {
       Ext.destroy(this.getInAnimation(), this.getOutAnimation());
       Ext.fx.layout.card.Abstract.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -71127,7 +71117,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.layout.card, "Style"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Slide",
@@ -71135,12 +71125,12 @@ Ext.cmd.derive(
   {
     config: {
       inAnimation: { type: "slide", easing: "ease-out" },
-      outAnimation: { type: "slide", easing: "ease-out", out: true },
+      outAnimation: { type: "slide", easing: "ease-out", out: true }
     },
     updateReverse: function (a) {
       this.getInAnimation().setReverse(a);
       this.getOutAnimation().setReverse(a);
-    },
+    }
   },
   0,
   0,
@@ -71149,7 +71139,7 @@ Ext.cmd.derive(
   ["fx.layout.card.slide"],
   0,
   [Ext.fx.layout.card, "Slide"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Cover",
@@ -71161,19 +71151,19 @@ Ext.cmd.derive(
         before: { "z-index": 100 },
         after: { "z-index": 0 },
         type: "slide",
-        easing: "ease-out",
+        easing: "ease-out"
       },
       outAnimation: {
         easing: "ease-out",
         from: { opacity: 0.99 },
         to: { opacity: 1 },
-        out: true,
-      },
+        out: true
+      }
     },
     updateReverse: function (a) {
       this.getInAnimation().setReverse(a);
       this.getOutAnimation().setReverse(a);
-    },
+    }
   },
   0,
   0,
@@ -71182,7 +71172,7 @@ Ext.cmd.derive(
   ["fx.layout.card.cover"],
   0,
   [Ext.fx.layout.card, "Cover"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Reveal",
@@ -71192,20 +71182,20 @@ Ext.cmd.derive(
       inAnimation: {
         easing: "ease-out",
         from: { opacity: 0.99 },
-        to: { opacity: 1 },
+        to: { opacity: 1 }
       },
       outAnimation: {
         before: { "z-index": 100 },
         after: { "z-index": 0 },
         type: "slide",
         easing: "ease-out",
-        out: true,
-      },
+        out: true
+      }
     },
     updateReverse: function (a) {
       this.getInAnimation().setReverse(a);
       this.getOutAnimation().setReverse(a);
-    },
+    }
   },
   0,
   0,
@@ -71214,7 +71204,7 @@ Ext.cmd.derive(
   ["fx.layout.card.reveal"],
   0,
   [Ext.fx.layout.card, "Reveal"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Fade",
@@ -71223,8 +71213,8 @@ Ext.cmd.derive(
     config: {
       reverse: null,
       inAnimation: { type: "fade", easing: "ease-out" },
-      outAnimation: { type: "fade", easing: "ease-out", out: true },
-    },
+      outAnimation: { type: "fade", easing: "ease-out", out: true }
+    }
   },
   0,
   0,
@@ -71233,7 +71223,7 @@ Ext.cmd.derive(
   ["fx.layout.card.fade"],
   0,
   [Ext.fx.layout.card, "Fade"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Flip",
@@ -71246,7 +71236,7 @@ Ext.cmd.derive(
         half: true,
         easing: "ease-out",
         before: { "backface-visibility": "hidden" },
-        after: { "backface-visibility": null },
+        after: { "backface-visibility": null }
       },
       outAnimation: {
         type: "flip",
@@ -71254,8 +71244,8 @@ Ext.cmd.derive(
         easing: "ease-in",
         before: { "backface-visibility": "hidden" },
         after: { "backface-visibility": null },
-        out: true,
-      },
+        out: true
+      }
     },
     onActiveItemChange: function (d, b, e, a) {
       var c = b.element.getParent();
@@ -71266,11 +71256,11 @@ Ext.cmd.derive(
           c.removeCls("x-layout-card-perspective");
         },
         this,
-        { single: true },
+        { single: true }
       );
       Ext.fx.layout.card.Style.prototype.onActiveItemChange.apply(
         this,
-        arguments,
+        arguments
       );
     },
     updateDuration: function (d) {
@@ -71280,7 +71270,7 @@ Ext.cmd.derive(
       b.setDelay(c);
       b.setDuration(c);
       a.setDuration(c);
-    },
+    }
   },
   0,
   0,
@@ -71289,7 +71279,7 @@ Ext.cmd.derive(
   ["fx.layout.card.flip"],
   0,
   [Ext.fx.layout.card, "Flip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Pop",
@@ -71298,7 +71288,7 @@ Ext.cmd.derive(
     config: {
       duration: 500,
       inAnimation: { type: "pop", easing: "ease-out" },
-      outAnimation: { type: "pop", easing: "ease-in", out: true },
+      outAnimation: { type: "pop", easing: "ease-in", out: true }
     },
     updateDuration: function (d) {
       var c = d / 2,
@@ -71307,7 +71297,7 @@ Ext.cmd.derive(
       b.setDelay(c);
       b.setDuration(c);
       a.setDuration(c);
-    },
+    }
   },
   0,
   0,
@@ -71316,7 +71306,7 @@ Ext.cmd.derive(
   ["fx.layout.card.pop"],
   0,
   [Ext.fx.layout.card, "Pop"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Scroll",
@@ -71434,7 +71424,7 @@ Ext.cmd.derive(
       Ext.AnimationQueue.stop(this.doAnimationFrame, this);
       c.isAnimating = false;
       c.fireEvent("animationend", c);
-    },
+    }
   },
   1,
   0,
@@ -71443,7 +71433,7 @@ Ext.cmd.derive(
   ["fx.layout.card.scroll"],
   0,
   [Ext.fx.layout.card, "Scroll"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.Card",
@@ -71468,7 +71458,7 @@ Ext.cmd.derive(
         a = Ext.ClassManager.getByAlias("fx.layout.card." + c);
       }
       return Ext.factory(b, a);
-    },
+    }
   },
   1,
   0,
@@ -71477,7 +71467,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.layout, "Card"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.Cube",
@@ -71486,8 +71476,8 @@ Ext.cmd.derive(
     config: {
       reverse: null,
       inAnimation: { type: "cube" },
-      outAnimation: { type: "cube", out: true },
-    },
+      outAnimation: { type: "cube", out: true }
+    }
   },
   0,
   0,
@@ -71496,7 +71486,7 @@ Ext.cmd.derive(
   ["fx.layout.card.cube"],
   0,
   [Ext.fx.layout.card, "Cube"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.ScrollCover",
@@ -71514,7 +71504,7 @@ Ext.cmd.derive(
         h.renderElement.dom.style.setProperty(
           "visibility",
           "hidden",
-          "important",
+          "important"
         );
         b = h.setTranslatable(true).getTranslatable();
         g = d.setTranslatable(true).getTranslatable();
@@ -71525,7 +71515,7 @@ Ext.cmd.derive(
         b.on({
           animationstart: "onInAnimationStart",
           animationend: "onInAnimationEnd",
-          scope: this,
+          scope: this
         });
         b.translateAnimated({ x: 0, y: 0 }, j);
         e.pause();
@@ -71540,7 +71530,7 @@ Ext.cmd.derive(
         .getWrapper()
         .dom.style.removeProperty("z-index");
       this.currentEventController.resume();
-    },
+    }
   },
   0,
   0,
@@ -71549,7 +71539,7 @@ Ext.cmd.derive(
   ["fx.layout.card.scrollcover"],
   0,
   [Ext.fx.layout.card, "ScrollCover"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.layout.card.ScrollReveal",
@@ -71582,7 +71572,7 @@ Ext.cmd.derive(
         .getWrapper()
         .dom.style.removeProperty("z-index");
       this.currentEventController.resume();
-    },
+    }
   },
   0,
   0,
@@ -71591,7 +71581,7 @@ Ext.cmd.derive(
   ["fx.layout.card.scrollreveal"],
   0,
   [Ext.fx.layout.card, "ScrollReveal"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.fx.runner.CssAnimation",
@@ -71610,7 +71600,7 @@ Ext.cmd.derive(
       Ext.getWin().on({
         animationstart: "onAnimationStart",
         animationend: "onAnimationEnd",
-        scope: this,
+        scope: this
       });
     },
     onAnimationStart: function (h) {
@@ -71712,7 +71702,7 @@ Ext.cmd.derive(
           "animation-timing-function": e,
           "animation-delay": a,
           "animation-direction": k,
-          "animation-iteration-count": o,
+          "animation-iteration-count": o
         };
         if (r.preserveEndState) {
           u[j] = d["100%"];
@@ -71755,7 +71745,7 @@ Ext.cmd.derive(
         }
       }
       return this;
-    },
+    }
   },
   1,
   0,
@@ -71764,7 +71754,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.fx.runner, "CssAnimation"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.list.AbstractTreeItem",
@@ -71778,7 +71768,7 @@ Ext.cmd.derive(
       leaf: true,
       loading: false,
       selected: false,
-      selectedParent: false,
+      selectedParent: false
     },
     config: {
       iconClsProperty: "iconCls",
@@ -71788,7 +71778,7 @@ Ext.cmd.derive(
       over: null,
       parentItem: null,
       text: { lazy: true, $value: "" },
-      textProperty: "text",
+      textProperty: "text"
     },
     updateNode: function (d) {
       if (d) {
@@ -71973,7 +71963,7 @@ Ext.cmd.derive(
             node: b,
             tree: a,
             select: b.get("selectable") !== false && c.isSelectionEvent(g),
-            toggle: c.isToggleEvent(g),
+            toggle: c.isToggleEvent(g)
           };
         if (a.fireEvent("itemclick", a, d) !== false) {
           if (d.toggle) {
@@ -72001,8 +71991,8 @@ Ext.cmd.derive(
       },
       updateOwner: function (a) {
         this.parent = a;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -72011,7 +72001,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.list, "AbstractTreeItem"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.list.RootTreeItem",
@@ -72021,7 +72011,7 @@ Ext.cmd.derive(
     element: {
       reference: "element",
       tag: "ul",
-      cls: "x-treelist-root-container",
+      cls: "x-treelist-root-container"
     },
     insertItem: function (b, a) {
       if (a) {
@@ -72032,7 +72022,7 @@ Ext.cmd.derive(
     },
     isToggleEvent: function (a) {
       return false;
-    },
+    }
   },
   0,
   0,
@@ -72041,7 +72031,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.list, "RootTreeItem"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.list.TreeItem",
@@ -72080,15 +72070,15 @@ Ext.cmd.derive(
                 { reference: "textElement", cls: "x-treelist-item-text" },
                 {
                   reference: "expanderElement",
-                  cls: "x-treelist-item-expander",
-                },
-              ],
-            },
-          ],
+                  cls: "x-treelist-item-expander"
+                }
+              ]
+            }
+          ]
         },
         { reference: "itemContainer", tag: "ul", cls: "x-treelist-container" },
-        { reference: "toolElement", cls: "x-treelist-item-tool" },
-      ],
+        { reference: "toolElement", cls: "x-treelist-item-tool" }
+      ]
     },
     constructor: function (a) {
       Ext.list.AbstractTreeItem.prototype.constructor.call(this, a);
@@ -72140,10 +72130,10 @@ Ext.cmd.derive(
               from: { height: a },
               to: { height: 0 },
               callback: c.nodeCollapseDone,
-              scope: c,
+              scope: c
             },
-            d,
-          ),
+            d
+          )
         );
       }
     },
@@ -72169,8 +72159,8 @@ Ext.cmd.derive(
         c.expanding = c.runAnimation(
           Ext.merge(
             { to: { height: a }, callback: c.nodeExpandDone, scope: c },
-            d,
-          ),
+            d
+          )
         );
       }
     },
@@ -72280,8 +72270,8 @@ Ext.cmd.derive(
       updateIndent: function (b, a) {
         this.syncIndent();
         Ext.list.AbstractTreeItem.prototype.updateIndent.call(this, b, a);
-      },
-    },
+      }
+    }
   },
   1,
   ["treelistitem"],
@@ -72290,7 +72280,7 @@ Ext.cmd.derive(
   ["widget.treelistitem"],
   0,
   [Ext.list, "TreeItem"],
-  0,
+  0
 );
 Ext.define("Ext.overrides.list.TreeItem", {
   override: "Ext.list.TreeItem",
@@ -72363,15 +72353,15 @@ Ext.define("Ext.overrides.list.TreeItem", {
           element: "el",
           click: function (g) {
             return a.onClick(g);
-          },
-        },
+          }
+        }
       });
       c.add(d);
       c.show();
       c.el.alignTo(e, "tr?");
       return c;
-    },
-  },
+    }
+  }
 });
 Ext.cmd.derive(
   "Ext.list.Tree",
@@ -72389,7 +72379,7 @@ Ext.cmd.derive(
         click: "onClick",
         mouseenter: "onMouseEnter",
         mouseleave: "onMouseLeave",
-        mouseover: "onMouseOver",
+        mouseover: "onMouseOver"
       },
       children: [
         {
@@ -72397,15 +72387,15 @@ Ext.cmd.derive(
           cls: "x-treelist-toolstrip",
           listeners: {
             click: "onToolStripClick",
-            mouseover: "onToolStripMouseOver",
-          },
-        },
-      ],
+            mouseover: "onToolStripMouseOver"
+          }
+        }
+      ]
     },
     cachedConfig: {
       animation: { duration: 500, easing: "ease" },
       expanderFirst: true,
-      expanderOnly: true,
+      expanderOnly: true
     },
     config: {
       defaults: { xtype: "treelistitem" },
@@ -72418,7 +72408,7 @@ Ext.cmd.derive(
       selectOnExpander: false,
       singleExpand: null,
       store: null,
-      ui: null,
+      ui: null
     },
     twoWayBindable: { selection: 1 },
     publishes: { selection: 1 },
@@ -72520,7 +72510,7 @@ Ext.cmd.derive(
           nodeinsert: "onNodeInsert",
           noderemove: "onNodeRemove",
           rootchange: "onRootChange",
-          update: "onNodeUpdate",
+          update: "onNodeUpdate"
         });
         a = b.getRoot();
         if (a) {
@@ -72579,9 +72569,9 @@ Ext.cmd.derive(
           parentItem: a.isRootListItem ? null : a,
           owner: this,
           node: b,
-          indent: this.getIndent(),
+          indent: this.getIndent()
         },
-        this.getDefaults(),
+        this.getDefaults()
       );
     },
     privates: {
@@ -72622,7 +72612,7 @@ Ext.cmd.derive(
         c.rootItem = b = new Ext.list.RootTreeItem({
           indent: c.getIndent(),
           node: a,
-          owner: c,
+          owner: c
         });
         c.element.appendChild(b.element);
         c.itemMap[a.internalId] = b;
@@ -72658,7 +72648,7 @@ Ext.cmd.derive(
           c.floaterMouseListeners = (d.floater || d).el.monitorMouseLeave(
             300,
             c.checkForMouseLeave,
-            c,
+            c
           );
         } else {
           Ext.on("mousedown", "checkForOutsideClick", c);
@@ -72820,7 +72810,7 @@ Ext.cmd.derive(
             b.iconSize ||
             (b.iconSize = parseInt(
               b.element.getStyle("background-position"),
-              10,
+              10
             ));
         b.setIconSize(a);
       },
@@ -72835,7 +72825,7 @@ Ext.cmd.derive(
             a.element.un({
               scope: b,
               mouseleave: "checkForMouseLeave",
-              mouseover: "onMouseOver",
+              mouseover: "onMouseOver"
             });
           } else {
             Ext.un("mousedown", "checkForOutsideClick", b);
@@ -72851,8 +72841,8 @@ Ext.cmd.derive(
         if (a) {
           a.setIndent(b);
         }
-      },
-    },
+      }
+    }
   },
   1,
   ["treelist"],
@@ -72861,7 +72851,7 @@ Ext.cmd.derive(
   ["widget.treelist"],
   0,
   [Ext.list, "Tree"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.ConfigState",
@@ -72890,7 +72880,7 @@ Ext.cmd.derive(
           delete d.capturedConfigState;
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -72899,7 +72889,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "ConfigState"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Container",
@@ -72996,8 +72986,8 @@ Ext.cmd.derive(
           b = b.substring(0, a);
         }
         return b;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -73006,7 +72996,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Container"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Hookable",
@@ -73042,7 +73032,7 @@ Ext.cmd.derive(
         preventDefault: !!c,
         boundFn: g,
         bindingMethod: i,
-        bindingScope: this,
+        bindingScope: this
       };
       return this;
     },
@@ -73068,7 +73058,7 @@ Ext.cmd.derive(
         e = c.$binding;
       }
       return this;
-    },
+    }
   },
   0,
   0,
@@ -73077,7 +73067,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Hookable"],
-  0,
+  0
 );
 Ext.define("Ext.mixin.Mashup", function (a) {
   return {
@@ -73086,7 +73076,7 @@ Ext.define("Ext.mixin.Mashup", function (a) {
       id: "mashup",
       extended: function (c, b) {
         a.process(b);
-      },
+      }
     },
     statics: {
       process: function (e) {
@@ -73105,15 +73095,15 @@ Ext.define("Ext.mixin.Mashup", function (a) {
               onLoad: function () {
                 b.onCreated = d;
                 b.onCreated.call(i, h);
-              },
+              }
             });
           };
         }
-      },
+      }
     },
     onClassMixedIn: function (b) {
       a.process(b);
-    },
+    }
   };
 });
 Ext.cmd.derive(
@@ -73137,14 +73127,14 @@ Ext.cmd.derive(
               }
             }
             return b;
-          },
+          }
         },
         responsiveFormulas: {
           $value: 0,
           merge: function (e, b, d, c) {
             return this.mergeNew(e, b, d, c);
-          },
-        },
+          }
+        }
       },
       destroy: function () {
         a.unregister(this);
@@ -73242,7 +73232,7 @@ Ext.cmd.derive(
               c.platform = Ext.platformTags;
             }
             c[Ext.dom.Element.getOrientation()] = true;
-          },
+          }
         },
         afterClassMixedIn: function (g) {
           var e = g.prototype,
@@ -73328,8 +73318,8 @@ Ext.cmd.derive(
         updateResponsiveState: function () {
           var b = this.getResponsiveState();
           this.setConfig(b);
-        },
-      },
+        }
+      }
     };
   },
   0,
@@ -73339,7 +73329,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Responsive"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Selectable",
@@ -73355,7 +73345,7 @@ Ext.cmd.derive(
       deselectOnContainerClick: true,
       selection: null,
       twoWayBindable: { selection: 1 },
-      publishes: { selection: 1 },
+      publishes: { selection: 1 }
     },
     modes: { SINGLE: true, SIMPLE: true, MULTI: true },
     selectableEventHooks: {
@@ -73364,7 +73354,7 @@ Ext.cmd.derive(
       update: "onSelectionStoreUpdate",
       clear: { fn: "onSelectionStoreClear", priority: 1000 },
       load: "refreshSelection",
-      refresh: "refreshSelection",
+      refresh: "refreshSelection"
     },
     constructor: function () {
       this.selected = new Ext.util.MixedCollection();
@@ -73624,7 +73614,7 @@ Ext.cmd.derive(
     onItemSelect: Ext.emptyFn,
     onItemDeselect: Ext.emptyFn,
     onLastFocusChanged: Ext.emptyFn,
-    onEditorKey: Ext.emptyFn,
+    onEditorKey: Ext.emptyFn
   },
   1,
   0,
@@ -73633,7 +73623,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Selectable"],
-  function () {},
+  function () {}
 );
 Ext.cmd.derive(
   "Ext.mixin.StyleCacher",
@@ -73649,7 +73639,7 @@ Ext.cmd.derive(
         a[b] = Ext.fly(c).getStyle(b);
       }
       return a[b];
-    },
+    }
   },
   0,
   0,
@@ -73658,7 +73648,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "StyleCacher"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.mixin.Traversable",
@@ -73692,7 +73682,7 @@ Ext.cmd.derive(
         a = a.getParent();
       }
       return b;
-    },
+    }
   },
   0,
   0,
@@ -73701,7 +73691,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.mixin, "Traversable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.perf.Accumulator",
@@ -73799,13 +73789,13 @@ Ext.cmd.derive(
               "avg={[this.time(values.sum / parent.count)]}",
               ")",
               "</tpl>",
-              "</tpl>",
+              "</tpl>"
             ].join(""),
             {
               time: function (m) {
                 return Math.round(m * 100) / 100;
-              },
-            },
+              }
+            }
           );
         }
         var l = this.getData(k);
@@ -73822,7 +73812,7 @@ Ext.cmd.derive(
           childCount: l.childCount,
           depth: l.maxDepth,
           pure: g(l.count, l.childCount, k, l.pure),
-          total: g(l.count, l.childCount, k, l.total),
+          total: g(l.count, l.childCount, k, l.total)
         };
       },
       enter: function () {
@@ -73883,7 +73873,7 @@ Ext.cmd.derive(
         };
         Ext.ClassManager.onCreated(q, t, s);
         return t;
-      },
+      }
     };
   },
   1,
@@ -73895,7 +73885,7 @@ Ext.cmd.derive(
   [Ext.perf, "Accumulator"],
   function () {
     Ext.perf.getTimestamp = this.getTimestamp;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.perf.Monitor",
@@ -73997,7 +73987,7 @@ Ext.cmd.derive(
       if (!c) {
         c = {
           render: { "Ext.Component": "render" },
-          layout: { "Ext.layout.Context": "run" },
+          layout: { "Ext.layout.Context": "run" }
         };
       }
       this.currentConfig = c;
@@ -74060,7 +74050,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -74069,7 +74059,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.perf, "Monitor", Ext, "Perf"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.Abstract",
@@ -74115,7 +74105,7 @@ Ext.cmd.derive(
         a = b.resolveSatelliteListenerScope(c, d);
       }
       return a || c.mixins.observable.resolveListenerScope.call(c, d);
-    },
+    }
   },
   1,
   0,
@@ -74124,7 +74114,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.plugin, "Abstract", Ext, "AbstractPlugin"],
-  0,
+  0
 );
 Ext.define("Ext.overrides.plugin.Abstract", {
   override: "Ext.plugin.Abstract",
@@ -74138,7 +74128,7 @@ Ext.define("Ext.overrides.plugin.Abstract", {
   },
   disable: function () {
     this.disabled = true;
-  },
+  }
 });
 Ext.cmd.derive(
   "Ext.plugin.LazyItems",
@@ -74154,13 +74144,13 @@ Ext.cmd.derive(
       a.beforeRender = Ext.Function.createInterceptor(
         a.beforeRender,
         this.beforeComponentRender,
-        this,
+        this
       );
     },
     beforeComponentRender: function () {
       this.cmp.add(this.items);
       this.cmp.beforeComponentRender = null;
-    },
+    }
   },
   0,
   0,
@@ -74169,7 +74159,7 @@ Ext.cmd.derive(
   ["plugin.lazyitems"],
   0,
   [Ext.plugin, "LazyItems"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.MouseEnter",
@@ -74206,7 +74196,7 @@ Ext.cmd.derive(
     destroy: function () {
       Ext.plugin.Abstract.prototype.destroy.call(this);
       Ext.destroy(this.mouseListener);
-    },
+    }
   },
   0,
   0,
@@ -74215,7 +74205,7 @@ Ext.cmd.derive(
   ["plugin.mouseenter"],
   0,
   [Ext.plugin, "MouseEnter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Shape",
@@ -74231,7 +74221,7 @@ Ext.cmd.derive(
     append: function () {
       this.target.appendShape(this);
       return this;
-    },
+    }
   },
   1,
   0,
@@ -74240,7 +74230,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.sparkline, "Shape"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.CanvasBase",
@@ -74262,10 +74252,10 @@ Ext.cmd.derive(
       return this.drawShape(
         [
           [c, e],
-          [b, d],
+          [b, d]
         ],
         g,
-        a,
+        a
       );
     },
     drawShape: function (c, b, d, a) {
@@ -74297,7 +74287,7 @@ Ext.cmd.derive(
     insertAfterShape: function (b, a) {},
     removeShapeId: function (a) {},
     getShapeAt: function (a, b) {},
-    render: function () {},
+    render: function () {}
   },
   1,
   0,
@@ -74306,7 +74296,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.sparkline, "CanvasBase"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.CanvasCanvas",
@@ -74339,9 +74329,9 @@ Ext.cmd.derive(
               c = this.canvas.width - c - d;
             }
             this.$clearRect(c * a, e * a, d * a, b * a);
-          },
+          }
         };
-      })(),
+      })()
     },
     setWidth: function (a) {
       Ext.sparkline.CanvasBase.prototype.setWidth.apply(this, arguments);
@@ -74458,10 +74448,10 @@ Ext.cmd.derive(
           [b + c, h],
           [b + c, h + a],
           [b, h + a],
-          [b, h],
+          [b, h]
         ],
         d,
-        g,
+        g
       );
     },
     appendShape: function (a) {
@@ -74552,7 +74542,7 @@ Ext.cmd.derive(
         this.shapes = {};
         this.shapeseq = [];
       }
-    },
+    }
   },
   0,
   0,
@@ -74561,7 +74551,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.sparkline, "CanvasCanvas"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.VmlCanvas",
@@ -74626,7 +74616,7 @@ Ext.cmd.derive(
         k.join(", "),
         " ",
         e,
-        'e"></svml:shape>',
+        'e"></svml:shape>'
       ].join("");
     },
     _drawCircle: function (d, i, g, c, h, a, b) {
@@ -74655,7 +74645,7 @@ Ext.cmd.derive(
         e,
         "px;height:",
         e,
-        'px"></svml:oval>',
+        'px"></svml:oval>'
       ].join("");
     },
     _drawPieSlice: function (j, o, m, i, k, e, n, d) {
@@ -74716,7 +74706,7 @@ Ext.cmd.derive(
         m,
         " wa ",
         l.join(", "),
-        ' x e"></svml:shape>',
+        ' x e"></svml:shape>'
       ].join("");
     },
     _drawRect: function (e, b, h, c, a, d, g) {
@@ -74727,10 +74717,10 @@ Ext.cmd.derive(
           [b, h + a],
           [b + c, h + a],
           [b + c, h],
-          [b, h],
+          [b, h]
         ],
         d,
-        g,
+        g
       );
     },
     reset: function () {
@@ -74774,7 +74764,7 @@ Ext.cmd.derive(
     },
     render: function () {
       this.group.dom.innerHTML = this.prerender.join("");
-    },
+    }
   },
   0,
   0,
@@ -74790,11 +74780,11 @@ Ext.cmd.derive(
         a.namespaces.add(
           "svml",
           "urn:schemas-microsoft-com:vml",
-          "#default#VML",
+          "#default#VML"
         );
       }
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Color",
@@ -74808,7 +74798,7 @@ Ext.cmd.derive(
       hexRe:
         /\s*#([0-9a-fA-F][0-9a-fA-F]?)([0-9a-fA-F][0-9a-fA-F]?)([0-9a-fA-F][0-9a-fA-F]?)\s*/,
       NONE: "none",
-      RGBA_NONE: "rgba(0, 0, 0, 0)",
+      RGBA_NONE: "rgba(0, 0, 0, 0)"
     },
     isColor: true,
     lightnessFactor: 0.2,
@@ -75072,7 +75062,7 @@ Ext.cmd.derive(
           } else {
             if (Ext.util.Color.ColorList.hasOwnProperty(k.toLowerCase())) {
               return this.setFromString(
-                Ext.util.Color.ColorList[k.toLowerCase()],
+                Ext.util.Color.ColorList[k.toLowerCase()]
               );
             }
           }
@@ -75086,7 +75076,7 @@ Ext.cmd.derive(
       this.b = c;
       this.a = d;
       return this;
-    },
+    }
   },
   3,
   0,
@@ -75253,7 +75243,7 @@ Ext.cmd.derive(
         white: "#ffffff",
         whitesmoke: "#f5f5f5",
         yellow: "#ffff00",
-        yellowgreen: "#9acd32",
+        yellowgreen: "#9acd32"
       },
       fromHSL: function (d, c, b) {
         return new this(0, 0, 0, 0).setHSL(d, c, b);
@@ -75279,7 +75269,7 @@ Ext.cmd.derive(
                   arguments[0],
                   arguments[1],
                   arguments[2],
-                  arguments[3],
+                  arguments[3]
                 );
               } else {
                 return new Ext.util.Color(0, 0, 0, 0);
@@ -75287,9 +75277,9 @@ Ext.cmd.derive(
             }
           }
         }
-      },
+      }
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.sparkline.Base",
@@ -75309,7 +75299,7 @@ Ext.cmd.derive(
       tooltipSuffix: "",
       disableTooltips: false,
       disableInteraction: false,
-      tipTpl: null,
+      tipTpl: null
     },
     config: { values: null },
     element: {
@@ -75319,10 +75309,10 @@ Ext.cmd.derive(
       listeners: {
         mouseenter: "onMouseEnter",
         mouseleave: "onMouseLeave",
-        mousemove: "onMouseMove",
+        mousemove: "onMouseMove"
       },
       width: 0,
-      height: 0,
+      height: 0
     },
     defaultBindProperty: "values",
     redrawQueue: {},
@@ -75344,7 +75334,7 @@ Ext.cmd.derive(
             }
           }
         }
-      },
+      }
     },
     constructor: function (a) {
       var b = this;
@@ -75424,7 +75414,7 @@ Ext.cmd.derive(
       c.width = b;
       if (c.height == null && d) {
         c.setHeight(
-          parseInt(d.getCachedStyle(e.parentNode, "line-height"), 10),
+          parseInt(d.getCachedStyle(e.parentNode, "line-height"), 10)
         );
       }
     },
@@ -75545,7 +75535,7 @@ Ext.cmd.derive(
         if (!g[a].isNull || !m.getTooltipSkipNull()) {
           Ext.apply(g[a], {
             prefix: m.getTooltipPrefix(),
-            suffix: m.getTooltipSuffix(),
+            suffix: m.getTooltipSuffix()
           });
           e.push(p.apply(g[a]));
         }
@@ -75582,8 +75572,8 @@ Ext.cmd.derive(
       isValidRegion: function (b, a) {
         return b < a.length;
       },
-      showTip: Ext.privateFn,
-    },
+      showTip: Ext.privateFn
+    }
   },
   1,
   ["sparkline"],
@@ -75614,7 +75604,7 @@ Ext.cmd.derive(
         listeners: {
           mouseenter: "onMouseEnter",
           mouseleave: "onMouseLeave",
-          mousemove: "onMouseMove",
+          mousemove: "onMouseMove"
         },
         style: {
           display: "inline-block",
@@ -75623,7 +75613,7 @@ Ext.cmd.derive(
           margin: "0px",
           padding: "0px",
           verticalAlign: "top",
-          cursor: "default",
+          cursor: "default"
         },
         children: [
           {
@@ -75631,12 +75621,12 @@ Ext.cmd.derive(
             reference: "groupEl",
             coordorigin: "0 0",
             coordsize: "0 0",
-            style: "position:absolute;width:0;height:0;pointer-events:none",
-          },
-        ],
+            style: "position:absolute;width:0;height:0;pointer-events:none"
+          }
+        ]
       };
     }
-  },
+  }
 );
 Ext.define("Ext.override.sparkline.Base", {
   override: "Ext.sparkline.Base",
@@ -75646,9 +75636,9 @@ Ext.define("Ext.override.sparkline.Base", {
         id: "sparklines-tooltip",
         showDelay: 0,
         dismissDelay: 0,
-        hideDelay: 400,
+        hideDelay: 400
       });
-    },
+    }
   },
   onMouseMove: function (a) {
     this.tooltip.triggerEvent = a;
@@ -75668,8 +75658,8 @@ Ext.define("Ext.override.sparkline.Base", {
       var a = this.tooltip;
       a.target = this.el;
       a.onTargetOver(a.triggerEvent);
-    },
-  },
+    }
+  }
 });
 Ext.cmd.derive(
   "Ext.sparkline.BarBase",
@@ -75713,7 +75703,7 @@ Ext.cmd.derive(
         h.updateDisplay();
       }
       d.render();
-    },
+    }
   },
   0,
   0,
@@ -75722,7 +75712,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.sparkline, "BarBase"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.RangeMap",
@@ -75764,7 +75754,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -75773,7 +75763,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.sparkline, "RangeMap"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Bar",
@@ -75790,7 +75780,7 @@ Ext.cmd.derive(
         "#66aa00",
         "#dd4477",
         "#0099c6",
-        "#990099",
+        "#990099"
       ],
       zeroColor: null,
       nullColor: null,
@@ -75800,7 +75790,7 @@ Ext.cmd.derive(
       chartRangeMin: null,
       chartRangeMax: null,
       chartRangeClip: false,
-      colorMap: null,
+      colorMap: null
     },
     tipTpl: "&#9679; {prefix}{value}{suffix}",
     remove: function (e, c) {
@@ -75990,7 +75980,7 @@ Ext.cmd.derive(
           isNull: d === null,
           value: d,
           color: this.calcColor(c, d, e),
-          offset: e,
+          offset: e
         });
       }
       return a;
@@ -76081,7 +76071,7 @@ Ext.cmd.derive(
         }
         c.drawRect(j, h, q - 1, r - 1, t, t).append();
       }
-    },
+    }
   },
   0,
   ["sparklinebar"],
@@ -76092,7 +76082,7 @@ Ext.cmd.derive(
   [Ext.sparkline, "Bar"],
   function (a) {
     a.onClassCreated(a);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.sparkline.Box",
@@ -76112,7 +76102,7 @@ Ext.cmd.derive(
       target: null,
       targetColor: "#4a2",
       chartRangeMin: null,
-      chartRangeMax: null,
+      chartRangeMax: null
     },
     tipTpl: [
       "{field:this.fields}: {value}",
@@ -76125,11 +76115,11 @@ Ext.cmd.derive(
             lo: "Left Outlier",
             ro: "Right Outlier",
             lw: "Left Whisker",
-            rw: "Right Whisker",
+            rw: "Right Whisker"
           };
           return a[b];
-        },
-      },
+        }
+      }
     ],
     tooltipFormatFieldlistKey: "field",
     quartile: function (a, c) {
@@ -76164,7 +76154,7 @@ Ext.cmd.derive(
       var a = [
         { field: "lq", value: this.quartiles[0] },
         { field: "med", value: this.quartiles[1] },
-        { field: "uq", value: this.quartiles[2] },
+        { field: "uq", value: this.quartiles[2] }
       ];
       if (this.loutlier !== undefined) {
         a.push({ field: "lo", value: this.loutlier });
@@ -76279,42 +76269,42 @@ Ext.cmd.derive(
         Math.round((p - s) * g),
         Math.round(e * 0.8),
         E.getBoxLineColor(),
-        E.getBoxFillColor(),
+        E.getBoxFillColor()
       ).append();
       l.drawLine(
         Math.round((w - x) * g + z),
         Math.round(e / 2),
         Math.round((s - x) * g + z),
         Math.round(e / 2),
-        d,
+        d
       ).append();
       l.drawLine(
         Math.round((w - x) * g + z),
         Math.round(e / 4),
         Math.round((w - x) * g + z),
         Math.round(e - e / 4),
-        c,
+        c
       ).append();
       l.drawLine(
         Math.round((b - x) * g + z),
         Math.round(e / 2),
         Math.round((p - x) * g + z),
         Math.round(e / 2),
-        d,
+        d
       ).append();
       l.drawLine(
         Math.round((b - x) * g + z),
         Math.round(e / 4),
         Math.round((b - x) * g + z),
         Math.round(e - e / 4),
-        c,
+        c
       ).append();
       l.drawLine(
         Math.round((r - x) * g + z),
         Math.round(e * 0.1),
         Math.round((r - x) * g + z),
         Math.round(e * 0.9),
-        E.getMedianColor(),
+        E.getMedianColor()
       ).append();
       if (E.target) {
         y = Math.ceil(E.spotRadius);
@@ -76323,14 +76313,14 @@ Ext.cmd.derive(
           Math.round(e / 2 - y),
           Math.round((E.target - x) * g + z),
           Math.round(e / 2 + y),
-          n,
+          n
         ).append();
         l.drawLine(
           Math.round((E.target - x) * g + z - y),
           Math.round(e / 2),
           Math.round((E.target - x) * g + z + y),
           Math.round(e / 2),
-          n,
+          n
         ).append();
       }
       if (E.currentPageXY && E.el.getRegion().contains(E.currentPageXY)) {
@@ -76338,7 +76328,7 @@ Ext.cmd.derive(
         E.updateDisplay();
       }
       l.render();
-    },
+    }
   },
   0,
   ["sparklinebox"],
@@ -76347,7 +76337,7 @@ Ext.cmd.derive(
   ["widget.sparklinebox"],
   0,
   [Ext.sparkline, "Box"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Bullet",
@@ -76358,7 +76348,7 @@ Ext.cmd.derive(
       targetWidth: 3,
       performanceColor: "#33f",
       rangeColors: ["#d3dafe", "#a8b6ff", "#7f94ff"],
-      base: null,
+      base: null
     },
     tipTpl: [
       "{fieldkey:this.fields} - {value}",
@@ -76373,8 +76363,8 @@ Ext.cmd.derive(
           if (a === "t") {
             return "Target";
           }
-        },
-      },
+        }
+      }
     ],
     applyValues: function (a) {
       a = Ext.Array.map(Ext.Array.from(a), this.normalizeValue);
@@ -76420,7 +76410,7 @@ Ext.cmd.derive(
       return {
         fieldkey: a.substr(0, 1),
         value: this.values[a.substr(1)],
-        region: a,
+        region: a
       };
     },
     renderHighlight: function (e) {
@@ -76467,7 +76457,7 @@ Ext.cmd.derive(
         c - 1,
         Math.round(this.getHeight() * 0.4) - 1,
         a,
-        a,
+        a
       );
     },
     renderTarget: function (c) {
@@ -76516,8 +76506,8 @@ Ext.cmd.derive(
     privates: {
       isValidRegion: function (b, a) {
         return true;
-      },
-    },
+      }
+    }
   },
   0,
   ["sparklinebullet"],
@@ -76526,7 +76516,7 @@ Ext.cmd.derive(
   ["widget.sparklinebullet"],
   0,
   [Ext.sparkline, "Bullet"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Discrete",
@@ -76538,7 +76528,7 @@ Ext.cmd.derive(
       thresholdValue: 0,
       chartRangeMax: null,
       chartRangeMin: null,
-      chartRangeClip: false,
+      chartRangeClip: false
     },
     tipTpl: "{prefix}{value}{suffix}",
     applyValues: function (a) {
@@ -76580,7 +76570,7 @@ Ext.cmd.derive(
       return {
         isNull: this.values[a] === undefined,
         value: this.values[a],
-        offset: a,
+        offset: a
       };
     },
     renderRegion: function (k, e) {
@@ -76607,7 +76597,7 @@ Ext.cmd.derive(
         g = m.calcHighlightColor(g);
       }
       b.drawLine(p, a, p, a + q, g).append();
-    },
+    }
   },
   0,
   ["sparklinediscrete"],
@@ -76616,7 +76606,7 @@ Ext.cmd.derive(
   ["widget.sparklinediscrete"],
   0,
   [Ext.sparkline, "Discrete"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Line",
@@ -76639,7 +76629,7 @@ Ext.cmd.derive(
       chartRangeMax: null,
       chartRangeMinX: null,
       chartRangeMaxX: null,
-      valueSpots: null,
+      valueSpots: null
     },
     tipTpl: "&#9679; {prefix}{y}{suffix}",
     applyValueSpots: function (a) {
@@ -76673,7 +76663,7 @@ Ext.cmd.derive(
         y: this.yvalues[a],
         color: this.getLineColor(),
         fillColor: this.getFillColor(),
-        offset: a,
+        offset: a
       };
     },
     renderHighlight: function (g) {
@@ -76695,7 +76685,7 @@ Ext.cmd.derive(
           c.canvasTop,
           e[0],
           c.canvasTop + c.getHeight(),
-          d,
+          d
         ).append();
       }
     },
@@ -76937,7 +76927,7 @@ Ext.cmd.derive(
               t + Math.round(m - m * ((I[N] - q.miny) / g)),
               L,
               null,
-              u,
+              u
             ).append();
           }
         }
@@ -76948,7 +76938,7 @@ Ext.cmd.derive(
           t + Math.round(m - m * ((I[C] - q.miny) / g)),
           L,
           null,
-          l,
+          l
         ).append();
       }
       if (q.maxy !== q.minyorg) {
@@ -76959,7 +76949,7 @@ Ext.cmd.derive(
             t + Math.round(m - m * ((q.minyorg - q.miny) / g)),
             L,
             null,
-            b,
+            b
           ).append();
         }
         if (L && z) {
@@ -76969,7 +76959,7 @@ Ext.cmd.derive(
             t + Math.round(m - m * ((q.maxyorg - q.miny) / g)),
             L,
             null,
-            z,
+            z
           ).append();
         }
       }
@@ -76978,7 +76968,7 @@ Ext.cmd.derive(
         q.updateDisplay();
       }
       k.render();
-    },
+    }
   },
   0,
   ["sparklineline"],
@@ -76987,7 +76977,7 @@ Ext.cmd.derive(
   ["widget.sparklineline"],
   0,
   [Ext.sparkline, "Line"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.Pie",
@@ -77003,10 +76993,10 @@ Ext.cmd.derive(
         "#66aa00",
         "#dd4477",
         "#0099c6",
-        "#990099",
+        "#990099"
       ],
       borderWidth: 0,
-      borderColor: "#000",
+      borderColor: "#000"
     },
     tipTpl: '&#9679; {value} ({percent:number("0.0")}%)',
     applyValues: function (a) {
@@ -77043,7 +77033,7 @@ Ext.cmd.derive(
         value: this.values[b],
         percent: (this.values[b] / this.total) * 100,
         color: a[b % a.length],
-        offset: b,
+        offset: b
       };
     },
     renderHighlight: function (a) {
@@ -77102,7 +77092,7 @@ Ext.cmd.derive(
           Math.floor(e - a / 2),
           h.getBorderColor(),
           null,
-          a,
+          a
         ).append();
       }
       for (d = k.length; d--; ) {
@@ -77117,7 +77107,7 @@ Ext.cmd.derive(
         h.updateDisplay();
       }
       c.render();
-    },
+    }
   },
   0,
   ["sparklinepie"],
@@ -77126,7 +77116,7 @@ Ext.cmd.derive(
   ["widget.sparklinepie"],
   0,
   [Ext.sparkline, "Pie"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.sparkline.TriState",
@@ -77138,7 +77128,7 @@ Ext.cmd.derive(
       posBarColor: "#6f6",
       negBarColor: "#f44",
       zeroBarColor: "#999",
-      colorMap: {},
+      colorMap: {}
     },
     tipTpl: [
       "&#9679; {value:this.states}",
@@ -77155,8 +77145,8 @@ Ext.cmd.derive(
             return "Win";
           }
           return a;
-        },
-      },
+        }
+      }
     ],
     applyColorMap: function (a) {
       var b = this;
@@ -77197,7 +77187,7 @@ Ext.cmd.derive(
         isNull: this.values[a] == null,
         value: this.values[a],
         color: this.calcColor(this.values[a], a),
-        offset: a,
+        offset: a
       };
     },
     calcColor: function (g, h) {
@@ -77259,7 +77249,7 @@ Ext.cmd.derive(
         c = h.calcHighlightColor(c);
       }
       a.drawRect(j, i, h.getBarWidth() - 1, l - 1, c, c).append();
-    },
+    }
   },
   0,
   ["sparklinetristate"],
@@ -77268,7 +77258,7 @@ Ext.cmd.derive(
   ["widget.sparklinetristate"],
   0,
   [Ext.sparkline, "TriState"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Base64",
@@ -77388,14 +77378,14 @@ Ext.cmd.derive(
             g = b.charCodeAt(h + 1);
             d = b.charCodeAt(h + 2);
             e += String.fromCharCode(
-              ((j & 15) << 12) | ((g & 63) << 6) | (d & 63),
+              ((j & 15) << 12) | ((g & 63) << 6) | (d & 63)
             );
             h += 3;
           }
         }
       }
       return e;
-    },
+    }
   },
   0,
   0,
@@ -77404,7 +77394,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Base64"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.DelimitedValue",
@@ -77455,7 +77445,7 @@ Ext.cmd.derive(
               '|([^"\\' +
               c +
               "\\r\\n]*))",
-            "gi",
+            "gi"
           )),
         e = g[a] || (g[a] = new RegExp("\\" + a + "\\" + a, "g")),
         h,
@@ -77517,7 +77507,7 @@ Ext.cmd.derive(
         o[l] = a.join(e);
       }
       return o.join(j.lineBreak);
-    },
+    }
   },
   1,
   0,
@@ -77526,7 +77516,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "DelimitedValue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.CSV",
@@ -77539,7 +77529,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "CSV"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.ItemCollection",
@@ -77551,7 +77541,7 @@ Ext.cmd.derive(
     },
     has: function (a) {
       return this.map.hasOwnProperty(a.getId());
-    },
+    }
   },
   0,
   0,
@@ -77560,7 +77550,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ItemCollection", Ext, "ItemCollection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.LocalStorage",
@@ -77593,7 +77583,7 @@ Ext.cmd.derive(
         }
         return a;
       },
-      supported: true,
+      supported: true
     },
     constructor: function (a) {
       var b = this;
@@ -77688,7 +77678,7 @@ Ext.cmd.derive(
       if (d && e !== a.length) {
         d.push(c);
       }
-    },
+    }
   },
   1,
   0,
@@ -77795,9 +77785,9 @@ Ext.cmd.derive(
         }
         e[b] = g;
         d.save(d.flushDelay);
-      },
+      }
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.TSV",
@@ -77810,7 +77800,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "TSV"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.TaskManager",
@@ -77823,7 +77813,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "TaskManager", Ext, "TaskManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.TextMetrics",
@@ -77845,13 +77835,13 @@ Ext.cmd.derive(
         var a = this;
         Ext.destroy(a.shared);
         a.shared = null;
-      },
+      }
     },
     constructor: function (a, d) {
       var c = this,
         b = Ext.getBody().createChild({
           role: "presentation",
-          cls: "x-textmetrics",
+          cls: "x-textmetrics"
         });
       b.setVisibilityMode(1);
       c.measure = b;
@@ -77885,8 +77875,8 @@ Ext.cmd.derive(
           "line-height",
           "text-transform",
           "letter-spacing",
-          "word-break",
-        ]),
+          "word-break"
+        ])
       );
     },
     setFixedWidth: function (a) {
@@ -77903,7 +77893,7 @@ Ext.cmd.derive(
       var a = this;
       a.el = a.measure = Ext.destroy(a.measure);
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -77918,14 +77908,14 @@ Ext.cmd.derive(
         return Ext.Number.constrain(
           Ext.util.TextMetrics.measure(
             this.dom,
-            Ext.valueFrom(c, this.dom.innerHTML, true),
+            Ext.valueFrom(c, this.dom.innerHTML, true)
           ).width,
           b || 0,
-          a || 1000000,
+          a || 1000000
         );
-      },
+      }
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.translatable.CssTransform",
@@ -77946,7 +77936,7 @@ Ext.cmd.derive(
         a.dom.style.webkitTransform = null;
       }
       Ext.util.translatable.Dom.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -77955,7 +77945,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "CssTransform"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.translatable.ScrollParent",
@@ -77982,7 +77972,7 @@ Ext.cmd.derive(
       a.x = b.getScrollLeft();
       a.y = b.getScrollTop();
       return a;
-    },
+    }
   },
   0,
   0,
@@ -77991,7 +77981,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "ScrollParent"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.translatable.CssPosition",
@@ -78012,7 +78002,7 @@ Ext.cmd.derive(
       a.left = null;
       a.top = null;
       Ext.util.translatable.Dom.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -78021,7 +78011,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.translatable, "CssPosition"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Translatable",
@@ -78039,7 +78029,7 @@ Ext.cmd.derive(
         case "cssposition":
           return new b.CssPosition(a);
       }
-    },
+    }
   },
   1,
   0,
@@ -78048,7 +78038,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Translatable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.paintmonitor.OverflowChange",
@@ -78058,7 +78048,7 @@ Ext.cmd.derive(
     monitorClass: "overflowchange",
     onElementPainted: function (a) {
       this.getCallback().apply(this.getScope(), this.getArgs());
-    },
+    }
   },
   0,
   0,
@@ -78067,7 +78057,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util.paintmonitor, "OverflowChange"],
-  0,
+  0
 );
 Ext.define(null, {
   override: "Ext.event.publisher.Focus",
@@ -78088,7 +78078,7 @@ Ext.define(null, {
       return;
     }
     this.callParent([c]);
-  },
+  }
 });
 Ext.define(null, {
   override: "Ext.form.field.Checkbox",
@@ -78107,7 +78097,7 @@ Ext.define(null, {
     if (c && b !== a.lastValue) {
       c.repaint();
     }
-  },
+  }
 });
 Ext.define(null, {
   override: "Ext.form.field.Radio",
@@ -78125,7 +78115,7 @@ Ext.define(null, {
   },
   onChange: function (b, a) {
     this.callSuper([b, a]);
-  },
+  }
 });
 Ext.define(null, {
   override: "Ext.scroll.Scroller",
@@ -78187,8 +78177,8 @@ Ext.define(null, {
         return;
       }
       a.callParent();
-    },
-  },
+    }
+  }
 });
 Ext.cmd.derive(
   "Ext.Action",
@@ -78274,9 +78264,9 @@ Ext.cmd.derive(
     execute: function () {
       this.initialConfig.handler.apply(
         this.initialConfig.scope || Ext.global,
-        arguments,
+        arguments
       );
-    },
+    }
   },
   1,
   0,
@@ -78285,7 +78275,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "Action"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.ElementLoader",
@@ -78297,11 +78287,11 @@ Ext.cmd.derive(
           a.getTarget().setHtml(
             b.responseText,
             c.scripts === true,
-            c.rendererScope,
+            c.rendererScope
           );
           return true;
-        },
-      },
+        }
+      }
     },
     url: null,
     params: null,
@@ -78380,7 +78370,7 @@ Ext.cmd.derive(
         success: c.success || e.success,
         failure: c.failure || e.failure,
         renderer: c.renderer || e.renderer,
-        scripts: Ext.isDefined(c.scripts) ? c.scripts : e.scripts,
+        scripts: Ext.isDefined(c.scripts) ? c.scripts : e.scripts
       };
       e.active.request = Ext.Ajax.request(c);
       e.setOptions(e.active, c);
@@ -78438,7 +78428,7 @@ Ext.cmd.derive(
       a.stopAutoRefresh();
       a.abort();
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -78448,11 +78438,11 @@ Ext.cmd.derive(
   [
     [
       Ext.util.Observable.prototype.mixinId || Ext.util.Observable.$className,
-      Ext.util.Observable,
-    ],
+      Ext.util.Observable
+    ]
   ],
   [Ext, "ElementLoader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.ComponentLoader",
@@ -78487,8 +78477,8 @@ Ext.cmd.derive(
             g.resumeLayouts(true);
           }
           return i;
-        },
-      },
+        }
+      }
     },
     target: null,
     loadOnRender: false,
@@ -78538,7 +78528,7 @@ Ext.cmd.derive(
         default:
           return Ext.ElementLoader.Renderer.Html;
       }
-    },
+    }
   },
   0,
   0,
@@ -78547,7 +78537,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext, "ComponentLoader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.SizeModel",
@@ -78573,7 +78563,7 @@ Ext.cmd.derive(
     calculatedFromConfigured: false,
     calculatedFromNatural: false,
     calculatedFromShrinkWrap: false,
-    names: null,
+    names: null
   },
   1,
   0,
@@ -78598,36 +78588,36 @@ Ext.cmd.derive(
       name: "calculatedFromConfigured",
       configured: true,
       calculatedFrom: true,
-      names: { width: "width", height: "height" },
+      names: { width: "width", height: "height" }
     });
     new e({
       name: "calculatedFromNatural",
       natural: true,
-      calculatedFrom: true,
+      calculatedFrom: true
     });
     new e({
       name: "calculatedFromShrinkWrap",
       shrinkWrap: true,
-      calculatedFrom: true,
+      calculatedFrom: true
     });
     new e({
       name: "constrainedMax",
       configured: true,
       constrained: true,
-      names: { width: "maxWidth", height: "maxHeight" },
+      names: { width: "maxWidth", height: "maxHeight" }
     });
     new e({
       name: "constrainedMin",
       configured: true,
       constrained: true,
-      names: { width: "minWidth", height: "minHeight" },
+      names: { width: "minWidth", height: "minHeight" }
     });
     new e({
       name: "constrainedDock",
       configured: true,
       constrained: true,
       constrainedByMin: true,
-      names: { width: "dockConstrainedWidth", height: "dockConstrainedHeight" },
+      names: { width: "dockConstrainedWidth", height: "dockConstrainedHeight" }
     });
     for (c = 0, h = a.length; c < h; ++c) {
       d = a[c];
@@ -78636,7 +78626,7 @@ Ext.cmd.derive(
         g.push({ width: d, height: a[b] });
       }
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.Layout",
@@ -78652,7 +78642,7 @@ Ext.cmd.derive(
       readsWidth: 1,
       readsHeight: 1,
       setsWidth: 0,
-      setsHeight: 0,
+      setsHeight: 0
     },
     $configPrefixed: false,
     $configStrict: false,
@@ -78924,7 +78914,7 @@ Ext.cmd.derive(
       for (b = 0; b < c; ++b) {
         delete a[b].$i;
       }
-    },
+    }
   },
   1,
   0,
@@ -78935,14 +78925,14 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.layout, "Layout"],
   function () {
     var a = this;
     a.prototype.sizeModels = a.sizeModels = Ext.layout.SizeModel.sizeModels;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.container.Container",
@@ -79127,7 +79117,7 @@ Ext.cmd.derive(
         got: i,
         gotAll: i === k,
         gotWidth: d,
-        gotHeight: h,
+        gotHeight: h
       };
     },
     getPositionOffset: function (a) {
@@ -79300,7 +79290,7 @@ Ext.cmd.derive(
         --this.activeItemCount;
       }
       Ext.layout.Layout.prototype.onRemove.call(this, b, a);
-    },
+    }
   },
   1,
   0,
@@ -79311,11 +79301,11 @@ Ext.cmd.derive(
     [
       Ext.util.ElementContainer.prototype.mixinId ||
         Ext.util.ElementContainer.$className,
-      Ext.util.ElementContainer,
-    ],
+      Ext.util.ElementContainer
+    ]
   ],
   [Ext.layout.container, "Container", Ext.layout, "ContainerLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Auto",
@@ -79338,12 +79328,12 @@ Ext.cmd.derive(
       'class="{innerCtCls}">',
       "{%this.renderBody(out,values)%}",
       "</div>",
-      "</div>",
+      "</div>"
     ],
     beginLayout: function (a) {
       Ext.layout.container.Container.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
       this.initContextItems(a);
     },
@@ -79375,7 +79365,7 @@ Ext.cmd.derive(
         i;
       Ext.layout.container.Container.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       e = m = c = "";
       if (!d.widthModel.shrinkWrap) {
@@ -79496,8 +79486,8 @@ Ext.cmd.derive(
             state: {
               overflowAdjust: { width: b, height: j },
               overflowState: g,
-              secondPass: true,
-            },
+              secondPass: true
+            }
           });
         }
       }
@@ -79531,7 +79521,7 @@ Ext.cmd.derive(
       var a = this.innerCt;
       Ext.layout.container.Container.prototype.finishedLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (Ext.isIE8) {
         a.repaint();
@@ -79545,7 +79535,7 @@ Ext.cmd.derive(
     getContainerSize: function (b, c) {
       var a = Ext.layout.container.Container.prototype.getContainerSize.apply(
           this,
-          arguments,
+          arguments
         ),
         d = b.state.overflowAdjust;
       if (d) {
@@ -79672,13 +79662,13 @@ Ext.cmd.derive(
     setupRenderTpl: function (a) {
       Ext.layout.container.Container.prototype.setupRenderTpl.apply(
         this,
-        arguments,
+        arguments
       );
       a.renderPadding = this.doRenderPadding;
     },
     getContentTarget: function () {
       return this.innerCt;
-    },
+    }
   },
   0,
   0,
@@ -79690,7 +79680,7 @@ Ext.cmd.derive(
   function (b) {
     var a = Ext.chromeVersion;
     b.prototype.chromeCellMeasureBug = Ext.isChrome && a >= 26 && a <= 34;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.ZIndexManager",
@@ -79709,13 +79699,13 @@ Ext.cmd.derive(
               c = e.getActiveCounter() - d.getActiveCounter();
             }
             return c;
-          },
+          }
         },
         filters: {
           filterFn: function (c) {
             return c.isVisible();
-          },
-        },
+          }
+        }
       });
       b.zIndexStack.addObserver(b);
       b.front = null;
@@ -79724,18 +79714,18 @@ Ext.cmd.derive(
         beforehide: b.onComponentShowHide,
         show: b.onComponentShowHide,
         scope: b,
-        destroyable: true,
+        destroyable: true
       });
       if (a) {
         if (a.isContainer) {
           b.resizeListeners = a.on({
             resize: b.onContainerResize,
             scope: b,
-            destroyable: true,
+            destroyable: true
           });
           b.zseed = Ext.Number.from(
             b.rendered ? a.getEl().getStyle("zIndex") : undefined,
-            b.getNextZSeed(),
+            b.getNextZSeed()
           );
           b.targetEl = a.getTargetEl();
           b.container = a;
@@ -79743,7 +79733,7 @@ Ext.cmd.derive(
           b.resizeListeners = Ext.on({
             resize: b.onContainerResize,
             scope: b,
-            destroyable: true,
+            destroyable: true
           });
           b.zseed = b.getNextZSeed();
           b.targetEl = Ext.get(a);
@@ -79755,7 +79745,7 @@ Ext.cmd.derive(
             resize: b.scheduleContainerResize,
             scope: b,
             destroyable: true,
-            priority: -10000,
+            priority: -10000
           });
           b.targetEl = Ext.getBody();
         });
@@ -80001,7 +79991,7 @@ Ext.cmd.derive(
         d.maskShim,
         d.zIndexStack,
         d.globalListeners,
-        d.resizeListeners,
+        d.resizeListeners
       );
       d.callParent();
     },
@@ -80012,14 +80002,14 @@ Ext.cmd.derive(
           return {
             height: Math.max(
               document.body.scrollHeight,
-              Ext.dom.Element.getDocumentHeight(),
+              Ext.dom.Element.getDocumentHeight()
             ),
             width: Math.max(
               document.body.scrollWidth,
-              document.documentElement.clientWidth,
+              document.documentElement.clientWidth
             ),
             x: 0,
-            y: 0,
+            y: 0
           };
         } else {
           return a.getBox();
@@ -80029,7 +80019,7 @@ Ext.cmd.derive(
         if (!this.containerResizeTimer) {
           this.containerResizeTimer = Ext.Function.requestAnimationFrame(
             this.onContainerResize,
-            this,
+            this
           );
         }
       },
@@ -80081,13 +80071,13 @@ Ext.cmd.derive(
           d.mask = a = Ext.getBody().createChild({
             role: "presentation",
             cls: "x-mask x-border-box",
-            style: "height:0;width:0",
+            style: "height:0;width:0"
           });
           a.setVisibilityMode(Ext.Element.DISPLAY);
           a.on({
             mousedown: d.onMaskMousedown,
             click: d.onMaskClick,
-            scope: d,
+            scope: d
           });
         } else {
           d.hideModalMask();
@@ -80122,8 +80112,8 @@ Ext.cmd.derive(
             a.hide();
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -80134,7 +80124,7 @@ Ext.cmd.derive(
   [Ext, "ZIndexManager", Ext, "WindowGroup"],
   function () {
     Ext.WindowManager = Ext.WindowMgr = new this();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.container.Container",
@@ -80915,7 +80905,7 @@ Ext.cmd.derive(
         "margin-top": "",
         "margin-right": "",
         "margin-bottom": "",
-        "margin-left": "",
+        "margin-left": ""
       },
       resetItemMargins: function () {
         var a = this.items.items,
@@ -80931,8 +80921,8 @@ Ext.cmd.derive(
       setupRenderTpl: function (a) {
         Ext.Component.prototype.setupRenderTpl.apply(this, arguments);
         this.getLayout().setupRenderTpl(a);
-      },
-    },
+      }
+    }
   },
   0,
   ["container"],
@@ -80942,15 +80932,15 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
+      Ext.mixin.Queryable
     ],
     [
       Ext.mixin.Container.prototype.mixinId || Ext.mixin.Container.$className,
-      Ext.mixin.Container,
-    ],
+      Ext.mixin.Container
+    ]
   ],
   [Ext.container, "Container", Ext, "Container", Ext, "AbstractContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Editor",
@@ -80960,12 +80950,12 @@ Ext.cmd.derive(
     sizePolicies: {
       $: {
         $: { readsWidth: 1, readsHeight: 1, setsWidth: 0, setsHeight: 0 },
-        boundEl: { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 },
+        boundEl: { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 }
       },
       boundEl: {
         $: { readsWidth: 0, readsHeight: 1, setsWidth: 1, setsHeight: 0 },
-        boundEl: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 },
-      },
+        boundEl: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 }
+      }
     },
     getItemSizePolicy: function (d) {
       var c = this,
@@ -81004,7 +80994,7 @@ Ext.cmd.derive(
         default:
           return c;
       }
-    },
+    }
   },
   0,
   0,
@@ -81013,7 +81003,7 @@ Ext.cmd.derive(
   ["layout.editor"],
   0,
   [Ext.layout.container, "Editor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.Editor",
@@ -81229,7 +81219,7 @@ Ext.cmd.derive(
       }
       Ext.destroy(b.field);
       Ext.container.Container.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["editor"],
@@ -81238,7 +81228,7 @@ Ext.cmd.derive(
   ["widget.editor"],
   0,
   [Ext, "Editor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.EventManager",
@@ -81356,7 +81346,7 @@ Ext.cmd.derive(
         }
       : function (a) {
           return a && a.nodeType === 3 ? a.parentNode : a;
-        },
+        }
   },
   0,
   0,
@@ -81368,7 +81358,7 @@ Ext.cmd.derive(
   function (a) {
     a.on = a.addListener;
     a.un = a.removeListener;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.Img",
@@ -81483,7 +81473,7 @@ Ext.cmd.derive(
         b = b.dom;
         e._naturalSize = g = {
           width: (a = b.naturalWidth),
-          height: b.naturalHeight,
+          height: b.naturalHeight
         };
         if (!a) {
           d = b.style;
@@ -81522,7 +81512,7 @@ Ext.cmd.derive(
         b.dom.innerHTML = c.character;
         b.setStyle(c.getStyle());
       }
-    },
+    }
   },
   0,
   ["image", "imagecomponent"],
@@ -81531,7 +81521,7 @@ Ext.cmd.derive(
   ["widget.image", "widget.imagecomponent"],
   0,
   [Ext, "Img"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.StoreHolder",
@@ -81596,7 +81586,7 @@ Ext.cmd.derive(
     },
     getStoreListeners: Ext.emptyFn,
     onUnbindStore: Ext.emptyFn,
-    onBindStore: Ext.emptyFn,
+    onBindStore: Ext.emptyFn
   },
   0,
   0,
@@ -81605,7 +81595,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "StoreHolder"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.LoadMask",
@@ -81633,7 +81623,7 @@ Ext.cmd.derive(
       "mask-msg-text",
       '{childElCls}" role="presentation">{msg}</div>',
       "</div>",
-      "</div>",
+      "</div>"
     ],
     maskOnDisable: false,
     skipLayout: true,
@@ -81694,7 +81684,7 @@ Ext.cmd.derive(
           hide: c.onContainerHide,
           expand: c.onContainerExpand,
           collapse: c.onContainerCollapse,
-          scope: c,
+          scope: c
         });
       }
     },
@@ -81948,7 +81938,7 @@ Ext.cmd.derive(
         a.ownerCt.unmask();
       }
       Ext.Component.prototype.doDestroy.call(this);
-    },
+    }
   },
   1,
   ["loadmask"],
@@ -81958,11 +81948,11 @@ Ext.cmd.derive(
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext, "LoadMask"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.Component",
@@ -82091,7 +82081,7 @@ Ext.cmd.derive(
         a.width,
         a.height,
         d ? d.width : undefined,
-        d ? d.height : undefined,
+        d ? d.height : undefined
       );
     },
     getTarget: function () {
@@ -82108,7 +82098,7 @@ Ext.cmd.derive(
         c = b.getEl("getTarget", a);
         a.targetInfo = d = {
           padding: c.getPaddingInfo(),
-          border: c.getBorderInfo(),
+          border: c.getBorderInfo()
         };
       }
       return d;
@@ -82127,7 +82117,7 @@ Ext.cmd.derive(
         w = {
           gotWidth: false,
           gotHeight: false,
-          isContainer: (j = !m.hasRawContent),
+          isContainer: (j = !m.hasRawContent)
         },
         t = i || 3,
         q,
@@ -82328,7 +82318,7 @@ Ext.cmd.derive(
     },
     measureOwnerWidth: function (a) {
       return a.el.getWidth();
-    },
+    }
   },
   0,
   0,
@@ -82337,7 +82327,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.layout.component, "Component"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.Auto",
@@ -82355,7 +82345,7 @@ Ext.cmd.derive(
         b = c.owner.el;
       Ext.layout.component.Component.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (g && g.fixed && d.widthModel.shrinkWrap) {
         b.setWidth(null);
@@ -82470,7 +82460,7 @@ Ext.cmd.derive(
         }
         h.setWidth(e, d);
       }
-    },
+    }
   },
   0,
   0,
@@ -82479,7 +82469,7 @@ Ext.cmd.derive(
   ["layout.autocomponent"],
   0,
   [Ext.layout.component, "Auto"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.ProgressBar",
@@ -82519,7 +82509,7 @@ Ext.cmd.derive(
       } else {
         c.done = false;
       }
-    },
+    }
   },
   0,
   0,
@@ -82528,7 +82518,7 @@ Ext.cmd.derive(
   ["layout.progressbar"],
   0,
   [Ext.layout.component, "ProgressBar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.ProgressBar",
@@ -82550,7 +82540,7 @@ Ext.cmd.derive(
       '<div role="presentation">{text}</div>',
       "</div>",
       "</tpl>",
-      "</div>",
+      "</div>"
     ],
     componentLayout: "progressbar",
     ariaRole: "progressbar",
@@ -82559,7 +82549,7 @@ Ext.cmd.derive(
     autoEl: {
       "aria-valuemin": "0",
       "aria-valuenow": "0",
-      "aria-valuemax": "100",
+      "aria-valuemax": "100"
     },
     initRenderData: function () {
       var a = this,
@@ -82569,7 +82559,7 @@ Ext.cmd.derive(
       return Ext.apply(b, {
         internalText: !a.hasOwnProperty("textEl"),
         text: a.text || Math.round(c * 100) + "%",
-        percentage: c * 100,
+        percentage: c * 100
       });
     },
     onRender: function () {
@@ -82622,8 +82612,8 @@ Ext.cmd.derive(
           d.bar.animate(
             Ext.apply(
               { from: { width: b * 100 + "%" }, to: { width: e * 100 + "%" } },
-              d.animate,
-            ),
+              d.animate
+            )
           );
         } else {
           d.bar.setStyle("width", e * 100 + "%");
@@ -82671,7 +82661,7 @@ Ext.cmd.derive(
             b.updateProgress(
               (((d + e) % e) + 1) * (100 / e) * 0.01,
               null,
-              c.animate,
+              c.animate
             );
           },
           interval: c.interval || 1000,
@@ -82682,7 +82672,7 @@ Ext.cmd.derive(
             }
             b.reset();
           },
-          scope: a,
+          scope: a
         });
       }
       return b;
@@ -82724,7 +82714,7 @@ Ext.cmd.derive(
         }
       }
       Ext.Component.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["progressbar"],
@@ -82734,11 +82724,11 @@ Ext.cmd.derive(
   [
     [
       Ext.ProgressBase.prototype.mixinId || Ext.ProgressBase.$className,
-      Ext.ProgressBase,
-    ],
+      Ext.ProgressBase
+    ]
   ],
   [Ext, "ProgressBar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.ButtonElement",
@@ -82779,10 +82769,10 @@ Ext.cmd.derive(
       Ext.dom.Element.prototype.setWidth.call(this, b, a);
       this.component.btnWrap.setStyle(
         "table-layout",
-        !b || b === "auto" ? "" : "fixed",
+        !b || b === "auto" ? "" : "fixed"
       );
       return this;
-    },
+    }
   },
   0,
   0,
@@ -82791,7 +82781,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "ButtonElement"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.button.Manager",
@@ -82871,7 +82861,7 @@ Ext.cmd.derive(
         }
       }
       return null;
-    },
+    }
   },
   0,
   0,
@@ -82880,7 +82870,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.button, "Manager", Ext, "ButtonToggleManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.Manager",
@@ -83014,9 +83004,9 @@ Ext.cmd.derive(
       Ext.on({
         mousedown: a.checkActiveMenus,
         scroll: a.onGlobalScroll,
-        scope: a,
+        scope: a
       });
-    },
+    }
   },
   1,
   0,
@@ -83025,7 +83015,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.menu, "Manager", Ext.menu, "MenuMgr"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.ClickRepeater",
@@ -83107,7 +83097,7 @@ Ext.cmd.derive(
         this.delay = 400;
       }
       this.timer = Ext.defer(this.click, this.delay || this.interval, this, [
-        a,
+        a
       ]);
       if (this.mousedownPreventDefault) {
         a.preventDefault();
@@ -83125,11 +83115,11 @@ Ext.cmd.derive(
               Ext.Date.getElapsed(this.mousedownTime),
               400,
               -390,
-              12000,
+              12000
             )
           : this.interval,
         this,
-        [a],
+        [a]
       );
     },
     easeOutExpo: function (e, a, h, g) {
@@ -83158,7 +83148,7 @@ Ext.cmd.derive(
         this.el.removeCls(this.pressedCls);
       }
       this.fireEvent("mouseup", this, a);
-    },
+    }
   },
   1,
   0,
@@ -83167,7 +83157,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ClickRepeater"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.button.Button",
@@ -83179,7 +83169,7 @@ Ext.cmd.derive(
       text: null,
       textAlign: "center",
       arrowVisible: true,
-      glyph: null,
+      glyph: null
     },
     isButton: true,
     _syncFrameHeight: true,
@@ -83204,7 +83194,7 @@ Ext.cmd.derive(
       scope: "this",
       SPACE: "onEnterKey",
       ENTER: "onEnterKey",
-      DOWN: "onDownKey",
+      DOWN: "onDownKey"
     },
     defaultBindProperty: "text",
     childEls: ["btnEl", "btnWrap", "btnInnerEl", "btnIconEl", "arrowEl"],
@@ -83312,7 +83302,7 @@ Ext.cmd.derive(
     initRenderData: function () {
       return Ext.apply(
         Ext.Component.prototype.initRenderData.call(this),
-        this.getTemplateArgs(),
+        this.getTemplateArgs()
       );
     },
     getMenu: function () {
@@ -83388,7 +83378,7 @@ Ext.cmd.derive(
           scope: c,
           mouseover: c.onMouseOver,
           mouseout: c.onMouseOut,
-          mousedown: c.onMouseDown,
+          mousedown: c.onMouseDown
         };
         if (c.split) {
           b.mousemove = c.onMouseMove;
@@ -83404,7 +83394,7 @@ Ext.cmd.derive(
           new Ext.util.ClickRepeater(a, Ext.isObject(c.repeat) ? c.repeat : {}),
           "click",
           c.onRepeatClick,
-          c,
+          c
         );
       } else {
         if (b[c.clickEvent]) {
@@ -83466,7 +83456,7 @@ Ext.cmd.derive(
         textAlignCls: b + "-" + h.getTextAlign(),
         arrowElCls: h._arrowElCls,
         arrowElStyle: h.arrowVisible ? "" : "display:none",
-        tabIndex: h.tabIndex,
+        tabIndex: h.tabIndex
       };
     },
     renderIcon: function (a) {
@@ -83499,7 +83489,7 @@ Ext.cmd.derive(
       return a
         ? Ext.urlAppend(
             a,
-            Ext.Object.toQueryString(Ext.apply({}, b.params, b.baseParams)),
+            Ext.Object.toQueryString(Ext.apply({}, b.params, b.baseParams))
           )
         : false;
     },
@@ -84010,7 +84000,7 @@ Ext.cmd.derive(
         btnWrap: "_btnWrapCls",
         btnEl: "_btnCls",
         btnIconEl: "_baseIconCls",
-        btnInnerEl: "_innerCls",
+        btnInnerEl: "_innerCls"
       },
       addUIToElement: function () {
         Ext.Component.prototype.addUIToElement.call(this);
@@ -84074,8 +84064,8 @@ Ext.cmd.derive(
       wrapPrimaryEl: function (a) {
         this.el = new Ext.dom.ButtonElement(a);
         Ext.Component.prototype.wrapPrimaryEl.call(this, a);
-      },
-    },
+      }
+    }
   },
   0,
   ["button"],
@@ -84085,11 +84075,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
-    ],
+      Ext.mixin.Queryable
+    ]
   ],
   [Ext.button, "Button", Ext, "Button"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.button.Split",
@@ -84248,8 +84238,8 @@ Ext.cmd.derive(
         Ext.button.Button.prototype._removeSplitCls.call(this);
         a.dom.removeAttribute("tabIndex");
         a.setVisible(false);
-      },
-    },
+      }
+    }
   },
   0,
   ["splitbutton"],
@@ -84258,7 +84248,7 @@ Ext.cmd.derive(
   ["widget.splitbutton"],
   0,
   [Ext.button, "Split", Ext, "SplitButton"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.button.Cycle",
@@ -84324,9 +84314,9 @@ Ext.cmd.derive(
             itemIndex: c,
             checkHandler: g.checkHandler,
             scope: g,
-            checked: d.checked || false,
+            checked: d.checked || false
           },
-          d,
+          d
         );
         g.menu.items.push(d);
         if (d.checked) {
@@ -84349,7 +84339,7 @@ Ext.cmd.derive(
         b;
       b = c.activeItem.next(":not([disabled])") || a.items.getAt(0);
       b.setChecked(true);
-    },
+    }
   },
   0,
   ["cycle"],
@@ -84358,7 +84348,7 @@ Ext.cmd.derive(
   ["widget.cycle"],
   0,
   [Ext.button, "Cycle", Ext, "CycleButton"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.SegmentedButton",
@@ -84391,7 +84381,7 @@ Ext.cmd.derive(
           a.destroy();
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -84400,7 +84390,7 @@ Ext.cmd.derive(
   ["layout.segmentedbutton"],
   0,
   [Ext.layout.container, "SegmentedButton"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.button.Segmented",
@@ -84412,7 +84402,7 @@ Ext.cmd.derive(
       forceSelection: false,
       allowToggle: true,
       vertical: false,
-      defaultUI: "default",
+      defaultUI: "default"
     },
     beforeRenderConfig: { value: undefined },
     defaultBindProperty: "value",
@@ -84510,7 +84500,7 @@ Ext.cmd.derive(
         show: a,
         beforetoggle: "_onBeforeItemToggle",
         toggle: "_onItemToggle",
-        scope: b,
+        scope: b
       });
       if (b.getAllowToggle()) {
         c.enableToggle = true;
@@ -84542,7 +84532,7 @@ Ext.cmd.derive(
         c;
       if (this.rendered) {
         Ext.raise(
-          "Changing the ui config of a segmented button after render is not supported.",
+          "Changing the ui config of a segmented button after render is not supported."
         );
       } else {
         if (a) {
@@ -84675,8 +84665,8 @@ Ext.cmd.derive(
           }
           l[e - 1].addCls(k);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["segmentedbutton"],
@@ -84685,7 +84675,7 @@ Ext.cmd.derive(
   ["widget.segmentedbutton"],
   0,
   [Ext.button, "Segmented"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Bar",
@@ -84701,7 +84691,7 @@ Ext.cmd.derive(
         a
           ? { type: "vbox", align: "middle", alignRoundingMethod: "ceil" }
           : { type: "hbox", align: "middle", alignRoundingMethod: "floor" },
-        b.layout,
+        b.layout
       );
       Ext.container.Container.prototype.initComponent.call(this);
     },
@@ -84740,7 +84730,7 @@ Ext.cmd.derive(
       clearOrientation: function () {
         this.removeClsWithUI([
           this.vertical ? "vertical" : "horizontal",
-          this.getDockName(),
+          this.getDockName()
         ]);
       },
       getDockName: function () {
@@ -84751,8 +84741,8 @@ Ext.cmd.derive(
           b = c.dock,
           a = (c.vertical = b ? b in c._verticalSides : c.vertical);
         c.addClsWithUI([a ? "vertical" : "horizontal", c.getDockName()]);
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -84761,7 +84751,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.panel, "Bar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Title",
@@ -84780,7 +84770,7 @@ Ext.cmd.derive(
       icon: null,
       iconAlign: null,
       iconCls: null,
-      rotation: null,
+      rotation: null
     },
     autoEl: { role: "presentation", unselectable: "on" },
     textElRole: "presentation",
@@ -84793,18 +84783,18 @@ Ext.cmd.derive(
     _textAlignClasses: {
       left: "x-title-align-left",
       center: "x-title-align-center",
-      right: "x-title-align-right",
+      right: "x-title-align-right"
     },
     _iconAlignClasses: {
       top: "x-title-icon-top",
       right: "x-title-icon-right",
       bottom: "x-title-icon-bottom",
-      left: "x-title-icon-left",
+      left: "x-title-icon-left"
     },
     _rotationClasses: {
       0: "x-title-rotate-none",
       1: "x-title-rotate-right",
-      2: "x-title-rotate-left",
+      2: "x-title-rotate-left"
     },
     _rotationAngles: { 1: 90, 2: 270 },
     baseCls: "x-title",
@@ -84826,7 +84816,7 @@ Ext.cmd.derive(
         e = a.x;
         c.setStyle(
           d._getVerticalAdjustDirection(),
-          e + (b === 1 ? a.width : -a.height) + "px",
+          e + (b === 1 ? a.width : -a.height) + "px"
         );
       }
       Ext.Component.prototype.afterComponentLayout.call(this);
@@ -84880,7 +84870,7 @@ Ext.cmd.derive(
         iconAlignCls: e._iconAlignClasses[a],
         glyph: d,
         glyphCls: d ? e._glyphCls : "",
-        glyphFontFamily: g,
+        glyphFontFamily: g
       };
     },
     initRenderData: function () {
@@ -84896,9 +84886,9 @@ Ext.cmd.derive(
           itemCls: b._itemCls,
           textCls: b._textCls,
           iconMarkup: null,
-          iconBeforeTitle: null,
+          iconBeforeTitle: null
         },
-        Ext.Component.prototype.initRenderData.call(this),
+        Ext.Component.prototype.initRenderData.call(this)
       );
       if (b._hasIcon()) {
         a = b.getIconAlign();
@@ -85054,7 +85044,7 @@ Ext.cmd.derive(
           c = b === "left" || b === "top";
           d.dom.insertAdjacentHTML(
             c ? "afterbegin" : "beforeend",
-            e.getIconMarkup(),
+            e.getIconMarkup()
           );
           g = e.iconWrapEl = d[c ? "first" : "last"]();
           e.iconEl = g.first();
@@ -85062,8 +85052,8 @@ Ext.cmd.derive(
         if (g) {
           g.setDisplayed(a);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["title"],
@@ -85072,7 +85062,7 @@ Ext.cmd.derive(
   ["widget.title"],
   0,
   [Ext.panel, "Title"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Tool",
@@ -85086,7 +85076,7 @@ Ext.cmd.derive(
     toolOverCls: "x-tool-over",
     childEls: ["toolEl"],
     renderTpl: [
-      '<div id="{id}-toolEl" data-ref="toolEl" class="{className} {childElCls}" role="presentation"<tpl if="glyph"><tpl if="glyphFontFamily"> style="font-family:{glyphFontFamily};"></tpl>{glyph}<tpl else>></tpl></div>',
+      '<div id="{id}-toolEl" data-ref="toolEl" class="{className} {childElCls}" role="presentation"<tpl if="glyph"><tpl if="glyphFontFamily"> style="font-family:{glyphFontFamily};"></tpl>{glyph}<tpl else>></tpl></div>'
     ],
     toolOwner: null,
     tooltipType: "qtip",
@@ -85114,7 +85104,7 @@ Ext.cmd.derive(
       Ext.applyIf(c, {
         className: b.calculateClassName(),
         glyph: a,
-        glyphFontFamily: d,
+        glyphFontFamily: d
       });
       return c;
     },
@@ -85143,7 +85133,7 @@ Ext.cmd.derive(
         mousedown: a.onMouseDown,
         mouseover: a.onMouseOver,
         mouseout: a.onMouseOut,
-        scope: a,
+        scope: a
       });
       b = a.tooltip;
       if (b) {
@@ -85296,7 +85286,7 @@ Ext.cmd.derive(
               a.scope,
               [a.toolOwner || a.ownerCt, a, c],
               0,
-              a,
+              a
             );
           }
         }
@@ -85329,8 +85319,8 @@ Ext.cmd.derive(
           a.removeCls(b);
           a.addCls(this.calculateClassName());
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["tool"],
@@ -85339,7 +85329,7 @@ Ext.cmd.derive(
   ["widget.tool"],
   0,
   [Ext.panel, "Tool"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.KeyMap",
@@ -85379,7 +85369,7 @@ Ext.cmd.derive(
       Ext.apply(c, {
         target: Ext.get(b),
         eventName: a || c.eventName,
-        bindings: [],
+        bindings: []
       });
       if (d) {
         c.addBinding(d);
@@ -85573,7 +85563,7 @@ Ext.cmd.derive(
         ctrl: e,
         alt: g,
         fn: d,
-        scope: c,
+        scope: c
       });
     },
     isEnabled: function () {
@@ -85584,7 +85574,7 @@ Ext.cmd.derive(
       if (!a.enabled) {
         a.target.on(a.eventName, a.handleTargetEvent, a, {
           capture: a.capture,
-          priority: a.priority,
+          priority: a.priority
         });
         a.enabled = true;
       }
@@ -85613,7 +85603,7 @@ Ext.cmd.derive(
       }
       delete a.target;
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -85622,7 +85612,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "KeyMap", Ext, "KeyMap"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.KeyNav",
@@ -85648,8 +85638,8 @@ Ext.cmd.derive(
         end: 35,
         enter: 13,
         esc: 27,
-        tab: 9,
-      },
+        tab: 9
+      }
     },
     constructor: function (a) {
       var b = this;
@@ -85669,9 +85659,9 @@ Ext.cmd.derive(
           ignoreInputFields: a.ignoreInputFields,
           eventName: c.getKeyEvent(
             "forceKeyDown" in a ? a.forceKeyDown : c.forceKeyDown,
-            a.eventName,
+            a.eventName
           ),
-          capture: a.capture,
+          capture: a.capture
         },
         d;
       if (c.map) {
@@ -85718,7 +85708,7 @@ Ext.cmd.derive(
               defaultEventAction:
                 i.defaultEventAction !== undefined
                   ? i.defaultEventAction
-                  : c.defaultEventAction,
+                  : c.defaultEventAction
             };
           }
           e.addBinding({
@@ -85730,12 +85720,12 @@ Ext.cmd.derive(
               c.handleEvent,
               g.scope || h,
               [g.handler || g.fn, c],
-              true,
+              true
             ),
             defaultEventAction:
               g.defaultEventAction !== undefined
                 ? g.defaultEventAction
-                : c.defaultEventAction,
+                : c.defaultEventAction
           });
         }
       }
@@ -85774,7 +85764,7 @@ Ext.cmd.derive(
       } else {
         return a || this.eventName;
       }
-    },
+    }
   },
   1,
   0,
@@ -85783,7 +85773,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "KeyNav", Ext, "KeyNav"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.FocusableContainer",
@@ -85795,13 +85785,13 @@ Ext.cmd.derive(
         onAdd: "onFocusableChildAdd",
         onRemove: "onFocusableChildRemove",
         doDestroy: "destroyFocusableContainer",
-        onFocusEnter: "onFocusEnter",
+        onFocusEnter: "onFocusEnter"
       },
       after: {
         afterRender: "initFocusableContainer",
         onFocusLeave: "onFocusLeave",
-        afterShow: "activateFocusableContainer",
-      },
+        afterShow: "activateFocusableContainer"
+      }
     },
     isFocusableContainer: true,
     enableFocusableContainer: true,
@@ -85854,7 +85844,7 @@ Ext.cmd.derive(
           up: b.onFocusableContainerUpKey,
           down: b.onFocusableContainerDownKey,
           left: b.onFocusableContainerLeftKey,
-          right: b.onFocusableContainerRightKey,
+          right: b.onFocusableContainerRightKey
         });
       },
       destroyFocusableContainer: function () {
@@ -86193,8 +86183,8 @@ Ext.cmd.derive(
       },
       onFocusableChildMasked: Ext.privateFn,
       onFocusableChildDestroy: Ext.privateFn,
-      onFocusableChildUpdate: Ext.privateFn,
-    },
+      onFocusableChildUpdate: Ext.privateFn
+    }
   },
   0,
   0,
@@ -86203,7 +86193,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "FocusableContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Header",
@@ -86231,11 +86221,11 @@ Ext.cmd.derive(
             b = { text: b };
           }
           return Ext.merge(a ? Ext.Object.chain(a) : {}, b);
-        },
+        }
       },
       titleAlign: null,
       titlePosition: null,
-      titleRotation: null,
+      titleRotation: null
     },
     headerCls: "x-header",
     initComponent: function () {
@@ -86262,7 +86252,7 @@ Ext.cmd.derive(
         dblclick: d.onDblClick,
         click: d.onClick,
         element: "el",
-        scope: d,
+        scope: d
       });
     },
     addTool: function (a) {
@@ -86519,8 +86509,8 @@ Ext.cmd.derive(
         } else {
           b.removeCls(c);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["header"],
@@ -86531,11 +86521,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.panel, "Header"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.boxOverflow.None",
@@ -86619,7 +86609,7 @@ Ext.cmd.derive(
         c = a.innerCt;
       c.removeCls(b.getOverflowCls(a.oppositeDirection));
       c.addCls(b.getOverflowCls(a.direction));
-    },
+    }
   },
   1,
   0,
@@ -86630,11 +86620,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.layout.container.boxOverflow, "None", Ext.layout.boxOverflow, "None"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.boxOverflow.Scroller",
@@ -86660,7 +86650,7 @@ Ext.cmd.derive(
         role: "presentation",
         id: this.layout.owner.id + this.beforeSuffix,
         cls: this.createScrollerCls("beforeX"),
-        style: "display:none",
+        style: "display:none"
       };
     },
     getSuffixConfig: function () {
@@ -86668,7 +86658,7 @@ Ext.cmd.derive(
         role: "presentation",
         id: this.layout.owner.id + this.afterSuffix,
         cls: this.createScrollerCls("afterX"),
-        style: "display:none",
+        style: "display:none"
       };
     },
     createScrollerCls: function (e) {
@@ -86705,7 +86695,7 @@ Ext.cmd.derive(
       a.innerCtScrollPos = this.getScrollPosition();
       Ext.layout.container.boxOverflow.None.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
     },
     finishedLayout: function (d) {
@@ -86723,7 +86713,7 @@ Ext.cmd.derive(
       }
       Ext.layout.container.boxOverflow.None.prototype.finishedLayout.call(
         this,
-        d,
+        d
       );
     },
     handleOverflow: function (b) {
@@ -86749,7 +86739,7 @@ Ext.cmd.derive(
         (a._beforeScroller = a.createScroller(
           a.beforeSuffix,
           "beforeRepeater",
-          "scrollLeft",
+          "scrollLeft"
         ))
       );
     },
@@ -86760,7 +86750,7 @@ Ext.cmd.derive(
         (a._afterScroller = a.createScroller(
           a.afterSuffix,
           "afterRepeater",
-          "scrollRight",
+          "scrollRight"
         ))
       );
     },
@@ -86776,14 +86766,14 @@ Ext.cmd.derive(
       e[d] = new Ext.util.ClickRepeater(a, {
         interval: e.scrollRepeatInterval,
         handler: h,
-        scope: e,
+        scope: e
       });
       return a;
     },
     createWheelListener: function () {
       var a = this;
       a.wheelListener = a.layout.innerCt.on("mousewheel", a.onMouseWheel, a, {
-        destroyable: true,
+        destroyable: true
       });
     },
     onMouseWheel: function (a) {
@@ -86804,7 +86794,7 @@ Ext.cmd.derive(
       a.getBeforeScroller().show();
       a.getAfterScroller().show();
       a.layout.owner.addClsWithUI(
-        a.layout.direction === "vertical" ? "vertical-scroller" : "scroller",
+        a.layout.direction === "vertical" ? "vertical-scroller" : "scroller"
       );
     },
     hideScrollers: function () {
@@ -86815,7 +86805,7 @@ Ext.cmd.derive(
         c.hide();
         a.hide();
         b.layout.owner.removeClsWithUI(
-          b.layout.direction === "vertical" ? "vertical-scroller" : "scroller",
+          b.layout.direction === "vertical" ? "vertical-scroller" : "scroller"
         );
       }
     },
@@ -86826,7 +86816,7 @@ Ext.cmd.derive(
         "afterRepeater",
         "_beforeScroller",
         "_afterScroller",
-        "wheelListener",
+        "wheelListener"
       );
       this.callParent();
     },
@@ -86837,7 +86827,7 @@ Ext.cmd.derive(
       return {
         duration: this.scrollDuration,
         callback: this.updateScrollButtons,
-        scope: this,
+        scope: this
       };
     },
     updateScrollButtons: function () {
@@ -86908,7 +86898,7 @@ Ext.cmd.derive(
         e.innerCt[h.scrollTo](
           h.beforeScrollX,
           c,
-          b ? g.getScrollAnim() : false,
+          b ? g.getScrollAnim() : false
         );
         if (b) {
           g.scrolling = true;
@@ -86962,9 +86952,9 @@ Ext.cmd.derive(
       return {
         hiddenStart: e < a,
         hiddenEnd: d > i,
-        fullyVisible: e >= a && d <= i,
+        fullyVisible: e >= a && d <= i
       };
-    },
+    }
   },
   1,
   0,
@@ -86976,9 +86966,9 @@ Ext.cmd.derive(
     Ext.layout.container.boxOverflow,
     "Scroller",
     Ext.layout.boxOverflow,
-    "Scroller",
+    "Scroller"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DragDropManager",
@@ -87155,7 +87145,7 @@ Ext.cmd.derive(
           translate: false,
           fn: g.handleMouseUp,
           capture: false,
-          priority: -1000,
+          priority: -1000
         },
         b = { translate: false, fn: g.handleMouseMove, capture: false },
         h = { capture: true, destroyable: true, scope: g },
@@ -87335,8 +87325,7 @@ Ext.cmd.derive(
         }
         u = u.chain({
           target:
-            w.elementFromPoint(u.clientX, u.clientY) ||
-            document.documentElement,
+            w.elementFromPoint(u.clientX, u.clientY) || document.documentElement
         });
         if (j) {
           c.style.visibility = "visible";
@@ -87574,7 +87563,7 @@ Ext.cmd.derive(
         g.y,
         g.x + b.offsetWidth,
         g.y + b.offsetHeight,
-        g.x,
+        g.x
       );
       h = d.intersect(e);
       if (h) {
@@ -87696,7 +87685,7 @@ Ext.cmd.derive(
         }
       }
       return false;
-    },
+    }
   },
   0,
   0,
@@ -87709,7 +87698,7 @@ Ext.cmd.derive(
     Ext.onInternalReady(function () {
       a.addListeners();
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.resizer.Splitter",
@@ -87724,7 +87713,7 @@ Ext.cmd.derive(
       "x-",
       'layout-split-{collapseDir}{childElCls}">',
       "</div>",
-      "</tpl>",
+      "</tpl>"
     ],
     isSplitter: true,
     baseCls: "x-splitter",
@@ -87752,7 +87741,7 @@ Ext.cmd.derive(
     getTrackerConfig: function () {
       return Ext.apply(
         { xclass: "Ext.resizer.SplitterTracker", el: this.el, splitter: this },
-        this.tracker,
+        this.tracker
       );
     },
     beforeRender: function () {
@@ -87769,7 +87758,7 @@ Ext.cmd.derive(
       }
       Ext.applyIf(c.renderData, {
         collapseDir: c.getCollapseDirection(),
-        collapsible: b !== null ? b : d.collapsible,
+        collapsible: b !== null ? b : d.collapsible
       });
       c.ariaRenderAttributes = c.ariaRenderAttributes || {};
       c.ariaRenderAttributes["aria-orientation"] = c.orientation;
@@ -87795,7 +87784,7 @@ Ext.cmd.derive(
           expand: b.onTargetExpand,
           beforeexpand: b.onBeforeTargetExpand,
           beforecollapse: b.onBeforeTargetCollapse,
-          scope: b,
+          scope: b
         });
       }
       if (b.canResize) {
@@ -87835,7 +87824,7 @@ Ext.cmd.derive(
         g.collapseDirection = c;
       }
       g.setOrientation(
-        c === "top" || c === "bottom" ? "horizontal" : "vertical",
+        c === "top" || c === "bottom" ? "horizontal" : "vertical"
       );
       return c;
     },
@@ -87882,19 +87871,19 @@ Ext.cmd.derive(
       top: { cls: "x-layout-split-top" },
       right: { cls: "x-layout-split-right" },
       bottom: { cls: "x-layout-split-bottom" },
-      left: { cls: "x-layout-split-left" },
+      left: { cls: "x-layout-split-left" }
     },
     orientationProps: {
       horizontal: {
         opposite: "vertical",
         fixedAxis: "height",
-        stretchedAxis: "width",
+        stretchedAxis: "width"
       },
       vertical: {
         opposite: "horizontal",
         fixedAxis: "width",
-        stretchedAxis: "height",
-      },
+        stretchedAxis: "height"
+      }
     },
     applyCollapseDirection: function () {
       var c = this,
@@ -87973,7 +87962,7 @@ Ext.cmd.derive(
     doDestroy: function () {
       Ext.destroy(this.tracker);
       Ext.Component.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["splitter"],
@@ -87982,7 +87971,7 @@ Ext.cmd.derive(
   ["widget.splitter"],
   0,
   [Ext.resizer, "Splitter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Box",
@@ -88001,13 +87990,13 @@ Ext.cmd.derive(
             b = { type: b };
           }
           return Ext.merge(a ? Ext.Object.chain(a) : {}, b);
-        },
+        }
       },
       padding: 0,
       pack: "start",
       stretchMaxPartner: undefined,
       vertical: false,
-      alignRoundingMethod: "round",
+      alignRoundingMethod: "round"
     },
     itemCls: "x-box-item",
     targetCls: "x-box-layout-ct",
@@ -88018,7 +88007,7 @@ Ext.cmd.derive(
     childEls: ["innerCt", "targetEl"],
     renderTpl: [
       '{%var oc,l=values.$comp.layout,oh=l.overflowHandler;if (oh && oh.getPrefixConfig!==Ext.emptyFn) {if(oc=oh.getPrefixConfig())dh.generateMarkup(oc, out)}%}<div id="{ownerId}-innerCt" data-ref="innerCt" role="presentation" class="{[l.innerCls]}{[oh ? (" " + oh.getOverflowCls(l.direction)) : ""]}"><div id="{ownerId}-targetEl" data-ref="targetEl" class="{targetElCls}" role="presentation">{%this.renderBody(out, values)%}</div></div>{%if (oh && oh.getSuffixConfig!==Ext.emptyFn) {if(oc=oh.getSuffixConfig())dh.generateMarkup(oc, out)}%}',
-      { disableFormats: true, definitions: "var dh=Ext.DomHelper;" },
+      { disableFormats: true, definitions: "var dh=Ext.DomHelper;" }
     ],
     constructor: function (a) {
       var c = this,
@@ -88181,7 +88170,7 @@ Ext.cmd.derive(
       Ext.layout.container.Container.prototype.beginLayoutCycle.call(
         this,
         d,
-        n,
+        n
       );
       d.parallelSizeModel = h = d[j.widthModel];
       d.perpendicularSizeModel = g = d[j.heightModel];
@@ -88190,15 +88179,15 @@ Ext.cmd.derive(
           stretch: i === "stretch",
           stretchmax: i === "stretchmax",
           center: c.test(i),
-          bottom: k._endRe.test(i),
+          bottom: k._endRe.test(i)
         }),
-        pack: (m = { center: c.test(m), end: m === "end" }),
+        pack: (m = { center: c.test(m), end: m === "end" })
       };
       if (l) {
         if (!b) {
           a.canScroll = {
             parallel: !h.shrinkWrap && l[j.getX](),
-            perpendicular: !g.shrinkWrap && l[j.getY](),
+            perpendicular: !g.shrinkWrap && l[j.getY]()
           };
         }
         if (!a.actualScroll) {
@@ -88303,7 +88292,7 @@ Ext.cmd.derive(
         a.needsScroll = j = {
           parallel: b.parallel && i.targetSize[g.width] < c.smallestWidth,
           perpendicular:
-            b.perpendicular && i.targetSize[g.height] < c.smallestHeight,
+            b.perpendicular && i.targetSize[g.height] < c.smallestHeight
         };
       }
       if (!a.parallelDone) {
@@ -88319,7 +88308,7 @@ Ext.cmd.derive(
             j.perpendicular !== e.perpendicular
           ) {
             c.invalidate({
-              state: { scrollPass: true, canScroll: b, needsScroll: e },
+              state: { scrollPass: true, canScroll: b, needsScroll: e }
             });
             h.done = false;
             return;
@@ -88536,7 +88525,7 @@ Ext.cmd.derive(
               after: C,
               layout: t,
               childHeight: o,
-              names: M,
+              names: M
             });
             v.state.parallelDone = false;
           }
@@ -88563,7 +88552,7 @@ Ext.cmd.derive(
         }
       }
       v[M.setContentHeight](
-        H + t.padding[l] + v.targetContext.getPaddingInfo()[l],
+        H + t.padding[l] + v.targetContext.getPaddingInfo()[l]
       );
       if (L) {
         H -= a;
@@ -88651,7 +88640,7 @@ Ext.cmd.derive(
             childHeight: b,
             childX: j.x,
             childY: j.y,
-            names: k,
+            names: k
           });
         }
       }
@@ -88799,7 +88788,7 @@ Ext.cmd.derive(
           id: d.id + "-splitter",
           hidden: g,
           splitterFor: d,
-          synthetic: true,
+          synthetic: true
         },
         a = c + (b.collapseTarget === "prev" ? 1 : 0);
       e[this.names.height] = "100%";
@@ -88845,7 +88834,7 @@ Ext.cmd.derive(
       q[i.setWidth](c);
       q[i.setHeight](o);
       b.targetElContext.setWidth(
-        b.innerCtContext.props.width - (j.vertical ? 0 : d || 0),
+        b.innerCtContext.props.width - (j.vertical ? 0 : d || 0)
       );
       if (isNaN(c + o)) {
         j.done = false;
@@ -88864,7 +88853,7 @@ Ext.cmd.derive(
           } else {
             b = Ext.apply(
               { collapseTarget: b.side === "before" ? "next" : "prev" },
-              b,
+              b
             );
           }
         }
@@ -88994,7 +88983,7 @@ Ext.cmd.derive(
           setHeightInDom: "setHeightInDom",
           getScrollLeft: "getScrollLeft",
           setScrollLeft: "setScrollLeft",
-          scrollTo: "scrollTo",
+          scrollTo: "scrollTo"
         },
         sizePolicy: {
           flex: {
@@ -89003,29 +88992,29 @@ Ext.cmd.derive(
               readsWidth: 0,
               readsHeight: 0,
               setsWidth: 1,
-              setsHeight: 1,
+              setsHeight: 1
             },
             stretchmax: {
               readsWidth: 0,
               readsHeight: 1,
               setsWidth: 1,
-              setsHeight: 1,
-            },
+              setsHeight: 1
+            }
           },
           "": { readsWidth: 1, readsHeight: 1, setsWidth: 0, setsHeight: 0 },
           stretch: {
             readsWidth: 1,
             readsHeight: 0,
             setsWidth: 0,
-            setsHeight: 1,
+            setsHeight: 1
           },
           stretchmax: {
             readsWidth: 1,
             readsHeight: 1,
             setsWidth: 0,
-            setsHeight: 1,
-          },
-        },
+            setsHeight: 1
+          }
+        }
       },
       vbox: {
         direction: "vertical",
@@ -89081,7 +89070,7 @@ Ext.cmd.derive(
           setHeightInDom: "setWidthInDom",
           getScrollLeft: "getScrollTop",
           setScrollLeft: "setScrollTop",
-          scrollTo: "scrollTo",
+          scrollTo: "scrollTo"
         },
         sizePolicy: {
           flex: {
@@ -89090,31 +89079,31 @@ Ext.cmd.derive(
               readsWidth: 0,
               readsHeight: 0,
               setsWidth: 1,
-              setsHeight: 1,
+              setsHeight: 1
             },
             stretchmax: {
               readsWidth: 1,
               readsHeight: 0,
               setsWidth: 1,
-              setsHeight: 1,
-            },
+              setsHeight: 1
+            }
           },
           "": { readsWidth: 1, readsHeight: 1, setsWidth: 0, setsHeight: 0 },
           stretch: {
             readsWidth: 0,
             readsHeight: 1,
             setsWidth: 1,
-            setsHeight: 0,
+            setsHeight: 0
           },
           stretchmax: {
             readsWidth: 1,
             readsHeight: 1,
             setsWidth: 1,
-            setsHeight: 0,
-          },
-        },
-      },
-    },
+            setsHeight: 0
+          }
+        }
+      }
+    }
   },
   1,
   0,
@@ -89123,7 +89112,7 @@ Ext.cmd.derive(
   ["layout.box"],
   0,
   [Ext.layout.container, "Box", Ext.layout, "BoxLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.HBox",
@@ -89131,7 +89120,7 @@ Ext.cmd.derive(
   {
     alternateClassName: "Ext.layout.HBoxLayout",
     type: "hbox",
-    vertical: false,
+    vertical: false
   },
   0,
   0,
@@ -89140,7 +89129,7 @@ Ext.cmd.derive(
   ["layout.hbox"],
   0,
   [Ext.layout.container, "HBox", Ext.layout, "HBoxLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.VBox",
@@ -89153,7 +89142,7 @@ Ext.cmd.derive(
   ["layout.vbox"],
   0,
   [Ext.layout.container, "VBox", Ext.layout, "VBoxLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Toolbar",
@@ -89178,8 +89167,8 @@ Ext.cmd.derive(
       shortcuts: { "-": "tbseparator", " ": "tbspacer" },
       shortcutsHV: {
         0: { "->": { xtype: "tbfill", height: 0 } },
-        1: { "->": { xtype: "tbfill", width: 0 } },
-      },
+        1: { "->": { xtype: "tbfill", width: 0 } }
+      }
     },
     initComponent: function () {
       var c = this,
@@ -89190,7 +89179,7 @@ Ext.cmd.derive(
       }
       c.layout = b = Ext.applyIf(Ext.isString(b) ? { type: b } : b || {}, {
         type: a ? "vbox" : "hbox",
-        align: a ? "stretchmax" : "middle",
+        align: a ? "stretchmax" : "middle"
       });
       if (c.overflowHandler) {
         b.overflowHandler = c.overflowHandler;
@@ -89211,7 +89200,7 @@ Ext.cmd.derive(
       var e = this,
         b = Ext.container.Container.prototype.getRefItems.apply(
           this,
-          arguments,
+          arguments
         ),
         d = e.layout,
         c;
@@ -89289,7 +89278,7 @@ Ext.cmd.derive(
         if (!Ext.isString(a)) {
           a = Ext.container.Container.prototype.applyDefaults.apply(
             this,
-            arguments,
+            arguments
           );
         }
         return a;
@@ -89301,7 +89290,7 @@ Ext.cmd.derive(
             mouseover: b.onButtonOver,
             menushow: b.onButtonMenuShow,
             menuhide: b.onButtonMenuHide,
-            scope: b,
+            scope: b
           });
         }
       },
@@ -89322,8 +89311,8 @@ Ext.cmd.derive(
       },
       onButtonMenuHide: function (a) {
         this.activeMenuBtn = null;
-      },
-    },
+      }
+    }
   },
   0,
   ["toolbar"],
@@ -89334,11 +89323,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.toolbar, "Toolbar", Ext, "Toolbar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DragDrop",
@@ -89421,7 +89410,7 @@ Ext.cmd.derive(
           x: k.left,
           y: k.top,
           width: Ext.Element.getViewportWidth(),
-          height: Ext.Element.getViewportHeight(),
+          height: Ext.Element.getViewportHeight()
         };
       } else {
         j = m.getXY();
@@ -89433,12 +89422,12 @@ Ext.cmd.derive(
       this.setXConstraint(
         a - (b.left || 0),
         g.width - a - h.width - (b.right || 0),
-        this.xTickSize,
+        this.xTickSize
       );
       this.setYConstraint(
         d - (b.top || 0),
         g.height - d - h.height - (b.bottom || 0),
-        this.yTickSize,
+        this.yTickSize
       );
     },
     getEl: function () {
@@ -89723,14 +89712,14 @@ Ext.cmd.derive(
         this.setXConstraint(
           this.leftConstraint,
           this.rightConstraint,
-          this.xTickSize,
+          this.xTickSize
         );
       }
       if (this.constrainY) {
         this.setYConstraint(
           this.topConstraint,
           this.bottomConstraint,
-          this.yTickSize,
+          this.yTickSize
         );
       }
     },
@@ -89756,7 +89745,7 @@ Ext.cmd.derive(
     },
     toString: function () {
       return "DragDrop " + this.id;
-    },
+    }
   },
   3,
   0,
@@ -89765,7 +89754,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DragDrop"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DD",
@@ -89802,11 +89791,11 @@ Ext.cmd.derive(
       if (!this.deltaSetXY) {
         j = this.cachedViewportSize = {
           width: i.getDocumentWidth(),
-          height: i.getDocumentHeight(),
+          height: i.getDocumentHeight()
         };
         a = [
           Math.max(0, Math.min(g.x, j.width - l.width)),
-          Math.max(0, Math.min(g.y, j.height - l.height)),
+          Math.max(0, Math.min(g.y, j.height - l.height))
         ];
         d.setXY(a);
         k = this.getLocalX(d);
@@ -89817,7 +89806,7 @@ Ext.cmd.derive(
         this.setLocalXY(
           d,
           Math.max(0, Math.min(g.x + this.deltaSetXY[0], j.width - l.width)),
-          Math.max(0, Math.min(g.y + this.deltaSetXY[1], j.height - l.height)),
+          Math.max(0, Math.min(g.y + this.deltaSetXY[1], j.height - l.height))
         );
       }
       this.cachePosition(g.x, g.y);
@@ -89903,7 +89892,7 @@ Ext.cmd.derive(
     },
     setLocalXY: function (b, a, c) {
       b.setLocalXY(a, c);
-    },
+    }
   },
   3,
   0,
@@ -89912,7 +89901,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DD"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DDProxy",
@@ -89969,7 +89958,7 @@ Ext.cmd.derive(
       if (c.centerFrame) {
         c.setDelta(
           Math.round(parseInt(b.width, 10) / 2),
-          Math.round(parseInt(b.height, 10) / 2),
+          Math.round(parseInt(b.height, 10) / 2)
         );
       }
       c.setDragElPos(e, d);
@@ -90009,7 +89998,7 @@ Ext.cmd.derive(
     afterDrag: function () {},
     toString: function () {
       return "DDProxy " + this.id;
-    },
+    }
   },
   3,
   0,
@@ -90018,7 +90007,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DDProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.StatusProxy",
@@ -90027,7 +90016,7 @@ Ext.cmd.derive(
     animRepair: false,
     childEls: ["ghost"],
     renderTpl: [
-      '<div class="x-dd-drop-icon" role="presentation"></div><div id="{id}-ghost" data-ref="ghost" class="x-dd-drag-ghost" role="presentation"></div>',
+      '<div class="x-dd-drop-icon" role="presentation"></div><div id="{id}-ghost" data-ref="ghost" class="x-dd-drag-ghost" role="presentation"></div>'
     ],
     repairCls: "x-dd-drag-repair",
     ariaRole: "presentation",
@@ -90043,7 +90032,7 @@ Ext.cmd.derive(
         id: b.id || Ext.id(),
         cls: "x-dd-drag-proxy " + this.dropNotAllowed,
         shadow: a.shadow || false,
-        renderTo: Ext.getDetachedBody(),
+        renderTo: Ext.getDetachedBody()
       });
       Ext.Component.prototype.constructor.apply(this, arguments);
       this.dropStatus = this.dropNotAllowed;
@@ -90109,7 +90098,7 @@ Ext.cmd.derive(
           to: { x: c[0], y: c[1] },
           stopAnimation: true,
           callback: b.afterRepair,
-          scope: b,
+          scope: b
         });
       } else {
         b.afterRepair();
@@ -90124,7 +90113,7 @@ Ext.cmd.derive(
       }
       delete a.callback;
       delete a.scope;
-    },
+    }
   },
   1,
   0,
@@ -90133,7 +90122,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "StatusProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DragSource",
@@ -90152,7 +90141,7 @@ Ext.cmd.derive(
       if (!this.proxy) {
         this.proxy = new Ext.dd.StatusProxy({
           id: this.el.id + "-drag-status-proxy",
-          animRepair: this.animRepair,
+          animRepair: this.animRepair
         });
       }
       Ext.dd.DDProxy.prototype.constructor.call(
@@ -90163,8 +90152,8 @@ Ext.cmd.derive(
           dragElId: this.proxy.id,
           resizeFrame: false,
           isTarget: false,
-          scroll: this.scroll === true,
-        },
+          scroll: this.scroll === true
+        }
       );
       this.dragging = false;
     },
@@ -90338,7 +90327,7 @@ Ext.cmd.derive(
     destroy: function () {
       Ext.destroy(this.proxy);
       Ext.dd.DDProxy.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -90347,7 +90336,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DragSource"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Proxy",
@@ -90397,7 +90386,7 @@ Ext.cmd.derive(
         if (b.insertProxy) {
           b.proxy = b.panel.el.insertSibling({
             role: "presentation",
-            cls: "x-panel-dd-spacer",
+            cls: "x-panel-dd-spacer"
           });
           b.proxy.setSize(a);
         }
@@ -90411,7 +90400,7 @@ Ext.cmd.derive(
       if (this.proxy) {
         a.insertBefore(this.proxy.dom, b);
       }
-    },
+    }
   },
   1,
   0,
@@ -90420,7 +90409,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.panel, "Proxy", Ext.dd, "PanelProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.DD",
@@ -90494,7 +90483,7 @@ Ext.cmd.derive(
           a.afterInvalidDrop(b, d);
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -90503,7 +90492,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.panel, "DD"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.Dock",
@@ -90524,7 +90513,7 @@ Ext.cmd.derive(
       setSize: "setWidth",
       shrinkWrapDock: "shrinkWrapDockWidth",
       size: "width",
-      sizeModel: "widthModel",
+      sizeModel: "widthModel"
     },
     vertAxisProps: {
       name: "vert",
@@ -90539,7 +90528,7 @@ Ext.cmd.derive(
       setSize: "setHeight",
       shrinkWrapDock: "shrinkWrapDockHeight",
       size: "height",
-      sizeModel: "heightModel",
+      sizeModel: "heightModel"
     },
     initializedBorders: -1,
     horizontalCollapsePolicy: { width: true, x: true },
@@ -90563,19 +90552,19 @@ Ext.cmd.derive(
       "x-docked-noborder-top",
       "x-docked-noborder-right",
       "x-docked-noborder-bottom",
-      "x-docked-noborder-left",
+      "x-docked-noborder-left"
     ],
     noBorderClassesSides: {
       top: "x-docked-noborder-top",
       right: "x-docked-noborder-right",
       bottom: "x-docked-noborder-bottom",
-      left: "x-docked-noborder-left",
+      left: "x-docked-noborder-left"
     },
     borderWidthProps: {
       top: "border-top-width",
       right: "border-right-width",
       bottom: "border-bottom-width",
-      left: "border-left-width",
+      left: "border-left-width"
     },
     _itemCls: "x-docked",
     handleItemBorders: function () {
@@ -90712,7 +90701,7 @@ Ext.cmd.derive(
         n;
       Ext.layout.component.Component.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
       h = c.getCollapsed();
       if (h !== k && k !== undefined) {
@@ -90754,7 +90743,7 @@ Ext.cmd.derive(
         h;
       Ext.layout.component.Component.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (e.owner.manageHeight) {
         if (e.lastBodyDisplay) {
@@ -90835,7 +90824,7 @@ Ext.cmd.derive(
           c.contentWidth,
           d.widthModel,
           l.horzAxisProps,
-          d.collapsedHorz,
+          d.collapsedHorz
         );
       i =
         !e &&
@@ -90844,7 +90833,7 @@ Ext.cmd.derive(
           c.contentHeight,
           d.heightModel,
           l.vertAxisProps,
-          d.collapsedVert,
+          d.collapsedVert
         );
       for (h = 0, m = d.dockedItems.length; m--; ++h) {
         if (a) {
@@ -90918,7 +90907,7 @@ Ext.cmd.derive(
         setSize: m.setSize,
         shrinkWrapDock: p[m.shrinkWrapDock],
         sizeModelName: m.sizeModel,
-        dockedPixelsEnd: 0,
+        dockedPixelsEnd: 0
       };
     },
     dockChild: function (b, c, l, e) {
@@ -91283,7 +91272,7 @@ Ext.cmd.derive(
                 after: b,
                 axis: h,
                 ownerContext: g,
-                layout: this,
+                layout: this
               });
             }
           }
@@ -91308,7 +91297,7 @@ Ext.cmd.derive(
         c = b.target;
       Ext.layout.component.Component.prototype.finishedLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (!b.animatePolicy) {
         if (b.isCollapsingOrExpanding === 1) {
@@ -91573,15 +91562,15 @@ Ext.cmd.derive(
       nostretch: { setsWidth: 0, setsHeight: 0 },
       horz: {
         shrinkWrap: { setsWidth: 1, setsHeight: 0, readsWidth: 1 },
-        stretch: { setsWidth: 1, setsHeight: 0 },
+        stretch: { setsWidth: 1, setsHeight: 0 }
       },
       vert: {
         shrinkWrap: { setsWidth: 0, setsHeight: 1, readsHeight: 1 },
-        stretch: { setsWidth: 0, setsHeight: 1 },
+        stretch: { setsWidth: 0, setsHeight: 1 }
       },
       stretchV: { setsWidth: 0, setsHeight: 1 },
       autoStretchH: { readsWidth: 1, setsWidth: 1, setsHeight: 0 },
-      autoStretchV: { readsHeight: 1, setsWidth: 0, setsHeight: 1 },
+      autoStretchV: { readsHeight: 1, setsWidth: 0, setsHeight: 1 }
     },
     getItemSizePolicy: function (d, g) {
       var c = this,
@@ -91615,7 +91604,7 @@ Ext.cmd.derive(
     configureItem: function (a, b) {
       Ext.layout.component.Component.prototype.configureItem.apply(
         this,
-        arguments,
+        arguments
       );
       a.addCls(this._itemCls);
       if (!a.ignoreBorderManagement) {
@@ -91629,7 +91618,7 @@ Ext.cmd.derive(
       var b;
       Ext.layout.component.Component.prototype.afterRemove.apply(
         this,
-        arguments,
+        arguments
       );
       a.removeCls(this._itemCls);
       if (!a.ignoreBorderManagement) {
@@ -91669,11 +91658,11 @@ Ext.cmd.derive(
           b + "tr",
           b + "trl",
           b + "trb",
-          b + "trbl",
+          b + "trbl"
         ];
       }
       return c;
-    },
+    }
   },
   0,
   0,
@@ -91682,7 +91671,7 @@ Ext.cmd.derive(
   ["layout.dock"],
   0,
   [Ext.layout.component, "Dock", Ext.layout.component, "AbstractDock"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.Memento",
@@ -91760,7 +91749,7 @@ Ext.cmd.derive(
             }
           }
         }
-      },
+      }
     };
   })(),
   1,
@@ -91770,7 +91759,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Memento"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.container.DockingContainer",
@@ -91781,7 +91770,7 @@ Ext.cmd.derive(
       top: { render: 1, visual: 1 },
       left: { render: 3, visual: 5 },
       right: { render: 5, visual: 7 },
-      bottom: { render: 7, visual: 3 },
+      bottom: { render: 7, visual: 3 }
     },
     dockOrder: { top: -1, left: -1, right: 1, bottom: 1 },
     horizontalDocks: 0,
@@ -91942,7 +91931,7 @@ Ext.cmd.derive(
     },
     setupDockingRenderTpl: function (a) {
       a.renderDockedItems = this.doRenderDockedItems;
-    },
+    }
   },
   0,
   0,
@@ -91951,7 +91940,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.container, "DockingContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Panel",
@@ -91991,7 +91980,7 @@ Ext.cmd.derive(
       "</div>",
       "{% this.renderDockedItems(out,values,1); %}",
       "</div>",
-      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+      "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
     ],
     headerPosition: "top",
     iconAlign: "left",
@@ -92005,7 +91994,7 @@ Ext.cmd.derive(
       iconCls: null,
       title: null,
       titleAlign: null,
-      titleRotation: null,
+      titleRotation: null
     },
     animCollapse: Ext.enableFx,
     border: true,
@@ -92115,12 +92104,12 @@ Ext.cmd.derive(
       var c = this,
         a = Ext.container.Container.prototype.addUIClsToElement.apply(
           this,
-          arguments,
+          arguments
         );
       c.addBodyCls([
         "x-" + b,
         c.baseCls + "-body-" + b,
-        c.baseCls + "-body-" + c.ui + "-" + b,
+        c.baseCls + "-body-" + c.ui + "-" + b
       ]);
       return a;
     },
@@ -92160,7 +92149,7 @@ Ext.cmd.derive(
         a.dd,
         a.accordionHeaderKeyNav,
         a.accordionBodyKeyNav,
-        a.defaultButtonKeyNav,
+        a.defaultButtonKeyNav
       );
       a.destroyDockedItems();
       Ext.container.Container.prototype.doDestroy.call(this);
@@ -92326,7 +92315,7 @@ Ext.cmd.derive(
         }
         if (k) {
           i.layout = Ext.applyIf(i.layout || {}, {
-            pack: { left: "start", center: "center" }[a.buttonAlign] || "end",
+            pack: { left: "start", center: "center" }[a.buttonAlign] || "end"
           });
         }
         return i;
@@ -92467,7 +92456,7 @@ Ext.cmd.derive(
         getRefOwner: function () {
           return b.getRefOwner();
         },
-        cls: b.baseCls + "-ghost " + (a || ""),
+        cls: b.baseCls + "-ghost " + (a || "")
       };
     },
     createReExpander: function (g, b) {
@@ -92501,9 +92490,9 @@ Ext.cmd.derive(
             ownerLayout: d.componentLayout,
             forceOrientation: true,
             margin: d.margin,
-            defaultFocus: "tool[isDefaultExpandTool]",
+            defaultFocus: "tool[isDefaultExpandTool]"
           },
-          b,
+          b
         );
       if (d.collapseMode === "mini") {
         if (e) {
@@ -92517,7 +92506,7 @@ Ext.cmd.derive(
           enableFocusableContainer: c.enableFocusableContainer,
           activeChildTabIndex: c.activeChildTabIndex,
           inactiveChildTabIndex: c.inactiveChildTabIndex,
-          allowFocusingDisabledChildren: c.allowFocusingDisabledChildren,
+          allowFocusingDisabledChildren: c.allowFocusingDisabledChildren
         });
       }
       if (!d.hideCollapseTool) {
@@ -92532,8 +92521,8 @@ Ext.cmd.derive(
             uiCls: ["top"],
             handler: d.toggleCollapse,
             scope: d,
-            tooltip: d.expandToolText,
-          },
+            tooltip: d.expandToolText
+          }
         ];
       }
       j = new Ext.panel.Header(j);
@@ -92656,7 +92645,7 @@ Ext.cmd.derive(
           mouseleave: i.onMouseLeaveFloated,
           mouseenter: i.onMouseEnterFloated,
           scope: i,
-          destroyable: true,
+          destroyable: true
         };
       if (i.isSliding) {
         return;
@@ -92688,13 +92677,13 @@ Ext.cmd.derive(
         mousedown: i.onFloatedPointerEvent,
         mousemove: i.onFloatedPointerEvent,
         scope: i,
-        destroyable: true,
+        destroyable: true
       });
       if (!i.placeholderListener) {
         i.placeholderListener = j.on({
           resize: i.onPlaceholderResize,
           scope: i,
-          destroyable: true,
+          destroyable: true
         });
       }
       i.phHoverListeners = j.el.on(g);
@@ -92733,15 +92722,15 @@ Ext.cmd.derive(
         preserveScroll: true,
         duration: Ext.Number.from(
           i.animCollapse,
-          Ext.fx.Anim.prototype.duration,
+          Ext.fx.Anim.prototype.duration
         ),
         listeners: {
           afteranimate: function () {
             i.isSliding = false;
             i.fireEvent("endfloat", i);
             i.fireEvent("float", i);
-          },
-        },
+          }
+        }
       });
     },
     onFloatedPointerEvent: function (b) {
@@ -92824,7 +92813,7 @@ Ext.cmd.derive(
     getComponent: function (a) {
       var b = Ext.container.Container.prototype.getComponent.apply(
         this,
-        arguments,
+        arguments
       );
       if (b === undefined && !Ext.isNumber(a)) {
         b = this.getDockedComponent(a);
@@ -92877,12 +92866,12 @@ Ext.cmd.derive(
                 }
               },
               element: "el",
-              scope: d,
-            },
+              scope: d
+            }
           };
         }
         d.placeholder = g = Ext.widget(
-          d.createReExpander(h, { id: d.id + "-placeholder", listeners: c }),
+          d.createReExpander(h, { id: d.id + "-placeholder", listeners: c })
         );
       }
       if (!g.placeholderFor) {
@@ -92892,12 +92881,12 @@ Ext.cmd.derive(
         Ext.applyIf(g, {
           margin: d.margin,
           placeholderFor: d,
-          synthetic: true,
+          synthetic: true
         });
         g.addCls([
           "x-region-collapsed-placeholder",
           "x-region-collapsed-" + h + "-placeholder",
-          d.collapsedCls,
+          d.collapsedCls
         ]);
       }
       return g;
@@ -92911,7 +92900,7 @@ Ext.cmd.derive(
           style: b.bodyStyle,
           clsProp: "bodyCls",
           styleProp: "bodyStyle",
-          styleIsText: true,
+          styleIsText: true
         });
       }
       return a;
@@ -92931,7 +92920,7 @@ Ext.cmd.derive(
           dock: g,
           cls: "x-docked " + d.baseCls + "-" + d.ui + "-collapsed",
           isCollapsedExpander: true,
-          listeners: c,
+          listeners: c
         });
         d.dockedItems.insert(0, b);
       }
@@ -92952,8 +92941,8 @@ Ext.cmd.derive(
         a,
         this.getDockingRefItems(
           b,
-          Ext.container.Container.prototype.getRefItems.call(this, b),
-        ),
+          Ext.container.Container.prototype.getRefItems.call(this, b)
+        )
       );
       return a;
     },
@@ -93095,7 +93084,7 @@ Ext.cmd.derive(
         }
         a.getProtoBody().setStyle(
           "border-width",
-          this.unitizeBox(a.bodyBorder),
+          this.unitizeBox(a.bodyBorder)
         );
       }
     },
@@ -93108,7 +93097,7 @@ Ext.cmd.derive(
         } else {
           a.setStyle(
             "padding",
-            this.unitizeBox(b.bodyPadding === true ? 5 : b.bodyPadding),
+            this.unitizeBox(b.bodyPadding === true ? 5 : b.bodyPadding)
           );
         }
       }
@@ -93212,7 +93201,7 @@ Ext.cmd.derive(
         g,
         b,
         e,
-        a,
+        a
       );
     },
     initTools: function () {
@@ -93247,7 +93236,7 @@ Ext.cmd.derive(
           type: "close",
           scope: c,
           handler: c.close,
-          tooltip: c.closeToolText,
+          tooltip: c.closeToolText
         };
         if (c.isAccordionPanel || c.disableCloseToolFocus) {
           d.focusable = false;
@@ -93299,12 +93288,12 @@ Ext.cmd.derive(
           end: a.navigateAccordionHeader,
           space: a.toggleCollapse,
           enter: a.toggleCollapse,
-          del: { alt: true, fn: a.maybeClose },
+          del: { alt: true, fn: a.maybeClose }
         });
         a.accordionBodyKeyNav = new Ext.util.KeyNav({
           target: a.body,
           scope: a,
-          up: { ctrl: true, fn: a.navigateAccordionBody },
+          up: { ctrl: true, fn: a.navigateAccordionBody }
         });
       }
       if (a.defaultButton) {
@@ -93313,7 +93302,7 @@ Ext.cmd.derive(
           target: b,
           scope: a,
           defaultEventAction: "stopEvent",
-          enter: a.fireDefaultButton,
+          enter: a.fireDefaultButton
         });
       }
     },
@@ -93415,14 +93404,14 @@ Ext.cmd.derive(
                     duration: 100,
                     listeners: {
                       afteranimate: k.doPlaceholderCollapse,
-                      scope: k,
-                    },
+                      scope: k
+                    }
                   });
                 } else {
                   k.doPlaceholderCollapse();
                 }
-              },
-            },
+              }
+            }
           });
         } else {
           e.el.hide();
@@ -93515,8 +93504,8 @@ Ext.cmd.derive(
                 j.isCollapsingOrExpanding = 0;
                 j.fireEvent("expand", j);
                 j.fireEvent("endfloat", j);
-              },
-            },
+              }
+            }
           });
         } else {
           e.el.hide();
@@ -93526,7 +93515,7 @@ Ext.cmd.derive(
           e.el.slideIn(e.convertCollapseDir(h), {
             preserveScroll: true,
             duration: Ext.Number.from(c, Ext.fx.Anim.prototype.duration),
-            listeners: { afteranimate: e.doPlaceholderExpand, scope: e },
+            listeners: { afteranimate: e.doPlaceholderExpand, scope: e }
           });
         }
       } else {
@@ -93586,12 +93575,12 @@ Ext.cmd.derive(
       var c = this,
         a = Ext.container.Container.prototype.removeUIClsFromElement.apply(
           this,
-          arguments,
+          arguments
         );
       c.removeBodyCls([
         "x-" + b,
         c.baseCls + "-body-" + b,
-        c.baseCls + "-body-" + c.ui + "-" + b,
+        c.baseCls + "-body-" + c.ui + "-" + b
       ]);
       return a;
     },
@@ -94045,10 +94034,10 @@ Ext.cmd.derive(
                 listeners:
                   j.collapsible && j.titleCollapse
                     ? { click: j.toggleCollapse, scope: j }
-                    : null,
+                    : null
               },
-              j.header,
-            ),
+              j.header
+            )
           );
           j.addDocked(e, 0);
         }
@@ -94120,9 +94109,9 @@ Ext.cmd.derive(
                 role: "heading",
                 class: "x-hidden-clip",
                 style: "height:0",
-                html: m,
+                html: m
               },
-              true,
+              true
             );
             i.removeAttribute("aria-label");
             i.setAttribute("aria-labelledby", j.id + "-headingEl");
@@ -94164,7 +94153,7 @@ Ext.cmd.derive(
         } else {
           a.dd = new Ext.panel.DD(
             a,
-            Ext.isBoolean(a.draggable) ? null : a.draggable,
+            Ext.isBoolean(a.draggable) ? null : a.draggable
           );
         }
       },
@@ -94195,7 +94184,7 @@ Ext.cmd.derive(
         var a = this;
         Ext.container.Container.prototype.removeUIFromElement.apply(
           this,
-          arguments,
+          arguments
         );
         a.removeBodyCls(a.baseCls + "-body-" + a.ui);
       },
@@ -94231,9 +94220,9 @@ Ext.cmd.derive(
           preserveScroll: true,
           duration: Ext.Number.from(
             d.animCollapse,
-            Ext.fx.Anim.prototype.duration,
+            Ext.fx.Anim.prototype.duration
           ),
-          listeners: { afteranimate: c },
+          listeners: { afteranimate: c }
         });
         if (this.containsFocus) {
           a = this.findFocusTarget();
@@ -94253,7 +94242,7 @@ Ext.cmd.derive(
         Ext.destroy(
           b.pointerLeaveListener,
           b.phHoverListeners,
-          b.elHoverListeners,
+          b.elHoverListeners
         );
         if (d) {
           b.bodyMousedownListener = d.destroy();
@@ -94269,8 +94258,8 @@ Ext.cmd.derive(
         if (!a) {
           b.fireEvent("unfloat", b);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["panel"],
@@ -94283,7 +94272,7 @@ Ext.cmd.derive(
     var a = this.prototype;
     a.animCollapse = Ext.enableFx;
     a.placeholderCollapseHideMode = Ext.Element.VISIBILITY;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.container.Table",
@@ -94377,7 +94366,7 @@ Ext.cmd.derive(
         k.set({
           colSpan: n.colspan || 1,
           rowSpan: n.rowspan || 1,
-          cls: j.cellCls + " " + (n.cellCls || ""),
+          cls: j.cellCls + " " + (n.cellCls || "")
         });
         if (!o[d + 1] || o[d + 1].rowIdx !== b) {
           a++;
@@ -94476,10 +94465,10 @@ Ext.cmd.derive(
               id: j.owner.id + "-tbody",
               "data-ref": "tbody",
               role: "presentation",
-              cn: o,
-            },
+              cn: o
+            }
           },
-          j.tableAttrs,
+          j.tableAttrs
         ),
         c = j.tdAttrs,
         d,
@@ -94511,7 +94500,7 @@ Ext.cmd.derive(
         Ext.apply(k, {
           colSpan: n.colspan || 1,
           rowSpan: n.rowspan || 1,
-          cls: j.cellCls + " " + (n.cellCls || ""),
+          cls: j.cellCls + " " + (n.cellCls || "")
         });
         j.configureItem(n);
         k.cn = n.getRenderTree();
@@ -94523,7 +94512,7 @@ Ext.cmd.derive(
         return this.table.isAncestor(c.el);
       }
       return c.el.dom.parentNode === this.tbody.dom.rows[b].cells[a];
-    },
+    }
   },
   0,
   0,
@@ -94532,7 +94521,7 @@ Ext.cmd.derive(
   ["layout.table"],
   0,
   [Ext.layout.container, "Table", Ext.layout, "TableLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.container.ButtonGroup",
@@ -94617,8 +94606,8 @@ Ext.cmd.derive(
           a = Ext.panel.Panel.prototype.applyDefaults.apply(this, arguments);
         }
         return a;
-      },
-    },
+      }
+    }
   },
   0,
   ["buttongroup"],
@@ -94628,18 +94617,18 @@ Ext.cmd.derive(
     box: true,
     container: true,
     panel: true,
-    buttongroup: true,
+    buttongroup: true
   },
   ["widget.buttongroup"],
   [
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.container, "ButtonGroup", Ext, "ButtonGroup"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.container.Monitor",
@@ -94733,7 +94722,7 @@ Ext.cmd.derive(
           add: h.handleAdd,
           dockedadd: h.handleAdd,
           remove: h.handleRemove,
-          dockedremove: h.handleRemove,
+          dockedremove: h.handleRemove
         });
       }
       if (g !== true) {
@@ -94789,7 +94778,7 @@ Ext.cmd.derive(
         add: b.handleAdd,
         dockedadd: b.handleAdd,
         remove: b.handleRemove,
-        dockedremove: b.handleRemove,
+        dockedremove: b.handleRemove
       });
     },
     getItems: function () {
@@ -94808,7 +94797,7 @@ Ext.cmd.derive(
         a.call(b.scope || b, b);
       }
       b.items = Ext.destroy(b.items);
-    },
+    }
   },
   1,
   0,
@@ -94817,7 +94806,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.container, "Monitor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.Responsive",
@@ -94831,9 +94820,9 @@ Ext.cmd.derive(
         e = Ext.apply(
           {
             responsiveConfig: b.responsiveConfig,
-            responsiveFormulas: b.responsiveFormulas,
+            responsiveFormulas: b.responsiveFormulas
           },
-          a,
+          a
         );
       delete e.cmp;
       d.cmp = b;
@@ -94848,7 +94837,7 @@ Ext.cmd.derive(
       transformInstanceConfig: function (c) {
         var b = Ext.mixin.Responsive.prototype.transformInstanceConfig.call(
           this,
-          c,
+          c
         );
         if (b.ptype) {
           b = Ext.apply({}, b);
@@ -94864,8 +94853,8 @@ Ext.cmd.derive(
       updateResponsiveState: function () {
         var a = this.getResponsiveState();
         this.cmp.setConfig(a);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -94874,7 +94863,7 @@ Ext.cmd.derive(
   ["plugin.responsive"],
   0,
   [Ext.plugin, "Responsive"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.Viewport",
@@ -94894,7 +94883,7 @@ Ext.cmd.derive(
       decorate: function (a) {
         Ext.applyIf(a.prototype || a, {
           ariaRole: "application",
-          viewportCls: "x-viewport",
+          viewportCls: "x-viewport"
         });
         Ext.override(a, {
           isViewport: true,
@@ -94952,7 +94941,7 @@ Ext.cmd.derive(
               b = Ext.getBody();
             c.callParent(arguments);
             Ext.setViewportScroller(
-              c.getScrollable() || { x: false, y: false, element: b },
+              c.getScrollable() || { x: false, y: false, element: b }
             );
             if (c.getOverflowEl() !== b) {
               b.setStyle("overflow", "hidden");
@@ -94967,7 +94956,7 @@ Ext.cmd.derive(
             if (d !== b) {
               e.initInheritedState(
                 (e.inheritedState = b),
-                (e.inheritedStateInner = Ext.Object.chain(b)),
+                (e.inheritedStateInner = Ext.Object.chain(b))
               );
             } else {
               e.callParent([d, c]);
@@ -95013,17 +95002,17 @@ Ext.cmd.derive(
               if (b) {
                 b.restoreTabbableState(true);
               }
-            },
-          },
+            }
+          }
         });
-      },
+      }
     },
     privates: {
       updateResponsiveState: function () {
         this.cmp.handleViewportResize();
         Ext.plugin.Responsive.prototype.updateResponsiveState.call(this);
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -95034,7 +95023,7 @@ Ext.cmd.derive(
   [Ext.plugin, "Viewport"],
   function (a) {
     a.prototype.decorate = a.decorate;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.container.Viewport",
@@ -95046,8 +95035,8 @@ Ext.cmd.derive(
       updateResponsiveState: function () {
         this.handleViewportResize();
         this.mixins.responsive.updateResponsiveState.call(this);
-      },
-    },
+      }
+    }
   },
   0,
   ["viewport"],
@@ -95057,13 +95046,13 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Responsive.prototype.mixinId || Ext.mixin.Responsive.$className,
-      Ext.mixin.Responsive,
-    ],
+      Ext.mixin.Responsive
+    ]
   ],
   [Ext.container, "Viewport", Ext, "Viewport"],
   function () {
     Ext.plugin.Viewport.decorate(this);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.container.Anchor",
@@ -95085,7 +95074,7 @@ Ext.cmd.derive(
         c;
       Ext.layout.container.Auto.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       h = g.childItems;
       c = h.length;
@@ -95157,7 +95146,7 @@ Ext.cmd.derive(
         return function (b) {
           return b - a;
         };
-      },
+      }
     },
     parseAnchor: function (c, g, b) {
       if (c && c !== "none") {
@@ -95208,7 +95197,7 @@ Ext.cmd.derive(
         b = d.split(" ");
         g.anchorSpec = {
           right: e.parseAnchor(b[0], g.initialConfig.width, c),
-          bottom: e.parseAnchor(b[1], g.initialConfig.height, h),
+          bottom: e.parseAnchor(b[1], g.initialConfig.height, h)
         };
       }
     },
@@ -95217,8 +95206,8 @@ Ext.cmd.derive(
       b: { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 },
       r: {
         $: { readsWidth: 0, readsHeight: 1, setsWidth: 1, setsHeight: 0 },
-        b: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 },
-      },
+        b: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 }
+      }
     },
     getItemSizePolicy: function (c) {
       var e = c.anchorSpec,
@@ -95235,7 +95224,7 @@ Ext.cmd.derive(
         }
       }
       return d[a];
-    },
+    }
   },
   0,
   0,
@@ -95244,7 +95233,7 @@ Ext.cmd.derive(
   ["layout.anchor"],
   0,
   [Ext.layout.container, "Anchor", Ext.layout, "AnchorLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dashboard.Panel",
@@ -95315,7 +95304,7 @@ Ext.cmd.derive(
       a.on({
         beforeload: "onViewBeforeLoad",
         load: "onViewLoaded",
-        scope: this,
+        scope: this
       });
     },
     onViewBeforeLoad: function () {
@@ -95349,11 +95338,11 @@ Ext.cmd.derive(
         a.addPropertyToState(
           b,
           "height",
-          a.rendered ? a.getHeight() : a.height || a.minHeight || 100,
+          a.rendered ? a.getHeight() : a.height || a.minHeight || 100
         );
       }
       return b;
-    },
+    }
   },
   0,
   ["dashboard-panel"],
@@ -95363,12 +95352,12 @@ Ext.cmd.derive(
     box: true,
     container: true,
     panel: true,
-    "dashboard-panel": true,
+    "dashboard-panel": true
   },
   ["widget.dashboard-panel"],
   0,
   [Ext.dashboard, "Panel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dashboard.Column",
@@ -95392,7 +95381,7 @@ Ext.cmd.derive(
           d.query(">" + j.xtype + "[rowIndex=" + j.rowIndex + "]"),
           function (i) {
             return i !== j;
-          },
+          }
         );
         a = c.length;
         if (!j.destroying && !j.destroyed) {
@@ -95413,7 +95402,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   0,
   ["dashboard-column"],
@@ -95422,7 +95411,7 @@ Ext.cmd.derive(
   ["widget.dashboard-column"],
   0,
   [Ext.dashboard, "Column"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Column",
@@ -95437,7 +95426,7 @@ Ext.cmd.derive(
       readsWidth: 0,
       readsHeight: 1,
       setsWidth: 1,
-      setsHeight: 0,
+      setsHeight: 0
     },
     createsInnerCt: true,
     manageOverflow: true,
@@ -95515,7 +95504,7 @@ Ext.cmd.derive(
         d.setContentWidth(b + d.paddingContext.getPaddingInfo().width);
       }
       return !j;
-    },
+    }
   },
   0,
   0,
@@ -95524,7 +95513,7 @@ Ext.cmd.derive(
   ["layout.column"],
   0,
   [Ext.layout.container, "Column", Ext.layout, "ColumnLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DragTracker",
@@ -95549,7 +95538,7 @@ Ext.cmd.derive(
         Ext.getWin().on({
           touchstart: "onWindowTouchStart",
           scope: b,
-          capture: true,
+          capture: true
         });
       }
     },
@@ -95586,14 +95575,14 @@ Ext.cmd.derive(
       c.handleListeners = {
         scope: c,
         delegate: c.delegate,
-        dragstart: c.onDragStart,
+        dragstart: c.onDragStart
       };
       if (d) {
         c.handleListeners.longpress = c.onMouseDown;
         c.handleListeners.mousedown = {
           fn: c.onMouseDown,
           delegate: c.delegate,
-          translate: false,
+          translate: false
         };
         c.handleListeners.contextmenu = function (g) {
           g.stopEvent();
@@ -95604,7 +95593,7 @@ Ext.cmd.derive(
       if (!Ext.supports.TouchEvents && (c.trackOver || c.overCls)) {
         Ext.apply(c.handleListeners, {
           mouseover: c.onMouseOver,
-          mouseout: c.onMouseOut,
+          mouseout: c.onMouseOut
         });
       }
       c.mon(c.handle, c.handleListeners);
@@ -95614,7 +95603,7 @@ Ext.cmd.derive(
         left: c.onResizeKeyDown,
         right: c.onResizeKeyDown,
         down: c.onResizeKeyDown,
-        scope: c,
+        scope: c
       });
     },
     disable: function () {
@@ -95666,7 +95655,7 @@ Ext.cmd.derive(
             "mouseover",
             g,
             k,
-            g.delegate ? k.getTarget(g.delegate, j) : g.handle,
+            g.delegate ? k.getTarget(g.delegate, j) : g.handle
           );
         }
       }
@@ -95716,7 +95705,7 @@ Ext.cmd.derive(
         capture: true,
         mouseup: b.onMouseUp,
         mousemove: b.onMouseMove,
-        selectstart: b.stopSelect,
+        selectstart: b.stopSelect
       });
       b.dragEnded = false;
       if (!b.tolerance) {
@@ -95727,7 +95716,7 @@ Ext.cmd.derive(
             b.triggerStart,
             b.autoStart === true ? 1000 : b.autoStart,
             b,
-            [d],
+            [d]
           );
         }
       }
@@ -95784,7 +95773,7 @@ Ext.cmd.derive(
         mouseup: b.onMouseUp,
         selectstart: b.stopSelect,
         capture: true,
-        scope: b,
+        scope: b
       });
       b.clearStart();
       b.active = false;
@@ -95889,8 +95878,8 @@ Ext.cmd.derive(
           g[1] += a.top - e.top;
         }
         return g;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -95899,7 +95888,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.dd, "DragTracker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.SplitterTracker",
@@ -95913,7 +95902,7 @@ Ext.cmd.derive(
       a = this.overlay = Ext.getBody().createChild({
         role: "presentation",
         cls: this.overlayCls,
-        html: "&#160;",
+        html: "&#160;"
       });
       a.unselectable();
       a.setSize(b.getDocumentWidth(), b.getDocumentHeight());
@@ -95987,7 +95976,7 @@ Ext.cmd.derive(
       }
       if (b.active) {
         b.lastKeyDownXY[c] = Math.round(
-          b.lastKeyDownXY[c] + i * b.easing.getValue(),
+          b.lastKeyDownXY[c] + i * b.easing.getValue()
         );
         b.lastXY = b.lastKeyDownXY;
         d.setXY(b.getXY("dragTarget"));
@@ -96016,32 +96005,32 @@ Ext.cmd.derive(
           prevBox: e,
           nextBox: c,
           defaultMin: j,
-          splitWidth: i,
+          splitWidth: i
         };
         m = new Ext.util.Region(
           e.y,
           h.getVertPrevConstrainRight(d),
           e.bottom,
-          h.getVertPrevConstrainLeft(d),
+          h.getVertPrevConstrainLeft(d)
         );
         l = new Ext.util.Region(
           c.y,
           h.getVertNextConstrainRight(d),
           c.bottom,
-          h.getVertNextConstrainLeft(d),
+          h.getVertNextConstrainLeft(d)
         );
       } else {
         m = new Ext.util.Region(
           e.y + (k.minHeight || j),
           e.right,
           (k.maxHeight ? e.y + k.maxHeight : c.bottom - (g.minHeight || j)) + i,
-          e.x,
+          e.x
         );
         l = new Ext.util.Region(
           (g.maxHeight ? c.bottom - g.maxHeight : e.y + (k.minHeight || j)) - i,
           c.right,
           c.bottom - (g.minHeight || j),
-          c.x,
+          c.x
         );
       }
       return m.intersect(l);
@@ -96138,7 +96127,7 @@ Ext.cmd.derive(
     },
     getResizeOffset: function () {
       return this.getOffset("dragTarget");
-    },
+    }
   },
   0,
   0,
@@ -96147,7 +96136,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.resizer, "SplitterTracker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.ColumnSplitterTracker",
@@ -96180,7 +96169,7 @@ Ext.cmd.derive(
         i.columnWidth = a * h;
       }
       c.updateLayout();
-    },
+    }
   },
   0,
   0,
@@ -96189,7 +96178,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.layout.container, "ColumnSplitterTracker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.ColumnSplitter",
@@ -96207,7 +96196,7 @@ Ext.cmd.derive(
       var a = Ext.resizer.Splitter.prototype.getTrackerConfig.call(this);
       a.xclass = this.trackerClass;
       return a;
-    },
+    }
   },
   0,
   ["columnsplitter"],
@@ -96216,7 +96205,7 @@ Ext.cmd.derive(
   ["widget.columnsplitter"],
   0,
   [Ext.layout.container, "ColumnSplitter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Dashboard",
@@ -96291,7 +96280,7 @@ Ext.cmd.derive(
       }
       Ext.layout.container.Column.prototype.beforeLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
     },
     finishedLayout: function (e) {
@@ -96391,7 +96380,7 @@ Ext.cmd.derive(
           }
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -96400,7 +96389,7 @@ Ext.cmd.derive(
   ["layout.dashboard"],
   0,
   [Ext.layout.container, "Dashboard"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DDTarget",
@@ -96440,7 +96429,7 @@ Ext.cmd.derive(
     removeInvalidHandleType: Ext.emptyFn,
     toString: function () {
       return "DDTarget " + this.id;
-    },
+    }
   },
   3,
   0,
@@ -96449,7 +96438,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DDTarget"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.ScrollManager",
@@ -96462,7 +96451,7 @@ Ext.cmd.derive(
       a.fireEvents = Ext.Function.createSequence(
         a.fireEvents,
         this.onFire,
-        this,
+        this
       );
       a.stopDrag = Ext.Function.createSequence(a.stopDrag, this.onStop, this);
       this.doScroll = this.doScroll.bind(this);
@@ -96633,7 +96622,7 @@ Ext.cmd.derive(
           a[b]._region = a[b].getRegion();
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -96642,7 +96631,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "ScrollManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DropTarget",
@@ -96658,7 +96647,7 @@ Ext.cmd.derive(
         this,
         this.el.dom,
         this.ddGroup || this.group,
-        { isTarget: true },
+        { isTarget: true }
       );
     },
     containerScroll: false,
@@ -96691,7 +96680,7 @@ Ext.cmd.derive(
         Ext.dd.ScrollManager.unregister(this.el);
       }
       Ext.dd.DDTarget.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -96700,7 +96689,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DropTarget"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dashboard.DropZone",
@@ -96734,7 +96723,7 @@ Ext.cmd.derive(
           panel: C.panel,
           rawEvent: v,
           source: A,
-          status: this.dropAllowed,
+          status: this.dropAllowed
         },
         n,
         B,
@@ -96815,7 +96804,7 @@ Ext.cmd.derive(
             clear: "none",
             "margin-left":
               j.beforeAfter > 0 ? g - a - c.getPadding("lr") + "px" : "",
-            "margin-top": "7px",
+            "margin-top": "7px"
           });
         } else {
           o = n.body.getPadding("lr");
@@ -96900,7 +96889,7 @@ Ext.cmd.derive(
       if (j.drop) {
         l.fireEvent("drop", i);
       }
-    },
+    }
   },
   1,
   0,
@@ -96909,7 +96898,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dashboard, "DropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dashboard.Part",
@@ -96926,8 +96915,8 @@ Ext.cmd.derive(
         columnIndex: "{columnIndex}",
         id: "{id}",
         title: "{title}",
-        height: "{height}",
-      },
+        height: "{height}"
+      }
     },
     viewTemplateOptions: { excludeProperties: { bind: 1 } },
     valueRe: /^[{][a-z]*[}]$/i,
@@ -96948,7 +96937,7 @@ Ext.cmd.derive(
       a.part = d;
       a._partConfig = b;
       return a;
-    },
+    }
   },
   1,
   0,
@@ -96959,16 +96948,16 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
+      Ext.mixin.Factoryable
     ],
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
-    ],
+      Ext.mixin.Identifiable
+    ]
   ],
   [Ext.dashboard, "Part"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dashboard.Dashboard",
@@ -97030,7 +97019,7 @@ Ext.cmd.derive(
       if (!c) {
         b = h.add(
           0,
-          h.createColumn({ columnWidth: Ext.isArray(a) ? a[0] : 1 }),
+          h.createColumn({ columnWidth: Ext.isArray(a) ? a[0] : 1 })
         );
         g = [b];
         c = 1;
@@ -97069,10 +97058,10 @@ Ext.cmd.derive(
             remove: this.onRemoveItem,
             expand: b,
             collapse: b,
-            scope: this,
-          },
+            scope: this
+          }
         },
-        a,
+        a
       );
     },
     createView: function (c) {
@@ -97085,7 +97074,7 @@ Ext.cmd.derive(
       }
       a.bubbleEvents = Ext.Array.from(a.bubbleEvents).concat([
         "expand",
-        "collapse",
+        "collapse"
       ]);
       a.stateful = e.stateful;
       return a;
@@ -97189,7 +97178,7 @@ Ext.cmd.derive(
     serializeItem: function (a) {
       return Ext.apply(
         { type: a.part.id, id: a.id, columnIndex: a.columnIndex },
-        a._partConfig,
+        a._partConfig
       );
     },
     serializeItems: function () {
@@ -97222,7 +97211,7 @@ Ext.cmd.derive(
       if (b.stateful && !b.isMoving) {
         Ext.state.Manager.clear(b.getStateId());
       }
-    },
+    }
   },
   0,
   ["dashboard"],
@@ -97231,7 +97220,7 @@ Ext.cmd.derive(
   ["widget.dashboard"],
   0,
   [Ext.dashboard, "Dashboard"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DragZone",
@@ -97267,7 +97256,7 @@ Ext.cmd.derive(
         Ext.dd.ScrollManager.unregister(this.scrollEl || this.el);
       }
       Ext.dd.DragSource.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -97276,7 +97265,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DragZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.Registry",
@@ -97353,7 +97342,7 @@ Ext.cmd.derive(
     getTargetFromEvent: function (b) {
       var a = b.getTarget();
       return a ? this.elements[a.id] || this.handles[a.id] : null;
-    },
+    }
   },
   1,
   0,
@@ -97362,7 +97351,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "Registry"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dd.DropZone",
@@ -97427,7 +97416,7 @@ Ext.cmd.derive(
     },
     triggerCacheRefresh: function () {
       Ext.dd.DDM.refreshCache(this.groups);
-    },
+    }
   },
   0,
   0,
@@ -97436,7 +97425,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dd, "DropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.dom.Layer",
@@ -97516,7 +97505,7 @@ Ext.cmd.derive(
           k.show();
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -97525,7 +97514,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.dom, "Layer", Ext, "Layer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.event.publisher.MouseEnterLeave",
@@ -97570,11 +97559,11 @@ Ext.cmd.derive(
               }
             }
           }
-        },
+        }
       });
     }
     a.instance = new a();
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.flash.Component",
@@ -97604,9 +97593,9 @@ Ext.cmd.derive(
         {
           allowScriptAccess: "always",
           bgcolor: b.backgroundColor,
-          wmode: b.wmode,
+          wmode: b.wmode
         },
-        a,
+        a
       );
       c = Ext.apply({ allowedDomain: document.location.hostname }, c);
       new swfobject.embedSWF(
@@ -97619,7 +97608,7 @@ Ext.cmd.derive(
         c,
         a,
         b.flashAttributes,
-        b.swfCallback.bind(b),
+        b.swfCallback.bind(b)
       );
     },
     swfCallback: function (b) {
@@ -97651,8 +97640,8 @@ Ext.cmd.derive(
     },
     statics: {
       EXPRESS_INSTALL_URL:
-        "http://swfobject.googlecode.com/svn/trunk/swfobject/expressInstall.swf",
-    },
+        "http://swfobject.googlecode.com/svn/trunk/swfobject/expressInstall.swf"
+    }
   },
   0,
   ["flash"],
@@ -97661,7 +97650,7 @@ Ext.cmd.derive(
   ["widget.flash"],
   0,
   [Ext.flash, "Component", Ext, "FlashComponent"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.Action",
@@ -97710,15 +97699,15 @@ Ext.cmd.derive(
         success: a.onSuccess,
         failure: a.onFailure,
         scope: a,
-        timeout: (a.timeout || a.form.timeout) * 1000,
+        timeout: (a.timeout || a.form.timeout) * 1000
       };
     },
     statics: {
       CLIENT_INVALID: "client",
       SERVER_INVALID: "server",
       CONNECT_FAILURE: "connect",
-      LOAD_FAILURE: "load",
-    },
+      LOAD_FAILURE: "load"
+    }
   },
   1,
   0,
@@ -97727,7 +97716,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form.action, "Action", Ext.form, "Action"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.Load",
@@ -97741,8 +97730,8 @@ Ext.cmd.derive(
           method: this.getMethod(),
           url: this.getUrl(),
           headers: this.headers,
-          params: this.getParams(),
-        }),
+          params: this.getParams()
+        })
       );
     },
     onSuccess: function (b) {
@@ -97772,7 +97761,7 @@ Ext.cmd.derive(
         return { success: b.success, data: d };
       }
       return Ext.decode(c.responseText);
-    },
+    }
   },
   0,
   0,
@@ -97781,7 +97770,7 @@ Ext.cmd.derive(
   ["formaction.load"],
   0,
   [Ext.form.action, "Load", Ext.form.Action, "Load"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.Submit",
@@ -97804,7 +97793,7 @@ Ext.cmd.derive(
         b = Ext.apply(d.createCallback(), {
           url: d.getUrl(),
           method: d.getMethod(),
-          headers: d.headers,
+          headers: d.headers
         }),
         c = d.form,
         e = d.jsonSubmit || c.jsonSubmit,
@@ -97893,7 +97882,7 @@ Ext.cmd.derive(
             : Ext.fly(k.target).dom.name
           : "_self",
         style: "display:none",
-        cn: n,
+        cn: n
       };
       if (c.length) {
         l.encoding = l.enctype = "multipart/form-data";
@@ -97912,7 +97901,7 @@ Ext.cmd.derive(
         tag: "input",
         type: "hidden",
         name: a,
-        value: Ext.String.htmlEncode(b),
+        value: Ext.String.htmlEncode(b)
       };
     },
     onSuccess: function (b) {
@@ -97961,7 +97950,7 @@ Ext.cmd.derive(
         }
       }
       return m;
-    },
+    }
   },
   0,
   0,
@@ -97970,7 +97959,7 @@ Ext.cmd.derive(
   ["formaction.submit"],
   0,
   [Ext.form.action, "Submit", Ext.form.Action, "Submit"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.StandardSubmit",
@@ -97980,7 +97969,7 @@ Ext.cmd.derive(
       var a = this.buildForm();
       a.formEl.submit();
       this.cleanup(a);
-    },
+    }
   },
   0,
   0,
@@ -97989,7 +97978,7 @@ Ext.cmd.derive(
   ["formaction.standardsubmit"],
   0,
   [Ext.form.action, "StandardSubmit"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.util.ComponentDragger",
@@ -98054,7 +98043,7 @@ Ext.cmd.derive(
           d.top - b.top,
           d.right - b.right,
           d.bottom - b.bottom,
-          d.left - b.left,
+          d.left - b.left
         );
       }
       return h;
@@ -98063,7 +98052,7 @@ Ext.cmd.derive(
       var b = this,
         a = b.proxy && !b.comp.liveDrag ? b.proxy : b.comp,
         d = b.getOffset(
-          b.constrain || b.constrainDelegate ? "dragTarget" : null,
+          b.constrain || b.constrainDelegate ? "dragTarget" : null
         );
       a.setPagePosition(b.startPosition[0] + d[0], b.startPosition[1] + d[1]);
     },
@@ -98081,7 +98070,7 @@ Ext.cmd.derive(
       if (a.el.shim) {
         Ext.dom.Element.unmaskIframes();
       }
-    },
+    }
   },
   1,
   0,
@@ -98090,7 +98079,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "ComponentDragger"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.window.Window",
@@ -98179,7 +98168,7 @@ Ext.cmd.derive(
             width: b.size.width,
             height: b.size.height,
             x: b.pos[0],
-            y: b.pos[1],
+            y: b.pos[1]
           });
         }
       }
@@ -98414,9 +98403,9 @@ Ext.cmd.derive(
                     if (!g) {
                       i.fireEvent("maximize", i);
                     }
-                  },
+                  }
                 }
-              : null),
+              : null)
         );
         if (!b) {
           i.maximizing = false;
@@ -98459,9 +98448,9 @@ Ext.cmd.derive(
                     c.el.enableShadow(null, true);
                     c.maximized = false;
                     c.fireEvent("restore", c);
-                  },
+                  }
                 }
-              : null),
+              : null)
         );
         c.restorePos = c.restoreSize = null;
         if (c.dd) {
@@ -98597,8 +98586,8 @@ Ext.cmd.derive(
         if (l) {
           l.focus();
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["window"],
@@ -98607,7 +98596,7 @@ Ext.cmd.derive(
   ["widget.window"],
   0,
   [Ext.window, "Window", Ext, "Window"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.Labelable",
@@ -98616,7 +98605,7 @@ Ext.cmd.derive(
     isLabelable: true,
     mixinConfig: {
       id: "labelable",
-      on: { beforeRender: "beforeLabelRender", onRender: "onLabelRender" },
+      on: { beforeRender: "beforeLabelRender", onRender: "onLabelRender" }
     },
     config: {
       childEls: [
@@ -98627,8 +98616,8 @@ Ext.cmd.derive(
         "ariaErrorEl",
         "ariaStatusEl",
         "ariaHelpEl",
-        "labelTextEl",
-      ],
+        "labelTextEl"
+      ]
     },
     labelableRenderTpl: [
       "{beforeLabelTpl}",
@@ -98681,7 +98670,7 @@ Ext.cmd.derive(
       "</div>",
       "</div>",
       "</tpl>",
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     activeErrorsTpl: undefined,
     htmlActiveErrorsTpl: [
@@ -98689,17 +98678,17 @@ Ext.cmd.derive(
       '<ul class="{listCls}">',
       '<tpl for="errors"><li>{.}</li></tpl>',
       "</ul>",
-      "</tpl>",
+      "</tpl>"
     ],
     plaintextActiveErrorsTpl: [
       '<tpl if="errors && errors.length">',
       '<tpl for="errors"><tpl if="xindex &gt; 1">\n</tpl>{.}</tpl>',
-      "</tpl>",
+      "</tpl>"
     ],
     ariaActiveErrorsTpl: [
       '<tpl if="errors && errors.length">',
       '<tpl for="errors" between=". ">{.}</tpl>',
-      "</tpl>",
+      "</tpl>"
     ],
     isFieldLabelable: true,
     formItemCls: "x-form-item",
@@ -98744,7 +98733,7 @@ Ext.cmd.derive(
       "afterSubTpl",
       "beforeLabelTextTpl",
       "afterLabelTextTpl",
-      "labelAttrTpl",
+      "labelAttrTpl"
     ],
     statics: {
       initTip: function () {
@@ -98763,7 +98752,7 @@ Ext.cmd.derive(
           a.listeners = {
             beforeshow: function () {
               this.minWidth = Ext.fly(this.activeTarget.el).getWidth();
-            },
+            }
           };
         }
         b = this.tip = Ext.create("Ext.tip.QuickTip", a);
@@ -98773,7 +98762,7 @@ Ext.cmd.derive(
       },
       destroyTip: function () {
         this.tip = Ext.destroy(this.tip);
-      },
+      }
     },
     initLabelable: function () {
       var a = this,
@@ -98947,7 +98936,7 @@ Ext.cmd.derive(
         fieldLabel: p.getFieldLabel(),
         labelSeparator: p.labelSeparator,
         renderAriaElements: !!p.renderAriaElements,
-        ariaStatus: "",
+        ariaStatus: ""
       };
       if (p.ariaHelp) {
         q.ariaHelp = Ext.String.htmlEncode(p.ariaHelp);
@@ -98977,7 +98966,7 @@ Ext.cmd.derive(
         b;
       if (a) {
         a.setVisibilityMode(
-          d.msgTarget === "side" && !d.autoFitErrors ? g.VISIBILITY : g.DISPLAY,
+          d.msgTarget === "side" && !d.autoFitErrors ? g.VISIBILITY : g.DISPLAY
         );
       }
       if (d.extraMargins) {
@@ -99034,7 +99023,7 @@ Ext.cmd.derive(
       b = i.activeError = h.apply({
         fieldLabel: i.fieldLabel,
         errors: l,
-        listCls: "x-list-plain",
+        listCls: "x-list-plain"
       });
       i.renderActiveError();
       if (i.rendered) {
@@ -99152,7 +99141,7 @@ Ext.cmd.derive(
           this[a] = b[a];
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -99165,7 +99154,7 @@ Ext.cmd.derive(
     if (Ext.supports.Touch) {
       this.prototype.msgTarget = "side";
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.field.Field",
@@ -99368,8 +99357,8 @@ Ext.cmd.derive(
         b.originalValue = b.initialValue;
         b.reset();
         b.originalValue = a;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -99378,7 +99367,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form.field, "Field"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Base",
@@ -99403,7 +99392,7 @@ Ext.cmd.derive(
       "</tpl>",
       '<tpl foreach="inputElAriaAttributes"> {$}="{.}"</tpl>',
       ' class="{fieldCls} {typeCls} {typeCls}-{ui} {editableCls} {inputCls}" autocomplete="off"/>',
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     defaultBindProperty: "value",
     autoEl: { role: "presentation" },
@@ -99480,9 +99469,9 @@ Ext.cmd.derive(
           tabIdx: g.tabIndex,
           inputCls: g.inputCls,
           typeCls: "x-form-" + (g.isTextInput ? "text" : e),
-          ariaEl: g.ariaEl,
+          ariaEl: g.ariaEl
         },
-        g.subTplData,
+        g.subTplData
       );
       if (g.ariaRole) {
         c = {};
@@ -99535,7 +99524,7 @@ Ext.cmd.derive(
     initRenderData: function () {
       return Ext.applyIf(
         Ext.Component.prototype.initRenderData.call(this),
-        this.getLabelableRenderData(),
+        this.getLabelableRenderData()
       );
     },
     setFieldStyle: function (a) {
@@ -99707,7 +99696,7 @@ Ext.cmd.derive(
           h,
           Ext.supports.SpecialKeyDownRepeat ? "keydown" : "keypress",
           e.fireKey,
-          e,
+          e
         );
         for (b = 0; b < a; ++b) {
           d = c[b];
@@ -99739,12 +99728,12 @@ Ext.cmd.derive(
       if (!a) {
         b.checkChangeTask = a = new Ext.util.DelayedTask(
           b.doCheckChangeTask,
-          b,
+          b
         );
       }
       if (!b.bindNotifyListener) {
         b.bindNotifyListener = Ext.on("beforebindnotify", b.onBeforeNotify, b, {
-          destroyable: true,
+          destroyable: true
         });
       }
       a.delay(b.checkChangeBuffer);
@@ -99907,7 +99896,7 @@ Ext.cmd.derive(
         if (b && b.bindValidationField) {
           c.fieldBinding = b.bindValidationField("setValidationField", c);
         }
-      },
+      }
     },
     deprecated: {
       5: {
@@ -99916,10 +99905,10 @@ Ext.cmd.derive(
             this.bindChangeEvents(false);
             this.callParent(arguments);
             this.bindChangeEvents(true);
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   0,
   ["field"],
@@ -99929,15 +99918,15 @@ Ext.cmd.derive(
   [
     [
       Ext.form.Labelable.prototype.mixinId || Ext.form.Labelable.$className,
-      Ext.form.Labelable,
+      Ext.form.Labelable
     ],
     [
       Ext.form.field.Field.prototype.mixinId || Ext.form.field.Field.$className,
-      Ext.form.field.Field,
-    ],
+      Ext.form.field.Field
+    ]
   ],
   [Ext.form.field, "Base", Ext.form, "Field", Ext.form, "BaseField"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.VTypes",
@@ -99972,7 +99961,7 @@ Ext.cmd.derive(
         return d.test(e);
       },
       alphanumText: "This field should only contain letters, numbers and _",
-      alphanumMask: /[a-z0-9_]/i,
+      alphanumMask: /[a-z0-9_]/i
     };
   })(),
   0,
@@ -99982,7 +99971,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form.field, "VTypes", Ext.form, "VTypes"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.trigger.Trigger",
@@ -100007,12 +99996,12 @@ Ext.cmd.derive(
       '<tpl if="ariaRole"> role="{ariaRole}"<tpl else> role="presentation"</tpl>',
       ">",
       "{[values.$trigger.renderBody(values)]}",
-      "</div>",
+      "</div>"
     ],
     statics: {
       weightComparator: function (a, b) {
         return a.weight - b.weight;
-      },
+      }
     },
     constructor: function (b) {
       var c = this,
@@ -100068,15 +100057,15 @@ Ext.cmd.derive(
           listeners: {
             mousedown: d.onClickRepeaterMouseDown,
             mouseup: d.onClickRepeaterMouseUp,
-            scope: d,
+            scope: d
           },
-          scope: d,
+          scope: d
         });
       } else {
         d.field.mon(b, {
           click: d.onClick,
           mousedown: d.onMouseDown,
-          scope: d,
+          scope: d
         });
       }
     },
@@ -100162,7 +100151,7 @@ Ext.cmd.derive(
         triggerStyle: d,
         extraCls: c.extraCls,
         baseCls: c.baseCls,
-        ariaRole: c.ariaRole,
+        ariaRole: c.ariaRole
       });
     },
     setHidden: function (a) {
@@ -100191,7 +100180,7 @@ Ext.cmd.derive(
       if (a) {
         a.show();
       }
-    },
+    }
   },
   1,
   0,
@@ -100202,11 +100191,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.form.trigger, "Trigger"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Text",
@@ -100251,7 +100240,7 @@ Ext.cmd.derive(
       },
       translate: false,
       single: true,
-      preventDefault: true,
+      preventDefault: true
     },
     childEls: ["triggerWrap", "inputWrap", "placeholderLabel"],
     preSubTpl: [
@@ -100263,7 +100252,7 @@ Ext.cmd.derive(
       "</tpl>",
       ' class="{triggerWrapCls} {triggerWrapCls}-{ui}">',
       '<div id={cmpId}-inputWrap data-ref="inputWrap"',
-      ' role="presentation" class="{inputWrapCls} {inputWrapCls}-{ui}">',
+      ' role="presentation" class="{inputWrapCls} {inputWrapCls}-{ui}">'
     ],
     postSubTpl: [
       '<tpl if="!Ext.supports.Placeholder">',
@@ -100271,7 +100260,7 @@ Ext.cmd.derive(
       "</tpl>",
       "</div>",
       '<tpl for="triggers">{[values.renderTrigger(parent)]}</tpl>',
-      "</div>",
+      "</div>"
     ],
     initComponent: function () {
       var b = this,
@@ -100313,7 +100302,7 @@ Ext.cmd.derive(
           scope: b,
           keyup: b.onKeyUp,
           keydown: b.onKeyDown,
-          keypress: b.onKeyPress,
+          keypress: b.onKeyPress
         });
       }
     },
@@ -100354,7 +100343,7 @@ Ext.cmd.derive(
         fieldCls:
           d.fieldCls +
           (d.allowBlank ? "" : " " + d.requiredCls) +
-          (i ? " " + d.emptyUICls : ""),
+          (i ? " " + d.emptyUICls : "")
       });
       b = e.inputElAriaAttributes;
       if (b) {
@@ -100417,7 +100406,7 @@ Ext.cmd.derive(
             extraCls: "x-trigger-index-" + e,
             handler: "onTrigger" + e + "Click",
             compat4Mode: true,
-            scope: j,
+            scope: j
           };
         }
       }
@@ -100641,7 +100630,7 @@ Ext.cmd.derive(
     getState: function () {
       return this.addPropertyToState(
         Ext.form.field.Base.prototype.getState.call(this),
-        "value",
+        "value"
       );
     },
     applyState: function (a) {
@@ -100735,7 +100724,7 @@ Ext.cmd.derive(
         b = c.getTriggers();
         e = 0;
         d = Ext.util.Format.htmlEncode(
-          c.getGrowWidth() || (c.hasFocus ? "" : c.emptyText) || "",
+          c.getGrowWidth() || (c.hasFocus ? "" : c.emptyText) || ""
         );
         d += c.growAppend;
         for (h in b) {
@@ -100762,7 +100751,7 @@ Ext.cmd.derive(
     privates: {
       getTdType: function () {
         return "textfield";
-      },
+      }
     },
     deprecated: {
       5: {
@@ -100779,10 +100768,10 @@ Ext.cmd.derive(
               }
             }
             return a;
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   0,
   ["textfield"],
@@ -100791,7 +100780,7 @@ Ext.cmd.derive(
   ["widget.textfield"],
   0,
   [Ext.form.field, "Text", Ext.form, "TextField", Ext.form, "Text"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.TextArea",
@@ -100813,7 +100802,7 @@ Ext.cmd.derive(
       ' autocomplete="off">\n',
       '<tpl if="value">{[Ext.util.Format.htmlEncode(values.value)]}</tpl>',
       "</textarea>",
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     growMin: 60,
     growMax: 1000,
@@ -100852,7 +100841,7 @@ Ext.cmd.derive(
     },
     getValue: function () {
       return this.stripReturns(
-        Ext.form.field.Text.prototype.getValue.call(this),
+        Ext.form.field.Text.prototype.getValue.call(this)
       );
     },
     valueToRaw: function (a) {
@@ -100942,7 +100931,7 @@ Ext.cmd.derive(
         a.cancel();
       }
       Ext.form.field.Text.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["textarea", "textareafield"],
@@ -100953,12 +100942,12 @@ Ext.cmd.derive(
     field: true,
     textfield: true,
     textareafield: true,
-    textarea: true,
+    textarea: true
   },
   ["widget.textarea", "widget.textareafield"],
   0,
   [Ext.form.field, "TextArea", Ext.form, "TextArea"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.window.MessageBox",
@@ -101001,7 +100990,7 @@ Ext.cmd.derive(
       confirm: "Confirm",
       prompt: "Prompt",
       wait: "Loading...",
-      alert: "Attention",
+      alert: "Attention"
     },
     baseIconCls: "x-message-box-icon",
     ariaRole: "alertdialog",
@@ -101012,7 +101001,7 @@ Ext.cmd.derive(
         itemId: b,
         scope: this,
         text: this.buttonText[b],
-        minWidth: 75,
+        minWidth: 75
       });
     },
     btnCallback: function (a, c) {
@@ -101024,7 +101013,7 @@ Ext.cmd.derive(
           keyup: function (g) {
             b.btnCallback(a, g);
           },
-          single: true,
+          single: true
         });
         return;
       }
@@ -101076,26 +101065,26 @@ Ext.cmd.derive(
             items: [
               (e.msg = new Ext.Component({
                 id: b + "-msg",
-                cls: e.baseCls + "-text",
+                cls: e.baseCls + "-text"
               })),
               (e.textField = new Ext.form.field.Text({
                 id: b + "-textfield",
                 enableKeyEvents: true,
                 ariaAttributes: { "aria-labelledby": e.msg.id },
-                listeners: { keydown: e.onPromptKey, scope: e },
+                listeners: { keydown: e.onPromptKey, scope: e }
               })),
               (e.textArea = new Ext.form.field.TextArea({
                 id: b + "-textarea",
                 height: 75,
-                ariaAttributes: { "aria-labelledby": e.msg.id },
-              })),
-            ],
-          })),
-        ],
+                ariaAttributes: { "aria-labelledby": e.msg.id }
+              }))
+            ]
+          }))
+        ]
       });
       e.progressBar = new Ext.ProgressBar({
         id: b + "-progressbar",
-        margin: "0 10 10 10",
+        margin: "0 10 10 10"
       });
       e.items = [e.topContainer, e.progressBar];
       e.msgButtons = [];
@@ -101115,8 +101104,8 @@ Ext.cmd.derive(
           e.msgButtons[0],
           e.msgButtons[1],
           e.msgButtons[2],
-          e.msgButtons[3],
-        ],
+          e.msgButtons[3]
+        ]
       });
       e.dockedItems = [e.bottomTb];
       e.on("close", e.onClose, e);
@@ -101261,7 +101250,7 @@ Ext.cmd.derive(
       v.liveDrag = !d.proxyDrag;
       v.userCallback = Ext.Function.bindCallback(
         d.callback || d.fn || Ext.emptyFn,
-        d.scope || Ext.global,
+        d.scope || Ext.global
       );
       v.setIcon(d.icon);
       c = v.msg;
@@ -101354,7 +101343,7 @@ Ext.cmd.derive(
           resumelayouts: function () {
             c.show(a);
           },
-          single: true,
+          single: true
         });
         return c;
       }
@@ -101363,7 +101352,7 @@ Ext.cmd.derive(
         c.addCls(a.cls);
       }
       b = c.query(
-        "textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])",
+        "textfield:not([hidden]),textarea:not([hidden]),button:not([hidden])"
       );
       c.preventFocusOnActivate = !b.length;
       Ext.window.Window.prototype.show.call(this);
@@ -101416,7 +101405,7 @@ Ext.cmd.derive(
           message: d,
           buttons: this.YESNO,
           callback: c,
-          scope: b,
+          scope: b
         };
       }
       return this.show(a);
@@ -101432,7 +101421,7 @@ Ext.cmd.derive(
           callback: c,
           scope: b,
           multiline: a,
-          value: e,
+          value: e
         };
       }
       return this.show(g);
@@ -101446,7 +101435,7 @@ Ext.cmd.derive(
           wait: true,
           modal: true,
           minWidth: this.minProgressWidth,
-          waitConfig: a,
+          waitConfig: a
         };
       }
       return this.show(b);
@@ -101459,7 +101448,7 @@ Ext.cmd.derive(
           buttons: this.OK,
           fn: b,
           scope: a,
-          minWidth: this.minWidth,
+          minWidth: this.minWidth
         };
       }
       return this.show(d);
@@ -101469,7 +101458,7 @@ Ext.cmd.derive(
         c = { title: c, message: b, progress: true, progressText: a };
       }
       return this.show(c);
-    },
+    }
   },
   1,
   ["messagebox"],
@@ -101480,7 +101469,7 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     window: true,
-    messagebox: true,
+    messagebox: true
   },
   ["widget.messagebox"],
   0,
@@ -101489,7 +101478,7 @@ Ext.cmd.derive(
     Ext.onInternalReady(function () {
       Ext.MessageBox = Ext.Msg = new a();
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.Basic",
@@ -101507,7 +101496,7 @@ Ext.cmd.derive(
         disable: d.checkValidityDelay,
         dirtychange: d.checkDirtyDelay,
         errorchange: d.checkErrorDelay,
-        scope: d,
+        scope: d
       };
       d.checkValidityTask = new Ext.util.DelayedTask(d.checkValidity, d);
       d.checkDirtyTask = new Ext.util.DelayedTask(d.checkDirty, d);
@@ -101517,7 +101506,7 @@ Ext.cmd.derive(
         scope: d,
         addHandler: d.onFieldAdd,
         removeHandler: d.onFieldRemove,
-        invalidateHandler: d.onMonitorInvalidate,
+        invalidateHandler: d.onMonitorInvalidate
       });
       d.monitor.bind(b);
       Ext.apply(d, c);
@@ -101690,7 +101679,7 @@ Ext.cmd.derive(
       if (Ext.isString(b)) {
         b = Ext.ClassManager.instantiateByAlias(
           "formaction." + b,
-          Ext.apply({}, a, { form: this }),
+          Ext.apply({}, a, { form: this })
         );
       }
       if (this.fireEvent("beforeaction", this, b) !== false) {
@@ -101975,7 +101964,7 @@ Ext.cmd.derive(
         Ext.applyIf(a[b], c);
       }
       return this;
-    },
+    }
   },
   1,
   0,
@@ -101984,7 +101973,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form, "Basic", Ext.form, "BasicForm"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.FieldAncestor",
@@ -101993,7 +101982,7 @@ Ext.cmd.derive(
     mixinConfig: {
       id: "fieldAncestor",
       after: { initInheritedState: "initFieldInheritedState" },
-      before: { doDestroy: "onBeforeDestroy" },
+      before: { doDestroy: "onBeforeDestroy" }
     },
     initFieldAncestor: function () {
       var a = this;
@@ -102001,7 +101990,7 @@ Ext.cmd.derive(
         scope: a,
         selector: "[isFormField]:not([excludeForm])",
         addHandler: a.onChildFieldAdd,
-        removeHandler: a.onChildFieldRemove,
+        removeHandler: a.onChildFieldRemove
       });
       a.initFieldDefaults();
     },
@@ -102052,7 +102041,7 @@ Ext.cmd.derive(
     onFieldErrorChange: Ext.emptyFn,
     onBeforeDestroy: function () {
       this.monitor = Ext.destroy(this.monitor);
-    },
+    }
   },
   0,
   0,
@@ -102061,7 +102050,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form, "FieldAncestor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.field.FieldContainer",
@@ -102083,7 +102072,7 @@ Ext.cmd.derive(
         Ext.layout.component.Auto.prototype.calculateOwnerHeightFromContentHeight.call(
           this,
           c,
-          b,
+          b
         );
       return a + this.getHeightAdjustment();
     },
@@ -102092,7 +102081,7 @@ Ext.cmd.derive(
         Ext.layout.component.Auto.prototype.calculateOwnerWidthFromContentWidth.call(
           this,
           c,
-          b,
+          b
         );
       return a + this.getWidthAdjustment();
     },
@@ -102136,8 +102125,8 @@ Ext.cmd.derive(
           b += a.errorWrapEl.getWidth();
         }
         return b + a.bodyEl.getPadding("lr");
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -102146,7 +102135,7 @@ Ext.cmd.derive(
   ["layout.fieldcontainer"],
   0,
   [Ext.layout.component.field, "FieldContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.FieldContainer",
@@ -102171,7 +102160,7 @@ Ext.cmd.derive(
       "</tpl>",
       ">",
       "{%this.renderContainer(out,values)%}",
-      "</div>",
+      "</div>"
     ],
     initComponent: function () {
       var a = this;
@@ -102305,8 +102294,8 @@ Ext.cmd.derive(
           a.renderTpl = a.lookupTpl("labelableRenderTpl");
         }
         return Ext.container.Container.prototype.initRenderTpl.call(this);
-      },
-    },
+      }
+    }
   },
   0,
   ["fieldcontainer"],
@@ -102315,10 +102304,10 @@ Ext.cmd.derive(
   ["widget.fieldcontainer"],
   [
     ["labelable", Ext.form.Labelable],
-    ["fieldAncestor", Ext.form.FieldAncestor],
+    ["fieldAncestor", Ext.form.FieldAncestor]
   ],
   [Ext.form, "FieldContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.CheckboxGroup",
@@ -102354,7 +102343,7 @@ Ext.cmd.derive(
         c = k.innerCt.dom.style;
       Ext.layout.container.Container.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
       e = k.rowNodes[0].children;
       b.innerCtContext = b.getEl("innerCt", k);
@@ -102530,7 +102519,7 @@ Ext.cmd.derive(
     setupRenderTpl: function (a) {
       Ext.layout.container.Container.prototype.setupRenderTpl.apply(
         this,
-        arguments,
+        arguments
       );
       a.renderColumn = this.doRenderColumn;
     },
@@ -102619,9 +102608,9 @@ Ext.cmd.derive(
             tag: "td",
             cls: this.owner.groupCls,
             vAlign: "top",
-            role: "presentation",
+            role: "presentation"
           },
-          true,
+          true
         );
       }
       return a;
@@ -102676,7 +102665,7 @@ Ext.cmd.derive(
       b = d.getColumnNodeAt(h, c);
       g = b.children[a];
       b.insertBefore(e.el.dom, g || null);
-    },
+    }
   },
   0,
   0,
@@ -102685,7 +102674,7 @@ Ext.cmd.derive(
   ["layout.checkboxgroup"],
   0,
   [Ext.layout.container, "CheckboxGroup"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.CheckboxManager",
@@ -102696,7 +102685,7 @@ Ext.cmd.derive(
       return this.filterBy(function (c) {
         return c.name === a && c.getFormId() === b;
       });
-    },
+    }
   },
   0,
   0,
@@ -102705,7 +102694,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form, "CheckboxManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Checkbox",
@@ -102750,7 +102739,7 @@ Ext.cmd.derive(
       "{afterBoxLabelTpl}",
       "</tpl>",
       "</div>",
-      { disableFormats: true, compiled: true },
+      { disableFormats: true, compiled: true }
     ],
     publishes: { checked: 1 },
     subTplInsertions: [
@@ -102759,7 +102748,7 @@ Ext.cmd.derive(
       "beforeBoxLabelTextTpl",
       "afterBoxLabelTextTpl",
       "boxLabelAttrTpl",
-      "inputAttrTpl",
+      "inputAttrTpl"
     ],
     isCheckbox: true,
     focusCls: "form-checkbox-focus",
@@ -102832,7 +102821,7 @@ Ext.cmd.derive(
         labelAlignedBefore: g,
         afterLabelCls: g ? d.afterLabelCls : "",
         noBoxLabelCls: !c ? d.noBoxLabelCls : "",
-        inputName: d.name || d.id,
+        inputName: d.name || d.id
       });
       a = e.inputElAriaAttributes;
       if (a) {
@@ -103020,7 +103009,7 @@ Ext.cmd.derive(
     },
     getFocusClsEl: function () {
       return this.displayEl;
-    },
+    }
   },
   0,
   ["checkbox", "checkboxfield"],
@@ -103030,12 +103019,12 @@ Ext.cmd.derive(
     box: true,
     field: true,
     checkboxfield: true,
-    checkbox: true,
+    checkbox: true
   },
   ["widget.checkbox", "widget.checkboxfield"],
   0,
   [Ext.form.field, "Checkbox", Ext.form, "Checkbox"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.CheckboxGroup",
@@ -103277,7 +103266,7 @@ Ext.cmd.derive(
         a.updateLayout();
       }
       return c;
-    },
+    }
   },
   0,
   ["checkboxgroup"],
@@ -103287,7 +103276,7 @@ Ext.cmd.derive(
     box: true,
     container: true,
     fieldcontainer: true,
-    checkboxgroup: true,
+    checkboxgroup: true
   },
   ["widget.checkboxgroup"],
   [["field", Ext.form.field.Field]],
@@ -103296,9 +103285,9 @@ Ext.cmd.derive(
     this.borrow(Ext.form.field.Base, [
       "markInvalid",
       "clearInvalid",
-      "setError",
+      "setError"
     ]);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.FieldSet",
@@ -103322,7 +103311,7 @@ Ext.cmd.derive(
       '<div id="{id}-body" data-ref="body" class="{baseCls}-body {baseCls}-body-{ui} {bodyTargetCls}" ',
       'role="presentation"<tpl if="bodyStyle"> style="{bodyStyle}"</tpl>>',
       "{%this.renderContainer(out,values);%}",
-      "</div>",
+      "</div>"
     ],
     stateEvents: ["collapse", "expand"],
     maskOnDisable: false,
@@ -103391,7 +103380,7 @@ Ext.cmd.derive(
           items: a,
           ownerCt: c,
           shrinkWrap: true,
-          ownerLayout: c.componentLayout,
+          ownerLayout: c.componentLayout
         },
         b;
       if (c.checkboxToggle) {
@@ -103412,7 +103401,7 @@ Ext.cmd.derive(
           ui: b.ui,
           cls: b.baseCls + "-header-text",
           id: b.id + "-legendTitle",
-          ariaRole: "presentation",
+          ariaRole: "presentation"
         };
       if (b.collapsible && b.toggleOnTitleClick) {
         a.listeners = { click: { element: "el", scope: b, fn: b.toggle } };
@@ -103438,10 +103427,10 @@ Ext.cmd.derive(
             checked: !b.collapsed,
             msgTarget: "none",
             listeners: { change: b.onCheckChange, scope: b },
-            ariaLabel: b.expandText,
+            ariaLabel: b.expandText
           },
-          b.checkbox,
-        ),
+          b.checkbox
+        )
       );
       return c;
     },
@@ -103457,7 +103446,7 @@ Ext.cmd.derive(
         scope: a,
         ariaRole: "checkbox",
         ariaLabel: a.expandText,
-        ariaRenderAttributes: { "aria-checked": !a.collapsed },
+        ariaRenderAttributes: { "aria-checked": !a.collapsed }
       });
       return b;
     },
@@ -103562,7 +103551,7 @@ Ext.cmd.derive(
     getRefItems: function (a) {
       var c = Ext.container.Container.prototype.getRefItems.apply(
           this,
-          arguments,
+          arguments
         ),
         b = this.legend;
       if (b) {
@@ -103593,7 +103582,7 @@ Ext.cmd.derive(
         if (!a) {
           b.protoBody = a = new Ext.util.ProtoElement({
             styleProp: "bodyStyle",
-            styleIsText: true,
+            styleIsText: true
           });
         }
         return a;
@@ -103630,8 +103619,8 @@ Ext.cmd.derive(
       setupRenderTpl: function (a) {
         Ext.container.Container.prototype.setupRenderTpl.apply(this, arguments);
         a.renderLegend = this.doRenderLegend;
-      },
-    },
+      }
+    }
   },
   0,
   ["fieldset"],
@@ -103640,7 +103629,7 @@ Ext.cmd.derive(
   ["widget.fieldset"],
   [["fieldAncestor", Ext.form.FieldAncestor]],
   [Ext.form, "FieldSet"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.Label",
@@ -103652,7 +103641,7 @@ Ext.cmd.derive(
       var a = this;
       a.html = a.text ? Ext.util.Format.htmlEncode(a.text) : a.html || "";
       return Ext.apply(Ext.Component.prototype.getElConfig.call(this), {
-        htmlFor: a.forId || "",
+        htmlFor: a.forId || ""
       });
     },
     setText: function (c, b) {
@@ -103670,7 +103659,7 @@ Ext.cmd.derive(
         a.updateLayout();
       }
       return a;
-    },
+    }
   },
   0,
   ["label"],
@@ -103679,7 +103668,7 @@ Ext.cmd.derive(
   ["widget.label"],
   0,
   [Ext.form, "Label"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.Panel",
@@ -103702,7 +103691,7 @@ Ext.cmd.derive(
       "trackResetOnLoad",
       "url",
       "waitMsgTarget",
-      "waitTitle",
+      "waitTitle"
     ],
     initComponent: function () {
       var a = this;
@@ -103716,7 +103705,7 @@ Ext.cmd.derive(
         "actionfailed",
         "actioncomplete",
         "validitychange",
-        "dirtychange",
+        "dirtychange"
       ]);
       if (a.pollForChanges) {
         a.startPolling(a.pollInterval || 500);
@@ -103801,7 +103790,7 @@ Ext.cmd.derive(
       for (b = 0; b < c; b++) {
         a[b].checkChange();
       }
-    },
+    }
   },
   0,
   ["form"],
@@ -103810,7 +103799,7 @@ Ext.cmd.derive(
   ["widget.form"],
   [["fieldAncestor", Ext.form.FieldAncestor]],
   [Ext.form, "Panel", Ext, "FormPanel", Ext.form, "FormPanel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.RadioManager",
@@ -103831,7 +103820,7 @@ Ext.cmd.derive(
       return this.findBy(function (c) {
         return c.name === a && c.checked && c.getFormId() === b;
       });
-    },
+    }
   },
   0,
   0,
@@ -103840,7 +103829,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form, "RadioManager"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Radio",
@@ -103898,7 +103887,7 @@ Ext.cmd.derive(
     },
     getManager: function () {
       return Ext.form.RadioManager;
-    },
+    }
   },
   0,
   ["radiofield", "radio"],
@@ -103909,7 +103898,7 @@ Ext.cmd.derive(
     "checkboxfield",
     "checkbox",
     "radiofield",
-    "radio",
+    "radio"
   ],
   {
     component: true,
@@ -103918,12 +103907,12 @@ Ext.cmd.derive(
     checkboxfield: true,
     checkbox: true,
     radiofield: true,
-    radio: true,
+    radio: true
   },
   ["widget.radio", "widget.radiofield"],
   0,
   [Ext.form.field, "Radio", Ext.form, "Radio"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.RadioGroup",
@@ -104043,7 +104032,7 @@ Ext.cmd.derive(
       if (a) {
         a.setAttribute("aria-invalid", false);
       }
-    },
+    }
   },
   0,
   ["radiogroup"],
@@ -104053,7 +104042,7 @@ Ext.cmd.derive(
     "container",
     "fieldcontainer",
     "checkboxgroup",
-    "radiogroup",
+    "radiogroup"
   ],
   {
     component: true,
@@ -104061,7 +104050,7 @@ Ext.cmd.derive(
     container: true,
     fieldcontainer: true,
     checkboxgroup: true,
-    radiogroup: true,
+    radiogroup: true
   },
   ["widget.radiogroup"],
   0,
@@ -104092,10 +104081,10 @@ Ext.cmd.derive(
               g[b].enableTabbing();
             }
           }
-        },
+        }
       });
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.action.DirectAction",
@@ -104115,11 +104104,11 @@ Ext.cmd.derive(
             fnName +
             " for " +
             c +
-            " action",
+            " action"
         );
       }
       return a;
-    },
+    }
   },
   0,
   0,
@@ -104128,7 +104117,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.form.action, "DirectAction"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.DirectLoad",
@@ -104151,7 +104140,7 @@ Ext.cmd.derive(
         options: g != null ? { timeout: g * 1000 } : null,
         metadata: b,
         callback: e.onComplete,
-        scope: e,
+        scope: e
       });
       c.apply(window, a);
     },
@@ -104164,7 +104153,7 @@ Ext.cmd.derive(
       } else {
         this.onFailure(null);
       }
-    },
+    }
   },
   0,
   0,
@@ -104175,11 +104164,11 @@ Ext.cmd.derive(
     [
       Ext.form.action.DirectAction.prototype.mixinId ||
         Ext.form.action.DirectAction.$className,
-      Ext.form.action.DirectAction,
-    ],
+      Ext.form.action.DirectAction
+    ]
   ],
   [Ext.form.action, "DirectLoad", Ext.form.Action, "DirectLoad"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.action.DirectSubmit",
@@ -104202,7 +104191,7 @@ Ext.cmd.derive(
         options: g != null ? { timeout: g * 1000 } : null,
         metadata: b,
         callback: e.onComplete,
-        scope: e,
+        scope: e
       });
       c.apply(window, a);
       e.cleanup(h);
@@ -104216,7 +104205,7 @@ Ext.cmd.derive(
       } else {
         this.onFailure(null);
       }
-    },
+    }
   },
   0,
   0,
@@ -104227,11 +104216,11 @@ Ext.cmd.derive(
     [
       Ext.form.action.DirectAction.prototype.mixinId ||
         Ext.form.action.DirectAction.$className,
-      Ext.form.action.DirectAction,
-    ],
+      Ext.form.action.DirectAction
+    ]
   ],
   [Ext.form.action, "DirectSubmit", Ext.form.Action, "DirectSubmit"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Picker",
@@ -104243,9 +104232,9 @@ Ext.cmd.derive(
         picker: {
           handler: "onTriggerClick",
           scope: "this",
-          focusOnMousedown: true,
-        },
-      },
+          focusOnMousedown: true
+        }
+      }
     },
     renderConfig: { editable: true },
     keyMap: { scope: "this", DOWN: "onDownArrow", ESC: "onEsc" },
@@ -104337,7 +104326,7 @@ Ext.cmd.derive(
           if (!c.ariaEl.dom.hasAttribute("aria-owns")) {
             c.ariaEl.dom.setAttribute(
               "aria-owns",
-              b.listEl ? b.listEl.id : b.el.id,
+              b.listEl ? b.listEl.id : b.el.id
             );
           }
           c.ariaEl.dom.setAttribute("aria-expanded", true);
@@ -104347,12 +104336,12 @@ Ext.cmd.derive(
           touchstart: c.collapseIf,
           scope: c,
           delegated: false,
-          destroyable: true,
+          destroyable: true
         });
         c.scrollListeners = Ext.on({
           scroll: c.onGlobalScroll,
           scope: c,
-          destroyable: true,
+          destroyable: true
         });
         Ext.on("resize", c.alignPicker, c, { buffer: 1 });
         c.fireEvent("expand", c);
@@ -104466,8 +104455,8 @@ Ext.cmd.derive(
         if (!this.picker.owns(a.getElement())) {
           this.collapse();
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["pickerfield"],
@@ -104477,12 +104466,12 @@ Ext.cmd.derive(
     box: true,
     field: true,
     textfield: true,
-    pickerfield: true,
+    pickerfield: true
   },
   ["widget.pickerfield"],
   0,
   [Ext.form.field, "Picker", Ext.form, "Picker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.selection.Model",
@@ -104516,7 +104505,7 @@ Ext.cmd.derive(
     applySelected: function (a) {
       if (!a.isBag && !a.isCollection) {
         a = new Ext.util[this.ordered ? "Collection" : "Bag"](
-          Ext.apply({ rootProperty: "data" }, a),
+          Ext.apply({ rootProperty: "data" }, a)
         );
       }
       return a;
@@ -104532,7 +104521,7 @@ Ext.cmd.derive(
         load: a.onStoreLoad,
         refresh: a.onStoreRefresh,
         pageadd: a.onPageAdd,
-        pageremove: a.onPageRemove,
+        pageremove: a.onPageRemove
       };
     },
     onBindStore: function (a, c, b) {
@@ -105359,8 +105348,8 @@ Ext.cmd.derive(
         } else {
           d.doSelect(b, false);
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -105370,16 +105359,16 @@ Ext.cmd.derive(
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
+      Ext.util.StoreHolder
     ],
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.selection, "Model", Ext, "AbstractSelectionModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.selection.DataViewModel",
@@ -105404,7 +105393,7 @@ Ext.cmd.derive(
           c.navigationListeners = c.navigationModel.on({
             navigate: c.onNavigate,
             scope: c,
-            destroyable: true,
+            destroyable: true
           });
         }
       }
@@ -105451,7 +105440,7 @@ Ext.cmd.derive(
       this.bindComponent();
       Ext.destroy(this.keyNav);
       Ext.selection.Model.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -105460,7 +105449,7 @@ Ext.cmd.derive(
   ["selection.dataviewmodel"],
   0,
   [Ext.selection, "DataViewModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.NavigationModel",
@@ -105500,7 +105489,7 @@ Ext.cmd.derive(
         itemmousedown: a.onItemMouseDown,
         itemclick: a.onItemClick,
         itemcontextmenu: a.onItemMouseDown,
-        scope: a,
+        scope: a
       };
     },
     initKeyNav: function (a) {
@@ -105522,7 +105511,7 @@ Ext.cmd.derive(
         space: b.onKeySpace,
         enter: b.onKeyEnter,
         A: { ctrl: true, handler: b.onSelectAllKeyPress },
-        scope: b,
+        scope: b
       });
     },
     processViewEvent: function (b, a, e, c, d) {
@@ -105713,14 +105702,14 @@ Ext.cmd.derive(
         previousItem: a.previousItem,
         recordIndex: a.recordIndex,
         record: a.record,
-        item: a.item,
+        item: a.item
       });
     },
     destroy: function () {
       this.setStore(null);
       Ext.destroy(this.viewListeners, this.keyNav);
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -105730,20 +105719,20 @@ Ext.cmd.derive(
   [
     [
       Ext.util.Observable.prototype.mixinId || Ext.util.Observable.$className,
-      Ext.util.Observable,
+      Ext.util.Observable
     ],
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
+      Ext.mixin.Factoryable
     ],
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext.view, "NavigationModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.AbstractView",
@@ -105756,7 +105745,7 @@ Ext.cmd.derive(
       },
       getBoundView: function (a) {
         return Ext.getCmp(a.getAttribute("data-boundView"));
-      },
+      }
     },
     defaultBindProperty: "store",
     renderBuffer: document.createElement("div"),
@@ -105801,7 +105790,7 @@ Ext.cmd.derive(
               ? Ext.Function.createAnimationFrame(m.onFlushTick, m)
               : Ext.Function.bind(m.onFlushTick, m),
             interval: Ext.view.AbstractView.updateDelay,
-            repeat: 1,
+            repeat: 1
           });
         }
         m.flushQueueTask.start();
@@ -105835,19 +105824,19 @@ Ext.cmd.derive(
                 b.dataSource,
                 d.record,
                 d.operation,
-                Ext.Object.getKeys(d.data),
+                Ext.Object.getKeys(d.data)
               );
             }
           }
         }
         Ext.AnimationQueue.stop(e.flushChangeQueue, e);
-      },
+      }
     },
     config: {
       selection: null,
       store: "ext-empty-store",
       navigationModel: { type: "default" },
-      selectionModel: { type: "dataviewmodel" },
+      selectionModel: { type: "dataviewmodel" }
     },
     publishes: ["selection"],
     twoWayBindable: ["selection"],
@@ -105907,7 +105896,7 @@ Ext.cmd.derive(
           '<tpl for="."><div class="{0}" role="{2}">{1}</div></tpl>',
           d.itemCls,
           e,
-          d.itemAriaRole,
+          d.itemAriaRole
         );
         d.tpl = new Ext.XTemplate(e, c);
       }
@@ -106033,7 +106022,7 @@ Ext.cmd.derive(
           g.un({
             scope: e,
             selectionchange: e.updateBindSelection,
-            lastselectedchanged: e.updateBindSelection,
+            lastselectedchanged: e.updateBindSelection
           });
         }
         Ext.destroy(e.selModelRelayer);
@@ -106059,10 +106048,10 @@ Ext.cmd.derive(
               {
                 allowDeselect: e.allowDeselect || e.multiSelect,
                 mode: h,
-                locked: e.disableSelection,
+                locked: e.disableSelection
               },
-              b,
-            ),
+              b
+            )
           );
         }
       }
@@ -106083,12 +106072,12 @@ Ext.cmd.derive(
         "beforedeselect",
         "select",
         "deselect",
-        "focuschange",
+        "focuschange"
       ]);
       b.on({
         scope: e,
         lastselectedchanged: e.updateBindSelection,
-        selectionchange: e.updateBindSelection,
+        selectionchange: e.updateBindSelection
       });
       return b;
     },
@@ -106211,7 +106200,7 @@ Ext.cmd.derive(
         j.tabGuardEl = j.el.createChild(
           { cls: "x-tab-guard x-tab-guard-after", tabIndex: "0" },
           null,
-          true,
+          true
         );
       }
     },
@@ -106226,7 +106215,7 @@ Ext.cmd.derive(
         b.emptyEl = Ext.core.DomHelper.insertHtml(
           "beforeEnd",
           b.getTargetEl().dom,
-          b.emptyText,
+          b.emptyText
         );
       }
     },
@@ -106260,7 +106249,7 @@ Ext.cmd.derive(
           scroll: d.onViewScroll,
           scrollend: d.onViewScrollEnd,
           scope: d,
-          onFrame: !!Ext.global.requestAnimationFrame,
+          onFrame: !!Ext.global.requestAnimationFrame
         });
       }
       Ext.Component.prototype.afterFirstLayout.call(this, c, b);
@@ -106278,7 +106267,7 @@ Ext.cmd.derive(
       g = [];
       for (d = e.startIndex; d <= e.endIndex; d++) {
         g.push(
-          c.getByInternalId(e.item(d, true).getAttribute("data-recordId")),
+          c.getByInternalId(e.item(d, true).getAttribute("data-recordId"))
         );
       }
       h.fireItemMutationEvent("itemremove", g, e.startIndex || 0, b, h);
@@ -106378,7 +106367,7 @@ Ext.cmd.derive(
         Ext.util.CSS.createRule(
           d,
           a,
-          "touch-action: pinch-zoom double-tap-zoom;-ms-touch-action: pinch-zoom double-tap-zoom;-webkit-user-drag: none;",
+          "touch-action: pinch-zoom double-tap-zoom;-ms-touch-action: pinch-zoom double-tap-zoom;-webkit-user-drag: none;"
         );
       } else {
         if (d) {
@@ -106552,7 +106541,7 @@ Ext.cmd.derive(
     eventLifecycleMap: {
       refresh: "onViewRefresh",
       itemremove: "onItemRemove",
-      itemadd: "onItemAdd",
+      itemadd: "onItemAdd"
     },
     fireItemMutationEvent: function (a) {
       var b = this,
@@ -106560,7 +106549,7 @@ Ext.cmd.derive(
       if (c) {
         b.ownerGrid[b.eventLifecycleMap[a]].apply(
           b.ownerGrid,
-          Ext.Array.slice(arguments, 1),
+          Ext.Array.slice(arguments, 1)
         );
       }
       b.fireEvent.apply(b, arguments);
@@ -106670,7 +106659,7 @@ Ext.cmd.derive(
         update: a.onUpdate,
         clear: a.onDataRefresh,
         beginupdate: a.onBeginUpdate,
-        endupdate: a.onEndUpdate,
+        endupdate: a.onEndUpdate
       };
     },
     onBeginUpdate: function () {
@@ -106743,7 +106732,7 @@ Ext.cmd.derive(
     },
     getRecord: function (a) {
       return this.dataSource.getByInternalId(
-        Ext.getDom(a).getAttribute("data-recordId"),
+        Ext.getDom(a).getAttribute("data-recordId")
       );
     },
     isSelected: function (b) {
@@ -106895,7 +106884,7 @@ Ext.cmd.derive(
             target: d,
             msg: d.loadingText,
             useMsg: d.loadingUseMsg,
-            store: c,
+            store: c
           };
           if (d.loadingCls) {
             a.msgCls = d.loadingCls;
@@ -106907,15 +106896,15 @@ Ext.cmd.derive(
           d.loadMask.on({
             scope: d,
             beforeshow: d.onMaskBeforeShow,
-            hide: d.onMaskHide,
+            hide: d.onMaskHide
           });
         }
         return d.loadMask;
       },
       getOverflowEl: function () {
         return Ext.Component.prototype.getTargetEl.call(this);
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -106925,8 +106914,8 @@ Ext.cmd.derive(
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext.view, "AbstractView"],
   function () {
@@ -106935,7 +106924,7 @@ Ext.cmd.derive(
         getSelectionCount: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: getSelectionCount will be removed, please interact with the Ext.selection.DataViewModel",
+              "DataView: getSelectionCount will be removed, please interact with the Ext.selection.DataViewModel"
             );
           }
           return this.selModel.getSelection().length;
@@ -106943,7 +106932,7 @@ Ext.cmd.derive(
         getSelectedRecords: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: getSelectedRecords will be removed, please interact with the Ext.selection.DataViewModel",
+              "DataView: getSelectedRecords will be removed, please interact with the Ext.selection.DataViewModel"
             );
           }
           return this.selModel.getSelection();
@@ -106951,7 +106940,7 @@ Ext.cmd.derive(
         select: function (a, b, d) {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: select will be removed, please access select through a DataView's SelectionModel, ie: view.getSelectionModel().select()",
+              "DataView: select will be removed, please access select through a DataView's SelectionModel, ie: view.getSelectionModel().select()"
             );
           }
           var c = this.getSelectionModel();
@@ -106960,15 +106949,15 @@ Ext.cmd.derive(
         clearSelections: function () {
           if (Ext.global.console) {
             Ext.global.console.warn(
-              "DataView: clearSelections will be removed, please access deselectAll through DataView's SelectionModel, ie: view.getSelectionModel().deselectAll()",
+              "DataView: clearSelections will be removed, please access deselectAll through DataView's SelectionModel, ie: view.getSelectionModel().deselectAll()"
             );
           }
           var a = this.getSelectionModel();
           return a.deselectAll();
-        },
+        }
       });
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.view.View",
@@ -106993,14 +106982,14 @@ Ext.cmd.derive(
         keydown: "KeyDown",
         keyup: "KeyUp",
         keypress: "KeyPress",
-        focus: "Focus",
+        focus: "Focus"
       },
       TouchEventMap: {
         touchstart: "mousedown",
         touchend: "mouseup",
         tap: "click",
-        doubletap: "dblclick",
-      },
+        doubletap: "dblclick"
+      }
     },
     afterRender: function () {
       var a = this;
@@ -107017,7 +107006,7 @@ Ext.cmd.derive(
         keyup: a.handleEvent,
         keypress: a.handleEvent,
         mouseover: a.handleMouseOver,
-        mouseout: a.handleMouseOut,
+        mouseout: a.handleMouseOut
       });
     },
     getTargetSelector: function () {
@@ -107272,8 +107261,8 @@ Ext.cmd.derive(
         if (a) {
           a.className = a.className;
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["dataview"],
@@ -107282,7 +107271,7 @@ Ext.cmd.derive(
   ["widget.dataview"],
   0,
   [Ext.view, "View", Ext, "DataView"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.BoundListKeyNav",
@@ -107297,7 +107286,7 @@ Ext.cmd.derive(
         b.keyNav.map.addBinding({
           key: Ext.event.Event.ESC,
           fn: b.onKeyEsc,
-          scope: b,
+          scope: b
         });
       }
       if (!c) {
@@ -107305,7 +107294,7 @@ Ext.cmd.derive(
       }
       if (!c.rendered) {
         c.on("render", Ext.Function.bind(b.initKeyNav, b, [a], 0), b, {
-          single: true,
+          single: true
         });
         return;
       }
@@ -107326,7 +107315,7 @@ Ext.cmd.derive(
         enter: b.onKeyEnter,
         A: { ctrl: true, handler: b.onSelectAllKeyPress },
         priority: 1001,
-        scope: b,
+        scope: b
       });
     },
     processViewEvent: function (b, a, e, c, d) {
@@ -107355,7 +107344,7 @@ Ext.cmd.derive(
         a,
         e,
         c,
-        d,
+        d
       );
       if (d.pointerType === "mouse") {
         d.preventDefault();
@@ -107453,7 +107442,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.fieldKeyNav = Ext.destroy(this.fieldKeyNav);
       Ext.view.NavigationModel.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -107462,7 +107451,7 @@ Ext.cmd.derive(
   ["view.navigation.boundlist"],
   0,
   [Ext.view, "BoundListKeyNav"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.BoundList",
@@ -107488,7 +107477,7 @@ Ext.cmd.derive(
       var a = this.owner;
       Ext.layout.component.Auto.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (b.heightModel.auto) {
         a.el.setHeight("auto");
@@ -107537,14 +107526,14 @@ Ext.cmd.derive(
       var a =
           Ext.layout.component.Auto.prototype.calculateOwnerHeightFromContentHeight.apply(
             this,
-            arguments,
+            arguments
           ),
         b = c.toolbarContext;
       if (b) {
         a += b.getProp("height");
       }
       return a;
-    },
+    }
   },
   0,
   0,
@@ -107553,7 +107542,7 @@ Ext.cmd.derive(
   ["layout.boundlist"],
   0,
   [Ext.layout.component, "BoundList"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Item",
@@ -107562,7 +107551,7 @@ Ext.cmd.derive(
     alternateClassName: "Ext.Toolbar.Item",
     enable: Ext.emptyFn,
     disable: Ext.emptyFn,
-    focus: Ext.emptyFn,
+    focus: Ext.emptyFn
   },
   0,
   ["tbitem"],
@@ -107571,7 +107560,7 @@ Ext.cmd.derive(
   ["widget.tbitem"],
   0,
   [Ext.toolbar, "Item", Ext.Toolbar, "Item"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.TextItem",
@@ -107590,7 +107579,7 @@ Ext.cmd.derive(
     },
     setText: function (a) {
       this.update(a);
-    },
+    }
   },
   0,
   ["tbtext"],
@@ -107599,7 +107588,7 @@ Ext.cmd.derive(
   ["widget.tbtext"],
   0,
   [Ext.toolbar, "TextItem", Ext.Toolbar, "TextItem"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.trigger.Spinner",
@@ -107632,7 +107621,7 @@ Ext.cmd.derive(
         downDisabledCls: a.downEnabled ? "" : a.spinnerDownCls + "-disabled",
         spinnerCls: a.spinnerCls,
         spinnerUpCls: a.spinnerUpCls,
-        spinnerDownCls: a.spinnerDownCls,
+        spinnerDownCls: a.spinnerDownCls
       };
     },
     getStateEl: function () {
@@ -107670,9 +107659,9 @@ Ext.cmd.derive(
     },
     setDownEnabled: function (a) {
       this.downEl[a ? "removeCls" : "addCls"](
-        this.spinnerDownCls + "-disabled",
+        this.spinnerDownCls + "-disabled"
       );
-    },
+    }
   },
   0,
   0,
@@ -107681,7 +107670,7 @@ Ext.cmd.derive(
   ["trigger.spinner"],
   0,
   [Ext.form.trigger, "Spinner"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Spinner",
@@ -107695,9 +107684,9 @@ Ext.cmd.derive(
           upHandler: "onSpinnerUpClick",
           downHandler: "onSpinnerDownClick",
           endHandler: "onSpinEnd",
-          scope: "this",
-        },
-      },
+          scope: "this"
+        }
+      }
     },
     spinUpEnabled: true,
     spinDownEnabled: true,
@@ -107724,7 +107713,7 @@ Ext.cmd.derive(
         b.spinnerKeyNav = new Ext.util.KeyNav(b.inputEl, {
           scope: b,
           up: b.spinUp,
-          down: b.spinDown,
+          down: b.spinDown
         });
         b.inputEl.on({ keyup: b.onInputElKeyUp, scope: b });
       }
@@ -107796,7 +107785,7 @@ Ext.cmd.derive(
     doDestroy: function () {
       Ext.destroyMembers(this, "spinnerKeyNav");
       Ext.form.field.Text.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["spinnerfield"],
@@ -107806,7 +107795,7 @@ Ext.cmd.derive(
     box: true,
     field: true,
     textfield: true,
-    spinnerfield: true,
+    spinnerfield: true
   },
   ["widget.spinnerfield"],
   0,
@@ -107815,7 +107804,7 @@ Ext.cmd.derive(
     a.prototype.onSpinEnd = Ext.Function.createBuffered(function () {
       this.fireEvent("spinend", this);
     }, 100);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.field.Number",
@@ -108041,14 +108030,14 @@ Ext.cmd.derive(
       var a = this;
       if (!a.readOnly) {
         a.setSpinValue(
-          Ext.Number.constrain(a.getValue() + a.step, a.minValue, a.maxValue),
+          Ext.Number.constrain(a.getValue() + a.step, a.minValue, a.maxValue)
         );
       }
     },
     setSpinDownEnabled: function (b, a) {
       Ext.form.field.Spinner.prototype.setSpinDownEnabled.apply(
         this,
-        arguments,
+        arguments
       );
       if (!a) {
         delete this.spinDownDisabledByToggle;
@@ -108060,7 +108049,7 @@ Ext.cmd.derive(
       var a = this;
       if (!a.readOnly) {
         a.setSpinValue(
-          Ext.Number.constrain(a.getValue() - a.step, a.minValue, a.maxValue),
+          Ext.Number.constrain(a.getValue() - a.step, a.minValue, a.maxValue)
         );
       }
     },
@@ -108072,7 +108061,7 @@ Ext.cmd.derive(
         }
       }
       a.setValue(b);
-    },
+    }
   },
   0,
   ["numberfield"],
@@ -108083,12 +108072,12 @@ Ext.cmd.derive(
     field: true,
     textfield: true,
     spinnerfield: true,
-    numberfield: true,
+    numberfield: true
   },
   ["widget.numberfield"],
   0,
   [Ext.form.field, "Number", Ext.form, "NumberField", Ext.form, "Number"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Paging",
@@ -108112,7 +108101,7 @@ Ext.cmd.derive(
       currentPage: 0,
       pageCount: 0,
       toRecord: 0,
-      fromRecord: 0,
+      fromRecord: 0
     },
     defaultBindProperty: "store",
     getPagingItems: function () {
@@ -108128,7 +108117,7 @@ Ext.cmd.derive(
           iconCls: "x-tbar-page-first",
           disabled: true,
           handler: b.moveFirst,
-          scope: b,
+          scope: b
         },
         {
           itemId: "prev",
@@ -108137,7 +108126,7 @@ Ext.cmd.derive(
           iconCls: "x-tbar-page-prev",
           disabled: true,
           handler: b.movePrevious,
-          scope: b,
+          scope: b
         },
         "-",
         b.beforePageText,
@@ -108156,12 +108145,12 @@ Ext.cmd.derive(
           isFormField: false,
           width: b.inputItemWidth,
           margin: "-1 2 3 2",
-          listeners: a,
+          listeners: a
         },
         {
           xtype: "tbtext",
           itemId: "afterTextItem",
-          html: Ext.String.format(b.afterPageText, 1),
+          html: Ext.String.format(b.afterPageText, 1)
         },
         "-",
         {
@@ -108171,7 +108160,7 @@ Ext.cmd.derive(
           iconCls: "x-tbar-page-next",
           disabled: true,
           handler: b.moveNext,
-          scope: b,
+          scope: b
         },
         {
           itemId: "last",
@@ -108180,7 +108169,7 @@ Ext.cmd.derive(
           iconCls: "x-tbar-page-last",
           disabled: true,
           handler: b.moveLast,
-          scope: b,
+          scope: b
         },
         "-",
         {
@@ -108190,8 +108179,8 @@ Ext.cmd.derive(
           iconCls: "x-tbar-loading",
           disabled: b.store.isLoading(),
           handler: b.doRefresh,
-          scope: b,
-        },
+          scope: b
+        }
       ];
     },
     initComponent: function () {
@@ -108236,7 +108225,7 @@ Ext.cmd.derive(
           e = a.on({
             destroyable: true,
             scope: d,
-            storechange: "onOwnerStoreChange",
+            storechange: "onOwnerStoreChange"
           });
         }
         d._storeChangeListener = e;
@@ -108271,7 +108260,7 @@ Ext.cmd.derive(
             e.displayMsg,
             b.fromRecord,
             b.toRecord,
-            b.total,
+            b.total
           );
         }
         c.setText(g);
@@ -108342,7 +108331,7 @@ Ext.cmd.derive(
         currentPage: b.currentPage,
         pageCount: Ext.Number.isFinite(c) ? c : 1,
         fromRecord: (b.currentPage - 1) * b.pageSize + 1,
-        toRecord: d || a,
+        toRecord: d || a
       };
     },
     onLoadError: function () {
@@ -108479,7 +108468,7 @@ Ext.cmd.derive(
       return {
         beforeload: this.beforeLoad,
         load: this.onLoad,
-        exception: this.onLoadError,
+        exception: this.onLoadError
       };
     },
     onBindStore: function () {
@@ -108496,7 +108485,7 @@ Ext.cmd.derive(
       }
       a.bindStore(null);
       Ext.toolbar.Toolbar.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["pagingtoolbar"],
@@ -108506,17 +108495,17 @@ Ext.cmd.derive(
     box: true,
     container: true,
     toolbar: true,
-    pagingtoolbar: true,
+    pagingtoolbar: true
   },
   ["widget.pagingtoolbar"],
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext.toolbar, "Paging", Ext, "PagingToolbar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.BoundList",
@@ -108556,7 +108545,7 @@ Ext.cmd.derive(
       "Ext.DomHelper.generateMarkup(pagingToolbar.getRenderTree(), out);",
       "}",
       "%}",
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     focusOnToFront: false,
     alignOnScroll: false,
@@ -108593,7 +108582,7 @@ Ext.cmd.derive(
           '">' +
           a.getInnerTpl(a.displayField) +
           "</li>",
-        "</tpl>",
+        "</tpl>"
       );
     },
     setDisplayField: function (a) {
@@ -108619,7 +108608,7 @@ Ext.cmd.derive(
         store: a.dataSource,
         border: false,
         ownerCt: a,
-        ownerLayout: a.getComponentLayout(),
+        ownerLayout: a.getComponentLayout()
       });
     },
     getNodeContainer: function () {
@@ -108763,8 +108752,8 @@ Ext.cmd.derive(
         if (a) {
           a.finishRender();
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["boundlist"],
@@ -108774,11 +108763,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
-    ],
+      Ext.mixin.Queryable
+    ]
   ],
   [Ext.view, "BoundList", Ext, "BoundList"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.ComboBox",
@@ -108791,7 +108780,7 @@ Ext.cmd.derive(
       valueNotFoundText: null,
       displayTpl: null,
       delimiter: ", ",
-      displayField: "text",
+      displayField: "text"
     },
     publishes: ["selection"],
     twoWayBindable: ["selection"],
@@ -108830,7 +108819,7 @@ Ext.cmd.derive(
       loadingHeight: 70,
       minWidth: 70,
       maxHeight: 300,
-      shadow: "sides",
+      shadow: "sides"
     },
     transformInPlace: true,
     clearValueOnEmpty: true,
@@ -108917,7 +108906,7 @@ Ext.cmd.derive(
         priority: 1002,
         scope: a,
         down: { alt: true, handler: a.onAltDownArrow },
-        up: { alt: true, handler: a.onAltUpArrow },
+        up: { alt: true, handler: a.onAltUpArrow }
       });
     },
     getSubTplData: function (b) {
@@ -108940,7 +108929,7 @@ Ext.cmd.derive(
         a = "",
         b = Ext.form.field.Picker.prototype.getSubTplMarkup.apply(
           this,
-          arguments,
+          arguments
         );
       if (d.hiddenName) {
         a =
@@ -108960,7 +108949,7 @@ Ext.cmd.derive(
             a.getDisplayField() +
             '"]]}<tpl if="xindex < xcount">' +
             a.getDelimiter() +
-            "</tpl></tpl>",
+            "</tpl></tpl>"
         );
         b.auto = true;
       } else {
@@ -109200,13 +109189,13 @@ Ext.cmd.derive(
           rootProperty: "data",
           extraKeys: {
             byInternalId: { property: "internalId" },
-            byValue: { property: e.valueField, rootProperty: "data" },
+            byValue: { property: e.valueField, rootProperty: "data" }
           },
           listeners: {
             beginupdate: e.onValueCollectionBeginUpdate,
             endupdate: e.onValueCollectionEndUpdate,
-            scope: e,
-          },
+            scope: e
+          }
         };
         e.valueCollection = new Ext.util.Collection(g);
         e.pickerSelectionModel = new Ext.selection.DataViewModel({
@@ -109217,7 +109206,7 @@ Ext.cmd.derive(
           pruneRemoved: false,
           selected: e.valueCollection,
           store: a,
-          listeners: { scope: e, lastselectedchanged: e.updateBindSelection },
+          listeners: { scope: e, lastselectedchanged: e.updateBindSelection }
         });
         if (!c) {
           e.resetToDefault();
@@ -109226,7 +109215,7 @@ Ext.cmd.derive(
           e.pickerSelectionModel.on({
             scope: e,
             beforeselect: e.onBeforeSelect,
-            beforedeselect: e.onBeforeDeselect,
+            beforedeselect: e.onBeforeDeselect
           });
           b.setSelectionModel(e.pickerSelectionModel);
           if (b.getStore() !== a) {
@@ -109255,7 +109244,7 @@ Ext.cmd.derive(
             load: c.onLoad,
             exception: c.onException,
             update: c.onStoreUpdate,
-            remove: c.checkValueOnChange,
+            remove: c.checkValueOnChange
           };
         if (!b.getRemoteFilter()) {
           a.filterchange = c.checkValueOnChange;
@@ -109325,7 +109314,7 @@ Ext.cmd.derive(
           rawQuery: h,
           forceAll: c,
           combo: e,
-          cancel: false,
+          cancel: false
         }),
         g;
       if (b !== false && !b.cancel) {
@@ -109386,7 +109375,7 @@ Ext.cmd.derive(
             caseSensitive: d.caseSensitive,
             root: "data",
             property: d.displayField,
-            value: g,
+            value: g
           });
           a.addFilter(c, true);
           d.changingFilters = false;
@@ -109414,7 +109403,7 @@ Ext.cmd.derive(
         c.store.load({
           params: c.getParams(b.query),
           rawQuery: b.rawQuery,
-          callback: a,
+          callback: a
         });
       }
     },
@@ -109437,7 +109426,7 @@ Ext.cmd.derive(
     loadPage: function (b, a) {
       this.store.loadPage(
         b,
-        Ext.apply({ params: this.getParams(this.lastQuery) }, a),
+        Ext.apply({ params: this.getParams(this.lastQuery) }, a)
       );
     },
     onPageChange: function (b, a) {
@@ -109578,10 +109567,10 @@ Ext.cmd.derive(
             preserveScrollOnRefresh: true,
             pageSize: c.pageSize,
             tpl: c.tpl,
-            ariaSelectable: c.ariaSelectable,
+            ariaSelectable: c.ariaSelectable
           },
           c.listConfig,
-          c.defaultListConfig,
+          c.defaultListConfig
         );
       b = c.picker = Ext.widget(a);
       if (c.pageSize) {
@@ -109594,7 +109583,7 @@ Ext.cmd.derive(
         beforeselect: c.onBeforeSelect,
         beforedeselect: c.onBeforeDeselect,
         focuschange: c.onFocusChange,
-        scope: c,
+        scope: c
       });
       b.getNavigationModel().navigateOnSpace = false;
       return b;
@@ -109958,7 +109947,7 @@ Ext.cmd.derive(
       c = k.length;
       if (!h && g > 0) {
         e.hiddenDataEl.setHtml(
-          Ext.DomHelper.markup({ tag: "input", type: "hidden", name: a }),
+          Ext.DomHelper.markup({ tag: "input", type: "hidden", name: a })
         );
         c = 1;
         h = b.firstChild;
@@ -110032,7 +110021,7 @@ Ext.cmd.derive(
     },
     clearValue: function () {
       this.setValue(null);
-    },
+    }
   },
   0,
   ["combo", "combobox"],
@@ -110043,7 +110032,7 @@ Ext.cmd.derive(
     "textfield",
     "pickerfield",
     "combobox",
-    "combo",
+    "combo"
   ],
   {
     component: true,
@@ -110052,17 +110041,17 @@ Ext.cmd.derive(
     textfield: true,
     pickerfield: true,
     combobox: true,
-    combo: true,
+    combo: true
   },
   ["widget.combo", "widget.combobox"],
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext.form.field, "ComboBox", Ext.form, "ComboBox"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.picker.Month",
@@ -110106,7 +110095,7 @@ Ext.cmd.derive(
       "Ext.DomHelper.generateMarkup(cancelBtn.getRenderTree(), out);",
       "%}</div>",
       "</tpl>",
-      "</div>",
+      "</div>"
     ],
     okText: "OK",
     cancelText: "Cancel",
@@ -110133,13 +110122,13 @@ Ext.cmd.derive(
           ui: a.footerButtonUI,
           text: a.okText,
           handler: a.onOkClick,
-          scope: a,
+          scope: a
         });
         a.cancelBtn = new Ext.button.Button({
           ui: a.footerButtonUI,
           text: a.cancelText,
           handler: a.onCancelClick,
-          scope: a,
+          scope: a
         });
       }
       Ext.Component.prototype.initComponent.call(this);
@@ -110166,7 +110155,7 @@ Ext.cmd.derive(
         months: b,
         years: g.getYears(),
         showButtons: g.showButtons,
-        monthStyle: d,
+        monthStyle: d
       });
     },
     cacheWidth: function () {
@@ -110175,7 +110164,7 @@ Ext.cmd.derive(
         c = Ext.getBody().createChild({
           cls: a.baseCls + " " + a.borderBoxCls,
           style: "position:absolute;top:-1000px;left:-1000px;",
-          html: "&nbsp;",
+          html: "&nbsp;"
         });
       a.self.prototype.width = c.getWidth() + b.left + b.right;
       c.destroy();
@@ -110191,11 +110180,11 @@ Ext.cmd.derive(
       b.years = a.select("." + b.baseCls + "-year a");
       b.months = a.select("." + b.baseCls + "-month a");
       b.backRepeater = new Ext.util.ClickRepeater(b.prevEl, {
-        handler: Ext.Function.bind(b.adjustYear, b, [-b.totalYears]),
+        handler: Ext.Function.bind(b.adjustYear, b, [-b.totalYears])
       });
       b.prevEl.addClsOnOver(b.baseCls + "-yearnav-prev-over");
       b.nextRepeater = new Ext.util.ClickRepeater(b.nextEl, {
-        handler: Ext.Function.bind(b.adjustYear, b, [b.totalYears]),
+        handler: Ext.Function.bind(b.adjustYear, b, [b.totalYears])
       });
       b.nextEl.addClsOnOver(b.baseCls + "-yearnav-next-over");
       b.updateBody();
@@ -110365,7 +110354,7 @@ Ext.cmd.derive(
         this.backRepeater,
         this.nextRepeater,
         this.okBtn,
-        this.cancelBtn,
+        this.cancelBtn
       );
       Ext.Component.prototype.doDestroy.call(this);
     },
@@ -110377,8 +110366,8 @@ Ext.cmd.derive(
           a.okBtn.finishRender();
           a.cancelBtn.finishRender();
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["monthpicker"],
@@ -110387,7 +110376,7 @@ Ext.cmd.derive(
   ["widget.monthpicker"],
   0,
   [Ext.picker, "Month", Ext, "MonthPicker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.picker.Date",
@@ -110426,7 +110415,7 @@ Ext.cmd.derive(
       "prevEl",
       "nextEl",
       "middleBtnEl",
-      "footerEl",
+      "footerEl"
     ],
     border: true,
     renderTpl: [
@@ -110480,8 +110469,8 @@ Ext.cmd.derive(
         },
         renderMonthBtn: function (a, b) {
           Ext.DomHelper.generateMarkup(a.$comp.monthBtn.getRenderTree(), b);
-        },
-      },
+        }
+      }
     ],
     initHour: 12,
     numDays: 42,
@@ -110541,8 +110530,8 @@ Ext.cmd.derive(
         listeners: {
           click: c.doShowMonthPicker,
           arrowclick: c.doShowMonthPicker,
-          scope: c,
-        },
+          scope: c
+        }
       });
       if (c.showToday) {
         c.todayBtn = new Ext.button.Button({
@@ -110555,7 +110544,7 @@ Ext.cmd.derive(
           tabIndex: -1,
           ariaRole: "presentation",
           handler: c.selectToday,
-          scope: c,
+          scope: c
         });
       }
       Ext.Component.prototype.beforeRender.call(this);
@@ -110570,7 +110559,7 @@ Ext.cmd.derive(
         ariaMaxText: b(c.ariaMaxText),
         ariaDisabledDaysText: b(c.ariaDisabledDaysText),
         ariaDisabledDatesText: b(c.ariaDisabledDatesText),
-        days: d,
+        days: d
       });
       c.protoEl.unselectable();
     },
@@ -110579,7 +110568,7 @@ Ext.cmd.derive(
         b = a.parseBox(a.padding),
         c = Ext.getBody().createChild({
           cls: a.baseCls + " " + a.borderBoxCls,
-          style: "position:absolute;top:-1000px;left:-1000px;",
+          style: "position:absolute;top:-1000px;left:-1000px;"
         });
       a.self.prototype.width = c.getWidth() + b.left + b.right;
       c.destroy();
@@ -110594,7 +110583,7 @@ Ext.cmd.derive(
       c.mon(c.eventEl, {
         scope: c,
         mousewheel: c.handleMouseWheel,
-        click: { fn: c.handleDateClick, delegate: d },
+        click: { fn: c.handleDateClick, delegate: d }
       });
     },
     initEvents: function () {
@@ -110607,12 +110596,12 @@ Ext.cmd.derive(
       a.prevRepeater = new Ext.util.ClickRepeater(a.prevEl, {
         handler: a.showPrevMonth,
         scope: a,
-        mousedownStopEvent: true,
+        mousedownStopEvent: true
       });
       a.nextRepeater = new Ext.util.ClickRepeater(a.nextEl, {
         handler: a.showNextMonth,
         scope: a,
-        mousedownStopEvent: true,
+        mousedownStopEvent: true
       });
       a.keyNav = new Ext.util.KeyNav(
         a.eventEl,
@@ -110700,10 +110689,10 @@ Ext.cmd.derive(
                 }
               }
               g.preventDefault();
-            },
+            }
           },
-          a.keyNavConfig,
-        ),
+          a.keyNavConfig
+        )
       );
       if (a.disabled) {
         a.syncDisabled(true, true);
@@ -110840,7 +110829,7 @@ Ext.cmd.derive(
           duration: 200,
           callback: function () {
             b.setVisible(!c);
-          },
+          }
         };
       if (c) {
         b.el.slideOut("t", a);
@@ -110906,8 +110895,8 @@ Ext.cmd.derive(
             cancelclick: b.onCancelClick,
             okclick: b.onOkClick,
             yeardblclick: b.onOkClick,
-            monthdblclick: b.onOkClick,
-          },
+            monthdblclick: b.onOkClick
+          }
         });
         if (!b.disableAnim) {
           a.el.setStyle("display", "none");
@@ -111175,7 +111164,7 @@ Ext.cmd.derive(
           a.nextRepeater,
           a.prevRepeater,
           a.todayBtn,
-          a.todayElSpan,
+          a.todayElSpan
         );
       }
       Ext.Component.prototype.doDestroy.call(this);
@@ -111204,8 +111193,8 @@ Ext.cmd.derive(
         if (b && d) {
           d.setDisabled(e.todayDisabled || c);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["datepicker"],
@@ -111214,7 +111203,7 @@ Ext.cmd.derive(
   ["widget.datepicker"],
   0,
   [Ext.picker, "Date", Ext, "DatePicker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Date",
@@ -111525,8 +111514,8 @@ Ext.cmd.derive(
           esc: function () {
             a.inputEl.focus();
             a.collapse();
-          },
-        },
+          }
+        }
       });
     },
     onSelect: function (a, c) {
@@ -111551,7 +111540,7 @@ Ext.cmd.derive(
         b.setValue(a);
       }
       Ext.form.field.Picker.prototype.onBlur.call(this, c);
-    },
+    }
   },
   0,
   ["datefield"],
@@ -111562,12 +111551,12 @@ Ext.cmd.derive(
     field: true,
     textfield: true,
     pickerfield: true,
-    datefield: true,
+    datefield: true
   },
   ["widget.datefield"],
   0,
   [Ext.form.field, "Date", Ext.form, "DateField", Ext.form, "Date"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Display",
@@ -111580,7 +111569,7 @@ Ext.cmd.derive(
       ' tabindex="<tpl if="tabIdx != null">{tabIdx}<tpl else>-1</tpl>"',
       '<tpl if="fieldStyle"> style="{fieldStyle}"</tpl>',
       ' class="{fieldCls} {fieldCls}-{ui}">{value}</div>',
-      { compiled: true, disableFormats: true },
+      { compiled: true, disableFormats: true }
     ],
     ariaRole: undefined,
     focusable: false,
@@ -111635,11 +111624,11 @@ Ext.cmd.derive(
     getSubTplData: function (b) {
       var a = Ext.form.field.Base.prototype.getSubTplData.apply(
         this,
-        arguments,
+        arguments
       );
       a.value = this.getDisplayValue();
       return a;
-    },
+    }
   },
   0,
   ["displayfield"],
@@ -111648,7 +111637,7 @@ Ext.cmd.derive(
   ["widget.displayfield"],
   0,
   [Ext.form.field, "Display", Ext.form, "DisplayField", Ext.form, "Display"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.FileButton",
@@ -111667,7 +111656,7 @@ Ext.cmd.derive(
       'type="file" size="1" name="{inputName}" unselectable="on" ',
       '<tpl if="accept != null">accept="{accept}"</tpl>',
       '<tpl if="tabIndex != null">tabindex="{tabIndex}"</tpl>',
-      ">",
+      ">"
     ],
     keyMap: null,
     ariaEl: "fileInputEl",
@@ -111696,7 +111685,7 @@ Ext.cmd.derive(
         keydown: c.handlePrompt,
         change: c.fireChange,
         focus: c.onFileFocus,
-        blur: c.onFileBlur,
+        blur: c.onFileBlur
       };
       if (c.useTabGuards) {
         a = {
@@ -111704,7 +111693,7 @@ Ext.cmd.derive(
           role: "button",
           "aria-hidden": "true",
           "data-tabguard": "true",
-          style: { height: 0, width: 0 },
+          style: { height: 0, width: 0 }
         };
         a.tabIndex = c.tabIndex != null ? c.tabIndex : 0;
         c.beforeInputGuard = c.el.createChild(a, c.fileInputEl);
@@ -111731,9 +111720,9 @@ Ext.cmd.derive(
           tag: "input",
           type: "file",
           size: 1,
-          unselectable: "on",
+          unselectable: "on"
         },
-        d.afterInputGuard,
+        d.afterInputGuard
       );
       a.dom.setAttribute("data-componentid", d.id);
       if (d.tabIndex != null) {
@@ -111748,7 +111737,7 @@ Ext.cmd.derive(
         mousedown: d.handlePrompt,
         keydown: d.handlePrompt,
         focus: d.onFileFocus,
-        blur: d.onFileBlur,
+        blur: d.onFileBlur
       };
       if (d.useTabGuards) {
         b.keydown = d.onFileInputKeydown;
@@ -111862,8 +111851,8 @@ Ext.cmd.derive(
         } else {
           b.fileInputEl.dom.setAttribute("tabIndex", a);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["filebutton"],
@@ -111872,7 +111861,7 @@ Ext.cmd.derive(
   ["widget.filebutton"],
   0,
   [Ext.form.field, "FileButton"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.trigger.Component",
@@ -111896,7 +111885,7 @@ Ext.cmd.derive(
       }
       this.component = null;
       Ext.form.trigger.Trigger.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -111905,7 +111894,7 @@ Ext.cmd.derive(
   ["trigger.component"],
   0,
   [Ext.form.trigger, "Component"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.File",
@@ -111914,7 +111903,7 @@ Ext.cmd.derive(
     alternateClassName: [
       "Ext.form.FileUploadField",
       "Ext.ux.form.FileUploadField",
-      "Ext.form.File",
+      "Ext.form.File"
     ],
     emptyText: undefined,
     needArrowKeys: false,
@@ -111922,8 +111911,8 @@ Ext.cmd.derive(
       filebutton: {
         type: "component",
         hideOnReadOnly: false,
-        preventMouseDown: false,
-      },
+        preventMouseDown: false
+      }
     },
     buttonText: "Browse...",
     buttonOnly: false,
@@ -111954,9 +111943,9 @@ Ext.cmd.derive(
               : b.getButtonMarginProp() + b.buttonMargin + "px",
             accept: b.accept,
             inputName: b.getName(),
-            listeners: { scope: b, change: b.onFileChange },
+            listeners: { scope: b, change: b.onFileChange }
           },
-          b.buttonConfig,
+          b.buttonConfig
         );
         return Ext.form.field.Text.prototype.applyTriggers.call(this, a);
       }
@@ -112082,8 +112071,8 @@ Ext.cmd.derive(
       getFocusEl: function () {
         return this.button;
       },
-      getFocusClsEl: Ext.privateFn,
-    },
+      getFocusClsEl: Ext.privateFn
+    }
   },
   0,
   ["fileuploadfield", "filefield"],
@@ -112094,7 +112083,7 @@ Ext.cmd.derive(
     field: true,
     textfield: true,
     filefield: true,
-    fileuploadfield: true,
+    fileuploadfield: true
   },
   ["widget.filefield", "widget.fileuploadfield"],
   0,
@@ -112106,9 +112095,9 @@ Ext.cmd.derive(
     Ext.ux.form,
     "FileUploadField",
     Ext.form,
-    "File",
+    "File"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Hidden",
@@ -112135,7 +112124,7 @@ Ext.cmd.derive(
     setPosition: Ext.emptyFn,
     setPagePosition: Ext.emptyFn,
     markInvalid: Ext.emptyFn,
-    clearInvalid: Ext.emptyFn,
+    clearInvalid: Ext.emptyFn
   },
   0,
   ["hiddenfield", "hidden"],
@@ -112144,7 +112133,7 @@ Ext.cmd.derive(
   ["widget.hidden", "widget.hiddenfield"],
   0,
   [Ext.form.field, "Hidden", Ext.form, "Hidden"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tip.Tip",
@@ -112168,7 +112157,7 @@ Ext.cmd.derive(
       a.floating = Ext.apply(
         {},
         { shadow: a.shadow },
-        a.self.prototype.floating,
+        a.self.prototype.floating
       );
       Ext.panel.Panel.prototype.initComponent.apply(this, arguments);
       a.constrain = a.constrain || a.constrainPosition;
@@ -112179,16 +112168,14 @@ Ext.cmd.derive(
       Ext.panel.Panel.prototype.showAt.apply(this, arguments);
       if (a.isVisible()) {
         a.doAlignment(
-          a
-            .getRegion()
-            .alignTo({
-              target: new Ext.util.Point(b[0], b[1]),
-              inside: a.constrainPosition
-                ? Ext.getBody().getRegion().adjust(5, -5, -5, 5)
-                : null,
-              align: "tl-tl",
-              overlap: true,
-            }),
+          a.getRegion().alignTo({
+            target: new Ext.util.Point(b[0], b[1]),
+            inside: a.constrainPosition
+              ? Ext.getBody().getRegion().adjust(5, -5, -5, 5)
+              : null,
+            align: "tl-tl",
+            overlap: true
+          })
         );
       }
       a.calledFromShowAt = 0;
@@ -112223,13 +112210,13 @@ Ext.cmd.derive(
           el: a.getDragEl(),
           delegate: a.header.el,
           constrain: a,
-          constrainTo: a.el.dom.parentNode,
+          constrainTo: a.el.dom.parentNode
         };
         Ext.Component.prototype.initDraggable.call(a);
-      },
+      }
     },
     ghost: undefined,
-    unghost: undefined,
+    unghost: undefined
   },
   0,
   ["tip"],
@@ -112238,7 +112225,7 @@ Ext.cmd.derive(
   ["widget.tip"],
   0,
   [Ext.tip, "Tip", Ext, "Tip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tip.ToolTip",
@@ -112270,7 +112257,7 @@ Ext.cmd.derive(
       Ext.tip.Tip.prototype.onRender.apply(this, arguments);
       c.anchorEl = c.el.createChild({
         role: "presentation",
-        cls: "x-tip-anchor",
+        cls: "x-tip-anchor"
       });
     },
     show: function () {
@@ -112293,7 +112280,7 @@ Ext.cmd.derive(
           mousemove: "onMouseMove",
           tap: "onTargetTap",
           scope: b,
-          destroyable: true,
+          destroyable: true
         };
         b.targetListeners = c.on(a);
       } else {
@@ -112360,7 +112347,7 @@ Ext.cmd.derive(
         offset: b.targetOffset,
         inside: b.constrainPosition
           ? Ext.getBody().getRegion().adjust(5, -5, -5, 5)
-          : null,
+          : null
       };
       if (b.anchor) {
         g.anchorSize = b.anchorSize;
@@ -112374,7 +112361,7 @@ Ext.cmd.derive(
         callback: function () {
           a.hide();
           a.el.setOpacity("");
-        },
+        }
       });
     },
     getAnchorAlign: function () {
@@ -112453,7 +112440,7 @@ Ext.cmd.derive(
           a.showTimer = Ext.defer(
             a.showFromDelay,
             a.pointerEvent.pointerType !== "mouse" ? 0 : a.showDelay,
-            a,
+            a
           );
         }
       } else {
@@ -112595,8 +112582,8 @@ Ext.cmd.derive(
         }
         Ext.tip.Tip.prototype.clipTo.call(this, a, c);
         this.anchorEl.clipTo(a, c);
-      },
-    },
+      }
+    }
   },
   0,
   ["tooltip"],
@@ -112607,12 +112594,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     tip: true,
-    tooltip: true,
+    tooltip: true
   },
   ["widget.tooltip"],
   0,
   [Ext.tip, "ToolTip", Ext, "ToolTip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tip.QuickTip",
@@ -112633,7 +112620,7 @@ Ext.cmd.derive(
       anchor: "anchor",
       showDelay: "qshowDelay",
       hideAction: "hideAction",
-      anchorTarget: "anchorTarget",
+      anchorTarget: "anchorTarget"
     },
     isQuickTip: true,
     shrinkWrapDock: true,
@@ -112766,7 +112753,7 @@ Ext.cmd.derive(
           align: h.getAttribute(d + c.align),
           showDelay: h.getAttribute(d + c.showDelay),
           hideAction: h.getAttribute(d + c.hideAction),
-          alignTarget: h.getAttribute(d + c.anchorTarget),
+          alignTarget: h.getAttribute(d + c.anchorTarget)
         };
         if (!e.initialConfig.hasOwnProperty("anchor")) {
           e.anchor = h.getAttribute(d + c.anchor);
@@ -112909,7 +112896,7 @@ Ext.cmd.derive(
     hide: function () {
       this.activeTarget = null;
       Ext.tip.ToolTip.prototype.hide.call(this);
-    },
+    }
   },
   0,
   ["quicktip"],
@@ -112921,12 +112908,12 @@ Ext.cmd.derive(
     panel: true,
     tip: true,
     tooltip: true,
-    quicktip: true,
+    quicktip: true
   },
   ["widget.quicktip"],
   0,
   [Ext.tip, "QuickTip", Ext, "QuickTip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tip.QuickTipManager",
@@ -113020,7 +113007,7 @@ Ext.cmd.derive(
     tips: function () {
       var a = this.tip;
       a.register.apply(a, arguments);
-    },
+    }
   },
   0,
   0,
@@ -113029,7 +113016,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.tip, "QuickTipManager", Ext, "QuickTips"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.picker.Color",
@@ -113083,7 +113070,7 @@ Ext.cmd.derive(
       "CCFFFF",
       "99CCFF",
       "CC99FF",
-      "FFFFFF",
+      "FFFFFF"
     ],
     colorRe: /(?:^|\s)color-(.{6})(?:\s|$)/,
     renderTpl: [
@@ -113091,7 +113078,7 @@ Ext.cmd.derive(
       '<a href="#" role="button" class="color-{.} {parent.itemCls}" hidefocus="on">',
       '<span class="{parent.itemCls}-inner" style="background:#{.}">&#160;</span>',
       "</a>",
-      "</tpl>",
+      "</tpl>"
     ],
     initComponent: function () {
       var a = this;
@@ -113104,7 +113091,7 @@ Ext.cmd.derive(
       var a = this;
       return Ext.apply(Ext.Component.prototype.initRenderData.call(this), {
         itemCls: a.itemCls,
-        colors: a.colors,
+        colors: a.colors
       });
     },
     onRender: function () {
@@ -113115,7 +113102,7 @@ Ext.cmd.derive(
       if (a !== "click") {
         b.mon(b.el, "click", Ext.emptyFn, b, {
           delegate: "a",
-          stopEvent: true,
+          stopEvent: true
         });
       }
     },
@@ -113175,7 +113162,7 @@ Ext.cmd.derive(
     },
     getValue: function () {
       return this.value || null;
-    },
+    }
   },
   0,
   ["colorpicker"],
@@ -113184,7 +113171,7 @@ Ext.cmd.derive(
   ["widget.colorpicker"],
   0,
   [Ext.picker, "Color", Ext, "ColorPalette"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.field.HtmlEditor",
@@ -113203,7 +113190,7 @@ Ext.cmd.derive(
       }
       Ext.layout.component.field.FieldContainer.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
       b.toolbarContext = b.context.getCmp(a.toolbar);
       b.inputCmpContext = b.context.getCmp(a.inputCmp);
@@ -113221,7 +113208,7 @@ Ext.cmd.derive(
         a = c.natural || c.shrinkWrap ? h.naturalHeight : "";
       Ext.layout.component.field.FieldContainer.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (d.shrinkWrap) {
         g.setStyle("width", "");
@@ -113238,12 +113225,12 @@ Ext.cmd.derive(
       var a = this.owner;
       Ext.layout.component.field.FieldContainer.prototype.finishedLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (Ext.isGecko) {
         a.textareaEl.dom.value = this.lastValue;
       }
-    },
+    }
   },
   0,
   0,
@@ -113252,7 +113239,7 @@ Ext.cmd.derive(
   ["layout.htmleditor"],
   0,
   [Ext.layout.component.field, "HtmlEditor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Separator",
@@ -113260,7 +113247,7 @@ Ext.cmd.derive(
   {
     alternateClassName: "Ext.Toolbar.Separator",
     baseCls: "x-toolbar-separator",
-    ariaRole: "separator",
+    ariaRole: "separator"
   },
   0,
   ["tbseparator"],
@@ -113269,7 +113256,7 @@ Ext.cmd.derive(
   ["widget.tbseparator"],
   0,
   [Ext.toolbar, "Separator", Ext.Toolbar, "Separator"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.boxOverflow.Menu",
@@ -113292,7 +113279,7 @@ Ext.cmd.derive(
       Ext.layout.container.boxOverflow.None.prototype.beginLayoutCycle.call(
         this,
         b,
-        a,
+        a
       );
       if (!a) {
         this.clearOverflow(b);
@@ -113314,7 +113301,7 @@ Ext.cmd.derive(
         a = c.owner,
         b = a.id;
       d.menu = new Ext.menu.Menu({
-        listeners: { scope: d, beforeshow: d.beforeMenuShow },
+        listeners: { scope: d, beforeshow: d.beforeMenuShow }
       });
       d.menuTrigger = new Ext.button.Button({
         id: b + "-menu-trigger",
@@ -113328,7 +113315,7 @@ Ext.cmd.derive(
         showEmptyMenu: true,
         getSplitCls: function () {
           return "";
-        },
+        }
       });
       return d.menuTrigger.getRenderTree();
     },
@@ -113341,7 +113328,7 @@ Ext.cmd.derive(
       b.showTrigger(c);
       if (a.direction !== "vertical") {
         b.menuTrigger.setLocalY(
-          (c.state.boxPlan.maxSize - b.menuTrigger[a.names.getHeight]()) / 2,
+          (c.state.boxPlan.maxSize - b.menuTrigger[a.names.getHeight]()) / 2
         );
       }
       return { reservedSpace: b.triggerTotalWidth };
@@ -113461,7 +113448,7 @@ Ext.cmd.derive(
         "handler",
         "scope",
         "menu",
-        "tabIndex",
+        "tabIndex"
       ]);
       Ext.applyIf(b, { hideOnClick: a, destroyMenu: false, listeners: null });
       b.text = c.overflowText || c.text;
@@ -113477,13 +113464,13 @@ Ext.cmd.derive(
             masterComponent: c,
             checked: c.getValue(),
             hideOnClick: false,
-            checkChangeDisabled: true,
+            checkChangeDisabled: true
           };
         }
         b.listeners = {
           change: function (h, g, e) {
             h.masterComponent.setValue(g);
-          },
+          }
         };
         c.on("change", function (h, g, e) {
           h.overflowClone.setValue(g);
@@ -113496,7 +113483,7 @@ Ext.cmd.derive(
             checked: c.pressed,
             handler: function (g, h) {
               g.masterComponent.onClick(h);
-            },
+            }
           });
         }
       }
@@ -113504,13 +113491,13 @@ Ext.cmd.derive(
         c.on({
           textchange: this.onButtonAttrChange,
           iconchange: this.onButtonAttrChange,
-          toggle: this.onButtonToggle,
+          toggle: this.onButtonToggle
         });
         c.changeListenersAdded = true;
       }
       c.on({
         enable: this.onComponentStatusChange,
-        disable: this.onComponentStatusChange,
+        disable: this.onComponentStatusChange
       });
       delete b.margin;
       delete b.ownerCt;
@@ -113574,7 +113561,7 @@ Ext.cmd.derive(
                         },
                         setValue: function () {
                           c.overflowClone.setChecked(c.getValue());
-                        },
+                        }
                       });
                       c.overflowClone.on("click", function (h) {
                         h.setChecked(true);
@@ -113582,7 +113569,7 @@ Ext.cmd.derive(
                       });
                     } else {
                       c.overflowClone = g.add(
-                        Ext.create(Ext.getClassName(c), e.createMenuConfig(c)),
+                        Ext.create(Ext.getClassName(c), e.createMenuConfig(c))
                       );
                     }
                   }
@@ -113596,7 +113583,7 @@ Ext.cmd.derive(
     destroy: function () {
       Ext.destroy(this.menu, this.menuTrigger);
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -113605,7 +113592,7 @@ Ext.cmd.derive(
   ["box.overflow.Menu", "box.overflow.menu"],
   0,
   [Ext.layout.container.boxOverflow, "Menu", Ext.layout.boxOverflow, "Menu"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.HtmlEditor",
@@ -113626,7 +113613,7 @@ Ext.cmd.derive(
       '<iframe id="{id}-iframeEl" data-ref="iframeEl" name="{iframeName}" frameBorder="0" {iframeAttrTpl}',
       ' src="{iframeSrc}" class="{iframeCls}"></iframe>',
       "{afterIFrameTpl}",
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     stretchInputElFixed: true,
     subTplInsertions: [
@@ -113635,7 +113622,7 @@ Ext.cmd.derive(
       "beforeIFrameTpl",
       "afterIFrameTpl",
       "iframeAttrTpl",
-      "inputAttrTpl",
+      "inputAttrTpl"
     ],
     enableFormat: true,
     enableFontSize: true,
@@ -113652,7 +113639,7 @@ Ext.cmd.derive(
       "Courier New",
       "Tahoma",
       "Times New Roman",
-      "Verdana",
+      "Verdana"
     ],
     defaultValue: Ext.isOpera ? "&#160;" : "&#8203;",
     extraFieldBodyCls: "x-html-editor-wrap",
@@ -113694,7 +113681,7 @@ Ext.cmd.derive(
           value: a.value,
           iframeName: Ext.id(),
           iframeSrc: Ext.SSL_SECURE_URL,
-          iframeCls: "x-htmleditor-iframe",
+          iframeCls: "x-htmleditor-iframe"
         };
       a.getInsertionRenderData(b, a.subTplInsertions);
       return {
@@ -113704,7 +113691,7 @@ Ext.cmd.derive(
         childEls: ["iframeEl", "textareaEl"],
         id: c,
         cls: "x-html-editor-input",
-        data: b,
+        data: b
       };
     },
     createToolbar: function () {
@@ -113731,9 +113718,9 @@ Ext.cmd.derive(
             clickEvent: "mousedown",
             tooltip: a ? h.buttonTips[l] : g,
             overflowText: h.buttonTips[l].title || g,
-            tabIndex: -1,
+            tabIndex: -1
           },
-          h.buttonDefaults,
+          h.buttonDefaults
         );
       }
       if (h.enableFont && !Ext.isSafari2) {
@@ -113743,7 +113730,7 @@ Ext.cmd.derive(
             '<select id="{id}-selectEl" data-ref="selectEl" class="' +
               d +
               'font-select">',
-            "</select>",
+            "</select>"
           ],
           childEls: ["selectEl"],
           afterRender: function () {
@@ -113770,8 +113757,8 @@ Ext.cmd.derive(
               h.relayCmd("fontName", h.fontSelect.dom.value);
               h.deferFocus();
             },
-            element: "selectEl",
-          },
+            element: "selectEl"
+          }
         });
         b.push(j, "-");
       }
@@ -113782,7 +113769,7 @@ Ext.cmd.derive(
         b.push(
           "-",
           c("increasefontsize", false, h.adjustFont),
-          c("decreasefontsize", false, h.adjustFont),
+          c("decreasefontsize", false, h.adjustFont)
         );
       }
       if (h.enableColors) {
@@ -113809,15 +113796,15 @@ Ext.cmd.derive(
                     handler: function (k, i) {
                       h.relayCmd(
                         "forecolor",
-                        Ext.isWebKit || Ext.isIE ? "#" + i : i,
+                        Ext.isWebKit || Ext.isIE ? "#" + i : i
                       );
                       this.up("menu").hide();
-                    },
-                  },
-                ],
-              }),
+                    }
+                  }
+                ]
+              })
             },
-            h.buttonDefaults,
+            h.buttonDefaults
           ),
           Ext.merge(
             {
@@ -113846,17 +113833,17 @@ Ext.cmd.derive(
                       } else {
                         h.relayCmd(
                           Ext.isOpera ? "hilitecolor" : "backcolor",
-                          Ext.isWebKit || Ext.isIE || Ext.isOpera ? "#" + i : i,
+                          Ext.isWebKit || Ext.isIE || Ext.isOpera ? "#" + i : i
                         );
                       }
                       this.up("menu").hide();
-                    },
-                  },
-                ],
-              }),
+                    }
+                  }
+                ]
+              })
             },
-            h.buttonDefaults,
-          ),
+            h.buttonDefaults
+          )
         );
       }
       if (h.enableAlignments) {
@@ -113874,7 +113861,7 @@ Ext.cmd.derive(
             "-",
             c("sourceedit", true, function () {
               h.toggleSourceEdit(!h.sourceEditMode);
-            }),
+            })
           );
         }
       }
@@ -113893,8 +113880,8 @@ Ext.cmd.derive(
           click: function (i) {
             i.preventDefault();
           },
-          element: "el",
-        },
+          element: "el"
+        }
       };
     },
     getMaskTarget: function () {
@@ -113938,7 +113925,7 @@ Ext.cmd.derive(
           "}</style></head><body></body></html>",
         b.iframePad,
         a,
-        b.defaultFont,
+        b.defaultFont
       );
     },
     getEditorBody: function () {
@@ -114004,7 +113991,7 @@ Ext.cmd.derive(
       b.monitorTask = Ext.TaskManager.start({
         run: b.checkDesignMode,
         scope: b,
-        interval: 100,
+        interval: 100
       });
     },
     initFrameDoc: function () {
@@ -114028,7 +114015,7 @@ Ext.cmd.derive(
         },
         interval: 10,
         duration: 10000,
-        scope: b,
+        scope: b
       };
       Ext.TaskManager.start(a);
     },
@@ -114249,7 +114236,7 @@ Ext.cmd.derive(
         "background-image",
         "background-repeat",
         "background-color",
-        "color",
+        "color"
       ]);
       a["background-attachment"] = "fixed";
       c.bgProperties = "fixed";
@@ -114267,7 +114254,7 @@ Ext.cmd.derive(
           click: b,
           keyup: b,
           delegated: false,
-          buffer: 100,
+          buffer: 100
         });
         b = d.onRelayedEvent;
         i.on({
@@ -114277,7 +114264,7 @@ Ext.cmd.derive(
           click: b,
           dblclick: b,
           delegated: false,
-          scope: d,
+          scope: d
         });
         if (Ext.isGecko) {
           i.on("keypress", d.applyCommand, d);
@@ -114298,7 +114285,7 @@ Ext.cmd.derive(
               d.savedSelection =
                 h.selection.type !== "None" ? h.selection.createRange() : null;
             },
-            d,
+            d
           );
           i.on(
             "focusin",
@@ -114307,7 +114294,7 @@ Ext.cmd.derive(
                 d.savedSelection.select();
               }
             },
-            d,
+            d
           );
         }
         Ext.getWin().on("unload", d.destroyEditor, d);
@@ -114493,7 +114480,7 @@ Ext.cmd.derive(
           }
         },
         10,
-        this,
+        this
       );
     },
     execCmd: function (c, b) {
@@ -114641,73 +114628,73 @@ Ext.cmd.derive(
       bold: {
         title: "Bold (Ctrl+B)",
         text: "Make the selected text bold.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       italic: {
         title: "Italic (Ctrl+I)",
         text: "Make the selected text italic.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       underline: {
         title: "Underline (Ctrl+U)",
         text: "Underline the selected text.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       increasefontsize: {
         title: "Grow Text",
         text: "Increase the font size.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       decreasefontsize: {
         title: "Shrink Text",
         text: "Decrease the font size.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       backcolor: {
         title: "Text Highlight Color",
         text: "Change the background color of the selected text.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       forecolor: {
         title: "Font Color",
         text: "Change the color of the selected text.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       justifyleft: {
         title: "Align Text Left",
         text: "Align text to the left.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       justifycenter: {
         title: "Center Text",
         text: "Center text in the editor.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       justifyright: {
         title: "Align Text Right",
         text: "Align text to the right.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       insertunorderedlist: {
         title: "Bullet List",
         text: "Start a bulleted list.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       insertorderedlist: {
         title: "Numbered List",
         text: "Start a numbered list.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       createlink: {
         title: "Hyperlink",
         text: "Make the selected text a hyperlink.",
-        cls: "x-html-editor-tip",
+        cls: "x-html-editor-tip"
       },
       sourceedit: {
         title: "Source Edit",
         text: "Switch to source editing mode.",
-        cls: "x-html-editor-tip",
-      },
+        cls: "x-html-editor-tip"
+      }
     },
     privates: {
       deferFocus: function () {
@@ -114715,8 +114702,8 @@ Ext.cmd.derive(
       },
       getFocusEl: function () {
         return this.sourceEditMode ? this.textareaEl : this.iframeEl;
-      },
-    },
+      }
+    }
   },
   0,
   ["htmleditor"],
@@ -114726,12 +114713,12 @@ Ext.cmd.derive(
     box: true,
     container: true,
     fieldcontainer: true,
-    htmleditor: true,
+    htmleditor: true
   },
   ["widget.htmleditor"],
   [["field", Ext.form.field.Field]],
   [Ext.form.field, "HtmlEditor", Ext.form, "HtmlEditor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.TagKeyNav",
@@ -114748,7 +114735,7 @@ Ext.cmd.derive(
         return false;
       }
       return true;
-    },
+    }
   },
   0,
   0,
@@ -114757,7 +114744,7 @@ Ext.cmd.derive(
   ["view.navigation.tagfield"],
   0,
   [Ext.view, "TagKeyNav"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Tag",
@@ -114813,13 +114800,13 @@ Ext.cmd.derive(
       ' class="x-tagfield-arialist">',
       "</ul>",
       "</div>",
-      { disableFormats: true },
+      { disableFormats: true }
     ],
     postSubTpl: [
       '<label id="{cmpId}-placeholderLabel" data-ref="placeholderLabel" for="{cmpId}-inputEl" class="{placeholderCoverCls} {placeholderCoverCls}-{ui} {emptyCls}">{emptyText}</label>',
       "</div>",
       '<tpl for="triggers">{[values.renderTrigger(parent)]}</tpl>',
-      "</div>",
+      "</div>"
     ],
     extraFieldBodyCls: "x-tagfield-body",
     childEls: [
@@ -114828,7 +114815,7 @@ Ext.cmd.derive(
       "inputEl",
       "inputElCt",
       "selectedText",
-      "ariaList",
+      "ariaList"
     ],
     clearValueOnEmpty: false,
     ariaSelectable: true,
@@ -114858,8 +114845,8 @@ Ext.cmd.derive(
         listeners: {
           scope: c,
           selectionchange: c.onSelectionChange,
-          focuschange: c.onFocusChange,
-        },
+          focuschange: c.onFocusChange
+        }
       });
       if (!c.ariaHelp) {
         c.ariaHelp = c.createNewOnEnter
@@ -114883,7 +114870,7 @@ Ext.cmd.derive(
       a.listWrapper.on({
         scope: a,
         click: a.onItemListClick,
-        mousedown: a.onItemMouseDown,
+        mousedown: a.onItemMouseDown
       });
     },
     createPicker: function () {
@@ -114892,7 +114879,7 @@ Ext.cmd.derive(
       a = Ext.apply({ navigationModel: "tagfield" }, b.defaultListConfig);
       if (b.ariaAvailableListLabel) {
         a.ariaRenderAttributes = {
-          "aria-label": Ext.String.htmlEncode(b.ariaAvailableListLabel),
+          "aria-label": Ext.String.htmlEncode(b.ariaAvailableListLabel)
         };
       }
       b.defaultListConfig = a;
@@ -114911,13 +114898,13 @@ Ext.cmd.derive(
         b.valueStore = new Ext.data.Store({
           model: a.getModel(),
           proxy: "memory",
-          useModelWarning: false,
+          useModelWarning: false
         });
         b.selectionModel.bindStore(b.valueStore);
         if (b.filterPickList) {
           b.listFilter = new Ext.util.Filter({
             scope: b,
-            filterFn: b.filterPicked,
+            filterFn: b.filterPicked
           });
           b.changingFilters = true;
           a.filter(b.listFilter);
@@ -115029,7 +115016,7 @@ Ext.cmd.derive(
         b = j.id,
         h = Ext.form.field.ComboBox.prototype.getSubTplData.apply(
           this,
-          arguments,
+          arguments
         ),
         e = j.emptyText,
         g = e && h.value.length < 1,
@@ -115061,7 +115048,7 @@ Ext.cmd.derive(
       if (!j.ariaStaticRoles[j.ariaRole]) {
         h.multiSelect = j.multiSelect;
         h.ariaSelectedListLabel = Ext.String.htmlEncode(
-          j.ariaSelectedListLabel,
+          j.ariaSelectedListLabel
         );
         i = h.ariaElAttributes;
         if (i) {
@@ -115161,7 +115148,7 @@ Ext.cmd.derive(
           if (q) {
             l.ariaErrorEl.dom.innerHTML = Ext.String.formatEncode(
               l.ariaDeselectedText,
-              q,
+              q
             );
           }
           h.clearSelections();
@@ -115244,7 +115231,7 @@ Ext.cmd.derive(
         if (c.createNewOnEnter && d) {
           c.ariaErrorEl.dom.innerHTML = Ext.String.formatEncode(
             c.ariaSelectedText,
-            d,
+            d
           );
         }
         d = Ext.Array.clean(d.split(c.delimiterRegexp));
@@ -115359,8 +115346,8 @@ Ext.cmd.derive(
             getTip: function (c) {
               return Ext.String.htmlEncode(b.tipTpl.apply(c));
             },
-            strict: true,
-          },
+            strict: true
+          }
         ]);
       }
       if (!b.multiSelectItemTpl.isTemplate) {
@@ -115402,8 +115389,8 @@ Ext.cmd.derive(
             getItemLabel: function (d) {
               return Ext.String.htmlEncode(c.labelTpl.apply(d));
             },
-            strict: true,
-          },
+            strict: true
+          }
         ]);
       }
       if (!c.ariaListItemTpl.isTemplate) {
@@ -115431,8 +115418,8 @@ Ext.cmd.derive(
             getItemLabel: function (c) {
               return Ext.String.htmlEncode(b.labelTpl.apply(c));
             },
-            strict: true,
-          },
+            strict: true
+          }
         ]);
       }
       if (!b.ariaSelectedItemTpl.isTemplate) {
@@ -115440,7 +115427,7 @@ Ext.cmd.derive(
       }
       return Ext.String.format(
         b.ariaSelectedText,
-        b.ariaSelectedItemTpl.apply(a),
+        b.ariaSelectedItemTpl.apply(a)
       );
     },
     applyAriaSelectedText: function () {
@@ -115586,7 +115573,7 @@ Ext.cmd.derive(
               u.setValue(o, l, true);
               u.autoSize();
               u.lastQuery = false;
-            },
+            }
           });
           return false;
         }
@@ -115629,7 +115616,7 @@ Ext.cmd.derive(
       var a = this,
         b = Ext.form.field.ComboBox.prototype.getSubmitData.apply(
           this,
-          arguments,
+          arguments
         );
       if (a.multiSelect && a.encodeSubmitValue && b && b[a.name]) {
         b[a.name] = Ext.encode(b[a.name]);
@@ -115705,7 +115692,7 @@ Ext.cmd.derive(
       }
       Ext.form.field.ComboBox.prototype.renderActiveError.apply(
         this,
-        arguments,
+        arguments
       );
     },
     autoSize: function () {
@@ -115730,7 +115717,7 @@ Ext.cmd.derive(
           b.autoSizing = false;
         }
       }
-    },
+    }
   },
   0,
   ["tagfield"],
@@ -115742,7 +115729,7 @@ Ext.cmd.derive(
     "pickerfield",
     "combobox",
     "combo",
-    "tagfield",
+    "tagfield"
   ],
   {
     component: true,
@@ -115752,12 +115739,12 @@ Ext.cmd.derive(
     pickerfield: true,
     combobox: true,
     combo: true,
-    tagfield: true,
+    tagfield: true
   },
   ["widget.tagfield"],
   0,
   [Ext.form.field, "Tag"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.picker.Time",
@@ -115778,9 +115765,9 @@ Ext.cmd.derive(
         }
         return new Ext.data.Store({
           model: Ext.picker.Time.prototype.modelType,
-          data: i,
+          data: i
         });
-      },
+      }
     },
     increment: 15,
     format: "g:i A",
@@ -115832,11 +115819,11 @@ Ext.cmd.derive(
         filterFn: function (g) {
           var h = g.get("date");
           return h >= b && h <= a;
-        },
+        }
       });
       d.add(c);
       d.endUpdate();
-    },
+    }
   },
   0,
   ["timepicker"],
@@ -115846,7 +115833,7 @@ Ext.cmd.derive(
     box: true,
     dataview: true,
     boundlist: true,
-    timepicker: true,
+    timepicker: true
   },
   ["widget.timepicker"],
   0,
@@ -115854,9 +115841,9 @@ Ext.cmd.derive(
   function () {
     this.prototype.modelType = Ext.define(null, {
       extend: "Ext.data.Model",
-      fields: ["disp", "date"],
+      fields: ["disp", "date"]
     });
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.form.field.Time",
@@ -115898,7 +115885,7 @@ Ext.cmd.derive(
           '"])]}<tpl if="xindex < xcount">' +
           c.delimiter +
           "</tpl></tpl>",
-        { formatDate: c.formatDate.bind(c) },
+        { formatDate: c.formatDate.bind(c) }
       );
       c.store = Ext.picker.Time.createStore(c.format, c.increment);
       Ext.form.field.ComboBox.prototype.initComponent.call(this);
@@ -115966,7 +115953,7 @@ Ext.cmd.derive(
           e.getHours(),
           e.getMinutes(),
           e.getSeconds(),
-          e.getMilliseconds(),
+          e.getMilliseconds()
         );
       } else {
         c = null;
@@ -116085,9 +116072,9 @@ Ext.cmd.derive(
           maxValue: a.maxValue,
           increment: a.increment,
           format: a.format,
-          maxHeight: a.pickerMaxHeight,
+          maxHeight: a.pickerMaxHeight
         },
-        a.listConfig,
+        a.listConfig
       );
       return Ext.form.field.ComboBox.prototype.createPicker.call(this);
     },
@@ -116134,9 +116121,9 @@ Ext.cmd.derive(
     },
     getValue: function () {
       return this.rawToValue(
-        Ext.form.field.ComboBox.prototype.getValue.apply(this, arguments),
+        Ext.form.field.ComboBox.prototype.getValue.apply(this, arguments)
       );
-    },
+    }
   },
   0,
   ["timefield"],
@@ -116148,7 +116135,7 @@ Ext.cmd.derive(
     "pickerfield",
     "combobox",
     "combo",
-    "timefield",
+    "timefield"
   ],
   {
     component: true,
@@ -116158,12 +116145,12 @@ Ext.cmd.derive(
     pickerfield: true,
     combobox: true,
     combo: true,
-    timefield: true,
+    timefield: true
   },
   ["widget.timefield"],
   0,
   [Ext.form.field, "Time", Ext.form, "TimeField", Ext.form, "Time"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.form.field.Trigger",
@@ -116172,7 +116159,7 @@ Ext.cmd.derive(
     alternateClassName: [
       "Ext.form.TriggerField",
       "Ext.form.TwinTriggerField",
-      "Ext.form.Trigger",
+      "Ext.form.Trigger"
     ],
     triggerCls: "x-form-arrow-trigger",
     inheritableStatics: { warnDeprecated: function () {} },
@@ -116182,7 +116169,7 @@ Ext.cmd.derive(
     constructor: function (a) {
       this.self.warnDeprecated();
       Ext.form.field.Text.prototype.constructor.call(this, a);
-    },
+    }
   },
   1,
   ["triggerfield", "trigger"],
@@ -116193,7 +116180,7 @@ Ext.cmd.derive(
     field: true,
     textfield: true,
     triggerfield: true,
-    trigger: true,
+    trigger: true
   },
   ["widget.trigger", "widget.triggerfield"],
   0,
@@ -116205,9 +116192,9 @@ Ext.cmd.derive(
     Ext.form,
     "TwinTriggerField",
     Ext.form,
-    "Trigger",
+    "Trigger"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.CellContext",
@@ -116381,13 +116368,13 @@ Ext.cmd.derive(
             } while (!b.getCell(true));
             break;
         }
-      },
+      }
     },
     statics: {
       compare: function (b, a) {
         return b.rowIdx - a.rowIdx || b.colIdx - a.colIdx;
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -116396,7 +116383,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid, "CellContext"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.CellEditor",
@@ -116540,7 +116527,7 @@ Ext.cmd.derive(
         b.mon(b.inputEl, {
           mousedown: a.onCheckBoxMouseDown,
           click: a.onCheckBoxClick,
-          scope: a,
+          scope: a
         });
       }
     },
@@ -116583,7 +116570,7 @@ Ext.cmd.derive(
     },
     getTreeNodeOffset: function (a) {
       return a.child(this.treeNodeSelector).getOffsetsTo(a)[0];
-    },
+    }
   },
   0,
   0,
@@ -116592,7 +116579,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid, "CellEditor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.ColumnComponentLayout",
@@ -116612,13 +116599,13 @@ Ext.cmd.derive(
         d = c.widthModel.shrinkWrap;
       Ext.layout.component.Auto.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (d) {
         a.el.setWidth("");
       }
       a.textContainerEl[d && !a.isGroupHeader ? "addCls" : "removeCls"](
-        b.columnAutoCls,
+        b.columnAutoCls
       );
       a.titleEl.setStyle(b._paddingReset);
     },
@@ -116651,7 +116638,7 @@ Ext.cmd.derive(
       var b =
           Ext.layout.component.Auto.prototype.calculateOwnerHeightFromContentHeight.apply(
             this,
-            arguments,
+            arguments
           ),
         a = this.owner;
       if (!d.hasRawContent) {
@@ -116672,7 +116659,7 @@ Ext.cmd.derive(
       } else {
         c = Math.max(
           b,
-          a.textEl.getWidth() + g.titleContext.getPaddingInfo().width,
+          a.textEl.getWidth() + g.titleContext.getPaddingInfo().width
         );
       }
       return c + e + d;
@@ -116685,7 +116672,7 @@ Ext.cmd.derive(
         }
       }
       return b;
-    },
+    }
   },
   0,
   0,
@@ -116694,7 +116681,7 @@ Ext.cmd.derive(
   ["layout.columncomponent"],
   0,
   [Ext.grid, "ColumnComponentLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Fit",
@@ -116708,7 +116695,7 @@ Ext.cmd.derive(
       { readsWidth: 1, readsHeight: 1, setsWidth: 0, setsHeight: 0 },
       { readsWidth: 0, readsHeight: 1, setsWidth: 1, setsHeight: 0 },
       { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 },
-      { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 },
+      { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 }
     ],
     getItemSizePolicy: function (b, c) {
       var a = c || this.owner.getSizeModel(),
@@ -116734,7 +116721,7 @@ Ext.cmd.derive(
         d;
       Ext.layout.container.Container.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (o && k.targetContext.el.dom.tagName.toUpperCase() !== "TD") {
         o = h = u = false;
@@ -116803,7 +116790,7 @@ Ext.cmd.derive(
           k && c.width,
           h && c.height,
           g.maxChildMinWidth,
-          g.maxChildMinHeight,
+          g.maxChildMinHeight
         );
         if (n) {
           b = Ext.getScrollbarSize();
@@ -116936,7 +116923,7 @@ Ext.cmd.derive(
     },
     setItemWidth: function (a, b) {
       a.setWidth(b.targetSize.width - b.margins.width);
-    },
+    }
   },
   0,
   0,
@@ -116945,7 +116932,7 @@ Ext.cmd.derive(
   ["layout.fit"],
   0,
   [Ext.layout.container, "Fit", Ext.layout, "FitLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Table",
@@ -116963,7 +116950,7 @@ Ext.cmd.derive(
       selection: null,
       focused: null,
       headerBorders: true,
-      hideHeaders: null,
+      hideHeaders: null
     },
     publishes: ["selection"],
     twoWayBindable: ["selection"],
@@ -117058,8 +117045,8 @@ Ext.cmd.derive(
               enableColumnMove: j.enableColumnMove,
               enableColumnResize: j.enableColumnResize,
               columnLines: j.columnLines,
-              sealed: j.sealedColumns,
-            }),
+              sealed: j.sealedColumns
+            })
           );
         }
         if (Ext.isDefined(j.enableColumnHide)) {
@@ -117099,7 +117086,7 @@ Ext.cmd.derive(
         j.mon(k, {
           viewready: j.onViewReady,
           refresh: j.onRestoreHorzScroll,
-          scope: j,
+          scope: j
         });
         j.syncHeaderVisibility();
       }
@@ -117107,7 +117094,7 @@ Ext.cmd.derive(
       j.selModel.on({
         scope: j,
         lastselectedchanged: j.updateBindSelection,
-        selectionchange: j.updateBindSelection,
+        selectionchange: j.updateBindSelection
       });
       j.relayEvents(j.view, [
         "beforeitemlongpress",
@@ -117174,7 +117161,7 @@ Ext.cmd.derive(
         "select",
         "beforedeselect",
         "deselect",
-        "beforerowexit",
+        "beforerowexit"
       ]);
       if (!j.selModel.isSpreadsheetModel) {
         j.relayEvents(j.view, ["selectionchange"]);
@@ -117192,7 +117179,7 @@ Ext.cmd.derive(
         "columnshow",
         "sortchange",
         "filterchange",
-        "groupchange",
+        "groupchange"
       ]);
     },
     syncHeaderVisibility: function () {
@@ -117256,7 +117243,7 @@ Ext.cmd.derive(
             c,
             b,
             "variableRowHeight,numFromEdge,trailingBufferZone,leadingBufferZone,scrollToLoadBuffer",
-            true,
+            true
           );
           b.bufferedRenderer = b.addPlugin(c);
         }
@@ -117335,7 +117322,7 @@ Ext.cmd.derive(
         "sortchange",
         "headerclick",
         "headercontextmenu",
-        "headertriggerclick",
+        "headertriggerclick"
       ]);
     },
     getState: function () {
@@ -117363,7 +117350,7 @@ Ext.cmd.derive(
           b.sort(
             { property: g.property, direction: g.direction, root: g.root },
             null,
-            false,
+            false
           );
         } else {
           b.sort(g.property, g.direction);
@@ -117515,9 +117502,9 @@ Ext.cmd.derive(
             navigationModel: "grid",
             features: c.features,
             panel: c,
-            emptyText: c.emptyText || "",
+            emptyText: c.emptyText || ""
           },
-          c.viewConfig,
+          c.viewConfig
         );
         if (
           !("scrollable" in b || "scroll" in b || "autoScroll" in b) &&
@@ -117545,7 +117532,7 @@ Ext.cmd.derive(
     setEmptyText: function (a) {
       this.emptyText = a;
       this.view.setEmptyText(
-        '<div class="' + this.emptyCls + '">' + a + "</div>",
+        '<div class="' + this.emptyCls + '">' + a + "</div>"
       );
       return this;
     },
@@ -117654,7 +117641,7 @@ Ext.cmd.derive(
         (a.lhsMarker = Ext.DomHelper.append(
           a.el,
           { role: "presentation", cls: a.resizeMarkerCls },
-          true,
+          true
         ))
       );
     },
@@ -117665,7 +117652,7 @@ Ext.cmd.derive(
         (a.rhsMarker = Ext.DomHelper.append(
           a.el,
           { role: "presentation", cls: a.resizeMarkerCls },
-          true,
+          true
         ))
       );
     },
@@ -117793,7 +117780,7 @@ Ext.cmd.derive(
           b.globalShowListener = Ext.GlobalEvents.on({
             show: b.onGlobalShow,
             scope: b,
-            destroyable: true,
+            destroyable: true
           });
         }
       }
@@ -117893,7 +117880,7 @@ Ext.cmd.derive(
         b.plugins,
         b.focusEnterLeaveListeners,
         b.freeRowContexts,
-        Ext.Object.getValues(b.liveRowContexts),
+        Ext.Object.getValues(b.liveRowContexts)
       );
       Ext.panel.Panel.prototype.doDestroy.call(this);
       b.unbindStore();
@@ -117937,7 +117924,7 @@ Ext.cmd.derive(
             args: Ext.Array.slice(arguments),
             scope: g,
             single: true,
-            destroyable: true,
+            destroyable: true
           });
           return;
         }
@@ -117972,7 +117959,7 @@ Ext.cmd.derive(
               column: c,
               callback: function (r, p, q) {
                 Ext.callback(l, m || g, [true, p, q]);
-              },
+              }
             });
           } else {
             Ext.callback(l, m || g, [false, null]);
@@ -117996,8 +117983,8 @@ Ext.cmd.derive(
       },
       getOverflowEl: function () {
         return null;
-      },
-    },
+      }
+    }
   },
   1,
   ["tablepanel"],
@@ -118007,12 +117994,12 @@ Ext.cmd.derive(
     box: true,
     container: true,
     panel: true,
-    tablepanel: true,
+    tablepanel: true
   },
   ["widget.tablepanel"],
   0,
   [Ext.panel, "Table"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.ColumnLayout",
@@ -118076,7 +118063,7 @@ Ext.cmd.derive(
       return Ext.layout.container.HBox.prototype.moveItemBefore.call(
         this,
         b,
-        d,
+        d
       );
     },
     determineScrollbarWidth: function (h) {
@@ -118116,8 +118103,8 @@ Ext.cmd.derive(
             e.invalidate({
               state: {
                 reflexed: true,
-                scrollbarAdjustment: q.getScrollbarAdjustment(e),
-              },
+                scrollbarAdjustment: q.getScrollbarAdjustment(e)
+              }
             });
             return;
           }
@@ -118250,7 +118237,7 @@ Ext.cmd.derive(
           got: g,
           gotAll: g === i,
           gotWidth: c,
-          gotHeight: d,
+          gotHeight: d
         };
       }
       return k;
@@ -118266,9 +118253,9 @@ Ext.cmd.derive(
       return Ext.layout.container.HBox.prototype.publishInnerCtSize.call(
         this,
         e,
-        c,
+        c
       );
-    },
+    }
   },
   0,
   0,
@@ -118277,7 +118264,7 @@ Ext.cmd.derive(
   ["layout.gridcolumn"],
   0,
   [Ext.grid, "ColumnLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.ColumnManager",
@@ -118405,7 +118392,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.columns = this.rootColumns = null;
       this.callParent();
-    },
+    }
   },
   1,
   0,
@@ -118416,7 +118403,7 @@ Ext.cmd.derive(
   [Ext.grid, "ColumnManager", Ext.grid, "ColumnModel"],
   function () {
     this.createAlias("indexOf", "getHeaderIndex");
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.grid.NavigationModel",
@@ -118433,7 +118420,7 @@ Ext.cmd.derive(
         itemmousedown: a.onItemMouseDown,
         itemclick: a.onItemClick,
         itemcontextmenu: a.onItemClick,
-        scope: a,
+        scope: a
       };
     },
     initKeyNav: function (a) {
@@ -118465,7 +118452,7 @@ Ext.cmd.derive(
         113: b.onKeyF2,
         tab: b.onKeyTab,
         A: { ctrl: true, handler: b.onSelectAllKeyPress },
-        scope: b,
+        scope: b
       });
       b.keyNav.push(c);
       b.onKeyNavCreate(c);
@@ -118583,7 +118570,7 @@ Ext.cmd.derive(
           item: i.item,
           cell: i.position.cellElement,
           columnIndex: i.position.colIdx,
-          column: i.position.column,
+          column: i.position.column
         });
       } else {
         if (d.position.isEqual(i.position) || j) {
@@ -118627,7 +118614,7 @@ Ext.cmd.derive(
             d.ownerGrid.fireEvent(
               "cellactivate",
               d.ownerGrid,
-              d.actionPosition,
+              d.actionPosition
             );
           }
         }
@@ -118810,7 +118797,7 @@ Ext.cmd.derive(
       if (j.actionableMode && !s) {
         return j.ownerGrid.setActionableMode(
           false,
-          new Ext.grid.CellContext(j).setPosition(g, h),
+          new Ext.grid.CellContext(j).setPosition(g, h)
         );
       }
       if (i === r.recordIndex && b === r.columnIndex && j === r.position.view) {
@@ -118832,7 +118819,7 @@ Ext.cmd.derive(
         (r.recordIndex = i),
         (r.columnIndex = b),
         (r.record = g),
-        (r.column = h),
+        (r.column = h)
       );
       if (s) {
         r.item = r.cell = null;
@@ -118954,7 +118941,7 @@ Ext.cmd.derive(
           g,
           g.item,
           g.item[e ? "nextSibling" : "previousSibling"],
-          e,
+          e
         );
       }
       g.preventDefault();
@@ -119004,7 +118991,7 @@ Ext.cmd.derive(
           b.record,
           b.position.rowElement,
           b.recordIndex,
-          b,
+          b
         ],
         c = b.position.getCell();
       if (c) {
@@ -119044,7 +119031,7 @@ Ext.cmd.derive(
             e.shiftKey && (c === "right" || c === "left")
               ? d.vetoRowChange
               : null,
-            d,
+            d
           );
           if (a && a.column.cellFocusable !== false) {
             return a;
@@ -119100,7 +119087,7 @@ Ext.cmd.derive(
           b.setPosition(
             a.walkRecs(c.record, -a.dataSource.indexOf(c.record)),
             null,
-            c,
+            c
           );
         }
       } else {
@@ -119120,23 +119107,23 @@ Ext.cmd.derive(
             a.store.getCount() - 1,
             false,
             b.afterBufferedScrollTo,
-            b,
+            b
           );
         } else {
           b.setPosition(
             a.walkRecs(
               c.record,
-              a.dataSource.getCount() - 1 - a.dataSource.indexOf(c.record),
+              a.dataSource.getCount() - 1 - a.dataSource.indexOf(c.record)
             ),
             null,
-            c,
+            c
           );
         }
       } else {
         b.setPosition(
           c.record,
           c.view.getVisibleColumnManager().getColumns().length - 1,
-          c,
+          c
         );
       }
     },
@@ -119173,9 +119160,9 @@ Ext.cmd.derive(
         item: a.item,
         cell: a.cell,
         columnIndex: a.columnIndex,
-        column: a.column,
+        column: a.column
       });
-    },
+    }
   },
   0,
   0,
@@ -119184,7 +119171,7 @@ Ext.cmd.derive(
   ["view.navigation.grid"],
   0,
   [Ext.grid, "NavigationModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.TableLayout",
@@ -119267,9 +119254,9 @@ Ext.cmd.derive(
                 columnsChanged: j,
                 layout: n,
                 id: n.columnFlusherId,
-                flush: n.flushColumnWidths,
+                flush: n.flushColumnWidths
               }),
-            true,
+            true
           );
         }
         if (!o.flushed) {
@@ -119296,9 +119283,9 @@ Ext.cmd.derive(
                 otherSynchronizer: g,
                 layout: n,
                 id: n.rowHeightFlusherId,
-                flush: n.flushRowHeights,
+                flush: n.flushRowHeights
               }),
-            true,
+            true
           );
         }
         if (!p.flushed) {
@@ -119409,7 +119396,7 @@ Ext.cmd.derive(
     },
     isValidParent: function () {
       return true;
-    },
+    }
   },
   0,
   0,
@@ -119418,7 +119405,7 @@ Ext.cmd.derive(
   ["layout.tableview"],
   0,
   [Ext.view, "TableLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.locking.RowSynchronizer",
@@ -119488,7 +119475,7 @@ Ext.cmd.derive(
       for (a in b) {
         b[a].el.style.height = "";
       }
-    },
+    }
   },
   1,
   0,
@@ -119497,7 +119484,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.locking, "RowSynchronizer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.NodeCache",
@@ -119706,7 +119693,7 @@ Ext.cmd.derive(
         k.view.dataSource.getRange(b, g),
         b,
         j,
-        k.view,
+        k.view
       );
     },
     removeRange: function (c, g, d) {
@@ -119900,7 +119887,7 @@ Ext.cmd.derive(
         a += c[b].offsetHeight;
       }
       return a;
-    },
+    }
   },
   1,
   0,
@@ -119911,7 +119898,7 @@ Ext.cmd.derive(
   [Ext.view, "NodeCache"],
   function () {
     Ext.dom.CompositeElementLite.importElementMethods.call(this);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.scroll.TableScroller",
@@ -119929,8 +119916,8 @@ Ext.cmd.derive(
           }
         }
         this.callParent([a, d, c]);
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -119939,7 +119926,7 @@ Ext.cmd.derive(
   ["scroller.table"],
   0,
   [Ext.scroll, "TableScroller"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.Table",
@@ -119954,7 +119941,7 @@ Ext.cmd.derive(
         "select",
         "beforedeselect",
         "beforeselect",
-        "selectionchange",
+        "selectionchange"
       ],
       events: [
         "blur",
@@ -120047,8 +120034,8 @@ Ext.cmd.derive(
         "uievent",
         "groupcollapse",
         "groupexpand",
-        "scroll",
-      ],
+        "scroll"
+      ]
     },
     scrollable: true,
     componentLayout: "tableview",
@@ -120101,8 +120088,8 @@ Ext.cmd.derive(
       "%}",
       {
         definitions: "var view, tableCls, columns, i, len, column;",
-        priority: 0,
-      },
+        priority: 0
+      }
     ],
     outerRowTpl: [
       '<table id="{rowId}" role="presentation" ',
@@ -120114,7 +120101,7 @@ Ext.cmd.derive(
       "this.nextTpl.applyOut(values, out, parent)",
       "%}",
       "</table>",
-      { priority: 9999 },
+      { priority: 9999 }
     ],
     rowTpl: [
       "{%",
@@ -120127,7 +120114,7 @@ Ext.cmd.derive(
       "%}",
       "</tpl>",
       "</tr>",
-      { priority: 0 },
+      { priority: 0 }
     ],
     cellTpl: [
       '<td class="{tdCls}" {tdAttr} {cellAttr:attributes}',
@@ -120142,7 +120129,7 @@ Ext.cmd.derive(
       'style="text-align:{align};<tpl if="style">{style}</tpl>" ',
       "{cellInnerAttr:attributes}>{value}</div>",
       "</td>",
-      { priority: 0 },
+      { priority: 0 }
     ],
     refreshSelmodelOnRefresh: false,
     scrollableType: "table",
@@ -120214,7 +120201,7 @@ Ext.cmd.derive(
             }
           }
           b = Ext.Factory.selection(
-            Ext.apply({ allowDeselect: c.allowDeselect, locked: a }, b),
+            Ext.apply({ allowDeselect: c.allowDeselect, locked: a }, b)
           );
         }
       }
@@ -120226,7 +120213,7 @@ Ext.cmd.derive(
         c.un({
           scope: b,
           lastselectedchanged: b.updateBindSelection,
-          selectionchange: b.updateBindSelection,
+          selectionchange: b.updateBindSelection
         });
         Ext.destroy(b.selModelRelayer);
       }
@@ -120236,12 +120223,12 @@ Ext.cmd.derive(
         "beforedeselect",
         "select",
         "deselect",
-        "focuschange",
+        "focuschange"
       ]);
       a.on({
         scope: b,
         lastselectedchanged: b.updateBindSelection,
-        selectionchange: b.updateBindSelection,
+        selectionchange: b.updateBindSelection
       });
       b.selModel = a;
     },
@@ -120444,7 +120431,7 @@ Ext.cmd.derive(
       } else {
         d = new Ext.XTemplate(
           "{%this.nextTpl.applyOut(values, out, parent);%}",
-          d,
+          d
         );
       }
       for (a = c[e]; d.priority < a.priority; a = a.nextTpl) {
@@ -120618,7 +120605,7 @@ Ext.cmd.derive(
           c.grid.updateLayout();
         }
         Ext.resumeLayouts(
-          !b || !b.grid.isVisible() || b.all.getCount() === c.all.getCount(),
+          !b || !b.grid.isVisible() || b.all.getCount() === c.all.getCount()
         );
         d();
       }
@@ -120669,7 +120656,7 @@ Ext.cmd.derive(
     statics: {
       getBoundView: function (a) {
         return Ext.getCmp(a.getAttribute("data-boundView"));
-      },
+      }
     },
     getRecord: function (a) {
       if (this.store.destroyed) {
@@ -120735,7 +120722,7 @@ Ext.cmd.derive(
           "x-",
           "grid-cell-",
           e[d].getItemId(),
-          '" style="width:' + g + 'px">',
+          '" style="width:' + g + 'px">'
         );
       }
       c.push("</colgroup>");
@@ -120820,7 +120807,7 @@ Ext.cmd.derive(
           h,
           c,
           m.dataSource,
-          m,
+          m
         );
         if (l.css) {
           i.cssWarning = true;
@@ -121079,7 +121066,7 @@ Ext.cmd.derive(
           if (a === h.tabGuardEl) {
             d = new Ext.grid.CellContext(h).setPosition(
               h.all.endIndex,
-              h.getVisibleColumnManager().getColumns().length - 1,
+              h.getVisibleColumnManager().getColumns().length - 1
             );
             a = null;
           } else {
@@ -121087,14 +121074,14 @@ Ext.cmd.derive(
               if (a === b) {
                 d = new Ext.grid.CellContext(h).setPosition(
                   h.getRecord(a),
-                  h.getHeaderByCell(b),
+                  h.getHeaderByCell(b)
                 );
                 a = null;
               } else {
                 if (a && Ext.fly(a).isFocusable() && h.el.contains(a)) {
                   d = new Ext.grid.CellContext(h).setPosition(
                     h.getRecord(a),
-                    h.getHeaderByCell(b),
+                    h.getHeaderByCell(b)
                   );
                 }
               }
@@ -121228,7 +121215,7 @@ Ext.cmd.derive(
           h.lockingPartner.grid.isVisible() &&
           !h.lockingPartner.grid.collapsed
             ? h.lockingPartner
-            : h,
+            : h
         ).setPosition(0, 0),
         c,
         a;
@@ -121242,7 +121229,7 @@ Ext.cmd.derive(
           if (b.isTableView) {
             g = new Ext.grid.CellContext(h).setPosition(
               b.lastFocused.record,
-              0,
+              0
             );
           }
         }
@@ -121479,7 +121466,7 @@ Ext.cmd.derive(
                     [D, null, B, 0, 0, j.dataSource, j],
                     0,
                     E,
-                    C,
+                    C
                   );
                 }
                 m = D == null || D.length === 0;
@@ -121496,14 +121483,14 @@ Ext.cmd.derive(
                   j.self.prototype.changedCells = [];
                   j.prototype.clearChangedTask = new Ext.util.DelayedTask(
                     j.clearChangedCells,
-                    j.prototype,
+                    j.prototype
                   );
                   j.clearChangedTask.delay(j.unhighlightDelay);
                 }
                 j.changedCells.push({
                   cell: t,
                   cls: j.highlightClass,
-                  expires: Ext.Date.now() + 1000,
+                  expires: Ext.Date.now() + 1000
                 });
               }
             }
@@ -121663,7 +121650,7 @@ Ext.cmd.derive(
           l,
           c ? u.getVisibleColumnManager().getHeaderIndex(c) : -1,
           b,
-          c,
+          c
         );
         s.cellElement = a;
         m = u.fireEvent("uievent", d, u, a, l, k, q, b, j);
@@ -122064,11 +122051,11 @@ Ext.cmd.derive(
             e = Math.min(d.rowIdx, g.all.getCount() - 1);
             i = Math.min(
               d.colIdx,
-              g.getVisibleColumnManager().getColumns().length - 1,
+              g.getVisibleColumnManager().getColumns().length - 1
             );
             d = new Ext.grid.CellContext(g).setPosition(
               h.contains(d.record) ? d.record : e,
-              i,
+              i
             );
             if (a) {
               g.resumeActionableMode(d);
@@ -122198,7 +122185,7 @@ Ext.cmd.derive(
           if (l.actionRow) {
             l.actionRow.saveTabbableState({
               skipSelf: true,
-              includeSaved: false,
+              includeSaved: false
             });
           }
           if (l.destroyed) {
@@ -122393,7 +122380,7 @@ Ext.cmd.derive(
                 } else {
                   u.ownerGrid.setActionableMode(false);
                 }
-              },
+              }
             });
           } else {
             u.ownerGrid.setActionableMode(false);
@@ -122440,8 +122427,8 @@ Ext.cmd.derive(
           a = c.stretchers = c.el.appendChild([b, b], true);
         }
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   ["tableview", "gridview"],
@@ -122451,17 +122438,17 @@ Ext.cmd.derive(
     box: true,
     dataview: true,
     tableview: true,
-    gridview: true,
+    gridview: true
   },
   ["widget.gridview", "widget.tableview"],
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
-    ],
+      Ext.mixin.Queryable
+    ]
   ],
   [Ext.view, "Table", Ext.grid, "View"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.Panel",
@@ -122470,12 +122457,12 @@ Ext.cmd.derive(
     alternateClassName: [
       "Ext.list.ListView",
       "Ext.ListView",
-      "Ext.grid.GridPanel",
+      "Ext.grid.GridPanel"
     ],
     viewType: "tableview",
     ariaRole: "grid",
     lockable: false,
-    rowLines: true,
+    rowLines: true
   },
   0,
   ["grid", "gridpanel"],
@@ -122487,7 +122474,7 @@ Ext.cmd.derive(
     panel: true,
     tablepanel: true,
     gridpanel: true,
-    grid: true,
+    grid: true
   },
   ["widget.grid", "widget.gridpanel"],
   0,
@@ -122499,9 +122486,9 @@ Ext.cmd.derive(
     Ext,
     "ListView",
     Ext.grid,
-    "GridPanel",
+    "GridPanel"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.RowContext",
@@ -122553,14 +122540,14 @@ Ext.cmd.derive(
         d.viewModel = Ext.Factory.viewModel(
           {
             parent: d.ownerGrid.lookupViewModel(),
-            data: { record: d.record, recordIndex: d.recordIndex },
+            data: { record: d.record, recordIndex: d.recordIndex }
           },
-          d.ownerGrid.rowViewModel,
+          d.ownerGrid.rowViewModel
         );
       }
       if (!(a = c[b])) {
         a = c[b] = Ext.widget(
-          Ext.apply({ viewModel: d.viewModel, _rowContext: d }, e),
+          Ext.apply({ viewModel: d.viewModel, _rowContext: d }, e)
         );
         if (a.isWidget) {
           a.initBindable();
@@ -122591,7 +122578,7 @@ Ext.cmd.derive(
       }
       Ext.destroy(c.viewModel);
       c.callParent();
-    },
+    }
   },
   1,
   0,
@@ -122600,7 +122587,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid, "RowContext"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.RowEditorButtons",
@@ -122623,7 +122610,7 @@ Ext.cmd.derive(
             ui: a.buttonUI,
             scope: c,
             flex: 1,
-            minWidth: Ext.panel.Panel.prototype.minButtonWidth,
+            minWidth: Ext.panel.Panel.prototype.minButtonWidth
           },
           items: [
             {
@@ -122635,8 +122622,8 @@ Ext.cmd.derive(
               listeners: {
                 element: "el",
                 keydown: d.onUpdateKeyDown,
-                scope: d,
-              },
+                scope: d
+              }
             },
             {
               cls: e + "row-editor-cancel-button",
@@ -122646,12 +122633,12 @@ Ext.cmd.derive(
               listeners: {
                 element: "el",
                 keydown: d.onCancelKeyDown,
-                scope: d,
-              },
-            },
-          ],
+                scope: d
+              }
+            }
+          ]
         },
-        b,
+        b
       );
       Ext.container.Container.prototype.constructor.call(this, b);
       d.addClsWithUI(d.position);
@@ -122695,8 +122682,8 @@ Ext.cmd.derive(
         var a = Ext.container.Container.prototype.getFrameInfo.call(this);
         a.top = true;
         return a;
-      },
-    },
+      }
+    }
   },
   1,
   ["roweditorbuttons"],
@@ -122705,7 +122692,7 @@ Ext.cmd.derive(
   ["widget.roweditorbuttons"],
   0,
   [Ext.grid, "RowEditorButtons"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.RowEditor",
@@ -122741,15 +122728,15 @@ Ext.cmd.derive(
               id: b.id + "-locked-editor-cells",
               scrollable: { x: false, y: false },
               layout: { type: "hbox", align: "middle" },
-              margin: "0 1 0 0",
+              margin: "0 1 0 0"
             })),
           (e = d.normalColumnContainer =
             new a({
               scrollable: { x: false, y: false },
               flex: 1,
               id: b.id + "-normal-editor-cells",
-              layout: { type: "hbox", align: "middle" },
-            })),
+              layout: { type: "hbox", align: "middle" }
+            }))
         ];
         g.getScrollable().addPartner(b.lockedGrid.view.getScrollable(), "x");
         e.getScrollable().addPartner(b.normalGrid.view.getScrollable(), "x");
@@ -122757,7 +122744,7 @@ Ext.cmd.derive(
           collapse: d.onGridResize,
           expand: d.onGridResize,
           beginfloat: d.onBeginFloat,
-          scope: d,
+          scope: d
         });
       } else {
         d.setScrollable({ x: false, y: false });
@@ -122786,7 +122773,7 @@ Ext.cmd.derive(
         c.wrapEl.setLocalX(
           d.getOffsetsTo(a)[0] +
             d.getBorderWidth("l") -
-            a.el.getBorderWidth("l"),
+            a.el.getBorderWidth("l")
         );
         c.setWidth(e);
         b.setLocalX((e - b.getWidth()) / 2);
@@ -122864,7 +122851,7 @@ Ext.cmd.derive(
         beforerefresh: c.onBeforeViewRefresh,
         refresh: c.onViewRefresh,
         itemremove: c.onViewItemRemove,
-        scope: c,
+        scope: c
       });
       c.syncAllFieldWidths();
       if (c.floatingButtons) {
@@ -122878,7 +122865,7 @@ Ext.cmd.derive(
         tab: { fn: b.onFieldTab, scope: b },
         enter: a.onEnterKey,
         esc: a.onEscKey,
-        scope: a,
+        scope: a
       });
     },
     onBeforeViewRefresh: function (b) {
@@ -123133,7 +123120,7 @@ Ext.cmd.derive(
       if (!a && !b.destroying && !b.destroyed) {
         b.floatingButtons = a = new Ext.grid.RowEditorButtons({
           ownerCmp: b,
-          rowEditor: b,
+          rowEditor: b
         });
       }
       return a;
@@ -123199,8 +123186,8 @@ Ext.cmd.derive(
           g.wrapAnim = j.addAnimation(
             Ext.applyIf(
               { to: { top: c }, duration: i.duration || 125, callback: h },
-              i,
-            ),
+              i
+            )
           );
         } else {
           j.setLocalY(c);
@@ -123339,7 +123326,7 @@ Ext.cmd.derive(
         skipLabelForAttribute: true,
         getModelData: function () {
           return null;
-        },
+        }
       };
     },
     loadRecord: function (d) {
@@ -123452,7 +123439,7 @@ Ext.cmd.derive(
       if (h.rendered && h.formAriaLabel) {
         j = Ext.String.formatEncode(
           h.formAriaLabel,
-          h.formAriaLabelRowBase + b.rowIdx,
+          h.formAriaLabelRowBase + b.rowIdx
         );
         h.body.dom.setAttribute("aria-label", j);
       }
@@ -123630,7 +123617,7 @@ Ext.cmd.derive(
           anchorToTarget: true,
           targetOffset: [Ext.getScrollbarSize().width, 0],
           constrainPosition: true,
-          constrainTo: document.body,
+          constrainTo: document.body
         });
         a.add(c);
         b.mon(a, { afterlayout: b.onGridLayout, scope: b });
@@ -123651,7 +123638,7 @@ Ext.cmd.derive(
         return b.wrapAnim.on({
           afteranimate: b.showToolTip,
           scope: b,
-          single: true,
+          single: true
         });
       }
       c.update(b.getErrors());
@@ -123705,7 +123692,7 @@ Ext.cmd.derive(
       }
       a.floatingButtons = a.tooltip = Ext.destroy(a.floatingButtons, a.tooltip);
       Ext.form.Panel.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["roweditor"],
@@ -123716,12 +123703,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     form: true,
-    roweditor: true,
+    roweditor: true
   },
   ["widget.roweditor"],
   0,
   [Ext.grid, "RowEditor"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.DropZone",
@@ -123732,7 +123719,7 @@ Ext.cmd.derive(
       '<div class="',
       "x-",
       'grid-drop-indicator-left" role="presentation"></div>',
-      '<div class="x-grid-drop-indicator-right" role="presentation"></div>',
+      '<div class="x-grid-drop-indicator-right" role="presentation"></div>'
     ].join(""),
     constructor: function (a) {
       var b = this;
@@ -123780,7 +123767,7 @@ Ext.cmd.derive(
           ownerCt: a.view,
           floating: true,
           alignOnScroll: false,
-          shadow: false,
+          shadow: false
         });
       }
       return a.indicator;
@@ -123884,7 +123871,7 @@ Ext.cmd.derive(
           cancelDrop: function () {
             d.invalidateDrop();
             c = true;
-          },
+          }
         },
         j = false;
       if (d.valid) {
@@ -123894,7 +123881,7 @@ Ext.cmd.derive(
           g,
           d.overRecord,
           d.currentPosition,
-          b,
+          b
         );
         if (b.wait) {
           return;
@@ -123910,7 +123897,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.indicator = Ext.destroy(this.indicator);
       Ext.dd.DropZone.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -123919,7 +123906,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.view, "DropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.ViewDropZone",
@@ -123959,7 +123946,7 @@ Ext.cmd.derive(
         j.getSelectionModel().select(c.records);
       }
       j.getNavigationModel().setPosition(c.records[0]);
-    },
+    }
   },
   0,
   0,
@@ -123968,7 +123955,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid, "ViewDropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.HeaderResizer",
@@ -124015,7 +124002,7 @@ Ext.cmd.derive(
         onCancel: b.onCancel.bind(b),
         tolerance: 3,
         autoStart: 300,
-        el: a,
+        el: a
       });
       c.setTouchAction({ panX: false });
     },
@@ -124172,7 +124159,7 @@ Ext.cmd.derive(
       } else {
         a.setMarkerX(
           a.getMovingMarker(a.markerOwner),
-          a.calculateDragX(a.markerOwner),
+          a.calculateDragX(a.markerOwner)
         );
       }
     },
@@ -124262,7 +124249,7 @@ Ext.cmd.derive(
     },
     adjustColumnWidth: function (a) {
       this.dragHd.setWidth(this.origWidth + a);
-    },
+    }
   },
   0,
   0,
@@ -124271,7 +124258,7 @@ Ext.cmd.derive(
   ["plugin.gridheaderresizer"],
   0,
   [Ext.grid.plugin, "HeaderResizer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.header.DragZone",
@@ -124336,7 +124323,7 @@ Ext.cmd.derive(
     },
     enable: function () {
       this.disabled = false;
-    },
+    }
   },
   1,
   0,
@@ -124345,7 +124332,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.header, "DragZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.header.DropZone",
@@ -124375,10 +124362,10 @@ Ext.cmd.derive(
         this.topIndicator = Ext.getBody().createChild({
           role: "presentation",
           cls: "x-col-move-top",
-          html: "&#160;",
+          html: "&#160;"
         });
         this.indicatorXOffset = Math.floor(
-          (this.topIndicator.dom.offsetWidth + 1) / 2,
+          (this.topIndicator.dom.offsetWidth + 1) / 2
         );
       }
       return this.topIndicator;
@@ -124388,7 +124375,7 @@ Ext.cmd.derive(
         this.bottomIndicator = Ext.getBody().createChild({
           role: "presentation",
           cls: "x-col-move-bottom",
-          html: "&#160;",
+          html: "&#160;"
         });
       }
       return this.bottomIndicator;
@@ -124615,7 +124602,7 @@ Ext.cmd.derive(
           r.headerCt.grid.updateLayout();
         }
       }
-    },
+    }
   },
   1,
   0,
@@ -124624,7 +124611,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.header, "DropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.HeaderReorderer",
@@ -124661,7 +124648,7 @@ Ext.cmd.derive(
       if (this.dragZone) {
         this.dragZone.disable();
       }
-    },
+    }
   },
   0,
   0,
@@ -124670,7 +124657,7 @@ Ext.cmd.derive(
   ["plugin.gridheaderreorderer"],
   0,
   [Ext.grid.plugin, "HeaderReorderer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.header.Container",
@@ -124723,7 +124710,7 @@ Ext.cmd.derive(
       } else {
         a.layout = Ext.apply(
           { type: "gridcolumn", align: "stretch" },
-          a.initialConfig.layout,
+          a.initialConfig.layout
         );
         a.defaults.columnLines = a.columnLines;
         if (a.isRootHeader) {
@@ -124780,7 +124767,7 @@ Ext.cmd.derive(
           mousedown: c.onHeaderCtMouseDown,
           mouseover: c.onHeaderCtMouseOver,
           mouseout: c.onHeaderCtMouseOut,
-          scope: c,
+          scope: c
         };
         if (Ext.supports.Touch) {
           b.longpress = c.onHeaderCtLongPress;
@@ -124809,7 +124796,7 @@ Ext.cmd.derive(
                 c.onHeaderTriggerClick(
                   a,
                   d,
-                  d.pointerType === "touch" ? a.el : a.triggerEl,
+                  d.pointerType === "touch" ? a.el : a.triggerEl
                 );
               } else {
                 c.onHeaderClick(h, d, b);
@@ -125102,7 +125089,7 @@ Ext.cmd.derive(
     lookupComponent: function (b) {
       var a = Ext.container.Container.prototype.lookupComponent.apply(
         this,
-        arguments,
+        arguments
       );
       if (!a.isGroupHeader && a.width === undefined && !a.flex) {
         a.width = this.defaultWidth;
@@ -125311,8 +125298,8 @@ Ext.cmd.derive(
           listeners: {
             beforeshow: b.beforeMenuShow,
             hide: b.onMenuHide,
-            scope: b,
-          },
+            scope: b
+          }
         });
         b.fireEvent("menucreate", b, b.menu);
         if (a) {
@@ -125337,8 +125324,8 @@ Ext.cmd.derive(
               text: c.columnsText,
               iconCls: c.menuColsIcon,
               menu: { items: a },
-              hideOnClick: false,
-            },
+              hideOnClick: false
+            }
           ]);
         }
       }
@@ -125355,15 +125342,15 @@ Ext.cmd.derive(
             text: c.sortAscText,
             iconCls: c.menuSortAscCls,
             handler: c.onSortAscClick,
-            scope: c,
+            scope: c
           },
           {
             itemId: "descItem",
             text: c.sortDescText,
             iconCls: c.menuSortDescCls,
             handler: c.onSortDescClick,
-            scope: c,
-          },
+            scope: c
+          }
         ];
       }
       if (a && a.length) {
@@ -125375,7 +125362,7 @@ Ext.cmd.derive(
           text: c.columnsText,
           iconCls: c.menuColsIcon,
           menu: a,
-          hideOnClick: false,
+          hideOnClick: false
         });
       }
       return b;
@@ -125406,7 +125393,7 @@ Ext.cmd.derive(
           headerId: e.id,
           menu: e.isGroupHeader ? this.getColumnMenu(e) : undefined,
           checkHandler: this.onColumnCheckChange,
-          scope: this,
+          scope: this
         });
         c.push(d);
       }
@@ -125647,7 +125634,7 @@ Ext.cmd.derive(
           home: b.onHomeKey,
           end: b.onEndKey,
           space: b.onHeaderActivate,
-          enter: b.onHeaderActivate,
+          enter: b.onHeaderActivate
         });
       },
       onHomeKey: function (a) {
@@ -125690,8 +125677,8 @@ Ext.cmd.derive(
         if (a || b) {
           c.initFocusableContainer();
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["headercontainer"],
@@ -125702,11 +125689,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.grid.header, "Container"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Column",
@@ -125726,7 +125713,7 @@ Ext.cmd.derive(
       "triggerEl",
       "textEl",
       "textContainerEl",
-      "textInnerEl",
+      "textInnerEl"
     ],
     headerWrap: false,
     renderTpl: [
@@ -125765,7 +125752,7 @@ Ext.cmd.derive(
       '{childElCls}" style="{triggerStyle}"></div>',
       "</tpl>",
       "</div>",
-      "{%this.renderContainer(out,values)%}",
+      "{%this.renderContainer(out,values)%}"
     ],
     dataIndex: null,
     text: "\xa0",
@@ -125800,12 +125787,12 @@ Ext.cmd.derive(
     rendererNames: {
       column: "renderer",
       edit: "editRenderer",
-      summary: "summaryRenderer",
+      summary: "summaryRenderer"
     },
     formatterNames: {
       column: "formatter",
       edit: "editFormatter",
-      summary: "summaryFormatter",
+      summary: "summaryFormatter"
     },
     initComponent: function () {
       var a = this;
@@ -126018,15 +126005,15 @@ Ext.cmd.derive(
       return Ext.applyIf(
         Ext.grid.header.Container.prototype.initRenderData.apply(
           this,
-          arguments,
+          arguments
         ),
         {
           text: d,
           empty: b.isEmptyText(d),
           menuDisabled: b.menuDisabled,
           tipMarkup: e,
-          triggerStyle: this.getTriggerVisible() ? "display:block" : "",
-        },
+          triggerStyle: this.getTriggerVisible() ? "display:block" : ""
+        }
       );
     },
     applyColumnState: function (a, c) {
@@ -126103,7 +126090,7 @@ Ext.cmd.derive(
           ? false
           : Ext.Array.indexOf(
               this.getRootHeaderCt().getVisibleGridColumns(),
-              this,
+              this
             );
     },
     getLabelChain: function () {
@@ -126169,7 +126156,7 @@ Ext.cmd.derive(
         c = e.getRootHeaderCt();
       Ext.grid.header.Container.prototype.afterComponentLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (c && (b != null || e.flex) && d !== b) {
         c.onHeaderResize(e, d);
@@ -126559,7 +126546,7 @@ Ext.cmd.derive(
               this.dirtyTextElementId +
               '" class="x-hidden-offsets">' +
               this.dirtyText +
-              "</span>",
+              "</span>"
           );
         }
       },
@@ -126604,7 +126591,7 @@ Ext.cmd.derive(
             a.hasSetSorter = true;
           }
         }
-      },
+      }
     },
     deprecated: {
       5: {
@@ -126613,10 +126600,10 @@ Ext.cmd.derive(
             return function (b) {
               return Ext.util.Format[a](b);
             };
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   0,
   ["gridcolumn"],
@@ -126626,12 +126613,12 @@ Ext.cmd.derive(
     box: true,
     container: true,
     headercontainer: true,
-    gridcolumn: true,
+    gridcolumn: true
   },
   ["widget.gridcolumn"],
   0,
   [Ext.grid.column, "Column", Ext.grid, "Column"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.ActionProxy",
@@ -126669,7 +126656,7 @@ Ext.cmd.derive(
     },
     on: function () {
       return this.column.on.apply(this.column, arguments);
-    },
+    }
   },
   1,
   0,
@@ -126678,7 +126665,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.column, "ActionProxy"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Action",
@@ -126765,7 +126752,7 @@ Ext.cmd.derive(
                 u.scope || w.origScope,
                 [n, b, o, u, c],
                 0,
-                w,
+                w
               )
             : false);
         g =
@@ -126806,7 +126793,7 @@ Ext.cmd.derive(
                 u.scope || w.origScope,
                 arguments,
                 undefined,
-                w,
+                w
               )
             : u.iconCls || w.iconCls || "") +
           '"' +
@@ -126895,7 +126882,7 @@ Ext.cmd.derive(
                 p.scope || j.origScope,
                 [m, b, l, p, d],
                 0,
-                j,
+                j
               )
             : false);
         if (p && !a) {
@@ -126908,7 +126895,7 @@ Ext.cmd.derive(
                 p.scope || j.origScope,
                 [m, b, l, p, i, d, q],
                 undefined,
-                j,
+                j
               );
               if (m.destroyed) {
                 return false;
@@ -126926,7 +126913,7 @@ Ext.cmd.derive(
       }
       return Ext.grid.column.Column.prototype.processEvent.apply(
         this,
-        arguments,
+        arguments
       );
     },
     cascade: function (b, a) {
@@ -126941,8 +126928,8 @@ Ext.cmd.derive(
       },
       shouldUpdateCell: function () {
         return 2;
-      },
-    },
+      }
+    }
   },
   1,
   ["actioncolumn"],
@@ -126952,7 +126939,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "actioncolumn",
+    "actioncolumn"
   ],
   {
     component: true,
@@ -126960,12 +126947,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    actioncolumn: true,
+    actioncolumn: true
   },
   ["widget.actioncolumn"],
   0,
   [Ext.grid.column, "Action", Ext.grid, "ActionColumn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Boolean",
@@ -126989,7 +126976,7 @@ Ext.cmd.derive(
     updater: function (a, b) {
       Ext.fly(a).down(this.getView().innerSelector, true).innerHTML =
         Ext.grid.column.Boolean.prototype.defaultRenderer.call(this, b);
-    },
+    }
   },
   0,
   ["booleancolumn"],
@@ -126999,7 +126986,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "booleancolumn",
+    "booleancolumn"
   ],
   {
     component: true,
@@ -127007,12 +126994,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    booleancolumn: true,
+    booleancolumn: true
   },
   ["widget.booleancolumn"],
   0,
   [Ext.grid.column, "Boolean", Ext.grid, "BooleanColumn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Check",
@@ -127036,7 +127023,7 @@ Ext.cmd.derive(
     checkboxAriaRole: "button",
     constructor: function (a) {
       this.updateHeaderState = Ext.Function.createAnimationFrame(
-        a.updateHeaderState || this.updateHeaderState,
+        a.updateHeaderState || this.updateHeaderState
       );
       this.scope = this;
       Ext.grid.column.Column.prototype.constructor.apply(this, arguments);
@@ -127045,20 +127032,18 @@ Ext.cmd.derive(
       var a = this;
       Ext.grid.column.Column.prototype.afterComponentLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (a.useAriaElements && a.headerCheckbox) {
         a.updateHeaderAriaDescription(a.areAllChecked());
       }
       if (!a.storeListeners) {
         a.updateHeaderState();
-        a.storeListeners = a
-          .getView()
-          .dataSource.on({
-            datachanged: a.onDataChanged,
-            scope: a,
-            destroyable: true,
-          });
+        a.storeListeners = a.getView().dataSource.on({
+          datachanged: a.onDataChanged,
+          scope: a,
+          destroyable: true
+        });
       }
     },
     onRemoved: function () {
@@ -127107,7 +127092,7 @@ Ext.cmd.derive(
       } else {
         d = Ext.grid.column.Column.prototype.processEvent.apply(
           this,
-          arguments,
+          arguments
         );
       }
       return d;
@@ -127124,7 +127109,7 @@ Ext.cmd.derive(
           this,
           d,
           a,
-          b,
+          b
         );
       }
     },
@@ -127283,7 +127268,7 @@ Ext.cmd.derive(
       if (b.useAriaElements && b.ariaEl.dom) {
         b.ariaEl.dom.setAttribute(
           "aria-describedby",
-          b.id + "-header-description" + (!a ? "-not" : "") + "-selected",
+          b.id + "-header-description" + (!a ? "-not" : "") + "-selected"
         );
       }
     },
@@ -127294,7 +127279,7 @@ Ext.cmd.derive(
         if (a) {
           a.dom.setAttribute(
             "aria-describedby",
-            d.id + "-cell-description" + (!c ? "-not" : "") + "-selected",
+            d.id + "-cell-description" + (!c ? "-not" : "") + "-selected"
           );
         }
       }
@@ -127306,7 +127291,7 @@ Ext.cmd.derive(
         b.push(
           '<span role="presentation" class="',
           c.headerCheckboxCls,
-          '"></span>',
+          '"></span>'
         );
         if (c.useAriaElements) {
           b.push(
@@ -127326,11 +127311,11 @@ Ext.cmd.derive(
               d +
               '-cell-description-not-selected" class="x-hidden-offsets">' +
               c.rowSelectText +
-              "</span>",
+              "</span>"
           );
         }
-      },
-    },
+      }
+    }
   },
   1,
   ["checkcolumn"],
@@ -127340,7 +127325,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "checkcolumn",
+    "checkcolumn"
   ],
   {
     component: true,
@@ -127348,7 +127333,7 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    checkcolumn: true,
+    checkcolumn: true
   },
   ["widget.checkcolumn"],
   0,
@@ -127358,9 +127343,9 @@ Ext.cmd.derive(
     Ext.ux,
     "CheckColumn",
     Ext.grid.column,
-    "CheckColumn",
+    "CheckColumn"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Date",
@@ -127382,7 +127367,7 @@ Ext.cmd.derive(
     updater: function (a, b) {
       Ext.fly(a).down(this.getView().innerSelector, true).innerHTML =
         Ext.grid.column.Date.prototype.defaultRenderer.call(this, b);
-    },
+    }
   },
   0,
   ["datecolumn"],
@@ -127392,7 +127377,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "datecolumn",
+    "datecolumn"
   ],
   {
     component: true,
@@ -127400,12 +127385,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    datecolumn: true,
+    datecolumn: true
   },
   ["widget.datecolumn"],
   0,
   [Ext.grid.column, "Date", Ext.grid, "DateColumn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Number",
@@ -127421,7 +127406,7 @@ Ext.cmd.derive(
     updater: function (a, b) {
       Ext.fly(a).down(this.getView().innerSelector, true).innerHTML =
         Ext.grid.column.Number.prototype.defaultRenderer.call(this, b);
-    },
+    }
   },
   0,
   ["numbercolumn"],
@@ -127431,7 +127416,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "numbercolumn",
+    "numbercolumn"
   ],
   {
     component: true,
@@ -127439,12 +127424,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    numbercolumn: true,
+    numbercolumn: true
   },
   ["widget.numbercolumn"],
   0,
   [Ext.grid.column, "Number", Ext.grid, "NumberColumn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.RowNumberer",
@@ -127491,7 +127476,7 @@ Ext.cmd.derive(
     updater: function (a, d, c, b, e) {
       Ext.fly(a).down(this.getView().innerSelector, true).innerHTML =
         this.defaultRenderer(d, null, c, null, null, e, b);
-    },
+    }
   },
   1,
   ["rownumberer"],
@@ -127501,7 +127486,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "rownumberer",
+    "rownumberer"
   ],
   {
     component: true,
@@ -127509,12 +127494,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    rownumberer: true,
+    rownumberer: true
   },
   ["widget.rownumberer"],
   0,
   [Ext.grid.column, "RowNumberer", Ext.grid, "RowNumberer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Template",
@@ -127537,7 +127522,7 @@ Ext.cmd.derive(
     updater: function (a, b) {
       Ext.fly(a).down(this.getView().innerSelector, true).innerHTML =
         Ext.grid.column.CheckColumn.prototype.defaultRenderer.call(this, b);
-    },
+    }
   },
   0,
   ["templatecolumn"],
@@ -127547,7 +127532,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "templatecolumn",
+    "templatecolumn"
   ],
   {
     component: true,
@@ -127555,12 +127540,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    templatecolumn: true,
+    templatecolumn: true
   },
   ["widget.templatecolumn"],
   0,
   [Ext.grid.column, "Template", Ext.grid, "TemplateColumn"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.column.Widget",
@@ -127769,7 +127754,7 @@ Ext.cmd.derive(
             refresh: c.onViewRefresh,
             itemadd: c.onItemAdd,
             scope: c,
-            destroyable: true,
+            destroyable: true
           };
         if (c.bindDataIndex) {
           b.itemUpdate = c.onItemUpdate;
@@ -127791,8 +127776,8 @@ Ext.cmd.derive(
       },
       widgetColumnDecorator: function () {
         return this.$widgetColumn;
-      },
-    },
+      }
+    }
   },
   0,
   ["widgetcolumn"],
@@ -127802,7 +127787,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "widgetcolumn",
+    "widgetcolumn"
   ],
   {
     component: true,
@@ -127810,18 +127795,18 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    widgetcolumn: true,
+    widgetcolumn: true
   },
   ["widget.widgetcolumn"],
   [
     [
       Ext.mixin.StyleCacher.prototype.mixinId ||
         Ext.mixin.StyleCacher.$className,
-      Ext.mixin.StyleCacher,
-    ],
+      Ext.mixin.StyleCacher
+    ]
   ],
   [Ext.grid.column, "Widget"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.Feature",
@@ -127852,7 +127837,7 @@ Ext.cmd.derive(
     },
     disable: function () {
       this.disabled = true;
-    },
+    }
   },
   1,
   0,
@@ -127861,7 +127846,7 @@ Ext.cmd.derive(
   ["feature.feature"],
   0,
   [Ext.grid.feature, "Feature"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.AbstractSummary",
@@ -127877,7 +127862,7 @@ Ext.cmd.derive(
           this.nextTpl.applyOut(a, b, c);
         }
       },
-      priority: 1000,
+      priority: 1000
     },
     showSummaryRow: true,
     init: function () {
@@ -127953,7 +127938,7 @@ Ext.cmd.derive(
           itemClasses: [],
           recordIndex: -1,
           rowId: h.getRowId(g),
-          columns: c,
+          columns: c
         };
       for (e = 0; e < k; e++) {
         b = c[e];
@@ -128069,7 +128054,7 @@ Ext.cmd.derive(
       Ext.destroy(this.readerListeners);
       this.readerRawData = this.summaryRows = null;
       Ext.grid.feature.Feature.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -128078,7 +128063,7 @@ Ext.cmd.derive(
   ["feature.abstractsummary"],
   0,
   [Ext.grid.feature, "AbstractSummary"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.GroupStore",
@@ -128110,7 +128095,7 @@ Ext.cmd.derive(
           idchanged: b.onIdChanged,
           update: b.onUpdate,
           scope: b,
-          destroyable: true,
+          destroyable: true
         });
         b.store = a;
         b.processStore(a);
@@ -128153,8 +128138,8 @@ Ext.cmd.derive(
         x = w.data = new Ext.util.Collection({
           rootProperty: "data",
           extraKeys: {
-            byInternalId: { property: "internalId", rootProperty: "" },
-          },
+            byInternalId: { property: "internalId", rootProperty: "" }
+          }
         });
       }
       if (d.getCount()) {
@@ -128375,7 +128360,7 @@ Ext.cmd.derive(
       Ext.destroy(a.data);
       a.groupingFeature = null;
       Ext.util.Observable.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -128384,7 +128369,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.feature, "GroupStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.Grouping",
@@ -128422,7 +128407,7 @@ Ext.cmd.derive(
       "this.groupingFeature.cleanup(values.rows, values.view.rowValues);",
       "}",
       "%}",
-      { priority: 200 },
+      { priority: 200 }
     ],
     groupRowTpl: [
       "{%",
@@ -128491,8 +128476,8 @@ Ext.cmd.derive(
               Ext.fly(h).syncContent(g);
             }
           }
-        },
-      },
+        }
+      }
     ],
     relayedEvents: ["groupcollapse", "groupexpand"],
     init: function (c) {
@@ -128508,7 +128493,7 @@ Ext.cmd.derive(
         columnhide: e.onColumnHideShow,
         columnshow: e.onColumnHideShow,
         columnmove: e.onColumnMove,
-        scope: e,
+        scope: e
       });
       a.addTpl(Ext.XTemplate.getTpl(e, "outerTpl")).groupingFeature = e;
       a.addRowTpl(Ext.XTemplate.getTpl(e, "groupRowTpl")).groupingFeature = e;
@@ -128645,7 +128630,7 @@ Ext.cmd.derive(
       a.on({
         scope: b,
         groupmousedown: b.onGroupMousedown,
-        groupclick: b.onGroupClick,
+        groupclick: b.onGroupClick
       });
       if (b.enableGroupingMenu) {
         b.injectGroupingMenu();
@@ -128753,7 +128738,7 @@ Ext.cmd.derive(
           itemId: "groupMenuItem",
           text: c,
           handler: g.onGroupMenuItemClick,
-          scope: g,
+          scope: g
         });
         if (d) {
           h.push({
@@ -128761,7 +128746,7 @@ Ext.cmd.derive(
             text: a,
             checked: !e,
             checkHandler: g.onGroupToggleMenuItemClick,
-            scope: g,
+            scope: g
           });
         }
         return h;
@@ -128874,7 +128859,7 @@ Ext.cmd.derive(
             lastGroup: null,
             lastGroupGeneration: null,
             lastFilterGeneration: null,
-            aggregateRecord: new Ext.data.Model(),
+            aggregateRecord: new Ext.data.Model()
           };
         }
       }
@@ -129307,7 +129292,7 @@ Ext.cmd.derive(
         }
         if (g !== a.isBufferedStore) {
           Ext.raise(
-            "Cannot reconfigure grouping switching between buffered and non-buffered stores",
+            "Cannot reconfigure grouping switching between buffered and non-buffered stores"
           );
         }
         i.isGrouping = !!j.getGrouper();
@@ -129376,10 +129361,10 @@ Ext.cmd.derive(
         b.storeListeners = a.on({
           groupchange: b.onGroupChange,
           scope: b,
-          destroyable: true,
+          destroyable: true
         });
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -129388,7 +129373,7 @@ Ext.cmd.derive(
   ["feature.grouping"],
   [["summary", Ext.grid.feature.AbstractSummary]],
   [Ext.grid.feature, "Grouping"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.GroupingSummary",
@@ -129398,13 +129383,13 @@ Ext.cmd.derive(
     vetoEvent: function (b, d, g, c) {
       var a = Ext.grid.feature.Grouping.prototype.vetoEvent.apply(
         this,
-        arguments,
+        arguments
       );
       if (a !== false && c.getTarget(this.summaryRowSelector)) {
         a = false;
       }
       return a;
-    },
+    }
   },
   0,
   0,
@@ -129413,7 +129398,7 @@ Ext.cmd.derive(
   ["feature.groupingsummary"],
   0,
   [Ext.grid.feature, "GroupingSummary"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.RowBody",
@@ -129449,7 +129434,7 @@ Ext.cmd.derive(
         this.nextTpl.applyOut(b, d, g);
         i.rowBodyCls = i.rowBodyColspan = i.rowBody = null;
       },
-      priority: 100,
+      priority: 100
     },
     extraRowTpl: [
       "{%",
@@ -129485,8 +129470,8 @@ Ext.cmd.derive(
           if (d && (e = Ext.fly(g).down(a.eventSelector, true))) {
             Ext.fly(d).syncContent(e);
           }
-        },
-      },
+        }
+      }
     ],
     init: function (b) {
       var c = this,
@@ -129518,7 +129503,7 @@ Ext.cmd.derive(
       if (this.getAdditionalData) {
         Ext.apply(b, this.getAdditionalData(a.data, c, a, b));
       }
-    },
+    }
   },
   0,
   0,
@@ -129527,7 +129512,7 @@ Ext.cmd.derive(
   ["feature.rowbody"],
   0,
   [Ext.grid.feature, "RowBody"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.feature.Summary",
@@ -129572,8 +129557,8 @@ Ext.cmd.derive(
               Ext.fly(g).syncContent(e);
             }
           }
-        },
-      },
+        }
+      }
     ],
     init: function (b) {
       var d = this,
@@ -129585,7 +129570,7 @@ Ext.cmd.derive(
         b.headerCt.on({
           add: d.onStoreUpdate,
           afterlayout: d.onStoreUpdate,
-          scope: d,
+          scope: d
         });
         b.on({
           beforerender: function () {
@@ -129602,7 +129587,7 @@ Ext.cmd.derive(
                   '">',
                 '<tr class="' + d.summaryRowCls + '"></tr>',
                 "</table>",
-                "</div>",
+                "</div>"
               ],
               scrollable: { x: false, y: false },
               hidden: !d.showSummaryRow,
@@ -129610,7 +129595,7 @@ Ext.cmd.derive(
               cls: [d.dockedSummaryCls, d.dockedSummaryCls + "-" + c],
               xtype: "component",
               dock: c,
-              weight: 10000000,
+              weight: 10000000
             })[0];
           },
           afterrender: function () {
@@ -129619,7 +129604,7 @@ Ext.cmd.derive(
               .addPartner(d.summaryBar.getScrollable(), "x");
             d.onStoreUpdate();
           },
-          single: true,
+          single: true
         });
         b.headerCt.afterComponentLayout = Ext.Function.createSequence(
           b.headerCt.afterComponentLayout,
@@ -129631,13 +129616,13 @@ Ext.cmd.derive(
               e += Ext.getScrollbarSize().width;
             }
             g.setWidth(e);
-          },
+          }
         );
       } else {
         if (b.bufferedRenderer) {
           d.wrapsItem = true;
           a.addRowTpl(
-            Ext.XTemplate.getTpl(d, "fullSummaryTpl"),
+            Ext.XTemplate.getTpl(d, "fullSummaryTpl")
           ).summaryFeature = d;
           a.on("refresh", d.onViewRefresh, d);
         } else {
@@ -129648,7 +129633,7 @@ Ext.cmd.derive(
       b.ownerGrid.on({
         beforereconfigure: d.onBeforeReconfigure,
         columnmove: d.onStoreUpdate,
-        scope: d,
+        scope: d
       });
       d.bindStore(b, b.getStore());
     },
@@ -129665,7 +129650,7 @@ Ext.cmd.derive(
         scope: c,
         destroyable: true,
         update: c.onStoreUpdate,
-        datachanged: c.onStoreUpdate,
+        datachanged: c.onStoreUpdate
       });
       Ext.grid.feature.AbstractSummary.prototype.bindStore.call(this, b, a);
     },
@@ -129679,13 +129664,13 @@ Ext.cmd.derive(
         d.push(
           '<table cellpadding="0" cellspacing="0" class="' +
             g.summaryItemCls +
-            '" style="table-layout: fixed; width: 100%;">',
+            '" style="table-layout: fixed; width: 100%;">'
         );
         g.outputSummaryRecord(
           a && a.isModel ? a : g.createSummaryRecord(b),
           c,
           d,
-          e,
+          e
         );
         d.push("</table>");
       }
@@ -129696,7 +129681,7 @@ Ext.cmd.derive(
       Ext.grid.feature.AbstractSummary.prototype.toggleSummaryRow.call(
         this,
         d,
-        a,
+        a
       );
       if (b) {
         b.setVisible(c.showSummaryRow);
@@ -129723,10 +129708,10 @@ Ext.cmd.derive(
             cellspacing: 0,
             cls: b,
             style: "table-layout: fixed; width: 100%",
-            children: [{ tag: "tbody" }],
+            children: [{ tag: "tbody" }]
           },
           false,
-          true,
+          true
         );
       }
       return d;
@@ -129745,7 +129730,7 @@ Ext.cmd.derive(
         a = c.createSummaryRecord(b);
         d = c.getSummaryRowPlaceholder(b);
         d.appendChild(
-          Ext.fly(b.createRowElement(a, -1)).down(c.summaryRowSelector, true),
+          Ext.fly(b.createRowElement(a, -1)).down(c.summaryRowSelector, true)
         );
       }
     },
@@ -129845,7 +129830,7 @@ Ext.cmd.derive(
       var a = this;
       a.summaryRecord = a.storeListeners = Ext.destroy(a.storeListeners);
       Ext.grid.feature.AbstractSummary.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -129854,7 +129839,7 @@ Ext.cmd.derive(
   ["feature.summary"],
   0,
   [Ext.grid.feature, "Summary"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.Item",
@@ -130013,7 +129998,7 @@ Ext.cmd.derive(
         b.hideMenuTimer = Ext.defer(
           b.doHideMenu,
           Ext.isNumber(a) ? a : b.menuHideDelay,
-          b,
+          b
         );
       }
     },
@@ -130144,7 +130129,7 @@ Ext.cmd.derive(
         linkCls: i.linkCls,
         linkHrefCls: i.linkHrefCls,
         groupCls: i.group ? i.groupCls : "",
-        tabIndex: i.tabIndex,
+        tabIndex: i.tabIndex
       });
     },
     onRender: function () {
@@ -130182,7 +130167,7 @@ Ext.cmd.derive(
         d = i.isMenu;
         i = g.menu = Ext.menu.Manager.get(i, {
           ownerCmp: g,
-          focusOnToFront: false,
+          focusOnToFront: false
         });
         i.setOwnerCmp(g, d);
         if (a) {
@@ -130263,7 +130248,7 @@ Ext.cmd.derive(
         }
         if (Ext.quickTipsActive && Ext.isObject(c)) {
           Ext.tip.QuickTipManager.register(
-            Ext.apply({ target: b.itemEl.id }, c),
+            Ext.apply({ target: b.itemEl.id }, c)
           );
           b.tooltip = c;
         } else {
@@ -130286,7 +130271,7 @@ Ext.cmd.derive(
       },
       cancelDeferHide: function () {
         window.clearTimeout(this.hideMenuTimer);
-      },
+      }
     },
     applyGlyph: function (b, a) {
       if (b) {
@@ -130311,7 +130296,7 @@ Ext.cmd.derive(
           a.dom.innerHTML = "";
         }
       }
-    },
+    }
   },
   0,
   ["menuitem"],
@@ -130321,11 +130306,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Queryable.prototype.mixinId || Ext.mixin.Queryable.$className,
-      Ext.mixin.Queryable,
-    ],
+      Ext.mixin.Queryable
+    ]
   ],
   [Ext.menu, "Item", Ext.menu, "TextItem"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.CheckItem",
@@ -130360,7 +130345,7 @@ Ext.cmd.derive(
       Ext.menu.Item.prototype.beforeRender.call(this);
       Ext.apply(b.renderData, {
         checkboxCls: b.checkboxCls,
-        showCheckbox: b.showCheckbox,
+        showCheckbox: b.showCheckbox
       });
       a = b.ariaRenderAttributes || (b.ariaRenderAttributes = {});
       a["aria-checked"] = b.menu ? "mixed" : b.checked;
@@ -130461,7 +130446,7 @@ Ext.cmd.derive(
           d.fireEvent("checkchange", d, e);
         }
       }
-    },
+    }
   },
   0,
   ["menucheckitem"],
@@ -130470,7 +130455,7 @@ Ext.cmd.derive(
   ["widget.menucheckitem"],
   0,
   [Ext.menu, "CheckItem"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.Separator",
@@ -130486,7 +130471,7 @@ Ext.cmd.derive(
     beforeRender: function () {
       this.addCls(this.separatorCls);
       Ext.menu.Item.prototype.beforeRender.call(this);
-    },
+    }
   },
   0,
   ["menuseparator"],
@@ -130495,7 +130480,7 @@ Ext.cmd.derive(
   ["widget.menuseparator"],
   0,
   [Ext.menu, "Separator"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.Menu",
@@ -130537,7 +130522,7 @@ Ext.cmd.derive(
           element: "el",
           click: c.onClick,
           mouseover: c.onMouseOver,
-          scope: c,
+          scope: c
         };
       if (Ext.supports.Touch) {
         b.pointerdown = c.onMouseOver;
@@ -130601,14 +130586,14 @@ Ext.cmd.derive(
             scope: b,
             shift: false,
             ctrl: false,
-            alt: false,
-          },
+            alt: false
+          }
         ]);
       } else {
         b.escapeKeyNav = new Ext.util.KeyNav(b.el, {
           eventName: "keydown",
           scope: b,
-          esc: b.onEscapeKey,
+          esc: b.onEscapeKey
         });
       }
       Ext.panel.Panel.prototype.onBoxReady.apply(this, arguments);
@@ -130616,7 +130601,7 @@ Ext.cmd.derive(
         b.iconSepEl = b.body.insertFirst({
           role: "presentation",
           cls: c + " " + c + "-" + b.ui,
-          html: "&#160;",
+          html: "&#160;"
         });
       }
       if (
@@ -130629,7 +130614,7 @@ Ext.cmd.derive(
       b.mouseMonitor = b.el.monitorMouseLeave(
         b.mouseLeaveDelay,
         b.onMouseLeave,
-        b,
+        b
       );
     },
     onFocusEnter: function (b) {
@@ -130721,7 +130706,7 @@ Ext.cmd.derive(
             canActivate: false,
             hideOnClick: false,
             plain: true,
-            text: a,
+            text: a
           });
     },
     configureItem: function (c) {
@@ -130976,8 +130961,8 @@ Ext.cmd.derive(
         delete c.hierarchicallyHidden;
         c.onInheritedAdd(b, a);
         c.containerOnAdded(b, a);
-      },
-    },
+      }
+    }
   },
   0,
   ["menu"],
@@ -130988,11 +130973,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.menu, "Menu"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.Base",
@@ -131005,7 +130990,7 @@ Ext.cmd.derive(
       itemDefaults: null,
       menuDefaults: { xtype: "menu" },
       updateBuffer: 500,
-      serializer: null,
+      serializer: null
     },
     active: false,
     type: "string",
@@ -131148,7 +131133,7 @@ Ext.cmd.derive(
     },
     updateStoreFilter: function () {
       this.getGridStore().getFilters().notify("endupdate");
-    },
+    }
   },
   1,
   0,
@@ -131159,11 +131144,11 @@ Ext.cmd.derive(
     [
       Ext.mixin.Factoryable.prototype.mixinId ||
         Ext.mixin.Factoryable.$className,
-      Ext.mixin.Factoryable,
-    ],
+      Ext.mixin.Factoryable
+    ]
   ],
   [Ext.grid.filters.filter, "Base"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.SingleFilter",
@@ -131210,7 +131195,7 @@ Ext.cmd.derive(
       if (!this.menu || this.active) {
         this.active = false;
       }
-    },
+    }
   },
   1,
   0,
@@ -131219,7 +131204,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.filters.filter, "SingleFilter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.Boolean",
@@ -131238,7 +131223,7 @@ Ext.cmd.derive(
         e = c.getItemDefaults();
       Ext.grid.filters.filter.SingleFilter.prototype.createMenu.apply(
         this,
-        arguments,
+        arguments
       );
       c.menu.add([
         Ext.apply(
@@ -131248,9 +131233,9 @@ Ext.cmd.derive(
             group: d,
             checked: !!c.defaultValue,
             hideOnClick: false,
-            listeners: b,
+            listeners: b
           },
-          e,
+          e
         ),
         Ext.apply(
           {
@@ -131259,10 +131244,10 @@ Ext.cmd.derive(
             group: d,
             checked: !c.defaultValue,
             hideOnClick: false,
-            listeners: b,
+            listeners: b
           },
-          e,
-        ),
+          e
+        )
       ]);
     },
     onClick: function (a) {
@@ -131278,7 +131263,7 @@ Ext.cmd.derive(
         a.setActive(true);
       }
     },
-    activateMenu: Ext.emptyFn,
+    activateMenu: Ext.emptyFn
   },
   0,
   0,
@@ -131287,7 +131272,7 @@ Ext.cmd.derive(
   ["grid.filter.boolean"],
   0,
   [Ext.grid.filters.filter, "Boolean"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.TriFilter",
@@ -131330,27 +131315,27 @@ Ext.cmd.derive(
         i.createFilter(
           {
             operator: "lt",
-            value: !g && j && Ext.isDefined(j.lt) ? j.lt : null,
+            value: !g && j && Ext.isDefined(j.lt) ? j.lt : null
           },
-          "lt",
+          "lt"
         );
       a.gt =
         e ||
         i.createFilter(
           {
             operator: "gt",
-            value: !g && j && Ext.isDefined(j.gt) ? j.gt : null,
+            value: !g && j && Ext.isDefined(j.gt) ? j.gt : null
           },
-          "gt",
+          "gt"
         );
       a.eq =
         c ||
         i.createFilter(
           {
             operator: "eq",
-            value: !g && j && Ext.isDefined(j.eq) ? j.eq : null,
+            value: !g && j && Ext.isDefined(j.eq) ? j.eq : null
           },
-          "eq",
+          "eq"
         );
       i.filter = a;
       if (i.active) {
@@ -131522,7 +131507,7 @@ Ext.cmd.derive(
         g.endUpdate();
       }
       j.preventFilterRemoval = false;
-    },
+    }
   },
   1,
   0,
@@ -131531,7 +131516,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.filters.filter, "TriFilter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.Date",
@@ -131542,17 +131527,17 @@ Ext.cmd.derive(
       fields: {
         lt: { text: "Before" },
         gt: { text: "After" },
-        eq: { text: "On" },
+        eq: { text: "On" }
       },
       pickerDefaults: { xtype: "datepicker", border: 0 },
       updateBuffer: 0,
-      dateFormat: undefined,
+      dateFormat: undefined
     },
     itemDefaults: {
       xtype: "menucheckitem",
       selectOnFocus: true,
       width: 125,
-      menu: { layout: "auto", plain: true },
+      menu: { layout: "auto", plain: true }
     },
     applyDateFormat: function (a) {
       return a || Ext.Date.defaultFormat;
@@ -131572,7 +131557,7 @@ Ext.cmd.derive(
         m;
       Ext.grid.filters.filter.TriFilter.prototype.createMenu.apply(
         this,
-        arguments,
+        arguments
       );
       c = k.getItemDefaults();
       g = k.getFields();
@@ -131581,9 +131566,9 @@ Ext.cmd.derive(
           minDate: k.minDate,
           maxDate: k.maxDate,
           format: k.dateFormat,
-          listeners: { scope: k, select: k.onMenuSelect },
+          listeners: { scope: k, select: k.onMenuSelect }
         },
-        k.getPickerDefaults(),
+        k.getPickerDefaults()
       );
       k.fields = {};
       for (e = 0, j = a.length; e < j; e++) {
@@ -131593,8 +131578,8 @@ Ext.cmd.derive(
             menu: {
               xtype: "datemenu",
               hideOnClick: false,
-              pickerCfg: Ext.apply({ itemId: n }, d),
-            },
+              pickerCfg: Ext.apply({ itemId: n }, d)
+            }
           };
           if (c) {
             Ext.merge(h, c);
@@ -131638,7 +131623,7 @@ Ext.cmd.derive(
       a = Ext.grid.filters.filter.TriFilter.prototype.getFilterConfig.call(
         this,
         a,
-        b,
+        b
       );
       a.serializer = this.getSerializer();
       a.convert = this.convertDateOnly;
@@ -131692,7 +131677,7 @@ Ext.cmd.derive(
       j[i.filterKey] = c;
       h.setValue(j);
       g.up("menu").hide();
-    },
+    }
   },
   0,
   0,
@@ -131701,7 +131686,7 @@ Ext.cmd.derive(
   ["grid.filter.date"],
   0,
   [Ext.grid.filters.filter, "Date"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.List",
@@ -131721,7 +131706,7 @@ Ext.cmd.derive(
       add: "onDataChanged",
       refresh: "onDataChanged",
       remove: "onDataChanged",
-      update: "onDataChanged",
+      update: "onDataChanged"
     },
     constructor: function (a) {
       var c = this,
@@ -131735,13 +131720,13 @@ Ext.cmd.derive(
         b = c.getGridStore();
         if (c.value != null && c.active && !b.isEmptyStore) {
           c.gridStoreListeners = b.on(
-            Ext.apply({ scope: c, destroyable: true }, c.gridStoreListenersCfg),
+            Ext.apply({ scope: c, destroyable: true }, c.gridStoreListenersCfg)
           );
         }
         c.gridListeners = c.grid.on({
           reconfigure: c.onReconfigure,
           scope: c,
-          destroyable: true,
+          destroyable: true
         });
         c.inferOptionsFromGridStore = true;
       }
@@ -131840,8 +131825,8 @@ Ext.cmd.derive(
             .on(
               Ext.apply(
                 { scope: h, destroyable: true },
-                h.gridStoreListenersCfg,
-              ),
+                h.gridStoreListenersCfg
+              )
             );
         }
         h.loaded = true;
@@ -131918,10 +131903,10 @@ Ext.cmd.derive(
                 group: m,
                 value: b,
                 checkHandler: o.onCheckChange,
-                scope: o,
+                scope: o
               },
-              d,
-            ),
+              d
+            )
           );
         }
         c.resumeLayouts(true);
@@ -131932,7 +131917,7 @@ Ext.cmd.derive(
       return Ext.grid.filters.filter.SingleFilter.prototype.getFilterConfig.call(
         this,
         a,
-        b,
+        b
       );
     },
     getOptionsFromStore: function (j) {
@@ -131962,7 +131947,7 @@ Ext.cmd.derive(
           }
         },
         null,
-        { filtered: true, collapsed: true },
+        { filtered: true, collapsed: true }
       );
       return g;
     },
@@ -132038,7 +132023,7 @@ Ext.cmd.derive(
       if (this.loadOnShow && !this.loaded && !a.hasPendingLoad()) {
         a.load();
       }
-    },
+    }
   },
   1,
   0,
@@ -132047,7 +132032,7 @@ Ext.cmd.derive(
   ["grid.filter.list"],
   0,
   [Ext.grid.filters.filter, "List"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.Number",
@@ -132058,8 +132043,8 @@ Ext.cmd.derive(
       fields: {
         gt: { iconCls: "x-grid-filters-gt", margin: "0 0 3px 0" },
         lt: { iconCls: "x-grid-filters-lt", margin: "0 0 3px 0" },
-        eq: { iconCls: "x-grid-filters-eq", margin: 0 },
-      },
+        eq: { iconCls: "x-grid-filters-eq", margin: 0 }
+      }
     },
     emptyText: "Enter Number...",
     itemDefaults: {
@@ -132068,7 +132053,7 @@ Ext.cmd.derive(
       hideEmptyLabel: false,
       labelSeparator: "",
       labelWidth: 29,
-      selectOnFocus: false,
+      selectOnFocus: false
     },
     menuDefaults: { bodyPadding: 3, showSeparator: false },
     createMenu: function () {
@@ -132077,7 +132062,7 @@ Ext.cmd.derive(
           scope: h,
           keyup: h.onValueChange,
           spin: { fn: h.onInputSpin, buffer: 200 },
-          el: { click: h.stopFn },
+          el: { click: h.stopFn }
         },
         b = h.getItemDefaults(),
         a = h.menuItems,
@@ -132122,7 +132107,7 @@ Ext.cmd.derive(
     },
     stopFn: function (a) {
       a.stopPropagation();
-    },
+    }
   },
   0,
   0,
@@ -132131,7 +132116,7 @@ Ext.cmd.derive(
   ["grid.filter.number", "grid.filter.numeric"],
   0,
   [Ext.grid.filters.filter, "Number"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.filter.String",
@@ -132148,7 +132133,7 @@ Ext.cmd.derive(
       labelSeparator: "",
       labelWidth: 29,
       margin: 0,
-      selectOnFocus: true,
+      selectOnFocus: true
     },
     menuDefaults: { bodyPadding: 3, showSeparator: false },
     createMenu: function () {
@@ -132168,8 +132153,8 @@ Ext.cmd.derive(
         el: {
           click: function (c) {
             c.stopPropagation();
-          },
-        },
+          }
+        }
       });
     },
     setValue: function (b) {
@@ -132195,18 +132180,18 @@ Ext.cmd.derive(
           filterFn: function (d) {
             return Ext.callback(c.filterFn, c.scope, [
               d,
-              c.inputItem.getValue(),
+              c.inputItem.getValue()
             ]);
-          },
+          }
         });
       } else {
         return Ext.grid.filters.filter.SingleFilter.prototype.createFilter.call(
           this,
           a,
-          b,
+          b
         );
       }
-    },
+    }
   },
   0,
   0,
@@ -132215,7 +132200,7 @@ Ext.cmd.derive(
   ["grid.filter.string"],
   0,
   [Ext.grid.filters.filter, "String"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.filters.Filters",
@@ -132226,7 +132211,7 @@ Ext.cmd.derive(
       boolean: "boolean",
       int: "number",
       date: "date",
-      number: "number",
+      number: "number"
     },
     filterCls: "x-grid-filters-filtered-column",
     menuFilterText: "Filters",
@@ -132248,12 +132233,12 @@ Ext.cmd.derive(
         destroyable: true,
         scope: c,
         add: c.onAdd,
-        menucreate: c.onMenuCreate,
+        menucreate: c.onMenuCreate
       });
       c.gridListeners = b.on({
         destroyable: true,
         scope: c,
-        reconfigure: c.onReconfigure,
+        reconfigure: c.onReconfigure
       });
       c.bindStore(a);
       if (b.stateful) {
@@ -132355,7 +132340,7 @@ Ext.cmd.derive(
         checked: false,
         itemId: "filters",
         text: c.menuFilterText,
-        listeners: { scope: c, checkchange: c.onCheckChange },
+        listeners: { scope: c, checkchange: c.onCheckChange }
       });
       return (c.filterMenuItem[a] = b);
     },
@@ -132551,8 +132536,8 @@ Ext.cmd.derive(
             e.endUpdate();
           }
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -132562,11 +132547,11 @@ Ext.cmd.derive(
   [
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
-    ],
+      Ext.util.StoreHolder
+    ]
   ],
   [Ext.grid.filters, "Filters"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.locking.HeaderContainer",
@@ -132613,7 +132598,7 @@ Ext.cmd.derive(
       "statesave",
       "beforestatesave",
       "staterestore",
-      "beforestaterestore",
+      "beforestaterestore"
     ],
     constructor: function (b) {
       var a = this,
@@ -132701,7 +132686,7 @@ Ext.cmd.derive(
       var a = this.lockable;
       a.lockedGrid.headerCt.enable();
       a.normalGrid.headerCt.enable();
-    },
+    }
   },
   1,
   0,
@@ -132710,7 +132695,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.locking, "HeaderContainer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.locking.View",
@@ -132738,7 +132723,7 @@ Ext.cmd.derive(
       a.locked.viewConfig.navigationModel =
         a.normal.viewConfig.navigationModel = e.navigationModel;
       e.lockedGrid = e.ownerGrid.lockedGrid = c.ComponentManager.create(
-        a.locked,
+        a.locked
       );
       e.lockedView = d = e.lockedGrid.getView();
       e.selModel = a.normal.viewConfig.selModel = d.getSelectionModel();
@@ -132749,7 +132734,7 @@ Ext.cmd.derive(
         a.normal.rowLines = e.lockedGrid.rowLines;
       }
       e.normalGrid = e.ownerGrid.normalGrid = c.ComponentManager.create(
-        a.normal,
+        a.normal
       );
       d.lockingPartner = b = e.normalView = e.normalGrid.getView();
       b.lockingPartner = d;
@@ -132759,17 +132744,17 @@ Ext.cmd.derive(
       e.lockedViewEventRelayers = e.relayEvents(d, c.view.Table.events);
       e.normalViewEventRelayers = e.relayEvents(
         b,
-        c.view.Table.events.concat(c.view.Table.normalSideEvents),
+        c.view.Table.events.concat(c.view.Table.normalSideEvents)
       );
       b.on({
         scope: e,
         itemmouseleave: e.onItemMouseLeave,
-        itemmouseenter: e.onItemMouseEnter,
+        itemmouseenter: e.onItemMouseEnter
       });
       d.on({
         scope: e,
         itemmouseleave: e.onItemMouseLeave,
-        itemmouseenter: e.onItemMouseEnter,
+        itemmouseenter: e.onItemMouseEnter
       });
       e.loadingText = b.loadingText;
       e.loadingCls = b.loadingCls;
@@ -132803,7 +132788,7 @@ Ext.cmd.derive(
           msg: d.loadingText,
           msgCls: d.loadingCls,
           useMsg: d.loadingUseMsg,
-          store: d.ownerGrid.store,
+          store: d.ownerGrid.store
         };
       d.el = c;
       d.rendered = true;
@@ -132912,7 +132897,7 @@ Ext.cmd.derive(
         update: a.onUpdate,
         clear: a.onDataRefresh,
         beginupdate: a.onBeginUpdate,
-        endupdate: a.onEndUpdate,
+        endupdate: a.onEndUpdate
       };
     },
     onOwnerGridHide: function () {
@@ -133068,7 +133053,7 @@ Ext.cmd.derive(
     getHeaderByCell: function (a) {
       if (a) {
         return this.getVisibleColumnManager().getHeaderById(
-          a.getAttribute("data-columnId"),
+          a.getAttribute("data-columnId")
         );
       }
       return false;
@@ -133092,7 +133077,7 @@ Ext.cmd.derive(
       if (a === d) {
         e = new Ext.grid.CellContext(b.getView()).setPosition(
           e.record,
-          e.column,
+          e.column
         );
       }
       return a.getCellByPosition(e, c);
@@ -133139,11 +133124,11 @@ Ext.cmd.derive(
         a.navigationModel,
         a.loadMask,
         a.lockedViewEventRelayers,
-        a.normalViewEventRelayers,
+        a.normalViewEventRelayers
       );
       a.lockedView.lockingPartner = a.normalView.lockingPartner = null;
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -133153,16 +133138,16 @@ Ext.cmd.derive(
   [
     [
       Ext.util.Observable.prototype.mixinId || Ext.util.Observable.$className,
-      Ext.util.Observable,
+      Ext.util.Observable
     ],
     [
       Ext.util.StoreHolder.prototype.mixinId || Ext.util.StoreHolder.$className,
-      Ext.util.StoreHolder,
+      Ext.util.StoreHolder
     ],
     [
       Ext.util.Focusable.prototype.mixinId || Ext.util.Focusable.$className,
-      Ext.util.Focusable,
-    ],
+      Ext.util.Focusable
+    ]
   ],
   [Ext.grid.locking, "View", Ext.grid, "LockingView"],
   function () {
@@ -133171,9 +133156,9 @@ Ext.cmd.derive(
     this.borrow(Ext.view.Table, [
       "cellSelector",
       "selectedCellCls",
-      "selectedItemCls",
+      "selectedItemCls"
     ]);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.scroll.LockingScroller",
@@ -133233,8 +133218,8 @@ Ext.cmd.derive(
       },
       onNormalScroll: function (b, a, c) {
         this.position.x = a;
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -133243,7 +133228,7 @@ Ext.cmd.derive(
   ["scroller.locking"],
   0,
   [Ext.scroll, "LockingScroller"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.locking.Lockable",
@@ -133276,7 +133261,7 @@ Ext.cmd.derive(
       "trailingBufferZone",
       "leadingBufferZone",
       "scrollToLoadBuffer",
-      "syncRowHeight",
+      "syncRowHeight"
     ],
     normalCfgCopy: ["scroll"],
     lockedCfgCopy: [],
@@ -133330,7 +133315,7 @@ Ext.cmd.derive(
       p.scrollable = new Ext.scroll.LockingScroller({
         component: p,
         x: false,
-        y: true,
+        y: true
       });
       p.features = null;
       b = p.constructLockablePlugins();
@@ -133355,7 +133340,7 @@ Ext.cmd.derive(
           );
         },
         features: m.lockedFeatures,
-        plugins: b.lockedPlugins,
+        plugins: b.lockedPlugins
       };
       o = {
         id: p.id + "-normal",
@@ -133377,7 +133362,7 @@ Ext.cmd.derive(
           );
         },
         features: m.normalFeatures,
-        plugins: b.normalPlugins,
+        plugins: b.normalPlugins
       };
       p.addCls("x-grid-locked");
       Ext.copy(o, p, p.bothCfgCopy, true);
@@ -133433,14 +133418,14 @@ Ext.cmd.derive(
         loadMask: a,
         locked: e,
         normal: o,
-        ownerGrid: p,
+        ownerGrid: p
       });
       e = p.lockedGrid;
       o = p.normalGrid;
       e.on({
         beginfloat: p.onBeginLockedFloat,
         endfloat: p.onEndLockedFloat,
-        scope: p,
+        scope: p
       });
       if (!e.getVisibleColumnManager().getColumns().length) {
         e.hide();
@@ -133461,7 +133446,7 @@ Ext.cmd.derive(
         columnhide: p.delaySyncLockedWidth,
         sortchange: p.onLockedHeaderSortChange,
         columnresize: p.delaySyncLockedWidth,
-        scope: p,
+        scope: p
       });
       h.on({
         add: p.delaySyncLockedWidth,
@@ -133469,7 +133454,7 @@ Ext.cmd.derive(
         columnshow: p.delaySyncLockedWidth,
         columnhide: p.delaySyncLockedWidth,
         sortchange: p.onNormalHeaderSortChange,
-        scope: p,
+        scope: p
       });
       p.modifyHeaderCt();
       p.items = [e];
@@ -133484,7 +133469,7 @@ Ext.cmd.derive(
         "filterchange",
         "groupchange",
         "beforeload",
-        "load",
+        "load"
       ]);
       p.gridRelayers = p.relayEvents(o, ["viewready"]);
     },
@@ -133497,7 +133482,7 @@ Ext.cmd.derive(
         xclass: "Ext.grid.locking.View",
         locked: this.lockedGrid,
         normal: this.normalGrid,
-        panel: this,
+        panel: this
       };
     },
     onBeginLockedFloat: function (a) {
@@ -133607,12 +133592,12 @@ Ext.cmd.derive(
           u -= i;
           if (z && y.view.body.dom) {
             B.lockedScrollbarScroller.setSize({
-              x: y.headerCt.getTableWidth(),
+              x: y.headerCt.getTableWidth()
             });
           }
           if (n.view.body.dom) {
             B.normalScrollbarScroller.setSize({
-              x: n.headerCt.getTableWidth(),
+              x: n.headerCt.getTableWidth()
             });
           }
         }
@@ -133630,19 +133615,19 @@ Ext.cmd.derive(
         p.toggleCls(x, !!g);
         B.normalScrollbarClipper.toggleCls(
           B.scrollbarClipperCls + "-floated",
-          !!B.normalGrid.floatedFromCollapse,
+          !!B.normalGrid.floatedFromCollapse
         );
         B.normalScrollbar.toggleCls(
           B.scrollbarCls + "-floated",
-          !!B.normalGrid.floatedFromCollapse,
+          !!B.normalGrid.floatedFromCollapse
         );
         B.lockedScrollbarClipper.toggleCls(
           B.scrollbarClipperCls + "-floated",
-          !!B.lockedGrid.floatedFromCollapse,
+          !!B.lockedGrid.floatedFromCollapse
         );
         B.lockedScrollbar.toggleCls(
           B.scrollbarCls + "-floated",
-          !!B.lockedGrid.floatedFromCollapse,
+          !!B.lockedGrid.floatedFromCollapse
         );
         A.setSize(B.lockedScrollbarClipper.dom.offsetWidth, i);
         p.setSize(h, i);
@@ -133659,10 +133644,10 @@ Ext.cmd.derive(
             s.style.width = r + w + "px";
             s.style.right = -w + "px";
             n.headerCt.layout.innerCt.setWidth(
-              n.headerCt.layout.innerCt.getWidth() + w,
+              n.headerCt.layout.innerCt.getWidth() + w
             );
             B.verticalScrollbarScroller.setSize({
-              y: B.scrollable.getSize().y,
+              y: B.scrollable.getSize().y
             });
             B.verticalScrollbar.show();
           } else {
@@ -133675,14 +133660,14 @@ Ext.cmd.derive(
     initScrollContainer: function () {
       var i = this,
         l = (i.scrollContainer = i.body.insertFirst({
-          cls: [i.scrollContainerCls, i._rtlCls],
+          cls: [i.scrollContainerCls, i._rtlCls]
         })),
         h = (i.scrollBody = l.appendChild({ cls: i.scrollBodyCls })),
         p = (i.lockedScrollbar = l.appendChild({
-          cls: [i.scrollbarCls, i.scrollbarCls + "-locked", i._rtlCls],
+          cls: [i.scrollbarCls, i.scrollbarCls + "-locked", i._rtlCls]
         })),
         c = (i.normalScrollbar = l.appendChild({
-          cls: [i.scrollbarCls, i._rtlCls],
+          cls: [i.scrollbarCls, i._rtlCls]
         })),
         o = i.lockedGrid.view,
         b = i.normalGrid.view,
@@ -133699,17 +133684,17 @@ Ext.cmd.derive(
       i.scrollable.setConfig({
         element: h,
         lockedScroller: m,
-        normalScroller: k,
+        normalScroller: k
       });
       n = i.lockedScrollbarClipper = h.appendChild({
         cls: [
           i.scrollbarClipperCls,
           i.scrollbarClipperCls + "-locked",
-          i._rtlCls,
-        ],
+          i._rtlCls
+        ]
       });
       g = i.normalScrollbarClipper = h.appendChild({
-        cls: [i.scrollbarClipperCls, i._rtlCls],
+        cls: [i.scrollbarClipperCls, i._rtlCls]
       });
       n.appendChild(o.el);
       g.appendChild(b.el);
@@ -133719,13 +133704,13 @@ Ext.cmd.derive(
         element: p,
         x: "scroll",
         y: false,
-        rtl: m.getRtl && m.getRtl(),
+        rtl: m.getRtl && m.getRtl()
       });
       d = i.normalScrollbarScroller = new a({
         element: c,
         x: "scroll",
         y: false,
-        rtl: k.getRtl && k.getRtl(),
+        rtl: k.getRtl && k.getRtl()
       });
       if (b.el._rtlScrollbarOnRight) {
         i.verticalScrollbar = l.appendChild({
@@ -133734,13 +133719,13 @@ Ext.cmd.derive(
             top: 0,
             left: 0,
             bottom: 0,
-            width: Ext.getScrollbarSize().width + "px",
-          },
+            width: Ext.getScrollbarSize().width + "px"
+          }
         });
         i.verticalScrollbarScroller = new a({
           element: i.verticalScrollbar,
           x: false,
-          y: true,
+          y: true
         });
         i.verticalScrollbarScroller.addPartner(i.scrollable, "y");
       }
@@ -133767,12 +133752,12 @@ Ext.cmd.derive(
         b = {
           itemId: "lockedHeaderCt",
           stretchMaxPartner: "^^>>#normalHeaderCt",
-          items: l,
+          items: l
         },
         j = {
           itemId: "normalHeaderCt",
           stretchMaxPartner: "^^>>#lockedHeaderCt",
-          items: c,
+          items: c
         },
         o = { locked: b, normal: j },
         a;
@@ -133828,19 +133813,19 @@ Ext.cmd.derive(
       var a = this;
       a.lockedGrid.headerCt.getMenuItems = a.getMenuItems(
         a.lockedGrid.headerCt.getMenuItems,
-        true,
+        true
       );
       a.normalGrid.headerCt.getMenuItems = a.getMenuItems(
         a.normalGrid.headerCt.getMenuItems,
-        false,
+        false
       );
       a.lockedGrid.headerCt.showMenuBy = Ext.Function.createInterceptor(
         a.lockedGrid.headerCt.showMenuBy,
-        a.showMenuBy,
+        a.showMenuBy
       );
       a.normalGrid.headerCt.showMenuBy = Ext.Function.createInterceptor(
         a.normalGrid.headerCt.showMenuBy,
-        a.showMenuBy,
+        a.showMenuBy
       );
     },
     onUnlockMenuClick: function () {
@@ -133885,14 +133870,14 @@ Ext.cmd.derive(
           iconCls: j,
           text: i,
           handler: e,
-          disabled: !c,
+          disabled: !c
         });
         k.push({
           itemId: "lockItem",
           iconCls: b,
           text: a,
           handler: d,
-          disabled: c,
+          disabled: c
         });
         return k;
       };
@@ -133903,7 +133888,7 @@ Ext.cmd.derive(
           b.syncLockedWidthTask ||
           (b.syncLockedWidthTask = new Ext.util.DelayedTask(
             b.syncLockedWidth,
-            b,
+            b
           ));
       if (b.reconfiguring) {
         return;
@@ -134269,7 +134254,7 @@ Ext.cmd.derive(
         b.normalGrid.headerCt.showMenuBy = null;
       }
       Ext.destroy(b.view, b.headerCt);
-    },
+    }
   },
   0,
   0,
@@ -134280,7 +134265,7 @@ Ext.cmd.derive(
   [Ext.grid.locking, "Lockable", Ext.grid, "Lockable"],
   function () {
     this.borrow(Ext.Component, ["constructPlugin"]);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.BufferedRenderer",
@@ -134309,7 +134294,7 @@ Ext.cmd.derive(
           columnschanged: e.checkVariableRowHeight,
           boxready: e.onViewBoxReady,
           scope: e,
-          destroyable: true,
+          destroyable: true
         },
         b = { scroll: e.onViewScroll, scope: e },
         g = a.initialConfig;
@@ -134368,7 +134353,7 @@ Ext.cmd.derive(
         clear: c.onStoreClear,
         beforeload: c.onBeforeStoreLoad,
         load: c.onStoreLoad,
-        destroyable: true,
+        destroyable: true
       });
       c.store = b;
       c.setBodyTop(0);
@@ -134396,7 +134381,7 @@ Ext.cmd.derive(
                 c.position =
                 c.scrollHeight =
                 c.nextRefreshStartIndex =
-                  0),
+                  0)
             );
             c.scroller.scrollTo(null, 0);
           }
@@ -134438,7 +134423,7 @@ Ext.cmd.derive(
       ) {
         b.on({
           boxready: Ext.Function.pass(d.onViewRefresh, [b, c], d),
-          single: true,
+          single: true
         });
         d.skipNextRefreshSize = true;
         return;
@@ -134577,7 +134562,7 @@ Ext.cmd.derive(
         o = Ext.Number.sign(
           j.getFirstVisibleRowIndex() -
             q.startIndex -
-            (q.endIndex - j.getLastVisibleRowIndex()),
+            (q.endIndex - j.getLastVisibleRowIndex())
         );
       if (h && !b && h.view.componentLayoutCounter) {
         if (h.viewSize > k) {
@@ -134615,7 +134600,7 @@ Ext.cmd.derive(
                       q.scroll(
                         Ext.Array.slice(s, q.endIndex + 1, Infinity),
                         1,
-                        0,
+                        0
                       );
                     }
                     if (t < q.startIndex) {
@@ -134632,7 +134617,7 @@ Ext.cmd.derive(
                       h.setViewSize(k, true);
                       p.syncRowHeights();
                     }
-                  },
+                  }
                 });
               } else {
                 j.refreshView(0);
@@ -134734,7 +134719,7 @@ Ext.cmd.derive(
             n.startIndex,
             Math.min(k.getCount(), n.startIndex + i.viewSize) - 1,
             null,
-            true,
+            true
           );
         }
         j.refreshSize(n.getCount() !== d);
@@ -134814,16 +134799,16 @@ Ext.cmd.derive(
         i = Math.max(
           Math.min(
             n - Math.floor((j.leadingBufferZone + j.trailingBufferZone) / 2),
-            k - j.viewSize + 1,
+            k - j.viewSize + 1
           ),
-          0,
+          0
         );
         b = Math.min(i + j.viewSize - 1, k - 1);
       } else {
         m = 1;
         b = Math.min(
           n + Math.floor((j.leadingBufferZone + j.trailingBufferZone) / 2),
-          k - 1,
+          k - 1
         );
         i = Math.max(b - (j.viewSize - 1), 0);
       }
@@ -134853,7 +134838,7 @@ Ext.cmd.derive(
           if (g) {
             g.position = g.scrollTop = j.scrollTop;
           }
-        },
+        }
       });
     },
     onViewItemMouseDown: function () {
@@ -134911,7 +134896,7 @@ Ext.cmd.derive(
           if (e.topOfViewCloseToEdge()) {
             a = Math.max(
               0,
-              e.getLastVisibleRowIndex() + e.trailingBufferZone - g,
+              e.getLastVisibleRowIndex() + e.trailingBufferZone - g
             );
             if (a > l.startIndex) {
               a = l.startIndex + Math.floor(b / e.rowHeight);
@@ -134923,7 +134908,7 @@ Ext.cmd.derive(
           if (e.bottomOfViewCloseToEdge()) {
             a = Math.max(
               0,
-              Math.min(e.getFirstVisibleRowIndex() - e.trailingBufferZone, i),
+              Math.min(e.getFirstVisibleRowIndex() - e.trailingBufferZone, i)
             );
           }
         }
@@ -135056,7 +135041,7 @@ Ext.cmd.derive(
                     (p < s.bodyTop
                       ? s.leadingBufferZone
                       : s.trailingBufferZone),
-                0,
+                0
               );
             }
           }
@@ -135097,7 +135082,7 @@ Ext.cmd.derive(
                 d.onRangeFetched,
                 d,
                 null,
-                false,
+                false
               );
             }
             d.renderTask.delay(1, null, null, [null, h, a, null, c]);
@@ -135181,7 +135166,7 @@ Ext.cmd.derive(
                 : E.trailingBufferZone;
             n = Math.max(
               E.scrollTop - q.item(q.startIndex + a - 1, true).offsetTop,
-              0,
+              0
             );
           }
         } else {
@@ -135370,7 +135355,7 @@ Ext.cmd.derive(
                 (h.lastScrollDirection === -1
                   ? h.leadingBufferZone
                   : h.trailingBufferZone),
-              Math.floor((c - k) / 2),
+              Math.floor((c - k) / 2)
             );
         } else {
           if (k === c) {
@@ -135421,7 +135406,7 @@ Ext.cmd.derive(
                 (i.lastScrollDirection === 1
                   ? i.leadingBufferZone
                   : i.trailingBufferZone),
-              Math.floor((c - l) / 2),
+              Math.floor((c - l) / 2)
             );
         } else {
           if (l === c) {
@@ -135515,7 +135500,7 @@ Ext.cmd.derive(
               b.onRangeFetched(g, i, e, h);
             }
           },
-          fireEvent: false,
+          fireEvent: false
         });
       }
     },
@@ -135533,10 +135518,10 @@ Ext.cmd.derive(
         b.viewListeners,
         b.stretcher,
         b.gridListeners,
-        b.scrollListeners,
+        b.scrollListeners
       );
       Ext.plugin.Abstract.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -135545,7 +135530,7 @@ Ext.cmd.derive(
   ["plugin.bufferedrenderer"],
   0,
   [Ext.grid.plugin, "BufferedRenderer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.Editing",
@@ -135578,7 +135563,7 @@ Ext.cmd.derive(
           beforereconfigure: b.onBeforeReconfigure,
           reconfigure: b.onReconfigure,
           scope: b,
-          beforerender: { fn: b.onBeforeRender, single: true, scope: b },
+          beforerender: { fn: b.onBeforeRender, single: true, scope: b }
         });
       }
       a.editorEventRelayers = a.relayEvents(b, b.relayedEvents);
@@ -135600,7 +135585,7 @@ Ext.cmd.derive(
     },
     setup: function () {
       this.initFieldAccessors(
-        this.grid.getTopLevelColumnManager().getColumns(),
+        this.grid.getTopLevelColumnManager().getColumns()
       );
     },
     destroy: function () {
@@ -135746,7 +135731,7 @@ Ext.cmd.derive(
             b.triggerEvent ||
               "cell" + (b.clicksToEdit === 1 ? "click" : "dblclick"),
             b.onCellClick,
-            b,
+            b
           );
         }
       }
@@ -135798,7 +135783,7 @@ Ext.cmd.derive(
         scope: a,
         add: a.onColumnAdd,
         columnmove: a.onColumnMove,
-        beforedestroy: a.beforeGridHeaderDestroy,
+        beforedestroy: a.beforeGridHeaderDestroy
       });
     },
     onColumnAdd: function (a, b) {
@@ -135830,7 +135815,7 @@ Ext.cmd.derive(
       if (!k.componentLayoutCounter) {
         k.on({
           boxready: Ext.Function.bind(h.startEdit, h, [e, c]),
-          single: true,
+          single: true
         });
         return;
       }
@@ -135889,7 +135874,7 @@ Ext.cmd.derive(
     validateEdit: function (a) {
       var b = this;
       return b.fireEvent("validateedit", b, a) !== false && !a.cancel;
-    },
+    }
   },
   1,
   0,
@@ -135899,11 +135884,11 @@ Ext.cmd.derive(
   [
     [
       Ext.mixin.Observable.prototype.mixinId || Ext.mixin.Observable.$className,
-      Ext.mixin.Observable,
-    ],
+      Ext.mixin.Observable
+    ]
   ],
   [Ext.grid.plugin, "Editing"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.CellEditing",
@@ -135954,7 +135939,7 @@ Ext.cmd.derive(
       b.mon(a, {
         columnresize: b.cancelEdit,
         columnmove: b.cancelEdit,
-        scope: b,
+        scope: b
       });
     },
     isCellEditable: function (a, d) {
@@ -136087,7 +136072,7 @@ Ext.cmd.derive(
     },
     startEdit: function (a, b) {
       this.startEditByPosition(
-        new Ext.grid.CellContext(this.view).setPosition(a, b),
+        new Ext.grid.CellContext(this.view).setPosition(a, b)
       );
     },
     completeEdit: function (a) {
@@ -136129,7 +136114,7 @@ Ext.cmd.derive(
         }
         if (!(b instanceof Ext.grid.CellEditor)) {
           b = new Ext.grid.CellEditor(
-            Ext.apply({ floating: true, editorId: c, field: b }, b.editorCfg),
+            Ext.apply({ floating: true, editorId: c, field: b }, b.editorCfg)
           );
         }
         b.field.excludeForm = true;
@@ -136213,7 +136198,7 @@ Ext.cmd.derive(
       if (!b.isCellContext) {
         b = new Ext.grid.CellContext(e.view).setPosition(
           b.row,
-          e.grid.getColumnManager().getColumns()[b.column],
+          e.grid.getColumnManager().getColumns()[b.column]
         );
       }
       c = a.getHeaderIndex(b.column);
@@ -136237,7 +136222,7 @@ Ext.cmd.derive(
       } else {
         return e.grid.setActionableMode(true, b);
       }
-    },
+    }
   },
   0,
   0,
@@ -136246,14 +136231,14 @@ Ext.cmd.derive(
   ["plugin.cellediting"],
   0,
   [Ext.grid.plugin, "CellEditing"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.AbstractClipboard",
   Ext.plugin.Abstract,
   {
     cachedConfig: {
-      formats: { text: { get: "getTextData", put: "putTextData" } },
+      formats: { text: { get: "getTextData", put: "putTextData" } }
     },
     config: { memory: null, source: "system", system: "text" },
     destroy: function () {
@@ -136282,7 +136267,7 @@ Ext.cmd.derive(
             b.finishInit(a);
           },
           destroyable: true,
-          single: true,
+          single: true
         });
       }
     },
@@ -136338,14 +136323,14 @@ Ext.cmd.derive(
           binding: [
             { ctrl: true, key: "x", fn: b.onCut, scope: b },
             { ctrl: true, key: "c", fn: b.onCopy, scope: b },
-            { ctrl: true, key: "v", fn: b.onPaste, scope: b },
-          ],
+            { ctrl: true, key: "v", fn: b.onPaste, scope: b }
+          ]
         });
         ++b.shared.counter;
         b.destroyListener = a.on({
           destroyable: true,
           destroy: "destroy",
-          scope: b,
+          scope: b
         });
       },
       getData: function (d, j) {
@@ -136385,8 +136370,8 @@ Ext.cmd.derive(
               position: "absolute",
               top: "-1000px",
               width: "1px",
-              height: "1px",
-            },
+              height: "1px"
+            }
           });
           a.suspendFocusEvents();
         }
@@ -136449,7 +136434,7 @@ Ext.cmd.derive(
               c.value = "";
             },
             100,
-            d,
+            d
           );
         }
       },
@@ -136500,8 +136485,8 @@ Ext.cmd.derive(
       updateSystem: function () {
         this.allFormats = null;
       },
-      validateAction: Ext.privateFn,
-    },
+      validateAction: Ext.privateFn
+    }
   },
   0,
   0,
@@ -136510,7 +136495,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.plugin, "AbstractClipboard"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.Clipboard",
@@ -136519,7 +136504,7 @@ Ext.cmd.derive(
     formats: {
       cell: { get: "getCells" },
       html: { get: "getCellData" },
-      raw: { get: "getCellData", put: "putCellData" },
+      raw: { get: "getCellData", put: "putCellData" }
     },
     getCellData: function (n, b) {
       var k = this.getCmp(),
@@ -136661,8 +136646,8 @@ Ext.cmd.derive(
         if (a.actionableMode) {
           return false;
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -136671,7 +136656,7 @@ Ext.cmd.derive(
   ["plugin.clipboard"],
   0,
   [Ext.grid.plugin, "Clipboard"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.DragDrop",
@@ -136700,7 +136685,7 @@ Ext.cmd.derive(
         a.dropZone.unlock();
       }
       (arguments.callee.$previous || Ext.plugin.Abstract.prototype.enable).call(
-        this,
+        this
       );
     },
     disable: function () {
@@ -136731,18 +136716,18 @@ Ext.cmd.derive(
               ddGroup: b.dragGroup || b.ddGroup,
               dragText: b.dragText,
               containerScroll: b.containerScroll,
-              scrollEl: d,
+              scrollEl: d
             },
-            b.dragZone,
-          ),
+            b.dragZone
+          )
         );
       }
       if (b.enableDrop) {
         b.dropZone = new Ext.grid.ViewDropZone(
-          Ext.apply({ view: a, ddGroup: b.dropGroup || b.ddGroup }, b.dropZone),
+          Ext.apply({ view: a, ddGroup: b.dropGroup || b.ddGroup }, b.dropZone)
         );
       }
-    },
+    }
   },
   0,
   0,
@@ -136751,7 +136736,7 @@ Ext.cmd.derive(
   ["plugin.gridviewdragdrop"],
   0,
   [Ext.grid.plugin, "DragDrop"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.RowEditing",
@@ -136792,7 +136777,7 @@ Ext.cmd.derive(
     onBeforeReconfigure: function () {
       Ext.grid.plugin.Editing.prototype.onBeforeReconfigure.apply(
         this,
-        arguments,
+        arguments
       );
       this.cancelEdit();
     },
@@ -136923,7 +136908,7 @@ Ext.cmd.derive(
           fields: d.getGridColumns(),
           hidden: true,
           view: i,
-          editingPlugin: h,
+          editingPlugin: h
         },
         k;
       for (j = 0; j < a; j++) {
@@ -136948,10 +136933,10 @@ Ext.cmd.derive(
             scope: b,
             columnresize: b.onColumnResize,
             columnhide: b.onColumnHide,
-            columnshow: b.onColumnShow,
+            columnshow: b.onColumnShow
           });
         },
-        single: true,
+        single: true
       });
     },
     moveEditorByClick: function () {
@@ -137039,7 +137024,7 @@ Ext.cmd.derive(
       e = Ext.grid.plugin.Editing.prototype.createColumnField.call(
         this,
         c,
-        a || d,
+        a || d
       );
       if (e) {
         e.skipLabelForAttribute = true;
@@ -137051,7 +137036,7 @@ Ext.cmd.derive(
         }
       }
       return e;
-    },
+    }
   },
   1,
   0,
@@ -137060,7 +137045,7 @@ Ext.cmd.derive(
   ["plugin.rowediting"],
   0,
   [Ext.grid.plugin, "RowEditing"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.RowExpander",
@@ -137089,7 +137074,7 @@ Ext.cmd.derive(
       syncRowHeights: function (a, b) {
         this.rowExpander.syncRowHeights(a, b);
       },
-      priority: 20000,
+      priority: 20000
     },
     setCmp: function (a) {
       var c = this,
@@ -137116,16 +137101,16 @@ Ext.cmd.derive(
           rowBodyHiddenCls: c.rowBodyHiddenCls,
           rowCollapsedCls: c.rowCollapsedCls,
           setupRowData: c.getRowBodyFeatureData,
-          setup: c.setup,
+          setup: c.setup
         };
       b.push(
         Ext.apply(
           {
             lockableScope: "normal",
-            getRowBodyContents: c.getRowBodyContentsFn(c.rowBodyTpl),
+            getRowBodyContents: c.getRowBodyContentsFn(c.rowBodyTpl)
           },
-          d,
-        ),
+          d
+        )
       );
       if (a.enableLocking) {
         b.push(
@@ -137136,10 +137121,10 @@ Ext.cmd.derive(
                 ? c.getRowBodyContentsFn(c.lockedTpl)
                 : function () {
                     return "";
-                  },
+                  }
             },
-            d,
-          ),
+            d
+          )
         );
       }
       return b;
@@ -137169,7 +137154,7 @@ Ext.cmd.derive(
       e.bindView(a);
       if (g) {
         e.addExpander(
-          e.lockedGrid.headerCt.items.getCount() ? e.lockedGrid : e.normalGrid,
+          e.lockedGrid.headerCt.items.getCount() ? e.lockedGrid : e.normalGrid
         );
         d.addRowTpl(e.addCollapsedCls).rowExpander =
           c.addRowTpl(e.addCollapsedCls).rowExpander =
@@ -137180,7 +137165,7 @@ Ext.cmd.derive(
           processcolumns: e.onLockableProcessColumns,
           lockcolumn: e.onColumnLock,
           unlockcolumn: e.onColumnUnlock,
-          scope: e,
+          scope: e
         });
       } else {
         a.addRowTpl(e.addCollapsedCls).rowExpander = a.rowExpander = e;
@@ -137387,9 +137372,9 @@ Ext.cmd.derive(
         },
         editRenderer: function () {
           return "&#160;";
-        },
+        }
       };
-    },
+    }
   },
   0,
   0,
@@ -137398,7 +137383,7 @@ Ext.cmd.derive(
   ["plugin.rowexpander"],
   0,
   [Ext.grid.plugin, "RowExpander"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.plugin.RowWidget",
@@ -137416,7 +137401,7 @@ Ext.cmd.derive(
         }
         this.nextTpl.applyOut(a, b, c);
       },
-      priority: 20000,
+      priority: 20000
     },
     setCmp: function (a) {
       var c = this,
@@ -137456,7 +137441,7 @@ Ext.cmd.derive(
           rowCollapsedCls: c.rowCollapsedCls,
           setupRowData: c.setupRowData,
           setup: c.setup,
-          onClick: Ext.emptyFn,
+          onClick: Ext.emptyFn
         };
       b.push(Ext.apply({ lockableScope: "normal" }, d));
       if (a.enableLocking) {
@@ -137475,7 +137460,7 @@ Ext.cmd.derive(
         refresh: b.onViewRefresh,
         itemadd: b.onItemAdd,
         scope: b,
-        destroyable: true,
+        destroyable: true
       });
       Ext.override(a, b.viewOverrides);
     },
@@ -137517,7 +137502,7 @@ Ext.cmd.derive(
               a.saveTabbableState({ skipSelf: true, includeSaved: false });
             }
           }
-        },
+        }
       },
       destroyLiveWidget: function (b, a) {
         a.destroy();
@@ -137660,8 +137645,8 @@ Ext.cmd.derive(
         if (j.scrollIntoViewOnExpand && m) {
           j.grid.ensureVisible(b);
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -137672,16 +137657,16 @@ Ext.cmd.derive(
     [
       Ext.mixin.Identifiable.prototype.mixinId ||
         Ext.mixin.Identifiable.$className,
-      Ext.mixin.Identifiable,
+      Ext.mixin.Identifiable
     ],
     [
       Ext.mixin.StyleCacher.prototype.mixinId ||
         Ext.mixin.StyleCacher.$className,
-      Ext.mixin.StyleCacher,
-    ],
+      Ext.mixin.StyleCacher
+    ]
   ],
   [Ext.grid.plugin, "RowWidget"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.property.Grid",
@@ -137710,8 +137695,8 @@ Ext.cmd.derive(
           clicksToEdit: c.clicksToEdit,
           startEdit: function (d, e) {
             return this.self.prototype.startEdit.call(this, d, c.valueColumn);
-          },
-        }),
+          }
+        })
       );
       c.selModel = {
         type: "cellmodel",
@@ -137719,7 +137704,7 @@ Ext.cmd.derive(
           d.column = c.valueColumn;
           d.colIdx = c.valueColumn.getVisibleIndex();
           return this.self.prototype.onCellSelect.call(this, d);
-        },
+        }
       };
       c.sourceConfig = Ext.apply({}, c.sourceConfig);
       if (!c.store) {
@@ -137736,23 +137721,23 @@ Ext.cmd.derive(
       a.getDefaultFocusPosition = c.getDefaultFocusPosition;
       c.editors = {
         date: new Ext.grid.CellEditor({
-          field: new Ext.form.field.Date({ selectOnFocus: b }),
+          field: new Ext.form.field.Date({ selectOnFocus: b })
         }),
         string: new Ext.grid.CellEditor({
-          field: new Ext.form.field.Text({ selectOnFocus: b }),
+          field: new Ext.form.field.Text({ selectOnFocus: b })
         }),
         number: new Ext.grid.CellEditor({
-          field: new Ext.form.field.Number({ selectOnFocus: b }),
+          field: new Ext.form.field.Number({ selectOnFocus: b })
         }),
         boolean: new Ext.grid.CellEditor({
           field: new Ext.form.field.ComboBox({
             editable: false,
             store: [
               [true, c.headerCt.trueText],
-              [false, c.headerCt.falseText],
-            ],
-          }),
-        }),
+              [false, c.headerCt.falseText]
+            ]
+          })
+        })
       };
       c.store.on("update", c.onUpdate, c);
     },
@@ -137889,7 +137874,7 @@ Ext.cmd.derive(
           e = h.setConfigProp(
             c,
             "editor",
-            new Ext.grid.CellEditor({ field: e }),
+            new Ext.grid.CellEditor({ field: e })
           );
         }
       } else {
@@ -137972,7 +137957,7 @@ Ext.cmd.derive(
     },
     removeProperty: function (a) {
       this.propStore.remove(a);
-    },
+    }
   },
   0,
   ["propertygrid"],
@@ -137984,7 +137969,7 @@ Ext.cmd.derive(
     "tablepanel",
     "gridpanel",
     "grid",
-    "propertygrid",
+    "propertygrid"
   ],
   {
     component: true,
@@ -137994,12 +137979,12 @@ Ext.cmd.derive(
     tablepanel: true,
     gridpanel: true,
     grid: true,
-    propertygrid: true,
+    propertygrid: true
   },
   ["widget.propertygrid"],
   0,
   [Ext.grid.property, "Grid", Ext.grid, "PropertyGrid"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.property.HeaderContainer",
@@ -138037,7 +138022,7 @@ Ext.cmd.derive(
             itemId: b.nameField,
             menuDisabled: true,
             tdCls: c.nameColumnCls,
-            innerCls: c.nameColumnInnerCls,
+            innerCls: c.nameColumnInnerCls
           },
           {
             header: c.valueText,
@@ -138049,9 +138034,9 @@ Ext.cmd.derive(
             fixed: true,
             dataIndex: b.valueField,
             itemId: b.valueField,
-            menuDisabled: true,
-          },
-        ],
+            menuDisabled: true
+          }
+        ]
       });
       c.grid.valueColumn = c.items.getAt(1);
     },
@@ -138084,7 +138069,7 @@ Ext.cmd.derive(
     },
     getPropertyName: function (a) {
       return this.grid.getConfigProp(a, "displayName", a);
-    },
+    }
   },
   1,
   0,
@@ -138093,7 +138078,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.property, "HeaderContainer", Ext.grid, "PropertyColumnModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.property.Property",
@@ -138107,7 +138092,7 @@ Ext.cmd.derive(
         b = { name: b, value: a };
       }
       Ext.data.Model.prototype.constructor.call(this, b);
-    },
+    }
   },
   1,
   0,
@@ -138116,7 +138101,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.property, "Property", Ext, "PropGridProperty"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.property.Reader",
@@ -138146,7 +138131,7 @@ Ext.cmd.derive(
     },
     isEditableValue: function (a) {
       return Ext.isPrimitive(a) || Ext.isDate(a) || a === null;
-    },
+    }
   },
   0,
   0,
@@ -138155,7 +138140,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.property, "Reader"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.property.Store",
@@ -138170,7 +138155,7 @@ Ext.cmd.derive(
       Ext.data.Store.prototype.constructor.call(this, {
         data: c,
         model: Ext.grid.property.Property,
-        proxy: b.getProxy(),
+        proxy: b.getProxy()
       });
     },
     getProxy: function () {
@@ -138178,7 +138163,7 @@ Ext.cmd.derive(
       if (!a) {
         a = this.proxy = new Ext.data.proxy.Memory({
           model: Ext.grid.property.Property,
-          reader: this.getReader(),
+          reader: this.getReader()
         });
       }
       return a;
@@ -138187,7 +138172,7 @@ Ext.cmd.derive(
       var a = this.reader;
       if (!a) {
         a = this.reader = new Ext.grid.property.Reader({
-          model: Ext.grid.property.Property,
+          model: Ext.grid.property.Property
         });
       }
       return a;
@@ -138241,7 +138226,7 @@ Ext.cmd.derive(
     doDestroy: function () {
       Ext.destroy(this.reader, this.proxy);
       Ext.data.Store.prototype.doDestroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -138250,7 +138235,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.property, "Store", Ext.grid, "PropertyStore"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.Selection",
@@ -138258,7 +138243,7 @@ Ext.cmd.derive(
   {
     constructor: function (a) {
       this.view = a.ownerGrid.view;
-    },
+    }
   },
   1,
   0,
@@ -138267,7 +138252,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.selection, "Selection"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.Cells",
@@ -138418,7 +138403,7 @@ Ext.cmd.derive(
         } else {
           c.startCell = c.startCell.setPosition(
             c.getFirstRowIndex(),
-            c.getFirstColumnIndex(),
+            c.getFirstColumnIndex()
           );
           c.setRangeEnd(b.end);
           c.view.getNavigationModel().setPosition(b.end);
@@ -138427,7 +138412,7 @@ Ext.cmd.derive(
       getRange: function () {
         return [
           [this.getFirstColumnIndex(), this.getFirstRowIndex()],
-          [this.getLastColumnIndex(), this.getLastRowIndex()],
+          [this.getLastColumnIndex(), this.getLastRowIndex()]
         ];
       },
       getRangeSize: function () {
@@ -138445,8 +138430,8 @@ Ext.cmd.derive(
         b.setRangeEnd(
           new Ext.grid.CellContext(a).setPosition(
             a.dataSource.getCount() - 1,
-            a.getVisibleColumnManager().getColumns().length - 1,
-          ),
+            a.getVisibleColumnManager().getColumns().length - 1
+          )
         );
       },
       isAllSelected: function () {
@@ -138481,18 +138466,18 @@ Ext.cmd.derive(
               a,
               new Ext.grid.CellContext(a.view).setPosition(
                 a.getFirstRowIndex(),
-                a.getFirstColumnIndex(),
+                a.getFirstColumnIndex()
               ),
               new Ext.grid.CellContext(a.view).setPosition(
                 a.getLastRowIndex(),
-                a.getLastColumnIndex(),
-              ),
+                a.getLastColumnIndex()
+              )
             );
         } else {
           a.view.getSelectionModel().onSelectionFinish(a);
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -138501,7 +138486,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.selection, "Cells"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.Columns",
@@ -138579,7 +138564,7 @@ Ext.cmd.derive(
       add: function (a) {
         Ext.Array.include(
           this.selectedColumns || (this.selectedColumns = []),
-          a,
+          a
         );
         this.refreshColumns(a);
       },
@@ -138690,8 +138675,8 @@ Ext.cmd.derive(
               new Ext.grid.CellContext(b.view).setPosition(0, a[0]),
               new Ext.grid.CellContext(b.view).setPosition(
                 b.view.dataSource.getCount() - 1,
-                a[1],
-              ),
+                a[1]
+              )
             );
         } else {
           b.view.getSelectionModel().onSelectionFinish(b);
@@ -138714,8 +138699,8 @@ Ext.cmd.derive(
           }
           return [c[0], c[a - 1]];
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -138724,7 +138709,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.selection, "Columns"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.Replicator",
@@ -138734,7 +138719,7 @@ Ext.cmd.derive(
       this.gridListeners = a.on({
         beforeselectionextend: this.onBeforeSelectionExtend,
         scope: this,
-        destroyable: true,
+        destroyable: true
       });
     },
     onBeforeSelectionExtend: function (c, b, d) {
@@ -138840,7 +138825,7 @@ Ext.cmd.derive(
     destroy: function () {
       this.gridListeners = Ext.destroy(this.gridListeners);
       Ext.plugin.Abstract.prototype.destroy.call(this);
-    },
+    }
   },
   0,
   0,
@@ -138849,7 +138834,7 @@ Ext.cmd.derive(
   ["plugin.selectionreplicator"],
   0,
   [Ext.grid.selection, "Replicator"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.Rows",
@@ -139042,7 +139027,7 @@ Ext.cmd.derive(
                   }
                 }
               }
-            },
+            }
           });
         }
       }
@@ -139147,13 +139132,13 @@ Ext.cmd.derive(
           a = new Ext.util.Collection({
             rootProperty: "data",
             extraKeys: {
-              byInternalId: { rootProperty: false, property: "internalId" },
+              byInternalId: { rootProperty: false, property: "internalId" }
             },
             sorters: [
               function (d, c) {
                 return b.indexOf(d) - b.indexOf(c);
-              },
-            ],
+              }
+            ]
           });
         return a;
       },
@@ -139170,7 +139155,7 @@ Ext.cmd.derive(
             forRender: false,
             callback: function (d) {
               b.add.apply(b, d);
-            },
+            }
           });
           c.setRangeStart((c.lastRange = null));
         }
@@ -139186,8 +139171,8 @@ Ext.cmd.derive(
               new Ext.grid.CellContext(b.view).setPosition(a[0], 0),
               new Ext.grid.CellContext(b.view).setPosition(
                 a[1],
-                b.view.getVisibleColumnManager().getColumns().length - 1,
-              ),
+                b.view.getVisibleColumnManager().getColumns().length - 1
+              )
             );
         } else {
           b.view.getSelectionModel().onSelectionFinish(b);
@@ -139212,8 +139197,8 @@ Ext.cmd.derive(
             return [b.indexOf(d[0]), b.indexOf(d[a - 1])];
           }
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -139222,7 +139207,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.selection, "Rows"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.SelectionExtender",
@@ -139245,13 +139230,13 @@ Ext.cmd.derive(
       b.handle = a.view.ownerGrid.body
         .createChild({
           cls: "x-ssm-extender-drag-handle",
-          style: "display:none",
+          style: "display:none"
         })
         .setVisibilityMode(c);
       b.handle.on({
         contextmenu: function (d) {
           d.stopEvent();
-        },
+        }
       });
       b.mask = b.el
         .createChild({ cls: "x-ssm-extender-mask", style: "display:none" })
@@ -139261,12 +139246,12 @@ Ext.cmd.derive(
       b.viewListeners = b.view.on({
         scroll: b.onViewScroll,
         scope: b,
-        destroyable: true,
+        destroyable: true
       });
       b.gridListeners = b.view.ownerGrid.on({
         columnResize: b.alignHandle,
         scope: b,
-        destroyable: true,
+        destroyable: true
       });
       b.extendX = !!(b.axes & 1);
       b.extendY = !!(b.axes & 2);
@@ -139326,7 +139311,7 @@ Ext.cmd.derive(
           (i.scrollTask = Ext.util.TaskManager.newTask({
             run: i.doAutoScroll,
             scope: i,
-            interval: 10,
+            interval: 10
           })),
         a = i.scrollBy || (i.scrollBy = []);
       if (!i.el.contains(j.target)) {
@@ -139431,7 +139416,7 @@ Ext.cmd.derive(
           start: d.setRow(b.rowIdx),
           end: c.setRow(h.firstPos.rowIdx - 1),
           rows: b.rowIdx - h.firstPos.rowIdx,
-          mousePosition: h.lastXY,
+          mousePosition: h.lastXY
         };
         h.mask.dom.style.borderBottomWidth = "0";
         g.x = l.x;
@@ -139445,7 +139430,7 @@ Ext.cmd.derive(
             start: d.setRow(h.lastPos.rowIdx + 1),
             end: c.setRow(b.rowIdx),
             rows: b.rowIdx - h.lastPos.rowIdx,
-            mousePosition: h.lastXY,
+            mousePosition: h.lastXY
           };
           h.mask.dom.style.borderTopWidth = "0";
           g.x = l.x;
@@ -139459,7 +139444,7 @@ Ext.cmd.derive(
               start: d.setColumn(b.colIdx),
               end: c.setColumn(h.firstPos.colIdx - 1),
               columns: b.colIdx - h.firstPos.colIdx,
-              mousePosition: h.lastXY,
+              mousePosition: h.lastXY
             };
             h.mask.dom.style.borderRightWidth = "0";
             g.x = e.getX();
@@ -139473,7 +139458,7 @@ Ext.cmd.derive(
                 start: d.setColumn(h.lastPos.colIdx + 1),
                 end: c.setColumn(b.colIdx),
                 columns: b.colIdx - h.lastPos.colIdx,
-                mousePosition: h.lastXY,
+                mousePosition: h.lastXY
               };
               h.mask.dom.style.borderLeftWidth = "0";
               g.x = l.right;
@@ -139491,7 +139476,7 @@ Ext.cmd.derive(
           "selectionextenderdrag",
           j.ownerGrid,
           j.getSelectionModel().getSelected(),
-          h.extensionDescriptor,
+          h.extensionDescriptor
         );
       }
       if (h.extensionDescriptor) {
@@ -139505,7 +139490,7 @@ Ext.cmd.derive(
       var a = this;
       Ext.destroy(a.gridListeners, a.viewListeners, a.mask, a.handle);
       Ext.dd.DragTracker.prototype.destroy.call(this);
-    },
+    }
   },
   1,
   0,
@@ -139514,7 +139499,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.grid.selection, "SelectionExtender"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.grid.selection.SpreadsheetModel",
@@ -139527,7 +139512,7 @@ Ext.cmd.derive(
       rowSelect: { $value: true, lazy: true },
       dragSelect: { $value: true, lazy: true },
       selected: null,
-      extensible: { $value: true, lazy: true },
+      extensible: { $value: true, lazy: true }
     },
     checkboxSelect: false,
     checkboxColumnIndex: 0,
@@ -139562,7 +139547,7 @@ Ext.cmd.derive(
             columnschanged: d.onColumnsChanged,
             columnmove: d.onColumnMove,
             scope: d,
-            destroyable: true,
+            destroyable: true
           });
           a = d.getStoreListeners();
           a.scope = d;
@@ -139576,7 +139561,7 @@ Ext.cmd.derive(
           d.navigationListeners = d.navigationModel.on({
             navigate: d.onNavigate,
             scope: d,
-            destroyable: true,
+            destroyable: true
           });
           if (d.getColumnSelect()) {
             b.ownerGrid.addCls(d.columnSelectCls);
@@ -139609,7 +139594,7 @@ Ext.cmd.derive(
         updateHeaderState: a.updateHeaderState.bind(a),
         toggleAll: Ext.emptyFn,
         setRecordCheck: Ext.emptyFn,
-        isRecordChecked: Ext.emptyFn,
+        isRecordChecked: Ext.emptyFn
       };
     },
     renderEmpty: function () {
@@ -139645,7 +139630,7 @@ Ext.cmd.derive(
             a = d.view.ownerGrid.getVisibleColumnManager();
             b = Ext.Array.sort(
               [a.indexOf(g.lastColumnSelected), a.indexOf(k)],
-              Ext.Array.numericSortFn,
+              Ext.Array.numericSortFn
             );
             for (c = b[0]; c <= b[1]; c++) {
               d.selectColumn(a.getHeaderAtIndex(c), true);
@@ -139714,7 +139699,7 @@ Ext.cmd.derive(
     },
     getCellContext: function (a, b) {
       return new Ext.grid.CellContext(
-        this.view.ownerGrid.getView(),
+        this.view.ownerGrid.getView()
       ).setPosition(a, b);
     },
     select: function (b, m, l) {
@@ -139923,7 +139908,7 @@ Ext.cmd.derive(
         b.viewListeners,
         b.selected,
         b.navigationListeners,
-        b.extensible,
+        b.extensible
       );
       if (a) {
         Ext.dd.ScrollManager.unregister(a);
@@ -139942,7 +139927,7 @@ Ext.cmd.derive(
       getViewListeners: function () {
         return {
           refresh: this.onViewRefresh,
-          keyup: { element: "el", fn: this.onViewKeyUp, scope: this },
+          keyup: { element: "el", fn: this.onViewKeyUp, scope: this }
         };
       },
       onViewKeyUp: function (b) {
@@ -140007,7 +139992,7 @@ Ext.cmd.derive(
           "idle",
           c ? this.fireSelectionChange : this.updateSelectionExtender,
           this,
-          { single: true },
+          { single: true }
         );
       },
       onColumnMove: function () {
@@ -140068,7 +140053,7 @@ Ext.cmd.derive(
           vthresh: 50,
           hthresh: 50,
           frequency: 300,
-          increment: 100,
+          increment: 100
         };
         Ext.dd.ScrollManager.register(e);
         (g.scrollEls || (g.scrollEls = [])).push(e);
@@ -140140,7 +140125,7 @@ Ext.cmd.derive(
           k.lastOverRecord = k.lastOverColumn = null;
           Ext.getBody().on("mouseup", k.onMouseUp, k, {
             single: true,
-            view: b.view,
+            view: b.view
           });
           if (n) {
             b.view.el.on("mousemove", k.onMouseMove, k, { view: b.view });
@@ -140214,7 +140199,7 @@ Ext.cmd.derive(
           }
           if (j || c) {
             n.getNavigationModel().setPosition(
-              new Ext.grid.CellContext(d.getView()).setPosition(g, d),
+              new Ext.grid.CellContext(d.getView()).setPosition(g, d)
             );
           }
           l.lastOverColumn = d;
@@ -140235,7 +140220,7 @@ Ext.cmd.derive(
               if (b) {
                 i.position = new Ext.grid.CellContext(c).setPosition(
                   b,
-                  c.getHeaderByCell(a),
+                  c.getHeaderByCell(a)
                 );
               }
             }
@@ -140511,7 +140496,7 @@ Ext.cmd.derive(
           editRenderer: "&#160;",
           tdCls: a.rowNumbererTdCls,
           cls: a.rowNumbererHeaderCls,
-          locked: a.hasLockedHeader,
+          locked: a.hasLockedHeader
         };
       },
       updateRowSelect: function (c) {
@@ -140592,7 +140577,7 @@ Ext.cmd.derive(
               g,
               h.getCount()
                 ? g.store.getRange.apply(h.view.dataSource, h.getRowRange())
-                : [],
+                : []
             );
           }
         }
@@ -140637,7 +140622,7 @@ Ext.cmd.derive(
             "beforeselectionextend",
             a.view.ownerGrid,
             b,
-            c,
+            c
           ) !== false
         ) {
           b.extendRange(c);
@@ -140712,8 +140697,8 @@ Ext.cmd.derive(
         if (a && a.isRows) {
           Ext.selection.Model.prototype.onStoreRemove.apply(this, arguments);
         }
-      },
-    },
+      }
+    }
   },
   0,
   0,
@@ -140729,7 +140714,7 @@ Ext.cmd.derive(
         Ext.grid.column.RowNumberer.prototype.tdCls +
         " x-ssm-row-numberer-cell";
     }
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Queue",
@@ -140784,7 +140769,7 @@ Ext.cmd.derive(
         --d.length;
       }
       return e;
-    },
+    }
   },
   1,
   0,
@@ -140793,7 +140778,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Queue"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.ContextItem",
@@ -140861,7 +140846,7 @@ Ext.cmd.derive(
           s.ownerCtContext = m;
         }
         s.sizeModel = d = t.getSizeModel(
-          m && m.widthModel.pairsByHeightOrdinal[m.heightModel.ordinal],
+          m && m.widthModel.pairsByHeightOrdinal[m.heightModel.ordinal]
         );
         s.widthModel = i = d.width;
         s.heightModel = h = d.height;
@@ -140944,7 +140929,7 @@ Ext.cmd.derive(
       if (j) {
         t.widthModel = t.heightModel = null;
         b = v.getSizeModel(
-          l && l.widthModel.pairsByHeightOrdinal[l.heightModel.ordinal],
+          l && l.widthModel.pairsByHeightOrdinal[l.heightModel.ordinal]
         );
         if (h) {
           t.sizeModel = b;
@@ -141142,14 +141127,14 @@ Ext.cmd.derive(
       "border-top-width",
       "border-right-width",
       "border-bottom-width",
-      "border-left-width",
+      "border-left-width"
     ],
     marginNames: ["margin-top", "margin-right", "margin-bottom", "margin-left"],
     paddingNames: [
       "padding-top",
       "padding-right",
       "padding-bottom",
-      "padding-left",
+      "padding-left"
     ],
     trblNames: ["top", "right", "bottom", "left"],
     cacheMissHandlers: {
@@ -141171,7 +141156,7 @@ Ext.cmd.derive(
         c.width = c.left + c.right;
         c.height = c.top + c.bottom;
         return c;
-      },
+      }
     },
     checkCache: function (a) {
       return this.cacheMissHandlers[a](this);
@@ -141273,7 +141258,7 @@ Ext.cmd.derive(
         g = Ext.apply(
           {},
           { from: {}, to: {}, duration: e || Ext.fx.Anim.prototype.duration },
-          n,
+          n
         );
         for (d = 0, i = 0, m = h.length; i < m; i++) {
           k = h[i];
@@ -141312,7 +141297,7 @@ Ext.cmd.derive(
               if (l.hasListeners.afterlayoutanimation) {
                 l.fireEvent("afterlayoutanimation", l);
               }
-            },
+            }
           });
         } else {
           if (o.isCollapsingOrExpanding === 2) {
@@ -141371,7 +141356,7 @@ Ext.cmd.derive(
               bottom: b.bottom + a.bottom,
               left: b.left + a.left,
               width: b.width + a.width,
-              height: b.height + a.height,
+              height: b.height + a.height
             }
           : a;
       }
@@ -141556,7 +141541,7 @@ Ext.cmd.derive(
         d;
       c.ownerContext = null;
       e.sizeModel = d = g.getSizeModel(
-        b && b.widthModel.pairsByHeightOrdinal[b.heightModel.ordinal],
+        b && b.widthModel.pairsByHeightOrdinal[b.heightModel.ordinal]
       );
       e.widthModel = d.width;
       e.heightModel = d.height;
@@ -141883,7 +141868,7 @@ Ext.cmd.derive(
       if (g) {
         c.setStyle(i);
       }
-    },
+    }
   },
   1,
   0,
@@ -141928,9 +141913,9 @@ Ext.cmd.derive(
       "padding-left": c,
       "line-height": b,
       display: b,
-      clear: b,
+      clear: b
     };
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.Context",
@@ -142141,7 +142126,7 @@ Ext.cmd.derive(
           (a[e] = new Ext.layout.ContextItem({
             context: this,
             target: d,
-            el: b,
+            el: b
           }));
       return c;
     },
@@ -142570,7 +142555,7 @@ Ext.cmd.derive(
         c.setSize(g, b);
         h = d[++e];
       }
-    },
+    }
   },
   1,
   0,
@@ -142579,7 +142564,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.layout, "Context"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.Body",
@@ -142597,7 +142582,7 @@ Ext.cmd.derive(
         a = c.owner.body;
       Ext.layout.component.Auto.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (g && g.fixed && d.widthModel.shrinkWrap) {
         a.setWidth(null);
@@ -142610,7 +142595,7 @@ Ext.cmd.derive(
       var a =
         Ext.layout.component.Auto.prototype.calculateOwnerHeightFromContentHeight.apply(
           this,
-          arguments,
+          arguments
         );
       if (c.targetContext !== c) {
         a += c.getPaddingInfo().height;
@@ -142621,7 +142606,7 @@ Ext.cmd.derive(
       var b =
         Ext.layout.component.Auto.prototype.calculateOwnerWidthFromContentWidth.apply(
           this,
-          arguments,
+          arguments
         );
       if (c.targetContext !== c) {
         b += c.getPaddingInfo().width;
@@ -142649,7 +142634,7 @@ Ext.cmd.derive(
         a -= d.getPaddingInfo().width;
       }
       d.bodyContext.setWidth(a, !d.widthModel.natural);
-    },
+    }
   },
   0,
   0,
@@ -142658,7 +142643,7 @@ Ext.cmd.derive(
   ["layout.body"],
   0,
   [Ext.layout.component, "Body"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.component.FieldSet",
@@ -142683,7 +142668,7 @@ Ext.cmd.derive(
         a;
       Ext.layout.component.Body.prototype.beginLayoutCycle.apply(
         this,
-        arguments,
+        arguments
       );
       if (c.collapsed) {
         b.setContentHeight(0);
@@ -142692,7 +142677,7 @@ Ext.cmd.derive(
         if (b.widthModel.shrinkWrap) {
           a = this.lastComponentSize;
           b.setContentWidth(
-            (a && a.contentWidth) || this.defaultCollapsedWidth,
+            (a && a.contentWidth) || this.defaultCollapsedWidth
           );
         }
       }
@@ -142713,7 +142698,7 @@ Ext.cmd.derive(
       return Ext.layout.component.Body.prototype.calculateOwnerWidthFromContentWidth.call(
         this,
         c,
-        a,
+        a
       );
     },
     calculateOwnerHeightFromContentHeight: function (d, c) {
@@ -142739,14 +142724,14 @@ Ext.cmd.derive(
         Ext.layout.component.Body.prototype.publishInnerHeight.call(
           this,
           d,
-          a - b,
+          a - b
         );
       }
     },
     getLayoutItems: function () {
       var a = this.owner.legend;
       return a ? [a] : [];
-    },
+    }
   },
   0,
   0,
@@ -142755,7 +142740,7 @@ Ext.cmd.derive(
   ["layout.fieldset"],
   0,
   [Ext.layout.component, "FieldSet"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Absolute",
@@ -142784,7 +142769,7 @@ Ext.cmd.derive(
         b = Ext.layout.container.Anchor.prototype.onContentChange.call(
           this,
           a,
-          c,
+          c
         );
       }
       return b;
@@ -142862,7 +142847,7 @@ Ext.cmd.derive(
           u.done = false;
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -142871,7 +142856,7 @@ Ext.cmd.derive(
   ["layout.absolute"],
   0,
   [Ext.layout.container, "Absolute", Ext.layout, "AbsoluteLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Accordion",
@@ -142974,7 +142959,7 @@ Ext.cmd.derive(
       this.beforeRenderItems(a);
       return Ext.layout.container.VBox.prototype.getItemsRenderTree.apply(
         this,
-        arguments,
+        arguments
       );
     },
     renderItems: function (a, b) {
@@ -143128,7 +143113,7 @@ Ext.cmd.derive(
       return c;
     },
     afterCollapse: Ext.emptyFn,
-    afterExpand: Ext.emptyFn,
+    afterExpand: Ext.emptyFn
   },
   1,
   0,
@@ -143137,7 +143122,7 @@ Ext.cmd.derive(
   ["layout.accordion"],
   0,
   [Ext.layout.container, "Accordion", Ext.layout, "AccordionLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.BorderSplitter",
@@ -143160,7 +143145,7 @@ Ext.cmd.derive(
       if (this.performCollapse !== false && a.collapseMode == "mini") {
         a.removeCls(a.baseCls + "-" + a.collapsedCls + "-mini");
       }
-    },
+    }
   },
   0,
   ["bordersplitter"],
@@ -143169,7 +143154,7 @@ Ext.cmd.derive(
   ["widget.bordersplitter"],
   0,
   [Ext.resizer, "BorderSplitter"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Border",
@@ -143192,7 +143177,7 @@ Ext.cmd.derive(
         horizontal: true,
         posProp: "x",
         sizeProp: "width",
-        sizePropCap: "Width",
+        sizePropCap: "Width"
       },
       vert: {
         borderBegin: "north",
@@ -143200,8 +143185,8 @@ Ext.cmd.derive(
         horizontal: false,
         posProp: "y",
         sizeProp: "height",
-        sizePropCap: "Height",
-      },
+        sizePropCap: "Height"
+      }
     },
     centerRegion: null,
     manageMargins: true,
@@ -143333,7 +143318,7 @@ Ext.cmd.derive(
       }
       Ext.layout.container.Container.prototype.beginLayout.apply(
         this,
-        arguments,
+        arguments
       );
       k = d.childItems;
       b = k.length;
@@ -143566,7 +143551,7 @@ Ext.cmd.derive(
             }
           }
         },
-        this,
+        this
       );
       return c;
     },
@@ -143593,9 +143578,9 @@ Ext.cmd.derive(
             hidden: g,
             canResize: d.splitterResize !== false,
             splitterFor: d,
-            synthetic: true,
+            synthetic: true
           },
-          b,
+          b
         ),
         a = c + (h === "south" || h === "east" ? 0 : 1);
       if (d.collapseMode === "mini") {
@@ -143606,7 +143591,7 @@ Ext.cmd.derive(
     getMoveAfterIndex: function (b) {
       var a = Ext.layout.container.Container.prototype.getMoveAfterIndex.apply(
         this,
-        arguments,
+        arguments
       );
       if (b.splitter) {
         a++;
@@ -143624,7 +143609,7 @@ Ext.cmd.derive(
       return Ext.layout.container.Container.prototype.moveItemBefore.call(
         this,
         a,
-        c,
+        c
       );
     },
     onAdd: function (j, d) {
@@ -143716,7 +143701,7 @@ Ext.cmd.derive(
       north: { splitterDelta: 1 },
       south: { splitterDelta: -1 },
       west: { splitterDelta: 1 },
-      east: { splitterDelta: -1 },
+      east: { splitterDelta: -1 }
     },
     regionFlags: {
       center: { isCenter: true, isHorz: false, isVert: false },
@@ -143724,26 +143709,26 @@ Ext.cmd.derive(
         isCenter: false,
         isHorz: false,
         isVert: true,
-        collapseDirection: "top",
+        collapseDirection: "top"
       },
       south: {
         isCenter: false,
         isHorz: false,
         isVert: true,
-        collapseDirection: "bottom",
+        collapseDirection: "bottom"
       },
       west: {
         isCenter: false,
         isHorz: true,
         isVert: false,
-        collapseDirection: "left",
+        collapseDirection: "left"
       },
       east: {
         isCenter: false,
         isHorz: true,
         isVert: false,
-        collapseDirection: "right",
-      },
+        collapseDirection: "right"
+      }
     },
     setupSplitterNeighbors: function (m) {
       var p = {},
@@ -143799,12 +143784,12 @@ Ext.cmd.derive(
       north: ["north", "east", "west"],
       south: ["south", "east", "west"],
       east: ["east", "north", "south"],
-      west: ["west", "north", "south"],
+      west: ["west", "north", "south"]
     },
     sizePolicies: {
       vert: { readsWidth: 0, readsHeight: 1, setsWidth: 1, setsHeight: 0 },
       horz: { readsWidth: 1, readsHeight: 0, setsWidth: 0, setsHeight: 1 },
-      flexAll: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 },
+      flexAll: { readsWidth: 0, readsHeight: 0, setsWidth: 1, setsHeight: 1 }
     },
     getItemSizePolicy: function (e) {
       var d = this,
@@ -143847,7 +143832,7 @@ Ext.cmd.derive(
         return g;
       }
       return d.autoSizePolicy;
-    },
+    }
   },
   0,
   0,
@@ -143860,12 +143845,12 @@ Ext.cmd.derive(
     var a = {
         addUnflexed: function (c) {
           this.flexSpace = Math.max(this.flexSpace - c, 0);
-        },
+        }
       },
       b = this.prototype.axisProps;
     Ext.apply(b.horz, a);
     Ext.apply(b.vert, a);
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.layout.container.Card",
@@ -143890,7 +143875,7 @@ Ext.cmd.derive(
               boxready: function () {
                 b.fireEvent("activate", b);
               },
-              single: true,
+              single: true
             });
           }
         }
@@ -143901,7 +143886,7 @@ Ext.cmd.derive(
         } else {
           return Ext.layout.container.Fit.prototype.getRenderTree.apply(
             this,
-            arguments,
+            arguments
           );
         }
       }
@@ -144064,7 +144049,7 @@ Ext.cmd.derive(
     setItemHideMode: function (a) {
       a.originalHideMode = a.hideMode;
       a.hideMode = "offsets";
-    },
+    }
   },
   0,
   0,
@@ -144073,7 +144058,7 @@ Ext.cmd.derive(
   ["layout.card"],
   0,
   [Ext.layout.container, "Card", Ext.layout, "CardLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Center",
@@ -144085,7 +144070,7 @@ Ext.cmd.derive(
     itemCls: "x-center-layout-item",
     childEls: ["targetEl"],
     renderTpl: [
-      '<div id="{ownerId}-targetEl" data-ref="targetEl" class="{targetElCls}" role="presentation">{%this.renderBody(out, values)%}</div>',
+      '<div id="{ownerId}-targetEl" data-ref="targetEl" class="{targetElCls}" role="presentation">{%this.renderBody(out, values)%}</div>'
     ],
     targetElCls: "x-center-target",
     beginLayout: function (b) {
@@ -144182,7 +144167,7 @@ Ext.cmd.derive(
     setItemWidth: function (b, c) {
       var a = parseFloat(b.target.width) / 100;
       b.setWidth(Math.round((c.targetSize.width - c.margins.width) * a));
-    },
+    }
   },
   0,
   0,
@@ -144191,7 +144176,7 @@ Ext.cmd.derive(
   ["layout.center", "layout.ux.center"],
   0,
   [Ext.layout.container, "Center", Ext.ux.layout, "Center"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.layout.container.Form",
@@ -144231,7 +144216,7 @@ Ext.cmd.derive(
     },
     getRenderTarget: function () {
       return this.formWrap;
-    },
+    }
   },
   0,
   0,
@@ -144240,7 +144225,7 @@ Ext.cmd.derive(
   ["layout.form"],
   0,
   [Ext.layout.container, "Form", Ext.layout, "FormLayout"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.Bar",
@@ -144258,7 +144243,7 @@ Ext.cmd.derive(
       type: "hbox",
       align: "stretchmax",
       pack: "start",
-      overflowHandler: "menu",
+      overflowHandler: "menu"
     },
     lookupComponent: function (a) {
       a = Ext.menu.Menu.prototype.lookupComponent.call(this, a);
@@ -144272,14 +144257,14 @@ Ext.cmd.derive(
         a.preventDefault();
         this.mixins.focusablecontainer.onFocusableContainerLeftKey.call(
           this,
-          a,
+          a
         );
       },
       onFocusableContainerRightKey: function (a) {
         a.preventDefault();
         this.mixins.focusablecontainer.onFocusableContainerRightKey.call(
           this,
-          a,
+          a
         );
       },
       onFocusableContainerUpKey: function (a) {
@@ -144295,8 +144280,8 @@ Ext.cmd.derive(
         if (b && b.expandMenu) {
           b.expandMenu(a, 0);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["menubar"],
@@ -144307,12 +144292,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     menu: true,
-    menubar: true,
+    menubar: true
   },
   ["widget.menubar"],
   0,
   [Ext.menu, "Bar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.ColorPicker",
@@ -144333,10 +144318,10 @@ Ext.cmd.derive(
             cls: "x-menu-color-item",
             margin: 0,
             id: b.pickerId,
-            xtype: "colorpicker",
+            xtype: "colorpicker"
           },
-          a,
-        ),
+          a
+        )
       });
       Ext.menu.Menu.prototype.initComponent.apply(this, arguments);
       b.picker = b.down("colorpicker");
@@ -144347,7 +144332,7 @@ Ext.cmd.derive(
     },
     hidePickerOnSelect: function () {
       Ext.menu.Manager.hideAll();
-    },
+    }
   },
   0,
   ["colormenu"],
@@ -144358,12 +144343,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     menu: true,
-    colormenu: true,
+    colormenu: true
   },
   ["widget.colormenu"],
   0,
   [Ext.menu, "ColorPicker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.menu.DatePicker",
@@ -144385,9 +144370,9 @@ Ext.cmd.derive(
             margin: 0,
             border: false,
             id: c.pickerId,
-            xtype: "datepicker",
+            xtype: "datepicker"
           },
-          c.pickerCfg,
+          c.pickerCfg
         );
       } else {
         a = Ext.apply({}, c.initialConfig);
@@ -144398,16 +144383,16 @@ Ext.cmd.derive(
             margin: 0,
             border: false,
             id: c.pickerId,
-            xtype: "datepicker",
+            xtype: "datepicker"
           },
-          a,
+          a
         );
       }
       Ext.apply(c, {
         showSeparator: false,
         plain: true,
         bodyPadding: 0,
-        items: [b],
+        items: [b]
       });
       Ext.menu.Menu.prototype.initComponent.call(this);
       c.picker = c.down("datepicker");
@@ -144423,7 +144408,7 @@ Ext.cmd.derive(
     },
     hidePickerOnSelect: function () {
       Ext.menu.Manager.hideAll();
-    },
+    }
   },
   0,
   ["datemenu"],
@@ -144434,12 +144419,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     menu: true,
-    datemenu: true,
+    datemenu: true
   },
   ["widget.datemenu"],
   0,
   [Ext.menu, "DatePicker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.panel.Pinnable",
@@ -144458,8 +144443,8 @@ Ext.cmd.derive(
           type: a ? "unpin" : "pin",
           callback: "togglePin",
           scope: b,
-          tooltip: a ? b.pinnedTip : b.unpinnedTip,
-        })),
+          tooltip: a ? b.pinnedTip : b.unpinnedTip
+        }))
       );
     },
     isPinned: function () {
@@ -144484,7 +144469,7 @@ Ext.cmd.derive(
         a = c.pinTool;
       a.setTooltip(b ? c.pinnedTip : c.unpinnedTip);
       a.setType(b ? "unpin" : "pin");
-    },
+    }
   },
   0,
   0,
@@ -144493,7 +144478,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.panel, "Pinnable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.plugin.Manager",
@@ -144525,7 +144510,7 @@ Ext.cmd.derive(
         a.setCmpCalled = true;
       }
       return a;
-    },
+    }
   },
   0,
   0,
@@ -144534,7 +144519,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.plugin, "Manager", Ext, "PluginManager", Ext, "PluginMgr"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.BorderSplitterTracker",
@@ -144617,7 +144602,7 @@ Ext.cmd.derive(
       right: function (c, a, b, d) {
         c.right = c.left - a;
         c[0] = c.x = c.left = c.x - b + d.getWidth();
-      },
+      }
     },
     onBeforeStart: function (k) {
       var g = this,
@@ -144666,19 +144651,19 @@ Ext.cmd.derive(
         adjustTarget: function (b, a, c) {
           b.flex = null;
           b.setSize(a + c);
-        },
+        }
       },
       vert: {
         index: 1,
         adjustTarget: function (b, a, c) {
           b.flex = null;
           b.setSize(undefined, a + c);
-        },
-      },
+        }
+      }
     },
     getCollapseDirection: function () {
       return this.splitter.getCollapseDirection();
-    },
+    }
   },
   0,
   0,
@@ -144687,7 +144672,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.resizer, "BorderSplitterTracker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.Handle",
@@ -144702,7 +144687,7 @@ Ext.cmd.derive(
       Ext.Component.prototype.beforeRender.call(this);
       a.protoEl.unselectable();
       a.addCls(a.baseHandleCls, a.baseHandleCls + "-" + a.region, a.handleCls);
-    },
+    }
   },
   0,
   0,
@@ -144711,7 +144696,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.resizer, "Handle"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.ResizeTracker",
@@ -144779,7 +144764,7 @@ Ext.cmd.derive(
       } else {
         b = c.createProxy(
           { tag: "div", role: "presentation", cls: a, id: c.id + "-rzproxy" },
-          Ext.getBody(),
+          Ext.getBody()
         );
       }
       b.removeCls("x-proxy-el");
@@ -144976,7 +144961,7 @@ Ext.cmd.derive(
     },
     convertRegionName: function (a) {
       return a;
-    },
+    }
   },
   1,
   0,
@@ -144985,7 +144970,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.resizer, "ResizeTracker"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.resizer.Resizer",
@@ -145019,7 +145004,7 @@ Ext.cmd.derive(
       se: "southeast",
       sw: "southwest",
       nw: "northwest",
-      ne: "northeast",
+      ne: "northeast"
     },
     touchActionMap: {
       n: { panY: false },
@@ -145029,7 +145014,7 @@ Ext.cmd.derive(
       se: { panX: false, panY: false },
       sw: { panX: false, panY: false },
       nw: { panX: false, panY: false },
-      ne: { panX: false, panY: false },
+      ne: { panX: false, panY: false }
     },
     ariaRole: "presentation",
     constructor: function (r) {
@@ -145103,7 +145088,7 @@ Ext.cmd.derive(
           role: "presentation",
           cls: s.wrapCls,
           id: s.el.id + "-rzwrap",
-          style: c.getStyle(["margin-top", "margin-bottom"]),
+          style: c.getStyle(["margin-top", "margin-bottom"])
         });
         d = c.getPositioning();
         s.el.setPositioning(d);
@@ -145139,13 +145124,13 @@ Ext.cmd.derive(
         minHeight: s.minHeight,
         maxHeight: s.maxHeight,
         minWidth: s.minWidth,
-        maxWidth: s.maxWidth,
+        maxWidth: s.maxWidth
       });
       s.resizeTracker.on({
         mousedown: s.onBeforeResize,
         drag: s.onResize,
         dragend: s.onResizeEnd,
-        scope: s,
+        scope: s
       });
       if (s.handles === "all") {
         s.handles = "n s e w ne nw se sw";
@@ -145169,7 +145154,7 @@ Ext.cmd.derive(
             id: s.el.id + "-" + g + "-handle",
             cls: Ext.String.format(l, g) + " " + m,
             unselectable: "on",
-            role: "presentation",
+            role: "presentation"
           });
           k.region = g;
           if (s.transparent) {
@@ -145237,7 +145222,7 @@ Ext.cmd.derive(
         }
       }
       e.callParent();
-    },
+    }
   },
   1,
   0,
@@ -145246,7 +145231,7 @@ Ext.cmd.derive(
   0,
   [["observable", Ext.util.Observable]],
   [Ext.resizer, "Resizer", Ext, "Resizable"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.selection.CellModel",
@@ -145269,7 +145254,7 @@ Ext.cmd.derive(
           c.gridListeners = b.on({
             columnmove: c.onColumnMove,
             scope: c,
-            destroyable: true,
+            destroyable: true
           });
         }
       }
@@ -145326,7 +145311,7 @@ Ext.cmd.derive(
             record: a.record,
             row: a.rowIdx,
             columnHeader: a.column,
-            column: a.view.getColumnManager().indexOf(a.column),
+            column: a.view.getColumnManager().indexOf(a.column)
           }
         : a;
     },
@@ -145340,7 +145325,7 @@ Ext.cmd.derive(
           column:
             typeof c.column === "number"
               ? this.view.getColumnManager().getColumns()[c.column]
-              : c.column,
+              : c.column
         });
       }
       return this.setPosition(c, a, b);
@@ -145381,7 +145366,7 @@ Ext.cmd.derive(
         b = new Ext.grid.CellContext(a).setPosition({
           row: e,
           column:
-            typeof c === "number" ? a.getColumnManager().getColumns()[c] : c,
+            typeof c === "number" ? a.getColumnManager().getColumns()[c] : c
         });
         return b.record === g.record && b.column === g.column;
       }
@@ -145391,7 +145376,7 @@ Ext.cmd.derive(
         e = c.getPosition();
       Ext.selection.DataViewModel.prototype.onStoreRemove.apply(
         this,
-        arguments,
+        arguments
       );
       if (e && b.isMoving(e.record)) {
         return;
@@ -145424,7 +145409,7 @@ Ext.cmd.derive(
       }
       Ext.selection.DataViewModel.prototype.updateSelectedInstances.call(
         this,
-        a,
+        a
       );
     },
     onCellClick: function (c, a, g, b, i, d, h) {
@@ -145519,7 +145504,7 @@ Ext.cmd.derive(
     },
     selectByPosition: function (a, b) {
       this.setPosition(a, b);
-    },
+    }
   },
   0,
   0,
@@ -145528,7 +145513,7 @@ Ext.cmd.derive(
   ["selection.cellmodel"],
   0,
   [Ext.selection, "CellModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.selection.RowModel",
@@ -145582,7 +145567,7 @@ Ext.cmd.derive(
       if (a) {
         return new Ext.grid.CellContext(this.view).setPosition(
           this.store.indexOf(a),
-          0,
+          0
         );
       }
     },
@@ -145635,7 +145620,7 @@ Ext.cmd.derive(
         (d && b.previousRecord === b.record) ||
         Ext.selection.DataViewModel.prototype.vetoSelection.call(this, c)
       );
-    },
+    }
   },
   0,
   0,
@@ -145644,7 +145629,7 @@ Ext.cmd.derive(
   ["selection.rowmodel"],
   0,
   [Ext.selection, "RowModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.selection.CheckboxModel",
@@ -145682,7 +145667,7 @@ Ext.cmd.derive(
             lockcolumn: c.onColumnLock,
             unlockcolumn: c.onColumnUnlock,
             scope: c,
-            destroyable: true,
+            destroyable: true
           });
         }
         if (
@@ -145698,7 +145683,7 @@ Ext.cmd.derive(
           c.mon(b.ownerGrid, {
             beforereconfigure: c.onBeforeReconfigure,
             reconfigure: c.onReconfigure,
-            scope: c,
+            scope: c
           });
         }
       }
@@ -145850,7 +145835,7 @@ Ext.cmd.derive(
         processEvent: b.processColumnEvent,
         toggleAll: Ext.emptyFn,
         setRecordCheck: Ext.emptyFn,
-        isRecordChecked: b.isRowSelected.bind(b),
+        isRecordChecked: b.isRowSelected.bind(b)
       };
       if (!b.checkOnly) {
         a.tabIndex = undefined;
@@ -145883,7 +145868,7 @@ Ext.cmd.derive(
           item: d.item,
           cell: d.position.cellElement,
           columnIndex: d.position.colIdx,
-          column: d.position.column,
+          column: d.position.column
         });
       }
     },
@@ -145938,7 +145923,7 @@ Ext.cmd.derive(
       }
       Ext.selection.RowModel.prototype.maybeFireSelectionChange.apply(
         this,
-        arguments,
+        arguments
       );
     },
     resumeChanges: function () {
@@ -146013,11 +145998,11 @@ Ext.cmd.derive(
             this,
             a,
             d,
-            b,
+            b
           );
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -146029,7 +146014,7 @@ Ext.cmd.derive(
   function (a) {
     a.prototype.checkSelector =
       "." + Ext.grid.column.Check.prototype.checkboxCls;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.selection.TreeModel",
@@ -146070,7 +146055,7 @@ Ext.cmd.derive(
           d.type === "click" &&
           d.getTarget(
             c.expanderSelector ||
-              (c.lockingPartner && c.lockingPartner.expanderSelector),
+              (c.lockingPartner && c.lockingPartner.expanderSelector)
           );
       return a || Ext.selection.RowModel.prototype.vetoSelection.call(this, d);
     },
@@ -146089,8 +146074,8 @@ Ext.cmd.derive(
             this.gatherSelected(g, c);
           }
         }
-      },
-    },
+      }
+    }
   },
   1,
   0,
@@ -146099,7 +146084,7 @@ Ext.cmd.derive(
   ["selection.treemodel"],
   0,
   [Ext.selection, "TreeModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.slider.Thumb",
@@ -146159,7 +146144,7 @@ Ext.cmd.derive(
           from: i,
           to: h,
           scope: g,
-          callback: g.onAnimComplete,
+          callback: g.onAnimComplete
         };
         if (b !== true) {
           Ext.apply(e, b);
@@ -146193,7 +146178,7 @@ Ext.cmd.derive(
         onDrag: a.onDrag.bind(a),
         onEnd: a.onDragEnd.bind(a),
         tolerance: 3,
-        autoStart: 300,
+        autoStart: 300
       });
       a.el.hover(a.addOverCls, a.removeOverCls, a);
     },
@@ -146282,7 +146267,7 @@ Ext.cmd.derive(
       }
       a.el = a.tracker = a.anim = Ext.destroy(a.el, a.tracker);
       a.callParent();
-    },
+    }
   },
   1,
   0,
@@ -146291,7 +146276,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.slider, "Thumb"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.slider.Tip",
@@ -146341,7 +146326,7 @@ Ext.cmd.derive(
         dragstart: b.onSlide,
         drag: b.onSlide,
         dragend: b.hide,
-        destroy: b.destroy,
+        destroy: b.destroy
       });
     },
     onSlide: function (c, d, a) {
@@ -146352,7 +146337,7 @@ Ext.cmd.derive(
     },
     getText: function (a) {
       return String(a.value);
-    },
+    }
   },
   0,
   ["slidertip"],
@@ -146363,12 +146348,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     tip: true,
-    slidertip: true,
+    slidertip: true
   },
   ["widget.slidertip"],
   0,
   [Ext.slider, "Tip"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.slider.Multi",
@@ -146428,8 +146413,8 @@ Ext.cmd.derive(
             Ext.DomHelper.generateMarkup(a, g);
           }
         },
-        disableFormats: true,
-      },
+        disableFormats: true
+      }
     ],
     horizontalProp: "left",
     initValue: function () {
@@ -146490,7 +146475,7 @@ Ext.cmd.derive(
           slider: b,
           index: b.thumbs.length,
           constrain: b.constrainThumbs,
-          disabled: !!b.readOnly,
+          disabled: !!b.readOnly
         });
       b.thumbs.push(a);
       if (b.rendered) {
@@ -146524,7 +146509,7 @@ Ext.cmd.derive(
         maxValue: c.maxValue,
         value: c.value,
         tabIdx: c.tabIndex,
-        childElCls: "",
+        childElCls: ""
       });
       a = d.inputElAriaAttributes;
       if (a) {
@@ -146612,7 +146597,7 @@ Ext.cmd.derive(
           b,
           Ext.util.Format.round(c.reversePixelValue(d), c.decimalPrecision),
           undefined,
-          true,
+          true
         );
       }
     },
@@ -146820,7 +146805,7 @@ Ext.cmd.derive(
           if (!g.thumbHolder) {
             g.thumbHolder = g.endEl.createChild({
               role: "presentation",
-              cls: "x-slider-thumb " + g.disabledCls,
+              cls: "x-slider-thumb " + g.disabledCls
             });
           }
           g.thumbHolder.show().setXY(h);
@@ -146909,7 +146894,7 @@ Ext.cmd.derive(
         Ext.destroy(this.thumbs);
       }
       Ext.form.field.Base.prototype.doDestroy.call(this);
-    },
+    }
   },
   0,
   ["multislider"],
@@ -146918,7 +146903,7 @@ Ext.cmd.derive(
   ["widget.multislider"],
   0,
   [Ext.slider, "Multi", Ext.slider, "MultiSlider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.slider.Single",
@@ -146928,7 +146913,7 @@ Ext.cmd.derive(
       "Ext.Slider",
       "Ext.form.SliderField",
       "Ext.slider.SingleSlider",
-      "Ext.slider.Slider",
+      "Ext.slider.Slider"
     ],
     defaultBindProperty: "value",
     initComponent: function () {
@@ -146952,7 +146937,7 @@ Ext.cmd.derive(
     },
     getNearest: function () {
       return this.thumbs[0];
-    },
+    }
   },
   0,
   ["slider", "sliderfield"],
@@ -146963,7 +146948,7 @@ Ext.cmd.derive(
     field: true,
     multislider: true,
     slider: true,
-    sliderfield: true,
+    sliderfield: true
   },
   ["widget.slider", "widget.sliderfield"],
   0,
@@ -146977,9 +146962,9 @@ Ext.cmd.derive(
     Ext.slider,
     "SingleSlider",
     Ext.slider,
-    "Slider",
+    "Slider"
   ],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.slider.Widget",
@@ -146993,7 +146978,7 @@ Ext.cmd.derive(
       minValue: 0,
       maxValue: 100,
       publishOnComplete: true,
-      twoWayBindable: { value: 1 },
+      twoWayBindable: { value: 1 }
     },
     decimalPrecision: 0,
     defaultBindProperty: "value",
@@ -147004,15 +146989,15 @@ Ext.cmd.derive(
         mousedown: "onMouseDown",
         dragstart: "cancelDrag",
         drag: "cancelDrag",
-        dragend: "cancelDrag",
+        dragend: "cancelDrag"
       },
       children: [
         {
           reference: "endEl",
           cls: "x-slider-end",
-          children: [{ reference: "innerEl", cls: "x-slider-inner" }],
-        },
-      ],
+          children: [{ reference: "innerEl", cls: "x-slider-inner" }]
+        }
+      ]
     },
     thumbCls: "x-slider-thumb",
     horizontalProp: "left",
@@ -147141,7 +147126,7 @@ Ext.cmd.derive(
       for (; c < d; c++) {
         a = e[c];
         m = k.reversePercentageValue(
-          parseInt(a.dom.style[k.getThumbPositionStyle()], 10),
+          parseInt(a.dom.style[k.getThumbPositionStyle()], 10)
         );
         h = Math.abs(m - g);
         if (Math.abs(h) <= l) {
@@ -147215,7 +147200,7 @@ Ext.cmd.derive(
       }
       a = j.getThumb(g);
       e = j.reversePercentageValue(
-        parseInt(a.dom.style[j.getThumbPositionStyle()], 10),
+        parseInt(a.dom.style[j.getThumbPositionStyle()], 10)
       );
       k = j.normalizeValue(k);
       if (k !== e && j.fireEvent("beforechange", j, k, e, a) !== false) {
@@ -147224,7 +147209,7 @@ Ext.cmd.derive(
           j.moveThumb(
             a,
             j.calculateThumbPosition(k),
-            Ext.isDefined(b) ? b !== false : j.animate,
+            Ext.isDefined(b) ? b !== false : j.animate
           );
           j.fireEvent("change", j, k, a);
         }
@@ -147254,8 +147239,8 @@ Ext.cmd.derive(
       for (; d < a; d++) {
         c.push(
           e.reversePercentageValue(
-            parseInt(e.thumbs[d].dom.style[e.getThumbPositionStyle()], 10),
-          ),
+            parseInt(e.thumbs[d].dom.style[e.getThumbPositionStyle()], 10)
+          )
         );
       }
       return c;
@@ -147343,7 +147328,7 @@ Ext.cmd.derive(
       };
       e = { mousemove: h, mouseup: c };
       Ext.getDoc().on(e);
-    },
+    }
   },
   0,
   ["sliderwidget"],
@@ -147352,7 +147337,7 @@ Ext.cmd.derive(
   ["widget.sliderwidget"],
   0,
   [Ext.slider, "Widget"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.state.CookieProvider",
@@ -147419,7 +147404,7 @@ Ext.cmd.derive(
         (b.path == null ? "" : "; path=" + b.path) +
         (b.domain == null ? "" : "; domain=" + b.domain) +
         (b.secure ? "; secure" : "");
-    },
+    }
   },
   1,
   0,
@@ -147428,7 +147413,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.state, "CookieProvider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.state.LocalStorageProvider",
@@ -147476,7 +147461,7 @@ Ext.cmd.derive(
         c = c.substring(0, b);
       }
       return new Ext.util.LocalStorage({ id: c, prefix: a });
-    },
+    }
   },
   1,
   0,
@@ -147485,7 +147470,7 @@ Ext.cmd.derive(
   ["state.localstorage"],
   0,
   [Ext.state, "LocalStorageProvider"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tab.Tab",
@@ -147522,7 +147507,7 @@ Ext.cmd.derive(
       top: { default: "top", 0: "top", 1: "left", 2: "right" },
       right: { default: "top", 0: "right", 1: "top", 2: "bottom" },
       bottom: { default: "bottom", 0: "bottom", 1: "right", 2: "left" },
-      left: { default: "top", 0: "left", 1: "bottom", 2: "top" },
+      left: { default: "top", 0: "left", 1: "bottom", 2: "top" }
     },
     _defaultRotations: { top: 0, right: 1, bottom: 0, left: 2 },
     initComponent: function () {
@@ -147672,9 +147657,9 @@ Ext.cmd.derive(
               tag: "span",
               id: a.id + "-closeEl",
               cls: a.baseCls + "-close-btn",
-              html: a.closeText,
+              html: a.closeText
             },
-            "after",
+            "after"
           );
         }
         b.addClsOnOver(a.closeElOverCls);
@@ -147798,8 +147783,8 @@ Ext.cmd.derive(
       },
       wrapPrimaryEl: function (a) {
         Ext.Button.superclass.wrapPrimaryEl.call(this, a);
-      },
-    },
+      }
+    }
   },
   0,
   ["tab"],
@@ -147808,7 +147793,7 @@ Ext.cmd.derive(
   ["widget.tab"],
   0,
   [Ext.tab, "Tab"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tab.Bar",
@@ -147820,7 +147805,7 @@ Ext.cmd.derive(
     config: {
       tabRotation: "default",
       tabStretchMax: true,
-      activateOnFocus: true,
+      activateOnFocus: true
     },
     defaultType: "tab",
     plain: false,
@@ -147845,7 +147830,7 @@ Ext.cmd.derive(
       d.setLayout({
         align:
           c || (d.getTabStretchMax() ? "stretchmax" : d._layoutAlign[d.dock]),
-        overflowHandler: b || "scroller",
+        overflowHandler: b || "scroller"
       });
       d.on({ click: d.onClick, element: "el", scope: d });
     },
@@ -147880,7 +147865,7 @@ Ext.cmd.derive(
         baseBodyCls: a._baseBodyCls,
         bodyTargetCls: a.bodyTargetCls,
         stripCls: a._stripCls,
-        dock: a.dock,
+        dock: a.dock
       });
     },
     setDock: function (h) {
@@ -147952,7 +147937,7 @@ Ext.cmd.derive(
           destroyable: true,
           glyphchange: a,
           iconchange: a,
-          textchange: a,
+          textchange: a
         });
       }
       Ext.panel.Bar.prototype.onAdd.call(this, b, c);
@@ -148280,8 +148265,8 @@ Ext.cmd.derive(
         if (c.activateOnFocus && d && d.isTab) {
           c.doActivateTab(d);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["tabbar"],
@@ -148292,11 +148277,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.tab, "Bar"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tab.Panel",
@@ -148307,7 +148292,7 @@ Ext.cmd.derive(
       tabBar: undefined,
       tabPosition: "top",
       tabRotation: "default",
-      tabStretchMax: true,
+      tabStretchMax: true
     },
     removePanelHeader: true,
     plain: false,
@@ -148330,10 +148315,10 @@ Ext.cmd.derive(
             owner: g,
             deferredRender: g.deferredRender,
             itemCls: g.itemCls,
-            activeItem: c,
+            activeItem: c
           },
-          g.layout,
-        ),
+          g.layout
+        )
       );
       if (d != null) {
         h = g.header = Ext.apply({}, h);
@@ -148421,10 +148406,10 @@ Ext.cmd.derive(
             vertical: b === "left" || b === "right",
             plain: c.plain,
             tabStretchMax: c.getTabStretchMax(),
-            tabPanel: c,
+            tabPanel: c
           },
-          a,
-        ),
+          a
+        )
       );
     },
     updateHeaderPosition: function (c, b) {
@@ -148465,7 +148450,7 @@ Ext.cmd.derive(
           tooltip: h.tooltip,
           tabBar: c,
           tabPosition: c.dock,
-          rotation: c.getTabRotation(),
+          rotation: c.getTabRotation()
         };
       if (h.closeText !== undefined) {
         a.closeText = h.closeText;
@@ -148488,7 +148473,7 @@ Ext.cmd.derive(
         iconchange: g.onItemIconChange,
         iconclschange: g.onItemIconClsChange,
         glyphchange: g.onItemGlyphChange,
-        titlechange: g.onItemTitleChange,
+        titlechange: g.onItemTitleChange
       });
       if (h.isPanel) {
         if (g.removePanelHeader) {
@@ -148557,7 +148542,7 @@ Ext.cmd.derive(
         iconchange: a.onItemIconChange,
         iconclschange: a.onItemIconClsChange,
         glyphchange: a.onItemGlyphChange,
-        titlechange: a.onItemTitleChange,
+        titlechange: a.onItemTitleChange
       });
       if (b.tab && !a.destroying && b.tab.ownerCt === a.tabBar) {
         a.tabBar.remove(b.tab);
@@ -148585,7 +148570,7 @@ Ext.cmd.derive(
           if (
             d.tab &&
             (a = c.tabBar.items.indexOf(
-              c.tabBar.findNextActivatable(d.tab),
+              c.tabBar.findNextActivatable(d.tab)
             )) !== -1
           ) {
             c.setActiveTab(a);
@@ -148596,8 +148581,8 @@ Ext.cmd.derive(
           delete d.tab.card;
           delete d.tab;
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["tabpanel"],
@@ -148606,7 +148591,7 @@ Ext.cmd.derive(
   ["widget.tabpanel"],
   0,
   [Ext.tab, "Panel", Ext, "TabPanel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Breadcrumb",
@@ -148622,7 +148607,7 @@ Ext.cmd.derive(
       showIcons: null,
       showMenuIcons: null,
       store: null,
-      useSplitButtons: true,
+      useSplitButtons: true
     },
     renderConfig: { selection: "root" },
     publishes: ["selection"],
@@ -148661,7 +148646,7 @@ Ext.cmd.derive(
         a = b.layout.overflowHandler;
       Ext.container.Container.prototype.afterComponentLayout.apply(
         this,
-        arguments,
+        arguments
       );
       if (a && b.tooNarrow && a.scrollToItem) {
         a.scrollToItem(b.getSelection().get("depth"));
@@ -148721,11 +148706,11 @@ Ext.cmd.derive(
                 listeners: {
                   click: "_onMenuClick",
                   beforeshow: "_onMenuBeforeShow",
-                  scope: this,
-                },
+                  scope: this
+                }
               },
               handler: "_onButtonClick",
-              scope: s,
+              scope: s
             });
           }
           d = this.getShowIcons();
@@ -148754,7 +148739,7 @@ Ext.cmd.derive(
                     a.setIconCls(
                       (c.isLeaf() ? s._leafIconCls : s._folderIconCls) +
                         "-" +
-                        s.ui,
+                        s.ui
                     );
                   } else {
                     a.setGlyph(null);
@@ -148794,7 +148779,7 @@ Ext.cmd.derive(
     applyUseSplitButtons: function (b, a) {
       if (this.rendered && b !== a) {
         Ext.raise(
-          "Cannot reconfigure 'useSplitButtons' config of Ext.toolbar.Breadcrumb after initial render",
+          "Cannot reconfigure 'useSplitButtons' config of Ext.toolbar.Breadcrumb after initial render"
         );
       }
       return b;
@@ -148878,8 +148863,8 @@ Ext.cmd.derive(
         } else {
           return false;
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["breadcrumb"],
@@ -148890,11 +148875,11 @@ Ext.cmd.derive(
     [
       Ext.util.FocusableContainer.prototype.mixinId ||
         Ext.util.FocusableContainer.$className,
-      Ext.util.FocusableContainer,
-    ],
+      Ext.util.FocusableContainer
+    ]
   ],
   [Ext.toolbar, "Breadcrumb"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Fill",
@@ -148903,7 +148888,7 @@ Ext.cmd.derive(
     alternateClassName: "Ext.Toolbar.Fill",
     ariaRole: "presentation",
     isFill: true,
-    flex: 1,
+    flex: 1
   },
   0,
   ["tbfill"],
@@ -148912,7 +148897,7 @@ Ext.cmd.derive(
   ["widget.tbfill"],
   0,
   [Ext.toolbar, "Fill", Ext.Toolbar, "Fill"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.toolbar.Spacer",
@@ -148920,7 +148905,7 @@ Ext.cmd.derive(
   {
     alternateClassName: "Ext.Toolbar.Spacer",
     baseCls: "x-toolbar-spacer",
-    ariaRole: "presentation",
+    ariaRole: "presentation"
   },
   0,
   ["tbspacer"],
@@ -148929,7 +148914,7 @@ Ext.cmd.derive(
   ["widget.tbspacer"],
   0,
   [Ext.toolbar, "Spacer", Ext.Toolbar, "Spacer"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.Column",
@@ -148979,7 +148964,7 @@ Ext.cmd.derive(
       '<a href="{href}" role="link" target="{hrefTarget}" class="{textCls} {childCls}">{value}</a>',
       "<tpl else>",
       '<span class="{textCls} {childCls}">{value}</span>',
-      "</tpl>",
+      "</tpl>"
     ],
     uiFields: { checked: 1, icon: 1, iconCls: 1 },
     rowFields: {
@@ -148990,7 +148975,7 @@ Ext.cmd.derive(
       loading: 1,
       qtip: 1,
       qtitle: 1,
-      cls: 1,
+      cls: 1
     },
     initComponent: function () {
       var a = this;
@@ -149062,7 +149047,7 @@ Ext.cmd.derive(
         lines: q,
         metaData: a,
         childCls: k.getChildCls ? k.getChildCls() + " " : "",
-        value: n,
+        value: n
       };
     },
     shouldUpdateCell: function (b, d) {
@@ -149086,7 +149071,7 @@ Ext.cmd.derive(
         }
       }
       return Ext.grid.column.Column.prototype.shouldUpdateCell.call(this, b, d);
-    },
+    }
   },
   0,
   ["treecolumn"],
@@ -149096,7 +149081,7 @@ Ext.cmd.derive(
     "container",
     "headercontainer",
     "gridcolumn",
-    "treecolumn",
+    "treecolumn"
   ],
   {
     component: true,
@@ -149104,12 +149089,12 @@ Ext.cmd.derive(
     container: true,
     headercontainer: true,
     gridcolumn: true,
-    treecolumn: true,
+    treecolumn: true
   },
   ["widget.treecolumn"],
   0,
   [Ext.tree, "Column"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.NavigationModel",
@@ -149126,7 +149111,7 @@ Ext.cmd.derive(
       var b = this.onAsterisk;
       a.map.addBinding([
         { key: "8", shift: true, handler: b, scope: this },
-        { key: Ext.event.Event.NUM_MULTIPLY, handler: b, scope: this },
+        { key: Ext.event.Event.NUM_MULTIPLY, handler: b, scope: this }
       ]);
     },
     onColumnsChanged: function () {
@@ -149142,7 +149127,7 @@ Ext.cmd.derive(
         c,
         h,
         e,
-        a,
+        a
       );
       return !a.nodeToggled;
     },
@@ -149200,7 +149185,7 @@ Ext.cmd.derive(
     },
     onAsterisk: function (a) {
       this.view.ownerGrid.expandAll();
-    },
+    }
   },
   0,
   0,
@@ -149209,7 +149194,7 @@ Ext.cmd.derive(
   ["view.navigation.tree"],
   0,
   [Ext.tree, "NavigationModel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.View",
@@ -149257,8 +149242,8 @@ Ext.cmd.derive(
           if (b.isLoading()) {
             c.rowClasses.push(a.loadingCls);
           }
-        },
-      },
+        }
+      }
     ],
     initComponent: function () {
       var a = this;
@@ -149301,7 +149286,7 @@ Ext.cmd.derive(
         scope: a,
         delegate: a.expanderSelector,
         mouseover: a.onExpanderMouseOver,
-        mouseout: a.onExpanderMouseOut,
+        mouseout: a.onExpanderMouseOut
       });
     },
     processUIEvent: function (a) {
@@ -149331,7 +149316,7 @@ Ext.cmd.derive(
         c;
       c = Ext.fly(d).insertSibling(
         { role: "presentation", tag: "div", cls: e.nodeAnimWrapCls },
-        "after",
+        "after"
       );
       return {
         record: a,
@@ -149340,7 +149325,7 @@ Ext.cmd.derive(
         expanding: false,
         collapsing: false,
         animateEl: c,
-        targetEl: c,
+        targetEl: c
       };
     },
     getAnimWrap: function (d, a) {
@@ -149478,7 +149463,7 @@ Ext.cmd.derive(
           b.dom.style.height = "0px";
         },
         null,
-        { single: true },
+        { single: true }
       );
       b.animate({
         from: { height: 0 },
@@ -149499,7 +149484,7 @@ Ext.cmd.derive(
             }
             d.el.destroy();
             h.animWraps[d.record.internalId] = e[a] = null;
-          },
+          }
         },
         callback: function () {
           i.isExpandingOrCollapsing = false;
@@ -149507,7 +149492,7 @@ Ext.cmd.derive(
             h.refreshSize(true);
           }
           h.fireEvent("afteritemexpand", i, g, c);
-        },
+        }
       });
     },
     onBeforeCollapse: function (e, b, c, h, d) {
@@ -149563,7 +149548,7 @@ Ext.cmd.derive(
           afteranimate: function () {
             b.el.destroy();
             g.animWraps[b.record.internalId] = a[i] = null;
-          },
+          }
         },
         callback: function () {
           d.isExpandingOrCollapsing = false;
@@ -149573,7 +149558,7 @@ Ext.cmd.derive(
           g.fireEvent("afteritemcollapse", d, c, e);
           Ext.callback(b.callback, b.scope);
           b.callback = b.scope = null;
-        },
+        }
       });
     },
     isAnimating: function (a) {
@@ -149645,7 +149630,7 @@ Ext.cmd.derive(
           b,
           i,
           j,
-          h,
+          h
         );
       }
     },
@@ -149728,13 +149713,13 @@ Ext.cmd.derive(
     },
     onExpanderMouseOut: function (a) {
       a.getTarget(this.cellSelector, 10, true).removeCls(
-        this.expanderIconOverCls,
+        this.expanderIconOverCls
       );
     },
     getStoreListeners: function () {
       return Ext.apply(Ext.view.Table.prototype.getStoreListeners.call(this), {
         rootchange: this.onRootChange,
-        fillcomplete: this.onFillComplete,
+        fillcomplete: this.onFillComplete
       });
     },
     onBindStore: function (a, c, d, e) {
@@ -149759,7 +149744,7 @@ Ext.cmd.derive(
           beforecollapse: c.onBeforeCollapse,
           collapse: c.onCollapse,
           destroyable: true,
-          scope: c,
+          scope: c
         });
         b.addRelayers(d);
       }
@@ -149788,8 +149773,8 @@ Ext.cmd.derive(
           }
         }
         return c;
-      },
-    },
+      }
+    }
   },
   0,
   ["treeview"],
@@ -149800,12 +149785,12 @@ Ext.cmd.derive(
     dataview: true,
     tableview: true,
     gridview: true,
-    treeview: true,
+    treeview: true
   },
   ["widget.treeview"],
   0,
   [Ext.tree, "View"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.Panel",
@@ -149830,7 +149815,7 @@ Ext.cmd.derive(
       "useArrows",
       "lines",
       "rootVisible",
-      "scroll",
+      "scroll"
     ],
     lockedCfgCopy: [
       "displayField",
@@ -149838,7 +149823,7 @@ Ext.cmd.derive(
       "singleExpand",
       "useArrows",
       "lines",
-      "rootVisible",
+      "rootVisible"
     ],
     isTree: true,
     arrowCls: "x-tree-arrows",
@@ -149886,9 +149871,9 @@ Ext.cmd.derive(
           singleExpand: d.singleExpand,
           node: c.getRoot(),
           navigationModel: "tree",
-          isAutoTree: e,
+          isAutoTree: e
         },
-        d.viewConfig,
+        d.viewConfig
       );
       if (e) {
         d.addCls(d.autoWidthCls);
@@ -149897,8 +149882,8 @@ Ext.cmd.derive(
             xtype: "treecolumn",
             text: d.hideHeaders === true ? "Name" : null,
             flex: 1,
-            dataIndex: d.displayField,
-          },
+            dataIndex: d.displayField
+          }
         ];
       }
       if (d.cls) {
@@ -149911,7 +149896,7 @@ Ext.cmd.derive(
         "beforecheckchange",
         "checkchange",
         "afteritemexpand",
-        "afteritemcollapse",
+        "afteritemcollapse"
       ]);
     },
     applyStore: function (a) {
@@ -149975,7 +149960,7 @@ Ext.cmd.derive(
       d.storeListeners = d.mon(b, {
         destroyable: true,
         rootchange: d.onRootChange,
-        scope: d,
+        scope: d
       });
       d.storeRelayers = d.relayEvents(b, ["beforeload", "load"]);
       if (!d.rootVisible && !b.autoLoad && !(a.isExpanded() || a.isLoading())) {
@@ -150014,7 +149999,7 @@ Ext.cmd.derive(
         collapse: a.createRelayer("itemcollapse", [0, 1]),
         beforeexpand: a.createRelayer("beforeitemexpand", [0, 1]),
         beforecollapse: a.createRelayer("beforeitemcollapse", [0, 1]),
-        scope: a,
+        scope: a
       });
     },
     unbindStore: function () {
@@ -150196,9 +150181,9 @@ Ext.cmd.derive(
         separator: b,
         select: true,
         callback: e,
-        scope: a,
+        scope: a
       });
-    },
+    }
   },
   1,
   ["treepanel"],
@@ -150209,12 +150194,12 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     tablepanel: true,
-    treepanel: true,
+    treepanel: true
   },
   ["widget.treepanel"],
   0,
   [Ext.tree, "Panel", Ext.tree, "TreePanel", Ext, "TreePanel"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.DragZone",
@@ -150305,7 +150290,7 @@ Ext.cmd.derive(
           ddel: this.ddel,
           item: b,
           records: a.getSelectionModel().getSelection(),
-          fromPosition: Ext.fly(b).getXY(),
+          fromPosition: Ext.fly(b).getXY()
         };
       }
     },
@@ -150330,7 +150315,7 @@ Ext.cmd.derive(
     },
     getRepairXY: function (b, a) {
       return a ? a.fromPosition : false;
-    },
+    }
   },
   1,
   0,
@@ -150339,7 +150324,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.view, "DragZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.ViewDragZone",
@@ -150390,13 +150375,13 @@ Ext.cmd.derive(
                 if (a.isSelected(d)) {
                   c(d).addCls(i);
                 }
-              },
-            },
+              }
+            }
           });
         }
       }
       h.dragging = false;
-    },
+    }
   },
   0,
   0,
@@ -150405,7 +150390,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.tree, "ViewDragZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.ViewDropZone",
@@ -150429,7 +150414,7 @@ Ext.cmd.derive(
         this.expandNode,
         this.expandDelay,
         this,
-        [a],
+        [a]
       );
     },
     cancelExpand: function () {
@@ -150655,7 +150640,7 @@ Ext.cmd.derive(
           q();
         }
       }
-    },
+    }
   },
   0,
   0,
@@ -150664,7 +150649,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.tree, "ViewDropZone"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.tree.plugin.TreeViewDragDrop",
@@ -150709,10 +150694,10 @@ Ext.cmd.derive(
               displayField: b.displayField,
               repairHighlightColor: b.nodeHighlightColor,
               repairHighlight: b.nodeHighlightOnRepair,
-              scrollEl: d,
+              scrollEl: d
             },
-            b.dragZone,
-          ),
+            b.dragZone
+          )
         );
       }
       if (b.enableDrop) {
@@ -150728,13 +150713,13 @@ Ext.cmd.derive(
               dropHighlightColor: b.nodeHighlightColor,
               dropHighlight: b.nodeHighlightOnDrop,
               sortOnDrop: b.sortOnDrop,
-              containerScroll: b.containerScroll,
+              containerScroll: b.containerScroll
             },
-            b.dropZone,
-          ),
+            b.dropZone
+          )
         );
       }
-    },
+    }
   },
   0,
   0,
@@ -150746,7 +150731,7 @@ Ext.cmd.derive(
   function () {
     var a = this.prototype;
     a.nodeHighlightOnDrop = a.nodeHighlightOnRepair = Ext.enableFx;
-  },
+  }
 );
 Ext.cmd.derive(
   "Ext.util.Cookies",
@@ -150790,7 +150775,7 @@ Ext.cmd.derive(
         document.cookie =
           a + "=; expires=Thu, 01-Jan-1970 00:00:01 GMT; path=" + b;
       }
-    },
+    }
   },
   0,
   0,
@@ -150799,7 +150784,7 @@ Ext.cmd.derive(
   0,
   0,
   [Ext.util, "Cookies"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.MultiSelectorSearch",
@@ -150815,7 +150800,7 @@ Ext.cmd.derive(
     platformConfig: {
       desktop: { resizable: true },
       "tablet && rtl": { resizable: { handles: "sw" } },
-      "tablet && !rtl": { resizable: { handles: "se" } },
+      "tablet && !rtl": { resizable: { handles: "se" } }
     },
     defaultListenerScope: true,
     referenceHolder: true,
@@ -150838,7 +150823,7 @@ Ext.cmd.derive(
           g.selModel = g.selModel || {
             type: "checkboxmodel",
             pruneRemoved: false,
-            listeners: { selectionchange: "onSelectionChange" },
+            listeners: { selectionchange: "onSelectionChange" }
           };
           Ext.merge(g, h.grid);
           if (!g.columns) {
@@ -150864,7 +150849,7 @@ Ext.cmd.derive(
             }
           },
           null,
-          { single: true },
+          { single: true }
         );
       } else {
         h.selectRecords(c);
@@ -150902,14 +150887,14 @@ Ext.cmd.derive(
             clear: {
               cls: "x-form-clear-trigger",
               handler: "onClearSearch",
-              hidden: true,
-            },
+              hidden: true
+            }
           },
           listeners: {
             specialKey: "onSpecialKey",
-            change: { fn: "onSearchChange", buffer: 300 },
-          },
-        },
+            change: { fn: "onSearchChange", buffer: 300 }
+          }
+        }
       ];
     },
     onSpecialKey: function (b, a) {
@@ -150925,8 +150910,8 @@ Ext.cmd.derive(
           reference: "searchGrid",
           trailingBufferZone: 2,
           leadingBufferZone: 2,
-          viewConfig: { deferEmptyText: false, emptyText: "No results." },
-        },
+          viewConfig: { deferEmptyText: false, emptyText: "No results." }
+        }
       ];
     },
     getMatchingRecords: function (e) {
@@ -150967,7 +150952,7 @@ Ext.cmd.derive(
           c.searchFilter = a = new Ext.util.Filter({
             id: "search",
             property: c.field,
-            value: d,
+            value: d
           });
         }
         b.add(a);
@@ -151017,8 +151002,8 @@ Ext.cmd.derive(
         if (m || g) {
           e.splice(e.length, g, m);
         }
-      },
-    },
+      }
+    }
   },
   0,
   ["multiselector-search"],
@@ -151028,12 +151013,12 @@ Ext.cmd.derive(
     box: true,
     container: true,
     panel: true,
-    "multiselector-search": true,
+    "multiselector-search": true
   },
   ["widget.multiselector-search"],
   0,
   [Ext.view, "MultiSelectorSearch"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.view.MultiSelector",
@@ -151044,8 +151029,8 @@ Ext.cmd.derive(
         xtype: "multiselector-search",
         width: 200,
         height: 200,
-        store: { autoLoad: true },
-      },
+        store: { autoLoad: true }
+      }
     },
     fieldName: "name",
     fieldTitle: null,
@@ -151077,7 +151062,7 @@ Ext.cmd.derive(
         g.hideHeaders = !h;
         g.columns = [
           { text: h, dataIndex: g.fieldName, flex: 1 },
-          g.makeRemoveRowColumn(),
+          g.makeRemoveRowColumn()
         ];
       }
       Ext.grid.Panel.prototype.initComponent.call(this);
@@ -151088,7 +151073,7 @@ Ext.cmd.derive(
         type: "plus",
         tooltip: a.addToolText,
         callback: "onShowSearch",
-        scope: a,
+        scope: a
       });
       a.searchTool = a.tools[a.tools.length - 1];
     },
@@ -151104,7 +151089,7 @@ Ext.cmd.derive(
         processEvent: a.processRowEvent.bind(a),
         renderer: a.renderRemoveRow,
         updater: Ext.emptyFn,
-        scope: a,
+        scope: a
       };
     },
     processRowEvent: function (g, i, j, a, h, d, b, k) {
@@ -151168,9 +151153,9 @@ Ext.cmd.derive(
               owner: e,
               field: e.fieldName,
               floating: true,
-              alignOnScroll: false,
+              alignOnScroll: false
             },
-            e.getSearch(),
+            e.getSearch()
           );
           e.searchPopup = a = e.add(a);
           if (c.getCount()) {
@@ -151185,17 +151170,17 @@ Ext.cmd.derive(
         e.scrollListeners = Ext.on({
           scroll: "onGlobalScroll",
           scope: e,
-          destroyable: true,
+          destroyable: true
         });
         e.touchListeners = Ext.getDoc().on({
           translate: false,
           touchstart: e.onDismissSearch,
           scope: e,
           delegated: false,
-          destroyable: true,
+          destroyable: true
         });
-      },
-    },
+      }
+    }
   },
   0,
   ["multiselector"],
@@ -151207,7 +151192,7 @@ Ext.cmd.derive(
     "tablepanel",
     "gridpanel",
     "grid",
-    "multiselector",
+    "multiselector"
   ],
   {
     component: true,
@@ -151217,12 +151202,12 @@ Ext.cmd.derive(
     tablepanel: true,
     gridpanel: true,
     grid: true,
-    multiselector: true,
+    multiselector: true
   },
   ["widget.multiselector"],
   0,
   [Ext.view, "MultiSelector"],
-  0,
+  0
 );
 Ext.cmd.derive(
   "Ext.window.Toast",
@@ -151292,60 +151277,60 @@ Ext.cmd.derive(
         paddingFactorX: -1,
         paddingFactorY: -1,
         siblingAlignment: "br-br",
-        anchorAlign: "tr-br",
+        anchorAlign: "tr-br"
       },
       bl: {
         paddingFactorX: 1,
         paddingFactorY: -1,
         siblingAlignment: "bl-bl",
-        anchorAlign: "tl-bl",
+        anchorAlign: "tl-bl"
       },
       tr: {
         paddingFactorX: -1,
         paddingFactorY: 1,
         siblingAlignment: "tr-tr",
-        anchorAlign: "br-tr",
+        anchorAlign: "br-tr"
       },
       tl: {
         paddingFactorX: 1,
         paddingFactorY: 1,
         siblingAlignment: "tl-tl",
-        anchorAlign: "bl-tl",
+        anchorAlign: "bl-tl"
       },
       b: {
         paddingFactorX: 0,
         paddingFactorY: -1,
         siblingAlignment: "b-b",
         useXAxis: 0,
-        anchorAlign: "t-b",
+        anchorAlign: "t-b"
       },
       t: {
         paddingFactorX: 0,
         paddingFactorY: 1,
         siblingAlignment: "t-t",
         useXAxis: 0,
-        anchorAlign: "b-t",
+        anchorAlign: "b-t"
       },
       l: {
         paddingFactorX: 1,
         paddingFactorY: 0,
         siblingAlignment: "l-l",
         useXAxis: 1,
-        anchorAlign: "r-l",
+        anchorAlign: "r-l"
       },
       r: {
         paddingFactorX: -1,
         paddingFactorY: 0,
         siblingAlignment: "r-r",
         useXAxis: 1,
-        anchorAlign: "l-r",
+        anchorAlign: "l-r"
       },
       x: {
         br: { anchorAlign: "bl-br" },
         bl: { anchorAlign: "br-bl" },
         tr: { anchorAlign: "tl-tr" },
-        tl: { anchorAlign: "tr-tl" },
-      },
+        tl: { anchorAlign: "tr-tl" }
+      }
     },
     updateAlignment: function (e) {
       var c = this,
@@ -151483,7 +151468,7 @@ Ext.cmd.derive(
           e.anchor.el,
           e.anchorAlign,
           [e.paddingX * e.paddingFactorX, e.paddingY * e.paddingFactorY],
-          false,
+          false
         );
         e.xPos = e.getXposAlignedToAnchor();
         e.yPos = e.getYposAlignedToAnchor();
@@ -151498,7 +151483,7 @@ Ext.cmd.derive(
           duration: e.slideInDuration,
           dynamic: true,
           callback: e.afterPositioned,
-          scope: e,
+          scope: e
         });
       } else {
         e.setLocalXY(e.xPos, e.yPos);
@@ -151537,7 +151522,7 @@ Ext.cmd.derive(
             to: { x: e.xPos, y: e.yPos },
             easing: e.slideBackAnimation,
             duration: e.slideBackDuration,
-            dynamic: true,
+            dynamic: true
           });
         }
       }
@@ -151624,8 +151609,8 @@ Ext.cmd.derive(
                   if (!c.destroying && !c.destroyed) {
                     c.hide(c.animateTarget, c.doClose, c);
                   }
-                },
-              },
+                }
+              }
             });
           } else {
             b.isFading = false;
@@ -151634,7 +151619,7 @@ Ext.cmd.derive(
         }
       }
       return b;
-    },
+    }
   },
   1,
   ["toast"],
@@ -151645,7 +151630,7 @@ Ext.cmd.derive(
     container: true,
     panel: true,
     window: true,
-    toast: true,
+    toast: true
   },
   ["widget.toast"],
   0,
@@ -151664,5 +151649,5 @@ Ext.cmd.derive(
       b.show();
       return b;
     };
-  },
+  }
 );

@@ -9,7 +9,7 @@ Ext.define("Ext.util.Translatable", {
     "Ext.util.translatable.CssTransform",
     "Ext.util.translatable.ScrollPosition",
     "Ext.util.translatable.ScrollParent",
-    "Ext.util.translatable.CssPosition",
+    "Ext.util.translatable.CssPosition"
   ],
 
   constructor: function (config) {
@@ -25,5 +25,5 @@ Ext.define("Ext.util.Translatable", {
       case "cssposition":
         return new namespace.CssPosition(config);
     }
-  },
+  }
 });

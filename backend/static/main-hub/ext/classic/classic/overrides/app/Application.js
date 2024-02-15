@@ -18,7 +18,7 @@ Ext.define("Ext.overrides.app.Application", {
      * @cfg {Boolean} enableQuickTips
      * @deprecated 6.2.0 Use {@link #quickTips}.
      */
-    enableQuickTips: null,
+    enableQuickTips: null
   },
 
   /**
@@ -47,10 +47,10 @@ Ext.define("Ext.overrides.app.Application", {
       plugins = proto.plugins;
       // Need to copy over any plugins defined on the prototype.
       plugins = ["viewport"].concat(
-        plugins ? Ext.Array.from(plugins, true) : [],
+        plugins ? Ext.Array.from(plugins, true) : []
       );
       config = {
-        plugins: plugins,
+        plugins: plugins
       };
     }
 
@@ -69,7 +69,7 @@ Ext.define("Ext.overrides.app.Application", {
         Ext.raise(
           "[Ext.app.Application] Can't resolve namespace for " +
             data.$className +
-            ", did you forget to specify 'name' property?",
+            ", did you forget to specify 'name' property?"
         );
       }
       //</debug>
@@ -85,7 +85,7 @@ Ext.define("Ext.overrides.app.Application", {
         requires,
         namespace,
         "view",
-        viewportClass,
+        viewportClass
       );
     }
   },
@@ -122,5 +122,5 @@ Ext.define("Ext.overrides.app.Application", {
 
   initQuickTips: function () {
     Ext.tip.QuickTipManager.init();
-  },
+  }
 });

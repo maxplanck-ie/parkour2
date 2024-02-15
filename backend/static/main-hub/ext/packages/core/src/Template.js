@@ -52,7 +52,7 @@ Ext.define(
 
     requires: [
       //'Ext.dom.Helper',
-      "Ext.util.Format",
+      "Ext.util.Format"
     ],
 
     inheritableStatics: {
@@ -67,7 +67,7 @@ Ext.define(
       from: function (el, config) {
         el = Ext.getDom(el);
         return new this(el.value || el.innerHTML, config || "");
-      },
+      }
     },
 
     // Chrome really likes "new Function" to realize the code block (as in it is
@@ -212,7 +212,7 @@ Ext.define(
         if (formatFn && useFormat) {
           if (args) {
             args = [values[name]].concat(
-              Ext.functionFactory("return [" + args + "];")(),
+              Ext.functionFactory("return [" + args + "];")()
             );
           } else {
             args = [values[name]];
@@ -413,7 +413,7 @@ Ext.define(
       var newNode = Ext.DomHelper.insertHtml(
         where,
         Ext.getDom(el),
-        this.apply(values),
+        this.apply(values)
       );
       return returnElement ? Ext.get(newNode) : newNode;
     },
@@ -429,7 +429,7 @@ Ext.define(
     overwrite: function (el, values, returnElement) {
       var newNode = Ext.DomHelper.overwrite(Ext.getDom(el), this.apply(values));
       return returnElement ? Ext.get(newNode) : newNode;
-    },
+    }
   },
   function (Template) {
     var formatRe = /\{\d+\}/,
@@ -454,7 +454,7 @@ Ext.define(
       formatTplConfig = {
         useFormat: false,
         compiled: true,
-        stringFormat: true,
+        stringFormat: true
       },
       formatFns = {};
 
@@ -488,5 +488,5 @@ Ext.define(
     Ext.String.formatEncode = function () {
       return Ext.String.htmlEncode(Ext.String.format.apply(this, arguments));
     };
-  },
+  }
 );

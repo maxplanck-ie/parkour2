@@ -56,10 +56,10 @@ Ext.define(
     },
 
     statics: {
-      defaultProxy: "memory",
-    },
+      defaultProxy: "memory"
+    }
   },
   function () {
     Ext.data.NodeInterface.decorate(this);
-  },
+  }
 );

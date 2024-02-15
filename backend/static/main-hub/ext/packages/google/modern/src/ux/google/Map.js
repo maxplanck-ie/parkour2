@@ -98,7 +98,7 @@ Ext.define("Ext.ux.google.Map", {
      *
      * @accessor
      */
-    mapListeners: null,
+    mapListeners: null
   },
 
   constructor: function (config) {
@@ -115,7 +115,7 @@ Ext.define("Ext.ux.google.Map", {
 
     this.on({
       painted: "doResize",
-      scope: this,
+      scope: this
     });
     this.innerElement.on("touchstart", "onTouchStart", this);
   },
@@ -140,10 +140,10 @@ Ext.define("Ext.ux.google.Map", {
         Ext.merge(
           {
             navigationControlOptions: {
-              style: gm.NavigationControlStyle.ZOOM_PAN,
-            },
+              style: gm.NavigationControlStyle.ZOOM_PAN
+            }
           },
-          mapOptions,
+          mapOptions
         );
       }
 
@@ -158,7 +158,7 @@ Ext.define("Ext.ux.google.Map", {
       ) {
         mapOptions.center = new gm.LatLng(
           mapOptions.center.latitude,
-          mapOptions.center.longitude,
+          mapOptions.center.longitude
         );
       }
 
@@ -171,7 +171,7 @@ Ext.define("Ext.ux.google.Map", {
       event.addListener(
         map,
         "maptypeid_changed",
-        Ext.bind(me.onTypeChange, me),
+        Ext.bind(me.onTypeChange, me)
       );
       event.addListener(map, "center_changed", Ext.bind(me.onCenterChange, me));
       event.addListenerOnce(map, "tilesloaded", Ext.bind(me.onTilesLoaded, me));
@@ -196,11 +196,11 @@ Ext.define("Ext.ux.google.Map", {
           children: [
             {
               reference: "mapContainer",
-              className: Ext.baseCSSPrefix + "map-container",
-            },
-          ],
-        },
-      ],
+              className: Ext.baseCSSPrefix + "map-container"
+            }
+          ]
+        }
+      ]
     };
   },
 
@@ -244,7 +244,7 @@ Ext.define("Ext.ux.google.Map", {
     var events = {
       locationupdate: "onGeoUpdate",
       locationerror: "onGeoError",
-      scope: this,
+      scope: this
     };
 
     if (oldGeo) {
@@ -313,7 +313,7 @@ Ext.define("Ext.ux.google.Map", {
             handle = event.addListener(
               map,
               eventType,
-              Ext.bind(callbackFn, callbackFn),
+              Ext.bind(callbackFn, callbackFn)
             );
             callbackFn.fn = fn;
             callbackFn.scope = scope;
@@ -330,7 +330,7 @@ Ext.define("Ext.ux.google.Map", {
   onGeoUpdate: function (geo) {
     if (geo) {
       this.setMapCenter(
-        new google.maps.LatLng(geo.getLatitude(), geo.getLongitude()),
+        new google.maps.LatLng(geo.getLatitude(), geo.getLongitude())
       );
     }
   },
@@ -374,7 +374,7 @@ Ext.define("Ext.ux.google.Map", {
       ) {
         coordinates = new gm.LatLng(
           coordinates.latitude,
-          coordinates.longitude,
+          coordinates.longitude
         );
       }
 
@@ -388,7 +388,7 @@ Ext.define("Ext.ux.google.Map", {
         map.panTo(coordinates);
       } else {
         this.options = Ext.apply(this.getMapOptions(), {
-          center: coordinates,
+          center: coordinates
         });
       }
     }
@@ -405,7 +405,7 @@ Ext.define("Ext.ux.google.Map", {
     zoom = map && map.getZoom ? map.getZoom() : mapOptions.zoom || 10;
 
     this.options = Ext.apply(mapOptions, {
-      zoom: zoom,
+      zoom: zoom
     });
 
     this.fireEvent("zoomchange", this, map, zoom);
@@ -423,7 +423,7 @@ Ext.define("Ext.ux.google.Map", {
       map && map.getMapTypeId ? map.getMapTypeId() : mapOptions.mapTypeId;
 
     this.options = Ext.apply(mapOptions, {
-      mapTypeId: mapTypeId,
+      mapTypeId: mapTypeId
     });
 
     this.fireEvent("typechange", this, map, mapTypeId);
@@ -440,7 +440,7 @@ Ext.define("Ext.ux.google.Map", {
     center = map && map.getCenter ? map.getCenter() : mapOptions.center;
 
     this.options = Ext.apply(mapOptions, {
-      center: center,
+      center: center
     });
 
     this.fireEvent("centerchange", this, map, center);
@@ -455,5 +455,5 @@ Ext.define("Ext.ux.google.Map", {
     }
 
     this.callParent();
-  },
+  }
 });

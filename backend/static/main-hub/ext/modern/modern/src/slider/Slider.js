@@ -53,10 +53,10 @@ Ext.define("Ext.slider.Slider", {
         translatable: {
           easingX: {
             duration: 300,
-            type: "ease-out",
-          },
-        },
-      },
+            type: "ease-out"
+          }
+        }
+      }
     },
 
     /**
@@ -120,7 +120,7 @@ Ext.define("Ext.slider.Slider", {
      * @cfg {Boolean} readOnly
      * @accessor
      */
-    readOnly: false,
+    readOnly: false
   },
 
   /**
@@ -140,12 +140,12 @@ Ext.define("Ext.slider.Slider", {
   template: [
     {
       reference: "trackElement",
-      cls: Ext.baseCSSPrefix + "track-el",
+      cls: Ext.baseCSSPrefix + "track-el"
     },
     {
       reference: "thumbWrapElement",
-      cls: Ext.baseCSSPrefix + "thumb-wrap-el",
-    },
+      cls: Ext.baseCSSPrefix + "thumb-wrap-el"
+    }
   ],
 
   fillSelector: "." + Ext.baseCSSPrefix + "fill-el",
@@ -174,7 +174,7 @@ Ext.define("Ext.slider.Slider", {
     element.on({
       scope: this,
       tap: "onTap",
-      resize: "onResize",
+      resize: "onResize"
     });
 
     thumb = this.thumbs[0];
@@ -287,7 +287,7 @@ Ext.define("Ext.slider.Slider", {
       index = me.getThumbIndex(thumb),
       offsetValueRatio = me.offsetValueRatio,
       constrainedValue = me.constrainValue(
-        me.getMinValue() + offsetX / offsetValueRatio,
+        me.getMinValue() + offsetX / offsetValueRatio
       );
 
     e.stopPropagation();
@@ -347,16 +347,16 @@ Ext.define("Ext.slider.Slider", {
     if (previousThumb) {
       previousThumb.getDraggable().addExtraConstraint({
         max: {
-          x: offsetX - (allowThumbsOverlapping ? 0 : thumbWidth),
-        },
+          x: offsetX - (allowThumbsOverlapping ? 0 : thumbWidth)
+        }
       });
     }
 
     if (nextThumb) {
       nextThumb.getDraggable().addExtraConstraint({
         min: {
-          x: offsetX + (allowThumbsOverlapping ? 0 : thumbWidth),
-        },
+          x: offsetX + (allowThumbsOverlapping ? 0 : thumbWidth)
+        }
       });
     }
   },
@@ -454,7 +454,7 @@ Ext.define("Ext.slider.Slider", {
           "Invalid values of '" +
             Ext.encode(values) +
             "', values at smaller indexes must " +
-            "be smaller than or equal to values at greater indexes",
+            "be smaller than or equal to values at greater indexes"
         );
         //</debug>
         filteredValue = previousFilteredValue;
@@ -744,6 +744,6 @@ Ext.define("Ext.slider.Slider", {
 
     onThumbAnimationEnd: function () {
       this.isThumbAnimating--;
-    },
-  },
+    }
+  }
 });

@@ -465,8 +465,8 @@ Ext.define("Ext.chart.series.Series", {
       },
       $value: {
         fillStyle: "yellow",
-        strokeStyle: "red",
-      },
+        strokeStyle: "red"
+      }
     },
 
     /**
@@ -514,7 +514,7 @@ Ext.define("Ext.chart.series.Series", {
      * @cfg {Ext.draw.sprite.Sprite} tooltip.renderer.ctx.sprite The sprite (item)
      * target of the tooltip
      */
-    tooltip: null,
+    tooltip: null
   },
 
   directions: [],
@@ -568,12 +568,12 @@ Ext.define("Ext.chart.series.Series", {
   applyAnimation: function (newAnimation, oldAnimation) {
     if (!newAnimation) {
       newAnimation = {
-        duration: 0,
+        duration: 0
       };
     } else if (newAnimation === true) {
       newAnimation = {
         easing: "easeInOut",
-        duration: 500,
+        duration: 500
       };
     }
     return oldAnimation
@@ -585,7 +585,7 @@ Ext.define("Ext.chart.series.Series", {
     var chart = this.getChart();
     if (chart && chart.animationSuspendCount) {
       return {
-        duration: 0,
+        duration: 0
       };
     } else {
       return this.callParent();
@@ -697,18 +697,18 @@ Ext.define("Ext.chart.series.Series", {
     if (config.tips) {
       config = Ext.apply(
         {
-          tooltip: config.tips,
+          tooltip: config.tips
         },
-        config,
+        config
       );
     }
     // Backward compatibility with Touch.
     if (config.highlightCfg) {
       config = Ext.apply(
         {
-          highlight: config.highlightCfg,
+          highlight: config.highlightCfg
         },
-        config,
+        config
       );
     }
 
@@ -743,9 +743,9 @@ Ext.define("Ext.chart.series.Series", {
         constrainPosition: true,
         shrinkWrapDock: true,
         autoHide: true,
-        mouseOffset: [20, 20],
+        mouseOffset: [20, 20]
       },
-      tooltip,
+      tooltip
     );
 
     return Ext.create(config);
@@ -797,7 +797,7 @@ Ext.define("Ext.chart.series.Series", {
     // It aligns using the component level defaultAlign config.
     tooltip.pointerEvent = event;
     tooltip.currentTarget.attach(
-      (item.sprite.length ? item.sprite[0] : item.sprite).getSurface().el.dom,
+      (item.sprite.length ? item.sprite[0] : item.sprite).getSurface().el.dom
     );
 
     Ext.callback(
@@ -805,7 +805,7 @@ Ext.define("Ext.chart.series.Series", {
       tooltip.scope,
       [tooltip, item.record, item],
       0,
-      me,
+      me
     );
 
     if (tooltip.isVisible()) {
@@ -855,14 +855,14 @@ Ext.define("Ext.chart.series.Series", {
       oldStore.un({
         datachanged: "onDataChanged",
         update: "onDataChanged",
-        scope: me,
+        scope: me
       });
     }
     if (newStore) {
       newStore.on({
         datachanged: "onDataChanged",
         update: "onDataChanged",
-        scope: me,
+        scope: me
       });
       sprites = me.getSprites();
       for (i = 0, len = sprites.length; i < len; i++) {
@@ -1097,7 +1097,7 @@ Ext.define("Ext.chart.series.Series", {
     for (i = 0, ln = directions.length; i < ln; i++) {
       direction = directions[i];
       directionToFieldsMap[direction] = me.getFields(
-        me["fieldCategory" + direction],
+        me["fieldCategory" + direction]
       );
     }
 
@@ -1118,7 +1118,7 @@ Ext.define("Ext.chart.series.Series", {
       if (directionToAxesMap[direction]) {
         axis = me.findMatchingAxis(
           directionToAxesMap[direction],
-          directionToFieldsMap[direction],
+          directionToFieldsMap[direction]
         );
         if (axis) {
           me["set" + direction + "Axis"](axis);
@@ -1196,7 +1196,7 @@ Ext.define("Ext.chart.series.Series", {
         }
         if (label.display) {
           oldLabel.setAttributes({
-            hidden: label.display === "none",
+            hidden: label.display === "none"
           });
         }
       }
@@ -1240,7 +1240,7 @@ Ext.define("Ext.chart.series.Series", {
   getDefaultSpriteConfig: function () {
     return {
       type: this.seriesType,
-      renderer: this.getRenderer(),
+      renderer: this.getRenderer()
     };
   },
 
@@ -1270,7 +1270,7 @@ Ext.define("Ext.chart.series.Series", {
 
     if (markers) {
       markers.getTemplate().setAttributes({
-        hidden: !showMarkers,
+        hidden: !showMarkers
       });
     }
   },
@@ -1290,7 +1290,7 @@ Ext.define("Ext.chart.series.Series", {
     if (itemInstancing) {
       sprite.itemsMarker = me.createItemInstancingSprite(
         sprite,
-        itemInstancing,
+        itemInstancing
       );
     }
 
@@ -1305,7 +1305,7 @@ Ext.define("Ext.chart.series.Series", {
         markers.setTemplate(markersTpl);
         markers.getTemplate().fx.setCustomDurations({
           translationX: 0,
-          translationY: 0,
+          translationY: 0
         });
         sprite.dataMarker = markers;
         sprite.bindMarker("markers", markers);
@@ -1375,7 +1375,7 @@ Ext.define("Ext.chart.series.Series", {
   applyStyle: function (style, oldStyle) {
     // TODO: Incremental setter
     var cls = Ext.ClassManager.get(
-      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType),
+      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType)
     );
     if (cls && cls.def) {
       style = cls.def.normalize(style);
@@ -1385,7 +1385,7 @@ Ext.define("Ext.chart.series.Series", {
 
   applySubStyle: function (subStyle, oldSubStyle) {
     var cls = Ext.ClassManager.get(
-      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType),
+      Ext.ClassManager.getNameByAlias("sprite." + this.seriesType)
     );
     if (cls && cls.def) {
       subStyle = cls.def.batchedNormalize(subStyle, true);
@@ -1397,7 +1397,7 @@ Ext.define("Ext.chart.series.Series", {
     var type =
         (marker && marker.type) || (oldMarker && oldMarker.type) || "circle",
       cls = Ext.ClassManager.get(
-        Ext.ClassManager.getNameByAlias("sprite." + type),
+        Ext.ClassManager.getNameByAlias("sprite." + type)
       );
     if (cls && cls.def) {
       marker = cls.def.normalize(Ext.isObject(marker) ? marker : {}, true);
@@ -1410,7 +1410,7 @@ Ext.define("Ext.chart.series.Series", {
     var type =
         (marker && marker.type) || (oldMarker && oldMarker.type) || "circle",
       cls = Ext.ClassManager.get(
-        Ext.ClassManager.getNameByAlias("sprite." + type),
+        Ext.ClassManager.getNameByAlias("sprite." + type)
       );
     if (cls && cls.def) {
       marker = cls.def.batchedNormalize(marker, true);
@@ -1625,7 +1625,7 @@ Ext.define("Ext.chart.series.Series", {
       seriesThemeSubStyle = (theme && theme.subStyle) || {},
       subStyle = Ext.applyIf(
         Ext.apply({}, me.getSubStyle()),
-        seriesThemeSubStyle,
+        seriesThemeSubStyle
       );
     return subStyle;
   },
@@ -1702,7 +1702,7 @@ Ext.define("Ext.chart.series.Series", {
     markerSubStyle = me.getMarkerSubStyle();
     themeMarkerSubStyle = me.styleDataForIndex(
       theme && theme.markerSubStyle,
-      i,
+      i
     );
 
     Ext.apply(result, themeStyle);
@@ -1784,7 +1784,7 @@ Ext.define("Ext.chart.series.Series", {
         index: index,
         record: me.getStore().getData().items[index],
         field: me.getYField(),
-        sprite: sprite,
+        sprite: sprite
       };
       return item;
     }
@@ -1846,7 +1846,7 @@ Ext.define("Ext.chart.series.Series", {
       mark: "black",
       disabled: this.getHidden(),
       series: this.getId(),
-      index: 0,
+      index: 0
     });
   },
 
@@ -1884,5 +1884,5 @@ Ext.define("Ext.chart.series.Series", {
       clearTimeout(me.tooltipTimeout);
     }
     me.callParent();
-  },
+  }
 });

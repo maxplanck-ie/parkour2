@@ -21,7 +21,7 @@ describe("Ext.view.MultiSelector", function () {
       "Nige",
       "Phil",
       "Ross",
-      "Ryan",
+      "Ryan"
     ],
     lastNames = [
       "Toll",
@@ -31,7 +31,7 @@ describe("Ext.view.MultiSelector", function () {
       "White",
       "Guerrant",
       "Gerbasi",
-      "Smith",
+      "Smith"
     ],
     data = [],
     rand = 37,
@@ -46,8 +46,8 @@ describe("Ext.view.MultiSelector", function () {
     model: "spec.Employee",
     proxy: {
       type: "ajax",
-      url: "foo",
-    },
+      url: "foo"
+    }
   };
 
   var defaultSearchStoreCfg = {
@@ -56,8 +56,8 @@ describe("Ext.view.MultiSelector", function () {
     asynchronousLoad: false,
     proxy: {
       type: "ajax",
-      url: "bar",
-    },
+      url: "bar"
+    }
   };
 
   for (i = 0; i < lastNames.length; ++i) {
@@ -65,7 +65,7 @@ describe("Ext.view.MultiSelector", function () {
     data.push({
       id: ++sequence,
       forename: (s = firstNames[i]),
-      surname: lastNames[i],
+      surname: lastNames[i]
     });
     map[s] = 1;
 
@@ -80,7 +80,7 @@ describe("Ext.view.MultiSelector", function () {
       data.push({
         id: ++sequence,
         forename: s,
-        surname: lastNames[i],
+        surname: lastNames[i]
       });
     }
   }
@@ -98,13 +98,13 @@ describe("Ext.view.MultiSelector", function () {
 
       viewConfig: {
         deferEmptyText: false,
-        emptyText: "No employees selected",
+        emptyText: "No employees selected"
       },
 
       search: {
         field: "name",
-        store: searchStoreCfg,
-      },
+        store: searchStoreCfg
+      }
     });
   }
 
@@ -113,7 +113,7 @@ describe("Ext.view.MultiSelector", function () {
 
     Ext.Ajax.mockComplete({
       status: status || 200,
-      responseText: responseText,
+      responseText: responseText
     });
   }
 
@@ -127,13 +127,13 @@ describe("Ext.view.MultiSelector", function () {
       extend: "Ext.data.Model",
       fields: [
         {
-          name: "id",
+          name: "id"
         },
         {
-          name: "forename",
+          name: "forename"
         },
         {
-          name: "surname",
+          name: "surname"
         },
         {
           name: "name",
@@ -141,9 +141,9 @@ describe("Ext.view.MultiSelector", function () {
             return rec.editing
               ? v
               : rec.get("forename") + " " + rec.get("surname");
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
   });
 
@@ -208,7 +208,7 @@ describe("Ext.view.MultiSelector", function () {
             completeRequest();
 
             expect(
-              searchGrid.getSelectionModel().getSelection()[0].get("name"),
+              searchGrid.getSelectionModel().getSelection()[0].get("name")
             ).toBe(multiSelector.store.getAt(0).get("name"));
           });
         });
@@ -251,9 +251,9 @@ describe("Ext.view.MultiSelector", function () {
               {
                 forename: "Ben",
                 surname: "Toll",
-                id: 1,
-              },
-            ],
+                id: 1
+              }
+            ]
           };
 
           var searchStoreCfg = {
@@ -265,19 +265,19 @@ describe("Ext.view.MultiSelector", function () {
               {
                 forename: "Ben",
                 surname: "Toll",
-                id: 1,
+                id: 1
               },
               {
                 forename: "Don",
                 surname: "Griffin",
-                id: 2,
+                id: 2
               },
               {
                 forename: "Evan",
                 surname: "Trimboli",
-                id: 3,
-              },
-            ],
+                id: 3
+              }
+            ]
           };
 
           makeSelector(storeCfg, searchStoreCfg);
@@ -289,7 +289,7 @@ describe("Ext.view.MultiSelector", function () {
             multiSelector
               .down("gridpanel")
               .selModel.getSelection()[0]
-              .get("name"),
+              .get("name")
           ).toBe(multiSelector.store.getAt(0).get("name"));
         });
 
@@ -333,9 +333,9 @@ describe("Ext.view.MultiSelector", function () {
             {
               forename: "Ben",
               surname: "Toll",
-              id: 1,
-            },
-          ],
+              id: 1
+            }
+          ]
         };
 
         var searchStoreCfg = {
@@ -347,19 +347,19 @@ describe("Ext.view.MultiSelector", function () {
             {
               forename: "Ben",
               surname: "Toll",
-              id: 1,
+              id: 1
             },
             {
               forename: "Don",
               surname: "Griffin",
-              id: 2,
+              id: 2
             },
             {
               forename: "Evan",
               surname: "Trimboli",
-              id: 3,
-            },
-          ],
+              id: 3
+            }
+          ]
         };
 
         makeSelector(storeCfg, searchStoreCfg);
@@ -377,7 +377,7 @@ describe("Ext.view.MultiSelector", function () {
         multiSelector.searchPopup.deselectRecords(record);
 
         expect(
-          multiSelector.down("gridpanel").selModel.getSelection().length,
+          multiSelector.down("gridpanel").selModel.getSelection().length
         ).toBe(0);
       });
 

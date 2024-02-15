@@ -65,7 +65,7 @@ Ext.define(
         Ext.applyIf(target.prototype || target, {
           ariaRole: "application",
 
-          viewportCls: Ext.baseCSSPrefix + "viewport",
+          viewportCls: Ext.baseCSSPrefix + "viewport"
         });
 
         Ext.override(target, {
@@ -167,8 +167,8 @@ Ext.define(
               me.getScrollable() || {
                 x: false,
                 y: false,
-                element: body,
-              },
+                element: body
+              }
             );
 
             // If we are not scrolling the body, the body has to be overflow:hidden
@@ -195,7 +195,7 @@ Ext.define(
               // any derived class poke on the proper object!
               me.initInheritedState(
                 (me.inheritedState = root),
-                (me.inheritedStateInner = Ext.Object.chain(root)),
+                (me.inheritedStateInner = Ext.Object.chain(root))
               );
             } else {
               me.callParent([inheritedState, inheritedStateInner]);
@@ -248,7 +248,7 @@ Ext.define(
 
               if (el) {
                 el.saveTabbableState({
-                  skipSelf: true,
+                  skipSelf: true
                 });
               }
             },
@@ -259,10 +259,10 @@ Ext.define(
               if (el) {
                 el.restoreTabbableState(/* skipSelf = */ true);
               }
-            },
-          },
+            }
+          }
         });
-      },
+      }
     },
 
     privates: {
@@ -276,10 +276,10 @@ Ext.define(
         this.cmp.handleViewportResize();
 
         this.callParent();
-      },
-    },
+      }
+    }
   },
   function (Viewport) {
     Viewport.prototype.decorate = Viewport.decorate;
-  },
+  }
 );

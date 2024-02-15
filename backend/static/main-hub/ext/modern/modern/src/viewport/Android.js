@@ -9,8 +9,8 @@ Ext.define(
 
     config: {
       translatable: {
-        translationMethod: "csstransform",
-      },
+        translationMethod: "csstransform"
+      }
     },
 
     constructor: function () {
@@ -20,7 +20,7 @@ Ext.define(
         orientationchange: "hideKeyboardIfNeeded",
         scope: this,
         // run our handler before user code
-        priority: 1001,
+        priority: 1001
       });
     },
 
@@ -102,10 +102,10 @@ Ext.define(
           //<debug>
           Ext.Logger.error(
             "Timeout waiting for viewport's outerHeight to change before firing orientationchange",
-            this,
+            this
           );
           //</debug>
-        },
+        }
       );
 
       return this;
@@ -134,14 +134,14 @@ Ext.define(
       this.setHeight(height);
 
       var isHeightMaximized = Ext.Function.bind(this.isHeightMaximized, this, [
-        height,
+        height
       ]);
 
       this.scrollToTop();
       this.waitUntil(
         isHeightMaximized,
         this.fireMaximizeEvent,
-        this.fireMaximizeEvent,
+        this.fireMaximizeEvent
       );
     },
 
@@ -166,7 +166,7 @@ Ext.define(
       ) {
         e.preventDefault();
       }
-    },
+    }
   },
   function () {
     if (!Ext.os.is.Android) {
@@ -224,7 +224,7 @@ Ext.define(
           }
 
           return this.callParent(arguments);
-        },
+        }
       });
     }
 
@@ -233,7 +233,7 @@ Ext.define(
         onReady: function () {
           this.addWindowListener(
             "resize",
-            Ext.Function.bind(this.onWindowResize, this),
+            Ext.Function.bind(this.onWindowResize, this)
           );
 
           this.callParent(arguments);
@@ -261,28 +261,28 @@ Ext.define(
           ) {
             this.scrollToTop();
           }
-        },
+        }
       });
     } else if (version.gtEq("3.1")) {
       this.override({
         isHeightMaximized: function (height) {
           this.scrollToTop();
           return this.getWindowHeight() === height - 1;
-        },
+        }
       });
     } else if (version.match("3")) {
       this.override({
         isHeightMaximized: function () {
           this.scrollToTop();
           return true;
-        },
+        }
       });
     }
 
     if (version.gtEq("4")) {
       this.override({
-        doBlurInput: Ext.emptyFn,
+        doBlurInput: Ext.emptyFn
       });
     }
-  },
+  }
 );

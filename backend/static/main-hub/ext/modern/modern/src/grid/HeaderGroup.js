@@ -33,8 +33,8 @@ Ext.define("Ext.grid.HeaderGroup", {
 
     layout: {
       type: "hbox",
-      align: "stretch",
-    },
+      align: "stretch"
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "headergroup",
@@ -56,17 +56,17 @@ Ext.define("Ext.grid.HeaderGroup", {
               children: [
                 {
                   reference: "textElement",
-                  className: Ext.baseCSSPrefix + "text-el",
-                },
-              ],
-            },
-          ],
+                  className: Ext.baseCSSPrefix + "text-el"
+                }
+              ]
+            }
+          ]
         },
         {
           reference: "innerElement",
-          className: Ext.baseCSSPrefix + "inner",
-        },
-      ],
+          className: Ext.baseCSSPrefix + "inner"
+        }
+      ]
     };
   },
 
@@ -90,18 +90,18 @@ Ext.define("Ext.grid.HeaderGroup", {
       show: "onColumnShow",
       hide: "onColumnHide",
       delegate: "> column",
-      scope: "this",
+      scope: "this"
     });
 
     me.on({
       show: "onShow",
-      scope: "this",
+      scope: "this"
     });
 
     me.textElement.on({
       tap: "onHeaderGroupTap",
       longpress: "onHeaderGroupLongPress",
-      scope: this,
+      scope: this
     });
 
     me.callParent();
@@ -202,6 +202,6 @@ Ext.define("Ext.grid.HeaderGroup", {
       }
 
       return count;
-    },
-  },
+    }
+  }
 });

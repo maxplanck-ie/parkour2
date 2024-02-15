@@ -113,7 +113,7 @@ Ext.define("Ext.field.Slider", {
 
   config: {
     component: {
-      xtype: "slider",
+      xtype: "slider"
     },
 
     /**
@@ -141,7 +141,7 @@ Ext.define("Ext.field.Slider", {
      * @cfg {Number/Number[]} value
      * @accessor
      */
-    value: 0,
+    value: 0
   },
 
   classCls: Ext.baseCSSPrefix + "sliderfield",
@@ -166,13 +166,13 @@ Ext.define("Ext.field.Slider", {
      * @cfg {Number} maxValue
      * @accessor
      */
-    maxValue: 100,
+    maxValue: 100
   },
 
   defaultBindProperty: "value",
   twoWayBindable: {
     values: 1,
-    value: 1,
+    value: 1
   },
 
   /**
@@ -203,7 +203,7 @@ Ext.define("Ext.field.Slider", {
       change: "onSliderChange",
       dragstart: "onSliderDragStart",
       drag: "onSliderDrag",
-      dragend: "onSliderDragEnd",
+      dragend: "onSliderDragEnd"
     });
   },
 
@@ -315,5 +315,5 @@ Ext.define("Ext.field.Slider", {
     if (value && value.length > 1) {
       this.addCls(Ext.baseCSSPrefix + "slider-multiple");
     }
-  },
+  }
 });

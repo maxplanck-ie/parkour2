@@ -17,7 +17,7 @@ if (!fs.existsSync(TMP_DIR_NAME)) {
 
 var defaultHeaders = {
   "Content-Type": "text/plain",
-  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Origin": "*"
 };
 
 function respond(response, code, data, headers) {
@@ -79,8 +79,8 @@ http
         var script = helpers.interpolate(
           SCRIPT,
           helpers.apply(config, {
-            filename: serverFileName,
-          }),
+            filename: serverFileName
+          })
         );
 
         fs.writeFile(
@@ -103,7 +103,7 @@ http
                   respond(response, 200, data, {
                     "Content-Type": config.contentType,
                     "Content-Disposition":
-                      "attachment; filename=" + userFileName,
+                      "attachment; filename=" + userFileName
                   });
                   fs.unlink(serverFileName, function () {
                     if (err) throw err;
@@ -116,11 +116,11 @@ http
                   500,
                   "Internal server error.\n" +
                     "phantomjs exited with code " +
-                    code,
+                    code
                 );
               }
             });
-          },
+          }
         );
       });
     } else {

@@ -35,7 +35,7 @@ Ext.define("MainHub.overrides.grid.plugin.RowExpander", {
         rowIndex,
         cellIndex,
         e,
-        record,
+        record
       ) {
         var isTouch = e.pointerType === "touch";
         var isExpanderClick = !!e.getTarget(".request-attachments-expander");
@@ -66,7 +66,7 @@ Ext.define("MainHub.overrides.grid.plugin.RowExpander", {
       // In an editor, this shows nothing.
       editRenderer: function () {
         return "&#160;";
-      },
+      }
     };
-  },
+  }
 });

@@ -15,12 +15,12 @@ Ext.define("Ext.util.translatable.Abstract", {
     easing: null,
 
     easingX: {
-      duration: 300,
+      duration: 300
     },
 
     easingY: {
-      duration: 300,
-    },
+      duration: 300
+    }
   },
 
   /**
@@ -307,5 +307,5 @@ Ext.define("Ext.util.translatable.Abstract", {
 
     me.destroying = false;
     me.destroyed = true;
-  },
+  }
 });

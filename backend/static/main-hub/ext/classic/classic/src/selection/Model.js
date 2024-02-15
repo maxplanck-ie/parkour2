@@ -19,7 +19,7 @@ Ext.define("Ext.selection.Model", {
 
   factoryConfig: {
     // Need to override the defaultType, otherwise this class would be the default, and it is an abstract base.
-    defaultType: "dataviewmodel",
+    defaultType: "dataviewmodel"
   },
 
   // We do not want "_hidden" style backing properties.
@@ -38,7 +38,7 @@ Ext.define("Ext.selection.Model", {
      * @private
      * The {@link Ext.util.Bag/Ext.util.Collection} to use as the collection of selected records.
      */
-    selected: {},
+    selected: {}
   },
 
   // lastSelected
@@ -139,7 +139,7 @@ Ext.define("Ext.selection.Model", {
     me.modes = {
       SINGLE: true,
       SIMPLE: true,
-      MULTI: true,
+      MULTI: true
     };
 
     me.callParent([cfg]);
@@ -160,10 +160,10 @@ Ext.define("Ext.selection.Model", {
       selected = new Ext.util[this.ordered ? "Collection" : "Bag"](
         Ext.apply(
           {
-            rootProperty: "data",
+            rootProperty: "data"
           },
-          selected,
-        ),
+          selected
+        )
       );
     }
     return selected;
@@ -182,7 +182,7 @@ Ext.define("Ext.selection.Model", {
 
       // BufferedStore events
       pageadd: me.onPageAdd,
-      pageremove: me.onPageRemove,
+      pageremove: me.onPageRemove
     };
   },
 
@@ -1397,6 +1397,6 @@ Ext.define("Ext.selection.Model", {
       } else {
         me.doSelect(record, false);
       }
-    },
-  },
+    }
+  }
 });

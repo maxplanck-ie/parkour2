@@ -16,18 +16,18 @@ describe("Ext.form.Labelable", function () {
           initRenderData: function () {
             return Ext.applyIf(
               this.callParent(),
-              this.getLabelableRenderData(),
+              this.getLabelableRenderData()
             );
           },
           privates: {
             initRenderTpl: function () {
               this.renderTpl = this.lookupTpl("labelableRenderTpl");
               return this.callParent();
-            },
-          },
+            }
+          }
         },
-        props,
-      ),
+        props
+      )
     );
   }
 
@@ -36,10 +36,10 @@ describe("Ext.form.Labelable", function () {
       "spec.Labelable",
       Ext.apply(
         {
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -57,7 +57,7 @@ describe("Ext.form.Labelable", function () {
         extraFieldBodyCls: "spec-body-extra",
         getSubTplMarkup: function () {
           return '<div style="height:50px;width:150px;background-color:green;"></div>';
-        },
+        }
       });
     });
 
@@ -131,7 +131,7 @@ describe("Ext.form.Labelable", function () {
 
       it("should render an errorEl if msgTarget is 'side'", function () {
         create({
-          msgTarget: "side",
+          msgTarget: "side"
         });
         expect(component.bodyEl.next()).toBe(component.errorWrapEl);
         expect(component.errorWrapEl.first()).toBe(component.errorEl);
@@ -139,7 +139,7 @@ describe("Ext.form.Labelable", function () {
 
       it("should render an errorEl if msgTarget is 'under'", function () {
         create({
-          msgTarget: "under",
+          msgTarget: "under"
         });
         expect(component.bodyEl.next()).toBe(component.errorWrapEl);
         expect(component.errorWrapEl.first()).toBe(component.errorEl);
@@ -209,7 +209,7 @@ describe("Ext.form.Labelable", function () {
       it("should render ariaHelpEl when ariaHelp is configured", function () {
         create({
           renderAriaElements: true,
-          ariaHelp: "foo bar",
+          ariaHelp: "foo bar"
         });
 
         expect(component.ariaHelpEl.dom).toBeDefined();
@@ -218,7 +218,7 @@ describe("Ext.form.Labelable", function () {
       it("should assign hidden-offsets to ariaHelpEl when rendered", function () {
         create({
           renderAriaElements: true,
-          ariaHelp: "blerg throbbe",
+          ariaHelp: "blerg throbbe"
         });
 
         expect(component.ariaHelpEl.hasCls("x-hidden-offsets")).toBe(true);
@@ -234,21 +234,21 @@ describe("Ext.form.Labelable", function () {
       it("should render a hidden label if hideLabel:true was configured", function () {
         create({
           fieldLabel: "Label",
-          hideLabel: true,
+          hideLabel: true
         });
         expect(component.labelEl.isVisible()).toBe(false);
       });
 
       it("should render a visible label if fieldLabel was configured", function () {
         create({
-          fieldLabel: "Label",
+          fieldLabel: "Label"
         });
         expect(component.labelEl.isVisible()).toBe(true);
       });
 
       it("should render the fieldLabel into the labelEl", function () {
         create({
-          fieldLabel: "Label",
+          fieldLabel: "Label"
         });
 
         expect(component.labelTextEl.dom).hasHTML("Label:");
@@ -257,7 +257,7 @@ describe("Ext.form.Labelable", function () {
       it("should render the labelSeparator after the label", function () {
         create({
           fieldLabel: "Label",
-          labelSeparator: "-",
+          labelSeparator: "-"
         });
 
         expect(component.labelTextEl.dom).hasHTML("Label-");
@@ -266,7 +266,7 @@ describe("Ext.form.Labelable", function () {
       it("should not render the separator if labelSeparator is empty", function () {
         create({
           fieldLabel: "Label",
-          labelSeparator: "",
+          labelSeparator: ""
         });
 
         expect(component.labelTextEl.dom).hasHTML("Label");
@@ -276,7 +276,7 @@ describe("Ext.form.Labelable", function () {
         it("should add the labelStyle to the labelEl", function () {
           create({
             fieldLabel: "Foo",
-            labelStyle: "border-top: 50px solid red;",
+            labelStyle: "border-top: 50px solid red;"
           });
           expect(component.labelEl.getStyle("border-top-width")).toBe("50px");
         });
@@ -290,7 +290,7 @@ describe("Ext.form.Labelable", function () {
         define({
           getSubTplMarkup: function () {
             return '<div style="background-color:green;width:200px;height:50px;"></div>';
-          },
+          }
         });
       });
 
@@ -308,7 +308,7 @@ describe("Ext.form.Labelable", function () {
 
       it("should hide the label element when setting an empty label", function () {
         create({
-          fieldLabel: "foo",
+          fieldLabel: "foo"
         });
         component.setFieldLabel("");
         expect(component.labelEl.isVisible()).toBe(false);
@@ -317,33 +317,33 @@ describe("Ext.form.Labelable", function () {
       describe("with under error", function () {
         it("should add the 'x-form-error-wrap-under-side-label' cls to the errorWrapEl when the label is on the side", function () {
           create({
-            msgTarget: "under",
+            msgTarget: "under"
           });
           component.setFieldLabel("foo");
           expect(component.errorWrapEl).toHaveCls(
-            "x-form-error-wrap-under-side-label",
+            "x-form-error-wrap-under-side-label"
           );
         });
 
         it("should not add the 'x-form-error-wrap-under-side-label' cls to the errorWrapEl when the label is on the top", function () {
           create({
             msgTarget: "under",
-            labelAlign: "top",
+            labelAlign: "top"
           });
           component.setFieldLabel("foo");
           expect(component.errorWrapEl).not.toHaveCls(
-            "x-form-error-wrap-under-side-label",
+            "x-form-error-wrap-under-side-label"
           );
         });
 
         it("should remove the 'x-form-error-wrap-under-side-label' cls from the errorWrapEl when empty label is set", function () {
           create({
             msgTarget: "under",
-            fieldLabel: "foo",
+            fieldLabel: "foo"
           });
           component.setFieldLabel("");
           expect(component.errorWrapEl).not.toHaveCls(
-            "x-form-error-wrap-under-side-label",
+            "x-form-error-wrap-under-side-label"
           );
         });
       });
@@ -354,7 +354,7 @@ describe("Ext.form.Labelable", function () {
         define({
           getSubTplMarkup: function () {
             return "<div></div>";
-          },
+          }
         });
       });
 
@@ -363,7 +363,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "Foo",
             hideLabel: false,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideLabel(true);
           component.render(Ext.getBody());
@@ -374,7 +374,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "Foo",
             hideLabel: true,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideLabel(false);
           component.render(Ext.getBody());
@@ -386,7 +386,7 @@ describe("Ext.form.Labelable", function () {
         it("should hide the label", function () {
           create({
             fieldLabel: "Foo",
-            hideLabel: false,
+            hideLabel: false
           });
           component.setHideLabel(true);
           expect(component.labelEl.isVisible()).toBe(false);
@@ -395,7 +395,7 @@ describe("Ext.form.Labelable", function () {
         it("should show the label", function () {
           create({
             fieldLabel: "Foo",
-            hideLabel: true,
+            hideLabel: true
           });
           component.setHideLabel(false);
           expect(component.labelEl.isVisible()).toBe(true);
@@ -404,7 +404,7 @@ describe("Ext.form.Labelable", function () {
         it("should run a layout", function () {
           create({
             fieldLabel: "Foo",
-            hideLabel: true,
+            hideLabel: true
           });
           var count = component.componentLayoutCounter;
           component.setHideLabel(false);
@@ -421,7 +421,7 @@ describe("Ext.form.Labelable", function () {
         define({
           getSubTplMarkup: function () {
             return "<div></div>";
-          },
+          }
         });
       });
 
@@ -430,7 +430,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "",
             hideEmptyLabel: false,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideEmptyLabel(true);
           component.render(Ext.getBody());
@@ -441,7 +441,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "",
             hideEmptyLabel: true,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideEmptyLabel(false);
           component.render(Ext.getBody());
@@ -453,7 +453,7 @@ describe("Ext.form.Labelable", function () {
             fieldLabel: "",
             hideEmptyLabel: true,
             hideLabel: true,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideEmptyLabel(false);
           component.render(Ext.getBody());
@@ -464,7 +464,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "Foo",
             hideEmptyLabel: false,
-            renderTo: null,
+            renderTo: null
           });
           component.setHideEmptyLabel(true);
           component.render(Ext.getBody());
@@ -476,7 +476,7 @@ describe("Ext.form.Labelable", function () {
         it("should hide if the label is empty", function () {
           create({
             fieldLabel: "",
-            hideEmptyLabel: false,
+            hideEmptyLabel: false
           });
           component.setHideEmptyLabel(true);
           expect(component.labelEl.isVisible()).toBe(false);
@@ -485,7 +485,7 @@ describe("Ext.form.Labelable", function () {
         it("should show if the label is empty", function () {
           create({
             fieldLabel: "",
-            hideEmptyLabel: true,
+            hideEmptyLabel: true
           });
           component.setHideEmptyLabel(false);
           expect(component.labelEl.isVisible()).toBe(true);
@@ -495,7 +495,7 @@ describe("Ext.form.Labelable", function () {
           create({
             fieldLabel: "",
             hideEmptyLabel: true,
-            hideLabel: true,
+            hideLabel: true
           });
           component.setHideEmptyLabel(false);
           expect(component.labelEl.isVisible()).toBe(false);
@@ -504,7 +504,7 @@ describe("Ext.form.Labelable", function () {
         it("should not hide if the label is not empty", function () {
           create({
             fieldLabel: "Foo",
-            hideEmptyLabel: false,
+            hideEmptyLabel: false
           });
           component.setHideEmptyLabel(true);
           expect(component.labelEl.isVisible()).toBe(true);
@@ -513,7 +513,7 @@ describe("Ext.form.Labelable", function () {
         it("should run a layout", function () {
           create({
             fieldLabel: "",
-            hideEmptyLabel: true,
+            hideEmptyLabel: true
           });
           var count = component.componentLayoutCounter;
           component.setHideEmptyLabel(false);
@@ -533,7 +533,7 @@ describe("Ext.form.Labelable", function () {
           renderAriaElements: true,
           getSubTplMarkup: function () {
             return "<div></div>";
-          },
+          }
         });
 
         create();
@@ -603,7 +603,7 @@ describe("Ext.form.Labelable", function () {
     var dimensions = {
       1: "width",
       2: "height",
-      3: "width and height",
+      3: "width and height"
     };
 
     function makeLayoutSuite(shrinkWrap, autoFitErrors) {
@@ -643,7 +643,7 @@ describe("Ext.form.Labelable", function () {
                   (shrinkHeight ? bodyHeight + "px;" : "100%;") +
                   '"></div>'
                 );
-              },
+              }
             });
           });
 
@@ -685,10 +685,10 @@ describe("Ext.form.Labelable", function () {
                     '<span style="display:inline-block;width:' +
                     labelInnerWidth +
                     'px;background-color:red;">&nbsp;</span>',
-                  labelSeparator: "",
+                  labelSeparator: ""
                 },
-                cfg,
-              ),
+                cfg
+              )
             );
           }
 
@@ -706,33 +706,33 @@ describe("Ext.form.Labelable", function () {
 
               it("should layout", function () {
                 create({
-                  labelAlign: labelAlign,
+                  labelAlign: labelAlign
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: labelWidth,
-                    h: height,
+                    h: height
                   },
                   ".x-form-item-label-inner": {
                     x: leftLabel
                       ? 0
                       : labelWidth - labelPadding - labelInnerWidth,
                     y: labelInnerY,
-                    w: labelInnerWidth,
+                    w: labelInnerWidth
                   },
                   bodyEl: {
                     x: labelWidth,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
-                  },
+                    h: bodyHeight
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -740,7 +740,7 @@ describe("Ext.form.Labelable", function () {
               it("should layout with side error", function () {
                 create({
                   labelAlign: labelAlign,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -748,66 +748,66 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: labelWidth,
-                    h: height,
+                    h: height
                   },
                   ".x-form-item-label-inner": {
                     x: leftLabel
                       ? 0
                       : labelWidth - labelPadding - labelInnerWidth,
                     y: labelInnerY,
-                    w: labelInnerWidth,
+                    w: labelInnerWidth
                   },
                   bodyEl: {
                     x: labelWidth,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: width - errorWidth,
                     y: 0,
                     w: errorWidth,
-                    h: height,
+                    h: height
                   },
                   errorEl: {
                     x: width - errorWidth + errorIconMargin,
                     y: (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
               it("should layout with hidden side error", function () {
                 create({
                   labelAlign: labelAlign,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w:
                       shrinkWidth && autoFitErrors ? width - errorWidth : width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: labelWidth,
-                    h: height,
+                    h: height
                   },
                   ".x-form-item-label-inner": {
                     x: leftLabel
                       ? 0
                       : labelWidth - labelPadding - labelInnerWidth,
                     y: labelInnerY,
-                    w: labelInnerWidth,
+                    w: labelInnerWidth
                   },
                   bodyEl: {
                     x: labelWidth,
@@ -816,20 +816,20 @@ describe("Ext.form.Labelable", function () {
                       autoFitErrors && !shrinkWidth
                         ? bodyWidth + errorWidth
                         : bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : width - errorWidth,
                     y: autoFitErrors ? 0 : 0,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : height,
+                    h: autoFitErrors ? 0 : height
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : width - errorWidth + errorIconMargin,
                     y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
@@ -839,7 +839,7 @@ describe("Ext.form.Labelable", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -847,63 +847,63 @@ describe("Ext.form.Labelable", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: labelWidth,
                       y: bodyHeight,
                       w: bodyWidth,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
 
               it("should layout with hidden label", function () {
                 create({
                   labelAlign: labelAlign,
-                  hideLabel: true,
+                  hideLabel: true
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
-                  },
+                    h: bodyHeight
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -912,7 +912,7 @@ describe("Ext.form.Labelable", function () {
                 create({
                   labelAlign: labelAlign,
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -920,29 +920,29 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: 0,
                     w: errorWidth,
-                    h: height,
+                    h: height
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
@@ -950,17 +950,17 @@ describe("Ext.form.Labelable", function () {
                 create({
                   labelAlign: labelAlign,
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w:
                       shrinkWidth && autoFitErrors ? width - errorWidth : width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
@@ -969,20 +969,20 @@ describe("Ext.form.Labelable", function () {
                       autoFitErrors && !shrinkWidth
                         ? bodyWidth + errorWidth
                         : bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : 0,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : height,
+                    h: autoFitErrors ? 0 : height
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                     y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
@@ -993,7 +993,7 @@ describe("Ext.form.Labelable", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -1001,31 +1001,31 @@ describe("Ext.form.Labelable", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
             });
           }
@@ -1039,32 +1039,32 @@ describe("Ext.form.Labelable", function () {
             function () {
               it("should layout", function () {
                 create({
-                  labelAlign: "top",
+                  labelAlign: "top"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
-                  },
+                    h: bodyHeight
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -1072,7 +1072,7 @@ describe("Ext.form.Labelable", function () {
               it("should layout with side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -1080,45 +1080,45 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: labelHeight,
                     w: errorWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
               it("should layout with hidden side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 width =
@@ -1127,13 +1127,13 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
@@ -1142,7 +1142,7 @@ describe("Ext.form.Labelable", function () {
                       autoFitErrors && !shrinkWidth
                         ? bodyWidth + errorWidth
                         : bodyWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
@@ -1151,13 +1151,13 @@ describe("Ext.form.Labelable", function () {
                       autoFitErrors && !shrinkWidth
                         ? bodyWidth + errorWidth
                         : bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : labelHeight,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : bodyHeight,
+                    h: autoFitErrors ? 0 : bodyHeight
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
@@ -1165,15 +1165,15 @@ describe("Ext.form.Labelable", function () {
                       ? 0
                       : labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
               it("should layout with under error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -1181,61 +1181,61 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
 
               it("should layout with hidden label", function () {
                 create({
                   labelAlign: "top",
-                  hideLabel: true,
+                  hideLabel: true
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
-                  },
+                    h: bodyHeight
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -1244,7 +1244,7 @@ describe("Ext.form.Labelable", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -1252,29 +1252,29 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: 0,
                     w: errorWidth,
-                    h: height,
+                    h: height
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
@@ -1282,17 +1282,17 @@ describe("Ext.form.Labelable", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w:
                       shrinkWidth && autoFitErrors ? width - errorWidth : width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
@@ -1301,20 +1301,20 @@ describe("Ext.form.Labelable", function () {
                       autoFitErrors && !shrinkWidth
                         ? bodyWidth + errorWidth
                         : bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : 0,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : height,
+                    h: autoFitErrors ? 0 : height
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                     y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
@@ -1322,7 +1322,7 @@ describe("Ext.form.Labelable", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -1330,34 +1330,34 @@ describe("Ext.form.Labelable", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorWrapEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
-            },
+            }
           );
-        },
+        }
       );
     }
 

@@ -18,7 +18,7 @@ describe("Ext.field.Spinner", function () {
     describe("defaultValue", function () {
       beforeEach(function () {
         createField({
-          defaultValue: 10,
+          defaultValue: 10
         });
       });
 
@@ -42,7 +42,7 @@ describe("Ext.field.Spinner", function () {
       beforeEach(function () {
         createField({
           stepValue: 1,
-          defaultValue: 10,
+          defaultValue: 10
         });
       });
 
@@ -77,7 +77,7 @@ describe("Ext.field.Spinner", function () {
       beforeEach(function () {
         createField({
           minValue: 9.9,
-          defaultValue: 10,
+          defaultValue: 10
         });
       });
 
@@ -112,7 +112,7 @@ describe("Ext.field.Spinner", function () {
       beforeEach(function () {
         createField({
           maxValue: 10.1,
-          defaultValue: 10,
+          defaultValue: 10
         });
       });
 
@@ -150,7 +150,7 @@ describe("Ext.field.Spinner", function () {
           defaultValue: 10,
           minValue: 8,
           maxValue: 12,
-          stepValue: 1,
+          stepValue: 1
         });
       });
 

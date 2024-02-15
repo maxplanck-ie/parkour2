@@ -21,7 +21,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
 
   layout: {
     type: "hbox",
-    align: "middle",
+    align: "middle"
   },
 
   config: {
@@ -101,7 +101,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
      * containing the the child nodes.  When `false`, the only mode of navigation is
      * the menu, since a click anywhere on the button will show the menu.
      */
-    useSplitButtons: true,
+    useSplitButtons: true
   },
 
   renderConfig: {
@@ -110,7 +110,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
      * The selected node, or `"root"` to select the root node
      * @accessor
      */
-    selection: "root",
+    selection: "root"
   },
 
   publishes: ["selection"],
@@ -128,7 +128,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
 
     if (typeof layout === "string") {
       layout = {
-        type: layout,
+        type: layout
       };
     }
 
@@ -208,7 +208,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
       items = [],
       itemCount = Ext.ComponentQuery.query(
         "[isCrumb]",
-        me.getRefItems(),
+        me.getRefItems()
       ).length,
       needsSync = me._needsSync,
       displayField = me.getDisplayField(),
@@ -261,11 +261,11 @@ Ext.define("Ext.toolbar.Breadcrumb", {
               listeners: {
                 click: "_onMenuClick",
                 beforeshow: "_onMenuBeforeShow",
-                scope: this,
-              },
+                scope: this
+              }
             },
             handler: "_onButtonClick",
-            scope: me,
+            scope: me
           });
         }
 
@@ -295,7 +295,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
             button.setIconCls(
               (currentNode.isLeaf() ? me._leafIconCls : me._folderIconCls) +
                 "-" +
-                me.ui,
+                me.ui
             );
           } else {
             // if showIcons is null do not show default icons
@@ -361,7 +361,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
   applyUseSplitButtons: function (useSplitButtons, oldUseSplitButtons) {
     if (this.rendered && useSplitButtons !== oldUseSplitButtons) {
       Ext.raise(
-        "Cannot reconfigure 'useSplitButtons' config of Ext.toolbar.Breadcrumb after initial render",
+        "Cannot reconfigure 'useSplitButtons' config of Ext.toolbar.Breadcrumb after initial render"
       );
     }
     return useSplitButtons;
@@ -386,7 +386,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
   updateOverflowHandler: function (overflowHandler) {
     if (overflowHandler === "menu") {
       Ext.raise(
-        "Using Menu overflow with breadcrumb is not currently supported.",
+        "Using Menu overflow with breadcrumb is not currently supported."
       );
     }
   },
@@ -402,7 +402,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
     _onButtonClick: function (button, e) {
       if (this.getUseSplitButtons()) {
         this.setSelection(
-          this.getStore().getNodeById(button._breadcrumbNodeId),
+          this.getStore().getNodeById(button._breadcrumbNodeId)
         );
       }
     },
@@ -457,7 +457,7 @@ Ext.define("Ext.toolbar.Breadcrumb", {
           child = childNodes[i];
           item = {
             text: child.get(displayField),
-            _breadcrumbNodeId: child.getId(),
+            _breadcrumbNodeId: child.getId()
           };
 
           if (showMenuIcons !== false) {
@@ -490,6 +490,6 @@ Ext.define("Ext.toolbar.Breadcrumb", {
         // prevent menu from being shown for nodes with no children
         return false;
       }
-    },
-  },
+    }
+  }
 });

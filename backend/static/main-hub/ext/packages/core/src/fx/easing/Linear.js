@@ -8,7 +8,7 @@ Ext.define("Ext.fx.easing.Linear", {
 
   config: {
     duration: 0,
-    endValue: 0,
+    endValue: 0
   },
 
   updateStartValue: function (startValue) {
@@ -29,5 +29,5 @@ Ext.define("Ext.fx.easing.Linear", {
     } else {
       return this.getStartValue() + (deltaTime / duration) * this.distance;
     }
-  },
+  }
 });

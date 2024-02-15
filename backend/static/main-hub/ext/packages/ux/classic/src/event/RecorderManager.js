@@ -17,7 +17,7 @@ Ext.define("Ext.ux.event.RecorderManager", {
   eventsToIgnore: {
     mousemove: 1,
     mouseover: 1,
-    mouseout: 1,
+    mouseout: 1
   },
 
   bodyBorder: false,
@@ -32,8 +32,8 @@ Ext.define("Ext.ux.event.RecorderManager", {
         add: me.updateEvents,
         coalesce: me.updateEvents,
         buffer: 200,
-        scope: me,
-      },
+        scope: me
+      }
     });
     me.recorder.eventsToRecord = Ext.apply({}, me.recorder.eventsToRecord);
 
@@ -44,7 +44,7 @@ Ext.define("Ext.ux.event.RecorderManager", {
         group: "speed",
         checked: value == me.playSpeed,
         handler: me.onPlaySpeed,
-        scope: me,
+        scope: me
       };
     }
 
@@ -55,7 +55,7 @@ Ext.define("Ext.ux.event.RecorderManager", {
         whenIdle: true,
         handler: me.onRecord,
         scope: me,
-        menu: me.makeRecordButtonMenu(),
+        menu: me.makeRecordButtonMenu()
       },
       {
         text: "Play",
@@ -72,14 +72,14 @@ Ext.define("Ext.ux.event.RecorderManager", {
           speed("Double Speed (2x)", 2),
           speed("Quad Speed (4x)", 4),
           "-",
-          speed("Full Speed", 1000),
-        ],
+          speed("Full Speed", 1000)
+        ]
       },
       {
         text: "Clear",
         whenIdle: true,
         handler: me.onClear,
-        scope: me,
+        scope: me
       },
       "->",
       {
@@ -87,8 +87,8 @@ Ext.define("Ext.ux.event.RecorderManager", {
         whenActive: true,
         disabled: true,
         handler: me.onStop,
-        scope: me,
-      },
+        scope: me
+      }
     ];
 
     var events = me.attachTo && me.attachTo.testEvents;
@@ -103,14 +103,14 @@ Ext.define("Ext.ux.event.RecorderManager", {
         scrollToBottom: function () {
           var inputEl = this.inputEl.dom;
           inputEl.scrollTop = inputEl.scrollHeight;
-        },
-      },
+        }
+      }
     ];
     me.fbar = [
       {
         xtype: "tbtext",
-        text: "Attached To: " + (me.attachTo && me.attachTo.location.href),
-      },
+        text: "Attached To: " + (me.attachTo && me.attachTo.location.href)
+      }
     ];
 
     me.callParent();
@@ -128,7 +128,7 @@ Ext.define("Ext.ux.event.RecorderManager", {
         subs[value.kind] = sub = [];
         ret.push({
           text: value.kind,
-          menu: sub,
+          menu: sub
         });
       }
 
@@ -141,7 +141,7 @@ Ext.define("Ext.ux.event.RecorderManager", {
           } else {
             delete eventsToRec[name];
           }
-        },
+        }
       });
 
       if (ignoredEvents[name]) {
@@ -187,8 +187,8 @@ Ext.define("Ext.ux.event.RecorderManager", {
           speed: me.playSpeed,
           listeners: {
             stop: me.onPlayStop,
-            scope: me,
-          },
+            scope: me
+          }
         });
 
         me.player.start();
@@ -270,5 +270,5 @@ Ext.define("Ext.ux.event.RecorderManager", {
 
     view.setValue(text);
     view.scrollToBottom();
-  },
+  }
 });

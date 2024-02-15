@@ -55,7 +55,7 @@ Ext.define("Ext.navigation.Bar", {
      * @accessor
      */
     layout: {
-      type: "hbox",
+      type: "hbox"
     },
 
     /**
@@ -85,7 +85,7 @@ Ext.define("Ext.navigation.Bar", {
      * @accessor
      */
     animation: {
-      duration: 300,
+      duration: 300
     },
 
     /**
@@ -120,8 +120,8 @@ Ext.define("Ext.navigation.Bar", {
     backButton: {
       align: "left",
       ui: "back",
-      hidden: true,
-    },
+      hidden: true
+    }
   },
 
   /**
@@ -163,7 +163,7 @@ Ext.define("Ext.navigation.Bar", {
 
       newBackButton.on({
         scope: this,
-        tap: this.onBackButtonTap,
+        tap: this.onBackButtonTap
       });
     }
   },
@@ -346,25 +346,25 @@ Ext.define("Ext.navigation.Bar", {
       element: {
         from: {
           transform: {
-            translateX: newOffset,
+            translateX: newOffset
           },
-          opacity: 0,
+          opacity: 0
         },
         to: {
           transform: {
-            translateX: 0,
+            translateX: 0
           },
-          opacity: 1,
-        },
+          opacity: 1
+        }
       },
       ghost: {
         to: {
           transform: {
-            translateX: oldOffset,
+            translateX: oldOffset
           },
-          opacity: 0,
-        },
-      },
+          opacity: 0
+        }
+      }
     };
 
     theta = barX - titleX + newLeftWidth;
@@ -398,31 +398,31 @@ Ext.define("Ext.navigation.Bar", {
       element: {
         from: {
           transform: {
-            translateX: newOffset,
+            translateX: newOffset
           },
-          opacity: 0,
+          opacity: 0
         },
         to: {
           transform: {
-            translateX: titleLeft,
+            translateX: titleLeft
           },
-          opacity: 1,
-        },
+          opacity: 1
+        }
       },
       ghost: {
         to: {
           transform: {
-            translateX: oldOffset,
+            translateX: oldOffset
           },
-          opacity: 0,
-        },
-      },
+          opacity: 0
+        }
+      }
     };
 
     return {
       left: leftAnims,
       title: titleAnims,
-      titleLeft: titleLeft,
+      titleLeft: titleLeft
     };
   },
 
@@ -448,7 +448,7 @@ Ext.define("Ext.navigation.Bar", {
       element: element,
       easing: "ease-in-out",
       duration: me.getAnimation().duration || 250,
-      preserveEndState: true,
+      preserveEndState: true
     });
 
     animation = new Ext.fx.Animation(config);
@@ -459,7 +459,7 @@ Ext.define("Ext.navigation.Bar", {
           callback.call(me);
         }
       },
-      me,
+      me
     );
 
     Ext.Animator.run(animation);
@@ -540,14 +540,14 @@ Ext.define("Ext.navigation.Bar", {
         position: "relative",
         top: "auto",
         left: "auto",
-        width: "auto",
+        width: "auto"
       });
     } else {
       this.element.setStyle({
         position: "absolute",
         top: "-1000px",
         left: "-1000px",
-        width: this.element.getWidth() + "px",
+        width: this.element.getWidth() + "px"
       });
     }
   },
@@ -583,7 +583,7 @@ Ext.define("Ext.navigation.Bar", {
       y: y,
       left: left,
       width: width,
-      ghost: ghost,
+      ghost: ghost
     };
-  },
+  }
 });

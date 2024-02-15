@@ -19,10 +19,10 @@ describe("Ext.button.Button", function () {
     button = new Ext.button.Button(
       Ext.apply(
         {
-          text: "Button",
+          text: "Button"
         },
-        config,
-      ),
+        config
+      )
     );
 
     return button;
@@ -31,9 +31,9 @@ describe("Ext.button.Button", function () {
   function createButton(config) {
     config = Ext.apply(
       {
-        renderTo: document.body,
+        renderTo: document.body
       },
-      config,
+      config
     );
 
     return makeButton(config);
@@ -101,7 +101,7 @@ describe("Ext.button.Button", function () {
     describe("toggleGroup", function () {
       it("if defined, it should enableToggle", function () {
         makeButton({
-          toggleGroup: "testgroup",
+          toggleGroup: "testgroup"
         });
 
         expect(button.enableToggle).toBeTruthy();
@@ -111,7 +111,7 @@ describe("Ext.button.Button", function () {
     describe("html config", function () {
       it("should use the html config if specified", function () {
         button = new Ext.button.Button({
-          html: "Foo",
+          html: "Foo"
         });
         expect(button.text).toBe("Foo");
       });
@@ -119,7 +119,7 @@ describe("Ext.button.Button", function () {
       it("should give precedence to the text config if both are specified", function () {
         makeButton({
           html: "Foo",
-          text: "Bar",
+          text: "Bar"
         });
         expect(button.text).toBe("Bar");
       });
@@ -129,10 +129,10 @@ describe("Ext.button.Button", function () {
   describe("border", function () {
     it("should respect an explicit border cfg", function () {
       makeButton({
-        border: false,
+        border: false
       });
       var p = new Ext.panel.Panel({
-        items: button,
+        items: button
       });
       expect(button.border).toBe(false);
 
@@ -143,7 +143,7 @@ describe("Ext.button.Button", function () {
   describe("setUI", function () {
     beforeEach(function () {
       makeButton({
-        text: "Foo",
+        text: "Foo"
       });
       button.render(Ext.getBody());
       button.setUI("custom");
@@ -192,7 +192,7 @@ describe("Ext.button.Button", function () {
   describe("setText", function () {
     it("should be able to set the text before rendering", function () {
       makeButton({
-        text: "Foo",
+        text: "Foo"
       });
       button.setText("Bar");
       button.render(Ext.getBody());
@@ -202,7 +202,7 @@ describe("Ext.button.Button", function () {
     it("should set the text after rendering", function () {
       makeButton({
         text: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.setText("Bar");
       expect(button.btnInnerEl.dom).hasHTML("Bar");
@@ -211,7 +211,7 @@ describe("Ext.button.Button", function () {
     it("should have a visible btnInnerEl if the text is empty and there is no icon", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "",
+        text: ""
       });
 
       expect(button.btnInnerEl.isVisible()).toBe(true);
@@ -221,7 +221,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: Ext.getBody(),
         icon: "resources/images/foo.gif",
-        text: "",
+        text: ""
       });
       // inner el starts off hidden because we have an icon
       expect(button.btnInnerEl.isVisible()).toBe(false);
@@ -234,7 +234,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: Ext.getBody(),
         icon: "resources/images/foo.gif",
-        text: "Foo",
+        text: "Foo"
       });
       // inner el starts off visible because we initially rendered with text
       expect(button.btnInnerEl.isVisible()).toBe(true);
@@ -245,7 +245,7 @@ describe("Ext.button.Button", function () {
     it("should not hide the btnInnerEl if text is emtpy and there is no icon", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "Foo",
+        text: "Foo"
       });
       expect(button.btnInnerEl.isVisible()).toBe(true);
       button.setText("");
@@ -255,7 +255,7 @@ describe("Ext.button.Button", function () {
     it("should render with a x-btn-text class on the btnEl when configured with text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "Foo",
+        text: "Foo"
       });
 
       expect(button.btnEl).toHaveCls("x-btn-text");
@@ -264,7 +264,7 @@ describe("Ext.button.Button", function () {
     it("should not render the x-btn-no-text class on the btnEl when configured with text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "Foo",
+        text: "Foo"
       });
 
       expect(button.btnEl).not.toHaveCls("x-btn-no-text");
@@ -273,7 +273,7 @@ describe("Ext.button.Button", function () {
     it("should not have a x-btn-text class on the btnEl when not configured with text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "",
+        text: ""
       });
 
       expect(button.btnEl).not.toHaveCls("x-btn-text");
@@ -282,7 +282,7 @@ describe("Ext.button.Button", function () {
     it("should have a x-btn-no-text class on the btnEl when not configured with text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "",
+        text: ""
       });
 
       expect(button.btnEl).toHaveCls("x-btn-no-text");
@@ -291,7 +291,7 @@ describe("Ext.button.Button", function () {
     it("should add the x-btn-text class and remove the x-btn-no-text class when setting the text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "",
+        text: ""
       });
 
       button.setText("Foo");
@@ -302,7 +302,7 @@ describe("Ext.button.Button", function () {
     it("should remove the x-btn-text class and add the x-btn-no-text class when setting empty text", function () {
       makeButton({
         renderTo: Ext.getBody(),
-        text: "Foo",
+        text: "Foo"
       });
 
       button.setText("");
@@ -313,7 +313,7 @@ describe("Ext.button.Button", function () {
     it("should render a non breaking space when the text passed is empty", function () {
       makeButton({
         text: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.setText("");
       expect(button.btnInnerEl.dom.innerHTML.length).toBeGreaterThan(0);
@@ -323,7 +323,7 @@ describe("Ext.button.Button", function () {
       var btn, old, newText;
       makeButton({
         text: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("textchange", function (a1, a2, a3) {
         btn = a1;
@@ -340,7 +340,7 @@ describe("Ext.button.Button", function () {
       var called = false;
       makeButton({
         text: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("textchange", function () {
         called = true;
@@ -356,34 +356,34 @@ describe("Ext.button.Button", function () {
 
     it("should be able to set the icon before rendering", function () {
       makeButton({
-        icon: fooIcon,
+        icon: fooIcon
       });
       button.setIcon(barIcon);
       button.render(Ext.getBody());
       expect(
-        button.btnIconEl.dom.style.backgroundImage.indexOf("bar"),
+        button.btnIconEl.dom.style.backgroundImage.indexOf("bar")
       ).toBeGreaterThan(-1);
     });
 
     it("should set the icon after rendering", function () {
       makeButton({
         icon: fooIcon,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.setIcon(barIcon);
       expect(
-        button.btnIconEl.dom.style.backgroundImage.indexOf("bar"),
+        button.btnIconEl.dom.style.backgroundImage.indexOf("bar")
       ).toBeGreaterThan(-1);
     });
 
     it("should set the icon after rendering (no initial icon)", function () {
       makeButton({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(false);
       button.setIcon(barIcon);
       expect(
-        button.btnIconEl.dom.style.backgroundImage.indexOf("bar"),
+        button.btnIconEl.dom.style.backgroundImage.indexOf("bar")
       ).toBeGreaterThan(-1);
       expect(button.btnIconEl.isVisible()).toBe(true);
     });
@@ -391,12 +391,12 @@ describe("Ext.button.Button", function () {
     it("should unset the icon after rendering", function () {
       makeButton({
         icon: fooIcon,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(true);
       button.setIcon(null);
       expect(button.btnIconEl.dom.style.backgroundImage.indexOf("foo")).toBe(
-        -1,
+        -1
       );
       expect(button.btnIconEl.isVisible()).toBe(false);
     });
@@ -405,7 +405,7 @@ describe("Ext.button.Button", function () {
       var btn, old, newIcon;
       makeButton({
         icon: fooIcon,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("iconchange", function (a1, a2, a3) {
         btn = a1;
@@ -422,7 +422,7 @@ describe("Ext.button.Button", function () {
       var called = false;
       makeButton({
         icon: fooIcon,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("iconchange", function () {
         called = true;
@@ -434,7 +434,7 @@ describe("Ext.button.Button", function () {
     it("should switch from using glyph to icon", function () {
       makeButton({
         glyph: "x48@FontAwesome",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -451,15 +451,15 @@ describe("Ext.button.Button", function () {
       expect(
         Ext.String.endsWith(
           button.btnIconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
     });
 
     it("should switch from using iconCls to icon", function () {
       makeButton({
         iconCls: "foo-icon-class",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       // iconEl must use the specified icon class
@@ -475,8 +475,8 @@ describe("Ext.button.Button", function () {
       expect(
         Ext.String.endsWith(
           button.btnIconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
     });
   });
@@ -484,7 +484,7 @@ describe("Ext.button.Button", function () {
   describe("setIconCls", function () {
     it("should be able to set the iconCls before rendering", function () {
       makeButton({
-        iconCls: "Foo",
+        iconCls: "Foo"
       });
       button.setIconCls("Bar");
       button.render(Ext.getBody());
@@ -494,7 +494,7 @@ describe("Ext.button.Button", function () {
     it("should set the iconCls after rendering", function () {
       makeButton({
         iconCls: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.setIconCls("Bar");
       expect(button.btnIconEl.hasCls("Bar")).toBe(true);
@@ -502,7 +502,7 @@ describe("Ext.button.Button", function () {
 
     it("should set the iconCls after rendering (no initial iconCls)", function () {
       makeButton({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(false);
       button.setIconCls("Bar");
@@ -513,7 +513,7 @@ describe("Ext.button.Button", function () {
     it("should unset the iconCls after rendering", function () {
       makeButton({
         iconCls: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(true);
       button.setIconCls(null);
@@ -525,7 +525,7 @@ describe("Ext.button.Button", function () {
       var btn, old, newIcon;
       makeButton({
         iconCls: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("iconchange", function (a1, a2, a3) {
         btn = a1;
@@ -542,7 +542,7 @@ describe("Ext.button.Button", function () {
       var called = false;
       makeButton({
         iconCls: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("iconchange", function () {
         called = true;
@@ -554,7 +554,7 @@ describe("Ext.button.Button", function () {
     it("should switch from using glyph to iconCls", function () {
       makeButton({
         glyph: "x48@FontAwesome",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -572,7 +572,7 @@ describe("Ext.button.Button", function () {
     it("should switch from using glyph to icon", function () {
       makeButton({
         glyph: "x48@FontAwesome",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -589,8 +589,8 @@ describe("Ext.button.Button", function () {
       expect(
         Ext.String.endsWith(
           button.btnIconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
     });
   });
@@ -598,7 +598,7 @@ describe("Ext.button.Button", function () {
   describe("setGlyph", function () {
     it("should be able to set the glyph before rendering", function () {
       makeButton({
-        glyph: 65,
+        glyph: 65
       });
       button.setGlyph(66);
       button.render(Ext.getBody());
@@ -608,7 +608,7 @@ describe("Ext.button.Button", function () {
     it("should set the glyph after rendering", function () {
       makeButton({
         glyph: 65,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.setGlyph(66);
       expect(button.btnIconEl.dom.innerHTML).toBe("B");
@@ -616,7 +616,7 @@ describe("Ext.button.Button", function () {
 
     it("should set the glyph after rendering (no initial glyph)", function () {
       makeButton({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(false);
       button.setGlyph(66);
@@ -627,7 +627,7 @@ describe("Ext.button.Button", function () {
     it("should unset the glyph after rendering", function () {
       makeButton({
         glyph: 65,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(button.btnIconEl.isVisible()).toBe(true);
       button.setGlyph(null);
@@ -639,7 +639,7 @@ describe("Ext.button.Button", function () {
       var btn, old, newGlyph;
       makeButton({
         glyph: 65,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       button.on("glyphchange", function (a1, a2, a3) {
         btn = a1;
@@ -656,7 +656,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: Ext.getBody(),
         icon: "resources/images/foo.gif",
-        text: "",
+        text: ""
       });
 
       // iconEl must use the image as the background image
@@ -664,8 +664,8 @@ describe("Ext.button.Button", function () {
       expect(
         Ext.String.endsWith(
           button.btnIconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -679,7 +679,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: Ext.getBody(),
         iconCls: "foo-icon-class",
-        text: "",
+        text: ""
       });
 
       // iconEl must use the image as the background image
@@ -717,7 +717,7 @@ describe("Ext.button.Button", function () {
       describe("before render", function () {
         it("should be able to set the href before rendered", function () {
           makeButton({
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref(sencha);
           button.render(Ext.getBody());
@@ -728,7 +728,7 @@ describe("Ext.button.Button", function () {
         it("should overwrite a configured href", function () {
           makeButton({
             href: "http://foo.com",
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref(sencha);
           button.render(Ext.getBody());
@@ -739,7 +739,7 @@ describe("Ext.button.Button", function () {
         it("should clear a configured href", function () {
           makeButton({
             href: sencha,
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref("");
           button.render(Ext.getBody());
@@ -749,7 +749,7 @@ describe("Ext.button.Button", function () {
 
         it("should not set if configured disabled: true", function () {
           makeButton({
-            disabled: true,
+            disabled: true
           });
           button.setHref("");
           button.render(Ext.getBody());
@@ -761,7 +761,7 @@ describe("Ext.button.Button", function () {
         it("should set if no href is initially configured", function () {
           makeButton({
             renderTo: Ext.getBody(),
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref(sencha);
           expectHref("sencha.com");
@@ -772,7 +772,7 @@ describe("Ext.button.Button", function () {
           makeButton({
             renderTo: Ext.getBody(),
             href: "http://foo.com",
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref(sencha);
           expectHref("sencha.com");
@@ -783,7 +783,7 @@ describe("Ext.button.Button", function () {
           makeButton({
             renderTo: Ext.getBody(),
             href: sencha,
-            hrefTarget: target,
+            hrefTarget: target
           });
           button.setHref("");
           expectEmptyHref();
@@ -794,7 +794,7 @@ describe("Ext.button.Button", function () {
           makeButton({
             renderTo: Ext.getBody(),
             hrefTarget: target,
-            disabled: true,
+            disabled: true
           });
           button.setHref(sencha);
           expectEmptyHref();
@@ -821,14 +821,14 @@ describe("Ext.button.Button", function () {
       describe("before render", function () {
         it("should be able to set the params", function () {
           makeButton({
-            href: sencha,
+            href: sencha
           });
           button.setParams({
-            foo: 1,
+            foo: 1
           });
           button.render(Ext.getBody());
           expect(getQueryString()).toEqual({
-            foo: "1",
+            foo: "1"
           });
         });
 
@@ -836,15 +836,15 @@ describe("Ext.button.Button", function () {
           makeButton({
             href: sencha,
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           button.setParams({
-            bar: 1,
+            bar: 1
           });
           button.render(Ext.getBody());
           expect(getQueryString()).toEqual({
-            bar: "1",
+            bar: "1"
           });
         });
 
@@ -852,8 +852,8 @@ describe("Ext.button.Button", function () {
           makeButton({
             href: sencha,
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           button.setParams(null);
           button.render(Ext.getBody());
@@ -865,13 +865,13 @@ describe("Ext.button.Button", function () {
         it("should set if no params were configured", function () {
           makeButton({
             renderTo: Ext.getBody(),
-            href: sencha,
+            href: sencha
           });
           button.setParams({
-            foo: 1,
+            foo: 1
           });
           expect(getQueryString()).toEqual({
-            foo: "1",
+            foo: "1"
           });
         });
 
@@ -880,14 +880,14 @@ describe("Ext.button.Button", function () {
             renderTo: Ext.getBody(),
             href: sencha,
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           button.setParams({
-            bar: 1,
+            bar: 1
           });
           expect(getQueryString()).toEqual({
-            bar: "1",
+            bar: "1"
           });
         });
 
@@ -896,8 +896,8 @@ describe("Ext.button.Button", function () {
             renderTo: Ext.getBody(),
             href: sencha,
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           button.setParams(null);
           expect(getQueryString()).toEqual({});
@@ -909,13 +909,13 @@ describe("Ext.button.Button", function () {
           makeButton({
             renderTo: Ext.getBody(),
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           expect(getQueryString()).toEqual({});
           button.setHref(sencha);
           expect(getQueryString()).toEqual({
-            foo: "1",
+            foo: "1"
           });
         });
 
@@ -924,8 +924,8 @@ describe("Ext.button.Button", function () {
             renderTo: Ext.getBody(),
             href: sencha,
             params: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           button.setHref(null);
           expect(getQueryString()).toEqual({});
@@ -938,15 +938,15 @@ describe("Ext.button.Button", function () {
             renderTo: Ext.getBody(),
             href: sencha,
             params: {
-              foo: 1,
+              foo: 1
             },
             baseParams: {
-              bar: 1,
-            },
+              bar: 1
+            }
           });
           expect(getQueryString()).toEqual({
             foo: "1",
-            bar: "1",
+            bar: "1"
           });
         });
 
@@ -955,14 +955,14 @@ describe("Ext.button.Button", function () {
             renderTo: Ext.getBody(),
             href: sencha,
             params: {
-              foo: 2,
+              foo: 2
             },
             baseParams: {
-              foo: 1,
-            },
+              foo: 1
+            }
           });
           expect(getQueryString()).toEqual({
-            foo: "2",
+            foo: "2"
           });
         });
       });
@@ -995,8 +995,8 @@ describe("Ext.button.Button", function () {
           },
           afterrender: function () {
             count += 3;
-          },
-        },
+          }
+        }
       });
 
       expect(count).toBe(1);
@@ -1013,8 +1013,8 @@ describe("Ext.button.Button", function () {
         listeners: {
           beforerender: function (btn) {
             btn.setIconCls("my-icon");
-          },
-        },
+          }
+        }
       });
 
       // Not the most precise assertion but it covers a large number of possible errors
@@ -1027,8 +1027,8 @@ describe("Ext.button.Button", function () {
         listeners: {
           beforerender: function (btn) {
             btn.setText("text");
-          },
-        },
+          }
+        }
       });
 
       // This is perhaps a little over specific
@@ -1052,13 +1052,13 @@ describe("Ext.button.Button", function () {
                   text: "Bar",
                   menu: [
                     {
-                      text: "Bletch",
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
+                      text: "Bletch"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         });
 
         // Child only query should just return the menu
@@ -1072,12 +1072,12 @@ describe("Ext.button.Button", function () {
         // Yes. Six:
         // Top menu, its Foo item, Foo's Menu, the Bar item, Bars menu, and the Bletch item.
         expect(queryResult.length).toBe(6);
-      },
+      }
     );
 
     it("should accept a menu configuration", function () {
       makeButton({
-        menu: {},
+        menu: {}
       });
       expect(button.menu.isMenu).toBe(true);
     });
@@ -1085,7 +1085,7 @@ describe("Ext.button.Button", function () {
     it("should destroy the menu on destroy", function () {
       var menu = new Ext.menu.Menu();
       makeButton({
-        menu: menu,
+        menu: menu
       });
       button.destroy();
       expect(menu.destroyed).toBe(true);
@@ -1096,7 +1096,7 @@ describe("Ext.button.Button", function () {
       var menu = new Ext.menu.Menu();
       makeButton({
         destroyMenu: false,
-        menu: menu,
+        menu: menu
       });
       button.destroy();
       expect(menu.destroyed).toBeFalsy();
@@ -1111,12 +1111,12 @@ describe("Ext.button.Button", function () {
         menu = new Ext.menu.Menu({
           shadow: false,
           items: {
-            text: "An item",
-          },
+            text: "An item"
+          }
         });
         makeButton({
           renderTo: Ext.getBody(),
-          menu: menu,
+          menu: menu
         });
 
         // Menu's timer before which it won't show after a hide
@@ -1151,7 +1151,7 @@ describe("Ext.button.Button", function () {
       var menu = new Ext.menu.Menu();
       makeButton({
         renderTo: Ext.getBody(),
-        menu: menu,
+        menu: menu
       });
 
       clickIt();
@@ -1160,11 +1160,11 @@ describe("Ext.button.Button", function () {
 
     it("should show menu when showMenu is called, even if empty", function () {
       var menu = new Ext.menu.Menu({
-        shadow: false,
+        shadow: false
       });
       makeButton({
         renderTo: Ext.getBody(),
-        menu: menu,
+        menu: menu
       });
 
       button.showMenu();
@@ -1181,7 +1181,7 @@ describe("Ext.button.Button", function () {
         initComponent: function () {
           owner = this.getRefOwner();
           this.callParent();
-        },
+        }
       });
 
       makeButton({
@@ -1190,10 +1190,10 @@ describe("Ext.button.Button", function () {
           xtype: "submenu",
           items: [
             {
-              text: "A",
-            },
-          ],
-        },
+              text: "A"
+            }
+          ]
+        }
       });
       expect(owner).toBe(button);
 
@@ -1212,13 +1212,13 @@ describe("Ext.button.Button", function () {
           menu: {
             items: [
               {
-                text: "1",
+                text: "1"
               },
               {
-                text: "2",
-              },
-            ],
-          },
+                text: "2"
+              }
+            ]
+          }
         });
 
         menu = button.menu;
@@ -1232,9 +1232,9 @@ describe("Ext.button.Button", function () {
             {
               xtype: "label",
               text: "The End.",
-              y: 2000,
-            },
-          ],
+              y: 2000
+            }
+          ]
         });
 
         clickIt();
@@ -1266,7 +1266,7 @@ describe("Ext.button.Button", function () {
         menu = new Ext.menu.Menu();
 
         makeButton({
-          menu: menu,
+          menu: menu
         });
 
         button.destroy();
@@ -1292,26 +1292,26 @@ describe("Ext.button.Button", function () {
           menu: {
             items: [
               {
-                text: "Level 2",
-              },
-            ],
-          },
+                text: "Level 2"
+              }
+            ]
+          }
         },
         menuCmp,
         mainMenu;
 
       beforeEach(function () {
         mainMenu = new Ext.menu.Menu({
-          id: "lily",
+          id: "lily"
         });
 
         menuCmp = new Ext.menu.Menu({
-          id: "rupert",
+          id: "rupert"
         });
 
         makeButton({
           menu: mainMenu,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -1341,7 +1341,7 @@ describe("Ext.button.Button", function () {
 
         it("should poke the split classes onto the btnWrap element when the new menu is set", function () {
           var btn = new Ext.button.Button({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           btn.setMenu(menuCmp);
@@ -1412,14 +1412,14 @@ describe("Ext.button.Button", function () {
         menu = new Ext.menu.Menu({
           items: [
             {
-              text: "foo",
-            },
-          ],
+              text: "foo"
+            }
+          ]
         });
 
         makeButton({
           renderTo: Ext.getBody(),
-          menu: menu,
+          menu: menu
         });
       });
 
@@ -1476,9 +1476,9 @@ describe("Ext.button.Button", function () {
           text: "foo",
           menu: [
             {
-              text: "item1",
-            },
-          ],
+              text: "item1"
+            }
+          ]
         });
 
         enterSpy = spyOn(button, "onEnterKey").andCallThrough();
@@ -1575,7 +1575,7 @@ describe("Ext.button.Button", function () {
       it("should set the qtip attribute", function () {
         makeButton({
           tooltip: "Foo",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(button.el.getAttribute("data-qtip")).toBe("Foo");
       });
@@ -1584,7 +1584,7 @@ describe("Ext.button.Button", function () {
         makeButton({
           tooltip: "Foo",
           tooltipType: "title",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(button.el.getAttribute("title")).toBe("Foo");
       });
@@ -1592,7 +1592,7 @@ describe("Ext.button.Button", function () {
       it("should register with the tip manager", function () {
         var id = Ext.id(),
           cfg = {
-            html: "Foo",
+            html: "Foo"
           },
           o;
 
@@ -1602,7 +1602,7 @@ describe("Ext.button.Button", function () {
         makeButton({
           id: id,
           tooltip: cfg,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         cfg.target = id;
         expect(o).toEqual(cfg);
@@ -1619,7 +1619,7 @@ describe("Ext.button.Button", function () {
 
       it("should set the title attribute", function () {
         makeButton({
-          tooltipType: "title",
+          tooltipType: "title"
         });
         button.setTooltip("Foo");
         button.render(Ext.getBody());
@@ -1629,7 +1629,7 @@ describe("Ext.button.Button", function () {
       it("should register with the tip manager", function () {
         var id = Ext.id(),
           cfg = {
-            html: "Foo",
+            html: "Foo"
           },
           o;
 
@@ -1637,7 +1637,7 @@ describe("Ext.button.Button", function () {
           o = arg;
         });
         makeButton({
-          id: id,
+          id: id
         });
         cfg.target = id;
         button.setTooltip(cfg);
@@ -1650,7 +1650,7 @@ describe("Ext.button.Button", function () {
       describe("setting the tip", function () {
         it("should set the qtip attribute", function () {
           makeButton({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           button.setTooltip("Foo");
           expect(button.el.getAttribute("data-qtip")).toBe("Foo");
@@ -1659,7 +1659,7 @@ describe("Ext.button.Button", function () {
         it("should set the title attribute", function () {
           makeButton({
             renderTo: Ext.getBody(),
-            tooltipType: "title",
+            tooltipType: "title"
           });
           button.setTooltip("Foo");
           expect(button.el.getAttribute("title")).toBe("Foo");
@@ -1667,7 +1667,7 @@ describe("Ext.button.Button", function () {
 
         it("should register with the tip manager", function () {
           var cfg = {
-              html: "Foo",
+              html: "Foo"
             },
             o;
 
@@ -1675,7 +1675,7 @@ describe("Ext.button.Button", function () {
             o = arg;
           });
           makeButton({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           cfg.target = button.id;
           button.setTooltip(cfg);
@@ -1687,7 +1687,7 @@ describe("Ext.button.Button", function () {
         it("should set the qtip attribute", function () {
           makeButton({
             tooltip: "Foo",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           button.setTooltip(null);
           expect(button.el.getAttribute("data-qtip")).toBeFalsy();
@@ -1697,7 +1697,7 @@ describe("Ext.button.Button", function () {
           makeButton({
             tooltip: "Foo",
             renderTo: Ext.getBody(),
-            tooltipType: "title",
+            tooltipType: "title"
           });
           button.setTooltip(null);
           expect(button.el.getAttribute("title")).toBeFalsy();
@@ -1705,13 +1705,13 @@ describe("Ext.button.Button", function () {
 
         it("should unregister with the tip manager", function () {
           var cfg = {
-            html: "Foo",
+            html: "Foo"
           };
 
           spyOn(QTM, "unregister").andCallThrough();
           makeButton({
             tooltip: cfg,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           button.setTooltip(null);
           expect(QTM.unregister.mostRecentCall.args[0].id).toEqual(button.id);
@@ -1721,13 +1721,13 @@ describe("Ext.button.Button", function () {
       describe("destroying", function () {
         it("should clear the tip", function () {
           var cfg = {
-            html: "Foo",
+            html: "Foo"
           };
 
           spyOn(QTM, "unregister").andCallThrough();
           makeButton({
             tooltip: cfg,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           button.destroy();
           expect(QTM.unregister.mostRecentCall.args[0].id).toEqual(button.id);
@@ -1750,10 +1750,10 @@ describe("Ext.button.Button", function () {
       makeButton(
         Ext.apply(
           {
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -1778,7 +1778,7 @@ describe("Ext.button.Button", function () {
     describe("handler", function () {
       it("should call the handler fn", function () {
         makeEventButton({
-          handler: spy,
+          handler: spy
         });
         button.setHandler(spy);
         clickIt();
@@ -1787,7 +1787,7 @@ describe("Ext.button.Button", function () {
 
       it("should pass the button and the event object", function () {
         makeEventButton({
-          handler: spy,
+          handler: spy
         });
         clickIt();
         var args = spy.mostRecentCall.args;
@@ -1797,7 +1797,7 @@ describe("Ext.button.Button", function () {
 
       it("should default the scope to the button", function () {
         makeEventButton({
-          handler: spy,
+          handler: spy
         });
         clickIt();
         expect(spy.mostRecentCall.object).toBe(button);
@@ -1807,7 +1807,7 @@ describe("Ext.button.Button", function () {
         var scope = {};
         makeEventButton({
           handler: spy,
-          scope: scope,
+          scope: scope
         });
         clickIt();
         expect(spy.mostRecentCall.object).toBe(scope);
@@ -1816,7 +1816,7 @@ describe("Ext.button.Button", function () {
       it("should be able to resolve to a View Controller", function () {
         makeEventButton({
           handler: "doFoo",
-          renderTo: null,
+          renderTo: null
         });
 
         var ctrl = new Ext.app.ViewController();
@@ -1824,7 +1824,7 @@ describe("Ext.button.Button", function () {
         var ct = new Ext.container.Container({
           renderTo: Ext.getBody(),
           controller: ctrl,
-          items: button,
+          items: button
         });
         clickIt();
         expect(spy).toHaveBeenCalled();
@@ -1833,7 +1833,7 @@ describe("Ext.button.Button", function () {
 
       it("should not fire the handler if the click event returns false", function () {
         makeEventButton({
-          handler: spy,
+          handler: spy
         });
         button.on("click", function () {
           return false;
@@ -1844,7 +1844,7 @@ describe("Ext.button.Button", function () {
 
       it("should not fire the handler if the click event destroys the button", function () {
         makeEventButton({
-          handler: spy,
+          handler: spy
         });
         button.on("click", function () {
           return button.destroy();
@@ -1865,13 +1865,13 @@ describe("Ext.button.Button", function () {
           plain: true,
           items: [
             {
-              text: "foo",
+              text: "foo"
             },
             {
-              text: "bar",
-            },
-          ],
-        },
+              text: "bar"
+            }
+          ]
+        }
       });
 
       expect(button.menuAlign).toBe(button.self.prototype.menuAlign);
@@ -1885,14 +1885,14 @@ describe("Ext.button.Button", function () {
           plain: true,
           items: [
             {
-              text: "foo",
+              text: "foo"
             },
             {
-              text: "bar",
-            },
-          ],
+              text: "bar"
+            }
+          ]
         },
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(button.menuAlign).toBe(pos);
@@ -1908,19 +1908,19 @@ describe("Ext.button.Button", function () {
           plain: true,
           items: [
             {
-              text: "foo",
+              text: "foo"
             },
             {
-              text: "bar",
-            },
-          ],
-        },
+              text: "bar"
+            }
+          ]
+        }
       });
 
       ctn = new Ext.Container({
         floating: true,
         items: button,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       menu = button.menu;
@@ -1932,7 +1932,7 @@ describe("Ext.button.Button", function () {
         pos,
         undefined,
         false,
-        true,
+        true
       );
 
       Ext.destroy(ctn);
@@ -1949,8 +1949,8 @@ describe("Ext.button.Button", function () {
           href: "/foo",
           renderTo: Ext.getBody(),
           xhooks: {
-            frameTableListener: jasmine.createSpy("frameTableListener"),
-          },
+            frameTableListener: jasmine.createSpy("frameTableListener")
+          }
         });
 
         button.frameTable.dom.click();
@@ -1964,7 +1964,7 @@ describe("Ext.button.Button", function () {
           frame: true,
           href: "/foo",
           disabled: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         spyOn(button, "doNavigate");
@@ -1981,7 +1981,7 @@ describe("Ext.button.Button", function () {
         makeButton({
           frame: true,
           href: "/foo",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         window.open = Ext.emptyFn;
@@ -2003,7 +2003,7 @@ describe("Ext.button.Button", function () {
         it("should render with arrowCls on the buttonWrap if arrowVisible is true", function () {
           makeButton({
             renderTo: document.body,
-            menu: [{ text: "fake item" }],
+            menu: [{ text: "fake item" }]
           });
           expect(button.btnWrap).toHaveCls(arrowCls);
           expect(button.btnWrap).toHaveCls(arrowClsRight);
@@ -2016,7 +2016,7 @@ describe("Ext.button.Button", function () {
         it("should hide and show the arrow", function () {
           makeButton({
             renderTo: document.body,
-            menu: [{ text: "fake item" }],
+            menu: [{ text: "fake item" }]
           });
           button.setArrowVisible(false);
           expect(button.btnWrap).not.toHaveCls(arrowCls);
@@ -2038,7 +2038,7 @@ describe("Ext.button.Button", function () {
           makeButton({
             renderTo: document.body,
             menu: [{ text: "fake item" }],
-            arrowVisible: false,
+            arrowVisible: false
           });
           expect(button.btnWrap).not.toHaveCls(arrowCls);
           expect(button.btnWrap).not.toHaveCls(arrowClsRight);
@@ -2051,7 +2051,7 @@ describe("Ext.button.Button", function () {
         it("should remove the arrowCls if the menu is subsequently removed", function () {
           makeButton({
             renderTo: document.body,
-            menu: [{ text: "fake item" }],
+            menu: [{ text: "fake item" }]
           });
 
           button.setMenu(null);
@@ -2068,7 +2068,7 @@ describe("Ext.button.Button", function () {
       describe("without menu", function () {
         it("should not render with arrowCls on the buttonWrap", function () {
           makeButton({
-            renderTo: document.body,
+            renderTo: document.body
           });
           expect(button.btnWrap).not.toHaveCls(arrowCls);
           expect(button.btnWrap).not.toHaveCls(arrowClsRight);
@@ -2080,7 +2080,7 @@ describe("Ext.button.Button", function () {
 
         it("should not show the arrow", function () {
           makeButton({
-            renderTo: document.body,
+            renderTo: document.body
           });
           button.setArrowVisible(true);
           expect(button.btnWrap).not.toHaveCls(arrowCls);
@@ -2093,7 +2093,7 @@ describe("Ext.button.Button", function () {
 
         it("should add the arrowCls if a menu is subsequently added", function () {
           makeButton({
-            renderTo: document.body,
+            renderTo: document.body
           });
 
           button.setMenu([{ text: "fake item" }]);
@@ -2109,7 +2109,7 @@ describe("Ext.button.Button", function () {
         it("should not add the arrowCls if a menu is subsequently added, if arrowVisible is false", function () {
           makeButton({
             renderTo: document.body,
-            arrowVisible: false,
+            arrowVisible: false
           });
 
           button.setMenu([{ text: "fake item" }]);
@@ -2130,7 +2130,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: document.body,
         iconCls: "foo",
-        text: "Icon Align",
+        text: "Icon Align"
       });
 
       var btnEl = button.btnEl,
@@ -2186,7 +2186,7 @@ describe("Ext.button.Button", function () {
     var dimensions = {
       1: "width",
       2: "height",
-      3: "width and height",
+      3: "width and height"
     };
 
     describe("simple tests", function () {
@@ -2194,7 +2194,7 @@ describe("Ext.button.Button", function () {
         expect(function () {
           makeButton({
             renderTo: Ext.getBody(),
-            height: 0,
+            height: 0
           });
         }).not.toThrow();
       });
@@ -2203,7 +2203,7 @@ describe("Ext.button.Button", function () {
         makeButton({
           renderTo: Ext.getBody(),
           minWidth: 75,
-          text: "Foo",
+          text: "Foo"
         });
         button.setText("Text that will stretch longer than 75px");
         expect(button.getWidth()).toBeGreaterThan(75);
@@ -2218,7 +2218,7 @@ describe("Ext.button.Button", function () {
         // Turn the icon green (specs don't need this, but helps when debugging)
         Ext.util.CSS.createStyleSheet(
           ".spec-icon{background-color:green;}",
-          "btnSpecStyleSheet",
+          "btnSpecStyleSheet"
         );
 
         button = Ext.create(
@@ -2227,10 +2227,10 @@ describe("Ext.button.Button", function () {
               renderTo: document.body,
               xtype: "button",
               width: shrinkWidth ? null : 100,
-              height: shrinkHeight ? null : 100,
+              height: shrinkHeight ? null : 100
             },
-            config || {},
-          ),
+            config || {}
+          )
         );
       }
 
@@ -2262,7 +2262,7 @@ describe("Ext.button.Button", function () {
         } else {
           backgroundPosition = btnIconEl.getStyle("background-position");
           expect(
-            backgroundPosition === "50% 50%" || backgroundPosition === "50%",
+            backgroundPosition === "50% 50%" || backgroundPosition === "50%"
           ).toBe(true);
         }
       }
@@ -2288,7 +2288,7 @@ describe("Ext.button.Button", function () {
           expect(
             style.display === "flex" ||
               style.display === "-ms-flexbox" ||
-              style.display === "-webkit-box",
+              style.display === "-webkit-box"
           ).toBe(true);
         } else {
           expect(style.display).toBe(display);
@@ -2317,65 +2317,65 @@ describe("Ext.button.Button", function () {
           describe("no icon or arrow", function () {
             function make(config) {
               Ext.apply(config, {
-                text: getButtonText(shrinkWidth ? 86 : 20, stretch ? 94 : null),
+                text: getButtonText(shrinkWidth ? 86 : 20, stretch ? 94 : null)
               });
 
               makeButton(config);
             }
             it("should layout with textAlign:left", function () {
               make({
-                textAlign: "left",
+                textAlign: "left"
               });
 
               expect(button).toHaveLayout({
                 el: {
                   w: 100,
-                  h: shrinkHeight && !stretch ? 22 : 100,
+                  h: shrinkHeight && !stretch ? 22 : 100
                 },
                 ".btn-text-content": {
                   x: 7,
                   y: shrinkHeight ? 3 : 42,
                   w: shrinkWidth ? 86 : 20,
-                  h: stretch ? 94 : 16,
-                },
+                  h: stretch ? 94 : 16
+                }
               });
             });
 
             it("should layout with textAlign:center", function () {
               make({
-                textAlign: "center",
+                textAlign: "center"
               });
 
               expect(button).toHaveLayout({
                 el: {
                   w: 100,
-                  h: shrinkHeight && !stretch ? 22 : 100,
+                  h: shrinkHeight && !stretch ? 22 : 100
                 },
                 ".btn-text-content": {
                   x: shrinkWidth ? 7 : 40,
                   y: shrinkHeight ? 3 : 42,
                   w: shrinkWidth ? 86 : 20,
-                  h: stretch ? 94 : 16,
-                },
+                  h: stretch ? 94 : 16
+                }
               });
             });
 
             it("should layout with textAlign:right", function () {
               make({
-                textAlign: "right",
+                textAlign: "right"
               });
 
               expect(button).toHaveLayout({
                 el: {
                   w: 100,
-                  h: shrinkHeight && !stretch ? 22 : 100,
+                  h: shrinkHeight && !stretch ? 22 : 100
                 },
                 ".btn-text-content": {
                   x: shrinkWidth ? 7 : 73,
                   y: shrinkHeight ? 3 : 42,
                   w: shrinkWidth ? 86 : 20,
-                  h: stretch ? 94 : 16,
-                },
+                  h: stretch ? 94 : 16
+                }
               });
             });
           });
@@ -2391,31 +2391,31 @@ describe("Ext.button.Button", function () {
                     iconCls: "spec-icon",
                     text: getButtonText(
                       shrinkWidth ? (iconVertical ? 86 : 70) : 20,
-                      stretch ? (iconVertical ? 74 : 94) : null,
-                    ),
+                      stretch ? (iconVertical ? 74 : 94) : null
+                    )
                   },
-                  config,
-                ),
+                  config
+                )
               );
             }
             describe("iconAlign:top", function () {
               it("no text", function () {
                 make({
                   text: "",
-                  iconAlign: "top",
+                  iconAlign: "top"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: shrinkWidth ? 22 : 100,
-                    h: shrinkHeight ? 22 : 100,
+                    h: shrinkHeight ? 22 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 16 : 94,
-                    h: 16,
-                  },
+                    h: 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2424,26 +2424,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   textAlign: "left",
-                  iconAlign: "top",
+                  iconAlign: "top"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? 3 : 32,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 23 : 52,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2452,26 +2452,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:center", function () {
                 make({
                   textAlign: "center",
-                  iconAlign: "top",
+                  iconAlign: "top"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? 3 : 32,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 40,
                     y: shrinkHeight ? 23 : 52,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2480,26 +2480,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:right", function () {
                 make({
                   textAlign: "right",
-                  iconAlign: "top",
+                  iconAlign: "top"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? 3 : 32,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 73,
                     y: shrinkHeight ? 23 : 52,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2510,20 +2510,20 @@ describe("Ext.button.Button", function () {
               it("no text", function () {
                 make({
                   text: "",
-                  iconAlign: "right",
+                  iconAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: shrinkWidth ? 22 : 100,
-                    h: shrinkHeight ? 22 : 100,
+                    h: shrinkHeight ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 3 : 42,
                     y: shrinkHeight ? 3 : 42,
                     w: 16,
-                    h: 16,
-                  },
+                    h: 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2532,26 +2532,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   textAlign: "left",
-                  iconAlign: "right",
+                  iconAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 81 : 31,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2560,26 +2560,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:center", function () {
                 make({
                   textAlign: "center",
-                  iconAlign: "right",
+                  iconAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 81 : 56,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 32,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2588,26 +2588,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:right", function () {
                 make({
                   textAlign: "right",
-                  iconAlign: "right",
+                  iconAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: 81,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 57,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2618,20 +2618,20 @@ describe("Ext.button.Button", function () {
               it("no text", function () {
                 make({
                   text: "",
-                  iconAlign: "bottom",
+                  iconAlign: "bottom"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: shrinkWidth ? 22 : 100,
-                    h: shrinkHeight ? 22 : 100,
+                    h: shrinkHeight ? 22 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 16 : 94,
-                    h: 16,
-                  },
+                    h: 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2640,26 +2640,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   textAlign: "left",
-                  iconAlign: "bottom",
+                  iconAlign: "bottom"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 32,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2668,26 +2668,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:center", function () {
                 make({
                   textAlign: "center",
-                  iconAlign: "bottom",
+                  iconAlign: "bottom"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 40,
                     y: shrinkHeight ? 3 : 32,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2696,26 +2696,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:right", function () {
                 make({
                   textAlign: "right",
-                  iconAlign: "bottom",
+                  iconAlign: "bottom"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 42 : 100,
+                    h: shrinkHeight && !stretch ? 42 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                     w: 94,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 73,
                     y: shrinkHeight ? 3 : 32,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 74 : 16,
-                  },
+                    h: stretch ? 74 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2726,20 +2726,20 @@ describe("Ext.button.Button", function () {
               it("no text", function () {
                 make({
                   text: "",
-                  iconAlign: "left",
+                  iconAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: shrinkWidth ? 22 : 100,
-                    h: shrinkHeight ? 22 : 100,
+                    h: shrinkHeight ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 3 : 42,
                     y: shrinkHeight ? 3 : 42,
                     w: 16,
-                    h: 16,
-                  },
+                    h: 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2748,26 +2748,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   textAlign: "left",
-                  iconAlign: "left",
+                  iconAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: 3,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: 23,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2776,26 +2776,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:center", function () {
                 make({
                   textAlign: "center",
-                  iconAlign: "left",
+                  iconAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 3 : 28,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 23 : 48,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2804,26 +2804,26 @@ describe("Ext.button.Button", function () {
               it("textAlign:right", function () {
                 make({
                   textAlign: "right",
-                  iconAlign: "left",
+                  iconAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   btnIconEl: {
                     x: shrinkWidth ? 3 : 53,
                     y: shrinkHeight && !stretch ? 3 : 42,
                     w: 16,
-                    h: 16,
+                    h: 16
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 23 : 73,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 70 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectIconPosition();
@@ -2847,11 +2847,11 @@ describe("Ext.button.Button", function () {
                         ? config.arrowAlign === "bottom"
                           ? 84
                           : 94
-                        : null,
-                    ),
+                        : null
+                    )
                   },
-                  config,
-                ),
+                  config
+                )
               );
             }
 
@@ -2859,78 +2859,78 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "left",
+                  textAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 78 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "8px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
 
               it("textAlign:center", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "center",
+                  textAlign: "center"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 36,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 78 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "8px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
 
               it("textAlign:right", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "right",
+                  textAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 65,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 78 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "8px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
             });
@@ -2939,78 +2939,78 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "left",
+                  textAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 32 : 100,
+                    h: shrinkHeight && !stretch ? 32 : 100
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 37,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 84 : 16,
-                  },
+                    h: stretch ? 84 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "8px",
+                  height: "8px"
                 });
               });
 
               it("textAlign:center", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "center",
+                  textAlign: "center"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 32 : 100,
+                    h: shrinkHeight && !stretch ? 32 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 40,
                     y: shrinkHeight ? 3 : 37,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 84 : 16,
-                  },
+                    h: stretch ? 84 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "8px",
+                  height: "8px"
                 });
               });
 
               it("textAlign:right", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "right",
+                  textAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 32 : 100,
+                    h: shrinkHeight && !stretch ? 32 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 73,
                     y: shrinkHeight ? 3 : 37,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 84 : 16,
-                  },
+                    h: stretch ? 84 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "8px",
+                  height: "8px"
                 });
               });
             });
@@ -3032,11 +3032,11 @@ describe("Ext.button.Button", function () {
                         ? config.arrowAlign === "bottom"
                           ? 78
                           : 94
-                        : null,
-                    ),
+                        : null
+                    )
                   },
-                  config,
-                ),
+                  config
+                )
               );
             }
 
@@ -3044,78 +3044,78 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "left",
+                  textAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 72 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "14px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
 
               it("textAlign:center", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "center",
+                  textAlign: "center"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 33,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 72 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "14px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
 
               it("textAlign:right", function () {
                 make({
                   arrowAlign: "right",
-                  textAlign: "right",
+                  textAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 22 : 100,
+                    h: shrinkHeight && !stretch ? 22 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 59,
                     y: shrinkHeight ? 3 : 42,
                     w: shrinkWidth ? 72 : 20,
-                    h: stretch ? 94 : 16,
-                  },
+                    h: stretch ? 94 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-cell" : "flex",
                   width: "14px",
-                  height: shrinkHeight && !stretch ? "16px" : "94px",
+                  height: shrinkHeight && !stretch ? "16px" : "94px"
                 });
               });
             });
@@ -3124,78 +3124,78 @@ describe("Ext.button.Button", function () {
               it("textAlign:left", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "left",
+                  textAlign: "left"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 38 : 100,
+                    h: shrinkHeight && !stretch ? 38 : 100
                   },
                   ".btn-text-content": {
                     x: 7,
                     y: shrinkHeight ? 3 : 34,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 78 : 16,
-                  },
+                    h: stretch ? 78 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "14px",
+                  height: "14px"
                 });
               });
 
               it("textAlign:center", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "center",
+                  textAlign: "center"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 38 : 100,
+                    h: shrinkHeight && !stretch ? 38 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 40,
                     y: shrinkHeight ? 3 : 34,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 78 : 16,
-                  },
+                    h: stretch ? 78 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "14px",
+                  height: "14px"
                 });
               });
 
               it("textAlign:right", function () {
                 make({
                   arrowAlign: "bottom",
-                  textAlign: "right",
+                  textAlign: "right"
                 });
 
                 expect(button).toHaveLayout({
                   el: {
                     w: 100,
-                    h: shrinkHeight && !stretch ? 38 : 100,
+                    h: shrinkHeight && !stretch ? 38 : 100
                   },
                   ".btn-text-content": {
                     x: shrinkWidth ? 7 : 73,
                     y: shrinkHeight ? 3 : 34,
                     w: shrinkWidth ? 86 : 20,
-                    h: stretch ? 78 : 16,
-                  },
+                    h: stretch ? 78 : 16
+                  }
                 });
 
                 expectArrowStyle({
                   display: Ext.isIE9m ? "table-row" : "block",
                   width: "94px",
-                  height: "14px",
+                  height: "14px"
                 });
               });
             });
@@ -3226,11 +3226,11 @@ describe("Ext.button.Button", function () {
                     menu: [],
                     text: getButtonText(
                       shrinkWidth ? textWidth : 20,
-                      stretch ? textHeight : null,
-                    ),
+                      stretch ? textHeight : null
+                    )
                   },
-                  config,
-                ),
+                  config
+                )
               );
             }
 
@@ -3240,20 +3240,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 34 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 16 : 82,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3261,7 +3261,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -3269,26 +3269,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3296,7 +3296,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -3304,26 +3304,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 36,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3331,7 +3331,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -3339,26 +3339,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 65,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3366,7 +3366,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
               });
@@ -3376,20 +3376,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 32 : 100,
+                      h: shrinkHeight ? 32 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 16 : 94,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3397,7 +3397,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3405,26 +3405,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 27,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 23 : 47,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3432,7 +3432,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3440,26 +3440,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 27,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 40,
                       y: shrinkHeight ? 23 : 47,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3467,7 +3467,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3475,26 +3475,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 27,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 73,
                       y: shrinkHeight ? 23 : 47,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3502,7 +3502,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
               });
@@ -3514,20 +3514,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 34 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 36,
                       y: shrinkHeight ? 3 : 42,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3535,7 +3535,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -3543,26 +3543,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 69 : 31,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 58 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3570,7 +3570,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -3578,26 +3578,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 69 : 50,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 26,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 58 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3605,7 +3605,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -3613,26 +3613,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: 69,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 45,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 58 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3640,7 +3640,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
               });
@@ -3650,20 +3650,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 32 : 100,
+                      h: shrinkHeight ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 42,
                       y: shrinkHeight ? 3 : 37,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3671,7 +3671,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3679,26 +3679,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 81 : 31,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3706,7 +3706,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3714,26 +3714,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 81 : 56,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 32,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3741,7 +3741,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3749,26 +3749,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: 81,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 57,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3776,7 +3776,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
               });
@@ -3788,20 +3788,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 34 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 16 : 82,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3809,7 +3809,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -3817,26 +3817,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3844,7 +3844,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -3852,26 +3852,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 36,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3879,7 +3879,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -3887,26 +3887,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 86,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 65,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 78 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3914,7 +3914,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
               });
@@ -3924,20 +3924,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 32 : 100,
+                      h: shrinkHeight ? 32 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 16 : 94,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3945,7 +3945,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3953,26 +3953,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 71 : 23) : 47,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight || stretch ? 3 : 27,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -3980,7 +3980,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -3988,26 +3988,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 71 : 23) : 47,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 40,
                       y: shrinkHeight || stretch ? 3 : 27,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4015,7 +4015,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -4023,26 +4023,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 52 : 100,
+                      h: shrinkHeight && !stretch ? 52 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 71 : 23) : 47,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 73,
                       y: shrinkHeight || stretch ? 3 : 27,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 64 : 16,
-                    },
+                      h: stretch ? 64 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4050,7 +4050,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
               });
@@ -4062,20 +4062,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 34 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 36,
                       y: shrinkHeight ? 3 : 42,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4083,7 +4083,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -4091,26 +4091,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 23,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 62 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4118,7 +4118,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -4126,26 +4126,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 24,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 44,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 62 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4153,7 +4153,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -4161,26 +4161,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 45,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 65,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 62 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4188,7 +4188,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "8px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
               });
@@ -4198,20 +4198,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 32 : 100,
+                      h: shrinkHeight ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 42,
                       y: shrinkHeight ? 3 : 37,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4219,7 +4219,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -4227,26 +4227,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 23,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4254,7 +4254,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -4262,26 +4262,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 28,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 48,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4289,7 +4289,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
 
@@ -4297,26 +4297,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 32 : 100,
+                      h: shrinkHeight && !stretch ? 32 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 53,
                       y: shrinkHeight && !stretch ? 3 : 37,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 73,
                       y: shrinkHeight ? 3 : 37,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 84 : 16,
-                    },
+                      h: stretch ? 84 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4324,7 +4324,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "8px",
+                    height: "8px"
                   });
                 });
               });
@@ -4356,11 +4356,11 @@ describe("Ext.button.Button", function () {
                     iconCls: "spec-icon",
                     text: getButtonText(
                       shrinkWidth ? textWidth : 20,
-                      stretch ? textHeight : null,
-                    ),
+                      stretch ? textHeight : null
+                    )
                   },
-                  config,
-                ),
+                  config
+                )
               );
             }
 
@@ -4370,20 +4370,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 40 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 16 : 76,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4391,7 +4391,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -4399,26 +4399,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4426,7 +4426,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -4434,26 +4434,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 33,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4461,7 +4461,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -4469,26 +4469,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 32,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 59,
                       y: shrinkHeight ? 23 : 52,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4496,7 +4496,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
               });
@@ -4506,20 +4506,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 38 : 100,
+                      h: shrinkHeight ? 38 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 16 : 94,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4527,7 +4527,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4535,26 +4535,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 24,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 23 : 44,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4562,7 +4562,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4570,26 +4570,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 24,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 40,
                       y: shrinkHeight ? 23 : 44,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4597,7 +4597,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4605,26 +4605,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "top",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 24,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 73,
                       y: shrinkHeight ? 23 : 44,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4632,7 +4632,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
               });
@@ -4644,20 +4644,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 40 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 33,
                       y: shrinkHeight ? 3 : 42,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4665,7 +4665,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -4673,26 +4673,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 63 : 31,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 52 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4700,7 +4700,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -4708,26 +4708,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 63 : 47,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 23,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 52 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4735,7 +4735,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -4743,26 +4743,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: 63,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 39,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 52 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4770,7 +4770,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
               });
@@ -4780,20 +4780,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 38 : 100,
+                      h: shrinkHeight ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 42,
                       y: shrinkHeight ? 3 : 34,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4801,7 +4801,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4809,26 +4809,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 81 : 31,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4836,7 +4836,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4844,26 +4844,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 81 : 56,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 32,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4871,7 +4871,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -4879,26 +4879,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "right",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: 81,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 57,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4906,7 +4906,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
               });
@@ -4918,20 +4918,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 40 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 16 : 76,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4939,7 +4939,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -4947,26 +4947,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -4974,7 +4974,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -4982,26 +4982,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 33,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5009,7 +5009,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
 
@@ -5017,26 +5017,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 42 : 100,
+                      h: shrinkHeight && !stretch ? 42 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 81 : 23) : 52,
                       w: 80,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 59,
                       y: shrinkHeight || stretch ? 3 : 32,
                       w: shrinkWidth ? 72 : 20,
-                      h: stretch ? 74 : 16,
-                    },
+                      h: stretch ? 74 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5044,7 +5044,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "36px" : "94px",
+                    height: shrinkHeight && !stretch ? "36px" : "94px"
                   });
                 });
               });
@@ -5054,20 +5054,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 38 : 100,
+                      h: shrinkHeight ? 38 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 16 : 94,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5075,7 +5075,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5083,26 +5083,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 65 : 23) : 44,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 7,
                       y: shrinkHeight || stretch ? 3 : 24,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5110,7 +5110,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5118,26 +5118,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 65 : 23) : 44,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 40,
                       y: shrinkHeight || stretch ? 3 : 24,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5145,7 +5145,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5153,26 +5153,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "bottom",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 58 : 100,
+                      h: shrinkHeight && !stretch ? 58 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight ? (stretch ? 65 : 23) : 44,
                       w: 94,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 7 : 73,
                       y: shrinkHeight || stretch ? 3 : 24,
                       w: shrinkWidth ? 86 : 20,
-                      h: stretch ? 58 : 16,
-                    },
+                      h: stretch ? 58 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5180,7 +5180,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
               });
@@ -5192,20 +5192,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 40 : 100,
-                      h: shrinkHeight ? 22 : 100,
+                      h: shrinkHeight ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 33,
                       y: shrinkHeight ? 3 : 42,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5213,7 +5213,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight ? "16px" : "94px",
+                    height: shrinkHeight ? "16px" : "94px"
                   });
                 });
 
@@ -5221,26 +5221,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 23,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 56 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5248,7 +5248,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -5256,26 +5256,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 21,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 41,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 56 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5283,7 +5283,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
 
@@ -5291,26 +5291,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "right",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 22 : 100,
+                      h: shrinkHeight && !stretch ? 22 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 39,
                       y: shrinkHeight && !stretch ? 3 : 42,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 59,
                       y: shrinkHeight ? 3 : 42,
                       w: shrinkWidth ? 56 : 20,
-                      h: stretch ? 94 : 16,
-                    },
+                      h: stretch ? 94 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5318,7 +5318,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-cell" : "flex",
                     width: "14px",
-                    height: shrinkHeight && !stretch ? "16px" : "94px",
+                    height: shrinkHeight && !stretch ? "16px" : "94px"
                   });
                 });
               });
@@ -5328,20 +5328,20 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    text: "",
+                    text: ""
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: shrinkWidth ? 22 : 100,
-                      h: shrinkHeight ? 38 : 100,
+                      h: shrinkHeight ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 42,
                       y: shrinkHeight ? 3 : 34,
                       w: 16,
-                      h: 16,
-                    },
+                      h: 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5349,7 +5349,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: shrinkWidth ? "16px" : "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5357,26 +5357,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "left",
+                    textAlign: "left"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: 3,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: 23,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5384,7 +5384,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5392,26 +5392,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "center",
+                    textAlign: "center"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 28,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 48,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5419,7 +5419,7 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
 
@@ -5427,26 +5427,26 @@ describe("Ext.button.Button", function () {
                   make({
                     iconAlign: "left",
                     arrowAlign: "bottom",
-                    textAlign: "right",
+                    textAlign: "right"
                   });
 
                   expect(button).toHaveLayout({
                     el: {
                       w: 100,
-                      h: shrinkHeight && !stretch ? 38 : 100,
+                      h: shrinkHeight && !stretch ? 38 : 100
                     },
                     btnIconEl: {
                       x: shrinkWidth ? 3 : 53,
                       y: shrinkHeight && !stretch ? 3 : 34,
                       w: 16,
-                      h: 16,
+                      h: 16
                     },
                     ".btn-text-content": {
                       x: shrinkWidth ? 23 : 73,
                       y: shrinkHeight ? 3 : 34,
                       w: shrinkWidth ? 70 : 20,
-                      h: stretch ? 78 : 16,
-                    },
+                      h: stretch ? 78 : 16
+                    }
                   });
 
                   expectIconPosition();
@@ -5454,13 +5454,13 @@ describe("Ext.button.Button", function () {
                   expectArrowStyle({
                     display: Ext.isIE9m ? "table-row" : "block",
                     width: "94px",
-                    height: "14px",
+                    height: "14px"
                   });
                 });
               });
             });
           });
-        },
+        }
       );
     }
     makeLayoutSuite(0); // fixed width and height
@@ -5478,7 +5478,7 @@ describe("Ext.button.Button", function () {
           button = Ext.create({
             xtype: "button",
             renderTo: document.body,
-            text: "Hello",
+            text: "Hello"
           });
           btnWrap = button.btnWrap;
         });
@@ -5524,7 +5524,7 @@ describe("Ext.button.Button", function () {
             xtype: "button",
             renderTo: document.body,
             width: 100,
-            text: "Hello",
+            text: "Hello"
           });
           btnWrap = button.btnWrap;
         });
@@ -5573,7 +5573,7 @@ describe("Ext.button.Button", function () {
           button = Ext.create({
             xtype: "button",
             renderTo: document.body,
-            text: "Hello",
+            text: "Hello"
           });
           btnEl = button.btnEl;
         });
@@ -5619,7 +5619,7 @@ describe("Ext.button.Button", function () {
             xtype: "button",
             renderTo: document.body,
             height: 100,
-            text: "Hello",
+            text: "Hello"
           });
           btnEl = button.btnEl;
         });
@@ -5669,7 +5669,7 @@ describe("Ext.button.Button", function () {
             button = Ext.create({
               xtype: "button",
               renderTo: document.body,
-              text: "Hello",
+              text: "Hello"
             });
             frameBody = button.frameBody;
           });
@@ -5715,7 +5715,7 @@ describe("Ext.button.Button", function () {
               xtype: "button",
               renderTo: document.body,
               height: 100,
-              text: "Hello",
+              text: "Hello"
             });
             frameBody = button.frameBody;
           });
@@ -5761,7 +5761,7 @@ describe("Ext.button.Button", function () {
       expect(function () {
         makeButton({
           renderTo: Ext.getBody(),
-          height: 0,
+          height: 0
         });
       }).not.toThrow();
     });
@@ -5770,7 +5770,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         renderTo: Ext.getBody(),
         minWidth: 75,
-        text: "Foo",
+        text: "Foo"
       });
       button.setText("Text that will stretch longer than 75px");
       expect(button.getWidth()).toBeGreaterThan(75);
@@ -5788,14 +5788,14 @@ describe("Ext.button.Button", function () {
         items: [
           {
             xtype: "splitbutton",
-            text: '<span style="display:inline-block;width:72px;background-color:red;"></span>',
+            text: '<span style="display:inline-block;width:72px;background-color:red;"></span>'
           },
           {
             xtype: "button",
             text: '<span style="display:inline-block;width:78px;background-color:red;"></span>',
-            menu: [],
-          },
-        ],
+            menu: []
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).getWidth()).toBe(100);
@@ -5818,15 +5818,15 @@ describe("Ext.button.Button", function () {
           {
             xtype: "splitbutton",
             arrowAlign: "bottom",
-            text: '<div style="display:inline-block;width:86px;height:78px;background-color:red;">&nbsp;</div>',
+            text: '<div style="display:inline-block;width:86px;height:78px;background-color:red;">&nbsp;</div>'
           },
           {
             xtype: "button",
             arrowAlign: "bottom",
             menu: [],
-            text: '<div style="display:inline-block;width:86px;height:84px;background-color:red;">&nbsp;</div>',
-          },
-        ],
+            text: '<div style="display:inline-block;width:86px;height:84px;background-color:red;">&nbsp;</div>'
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).getWidth()).toBe(100);
@@ -5841,26 +5841,26 @@ describe("Ext.button.Button", function () {
         renderTo: document.body,
         text: '<div style="display:inline-block;width:142px;background:red;">&nbsp;</div>',
         menu: [],
-        width: 50,
+        width: 50
       });
 
       expect(button).toHaveLayout({
         el: {
           w: 50,
-          h: 22,
+          h: 22
         },
         btnWrap: {
           x: 3,
           y: 3,
           w: 44,
-          h: 16,
+          h: 16
         },
         btnInnerEl: {
           x: 3,
           y: 3,
           w: 36,
-          h: 16,
-        },
+          h: 16
+        }
       });
     });
   }); // layout
@@ -5870,13 +5870,13 @@ describe("Ext.button.Button", function () {
       makeButton({
         viewModel: {
           data: {
-            foo: false,
-          },
+            foo: false
+          }
         },
         enableToggle: true,
         bind: {
-          pressed: "{foo}",
-        },
+          pressed: "{foo}"
+        }
       });
 
       var vm = button.getViewModel();
@@ -5893,7 +5893,7 @@ describe("Ext.button.Button", function () {
       makeButton({
         viewModel: true,
         enableToggle: true,
-        reference: "btn",
+        reference: "btn"
       });
 
       var vm = button.getViewModel();
@@ -5913,8 +5913,8 @@ describe("Ext.button.Button", function () {
         vm = new Ext.app.ViewModel({
           data: {
             title: "someTitle",
-            text: "otherText",
-          },
+            text: "otherText"
+          }
         });
       });
 
@@ -5929,14 +5929,14 @@ describe("Ext.button.Button", function () {
           viewModel: vm,
           menu: {
             bind: {
-              title: "{title}",
+              title: "{title}"
             },
             items: {
               bind: {
-                text: "{text}",
-              },
-            },
-          },
+                text: "{text}"
+              }
+            }
+          }
         });
         var menu = button.getMenu();
         // Render it to trigger the bindings to initialize
@@ -5950,14 +5950,14 @@ describe("Ext.button.Button", function () {
         makeButton({
           renderTo: Ext.getBody(),
           text: "Foo",
-          viewModel: vm,
+          viewModel: vm
         });
         button.setMenu([
           {
             bind: {
-              text: "{text}",
-            },
-          },
+              text: "{text}"
+            }
+          }
         ]);
         var menu = button.getMenu();
         menu.show();
@@ -5970,7 +5970,7 @@ describe("Ext.button.Button", function () {
   describe("default ARIA attributes", function () {
     beforeEach(function () {
       makeButton({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -6018,7 +6018,7 @@ describe("Ext.button.Button", function () {
   describe("click", function () {
     beforeEach(function () {
       makeButton({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -6033,7 +6033,7 @@ describe("Ext.button.Button", function () {
     beforeEach(function () {
       makeButton({
         renderTo: Ext.getBody(),
-        enableToggle: true,
+        enableToggle: true
       });
     });
 
@@ -6083,7 +6083,7 @@ describe("Ext.button.Button", function () {
           button.addListener({
             beforetoggle: function () {
               return false;
-            },
+            }
           });
         });
         it("should not be set to true when clicked", function () {
@@ -6126,7 +6126,7 @@ describe("Ext.button.Button", function () {
           button.addListener({
             beforetoggle: function () {
               return false;
-            },
+            }
           });
         });
         it("should not be set to true when Space key is pressed", function () {
@@ -6148,12 +6148,12 @@ describe("Ext.button.Button", function () {
     describe("from parent", function () {
       it("should remain disabled if configured as disabled and the parent is enabled", function () {
         makeButton({
-          disabled: true,
+          disabled: true
         });
 
         var ct = new Ext.container.Container({
           renderTo: document.body,
-          items: button,
+          items: button
         });
 
         ct.disable();
@@ -6176,7 +6176,7 @@ describe("Ext.button.Button", function () {
 
       makeButton({
         text: "foo",
-        handler: handlerSpy,
+        handler: handlerSpy
       });
 
       enterSpy = spyOn(button, "onEnterKey").andCallThrough();

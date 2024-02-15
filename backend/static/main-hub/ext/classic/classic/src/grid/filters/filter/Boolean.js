@@ -90,7 +90,7 @@ Ext.define("Ext.grid.filters.filter.Boolean", {
       gId = Ext.id(),
       listeners = {
         scope: me,
-        click: me.onClick,
+        click: me.onClick
       },
       itemDefaults = me.getItemDefaults();
 
@@ -104,9 +104,9 @@ Ext.define("Ext.grid.filters.filter.Boolean", {
           group: gId,
           checked: !!me.defaultValue,
           hideOnClick: false,
-          listeners: listeners,
+          listeners: listeners
         },
-        itemDefaults,
+        itemDefaults
       ),
       Ext.apply(
         {
@@ -115,10 +115,10 @@ Ext.define("Ext.grid.filters.filter.Boolean", {
           group: gId,
           checked: !me.defaultValue,
           hideOnClick: false,
-          listeners: listeners,
+          listeners: listeners
         },
-        itemDefaults,
-      ),
+        itemDefaults
+      )
     ]);
   },
 
@@ -148,5 +148,5 @@ Ext.define("Ext.grid.filters.filter.Boolean", {
   },
 
   // This is supposed to be just a stub.
-  activateMenu: Ext.emptyFn,
+  activateMenu: Ext.emptyFn
 });

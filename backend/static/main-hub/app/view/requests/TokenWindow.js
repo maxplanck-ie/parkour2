@@ -10,7 +10,7 @@ Ext.define("MainHub.view.requests.TokenWindow", {
   autoShow: true,
   layout: {
     type: "vbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   items: [
@@ -23,7 +23,7 @@ Ext.define("MainHub.view.requests.TokenWindow", {
         submitEmptyText: false,
         allowBlank: false,
         labelWidth: 100,
-        anchor: "100%",
+        anchor: "100%"
       },
       items: [
         {
@@ -31,14 +31,14 @@ Ext.define("MainHub.view.requests.TokenWindow", {
           itemId: "subject-field",
           name: "subject",
           fieldLabel: "Subject",
-          emptyText: "Subject",
+          emptyText: "Subject"
         },
         {
           xtype: "textarea",
           name: "message",
           fieldLabel: "Message",
           emptyText: "Message",
-          height: 175,
+          height: 175
         },
         {
           xtype: "fieldcontainer",
@@ -49,12 +49,12 @@ Ext.define("MainHub.view.requests.TokenWindow", {
               boxLabel: "Include the list of all libraries and samples",
               name: "include_records",
               inputValue: "true",
-              checked: true,
-            },
-          ],
-        },
-      ],
-    },
+              checked: true
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   bbar: [
@@ -63,7 +63,7 @@ Ext.define("MainHub.view.requests.TokenWindow", {
       xtype: "button",
       itemId: "send-email-button",
       iconCls: "fa fa-paper-plane fa-lg",
-      text: "Send",
-    },
-  ],
+      text: "Send"
+    }
+  ]
 });

@@ -24,7 +24,7 @@ Ext.define("Ext.grid.locking.RowSynchronizer", {
 
     if (el) {
       this.els[name] = {
-        el: el,
+        el: el
       };
     }
   },
@@ -92,5 +92,5 @@ Ext.define("Ext.grid.locking.RowSynchronizer", {
     for (name in els) {
       els[name].el.style.height = "";
     }
-  },
+  }
 });

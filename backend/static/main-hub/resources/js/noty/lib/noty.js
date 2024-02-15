@@ -31,7 +31,7 @@
       /******/ var module = (installedModules[moduleId] = {
         /******/ i: moduleId,
         /******/ l: false,
-        /******/ exports: {},
+        /******/ exports: {}
         /******/
       });
       /******/
@@ -40,7 +40,7 @@
         module.exports,
         module,
         module.exports,
-        __webpack_require__,
+        __webpack_require__
       );
       /******/
       /******/ // Flag the module as loaded
@@ -69,7 +69,7 @@
         /******/ Object.defineProperty(exports, name, {
           /******/ configurable: false,
           /******/ enumerable: true,
-          /******/ get: getter,
+          /******/ get: getter
           /******/
         });
         /******/
@@ -111,7 +111,7 @@
         "use strict";
 
         Object.defineProperty(exports, "__esModule", {
-          value: true,
+          value: true
         });
         exports.css =
           exports.deepExtend =
@@ -239,7 +239,7 @@
               var r = (Math.random() * 16) | 0;
               var v = c === "x" ? r : (r & 0x3) | 0x8;
               return v.toString(16);
-            },
+            }
           );
 
           return id;
@@ -364,7 +364,7 @@
         function classList(element) {
           return (" " + ((element && element.className) || "") + " ").replace(
             /\s+/gi,
-            " ",
+            " "
           );
         }
 
@@ -474,7 +474,7 @@
         "use strict";
 
         Object.defineProperty(exports, "__esModule", {
-          value: true,
+          value: true
         });
         exports.Defaults =
           exports.Store =
@@ -527,7 +527,7 @@
           originalTitle: null,
           count: 0,
           changed: false,
-          timer: -1,
+          timer: -1
         };
 
         var docTitle = (exports.docTitle = {
@@ -567,7 +567,7 @@
               document.title = DocTitleProps.originalTitle;
               DocTitleProps.changed = false;
             }
-          },
+          }
         });
 
         var DefaultMaxVisible = (exports.DefaultMaxVisible = 5);
@@ -575,8 +575,8 @@
         var Queues = (exports.Queues = {
           global: {
             maxVisible: DefaultMaxVisible,
-            queue: [],
-          },
+            queue: []
+          }
         });
 
         var Store = (exports.Store = {});
@@ -591,7 +591,7 @@
           closeWith: ["click"],
           animation: {
             open: "noty_effects_open",
-            close: "noty_effects_close",
+            close: "noty_effects_close"
           },
           id: false,
           force: false,
@@ -607,18 +607,18 @@
             afterClose: null,
             onClick: null,
             onHover: null,
-            onTemplate: null,
+            onTemplate: null
           },
           sounds: {
             sources: [],
             volume: 1,
-            conditions: [],
+            conditions: []
           },
           titleCount: {
-            conditions: [],
+            conditions: []
           },
           modal: false,
-          visibilityControl: false,
+          visibilityControl: false
 
           /**
            * @param {string} queueName
@@ -644,7 +644,7 @@
 
           return {
             current: count,
-            maxVisible: max,
+            maxVisible: max
           };
         }
 
@@ -656,7 +656,7 @@
           if (!Queues.hasOwnProperty(ref.options.queue)) {
             Queues[ref.options.queue] = {
               maxVisible: DefaultMaxVisible,
-              queue: [],
+              queue: []
             };
           }
 
@@ -714,7 +714,7 @@
           var ghost = document.createElement("div");
           ghost.setAttribute("id", ghostID);
           Utils.css(ghost, {
-            height: Utils.outerHeight(ref.barDom) + "px",
+            height: Utils.outerHeight(ref.barDom) + "px"
           });
 
           ref.barDom.insertAdjacentHTML("afterend", ghost.outerHTML);
@@ -748,7 +748,7 @@
             "noty_bar noty_type__" +
               ref.options.type +
               " noty_theme__" +
-              ref.options.theme,
+              ref.options.theme
           );
 
           ref.barDom.innerHTML = markup;
@@ -868,7 +868,7 @@
             if (ref.options.progressBar && ref.progressDom) {
               Utils.css(ref.progressDom, {
                 transition: "width " + ref.options.timeout + "ms linear",
-                width: "0%",
+                width: "0%"
               });
             }
 
@@ -892,7 +892,7 @@
             if (ref.options.progressBar && ref.progressDom) {
               Utils.css(ref.progressDom, {
                 transition: "width 0ms linear",
-                width: "100%",
+                width: "100%"
               });
             }
           }
@@ -965,7 +965,7 @@
         "use strict";
 
         Object.defineProperty(exports, "__esModule", {
-          value: true,
+          value: true
         });
         exports.NotyButton = undefined;
 
@@ -998,7 +998,7 @@
         var NotyButton = (exports.NotyButton = function NotyButton(
           html,
           classes,
-          cb,
+          cb
         ) {
           var _this = this;
 
@@ -1028,7 +1028,7 @@
         "use strict";
 
         Object.defineProperty(exports, "__esModule", {
-          value: true,
+          value: true
         });
 
         var _createClass = (function () {
@@ -1072,7 +1072,7 @@
               onSubscriptionCancel: [],
               onWorkerError: [],
               onWorkerSuccess: [],
-              onWorkerNotSupported: [],
+              onWorkerNotSupported: []
             };
             return this;
           }
@@ -1100,7 +1100,7 @@
                 }
 
                 return this;
-              },
+              }
             },
             {
               key: "fire",
@@ -1119,13 +1119,13 @@
                     }
                   });
                 }
-              },
+              }
             },
             {
               key: "create",
               value: function create() {
                 console.log("NOT IMPLEMENTED YET");
-              },
+              }
 
               /**
                * @return {boolean}
@@ -1146,7 +1146,7 @@
                 } catch (e) {}
 
                 return result;
-              },
+              }
 
               /**
                * @return {string}
@@ -1191,7 +1191,7 @@
                 }
 
                 return perm.toString().toLowerCase();
-              },
+              }
 
               /**
                * @return {string}
@@ -1209,7 +1209,7 @@
                 }
 
                 return endpoint;
-              },
+              }
 
               /**
                * @return {boolean}
@@ -1225,7 +1225,7 @@
                 } catch (e) {
                   return false;
                 }
-              },
+              }
 
               /**
                * @return {void}
@@ -1272,7 +1272,7 @@
                       }
                     });
                 }
-              },
+              }
 
               /**
                * @return {void}
@@ -1303,7 +1303,7 @@
                               self.fire("onWorkerSuccess");
                               serviceWorkerRegistration.pushManager
                                 .subscribe({
-                                  userVisibleOnly: userVisibleOnly,
+                                  userVisibleOnly: userVisibleOnly
                                 })
                                 .then(function (subscription) {
                                   var key = subscription.getKey("p256dh");
@@ -1315,28 +1315,28 @@
                                       ? window.btoa(
                                           String.fromCharCode.apply(
                                             null,
-                                            new Uint8Array(key),
-                                          ),
+                                            new Uint8Array(key)
+                                          )
                                         )
                                       : null,
                                     auth: token
                                       ? window.btoa(
                                           String.fromCharCode.apply(
                                             null,
-                                            new Uint8Array(token),
-                                          ),
+                                            new Uint8Array(token)
+                                          )
                                         )
-                                      : null,
+                                      : null
                                   };
 
                                   self.fire("onSubscriptionSuccess", [
-                                    self.subData,
+                                    self.subData
                                   ]);
                                 })
                                 .catch(function (err) {
                                   self.fire("onWorkerError", [err]);
                                 });
-                            },
+                            }
                           );
                         });
                     } else {
@@ -1363,8 +1363,8 @@
                 } else {
                   cb(current);
                 }
-              },
-            },
+              }
+            }
           ]);
 
           return Push;
@@ -1571,7 +1571,7 @@
                       _state,
                       child,
                       callback,
-                      parent._result,
+                      parent._result
                     );
                   });
                 })();
@@ -1646,7 +1646,7 @@
 
             function cannotReturnOwn() {
               return new TypeError(
-                "A promises callback cannot return that same promise.",
+                "A promises callback cannot return that same promise."
               );
             }
 
@@ -1663,7 +1663,7 @@
               then,
               value,
               fulfillmentHandler,
-              rejectionHandler,
+              rejectionHandler
             ) {
               try {
                 then.call(value, fulfillmentHandler, rejectionHandler);
@@ -1697,7 +1697,7 @@
 
                     _reject(promise, reason);
                   },
-                  "Settle: " + (promise._label || " unknown promise"),
+                  "Settle: " + (promise._label || " unknown promise")
                 );
 
                 if (!sealed && error) {
@@ -1721,7 +1721,7 @@
                   },
                   function (reason) {
                     return _reject(promise, reason);
-                  },
+                  }
                 );
               }
             }
@@ -1892,7 +1892,7 @@
                   },
                   function rejectPromise(reason) {
                     _reject(promise, reason);
-                  },
+                  }
                 );
               } catch (e) {
                 _reject(promise, e);
@@ -1974,7 +1974,7 @@
                     new c(function (resolve$$) {
                       return resolve$$(entry);
                     }),
-                    i,
+                    i
                   );
                 }
               } else {
@@ -2011,7 +2011,7 @@
                 },
                 function (reason) {
                   return enumerator._settledAt(REJECTED, i, reason);
-                },
+                }
               );
             };
 
@@ -2138,7 +2138,7 @@
               if (!isArray(entries)) {
                 return new Constructor(function (_, reject) {
                   return reject(
-                    new TypeError("You must pass an array to race."),
+                    new TypeError("You must pass an array to race.")
                   );
                 });
               } else {
@@ -2195,13 +2195,13 @@
 
             function needsResolver() {
               throw new TypeError(
-                "You must pass a resolver function as the first argument to the promise constructor",
+                "You must pass a resolver function as the first argument to the promise constructor"
               );
             }
 
             function needsNew() {
               throw new TypeError(
-                "Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function.",
+                "Failed to construct 'Promise': Please use the 'new' operator, this object constructor cannot be called as a function."
               );
             }
 
@@ -2556,7 +2556,7 @@
   */
               catch: function _catch(onRejection) {
                 return this.then(null, onRejection);
-              },
+              }
             };
 
             function polyfill() {
@@ -2571,7 +2571,7 @@
                   local = Function("return this")();
                 } catch (e) {
                   throw new Error(
-                    "polyfill failed because global object is unavailable in this environment",
+                    "polyfill failed because global object is unavailable in this environment"
                   );
                 }
               }
@@ -2617,7 +2617,7 @@
         "use strict";
 
         Object.defineProperty(exports, "__esModule", {
-          value: true,
+          value: true
         });
 
         var _createClass = (function () {
@@ -2716,11 +2716,11 @@
               afterClose: [],
               onClick: [],
               onHover: [],
-              onTemplate: [],
+              onTemplate: []
             };
             this.promises = {
               show: null,
-              close: null,
+              close: null
             };
             this.on("beforeShow", this.options.callbacks.beforeShow);
             this.on("onShow", this.options.callbacks.onShow);
@@ -2759,7 +2759,7 @@
                   }
 
                   return this;
-                },
+                }
 
                 /**
                  * @return {Noty}
@@ -2796,7 +2796,7 @@
                       API.PageHidden &&
                       Utils.inArray(
                         "docHidden",
-                        this.options.titleCount.conditions,
+                        this.options.titleCount.conditions
                       )
                     ) {
                       API.docTitle.increment();
@@ -2822,7 +2822,7 @@
                   if (this.options.force) {
                     this.layoutDom.insertBefore(
                       this.barDom,
-                      this.layoutDom.firstChild,
+                      this.layoutDom.firstChild
                     );
                   } else {
                     this.layoutDom.appendChild(this.barDom);
@@ -2839,7 +2839,7 @@
                   if (
                     Utils.inArray(
                       "docVisible",
-                      this.options.titleCount.conditions,
+                      this.options.titleCount.conditions
                     )
                   ) {
                     API.docTitle.increment();
@@ -2852,7 +2852,7 @@
                   if (API.hasButtons(this)) {
                     Object.keys(this.options.buttons).forEach(function (key) {
                       var btn = _this.barDom.querySelector(
-                        "#" + _this.options.buttons[key].id,
+                        "#" + _this.options.buttons[key].id
                       );
                       Utils.addListener(btn, "click", function (e) {
                         Utils.stopPropagation(e);
@@ -2874,7 +2874,7 @@
                         API.fire(_this, "onClick");
                         _this.close();
                       },
-                      false,
+                      false
                     );
                   }
 
@@ -2884,7 +2884,7 @@
                     function () {
                       API.fire(_this, "onHover");
                     },
-                    false,
+                    false
                   );
 
                   if (this.options.timeout)
@@ -2908,7 +2908,7 @@
                         Utils.stopPropagation(e);
                         _this.close();
                       },
-                      false,
+                      false
                     );
                   }
 
@@ -2916,7 +2916,7 @@
 
                   if (this.options.animation.open === null) {
                     this.promises.show = new _es6Promise2.default(function (
-                      resolve,
+                      resolve
                     ) {
                       resolve();
                     });
@@ -2924,12 +2924,12 @@
                     typeof this.options.animation.open === "function"
                   ) {
                     this.promises.show = new _es6Promise2.default(
-                      this.options.animation.open.bind(this),
+                      this.options.animation.open.bind(this)
                     );
                   } else {
                     Utils.addClass(this.barDom, this.options.animation.open);
                     this.promises.show = new _es6Promise2.default(function (
-                      resolve,
+                      resolve
                     ) {
                       Utils.addListener(
                         _this.barDom,
@@ -2937,10 +2937,10 @@
                         function () {
                           Utils.removeClass(
                             _this.barDom,
-                            _this.options.animation.open,
+                            _this.options.animation.open
                           );
                           resolve();
-                        },
+                        }
                       );
                     });
                   }
@@ -2953,7 +2953,7 @@
                   });
 
                   return this;
-                },
+                }
 
                 /**
                  * @return {Noty}
@@ -2964,7 +2964,7 @@
                 value: function stop() {
                   API.dequeueClose(this);
                   return this;
-                },
+                }
 
                 /**
                  * @return {Noty}
@@ -2975,7 +2975,7 @@
                 value: function resume() {
                   API.queueClose(this);
                   return this;
-                },
+                }
 
                 /**
                  * @param {int|boolean} ms
@@ -3013,7 +3013,7 @@
                   }
 
                   return this;
-                }),
+                })
 
                 /**
                  * @param {string} html
@@ -3036,7 +3036,7 @@
                   if (optionsOverride) this.options.text = html;
 
                   return this;
-                },
+                }
 
                 /**
                  * @param {string} type
@@ -3069,7 +3069,7 @@
                   if (optionsOverride) this.options.type = type;
 
                   return this;
-                },
+                }
 
                 /**
                  * @param {string} theme
@@ -3102,7 +3102,7 @@
                   if (optionsOverride) this.options.theme = theme;
 
                   return this;
-                },
+                }
 
                 /**
                  * @return {Noty}
@@ -3127,7 +3127,7 @@
 
                   if (this.options.animation.close === null) {
                     this.promises.close = new _es6Promise2.default(function (
-                      resolve,
+                      resolve
                     ) {
                       resolve();
                     });
@@ -3135,12 +3135,12 @@
                     typeof this.options.animation.close === "function"
                   ) {
                     this.promises.close = new _es6Promise2.default(
-                      this.options.animation.close.bind(this),
+                      this.options.animation.close.bind(this)
                     );
                   } else {
                     Utils.addClass(this.barDom, this.options.animation.close);
                     this.promises.close = new _es6Promise2.default(function (
-                      resolve,
+                      resolve
                     ) {
                       Utils.addListener(
                         _this4.barDom,
@@ -3152,7 +3152,7 @@
                             API.ghostFix(_this4);
                           }
                           resolve();
-                        },
+                        }
                       );
                     });
                   }
@@ -3165,7 +3165,7 @@
                   this.closed = true;
 
                   return this;
-                },
+                }
 
                 // API functions
 
@@ -3173,7 +3173,7 @@
                  * @param {boolean|string} queueName
                  * @return {Noty}
                  */
-              },
+              }
             ],
             [
               {
@@ -3197,7 +3197,7 @@
                     }
                   });
                   return this;
-                },
+                }
 
                 /**
                  * @param {Object} obj
@@ -3209,7 +3209,7 @@
                 value: function overrideDefaults(obj) {
                   API.Defaults = Utils.deepExtend({}, API.Defaults, obj);
                   return this;
-                },
+                }
 
                 /**
                  * @param {int} amount
@@ -3235,7 +3235,7 @@
 
                   API.Queues[queueName].maxVisible = amount;
                   return this;
-                },
+                }
 
                 /**
                  * @param {string} innerHtml
@@ -3262,9 +3262,9 @@
                     innerHtml,
                     classes,
                     cb,
-                    attributes,
+                    attributes
                   );
-                },
+                }
 
                 /**
                  * @return {string}
@@ -3274,7 +3274,7 @@
                 key: "version",
                 value: function version() {
                   return "3.1.3";
-                },
+                }
 
                 /**
                  * @param {String} workerPath
@@ -3285,9 +3285,9 @@
                 key: "Push",
                 value: function Push(workerPath) {
                   return new _push.Push(workerPath);
-                },
-              },
-            ],
+                }
+              }
+            ]
           );
 
           return Noty;
@@ -3527,9 +3527,9 @@
       /***/ function (module, exports) {
         /* (ignored) */
         /***/
-      },
+      }
       /******/
-    ],
+    ]
   );
 });
 //# sourceMappingURL=noty.js.map

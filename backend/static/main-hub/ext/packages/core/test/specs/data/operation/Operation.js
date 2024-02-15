@@ -142,7 +142,7 @@ describe("Ext.data.operation.Operation", function () {
 
       beforeEach(function () {
         proxy = {
-          completeOperation: jasmine.createSpy("completeOperation"),
+          completeOperation: jasmine.createSpy("completeOperation")
         };
       });
 
@@ -176,7 +176,7 @@ describe("Ext.data.operation.Operation", function () {
     beforeEach(function () {
       proxy = new Ext.data.proxy.Proxy();
       makeOperation({
-        proxy: proxy,
+        proxy: proxy
       });
       op.doExecute = function () {
         request = new Ext.data.Request();
@@ -222,7 +222,7 @@ describe("Ext.data.operation.Operation", function () {
       makeOperation({
         callback: function () {
           called = true;
-        },
+        }
       });
       op.execute();
       op.setSuccessful(true);
@@ -234,7 +234,7 @@ describe("Ext.data.operation.Operation", function () {
       makeOperation({
         callback: function () {
           called = true;
-        },
+        }
       });
       op.execute();
       op.setException("Failed");
@@ -246,7 +246,7 @@ describe("Ext.data.operation.Operation", function () {
       makeOperation({
         callback: function () {
           scope = this;
-        },
+        }
       });
       op.execute();
       op.setSuccessful(true);
@@ -261,7 +261,7 @@ describe("Ext.data.operation.Operation", function () {
         scope: o,
         callback: function () {
           scope = this;
-        },
+        }
       });
       op.execute();
       op.setSuccessful(true);
@@ -271,7 +271,7 @@ describe("Ext.data.operation.Operation", function () {
     it("should pass the records, operation and success state", function () {
       var callback = jasmine.createSpy();
       makeOperation({
-        callback: callback,
+        callback: callback
       });
       op.execute();
       op.setSuccessful(true);
@@ -289,7 +289,7 @@ describe("Ext.data.operation.Operation", function () {
     beforeEach(function () {
       Model = Ext.define(null, {
         extend: "Ext.data.Model",
-        fields: ["id"],
+        fields: ["id"]
       });
 
       response = {};
@@ -316,10 +316,10 @@ describe("Ext.data.operation.Operation", function () {
       it("should set an exception ", function () {
         op.process(
           new Ext.data.ResultSet({
-            success: false,
+            success: false
           }),
           request,
-          response,
+          response
         );
         expect(op.hasException()).toBe(true);
         expect(op.wasSuccessful()).toBe(false);
@@ -329,10 +329,10 @@ describe("Ext.data.operation.Operation", function () {
         op.process(
           new Ext.data.ResultSet({
             success: false,
-            message: "Failed",
+            message: "Failed"
           }),
           request,
-          response,
+          response
         );
         expect(op.getError()).toBe("Failed");
       });

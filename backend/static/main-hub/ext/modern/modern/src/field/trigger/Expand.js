@@ -7,5 +7,5 @@ Ext.define("Ext.field.trigger.Expand", {
   alias: "trigger.expand",
   classCls: Ext.baseCSSPrefix + "expandtrigger",
   handler: "onExpandTap",
-  scope: "this",
+  scope: "this"
 });

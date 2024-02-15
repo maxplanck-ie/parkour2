@@ -28,9 +28,9 @@ Ext.define("Ext.view.MultiSelector", {
       width: 200,
       height: 200,
       store: {
-        autoLoad: true,
-      },
-    },
+        autoLoad: true
+      }
+    }
   },
 
   /**
@@ -95,14 +95,14 @@ Ext.define("Ext.view.MultiSelector", {
 
     if (!store) {
       me.store = {
-        model: model,
+        model: model
       };
     }
 
     if (emptyText && !me.viewConfig) {
       me.viewConfig = {
         deferEmptyText: false,
-        emptyText: emptyText,
+        emptyText: emptyText
       };
     }
 
@@ -110,7 +110,7 @@ Ext.define("Ext.view.MultiSelector", {
       me.hideHeaders = !fieldTitle;
       me.columns = [
         { text: fieldTitle, dataIndex: me.fieldName, flex: 1 },
-        me.makeRemoveRowColumn(),
+        me.makeRemoveRowColumn()
       ];
     }
 
@@ -124,7 +124,7 @@ Ext.define("Ext.view.MultiSelector", {
       type: "plus",
       tooltip: me.addToolText,
       callback: "onShowSearch",
-      scope: me,
+      scope: me
     });
     me.searchTool = me.tools[me.tools.length - 1];
   },
@@ -144,7 +144,7 @@ Ext.define("Ext.view.MultiSelector", {
       processEvent: me.processRowEvent.bind(me),
       renderer: me.renderRemoveRow,
       updater: Ext.emptyFn,
-      scope: me,
+      scope: me
     };
   },
 
@@ -156,7 +156,7 @@ Ext.define("Ext.view.MultiSelector", {
     cellIndex,
     e,
     record,
-    row,
+    row
   ) {
     var body = Ext.getBody();
 
@@ -233,9 +233,9 @@ Ext.define("Ext.view.MultiSelector", {
             owner: me,
             field: me.fieldName,
             floating: true,
-            alignOnScroll: false,
+            alignOnScroll: false
           },
-          me.getSearch(),
+          me.getSearch()
         );
         me.searchPopup = searchPopup = me.add(searchPopup);
 
@@ -258,7 +258,7 @@ Ext.define("Ext.view.MultiSelector", {
       me.scrollListeners = Ext.on({
         scroll: "onGlobalScroll",
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       // Dismiss on touch outside this component tree.
@@ -271,8 +271,8 @@ Ext.define("Ext.view.MultiSelector", {
         touchstart: me.onDismissSearch,
         scope: me,
         delegated: false,
-        destroyable: true,
+        destroyable: true
       });
-    },
-  },
+    }
+  }
 });

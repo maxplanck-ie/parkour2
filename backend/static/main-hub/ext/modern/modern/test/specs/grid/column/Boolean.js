@@ -15,38 +15,38 @@ describe("Ext.grid.column.Boolean", function () {
             "name",
             "email",
             "phone",
-            { name: "married", type: "boolean" },
+            { name: "married", type: "boolean" }
           ],
           data: [
             {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              married: false,
+              married: false
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              married: false,
+              married: false
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              married: true,
+              married: true
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              married: true,
-            },
+              married: true
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.grid.Grid(
@@ -58,21 +58,21 @@ describe("Ext.grid.column.Boolean", function () {
               header: "Married",
               dataIndex: "married",
               width: 100,
-              xtype: "booleancolumn",
+              xtype: "booleancolumn"
             },
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
-            { header: "Phone", dataIndex: "phone", width: 100 },
+            { header: "Phone", dataIndex: "phone", width: 100 }
           ],
           height: 200,
-          width: 400,
+          width: 400
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -92,7 +92,7 @@ describe("Ext.grid.column.Boolean", function () {
 
     Controller = Ext.define("spec.TestController", {
       extend: "Ext.app.ViewController",
-      alias: "controller.test",
+      alias: "controller.test"
     });
   });
 
@@ -116,17 +116,17 @@ describe("Ext.grid.column.Boolean", function () {
             header: "Income",
             dataIndex: "married",
             width: 100,
-            xtype: "booleancolumn",
-          },
+            xtype: "booleancolumn"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "False",
+        "False"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "False",
+        "False"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe("True");
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("True");
@@ -141,17 +141,17 @@ describe("Ext.grid.column.Boolean", function () {
             width: 100,
             xtype: "booleancolumn",
             trueText: "Wahr",
-            falseText: "Falsch",
-          },
+            falseText: "Falsch"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "Falsch",
+        "Falsch"
       );
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "Falsch",
+        "Falsch"
       );
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe("Wahr");
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe("Wahr");
@@ -161,8 +161,8 @@ describe("Ext.grid.column.Boolean", function () {
       var vm = new Ext.app.ViewModel({
         data: {
           trueText: "Adevarat",
-          falseText: "Fals",
-        },
+          falseText: "Fals"
+        }
       });
 
       createGrid({
@@ -176,22 +176,22 @@ describe("Ext.grid.column.Boolean", function () {
               viewModel: vm,
               bind: {
                 trueText: "{trueText}",
-                falseText: "{falseText}",
-              },
-            },
-          },
+                falseText: "{falseText}"
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm.notify();
       expect(getCell(0, 0).el.down(".x-inner-el", true).innerHTML).toBe("Fals");
       expect(getCell(1, 0).el.down(".x-inner-el", true).innerHTML).toBe("Fals");
       expect(getCell(2, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "Adevarat",
+        "Adevarat"
       );
       expect(getCell(3, 0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "Adevarat",
+        "Adevarat"
       );
     });
   });

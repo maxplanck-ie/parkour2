@@ -41,8 +41,8 @@ Ext.define("Ext.theme.blackberry.MenuButton", {
      * @hide
      */
     listeners: {
-      tap: "onTap",
-    },
+      tap: "onTap"
+    }
   },
 
   /**
@@ -72,24 +72,24 @@ Ext.define("Ext.theme.blackberry.MenuButton", {
               Ext.Viewport.removeMenu(me.getMenuSide());
               me.$menu.destroy();
             }
-          },
-        },
-      }),
+          }
+        }
+      })
     );
 
     menu.on({
       scope: me,
       tap: me.onMenuButtonTap,
-      delegate: "button",
+      delegate: "button"
     });
 
     Ext.Viewport.setMenu(menu, {
       side: me.getMenuSide(),
-      cover: me.getMenuCover(),
+      cover: me.getMenuCover()
     });
 
     Ext.Viewport.showMenu(me.getMenuSide());
   },
 
-  onMenuButtonTap: Ext.emptyFn,
+  onMenuButtonTap: Ext.emptyFn
 });

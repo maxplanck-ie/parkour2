@@ -49,15 +49,15 @@ Ext.define("Ext.field.Email", {
      * @inheritdoc
      */
     component: {
-      type: "email",
+      type: "email"
     },
 
     /**
      * @cfg
      * @inheritdoc
      */
-    autoCapitalize: false,
+    autoCapitalize: false
   },
 
-  classCls: Ext.baseCSSPrefix + "emailfield",
+  classCls: Ext.baseCSSPrefix + "emailfield"
 });

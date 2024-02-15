@@ -15,7 +15,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
      * True to resize on the fly rather than using a proxy marker.
      * @accessor
      */
-    dynamic: false,
+    dynamic: false
   },
 
   colHeaderCls: Ext.baseCSSPrefix + "column-header",
@@ -69,7 +69,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
       onCancel: me.onCancel.bind(me),
       tolerance: 3,
       autoStart: 300,
-      el: el,
+      el: el
     });
 
     headerCt.setTouchAction({ panX: false });
@@ -218,7 +218,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
     // beyond the minColWidth. If there is no next header, then the header may not be expanded.
     if (me.headerCt.forceFit) {
       nextHd = me.dragHd.nextNode(
-        "gridcolumn:not([hidden]):not([isGroupHeader])",
+        "gridcolumn:not([hidden]):not([isGroupHeader])"
       );
       if (nextHd && me.headerInSameGrid(nextHd)) {
         maxColWidth =
@@ -243,7 +243,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
       0,
       0,
       0,
-      me.minColWidth,
+      me.minColWidth
     );
     result.right = dragHdEl.getX() + maxColWidth;
     return result;
@@ -309,7 +309,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
     } else {
       me.setMarkerX(
         me.getMovingMarker(me.markerOwner),
-        me.calculateDragX(me.markerOwner),
+        me.calculateDragX(me.markerOwner)
       );
     }
   },
@@ -373,7 +373,7 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
       // Constraining so that neither neighbour can be sized to below minWidth is handled in getConstrainRegion
       if (me.headerCt.forceFit) {
         nextHd = dragHd.nextNode(
-          "gridcolumn:not([hidden]):not([isGroupHeader])",
+          "gridcolumn:not([hidden]):not([isGroupHeader])"
         );
         if (nextHd && !me.headerInSameGrid(nextHd)) {
           nextHd = null;
@@ -440,5 +440,5 @@ Ext.define("Ext.grid.plugin.HeaderResizer", {
 
   adjustColumnWidth: function (offsetX) {
     this.dragHd.setWidth(this.origWidth + offsetX);
-  },
+  }
 });

@@ -76,13 +76,13 @@ Ext.define(
           me.fire("pinchstart", e, {
             touches: touches,
             distance: distance,
-            scale: 1,
+            scale: 1
           });
         } else {
           me.fire("pinch", e, {
             touches: touches,
             distance: distance,
-            scale: distance / me.startDistance,
+            scale: distance / me.startDistance
           });
         }
       }
@@ -104,10 +104,10 @@ Ext.define(
       this.lastTouches = null;
       this.startDistance = 0;
       return this.callParent();
-    },
+    }
   },
   function (Pinch) {
     var gestures = Ext.manifest.gestures;
     Pinch.instance = new Pinch(gestures && gestures.pinch);
-  },
+  }
 );

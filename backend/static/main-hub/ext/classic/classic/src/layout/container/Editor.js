@@ -13,7 +13,7 @@ Ext.define("Ext.layout.container.Editor", {
 
   autoSizeDefault: {
     width: "field",
-    height: "field",
+    height: "field"
   },
 
   sizePolicies: {
@@ -24,14 +24,14 @@ Ext.define("Ext.layout.container.Editor", {
         readsWidth: 1,
         readsHeight: 1,
         setsWidth: 0,
-        setsHeight: 0,
+        setsHeight: 0
       },
       boundEl: {
         readsWidth: 1,
         readsHeight: 0,
         setsWidth: 0,
-        setsHeight: 1,
-      },
+        setsHeight: 1
+      }
     },
 
     boundEl: {
@@ -40,15 +40,15 @@ Ext.define("Ext.layout.container.Editor", {
         readsWidth: 0,
         readsHeight: 1,
         setsWidth: 1,
-        setsHeight: 0,
+        setsHeight: 0
       },
       boundEl: {
         readsWidth: 0,
         readsHeight: 0,
         setsWidth: 1,
-        setsHeight: 1,
-      },
-    },
+        setsHeight: 1
+      }
+    }
   },
 
   getItemSizePolicy: function (item) {
@@ -82,13 +82,13 @@ Ext.define("Ext.layout.container.Editor", {
         owner,
         autoSize.width,
         "getWidth",
-        owner.width,
+        owner.width
       );
       fieldHeight = me.getDimension(
         owner,
         autoSize.height,
         "getHeight",
-        owner.height,
+        owner.height
       );
     }
 
@@ -102,7 +102,7 @@ Ext.define("Ext.layout.container.Editor", {
     // This is a Container layout, so publish content size
     ownerContext.setContentSize(
       fieldWidth || owner.field.getWidth(),
-      fieldHeight || owner.field.getHeight(),
+      fieldHeight || owner.field.getHeight()
     );
   },
 
@@ -120,5 +120,5 @@ Ext.define("Ext.layout.container.Editor", {
       default:
         return ownerSize;
     }
-  },
+  }
 });

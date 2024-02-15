@@ -27,11 +27,11 @@ Ext.define("Ext.ElementLoader", {
           .setHtml(
             response.responseText,
             active.scripts === true,
-            active.rendererScope,
+            active.rendererScope
           );
         return true;
-      },
-    },
+      }
+    }
   },
 
   /* End Definitions */
@@ -274,7 +274,7 @@ Ext.define("Ext.ElementLoader", {
     Ext.apply(params, me.baseParams);
 
     Ext.applyIf(options, {
-      url: me.url,
+      url: me.url
     });
 
     //<debug>
@@ -286,7 +286,7 @@ Ext.define("Ext.ElementLoader", {
     Ext.apply(options, {
       scope: me,
       params: params,
-      callback: me.onComplete,
+      callback: me.onComplete
     });
 
     if (me.fireEvent("beforeload", me, options) === false) {
@@ -305,7 +305,7 @@ Ext.define("Ext.ElementLoader", {
       success: options.success || me.success,
       failure: options.failure || me.failure,
       renderer: options.renderer || me.renderer,
-      scripts: Ext.isDefined(options.scripts) ? options.scripts : me.scripts,
+      scripts: Ext.isDefined(options.scripts) ? options.scripts : me.scripts
     };
     me.active.request = Ext.Ajax.request(options);
     me.setOptions(me.active, options);
@@ -413,5 +413,5 @@ Ext.define("Ext.ElementLoader", {
     me.abort();
 
     me.callParent();
-  },
+  }
 });

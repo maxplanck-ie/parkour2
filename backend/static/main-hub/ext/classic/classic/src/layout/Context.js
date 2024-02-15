@@ -283,7 +283,7 @@ Ext.define("Ext.layout.Context", {
     "Ext.layout.ContextItem",
     "Ext.layout.Layout",
     "Ext.fx.Anim",
-    "Ext.fx.Manager",
+    "Ext.fx.Manager"
   ],
 
   remainingLayouts: 0,
@@ -354,7 +354,7 @@ Ext.define("Ext.layout.Context", {
                 ]
                 */
       },
-      dom: {},
+      dom: {}
     };
   },
 
@@ -599,7 +599,7 @@ Ext.define("Ext.layout.Context", {
         (items[id] = new Ext.layout.ContextItem({
           context: this,
           target: target,
-          el: el,
+          el: el
         }));
 
     return item;
@@ -1357,7 +1357,7 @@ Ext.define("Ext.layout.Context", {
       //resetLayout: true,
       //runCycle: true,
       //setProp: true,
-      0: 0,
+      0: 0
     },
 
     //profileLayoutsByType: true,
@@ -1405,7 +1405,7 @@ Ext.define("Ext.layout.Context", {
 
       if (me.remainingLayouts !== expected) {
         Ext.raise({
-          msg: "Bookkeeping error me.remainingLayouts",
+          msg: "Bookkeeping error me.remainingLayouts"
         });
       }
     },
@@ -1437,7 +1437,7 @@ Ext.define("Ext.layout.Context", {
       var ret = this.callParent(arguments);
       if (!ret.wrapsComponent) {
         Ext.raise({
-          msg: target.id + " is not a component",
+          msg: target.id + " is not a component"
         });
       }
       return ret;
@@ -1448,7 +1448,7 @@ Ext.define("Ext.layout.Context", {
       if (ret && ret.wrapsComponent) {
         Ext.raise({
           msg:
-            parent.id + "/" + target.id + " is a component (expected element)",
+            parent.id + "/" + target.id + " is a component (expected element)"
         });
       }
       return ret;
@@ -1468,12 +1468,12 @@ Ext.define("Ext.layout.Context", {
 
       if (!layout.running) {
         Ext.raise({
-          msg: name + " is already done",
+          msg: name + " is already done"
         });
       }
       if (!me.remainingLayouts) {
         Ext.raise({
-          msg: name + " finished but no layouts are running",
+          msg: name + " finished but no layouts are running"
         });
       }
 
@@ -1532,7 +1532,7 @@ Ext.define("Ext.layout.Context", {
     queueLayout: function (layout) {
       if (layout.done || layout.blockCount || layout.pending) {
         Ext.raise({
-          msg: this.getLayoutName(layout) + " should not be queued for layout",
+          msg: this.getLayoutName(layout) + " should not be queued for layout"
         });
       }
       if (this.logOn.queueLayout) {
@@ -1592,7 +1592,7 @@ Ext.define("Ext.layout.Context", {
         " - size: ",
         ownerContext.widthModel.name,
         "/",
-        ownerContext.heightModel.name,
+        ownerContext.heightModel.name
       );
 
       if (!layout.done || me.reportOnSuccess) {
@@ -1626,7 +1626,7 @@ Ext.define("Ext.layout.Context", {
               ") dirty: ",
               item.dirty ? !!item.dirty[info.name] : false,
               ", setBy: ",
-              setBy,
+              setBy
             );
           }
 
@@ -1739,7 +1739,7 @@ Ext.define("Ext.layout.Context", {
       } else {
         Ext.log(
           { level: "error" },
-          "----------------- FAILURE -----------------",
+          "----------------- FAILURE -----------------"
         );
       }
 
@@ -1800,7 +1800,7 @@ Ext.define("Ext.layout.Context", {
         me.calcCount,
         " in ",
         me.round(time),
-        " msec",
+        " msec"
       );
 
       Ext.log("Calculates by type:");
@@ -1821,7 +1821,7 @@ Ext.define("Ext.layout.Context", {
             calcs: me.calcsByType[key],
             multiple: Math.round((me.calcsByType[key] / total) * 10) / 10,
             calcTime: me.round(me.timesByType[key]),
-            avgCalcTime: me.round(me.timesByType[key] / me.calcsByType[key]),
+            avgCalcTime: me.round(me.timesByType[key] / me.calcsByType[key])
           });
         }
       }
@@ -1846,7 +1846,7 @@ Ext.define("Ext.layout.Context", {
           calc.calcTime,
           " msec (avg ",
           calc.avgCalcTime,
-          " msec)",
+          " msec)"
         );
       }
 
@@ -1860,7 +1860,7 @@ Ext.define("Ext.layout.Context", {
           this.cycleCount,
           " (queue length: ",
           this.layoutQueue.length,
-          ")",
+          ")"
         );
       }
 
@@ -1904,6 +1904,6 @@ Ext.define("Ext.layout.Context", {
             }**/
 
       return ret;
-    },
-  }, // End Diagnostics
+    }
+  } // End Diagnostics
 });

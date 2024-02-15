@@ -22,7 +22,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
 
@@ -34,9 +34,9 @@ describe("Ext.grid.plugin.CellEditing", function () {
     return grid.getView().getCellInclusive(
       {
         row: rowIdx,
-        column: cellIdx,
+        column: cellIdx
       },
-      true,
+      true
     );
   }
 
@@ -50,31 +50,31 @@ describe("Ext.grid.plugin.CellEditing", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              age: 14,
+              age: 14
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              age: 12,
+              age: 12
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              age: 44,
+              age: 44
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              age: 41,
-            },
+              age: 41
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     plugin = new Ext.grid.plugin.CellEditing(pluginCfg);
@@ -87,7 +87,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
               header: "Name",
               dataIndex: "name",
               editor: "textfield",
-              locked: locked,
+              locked: locked
             },
             {
               header: "Email",
@@ -96,21 +96,21 @@ describe("Ext.grid.plugin.CellEditing", function () {
               editor: {
                 xtype: "textareafield",
                 allowBlank: false,
-                grow: true,
-              },
+                grow: true
+              }
             },
             { header: "Phone", dataIndex: "phone", editor: "textfield" },
-            { header: "Age", dataIndex: "age", editor: "textfield" },
+            { header: "Age", dataIndex: "age", editor: "textfield" }
           ],
           store: store,
           selModel: "cellmodel",
           plugins: [plugin],
           width: 200,
           height: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.view;
@@ -129,7 +129,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
     jasmine.fireKeyEvent(
       target,
       Ext.supports.SpecialKeyDownRepeat ? "keydown" : "keypress",
-      key,
+      key
     );
   }
 
@@ -157,8 +157,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
       makeGrid(
         { clicksToEdit: 1 },
         {
-          width: 600,
-        },
+          width: 600
+        }
       );
       var spy = spyOnEvent(grid, "cellactivate"),
         cell = findCell(0, 0),
@@ -200,12 +200,12 @@ describe("Ext.grid.plugin.CellEditing", function () {
           listeners: {
             edit: function (editor) {
               wasEdited = true;
-            },
-          },
+            }
+          }
         },
         {
-          selType: "cellmodel",
-        },
+          selType: "cellmodel"
+        }
       );
 
       columnManager = grid.getColumnManager();
@@ -274,8 +274,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
         listeners: {
           edit: function (editor, context, options) {
             context.record.set("email", "lisa@milhouse.com");
-          },
-        },
+          }
+        }
       });
 
       plugin.startEdit(0, 0);
@@ -318,8 +318,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
             beforeedit: function (editor, context) {
               context.value = "motley";
               editorContext = context;
-            },
-          },
+            }
+          }
         });
 
         startEdit();
@@ -341,8 +341,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
               canceledit: function (editor, context) {
                 cancelEditFired = true;
                 editorContext = context;
-              },
-            },
+              }
+            }
           });
 
           startEdit();
@@ -433,7 +433,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
           null,
           null,
           null,
-          !!shift,
+          !!shift
         );
       }
 
@@ -461,14 +461,14 @@ describe("Ext.grid.plugin.CellEditing", function () {
           beforeEach(function () {
             makeGrid(
               {
-                clicksToEdit: eventName === "click" ? 1 : 2,
+                clicksToEdit: eventName === "click" ? 1 : 2
               },
               {
                 selModel: {
                   type: "rowmodel",
-                  mode: "MULTI",
-                },
-              },
+                  mode: "MULTI"
+                }
+              }
             );
 
             selModel = grid.selModel;
@@ -533,7 +533,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
 
     it("should keep existing selections when editing a cell in an previously-selected row", function () {
       makeGrid(null, {
-        selModel: new Ext.selection.CheckboxModel({}),
+        selModel: new Ext.selection.CheckboxModel({})
       });
 
       store = grid.store;
@@ -554,7 +554,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
         selections;
 
       makeGrid(null, {
-        selModel: new Ext.selection.CheckboxModel({}),
+        selModel: new Ext.selection.CheckboxModel({})
       });
 
       store = grid.store;
@@ -577,7 +577,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
 
     it("should keep existing selections when editing a cell in an unselected row", function () {
       makeGrid(null, {
-        selModel: new Ext.selection.CheckboxModel({}),
+        selModel: new Ext.selection.CheckboxModel({})
       });
 
       store = grid.store;
@@ -621,9 +621,9 @@ describe("Ext.grid.plugin.CellEditing", function () {
           type: "ajax",
           url: "fake",
           reader: {
-            type: "array",
-          },
-        },
+            type: "array"
+          }
+        }
       });
 
       makeGrid(
@@ -644,10 +644,10 @@ describe("Ext.grid.plugin.CellEditing", function () {
                 minChars: 2,
                 displayField: "state",
                 valueField: "id",
-                forceSelection: forceSelection,
-              },
-            },
-          ],
+                forceSelection: forceSelection
+              }
+            }
+          ]
         },
         {
           fields: ["id", "state", "nickname"],
@@ -655,15 +655,15 @@ describe("Ext.grid.plugin.CellEditing", function () {
             ["AL", "Alabama", "The Heart of Dixie"],
             ["AK", "Alaska", "The Land of the Midnight Sun"],
             ["AR", "Arkansas", "The Natural State"],
-            ["AZ", "Arizona", "The Grand Canyon State"],
+            ["AZ", "Arizona", "The Grand Canyon State"]
           ],
           proxy: {
             type: "memory",
             reader: {
-              type: "array",
-            },
-          },
-        },
+              type: "array"
+            }
+          }
+        }
       );
     }
 
@@ -695,7 +695,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
                   },
                   "row " + (curRowIdx + 1) + " to begin editing",
                   5000,
-                  Ext.isIE ? 50 : undefined,
+                  Ext.isIE ? 50 : undefined
                 );
               }
 
@@ -706,7 +706,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
                     grid.view
                       .getNode(store.getAt(0))
                       .getElementsByTagName("td")[0],
-                    "dblclick",
+                    "dblclick"
                   );
                 });
 
@@ -718,7 +718,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
                   },
                   "first row editing to start",
                   5000,
-                  Ext.isIE ? 50 : undefined,
+                  Ext.isIE ? 50 : undefined
                 );
 
                 runs(function () {
@@ -784,7 +784,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
                     runs(function () {
                       expect(record.get("state")).toBe("Arizona");
                       expect(record.get("nickname")).toBe(
-                        "The Grand Canyon State",
+                        "The Grand Canyon State"
                       );
                     });
                   });
@@ -860,17 +860,17 @@ describe("Ext.grid.plugin.CellEditing", function () {
         beforeEach(function () {
           makeGrid(
             {
-              clicksToEdit: 1,
+              clicksToEdit: 1
             },
             {
               columns: [
                 { header: "Name", dataIndex: "name", editor: "textfield" },
                 { header: "Email", dataIndex: "email", flex: 1 },
                 { header: "Phone", dataIndex: "phone" },
-                { header: "Age", dataIndex: "age" },
+                { header: "Age", dataIndex: "age" }
               ],
-              selModel: "rowmodel",
-            },
+              selModel: "rowmodel"
+            }
           );
 
           startEdit();
@@ -1004,7 +1004,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
     describe("1 click", function () {
       beforeEach(function () {
         makeGrid({
-          clicksToEdit: 1,
+          clicksToEdit: 1
         });
       });
 
@@ -1030,7 +1030,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
           node = grid.view.getNodeByRecord(record);
           jasmine.fireMouseEvent(
             Ext.fly(node).down(".x-grid-cell"),
-            "dblclick",
+            "dblclick"
           );
 
           // We expect nothing to happen
@@ -1146,7 +1146,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             return plugin.activeEditor && plugin.activeEditor.field.hasFocus;
           },
           "editor to focus",
-          1000,
+          1000
         );
 
         // Need to be able to correctly startEdit while editing to move edit location
@@ -1163,7 +1163,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             );
           },
           "something funky to happen",
-          1000,
+          1000
         );
       });
 
@@ -1189,11 +1189,11 @@ describe("Ext.grid.plugin.CellEditing", function () {
           tearDown();
 
           makeGrid(null, {
-            renderTo: null,
+            renderTo: null
           });
 
           win = new Ext.window.Window({
-            items: grid,
+            items: grid
           });
           win.show();
 
@@ -1207,7 +1207,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             win.el.dom,
             "mousemove",
             win.x - 100,
-            win.y - 100,
+            win.y - 100
           );
           jasmine.fireMouseEvent(win.el.dom, "mouseup", 400);
 
@@ -1270,7 +1270,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
               return model.get("name") === str;
             },
             "model to be set",
-            1000,
+            1000
           );
 
           runs(function () {
@@ -1293,7 +1293,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
               return !plugin.editing;
             },
             "editing to stop",
-            1000,
+            1000
           );
 
           runs(function () {
@@ -1460,10 +1460,10 @@ describe("Ext.grid.plugin.CellEditing", function () {
       fieldset = new Ext.form.FieldSet({
         collapsible: true,
         items: makeGrid({
-          renderTo: null,
+          renderTo: null
         }),
         width: 500,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       startEdit();
@@ -1487,7 +1487,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
 
         editor_2 = new Ext.grid.CellEditor({
           field: "textfield",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         fieldset.toggle();
@@ -1517,7 +1517,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
 
         editor_2 = new Ext.grid.CellEditor({
           field: "textfield",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         fieldset.toggle();
@@ -1560,8 +1560,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
               dataIndex: "name",
               editor: {
                 xtype: "textfield",
-                selectOnFocus: true,
-              },
+                selectOnFocus: true
+              }
             },
             {
               header: "Email",
@@ -1569,19 +1569,19 @@ describe("Ext.grid.plugin.CellEditing", function () {
               flex: 1,
               editor: {
                 xtype: "textfield",
-                selectOnFocus: true,
-              },
+                selectOnFocus: true
+              }
             },
             { header: "Phone", dataIndex: "phone", editor: "textfield" },
-            { header: "Age", dataIndex: "age", editor: "textfield" },
-          ],
+            { header: "Age", dataIndex: "age", editor: "textfield" }
+          ]
         });
 
         node = grid.view.getNode(grid.store.getAt(1));
         jasmine.fireMouseEvent(node.getElementsByTagName("td")[0], "dblclick");
 
         expect(getSelectionText()).toBe("Bart");
-      },
+      }
     );
   });
 
@@ -1600,8 +1600,8 @@ describe("Ext.grid.plugin.CellEditing", function () {
             dataIndex: "name",
             editor: {
               xtype: "textfield",
-              selectOnFocus: true,
-            },
+              selectOnFocus: true
+            }
           },
           {
             header: "Email",
@@ -1609,12 +1609,12 @@ describe("Ext.grid.plugin.CellEditing", function () {
             flex: 1,
             editor: {
               xtype: "textfield",
-              selectOnFocus: true,
-            },
+              selectOnFocus: true
+            }
           },
           { header: "Phone", dataIndex: "phone", editor: "textfield" },
-          { header: "Age", dataIndex: "age", editor: "textfield" },
-        ],
+          { header: "Age", dataIndex: "age", editor: "textfield" }
+        ]
       });
 
       startEdit(0, 1);
@@ -1649,7 +1649,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             autoSync,
           function () {
             makeGrid(null, null, {
-              autoSync: autoSync,
+              autoSync: autoSync
             });
 
             record = grid.store.getAt(0);
@@ -1667,7 +1667,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
                 return !!plugin.activeEditor.editing;
               },
               "editing to start",
-              1000,
+              1000
             );
 
             runs(function () {
@@ -1676,7 +1676,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
               expect(plugin.activeEditor.editing).toBe(true);
               expect(plugin.activeColumn.dataIndex).toBe("email");
             });
-          },
+          }
         );
       }
 
@@ -1701,7 +1701,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             return !!plugin.activeEditor.editing;
           },
           "editing to start",
-          1000,
+          1000
         );
 
         runs(function () {
@@ -1730,7 +1730,7 @@ describe("Ext.grid.plugin.CellEditing", function () {
             return !!plugin.activeEditor.editing;
           },
           "editing to start",
-          1000,
+          1000
         );
 
         runs(function () {

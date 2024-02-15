@@ -24,7 +24,7 @@ Ext.define("Ext.ux.colorpick.ColorMapController", {
     me.mon(colorMap.getEl(), {
       mousedown: me.onMouseDown,
       dragstart: me.onDragStart,
-      scope: me,
+      scope: me
     });
   },
 
@@ -95,7 +95,7 @@ Ext.define("Ext.ux.colorpick.ColorMapController", {
 
     dragHandle.getEl().setStyle({
       left: left + "px",
-      top: top + "px",
+      top: top + "px"
     });
 
     me.onHandleDrag();
@@ -133,7 +133,7 @@ Ext.define("Ext.ux.colorpick.ColorMapController", {
     // Position dragger
     dragHandle.getEl().setStyle({
       left: left + "px",
-      top: top + "px",
+      top: top + "px"
     });
   },
 
@@ -150,10 +150,10 @@ Ext.define("Ext.ux.colorpick.ColorMapController", {
     hex = Ext.ux.colorpick.ColorUtils.rgb2hex(
       fullColorRGB.r,
       fullColorRGB.g,
-      fullColorRGB.b,
+      fullColorRGB.b
     );
     me.getView()
       .getEl()
       .applyStyles({ "background-color": "#" + hex });
-  },
+  }
 });

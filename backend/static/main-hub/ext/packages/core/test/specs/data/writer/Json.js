@@ -7,7 +7,7 @@ describe("Ext.data.writer.Json", function () {
     simpleData = {
       id: 1,
       title: "Article 1",
-      body: "content1",
+      body: "content1"
     };
 
   beforeEach(function () {
@@ -15,9 +15,9 @@ describe("Ext.data.writer.Json", function () {
     buildWriter = function (cfg) {
       cfg = Ext.apply(
         {
-          writeAllFields: true,
+          writeAllFields: true
         },
-        cfg,
+        cfg
       );
       writer = new Ext.data.writer.Json(cfg);
     };
@@ -27,8 +27,8 @@ describe("Ext.data.writer.Json", function () {
       fields: [
         { name: "id", type: "int" },
         { name: "title", type: "string" },
-        { name: "body", type: "string", writeName: "content" },
-      ],
+        { name: "body", type: "string", writeName: "content" }
+      ]
     });
 
     buildRecords = function (recs) {
@@ -41,7 +41,7 @@ describe("Ext.data.writer.Json", function () {
 
     makeOperation = function (records) {
       return new Ext.data.operation.Create({
-        records: records,
+        records: records
       });
     };
   });
@@ -80,8 +80,8 @@ describe("Ext.data.writer.Json", function () {
       buildWriter();
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       var actual = request.getJsonData();
       expect(actual).toEqual(simpleData);
@@ -89,12 +89,12 @@ describe("Ext.data.writer.Json", function () {
 
     it("should wrap a single record in an array if allowSingle is false", function () {
       buildWriter({
-        allowSingle: false,
+        allowSingle: false
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).toEqual([simpleData]);
     });
@@ -109,19 +109,19 @@ describe("Ext.data.writer.Json", function () {
               {
                 id: 2,
                 title: "Article 2",
-                body: "content2",
-              },
-            ]),
-          ),
-        }),
+                body: "content2"
+              }
+            ])
+          )
+        })
       );
       expect(request.getJsonData()).toEqual([
         simpleData,
         {
           id: 2,
           title: "Article 2",
-          body: "content2",
-        },
+          body: "content2"
+        }
       ]);
     });
   });
@@ -129,13 +129,13 @@ describe("Ext.data.writer.Json", function () {
   describe("with encode: true", function () {
     it("should throw an exception if no root is specified", function () {
       buildWriter({
-        encode: true,
+        encode: true
       });
       expect(function () {
         writer.write(
           new Ext.data.Request({
-            operation: makeOperation(buildRecords([simpleData])),
-          }),
+            operation: makeOperation(buildRecords([simpleData]))
+          })
         );
       }).toThrow();
     });
@@ -143,13 +143,13 @@ describe("Ext.data.writer.Json", function () {
     it("should write the data to the request params", function () {
       buildWriter({
         encode: true,
-        rootProperty: "root",
+        rootProperty: "root"
       });
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getParams().root).toBeDefined();
     });
@@ -157,13 +157,13 @@ describe("Ext.data.writer.Json", function () {
     it("should encode the data", function () {
       buildWriter({
         encode: true,
-        rootProperty: "root",
+        rootProperty: "root"
       });
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getParams().root).toBe(Ext.encode(simpleData));
     });
@@ -173,14 +173,14 @@ describe("Ext.data.writer.Json", function () {
         buildWriter({
           encode: true,
           rootProperty: "root",
-          transform: Ext.identityFn,
+          transform: Ext.identityFn
         });
 
         var request = writer.write(
           new Ext.data.Request({
             params: {},
-            operation: makeOperation(buildRecords([simpleData])),
-          }),
+            operation: makeOperation(buildRecords([simpleData]))
+          })
         );
         expect(request.getJsonData()).toBeUndefined();
         expect(request.getParams().root).toBe(Ext.encode(simpleData));
@@ -194,8 +194,8 @@ describe("Ext.data.writer.Json", function () {
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).toBeDefined();
     });
@@ -205,24 +205,24 @@ describe("Ext.data.writer.Json", function () {
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).toEqual(simpleData);
     });
 
     it("should write to the root property jsonData if specified", function () {
       buildWriter({
-        rootProperty: "root",
+        rootProperty: "root"
       });
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).toEqual({
-        root: simpleData,
+        root: simpleData
       });
     });
   });
@@ -241,26 +241,26 @@ describe("Ext.data.writer.Json", function () {
           {
             name: "someNestedProperty",
             type: "string",
-            mapping: "some.nested.property",
+            mapping: "some.nested.property"
           },
           {
             name: "someOtherProperty",
             type: "string",
-            mapping: "some.other.property",
+            mapping: "some.other.property"
           },
           {
             name: "someOtherProperty2",
             type: "int",
-            mapping: "some.other.property2",
-          },
-        ],
+            mapping: "some.other.property2"
+          }
+        ]
       });
       flatData = {
         id: 1,
         title: "Article 1",
         someNestedProperty: "nested",
         someOtherProperty: "other",
-        someOtherProperty2: 5,
+        someOtherProperty2: 5
       };
     });
 
@@ -268,52 +268,52 @@ describe("Ext.data.writer.Json", function () {
       buildWriter();
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([flatData])),
-        }),
+          operation: makeOperation(buildRecords([flatData]))
+        })
       );
       expect(request.getJsonData()).toEqual(flatData);
     });
 
     it("should write as flat output using the mapped field names by default when nameProperty is used", function () {
       buildWriter({
-        nameProperty: "mapping",
+        nameProperty: "mapping"
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([flatData])),
-        }),
+          operation: makeOperation(buildRecords([flatData]))
+        })
       );
       expect(request.getJsonData()).toEqual({
         id: 1,
         my_title: "Article 1",
         "some.nested.property": "nested",
         "some.other.property": "other",
-        "some.other.property2": 5,
+        "some.other.property2": 5
       });
     });
 
     it("should expand output to nested JSON when nameProperty is used and expandData = true", function () {
       buildWriter({
         nameProperty: "mapping",
-        expandData: true,
+        expandData: true
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([flatData])),
-        }),
+          operation: makeOperation(buildRecords([flatData]))
+        })
       );
       expect(request.getJsonData()).toEqual({
         id: 1,
         my_title: "Article 1",
         some: {
           nested: {
-            property: "nested",
+            property: "nested"
           },
           other: {
             property: "other",
-            property2: 5,
-          },
-        },
+            property2: 5
+          }
+        }
       });
     });
   });
@@ -325,14 +325,14 @@ describe("Ext.data.writer.Json", function () {
       };
 
       buildWriter({
-        transform: transformFn,
+        transform: transformFn
       });
 
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).not.toEqual(simpleData);
       expect(request.getJsonData()).toEqual({ id: 2 });
@@ -348,15 +348,15 @@ describe("Ext.data.writer.Json", function () {
       buildWriter({
         transform: {
           fn: transformFn,
-          scope: mockScope,
-        },
+          scope: mockScope
+        }
       });
 
       var request = writer.write(
         new Ext.data.Request({
           params: {},
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getJsonData()).not.toEqual(simpleData);
       expect(request.getJsonData()).toEqual({ id: 2 });

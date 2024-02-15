@@ -239,6 +239,6 @@ Ext.define("Ext.app.bind.AbstractStub", {
 
       // Schedulable#sort === emptyFn
       //me.callParent();
-    },
-  },
+    }
+  }
 });

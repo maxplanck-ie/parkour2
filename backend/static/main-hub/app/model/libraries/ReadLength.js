@@ -4,6 +4,6 @@ Ext.define("MainHub.model.libraries.ReadLength", {
   fields: [
     { name: "name", type: "string" },
     { name: "id", type: "int" },
-    { name: "archived", type: "bool" },
-  ],
+    { name: "archived", type: "bool" }
+  ]
 });

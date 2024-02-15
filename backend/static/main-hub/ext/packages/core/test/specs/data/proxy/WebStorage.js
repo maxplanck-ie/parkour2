@@ -14,7 +14,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     },
     clear: function () {
       this.items = {};
-    },
+    }
   };
 
   beforeEach(function () {
@@ -24,15 +24,15 @@ describe("Ext.data.proxy.WebStorage", function () {
         { name: "id", type: "int" },
         { name: "name", type: "string" },
         { name: "age", type: "int" },
-        { name: "hired", type: "date", dateFormat: "d/m/Y" },
-      ],
+        { name: "hired", type: "date", dateFormat: "d/m/Y" }
+      ]
     });
 
     Ext.define("spec.Storage", {
       extend: "Ext.data.proxy.WebStorage",
       getStorageObject: function () {
         return fakeStorageObject;
-      },
+      }
     });
   });
 
@@ -51,7 +51,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
       proxy = new spec.Storage({
         id: "wsId",
-        model: spec.User,
+        model: spec.User
       });
     });
 
@@ -79,12 +79,12 @@ describe("Ext.data.proxy.WebStorage", function () {
       beforeEach(function () {
         spec.User = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: [{ name: "id", type: "string" }],
+          fields: [{ name: "id", type: "string" }]
         });
 
         proxy = new spec.Storage({
           id: "wsId",
-          model: spec.User,
+          model: spec.User
         });
       });
       it("should return each array item as a string", function () {
@@ -105,7 +105,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
       proxy = new spec.Storage({
         id: "wsId",
-        model: spec.User,
+        model: spec.User
       });
     });
 
@@ -113,7 +113,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       proxy.getNextId();
 
       expect(fakeStorageObject.getItem(proxy.getRecordCounterKey())).toEqual(
-        "4",
+        "4"
       );
     });
 
@@ -127,12 +127,12 @@ describe("Ext.data.proxy.WebStorage", function () {
       beforeEach(function () {
         spec.User = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: [{ name: "id", type: "string" }],
+          fields: [{ name: "id", type: "string" }]
         });
 
         proxy = new spec.Storage({
           id: "wsId",
-          model: spec.User,
+          model: spec.User
         });
       });
 
@@ -144,7 +144,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
   describe("instantiation with id configuration option and methods", function () {
     config = {
-      id: "User",
+      id: "User"
     };
 
     beforeEach(function () {
@@ -158,7 +158,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
       it("should extend Ext.data.proxy.Client", function () {
         expect(proxy.superclass.superclass).toEqual(
-          Ext.data.proxy.Client.prototype,
+          Ext.data.proxy.Client.prototype
         );
       });
 
@@ -177,13 +177,13 @@ describe("Ext.data.proxy.WebStorage", function () {
             fields: [
               { name: "name", type: "string" },
               { name: "age", type: "int" },
-              { name: "planet", type: "string", defaultValue: "Earth" },
-            ],
+              { name: "planet", type: "string", defaultValue: "Earth" }
+            ]
           });
           nicolas = new spec.Human({
             id: 1,
             name: "Nicolas",
-            age: 27,
+            age: 27
           });
         });
 
@@ -215,7 +215,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       describe("getStorageObject", function () {
         it("should throw an error on getStorageObject", function () {
           expect(
-            Ext.data.proxy.WebStorage.prototype.getStorageObject,
+            Ext.data.proxy.WebStorage.prototype.getStorageObject
           ).toThrow();
         });
       });
@@ -224,7 +224,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
   describe("instantiation with tree-indicator set in storage object", function () {
     var config = {
-      id: "tree-test",
+      id: "tree-test"
     };
 
     beforeEach(function () {
@@ -242,19 +242,19 @@ describe("Ext.data.proxy.WebStorage", function () {
 
     beforeEach(function () {
       proxy = new spec.Storage({
-        id: "lsTest",
+        id: "lsTest"
       });
 
       store = new Ext.data.Store({
         model: spec.User,
-        proxy: proxy,
+        proxy: proxy
       });
 
       store.add(
         { name: "Ed" },
         { name: "Abe" },
         { name: "Aaron" },
-        { name: "Tommy" },
+        { name: "Tommy" }
       );
       store.sync();
     });
@@ -296,16 +296,16 @@ describe("Ext.data.proxy.WebStorage", function () {
 
     beforeEach(function () {
       proxy = new spec.Storage({
-        id: "tree-test",
+        id: "tree-test"
       });
 
       spec.User = Ext.define(null, {
         extend: "Ext.data.TreeModel",
         fields: [
           { name: "id", type: "int" },
-          { name: "name", type: "string" },
+          { name: "name", type: "string" }
         ],
-        proxy: proxy,
+        proxy: proxy
       });
 
       Ext.data.NodeInterface.decorate(spec.User);
@@ -316,8 +316,8 @@ describe("Ext.data.proxy.WebStorage", function () {
         root: {
           name: "Users",
           expanded: true,
-          id: 42,
-        },
+          id: 42
+        }
       });
 
       node1 = new spec.User({ name: "Abe" });
@@ -379,7 +379,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     beforeEach(function () {
       proxy = new spec.Storage({
         model: spec.User,
-        id: "someId",
+        id: "someId"
       });
 
       spyOn(proxy, "getNextId").andReturn(10);
@@ -390,7 +390,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
     var createOperation = function () {
       operation = new Ext.data.operation.Create({
-        records: [record],
+        records: [record]
       });
 
       spyOn(operation, "setCompleted").andCallThrough();
@@ -413,12 +413,12 @@ describe("Ext.data.proxy.WebStorage", function () {
         var uniqueModel = Ext.define(null, {
           extend: "Ext.data.Model",
           fields: ["id"],
-          identifier: "uuid",
+          identifier: "uuid"
         });
 
         proxy = new spec.Storage({
           model: uniqueModel,
-          id: "someId",
+          id: "someId"
         });
 
         record = new uniqueModel();
@@ -525,7 +525,7 @@ describe("Ext.data.proxy.WebStorage", function () {
         proxy.create(operation);
 
         expect(proxy.getStorageObject().getItem(proxy.getTreeKey())).toEqual(
-          "true",
+          "true"
         );
       });
 
@@ -543,7 +543,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     beforeEach(function () {
       proxy = new spec.Storage({
         model: spec.User,
-        id: "someId",
+        id: "someId"
       });
 
       spyOn(proxy, "setRecord").andCallThrough();
@@ -551,7 +551,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       record = new spec.User({ id: 100, name: "Ed" });
 
       operation = new Ext.data.operation.Update({
-        records: [record],
+        records: [record]
       });
 
       spyOn(operation, "setCompleted").andCallThrough();
@@ -629,7 +629,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     beforeEach(function () {
       proxy = new spec.Storage({
         model: spec.User,
-        id: "someId",
+        id: "someId"
       });
 
       record = new spec.User({ id: 100, name: "Ed", hired: "31/05/2010" });
@@ -672,13 +672,13 @@ describe("Ext.data.proxy.WebStorage", function () {
 
       proxy.setRecord(record);
       decodedData = Ext.decode(
-        fakeStorageObject.getItem(proxy.getRecordKey(100)),
+        fakeStorageObject.getItem(proxy.getRecordKey(100))
       );
 
       expect(decodedData).toEqual({
         name: "Ed",
         age: 0,
-        hired: "31/05/2010",
+        hired: "31/05/2010"
       });
     });
   });
@@ -689,7 +689,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     beforeEach(function () {
       config = {
         id: "User",
-        model: spec.User,
+        model: spec.User
       };
 
       proxy = new spec.Storage(config);
@@ -701,7 +701,7 @@ describe("Ext.data.proxy.WebStorage", function () {
 
         var rec = new spec.User({
           id: 1,
-          name: "Foo",
+          name: "Foo"
         });
         rec.save();
 
@@ -720,7 +720,7 @@ describe("Ext.data.proxy.WebStorage", function () {
         spyOn(proxy, "getRecord").andReturn(fakeRecord);
 
         operation = new Ext.data.operation.Read({
-          id: 100,
+          id: 100
         });
       });
 
@@ -779,9 +779,9 @@ describe("Ext.data.proxy.WebStorage", function () {
         expect(recordCreator).toHaveBeenCalledWith(
           {
             id: 100,
-            name: "Phil",
+            name: "Phil"
           },
-          spec.User,
+          spec.User
         );
       });
     });
@@ -793,19 +793,19 @@ describe("Ext.data.proxy.WebStorage", function () {
         fakeStorageObject.setItem("User", "1,2,3,4");
         fakeStorageObject.setItem(
           "User-1",
-          '{"firstName":"Bob","lastName":"Smith","age":"2"}',
+          '{"firstName":"Bob","lastName":"Smith","age":"2"}'
         );
         fakeStorageObject.setItem(
           "User-2",
-          '{"firstName":"Joe","lastName":"Smith","age":"50"}',
+          '{"firstName":"Joe","lastName":"Smith","age":"50"}'
         );
         fakeStorageObject.setItem(
           "User-3",
-          '{"firstName":"Tim","lastName":"Jones","age":"41"}',
+          '{"firstName":"Tim","lastName":"Jones","age":"41"}'
         );
         fakeStorageObject.setItem(
           "User-4",
-          '{"firstName":"Jim","lastName":"Smith","age":"33"}',
+          '{"firstName":"Jim","lastName":"Smith","age":"33"}'
         );
 
         operation = new Ext.data.operation.Read();
@@ -840,9 +840,9 @@ describe("Ext.data.proxy.WebStorage", function () {
             id: 1,
             firstName: "Bob",
             lastName: "Smith",
-            age: "2",
+            age: "2"
           },
-          spec.User,
+          spec.User
         ]);
 
         expect(recordCreator.calls[1].args).toEqual([
@@ -850,9 +850,9 @@ describe("Ext.data.proxy.WebStorage", function () {
             id: 2,
             firstName: "Joe",
             lastName: "Smith",
-            age: "50",
+            age: "50"
           },
-          spec.User,
+          spec.User
         ]);
 
         expect(recordCreator.calls[2].args).toEqual([
@@ -860,9 +860,9 @@ describe("Ext.data.proxy.WebStorage", function () {
             id: 3,
             firstName: "Tim",
             lastName: "Jones",
-            age: "41",
+            age: "41"
           },
-          spec.User,
+          spec.User
         ]);
 
         expect(recordCreator.calls[3].args).toEqual([
@@ -870,9 +870,9 @@ describe("Ext.data.proxy.WebStorage", function () {
             id: 4,
             firstName: "Jim",
             lastName: "Smith",
-            age: "33",
+            age: "33"
           },
-          spec.User,
+          spec.User
         ]);
       });
 
@@ -920,17 +920,17 @@ describe("Ext.data.proxy.WebStorage", function () {
           filters: [
             new Ext.util.Filter({
               property: "lastName",
-              value: "Smith",
+              value: "Smith"
             }),
             new Ext.util.Filter({
               filterFn: function (record) {
                 return record.get("age") < 40;
-              },
-            }),
+              }
+            })
           ],
           callback: function (r) {
             records = r;
-          },
+          }
         });
 
         proxy.read(operation);
@@ -948,7 +948,7 @@ describe("Ext.data.proxy.WebStorage", function () {
           limit: 2,
           callback: function (r) {
             records = r;
-          },
+          }
         });
 
         proxy.read(operation);
@@ -965,17 +965,17 @@ describe("Ext.data.proxy.WebStorage", function () {
           sorters: [
             new Ext.util.Sorter({
               property: "lastName",
-              root: "data",
+              root: "data"
             }),
             new Ext.util.Sorter({
               sorterFn: function (record1, record2) {
                 return record1.get("age") - record2.get("age");
-              },
-            }),
+              }
+            })
           ],
           callback: function (r) {
             records = r;
-          },
+          }
         });
 
         proxy.read(operation);
@@ -994,28 +994,28 @@ describe("Ext.data.proxy.WebStorage", function () {
           sorters: [
             new Ext.util.Sorter({
               property: "lastName",
-              root: "data",
+              root: "data"
             }),
             new Ext.util.Sorter({
               sorterFn: function (record1, record2) {
                 return record1.get("age") - record2.get("age");
-              },
-            }),
+              }
+            })
           ],
           filters: [
             new Ext.util.Filter({
               property: "lastName",
-              value: "Smith",
+              value: "Smith"
             }),
             new Ext.util.Filter({
               filterFn: function (record) {
                 return record.get("age") < 40;
-              },
-            }),
+              }
+            })
           ],
           callback: function (r) {
             records = r;
-          },
+          }
         });
 
         proxy.read(operation);
@@ -1032,19 +1032,19 @@ describe("Ext.data.proxy.WebStorage", function () {
           sorters: [
             new Ext.util.Sorter({
               property: "lastName",
-              root: "data",
+              root: "data"
             }),
             new Ext.util.Sorter({
               sorterFn: function (record1, record2) {
                 return record1.get("age") - record2.get("age");
-              },
-            }),
+              }
+            })
           ],
           start: 1,
           limit: 2,
           callback: function (r) {
             records = r;
-          },
+          }
         });
 
         proxy.read(operation);
@@ -1059,7 +1059,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       beforeEach(function () {
         proxy = new spec.Storage({
           model: spec.User,
-          id: "tree-test",
+          id: "tree-test"
         });
 
         Ext.data.NodeInterface.decorate(spec.User);
@@ -1070,7 +1070,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       });
       it("should get tree data", function () {
         spyOn(proxy, "getTreeData").andReturn([
-          new spec.User({ id: 1, name: "Phil" }),
+          new spec.User({ id: 1, name: "Phil" })
         ]);
 
         proxy.read(operation);
@@ -1085,7 +1085,7 @@ describe("Ext.data.proxy.WebStorage", function () {
       beforeEach(function () {
         proxy = new spec.Storage({
           model: spec.User,
-          id: "tree-test",
+          id: "tree-test"
         });
 
         Ext.data.NodeInterface.decorate(spec.User);
@@ -1096,27 +1096,27 @@ describe("Ext.data.proxy.WebStorage", function () {
         fakeStorageObject.setItem("tree-test-counter", "6");
         fakeStorageObject.setItem(
           "tree-test-1",
-          '{"name":"Phil","index":2,"leaf":true}',
+          '{"name":"Phil","index":2,"leaf":true}'
         );
         fakeStorageObject.setItem(
           "tree-test-2",
-          '{"name":"Don","index":1,"leaf":false}',
+          '{"name":"Don","index":1,"leaf":false}'
         );
         fakeStorageObject.setItem(
           "tree-test-3",
-          '{"name":"Evan","parentId":2,"index":1,"leaf":true}',
+          '{"name":"Evan","parentId":2,"index":1,"leaf":true}'
         );
         fakeStorageObject.setItem(
           "tree-test-4",
-          '{"name":"Nige","parentId":2,"index":0,"leaf":false}',
+          '{"name":"Nige","parentId":2,"index":0,"leaf":false}'
         );
         fakeStorageObject.setItem(
           "tree-test-5",
-          '{"name":"Thomas","parentId":4,"index":0,"leaf":false}',
+          '{"name":"Thomas","parentId":4,"index":0,"leaf":false}'
         );
         fakeStorageObject.setItem(
           "tree-test-6",
-          '{"name":"Brian","index":0,"leaf":false}',
+          '{"name":"Brian","index":0,"leaf":false}'
         );
       });
       it("should return an array of records", function () {
@@ -1182,7 +1182,7 @@ describe("Ext.data.proxy.WebStorage", function () {
     beforeEach(function () {
       proxy = new spec.Storage({
         model: spec.User,
-        id: "clear-test",
+        id: "clear-test"
       });
 
       fakeStorageObject.setItem("clear-test", "1,2,3");

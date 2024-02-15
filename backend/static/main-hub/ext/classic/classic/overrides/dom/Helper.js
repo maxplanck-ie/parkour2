@@ -25,7 +25,7 @@ Ext.define(
             el.tagName.toLowerCase(),
             where,
             el,
-            html,
+            html
           );
         }
         return frag;
@@ -117,7 +117,7 @@ Ext.define(
         }
         destinationEl.insertBefore(node, before);
         return node;
-      },
+      }
     };
-  })(),
+  })()
 );

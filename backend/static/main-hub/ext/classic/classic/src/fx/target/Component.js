@@ -36,7 +36,7 @@ Ext.define("Ext.fx.target.Component", {
     },
     opacity: function () {
       return this.el.getStyle("opacity");
-    },
+    }
   },
 
   setMethods: {
@@ -46,7 +46,7 @@ Ext.define("Ext.fx.target.Component", {
     y: "setPagePosition",
     height: "setSize",
     width: "setSize",
-    opacity: "setOpacity",
+    opacity: "setOpacity"
   },
 
   // Read the named attribute from the target Component. Use the defined getter for the attribute
@@ -54,8 +54,8 @@ Ext.define("Ext.fx.target.Component", {
     return [
       [
         this.target,
-        val !== undefined ? val : this.getPropMethod[attr].call(this.target),
-      ],
+        val !== undefined ? val : this.getPropMethod[attr].call(this.target)
+      ]
     ];
   },
 
@@ -120,7 +120,7 @@ Ext.define("Ext.fx.target.Component", {
           // If it does, *this* frame will fire again... recursively
           Ext.GlobalEvents.on({
             idle: Ext.Function.bind(o.target.setSize, o.target, [w, h]),
-            single: true,
+            single: true
           });
         }
       }
@@ -129,5 +129,5 @@ Ext.define("Ext.fx.target.Component", {
         o.target.el.setStyle("opacity", o.opacity);
       }
     }
-  },
+  }
 });

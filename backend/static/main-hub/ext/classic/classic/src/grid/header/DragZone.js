@@ -39,7 +39,7 @@ Ext.define("Ext.grid.header.DragZone", {
           ddel.innerHTML = headerCmp.text;
           return {
             ddel: ddel,
-            header: headerCmp,
+            header: headerCmp
           };
         }
       }
@@ -77,5 +77,5 @@ Ext.define("Ext.grid.header.DragZone", {
 
   enable: function () {
     this.disabled = false;
-  },
+  }
 });

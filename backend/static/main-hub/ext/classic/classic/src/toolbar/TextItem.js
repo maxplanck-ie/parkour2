@@ -51,5 +51,5 @@ Ext.define("Ext.toolbar.TextItem", {
    */
   setText: function (text) {
     this.update(text);
-  },
+  }
 });

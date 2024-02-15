@@ -16,6 +16,6 @@ Ext.define("Ext.rtl.button.Segmented", {
         cls = this._firstCls;
       }
       return cls;
-    },
-  },
+    }
+  }
 });

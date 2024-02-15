@@ -39,8 +39,8 @@ describe("Ext.data.ChainedStore", function () {
     source = new Ext.data.Store(
       Ext.applyIf(cfg, {
         asynchronousLoad: false,
-        model: "spec.User",
-      }),
+        model: "spec.User"
+      })
     );
   }
 
@@ -48,17 +48,17 @@ describe("Ext.data.ChainedStore", function () {
     store = new Ext.data.ChainedStore(
       Ext.apply(
         {
-          source: source,
+          source: source
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
   function completeWithData(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
@@ -73,7 +73,7 @@ describe("Ext.data.ChainedStore", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -90,7 +90,7 @@ describe("Ext.data.ChainedStore", function () {
       group: "code",
       old: false,
       age: 25,
-      valid: "yes",
+      valid: "yes"
     };
     abeRaw = {
       name: "Abe Elias",
@@ -99,7 +99,7 @@ describe("Ext.data.ChainedStore", function () {
       group: "admin",
       old: false,
       age: 20,
-      valid: "yes",
+      valid: "yes"
     };
     aaronRaw = {
       name: "Aaron Conran",
@@ -108,7 +108,7 @@ describe("Ext.data.ChainedStore", function () {
       group: "admin",
       old: true,
       age: 26,
-      valid: "yes",
+      valid: "yes"
     };
     tommyRaw = {
       name: "Tommy Maintz",
@@ -117,7 +117,7 @@ describe("Ext.data.ChainedStore", function () {
       group: "code",
       old: true,
       age: 70,
-      valid: "yes",
+      valid: "yes"
     };
 
     User = Ext.define("spec.User", {
@@ -131,8 +131,8 @@ describe("Ext.data.ChainedStore", function () {
         { name: "group", type: "string" },
         { name: "old", type: "boolean" },
         { name: "valid", type: "string" },
-        { name: "age", type: "int" },
-      ],
+        { name: "age", type: "int" }
+      ]
     });
 
     createSource();
@@ -172,8 +172,8 @@ describe("Ext.data.ChainedStore", function () {
       createStore({
         listeners: {
           refresh: spy,
-          datachanged: spy,
-        },
+          datachanged: spy
+        }
       });
       expect(spy).not.toHaveBeenCalled();
     });
@@ -181,7 +181,7 @@ describe("Ext.data.ChainedStore", function () {
     it("should accept an id of a store as the source", function () {
       var idSource = new Ext.data.Store({
         model: "spec.User",
-        storeId: "sourceId",
+        storeId: "sourceId"
       });
       source = "sourceId";
       createStore();
@@ -193,7 +193,7 @@ describe("Ext.data.ChainedStore", function () {
     it("should accept a chained store as the source", function () {
       createStore();
       var child = new Ext.data.ChainedStore({
-        source: store,
+        source: store
       });
       expect(child.getCount()).toBe(4);
       expect(child.getModel()).toBe(User);
@@ -274,11 +274,11 @@ describe("Ext.data.ChainedStore", function () {
           store.sort("age");
           source.add([
             {
-              age: 1,
+              age: 1
             },
             {
-              age: 1000,
-            },
+              age: 1000
+            }
           ]);
           expect(beginSpy.callCount).toBe(1);
           expect(endSpy.callCount).toBe(1);
@@ -339,7 +339,7 @@ describe("Ext.data.ChainedStore", function () {
       it("should be affected by filters", function () {
         store.getFilters().add({
           property: "group",
-          value: "admin",
+          value: "admin"
         });
         expect(store.first()).toBe(abeRec);
       });
@@ -363,7 +363,7 @@ describe("Ext.data.ChainedStore", function () {
       it("should be affected by filters", function () {
         store.getFilters().add({
           property: "group",
-          value: "admin",
+          value: "admin"
         });
         expect(store.last()).toBe(aaronRec);
       });
@@ -558,7 +558,7 @@ describe("Ext.data.ChainedStore", function () {
         createStore();
         source.filter("group", "code");
         var rec = makeUser("foo@sencha.com", {
-          group: "admin",
+          group: "admin"
         });
         source.add(rec);
         source.getFilters().removeAll();
@@ -602,7 +602,7 @@ describe("Ext.data.ChainedStore", function () {
 
           beforeEach(function () {
             child = new Ext.data.ChainedStore({
-              source: store,
+              source: store
             });
           });
 
@@ -661,7 +661,7 @@ describe("Ext.data.ChainedStore", function () {
         store.getFilters().add({
           property: "age",
           value: 70,
-          operator: "<",
+          operator: "<"
         });
         expect(store.getCount()).toBe(3);
         source.filter("group", "admin");
@@ -700,10 +700,10 @@ describe("Ext.data.ChainedStore", function () {
         it("should fire the update event on both source and chained Stores", function () {
           store = new Ext.data.ArrayStore({
             fields: ["f1"],
-            data: [["f1value"]],
+            data: [["f1value"]]
           });
           var chained = new Ext.data.ChainedStore({
-              source: store,
+              source: store
             }),
             sourceFiredUpdate,
             chainedFiredUpdate,
@@ -739,11 +739,11 @@ describe("Ext.data.ChainedStore", function () {
             data: [["f1value"]],
             filters: {
               property: "f1",
-              value: "f1Value",
-            },
+              value: "f1Value"
+            }
           });
           var chained = new Ext.data.ChainedStore({
-              source: store,
+              source: store
             }),
             sourceFiredUpdate,
             chainedFiredUpdate,
@@ -795,8 +795,8 @@ describe("Ext.data.ChainedStore", function () {
         source.load();
         completeWithData([
           {
-            id: "foo@sencha.com",
-          },
+            id: "foo@sencha.com"
+          }
         ]);
         expect(store.getCount()).toBe(1);
         expect(store.getAt(0)).toBe(source.getAt(0));
@@ -826,7 +826,7 @@ describe("Ext.data.ChainedStore", function () {
           expect(spy).toHaveBeenCalled();
           expect(spy.mostRecentCall.args[0]).toBe(store);
           expect(spy.mostRecentCall.args[1]).toBe(
-            readSpy.mostRecentCall.args[0],
+            readSpy.mostRecentCall.args[0]
           );
         });
 
@@ -844,11 +844,11 @@ describe("Ext.data.ChainedStore", function () {
             source.getAt(0),
             source.getAt(1),
             source.getAt(2),
-            source.getAt(3),
+            source.getAt(3)
           ]);
           expect(spy.mostRecentCall.args[2]).toBe(true);
           expect(spy.mostRecentCall.args[3]).toBe(
-            readSpy.mostRecentCall.args[0],
+            readSpy.mostRecentCall.args[0]
           );
         });
 
@@ -883,8 +883,8 @@ describe("Ext.data.ChainedStore", function () {
         createStore();
         source.loadData([
           {
-            id: "foo@sencha.com",
-          },
+            id: "foo@sencha.com"
+          }
         ]);
         expect(store.getCount()).toBe(1);
         expect(store.getAt(0)).toBe(source.getAt(0));
@@ -936,8 +936,8 @@ describe("Ext.data.ChainedStore", function () {
         createStore();
         source.loadRawData([
           {
-            id: "foo@sencha.com",
-          },
+            id: "foo@sencha.com"
+          }
         ]);
         expect(store.getCount()).toBe(1);
         expect(store.getAt(0)).toBe(source.getAt(0));
@@ -997,7 +997,7 @@ describe("Ext.data.ChainedStore", function () {
         createStore();
         store.getFilters().add({
           property: "group",
-          value: "code",
+          value: "code"
         });
         source.load();
         completeWithData([abeRaw, edRaw, tommyRaw, aaronRaw]);
@@ -1016,7 +1016,7 @@ describe("Ext.data.ChainedStore", function () {
     describe("adding to the source", function () {
       it("should also add to the store", function () {
         var rec = source.add({
-          id: "new@sencha.com",
+          id: "new@sencha.com"
         })[0];
         expect(store.getAt(4)).toBe(rec);
       });
@@ -1032,7 +1032,7 @@ describe("Ext.data.ChainedStore", function () {
           store.on("datachanged", datachangedSpy);
 
           rec = source.add({
-            id: "new@sencha.com",
+            id: "new@sencha.com"
           })[0];
 
           expect(addSpy).toHaveBeenCalled();
@@ -1053,7 +1053,7 @@ describe("Ext.data.ChainedStore", function () {
             order.push("store");
           });
           source.add({
-            id: "foo@sencha.com",
+            id: "foo@sencha.com"
           });
           expect(order).toEqual(["source", "store"]);
         });
@@ -1064,7 +1064,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should use the position from the source", function () {
             source.sort("email");
             var rec = source.add({
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(0)).toBe(rec);
             expect(store.getAt(0)).toBe(rec);
@@ -1075,7 +1075,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should add to the end of the source and insert into the sorted position in the store", function () {
             store.sort("email");
             var rec = source.add({
-              email: "bbb@sencha.com",
+              email: "bbb@sencha.com"
             })[0];
             expect(source.getAt(4)).toBe(rec);
             expect(store.getAt(2)).toBe(rec);
@@ -1087,7 +1087,7 @@ describe("Ext.data.ChainedStore", function () {
             store.sort("email");
             source.sort("email", "desc");
             var rec = source.add({
-              email: "aazzon@sencha.com",
+              email: "aazzon@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(1)).toBe(rec);
@@ -1100,7 +1100,7 @@ describe("Ext.data.ChainedStore", function () {
           store.filter("group", "admin");
           var rec = source.add({
             email: "new@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           expect(store.indexOf(rec)).toBe(-1);
         });
@@ -1109,7 +1109,7 @@ describe("Ext.data.ChainedStore", function () {
           store.filter("group", "admin");
           var rec = source.add({
             email: "new@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           store.getFilters().removeAll();
           expect(store.getAt(4)).toBe(rec);
@@ -1120,7 +1120,7 @@ describe("Ext.data.ChainedStore", function () {
     describe("adding to the store", function () {
       it("should also add the record to the source", function () {
         var rec = store.add({
-          id: "new@sencha.com",
+          id: "new@sencha.com"
         })[0];
         expect(source.getAt(4)).toBe(rec);
       });
@@ -1134,7 +1134,7 @@ describe("Ext.data.ChainedStore", function () {
           source.on("datachanged", datachangedSpy);
 
           var rec = store.add({
-              id: "new@sencha.com",
+              id: "new@sencha.com"
             })[0],
             args;
 
@@ -1156,7 +1156,7 @@ describe("Ext.data.ChainedStore", function () {
             order.push("store");
           });
           store.add({
-            id: "foo@sencha.com",
+            id: "foo@sencha.com"
           });
           expect(order).toEqual(["source", "store"]);
         });
@@ -1167,7 +1167,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should append to the store and add to the sorted position in the source", function () {
             source.sort("email");
             var rec = store.add({
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(0)).toBe(rec);
             expect(store.getAt(4)).toBe(rec);
@@ -1178,7 +1178,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should append to the source and add to the sorted position in the store", function () {
             store.sort("email");
             var rec = source.add({
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(store.getAt(0)).toBe(rec);
           });
@@ -1189,7 +1189,7 @@ describe("Ext.data.ChainedStore", function () {
             store.sort("email");
             source.sort("email", "desc");
             var rec = source.add({
-              email: "aazzon@sencha.com",
+              email: "aazzon@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(1)).toBe(rec);
@@ -1207,7 +1207,7 @@ describe("Ext.data.ChainedStore", function () {
     describe("inserting in the source", function () {
       it("should also add to the store", function () {
         var rec = source.insert(0, {
-          id: "new@sencha.com",
+          id: "new@sencha.com"
         })[0];
         expect(source.getAt(0)).toBe(rec);
         expect(store.getAt(0)).toBe(rec);
@@ -1224,7 +1224,7 @@ describe("Ext.data.ChainedStore", function () {
           store.on("datachanged", datachangedSpy);
 
           rec = source.insert(0, {
-            id: "new@sencha.com",
+            id: "new@sencha.com"
           })[0];
 
           expect(addSpy).toHaveBeenCalled();
@@ -1245,7 +1245,7 @@ describe("Ext.data.ChainedStore", function () {
             order.push("store");
           });
           source.insert(0, {
-            id: "foo@sencha.com",
+            id: "foo@sencha.com"
           });
           expect(order).toEqual(["source", "store"]);
         });
@@ -1256,7 +1256,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should use the position from the source", function () {
             source.sort("email");
             var rec = source.insert(2, {
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(0)).toBe(rec);
             expect(store.getAt(0)).toBe(rec);
@@ -1267,7 +1267,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should insert into the specified position in the source and the sorted position in the store", function () {
             store.sort("email");
             var rec = source.insert(3, {
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(0)).toBe(rec);
@@ -1280,7 +1280,7 @@ describe("Ext.data.ChainedStore", function () {
             source.sort("email", "desc");
 
             var rec = source.insert(3, {
-              email: "aazzon@sencha.com",
+              email: "aazzon@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(1)).toBe(rec);
@@ -1293,7 +1293,7 @@ describe("Ext.data.ChainedStore", function () {
           store.filter("group", "admin");
           var rec = source.insert(0, {
             email: "new@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           expect(store.indexOf(rec)).toBe(-1);
         });
@@ -1302,7 +1302,7 @@ describe("Ext.data.ChainedStore", function () {
           store.filter("group", "admin");
           var rec = source.insert(0, {
             email: "new@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           store.getFilters().removeAll();
           expect(source.getAt(0)).toBe(rec);
@@ -1312,7 +1312,7 @@ describe("Ext.data.ChainedStore", function () {
           store.filter("group", "admin");
           var rec = source.insert(2, {
             email: "new@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           store.getFilters().removeAll();
           expect(store.getAt(2)).toBe(rec);
@@ -1323,7 +1323,7 @@ describe("Ext.data.ChainedStore", function () {
     describe("inserting in the store", function () {
       it("should also add the record to the source", function () {
         var rec = store.insert(0, {
-          id: "new@sencha.com",
+          id: "new@sencha.com"
         })[0];
         expect(source.getAt(0)).toBe(rec);
       });
@@ -1337,7 +1337,7 @@ describe("Ext.data.ChainedStore", function () {
           source.on("datachanged", datachangedSpy);
 
           var rec = store.insert(2, {
-              id: "new@sencha.com",
+              id: "new@sencha.com"
             })[0],
             args;
 
@@ -1359,7 +1359,7 @@ describe("Ext.data.ChainedStore", function () {
             order.push("store");
           });
           store.insert(1, {
-            id: "foo@sencha.com",
+            id: "foo@sencha.com"
           });
           expect(order).toEqual(["source", "store"]);
         });
@@ -1370,7 +1370,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should insert into the correct sorted position in the source and use the specified position in the store", function () {
             source.sort("email");
             var rec = store.insert(2, {
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(0)).toBe(rec);
             expect(store.getAt(2)).toBe(rec);
@@ -1381,7 +1381,7 @@ describe("Ext.data.ChainedStore", function () {
           it("should insert into the specified position in the source and the sorted position in the store", function () {
             store.sort("email");
             var rec = store.insert(3, {
-              email: "aaaa@sencha.com",
+              email: "aaaa@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(0)).toBe(rec);
@@ -1394,7 +1394,7 @@ describe("Ext.data.ChainedStore", function () {
             source.sort("email", "desc");
 
             var rec = store.insert(3, {
-              email: "aazzon@sencha.com",
+              email: "aazzon@sencha.com"
             })[0];
             expect(source.getAt(3)).toBe(rec);
             expect(store.getAt(1)).toBe(rec);
@@ -1714,7 +1714,7 @@ describe("Ext.data.ChainedStore", function () {
     beforeEach(function () {
       Order = Ext.define("spec.Order", {
         extend: "Ext.data.Model",
-        fields: ["id"],
+        fields: ["id"]
       });
 
       OrderItem = Ext.define("spec.OrderItem", {
@@ -1723,13 +1723,13 @@ describe("Ext.data.ChainedStore", function () {
           "id",
           {
             name: "orderId",
-            reference: "Order",
-          },
-        ],
+            reference: "Order"
+          }
+        ]
       });
 
       orders = new Ext.data.Store({
-        model: Order,
+        model: Order
       });
 
       orders.loadRawData([
@@ -1738,20 +1738,20 @@ describe("Ext.data.ChainedStore", function () {
           orderItems: [
             {
               id: 1,
-              orderId: 1,
+              orderId: 1
             },
             {
               id: 3,
-              orderId: 1,
-            },
-          ],
-        },
+              orderId: 1
+            }
+          ]
+        }
       ]);
 
       source = orders.first().orderItems();
 
       createStore({
-        sorters: ["id"],
+        sorters: ["id"]
       });
     });
 
@@ -1763,7 +1763,7 @@ describe("Ext.data.ChainedStore", function () {
 
     it("should add records from source store to chained store in sorted order if chained store is sorted", function () {
       source.add({
-        id: 2,
+        id: 2
       });
 
       // chained store maintains itself in sorted order
@@ -1776,7 +1776,7 @@ describe("Ext.data.ChainedStore", function () {
       store.setAutoSort(false);
 
       source.add({
-        id: 2,
+        id: 2
       });
 
       // The new id:2 record should have been appended
@@ -1802,9 +1802,9 @@ describe("Ext.data.ChainedStore", function () {
         data: [
           {
             id: 1,
-            name: "foo",
-          },
-        ],
+            name: "foo"
+          }
+        ]
       });
 
       createStore();
@@ -1815,7 +1815,7 @@ describe("Ext.data.ChainedStore", function () {
         // the initialization of the collectionkey will call addObserver() in the underlying collection
         // if this happens while we're in the middle of notify(), chained store will be left out
         source.setExtraKeys({
-          byFoo: { property: "name", root: "" },
+          byFoo: { property: "name", root: "" }
         });
       });
       // remove the last record

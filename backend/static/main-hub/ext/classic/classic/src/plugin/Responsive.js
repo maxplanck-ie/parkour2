@@ -38,9 +38,9 @@ Ext.define("Ext.plugin.Responsive", {
       c = Ext.apply(
         {
           responsiveConfig: cmp.responsiveConfig,
-          responsiveFormulas: cmp.responsiveFormulas,
+          responsiveFormulas: cmp.responsiveFormulas
         },
-        config,
+        config
       );
 
     delete c.cmp;
@@ -89,6 +89,6 @@ Ext.define("Ext.plugin.Responsive", {
       var config = this.getResponsiveState();
       // Push the dynamic stuff back on to our component:
       this.cmp.setConfig(config);
-    },
-  },
+    }
+  }
 });

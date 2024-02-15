@@ -6,5 +6,5 @@ Ext.define("Ext.device.browser.Simulator", {
     window.open(config.url, "_blank");
   },
 
-  close: Ext.emptyFn,
+  close: Ext.emptyFn
 });

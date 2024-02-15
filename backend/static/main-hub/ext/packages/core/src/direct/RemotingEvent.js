@@ -15,5 +15,5 @@ Ext.define("Ext.direct.RemotingEvent", {
     var me = this;
 
     return me.transaction || Ext.direct.Manager.getTransaction(me.tid);
-  },
+  }
 });

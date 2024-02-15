@@ -12,7 +12,7 @@ Ext.define("Ext.carousel.Infinite", {
 
     maxItemIndex: Infinity,
 
-    innerItemConfig: {},
+    innerItemConfig: {}
   },
 
   applyIndicator: function (indicator) {
@@ -20,7 +20,7 @@ Ext.define("Ext.carousel.Infinite", {
     if (indicator) {
       Ext.Logger.error(
         "'indicator' in Infinite Carousel implementation is not currently supported",
-        this,
+        this
       );
     }
     //</debug>
@@ -165,5 +165,5 @@ Ext.define("Ext.carousel.Infinite", {
     if (activeItem) {
       return this.callParent([activeItem]);
     }
-  },
+  }
 });

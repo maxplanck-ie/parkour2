@@ -6,10 +6,10 @@ describe("Ext.toolbar.Toolbar", function () {
       Ext.apply(
         {
           width: 200,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg || {},
-      ),
+        cfg || {}
+      )
     );
   }
 
@@ -28,7 +28,7 @@ describe("Ext.toolbar.Toolbar", function () {
       it("should not create a menu", function () {
         // false is the default value.
         createToolbar({
-          enableOverflow: false,
+          enableOverflow: false
         });
         expect(toolbar.layout.overflowHandler).toBeNull();
       });
@@ -37,14 +37,14 @@ describe("Ext.toolbar.Toolbar", function () {
     describe("when enableOverflow is true", function () {
       it("should create an overflow menu", function () {
         createToolbar({
-          enableOverflow: true,
+          enableOverflow: true
         });
         expect(toolbar.layout.overflowHandler.menu).toBeDefined();
       });
 
       it('should create an overflow menu with type "menu"', function () {
         createToolbar({
-          enableOverflow: true,
+          enableOverflow: true
         });
         expect(toolbar.layout.overflowHandler.type).toBe("menu");
       });
@@ -58,18 +58,18 @@ describe("Ext.toolbar.Toolbar", function () {
           width: 100,
           items: [
             {
-              text: "Foo",
+              text: "Foo"
             },
             {
-              text: "Bar",
+              text: "Bar"
             },
             {
-              text: "Test",
+              text: "Test"
             },
             {
-              xtype: "textfield",
-            },
-          ],
+              xtype: "textfield"
+            }
+          ]
         });
         menu = toolbar.layout.overflowHandler.menu;
         menu.show();
@@ -89,19 +89,19 @@ describe("Ext.toolbar.Toolbar", function () {
           width: 100,
           items: [
             {
-              text: "Foo",
+              text: "Foo"
             },
             {
-              text: "Bar",
+              text: "Bar"
             },
             {
-              text: "Test",
+              text: "Test"
             },
             {
               xtype: "radio",
-              name: "foo",
-            },
-          ],
+              name: "foo"
+            }
+          ]
         });
         menu = toolbar.layout.overflowHandler.menu;
         menu.show();
@@ -121,19 +121,19 @@ describe("Ext.toolbar.Toolbar", function () {
           width: 100,
           items: [
             {
-              text: "Foo",
+              text: "Foo"
             },
             {
-              text: "Bar",
+              text: "Bar"
             },
             {
-              text: "Test",
+              text: "Test"
             },
             {
               xtype: "radio",
-              name: "foo",
-            },
-          ],
+              name: "foo"
+            }
+          ]
         });
         menu = toolbar.layout.overflowHandler.menu;
         menu.show();
@@ -162,9 +162,9 @@ describe("Ext.toolbar.Toolbar", function () {
         defaultButtonUI: "foo",
         items: [
           {
-            text: "Bar",
-          },
-        ],
+            text: "Bar"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("foo-small");
@@ -180,9 +180,9 @@ describe("Ext.toolbar.Toolbar", function () {
         items: [
           {
             text: "Bar",
-            ui: "bar",
-          },
-        ],
+            ui: "bar"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("bar-small");
@@ -194,9 +194,9 @@ describe("Ext.toolbar.Toolbar", function () {
         items: [
           {
             text: "Bar",
-            ui: "default",
-          },
-        ],
+            ui: "default"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("default-small");
@@ -210,11 +210,11 @@ describe("Ext.toolbar.Toolbar", function () {
             xtype: "segmentedbutton",
             items: [
               {
-                text: "Bar",
-              },
-            ],
-          },
-        ],
+                text: "Bar"
+              }
+            ]
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).getDefaultUI()).toBe("foo");
@@ -230,11 +230,11 @@ describe("Ext.toolbar.Toolbar", function () {
             defaultUI: "bar",
             items: [
               {
-                text: "Bar",
-              },
-            ],
-          },
-        ],
+                text: "Bar"
+              }
+            ]
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).getDefaultUI()).toBe("bar");
@@ -250,11 +250,11 @@ describe("Ext.toolbar.Toolbar", function () {
             defaultUI: "default",
             items: [
               {
-                text: "Bar",
-              },
-            ],
-          },
-        ],
+                text: "Bar"
+              }
+            ]
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).getDefaultUI()).toBe("default");
@@ -268,9 +268,9 @@ describe("Ext.toolbar.Toolbar", function () {
         defaultFieldUI: "foo",
         items: [
           {
-            xtype: "textfield",
-          },
-        ],
+            xtype: "textfield"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("foo");
@@ -282,9 +282,9 @@ describe("Ext.toolbar.Toolbar", function () {
         items: [
           {
             xtype: "textfield",
-            ui: "bar",
-          },
-        ],
+            ui: "bar"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("bar");
@@ -296,9 +296,9 @@ describe("Ext.toolbar.Toolbar", function () {
         items: [
           {
             xtype: "textfield",
-            ui: "default",
-          },
-        ],
+            ui: "default"
+          }
+        ]
       });
 
       expect(toolbar.items.getAt(0).ui).toBe("default");
@@ -310,12 +310,12 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
+            xtype: "button"
           },
           {
-            xtype: "button",
-          },
-        ],
+            xtype: "button"
+          }
+        ]
       });
 
       expect(toolbar.tabGuardBeforeEl).toHaveAttr("tabIndex", "0");
@@ -326,12 +326,12 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
+            xtype: "button"
           },
           {
-            xtype: "textfield",
-          },
-        ],
+            xtype: "textfield"
+          }
+        ]
       });
 
       expect(toolbar.tabGuardBeforeEl).not.toHaveAttr("tabIndex");
@@ -342,12 +342,12 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
+            xtype: "button"
           },
           {
-            xtype: "slider",
-          },
-        ],
+            xtype: "slider"
+          }
+        ]
       });
 
       expect(toolbar.tabGuardBeforeEl).not.toHaveAttr("tabIndex");
@@ -360,9 +360,9 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
-          },
-        ],
+            xtype: "button"
+          }
+        ]
       });
 
       expect(toolbar).toHaveAttr("role", "toolbar");
@@ -372,12 +372,12 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
+            xtype: "button"
           },
           {
-            xtype: "textfield",
-          },
-        ],
+            xtype: "textfield"
+          }
+        ]
       });
 
       expect(toolbar).toHaveAttr("role", "group");
@@ -387,12 +387,12 @@ describe("Ext.toolbar.Toolbar", function () {
       createToolbar({
         items: [
           {
-            xtype: "button",
+            xtype: "button"
           },
           {
-            xtype: "slider",
-          },
-        ],
+            xtype: "slider"
+          }
+        ]
       });
 
       expect(toolbar).toHaveAttr("role", "group");

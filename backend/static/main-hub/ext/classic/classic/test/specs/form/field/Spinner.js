@@ -9,7 +9,7 @@ describe("Ext.form.field.Spinner", function () {
       Ext.applyIf(config, {
         name: "test",
         onSpinUp: jasmine.createSpy(),
-        onSpinDown: jasmine.createSpy(),
+        onSpinDown: jasmine.createSpy()
       });
       component = new Ext.form.field.Spinner(config);
     };
@@ -40,7 +40,7 @@ describe("Ext.form.field.Spinner", function () {
   describe("rendering", function () {
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -65,7 +65,7 @@ describe("Ext.form.field.Spinner", function () {
 
     it("should invoke the 'onSpinUp' method when clicking the up trigger", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       fireClick(component.spinUpEl);
       expect(component.onSpinUp).toHaveBeenCalled();
@@ -73,14 +73,14 @@ describe("Ext.form.field.Spinner", function () {
     it("should not invoke the 'onSpinUp' method if spinUpEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        spinUpEnabled: false,
+        spinUpEnabled: false
       });
       fireClick(component.spinUpEl);
       expect(component.onSpinUp).not.toHaveBeenCalled();
     });
     it("should invoke the 'onSpinDown' method when clicking the down trigger", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       fireClick(component.spinDownEl);
       expect(component.onSpinDown).toHaveBeenCalled();
@@ -88,7 +88,7 @@ describe("Ext.form.field.Spinner", function () {
     it("should not invoke the 'onSpinDown' method if spinDownEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        spinDownEnabled: false,
+        spinDownEnabled: false
       });
       fireClick(component.spinDownEl);
       expect(component.onSpinDown).not.toHaveBeenCalled();
@@ -100,7 +100,7 @@ describe("Ext.form.field.Spinner", function () {
       beforeEach(function () {
         makeComponent({
           spinUpEnabled: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setSpinUpEnabled(false);
       });
@@ -111,7 +111,7 @@ describe("Ext.form.field.Spinner", function () {
 
       it("should add the 'x-form-spinner-up-disabled' class", function () {
         expect(component.spinUpEl.hasCls("x-form-spinner-up-disabled")).toBe(
-          true,
+          true
         );
       });
     });
@@ -120,7 +120,7 @@ describe("Ext.form.field.Spinner", function () {
       beforeEach(function () {
         makeComponent({
           spinUpEnabled: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setSpinUpEnabled(true);
       });
@@ -131,7 +131,7 @@ describe("Ext.form.field.Spinner", function () {
 
       it("should remove the 'x-form-spinner-up-disabled' class", function () {
         expect(component.spinUpEl.hasCls("x-form-spinner-up-disabled")).toBe(
-          false,
+          false
         );
       });
     });
@@ -142,7 +142,7 @@ describe("Ext.form.field.Spinner", function () {
       beforeEach(function () {
         makeComponent({
           spinDownEnabled: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setSpinDownEnabled(false);
       });
@@ -153,7 +153,7 @@ describe("Ext.form.field.Spinner", function () {
 
       it("should add the 'x-form-spinner-down-disabled' class", function () {
         expect(
-          component.spinDownEl.hasCls("x-form-spinner-down-disabled"),
+          component.spinDownEl.hasCls("x-form-spinner-down-disabled")
         ).toBe(true);
       });
     });
@@ -162,7 +162,7 @@ describe("Ext.form.field.Spinner", function () {
       beforeEach(function () {
         makeComponent({
           spinDownEnabled: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setSpinDownEnabled(true);
       });
@@ -173,7 +173,7 @@ describe("Ext.form.field.Spinner", function () {
 
       it("should remove the 'x-form-spinner-down-disabled' class", function () {
         expect(
-          component.spinDownEl.hasCls("x-form-spinner-down-disabled"),
+          component.spinDownEl.hasCls("x-form-spinner-down-disabled")
         ).toBe(false);
       });
     });
@@ -187,7 +187,7 @@ describe("Ext.form.field.Spinner", function () {
 
     it("should call onSpinUp when the up arrow is pressed", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       fireKey(Ext.event.Event.UP);
       expect(component.onSpinUp).toHaveBeenCalled();
@@ -196,7 +196,7 @@ describe("Ext.form.field.Spinner", function () {
     it("should not call onSpinUp if keyNavEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        keyNavEnabled: false,
+        keyNavEnabled: false
       });
       fireKey(Ext.event.Event.UP);
       expect(component.onSpinUp).not.toHaveBeenCalled();
@@ -205,7 +205,7 @@ describe("Ext.form.field.Spinner", function () {
     it("should not call onSpinUp if spinUpEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        spinUpEnabled: false,
+        spinUpEnabled: false
       });
       fireKey(Ext.event.Event.UP);
       expect(component.onSpinUp).not.toHaveBeenCalled();
@@ -213,7 +213,7 @@ describe("Ext.form.field.Spinner", function () {
 
     it("should call onSpinDown when the down arrow is pressed", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       fireKey(Ext.event.Event.DOWN);
       expect(component.onSpinDown).toHaveBeenCalled();
@@ -222,7 +222,7 @@ describe("Ext.form.field.Spinner", function () {
     it("should not call onSpinDown if keyNavEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        keyNavEnabled: false,
+        keyNavEnabled: false
       });
       fireKey(Ext.event.Event.DOWN);
       expect(component.onSpinDown).not.toHaveBeenCalled();
@@ -231,7 +231,7 @@ describe("Ext.form.field.Spinner", function () {
     it("should not call onSpinDown if spinDownEnabled = false", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        spinDownEnabled: false,
+        spinDownEnabled: false
       });
       fireKey(Ext.event.Event.DOWN);
       expect(component.onSpinDown).not.toHaveBeenCalled();
@@ -242,7 +242,7 @@ describe("Ext.form.field.Spinner", function () {
     describe("spinning up", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         spyOn(component, "fireEvent").andCallThrough();
         component.spinUp();
@@ -252,7 +252,7 @@ describe("Ext.form.field.Spinner", function () {
         expect(component.fireEvent).toHaveBeenCalledWith(
           "spin",
           component,
-          "up",
+          "up"
         );
       });
 
@@ -264,7 +264,7 @@ describe("Ext.form.field.Spinner", function () {
     describe("spinning down", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         spyOn(component, "fireEvent").andCallThrough();
         component.spinDown();
@@ -274,7 +274,7 @@ describe("Ext.form.field.Spinner", function () {
         expect(component.fireEvent).toHaveBeenCalledWith(
           "spin",
           component,
-          "down",
+          "down"
         );
       });
 
@@ -297,8 +297,8 @@ describe("Ext.form.field.Spinner", function () {
             },
             spinend: function () {
               spinEndCount++;
-            },
-          },
+            }
+          }
         });
       });
 
@@ -308,14 +308,14 @@ describe("Ext.form.field.Spinner", function () {
             jasmine.fireKeyEvent(
               component.inputEl,
               "keyup",
-              Ext.event.Event.UP,
+              Ext.event.Event.UP
             );
             return true;
           }
           jasmine.fireKeyEvent(
             component.inputEl,
             "keydown",
-            Ext.event.Event.UP,
+            Ext.event.Event.UP
           );
         });
 

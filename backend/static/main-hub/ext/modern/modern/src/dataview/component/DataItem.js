@@ -165,9 +165,9 @@ Ext.define("Ext.dataview.component.DataItem", {
 
     items: [
       {
-        xtype: "component",
-      },
-    ],
+        xtype: "component"
+      }
+    ]
   },
 
   classCls: Ext.baseCSSPrefix + "dataitem",
@@ -229,7 +229,7 @@ Ext.define("Ext.dataview.component.DataItem", {
       data = dataview.prepareData(
         newRecord.getData(true),
         dataview.getStore().indexOf(newRecord),
-        newRecord,
+        newRecord
       ),
       items = me.getItems(),
       item = items.first(),
@@ -249,5 +249,5 @@ Ext.define("Ext.dataview.component.DataItem", {
      * @param {Object} newData The new data.
      */
     me.fireEvent("updatedata", me, data);
-  },
+  }
 });

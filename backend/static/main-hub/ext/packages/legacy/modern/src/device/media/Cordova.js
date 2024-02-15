@@ -15,7 +15,7 @@ Ext.define("Ext.device.media.Cordova", {
     /**
      * @private
      */
-    media: null,
+    media: null
   },
 
   updateSrc: function (newSrc, oldSrc) {
@@ -79,5 +79,5 @@ Ext.define("Ext.device.media.Cordova", {
     if (media) {
       media.stopRecord();
     }
-  },
+  }
 });

@@ -7,7 +7,7 @@ Ext.define("Ext.layout.Float", {
   alias: "layout.float",
 
   config: {
-    direction: "left",
+    direction: "left"
   },
 
   cls: Ext.baseCSSPrefix + "layout-float",
@@ -25,7 +25,7 @@ Ext.define("Ext.layout.Float", {
 
     this.container.innerElement.swapCls(
       prefix + direction,
-      prefix + oldDirection,
+      prefix + oldDirection
     );
-  },
+  }
 });

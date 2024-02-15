@@ -3,7 +3,7 @@ Ext.define("Ext.theme.ios.dataview.NestedList", {
 
   config: {
     backButton: {
-      ui: "back",
-    },
-  },
+      ui: "back"
+    }
+  }
 });

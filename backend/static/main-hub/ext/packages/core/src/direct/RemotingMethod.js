@@ -53,7 +53,7 @@ Ext.define("Ext.direct.RemotingMethod", {
         //<debug>
         if (len === 0) {
           Ext.raise(
-            "metadata.len cannot be 0 " + "for Ext Direct method " + me.name,
+            "metadata.len cannot be 0 " + "for Ext Direct method " + me.name
           );
         }
         //</debug>
@@ -77,7 +77,7 @@ Ext.define("Ext.direct.RemotingMethod", {
         Ext.raise(
           "metadata is neither named nor ordered " +
             "for Ext Direct method " +
-            me.name,
+            me.name
         );
       }
       //</debug>
@@ -121,8 +121,8 @@ Ext.define("Ext.direct.RemotingMethod", {
                     params[i],
                     paramOrder,
                     paramOrder.length,
-                    true,
-                  ),
+                    true
+                  )
                 );
               }
             } else {
@@ -130,7 +130,7 @@ Ext.define("Ext.direct.RemotingMethod", {
                 params,
                 paramOrder,
                 paramOrder.length,
-                true,
+                true
               );
             }
 
@@ -245,13 +245,13 @@ Ext.define("Ext.direct.RemotingMethod", {
           Ext.raise(
             "options.metadata is not an Array " +
               "for Ext Direct method " +
-              me.name,
+              me.name
           );
         } else if (options.metadata.length < me.metadata.len) {
           Ext.raise(
             "Not enough parameters in options.metadata " +
               "for Ext Direct method " +
-              me.name,
+              me.name
           );
         }
         //</debug>
@@ -263,7 +263,7 @@ Ext.define("Ext.direct.RemotingMethod", {
           Ext.raise(
             "options.metadata is not an Object " +
               "for Ext Direct method " +
-              me.name,
+              me.name
           );
         }
         //</debug>
@@ -286,7 +286,7 @@ Ext.define("Ext.direct.RemotingMethod", {
                 name +
                 " is missing " +
                 "in options.metadata for Ext Direct method " +
-                me.name,
+                me.name
             );
           }
         }
@@ -302,7 +302,7 @@ Ext.define("Ext.direct.RemotingMethod", {
       metadata: metadata,
       callback: callback,
       scope: scope,
-      options: options,
+      options: options
     };
-  },
+  }
 });

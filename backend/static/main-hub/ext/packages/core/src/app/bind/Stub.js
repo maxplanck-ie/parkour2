@@ -555,9 +555,9 @@ Ext.define("Ext.app.bind.Stub", {
               scope: me,
               load: {
                 fn: "onStoreLoad",
-                single: true,
+                single: true
               },
-              destroy: "onDestroyBound",
+              destroy: "onDestroyBound"
             });
           }
         }
@@ -577,7 +577,7 @@ Ext.define("Ext.app.bind.Stub", {
           current.un({
             scope: me,
             load: "onStoreLoad",
-            destroy: "onDestroyBound",
+            destroy: "onDestroyBound"
           });
         }
       }
@@ -607,6 +607,6 @@ Ext.define("Ext.app.bind.Stub", {
         // current sweep if the formula produces a different result.
         scheduler.sortItem(formula);
       }
-    },
-  },
+    }
+  }
 });

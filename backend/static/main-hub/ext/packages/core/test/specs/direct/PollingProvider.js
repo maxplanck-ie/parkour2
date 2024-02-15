@@ -4,7 +4,7 @@ describe("Ext.direct.PollingProvider", function () {
   function createProvider(config) {
     config = Ext.apply({}, config, {
       url: "/foo",
-      baseParams: { foo: "bar" },
+      baseParams: { foo: "bar" }
     });
 
     provider = new Ext.direct.PollingProvider(config);
@@ -23,7 +23,7 @@ describe("Ext.direct.PollingProvider", function () {
     return {
       type: event.type,
       name: event.name,
-      data: event.data,
+      data: event.data
     };
   }
 
@@ -36,10 +36,10 @@ describe("Ext.direct.PollingProvider", function () {
         DirectSpecs: [
           {
             name: "pollFn",
-            params: ["foo"],
-          },
-        ],
-      },
+            params: ["foo"]
+          }
+        ]
+      }
     });
 
     createProvider();
@@ -106,7 +106,7 @@ describe("Ext.direct.PollingProvider", function () {
         provider.connect();
 
         expect(spy).toHaveBeenCalledWith(
-          "Using a function for url is deprecated, use pollFn instead.",
+          "Using a function for url is deprecated, use pollFn instead."
         );
       });
 
@@ -168,7 +168,7 @@ describe("Ext.direct.PollingProvider", function () {
         url: "/foo",
         params: { foo: "bar" },
         scope: provider,
-        callback: provider.onData,
+        callback: provider.onData
       });
     });
 
@@ -181,7 +181,7 @@ describe("Ext.direct.PollingProvider", function () {
         params: { foo: "bar" },
         scope: provider,
         callback: provider.onData,
-        headers: { blerg: "zingbong" },
+        headers: { blerg: "zingbong" }
       });
     });
 
@@ -214,7 +214,7 @@ describe("Ext.direct.PollingProvider", function () {
         beforeEach(function () {
           createProvider({
             url: pollFn,
-            baseParams: undefined,
+            baseParams: undefined
           });
 
           provider.connect();
@@ -244,7 +244,7 @@ describe("Ext.direct.PollingProvider", function () {
           createProvider({
             pollFn: pollFn,
             url: undefined,
-            baseParams: undefined,
+            baseParams: undefined
           });
 
           provider.connect();
@@ -290,7 +290,7 @@ describe("Ext.direct.PollingProvider", function () {
       }).toThrow(
         "Attempting to configure PollProvider " +
           provider.id +
-          " with interval that is less than 100ms.",
+          " with interval that is less than 100ms."
       );
     });
 
@@ -333,7 +333,7 @@ describe("Ext.direct.PollingProvider", function () {
           data: null,
           code: Ext.direct.Manager.exceptions.TRANSPORT,
           message: "Unable to connect to the server.",
-          xhr: { foo: "bar" },
+          xhr: { foo: "bar" }
         });
 
       expect(args[1]).toEqual(ex);
@@ -369,23 +369,23 @@ describe("Ext.direct.PollingProvider", function () {
           {
             type: "event",
             name: "foo",
-            data: { foo: "bar" },
+            data: { foo: "bar" }
           },
           {
             type: "event",
             name: "bar",
-            data: null,
+            data: null
           },
           {
             type: "event",
             name: "baz",
-            data: ["foo", "bar"],
+            data: ["foo", "bar"]
           },
           {
             type: "event",
             name: "qux",
-            data: "plugh",
-          },
+            data: "plugh"
+          }
         ];
 
       it("fires 'data' event when dataset contains events", function () {
@@ -463,13 +463,13 @@ describe("Ext.direct.PollingProvider", function () {
         var args = handler.argsForCall[0][1],
           xcpt = {
             code: args.code,
-            message: args.message,
+            message: args.message
           };
 
         expect(xcpt).toEqual({
           code: Ext.direct.Manager.exceptions.PARSE,
           message:
-            "Error parsing json response: \n\n Ext.JSON.decode(): You're trying to decode an invalid JSON String: invalid json",
+            "Error parsing json response: \n\n Ext.JSON.decode(): You're trying to decode an invalid JSON String: invalid json"
         });
       });
 
@@ -477,13 +477,13 @@ describe("Ext.direct.PollingProvider", function () {
         var args = exceptionHandler.argsForCall[0][1],
           xcpt = {
             code: args.code,
-            message: args.message,
+            message: args.message
           };
 
         expect(xcpt).toEqual({
           code: Ext.direct.Manager.exceptions.PARSE,
           message:
-            "Error parsing json response: \n\n Ext.JSON.decode(): You're trying to decode an invalid JSON String: invalid json",
+            "Error parsing json response: \n\n Ext.JSON.decode(): You're trying to decode an invalid JSON String: invalid json"
         });
       });
     });
@@ -491,7 +491,7 @@ describe("Ext.direct.PollingProvider", function () {
     describe("invalid payload data", function () {
       beforeEach(function () {
         provider.onData({}, true, {
-          responseText: Ext.JSON.encode({ foo: "bar" }),
+          responseText: Ext.JSON.encode({ foo: "bar" })
         });
       });
 
@@ -499,12 +499,12 @@ describe("Ext.direct.PollingProvider", function () {
         var args = handler.argsForCall[0][1],
           xcpt = {
             code: args.code,
-            message: args.message,
+            message: args.message
           };
 
         expect(xcpt).toEqual({
           code: Ext.direct.Manager.exceptions.DATA,
-          message: "Invalid data: event type is not specified",
+          message: "Invalid data: event type is not specified"
         });
       });
 
@@ -512,12 +512,12 @@ describe("Ext.direct.PollingProvider", function () {
         var args = exceptionHandler.argsForCall[0][1],
           xcpt = {
             code: args.code,
-            message: args.message,
+            message: args.message
           };
 
         expect(xcpt).toEqual({
           code: Ext.direct.Manager.exceptions.DATA,
-          message: "Invalid data: event type is not specified",
+          message: "Invalid data: event type is not specified"
         });
       });
     });
@@ -528,7 +528,7 @@ describe("Ext.direct.PollingProvider", function () {
       beforeEach(function () {
         ex = {
           type: "exception",
-          message: "Fubar",
+          message: "Fubar"
         };
 
         data = Ext.JSON.encode(ex);
@@ -540,7 +540,7 @@ describe("Ext.direct.PollingProvider", function () {
         var args = handler.argsForCall[0][1],
           xcpt = {
             type: args.type,
-            message: args.message,
+            message: args.message
           };
 
         expect(handler.argsForCall.length).toBe(1);
@@ -552,7 +552,7 @@ describe("Ext.direct.PollingProvider", function () {
         var args = exceptionHandler.argsForCall[0][1],
           xcpt = {
             type: args.type,
-            message: args.message,
+            message: args.message
           };
 
         expect(exceptionHandler.argsForCall.length).toBe(1);
@@ -601,10 +601,10 @@ describe("Ext.direct.PollingProvider", function () {
           {
             type: "event",
             name: "blerg",
-            data: params,
+            data: params
           },
           {},
-          true,
+          true
         );
       });
 
@@ -617,7 +617,7 @@ describe("Ext.direct.PollingProvider", function () {
       expect(event).toEqual({
         type: "event",
         name: "blerg",
-        data: { foo: "bar" },
+        data: { foo: "bar" }
       });
     });
 
@@ -630,7 +630,7 @@ describe("Ext.direct.PollingProvider", function () {
           event = {
             type: "event",
             name: "blam" + i,
-            data: params,
+            data: params
           };
 
           result.push(event);
@@ -648,7 +648,7 @@ describe("Ext.direct.PollingProvider", function () {
       expect(result).toEqual([
         { type: "event", name: "blam1", data: { foo: "bar" } },
         { type: "event", name: "blam2", data: { foo: "bar" } },
-        { type: "event", name: "blam3", data: { foo: "bar" } },
+        { type: "event", name: "blam3", data: { foo: "bar" } }
       ]);
     });
   });

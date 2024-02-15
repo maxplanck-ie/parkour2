@@ -4,7 +4,7 @@ describe("Ext.list.TreeItem", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.TreeModel",
-    fields: ["customField"],
+    fields: ["customField"]
   });
 
   function makeList(cfg, noStore) {
@@ -13,8 +13,8 @@ describe("Ext.list.TreeItem", function () {
         model: Model,
         root: {
           expanded: true,
-          children: sampleData,
-        },
+          children: sampleData
+        }
       });
     }
 
@@ -22,10 +22,10 @@ describe("Ext.list.TreeItem", function () {
       Ext.apply(
         {
           store: store,
-          animation: false,
+          animation: false
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     list.render(Ext.getBody());
 
@@ -44,25 +44,25 @@ describe("Ext.list.TreeItem", function () {
           {
             id: "i11",
             text: "Item 1.1",
-            leaf: true,
+            leaf: true
           },
           {
             id: "i12",
             text: "Item 1.2",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       },
       {
         id: "i2",
         text: "Item 2",
-        expandable: false,
+        expandable: false
       },
       {
         id: "i3",
         iconCls: "iconB",
         text: "Item 3",
-        children: [],
+        children: []
       },
       {
         id: "i4",
@@ -72,19 +72,19 @@ describe("Ext.list.TreeItem", function () {
           {
             id: "i41",
             iconCls: "iconC",
-            text: "Item 4.1",
+            text: "Item 4.1"
           },
           {
             id: "i42",
             text: "Item 4.2",
-            iconCls: null,
+            iconCls: null
           },
           {
             id: "i43",
-            text: "Item 4.3",
-          },
-        ],
-      },
+            text: "Item 4.3"
+          }
+        ]
+      }
     ];
   });
 
@@ -148,7 +148,7 @@ describe("Ext.list.TreeItem", function () {
             function (id) {
               var item = getItem(id);
               expect(item.element).not.toHaveCls(item.leafCls);
-            },
+            }
           );
         });
       });
@@ -174,7 +174,7 @@ describe("Ext.list.TreeItem", function () {
             function (id) {
               var item = getItem(id);
               expect(item.element).not.toHaveCls(item.withIconCls);
-            },
+            }
           );
         });
 
@@ -189,7 +189,7 @@ describe("Ext.list.TreeItem", function () {
             function (id) {
               var item = getItem(id);
               expect(item.element).not.toHaveCls(item.hideIconCls);
-            },
+            }
           );
         });
       });
@@ -218,7 +218,7 @@ describe("Ext.list.TreeItem", function () {
             function (id) {
               var item = getItem(id);
               expect(item.element).not.toHaveCls(item.expandedCls);
-            },
+            }
           );
         });
       });
@@ -243,9 +243,9 @@ describe("Ext.list.TreeItem", function () {
         it("should insert nodes in the right position", function () {
           byId("i1").insertBefore(
             {
-              id: "i9",
+              id: "i9"
             },
-            byId("i12"),
+            byId("i12")
           );
 
           var childNodes = getItem("i1").itemContainer.dom.childNodes;
@@ -256,7 +256,7 @@ describe("Ext.list.TreeItem", function () {
 
         it("should append nodes to the right position", function () {
           byId("i1").appendChild({
-            id: "i9",
+            id: "i9"
           });
 
           var childNodes = getItem("i1").itemContainer.dom.childNodes;
@@ -271,7 +271,7 @@ describe("Ext.list.TreeItem", function () {
 
           expect(el).not.toHaveCls(item.expandableCls);
           byId("i3").appendChild({
-            id: "i9",
+            id: "i9"
           });
           expect(el).toHaveCls(item.expandableCls);
         });
@@ -371,7 +371,7 @@ describe("Ext.list.TreeItem", function () {
               expect(item.element).toHaveCls(item.loadingCls);
               Ext.Ajax.mockComplete({
                 status: 200,
-                responseText: "[]",
+                responseText: "[]"
               });
               expect(item.element).not.toHaveCls(item.loadingCls);
               MockAjaxManager.removeMethods();
@@ -528,7 +528,7 @@ describe("Ext.list.TreeItem", function () {
       beforeEach(function () {
         sampleData[3].children[0].leaf = true;
         makeList({
-          expanderOnly: false,
+          expanderOnly: false
         });
       });
 
@@ -571,7 +571,7 @@ describe("Ext.list.TreeItem", function () {
     describe("with expanderOnly: true", function () {
       beforeEach(function () {
         makeList({
-          expanderOnly: true,
+          expanderOnly: true
         });
       });
 

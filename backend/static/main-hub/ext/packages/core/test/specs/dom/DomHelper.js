@@ -18,7 +18,7 @@ xdescribe("Ext.core.DomHelper", function () {
         thead: "table",
         tfoot: "table",
         tr: "tbody",
-        td: "tr",
+        td: "tr"
       },
 
       voidNode: {
@@ -34,8 +34,8 @@ xdescribe("Ext.core.DomHelper", function () {
         param: true,
         range: true,
         spacer: true,
-        wbr: true,
-      },
+        wbr: true
+      }
     },
     String: {
       html: function (tagName, className) {
@@ -43,8 +43,8 @@ xdescribe("Ext.core.DomHelper", function () {
         if (!TestHelper.dom.voidNode[tagName]) HTML += "</" + tagName + ">";
         // console.log(HTML);
         return HTML;
-      },
-    },
+      }
+    }
   };
 
   xdescribe("useDom = false", function () {
@@ -81,8 +81,8 @@ xdescribe("Ext.core.DomHelper", function () {
           { cls: "child2" },
           { cls: "child" },
           { cls: "child" },
-          { cls: "child" },
-        ],
+          { cls: "child" }
+        ]
       });
 
       els = Ext.select("#DomHelperHelper > div");
@@ -107,11 +107,11 @@ xdescribe("Ext.core.DomHelper", function () {
                 tag: "span",
                 html: "test",
                 style: {
-                  padding: "10px",
-                },
+                  padding: "10px"
+                }
               },
-              { tag: "br" },
-            ],
+              { tag: "br" }
+            ]
           };
 
         expect(dh.markup(html)).toEqual(markup);
@@ -127,7 +127,7 @@ xdescribe("Ext.core.DomHelper", function () {
 
       it("should apply styles from an object", function () {
         dh.applyStyles(el, {
-          padding: "10px",
+          padding: "10px"
         });
 
         expect(el.dom.style.padding).toMatch(/^(?:10px|10px 10px 10px 10px)$/);
@@ -136,7 +136,7 @@ xdescribe("Ext.core.DomHelper", function () {
       // TODO: Implement using raw numbers in DomHelper.applyStyles
       xit("should apply styles from an object using numbers", function () {
         dh.applyStyles(el, {
-          padding: 10,
+          padding: 10
         });
 
         expect(el.dom.style.padding).toMatch(/^(?:10px|10px 10px 10px 10px)$/);
@@ -145,7 +145,7 @@ xdescribe("Ext.core.DomHelper", function () {
       it("should apply styles from a function", function () {
         dh.applyStyles(el, function () {
           return {
-            padding: "10px",
+            padding: "10px"
           };
         });
 
@@ -157,8 +157,8 @@ xdescribe("Ext.core.DomHelper", function () {
       it("should un-camel case names", function () {
         expect(
           dh.generateStyles({
-            backgroundColor: "red",
-          }),
+            backgroundColor: "red"
+          })
         ).toEqual("background-color:red;");
       });
 
@@ -167,8 +167,8 @@ xdescribe("Ext.core.DomHelper", function () {
           dh.generateStyles({
             backgroundColor: "red",
             color: "green",
-            "font-size": "12px",
-          }),
+            "font-size": "12px"
+          })
         ).toEqual("background-color:red;color:green;font-size:12px;");
       });
 
@@ -176,9 +176,9 @@ xdescribe("Ext.core.DomHelper", function () {
         var buffer = [];
         dh.generateStyles(
           {
-            color: "red",
+            color: "red"
           },
-          buffer,
+          buffer
         );
         expect(buffer.join("")).toEqual("color:red;");
       });
@@ -186,8 +186,8 @@ xdescribe("Ext.core.DomHelper", function () {
       it("should not html encode by default", function () {
         expect(
           dh.generateStyles({
-            fontFamily: '"Arial"',
-          }),
+            fontFamily: '"Arial"'
+          })
         ).toEqual('font-family:"Arial";');
       });
 
@@ -195,11 +195,11 @@ xdescribe("Ext.core.DomHelper", function () {
         expect(
           dh.generateStyles(
             {
-              fontFamily: '"Arial"',
+              fontFamily: '"Arial"'
             },
             null,
-            true,
-          ),
+            true
+          )
         ).toEqual("font-family:&quot;Arial&quot;;");
       });
     });
@@ -274,7 +274,7 @@ xdescribe("Ext.core.DomHelper", function () {
             afterEnd: true,
             beforeBegin: true,
             afterBegin: true,
-            beforeEnd: true,
+            beforeEnd: true
           };
 
         for (var tagName in TestHelper.dom.voidNode) {
@@ -307,25 +307,25 @@ xdescribe("Ext.core.DomHelper", function () {
             insertHtml_shouldSupport_inside(
               "afterBegin",
               tagName,
-              tagNameToInsert,
+              tagNameToInsert
             );
           if (where.beforeEnd)
             insertHtml_shouldSupport_inside(
               "beforeEnd",
               tagName,
-              tagNameToInsert,
+              tagNameToInsert
             );
           if (where.afterEnd)
             insertHtml_shouldSupport_outside(
               "afterEnd",
               tagName,
-              tagNameToInsert,
+              tagNameToInsert
             );
           if (where.beforeBegin)
             insertHtml_shouldSupport_outside(
               "beforeBegin",
               tagName,
-              tagNameToInsert,
+              tagNameToInsert
             );
 
           if (where.afterBegin || where.beforeEnd) {
@@ -334,7 +334,7 @@ xdescribe("Ext.core.DomHelper", function () {
                 "should overwrite the HTML",
                 "of a",
                 tagName.toUpperCase(),
-                "Element",
+                "Element"
               ].join(" "),
               function () {
                 var html = TestHelper.String.html(tagNameToInsert, "overwrite");
@@ -348,7 +348,7 @@ xdescribe("Ext.core.DomHelper", function () {
                 expect(target.childNodes.length).toBe(1);
                 expect(target.firstChild).toBeDefined();
                 expect(target.firstChild.className).toBe("overwrite");
-              },
+              }
             );
 
             if (Ext.core.Element.prototype.setHTML)
@@ -357,12 +357,12 @@ xdescribe("Ext.core.DomHelper", function () {
                   "should set the HTML",
                   "of a",
                   tagName.toUpperCase(),
-                  "Element",
+                  "Element"
                 ].join(" "),
                 function () {
                   var html = TestHelper.String.html(
                     tagNameToInsert,
-                    "overwrite",
+                    "overwrite"
                   );
 
                   var target = document.createElement(tagName);
@@ -374,7 +374,7 @@ xdescribe("Ext.core.DomHelper", function () {
                   expect(target.childNodes.length).toBe(1);
                   expect(target.firstChild).toBeDefined();
                   expect(target.firstChild.className).toBe("overwrite");
-                },
+                }
               );
           }
         }
@@ -382,7 +382,7 @@ xdescribe("Ext.core.DomHelper", function () {
         function insertHtml_shouldSupport_inside(
           where,
           tagName,
-          tagNameToInsert,
+          tagNameToInsert
         ) {
           it(
             [
@@ -390,7 +390,7 @@ xdescribe("Ext.core.DomHelper", function () {
               tagNameToInsert.toUpperCase(),
               where,
               "of a " + tagName.toUpperCase() + " Element",
-              "when it has no parentNode",
+              "when it has no parentNode"
             ].join(" "),
             function () {
               var html = TestHelper.String.html(tagNameToInsert, where);
@@ -404,21 +404,21 @@ xdescribe("Ext.core.DomHelper", function () {
               expect(target.childNodes.length).toBe(1);
               expect(target.firstChild).toBeDefined();
               expect(target.firstChild.className).toBe(where);
-            },
+            }
           );
         }
 
         function insertHtml_shouldSupport_outside(
           where,
           tagName,
-          tagNameToInsert,
+          tagNameToInsert
         ) {
           it(
             [
               "should insertHtml",
               tagNameToInsert.toUpperCase(),
               where,
-              "of a " + tagName.toUpperCase() + " Element",
+              "of a " + tagName.toUpperCase() + " Element"
             ].join(" "),
             function () {
               var html = TestHelper.String.html(tagNameToInsert, where);
@@ -427,7 +427,7 @@ xdescribe("Ext.core.DomHelper", function () {
               document
                 .createElement(
                   TestHelper.dom.parentNodeName[tagName] ||
-                    TestHelper.dom.parentNodeName["*"],
+                    TestHelper.dom.parentNodeName["*"]
                 )
                 .appendChild(target);
               var parentNode = target.parentNode;
@@ -442,10 +442,10 @@ xdescribe("Ext.core.DomHelper", function () {
 
               expect(parentNode.childNodes.length).toBe(1);
               expect(parentNode.firstChild.tagName.toLowerCase()).toBe(
-                tagNameToInsert,
+                tagNameToInsert
               );
               expect(parentNode.firstChild.className).toBe(where);
-            },
+            }
           );
         }
       });
@@ -459,7 +459,7 @@ xdescribe("Ext.core.DomHelper", function () {
 
         dh.overwrite(node, {
           tag: "span",
-          html: "hello",
+          html: "hello"
         });
 
         expect(node.innerHTML.toLowerCase()).toEqual("<span>hello</span>");
@@ -490,13 +490,13 @@ xdescribe("Ext.core.DomHelper", function () {
         it("should set the html of an Element with multiple arguments", function () {
           var html = [
             "<p>Paragraph</p>",
-            '<a href="http://mootools.net/">Link</a>',
+            '<a href="http://mootools.net/">Link</a>'
           ];
           var parent = document.createElement("div");
           dh.overwrite(parent, html);
 
           expect(parent.innerHTML.toLowerCase()).toEqual(
-            html.join("").toLowerCase(),
+            html.join("").toLowerCase()
           );
         });
 
@@ -521,7 +521,7 @@ xdescribe("Ext.core.DomHelper", function () {
           expect(table.childNodes.length).toEqual(1);
           expect(table.firstChild.firstChild.childNodes.length).toEqual(2);
           expect(table.firstChild.lastChild.firstChild.className).toEqual(
-            "cell",
+            "cell"
           );
         });
 

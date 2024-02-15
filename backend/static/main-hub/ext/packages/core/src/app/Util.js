@@ -5,7 +5,7 @@
 Ext.define("Ext.app.Util", {}, function () {
   Ext.apply(Ext.app, {
     namespaces: {
-      Ext: {},
+      Ext: {}
     },
 
     /**
@@ -47,7 +47,7 @@ Ext.define("Ext.app.Util", {}, function () {
       var namespaces = Ext.apply(
           {},
           Ext.ClassManager.paths,
-          Ext.app.namespaces,
+          Ext.app.namespaces
         ),
         deepestPrefix = "",
         prefix;
@@ -89,7 +89,7 @@ Ext.define("Ext.app.Util", {}, function () {
         if (!manifestPaths || appFolder !== undefined) {
           Ext.Loader.setPath(
             appName,
-            appFolder === undefined ? "app" : appFolder,
+            appFolder === undefined ? "app" : appFolder
           );
         }
       }
@@ -101,7 +101,7 @@ Ext.define("Ext.app.Util", {}, function () {
           }
         }
       }
-    },
+    }
   });
 
   /**

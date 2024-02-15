@@ -253,14 +253,14 @@ Ext.define("Ext.util.Positionable", {
     element,
     position,
     offsets,
-    /* private (documented in ext) */ animate,
+    /* private (documented in ext) */ animate
   ) {
     var me = this,
       el = me.el;
 
     return me.setXY(
       me.getAlignToXY(element, position, offsets),
-      el.anim && !!animate ? el.anim(animate) : false,
+      el.anim && !!animate ? el.anim(animate) : false
     );
   },
 
@@ -332,7 +332,7 @@ Ext.define("Ext.util.Positionable", {
       Ext.raise({
         sourceClass: "Ext.util.Positionable",
         sourceMethod: "getAlignToXY",
-        msg: "Attempted to align an element that doesn't exist",
+        msg: "Attempted to align an element that doesn't exist"
       });
       //</debug>
     }
@@ -359,7 +359,7 @@ Ext.define("Ext.util.Positionable", {
       minHeight: minHeight,
       offset: offset,
       align: posSpec,
-      axisLock: true,
+      axisLock: true
     });
     return newRegion;
   },
@@ -456,7 +456,7 @@ Ext.define("Ext.util.Positionable", {
       width: w,
       height: h,
       right: x + w,
-      bottom: y + h,
+      bottom: y + h
     };
   },
 
@@ -486,7 +486,7 @@ Ext.define("Ext.util.Positionable", {
     constrainTo,
     proposedPosition,
     local,
-    proposedSize,
+    proposedSize
   ) {
     var me = this,
       vector,
@@ -505,7 +505,7 @@ Ext.define("Ext.util.Positionable", {
       if (proposedPosition) {
         proposedConstrainPosition = [
           proposedPosition[0] + parentOffset[0],
-          proposedPosition[1] + parentOffset[1],
+          proposedPosition[1] + parentOffset[1]
         ];
       }
     } else {
@@ -523,7 +523,7 @@ Ext.define("Ext.util.Positionable", {
 
     if (local && proposedConstrainPosition) {
       proposedConstrainPosition = me.reverseTranslateXY(
-        proposedConstrainPosition,
+        proposedConstrainPosition
       );
     }
 
@@ -625,7 +625,7 @@ Ext.define("Ext.util.Positionable", {
         constraintInsets.top,
         constraintInsets.right,
         constraintInsets.bottom,
-        constraintInsets.left,
+        constraintInsets.left
       );
     }
 
@@ -633,7 +633,7 @@ Ext.define("Ext.util.Positionable", {
     if (proposedPosition) {
       thisRegion.translateBy(
         proposedPosition[0] - thisRegion.x,
-        proposedPosition[1] - thisRegion.y,
+        proposedPosition[1] - thisRegion.y
       );
     }
     // Set the size of this region to the proposed size
@@ -648,7 +648,7 @@ Ext.define("Ext.util.Positionable", {
         shadowSize[0],
         -shadowSize[1],
         -shadowSize[2],
-        shadowSize[3],
+        shadowSize[3]
       );
     }
 
@@ -733,7 +733,7 @@ Ext.define("Ext.util.Positionable", {
       viewContentBox.top,
       viewContentBox.right,
       viewContentBox.bottom,
-      viewContentBox.left,
+      viewContentBox.left
     );
   },
 
@@ -814,7 +814,7 @@ Ext.define("Ext.util.Positionable", {
   move: function (
     direction,
     distance,
-    /* private (documented in ext) */ animate,
+    /* private (documented in ext) */ animate
   ) {
     var me = this,
       xy = me.getXY(),
@@ -834,7 +834,7 @@ Ext.define("Ext.util.Positionable", {
         up: top,
         b: bottom,
         bottom: bottom,
-        down: bottom,
+        down: bottom
       };
 
     direction = direction.toLowerCase();
@@ -856,7 +856,7 @@ Ext.define("Ext.util.Positionable", {
         x: box.left,
         y: box.top,
         width: box.right - box.left,
-        height: box.bottom - box.top,
+        height: box.bottom - box.top
       };
     }
 
@@ -886,7 +886,7 @@ Ext.define("Ext.util.Positionable", {
       y = "y" in box ? box.y : box.top;
       constrainedPos = me.calculateConstrainedPosition(null, [x, y], false, [
         box.width,
-        box.height,
+        box.height
       ]);
 
       // If it *needs* constraining, change the position
@@ -909,7 +909,7 @@ Ext.define("Ext.util.Positionable", {
 
     return {
       left: pos.x,
-      top: pos.y,
+      top: pos.y
     };
   },
 
@@ -944,7 +944,7 @@ Ext.define("Ext.util.Positionable", {
     top = typeof y === "number" ? y - xy[1] + top : undefined;
     return {
       x: left,
-      y: top,
+      y: top
     };
   },
 
@@ -1129,6 +1129,6 @@ Ext.define("Ext.util.Positionable", {
           el.removeCls(clippedCls);
         }
       }
-    },
-  },
+    }
+  }
 });

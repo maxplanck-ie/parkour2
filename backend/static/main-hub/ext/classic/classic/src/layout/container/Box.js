@@ -13,7 +13,7 @@ Ext.define("Ext.layout.container.Box", {
     "Ext.layout.container.boxOverflow.Scroller",
     "Ext.util.Format",
     "Ext.dd.DragDropManager",
-    "Ext.resizer.Splitter",
+    "Ext.resizer.Splitter"
   ],
 
   type: "box",
@@ -99,12 +99,12 @@ Ext.define("Ext.layout.container.Box", {
       merge: function (newValue, oldValue) {
         if (typeof newValue === "string") {
           newValue = {
-            type: newValue,
+            type: newValue
           };
         }
 
         return Ext.merge(oldValue ? Ext.Object.chain(oldValue) : {}, newValue);
-      },
+      }
     },
 
     /**
@@ -166,7 +166,7 @@ Ext.define("Ext.layout.container.Box", {
      *  - [floor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor)
      *  - [ceil](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil)
      */
-    alignRoundingMethod: "round",
+    alignRoundingMethod: "round"
   },
 
   itemCls: Ext.baseCSSPrefix + "box-item",
@@ -196,8 +196,8 @@ Ext.define("Ext.layout.container.Box", {
       "}%}",
     {
       disableFormats: true,
-      definitions: "var dh=Ext.DomHelper;",
-    },
+      definitions: "var dh=Ext.DomHelper;"
+    }
   ],
 
   constructor: function (config) {
@@ -445,12 +445,12 @@ Ext.define("Ext.layout.container.Box", {
         stretch: align === "stretch",
         stretchmax: align === "stretchmax",
         center: centerRe.test(align),
-        bottom: me._endRe.test(align),
+        bottom: me._endRe.test(align)
       }),
       pack: (pack = {
         center: centerRe.test(pack),
-        end: pack === "end",
-      }),
+        end: pack === "end"
+      })
     };
 
     // Scrolling can occur if:
@@ -462,7 +462,7 @@ Ext.define("Ext.layout.container.Box", {
         // a scrollable and can scroll in that direction without having a visible scrollbar.
         state.canScroll = {
           parallel: !widthModel.shrinkWrap && scrollable[names.getX](),
-          perpendicular: !heightModel.shrinkWrap && scrollable[names.getY](),
+          perpendicular: !heightModel.shrinkWrap && scrollable[names.getY]()
         };
       }
 
@@ -470,7 +470,7 @@ Ext.define("Ext.layout.container.Box", {
         // Store the final calculated state for this cycle in here
         state.actualScroll = {
           parallel: false,
-          perpendicular: false,
+          perpendicular: false
         };
       }
     }
@@ -630,7 +630,7 @@ Ext.define("Ext.layout.container.Box", {
           plan.targetSize[names.width] < ownerContext.smallestWidth,
         perpendicular:
           canScroll.perpendicular &&
-          plan.targetSize[names.height] < ownerContext.smallestHeight,
+          plan.targetSize[names.height] < ownerContext.smallestHeight
       };
     }
 
@@ -642,7 +642,7 @@ Ext.define("Ext.layout.container.Box", {
       state.perpendicularDone = me.calculatePerpendicular(
         ownerContext,
         names,
-        plan,
+        plan
       );
     }
 
@@ -656,8 +656,8 @@ Ext.define("Ext.layout.container.Box", {
             state: {
               scrollPass: true,
               canScroll: canScroll,
-              needsScroll: actualScroll,
-            },
+              needsScroll: actualScroll
+            }
           });
           me.done = false;
           return;
@@ -756,7 +756,7 @@ Ext.define("Ext.layout.container.Box", {
         childContext = childItems[i];
         if (childContext.percentageParallel) {
           childWidth = Math.ceil(
-            percentageSpace * childContext.percentageParallel,
+            percentageSpace * childContext.percentageParallel
           );
           childWidth = childContext[setWidthName](childWidth);
           nonFlexWidth += childWidth;
@@ -953,7 +953,7 @@ Ext.define("Ext.layout.container.Box", {
             after: onAfterInvalidateChild,
             layout: me,
             childHeight: availHeight,
-            names: names,
+            names: names
           });
 
           // By invalidating the height, it could mean the width can change, so we need
@@ -967,8 +967,8 @@ Ext.define("Ext.layout.container.Box", {
             (maxHeight = mmax(
               maxHeight,
               childHeight + childMargins,
-              childContext.target[names.minHeight] || 0,
-            )),
+              childContext.target[names.minHeight] || 0
+            ))
           )
         ) {
           return false; // heightShrinkWrap || isCenter || isStretchMax ??
@@ -1002,7 +1002,7 @@ Ext.define("Ext.layout.container.Box", {
       if (stretchMaxChildren && stretchMaxChildren.length) {
         maxHeight = mmax(
           maxHeight,
-          stretchMaxPartner.getProp("maxChildHeight"),
+          stretchMaxPartner.getProp("maxChildHeight")
         );
         if (isNaN(maxHeight)) {
           return false;
@@ -1013,7 +1013,7 @@ Ext.define("Ext.layout.container.Box", {
     ownerContext[names.setContentHeight](
       maxHeight +
         me.padding[heightName] +
-        ownerContext.targetContext.getPaddingInfo()[heightName],
+        ownerContext.targetContext.getPaddingInfo()[heightName]
     );
 
     // We have to publish the contentHeight with the additional scrollbarHeight
@@ -1073,7 +1073,7 @@ Ext.define("Ext.layout.container.Box", {
         } else if (isBottom) {
           childTop = mmax(
             0,
-            height - childTop - childContext.props[heightName],
+            height - childTop - childContext.props[heightName]
           );
         }
       }
@@ -1151,7 +1151,7 @@ Ext.define("Ext.layout.container.Box", {
           childHeight: childHeight,
           childX: props.x,
           childY: props.y,
-          names: names,
+          names: names
         });
       }
     }
@@ -1351,7 +1351,7 @@ Ext.define("Ext.layout.container.Box", {
         id: item.id + "-splitter",
         hidden: hidden,
         splitterFor: item,
-        synthetic: true, // not user-defined
+        synthetic: true // not user-defined
       },
       at = index + (splitterCfg.collapseTarget === "prev" ? 1 : 0);
 
@@ -1432,7 +1432,7 @@ Ext.define("Ext.layout.container.Box", {
     // FF needs it because of a vertical tab bug: https://sencha.jira.com/browse/EXTJSIV-8614
     ownerContext.targetElContext.setWidth(
       ownerContext.innerCtContext.props.width -
-        (me.vertical ? 0 : widthOffset || 0),
+        (me.vertical ? 0 : widthOffset || 0)
     );
 
     // If unable to publish both dimensions, this layout needs to run again
@@ -1451,18 +1451,18 @@ Ext.define("Ext.layout.container.Box", {
     if (split) {
       if (split === true) {
         split = {
-          collapseTarget: "next",
+          collapseTarget: "next"
         };
       } else if (Ext.isString(split)) {
         split = {
-          collapseTarget: split === "before" ? "next" : "prev",
+          collapseTarget: split === "before" ? "next" : "prev"
         };
       } else {
         split = Ext.apply(
           {
-            collapseTarget: split.side === "before" ? "next" : "prev",
+            collapseTarget: split.side === "before" ? "next" : "prev"
           },
-          split,
+          split
         );
       }
 
@@ -1512,7 +1512,7 @@ Ext.define("Ext.layout.container.Box", {
 
     if (typeof overflowHandler === "string") {
       overflowHandler = {
-        type: overflowHandler,
+        type: overflowHandler
       };
     }
 
@@ -1639,7 +1639,7 @@ Ext.define("Ext.layout.container.Box", {
         setHeightInDom: "setHeightInDom",
         getScrollLeft: "getScrollLeft",
         setScrollLeft: "setScrollLeft",
-        scrollTo: "scrollTo",
+        scrollTo: "scrollTo"
       },
 
       sizePolicy: {
@@ -1648,40 +1648,40 @@ Ext.define("Ext.layout.container.Box", {
             readsWidth: 0,
             readsHeight: 1,
             setsWidth: 1,
-            setsHeight: 0,
+            setsHeight: 0
           },
           stretch: {
             readsWidth: 0,
             readsHeight: 0,
             setsWidth: 1,
-            setsHeight: 1,
+            setsHeight: 1
           },
           stretchmax: {
             readsWidth: 0,
             readsHeight: 1,
             setsWidth: 1,
-            setsHeight: 1,
-          },
+            setsHeight: 1
+          }
         },
         "": {
           readsWidth: 1,
           readsHeight: 1,
           setsWidth: 0,
-          setsHeight: 0,
+          setsHeight: 0
         },
         stretch: {
           readsWidth: 1,
           readsHeight: 0,
           setsWidth: 0,
-          setsHeight: 1,
+          setsHeight: 1
         },
         stretchmax: {
           readsWidth: 1,
           readsHeight: 1,
           setsWidth: 0,
-          setsHeight: 1,
-        },
-      },
+          setsHeight: 1
+        }
+      }
     },
     // VBOX
     vbox: {
@@ -1743,7 +1743,7 @@ Ext.define("Ext.layout.container.Box", {
         setHeightInDom: "setWidthInDom",
         getScrollLeft: "getScrollTop",
         setScrollLeft: "setScrollTop",
-        scrollTo: "scrollTo",
+        scrollTo: "scrollTo"
       },
 
       sizePolicy: {
@@ -1752,40 +1752,40 @@ Ext.define("Ext.layout.container.Box", {
             readsWidth: 1,
             readsHeight: 0,
             setsWidth: 0,
-            setsHeight: 1,
+            setsHeight: 1
           },
           stretch: {
             readsWidth: 0,
             readsHeight: 0,
             setsWidth: 1,
-            setsHeight: 1,
+            setsHeight: 1
           },
           stretchmax: {
             readsWidth: 1,
             readsHeight: 0,
             setsWidth: 1,
-            setsHeight: 1,
-          },
+            setsHeight: 1
+          }
         },
         "": {
           readsWidth: 1,
           readsHeight: 1,
           setsWidth: 0,
-          setsHeight: 0,
+          setsHeight: 0
         },
         stretch: {
           readsWidth: 0,
           readsHeight: 1,
           setsWidth: 1,
-          setsHeight: 0,
+          setsHeight: 0
         },
         stretchmax: {
           readsWidth: 1,
           readsHeight: 1,
           setsWidth: 1,
-          setsHeight: 0,
-        },
-      },
-    },
-  },
+          setsHeight: 0
+        }
+      }
+    }
+  }
 });

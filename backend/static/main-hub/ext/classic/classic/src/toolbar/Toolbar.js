@@ -308,19 +308,19 @@ Ext.define("Ext.toolbar.Toolbar", {
   statics: {
     shortcuts: {
       "-": "tbseparator",
-      " ": "tbspacer",
+      " ": "tbspacer"
     },
 
     shortcutsHV: {
       // horizontal
       0: {
-        "->": { xtype: "tbfill", height: 0 },
+        "->": { xtype: "tbfill", height: 0 }
       },
       // vertical
       1: {
-        "->": { xtype: "tbfill", width: 0 },
-      },
-    },
+        "->": { xtype: "tbfill", width: 0 }
+      }
+    }
   },
 
   initComponent: function () {
@@ -335,13 +335,13 @@ Ext.define("Ext.toolbar.Toolbar", {
     me.layout = layout = Ext.applyIf(
       Ext.isString(layout)
         ? {
-            type: layout,
+            type: layout
           }
         : layout || {},
       {
         type: vertical ? "vbox" : "hbox",
-        align: vertical ? "stretchmax" : "middle",
-      },
+        align: vertical ? "stretchmax" : "middle"
+      }
     );
 
     if (me.overflowHandler) {
@@ -426,14 +426,14 @@ Ext.define("Ext.toolbar.Toolbar", {
 
       if (typeof shortcut === "string") {
         c = {
-          xtype: shortcut,
+          xtype: shortcut
         };
       } else if (shortcut) {
         c = Ext.apply({}, shortcut);
       } else {
         c = {
           xtype: "tbtext",
-          text: c,
+          text: c
         };
       }
 
@@ -523,7 +523,7 @@ Ext.define("Ext.toolbar.Toolbar", {
           mouseover: me.onButtonOver,
           menushow: me.onButtonMenuShow,
           menuhide: me.onButtonMenuHide,
-          scope: me,
+          scope: me
         });
       }
     },
@@ -557,6 +557,6 @@ Ext.define("Ext.toolbar.Toolbar", {
      */
     onButtonMenuHide: function (btn) {
       this.activeMenuBtn = null;
-    },
-  },
+    }
+  }
 });

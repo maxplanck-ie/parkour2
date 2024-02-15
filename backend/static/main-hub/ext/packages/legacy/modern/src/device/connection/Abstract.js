@@ -7,7 +7,7 @@ Ext.define("Ext.device.connection.Abstract", {
 
   config: {
     online: false,
-    type: null,
+    type: null
   },
 
   /**
@@ -68,7 +68,7 @@ Ext.define("Ext.device.connection.Abstract", {
    */
   isOnline: function () {
     return this.getOnline();
-  },
+  }
 
   /**
    * @method getType

@@ -79,7 +79,7 @@ Ext.define("Ext.Glyph", {
         isNaN(
           (glyph = isNaN(glyphParts[0])
             ? parseInt("0" + glyphParts[0], 16)
-            : parseInt(glyphParts[0], 10)),
+            : parseInt(glyphParts[0], 10))
         ) ||
         !glyph
       ) {
@@ -96,7 +96,7 @@ Ext.define("Ext.Glyph", {
 
   getStyle: function () {
     return {
-      "font-family": this.fontFamily,
+      "font-family": this.fontFamily
     };
   },
 
@@ -139,7 +139,7 @@ Ext.define("Ext.Glyph", {
         return glyph.isGlyph
           ? glyph
           : (instance || (instance = new Ext.Glyph())).setGlyph(glyph);
-      },
+      }
     };
-  })(),
+  })()
 });

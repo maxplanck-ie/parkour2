@@ -131,8 +131,8 @@ Ext.define("Ext.util.KeyNav", {
       end: 35,
       enter: 13,
       esc: 27,
-      tab: 9,
-    },
+      tab: 9
+    }
   },
 
   constructor: function (config) {
@@ -154,10 +154,10 @@ Ext.define("Ext.util.KeyNav", {
     this.doConstruction(
       Ext.apply(
         {
-          target: el,
+          target: el
         },
-        config,
-      ),
+        config
+      )
     );
   },
 
@@ -173,9 +173,9 @@ Ext.define("Ext.util.KeyNav", {
         ignoreInputFields: config.ignoreInputFields,
         eventName: me.getKeyEvent(
           "forceKeyDown" in config ? config.forceKeyDown : me.forceKeyDown,
-          config.eventName,
+          config.eventName
         ),
-        capture: config.capture,
+        capture: config.capture
       },
       map;
 
@@ -241,7 +241,7 @@ Ext.define("Ext.util.KeyNav", {
             defaultEventAction:
               bindings.defaultEventAction !== undefined
                 ? bindings.defaultEventAction
-                : me.defaultEventAction,
+                : me.defaultEventAction
           };
         }
         map.addBinding({
@@ -253,12 +253,12 @@ Ext.define("Ext.util.KeyNav", {
             me.handleEvent,
             binding.scope || defaultScope,
             [binding.handler || binding.fn, me],
-            true,
+            true
           ),
           defaultEventAction:
             binding.defaultEventAction !== undefined
               ? binding.defaultEventAction
-              : me.defaultEventAction,
+              : me.defaultEventAction
         });
       }
     }
@@ -338,5 +338,5 @@ Ext.define("Ext.util.KeyNav", {
     } else {
       return configuredEventName || this.eventName;
     }
-  },
+  }
 });

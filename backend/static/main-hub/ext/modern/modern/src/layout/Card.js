@@ -112,7 +112,7 @@ Ext.define("Ext.layout.Card", {
       "activeitemchange",
       [this, newItem, oldItem],
       "doActiveItemChange",
-      this,
+      this
     );
   },
 
@@ -154,5 +154,5 @@ Ext.define("Ext.layout.Card", {
   destroy: function () {
     Ext.destroy(this.getAnimation());
     this.callParent();
-  },
+  }
 });

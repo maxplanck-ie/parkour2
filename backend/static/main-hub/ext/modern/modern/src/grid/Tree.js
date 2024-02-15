@@ -46,7 +46,7 @@ Ext.define("Ext.grid.Tree", {
      * `true` to expand only on the click of the expander element. Setting this to
      * `false` will allow expansion on click of any part of the element.
      */
-    expanderOnly: true,
+    expanderOnly: true
   },
 
   config: {
@@ -80,12 +80,12 @@ Ext.define("Ext.grid.Tree", {
      * @cfg {Boolean} [folderSort=false]
      * True to automatically prepend a leaf sorter to the store.
      */
-    folderSort: false,
+    folderSort: false
   },
 
   // Instruct rows to create view models so we can use data binding
   itemConfig: {
-    viewModel: true,
+    viewModel: true
   },
 
   eventsSelector: "." + Ext.baseCSSPrefix + "grid-cell",
@@ -103,7 +103,7 @@ Ext.define("Ext.grid.Tree", {
       el.on({
         scope: me,
         painted: me.syncIconSize,
-        single: true,
+        single: true
       });
     }
   },
@@ -130,8 +130,8 @@ Ext.define("Ext.grid.Tree", {
           text: "Name",
           dataIndex: this.getDisplayField(),
           minWidth: 100,
-          flex: 1,
-        },
+          flex: 1
+        }
       ];
     }
     return columns;
@@ -170,7 +170,7 @@ Ext.define("Ext.grid.Tree", {
       me.storeListeners = me.mon(newStore, {
         destroyable: true,
         rootchange: me.onRootChange,
-        scope: me,
+        scope: me
       });
 
       // Relay store events. relayEvents always returns a Destroyable object.
@@ -185,7 +185,7 @@ Ext.define("Ext.grid.Tree", {
          * @event load
          * @inheritdoc Ext.data.TreeStore#load
          */
-        "load",
+        "load"
       ]);
 
       // If rootVisible is false, we *might* need to expand the node.
@@ -352,7 +352,7 @@ Ext.define("Ext.grid.Tree", {
       beforemove: "beforeitemmove",
       beforeinsert: "beforeiteminsert",
       beforeexpand: "beforeitemexpand",
-      beforecollapse: "beforeitemcollapse",
+      beforecollapse: "beforeitemcollapse"
     },
 
     syncIconSize: function () {
@@ -361,7 +361,7 @@ Ext.define("Ext.grid.Tree", {
           me.iconSize ||
           (me.iconSize = parseInt(
             me.element.getStyle("background-position"),
-            10,
+            10
           ));
 
       me.setIconSize(size);
@@ -377,6 +377,6 @@ Ext.define("Ext.grid.Tree", {
       Ext.Array.each(this.query("treecell"), function (cell) {
         cell.setIndent(value);
       });
-    },
-  },
+    }
+  }
 });

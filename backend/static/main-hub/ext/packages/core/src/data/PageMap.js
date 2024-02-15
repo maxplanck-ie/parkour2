@@ -23,7 +23,7 @@ Ext.define("Ext.data.PageMap", {
      * this config would likely be set to "data" so that property names are applied
      * to the fields of each record.
      */
-    rootProperty: "",
+    rootProperty: ""
   },
 
   // Maintain a generation counter, so that the Store can reject incoming pages destined for the previous generation
@@ -154,7 +154,7 @@ Ext.define("Ext.data.PageMap", {
         return item && regex.test((root ? item[root] : item)[property]);
       },
       null,
-      start,
+      start
     );
   },
 
@@ -164,7 +164,7 @@ Ext.define("Ext.data.PageMap", {
     start,
     startsWith,
     endsWith,
-    ignoreCase,
+    ignoreCase
   ) {
     if (Ext.isEmpty(value, false)) {
       return null;
@@ -178,7 +178,7 @@ Ext.define("Ext.data.PageMap", {
         return item && regex.test((root ? item[root] : item)[property]);
       },
       null,
-      start,
+      start
     );
   },
 
@@ -365,12 +365,12 @@ Ext.define("Ext.data.PageMap", {
       if (doSlice) {
         Array.push(
           result,
-          Array.slice(me.getPage(pageNumber), sliceBegin, sliceEnd),
+          Array.slice(me.getPage(pageNumber), sliceBegin, sliceEnd)
         );
       } else {
         Array.push(result, me.getPage(pageNumber));
       }
     }
     return result;
-  },
+  }
 });

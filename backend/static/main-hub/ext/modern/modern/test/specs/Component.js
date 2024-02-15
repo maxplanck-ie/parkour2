@@ -50,7 +50,7 @@ describe("Ext.Component", function () {
               hideCalled = true;
             }
             this.callParent(arguments);
-          },
+          }
         });
 
       component = new InstrumentedComponent();
@@ -73,10 +73,10 @@ describe("Ext.Component", function () {
           renderTo: Ext.getBody(),
           viewModel: {
             data: {
-              theHtml: "foo",
-            },
+              theHtml: "foo"
+            }
           },
-          bind: "{theHtml}",
+          bind: "{theHtml}"
         });
         component.getViewModel().notify();
         expect(component.getInnerHtmlElement().dom.innerHTML).toBe("foo");
@@ -88,10 +88,10 @@ describe("Ext.Component", function () {
             defaultBindProperty: "",
             viewModel: {
               data: {
-                theHtml: "foo",
-              },
+                theHtml: "foo"
+              }
             },
-            bind: "{theHtml}",
+            bind: "{theHtml}"
           });
           component.getBind();
         }).toThrow();
@@ -109,7 +109,7 @@ describe("Ext.Component", function () {
     describe("configuration", function () {
       it("should convert a string into an array", function () {
         makeComponent({
-          cls: "one",
+          cls: "one"
         });
 
         expect(component.getCls()).toEqual(["one"]);
@@ -117,7 +117,7 @@ describe("Ext.Component", function () {
 
       it("should accept an array", function () {
         makeComponent({
-          cls: ["one", "two"],
+          cls: ["one", "two"]
         });
 
         expect(component.getCls()).toEqual(["one", "two"]);
@@ -152,7 +152,7 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"]);
           expect(spy).toHaveBeenCalledWith(
             ["one", "two", "three"],
-            ["one", "two"],
+            ["one", "two"]
           );
           expect(component.getCls()).toEqual(["one", "two", "three"]);
         });
@@ -175,7 +175,7 @@ describe("Ext.Component", function () {
           component.addCls("one");
           expect(spy).toHaveBeenCalledWith(
             ["two", "three", "one"],
-            ["two", "three"],
+            ["two", "three"]
           );
           expect(component.getCls()).toEqual(["two", "three", "one"]);
         });
@@ -200,7 +200,7 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], "x-");
           expect(spy).toHaveBeenCalledWith(
             ["x-one", "x-two", "x-three"],
-            ["x-one", "x-two"],
+            ["x-one", "x-two"]
           );
           expect(component.getCls()).toEqual(["x-one", "x-two", "x-three"]);
         });
@@ -213,7 +213,7 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], "x-");
           expect(spy).toHaveBeenCalledWith(
             ["x-one", "x-two", "x-three"],
-            ["x-one"],
+            ["x-one"]
           );
           expect(component.getCls()).toEqual(["x-one", "x-two", "x-three"]);
         });
@@ -226,7 +226,7 @@ describe("Ext.Component", function () {
           component.addCls("one", "x-");
           expect(spy).toHaveBeenCalledWith(
             ["x-two", "x-three", "x-one"],
-            ["x-two", "x-three"],
+            ["x-two", "x-three"]
           );
           expect(component.getCls()).toEqual(["x-two", "x-three", "x-one"]);
         });
@@ -251,7 +251,7 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], null, "-y");
           expect(spy).toHaveBeenCalledWith(
             ["one-y", "two-y", "three-y"],
-            ["one-y", "two-y"],
+            ["one-y", "two-y"]
           );
           expect(component.getCls()).toEqual(["one-y", "two-y", "three-y"]);
         });
@@ -264,7 +264,7 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], null, "-y");
           expect(spy).toHaveBeenCalledWith(
             ["one-y", "two-y", "three-y"],
-            ["one-y"],
+            ["one-y"]
           );
           expect(component.getCls()).toEqual(["one-y", "two-y", "three-y"]);
         });
@@ -277,7 +277,7 @@ describe("Ext.Component", function () {
           component.addCls("one", null, "-y");
           expect(spy).toHaveBeenCalledWith(
             ["two-y", "three-y", "one-y"],
-            ["two-y", "three-y"],
+            ["two-y", "three-y"]
           );
           expect(component.getCls()).toEqual(["two-y", "three-y", "one-y"]);
         });
@@ -302,12 +302,12 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], "x-", "-y");
           expect(spy).toHaveBeenCalledWith(
             ["x-one-y", "x-two-y", "x-three-y"],
-            ["x-one-y", "x-two-y"],
+            ["x-one-y", "x-two-y"]
           );
           expect(component.getCls()).toEqual([
             "x-one-y",
             "x-two-y",
-            "x-three-y",
+            "x-three-y"
           ]);
         });
 
@@ -319,12 +319,12 @@ describe("Ext.Component", function () {
           component.addCls(["two", "three"], "x-", "-y");
           expect(spy).toHaveBeenCalledWith(
             ["x-one-y", "x-two-y", "x-three-y"],
-            ["x-one-y"],
+            ["x-one-y"]
           );
           expect(component.getCls()).toEqual([
             "x-one-y",
             "x-two-y",
-            "x-three-y",
+            "x-three-y"
           ]);
         });
 
@@ -336,12 +336,12 @@ describe("Ext.Component", function () {
           component.addCls("one", "x-", "-y");
           expect(spy).toHaveBeenCalledWith(
             ["x-two-y", "x-three-y", "x-one-y"],
-            ["x-two-y", "x-three-y"],
+            ["x-two-y", "x-three-y"]
           );
           expect(component.getCls()).toEqual([
             "x-two-y",
             "x-three-y",
-            "x-one-y",
+            "x-one-y"
           ]);
         });
       });
@@ -370,7 +370,7 @@ describe("Ext.Component", function () {
         describe("removing single cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "one",
+              cls: "one"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -397,7 +397,7 @@ describe("Ext.Component", function () {
         describe("removing mulitple cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["one", "two"],
+              cls: ["one", "two"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -449,7 +449,7 @@ describe("Ext.Component", function () {
         describe("removing single cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "x-one",
+              cls: "x-one"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -476,7 +476,7 @@ describe("Ext.Component", function () {
         describe("removing mulitple cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["x-one", "x-two"],
+              cls: ["x-one", "x-two"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -528,7 +528,7 @@ describe("Ext.Component", function () {
         describe("removing single cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "one-y",
+              cls: "one-y"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -555,7 +555,7 @@ describe("Ext.Component", function () {
         describe("removing mulitple cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["one-y", "two-y"],
+              cls: ["one-y", "two-y"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -607,7 +607,7 @@ describe("Ext.Component", function () {
         describe("removing single cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "x-one-y",
+              cls: "x-one-y"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -634,7 +634,7 @@ describe("Ext.Component", function () {
         describe("removing mulitple cls", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["x-one-y", "x-two-y"],
+              cls: ["x-one-y", "x-two-y"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -646,7 +646,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-one-y"],
-              ["x-one-y", "x-two-y"],
+              ["x-one-y", "x-two-y"]
             );
             expect(component.getCls()).toEqual(["x-one-y"]);
           });
@@ -658,7 +658,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-two-y"],
-              ["x-one-y", "x-two-y"],
+              ["x-one-y", "x-two-y"]
             );
             expect(component.getCls()).toEqual(["x-two-y"]);
           });
@@ -707,7 +707,7 @@ describe("Ext.Component", function () {
       describe("with existing cls (string)", function () {
         beforeEach(function () {
           makeComponent({
-            cls: "one",
+            cls: "one"
           });
           spy = spyOn(component, "updateCls");
         });
@@ -734,7 +734,7 @@ describe("Ext.Component", function () {
       describe("with existing cls (array)", function () {
         beforeEach(function () {
           makeComponent({
-            cls: ["one", "two"],
+            cls: ["one", "two"]
           });
           spy = spyOn(component, "updateCls");
         });
@@ -792,7 +792,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (string)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "one",
+              cls: "one"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -828,7 +828,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (array)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["one", "two"],
+              cls: ["one", "two"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -882,7 +882,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (string)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "x-one",
+              cls: "x-one"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -918,7 +918,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (array)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["x-one", "x-two"],
+              cls: ["x-one", "x-two"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -930,7 +930,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-two", "x-three"],
-              ["x-one", "x-two"],
+              ["x-one", "x-two"]
             );
             expect(component.getCls()).toEqual(["x-two", "x-three"]);
           });
@@ -942,7 +942,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-four", "x-three"],
-              ["x-one", "x-two"],
+              ["x-one", "x-two"]
             );
             expect(component.getCls()).toEqual(["x-four", "x-three"]);
           });
@@ -978,7 +978,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (string)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "one-y",
+              cls: "one-y"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -1014,7 +1014,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (array)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["one-y", "two-y"],
+              cls: ["one-y", "two-y"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -1026,7 +1026,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["two-y", "three-y"],
-              ["one-y", "two-y"],
+              ["one-y", "two-y"]
             );
             expect(component.getCls()).toEqual(["two-y", "three-y"]);
           });
@@ -1038,7 +1038,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["four-y", "three-y"],
-              ["one-y", "two-y"],
+              ["one-y", "two-y"]
             );
             expect(component.getCls()).toEqual(["four-y", "three-y"]);
           });
@@ -1074,7 +1074,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (string)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: "x-one-y",
+              cls: "x-one-y"
             });
             spy = spyOn(component, "updateCls");
           });
@@ -1104,7 +1104,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-two-y", "x-three-y"],
-              ["x-one-y"],
+              ["x-one-y"]
             );
             expect(component.getCls()).toEqual(["x-two-y", "x-three-y"]);
           });
@@ -1113,7 +1113,7 @@ describe("Ext.Component", function () {
         describe("with existing cls (array)", function () {
           beforeEach(function () {
             makeComponent({
-              cls: ["x-one-y", "x-two-y"],
+              cls: ["x-one-y", "x-two-y"]
             });
             spy = spyOn(component, "updateCls");
           });
@@ -1125,7 +1125,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-two-y", "x-three-y"],
-              ["x-one-y", "x-two-y"],
+              ["x-one-y", "x-two-y"]
             );
             expect(component.getCls()).toEqual(["x-two-y", "x-three-y"]);
           });
@@ -1136,7 +1136,7 @@ describe("Ext.Component", function () {
 
             expect(spy).toHaveBeenCalledWith(
               ["x-four-y", "x-three-y"],
-              ["x-one-y", "x-two-y"],
+              ["x-one-y", "x-two-y"]
             );
             expect(component.getCls()).toEqual(["x-four-y", "x-three-y"]);
           });
@@ -1164,7 +1164,7 @@ describe("Ext.Component", function () {
 
         it("force add cls to component", function () {
           makeComponent({
-            cls: "one",
+            cls: "one"
           });
 
           //normally since the component already has the cls it would remove
@@ -1178,7 +1178,7 @@ describe("Ext.Component", function () {
       describe("remove cls", function () {
         it("remove from component's element", function () {
           makeComponent({
-            cls: "one",
+            cls: "one"
           });
 
           component.toggleCls("one");
@@ -1188,7 +1188,7 @@ describe("Ext.Component", function () {
 
         it("remove cls from component's cls cache", function () {
           makeComponent({
-            cls: "one",
+            cls: "one"
           });
 
           component.toggleCls("one");
@@ -1205,7 +1205,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return true if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isHidden()).toBe(true);
           });
@@ -1221,8 +1221,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden()).toBe(true);
@@ -1234,8 +1234,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden()).toBe(true);
@@ -1245,8 +1245,8 @@ describe("Ext.Component", function () {
           it("should return false if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden()).toBe(false);
@@ -1257,8 +1257,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden()).toBe(false);
@@ -1274,10 +1274,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isHidden()).toBe(false);
@@ -1290,7 +1290,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return true if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isHidden(false)).toBe(true);
           });
@@ -1306,8 +1306,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(false)).toBe(true);
@@ -1319,8 +1319,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(false)).toBe(true);
@@ -1330,8 +1330,8 @@ describe("Ext.Component", function () {
           it("should return false if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(false)).toBe(false);
@@ -1342,8 +1342,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(false)).toBe(false);
@@ -1359,10 +1359,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isHidden(false)).toBe(false);
@@ -1375,7 +1375,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return true if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isHidden(true)).toBe(true);
           });
@@ -1391,8 +1391,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(true)).toBe(true);
@@ -1404,8 +1404,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(true)).toBe(true);
@@ -1415,8 +1415,8 @@ describe("Ext.Component", function () {
           it("should return false if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(true)).toBe(false);
@@ -1427,8 +1427,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isHidden(true)).toBe(true);
@@ -1444,10 +1444,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isHidden(true)).toBe(true);
@@ -1462,7 +1462,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return false if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isVisible()).toBe(false);
           });
@@ -1478,8 +1478,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible()).toBe(false);
@@ -1491,8 +1491,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible()).toBe(false);
@@ -1502,8 +1502,8 @@ describe("Ext.Component", function () {
           it("should return true if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible()).toBe(true);
@@ -1514,8 +1514,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible()).toBe(true);
@@ -1531,10 +1531,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isVisible()).toBe(true);
@@ -1547,7 +1547,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return false if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isVisible(false)).toBe(false);
           });
@@ -1563,8 +1563,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(false)).toBe(false);
@@ -1576,8 +1576,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(false)).toBe(false);
@@ -1587,8 +1587,8 @@ describe("Ext.Component", function () {
           it("should return true if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(false)).toBe(true);
@@ -1599,8 +1599,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(false)).toBe(true);
@@ -1616,10 +1616,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isVisible(false)).toBe(true);
@@ -1632,7 +1632,7 @@ describe("Ext.Component", function () {
         describe("as a root", function () {
           it("should return false if the component is hidden", function () {
             makeComponent({
-              hidden: true,
+              hidden: true
             });
             expect(component.isVisible(true)).toBe(false);
           });
@@ -1648,8 +1648,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(true)).toBe(false);
@@ -1661,8 +1661,8 @@ describe("Ext.Component", function () {
               hidden: true,
               items: {
                 xtype: "component",
-                hidden: true,
-              },
+                hidden: true
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(true)).toBe(false);
@@ -1672,8 +1672,8 @@ describe("Ext.Component", function () {
           it("should return true if the component is not hidden and the container is not", function () {
             var ct = new Ext.Container({
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(true)).toBe(true);
@@ -1684,8 +1684,8 @@ describe("Ext.Component", function () {
             var ct = new Ext.Container({
               hidden: true,
               items: {
-                xtype: "component",
-              },
+                xtype: "component"
+              }
             });
             component = ct.getItems().first();
             expect(component.isVisible(true)).toBe(false);
@@ -1701,10 +1701,10 @@ describe("Ext.Component", function () {
                   xtype: "container",
                   items: {
                     xtype: "component",
-                    itemId: "c",
-                  },
-                },
-              },
+                    itemId: "c"
+                  }
+                }
+              }
             });
             component = ct.down("#c");
             expect(component.isVisible(true)).toBe(false);
@@ -1724,17 +1724,17 @@ describe("Ext.Component", function () {
     it("should set the mask's zIndex one less that its own zIndex", function () {
       makeComponent({
         centered: true,
-        modal: true,
+        modal: true
       });
       ct = new Ext.Container({
         items: component,
-        renderTo: document.body,
+        renderTo: document.body
       });
       component.show();
 
       // Mask must be below component
       expect(Number(component.getModal().el.dom.style.zIndex)).toBe(
-        Number(component.el.dom.style.zIndex) - 1,
+        Number(component.el.dom.style.zIndex) - 1
       );
     });
   });
@@ -1742,15 +1742,15 @@ describe("Ext.Component", function () {
   describe("setData call", function () {
     it("should convert a string into an array", function () {
       makeComponent({
-        tpl: "first name is {fname}",
+        tpl: "first name is {fname}"
       });
 
       component.setData({
-        fname: null,
+        fname: null
       });
 
       expect(component.innerHtmlElement.dom.innerHTML).toEqual(
-        "first name is ",
+        "first name is "
       );
     });
   });
@@ -1774,17 +1774,17 @@ describe("Ext.Component", function () {
           showAnimation: {
             type: "slideIn",
             duration: 250,
-            easing: "ease-out",
+            easing: "ease-out"
           },
 
           hideAnimation: {
             type: "slideOut",
             duration: 250,
-            easing: "ease-in",
+            easing: "ease-in"
           },
           modal: true,
           floated: true,
-          html: "Test",
+          html: "Test"
         }),
         showAnim = cmp.getShowAnimation(),
         hideAnim = cmp.getHideAnimation();

@@ -62,7 +62,7 @@ Ext.define("Ext.ux.desktop.Wallpaper", {
         Ext.fly(imgEl)
           .setStyle({
             width: "100%",
-            height: "100%",
+            height: "100%"
           })
           .show();
       } else {
@@ -73,12 +73,12 @@ Ext.define("Ext.ux.desktop.Wallpaper", {
       }
 
       me.el.setStyle({
-        backgroundImage: bkgnd || "",
+        backgroundImage: bkgnd || ""
       });
       if (me.stateful) {
         me.saveState();
       }
     }
     return me;
-  },
+  }
 });

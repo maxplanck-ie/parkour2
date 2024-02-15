@@ -15,7 +15,7 @@ describe("Ext.direct.RemotingMethod", function () {
     beforeEach(function () {
       makeMethod({
         name: "foo",
-        len: 2,
+        len: 2
       });
     });
 
@@ -35,7 +35,7 @@ describe("Ext.direct.RemotingMethod", function () {
         metadata: undefined,
         callback: cb,
         scope: method,
-        options: opt,
+        options: opt
       });
     });
   });
@@ -44,7 +44,7 @@ describe("Ext.direct.RemotingMethod", function () {
     beforeEach(function () {
       makeMethod({
         name: "bar",
-        params: ["foo", "bar"],
+        params: ["foo", "bar"]
       });
     });
 
@@ -55,7 +55,7 @@ describe("Ext.direct.RemotingMethod", function () {
     it("should accept parameter names as array of strings", function () {
       expect(method.params).toEqual({
         foo: true,
-        bar: true,
+        bar: true
       });
     });
 
@@ -64,17 +64,17 @@ describe("Ext.direct.RemotingMethod", function () {
         name: "baz",
         params: [
           {
-            name: "foo",
+            name: "foo"
           },
           {
-            name: "bar",
-          },
-        ],
+            name: "bar"
+          }
+        ]
       });
 
       expect(method.params).toEqual({
         foo: true,
-        bar: true,
+        bar: true
       });
     });
 
@@ -83,36 +83,36 @@ describe("Ext.direct.RemotingMethod", function () {
 
       expect(data).toEqual({
         data: {
-          foo: "foo",
+          foo: "foo"
         },
         metadata: undefined,
         callback: cb,
         scope: method,
-        options: opt,
+        options: opt
       });
     });
 
     it("should filter out unspecified params", function () {
       makeMethod({
         name: "baz",
-        params: ["foo"],
+        params: ["foo"]
       });
 
       var data = method.getCallData([
         { foo: "bar", bar: "qux" },
         cb,
         method,
-        opt,
+        opt
       ]);
 
       expect(data).toEqual({
         data: {
-          foo: "bar",
+          foo: "bar"
         },
         metadata: undefined,
         callback: cb,
         scope: method,
-        options: opt,
+        options: opt
       });
     });
 
@@ -120,25 +120,25 @@ describe("Ext.direct.RemotingMethod", function () {
       makeMethod({
         name: "blerg",
         params: [],
-        strict: false,
+        strict: false
       });
 
       var data = method.getCallData([
         { foo: "bar", qux: "fred" },
         cb,
         method,
-        opt,
+        opt
       ]);
 
       expect(data).toEqual({
         data: {
           foo: "bar",
-          qux: "fred",
+          qux: "fred"
         },
         metadata: undefined,
         callback: cb,
         scope: method,
-        options: opt,
+        options: opt
       });
     });
   });
@@ -153,8 +153,8 @@ describe("Ext.direct.RemotingMethod", function () {
             name: "metaOrdered",
             len: 0,
             metadata: {
-              len: 42,
-            },
+              len: 42
+            }
           });
 
           metadata = method.metadata;
@@ -183,8 +183,8 @@ describe("Ext.direct.RemotingMethod", function () {
             name: "metaNamed",
             len: 0,
             metadata: {
-              params: ["foo", "bar"],
-            },
+              params: ["foo", "bar"]
+            }
           });
 
           metadata = method.metadata;
@@ -210,8 +210,8 @@ describe("Ext.direct.RemotingMethod", function () {
             len: 0,
             metadata: {
               params: ["foo", "bar"],
-              strict: false,
-            },
+              strict: false
+            }
           });
 
           expect(method.metadata.strict).toBe(false);
@@ -226,8 +226,8 @@ describe("Ext.direct.RemotingMethod", function () {
             name: "metaOrdered",
             len: 1,
             metadata: {
-              len: 1,
-            },
+              len: 1
+            }
           });
         });
 
@@ -239,7 +239,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: [42],
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -251,7 +251,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: [42],
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -262,7 +262,7 @@ describe("Ext.direct.RemotingMethod", function () {
             method.getCallData([1, cb, null, { metadata: [] }]);
           }).toThrow(
             "Not enough parameters in options.metadata " +
-              "for Ext Direct method metaOrdered",
+              "for Ext Direct method metaOrdered"
           );
         });
       });
@@ -273,8 +273,8 @@ describe("Ext.direct.RemotingMethod", function () {
             name: "metaNamedStrict",
             len: 0,
             metadata: {
-              params: ["foo", "bar"],
-            },
+              params: ["foo", "bar"]
+            }
           });
         });
 
@@ -282,7 +282,7 @@ describe("Ext.direct.RemotingMethod", function () {
           var data = method.getCallData([
             cb,
             null,
-            { metadata: { foo: 1, bar: 2 } },
+            { metadata: { foo: 1, bar: 2 } }
           ]);
 
           expect(data).toEqual({
@@ -290,7 +290,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: { foo: 1, bar: 2 },
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -298,7 +298,7 @@ describe("Ext.direct.RemotingMethod", function () {
           var data = method.getCallData([
             cb,
             null,
-            { metadata: { foo: 1, bar: 2, baz: 3 } },
+            { metadata: { foo: 1, bar: 2, baz: 3 } }
           ]);
 
           expect(data).toEqual({
@@ -306,7 +306,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: { foo: 1, bar: 2 },
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -317,7 +317,7 @@ describe("Ext.direct.RemotingMethod", function () {
             method.getCallData([cb, null, { metadata: { foo: 1 } }]);
           }).toThrow(
             "Named parameter bar is missing in options.metadata " +
-              "for Ext Direct method metaNamedStrict",
+              "for Ext Direct method metaNamedStrict"
           );
         });
       });
@@ -329,8 +329,8 @@ describe("Ext.direct.RemotingMethod", function () {
             len: 0,
             metadata: {
               params: ["foo"],
-              strict: false,
-            },
+              strict: false
+            }
           });
         });
 
@@ -342,7 +342,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: { foo: 1 },
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -350,7 +350,7 @@ describe("Ext.direct.RemotingMethod", function () {
           var data = method.getCallData([
             cb,
             null,
-            { metadata: { foo: 1, bar: 2 } },
+            { metadata: { foo: 1, bar: 2 } }
           ]);
 
           expect(data).toEqual({
@@ -358,7 +358,7 @@ describe("Ext.direct.RemotingMethod", function () {
             metadata: { foo: 1, bar: 2 },
             callback: cb,
             scope: null,
-            options: {},
+            options: {}
           });
         });
 
@@ -369,7 +369,7 @@ describe("Ext.direct.RemotingMethod", function () {
             method.getCallData([cb, null, { metadata: { bar: 2 } }]);
           }).toThrow(
             "Named parameter foo is missing in options.metadata " +
-              "for Ext Direct method metaNamedNonStrict",
+              "for Ext Direct method metaNamedNonStrict"
           );
         });
       });

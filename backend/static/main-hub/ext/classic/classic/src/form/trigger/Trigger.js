@@ -8,7 +8,7 @@ Ext.define("Ext.form.trigger.Trigger", {
   mixins: ["Ext.mixin.Factoryable"],
 
   factoryConfig: {
-    defaultType: "trigger",
+    defaultType: "trigger"
   },
 
   /**
@@ -139,7 +139,7 @@ Ext.define("Ext.form.trigger.Trigger", {
     '<tpl if="ariaRole"> role="{ariaRole}"<tpl else> role="presentation"</tpl>',
     ">",
     "{[values.$trigger.renderBody(values)]}",
-    "</div>",
+    "</div>"
   ],
 
   statics: {
@@ -153,7 +153,7 @@ Ext.define("Ext.form.trigger.Trigger", {
      */
     weightComparator: function (triggerA, triggerB) {
       return triggerA.weight - triggerB.weight;
-    },
+    }
   },
 
   constructor: function (config) {
@@ -253,15 +253,15 @@ Ext.define("Ext.form.trigger.Trigger", {
         listeners: {
           mousedown: me.onClickRepeaterMouseDown,
           mouseup: me.onClickRepeaterMouseUp,
-          scope: me,
+          scope: me
         },
-        scope: me,
+        scope: me
       });
     } else {
       me.field.mon(el, {
         click: me.onClick,
         mousedown: me.onMouseDown,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -429,7 +429,7 @@ Ext.define("Ext.form.trigger.Trigger", {
       triggerStyle: triggerStyle,
       extraCls: me.extraCls,
       baseCls: me.baseCls,
-      ariaRole: me.ariaRole,
+      ariaRole: me.ariaRole
     });
   },
 
@@ -468,5 +468,5 @@ Ext.define("Ext.form.trigger.Trigger", {
     if (el) {
       el.show();
     }
-  },
+  }
 });

@@ -121,5 +121,5 @@ Ext.define("Ext.menu.Separator", {
   beforeRender: function () {
     this.addCls(this.separatorCls);
     this.callParent();
-  },
+  }
 });

@@ -3,6 +3,6 @@ Ext.define("Ext.chart.theme.Sky", {
   singleton: true,
   alias: ["chart.theme.sky", "chart.theme.Sky"],
   config: {
-    baseColor: "#4ce0e7",
-  },
+    baseColor: "#4ce0e7"
+  }
 });

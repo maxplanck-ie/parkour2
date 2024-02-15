@@ -41,7 +41,7 @@ Ext.define("Ext.fx.easing.BoundMomentum", {
      * The start velocity
      * @accessor
      */
-    startVelocity: 0,
+    startVelocity: 0
   },
 
   applyMomentum: function (config, currentEasing) {
@@ -134,5 +134,5 @@ Ext.define("Ext.fx.easing.BoundMomentum", {
     this.lastValue = value;
 
     return value;
-  },
+  }
 });

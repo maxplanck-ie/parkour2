@@ -7,51 +7,51 @@ Ext.define("Ext.chart.theme.Midnight", {
 
     chart: {
       defaults: {
-        background: "rgb(52, 52, 53)",
-      },
+        background: "rgb(52, 52, 53)"
+      }
     },
 
     axis: {
       defaults: {
         style: {
-          strokeStyle: "rgb(224, 224, 227)",
+          strokeStyle: "rgb(224, 224, 227)"
         },
         label: {
-          fillStyle: "rgb(224, 224, 227)",
+          fillStyle: "rgb(224, 224, 227)"
         },
         title: {
-          fillStyle: "rgb(224, 224, 227)",
+          fillStyle: "rgb(224, 224, 227)"
         },
         grid: {
-          strokeStyle: "rgb(112, 112, 115)",
-        },
-      },
+          strokeStyle: "rgb(112, 112, 115)"
+        }
+      }
     },
 
     series: {
       defaults: {
         label: {
-          fillStyle: "rgb(224, 224, 227)",
-        },
-      },
+          fillStyle: "rgb(224, 224, 227)"
+        }
+      }
     },
 
     sprites: {
       text: {
-        fillStyle: "rgb(224, 224, 227)",
-      },
+        fillStyle: "rgb(224, 224, 227)"
+      }
     },
 
     legend: {
       label: {
-        fillStyle: "white",
+        fillStyle: "white"
       },
       border: {
         lineWidth: 2,
         fillStyle: "rgba(255, 255, 255, 0.3)",
-        strokeStyle: "rgb(150, 150, 150)",
+        strokeStyle: "rgb(150, 150, 150)"
       },
-      background: "rgb(52, 52, 53)",
-    },
-  },
+      background: "rgb(52, 52, 53)"
+    }
+  }
 });

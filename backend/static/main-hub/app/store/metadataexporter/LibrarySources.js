@@ -5,37 +5,37 @@ Ext.define("MainHub.store.metadataexporter.LibrarySources", {
   fields: [
     {
       name: "name",
-      type: "string",
-    },
+      type: "string"
+    }
   ],
 
   data: [
     {
-      name: "genomic",
+      name: "genomic"
     },
     {
-      name: "genomic single cell",
+      name: "genomic single cell"
     },
     {
-      name: "transcriptomic",
+      name: "transcriptomic"
     },
     {
-      name: "transcriptomic single cell",
+      name: "transcriptomic single cell"
     },
     {
-      name: "metagenomic",
+      name: "metagenomic"
     },
     {
-      name: "metatranscriptomic",
+      name: "metatranscriptomic"
     },
     {
-      name: "synthetic",
+      name: "synthetic"
     },
     {
-      name: "viral rna",
+      name: "viral rna"
     },
     {
-      name: "other",
-    },
-  ],
+      name: "other"
+    }
+  ]
 });

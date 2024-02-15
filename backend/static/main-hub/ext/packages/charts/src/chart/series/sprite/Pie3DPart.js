@@ -7,7 +7,7 @@
 Ext.define("Ext.chart.series.sprite.Pie3DPart", {
   extend: "Ext.draw.sprite.Path",
   mixins: {
-    markerHolder: "Ext.chart.MarkerHolder",
+    markerHolder: "Ext.chart.MarkerHolder"
   },
   alias: "sprite.pie3dPart",
 
@@ -103,10 +103,10 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
          * @cfg {String} [label='']
          * The label associated with the 'top' part of the sprite.
          */
-        label: "string",
+        label: "string"
       },
       aliases: {
-        rho: "endRho",
+        rho: "endRho"
       },
       triggers: {
         centerX: "path,bbox",
@@ -123,7 +123,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         colorSpread: "partColor",
         part: "path,partZIndex",
         globalAlpha: "canvas,alpha",
-        fillOpacity: "canvas,alpha",
+        fillOpacity: "canvas,alpha"
       },
       defaults: {
         centerX: 0,
@@ -142,14 +142,14 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         bevelWidth: 5,
         strokeOpacity: 0,
         part: "top",
-        label: "",
+        label: ""
       },
       updaters: {
         alpha: "alphaUpdater",
         partColor: "partColorUpdater",
-        partZIndex: "partZIndexUpdater",
-      },
-    },
+        partZIndex: "partZIndexUpdater"
+      }
+    }
   },
 
   bevelParams: [],
@@ -161,17 +161,17 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
       stops: [
         {
           offset: 0,
-          color: "rgba(255,255,255,0)",
+          color: "rgba(255,255,255,0)"
         },
         {
           offset: 0.7,
-          color: "rgba(255,255,255,0.6)",
+          color: "rgba(255,255,255,0.6)"
         },
         {
           offset: 1,
-          color: "rgba(255,255,255,0)",
-        },
-      ],
+          color: "rgba(255,255,255,0)"
+        }
+      ]
     });
   },
 
@@ -206,23 +206,23 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           start: {
             x: 0,
             y: 0,
-            r: 0,
+            r: 0
           },
           end: {
             x: 0,
             y: 0,
-            r: 1,
+            r: 1
           },
           stops: [
             {
               offset: 0,
-              color: color.createLighter(0.1 * colorSpread),
+              color: color.createLighter(0.1 * colorSpread)
             },
             {
               offset: 1,
-              color: color.createDarker(0.1 * colorSpread),
-            },
-          ],
+              color: color.createDarker(0.1 * colorSpread)
+            }
+          ]
         });
         break;
       case "bottom":
@@ -230,23 +230,23 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           start: {
             x: 0,
             y: 0,
-            r: 0,
+            r: 0
           },
           end: {
             x: 0,
             y: 0,
-            r: 1,
+            r: 1
           },
           stops: [
             {
               offset: 0,
-              color: color.createDarker(0.2 * colorSpread),
+              color: color.createDarker(0.2 * colorSpread)
             },
             {
               offset: 1,
-              color: color.toString(),
-            },
-          ],
+              color: color.toString()
+            }
+          ]
         });
         break;
       case "outerFront":
@@ -255,21 +255,21 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           stops: [
             {
               offset: 0,
-              color: color.createDarker(0.15 * colorSpread).toString(),
+              color: color.createDarker(0.15 * colorSpread).toString()
             },
             {
               offset: 0.3,
-              color: colorString,
+              color: colorString
             },
             {
               offset: 0.8,
-              color: color.createLighter(0.2 * colorSpread).toString(),
+              color: color.createLighter(0.2 * colorSpread).toString()
             },
             {
               offset: 1,
-              color: color.createDarker(0.25 * colorSpread).toString(),
-            },
-          ],
+              color: color.createDarker(0.25 * colorSpread).toString()
+            }
+          ]
         });
         break;
       case "start":
@@ -277,13 +277,13 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           stops: [
             {
               offset: 0,
-              color: color.createDarker(0.1 * colorSpread).toString(),
+              color: color.createDarker(0.1 * colorSpread).toString()
             },
             {
               offset: 1,
-              color: color.createLighter(0.2 * colorSpread).toString(),
-            },
-          ],
+              color: color.createLighter(0.2 * colorSpread).toString()
+            }
+          ]
         });
         break;
       case "end":
@@ -291,13 +291,13 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           stops: [
             {
               offset: 0,
-              color: color.createDarker(0.1 * colorSpread).toString(),
+              color: color.createDarker(0.1 * colorSpread).toString()
             },
             {
               offset: 1,
-              color: color.createLighter(0.2 * colorSpread).toString(),
-            },
-          ],
+              color: color.createLighter(0.2 * colorSpread).toString()
+            }
+          ]
         });
         break;
       case "innerFront":
@@ -306,21 +306,21 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
           stops: [
             {
               offset: 0,
-              color: color.createDarker(0.1 * colorSpread).toString(),
+              color: color.createDarker(0.1 * colorSpread).toString()
             },
             {
               offset: 0.2,
-              color: color.createLighter(0.2 * colorSpread).toString(),
+              color: color.createLighter(0.2 * colorSpread).toString()
             },
             {
               offset: 0.7,
-              color: colorString,
+              color: colorString
             },
             {
               offset: 1,
-              color: color.createDarker(0.1 * colorSpread).toString(),
-            },
-          ],
+              color: color.createDarker(0.1 * colorSpread).toString()
+            }
+          ]
         });
         break;
     }
@@ -517,9 +517,9 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
     me.putMarker(
       "labels",
       {
-        callout: 1,
+        callout: 1
       },
-      attributeId,
+      attributeId
     );
   },
 
@@ -568,11 +568,11 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
       0,
       startAngle,
       endAngle,
-      false,
+      false
     );
     path.lineTo(
       centerX + cosEnd * endRho,
-      centerY + thickness + sinEnd * endRho * distortion,
+      centerY + thickness + sinEnd * endRho * distortion
     );
     path.ellipse(
       centerX,
@@ -582,7 +582,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
       0,
       endAngle,
       startAngle,
-      true,
+      true
     );
     path.closePath();
   },
@@ -637,16 +637,16 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
       centerY += Math.sin(midAngle) * margin * distortion;
       path.moveTo(
         centerX + cos * startRho,
-        centerY + sin * startRho * distortion,
+        centerY + sin * startRho * distortion
       );
       path.lineTo(centerX + cos * endRho, centerY + sin * endRho * distortion);
       path.lineTo(
         centerX + cos * endRho,
-        centerY + sin * endRho * distortion + thickness,
+        centerY + sin * endRho * distortion + thickness
       );
       path.lineTo(
         centerX + cos * startRho,
-        centerY + sin * startRho * distortion + thickness,
+        centerY + sin * startRho * distortion + thickness
       );
       path.closePath();
     }
@@ -702,11 +702,11 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         Math.PI,
         startAngle,
-        true,
+        true
       );
       path.lineTo(
         centerX + Math.cos(startAngle) * radius,
-        centerY + Math.sin(startAngle) * radius * distortion,
+        centerY + Math.sin(startAngle) * radius * distortion
       );
       params = [
         centerX,
@@ -716,7 +716,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         startAngle,
         Math.PI,
-        false,
+        false
       ];
       if (!isDonut) {
         me.bevelParams.push(params);
@@ -734,11 +734,11 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         0,
         endAngle,
-        false,
+        false
       );
       path.lineTo(
         centerX + Math.cos(endAngle) * radius,
-        centerY + Math.sin(endAngle) * radius * distortion,
+        centerY + Math.sin(endAngle) * radius * distortion
       );
       params = [
         centerX,
@@ -748,7 +748,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         endAngle,
         0,
-        true,
+        true
       ];
       if (!isDonut) {
         me.bevelParams.push(params);
@@ -766,11 +766,11 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         Math.PI,
         endAngle,
-        false,
+        false
       );
       path.lineTo(
         centerX + Math.cos(endAngle) * radius,
-        centerY + Math.sin(endAngle) * radius * distortion,
+        centerY + Math.sin(endAngle) * radius * distortion
       );
       params = [
         centerX,
@@ -780,7 +780,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         endAngle,
         Math.PI,
-        true,
+        true
       ];
       if (isDonut) {
         me.bevelParams.push(params);
@@ -798,7 +798,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         startAngle,
         0,
-        false,
+        false
       );
       path.lineTo(centerX + radius, centerY);
       params = [
@@ -809,7 +809,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
         0,
         0,
         startAngle,
-        true,
+        true
       ];
       if (isDonut) {
         me.bevelParams.push(params);
@@ -834,7 +834,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               0,
               Math.PI,
-              false,
+              false
             );
             path.lineTo(centerX - radius, centerY);
             params = [
@@ -845,7 +845,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               Math.PI,
               0,
-              true,
+              true
             ];
             if (!isDonut) {
               me.bevelParams.push(params);
@@ -869,7 +869,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               startAngle,
               endAngle,
-              false,
+              false
             ];
             if ((isAllFront && !isDonut) || (isAllBack && isDonut)) {
               me.bevelParams.push(params);
@@ -877,7 +877,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
             path.ellipse.apply(path, params);
             path.lineTo(
               centerX + Math.cos(endAngle) * radius,
-              centerY + Math.sin(endAngle) * radius * distortion + thickness,
+              centerY + Math.sin(endAngle) * radius * distortion + thickness
             );
             path.ellipse(
               centerX,
@@ -887,7 +887,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               endAngle,
               startAngle,
-              true,
+              true
             );
             path.closePath();
           }
@@ -912,11 +912,11 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               startAngle,
               endAngle,
-              false,
+              false
             );
             path.lineTo(
               centerX + Math.cos(endAngle) * radius,
-              centerY + Math.sin(endAngle) * radius * distortion,
+              centerY + Math.sin(endAngle) * radius * distortion
             );
             params = [
               centerX,
@@ -926,7 +926,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               endAngle,
               startAngle,
-              true,
+              true
             ];
             if (isDonut) {
               me.bevelParams.push(params);
@@ -945,7 +945,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               -Math.PI,
               0,
-              false,
+              false
             );
             path.lineTo(centerX + radius, centerY);
             params = [
@@ -956,7 +956,7 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
               0,
               0,
               -Math.PI,
-              true,
+              true
             ];
             if (isDonut) {
               me.bevelParams.push(params);
@@ -983,5 +983,5 @@ Ext.define("Ext.chart.series.sprite.Pie3DPart", {
 
   outerBackRenderer: function (path) {
     this.rimRenderer(path, this.attr.endRho, false, false);
-  },
+  }
 });

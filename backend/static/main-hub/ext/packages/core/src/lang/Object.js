@@ -124,12 +124,12 @@
           for (i = 0, ln = value.length; i < ln; i++) {
             if (recursive) {
               objects = objects.concat(
-                self(name + "[" + i + "]", value[i], true),
+                self(name + "[" + i + "]", value[i], true)
               );
             } else {
               objects.push({
                 name: name,
-                value: value[i],
+                value: value[i]
               });
             }
           }
@@ -138,12 +138,12 @@
             if (value.hasOwnProperty(i)) {
               if (recursive) {
                 objects = objects.concat(
-                  self(name + "[" + i + "]", value[i], true),
+                  self(name + "[" + i + "]", value[i], true)
                 );
               } else {
                 objects.push({
                   name: name,
-                  value: value[i],
+                  value: value[i]
                 });
               }
             }
@@ -151,7 +151,7 @@
         } else {
           objects.push({
             name: name,
-            value: value,
+            value: value
           });
         }
 
@@ -201,7 +201,7 @@
         for (i in object) {
           if (object.hasOwnProperty(i)) {
             paramObjects = paramObjects.concat(
-              ExtObject.toQueryObjects(i, object[i], recursive),
+              ExtObject.toQueryObjects(i, object[i], recursive)
             );
           }
         }
@@ -219,7 +219,7 @@
           params.push(
             encodeURIComponent(paramObject.name) +
               "=" +
-              encodeURIComponent(String(value)),
+              encodeURIComponent(String(value))
           );
         }
 
@@ -314,7 +314,7 @@
                 throw new Error(
                   '[Ext.Object.fromQueryString] Malformed query string given, failed parsing name from "' +
                     part +
-                    '"',
+                    '"'
                 );
               }
               //</debug>
@@ -838,7 +838,7 @@
         objectClass.prototype = prototype;
 
         return objectClass;
-      },
+      }
     });
 
   /**

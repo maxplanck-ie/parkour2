@@ -2,7 +2,7 @@ Ext.define("Ext.theme.material.Button", {
   override: "Ext.Button",
 
   config: {
-    ripple: true,
+    ripple: true
   },
 
   destroy: function () {
@@ -50,8 +50,8 @@ Ext.define("Ext.theme.material.Button", {
           this,
           {
             single: true,
-            destroyable: true,
-          },
+            destroyable: true
+          }
         );
       }
     }
@@ -101,5 +101,5 @@ Ext.define("Ext.theme.material.Button", {
     }
 
     return cls;
-  },
+  }
 });

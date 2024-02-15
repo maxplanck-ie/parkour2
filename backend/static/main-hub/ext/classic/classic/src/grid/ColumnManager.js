@@ -14,7 +14,7 @@ Ext.define(
       //<debug>
       if (!headerCt.isRootHeader && !headerCt.isGroupHeader) {
         Ext.raise(
-          "ColumnManager must be passed an instantiated HeaderContainer or group header",
+          "ColumnManager must be passed an instantiated HeaderContainer or group header"
         );
       }
       //</debug>
@@ -25,7 +25,7 @@ Ext.define(
         //<debug>
         if (!headerCt.isRootHeader && !headerCt.isGroupHeader) {
           Ext.raise(
-            "ColumnManager must be passed an instantiated HeaderContainer or group header",
+            "ColumnManager must be passed an instantiated HeaderContainer or group header"
           );
         }
         //</debug>
@@ -228,9 +228,9 @@ Ext.define(
     destroy: function () {
       this.columns = this.rootColumns = null;
       this.callParent();
-    },
+    }
   },
   function () {
     this.createAlias("indexOf", "getHeaderIndex");
-  },
+  }
 );

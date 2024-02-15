@@ -11,15 +11,15 @@ describe("Ext.draw.engine.Canvas", function () {
         renderTo: Ext.getBody(),
         engine: "Ext.draw.engine.Canvas",
         width: side,
-        height: side,
+        height: side
       });
       var surface = draw.getSurface();
       var expectedCanvasCount = Math.pow(
         Math.ceil((side * (window.devicePixelRatio || 1)) / threshold),
-        2,
+        2
       );
       expect(surface.innerElement.select("canvas").elements.length).toBe(
-        expectedCanvasCount,
+        expectedCanvasCount
       );
       proto.splitThreshold = originalThreshold;
       Ext.destroy(draw);

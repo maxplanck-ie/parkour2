@@ -92,7 +92,7 @@ Ext.define("Ext.Img", {
      * @cfg {String} mode If set to 'background', uses a background-image CSS property instead of an
      * `<img>` tag to display the image.
      */
-    mode: "background",
+    mode: "background"
   },
 
   beforeInitialize: function () {
@@ -109,7 +109,7 @@ Ext.define("Ext.Img", {
 
     me.element.on({
       tap: "onTap",
-      scope: me,
+      scope: me
     });
   },
 
@@ -248,9 +248,9 @@ Ext.define("Ext.Img", {
 
     me.imageObject = me.imageElement = Ext.destroy(
       me.imageObject,
-      me.imageElement,
+      me.imageElement
     );
 
     me.callParent();
-  },
+  }
 });

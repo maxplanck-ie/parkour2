@@ -22,44 +22,44 @@ describe("grid-view", function () {
                     f1: 1,
                     f2: 2,
                     f3: 3,
-                    f4: 4,
+                    f4: 4
                   },
                   {
                     f1: 5,
                     f2: 6,
                     f3: 7,
-                    f4: 8,
+                    f4: 8
                   },
                   {
                     f1: 9,
                     f2: 10,
                     f3: 11,
-                    f4: 12,
+                    f4: 12
                   },
                   {
                     f1: 13,
                     f2: 14,
                     f3: 15,
-                    f4: 16,
-                  },
-                ],
+                    f4: 16
+                  }
+                ]
               },
               columns: [
                 {
                   locked: locked,
-                  dataIndex: "f1",
+                  dataIndex: "f1"
                 },
                 {
                   locked: true,
-                  dataIndex: "f2",
+                  dataIndex: "f2"
                 },
                 {
-                  dataIndex: "f3",
+                  dataIndex: "f3"
                 },
                 {
-                  dataIndex: "f4",
-                },
-              ],
+                  dataIndex: "f4"
+                }
+              ]
             });
             view = grid.view;
             navModel = grid.getNavigationModel();
@@ -68,7 +68,7 @@ describe("grid-view", function () {
         beforeEach(function () {
           Ext.define("spec.LockedModel", {
             extend: "Ext.data.Model",
-            fields: ["f1", "f2", "f3", "f4"],
+            fields: ["f1", "f2", "f3", "f4"]
           });
         });
 
@@ -92,7 +92,7 @@ describe("grid-view", function () {
             it("should be able to get a cell in the locked area", function () {
               var cell = grid.getView().getCellInclusive({
                 row: 0,
-                column: 0,
+                column: 0
               });
               expect(cell.down(innerSelector, true).innerHTML).toBe("1");
             });
@@ -100,7 +100,7 @@ describe("grid-view", function () {
             it("should be able to get a cell in the unlocked area", function () {
               var cell = grid.getView().getCellInclusive({
                 row: 3,
-                column: 3,
+                column: 3
               });
               expect(cell.down(innerSelector, true).innerHTML).toBe("16");
             });
@@ -108,7 +108,7 @@ describe("grid-view", function () {
             it("should return false if the cell doesn't exist", function () {
               var cell = grid.getView().getCellInclusive({
                 row: 20,
-                column: 20,
+                column: 20
               });
               expect(cell).toBe(false);
             });
@@ -117,13 +117,13 @@ describe("grid-view", function () {
               var cell = grid.getView().getCellInclusive(
                 {
                   row: 1,
-                  column: 1,
+                  column: 1
                 },
-                true,
+                true
               );
               expect(cell.tagName).not.toBeUndefined();
               expect(Ext.fly(cell).down(innerSelector, true).innerHTML).toBe(
-                "6",
+                "6"
               );
             });
           });
@@ -140,7 +140,7 @@ describe("grid-view", function () {
 
               grid.reconfigure(new Ext.data.Store(), [
                 { dataIndex: name, locked: true },
-                { dataIndex: "name" },
+                { dataIndex: "name" }
               ]);
 
               // Should have refreshed both sides to have no rows.
@@ -170,43 +170,43 @@ describe("grid-view", function () {
                         f1: 1,
                         f2: 2,
                         f3: 3,
-                        f4: 4,
+                        f4: 4
                       },
                       {
                         f1: 5,
                         f2: 6,
                         f3: 7,
-                        f4: 8,
+                        f4: 8
                       },
                       {
                         f1: 9,
                         f2: 10,
                         f3: 11,
-                        f4: 12,
+                        f4: 12
                       },
                       {
                         f1: 13,
                         f2: 14,
                         f3: 15,
-                        f4: 16,
-                      },
-                    ],
+                        f4: 16
+                      }
+                    ]
                   }),
                   [
                     {
-                      dataIndex: "f1",
+                      dataIndex: "f1"
                     },
                     {
                       locked: true,
-                      dataIndex: "f2",
+                      dataIndex: "f2"
                     },
                     {
-                      dataIndex: "f3",
+                      dataIndex: "f3"
                     },
                     {
-                      dataIndex: "f4",
-                    },
-                  ],
+                      dataIndex: "f4"
+                    }
+                  ]
                 );
                 cell_22 = new Ext.grid.CellContext(view).setPosition(2, 2);
                 view.el.focus();
@@ -220,7 +220,7 @@ describe("grid-view", function () {
             });
           });
         });
-      },
+      }
     );
   }
   createSuite(false);
@@ -231,16 +231,16 @@ describe("grid-view", function () {
 
     var Model = Ext.define(null, {
       extend: "Ext.data.Model",
-      fields: ["group", "text"],
+      fields: ["group", "text"]
     });
 
     function findCell(grid, rowIdx, cellIdx) {
       return grid.getView().getCellInclusive(
         {
           row: rowIdx,
-          column: cellIdx,
+          column: cellIdx
         },
-        true,
+        true
       );
     }
 
@@ -289,28 +289,28 @@ describe("grid-view", function () {
         multiSelect: true,
         features: [
           {
-            ftype: "grouping",
-          },
+            ftype: "grouping"
+          }
         ],
         viewConfig: {
           plugins: Ext.apply(
             {
-              ptype: "gridviewdragdrop",
+              ptype: "gridviewdragdrop"
             },
-            ddConfig,
-          ),
+            ddConfig
+          )
         },
         store: {
           model: Model,
           groupField: "group",
-          data: data,
+          data: data
         },
         columns: [
           {
             flex: 1,
-            dataIndex: "text",
-          },
-        ],
+            dataIndex: "text"
+          }
+        ]
       });
     }
 
@@ -329,29 +329,29 @@ describe("grid-view", function () {
         grid1 = makeGrid(
           {
             dragGroup: "group1",
-            dropGroup: "group2",
+            dropGroup: "group2"
           },
           [
             {
               group: "Group1",
-              text: "Item 1",
+              text: "Item 1"
             },
             {
               group: "Group2",
-              text: "Item 2",
+              text: "Item 2"
             },
             {
               group: "Group2",
-              text: "Item 3",
-            },
-          ],
+              text: "Item 3"
+            }
+          ]
         );
         grid2 = makeGrid({
           dragGroup: "group2",
           dropGroup: "group1",
           dropZone: {
-            overClass: "dropzone-over-class",
-          },
+            overClass: "dropzone-over-class"
+          }
         });
         dragEl = selectRow(grid1, 0);
         box = Ext.get(dragEl).getBox();
@@ -379,7 +379,7 @@ describe("grid-view", function () {
 
         // overClass should have been added
         expect(grid2.getView().el.addCls.calls[0].args[0]).toBe(
-          "dropzone-over-class",
+          "dropzone-over-class"
         );
 
         // But removed

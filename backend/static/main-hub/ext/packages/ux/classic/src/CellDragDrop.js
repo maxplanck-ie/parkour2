@@ -107,7 +107,7 @@ Ext.define("Ext.ux.CellDragDrop", {
     var me = this;
 
     view.on("render", me.onViewRender, me, {
-      single: true,
+      single: true
     });
   },
 
@@ -170,7 +170,7 @@ Ext.define("Ext.ux.CellDragDrop", {
             dragEl = document.createElement("div");
             dragEl.className = "x-form-text";
             dragEl.appendChild(
-              document.createTextNode(cell.textContent || cell.innerText),
+              document.createTextNode(cell.textContent || cell.innerText)
             );
 
             header = view.getHeaderByCell(cell);
@@ -179,7 +179,7 @@ Ext.define("Ext.ux.CellDragDrop", {
               ddel: dragEl,
               item: e.target,
               columnName: header.dataIndex,
-              record: record,
+              record: record
             };
           }
         },
@@ -202,7 +202,7 @@ Ext.define("Ext.ux.CellDragDrop", {
           self.proxy.update(self.ddel);
           self.onStartDrag(x, y);
           return true;
-        },
+        }
       });
     }
 
@@ -228,7 +228,7 @@ Ext.define("Ext.ux.CellDragDrop", {
               return {
                 node: cell,
                 record: view.getRecord(row),
-                columnName: header.dataIndex,
+                columnName: header.dataIndex
               };
             }
           }
@@ -260,7 +260,7 @@ Ext.define("Ext.ux.CellDragDrop", {
               Ext.fly(target.node).addCls(me.noDropCls);
             } else {
               Ext.fly(target.node).applyStyles({
-                backgroundColor: me.noDropBackgroundColor,
+                backgroundColor: me.noDropBackgroundColor
               });
             }
 
@@ -273,7 +273,7 @@ Ext.define("Ext.ux.CellDragDrop", {
             Ext.fly(target.node).addCls(me.dropCls);
           } else {
             Ext.fly(target.node).applyStyles({
-              backgroundColor: me.dropBackgroundColor,
+              backgroundColor: me.dropBackgroundColor
             });
           }
         },
@@ -292,7 +292,7 @@ Ext.define("Ext.ux.CellDragDrop", {
             Ext.fly(target.node).removeCls(cls);
           } else {
             Ext.fly(target.node).applyStyles({
-              backgroundColor: "",
+              backgroundColor: ""
             });
           }
         },
@@ -302,7 +302,7 @@ Ext.define("Ext.ux.CellDragDrop", {
           if (this.dropOK) {
             target.record.set(
               target.columnName,
-              dragData.record.get(dragData.columnName),
+              dragData.record.get(dragData.columnName)
             );
             if (me.applyEmptyText) {
               dragData.record.set(dragData.columnName, me.emptyText);
@@ -311,8 +311,8 @@ Ext.define("Ext.ux.CellDragDrop", {
           }
         },
 
-        onCellDrop: Ext.emptyFn,
+        onCellDrop: Ext.emptyFn
       });
     }
-  },
+  }
 });

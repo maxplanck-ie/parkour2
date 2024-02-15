@@ -21,7 +21,7 @@ Ext.define("Ext.slider.Single", {
     "Ext.Slider",
     "Ext.form.SliderField",
     "Ext.slider.SingleSlider",
-    "Ext.slider.Slider",
+    "Ext.slider.Slider"
   ],
 
   /**
@@ -84,5 +84,5 @@ Ext.define("Ext.slider.Single", {
   getNearest: function () {
     // Since there's only 1 thumb, it's always the nearest
     return this.thumbs[0];
-  },
+  }
 });

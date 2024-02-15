@@ -3,7 +3,7 @@ describe("Ext.list.Tree", function () {
 
   var Model = Ext.define(null, {
     extend: "Ext.data.TreeModel",
-    fields: ["customField"],
+    fields: ["customField"]
   });
 
   function makeList(cfg, noStore) {
@@ -12,8 +12,8 @@ describe("Ext.list.Tree", function () {
         model: Model,
         root: {
           expanded: true,
-          children: sampleData,
-        },
+          children: sampleData
+        }
       });
     }
 
@@ -21,10 +21,10 @@ describe("Ext.list.Tree", function () {
       Ext.apply(
         {
           store: store,
-          animation: false,
+          animation: false
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     list.render(Ext.getBody());
 
@@ -42,23 +42,23 @@ describe("Ext.list.Tree", function () {
           {
             id: "i11",
             text: "Item 1.1",
-            leaf: true,
+            leaf: true
           },
           {
             id: "i12",
             text: "Item 1.2",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       },
       {
         id: "i2",
         text: "Item 2",
-        expandable: false,
+        expandable: false
       },
       {
         id: "i3",
-        text: "Item 3",
+        text: "Item 3"
       },
       {
         id: "i4",
@@ -68,19 +68,19 @@ describe("Ext.list.Tree", function () {
           {
             id: "i41",
             text: "Item 4.1",
-            leaf: true,
+            leaf: true
           },
           {
             id: "i42",
-            text: "Item 4.2",
+            text: "Item 4.2"
           },
           {
             id: "i43",
             text: "Item 4.3",
-            leaf: true,
-          },
-        ],
-      },
+            leaf: true
+          }
+        ]
+      }
     ];
   });
 
@@ -114,11 +114,11 @@ describe("Ext.list.Tree", function () {
       it("should accept a store id", function () {
         store = new Ext.data.TreeStore({
           id: "storeWithId",
-          model: Model,
+          model: Model
         });
 
         makeList({
-          store: "storeWithId",
+          store: "storeWithId"
         });
         expect(list.getStore()).toBe(store);
       });
@@ -128,10 +128,10 @@ describe("Ext.list.Tree", function () {
           {
             store: {
               storeId: "storeWithId",
-              model: Model,
-            },
+              model: Model
+            }
           },
-          true,
+          true
         );
         expect(list.getStore().$className).toBe("Ext.data.TreeStore");
         expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -140,7 +140,7 @@ describe("Ext.list.Tree", function () {
       it("should accept a store config with a type", function () {
         Ext.define("spec.CustomTreeStore", {
           extend: "Ext.data.TreeStore",
-          alias: "store.customtree",
+          alias: "store.customtree"
         });
 
         makeList(
@@ -148,10 +148,10 @@ describe("Ext.list.Tree", function () {
             store: {
               type: "customtree",
               storeId: "storeWithId",
-              model: Model,
-            },
+              model: Model
+            }
           },
-          true,
+          true
         );
         expect(list.getStore().$className).toBe("spec.CustomTreeStore");
         expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -161,11 +161,11 @@ describe("Ext.list.Tree", function () {
 
       it("should accept a store instance", function () {
         store = new Ext.data.TreeStore({
-          model: Model,
+          model: Model
         });
 
         makeList({
-          store: store,
+          store: store
         });
         expect(list.getStore()).toBe(store);
       });
@@ -180,7 +180,7 @@ describe("Ext.list.Tree", function () {
         it("should accept a store id", function () {
           store = new Ext.data.TreeStore({
             id: "storeWithId",
-            model: Model,
+            model: Model
           });
           list.setStore("storeWithId");
           expect(list.getStore()).toBe(store);
@@ -189,7 +189,7 @@ describe("Ext.list.Tree", function () {
         it("should accept a store config and default the type to Ext.data.TreeStore", function () {
           list.setStore({
             storeId: "storeWithId",
-            model: Model,
+            model: Model
           });
           expect(list.getStore().$className).toBe("Ext.data.TreeStore");
           expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -198,13 +198,13 @@ describe("Ext.list.Tree", function () {
         it("should accept a store config with a type", function () {
           Ext.define("spec.CustomTreeStore", {
             extend: "Ext.data.TreeStore",
-            alias: "store.customtree",
+            alias: "store.customtree"
           });
 
           list.setStore({
             type: "customtree",
             storeId: "storeWithId",
-            model: Model,
+            model: Model
           });
           expect(list.getStore().$className).toBe("spec.CustomTreeStore");
           expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -214,7 +214,7 @@ describe("Ext.list.Tree", function () {
 
         it("should accept a store instance", function () {
           store = new Ext.data.TreeStore({
-            model: Model,
+            model: Model
           });
           list.setStore(store);
           expect(list.getStore()).toBe(store);
@@ -226,7 +226,7 @@ describe("Ext.list.Tree", function () {
 
         beforeEach(function () {
           store = new Ext.data.TreeStore({
-            model: Model,
+            model: Model
           });
           listeners = getListeners();
           makeList();
@@ -239,7 +239,7 @@ describe("Ext.list.Tree", function () {
         it("should accept a store id and unbind old store listeners", function () {
           var newStore = new Ext.data.TreeStore({
             id: "storeWithId",
-            model: Model,
+            model: Model
           });
 
           list.setStore("storeWithId");
@@ -251,7 +251,7 @@ describe("Ext.list.Tree", function () {
         it("should accept a store config and default the type to Ext.data.TreeStore and unbind old store listeners", function () {
           list.setStore({
             storeId: "storeWithId",
-            model: Model,
+            model: Model
           });
           expect(list.getStore().$className).toBe("Ext.data.TreeStore");
           expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -261,13 +261,13 @@ describe("Ext.list.Tree", function () {
         it("should accept a store config with a type and unbind old store listeners", function () {
           Ext.define("spec.CustomTreeStore", {
             extend: "Ext.data.TreeStore",
-            alias: "store.customtree",
+            alias: "store.customtree"
           });
 
           list.setStore({
             type: "customtree",
             storeId: "storeWithId",
-            model: Model,
+            model: Model
           });
           expect(list.getStore().$className).toBe("spec.CustomTreeStore");
           expect(list.getStore().getStoreId()).toBe("storeWithId");
@@ -278,7 +278,7 @@ describe("Ext.list.Tree", function () {
 
         it("should accept a store instance and unbind old store listeners", function () {
           var newStore = new Ext.data.TreeStore({
-            model: Model,
+            model: Model
           });
           list.setStore(newStore);
           expect(list.getStore()).toBe(newStore);
@@ -302,7 +302,7 @@ describe("Ext.list.Tree", function () {
     describe("destruction", function () {
       beforeEach(function () {
         store = new Ext.data.TreeStore({
-          model: Model,
+          model: Model
         });
       });
 
@@ -345,19 +345,19 @@ describe("Ext.list.Tree", function () {
         Ext.merge(
           {
             defaults: {
-              xtype: "spec_treelist_customitem",
-            },
+              xtype: "spec_treelist_customitem"
+            }
           },
-          cfg,
+          cfg
         ),
-        noStore,
+        noStore
       );
 
       list.on({
         iteminsert: insertSpy,
         itemremove: removeSpy,
         itemexpand: expandSpy,
-        itemcollapse: collapseSpy,
+        itemcollapse: collapseSpy
       });
     }
 
@@ -377,7 +377,7 @@ describe("Ext.list.Tree", function () {
 
           config: {
             testConfig: null,
-            floated: false,
+            floated: false
           },
 
           constructor: function (config) {
@@ -399,7 +399,7 @@ describe("Ext.list.Tree", function () {
               onNodeUpdate: [],
 
               insertItem: [],
-              removeItem: [],
+              removeItem: []
             };
             this.callParent([config]);
           },
@@ -466,7 +466,7 @@ describe("Ext.list.Tree", function () {
 
           updateText: function (text) {
             this.logs.text.push(text);
-          },
+          }
         });
         var temp = new spec.treelist.CustomItem();
         hasFirst = true;
@@ -490,8 +490,8 @@ describe("Ext.list.Tree", function () {
       it("should use a specified type", function () {
         makeList({
           defaults: {
-            xtype: "spec_treelist_customitem",
-          },
+            xtype: "spec_treelist_customitem"
+          }
         });
 
         list.getStore().each(function (node) {
@@ -536,8 +536,8 @@ describe("Ext.list.Tree", function () {
             sampleData[0].iconCls = "iconA";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item = getItem("i1");
             expect(item.logs.iconCls).toEqual([]);
@@ -554,8 +554,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item = getItem("i1");
             expect(item.logs.text).toEqual([]);
@@ -567,7 +567,7 @@ describe("Ext.list.Tree", function () {
             var item = getItem("i1");
             expect(item.logs.insertItem).toEqual([
               [getItem("i11"), null],
-              [getItem("i12"), null],
+              [getItem("i12"), null]
             ]);
           });
 
@@ -599,8 +599,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item = getItem("i1");
             expect(item.getTestConfig()).toBe(12);
@@ -641,8 +641,8 @@ describe("Ext.list.Tree", function () {
             sampleData[1].iconCls = "iconA";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item = getItem("i2");
             expect(item.logs.iconCls).toEqual([]);
@@ -659,8 +659,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item = getItem("i2");
             expect(item.logs.text).toEqual([]);
@@ -701,8 +701,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item = getItem("i2");
             expect(item.getTestConfig()).toBe(12);
@@ -747,8 +747,8 @@ describe("Ext.list.Tree", function () {
             sampleData[2].iconCls = "iconA";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item = getItem("i3");
             expect(item.logs.iconCls).toEqual([]);
@@ -765,8 +765,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item = getItem("i3");
             expect(item.logs.text).toEqual([]);
@@ -807,8 +807,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item = getItem("i3");
             expect(item.getTestConfig()).toBe(12);
@@ -849,8 +849,8 @@ describe("Ext.list.Tree", function () {
             sampleData[3].iconCls = "iconA";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item = getItem("i4");
             expect(item.logs.iconCls).toEqual([]);
@@ -867,8 +867,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item = getItem("i4");
             expect(item.logs.text).toEqual([]);
@@ -881,7 +881,7 @@ describe("Ext.list.Tree", function () {
             expect(item.logs.insertItem).toEqual([
               [getItem("i41"), null],
               [getItem("i42"), null],
-              [getItem("i43"), null],
+              [getItem("i43"), null]
             ]);
           });
 
@@ -913,8 +913,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item = getItem("i4");
             expect(item.getTestConfig()).toBe(12);
@@ -979,8 +979,8 @@ describe("Ext.list.Tree", function () {
             sampleData[0].children[1].iconCls = "iconB";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item1 = getItem("i11"),
               item2 = getItem("i12");
@@ -1007,8 +1007,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item1 = getItem("i11"),
               item2 = getItem("i12");
@@ -1062,8 +1062,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item1 = getItem("i11"),
               item2 = getItem("i12");
@@ -1143,8 +1143,8 @@ describe("Ext.list.Tree", function () {
             sampleData[3].children[2].iconCls = "iconC";
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item1 = getItem("i41"),
               item2 = getItem("i42"),
@@ -1177,8 +1177,8 @@ describe("Ext.list.Tree", function () {
           it("should not set the text if an textProperty is not specified", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item1 = getItem("i41"),
               item2 = getItem("i42"),
@@ -1247,8 +1247,8 @@ describe("Ext.list.Tree", function () {
           it("should have the itemConfig set", function () {
             makeCustomList({
               defaults: {
-                testConfig: 12,
-              },
+                testConfig: 12
+              }
             });
             var item1 = getItem("i41"),
               item2 = getItem("i42"),
@@ -1317,8 +1317,8 @@ describe("Ext.list.Tree", function () {
 
             makeList({
               listeners: {
-                refresh: spy,
-              },
+                refresh: spy
+              }
             });
             store.filterer = "bottomup";
             byId("i1").expand();
@@ -1337,8 +1337,8 @@ describe("Ext.list.Tree", function () {
             makeList({
               listeners: {
                 iteminsert: spy,
-                itemremove: spy,
-              },
+                itemremove: spy
+              }
             });
             store.filterer = "bottomup";
             store.filterBy(function (rec) {
@@ -1361,15 +1361,15 @@ describe("Ext.list.Tree", function () {
             beforeEach(function () {
               makeCustomList({
                 defaults: {
-                  testConfig: 200,
-                },
+                  testConfig: 200
+                }
               });
               node = root.insertBefore(
                 {
                   id: "i9",
-                  text: "Item 9",
+                  text: "Item 9"
                 },
-                byId("i1"),
+                byId("i1")
               );
             });
 
@@ -1415,17 +1415,17 @@ describe("Ext.list.Tree", function () {
 
               beforeEach(function () {
                 node = new Model({
-                  id: "i8",
+                  id: "i8"
                 });
 
                 insertSpy.reset();
                 node.appendChild([
                   {
-                    id: "i81",
+                    id: "i81"
                   },
                   {
-                    id: "i82",
-                  },
+                    id: "i82"
+                  }
                 ]);
 
                 root.insertBefore(node, byId("i9"));
@@ -1452,7 +1452,7 @@ describe("Ext.list.Tree", function () {
               it("should call insertItem", function () {
                 expect(item.logs.insertItem).toEqual([
                   [item1, null],
-                  [item2, null],
+                  [item2, null]
                 ]);
               });
 
@@ -1465,7 +1465,7 @@ describe("Ext.list.Tree", function () {
                   expect(insertSpy.callCount).toBe(1);
                   expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                   expect(insertSpy.mostRecentCall.args[1]).toBe(
-                    getItem("root"),
+                    getItem("root")
                   );
                   expect(insertSpy.mostRecentCall.args[2]).toBe(getItem("i8"));
                   expect(insertSpy.mostRecentCall.args[3]).toBe(getItem("i9"));
@@ -1481,16 +1481,16 @@ describe("Ext.list.Tree", function () {
               beforeEach(function () {
                 makeCustomList({
                   defaults: {
-                    testConfig: 200,
-                  },
+                    testConfig: 200
+                  }
                 });
                 getItem("i1").logs.insertItem = [];
                 node = byId("i1").insertBefore(
                   {
                     id: "i9",
-                    text: "Item 9",
+                    text: "Item 9"
                   },
-                  byId("i12"),
+                  byId("i12")
                 );
               });
 
@@ -1523,14 +1523,14 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   var item = getItem("i1");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i9"), getItem("i12")],
+                    [getItem("i9"), getItem("i12")]
                   ]);
                 });
 
                 it("should call onNodeInsert", function () {
                   var item = getItem("i1");
                   expect(item.logs.onNodeInsert).toEqual([
-                    [byId("i9"), byId("i12")],
+                    [byId("i9"), byId("i12")]
                   ]);
                 });
               });
@@ -1550,17 +1550,17 @@ describe("Ext.list.Tree", function () {
 
                 beforeEach(function () {
                   node = new Model({
-                    id: "i8",
+                    id: "i8"
                   });
 
                   insertSpy.reset();
                   node.appendChild([
                     {
-                      id: "i81",
+                      id: "i81"
                     },
                     {
-                      id: "i82",
-                    },
+                      id: "i82"
+                    }
                   ]);
 
                   byId("i1").insertBefore(node, byId("i9"));
@@ -1587,7 +1587,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   expect(item.logs.insertItem).toEqual([
                     [item1, null],
-                    [item2, null],
+                    [item2, null]
                   ]);
                 });
 
@@ -1600,13 +1600,13 @@ describe("Ext.list.Tree", function () {
                     expect(insertSpy.callCount).toBe(1);
                     expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                     expect(insertSpy.mostRecentCall.args[1]).toBe(
-                      getItem("i1"),
+                      getItem("i1")
                     );
                     expect(insertSpy.mostRecentCall.args[2]).toBe(
-                      getItem("i8"),
+                      getItem("i8")
                     );
                     expect(insertSpy.mostRecentCall.args[3]).toBe(
-                      getItem("i9"),
+                      getItem("i9")
                     );
                   });
                 });
@@ -1619,16 +1619,16 @@ describe("Ext.list.Tree", function () {
               beforeEach(function () {
                 makeCustomList({
                   defaults: {
-                    testConfig: 200,
-                  },
+                    testConfig: 200
+                  }
                 });
                 getItem("i4").logs.insertItem = [];
                 node = byId("i4").insertBefore(
                   {
                     id: "i9",
-                    text: "Item 9",
+                    text: "Item 9"
                   },
-                  byId("i43"),
+                  byId("i43")
                 );
               });
 
@@ -1661,14 +1661,14 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   var item = getItem("i4");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i9"), getItem("i43")],
+                    [getItem("i9"), getItem("i43")]
                   ]);
                 });
 
                 it("should call onNodeInsert", function () {
                   var item = getItem("i4");
                   expect(item.logs.onNodeInsert).toEqual([
-                    [byId("i9"), byId("i43")],
+                    [byId("i9"), byId("i43")]
                   ]);
                 });
               });
@@ -1688,17 +1688,17 @@ describe("Ext.list.Tree", function () {
 
                 beforeEach(function () {
                   node = new Model({
-                    id: "i8",
+                    id: "i8"
                   });
 
                   insertSpy.reset();
                   node.appendChild([
                     {
-                      id: "i81",
+                      id: "i81"
                     },
                     {
-                      id: "i82",
-                    },
+                      id: "i82"
+                    }
                   ]);
 
                   byId("i4").insertBefore(node, byId("i9"));
@@ -1725,7 +1725,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   expect(item.logs.insertItem).toEqual([
                     [item1, null],
-                    [item2, null],
+                    [item2, null]
                   ]);
                 });
 
@@ -1738,13 +1738,13 @@ describe("Ext.list.Tree", function () {
                     expect(insertSpy.callCount).toBe(1);
                     expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                     expect(insertSpy.mostRecentCall.args[1]).toBe(
-                      getItem("i4"),
+                      getItem("i4")
                     );
                     expect(insertSpy.mostRecentCall.args[2]).toBe(
-                      getItem("i8"),
+                      getItem("i8")
                     );
                     expect(insertSpy.mostRecentCall.args[3]).toBe(
-                      getItem("i9"),
+                      getItem("i9")
                     );
                   });
                 });
@@ -1760,9 +1760,9 @@ describe("Ext.list.Tree", function () {
             byId("i3").insertBefore(
               {
                 id: "i9",
-                text: "Item 9",
+                text: "Item 9"
               },
-              null,
+              null
             );
             expect(item.logs.expandable).toEqual([true]);
           });
@@ -1798,14 +1798,14 @@ describe("Ext.list.Tree", function () {
                 it("should call onNodeInsert", function () {
                   var item = getItem("i4");
                   expect(item.logs.onNodeInsert).toEqual([
-                    [byId("i43"), byId("i41")],
+                    [byId("i43"), byId("i41")]
                   ]);
                 });
 
                 it("should call insertItem", function () {
                   var item = getItem("i4");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i43"), getItem("i41")],
+                    [getItem("i43"), getItem("i41")]
                   ]);
                 });
 
@@ -1875,14 +1875,14 @@ describe("Ext.list.Tree", function () {
                 it("should call onNodeInsert", function () {
                   var item = getItem("i1");
                   expect(item.logs.onNodeInsert).toEqual([
-                    [byId("i43"), byId("i11")],
+                    [byId("i43"), byId("i11")]
                   ]);
                 });
 
                 it("should call insertItem", function () {
                   var item = getItem("i1");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i43"), getItem("i11")],
+                    [getItem("i43"), getItem("i11")]
                   ]);
                 });
 
@@ -1921,12 +1921,12 @@ describe("Ext.list.Tree", function () {
             beforeEach(function () {
               makeCustomList({
                 defaults: {
-                  testConfig: 200,
-                },
+                  testConfig: 200
+                }
               });
               node = root.appendChild({
                 id: "i9",
-                text: "Item 9",
+                text: "Item 9"
               });
             });
 
@@ -1972,17 +1972,17 @@ describe("Ext.list.Tree", function () {
 
               beforeEach(function () {
                 node = new Model({
-                  id: "i8",
+                  id: "i8"
                 });
 
                 insertSpy.reset();
                 node.appendChild([
                   {
-                    id: "i81",
+                    id: "i81"
                   },
                   {
-                    id: "i82",
-                  },
+                    id: "i82"
+                  }
                 ]);
 
                 root.appendChild(node);
@@ -2009,7 +2009,7 @@ describe("Ext.list.Tree", function () {
               it("should call insertItem", function () {
                 expect(item.logs.insertItem).toEqual([
                   [item1, null],
-                  [item2, null],
+                  [item2, null]
                 ]);
               });
 
@@ -2022,7 +2022,7 @@ describe("Ext.list.Tree", function () {
                   expect(insertSpy.callCount).toBe(1);
                   expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                   expect(insertSpy.mostRecentCall.args[1]).toBe(
-                    getItem("root"),
+                    getItem("root")
                   );
                   expect(insertSpy.mostRecentCall.args[2]).toBe(getItem("i8"));
                   expect(insertSpy.mostRecentCall.args[3]).toBeNull();
@@ -2038,13 +2038,13 @@ describe("Ext.list.Tree", function () {
               beforeEach(function () {
                 makeCustomList({
                   defaults: {
-                    testConfig: 200,
-                  },
+                    testConfig: 200
+                  }
                 });
                 getItem("i1").logs.insertItem = [];
                 node = byId("i1").appendChild({
                   id: "i9",
-                  text: "Item 9",
+                  text: "Item 9"
                 });
               });
 
@@ -2100,17 +2100,17 @@ describe("Ext.list.Tree", function () {
 
                 beforeEach(function () {
                   node = new Model({
-                    id: "i8",
+                    id: "i8"
                   });
 
                   insertSpy.reset();
                   node.appendChild([
                     {
-                      id: "i81",
+                      id: "i81"
                     },
                     {
-                      id: "i82",
-                    },
+                      id: "i82"
+                    }
                   ]);
 
                   byId("i1").appendChild(node);
@@ -2137,7 +2137,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   expect(item.logs.insertItem).toEqual([
                     [item1, null],
-                    [item2, null],
+                    [item2, null]
                   ]);
                 });
 
@@ -2150,10 +2150,10 @@ describe("Ext.list.Tree", function () {
                     expect(insertSpy.callCount).toBe(1);
                     expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                     expect(insertSpy.mostRecentCall.args[1]).toBe(
-                      getItem("i1"),
+                      getItem("i1")
                     );
                     expect(insertSpy.mostRecentCall.args[2]).toBe(
-                      getItem("i8"),
+                      getItem("i8")
                     );
                     expect(insertSpy.mostRecentCall.args[3]).toBeNull();
                   });
@@ -2167,13 +2167,13 @@ describe("Ext.list.Tree", function () {
               beforeEach(function () {
                 makeCustomList({
                   defaults: {
-                    testConfig: 200,
-                  },
+                    testConfig: 200
+                  }
                 });
                 getItem("i4").logs.insertItem = [];
                 node = byId("i4").appendChild({
                   id: "i9",
-                  text: "Item 9",
+                  text: "Item 9"
                 });
               });
 
@@ -2229,17 +2229,17 @@ describe("Ext.list.Tree", function () {
 
                 beforeEach(function () {
                   node = new Model({
-                    id: "i8",
+                    id: "i8"
                   });
 
                   insertSpy.reset();
                   node.appendChild([
                     {
-                      id: "i81",
+                      id: "i81"
                     },
                     {
-                      id: "i82",
-                    },
+                      id: "i82"
+                    }
                   ]);
 
                   byId("i4").appendChild(node);
@@ -2266,7 +2266,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   expect(item.logs.insertItem).toEqual([
                     [item1, null],
-                    [item2, null],
+                    [item2, null]
                   ]);
                 });
 
@@ -2279,10 +2279,10 @@ describe("Ext.list.Tree", function () {
                     expect(insertSpy.callCount).toBe(1);
                     expect(insertSpy.mostRecentCall.args[0]).toBe(list);
                     expect(insertSpy.mostRecentCall.args[1]).toBe(
-                      getItem("i4"),
+                      getItem("i4")
                     );
                     expect(insertSpy.mostRecentCall.args[2]).toBe(
-                      getItem("i8"),
+                      getItem("i8")
                     );
                     expect(insertSpy.mostRecentCall.args[3]).toBeNull();
                   });
@@ -2298,7 +2298,7 @@ describe("Ext.list.Tree", function () {
             expect(item.logs.expandable).toEqual([]);
             byId("i3").appendChild({
               id: "i9",
-              text: "Item 9",
+              text: "Item 9"
             });
             expect(item.logs.expandable).toEqual([true]);
           });
@@ -2339,7 +2339,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   var item = getItem("i4");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i41"), null],
+                    [getItem("i41"), null]
                   ]);
                 });
 
@@ -2414,7 +2414,7 @@ describe("Ext.list.Tree", function () {
                 it("should call insertItem", function () {
                   var item = getItem("i1");
                   expect(item.logs.insertItem).toEqual([
-                    [getItem("i43"), null],
+                    [getItem("i43"), null]
                   ]);
                 });
 
@@ -2642,7 +2642,7 @@ describe("Ext.list.Tree", function () {
             function complete(data) {
               Ext.Ajax.mockComplete({
                 status: 200,
-                responseText: Ext.encode(data),
+                responseText: Ext.encode(data)
               });
             }
 
@@ -2717,8 +2717,8 @@ describe("Ext.list.Tree", function () {
           it("should not call setText with no textProperty", function () {
             makeCustomList({
               defaults: {
-                textProperty: "",
-              },
+                textProperty: ""
+              }
             });
             var item = getItem("i2");
             expect(item.logs.text).toEqual([]);
@@ -2749,8 +2749,8 @@ describe("Ext.list.Tree", function () {
           it("should not call setIconCls with no iconClsProperty", function () {
             makeCustomList({
               defaults: {
-                iconClsProperty: "",
-              },
+                iconClsProperty: ""
+              }
             });
             var item = getItem("i2");
             expect(item.logs.iconCls).toEqual([]);
@@ -2829,10 +2829,10 @@ describe("Ext.list.Tree", function () {
 
           node.set({
             customField: 100,
-            text: "Foo",
+            text: "Foo"
           });
           expect(item.logs.onNodeUpdate).toEqual([
-            [node, ["customField", "text"]],
+            [node, ["customField", "text"]]
           ]);
         });
       });
@@ -2848,9 +2848,9 @@ describe("Ext.list.Tree", function () {
                 children: [
                   {
                     id: "i11",
-                    text: "Item 1.1",
-                  },
-                ],
+                    text: "Item 1.1"
+                  }
+                ]
               },
               {
                 id: "i2",
@@ -2859,14 +2859,14 @@ describe("Ext.list.Tree", function () {
                 children: [
                   {
                     id: "i21",
-                    text: "Item 2.1",
+                    text: "Item 2.1"
                   },
                   {
                     id: "i22",
-                    text: "Item 2.2",
-                  },
-                ],
-              },
+                    text: "Item 2.2"
+                  }
+                ]
+              }
             ];
             makeCustomList();
             var items = [
@@ -2874,11 +2874,11 @@ describe("Ext.list.Tree", function () {
               getItem("i11"),
               getItem("i2"),
               getItem("i21"),
-              getItem("i22"),
+              getItem("i22")
             ];
 
             store.setRoot({
-              children: [],
+              children: []
             });
 
             Ext.Array.forEach(items, function (item) {
@@ -2906,9 +2906,9 @@ describe("Ext.list.Tree", function () {
                   {
                     id: "j11",
                     text: "XItem 1.1",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 id: "j2",
@@ -2918,14 +2918,14 @@ describe("Ext.list.Tree", function () {
                   {
                     id: "j21",
                     text: "XItem 2.1",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     id: "j22",
-                    text: "XItem 2.2",
-                  },
-                ],
-              },
+                    text: "XItem 2.2"
+                  }
+                ]
+              }
             ];
           });
 
@@ -2937,7 +2937,7 @@ describe("Ext.list.Tree", function () {
             makeCustomList(cfg);
             store.setRoot({
               expanded: true,
-              children: data || newData,
+              children: data || newData
             });
           }
 
@@ -2976,8 +2976,8 @@ describe("Ext.list.Tree", function () {
                 newData[0].iconCls = "iconA";
                 makeAndSetRoot({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.logs.iconCls).toEqual([]);
@@ -2994,8 +2994,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetRoot({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.logs.text).toEqual([]);
@@ -3036,8 +3036,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetRoot({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.getTestConfig()).toBe(12);
@@ -3078,8 +3078,8 @@ describe("Ext.list.Tree", function () {
                 newData[1].iconCls = "iconA";
                 makeAndSetRoot({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.logs.iconCls).toEqual([]);
@@ -3096,8 +3096,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetRoot({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.logs.text).toEqual([]);
@@ -3109,7 +3109,7 @@ describe("Ext.list.Tree", function () {
                 var item = getItem("j2");
                 expect(item.logs.insertItem).toEqual([
                   [getItem("j21"), null],
-                  [getItem("j22"), null],
+                  [getItem("j22"), null]
                 ]);
               });
 
@@ -3141,8 +3141,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetRoot({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.getTestConfig()).toBe(12);
@@ -3186,8 +3186,8 @@ describe("Ext.list.Tree", function () {
                 newData[0].children[0].iconCls = "iconB";
                 makeAndSetRoot({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3206,8 +3206,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetRoot({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3245,8 +3245,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetRoot({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3310,8 +3310,8 @@ describe("Ext.list.Tree", function () {
                 newData[1].children[1].iconCls = "iconC";
                 makeAndSetRoot({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3338,8 +3338,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetRoot({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3393,8 +3393,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetRoot({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3418,9 +3418,9 @@ describe("Ext.list.Tree", function () {
                 children: [
                   {
                     id: "i11",
-                    text: "Item 1.1",
-                  },
-                ],
+                    text: "Item 1.1"
+                  }
+                ]
               },
               {
                 id: "i2",
@@ -3429,14 +3429,14 @@ describe("Ext.list.Tree", function () {
                 children: [
                   {
                     id: "i21",
-                    text: "Item 2.1",
+                    text: "Item 2.1"
                   },
                   {
                     id: "i22",
-                    text: "Item 2.2",
-                  },
-                ],
-              },
+                    text: "Item 2.2"
+                  }
+                ]
+              }
             ];
             makeCustomList();
             var items = [
@@ -3444,13 +3444,13 @@ describe("Ext.list.Tree", function () {
               getItem("i11"),
               getItem("i2"),
               getItem("i21"),
-              getItem("i22"),
+              getItem("i22")
             ];
 
             list.setStore({
               root: {
-                children: [],
-              },
+                children: []
+              }
             });
 
             Ext.Array.forEach(items, function (item) {
@@ -3478,9 +3478,9 @@ describe("Ext.list.Tree", function () {
                   {
                     id: "j11",
                     text: "XItem 1.1",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 id: "j2",
@@ -3490,14 +3490,14 @@ describe("Ext.list.Tree", function () {
                   {
                     id: "j21",
                     text: "XItem 2.1",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     id: "j22",
-                    text: "XItem 2.2",
-                  },
-                ],
-              },
+                    text: "XItem 2.2"
+                  }
+                ]
+              }
             ];
           });
 
@@ -3511,8 +3511,8 @@ describe("Ext.list.Tree", function () {
             list.setStore({
               root: {
                 expanded: true,
-                children: data || newData,
-              },
+                children: data || newData
+              }
             });
             store = list.getStore();
           }
@@ -3552,8 +3552,8 @@ describe("Ext.list.Tree", function () {
                 newData[0].iconCls = "iconA";
                 makeAndSetStore({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.logs.iconCls).toEqual([]);
@@ -3570,8 +3570,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetStore({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.logs.text).toEqual([]);
@@ -3612,8 +3612,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetStore({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j1");
                 expect(item.getTestConfig()).toBe(12);
@@ -3654,8 +3654,8 @@ describe("Ext.list.Tree", function () {
                 newData[1].iconCls = "iconA";
                 makeAndSetStore({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.logs.iconCls).toEqual([]);
@@ -3672,8 +3672,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetStore({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.logs.text).toEqual([]);
@@ -3685,7 +3685,7 @@ describe("Ext.list.Tree", function () {
                 var item = getItem("j2");
                 expect(item.logs.insertItem).toEqual([
                   [getItem("j21"), null],
-                  [getItem("j22"), null],
+                  [getItem("j22"), null]
                 ]);
               });
 
@@ -3717,8 +3717,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetStore({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j2");
                 expect(item.getTestConfig()).toBe(12);
@@ -3762,8 +3762,8 @@ describe("Ext.list.Tree", function () {
                 newData[0].children[0].iconCls = "iconB";
                 makeAndSetStore({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3782,8 +3782,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetStore({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3821,8 +3821,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetStore({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item = getItem("j11");
 
@@ -3886,8 +3886,8 @@ describe("Ext.list.Tree", function () {
                 newData[1].children[1].iconCls = "iconC";
                 makeAndSetStore({
                   defaults: {
-                    iconClsProperty: "",
-                  },
+                    iconClsProperty: ""
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3914,8 +3914,8 @@ describe("Ext.list.Tree", function () {
               it("should not set the text if an textProperty is not specified", function () {
                 makeAndSetStore({
                   defaults: {
-                    textProperty: "",
-                  },
+                    textProperty: ""
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3969,8 +3969,8 @@ describe("Ext.list.Tree", function () {
               it("should have the itemConfig set", function () {
                 makeAndSetStore({
                   defaults: {
-                    testConfig: 12,
-                  },
+                    testConfig: 12
+                  }
                 });
                 var item1 = getItem("j21"),
                   item2 = getItem("j22");
@@ -3988,7 +3988,7 @@ describe("Ext.list.Tree", function () {
       describe("at construction", function () {
         it("should have root level items in the toolElement", function () {
           makeCustomList({
-            micro: true,
+            micro: true
           });
           var toolNodes = list.toolsElement.dom.childNodes;
           expect(toolNodes[0]).toBe(getItem("i1").getToolElement().dom);
@@ -4002,11 +4002,11 @@ describe("Ext.list.Tree", function () {
             model: Model,
             root: {
               expanded: true,
-              children: [],
-            },
+              children: []
+            }
           });
           makeCustomList({
-            micro: true,
+            micro: true
           });
           expect(list.toolsElement.dom.childNodes.length).toBe(0);
         });
@@ -4019,14 +4019,14 @@ describe("Ext.list.Tree", function () {
               model: Model,
               root: {
                 expanded: true,
-                children: [],
-              },
+                children: []
+              }
             });
             makeCustomList({
-              micro: true,
+              micro: true
             });
             store.getRoot().appendChild({
-              id: "foo",
+              id: "foo"
             });
             var toolNodes = list.toolsElement.dom.childNodes;
             expect(toolNodes.length).toBe(1);
@@ -4037,13 +4037,13 @@ describe("Ext.list.Tree", function () {
         describe("starting with nodes", function () {
           beforeEach(function () {
             makeCustomList({
-              micro: true,
+              micro: true
             });
           });
 
           it("should handle appending", function () {
             store.getRoot().appendChild({
-              id: "foo",
+              id: "foo"
             });
             var toolNodes = list.toolsElement.dom.childNodes;
             expect(toolNodes.length).toBe(5);
@@ -4052,7 +4052,7 @@ describe("Ext.list.Tree", function () {
 
           it("should handle insertion", function () {
             store.getRoot().insertChild(0, {
-              id: "foo",
+              id: "foo"
             });
 
             var toolNodes = list.toolsElement.dom.childNodes;
@@ -4061,7 +4061,7 @@ describe("Ext.list.Tree", function () {
             expect(toolNodes[0]).toBe(getItem("foo").getToolElement().dom);
 
             store.getRoot().insertChild(2, {
-              id: "foo",
+              id: "foo"
             });
 
             expect(toolNodes.length).toBe(6);
@@ -4094,7 +4094,7 @@ describe("Ext.list.Tree", function () {
       describe("starting as micro: true", function () {
         beforeEach(function () {
           makeList({
-            micro: true,
+            micro: true
           });
         });
 
@@ -4126,7 +4126,7 @@ describe("Ext.list.Tree", function () {
       describe("starting micro: false", function () {
         beforeEach(function () {
           makeList({
-            micro: false,
+            micro: false
           });
         });
 
@@ -4144,7 +4144,7 @@ describe("Ext.list.Tree", function () {
       describe("starting as micro: true", function () {
         beforeEach(function () {
           makeList({
-            micro: true,
+            micro: true
           });
           list.setMicro(false);
         });
@@ -4161,7 +4161,7 @@ describe("Ext.list.Tree", function () {
       describe("starting micro: false", function () {
         beforeEach(function () {
           makeList({
-            micro: false,
+            micro: false
           });
           list.setMicro(true);
         });
@@ -4216,7 +4216,7 @@ describe("Ext.list.Tree", function () {
 
       it("should return newly added items", function () {
         var node = root.appendChild({
-            id: "i9",
+            id: "i9"
           }),
           item = list.getItem(node);
 
@@ -4229,9 +4229,9 @@ describe("Ext.list.Tree", function () {
             id: "i9",
             children: [
               {
-                id: "i91",
-              },
-            ],
+                id: "i91"
+              }
+            ]
           }),
           item = list.getItem(node.firstChild);
 
@@ -4296,29 +4296,29 @@ describe("Ext.list.Tree", function () {
               children: [
                 {
                   id: "i111",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i12",
               children: [
                 {
                   id: "i121",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i13",
               children: [
                 {
                   id: "i131",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
+                  leaf: true
+                }
+              ]
+            }
+          ]
         },
         {
           id: "i2",
@@ -4328,29 +4328,29 @@ describe("Ext.list.Tree", function () {
               children: [
                 {
                   id: "i211",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i22",
               children: [
                 {
                   id: "i221",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i23",
               children: [
                 {
                   id: "i231",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
+                  leaf: true
+                }
+              ]
+            }
+          ]
         },
         {
           id: "i3",
@@ -4360,30 +4360,30 @@ describe("Ext.list.Tree", function () {
               children: [
                 {
                   id: "i311",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i32",
               children: [
                 {
                   id: "i321",
-                  leaf: true,
-                },
-              ],
+                  leaf: true
+                }
+              ]
             },
             {
               id: "i33",
               children: [
                 {
                   id: "i331",
-                  leaf: true,
-                },
-              ],
-            },
-          ],
-        },
+                  leaf: true
+                }
+              ]
+            }
+          ]
+        }
       ];
     });
 
@@ -4481,7 +4481,7 @@ describe("Ext.list.Tree", function () {
     describe("with singleExpand: true", function () {
       beforeEach(function () {
         makeList({
-          singleExpand: true,
+          singleExpand: true
         });
       });
 
@@ -4554,21 +4554,21 @@ describe("Ext.list.Tree", function () {
         getItem("i2").expand();
         expect(order).toEqual([
           ["c", "i1"],
-          ["e", "i2"],
+          ["e", "i2"]
         ]);
         order = [];
 
         getItem("i3").expand();
         expect(order).toEqual([
           ["c", "i2"],
-          ["e", "i3"],
+          ["e", "i3"]
         ]);
         order = [];
 
         getItem("i1").expand();
         expect(order).toEqual([
           ["c", "i3"],
-          ["e", "i1"],
+          ["e", "i1"]
         ]);
       });
     });
@@ -4580,7 +4580,7 @@ describe("Ext.list.Tree", function () {
 
     beforeEach(function () {
       makeList({
-        renderTo: null,
+        renderTo: null
       });
 
       ct = new Ext.container.Container({
@@ -4589,15 +4589,15 @@ describe("Ext.list.Tree", function () {
         height: 600,
         layout: {
           type: "vbox",
-          align: "stretch",
+          align: "stretch"
         },
         items: [
           {
             xtype: "component",
-            flex: 1,
+            flex: 1
           },
-          list,
-        ],
+          list
+        ]
       });
 
       c = ct.items.first();
@@ -4640,7 +4640,7 @@ describe("Ext.list.Tree", function () {
       var h = c.getHeight();
       root.appendChild({
         id: "i9",
-        text: "Foo",
+        text: "Foo"
       });
       expect(c.getHeight()).toBeLessThan(h);
       expect(c.getHeight()).toBe(600 - listHeight());

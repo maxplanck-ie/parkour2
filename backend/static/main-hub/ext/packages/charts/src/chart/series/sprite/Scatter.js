@@ -58,7 +58,7 @@ Ext.define("Ext.chart.series.sprite.Scatter", {
           markerCfg = {
             type: "items",
             translationX: x,
-            translationY: y,
+            translationY: y
           };
           params = [me, markerCfg, { store: me.getStore() }, i];
           changes = Ext.callback(attr.renderer, null, params, 0, series);
@@ -131,7 +131,7 @@ Ext.define("Ext.chart.series.sprite.Scatter", {
         null,
         params,
         0,
-        me.getSeries(),
+        me.getSeries()
       );
       if (typeof changes === "string") {
         labelCfg.text = changes;
@@ -141,5 +141,5 @@ Ext.define("Ext.chart.series.sprite.Scatter", {
     }
 
     me.putMarker("labels", labelCfg, labelId);
-  },
+  }
 });

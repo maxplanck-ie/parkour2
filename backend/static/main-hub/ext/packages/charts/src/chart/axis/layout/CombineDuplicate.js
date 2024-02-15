@@ -15,5 +15,5 @@ Ext.define("Ext.chart.axis.layout.CombineDuplicate", {
       return result;
     }
     return this.labelMap[value];
-  },
+  }
 });

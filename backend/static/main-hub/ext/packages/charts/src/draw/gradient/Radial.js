@@ -45,7 +45,7 @@ Ext.define("Ext.draw.gradient.Radial", {
     start: {
       x: 0,
       y: 0,
-      r: 0,
+      r: 0
     },
     /**
      * @cfg {Object} end The ending circle of the gradient.
@@ -53,8 +53,8 @@ Ext.define("Ext.draw.gradient.Radial", {
     end: {
       x: 0,
       y: 0,
-      r: 1,
-    },
+      r: 1
+    }
   },
 
   applyStart: function (newStart, oldStart) {
@@ -64,7 +64,7 @@ Ext.define("Ext.draw.gradient.Radial", {
     var circle = {
       x: oldStart.x,
       y: oldStart.y,
-      r: oldStart.r,
+      r: oldStart.r
     };
 
     if ("x" in newStart) {
@@ -94,7 +94,7 @@ Ext.define("Ext.draw.gradient.Radial", {
     var circle = {
       x: oldEnd.x,
       y: oldEnd.y,
-      r: oldEnd.r,
+      r: oldEnd.r
     };
 
     if ("x" in newEnd) {
@@ -133,7 +133,7 @@ Ext.define("Ext.draw.gradient.Radial", {
         start.r * Math.max(w, h),
         x + end.x * w,
         y + end.y * h,
-        end.r * Math.max(w, h),
+        end.r * Math.max(w, h)
       ),
       stops = this.getStops(),
       ln = stops.length,
@@ -143,5 +143,5 @@ Ext.define("Ext.draw.gradient.Radial", {
       gradient.addColorStop(stops[i].offset, stops[i].color);
     }
     return gradient;
-  },
+  }
 });

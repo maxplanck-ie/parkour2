@@ -55,5 +55,5 @@ Ext.define("Ext.parse.symbol.Paren", {
 
     parser.advance(")");
     return ret;
-  },
+  }
 });

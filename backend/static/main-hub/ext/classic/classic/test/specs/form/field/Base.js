@@ -5,9 +5,9 @@ describe("Ext.form.field.Base", function () {
     cfg = Ext.apply(
       {
         ariaRole: "foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      cfg,
+      cfg
     );
 
     return (c = new Ext.form.field.Base(cfg));
@@ -28,7 +28,7 @@ describe("Ext.form.field.Base", function () {
   it("should encode the input value in the template", function () {
     makeField({
       renderTo: Ext.getBody(),
-      value: 'test "  <br/> test',
+      value: 'test "  <br/> test'
     });
 
     expect(c.inputEl.dom.value).toBe('test "  <br/> test');
@@ -43,7 +43,7 @@ describe("Ext.form.field.Base", function () {
     it("should add the readOnlyCls if configured with readOnly: true", function () {
       makeField({
         readOnly: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.el.hasCls(c.readOnlyCls)).toBe(true);
     });
@@ -51,7 +51,7 @@ describe("Ext.form.field.Base", function () {
     it("should add readOnly to the inputEl if configured with readOnly: true", function () {
       makeField({
         readOnly: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.inputEl.dom.readOnly).toBe(true);
     });
@@ -60,14 +60,14 @@ describe("Ext.form.field.Base", function () {
       makeField({
         readOnly: true,
         renderTo: Ext.getBody(),
-        readOnlyCls: "myCustomReadOnlyCls",
+        readOnlyCls: "myCustomReadOnlyCls"
       });
       expect(c.el.hasCls("myCustomReadOnlyCls")).toBe(true);
     });
 
     it("should be able to set readOnly: true at runtime", function () {
       makeField({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       c.setReadOnly(true);
       expect(c.el.hasCls(c.readOnlyCls)).toBe(true);
@@ -77,7 +77,7 @@ describe("Ext.form.field.Base", function () {
     it("should be able to set readOnly: false at runtime", function () {
       makeField({
         renderTo: Ext.getBody(),
-        readOnly: true,
+        readOnly: true
       });
       c.setReadOnly(false);
       expect(c.el.hasCls(c.readOnlyCls)).toBe(false);
@@ -90,14 +90,14 @@ describe("Ext.form.field.Base", function () {
       it("should always return false when hideLabel: true", function () {
         makeField({
           hideLabel: true,
-          fieldLabel: "Foo",
+          fieldLabel: "Foo"
         });
         expect(c.hasVisibleLabel()).toBe(false);
       });
 
       it("should return false with an empty label and hideEmptyLabel: true", function () {
         makeField({
-          hideEmptyLabel: true,
+          hideEmptyLabel: true
         });
         expect(c.hasVisibleLabel()).toBe(false);
       });
@@ -105,7 +105,7 @@ describe("Ext.form.field.Base", function () {
       it("should return true when we specify a label, even if it's empty", function () {
         makeField({
           fieldLabel: "",
-          hideEmptyLabel: false,
+          hideEmptyLabel: false
         });
         expect(c.hasVisibleLabel()).toBe(true);
       });
@@ -113,7 +113,7 @@ describe("Ext.form.field.Base", function () {
       it("should return true when we have a label and hideEmptyLabel: true", function () {
         makeField({
           fieldLabel: "Foo",
-          hideEmptyLabel: true,
+          hideEmptyLabel: true
         });
         expect(c.hasVisibleLabel()).toBe(true);
       });
@@ -121,7 +121,7 @@ describe("Ext.form.field.Base", function () {
 
     it("should be able to set the label before being rendered", function () {
       makeField({
-        labelSeparator: "",
+        labelSeparator: ""
       });
       c.setFieldLabel("Foo");
       c.render(Ext.getBody());
@@ -132,7 +132,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: "",
         fieldLabel: "Foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.labelTextEl.dom).hasHTML("Foo");
     });
@@ -141,7 +141,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         fieldLabel: "",
         hideEmptyLabel: false,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.labelEl.isVisible()).toBe(true);
     });
@@ -150,7 +150,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         fieldLabel: "",
         hideEmptyLabel: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.labelEl.isVisible()).toBe(false);
     });
@@ -159,7 +159,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         fieldLabel: "Foo",
         hideLabel: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(c.labelEl.isVisible()).toBe(false);
     });
@@ -168,7 +168,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: "",
         renderTo: Ext.getBody(),
-        fieldLabel: "Foo",
+        fieldLabel: "Foo"
       });
       c.setFieldLabel("Bar");
       expect(c.labelTextEl.dom).hasHTML("Bar");
@@ -178,7 +178,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: ":",
         renderTo: Ext.getBody(),
-        fieldLabel: "Foo",
+        fieldLabel: "Foo"
       });
       c.setFieldLabel("Bar");
       expect(c.labelTextEl.dom).hasHTML("Bar:");
@@ -188,7 +188,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: ":",
         renderTo: Ext.getBody(),
-        fieldLabel: "Foo",
+        fieldLabel: "Foo"
       });
       c.setFieldLabel("Bar:");
       expect(c.labelTextEl.dom).hasHTML("Bar:");
@@ -198,7 +198,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: ":",
         renderTo: Ext.getBody(),
-        fieldLabel: "Foo",
+        fieldLabel: "Foo"
       });
       expect(c.labelTextEl.dom).hasHTML("Foo:");
     });
@@ -207,7 +207,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         labelSeparator: ":",
         renderTo: Ext.getBody(),
-        fieldLabel: "Foo:",
+        fieldLabel: "Foo:"
       });
       expect(c.labelTextEl.dom).hasHTML("Foo:");
     });
@@ -216,7 +216,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         fieldLabel: "Foo",
         hideEmptyLabel: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       c.setFieldLabel("");
       expect(c.labelEl.isVisible()).toBe(false);
@@ -226,7 +226,7 @@ describe("Ext.form.field.Base", function () {
       makeField({
         fieldLabel: "",
         hideEmptyLabel: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       c.setFieldLabel("Foo");
       expect(c.labelEl.isVisible()).toBe(true);
@@ -242,14 +242,14 @@ describe("Ext.form.field.Base", function () {
           {
             renderTo: Ext.getBody(),
             listeners: {
-              validitychange: spy,
+              validitychange: spy
             },
             getErrors: function () {
               return error === null ? [] : [error];
-            },
+            }
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -266,7 +266,7 @@ describe("Ext.form.field.Base", function () {
       describe("initialization", function () {
         it("should not fire the event with a valid value", function () {
           makeDisableField({
-            disabled: true,
+            disabled: true
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -274,7 +274,7 @@ describe("Ext.form.field.Base", function () {
         it("should not fire the event with an invalid value", function () {
           error = "Foo";
           makeDisableField({
-            disabled: true,
+            disabled: true
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -283,7 +283,7 @@ describe("Ext.form.field.Base", function () {
       describe("enabling before having validated", function () {
         it("should not fire the event with a valid value", function () {
           makeDisableField({
-            disabled: true,
+            disabled: true
           });
           c.enable();
           expect(spy).not.toHaveBeenCalled();
@@ -292,7 +292,7 @@ describe("Ext.form.field.Base", function () {
         it("should not fire the event with an invalid value", function () {
           error = "Foo";
           makeDisableField({
-            disabled: true,
+            disabled: true
           });
           c.enable();
           expect(spy).not.toHaveBeenCalled();
@@ -302,7 +302,7 @@ describe("Ext.form.field.Base", function () {
       describe("enabling after having validated", function () {
         beforeEach(function () {
           makeDisableField({
-            disabled: true,
+            disabled: true
           });
         });
 
@@ -435,7 +435,7 @@ describe("Ext.form.field.Base", function () {
           allowBlank: false,
           getErrors: function () {
             return ["Some error"];
-          },
+          }
         });
       });
 
@@ -562,15 +562,15 @@ describe("Ext.form.field.Base", function () {
 
           expect(c).toHaveAttr(
             "aria-describedby",
-            c.id + "-ariaStatusEl " + c.id + "-ariaHelpEl",
+            c.id + "-ariaStatusEl " + c.id + "-ariaHelpEl"
           );
         });
 
         it("should not be overridden when defined via config", function () {
           createField({
             ariaAttributes: {
-              "aria-describedby": "throbbe",
-            },
+              "aria-describedby": "throbbe"
+            }
           });
 
           expect(c).toHaveAttr("aria-describedby", "throbbe");
@@ -581,8 +581,8 @@ describe("Ext.form.field.Base", function () {
         it("should set aria-foo", function () {
           createField({
             ariaAttributes: {
-              "aria-foo": "bar",
-            },
+              "aria-foo": "bar"
+            }
           });
 
           expect(c).toHaveAttr("aria-foo", "bar");

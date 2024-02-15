@@ -20,19 +20,19 @@ describe(
                 cls: "findIt",
                 children: [
                   {
-                    id: "child4_1_1",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    id: "child4_1_1"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
 
       input = Ext.getBody().createChild({
         id: "ExtElementInputHelper",
         tag: "input",
-        type: "text",
+        type: "text"
       });
 
       child1 = Ext.get("child1");
@@ -48,7 +48,7 @@ describe(
         [el, input, child1, child2, child3, child4, child4_1, child4_1_1],
         function (el) {
           el.destroy();
-        },
+        }
       );
     });
 
@@ -75,7 +75,7 @@ describe(
         describe("2", function () {
           it("should not return the el", function () {
             expect(child4_1.findParentNode(".wrapper", 2)).toEqual(
-              Ext.getDom(el),
+              Ext.getDom(el)
             );
           });
         });
@@ -269,13 +269,13 @@ describe(
 
       it("should include itself if it matches", function () {
         expect(child4_1_1.findParent("#child4_1_1", null, true)).toBe(
-          child4_1_1,
+          child4_1_1
         );
       });
 
       it("should default the maxDepth to 50 or the document element", function () {
         var root = Ext.getBody().createChild({
-            cls: "findParentRoot",
+            cls: "findParentRoot"
           }),
           current = root,
           els = [root],
@@ -287,12 +287,12 @@ describe(
         }
 
         expect(current.findParent(".findParentRoot", undefined, true)).toBe(
-          root,
+          root
         );
         current = current.createChild();
         els.push(current);
         expect(
-          current.findParent(".findParentRoot", undefined, true),
+          current.findParent(".findParentRoot", undefined, true)
         ).toBeNull();
 
         expect(els[10].findParent(".doesntExist")).toBeNull();
@@ -330,7 +330,7 @@ describe(
 
           it("should include an element within the limit", function () {
             expect(child4_1_1.findParent(".findIt", child4, true)).toBe(
-              child4_1,
+              child4_1
             );
           });
 
@@ -361,5 +361,5 @@ describe(
       });
     });
   },
-  "/src/dom/Element.traversal.js",
+  "/src/dom/Element.traversal.js"
 );

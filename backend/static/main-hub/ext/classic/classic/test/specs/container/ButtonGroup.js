@@ -19,9 +19,9 @@ describe("Ext.container.ButtonGroup", function () {
   function makeGroup(cfg) {
     cfg = Ext.apply(
       {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      cfg,
+      cfg
     );
 
     return createButtonGroup(cfg);
@@ -36,12 +36,12 @@ describe("Ext.container.ButtonGroup", function () {
       var panel = new Ext.Panel({
         items: [
           {
-            xtype: "buttongroup",
-          },
-        ],
+            xtype: "buttongroup"
+          }
+        ]
       });
       expect(
-        panel.items.getAt(0) instanceof Ext.container.ButtonGroup,
+        panel.items.getAt(0) instanceof Ext.container.ButtonGroup
       ).toBeTruthy();
 
       panel.destroy();
@@ -52,16 +52,16 @@ describe("Ext.container.ButtonGroup", function () {
     it("should default to table layout", function () {
       createButtonGroup();
       expect(
-        group.getLayout() instanceof Ext.layout.container.Table,
+        group.getLayout() instanceof Ext.layout.container.Table
       ).toBeTruthy();
     });
 
     it("should allow overriding the layout", function () {
       createButtonGroup({
-        layout: { type: "hbox" },
+        layout: { type: "hbox" }
       });
       expect(
-        group.getLayout() instanceof Ext.layout.container.HBox,
+        group.getLayout() instanceof Ext.layout.container.HBox
       ).toBeTruthy();
     });
 
@@ -69,7 +69,7 @@ describe("Ext.container.ButtonGroup", function () {
     xit("should default to one table row", function () {
       createButtonGroup({
         items: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.el.select("tr").getCount()).toEqual(1);
@@ -80,7 +80,7 @@ describe("Ext.container.ButtonGroup", function () {
       createButtonGroup({
         columns: 5,
         items: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.getLayout().columns).toEqual(5);
@@ -90,7 +90,7 @@ describe("Ext.container.ButtonGroup", function () {
   describe("Children", function () {
     it("should default child items to an xtype of 'button'", function () {
       createButtonGroup({
-        items: [{}, { xtype: "splitbutton" }],
+        items: [{}, { xtype: "splitbutton" }]
       });
 
       expect(group.items.getAt(0).xtype).toEqual("button");
@@ -101,7 +101,7 @@ describe("Ext.container.ButtonGroup", function () {
   describe("Title", function () {
     it("should have no title by default", function () {
       createButtonGroup({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.title).toBeNull();
@@ -111,7 +111,7 @@ describe("Ext.container.ButtonGroup", function () {
     it("should allow configuring a title", function () {
       createButtonGroup({
         title: "Group Title",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.header.getTitle().getText()).toEqual("Group Title");
@@ -122,7 +122,7 @@ describe("Ext.container.ButtonGroup", function () {
   describe("Element classes", function () {
     it("should have a className of 'x-btn-group-notitle' when no title is configured", function () {
       createButtonGroup({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.el).toHaveCls("x-btn-group-notitle");
@@ -131,7 +131,7 @@ describe("Ext.container.ButtonGroup", function () {
     it("should not have a className of 'x-btn-group-notitle' when a title is configured", function () {
       createButtonGroup({
         title: "Group Title",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.el).not.toHaveCls("x-btn-group-notitle");
@@ -139,7 +139,7 @@ describe("Ext.container.ButtonGroup", function () {
 
     it("should have a className of 'x-btn-group' by default", function () {
       createButtonGroup({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.el).toHaveCls("x-btn-group");
@@ -150,7 +150,7 @@ describe("Ext.container.ButtonGroup", function () {
         baseCls: "x-test",
         // x-test doesn't support sass framing we must deactivate frame to do this test in IE
         frame: false,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.el).not.toHaveCls("x-btn-group");
@@ -161,7 +161,7 @@ describe("Ext.container.ButtonGroup", function () {
   describe("Framing", function () {
     it("should default to having a frame", function () {
       createButtonGroup({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.frame).toBeTruthy();
@@ -172,7 +172,7 @@ describe("Ext.container.ButtonGroup", function () {
     it("should allow turning off the frame", function () {
       createButtonGroup({
         frame: false,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(group.frame).toBeFalsy();
@@ -203,14 +203,14 @@ describe("Ext.container.ButtonGroup", function () {
       describe("with header", function () {
         beforeEach(function () {
           makeGroup({
-            title: "frobbe",
+            title: "frobbe"
           });
         });
 
         it("should have aria-labelledby", function () {
           expect(group.body).toHaveAttr(
             "aria-labelledby",
-            group.header.titleCmp.textEl.id,
+            group.header.titleCmp.textEl.id
           );
         });
 
@@ -223,7 +223,7 @@ describe("Ext.container.ButtonGroup", function () {
         beforeEach(function () {
           makeGroup({
             title: "bonzo",
-            header: false,
+            header: false
           });
         });
 
@@ -240,7 +240,7 @@ describe("Ext.container.ButtonGroup", function () {
         beforeEach(function () {
           makeGroup({
             title: "throbbe",
-            header: false,
+            header: false
           });
 
           group.setIconCls("guzzard");

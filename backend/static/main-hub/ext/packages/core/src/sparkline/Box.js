@@ -80,7 +80,7 @@ Ext.define("Ext.sparkline.Box", {
     /**
      * @cfg {Number} [chartRangeMax] The maximum value to use for the range of Y values of the chart - Defaults to the minimum value supplied.
      */
-    chartRangeMax: null,
+    chartRangeMax: null
   },
 
   tipTpl: [
@@ -94,11 +94,11 @@ Ext.define("Ext.sparkline.Box", {
           lo: "Left Outlier",
           ro: "Right Outlier",
           lw: "Left Whisker",
-          rw: "Right Whisker",
+          rw: "Right Whisker"
         };
         return fields[v];
-      },
-    },
+      }
+    }
   ],
   tooltipFormatFieldlistKey: "field",
 
@@ -143,7 +143,7 @@ Ext.define("Ext.sparkline.Box", {
     var result = [
       { field: "lq", value: this.quartiles[0] },
       { field: "med", value: this.quartiles[1] },
-      { field: "uq", value: this.quartiles[2] },
+      { field: "uq", value: this.quartiles[2] }
     ];
     if (this.loutlier !== undefined) {
       result.push({ field: "lo", value: this.loutlier });
@@ -259,7 +259,7 @@ Ext.define("Ext.sparkline.Box", {
             canvasHeight / 2,
             spotRadius,
             outlierLineColor,
-            outlierFillColor,
+            outlierFillColor
           )
           .append();
       }
@@ -270,7 +270,7 @@ Ext.define("Ext.sparkline.Box", {
             canvasHeight / 2,
             spotRadius,
             outlierLineColor,
-            outlierFillColor,
+            outlierFillColor
           )
           .append();
       }
@@ -284,7 +284,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round((q3 - q1) * unitSize),
         Math.round(canvasHeight * 0.8),
         me.getBoxLineColor(),
-        me.getBoxFillColor(),
+        me.getBoxFillColor()
       )
       .append();
     // left whisker
@@ -294,7 +294,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round(canvasHeight / 2),
         Math.round((q1 - minValue) * unitSize + canvasLeft),
         Math.round(canvasHeight / 2),
-        lineColor,
+        lineColor
       )
       .append();
     canvas
@@ -303,7 +303,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round(canvasHeight / 4),
         Math.round((lwhisker - minValue) * unitSize + canvasLeft),
         Math.round(canvasHeight - canvasHeight / 4),
-        whiskerColor,
+        whiskerColor
       )
       .append();
     // right whisker
@@ -313,7 +313,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round(canvasHeight / 2),
         Math.round((q3 - minValue) * unitSize + canvasLeft),
         Math.round(canvasHeight / 2),
-        lineColor,
+        lineColor
       )
       .append();
     canvas
@@ -322,7 +322,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round(canvasHeight / 4),
         Math.round((rwhisker - minValue) * unitSize + canvasLeft),
         Math.round(canvasHeight - canvasHeight / 4),
-        whiskerColor,
+        whiskerColor
       )
       .append();
     // median line
@@ -332,7 +332,7 @@ Ext.define("Ext.sparkline.Box", {
         Math.round(canvasHeight * 0.1),
         Math.round((q2 - minValue) * unitSize + canvasLeft),
         Math.round(canvasHeight * 0.9),
-        me.getMedianColor(),
+        me.getMedianColor()
       )
       .append();
     if (me.target) {
@@ -343,7 +343,7 @@ Ext.define("Ext.sparkline.Box", {
           Math.round(canvasHeight / 2 - size),
           Math.round((me.target - minValue) * unitSize + canvasLeft),
           Math.round(canvasHeight / 2 + size),
-          targetColor,
+          targetColor
         )
         .append();
       canvas
@@ -352,7 +352,7 @@ Ext.define("Ext.sparkline.Box", {
           Math.round(canvasHeight / 2),
           Math.round((me.target - minValue) * unitSize + canvasLeft + size),
           Math.round(canvasHeight / 2),
-          targetColor,
+          targetColor
         )
         .append();
     }
@@ -363,5 +363,5 @@ Ext.define("Ext.sparkline.Box", {
       me.updateDisplay();
     }
     canvas.render();
-  },
+  }
 });

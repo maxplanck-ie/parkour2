@@ -23,5 +23,5 @@ Ext.define("Ext.toolbar.Separator", {
   alternateClassName: "Ext.Toolbar.Separator",
   baseCls: Ext.baseCSSPrefix + "toolbar-separator",
 
-  ariaRole: "separator",
+  ariaRole: "separator"
 });

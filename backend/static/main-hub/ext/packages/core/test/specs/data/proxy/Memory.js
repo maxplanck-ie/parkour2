@@ -10,20 +10,20 @@ describe("Ext.data.proxy.Memory", function () {
           {
             id: 1,
             name: "Ed Spencer",
-            phoneNumber: "555 1234",
+            phoneNumber: "555 1234"
           },
           {
             id: 2,
             name: "Abe Elias",
-            phoneNumber: "666 1234",
-          },
-        ],
+            phoneNumber: "666 1234"
+          }
+        ]
       },
       model: "spec.User",
       reader: {
         type: "json",
-        rootProperty: "users",
-      },
+        rootProperty: "users"
+      }
     });
   }
 
@@ -34,13 +34,13 @@ describe("Ext.data.proxy.Memory", function () {
     for (i = 1; i <= 100; ++i) {
       largeDataSet.push({
         id: i,
-        name: "Item " + i,
+        name: "Item " + i
       });
     }
     proxy = new Ext.data.proxy.Memory({
       data: largeDataSet,
       model: "spec.User",
-      enablePaging: page,
+      enablePaging: page
     });
   }
 
@@ -54,8 +54,8 @@ describe("Ext.data.proxy.Memory", function () {
       fields: [
         { name: "id", type: "int" },
         { name: "name", type: "string" },
-        { name: "phone", type: "string", mapping: "phoneNumber" },
-      ],
+        { name: "phone", type: "string", mapping: "phoneNumber" }
+      ]
     });
   });
 
@@ -94,8 +94,8 @@ describe("Ext.data.proxy.Memory", function () {
         new Ext.util.Filter({
           filterFn: function (rec) {
             return rec.getId() % 2 === 0;
-          },
-        }),
+          }
+        })
       ]);
 
       proxy.read(operation);
@@ -109,8 +109,8 @@ describe("Ext.data.proxy.Memory", function () {
         new Ext.util.Filter({
           filterFn: function (rec) {
             return rec.getId() < 10;
-          },
-        }),
+          }
+        })
       ]);
       operation.setStart(0);
       operation.setLimit(20);
@@ -129,13 +129,13 @@ describe("Ext.data.proxy.Memory", function () {
         onCollectionAdd: function () {
           this.onCollectionAddCallCount++;
           this.callParent(arguments);
-        },
+        }
       });
 
       createSmallProxy();
       var store = new StoreSubclass({
         proxy: proxy,
-        autoLoad: true,
+        autoLoad: true
       });
 
       // One block of data has arrived in the collection
@@ -151,8 +151,8 @@ describe("Ext.data.proxy.Memory", function () {
         new Ext.util.Sorter({
           root: "data",
           property: "id",
-          direction: "DESC",
-        }),
+          direction: "DESC"
+        })
       ]);
 
       proxy.read(operation);
@@ -181,10 +181,10 @@ describe("Ext.data.proxy.Memory", function () {
       store = new Ext.data.Store(
         Ext.apply(
           {
-            model: "spec.User",
+            model: "spec.User"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -197,7 +197,7 @@ describe("Ext.data.proxy.Memory", function () {
       createLargeProxy(true);
       createStore({
         proxy: proxy,
-        pageSize: 10,
+        pageSize: 10
       });
       store.load();
       expect(store.getCount()).toBe(10);
@@ -212,9 +212,9 @@ describe("Ext.data.proxy.Memory", function () {
           {
             filterFn: function (rec) {
               return rec.getId() % 4 === 0;
-            },
-          },
-        ],
+            }
+          }
+        ]
       });
       store.load();
       expect(store.getCount()).toBe(25);
@@ -228,9 +228,9 @@ describe("Ext.data.proxy.Memory", function () {
         sorters: [
           {
             property: "name",
-            direction: "ASC",
-          },
-        ],
+            direction: "ASC"
+          }
+        ]
       });
       store.load();
       expect(store.first().get("name")).toBe("Abe Elias");
@@ -242,7 +242,7 @@ describe("Ext.data.proxy.Memory", function () {
       createStore({
         autoSync: true,
         proxy: proxy,
-        pageSize: 10000,
+        pageSize: 10000
       });
       store.load();
       expect(store.getCount()).toBe(100);
@@ -250,7 +250,7 @@ describe("Ext.data.proxy.Memory", function () {
       store.addFilter({
         filterFn: function (rec) {
           return rec.getId() % 4 === 0;
-        },
+        }
       });
       expect(store.getCount()).toBe(25);
 

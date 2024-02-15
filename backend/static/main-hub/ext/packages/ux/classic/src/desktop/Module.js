@@ -7,7 +7,7 @@
 
 Ext.define("Ext.ux.desktop.Module", {
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   constructor: function (config) {
@@ -15,5 +15,5 @@ Ext.define("Ext.ux.desktop.Module", {
     this.init();
   },
 
-  init: Ext.emptyFn,
+  init: Ext.emptyFn
 });

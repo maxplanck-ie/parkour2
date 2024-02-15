@@ -8,7 +8,7 @@ Ext.define("Ext.util.InputBlocker", {
   blockInputs: function () {
     if (Ext.browser.is.ie) {
       Ext.select(
-        ".x-field-text .x-input:not(.x-item-disabled) .x-input-el, .x-field-textarea .x-input:not(.x-item-disabled) .x-input-el, .x-field-search .x-input:not(.x-item-disabled) .x-input-el",
+        ".x-field-text .x-input:not(.x-item-disabled) .x-input-el, .x-field-textarea .x-input:not(.x-item-disabled) .x-input-el, .x-field-search .x-input:not(.x-item-disabled) .x-input-el"
       ).each(function (item) {
         if (item.dom.offsetWidth > 0) {
           item.dom.setAttribute("disabled", true);
@@ -24,5 +24,5 @@ Ext.define("Ext.util.InputBlocker", {
         item.dom.removeAttribute("overlayfix");
       });
     }
-  },
+  }
 });

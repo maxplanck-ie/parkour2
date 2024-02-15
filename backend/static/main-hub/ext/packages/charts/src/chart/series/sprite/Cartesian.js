@@ -39,7 +39,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: "number",
         visibleMaxY: "number",
         innerWidth: "number",
-        innerHeight: "number",
+        innerHeight: "number"
       },
       defaults: {
         labels: null,
@@ -54,7 +54,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: 1,
         visibleMaxY: 1,
         innerWidth: 1,
-        innerHeight: 1,
+        innerHeight: 1
       },
       triggers: {
         dataX: "dataX,bbox",
@@ -64,7 +64,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
         visibleMaxX: "panzoom",
         visibleMaxY: "panzoom",
         innerWidth: "panzoom",
-        innerHeight: "panzoom",
+        innerHeight: "panzoom"
       },
       updaters: {
         dataX: function (attr) {
@@ -96,9 +96,9 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
           attr.scalingCenterX = 0;
           attr.scalingCenterY = 0;
           this.applyTransformations(true);
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   processDataY: Ext.emptyFn,
@@ -166,7 +166,7 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
 
     var clip = inverseMatrix.transformList([
       [rect[0] - 1, rect[3] + 1],
-      [rect[0] + rect[2] + 1, -1],
+      [rect[0] + rect[2] + 1, -1]
     ]);
 
     clip = clip[0].concat(clip[1]);
@@ -203,11 +203,11 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
       center = imat.transformPoint([x, y]),
       positionLB = imat.transformPoint([
         x - selectionTolerance,
-        y - selectionTolerance,
+        y - selectionTolerance
       ]),
       positionTR = imat.transformPoint([
         x + selectionTolerance,
-        y + selectionTolerance,
+        y + selectionTolerance
       ]),
       left = Math.min(positionLB[0], positionTR[0]),
       right = Math.max(positionLB[0], positionTR[0]),
@@ -234,5 +234,5 @@ Ext.define("Ext.chart.series.sprite.Cartesian", {
     }
 
     return index;
-  },
+  }
 });

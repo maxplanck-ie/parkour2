@@ -29,19 +29,19 @@ Ext.define("Ext.draw.sprite.Square", {
          * @cfg {Number} [size=4] The size of the sprite.
          * Meant to be comparable to the size of a circle sprite with the same radius.
          */
-        size: "number",
+        size: "number"
       },
       defaults: {
         x: 0,
         y: 0,
-        size: 4,
+        size: 4
       },
       triggers: {
         x: "path",
         y: "path",
-        size: "size",
-      },
-    },
+        size: "size"
+      }
+    }
   },
 
   updatePath: function (path, attr) {
@@ -51,7 +51,7 @@ Ext.define("Ext.draw.sprite.Square", {
       y = attr.y;
 
     path.fromSvgString(
-      "M".concat(x - size, ",", y - size, "l", [s, 0, 0, s, -s, 0, 0, -s, "z"]),
+      "M".concat(x - size, ",", y - size, "l", [s, 0, 0, s, -s, 0, 0, -s, "z"])
     );
-  },
+  }
 });

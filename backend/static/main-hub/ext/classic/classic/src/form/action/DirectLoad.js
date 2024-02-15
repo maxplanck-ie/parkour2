@@ -77,7 +77,7 @@ Ext.define("Ext.form.action.DirectLoad", {
       options: timeout != null ? { timeout: timeout * 1000 } : null,
       metadata: metadata,
       callback: me.onComplete,
-      scope: me,
+      scope: me
     });
 
     fn.apply(window, args);
@@ -96,5 +96,5 @@ Ext.define("Ext.form.action.DirectLoad", {
     } else {
       this.onFailure(null);
     }
-  },
+  }
 });

@@ -10,7 +10,7 @@ Ext.define("Ext.device.FileSystem", {
     "Ext.device.Communicator",
     "Ext.device.filesystem.Cordova",
     "Ext.device.filesystem.Chrome",
-    "Ext.device.filesystem.Simulator",
+    "Ext.device.filesystem.Simulator"
   ],
 
   constructor: function () {
@@ -24,5 +24,5 @@ Ext.define("Ext.device.FileSystem", {
     }
 
     return Ext.create("Ext.device.filesystem.Simulator");
-  },
+  }
 });

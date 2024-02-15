@@ -4,7 +4,7 @@ Ext.define("Ext.scroll.LockingScroller", {
 
   config: {
     lockedScroller: null,
-    normalScroller: null,
+    normalScroller: null
   },
 
   scrollTo: function (x, y, animate) {
@@ -74,6 +74,6 @@ Ext.define("Ext.scroll.LockingScroller", {
 
     onNormalScroll: function (normalScroller, x, y) {
       this.position.x = x;
-    },
-  },
+    }
+  }
 });

@@ -4,5 +4,5 @@ Ext.define("Ext.locale.sv_SE.grid.header.Container", {
   sortDescText: "Sortera fallande",
   lockText: "Lås kolumn",
   unlockText: "Lås upp kolumn",
-  columnsText: "Kolumner",
+  columnsText: "Kolumner"
 });

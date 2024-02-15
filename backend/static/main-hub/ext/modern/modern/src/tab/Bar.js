@@ -36,8 +36,8 @@ Ext.define("Ext.tab.Bar", {
      */
     layout: {
       type: "hbox",
-      align: "stretch",
-    },
+      align: "stretch"
+    }
   },
 
   eventedConfig: {
@@ -48,7 +48,7 @@ Ext.define("Ext.tab.Bar", {
      * @accessor
      * @evented
      */
-    activeTab: null,
+    activeTab: null
   },
 
   /**
@@ -67,7 +67,7 @@ Ext.define("Ext.tab.Bar", {
       tap: "onTabTap",
 
       delegate: "> tab",
-      scope: me,
+      scope: me
     });
   },
 
@@ -158,5 +158,5 @@ Ext.define("Ext.tab.Bar", {
     }
 
     this.callParent([item, index]);
-  },
+  }
 });

@@ -22,8 +22,8 @@ describe("grid-events", function () {
               "field8",
               "field9",
               "field10",
-              "group",
-            ],
+              "group"
+            ]
           });
 
         function triggerCellMouseEvent(type, rowIdx, cellIdx, button, x, y) {
@@ -45,9 +45,9 @@ describe("grid-events", function () {
           return grid.getView().getCellInclusive(
             {
               row: rowIdx,
-              column: cellIdx,
+              column: cellIdx
             },
-            true,
+            true
           );
         }
 
@@ -81,7 +81,7 @@ describe("grid-events", function () {
           for (i = 1; i <= 10; ++i) {
             defaultCols.push({
               name: "F" + i,
-              dataIndex: "field" + i,
+              dataIndex: "field" + i
             });
           }
 
@@ -97,13 +97,13 @@ describe("grid-events", function () {
               field8: i + "." + 8,
               field9: i + "." + 9,
               field10: i + "." + 10,
-              group: Math.floor((i + 4) / 5), // 1 to 5 are in group 1, 6 to 10 are in group 2
+              group: Math.floor((i + 4) / 5) // 1 to 5 are in group 1, 6 to 10 are in group 2
             });
           }
 
           store = {
             model: GridEventModel,
-            data: data,
+            data: data
           };
 
           // If we are creating a grouped grid, configure the Store with a groupField
@@ -121,17 +121,17 @@ describe("grid-events", function () {
               height: 500,
               bufferedRenderer: buffered,
               viewConfig: {
-                mouseOverOutBuffer: 0,
+                mouseOverOutBuffer: 0
               },
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             },
-            gridCfg || {},
+            gridCfg || {}
           );
 
           // If we are creating a grouped grid, use a grouping summary feature
           if (grouped) {
             grid.features = {
-              ftype: "groupingsummary",
+              ftype: "groupingsummary"
             };
           }
 
@@ -152,8 +152,8 @@ describe("grid-events", function () {
             beforeEach(function () {
               makeGrid(null, null, {
                 viewConfig: {
-                  mouseOverOutBuffer: 1,
-                },
+                  mouseOverOutBuffer: 1
+                }
               });
             });
 
@@ -169,7 +169,7 @@ describe("grid-events", function () {
               describe("longpresses", function () {
                 it("should fire beforeitemlongpress", function () {
                   var test = {
-                    setArgs: setArgs,
+                    setArgs: setArgs
                   };
                   spyOn(test, "setArgs").andCallThrough();
                   grid.on("beforeitemlongpress", test.setArgs);
@@ -184,7 +184,7 @@ describe("grid-events", function () {
 
                 it("should fire itemlongpress", function () {
                   var test = {
-                    setArgs: setArgs,
+                    setArgs: setArgs
                   };
                   spyOn(test, "setArgs").andCallThrough();
                   grid.on("itemlongpress", test.setArgs);
@@ -224,7 +224,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmouseenter if beforeitemmouseenter is vetoed", function () {
                   grid.on({
                     beforeitemmouseenter: retFalse,
-                    itemmouseenter: setCalled,
+                    itemmouseenter: setCalled
                   });
                   triggerCellMouseEvent("mouseover", 1, 3);
                   expect(called).toBe(false);
@@ -260,7 +260,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmouseleave if beforeitemmouseleave is vetoed", function () {
                   grid.on({
                     beforeitemmouseleave: retFalse,
-                    itemmouseleave: setCalled,
+                    itemmouseleave: setCalled
                   });
                   triggerCellMouseEvent("mouseover", 1, 3);
                   triggerCellMouseEvent("mouseout", 1, 3);
@@ -309,7 +309,7 @@ describe("grid-events", function () {
                 it("should not trigger containermouseout if beforecontainermouseout is vetoed", function () {
                   grid.on({
                     beforecontainermouseout: retFalse,
-                    containermouseout: setCalled,
+                    containermouseout: setCalled
                   });
                   triggerContainerMouseEvent("mouseout");
 
@@ -347,7 +347,7 @@ describe("grid-events", function () {
                 it("should not trigger containermouseover if beforecontainermouseover is vetoed", function () {
                   grid.on({
                     beforecontainermouseover: retFalse,
-                    containermouseover: setCalled,
+                    containermouseover: setCalled
                   });
                   triggerContainerMouseEvent("mouseover");
 
@@ -391,7 +391,7 @@ describe("grid-events", function () {
                 it("should not trigger itemclick if beforeitemclick is vetoed", function () {
                   grid.on({
                     beforeitemclick: retFalse,
-                    itemclick: setCalled,
+                    itemclick: setCalled
                   });
                   triggerCellMouseEvent("click", 2, 4);
                   expect(called).toBe(false);
@@ -414,7 +414,7 @@ describe("grid-events", function () {
                 it("should not trigger itemcontextmenu if beforeitemcontextmenu is vetoed", function () {
                   grid.on({
                     beforeitemcontextmenu: retFalse,
-                    itemcontextmenu: setCalled,
+                    itemcontextmenu: setCalled
                   });
                   triggerCellMouseEvent("contextmenu", 2, 4, 2);
                   expect(called).toBe(false);
@@ -437,7 +437,7 @@ describe("grid-events", function () {
                 it("should not trigger itemdblclick if beforeitemdblclick is vetoed", function () {
                   grid.on({
                     beforeitemdblclick: retFalse,
-                    itemdblclick: setCalled,
+                    itemdblclick: setCalled
                   });
                   triggerCellMouseEvent("dblclick", 2, 4);
                   expect(called).toBe(false);
@@ -460,7 +460,7 @@ describe("grid-events", function () {
                 it("should not trigger itemkeydown if beforeitemkeydown is vetoed", function () {
                   grid.on({
                     beforeitemkeydown: retFalse,
-                    itemkeydown: setCalled,
+                    itemkeydown: setCalled
                   });
                   triggerCellKeyEvent("keydown", 1, 3);
                   expect(called).toBe(false);
@@ -483,7 +483,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmousedown if beforeitemmousedown is vetoed", function () {
                   grid.on({
                     beforeitemmousedown: retFalse,
-                    itemmousedown: setCalled,
+                    itemmousedown: setCalled
                   });
                   triggerCellMouseEvent("mousedown", 1, 3);
                   expect(called).toBe(false);
@@ -507,7 +507,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmouseenter if beforeitemmouseenter is vetoed", function () {
                   grid.on({
                     beforeitemmouseenter: retFalse,
-                    itemmouseenter: setCalled,
+                    itemmouseenter: setCalled
                   });
                   triggerCellMouseEvent("mouseover", 1, 3);
                   expect(called).toBe(false);
@@ -533,7 +533,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmouseleave if beforeitemmouseleave is vetoed", function () {
                   grid.on({
                     beforeitemmouseleave: retFalse,
-                    itemmouseleave: setCalled,
+                    itemmouseleave: setCalled
                   });
                   triggerCellMouseEvent("mouseover", 1, 3);
                   triggerCellMouseEvent("mouseout", 1, 3);
@@ -557,7 +557,7 @@ describe("grid-events", function () {
                 it("should not trigger itemmouseup if beforeitemmouseup is vetoed", function () {
                   grid.on({
                     beforeitemmouseup: retFalse,
-                    itemmouseup: setCalled,
+                    itemmouseup: setCalled
                   });
                   triggerCellMouseEvent("mouseup", 1, 3);
                   expect(called).toBe(false);
@@ -570,7 +570,7 @@ describe("grid-events", function () {
                 var record = getRec(rowIndex);
                 expect(args[0]).toBe(view);
                 expect(args[1]).toBe(
-                  view.getCell(record, view.getHeaderAtIndex(colIndex)).dom,
+                  view.getCell(record, view.getHeaderAtIndex(colIndex)).dom
                 );
                 expect(args[2]).toBe(colIndex);
                 expect(args[3]).toBe(record);
@@ -595,7 +595,7 @@ describe("grid-events", function () {
                 it("should not trigger cellclick if beforecellclick is vetoed", function () {
                   grid.on({
                     beforecellclick: retFalse,
-                    cellclick: setCalled,
+                    cellclick: setCalled
                   });
                   triggerCellMouseEvent("click", 3, 6);
                   expect(called).toBe(false);
@@ -618,7 +618,7 @@ describe("grid-events", function () {
                 it("should not trigger cellcontextmenu if beforecellcontextmenu is vetoed", function () {
                   grid.on({
                     beforecellcontextmenu: retFalse,
-                    cellcontextmenu: setCalled,
+                    cellcontextmenu: setCalled
                   });
                   triggerCellMouseEvent("contextmenu", 3, 6);
                   expect(called).toBe(false);
@@ -641,7 +641,7 @@ describe("grid-events", function () {
                 it("should not trigger celldblclick if beforecelldblclick is vetoed", function () {
                   grid.on({
                     beforecelldblclick: retFalse,
-                    celldblclick: setCalled,
+                    celldblclick: setCalled
                   });
                   triggerCellMouseEvent("dblclick", 3, 6);
                   expect(called).toBe(false);
@@ -664,7 +664,7 @@ describe("grid-events", function () {
                 it("should not trigger cellkeydown if beforecellkeydown is vetoed", function () {
                   grid.on({
                     beforecellkeydown: retFalse,
-                    cellkeydown: setCalled,
+                    cellkeydown: setCalled
                   });
                   triggerCellKeyEvent("keydown", 3, 6);
                   expect(called).toBe(false);
@@ -687,7 +687,7 @@ describe("grid-events", function () {
                 it("should not trigger cellmousedown if beforecellmousedown is vetoed", function () {
                   grid.on({
                     beforecellmousedown: retFalse,
-                    cellmousedown: setCalled,
+                    cellmousedown: setCalled
                   });
                   triggerCellMouseEvent("mousedown", 3, 6);
                   expect(called).toBe(false);
@@ -710,7 +710,7 @@ describe("grid-events", function () {
                 it("should not trigger cellmouseup if beforecellmouseup is vetoed", function () {
                   grid.on({
                     beforecellmouseup: retFalse,
-                    cellmouseup: setCalled,
+                    cellmouseup: setCalled
                   });
                   triggerCellMouseEvent("mouseup", 3, 6);
                   expect(called).toBe(false);
@@ -748,7 +748,7 @@ describe("grid-events", function () {
                 it("should not trigger containerclick if beforecontainerclick is vetoed", function () {
                   grid.on({
                     beforecontainerclick: retFalse,
-                    containerclick: setCalled,
+                    containerclick: setCalled
                   });
                   triggerContainerMouseEvent("click");
                   expect(called).toBe(false);
@@ -771,7 +771,7 @@ describe("grid-events", function () {
                 it("should not trigger containercontextmenu if beforecontainercontextmenu is vetoed", function () {
                   grid.on({
                     beforecontainercontextmenu: retFalse,
-                    containercontextmenu: setCalled,
+                    containercontextmenu: setCalled
                   });
                   triggerContainerMouseEvent("contextmenu", 2);
                   expect(called).toBe(false);
@@ -794,7 +794,7 @@ describe("grid-events", function () {
                 it("should not trigger containerdblclick if beforecontainerdblclick is vetoed", function () {
                   grid.on({
                     beforecontainerdblclick: retFalse,
-                    containerdblclick: setCalled,
+                    containerdblclick: setCalled
                   });
                   triggerContainerMouseEvent("dblclick");
                   expect(called).toBe(false);
@@ -817,7 +817,7 @@ describe("grid-events", function () {
                 it("should not trigger containerkeydown if beforecontainerkeydown is vetoed", function () {
                   grid.on({
                     beforecontainerkeydown: retFalse,
-                    containerkeydown: setCalled,
+                    containerkeydown: setCalled
                   });
                   triggerContainerKeyEvent("keydown");
                   expect(called).toBe(false);
@@ -840,7 +840,7 @@ describe("grid-events", function () {
                 it("should not trigger containermousedown if beforecontainermousedown is vetoed", function () {
                   grid.on({
                     beforecontainermousedown: retFalse,
-                    containermousedown: setCalled,
+                    containermousedown: setCalled
                   });
                   triggerContainerMouseEvent("mousedown");
                   expect(called).toBe(false);
@@ -863,7 +863,7 @@ describe("grid-events", function () {
                 it("should not trigger containermouseout if beforecontainermouseout is vetoed", function () {
                   grid.on({
                     beforecontainermouseout: retFalse,
-                    containermouseout: setCalled,
+                    containermouseout: setCalled
                   });
                   triggerContainerMouseEvent("mouseout");
                   expect(called).toBe(false);
@@ -886,7 +886,7 @@ describe("grid-events", function () {
                 it("should not trigger containermouseover if beforecontainermouseover is vetoed", function () {
                   grid.on({
                     beforecontainermouseover: retFalse,
-                    containermouseover: setCalled,
+                    containermouseover: setCalled
                   });
                   triggerContainerMouseEvent("mouseover");
                   expect(called).toBe(false);
@@ -909,7 +909,7 @@ describe("grid-events", function () {
                 it("should not trigger containermouseup if beforecontainermouseup is vetoed", function () {
                   grid.on({
                     beforecontainermouseup: retFalse,
-                    containermouseup: setCalled,
+                    containermouseup: setCalled
                   });
                   triggerContainerMouseEvent("mouseup");
                   expect(called).toBe(false);
@@ -922,7 +922,7 @@ describe("grid-events", function () {
                 var record = getRec(rowIndex);
                 expect(args[0]).toBe(view);
                 expect(args[1]).toBe(
-                  view.getCell(record, view.getHeaderAtIndex(colIndex)).dom,
+                  view.getCell(record, view.getHeaderAtIndex(colIndex)).dom
                 );
                 expect(args[2]).toBe(rowIndex);
                 expect(args[3]).toBe(colIndex);
@@ -999,7 +999,7 @@ describe("grid-events", function () {
 
             beforeEach(function () {
               makeGrid(null, null, {
-                multiSelect: true,
+                multiSelect: true
               });
               sm = grid.getSelectionModel();
             });
@@ -1138,48 +1138,48 @@ describe("grid-events", function () {
                 {
                   locked: true,
                   text: "F1",
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
                   locked: true,
                   text: "F2",
-                  dataIndex: "field2",
+                  dataIndex: "field2"
                 },
                 {
                   locked: true,
                   text: "F3",
-                  dataIndex: "field3",
+                  dataIndex: "field3"
                 },
                 {
                   locked: true,
                   text: "F4",
-                  dataIndex: "field4",
+                  dataIndex: "field4"
                 },
                 {
                   locked: true,
                   text: "F5",
-                  dataIndex: "field5",
+                  dataIndex: "field5"
                 },
                 {
                   text: "F6",
-                  dataIndex: "field6",
+                  dataIndex: "field6"
                 },
                 {
                   text: "F7",
-                  dataIndex: "field7",
+                  dataIndex: "field7"
                 },
                 {
                   text: "F8",
-                  dataIndex: "field8",
+                  dataIndex: "field8"
                 },
                 {
                   text: "F9",
-                  dataIndex: "field9",
+                  dataIndex: "field9"
                 },
                 {
                   text: "F10",
-                  dataIndex: "field10",
-                },
+                  dataIndex: "field10"
+                }
               ]);
             });
 
@@ -1215,7 +1215,7 @@ describe("grid-events", function () {
                 expect(args[0] === view).toBe(true);
                 expect(args[1] === getRec(index)).toBe(true);
                 expect(
-                  args[2] === view.getNode(index).getElementsByTagName("tr")[0],
+                  args[2] === view.getNode(index).getElementsByTagName("tr")[0]
                 ).toBe(true);
                 expect(args[3]).toBe(index);
                 expect(args[4].type).toBe(type);
@@ -1262,7 +1262,7 @@ describe("grid-events", function () {
                 expect(args[0] === view).toBe(true);
                 expect(
                   args[1] ===
-                    view.getCell(record, view.getHeaderAtIndex(colIndex)).dom,
+                    view.getCell(record, view.getHeaderAtIndex(colIndex)).dom
                 ).toBe(true);
                 expect(args[2]).toBe(colIndex);
                 expect(args[3] === record).toBe(true);
@@ -1295,28 +1295,28 @@ describe("grid-events", function () {
                   {
                     locked: true,
                     text: "F1",
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     text: "F2",
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
                     locked: true,
                     text: "F3",
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
                     text: "F4",
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ],
                 false,
                 {
                   listeners: {
-                    viewready: spy,
-                  },
-                },
+                    viewready: spy
+                  }
+                }
               );
             });
 
@@ -1348,7 +1348,7 @@ describe("grid-events", function () {
             expect(args[0] === view).toBe(true);
             expect(
               args[1] ===
-                view.getCell(record, view.getHeaderAtIndex(colIndex)).dom,
+                view.getCell(record, view.getHeaderAtIndex(colIndex)).dom
             ).toBe(true);
             expect(args[2]).toBe(visibleColIndex);
             expect(args[3] === record).toBe(true);
@@ -1362,31 +1362,31 @@ describe("grid-events", function () {
               makeGrid([
                 {
                   text: "F1",
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
                   hidden: true,
                   text: "F2",
-                  dataIndex: "field2",
+                  dataIndex: "field2"
                 },
                 {
                   hidden: true,
                   text: "F3",
-                  dataIndex: "field3",
+                  dataIndex: "field3"
                 },
                 {
                   text: "F4",
-                  dataIndex: "field4",
+                  dataIndex: "field4"
                 },
                 {
                   hidden: true,
                   text: "F5",
-                  dataIndex: "field5",
+                  dataIndex: "field5"
                 },
                 {
                   text: "F6",
-                  dataIndex: "field6",
-                },
+                  dataIndex: "field6"
+                }
               ]);
             });
 
@@ -1415,52 +1415,52 @@ describe("grid-events", function () {
                 {
                   locked: true,
                   text: "F1",
-                  dataIndex: "field1",
+                  dataIndex: "field1"
                 },
                 {
                   locked: true,
                   hidden: true,
                   text: "F2",
-                  dataIndex: "field2",
+                  dataIndex: "field2"
                 },
                 {
                   locked: true,
                   hidden: true,
                   text: "F3",
-                  dataIndex: "field3",
+                  dataIndex: "field3"
                 },
                 {
                   locked: true,
                   text: "F4",
-                  dataIndex: "field4",
+                  dataIndex: "field4"
                 },
                 {
                   locked: true,
                   text: "F5",
-                  dataIndex: "field5",
+                  dataIndex: "field5"
                 },
                 {
                   text: "F6",
-                  dataIndex: "field6",
+                  dataIndex: "field6"
                 },
                 {
                   hidden: true,
                   text: "F7",
-                  dataIndex: "field7",
+                  dataIndex: "field7"
                 },
                 {
                   text: "F8",
-                  dataIndex: "field8",
+                  dataIndex: "field8"
                 },
                 {
                   hidden: true,
                   text: "F9",
-                  dataIndex: "field9",
+                  dataIndex: "field9"
                 },
                 {
                   text: "F10",
-                  dataIndex: "field10",
-                },
+                  dataIndex: "field10"
+                }
               ]);
             });
 
@@ -1508,13 +1508,13 @@ describe("grid-events", function () {
                 {
                   name: "F1",
                   dataIndex: "field1",
-                  field: "textfield",
-                },
+                  field: "textfield"
+                }
               ],
               null,
               {
-                plugins: [cellEditing],
-              },
+                plugins: [cellEditing]
+              }
             );
             col = grid.getColumnManager().getColumns()[0];
           });
@@ -1527,7 +1527,7 @@ describe("grid-events", function () {
             grid.getView().on("containermousedown", spy);
             cellEditing.startEditByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
             jasmine.fireMouseEvent(col.getEditor().inputEl, "mousedown");
             expect(spy).not.toHaveBeenCalled();
@@ -1537,7 +1537,7 @@ describe("grid-events", function () {
             grid.getView().on("containermouseup", spy);
             cellEditing.startEditByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
             jasmine.fireMouseEvent(col.getEditor().inputEl, "mouseup");
             expect(spy).not.toHaveBeenCalled();
@@ -1547,13 +1547,13 @@ describe("grid-events", function () {
             grid.getView().on("containerclick", spy);
             cellEditing.startEditByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
             jasmine.fireMouseEvent(col.getEditor().inputEl, "click");
             expect(spy).not.toHaveBeenCalled();
           });
         });
-      },
+      }
     );
   }
   createSuite(false);

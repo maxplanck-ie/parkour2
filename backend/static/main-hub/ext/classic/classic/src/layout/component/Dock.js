@@ -31,7 +31,7 @@ Ext.define("Ext.layout.component.Dock", {
     setSize: "setWidth",
     shrinkWrapDock: "shrinkWrapDockWidth",
     size: "width",
-    sizeModel: "widthModel",
+    sizeModel: "widthModel"
   },
 
   vertAxisProps: {
@@ -47,7 +47,7 @@ Ext.define("Ext.layout.component.Dock", {
     setSize: "setHeight",
     shrinkWrapDock: "shrinkWrapDockHeight",
     size: "height",
-    sizeModel: "heightModel",
+    sizeModel: "heightModel"
   },
 
   initializedBorders: -1,
@@ -81,21 +81,21 @@ Ext.define("Ext.layout.component.Dock", {
     Ext.baseCSSPrefix + "docked-noborder-top",
     Ext.baseCSSPrefix + "docked-noborder-right",
     Ext.baseCSSPrefix + "docked-noborder-bottom",
-    Ext.baseCSSPrefix + "docked-noborder-left",
+    Ext.baseCSSPrefix + "docked-noborder-left"
   ],
 
   noBorderClassesSides: {
     top: Ext.baseCSSPrefix + "docked-noborder-top",
     right: Ext.baseCSSPrefix + "docked-noborder-right",
     bottom: Ext.baseCSSPrefix + "docked-noborder-bottom",
-    left: Ext.baseCSSPrefix + "docked-noborder-left",
+    left: Ext.baseCSSPrefix + "docked-noborder-left"
   },
 
   borderWidthProps: {
     top: "border-top-width",
     right: "border-right-width",
     bottom: "border-bottom-width",
-    left: "border-left-width",
+    left: "border-left-width"
   },
 
   _itemCls: Ext.baseCSSPrefix + "docked",
@@ -379,7 +379,7 @@ Ext.define("Ext.layout.component.Dock", {
     var me = this,
       measure = me.measureAutoDimensions(
         ownerContext,
-        ownerContext.measureDimensions,
+        ownerContext.measureDimensions
       ),
       state = ownerContext.state,
       horzDone = state.horzDone,
@@ -437,7 +437,7 @@ Ext.define("Ext.layout.component.Dock", {
         measure.contentWidth,
         ownerContext.widthModel,
         me.horzAxisProps,
-        ownerContext.collapsedHorz,
+        ownerContext.collapsedHorz
       );
     vert =
       !vertDone &&
@@ -446,7 +446,7 @@ Ext.define("Ext.layout.component.Dock", {
         measure.contentHeight,
         ownerContext.heightModel,
         me.vertAxisProps,
-        ownerContext.collapsedVert,
+        ownerContext.collapsedVert
       );
 
     // We iterate forward and backward over the dockedItems at the same time based on
@@ -558,7 +558,7 @@ Ext.define("Ext.layout.component.Dock", {
     contentSize,
     sizeModel,
     axisProps,
-    collapsedAxis,
+    collapsedAxis
   ) {
     var me = this,
       begin = 0,
@@ -618,7 +618,7 @@ Ext.define("Ext.layout.component.Dock", {
       setSize: axisProps.setSize,
       shrinkWrapDock: ownerContext[axisProps.shrinkWrapDock],
       sizeModelName: axisProps.sizeModel,
-      dockedPixelsEnd: 0,
+      dockedPixelsEnd: 0
     };
   },
 
@@ -871,7 +871,7 @@ Ext.define("Ext.layout.component.Dock", {
       bodyContext = ownerContext.bodyContext,
       extraPaddingBegin = Math.max(
         borderBegin + paddingBegin - framingBegin,
-        0,
+        0
       ),
       bodyPos,
       bodySize,
@@ -986,7 +986,7 @@ Ext.define("Ext.layout.component.Dock", {
         options.ownerContext,
         itemContext,
         itemContext.target,
-        axis,
+        axis
       );
       itemContext.setProp(axis.posProp, axis.delta + pos);
     }
@@ -1066,7 +1066,7 @@ Ext.define("Ext.layout.component.Dock", {
           // so long as we set top and bottom margins on the bodyEl!
           ownerContext.bodyContext.setProp(
             "margin-bottom",
-            vert.dockedPixelsEnd,
+            vert.dockedPixelsEnd
           );
         }
 
@@ -1099,7 +1099,7 @@ Ext.define("Ext.layout.component.Dock", {
         // nope, just us to handle the constraint...
         ownerContext.invalidate({
           widthModel: widthModel,
-          heightModel: heightModel,
+          heightModel: heightModel
         });
         return false;
       }
@@ -1208,7 +1208,7 @@ Ext.define("Ext.layout.component.Dock", {
               after: after,
               axis: axis,
               ownerContext: ownerContext,
-              layout: this,
+              layout: this
             });
           }
         }
@@ -1508,7 +1508,7 @@ Ext.define("Ext.layout.component.Dock", {
       //<debug>
       if (!elFound) {
         Ext.log.error(
-          "Dock layout error for " + owner.id + ": bodyEl not found!",
+          "Dock layout error for " + owner.id + ": bodyEl not found!"
         );
       }
       //</debug>
@@ -1560,7 +1560,7 @@ Ext.define("Ext.layout.component.Dock", {
         //<debug>
         if (!elFound) {
           Ext.log.error(
-            "Dock layout error for " + owner.id + ": bodyWrapEl not found!",
+            "Dock layout error for " + owner.id + ": bodyWrapEl not found!"
           );
         }
         //</debug>
@@ -1639,7 +1639,7 @@ Ext.define("Ext.layout.component.Dock", {
   sizePolicy: {
     nostretch: {
       setsWidth: 0,
-      setsHeight: 0,
+      setsHeight: 0
     },
 
     horz: {
@@ -1649,12 +1649,12 @@ Ext.define("Ext.layout.component.Dock", {
         // shrinkWrapWidth and ours need to be maxed (calculatedFromShrinkWrap)
         setsWidth: 1,
         setsHeight: 0,
-        readsWidth: 1,
+        readsWidth: 1
       },
       stretch: {
         setsWidth: 1,
-        setsHeight: 0,
-      },
+        setsHeight: 0
+      }
     },
 
     vert: {
@@ -1662,17 +1662,17 @@ Ext.define("Ext.layout.component.Dock", {
       shrinkWrap: {
         setsWidth: 0,
         setsHeight: 1,
-        readsHeight: 1,
+        readsHeight: 1
       },
       stretch: {
         setsWidth: 0,
-        setsHeight: 1,
-      },
+        setsHeight: 1
+      }
     },
 
     stretchV: {
       setsWidth: 0,
-      setsHeight: 1,
+      setsHeight: 1
     },
 
     // Circular dependency with partial auto-sized panels:
@@ -1699,13 +1699,13 @@ Ext.define("Ext.layout.component.Dock", {
     autoStretchH: {
       readsWidth: 1,
       setsWidth: 1,
-      setsHeight: 0,
+      setsHeight: 0
     },
     autoStretchV: {
       readsHeight: 1,
       setsWidth: 0,
-      setsHeight: 1,
-    },
+      setsHeight: 1
+    }
   },
 
   getItemSizePolicy: function (item, ownerSizeModel) {
@@ -1844,10 +1844,10 @@ Ext.define("Ext.layout.component.Dock", {
         baseCls + "tr", // 1100 = 12
         baseCls + "trl", // 1101 = 13
         baseCls + "trb", // 1110 = 14
-        baseCls + "trbl", // 1111 = 15
+        baseCls + "trbl" // 1111 = 15
       ];
     }
 
     return table;
-  },
+  }
 });

@@ -11,13 +11,13 @@ Ext.define("Ext.fx.layout.card.Pop", {
 
     inAnimation: {
       type: "pop",
-      easing: "ease-out",
+      easing: "ease-out"
     },
     outAnimation: {
       type: "pop",
       easing: "ease-in",
-      out: true,
-    },
+      out: true
+    }
   },
 
   updateDuration: function (duration) {
@@ -28,5 +28,5 @@ Ext.define("Ext.fx.layout.card.Pop", {
     inAnimation.setDelay(halfDuration);
     inAnimation.setDuration(halfDuration);
     outAnimation.setDuration(halfDuration);
-  },
+  }
 });

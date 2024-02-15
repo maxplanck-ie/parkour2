@@ -56,7 +56,7 @@ xdescribe("Ext.util.History", function () {
         return hashHistory.length === 1;
       },
       "Hash history change #foo",
-      200,
+      200
     );
 
     runs(function () {
@@ -71,7 +71,7 @@ xdescribe("Ext.util.History", function () {
         return hashHistory.length === 2;
       },
       "Hash history change #bar",
-      200,
+      200
     );
 
     runs(function () {
@@ -86,7 +86,7 @@ xdescribe("Ext.util.History", function () {
         return hashHistory.length === 3;
       },
       "Hash history change #bletch",
-      200,
+      200
     );
 
     runs(function () {
@@ -101,7 +101,7 @@ xdescribe("Ext.util.History", function () {
         return hashHistory.length === 4;
       },
       "Hash history change #bar",
-      200,
+      200
     );
 
     runs(function () {
@@ -116,7 +116,7 @@ xdescribe("Ext.util.History", function () {
         return hashHistory.length === 5;
       },
       "Hash history change #foo",
-      200,
+      200
     );
 
     runs(function () {

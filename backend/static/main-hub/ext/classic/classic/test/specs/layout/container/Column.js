@@ -21,27 +21,27 @@ describe("Ext.layout.container.Column", function () {
           height: 500,
           layout: {
             type: "column",
-            columnCount: 3,
+            columnCount: 3
           },
           defaultType: "component",
           defaults: {
-            columnWidth: 1 / 3,
+            columnWidth: 1 / 3
           },
           items: [
             {
               // This is a little taller.
-              height: 110,
+              height: 110
             },
             {
-              height: 100,
+              height: 100
             },
             {
-              height: 100,
+              height: 100
             },
             {
-              height: 100,
-            },
-          ],
+              height: 100
+            }
+          ]
         }),
         item4 = container.items.items[3];
 
@@ -76,10 +76,10 @@ describe("Ext.layout.container.Column", function () {
             Ext.apply(
               {
                 xtype: "component",
-                style: "margin: 4px;",
+                style: "margin: 4px;"
               },
-              config,
-            ),
+              config
+            )
           );
         });
 
@@ -92,10 +92,10 @@ describe("Ext.layout.container.Column", function () {
               layout: "column",
               border: 0,
               bodyPadding: "6",
-              items: items,
+              items: items
             },
-            parentConfig,
-          ),
+            parentConfig
+          )
         );
       }
 
@@ -106,7 +106,7 @@ describe("Ext.layout.container.Column", function () {
       describe("configured width and height", function () {
         var parentConfig = {
           height: 100,
-          width: 100,
+          width: 100
         };
 
         describe("child items with columnWidth", function () {
@@ -114,7 +114,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 80, columnWidth: 0.25 },
               { height: 80, columnWidth: 0.25 },
-              { height: 80, columnWidth: 0.5 },
+              { height: 80, columnWidth: 0.5 }
             ]);
           });
 
@@ -130,7 +130,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 80, columnWidth: 0.5 },
               { height: 80, columnWidth: 0.5 },
-              { height: 80, width: 36 },
+              { height: 80, width: 36 }
             ]);
           });
 
@@ -146,7 +146,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 36, columnWidth: 0.5 },
               { height: 36, columnWidth: 0.6 },
-              { height: 36, width: 36 },
+              { height: 36, width: 36 }
             ]);
           });
 
@@ -165,7 +165,7 @@ describe("Ext.layout.container.Column", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { autoScroll: true },
-            parentConfig,
+            parentConfig
           );
 
           describe("vertical", function () {
@@ -173,7 +173,7 @@ describe("Ext.layout.container.Column", function () {
               makePanel(overflowParentConfig, [
                 { height: 36, width: 14 },
                 { height: 180, columnWidth: 1 },
-                { height: 36, width: 14 },
+                { height: 36, width: 14 }
               ]);
             });
 
@@ -189,7 +189,7 @@ describe("Ext.layout.container.Column", function () {
 
             it("should not have horizontal overflow", function () {
               expect(panel.body.dom.scrollWidth).toBe(
-                panel.getWidth() - scrollbarWidth,
+                panel.getWidth() - scrollbarWidth
               );
             });
           });
@@ -198,7 +198,7 @@ describe("Ext.layout.container.Column", function () {
             beforeEach(function () {
               makePanel(overflowParentConfig, {
                 width: 81 - scrollbarWidth,
-                height: 180,
+                height: 180
               });
             });
 
@@ -208,7 +208,7 @@ describe("Ext.layout.container.Column", function () {
 
             it("should have the correct scroll width", function () {
               expect(panel.body.dom.scrollWidth).toBe(
-                panel.getWidth() - scrollbarWidth + 1,
+                panel.getWidth() - scrollbarWidth + 1
               );
             });
           });
@@ -217,7 +217,7 @@ describe("Ext.layout.container.Column", function () {
             beforeEach(function () {
               makePanel(overflowParentConfig, {
                 height: 80 - scrollbarHeight,
-                width: 180,
+                width: 180
               });
             });
 
@@ -227,7 +227,7 @@ describe("Ext.layout.container.Column", function () {
 
             it("should not have vertical overflow", function () {
               expect(panel.body.dom.scrollHeight).toBe(
-                panel.getHeight() - scrollbarHeight,
+                panel.getHeight() - scrollbarHeight
               );
             });
           });
@@ -236,7 +236,7 @@ describe("Ext.layout.container.Column", function () {
             beforeEach(function () {
               makePanel(overflowParentConfig, {
                 height: 81 - scrollbarHeight,
-                width: 180,
+                width: 180
               });
             });
 
@@ -246,7 +246,7 @@ describe("Ext.layout.container.Column", function () {
 
             it("should have the correct scroll height", function () {
               expect(panel.body.dom.scrollHeight).toBe(
-                panel.getHeight() - scrollbarHeight + 1,
+                panel.getHeight() - scrollbarHeight + 1
               );
             });
           });
@@ -270,7 +270,7 @@ describe("Ext.layout.container.Column", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { autoScroll: true },
-            parentConfig,
+            parentConfig
           );
 
           beforeEach(function () {
@@ -286,7 +286,7 @@ describe("Ext.layout.container.Column", function () {
       describe("configured height, shrink wrap width", function () {
         var parentConfig = {
           height: 100,
-          shrinkWrap: 1,
+          shrinkWrap: 1
         };
 
         describe("child items with columnWidth", function () {
@@ -296,8 +296,8 @@ describe("Ext.layout.container.Column", function () {
               {
                 height: 80,
                 columnWidth: 0.8,
-                html: '<div style="width:40px;"></div>',
-              },
+                html: '<div style="width:40px;"></div>'
+              }
             ]);
           });
 
@@ -317,16 +317,16 @@ describe("Ext.layout.container.Column", function () {
               {
                 height: 100,
                 shrinkWrap: 1,
-                minWidth: 212,
+                minWidth: 212
               },
               [
                 { height: 80, columnWidth: 0.4, width: 32 },
                 {
                   height: 80,
                   columnWidth: 0.6,
-                  html: '<div style="width:40px;"></div>',
-                },
-              ],
+                  html: '<div style="width:40px;"></div>'
+                }
+              ]
             );
           });
 
@@ -343,7 +343,7 @@ describe("Ext.layout.container.Column", function () {
 
       describe("configured width, shrink wrap height", function () {
         var parentConfig = {
-          width: 100,
+          width: 100
         };
 
         describe("child items with columnWidth", function () {
@@ -351,7 +351,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 80, columnWidth: 0.5 },
               { height: 80, columnWidth: 0.25 },
-              { height: 80, columnWidth: 0.25 },
+              { height: 80, columnWidth: 0.25 }
             ]);
           });
 
@@ -371,7 +371,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 80, columnWidth: 0.5 },
               { height: 80, width: 36 },
-              { height: 80, columnWidth: 0.5 },
+              { height: 80, columnWidth: 0.5 }
             ]);
           });
 
@@ -391,7 +391,7 @@ describe("Ext.layout.container.Column", function () {
             makePanel(parentConfig, [
               { height: 36, columnWidth: 0.5 },
               { height: 36, width: 36 },
-              { height: 36, columnWidth: 0.6 },
+              { height: 36, columnWidth: 0.6 }
             ]);
           });
 
@@ -415,14 +415,14 @@ describe("Ext.layout.container.Column", function () {
           var overflowParentConfig = Ext.apply(
             {},
             { autoScroll: true },
-            parentConfig,
+            parentConfig
           );
 
           describe("horizontal", function () {
             beforeEach(function () {
               makePanel(overflowParentConfig, {
                 height: 80 - scrollbarHeight,
-                width: 180,
+                width: 180
               });
             });
 
@@ -433,7 +433,7 @@ describe("Ext.layout.container.Column", function () {
             // TODO: https://sencha.jira.com/browse/EXTJSIV-5911
             xit("should not have vertical overflow", function () {
               expect(panel.body.dom.scrollHeight).toBe(
-                panel.getHeight() - scrollbarHeight,
+                panel.getHeight() - scrollbarHeight
               );
             });
           });
@@ -442,7 +442,7 @@ describe("Ext.layout.container.Column", function () {
 
       describe("shrink wrap width and height", function () {
         var parentConfig = {
-          shrinkWrap: true,
+          shrinkWrap: true
         };
 
         describe("child items with columnWidth", function () {
@@ -452,8 +452,8 @@ describe("Ext.layout.container.Column", function () {
               {
                 height: 80,
                 columnWidth: 0.8,
-                html: '<div style="width:40px;"></div>',
-              },
+                html: '<div style="width:40px;"></div>'
+              }
             ]);
           });
 
@@ -477,16 +477,16 @@ describe("Ext.layout.container.Column", function () {
               {
                 height: 100,
                 shrinkWrap: 1,
-                minWidth: 212,
+                minWidth: 212
               },
               [
                 { height: 80, columnWidth: 0.4, width: 32 },
                 {
                   height: 80,
                   columnWidth: 0.6,
-                  html: '<div style="width:40px;"></div>',
-                },
-              ],
+                  html: '<div style="width:40px;"></div>'
+                }
+              ]
             );
           });
 
@@ -526,12 +526,12 @@ describe("Ext.layout.container.Column", function () {
         defaultType: "component",
         items: [
           {
-            html: '<div style="width: 100px;"></div>',
+            html: '<div style="width: 100px;"></div>'
           },
           {
-            html: '<div style="width: 100px;"></div>',
-          },
-        ],
+            html: '<div style="width: 100px;"></div>'
+          }
+        ]
       });
       expect(ct.items.first().getWidth()).toBe(100);
       expect(ct.items.last().getWidth()).toBe(100);
@@ -546,12 +546,12 @@ describe("Ext.layout.container.Column", function () {
         defaultType: "component",
         items: [
           {
-            html: '<div style="width: 100px;"></div>',
+            html: '<div style="width: 100px;"></div>'
           },
           {
-            columnWidth: 1,
-          },
-        ],
+            columnWidth: 1
+          }
+        ]
       });
       expect(ct.items.first().getWidth()).toBe(100);
       expect(ct.items.last().getWidth()).toBe(300);
@@ -568,9 +568,9 @@ describe("Ext.layout.container.Column", function () {
         items: [
           {
             minHeight: 70,
-            columnWidth: 1,
-          },
-        ],
+            columnWidth: 1
+          }
+        ]
       });
       expect(ct.items.first().getHeight()).toBe(70);
       ct.destroy();
@@ -587,9 +587,9 @@ describe("Ext.layout.container.Column", function () {
         height: 100,
         layout: "column",
         defaults: {
-          xtype: "button",
+          xtype: "button"
         },
-        items: [{ columnWidth: 1 }, { width: 50 }],
+        items: [{ columnWidth: 1 }, { width: 50 }]
       });
 
       expect(ct.items.getAt(0).getWidth()).toBe(150);

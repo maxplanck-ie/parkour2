@@ -14,5 +14,5 @@ Ext.define("Ext.theme.neptune.panel.Panel", {
     if (this.bodyBorder !== true) {
       this.callParent();
     }
-  },
+  }
 });

@@ -78,7 +78,7 @@
 Ext.define("Ext.grid.feature.Grouping", {
   extend: "Ext.grid.feature.Feature",
   mixins: {
-    summary: "Ext.grid.feature.AbstractSummary",
+    summary: "Ext.grid.feature.AbstractSummary"
   },
   requires: ["Ext.grid.feature.GroupStore"],
 
@@ -269,8 +269,8 @@ Ext.define("Ext.grid.feature.Grouping", {
     "}",
     "%}",
     {
-      priority: 200,
-    },
+      priority: 200
+    }
   ],
 
   groupRowTpl: [
@@ -345,11 +345,11 @@ Ext.define("Ext.grid.feature.Grouping", {
           sourceHd = sourceRow.down(groupingFeature.eventSelector, true),
           destSummaryRow = destRow.down(
             groupingFeature.summaryRowSelector,
-            true,
+            true
           ),
           sourceSummaryRow = sourceRow.down(
             groupingFeature.summaryRowSelector,
-            true,
+            true
           );
 
         // Sync the content of header element.
@@ -364,14 +364,14 @@ Ext.define("Ext.grid.feature.Grouping", {
             this.groupingFeature.view.updateColumns(
               destSummaryRow,
               sourceSummaryRow,
-              columnsToUpdate,
+              columnsToUpdate
             );
           } else {
             Ext.fly(destSummaryRow).syncContent(sourceSummaryRow);
           }
         }
-      },
-    },
+      }
+    }
   ],
 
   relayedEvents: ["groupcollapse", "groupexpand"],
@@ -393,7 +393,7 @@ Ext.define("Ext.grid.feature.Grouping", {
       columnhide: me.onColumnHideShow,
       columnshow: me.onColumnHideShow,
       columnmove: me.onColumnMove,
-      scope: me,
+      scope: me
     });
 
     // Add a table level processor
@@ -435,7 +435,7 @@ Ext.define("Ext.grid.feature.Grouping", {
     view.on({
       afterrender: me.afterViewRender,
       scope: me,
-      single: true,
+      single: true
     });
 
     me.groupRenderInfo = {};
@@ -591,7 +591,7 @@ Ext.define("Ext.grid.feature.Grouping", {
     view.on({
       scope: me,
       groupmousedown: me.onGroupMousedown,
-      groupclick: me.onGroupClick,
+      groupclick: me.onGroupClick
     });
 
     if (me.enableGroupingMenu) {
@@ -730,7 +730,7 @@ Ext.define("Ext.grid.feature.Grouping", {
         itemId: "groupMenuItem",
         text: groupByText,
         handler: me.onGroupMenuItemClick,
-        scope: me,
+        scope: me
       });
       if (enableNoGroups) {
         o.push({
@@ -738,7 +738,7 @@ Ext.define("Ext.grid.feature.Grouping", {
           text: showGroupsText,
           checked: !disabled,
           checkHandler: me.onGroupToggleMenuItemClick,
-          scope: me,
+          scope: me
         });
       }
       return o;
@@ -899,7 +899,7 @@ Ext.define("Ext.grid.feature.Grouping", {
           lastGroup: null,
           lastGroupGeneration: null,
           lastFilterGeneration: null,
-          aggregateRecord: new Ext.data.Model(),
+          aggregateRecord: new Ext.data.Model()
         };
       }
     }
@@ -1059,7 +1059,7 @@ Ext.define("Ext.grid.feature.Grouping", {
 
     if (options === true) {
       options = {
-        focus: true,
+        focus: true
       };
     }
 
@@ -1107,7 +1107,7 @@ Ext.define("Ext.grid.feature.Grouping", {
       collapsed ? "groupcollapse" : "groupexpand",
       view,
       header,
-      groupName,
+      groupName
     );
     if (options) {
       // NavigationModel cannot focus a collapsed group header. They are not navigable yet.
@@ -1277,7 +1277,7 @@ Ext.define("Ext.grid.feature.Grouping", {
             // Must use Model's comparison because Date objects are never equal
             rowValues.isFirstRow = !prev.isEqual(
               grouper.getGroupString(prev),
-              groupName,
+              groupName
             );
           }
         }
@@ -1292,7 +1292,7 @@ Ext.define("Ext.grid.feature.Grouping", {
             // Must use Model's comparison because Date objects are never equal
             rowValues.isLastRow = !next.isEqual(
               grouper.getGroupString(next),
-              groupName,
+              groupName
             );
           }
         }
@@ -1556,7 +1556,7 @@ Ext.define("Ext.grid.feature.Grouping", {
       // Grouping involves injecting a dataSource in early
       if (bufferedStore !== oldStore.isBufferedStore) {
         Ext.raise(
-          "Cannot reconfigure grouping switching between buffered and non-buffered stores",
+          "Cannot reconfigure grouping switching between buffered and non-buffered stores"
         );
       }
 
@@ -1614,7 +1614,7 @@ Ext.define("Ext.grid.feature.Grouping", {
           store,
           column.summaryType,
           fieldName,
-          group,
+          group
         );
         record.set(fieldName, summaryValue);
       } else {
@@ -1662,8 +1662,8 @@ Ext.define("Ext.grid.feature.Grouping", {
       me.storeListeners = store.on({
         groupchange: me.onGroupChange,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
-    },
-  },
+    }
+  }
 });

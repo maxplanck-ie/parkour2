@@ -4,8 +4,8 @@ describe("Ext.draw.Container", function () {
       var container = new Ext.draw.Container({
         sprites: {
           type: "rect",
-          x: 10,
-        },
+          x: 10
+        }
       });
 
       var sprite = container.getSprites()[0];
@@ -19,8 +19,8 @@ describe("Ext.draw.Container", function () {
     it("should accept sprite instances.", function () {
       var container = new Ext.draw.Container({
         sprites: new Ext.draw.sprite.Rect({
-          x: 10,
-        }),
+          x: 10
+        })
       });
 
       var sprite = container.getSprites()[0];
@@ -36,8 +36,8 @@ describe("Ext.draw.Container", function () {
         sprites: {
           type: "rect",
           surface: "test",
-          x: 10,
-        },
+          x: 10
+        }
       });
 
       var sprite = container.getSurface("test").getItems()[0];

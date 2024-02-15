@@ -152,7 +152,7 @@ Ext.define("Ext.ux.dashboard.GoogleRssView", {
 
     me.el.on({
       click: me.onClick,
-      scope: me,
+      scope: me
     });
 
     if (me.previewTips) {
@@ -166,8 +166,8 @@ Ext.define("Ext.ux.dashboard.GoogleRssView", {
         anchor: "top",
         listeners: {
           beforeshow: "onBeforeShowTip",
-          scope: me,
-        },
+          scope: me
+        }
       });
     }
   },
@@ -262,9 +262,9 @@ Ext.define("Ext.ux.dashboard.GoogleRssView", {
           closeGlyph: me.wrapGlyph(me.closeDetailsGlyph),
           prevGlyph: me.wrapGlyph(me.prevGlyph),
           nextGlyph: me.wrapGlyph(me.nextGlyph),
-          currentEntry: 0,
+          currentEntry: 0
         },
-        feedData,
+        feedData
       );
 
     me.data = data;
@@ -315,5 +315,5 @@ Ext.define("Ext.ux.dashboard.GoogleRssView", {
     Ext.destroy(this.tip);
 
     this.callParent();
-  },
+  }
 });

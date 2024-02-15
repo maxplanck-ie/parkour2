@@ -10,12 +10,12 @@ describe("Ext.layout.container.Card", function () {
           height: 100,
           layout: {
             type: "card",
-            deferredRender: config.deferredRender,
+            deferredRender: config.deferredRender
           },
-          renderTo: document.body,
+          renderTo: document.body
         },
-        config,
-      ),
+        config
+      )
     );
     return comp;
   }
@@ -26,8 +26,8 @@ describe("Ext.layout.container.Card", function () {
       scrollable: true,
       items: {
         xtype: "box",
-        html: makeText(),
-      },
+        html: makeText()
+      }
     });
   }
 
@@ -39,7 +39,7 @@ describe("Ext.layout.container.Card", function () {
     for (i = 0, len = len || 100; i < len; i++) {
       res.push({
         id: i,
-        name: "foo_" + i,
+        name: "foo_" + i
       });
     }
 
@@ -67,12 +67,12 @@ describe("Ext.layout.container.Card", function () {
         defaultType: "component",
         items: [
           {
-            itemId: "a",
+            itemId: "a"
           },
           {
-            itemId: "b",
-          },
-        ],
+            itemId: "b"
+          }
+        ]
       });
       expect(comp.down("#a").isVisible()).toBe(true);
     });
@@ -82,15 +82,15 @@ describe("Ext.layout.container.Card", function () {
         defaultType: "component",
         items: [
           {
-            itemId: "a",
+            itemId: "a"
           },
           {
-            itemId: "b",
+            itemId: "b"
           },
           {
-            itemId: "c",
-          },
-        ],
+            itemId: "c"
+          }
+        ]
       });
       expect(comp.down("#b").isVisible()).toBe(false);
       expect(comp.down("#c").isVisible()).toBe(false);
@@ -101,23 +101,23 @@ describe("Ext.layout.container.Card", function () {
         items: [
           {
             xtype: "component",
-            itemId: "a",
+            itemId: "a"
           },
           {
             xtype: "container",
             items: {
               xtype: "component",
-              itemId: "b",
-            },
+              itemId: "b"
+            }
           },
           {
             xtype: "container",
             items: {
               xtype: "component",
-              itemId: "c",
-            },
-          },
-        ],
+              itemId: "c"
+            }
+          }
+        ]
       });
       expect(comp.down("#b").isVisible(true)).toBe(false);
       expect(comp.down("#c").isVisible(true)).toBe(false);
@@ -130,25 +130,25 @@ describe("Ext.layout.container.Card", function () {
           items: [
             {
               xtype: "component",
-              itemId: "a",
+              itemId: "a"
             },
             {
               xtype: "container",
               listeners: { added: function () {} },
               items: {
                 xtype: "component",
-                itemId: "b",
-              },
+                itemId: "b"
+              }
             },
             {
               xtype: "container",
               listeners: { added: function () {} },
               items: {
                 xtype: "component",
-                itemId: "c",
-              },
-            },
-          ],
+                itemId: "c"
+              }
+            }
+          ]
         });
         expect(comp.down("#b").isVisible(true)).toBe(false);
         expect(comp.down("#c").isVisible(true)).toBe(false);
@@ -160,8 +160,8 @@ describe("Ext.layout.container.Card", function () {
     it("should size the child using both dimensions", function () {
       createCardContainer({
         items: {
-          xtype: "component",
-        },
+          xtype: "component"
+        }
       });
       expect(comp.items.items[0].getWidth()).toEqual(100);
       expect(comp.items.items[0].getHeight()).toEqual(100);
@@ -174,8 +174,8 @@ describe("Ext.layout.container.Card", function () {
         style: "position:absolute", // Avoid the 100% body width and allow the shrinkWrap
         items: {
           xtype: "component",
-          width: 200,
-        },
+          width: 200
+        }
       });
       expect(comp.items.items[0].getHeight()).toEqual(100);
       expect(comp.getWidth()).toEqual(200);
@@ -187,8 +187,8 @@ describe("Ext.layout.container.Card", function () {
         height: undefined,
         items: {
           xtype: "component",
-          height: 200,
-        },
+          height: 200
+        }
       });
       expect(comp.items.items[0].getWidth()).toEqual(100);
       expect(comp.getHeight()).toEqual(200);
@@ -200,12 +200,12 @@ describe("Ext.layout.container.Card", function () {
       createCardContainer({
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
       expect(comp.items.items[0].el).toBeDefined();
       expect(comp.items.items[1].el).toBeDefined();
@@ -217,12 +217,12 @@ describe("Ext.layout.container.Card", function () {
         deferredRender: true,
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
       expect(comp.items.items[0].el).toBeUndefined();
       expect(comp.items.items[1].el).toBeDefined();
@@ -237,7 +237,7 @@ describe("Ext.layout.container.Card", function () {
         deferredRender: true,
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
             xtype: "component",
@@ -247,10 +247,10 @@ describe("Ext.layout.container.Card", function () {
               },
               activate: function () {
                 comp1Activated = true;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
       expect(comp1BeforeActivated).toEqual(true);
       expect(comp1Activated).toEqual(true);
@@ -265,7 +265,7 @@ describe("Ext.layout.container.Card", function () {
         deferredRender: true,
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
             xtype: "component",
@@ -276,10 +276,10 @@ describe("Ext.layout.container.Card", function () {
               },
               activate: function () {
                 comp1Activated = true;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
       expect(comp1BeforeActivated).toEqual(true);
       expect(comp1Activated).toBeUndefined();
@@ -294,8 +294,8 @@ describe("Ext.layout.container.Card", function () {
         comp = createCardContainer({
           activeItem: 0,
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(comp.layout.getActiveItem()).toBe(comp.items.items[0]);
@@ -304,8 +304,8 @@ describe("Ext.layout.container.Card", function () {
       it("should return a default item if activeItem is not defined", function () {
         comp = createCardContainer({
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(comp.layout.getActiveItem()).toBe(comp.items.items[0]);
@@ -315,8 +315,8 @@ describe("Ext.layout.container.Card", function () {
         comp = createCardContainer({
           activeItem: undefined,
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(comp.layout.getActiveItem()).toBe(comp.items.items[0]);
@@ -326,8 +326,8 @@ describe("Ext.layout.container.Card", function () {
         comp = createCardContainer({
           activeItem: null,
           items: {
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(comp.layout.getActiveItem()).toBe(null);
@@ -338,12 +338,12 @@ describe("Ext.layout.container.Card", function () {
           activeItem: 1,
           items: [
             {
-              xtype: "component",
+              xtype: "component"
             },
             {
-              xtype: "component",
-            },
-          ],
+              xtype: "component"
+            }
+          ]
         });
 
         expect(comp.layout.getActiveItem()).toBe(comp.items.items[1]);
@@ -355,12 +355,12 @@ describe("Ext.layout.container.Card", function () {
           deferredRender: true,
           items: [
             {
-              xtype: "component",
+              xtype: "component"
             },
             {
-              xtype: "component",
-            },
-          ],
+              xtype: "component"
+            }
+          ]
         });
 
         expect(comp.layout.getActiveItem()).toBe(comp.items.items[1]);
@@ -373,12 +373,12 @@ describe("Ext.layout.container.Card", function () {
       comp = createCardContainer({
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
 
       items = comp.items;
@@ -397,12 +397,12 @@ describe("Ext.layout.container.Card", function () {
         activeItem: null,
         items: [
           {
-            xtype: "component",
+            xtype: "component"
           },
           {
-            xtype: "component",
-          },
-        ],
+            xtype: "component"
+          }
+        ]
       });
 
       items = comp.items;
@@ -434,7 +434,7 @@ describe("Ext.layout.container.Card", function () {
       // of a destroyed card and reapply it to the next created one.
       // See EXTJS-16173.
       createCardContainer({
-        items: [makeCard()],
+        items: [makeCard()]
       });
 
       // Create a new card.
@@ -463,9 +463,9 @@ describe("Ext.layout.container.Card", function () {
             items: [
               makeCard("Foo"),
               {
-                title: "The Owl's Nest Farm",
-              },
-            ],
+                title: "The Owl's Nest Farm"
+              }
+            ]
           });
 
           c = comp.items.getAt(0);
@@ -495,12 +495,12 @@ describe("Ext.layout.container.Card", function () {
                     xtype: "component",
                     scrollable: true,
                     height: 300,
-                    html: makeText(),
-                  },
-                ],
+                    html: makeText()
+                  }
+                ]
               },
-              makeCard(),
-            ],
+              makeCard()
+            ]
           });
 
           c = Ext.getCmp("BT");
@@ -553,24 +553,24 @@ describe("Ext.layout.container.Card", function () {
                         {
                           text: "Id",
                           dataIndex: "id",
-                          width: 100,
+                          width: 100
                         },
                         {
                           text: "Name",
                           dataIndex: "name",
                           locked: isLocked,
-                          width: 100,
-                        },
+                          width: 100
+                        }
                       ],
                       store: {
                         fields: ["id", "name"],
-                        data: makeData(10000),
-                      },
+                        data: makeData(10000)
+                      }
                     },
                     {
-                      title: "The Owl's Nest Farm",
-                    },
-                  ],
+                      title: "The Owl's Nest Farm"
+                    }
+                  ]
                 });
 
                 c = comp.items.getAt(0);
@@ -607,24 +607,24 @@ describe("Ext.layout.container.Card", function () {
                         {
                           text: "Id",
                           dataIndex: "id",
-                          width: 100,
+                          width: 100
                         },
                         {
                           text: "Name",
                           dataIndex: "name",
                           locked: isLocked,
-                          width: 100,
-                        },
+                          width: 100
+                        }
                       ],
                       store: {
                         fields: ["id", "name"],
-                        data: makeData(10000),
-                      },
+                        data: makeData(10000)
+                      }
                     },
                     {
-                      title: "The Owl's Nest Farm",
-                    },
-                  ],
+                      title: "The Owl's Nest Farm"
+                    }
+                  ]
                 });
 
                 p = new Ext.panel.Panel({
@@ -637,11 +637,11 @@ describe("Ext.layout.container.Card", function () {
                       region: "center",
                       xtype: "panel",
                       margin: "5 0 0 5",
-                      layout: "fit",
+                      layout: "fit"
                     },
-                    comp,
+                    comp
                   ],
-                  renderTo: Ext.getBody(),
+                  renderTo: Ext.getBody()
                 });
 
                 c = comp.items.getAt(0);
@@ -664,7 +664,7 @@ describe("Ext.layout.container.Card", function () {
 
                 p = Ext.destroy(p);
               });
-            },
+            }
           );
         }
 
@@ -686,9 +686,9 @@ describe("Ext.layout.container.Card", function () {
         items: [
           makeCard("Foo"),
           {
-            title: "The Owl's Nest Farm",
-          },
-        ],
+            title: "The Owl's Nest Farm"
+          }
+        ]
       });
 
       item = comp.items.getAt(0);
@@ -727,9 +727,9 @@ describe("Ext.layout.container.Card", function () {
         items: [
           makeCard("Foo"),
           {
-            title: "The Owl's Nest Farm",
-          },
-        ],
+            title: "The Owl's Nest Farm"
+          }
+        ]
       });
 
       item = comp.items.getAt(0);

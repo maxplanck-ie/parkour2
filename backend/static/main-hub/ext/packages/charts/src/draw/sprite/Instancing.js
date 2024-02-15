@@ -20,7 +20,7 @@ Ext.define("Ext.draw.sprite.Instancing", {
      * @cfg {Array} [instances]
      * The instances of the {@link #template} sprite as configs of attributes.
      */
-    instances: null,
+    instances: null
   },
 
   instances: null,
@@ -31,12 +31,12 @@ Ext.define("Ext.draw.sprite.Instancing", {
       Ext.raise(
         "A template of an instancing sprite must either be " +
           "a sprite instance or a valid config object from which a template " +
-          "sprite will be created.",
+          "sprite will be created."
       );
     } else if (template.isInstancing || template.isComposite) {
       Ext.raise(
         "Can't use an instancing or composite sprite " +
-          "as a template for an instancing sprite.",
+          "as a template for an instancing sprite."
       );
     }
     //</debug>
@@ -47,7 +47,7 @@ Ext.define("Ext.draw.sprite.Instancing", {
       }
       template = Ext.create(
         template.xclass || "sprite." + template.type,
-        template,
+        template
       );
     }
     var surface = template.getSurface();
@@ -274,5 +274,5 @@ Ext.define("Ext.draw.sprite.Instancing", {
     }
 
     me.callParent();
-  },
+  }
 });

@@ -4,19 +4,19 @@ Ext.define("MainHub.model.libraries.Index", {
   fields: [
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "index",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_id",
-      type: "string",
-    },
-  ],
+      type: "string"
+    }
+  ]
 });

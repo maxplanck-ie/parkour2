@@ -10,5 +10,5 @@ Ext.define("Ext.theme.neptune.picker.Month", {
   // determine that the text has wrapped if the height of the item exceeds 36px.
   // this allows theme developers some leeway to increase the month item size in
   // a neptune-derived theme.
-  measureMaxHeight: 36,
+  measureMaxHeight: 36
 });

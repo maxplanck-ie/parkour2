@@ -24,9 +24,9 @@ describe("Ext.picker.Month", function () {
       config = config || {};
       config = Ext.applyIf(
         {
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        config,
+        config
       );
       component = new Ext.picker.Month(config);
     };
@@ -47,7 +47,7 @@ describe("Ext.picker.Month", function () {
 
     it("should accept a date as the value config", function () {
       makeComponent({
-        value: new Date(2009, 3, 3),
+        value: new Date(2009, 3, 3)
       });
 
       expect(component.getValue()).toEqual([3, 2009]);
@@ -55,7 +55,7 @@ describe("Ext.picker.Month", function () {
 
     it("should accept an array as the value", function () {
       makeComponent({
-        value: [4, 1984],
+        value: [4, 1984]
       });
 
       expect(component.getValue()).toEqual([4, 1984]);
@@ -77,7 +77,7 @@ describe("Ext.picker.Month", function () {
 
     it("should be able to null out certain values", function () {
       makeComponent({
-        value: [3, 2010],
+        value: [3, 2010]
       });
       component.setValue([null, 2010]);
       expect(component.getValue()).toEqual([null, 2010]);
@@ -87,19 +87,19 @@ describe("Ext.picker.Month", function () {
   describe("rendering", function () {
     it("should respect the padding config", function () {
       makeComponent({
-        padding: 10,
+        padding: 10
       });
       expect(component.getWidth()).toBe(197);
     });
 
     it("should not show buttons if showButtons is false", function () {
       makeComponent({
-        showButtons: false,
+        showButtons: false
       });
 
       expect(
         getByElementsByClassName(component.el.dom, "x-monthpicker-buttons")
-          .length,
+          .length
       ).toEqual(0);
     });
 
@@ -109,7 +109,7 @@ describe("Ext.picker.Month", function () {
         getYears = function () {
           return getByElementsByClassName(
             component.el.dom,
-            "x-monthpicker-year",
+            "x-monthpicker-year"
           );
         };
 
@@ -129,13 +129,13 @@ describe("Ext.picker.Month", function () {
           year = new Date().getFullYear();
         expect(getYearText(years, 0)).toEqual((year - 4).toString());
         expect(getYearText(years, years.length - 1)).toEqual(
-          (year + 5).toString(),
+          (year + 5).toString()
         );
       });
 
       it("should use the value year as the active year if passed", function () {
         makeComponent({
-          value: [0, 1970],
+          value: [0, 1970]
         });
 
         var years = getYears();
@@ -159,7 +159,7 @@ describe("Ext.picker.Month", function () {
         var years = getYears();
         expect(getYearText(years, 0)).toEqual((year - 4).toString());
         expect(getYearText(years, years.length - 1, 0)).toEqual(
-          (year + 5).toString(),
+          (year + 5).toString()
         );
       });
     });
@@ -172,7 +172,7 @@ describe("Ext.picker.Month", function () {
       getSelection = function (isMonth) {
         var items = getByElementsByClassName(
             component.el.dom,
-            "x-monthpicker-" + (isMonth ? "month" : "year"),
+            "x-monthpicker-" + (isMonth ? "month" : "year")
           ),
           len = items.length,
           i = 0,
@@ -202,7 +202,7 @@ describe("Ext.picker.Month", function () {
 
     it("should only have a month selection for a month-only value", function () {
       makeComponent({
-        value: [3, null],
+        value: [3, null]
       });
       expect(getSelection()).toBeNull();
       expect(getSelection(true)).hasHTML("Apr");
@@ -210,7 +210,7 @@ describe("Ext.picker.Month", function () {
 
     it("should only have a year selection for a year-only value", function () {
       makeComponent({
-        value: [null, 2000],
+        value: [null, 2000]
       });
       expect(getSelection()).hasHTML("2000");
       expect(getSelection(true)).toBeNull();
@@ -218,7 +218,7 @@ describe("Ext.picker.Month", function () {
 
     it("should select have selections when both items are selected", function () {
       makeComponent({
-        value: [0, 2004],
+        value: [0, 2004]
       });
       expect(getSelection()).hasHTML("2004");
       expect(getSelection(true)).hasHTML("Jan");
@@ -227,7 +227,7 @@ describe("Ext.picker.Month", function () {
     it("should remove any selection if it's not valid for the range", function () {
       var d = new Date();
       makeComponent({
-        value: d,
+        value: d
       });
       expect(getSelection()).hasHTML(d.getFullYear().toString());
       component.adjustYear(-10);

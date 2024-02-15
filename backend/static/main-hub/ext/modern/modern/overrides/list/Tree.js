@@ -16,8 +16,8 @@ Ext.define("Ext.overrides.list.Tree", {
       el.on({
         scope: me,
         painted: me.syncIconSize,
-        single: true,
+        single: true
       });
     }
-  },
+  }
 });

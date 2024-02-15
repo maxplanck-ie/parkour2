@@ -99,7 +99,7 @@
     /* Sanity check - you just know it will happen */
     if (!(this instanceof Scroller)) {
       alert(
-        "Scroller warning: Scroller must be initialised with the 'new' keyword.",
+        "Scroller warning: Scroller must be initialised with the 'new' keyword."
       );
       return;
     }
@@ -204,13 +204,13 @@
          *  @type     int
          *  @default  0
          */
-        viewport: null,
+        viewport: null
       },
 
       topRowFloat: 0,
       scrollDrawDiff: null,
       loaderVisible: false,
-      forceReposition: false,
+      forceReposition: false
     };
 
     // @todo The defaults should extend a `c` property and the internal settings
@@ -230,7 +230,7 @@
       force: document.createElement("div"),
       scroller: null,
       table: null,
-      loader: null,
+      loader: null
     };
 
     // Attach the instance to the DataTables instance so it can be accessed in
@@ -376,7 +376,7 @@
         this.s.ani = ani;
         $(this.dom.scroller).animate(
           {
-            scrollTop: px,
+            scrollTop: px
           },
           function () {
             // This needs to happen after the animation has completed and
@@ -384,7 +384,7 @@
             setTimeout(function () {
               that.s.ani = false;
             }, 25);
-          },
+          }
         );
       } else {
         $(this.dom.scroller).scrollTop(px);
@@ -435,7 +435,7 @@
         // If collapsed (no height) use the max-height parameter
         if (!heights.viewport) {
           heights.viewport = this._parseHeight(
-            $(this.dom.scroller).css("max-height"),
+            $(this.dom.scroller).css("max-height")
           );
         }
 
@@ -466,13 +466,13 @@
           this.fnPixelsToRow(
             iScrollTop + this.s.heights.viewport,
             false,
-            this.s.ani,
-          ),
+            this.s.ani
+          )
         );
 
       return {
         start: Math.floor(this.fnPixelsToRow(iScrollTop, false, this.s.ani)),
-        end: iTotal < iPossibleEnd ? iTotal - 1 : iPossibleEnd - 1,
+        end: iTotal < iPossibleEnd ? iTotal - 1 : iPossibleEnd - 1
       };
     },
 
@@ -493,7 +493,7 @@
         this.s.dt.oApi._fnLog(
           this.s.dt,
           0,
-          "Pagination must be enabled for Scroller",
+          "Pagination must be enabled for Scroller"
         );
         return;
       }
@@ -508,7 +508,7 @@
 
       this.dom.scroller = $(
         "div." + this.s.dt.oClasses.sScrollBody,
-        this.s.dt.nTableWrapper,
+        this.s.dt.nTableWrapper
       )[0];
       this.dom.scroller.appendChild(this.dom.force);
       this.dom.scroller.style.position = "relative";
@@ -526,7 +526,7 @@
         this.dom.loader = $(
           '<div class="dataTables_processing DTS_Loading">' +
             this.s.dt.oLanguage.sLoadingRecords +
-            "</div>",
+            "</div>"
         ).css("display", "none");
 
         $(this.dom.scroller.parentNode)
@@ -566,7 +566,7 @@
             that._fnDrawCallback.call(that);
           }
         },
-        sName: "Scroller",
+        sName: "Scroller"
       });
 
       /* On resize, update the information element, since the number of rows shown might change */
@@ -594,7 +594,7 @@
             oData.iScrollerTopRow = that.s.topRowFloat;
           }
         },
-        "Scroller_State",
+        "Scroller_State"
       );
 
       if (this.s.dt.oLoadedState) {
@@ -622,7 +622,7 @@
           that.dom.table.style.position = "";
           that.dom.table.style.top = "";
           that.dom.table.style.left = "";
-        },
+        }
       });
     },
 
@@ -678,7 +678,7 @@
         iScrollTop > this.s.redrawBottom
       ) {
         var preRows = Math.ceil(
-          ((this.s.displayBuffer - 1) / 2) * this.s.viewportRows,
+          ((this.s.displayBuffer - 1) / 2) * this.s.viewportRows
         );
 
         if (
@@ -689,7 +689,7 @@
           iTopRow =
             parseInt(
               this._domain("physicalToVirtual", iScrollTop) / heights.row,
-              10,
+              10
             ) - preRows;
           this.s.topRowFloat =
             this._domain("physicalToVirtual", iScrollTop) / heights.row;
@@ -821,7 +821,7 @@
     _parseHeight: function (cssHeight) {
       var height;
       var matches = /^([+-]?(?:\d+(?:\.\d+)?|\.\d+))(px|em|rem|vh)$/.exec(
-        cssHeight,
+        cssHeight
       );
 
       if (matches === null) {
@@ -880,7 +880,7 @@
         // Domain scaled in the middle
         iScrollTop = this._domain(
           "virtualToPhysical",
-          this.s.topRowFloat * heights.row,
+          this.s.topRowFloat * heights.row
         );
       }
 
@@ -1024,7 +1024,7 @@
           dt.oClasses.sScrollBody +
           '"></div>' +
           "</div>" +
-          "</div>",
+          "</div>"
       );
 
       // Want 3 rows in the sizing table so :first-child and :last-child
@@ -1065,7 +1065,7 @@
         language = dt.oLanguage,
         iScrollTop = this.dom.scroller.scrollTop,
         iStart = Math.floor(
-          this.fnPixelsToRow(iScrollTop, false, this.s.ani) + 1,
+          this.fnPixelsToRow(iScrollTop, false, this.s.ani) + 1
         ),
         iMax = dt.fnRecordsTotal(),
         iTotal = dt.fnRecordsDisplay(),
@@ -1073,8 +1073,8 @@
           this.fnPixelsToRow(
             iScrollTop + this.s.heights.viewport,
             false,
-            this.s.ani,
-          ),
+            this.s.ani
+          )
         ),
         iEnd = iTotal < iPossibleEnd ? iTotal : iPossibleEnd,
         sStart = dt.fnFormatNumber(iStart),
@@ -1115,7 +1115,7 @@
           " " +
           language.sInfoFiltered.replace(
             "_MAX_",
-            dt.fnFormatNumber(dt.fnRecordsTotal()),
+            dt.fnFormatNumber(dt.fnRecordsTotal())
           ) +
           language.sInfoPostFix;
       }
@@ -1129,7 +1129,7 @@
           iEnd,
           iMax,
           iTotal,
-          sOut,
+          sOut
         );
       }
 
@@ -1142,7 +1142,7 @@
 
       // DT doesn't actually (yet) trigger this event, but it will in future
       $(dt.nTable).triggerHandler("info.dt");
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1275,7 +1275,7 @@
      *        }
      *    } );
      */
-    loadingIndicator: false,
+    loadingIndicator: false
   };
 
   Scroller.oDefaults = Scroller.defaults;
@@ -1311,11 +1311,11 @@
         new Scroller(oDTSettings, opts);
       },
       cFeature: "S",
-      sFeature: "Scroller",
+      sFeature: "Scroller"
     });
   } else {
     alert(
-      "Warning: Scroller requires DataTables 1.10.0 or greater - www.datatables.net/download",
+      "Warning: Scroller requires DataTables 1.10.0 or greater - www.datatables.net/download"
     );
   }
 
@@ -1359,7 +1359,7 @@
         return ctx[0].oScroller.fnRowToPixels(rowIdx, intParse, virtual);
       }
       // undefined
-    },
+    }
   );
 
   // Undocumented and deprecated - is it actually useful at all?
@@ -1372,7 +1372,7 @@
         return ctx[0].oScroller.fnPixelsToRow(pixels, intParse, virtual);
       }
       // undefined
-    },
+    }
   );
 
   // Undocumented and deprecated - use `row().scrollTo()` instead

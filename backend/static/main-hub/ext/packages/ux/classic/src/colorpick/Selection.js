@@ -39,7 +39,7 @@ Ext.define("Ext.ux.colorpick.Selection", {
      * @private
      */
     color: null,
-    previousColor: null,
+    previousColor: null
   },
 
   applyColor: function (color) {
@@ -86,5 +86,5 @@ Ext.define("Ext.ux.colorpick.Selection", {
     }
 
     this.fireEvent("change", me, value, oldValue);
-  },
+  }
 });

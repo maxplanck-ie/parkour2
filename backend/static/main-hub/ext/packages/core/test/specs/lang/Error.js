@@ -18,8 +18,8 @@ describe("Ext.Error", function () {
         },
         warn: function (s) {
           return s;
-        },
-      },
+        }
+      }
     };
 
     // This is to allow setting breakpoints for console messages
@@ -158,8 +158,8 @@ describe("Ext.Error", function () {
           Ext.raise({
             msg: "Custom error",
             data: {
-              foo: "bar",
-            },
+              foo: "bar"
+            }
           });
         } catch (err) {
           error = err;
@@ -179,8 +179,8 @@ describe("Ext.Error", function () {
           Ext.raise({
             msg: "Custom error",
             data: {
-              foo: "bar",
-            },
+              foo: "bar"
+            }
           });
         } catch (err) {}
       });
@@ -195,9 +195,9 @@ describe("Ext.Error", function () {
             Ext.raise({
               msg: "Custom error",
               data: o,
-              foo: "bar",
+              foo: "bar"
             });
-          },
+          }
         });
         customObj = Ext.create("spec.CustomClass");
       });
@@ -210,7 +210,7 @@ describe("Ext.Error", function () {
         var error;
         try {
           customObj.doSomething({
-            extraData: "extra",
+            extraData: "extra"
           });
         } catch (err) {
           error = err;
@@ -219,7 +219,7 @@ describe("Ext.Error", function () {
         expect(error.sourceClass).toEqual("spec.CustomClass");
         expect(error.sourceMethod).toEqual("doSomething");
         expect(error.toString()).toBe(
-          "spec.CustomClass.doSomething(): Custom error",
+          "spec.CustomClass.doSomething(): Custom error"
         );
       });
 
@@ -235,7 +235,7 @@ describe("Ext.Error", function () {
         });
         try {
           customObj.doSomething({
-            extraData: "extra",
+            extraData: "extra"
           });
         } catch (err) {}
       });
@@ -260,12 +260,12 @@ describe("Ext.Error", function () {
     it("should return a function that raises an error with the given suggestion", function () {
       Ext.ClassManager.enableNamespaceParseCache = false;
       Ext.define("spec.MyClass", {
-        deprecatedMethod: Ext.deprecated("use another function"),
+        deprecatedMethod: Ext.deprecated("use another function")
       });
       expect(function () {
         new spec.ThisClassContainsADeprecatedMethod().deprecatedMethod();
       }).toThrow(
-        'The method "spec.MyClass.deprecatedMethod" has been removed. use another function',
+        'The method "spec.MyClass.deprecatedMethod" has been removed. use another function'
       );
 
       Ext.undefine("spec.MyClass");

@@ -346,7 +346,7 @@ Ext.define("Ext.XTemplate", {
       compiler = new Ext.util.XTemplateCompiler({
         useFormat: me.disableFormats !== true,
         definitions: me.definitions,
-        strict: me.strict,
+        strict: me.strict
       });
 
       me.fn = compiler.compile(me.html);
@@ -446,6 +446,6 @@ Ext.define("Ext.XTemplate", {
       // is ready to return
 
       return tpl || null;
-    },
-  },
+    }
+  }
 });

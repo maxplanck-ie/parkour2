@@ -11,13 +11,13 @@ Ext.define("Ext.util.sizemonitor.Scroll", {
       children: [
         {
           reference: "expandMonitor",
-          className: "expand",
+          className: "expand"
         },
         {
           reference: "shrinkMonitor",
-          className: "shrink",
-        },
-      ],
+          className: "shrink"
+        }
+      ]
     };
   },
 
@@ -63,5 +63,5 @@ Ext.define("Ext.util.sizemonitor.Scroll", {
     this.onScroll = null;
 
     this.callParent();
-  },
+  }
 });

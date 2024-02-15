@@ -41,5 +41,5 @@ Ext.define("Ext.chart.overrides.AbstractChart", {
   doDestroy: function () {
     this.destroyChart();
     this.callParent();
-  },
+  }
 });

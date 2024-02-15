@@ -19,7 +19,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
      * @cfg defaultWidgetUI
      * A map of xtype to {@link Ext.Component#ui} names to use when using Components in the expansion row.
      */
-    defaultWidgetUI: {},
+    defaultWidgetUI: {}
   },
 
   /**
@@ -55,7 +55,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
 
     // We need a high priority to get in ahead of the outerRowTpl
     // so we can setup row data
-    priority: 20000,
+    priority: 20000
   },
 
   setCmp: function (grid) {
@@ -125,16 +125,16 @@ Ext.define("Ext.grid.plugin.RowWidget", {
         setup: me.setup,
 
         // Do not relay click events into the client grid's row
-        onClick: Ext.emptyFn,
+        onClick: Ext.emptyFn
       };
 
     features.push(
       Ext.apply(
         {
-          lockableScope: "normal",
+          lockableScope: "normal"
         },
-        featuresCfg,
-      ),
+        featuresCfg
+      )
     );
 
     // Locked side will need a copy to keep the two DOM structures symmetrical.
@@ -144,10 +144,10 @@ Ext.define("Ext.grid.plugin.RowWidget", {
       features.push(
         Ext.apply(
           {
-            lockableScope: "locked",
+            lockableScope: "locked"
           },
-          featuresCfg,
-        ),
+          featuresCfg
+        )
       );
     }
 
@@ -170,7 +170,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
       refresh: me.onViewRefresh,
       itemadd: me.onItemAdd,
       scope: me,
-      destroyable: true,
+      destroyable: true
     });
     Ext.override(view, me.viewOverrides);
   },
@@ -230,11 +230,11 @@ Ext.define("Ext.grid.plugin.RowWidget", {
             // Once an item has had tabbability saved, do not increment its save level
             focusEl.saveTabbableState({
               skipSelf: true,
-              includeSaved: false,
+              includeSaved: false
             });
           }
         }
-      },
+      }
     },
 
     destroyLiveWidget: function (recId, widget) {
@@ -319,7 +319,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
           result = me.grid.createManagedWidget(
             me.getId() + "-" + view.getId(),
             widget,
-            record,
+            record
           );
           result.resolveListenerScope = me.listenerScopeDecorator;
           result.measurer = me;
@@ -346,7 +346,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
       }
 
       target = Ext.fly(view.getNode(record)).down(
-        me.rowBodyFeature.innerSelector,
+        me.rowBodyFeature.innerSelector
       );
       width = target.getWidth(true) - target.getPadding("lr");
       widget = me.getWidget(view, record);
@@ -365,7 +365,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
             me.scope,
             [me, widget, record],
             0,
-            me,
+            me
           );
         }
 
@@ -454,7 +454,7 @@ Ext.define("Ext.grid.plugin.RowWidget", {
         rowNode,
         record,
         nextBd,
-        widget,
+        widget
       );
       view.updateLayout();
       Ext.resumeLayouts(true);
@@ -462,6 +462,6 @@ Ext.define("Ext.grid.plugin.RowWidget", {
       if (me.scrollIntoViewOnExpand && wasCollapsed) {
         me.grid.ensureVisible(rowIdx);
       }
-    },
-  },
+    }
+  }
 });

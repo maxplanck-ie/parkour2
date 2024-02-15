@@ -5,7 +5,7 @@ Ext.define("Ext.theme.blackberry.field.Picker", {
     this.callParent();
     this.label.on({
       scope: this,
-      tap: "onFocus",
+      tap: "onFocus"
     });
   },
 
@@ -24,13 +24,13 @@ Ext.define("Ext.theme.blackberry.field.Picker", {
                 {
                   reference: "labelTextElement",
                   cls: Ext.baseCSSPrefix + "label-text-el",
-                  tag: "span",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+                  tag: "span"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
   },
 
@@ -40,5 +40,5 @@ Ext.define("Ext.theme.blackberry.field.Picker", {
 
   updateLabelAlign: function () {
     return;
-  },
+  }
 });

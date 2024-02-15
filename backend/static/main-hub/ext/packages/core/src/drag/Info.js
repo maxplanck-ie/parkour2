@@ -36,53 +36,53 @@ Ext.define("Ext.drag.Info", {
     me.cursor = {
       current: {
         x: pageX,
-        y: pageY,
+        y: pageY
       },
       delta: {
         x: 0,
-        y: 0,
+        y: 0
       },
       initial: {
         x: pageX,
-        y: pageY,
+        y: pageY
       },
       offset: {
         x: pageX - x,
-        y: pageY - y,
-      },
+        y: pageY - y
+      }
     };
 
     me.element = {
       current: {
         x: x,
-        y: y,
+        y: y
       },
       delta: {
         x: 0,
-        y: 0,
+        y: 0
       },
       initial: {
         x: x,
-        y: y,
-      },
+        y: y
+      }
     };
 
     me.proxy = {
       current: {
         x: x,
-        y: y,
+        y: y
       },
       delta: {
         x: 0,
-        y: 0,
+        y: 0
       },
       initial: {
         x: x,
-        y: y,
+        y: y
       },
       element: el,
       isUnderCursor: false,
-      isElement: true,
+      isElement: true
     };
 
     me.types = [];
@@ -608,6 +608,6 @@ Ext.define("Ext.drag.Info", {
       if (!beforeStart && proxyEl) {
         proxyEl.setXY(alignXY);
       }
-    },
-  },
+    }
+  }
 });

@@ -42,7 +42,7 @@ Ext.define("Ext.data.writer.Xml", {
      * the owning {@link Ext.data.proxy.Proxy Proxy}'s {@link Ext.data.reader.Xml Reader}'s
      * {@link Ext.data.reader.Xml#record} setting, or `'record'`.
      */
-    record: "record",
+    record: "record"
   },
 
   // To break simple XPath selectors like "SystemInfo>SystemName" into ["SystemInfo", "SystemName"]
@@ -198,5 +198,5 @@ Ext.define("Ext.data.writer.Xml", {
     output.push("</", name, ">");
 
     return output;
-  },
+  }
 });

@@ -16,7 +16,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     // Requiring Ext.form.field.Base and Ext.view.Table ensures that grid editor sass
     // variables can derive from both form field vars and grid vars in the neutral theme
     "Ext.form.field.Base",
-    "Ext.view.Table",
+    "Ext.view.Table"
   ],
 
   mixins: ["Ext.mixin.Observable"],
@@ -169,8 +169,8 @@ Ext.define("Ext.grid.plugin.Editing", {
         beforerender: {
           fn: me.onBeforeRender,
           single: true,
-          scope: me,
-        },
+          scope: me
+        }
       });
     }
 
@@ -180,7 +180,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     if (ownerLockable) {
       ownerLockable.editorEventRelayers = ownerLockable.relayEvents(
         me,
-        me.relayedEvents,
+        me.relayedEvents
       );
     }
     // Marks the grid as editable, so that the SelectionModel
@@ -315,7 +315,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     if (!(field && field.isFormField)) {
       field = columnHeader.field = me.createColumnField(
         columnHeader,
-        defaultField,
+        defaultField
       );
     }
 
@@ -375,15 +375,15 @@ Ext.define("Ext.grid.plugin.Editing", {
           field = {
             name: dataIndex,
             xtype: field,
-            column: column,
+            column: column
           };
         } else {
           field = Ext.apply(
             {
               name: dataIndex,
-              column: column,
+              column: column
             },
-            field,
+            field
           );
         }
         field = Ext.ComponentManager.create(field, this.defaultFieldXType);
@@ -434,7 +434,7 @@ Ext.define("Ext.grid.plugin.Editing", {
         me.triggerEvent ||
           "cell" + (me.clicksToEdit === 1 ? "click" : "dblclick"),
         me.onCellClick,
-        me,
+        me
       );
     }
 
@@ -445,7 +445,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     // Attach new bindings to the View's NavigationModel which processes cellkeydown events.
     me.view.getNavigationModel().addKeyBindings({
       esc: me.onEscKey,
-      scope: me,
+      scope: me
     });
   },
 
@@ -515,7 +515,7 @@ Ext.define("Ext.grid.plugin.Editing", {
       scope: me,
       add: me.onColumnAdd,
       columnmove: me.onColumnMove,
-      beforedestroy: me.beforeGridHeaderDestroy,
+      beforedestroy: me.beforeGridHeaderDestroy
     });
   },
 
@@ -529,7 +529,7 @@ Ext.define("Ext.grid.plugin.Editing", {
   onEscKey: function (e) {
     if (this.editing) {
       var targetComponent = Ext.getCmp(
-        e.getTarget().getAttribute("componentId"),
+        e.getTarget().getAttribute("componentId")
       );
 
       // ESCAPE when a picker is expanded does not cancel the edit
@@ -582,7 +582,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     if (!layoutView.componentLayoutCounter) {
       layoutView.on({
         boxready: Ext.Function.bind(me.startEdit, me, [record, columnHeader]),
-        single: true,
+        single: true
       });
       return;
     }
@@ -596,7 +596,7 @@ Ext.define("Ext.grid.plugin.Editing", {
     // Note that in a locked grid, the columns are enumerated in a unified set for this purpose.
     if (Ext.isNumber(columnHeader)) {
       columnHeader = colMgr.getHeaderAtIndex(
-        Math.min(columnHeader, colMgr.getColumns().length),
+        Math.min(columnHeader, colMgr.getColumns().length)
       );
     }
 
@@ -625,7 +625,7 @@ Ext.define("Ext.grid.plugin.Editing", {
 
     // Ensure the row we want to edit is in the rendered range if the view is buffer rendered
     grid.ensureVisible(record, {
-      column: columnHeader,
+      column: columnHeader
     });
 
     gridRow = view.getRow(record);
@@ -651,7 +651,7 @@ Ext.define("Ext.grid.plugin.Editing", {
       rowIdx,
       colIdx,
       record,
-      columnHeader,
+      columnHeader
     );
 
     // Add extra Editing information
@@ -696,5 +696,5 @@ Ext.define("Ext.grid.plugin.Editing", {
     return (
       me.fireEvent("validateedit", me, context) !== false && !context.cancel
     );
-  },
+  }
 });

@@ -14,7 +14,7 @@ describe("Ext.draw.sprite.Path", function () {
         strokeStyle: "red",
         r: 100,
         cx: 100,
-        cy: 100,
+        cy: 100
       });
       surface.add(sprite);
       container.add(surface);
@@ -30,7 +30,7 @@ describe("Ext.draw.sprite.Path", function () {
       function () {
         var result = sprite.hitTest([90, 90]);
         expect(result && result.sprite).toBe(sprite);
-      },
+      }
     );
 
     it("should return null, if the sprite is visible, its bounding box is hit, but the path isn't", function () {

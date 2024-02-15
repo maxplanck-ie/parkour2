@@ -17,7 +17,7 @@ Ext.define("Ext.grid.property.Reader", {
     var Model = this.getModel(),
       result = {
         records: [],
-        success: true,
+        success: true
       },
       val,
       propName;
@@ -29,8 +29,8 @@ Ext.define("Ext.grid.property.Reader", {
           result.records.push(
             new Model({
               name: propName,
-              value: val,
-            }),
+              value: val
+            })
           );
         }
       }
@@ -44,5 +44,5 @@ Ext.define("Ext.grid.property.Reader", {
    */
   isEditableValue: function (val) {
     return Ext.isPrimitive(val) || Ext.isDate(val) || val === null;
-  },
+  }
 });

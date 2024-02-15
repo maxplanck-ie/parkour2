@@ -43,18 +43,18 @@
  */
 Ext.define("Ext.data.Connection", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   requires: [
     "Ext.data.request.Ajax",
     "Ext.data.request.Form",
     "Ext.data.flash.BinaryXhr",
-    "Ext.Deferred",
+    "Ext.Deferred"
   ],
 
   statics: {
-    requestId: 0,
+    requestId: 0
   },
 
   enctypeRe: /multipart\/form-data/i,
@@ -176,7 +176,7 @@ Ext.define("Ext.data.Connection", {
      * @cfg {String}
      * The header to send with Ajax requests. Also see {@link #useDefaultXhrHeader}.
      */
-    defaultXhrHeader: "XMLHttpRequest",
+    defaultXhrHeader: "XMLHttpRequest"
   },
 
   /**
@@ -383,7 +383,7 @@ Ext.define("Ext.data.Connection", {
     Ext.callback(options.callback, options.scope, [
       options,
       undefined,
-      undefined,
+      undefined
     ]);
 
     return Ext.Deferred.rejected([options, undefined, undefined]);
@@ -416,7 +416,7 @@ Ext.define("Ext.data.Connection", {
       owner: me,
       options: options,
       requestOptions: requestOptions,
-      ownerConfig: me.getConfig(),
+      ownerConfig: me.getConfig()
     });
 
     me.requests[request.id] = request;
@@ -489,7 +489,7 @@ Ext.define("Ext.data.Connection", {
     if (!url) {
       Ext.raise({
         options: options,
-        msg: "No URL specified",
+        msg: "No URL specified"
       });
     }
     //</debug>
@@ -510,7 +510,7 @@ Ext.define("Ext.data.Connection", {
       if (!Ext.isArray(options.binaryData)) {
         Ext.log.warn(
           "Binary submission data must be an array of byte values! Instead got " +
-            typeof options.binaryData,
+            typeof options.binaryData
         );
       }
       //</debug>
@@ -561,7 +561,7 @@ Ext.define("Ext.data.Connection", {
         url,
         (options.disableCachingParam || me.getDisableCachingParam()) +
           "=" +
-          new Date().getTime(),
+          new Date().getTime()
       );
     }
 
@@ -579,7 +579,7 @@ Ext.define("Ext.data.Connection", {
     return {
       url: url,
       method: method,
-      data: data || params || null,
+      data: data || params || null
     };
   },
 
@@ -720,5 +720,5 @@ Ext.define("Ext.data.Connection", {
       (Ext.isSafari && Ext.isDefined(window.Uint8Array)) ||
       (Ext.isGecko && Ext.isDefined(window.Uint8Array))
     );
-  },
+  }
 });

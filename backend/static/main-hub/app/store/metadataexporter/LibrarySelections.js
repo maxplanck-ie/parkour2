@@ -5,101 +5,101 @@ Ext.define("MainHub.store.metadataexporter.LibrarySelections", {
   fields: [
     {
       name: "name",
-      type: "string",
-    },
+      type: "string"
+    }
   ],
 
   data: [
     {
-      name: "random",
+      name: "random"
     },
     {
-      name: "pcr",
+      name: "pcr"
     },
     {
-      name: "random pcr",
+      name: "random pcr"
     },
     {
-      name: "rt-pcr",
+      name: "rt-pcr"
     },
     {
-      name: "hmpr",
+      name: "hmpr"
     },
     {
-      name: "mf",
+      name: "mf"
     },
     {
-      name: "repeat fractionation",
+      name: "repeat fractionation"
     },
     {
-      name: "size fractionation",
+      name: "size fractionation"
     },
     {
-      name: "msll",
+      name: "msll"
     },
     {
-      name: "cdna",
+      name: "cdna"
     },
     {
-      name: "cdna_randompriming",
+      name: "cdna_randompriming"
     },
     {
-      name: "cdna_oligo_dt",
+      name: "cdna_oligo_dt"
     },
     {
-      name: "polya",
+      name: "polya"
     },
     {
-      name: "oligo-dt",
+      name: "oligo-dt"
     },
     {
-      name: "inverse rrna",
+      name: "inverse rrna"
     },
     {
-      name: "inverse rrna selection",
+      name: "inverse rrna selection"
     },
     {
-      name: "chip",
+      name: "chip"
     },
     {
-      name: "mnase",
+      name: "mnase"
     },
     {
-      name: "dnase",
+      name: "dnase"
     },
     {
-      name: "hybrid selection",
+      name: "hybrid selection"
     },
 
     {
-      name: "reduced representation",
+      name: "reduced representation"
     },
     {
-      name: "restriction digest",
+      name: "restriction digest"
     },
     {
-      name: "5-methylcytidine antibody",
+      name: "5-methylcytidine antibody"
     },
     {
-      name: "mbd2 protein methyl-cpg binding domain",
+      name: "mbd2 protein methyl-cpg binding domain"
     },
     {
-      name: "cage",
+      name: "cage"
     },
     {
-      name: "race",
+      name: "race"
     },
     {
-      name: "mda",
+      name: "mda"
     },
     {
-      name: "padlock probes capture method",
+      name: "padlock probes capture method"
     },
     {
-      name: "other",
+      name: "other"
     },
     {
-      name: "unspecified",
-    },
-  ],
+      name: "unspecified"
+    }
+  ]
 });

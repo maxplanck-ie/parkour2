@@ -8,7 +8,7 @@
  */
 Ext.define("Ext.data.Batch", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   config: {
@@ -32,7 +32,7 @@ Ext.define("Ext.data.Batch", {
      * to the default of false (e.g. process as many operations as possible, and handle any exceptions
      * asynchronously without holding up the rest of the batch).
      */
-    pauseOnException: false,
+    pauseOnException: false
   },
 
   /**
@@ -359,5 +359,5 @@ Ext.define("Ext.data.Batch", {
       me.fireEvent("operationcomplete", me, operation);
       me.runNextOperation();
     }
-  },
+  }
 });

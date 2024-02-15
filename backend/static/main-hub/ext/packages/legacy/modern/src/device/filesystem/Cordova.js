@@ -47,12 +47,12 @@ Ext.define("Ext.device.filesystem.Cordova", {
               function (error) {
                 config.failure.call(config.scope || me, error);
               },
-              config.metadata,
+              config.metadata
             );
           },
           failure: function (error) {
             config.failure.call(config.scope || me, error);
-          },
+          }
         });
       },
 
@@ -90,14 +90,14 @@ Ext.define("Ext.device.filesystem.Cordova", {
               },
               function (error) {
                 config.failure.call(config.scope || me, error);
-              },
+              }
             );
           },
           failure: function (error) {
             config.failure.call(config.scope || me, error);
-          },
+          }
         });
-      },
+      }
     });
 
     Ext.override(Ext.device.filesystem.FileEntry, {
@@ -162,7 +162,7 @@ Ext.define("Ext.device.filesystem.Cordova", {
           config.success,
           config.failure,
           options,
-          config.trustAllHosts || false,
+          config.trustAllHosts || false
         );
         return fileTransfer;
       },
@@ -208,11 +208,11 @@ Ext.define("Ext.device.filesystem.Cordova", {
           config.success,
           config.failure,
           config.trustAllHosts || false,
-          config.options || {},
+          config.options || {}
         );
 
         return fileTransfer;
-      },
+      }
     });
-  },
+  }
 });

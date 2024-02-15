@@ -12,14 +12,14 @@ describe("Ext.ElementLoader", function () {
     MockAjaxManager.addMethods();
 
     el = Ext.getBody().createChild({
-      id: "elementloader",
+      id: "elementloader"
     });
 
     makeLoader = function (cfg) {
       cfg = cfg || {};
       Ext.applyIf(cfg, {
         url: "url",
-        target: el,
+        target: el
       });
       loader = new Ext.ElementLoader(cfg);
     };
@@ -27,7 +27,7 @@ describe("Ext.ElementLoader", function () {
     mockComplete = function (responseText, status) {
       Ext.Ajax.mockComplete({
         status: status || 200,
-        responseText: responseText || "response",
+        responseText: responseText || "response"
       });
     };
 
@@ -128,7 +128,7 @@ describe("Ext.ElementLoader", function () {
 
     xit("should unmask after the request completes", function () {
       makeLoader({
-        loadMask: true,
+        loadMask: true
       });
       loader.load();
       expect(el.isMasked()).toBe(true);
@@ -138,11 +138,11 @@ describe("Ext.ElementLoader", function () {
 
     it("should accept a masking message", function () {
       makeLoader({
-        loadMask: "Waiting",
+        loadMask: "Waiting"
       });
       loader.load();
       expect(el.down(".x-mask-msg", true).firstChild.firstChild).hasHTML(
-        "Waiting",
+        "Waiting"
       );
       mockComplete();
     });
@@ -150,7 +150,7 @@ describe("Ext.ElementLoader", function () {
     xit("should use the masking load option", function () {
       makeLoader();
       loader.load({
-        loadMask: true,
+        loadMask: true
       });
       expect(el.isMasked()).toBe(true);
       mockComplete();
@@ -158,13 +158,13 @@ describe("Ext.ElementLoader", function () {
 
     it("should give precedence to the load option", function () {
       makeLoader({
-        loadMask: "Waiting",
+        loadMask: "Waiting"
       });
       loader.load({
-        loadMask: "Other",
+        loadMask: "Other"
       });
       expect(el.down(".x-mask-msg", true).firstChild.firstChild).hasHTML(
-        "Other",
+        "Other"
       );
       mockComplete();
     });
@@ -173,12 +173,12 @@ describe("Ext.ElementLoader", function () {
   describe("url", function () {
     it("should throw an exception if there's no url", function () {
       loader = new Ext.ElementLoader({
-        target: el,
+        target: el
       });
       expect(function () {
         loader.load();
       }).toThrow(
-        "You must specify the URL from which content should be loaded",
+        "You must specify the URL from which content should be loaded"
       );
     });
 
@@ -190,10 +190,10 @@ describe("Ext.ElementLoader", function () {
 
     it("should use the url in the load options", function () {
       loader = new Ext.ElementLoader({
-        target: el,
+        target: el
       });
       loader.load({
-        url: "other",
+        url: "other"
       });
       expect(getAjaxOptions().url).toEqual("other");
     });
@@ -201,7 +201,7 @@ describe("Ext.ElementLoader", function () {
     it("should give precedence to the url in the load options", function () {
       makeLoader();
       loader.load({
-        url: "other",
+        url: "other"
       });
       expect(getAjaxOptions().url).toEqual("other");
     });
@@ -230,14 +230,14 @@ describe("Ext.ElementLoader", function () {
       loadAndCheck(
         {
           p1: 1,
-          p2: "param2",
+          p2: "param2"
         },
         {
           baseParams: {
             p1: 1,
-            p2: "param2",
-          },
-        },
+            p2: "param2"
+          }
+        }
       );
     });
 
@@ -245,14 +245,14 @@ describe("Ext.ElementLoader", function () {
       loadAndCheck(
         {
           p1: 2,
-          p2: "param1",
+          p2: "param1"
         },
         {
           params: {
             p1: 2,
-            p2: "param1",
-          },
-        },
+            p2: "param1"
+          }
+        }
       );
     });
 
@@ -260,46 +260,46 @@ describe("Ext.ElementLoader", function () {
       loadAndCheck(
         {
           p1: 1,
-          p2: 2,
+          p2: 2
         },
         {
           baseParams: {
-            p2: 2,
+            p2: 2
           },
           params: {
-            p1: 1,
-          },
-        },
+            p1: 1
+          }
+        }
       );
     });
 
     it("should favour baseParams over params", function () {
       loadAndCheck(
         {
-          p1: 1,
+          p1: 1
         },
         {
           baseParams: {
-            p1: 1,
+            p1: 1
           },
           params: {
-            p1: 2,
-          },
-        },
+            p1: 2
+          }
+        }
       );
     });
 
     it("should use params specified in the options", function () {
       loadAndCheck(
         {
-          p1: 1,
+          p1: 1
         },
         null,
         {
           params: {
-            p1: 1,
-          },
-        },
+            p1: 1
+          }
+        }
       );
     });
 
@@ -307,18 +307,18 @@ describe("Ext.ElementLoader", function () {
       loadAndCheck(
         {
           p1: "some",
-          p2: "param",
+          p2: "param"
         },
         {
           baseParams: {
-            p1: "some",
-          },
+            p1: "some"
+          }
         },
         {
           params: {
-            p2: "param",
-          },
-        },
+            p2: "param"
+          }
+        }
       );
     });
 
@@ -326,54 +326,54 @@ describe("Ext.ElementLoader", function () {
       loadAndCheck(
         {
           p1: "some",
-          p2: "param",
+          p2: "param"
         },
         {
           params: {
-            p1: "some",
-          },
+            p1: "some"
+          }
         },
         {
           params: {
-            p2: "param",
-          },
-        },
+            p2: "param"
+          }
+        }
       );
     });
 
     it("should favour the load params over the config params", function () {
       loadAndCheck(
         {
-          p1: "param",
+          p1: "param"
         },
         {
           params: {
-            p1: "some",
-          },
+            p1: "some"
+          }
         },
         {
           params: {
-            p1: "param",
-          },
-        },
+            p1: "param"
+          }
+        }
       );
     });
 
     it("should prefer baseParams over load params", function () {
       loadAndCheck(
         {
-          p1: "favoured",
+          p1: "favoured"
         },
         {
           baseParams: {
-            p1: "favoured",
-          },
+            p1: "favoured"
+          }
         },
         {
           params: {
-            p1: "other",
-          },
-        },
+            p1: "other"
+          }
+        }
       );
     });
 
@@ -382,21 +382,21 @@ describe("Ext.ElementLoader", function () {
         {
           p1: 1,
           p2: 2,
-          p3: 3,
+          p3: 3
         },
         {
           baseParams: {
-            p1: 1,
+            p1: 1
           },
           params: {
-            p2: 2,
-          },
+            p2: 2
+          }
         },
         {
           params: {
-            p3: 3,
-          },
-        },
+            p3: 3
+          }
+        }
       );
     });
   });
@@ -404,7 +404,7 @@ describe("Ext.ElementLoader", function () {
   describe("autoLoad", function () {
     it("should automatically load when autoLoad is set", function () {
       makeLoader({
-        autoLoad: true,
+        autoLoad: true
       });
       mockComplete();
       expect(el.dom).hasHTML("response");
@@ -414,12 +414,12 @@ describe("Ext.ElementLoader", function () {
       makeLoader({
         autoLoad: {
           params: {
-            p1: 1,
-          },
-        },
+            p1: 1
+          }
+        }
       });
       expect(getAjaxOptions().params).toEqual({
-        p1: 1,
+        p1: 1
       });
     });
   });
@@ -434,8 +434,8 @@ describe("Ext.ElementLoader", function () {
     it("should include any default options", function () {
       makeLoader({
         ajaxOptions: {
-          timeout: 10000,
-        },
+          timeout: 10000
+        }
       });
       loader.load();
       expect(getAjaxOptions().timeout).toEqual(10000);
@@ -445,8 +445,8 @@ describe("Ext.ElementLoader", function () {
       makeLoader();
       loader.load({
         ajaxOptions: {
-          timeout: 10000,
-        },
+          timeout: 10000
+        }
       });
       expect(getAjaxOptions().timeout).toEqual(10000);
     });
@@ -454,13 +454,13 @@ describe("Ext.ElementLoader", function () {
     it("should combine options from the config and on the load", function () {
       makeLoader({
         ajaxOptions: {
-          username: "user",
-        },
+          username: "user"
+        }
       });
       loader.load({
         ajaxOptions: {
-          timeout: 10000,
-        },
+          timeout: 10000
+        }
       });
       expect(getAjaxOptions().timeout).toEqual(10000);
       expect(getAjaxOptions().username).toEqual("user");
@@ -469,13 +469,13 @@ describe("Ext.ElementLoader", function () {
     it("should give precedence to ajax options on the load", function () {
       makeLoader({
         ajaxOptions: {
-          timeout: 10000,
-        },
+          timeout: 10000
+        }
       });
       loader.load({
         ajaxOptions: {
-          timeout: 5000,
-        },
+          timeout: 5000
+        }
       });
       expect(getAjaxOptions().timeout).toEqual(5000);
     });
@@ -499,14 +499,14 @@ describe("Ext.ElementLoader", function () {
 
     it("should take a string config", function () {
       loader = new E({
-        target: "elementloader",
+        target: "elementloader"
       });
       expect(loader.getTarget()).toEqual(el);
     });
 
     it("should take a dom object config", function () {
       loader = new E({
-        target: el.dom,
+        target: el.dom
       });
       expect(loader.getTarget()).toEqual(el);
     });
@@ -545,13 +545,13 @@ describe("Ext.ElementLoader", function () {
     it("should abort any active request if the target changes", function () {
       var other = Ext.getBody().createChild(),
         o = {
-          fn: function () {},
+          fn: function () {}
         };
 
       spyOn(o, "fn").andCallThrough();
       makeLoader();
       loader.load({
-        success: o.fn,
+        success: o.fn
       });
       loader.setTarget(other);
       expect(o.fn).not.toHaveBeenCalled();
@@ -560,7 +560,7 @@ describe("Ext.ElementLoader", function () {
 
     it("should throw an exception if no target is specified", function () {
       loader = new E({
-        url: "url",
+        url: "url"
       });
       expect(function () {
         loader.load();
@@ -585,12 +585,12 @@ describe("Ext.ElementLoader", function () {
       });
       it("should process inline scripts", function () {
         makeLoader({
-          scripts: true,
+          scripts: true
         });
 
         runs(function () {
           loadAndComplete(
-            '<script type="text/javascript">window.ElementLoaderTest = true;</script>',
+            '<script type="text/javascript">window.ElementLoaderTest = true;</script>'
           );
         });
 
@@ -601,12 +601,12 @@ describe("Ext.ElementLoader", function () {
 
       it("should process external scripts", function () {
         makeLoader({
-          scripts: true,
+          scripts: true
         });
 
         runs(function () {
           loadAndComplete(
-            '<script type="text/javascript" src="../resources/ExternalScript.js"></script>',
+            '<script type="text/javascript" src="../resources/ExternalScript.js"></script>'
           );
         });
 
@@ -622,8 +622,8 @@ describe("Ext.ElementLoader", function () {
           loadAndComplete(
             '<script type="text/javascript">window.ElementLoaderTest = true;</script>',
             {
-              scripts: true,
-            },
+              scripts: true
+            }
           );
         });
 
@@ -638,12 +638,12 @@ describe("Ext.ElementLoader", function () {
         var o = {
           fn: function (loader, response, options) {
             loader.getTarget().update("This is the " + response.responseText);
-          },
+          }
         };
 
         spyOn(o, "fn").andCallThrough();
         makeLoader({
-          renderer: o.fn,
+          renderer: o.fn
         });
         loadAndComplete("response");
         expect(o.fn).toHaveBeenCalled();
@@ -659,7 +659,7 @@ describe("Ext.ElementLoader", function () {
 
           callback: function (loader, success) {
             result = success;
-          },
+          }
         });
         loadAndComplete();
         expect(result).toBeFalsy();
@@ -675,7 +675,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should default the scope to the loader", function () {
         makeLoader({
-          renderer: spy,
+          renderer: spy
         });
         loadAndComplete();
         expect(spy.mostRecentCall.object).toBe(loader);
@@ -685,7 +685,7 @@ describe("Ext.ElementLoader", function () {
         var o = {};
         makeLoader({
           renderer: spy,
-          rendererScope: o,
+          rendererScope: o
         });
         loadAndComplete();
         expect(spy.mostRecentCall.object).toBe(o);
@@ -697,10 +697,10 @@ describe("Ext.ElementLoader", function () {
 
         makeLoader({
           renderer: spy,
-          rendererScope: o1,
+          rendererScope: o1
         });
         loadAndComplete("", {
-          rendererScope: o2,
+          rendererScope: o2
         });
         expect(spy.mostRecentCall.object).toBe(o2);
       });
@@ -713,7 +713,7 @@ describe("Ext.ElementLoader", function () {
       o = {
         trueFn: function (loader) {},
 
-        falseFn: function () {},
+        falseFn: function () {}
       };
       spyOn(o, "trueFn");
       spyOn(o, "falseFn").andReturn(false);
@@ -727,8 +727,8 @@ describe("Ext.ElementLoader", function () {
       it("should fire the beforeload event", function () {
         makeLoader({
           listeners: {
-            beforeload: o.trueFn,
-          },
+            beforeload: o.trueFn
+          }
         });
         loader.load();
         expect(o.trueFn).toHaveBeenCalled();
@@ -737,8 +737,8 @@ describe("Ext.ElementLoader", function () {
       it("should cancel the load if beforeload returns false", function () {
         makeLoader({
           listeners: {
-            beforeload: o.falseFn,
-          },
+            beforeload: o.falseFn
+          }
         });
         loader.load();
         expect(o.falseFn).toHaveBeenCalled();
@@ -750,8 +750,8 @@ describe("Ext.ElementLoader", function () {
       it("should fire the load event", function () {
         makeLoader({
           listeners: {
-            load: o.trueFn,
-          },
+            load: o.trueFn
+          }
         });
         loadAndComplete();
         expect(o.trueFn).toHaveBeenCalled();
@@ -761,8 +761,8 @@ describe("Ext.ElementLoader", function () {
         makeLoader({
           listeners: {
             beforeload: o.falseFn,
-            load: o.trueFn,
-          },
+            load: o.trueFn
+          }
         });
         loader.load();
         expect(o.trueFn).not.toHaveBeenCalled();
@@ -771,8 +771,8 @@ describe("Ext.ElementLoader", function () {
       it("should not fire if the ajax request fails", function () {
         makeLoader({
           listeners: {
-            load: o.trueFn,
-          },
+            load: o.trueFn
+          }
         });
         loadAndFail();
         expect(o.trueFn).not.toHaveBeenCalled();
@@ -782,8 +782,8 @@ describe("Ext.ElementLoader", function () {
         makeLoader({
           renderer: o.falseFn,
           listeners: {
-            load: o.trueFn,
-          },
+            load: o.trueFn
+          }
         });
         loadAndComplete();
         expect(o.trueFn).not.toHaveBeenCalled();
@@ -794,8 +794,8 @@ describe("Ext.ElementLoader", function () {
       it("should fire the exception event", function () {
         makeLoader({
           listeners: {
-            exception: o.trueFn,
-          },
+            exception: o.trueFn
+          }
         });
         loadAndFail();
         expect(o.trueFn).toHaveBeenCalled();
@@ -805,8 +805,8 @@ describe("Ext.ElementLoader", function () {
         makeLoader({
           listeners: {
             beforeload: o.falseFn,
-            exception: o.trueFn,
-          },
+            exception: o.trueFn
+          }
         });
         loader.load();
         expect(o.trueFn).not.toHaveBeenCalled();
@@ -815,8 +815,8 @@ describe("Ext.ElementLoader", function () {
       it("should not fire if the ajax request is successful", function () {
         makeLoader({
           listeners: {
-            exception: o.trueFn,
-          },
+            exception: o.trueFn
+          }
         });
         loadAndComplete();
         expect(o.trueFn).not.toHaveBeenCalled();
@@ -826,8 +826,8 @@ describe("Ext.ElementLoader", function () {
         makeLoader({
           renderer: o.falseFn,
           listeners: {
-            exception: o.trueFn,
-          },
+            exception: o.trueFn
+          }
         });
         loadAndComplete();
         expect(o.trueFn).toHaveBeenCalled();
@@ -852,7 +852,7 @@ describe("Ext.ElementLoader", function () {
           me = this;
         },
 
-        other: function () {},
+        other: function () {}
       };
       spyOn(o, "callback").andCallThrough();
       spyOn(o, "success").andCallThrough();
@@ -867,7 +867,7 @@ describe("Ext.ElementLoader", function () {
     describe("scope", function () {
       it("should default to the loader instance", function () {
         makeLoader({
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndComplete();
         expect(me).toEqual(loader);
@@ -877,7 +877,7 @@ describe("Ext.ElementLoader", function () {
         var scope = {};
         makeLoader({
           callback: o.callback,
-          scope: scope,
+          scope: scope
         });
         loadAndComplete();
         expect(me).toEqual(scope);
@@ -886,10 +886,10 @@ describe("Ext.ElementLoader", function () {
       it("should use the scope specified in the load options", function () {
         var scope = {};
         makeLoader({
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndComplete("", {
-          scope: scope,
+          scope: scope
         });
         expect(me).toEqual(scope);
       });
@@ -900,10 +900,10 @@ describe("Ext.ElementLoader", function () {
 
         makeLoader({
           scope: scope1,
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndComplete("", {
-          scope: scope2,
+          scope: scope2
         });
         expect(me).toEqual(scope2);
       });
@@ -914,7 +914,7 @@ describe("Ext.ElementLoader", function () {
         var scope = {};
         makeLoader({
           success: o.success,
-          scope: scope,
+          scope: scope
         });
         loadAndComplete();
         expect(me).toEqual(scope);
@@ -922,7 +922,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should use the function specified in the class config", function () {
         makeLoader({
-          success: o.success,
+          success: o.success
         });
         loadAndComplete();
         expect(o.success).toHaveBeenCalled();
@@ -931,17 +931,17 @@ describe("Ext.ElementLoader", function () {
       it("should use the function specified in the load options", function () {
         makeLoader();
         loadAndComplete("", {
-          success: o.success,
+          success: o.success
         });
         expect(o.success).toHaveBeenCalled();
       });
 
       it("should give precedence to the function specified in the options", function () {
         makeLoader({
-          success: o.other,
+          success: o.other
         });
         loadAndComplete("", {
-          success: o.success,
+          success: o.success
         });
         expect(o.success).toHaveBeenCalled();
         expect(o.other).not.toHaveBeenCalled();
@@ -949,7 +949,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should not fire success is the request fails", function () {
         makeLoader({
-          success: o.success,
+          success: o.success
         });
         loadAndFail();
         expect(o.success).not.toHaveBeenCalled();
@@ -960,7 +960,7 @@ describe("Ext.ElementLoader", function () {
           success: o.success,
           renderer: function () {
             return false;
-          },
+          }
         });
         loadAndComplete();
         expect(o.success).not.toHaveBeenCalled();
@@ -969,7 +969,7 @@ describe("Ext.ElementLoader", function () {
       it("should never fire in conjunction with failure", function () {
         makeLoader({
           success: o.success,
-          failure: o.failure,
+          failure: o.failure
         });
         loadAndComplete();
         expect(o.success).toHaveBeenCalled();
@@ -982,7 +982,7 @@ describe("Ext.ElementLoader", function () {
         var scope = {};
         makeLoader({
           failure: o.failure,
-          scope: scope,
+          scope: scope
         });
         loadAndFail();
         expect(me).toEqual(scope);
@@ -990,7 +990,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should use the function specified in the class config", function () {
         makeLoader({
-          failure: o.failure,
+          failure: o.failure
         });
         loadAndFail();
         expect(o.failure).toHaveBeenCalled();
@@ -999,17 +999,17 @@ describe("Ext.ElementLoader", function () {
       it("should use the function specified in the load options", function () {
         makeLoader();
         loadAndFail("", {
-          failure: o.failure,
+          failure: o.failure
         });
         expect(o.failure).toHaveBeenCalled();
       });
 
       it("should give precedence to the function specified in the options", function () {
         makeLoader({
-          failure: o.other,
+          failure: o.other
         });
         loadAndFail("", {
-          failure: o.failure,
+          failure: o.failure
         });
         expect(o.failure).toHaveBeenCalled();
         expect(o.other).not.toHaveBeenCalled();
@@ -1017,7 +1017,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should not fire failure is the request succeeds", function () {
         makeLoader({
-          failure: o.failure,
+          failure: o.failure
         });
         loadAndComplete();
         expect(o.failure).not.toHaveBeenCalled();
@@ -1028,7 +1028,7 @@ describe("Ext.ElementLoader", function () {
           failure: o.failure,
           renderer: function () {
             return false;
-          },
+          }
         });
         loadAndComplete();
         expect(o.failure).toHaveBeenCalled();
@@ -1037,7 +1037,7 @@ describe("Ext.ElementLoader", function () {
       it("should never fire in conjunction with success", function () {
         makeLoader({
           success: o.success,
-          failure: o.failure,
+          failure: o.failure
         });
         loadAndFail();
         expect(o.failure).toHaveBeenCalled();
@@ -1050,7 +1050,7 @@ describe("Ext.ElementLoader", function () {
         var scope = {};
         makeLoader({
           callback: o.callback,
-          scope: scope,
+          scope: scope
         });
         loadAndComplete();
         expect(me).toEqual(scope);
@@ -1058,7 +1058,7 @@ describe("Ext.ElementLoader", function () {
 
       it("should use the function specified in the class config", function () {
         makeLoader({
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndComplete();
         expect(o.callback).toHaveBeenCalled();
@@ -1067,17 +1067,17 @@ describe("Ext.ElementLoader", function () {
       it("should use the function specified in the load options", function () {
         makeLoader();
         loadAndComplete("", {
-          callback: o.callback,
+          callback: o.callback
         });
         expect(o.callback).toHaveBeenCalled();
       });
 
       it("should give precedence to the function specified in the options", function () {
         makeLoader({
-          callback: o.other,
+          callback: o.other
         });
         loadAndComplete("", {
-          callback: o.callback,
+          callback: o.callback
         });
         expect(o.callback).toHaveBeenCalled();
         expect(o.other).not.toHaveBeenCalled();
@@ -1086,7 +1086,7 @@ describe("Ext.ElementLoader", function () {
       it("should fire whenever success is fired", function () {
         makeLoader({
           success: o.success,
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndComplete();
         expect(o.success).toHaveBeenCalled();
@@ -1096,7 +1096,7 @@ describe("Ext.ElementLoader", function () {
       it("should fire whenever failure is fired", function () {
         makeLoader({
           failure: o.failure,
-          callback: o.callback,
+          callback: o.callback
         });
         loadAndFail();
         expect(o.failure).toHaveBeenCalled();
@@ -1119,7 +1119,7 @@ describe("Ext.ElementLoader", function () {
 
     it("should pass the options to the load method", function () {
       makeLoader({
-        url: "url",
+        url: "url"
       });
       var spy = spyOn(loader, "load").andCallFake(function (options) {
           removeSpy(spy);
@@ -1128,7 +1128,7 @@ describe("Ext.ElementLoader", function () {
         }),
         isLoaded;
       loader.startAutoRefresh(50, {
-        url: "other",
+        url: "other"
       });
 
       waitsFor(function () {

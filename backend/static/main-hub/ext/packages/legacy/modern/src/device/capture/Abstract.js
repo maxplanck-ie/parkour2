@@ -66,5 +66,5 @@ Ext.define("Ext.device.capture.Abstract", {
    *
    * @param {Function} config.failure Called if the capture is unsuccessful.
    */
-  captureVideo: Ext.emptyFn,
+  captureVideo: Ext.emptyFn
 });

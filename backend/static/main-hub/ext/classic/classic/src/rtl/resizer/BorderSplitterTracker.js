@@ -5,7 +5,7 @@ Ext.define("Ext.rtl.resizer.BorderSplitterTracker", {
     top: "top",
     right: "left",
     bottom: "bottom",
-    left: "right",
+    left: "right"
   },
 
   getCollapseDirection: function () {
@@ -15,5 +15,5 @@ Ext.define("Ext.rtl.resizer.BorderSplitterTracker", {
       direction = this.rtlDirections[direction];
     }
     return direction;
-  },
+  }
 });

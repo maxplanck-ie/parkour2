@@ -23,7 +23,7 @@ Ext.define("Ext.dom.Shim", {
       frameBorder: "0",
       src: Ext.SSL_SECURE_URL,
       // tabIndex of -1 ensures that the iframe is not focusable by the user
-      tabindex: "-1",
+      tabindex: "-1"
     };
   },
 
@@ -32,5 +32,5 @@ Ext.define("Ext.dom.Shim", {
     // shadow will be stacked on top of it.
     var shadow = this.shadow;
     return (shadow && shadow.el) || this.target;
-  },
+  }
 });

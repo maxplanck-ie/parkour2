@@ -51,7 +51,7 @@ Ext.define("Ext.direct.Provider", {
      * @cfg {Object} [headers]
      * An object containing default headers for every Ajax request made by this Provider.
      */
-    headers: undefined,
+    headers: undefined
   },
 
   /**
@@ -96,7 +96,7 @@ Ext.define("Ext.direct.Provider", {
     me.requests = {};
 
     Ext.applyIf(me, {
-      id: Ext.id(null, "provider-"),
+      id: Ext.id(null, "provider-")
     });
   },
 
@@ -220,12 +220,12 @@ Ext.define("Ext.direct.Provider", {
      * @static
      * @inheritable
      */
-    checkConfig: Ext.returnFalse,
+    checkConfig: Ext.returnFalse
   },
 
   onClassExtended: function (cls, data, hooks) {
     if (data.type) {
       Ext.direct.Manager.addProviderClass(data.type, cls);
     }
-  },
+  }
 });

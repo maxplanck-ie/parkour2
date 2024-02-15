@@ -134,14 +134,14 @@ Ext.define("Ext.grid.selection.Columns", {
       //<debug>
       if (!column.isColumn) {
         Ext.raise(
-          "Column selection must be passed a grid Column header object",
+          "Column selection must be passed a grid Column header object"
         );
       }
       //</debug>
 
       Ext.Array.include(
         this.selectedColumns || (this.selectedColumns = []),
-        column,
+        column
       );
       this.refreshColumns(column);
     },
@@ -251,7 +251,7 @@ Ext.define("Ext.grid.selection.Columns", {
       //<debug>
       if (!column.isColumn) {
         Ext.raise(
-          "Column selection must be passed a grid Column header object",
+          "Column selection must be passed a grid Column header object"
         );
       }
       //</debug>
@@ -307,8 +307,8 @@ Ext.define("Ext.grid.selection.Columns", {
             new Ext.grid.CellContext(me.view).setPosition(0, range[0]),
             new Ext.grid.CellContext(me.view).setPosition(
               me.view.dataSource.getCount() - 1,
-              range[1],
-            ),
+              range[1]
+            )
           );
       } else {
         me.view.getSelectionModel().onSelectionFinish(me);
@@ -342,6 +342,6 @@ Ext.define("Ext.grid.selection.Columns", {
         }
         return [selection[0], selection[len - 1]];
       }
-    },
-  },
+    }
+  }
 });

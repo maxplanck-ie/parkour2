@@ -28,11 +28,11 @@ Ext.define("Ext.ux.FileUploadWindow", {
             listeners: {
               change: function (fld, value) {
                 fld.setRawValue(value.replace(/C:\\fakepath\\/g, ""));
-              },
-            },
-          },
-        ],
-      },
+              }
+            }
+          }
+        ]
+      }
     ];
 
     me.buttons = [
@@ -40,16 +40,16 @@ Ext.define("Ext.ux.FileUploadWindow", {
         text: "Upload",
         handler: function () {
           this.up("window").onFileUpload();
-        },
+        }
       },
       {
         text: "Cancel",
         handler: function () {
           this.up("window").close();
-        },
-      },
+        }
+      }
     ];
 
     this.callParent(arguments);
-  },
+  }
 });

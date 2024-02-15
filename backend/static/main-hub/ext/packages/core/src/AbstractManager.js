@@ -43,12 +43,12 @@ Ext.define("Ext.AbstractManager", {
     var key = this.all.getKey(item);
     if (key === undefined) {
       Ext.raise(
-        "Key is undefined. Please ensure the item has a key before registering the item.",
+        "Key is undefined. Please ensure the item has a key before registering the item."
       );
     }
     if (this.all.containsKey(key)) {
       Ext.raise(
-        'Registering duplicate id "' + key + '" with ' + this.$className,
+        'Registering duplicate id "' + key + '" with ' + this.$className
       );
     }
     //</debug>
@@ -97,7 +97,7 @@ Ext.define("Ext.AbstractManager", {
     //<debug>
     if (Constructor === undefined) {
       Ext.raise(
-        "The '" + type + "' type has not been registered with this manager",
+        "The '" + type + "' type has not been registered with this manager"
       );
     }
     //</debug>
@@ -151,5 +151,5 @@ Ext.define("Ext.AbstractManager", {
    */
   getCount: function () {
     return this.all.getCount();
-  },
+  }
 });

@@ -17,12 +17,12 @@ Ext.define("Ext.dataview.plugin.ItemTip", {
   config: {
     // So that we can get early access to the owning DataView
     // in applyBind so we can ensure we have a ViewModel.
-    cmp: null,
+    cmp: null
   },
 
   listeners: {
     beforeshow: "onBeforeShow",
-    scope: "this",
+    scope: "this"
   },
 
   init: function (dataview) {
@@ -30,11 +30,11 @@ Ext.define("Ext.dataview.plugin.ItemTip", {
 
     dataview.on({
       initialize: this.onDataViewInitialized,
-      scope: this,
+      scope: this
     });
     dataview.getScrollable().on({
       scroll: this.onDataViewScroll,
-      scope: this,
+      scope: this
     });
   },
 
@@ -123,12 +123,12 @@ Ext.define("Ext.dataview.plugin.ItemTip", {
         me.setViewModel(
           Ext.Factory.viewModel({
             parent: parentViewModel,
-            data: {},
-          }),
+            data: {}
+          })
         );
       }
 
       me.callParent([binds, currentBindings]);
-    },
-  },
+    }
+  }
 });

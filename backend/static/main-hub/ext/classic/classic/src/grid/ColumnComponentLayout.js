@@ -12,7 +12,7 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
 
   _paddingReset: {
     paddingTop: "", // reset back to default padding of the style
-    paddingBottom: "",
+    paddingBottom: ""
   },
 
   columnAutoCls: Ext.baseCSSPrefix + "column-header-text-container-auto",
@@ -66,7 +66,7 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
       ownerContext.setProp(
         "innerHeight",
         innerHeight - owner.titleEl.getHeight(),
-        false,
+        false
       );
     }
   },
@@ -85,7 +85,7 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
       ownerContext.setProp(
         "innerWidth",
         outerWidth - ownerContext.getBorderInfo().width,
-        false,
+        false
       );
     }
   },
@@ -93,7 +93,7 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
   // Push content height outwards when we are shrinkwrapping
   calculateOwnerHeightFromContentHeight: function (
     ownerContext,
-    contentHeight,
+    contentHeight
   ) {
     var result = this.callParent(arguments),
       owner = this.owner;
@@ -130,7 +130,7 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
       inner = Math.max(
         contentWidth,
         owner.textEl.getWidth() +
-          ownerContext.titleContext.getPaddingInfo().width,
+          ownerContext.titleContext.getPaddingInfo().width
       );
     }
     return inner + padWidth + triggerOffset;
@@ -146,5 +146,5 @@ Ext.define("Ext.grid.ColumnComponentLayout", {
       }
     }
     return width;
-  },
+  }
 });

@@ -6,10 +6,10 @@ describe("Ext.tab.Panel", function () {
       Ext.apply(
         {
           xtype: "tabpanel",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        config,
-      ),
+        config
+      )
     );
 
     return tabPanel;
@@ -25,14 +25,14 @@ describe("Ext.tab.Panel", function () {
         xtype: "panel",
         html: "test " + (i + 1),
         title: "test " + (i + 1),
-        itemId: "item" + (i + 1),
+        itemId: "item" + (i + 1)
       };
     }
 
     return createTabPanel(
       Ext.apply({}, config, {
-        items: items,
-      }),
+        items: items
+      })
     );
   }
 
@@ -45,13 +45,13 @@ describe("Ext.tab.Panel", function () {
   describe("active tab config on init", function () {
     it("should ignore the activeTab as a string ID if it doesn't exist", function () {
       createTabPanelWithTabs(3, {
-        activeTab: "foo",
+        activeTab: "foo"
       });
       expect(tabPanel.getActiveTab()).toBeUndefined();
     });
     it("should ignore the activeTab as a numeric index if it doesn't exist", function () {
       createTabPanelWithTabs(3, {
-        activeTab: 4,
+        activeTab: 4
       });
       expect(tabPanel.getActiveTab()).toBeUndefined();
     });
@@ -62,13 +62,13 @@ describe("Ext.tab.Panel", function () {
       createTabPanelWithTabs(3, {
         items: [
           {
-            id: bar,
+            id: bar
           },
           {
-            id: foo,
-          },
+            id: foo
+          }
         ],
-        activeTab: foo,
+        activeTab: foo
       });
       expect(tabPanel.getActiveTab().id).toEqual(foo);
     });
@@ -79,19 +79,19 @@ describe("Ext.tab.Panel", function () {
       createTabPanelWithTabs(3, {
         items: [
           {
-            id: bar,
+            id: bar
           },
           {
-            id: foo,
-          },
+            id: foo
+          }
         ],
-        activeTab: 1,
+        activeTab: 1
       });
       expect(tabPanel.getActiveTab().id).toEqual(foo);
     });
     it("should not set an active tab if null", function () {
       createTabPanelWithTabs(3, {
-        activeTab: null,
+        activeTab: null
       });
       expect(tabPanel.getActiveTab()).toBeUndefined();
     });
@@ -106,7 +106,7 @@ describe("Ext.tab.Panel", function () {
     it("should activate the next tab", function () {
       createTabPanelWithTabs(6, {
         renderTo: document.body,
-        activeTab: 4,
+        activeTab: 4
       });
       tb = tabPanel.tabBar;
       tb.closeTab(tb.items.items[4]);
@@ -115,7 +115,7 @@ describe("Ext.tab.Panel", function () {
     it("should activate the previously active tab", function () {
       createTabPanelWithTabs(6, {
         renderTo: document.body,
-        activeTab: 5,
+        activeTab: 5
       });
       tb = tabPanel.tabBar;
       tabPanel.setActiveTab(0);
@@ -126,7 +126,7 @@ describe("Ext.tab.Panel", function () {
     it("should activate the new first tab when closing the first", function () {
       createTabPanelWithTabs(6, {
         renderTo: document.body,
-        activeTab: 0,
+        activeTab: 0
       });
       tb = tabPanel.tabBar;
       tabPanel.tabBar.closeTab(tb.items.items[0]);
@@ -137,7 +137,7 @@ describe("Ext.tab.Panel", function () {
   describe("the tabBar", function () {
     beforeEach(function () {
       fakeTabBar = {
-        something: "yea",
+        something: "yea"
       };
     });
 
@@ -159,8 +159,8 @@ describe("Ext.tab.Panel", function () {
     it("should accept additional config", function () {
       createTabPanel({
         tabBar: {
-          someConfig: "something",
-        },
+          someConfig: "something"
+        }
       });
 
       expect(tabPanel.tabBar.someConfig).toEqual("something");
@@ -173,7 +173,7 @@ describe("Ext.tab.Panel", function () {
 
       it("should create the dockedItems MixedCollection", function () {
         expect(tabPanel.dockedItems instanceof Ext.util.MixedCollection).toBe(
-          true,
+          true
         );
       });
 
@@ -189,9 +189,9 @@ describe("Ext.tab.Panel", function () {
             {
               xtype: "panel",
               html: "test",
-              dock: "top",
-            },
-          ],
+              dock: "top"
+            }
+          ]
         });
       });
 
@@ -210,14 +210,14 @@ describe("Ext.tab.Panel", function () {
           dockedItems: {
             xtype: "panel",
             html: "test",
-            dock: "top",
-          },
+            dock: "top"
+          }
         });
       });
 
       xit("should turn the dockedItems into an array", function () {
         expect(tabPanel.dockedItems instanceof Ext.util.MixedCollection).toBe(
-          true,
+          true
         );
       });
 
@@ -238,18 +238,18 @@ describe("Ext.tab.Panel", function () {
               items: [
                 {
                   xtype: "button",
-                  text: "Foo",
-                },
-              ],
+                  text: "Foo"
+                }
+              ]
             },
             items: [
               {
-                title: "Bar",
+                title: "Bar"
               },
               {
-                title: "Baz",
-              },
-            ],
+                title: "Baz"
+              }
+            ]
           });
         }).not.toThrow();
         var items = tabPanel.tabBar.items;
@@ -265,18 +265,18 @@ describe("Ext.tab.Panel", function () {
               items: [
                 {
                   xtype: "button",
-                  text: "Foo",
-                },
-              ],
+                  text: "Foo"
+                }
+              ]
             },
             items: [
               {
-                title: "Bar",
+                title: "Bar"
               },
               {
-                title: "Baz",
-              },
-            ],
+                title: "Baz"
+              }
+            ]
           });
         }).not.toThrow();
         var items = tabPanel.tabBar.items;
@@ -295,18 +295,18 @@ describe("Ext.tab.Panel", function () {
                 {
                   xtype: "button",
                   itemId: "theButton",
-                  text: "Foo",
-                },
-              ],
+                  text: "Foo"
+                }
+              ]
             },
             items: [
               {
-                title: "Bar",
+                title: "Bar"
               },
               {
-                title: "Baz",
-              },
-            ],
+                title: "Baz"
+              }
+            ]
           });
           btn = tabPanel.down("#theButton");
 
@@ -324,7 +324,7 @@ describe("Ext.tab.Panel", function () {
             return !!spy.callCount;
           },
           "spy to be called",
-          100,
+          100
         );
 
         runs(function () {
@@ -338,8 +338,8 @@ describe("Ext.tab.Panel", function () {
     beforeEach(function () {
       createTabPanel({
         layout: {
-          someConfig: "something",
-        },
+          someConfig: "something"
+        }
       });
     });
 
@@ -373,7 +373,7 @@ describe("Ext.tab.Panel", function () {
 
       it("if undefined, should call setActiveTab with the correct item", function () {
         createTabPanelWithTabs(2, {
-          activeTab: undefined,
+          activeTab: undefined
         });
 
         expect(tabPanel.getActiveTab()).toEqual(tabPanel.items.items[0]);
@@ -381,7 +381,7 @@ describe("Ext.tab.Panel", function () {
 
       it("if set, should call setActiveTab with the correct item", function () {
         createTabPanelWithTabs(2, {
-          activeTab: 1,
+          activeTab: 1
         });
 
         expect(tabPanel.getActiveTab()).toEqual(tabPanel.items.items[1]);
@@ -389,7 +389,7 @@ describe("Ext.tab.Panel", function () {
 
       it("if null, should not call setActiveTab", function () {
         createTabPanelWithTabs(2, {
-          activeTab: null,
+          activeTab: null
         });
 
         expect(tabPanel.getActiveTab()).toEqual(null);
@@ -416,10 +416,10 @@ describe("Ext.tab.Panel", function () {
               xtype: "panel",
               title: "new",
               html: "New Panel",
-              itemId: "newItem",
+              itemId: "newItem"
             },
-            config,
-          ),
+            config
+          )
         );
       }
 
@@ -459,7 +459,7 @@ describe("Ext.tab.Panel", function () {
     it("should append a tab to the end", function () {
       createTabPanelWithTabs(3);
       var item = tabPanel.add({
-          title: "foo",
+          title: "foo"
         }),
         tab,
         items;
@@ -474,7 +474,7 @@ describe("Ext.tab.Panel", function () {
     it("should insert a tab at the specified index", function () {
       createTabPanelWithTabs(3);
       var item = tabPanel.insert(1, {
-          title: "foo",
+          title: "foo"
         }),
         items,
         tab;
@@ -580,7 +580,7 @@ describe("Ext.tab.Panel", function () {
 
         it("should accept an object config and add it", function () {
           tabPanel.setActiveTab({
-            itemId: "item5",
+            itemId: "item5"
           });
           expect(tabPanel.getActiveTab()).toBe(tabPanel.down("#item5"));
         });
@@ -613,7 +613,7 @@ describe("Ext.tab.Panel", function () {
 
         it("should return a newly added item", function () {
           var item = tabPanel.setActiveTab({
-            itemId: "item5",
+            itemId: "item5"
           });
           expect(item).toBe(tabPanel.down("#item5"));
         });
@@ -679,7 +679,7 @@ describe("Ext.tab.Panel", function () {
         describe("when setting a new (config) tab", function () {
           it("should pass the new item instance", function () {
             tabPanel.setActiveTab({
-              itemId: "item5",
+              itemId: "item5"
             });
             var item = tabPanel.down("#item5");
             expect(beforeSpy.mostRecentCall.args[1]).toBe(item);
@@ -715,7 +715,7 @@ describe("Ext.tab.Panel", function () {
           var other = new Ext.Component({
             renderTo: Ext.getBody(),
             width: 50,
-            height: 50,
+            height: 50
           });
 
           tabPanel.on("beforetabchange", function () {
@@ -755,7 +755,7 @@ describe("Ext.tab.Panel", function () {
 
         it("should set the active item when adding a new item", function () {
           tabPanel.setActiveTab({
-            itemId: "item5",
+            itemId: "item5"
           });
           expect(bar.activeTab).toBe(tabPanel.down("#item5").tab);
         });
@@ -840,8 +840,8 @@ describe("Ext.tab.Panel", function () {
               textfield = item3.add({
                 xtype: "textfield",
                 listeners: {
-                  focus: fieldFocusSpy,
-                },
+                  focus: fieldFocusSpy
+                }
               });
 
               item3.on("activate", function () {
@@ -1009,7 +1009,7 @@ describe("Ext.tab.Panel", function () {
               runs(function () {
                 button = new Ext.button.Button({
                   text: "foo",
-                  activate: jasmine.createSpy("activate"),
+                  activate: jasmine.createSpy("activate")
                 });
 
                 tabPanel.getTabBar().insert(2, button);
@@ -1145,7 +1145,7 @@ describe("Ext.tab.Panel", function () {
             beforeEach(function () {
               runs(function () {
                 button = new Ext.button.Button({
-                  text: "foo",
+                  text: "foo"
                 });
 
                 tabPanel.getTabBar().insert(2, button);
@@ -1241,14 +1241,14 @@ describe("Ext.tab.Panel", function () {
         items: [
           {
             title: "200 hi",
-            height: 200,
+            height: 200
           },
           {
             title: "400 hi",
-            height: 400,
-          },
+            height: 400
+          }
         ],
-        renderTo: document.body,
+        renderTo: document.body
       });
     });
 
@@ -1267,8 +1267,8 @@ describe("Ext.tab.Panel", function () {
         renderTo: document.body,
         minTabWidth: 200,
         items: {
-          title: "Short",
-        },
+          title: "Short"
+        }
       });
       expect(tabPanel.down("tab").getWidth()).toBe(200);
     });
@@ -1277,8 +1277,8 @@ describe("Ext.tab.Panel", function () {
         renderTo: document.body,
         maxTabWidth: 20,
         items: {
-          title: "A very long title, but the tab must only be 20 wide",
-        },
+          title: "A very long title, but the tab must only be 20 wide"
+        }
       });
       expect(tabPanel.down("tab").getWidth()).toBe(20);
     });
@@ -1291,7 +1291,7 @@ describe("Ext.tab.Panel", function () {
       createTabPanel({
         renderTo: undefined,
         ui: "foo",
-        items: [{ title: "A" }],
+        items: [{ title: "A" }]
       });
 
       expect(tabPanel.tabBar.ui).toBe("foo");
@@ -1303,9 +1303,9 @@ describe("Ext.tab.Panel", function () {
         renderTo: undefined,
         ui: "foo",
         tabBar: {
-          ui: "bar",
+          ui: "bar"
         },
-        items: [{ title: "A" }],
+        items: [{ title: "A" }]
       });
 
       expect(tabPanel.tabBar.ui).toBe("bar");
@@ -1317,16 +1317,16 @@ describe("Ext.tab.Panel", function () {
         renderTo: undefined,
         ui: "foo",
         tabBar: {
-          ui: "bar",
+          ui: "bar"
         },
         items: [
           {
             title: "A",
             tabConfig: {
-              ui: "baz",
-            },
-          },
-        ],
+              ui: "baz"
+            }
+          }
+        ]
       });
 
       expect(tabPanel.tabBar.ui).toBe("bar");
@@ -1341,17 +1341,17 @@ describe("Ext.tab.Panel", function () {
         viewModel: {
           data: {
             tab1: "Foo",
-            tab2: "Bar",
-          },
+            tab2: "Bar"
+          }
         },
         items: [
           {
-            bind: "{tab1}",
+            bind: "{tab1}"
           },
           {
-            bind: "{tab2}",
-          },
-        ],
+            bind: "{tab2}"
+          }
+        ]
       });
       tabPanel.getViewModel().notify();
       var bar = tabPanel.getTabBar();
@@ -1366,16 +1366,16 @@ describe("Ext.tab.Panel", function () {
           {
             bind: "{title}",
             viewModel: {
-              data: { title: "Foo" },
-            },
+              data: { title: "Foo" }
+            }
           },
           {
             bind: "{title}",
             viewModel: {
-              data: { title: "Bar" },
-            },
-          },
-        ],
+              data: { title: "Bar" }
+            }
+          }
+        ]
       });
       var bar = tabPanel.getTabBar();
       tabPanel.items.first().getViewModel().notify();
@@ -1389,26 +1389,26 @@ describe("Ext.tab.Panel", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            title: "Foo",
+            title: "Foo"
           },
           {
             bind: "{title}",
             viewModel: {
-              data: { title: "Bar" },
+              data: { title: "Bar" }
             },
             items: {
               xtype: "component",
               viewModel: {
-                data: {},
-              },
-            },
-          },
-        ],
+                data: {}
+              }
+            }
+          }
+        ]
       });
       var item = tabPanel.items.last();
       item.getViewModel().notify();
       expect(
-        item.items.first().getConfig("viewModel", true).isViewModel,
+        item.items.first().getConfig("viewModel", true).isViewModel
       ).not.toBe(true);
     });
   });
@@ -1420,21 +1420,21 @@ describe("Ext.tab.Panel", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            title: "Item 1",
+            title: "Item 1"
           },
           {
             title: "Item 2",
             listeners: {
-              activate: spy,
-            },
+              activate: spy
+            }
           },
           {
             title: "Item 3",
             listeners: {
-              activate: spy,
-            },
-          },
-        ],
+              activate: spy
+            }
+          }
+        ]
       });
       tabPanel.removeAll();
       expect(spy).not.toHaveBeenCalled();
@@ -1446,21 +1446,21 @@ describe("Ext.tab.Panel", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            title: "Item 1",
+            title: "Item 1"
           },
           {
             title: "Item 2",
             listeners: {
-              afterrender: spy,
-            },
+              afterrender: spy
+            }
           },
           {
             title: "Item 3",
             listeners: {
-              afterrender: spy,
-            },
-          },
-        ],
+              afterrender: spy
+            }
+          }
+        ]
       });
       tabPanel.removeAll();
       expect(spy).not.toHaveBeenCalled();
@@ -1475,17 +1475,17 @@ describe("Ext.tab.Panel", function () {
         items: [
           {
             title: "Item 1",
-            closable: true,
+            closable: true
           },
           {
             title: "Item 2",
-            closable: true,
+            closable: true
           },
           {
             title: "Item 3",
-            closable: true,
-          },
-        ],
+            closable: true
+          }
+        ]
       });
       tabPanel.destroy();
       expect(Ext.ComponentManager.getCount()).toBe(count);
@@ -1497,21 +1497,21 @@ describe("Ext.tab.Panel", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            title: "Item 1",
+            title: "Item 1"
           },
           {
             title: "Item 2",
             listeners: {
-              activate: spy,
-            },
+              activate: spy
+            }
           },
           {
             title: "Item 3",
             listeners: {
-              activate: spy,
-            },
-          },
-        ],
+              activate: spy
+            }
+          }
+        ]
       });
       tabPanel.destroy();
       expect(spy).not.toHaveBeenCalled();
@@ -1523,21 +1523,21 @@ describe("Ext.tab.Panel", function () {
         renderTo: Ext.getBody(),
         items: [
           {
-            title: "Item 1",
+            title: "Item 1"
           },
           {
             title: "Item 2",
             listeners: {
-              afterrender: spy,
-            },
+              afterrender: spy
+            }
           },
           {
             title: "Item 3",
             listeners: {
-              afterrender: spy,
-            },
-          },
-        ],
+              afterrender: spy
+            }
+          }
+        ]
       });
       tabPanel.destroy();
       expect(spy).not.toHaveBeenCalled();
@@ -1555,26 +1555,26 @@ describe("Ext.tab.Panel", function () {
             deferredRender: false,
             items: [
               {
-                title: "Tab 1",
+                title: "Tab 1"
               },
               {
-                title: "Tab 2",
-              },
+                title: "Tab 2"
+              }
             ],
             loader: {
               url: "url",
-              renderer: "component",
-            },
+              renderer: "component"
+            }
           },
-          cfg || {},
-        ),
+          cfg || {}
+        )
       );
     }
 
     function mockComplete(responseText, status) {
       Ext.Ajax.mockComplete({
         status: status || 200,
-        responseText: responseText || "response",
+        responseText: responseText || "response"
       });
     }
 
@@ -1609,7 +1609,7 @@ describe("Ext.tab.Panel", function () {
 
         it("should not call setActiveTab when activeItem is null", function () {
           createPanel({
-            activeTab: null,
+            activeTab: null
           });
           spyOn(tabPanel, "setActiveTab");
 
@@ -1623,7 +1623,7 @@ describe("Ext.tab.Panel", function () {
       describe("no pre-existing tabs", function () {
         it("should call setActiveTab", function () {
           createPanel({
-            items: null,
+            items: null
           });
 
           spyOn(tabPanel, "setActiveTab");
@@ -1638,7 +1638,7 @@ describe("Ext.tab.Panel", function () {
         it("should not call setActiveTab when activeItem is null", function () {
           createPanel({
             activeTab: null,
-            items: null,
+            items: null
           });
           spyOn(tabPanel, "setActiveTab");
 
@@ -1653,7 +1653,7 @@ describe("Ext.tab.Panel", function () {
         // See EXTJS-16054.
         beforeEach(function () {
           createPanel({
-            items: null,
+            items: null
           });
 
           tabPanel.setActiveTab(1);
@@ -1685,7 +1685,7 @@ describe("Ext.tab.Panel", function () {
     describe("loading new tabs", function () {
       it("should not set an active item when activeItem is null (pre-existing tabs)", function () {
         createPanel({
-          activeTab: null,
+          activeTab: null
         });
 
         tabPanel.loader.load();
@@ -1698,7 +1698,7 @@ describe("Ext.tab.Panel", function () {
       it("should not set an active item when activeItem is null (no pre-existing tabs)", function () {
         createPanel({
           activeTab: null,
-          items: null,
+          items: null
         });
 
         tabPanel.loader.load();
@@ -1724,7 +1724,7 @@ describe("Ext.tab.Panel", function () {
             function () {
               called = true;
             },
-            this,
+            this
           );
 
           tabPanel.loader.load();
@@ -1735,7 +1735,7 @@ describe("Ext.tab.Panel", function () {
 
         it("should not fire when activeItem is null", function () {
           createPanel({
-            activeTab: null,
+            activeTab: null
           });
 
           tabPanel.on(
@@ -1743,7 +1743,7 @@ describe("Ext.tab.Panel", function () {
             function () {
               called = true;
             },
-            this,
+            this
           );
 
           tabPanel.loader.load();
@@ -1756,7 +1756,7 @@ describe("Ext.tab.Panel", function () {
       describe("no pre-existing tabs", function () {
         it("should fire", function () {
           createPanel({
-            items: null,
+            items: null
           });
 
           tabPanel.on(
@@ -1764,7 +1764,7 @@ describe("Ext.tab.Panel", function () {
             function () {
               called = true;
             },
-            this,
+            this
           );
 
           tabPanel.loader.load();
@@ -1777,7 +1777,7 @@ describe("Ext.tab.Panel", function () {
         it("should not fire when activeItem is null", function () {
           createPanel({
             activeTab: null,
-            items: null,
+            items: null
           });
 
           tabPanel.on(
@@ -1785,7 +1785,7 @@ describe("Ext.tab.Panel", function () {
             function () {
               called = true;
             },
-            this,
+            this
           );
 
           tabPanel.loader.load();
@@ -1804,10 +1804,10 @@ describe("Ext.tab.Panel", function () {
         items: [
           {
             tabConfig: {
-              rotation: 0,
-            },
-          },
-        ],
+              rotation: 0
+            }
+          }
+        ]
       });
 
       expect(tabPanel.tabBar.items.getAt(0).rotation).toBe(0);
@@ -1819,10 +1819,10 @@ describe("Ext.tab.Panel", function () {
         items: [
           {
             tabConfig: {
-              rotation: 0,
-            },
-          },
-        ],
+              rotation: 0
+            }
+          }
+        ]
       });
 
       expect(tabPanel.tabBar.items.getAt(0).rotation).toBe(0);
@@ -1831,15 +1831,15 @@ describe("Ext.tab.Panel", function () {
     it("should allow rotation to be configured on the tabBar", function () {
       createTabPanelWithTabs(1, {
         tabBar: {
-          tabRotation: 2,
-        },
+          tabRotation: 2
+        }
       });
       expect(tabPanel.tabBar.items.getAt(0).rotation).toBe(2);
     });
 
     it("should pass configured tabRotation on to the tabs", function () {
       createTabPanelWithTabs(1, {
-        tabRotation: 2,
+        tabRotation: 2
       });
       expect(tabPanel.tabBar.items.getAt(0).rotation).toBe(2);
     });
@@ -1848,49 +1848,49 @@ describe("Ext.tab.Panel", function () {
       it("should not have rotation classes for tabPosition:top", function () {
         createTabPanelWithTabs(1);
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-left",
+          "x-tab-rotate-left"
         );
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-right",
+          "x-tab-rotate-right"
         );
       });
 
       it("should default to 0 for tabPosition:bottom", function () {
         createTabPanelWithTabs(1, {
-          tabPosition: "bottom",
+          tabPosition: "bottom"
         });
 
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-left",
+          "x-tab-rotate-left"
         );
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-right",
+          "x-tab-rotate-right"
         );
       });
 
       it("should have right rotation cls for tabPosition:right", function () {
         createTabPanelWithTabs(1, {
-          tabPosition: "right",
+          tabPosition: "right"
         });
 
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-left",
+          "x-tab-rotate-left"
         );
         expect(tabPanel.tabBar.items.getAt(0).el).toHaveCls(
-          "x-tab-rotate-right",
+          "x-tab-rotate-right"
         );
       });
 
       it("should have left rotation cls for tabPosition:left", function () {
         createTabPanelWithTabs(1, {
-          tabPosition: "left",
+          tabPosition: "left"
         });
 
         expect(tabPanel.tabBar.items.getAt(0).el).toHaveCls(
-          "x-tab-rotate-left",
+          "x-tab-rotate-left"
         );
         expect(tabPanel.tabBar.items.getAt(0).el).not.toHaveCls(
-          "x-tab-rotate-right",
+          "x-tab-rotate-right"
         );
       });
     });
@@ -1904,7 +1904,7 @@ describe("Ext.tab.Panel", function () {
 
     it("should render the tabBar as a header item if tabBarHeaderPosition is specified", function () {
       createTabPanelWithTabs(1, {
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.getDockedItems().length).toBe(1);
       expect(tabPanel.getDockedItems()[0]).toBe(tabPanel.header);
@@ -1915,7 +1915,7 @@ describe("Ext.tab.Panel", function () {
       createTabPanelWithTabs(1, {
         ariaRole: "tabpanel",
         title: "Foo",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.getDockedItems().length).toBe(1);
       expect(tabPanel.getDockedItems()[0]).toBe(tabPanel.header);
@@ -1928,7 +1928,7 @@ describe("Ext.tab.Panel", function () {
       createTabPanelWithTabs(1, {
         ariaRole: "tabpanel",
         title: "Foo",
-        tabBarHeaderPosition: 1,
+        tabBarHeaderPosition: 1
       });
       expect(tabPanel.getDockedItems().length).toBe(1);
       expect(tabPanel.getDockedItems()[0]).toBe(tabPanel.header);
@@ -1939,7 +1939,7 @@ describe("Ext.tab.Panel", function () {
 
     it("should default the tabBar's 'dock' config to 'top' when inside a top header", function () {
       createTabPanelWithTabs(1, {
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.tabBar.dock).toBe("top");
     });
@@ -1947,7 +1947,7 @@ describe("Ext.tab.Panel", function () {
     it("should default the tabBar's 'dock' config to 'right' when inside a right header", function () {
       createTabPanelWithTabs(1, {
         headerPosition: "right",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.tabBar.dock).toBe("right");
     });
@@ -1955,7 +1955,7 @@ describe("Ext.tab.Panel", function () {
     it("should default the tabBar's 'dock' config to 'bottom' when inside a bottom header", function () {
       createTabPanelWithTabs(1, {
         headerPosition: "bottom",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.tabBar.dock).toBe("bottom");
     });
@@ -1963,7 +1963,7 @@ describe("Ext.tab.Panel", function () {
     it("should default the tabBar's 'dock' config to 'left' when inside a left header", function () {
       createTabPanelWithTabs(1, {
         headerPosition: "left",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
       expect(tabPanel.tabBar.dock).toBe("left");
     });
@@ -1974,15 +1974,15 @@ describe("Ext.tab.Panel", function () {
           items: [
             {
               xtype: "button",
-              text: "hi",
-            },
-          ],
+              text: "hi"
+            }
+          ]
         },
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
 
       expect(tabPanel.header.items.getAt(0) instanceof Ext.button.Button).toBe(
-        true,
+        true
       );
       expect(tabPanel.header.items.getAt(1)).toBe(tabPanel.tabBar);
     });
@@ -1993,13 +1993,13 @@ describe("Ext.tab.Panel", function () {
         items: [
           {
             xtype: "button",
-            text: "hi",
-          },
-        ],
+            text: "hi"
+          }
+        ]
       };
       createTabPanelWithTabs(1, {
         header: headerCfg,
-        tabBarHeaderPosition: 1,
+        tabBarHeaderPosition: 1
       });
       expect(headerCfg.items.length).toBe(1);
       expect(tabPanel.header.items.getCount()).toBe(3);
@@ -2014,21 +2014,21 @@ describe("Ext.tab.Panel", function () {
 
     it("should dock the tabBar to the right when tabPosition is 'right'", function () {
       createTabPanelWithTabs(1, {
-        tabPosition: "right",
+        tabPosition: "right"
       });
       expect(tabPanel.tabBar.dock).toBe("right");
     });
 
     it("should dock the tabBar to the bottom when tabPosition is 'bottom'", function () {
       createTabPanelWithTabs(1, {
-        tabPosition: "bottom",
+        tabPosition: "bottom"
       });
       expect(tabPanel.tabBar.dock).toBe("bottom");
     });
 
     it("should dock the tabBar to the left when tabPosition is 'left'", function () {
       createTabPanelWithTabs(1, {
-        tabPosition: "left",
+        tabPosition: "left"
       });
       expect(tabPanel.tabBar.dock).toBe("left");
     });
@@ -2037,7 +2037,7 @@ describe("Ext.tab.Panel", function () {
       createTabPanelWithTabs(1, {
         tabPosition: "left",
         headerPosition: "bottom",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
 
       expect(tabPanel.tabBar.dock).toBe("bottom");
@@ -2053,7 +2053,7 @@ describe("Ext.tab.Panel", function () {
     it("should not allow setting of tabPosition after rendering if tabBarHeaderPosition was specified", function () {
       createTabPanelWithTabs(1, {
         headerPosition: "bottom",
-        tabBarHeaderPosition: 0,
+        tabBarHeaderPosition: 0
       });
 
       tabPanel.setTabPosition("left");
@@ -2065,7 +2065,7 @@ describe("Ext.tab.Panel", function () {
     beforeEach(function () {
       createTabPanelWithTabs(2, {
         activeTab: 1,
-        disabled: true,
+        disabled: true
       });
     });
 
@@ -2133,8 +2133,8 @@ describe("Ext.tab.Panel", function () {
           card3 = tabPanel.add(
             new Ext.panel.Panel({
               title: '<span style="background-color: red">foo</span>',
-              html: "blerg",
-            }),
+              html: "blerg"
+            })
           );
 
           tab3 = card3.tab;
@@ -2161,7 +2161,7 @@ describe("Ext.tab.Panel", function () {
 
         beforeEach(function () {
           tabPanel2 = new Ext.tab.Panel({
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           oldTab1Id = tab1.id;

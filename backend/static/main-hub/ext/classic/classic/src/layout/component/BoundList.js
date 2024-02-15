@@ -88,7 +88,7 @@ Ext.define("Ext.layout.component.BoundList", {
       this.done = false;
     } else {
       ownerContext.listContext.setHeight(
-        height - ownerContext.getFrameInfo().height - toolbarHeight,
+        height - ownerContext.getFrameInfo().height - toolbarHeight
       );
     }
   },
@@ -101,5 +101,5 @@ Ext.define("Ext.layout.component.BoundList", {
       height += toolbar.getProp("height");
     }
     return height;
-  },
+  }
 });

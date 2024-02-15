@@ -74,7 +74,7 @@ Ext.define("Ext.ComponentLoader", {
         if (!target.isContainer) {
           Ext.raise({
             target: target,
-            msg: "Components can only be loaded into a container",
+            msg: "Components can only be loaded into a container"
           });
         }
         //</debug>
@@ -94,8 +94,8 @@ Ext.define("Ext.ComponentLoader", {
           target.resumeLayouts(true);
         }
         return success;
-      },
-    },
+      }
+    }
   },
 
   /* End Definitions */
@@ -233,5 +233,5 @@ The function must return false is loading is not successful. Below is a sample o
       default:
         return Ext.ElementLoader.Renderer.Html;
     }
-  },
+  }
 });

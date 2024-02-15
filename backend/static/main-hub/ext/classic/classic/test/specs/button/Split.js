@@ -5,9 +5,9 @@ describe("Ext.button.Split", function () {
     config = Ext.apply(
       {
         renderTo: Ext.getBody(),
-        text: "foo",
+        text: "foo"
       },
-      config,
+      config
     );
 
     return (button = new Ext.button.Split(config));
@@ -30,7 +30,7 @@ describe("Ext.button.Split", function () {
 
     it("should hide arrowEl when arrowVisible:false", function () {
       makeButton({
-        arrowVisible: false,
+        arrowVisible: false
       });
       expect(button.arrowEl.dom.nodeName).toBe("SPAN");
       expect(button.arrowEl.isVisible()).toBe(false);
@@ -293,7 +293,7 @@ describe("Ext.button.Split", function () {
     beforeEach(function () {
       before = new Ext.button.Button({
         renderTo: Ext.getBody(),
-        text: "before",
+        text: "before"
       });
 
       makeButton();
@@ -371,8 +371,8 @@ describe("Ext.button.Split", function () {
         renderTo: Ext.getBody(),
         text: "before",
         listeners: {
-          focus: beforeFocusSpy,
-        },
+          focus: beforeFocusSpy
+        }
       });
 
       // Component events
@@ -382,8 +382,8 @@ describe("Ext.button.Split", function () {
       makeButton({
         listeners: {
           focus: focusSpy,
-          blur: blurSpy,
-        },
+          blur: blurSpy
+        }
       });
 
       // Element events
@@ -518,12 +518,12 @@ describe("Ext.button.Split", function () {
           tabIndex: 1,
           menu: [
             {
-              text: "item 1",
+              text: "item 1"
             },
             {
-              text: "item 2",
-            },
-          ],
+              text: "item 2"
+            }
+          ]
         });
 
         button.setMenu(null);
@@ -542,12 +542,12 @@ describe("Ext.button.Split", function () {
           button.setMenu({
             items: [
               {
-                text: "foo 1",
+                text: "foo 1"
               },
               {
-                text: "foo 2",
-              },
-            ],
+                text: "foo 2"
+              }
+            ]
           });
         });
 
@@ -650,12 +650,12 @@ describe("Ext.button.Split", function () {
           renderTo: undefined,
           menu: [
             {
-              text: "foo",
+              text: "foo"
             },
             {
-              text: "bar",
-            },
-          ],
+              text: "bar"
+            }
+          ]
         });
 
         enterSpy = spyOn(button, "onEnterKey").andCallThrough();
@@ -704,7 +704,7 @@ describe("Ext.button.Split", function () {
 
         makeButton({
           renderTo: undefined,
-          arrowHandler: handlerSpy,
+          arrowHandler: handlerSpy
         });
 
         enterSpy = spyOn(button, "onEnterKey").andCallThrough();

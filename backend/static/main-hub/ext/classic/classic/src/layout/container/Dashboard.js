@@ -46,7 +46,7 @@ Ext.define("Ext.layout.container.Dashboard", {
 
   getSplitterConfig: function () {
     return {
-      xtype: "columnsplitter",
+      xtype: "columnsplitter"
     };
   },
 
@@ -115,8 +115,8 @@ Ext.define("Ext.layout.container.Dashboard", {
           (row = {
             index: rows.length,
             items: [],
-            maxHeight: 0,
-          }),
+            maxHeight: 0
+          })
         );
       }
 
@@ -278,5 +278,5 @@ Ext.define("Ext.layout.container.Dashboard", {
         item.removeCls(firstAndLast);
       }
     }
-  },
+  }
 });

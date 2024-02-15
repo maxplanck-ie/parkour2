@@ -19,5 +19,5 @@ Ext.define("Ext.app.domain.Direct", {
 
     me.callParent();
     me.monitor(Ext.direct.Provider);
-  },
+  }
 });

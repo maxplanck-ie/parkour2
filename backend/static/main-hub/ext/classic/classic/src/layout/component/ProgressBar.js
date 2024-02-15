@@ -52,5 +52,5 @@ Ext.define("Ext.layout.component.ProgressBar", {
     } else {
       me.done = false;
     }
-  },
+  }
 });

@@ -40,8 +40,8 @@ describe("Ext.field.Select", function () {
           options: [
             { text: "One", value: 1 },
             { text: "Two", value: 2 },
-            { text: "Three", value: 3 },
-          ],
+            { text: "Three", value: 3 }
+          ]
         });
       });
 
@@ -60,8 +60,8 @@ describe("Ext.field.Select", function () {
             options: [
               { text: "One", value: 1 },
               { text: "Two", value: 2 },
-              { text: "Three", value: 3 },
-            ],
+              { text: "Three", value: 3 }
+            ]
           });
         });
 
@@ -86,9 +86,9 @@ describe("Ext.field.Select", function () {
             data: [
               { text: "One", value: 1 },
               { text: "Two", value: 2 },
-              { text: "Three", value: 3 },
-            ],
-          },
+              { text: "Three", value: 3 }
+            ]
+          }
         });
       });
 
@@ -105,9 +105,9 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
-            },
+                { text: "Three", value: 3 }
+              ]
+            }
           });
         });
 
@@ -132,8 +132,8 @@ describe("Ext.field.Select", function () {
             options: [
               { text: "One", value: 0 },
               { text: "Two", value: 1 },
-              { text: "Three", value: 2 },
-            ],
+              { text: "Three", value: 2 }
+            ]
           });
         });
 
@@ -149,8 +149,8 @@ describe("Ext.field.Select", function () {
             options: [
               { text: "One", value: 0 },
               { text: "Two", value: 1 },
-              { text: "Three", value: 2 },
-            ],
+              { text: "Three", value: 2 }
+            ]
           });
         });
 
@@ -173,8 +173,8 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
+                { text: "Three", value: 3 }
+              ]
             });
 
             //autoSelect
@@ -185,7 +185,7 @@ describe("Ext.field.Select", function () {
         describe("value", function () {
           beforeEach(function () {
             createField({
-              value: 3,
+              value: 3
             });
           });
 
@@ -197,8 +197,8 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
+                { text: "Three", value: 3 }
+              ]
             });
 
             expect(field.getValue()).toEqual(3);
@@ -215,9 +215,9 @@ describe("Ext.field.Select", function () {
                   data: [
                     { text: "One", value: 1 },
                     { text: "Two", value: 2 },
-                    { text: "Three", value: 3 },
-                  ],
-                },
+                    { text: "Three", value: 3 }
+                  ]
+                }
               });
             });
 
@@ -240,8 +240,8 @@ describe("Ext.field.Select", function () {
                 data: [
                   { text: "One", value: 1 },
                   { text: "Two", value: 2 },
-                  { text: "Three", value: 3 },
-                ],
+                  { text: "Three", value: 3 }
+                ]
               });
               expect(field.getValue()).toEqual(1);
               field.setValue(null);
@@ -263,8 +263,8 @@ describe("Ext.field.Select", function () {
                 data: [
                   { text: "One", value: 1 },
                   { text: "Two", value: 2 },
-                  { text: "Three", value: 3 },
-                ],
+                  { text: "Three", value: 3 }
+                ]
               });
               expect(field.getValue()).toEqual(2);
               field.setValue(null);
@@ -284,9 +284,9 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
-            },
+                { text: "Three", value: 3 }
+              ]
+            }
           });
         });
 
@@ -304,9 +304,9 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
-            },
+                { text: "Three", value: 3 }
+              ]
+            }
           });
         });
 
@@ -328,15 +328,15 @@ describe("Ext.field.Select", function () {
             data: [
               {
                 name: "one",
-                value: 1,
+                value: 1
               },
               {
                 name: "two",
-                value: 2,
-              },
-            ],
-          },
-        },
+                value: 2
+              }
+            ]
+          }
+        }
       });
 
       var select = Ext.create("Ext.MySelect");
@@ -361,7 +361,7 @@ describe("Ext.field.Select", function () {
           field.setOptions([
             { text: "One", value: 1 },
             { text: "Two", value: 2 },
-            { text: "Three", value: 3 },
+            { text: "Three", value: 3 }
           ]);
 
           expect(spy.callCount).toBe(1);
@@ -374,8 +374,8 @@ describe("Ext.field.Select", function () {
             options: [
               { text: "One", value: 1 },
               { text: "Two", value: 2 },
-              { text: "Three", value: 3 },
-            ],
+              { text: "Three", value: 3 }
+            ]
           });
         });
 
@@ -412,9 +412,9 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
-            },
+                { text: "Three", value: 3 }
+              ]
+            }
           });
 
           field.setValue(3);
@@ -436,9 +436,9 @@ describe("Ext.field.Select", function () {
               data: [
                 { text: "One", value: 1 },
                 { text: "Two", value: 2 },
-                { text: "Three", value: 3 },
-              ],
-            },
+                { text: "Three", value: 3 }
+              ]
+            }
           });
 
           field.setValue(3);
@@ -467,8 +467,8 @@ describe("Ext.field.Select", function () {
                 data.push({ text: i, value: i });
               }
               return data;
-            })(),
-          },
+            })()
+          }
         });
 
         viewport.add(field);
@@ -502,7 +502,7 @@ describe("Ext.field.Select", function () {
             return scrollComplete;
           },
           "slot to scroll selection into view",
-          800,
+          800
         );
         runs(function () {
           item = list.getItemAt(45);
@@ -544,7 +544,7 @@ describe("Ext.field.Select", function () {
             return scrollComplete;
           },
           "slot to scroll selection into view",
-          800,
+          800
         );
         runs(function () {
           item = list.getItemAt(78);

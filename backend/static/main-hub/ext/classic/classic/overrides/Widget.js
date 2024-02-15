@@ -22,7 +22,7 @@ Ext.define(
     rendering: true,
 
     config: {
-      renderTo: null,
+      renderTo: null
     },
 
     constructor: function (config) {
@@ -213,7 +213,7 @@ Ext.define(
         options,
         order,
         caller,
-        manager,
+        manager
       ) {
         if (name == "painted" || name == "resize") {
           this.element.doAddListener(name, fn, scope || this, options, order);
@@ -228,8 +228,8 @@ Ext.define(
         }
 
         this.callParent([name, fn, scope]);
-      },
-    },
+      }
+    }
   },
   function (Cls) {
     var prototype = Cls.prototype;
@@ -239,5 +239,5 @@ Ext.define(
       // nodes on demand, so we just fall back to adding all references up front.
       prototype.addElementReferenceOnDemand = prototype.addElementReference;
     }
-  },
+  }
 );

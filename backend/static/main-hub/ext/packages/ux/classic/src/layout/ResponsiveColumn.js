@@ -90,7 +90,7 @@ Ext.define(
      */
     states: {
       small: 1000,
-      large: 0,
+      large: 0
     },
 
     _responsiveCls: Ext.baseCSSPrefix + "responsivecolumn",
@@ -136,7 +136,7 @@ Ext.define(
       if (responsiveCls) {
         item.addCls(responsiveCls);
       }
-    },
+    }
   },
   //--------------------------------------------------------------------------------------
   // IE8 does not support CSS calc expressions, so we have to fallback to more traditional
@@ -149,7 +149,7 @@ Ext.define(
           readsWidth: 0,
           readsHeight: 0,
           setsWidth: 1,
-          setsHeight: 0,
+          setsHeight: 0
         },
 
         setsItemSize: true,
@@ -186,21 +186,21 @@ Ext.define(
             // unlikely a component will have a background-image.
             itemWidth = parseInt(
               itemContext.el.getStyle("background-position-x"),
-              10,
+              10
             );
             itemMarginWidth = parseInt(
               itemContext.el.getStyle("background-position-y"),
-              10,
+              10
             );
 
             itemContext.setWidth(
               (itemWidth / 100) * (contentWidth - itemMarginWidth) -
-                itemMarginWidth,
+                itemMarginWidth
             );
           }
 
           ownerContext.setContentWidth(
-            contentWidth + ownerContext.paddingContext.getPaddingInfo().width,
+            contentWidth + ownerContext.paddingContext.getPaddingInfo().width
           );
 
           return true;
@@ -208,8 +208,8 @@ Ext.define(
 
         getItemSizePolicy: function () {
           return this.responsiveSizePolicy;
-        },
+        }
       });
     }
-  },
+  }
 );

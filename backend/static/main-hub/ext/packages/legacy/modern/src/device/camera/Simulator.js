@@ -7,9 +7,9 @@ Ext.define("Ext.device.camera.Simulator", {
   config: {
     samples: [
       {
-        success: "http://www.sencha.com/img/sencha-large.png",
-      },
-    ],
+        success: "http://www.sencha.com/img/sencha-large.png"
+      }
+    ]
   },
 
   constructor: function (config) {
@@ -44,5 +44,5 @@ Ext.define("Ext.device.camera.Simulator", {
     }
 
     this.sampleIndex = index;
-  },
+  }
 });

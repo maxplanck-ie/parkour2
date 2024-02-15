@@ -47,7 +47,7 @@ Ext.define("Ext.dom.Shadow", {
 
     me.elementConfig = {
       cls: me.cls,
-      role: "presentation",
+      role: "presentation"
     };
 
     offset = me.offset;
@@ -59,21 +59,21 @@ Ext.define("Ext.dom.Shadow", {
           x: 0,
           y: 0,
           w: offset,
-          h: offset,
+          h: offset
         };
         if (Ext.supports.CSS3BoxShadow) {
           offsets = {
             x: offset,
             y: offset,
             h: -offset,
-            w: -offset,
+            w: -offset
           };
         } else {
           offsets = {
             x: -rad,
             y: -rad,
             h: -rad,
-            w: -rad,
+            w: -rad
           };
         }
         break;
@@ -82,21 +82,21 @@ Ext.define("Ext.dom.Shadow", {
           x: -offset,
           y: 0,
           w: offset * 2,
-          h: offset,
+          h: offset
         };
         if (Ext.supports.CSS3BoxShadow) {
           offsets = {
             x: 0,
             y: offset,
             h: -offset,
-            w: 0,
+            w: 0
           };
         } else {
           offsets = {
             x: 1 + rad - 2 * offset,
             y: -(1 + rad),
             h: -1,
-            w: rad - 1,
+            w: rad - 1
           };
         }
         break;
@@ -105,21 +105,21 @@ Ext.define("Ext.dom.Shadow", {
           x: -offset,
           y: -offset,
           w: offset * 2,
-          h: offset * 2,
+          h: offset * 2
         };
         if (Ext.supports.CSS3BoxShadow) {
           offsets = {
             x: 0,
             y: 0,
             h: 0,
-            w: 0,
+            w: 0
           };
         } else {
           offsets = {
             x: 1 + rad - 2 * offset,
             y: 1 + rad - 2 * offset,
             h: offset - rad - 1,
-            w: offset - rad - 1,
+            w: offset - rad - 1
           };
         }
         break;
@@ -128,21 +128,21 @@ Ext.define("Ext.dom.Shadow", {
           x: -offset,
           y: 0,
           w: offset * 2,
-          h: offset,
+          h: offset
         };
         if (Ext.supports.CSS3BoxShadow) {
           offsets = {
             x: 0,
             y: offset,
             h: -offset,
-            w: 0,
+            w: 0
           };
         } else {
           offsets = {
             x: 0,
             y: offset,
             h: 0,
-            w: 0,
+            w: 0
           };
         }
         break;
@@ -241,5 +241,5 @@ Ext.define("Ext.dom.Shadow", {
       this.opacity = opacity;
       el.setOpacity(opacity);
     }
-  },
+  }
 });

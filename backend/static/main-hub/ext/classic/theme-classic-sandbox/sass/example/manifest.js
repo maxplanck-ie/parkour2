@@ -11,50 +11,50 @@ $Manifest = {
         items: [
           {
             text: "test",
-            cls: "x-menu-item-active",
-          },
-        ],
-      },
+            cls: "x-menu-item-active"
+          }
+        ]
+      }
     },
 
     {
       xtype: "widget.button",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.toolbar",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.panel",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.header",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.window",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.tab",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.progressbar",
-      ui: "default",
+      ui: "default"
     },
 
     {
       xtype: "widget.buttongroup",
-      ui: "default",
+      ui: "default"
     },
 
     //tips
@@ -69,8 +69,8 @@ $Manifest = {
           component.showBy(ct);
           ct.setHeight(component.height);
         },
-        hide: function () {},
-      },
+        hide: function () {}
+      }
     },
     {
       xtype: "widget.tooltip",
@@ -85,8 +85,8 @@ $Manifest = {
           component.showBy(ct);
           ct.setHeight(component.height);
         },
-        hide: function () {},
-      },
+        hide: function () {}
+      }
     },
 
     /**
@@ -102,7 +102,7 @@ $Manifest = {
         up: function (which) {
           if (which == "tablepanel") {
             return {
-              sortableColumns: true,
+              sortableColumns: true
             };
           }
         },
@@ -111,14 +111,14 @@ $Manifest = {
             el = me.el;
 
           el.addCls(
-            Ext.baseCSSPrefix + "column-header-align-" + me.align,
+            Ext.baseCSSPrefix + "column-header-align-" + me.align
           ).addClsOnOver(me.overCls);
 
           el.setStyle({
-            position: "relative",
+            position: "relative"
           });
-        },
-      },
+        }
+      }
     },
     {
       xtype: "widget.gridcolumn",
@@ -130,7 +130,7 @@ $Manifest = {
         up: function (which) {
           if (which == "tablepanel") {
             return {
-              sortableColumns: true,
+              sortableColumns: true
             };
           }
         },
@@ -139,15 +139,15 @@ $Manifest = {
             el = me.el;
 
           el.addCls(
-            Ext.baseCSSPrefix + "column-header-align-" + me.align,
+            Ext.baseCSSPrefix + "column-header-align-" + me.align
           ).addClsOnOver(me.overCls);
 
           el.setStyle({
-            position: "relative",
+            position: "relative"
           });
           el.addCls("x-column-header-over");
-        },
-      },
+        }
+      }
     },
 
     /**
@@ -208,13 +208,13 @@ $Manifest = {
       xtype: "widget.datepicker",
       folder: "datepicker",
       filename: "datepicker-header",
-      delegate: ".x-datepicker-header",
+      delegate: ".x-datepicker-header"
     },
     {
       xtype: "widget.datepicker",
       folder: "datepicker",
       filename: "datepicker-footer",
-      delegate: ".x-datepicker-footer",
-    },
-  ],
+      delegate: ".x-datepicker-footer"
+    }
+  ]
 };

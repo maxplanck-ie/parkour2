@@ -20,7 +20,7 @@ describe("Ext.GlobalEvents", function () {
             forumid: "40",
             replycount: "2",
             lastpost: "1305857807",
-            excerpt: "",
+            excerpt: ""
           },
           {
             title: "IFrame error  &quot;_flyweights is undefined&quot;",
@@ -33,9 +33,9 @@ describe("Ext.GlobalEvents", function () {
             forumid: "40",
             replycount: "1",
             lastpost: "1305857313",
-            excerpt: "",
-          },
-        ],
+            excerpt: ""
+          }
+        ]
       };
 
     function completeRequest(url, data) {
@@ -92,14 +92,14 @@ describe("Ext.GlobalEvents", function () {
           type: "jsonp",
           reader: {
             rootProperty: "topics",
-            totalProperty: "totalCount",
+            totalProperty: "totalCount"
           },
-          url: "fakeForumUrl",
+          url: "fakeForumUrl"
         },
         fields: ["title"],
         listeners: {
-          load: loadSpy,
-        },
+          load: loadSpy
+        }
       });
 
       store.loadPage(1);
@@ -117,7 +117,7 @@ describe("Ext.GlobalEvents", function () {
     it("should fire after a JsonP request is processed", function () {
       var request = Ext.data.JsonP.request({
         url: "fakeRequest",
-        callback: loadSpy,
+        callback: loadSpy
       });
 
       completeRequest(request, forumData);
@@ -134,7 +134,7 @@ describe("Ext.GlobalEvents", function () {
     it("should fire after an Ajax request is processed", function () {
       var request = Ext.Ajax.request({
         url: "fakeUrl",
-        callback: loadSpy,
+        callback: loadSpy
       });
 
       Ext.Ajax.mockCompleteWithData({}, request.id);
@@ -152,7 +152,7 @@ describe("Ext.GlobalEvents", function () {
       Ext.TaskManager.newTask({
         run: loadSpy,
         repeat: 1,
-        interval: 1,
+        interval: 1
       }).start();
 
       waitForSpy(loadSpy);
@@ -189,7 +189,7 @@ describe("Ext.GlobalEvents", function () {
 
     it("should fire the global scroll event whenever anything scrolls", function () {
       stretcher = Ext.getBody().createChild({
-        style: "height:10000px",
+        style: "height:10000px"
       });
 
       // Use Ext.Panel class - it will work in Classic and Modern
@@ -206,13 +206,13 @@ describe("Ext.GlobalEvents", function () {
         scrollable: true,
         items: {
           xtype: "component",
-          style: "height:1000px",
-        },
+          style: "height:1000px"
+        }
       });
 
       // Record all scroll events
       Ext.on({
-        scroll: onGlobalScroll,
+        scroll: onGlobalScroll
       });
       Ext.getViewportScroller().scrollBy(null, 100);
 

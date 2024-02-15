@@ -92,7 +92,7 @@ Ext.define("Ext.grid.column.Column", {
   requires: [
     "Ext.grid.ColumnComponentLayout",
     "Ext.grid.ColumnLayout",
-    "Ext.app.bind.Parser", // for "format" support
+    "Ext.app.bind.Parser" // for "format" support
   ],
 
   alternateClassName: "Ext.grid.Column",
@@ -130,7 +130,7 @@ Ext.define("Ext.grid.column.Column", {
      *
      * `'start'` and `'end'` always conform to the locale's text direction.
      */
-    align: "start",
+    align: "start"
   },
 
   baseCls: Ext.baseCSSPrefix + "column-header",
@@ -149,7 +149,7 @@ Ext.define("Ext.grid.column.Column", {
   // These are not readable descriptions; the values go in the aria-sort attribute.
   ariaSortStates: {
     ASC: "ascending",
-    DESC: "descending",
+    DESC: "descending"
   },
 
   childEls: [
@@ -157,7 +157,7 @@ Ext.define("Ext.grid.column.Column", {
     "triggerEl",
     "textEl",
     "textContainerEl",
-    "textInnerEl",
+    "textInnerEl"
   ],
 
   /**
@@ -209,7 +209,7 @@ Ext.define("Ext.grid.column.Column", {
     '{childElCls}" style="{triggerStyle}"></div>',
     "</tpl>",
     "</div>",
-    "{%this.renderContainer(out,values)%}",
+    "{%this.renderContainer(out,values)%}"
   ],
 
   /**
@@ -864,12 +864,12 @@ Ext.define("Ext.grid.column.Column", {
   rendererNames: {
     column: "renderer",
     edit: "editRenderer",
-    summary: "summaryRenderer",
+    summary: "summaryRenderer"
   },
   formatterNames: {
     column: "formatter",
     edit: "editFormatter",
-    summary: "summaryFormatter",
+    summary: "summaryFormatter"
   },
 
   initComponent: function () {
@@ -898,7 +898,7 @@ Ext.define("Ext.grid.column.Column", {
       //<debug>
       if (me.dataIndex) {
         Ext.raise(
-          "Ext.grid.column.Column: Group header may not accept a dataIndex",
+          "Ext.grid.column.Column: Group header may not accept a dataIndex"
         );
       }
       if (
@@ -906,7 +906,7 @@ Ext.define("Ext.grid.column.Column", {
         me.width !== Ext.grid.header.Container.prototype.defaultWidth
       ) {
         Ext.raise(
-          "Ext.grid.column.Column: Group header does not support setting explicit widths. A group header either shrinkwraps its children, or must be flexed.",
+          "Ext.grid.column.Column: Group header does not support setting explicit widths. A group header either shrinkwraps its children, or must be flexed."
         );
       }
       //</debug>
@@ -1017,10 +1017,10 @@ Ext.define("Ext.grid.column.Column", {
       ret = new Ext.util.Sorter(
         Ext.applyIf(
           {
-            sorterFn: me._initSorterFn,
+            sorterFn: me._initSorterFn
           },
-          sorter,
-        ),
+          sorter
+        )
       );
 
       ret.methodName = sorterFn;
@@ -1059,7 +1059,7 @@ Ext.define("Ext.grid.column.Column", {
     if (renderer in Ext.util.Format) {
       Ext.log.warn(
         'Use "formatter" config instead of "renderer" to use ' +
-          "Ext.util.Format to format cell values",
+          "Ext.util.Format to format cell values"
       );
     }
     //</debug>
@@ -1230,7 +1230,7 @@ Ext.define("Ext.grid.column.Column", {
       empty: me.isEmptyText(text),
       menuDisabled: me.menuDisabled,
       tipMarkup: tipMarkup,
-      triggerStyle: this.getTriggerVisible() ? "display:block" : "",
+      triggerStyle: this.getTriggerVisible() ? "display:block" : ""
     });
   },
 
@@ -1286,12 +1286,12 @@ Ext.define("Ext.grid.column.Column", {
     var me = this,
       items = me.items.items,
       state = {
-        id: me.getStateId(),
+        id: me.getStateId()
       };
 
     me.savePropsToState(
       ["hidden", "sortable", "locked", "flex", "width"],
-      state,
+      state
     );
 
     // Check for the existence of items, since column.Action won't have them
@@ -1319,7 +1319,7 @@ Ext.define("Ext.grid.column.Column", {
       me.textInnerEl.setHtml(text);
       me.titleEl.toggleCls(
         Ext.baseCSSPrefix + "column-header-inner-empty",
-        me.isEmptyText(text),
+        me.isEmptyText(text)
       );
       grid.syncHeaderVisibility();
     }
@@ -1350,7 +1350,7 @@ Ext.define("Ext.grid.column.Column", {
         ? false
         : Ext.Array.indexOf(
             this.getRootHeaderCt().getVisibleGridColumns(),
-            this,
+            this
           );
   },
 
@@ -1502,7 +1502,7 @@ Ext.define("Ext.grid.column.Column", {
       if (me.isGroupHeader && e.getPoint().isContainedBy(me.layout.innerCt)) {
         leafColumns = me.query("gridcolumn:not([hidden]):not([isGroupHeader])");
         me.getRootHeaderCt().autoSizeColumn(
-          leafColumns[leafColumns.length - 1],
+          leafColumns[leafColumns.length - 1]
         );
         return;
       } else {
@@ -1668,7 +1668,7 @@ Ext.define("Ext.grid.column.Column", {
       store.sort(
         me.getSortParam(),
         direction,
-        grid.multiColumnSort ? "multi" : "replace",
+        grid.multiColumnSort ? "multi" : "replace"
       );
     }
     Ext.resumeLayouts(true);
@@ -1750,7 +1750,7 @@ Ext.define("Ext.grid.column.Column", {
   isHideable: function () {
     var result = {
       hideCandidate: this,
-      result: this.hideable,
+      result: this.hideable
     };
 
     if (result.result) {
@@ -1776,7 +1776,7 @@ Ext.define("Ext.grid.column.Column", {
     // Note that we are not using CQ #id matchers - ':not(#' + result.hideCandidate.id + ')' - to exclude
     // the hideCandidate because CQ queries are cached for the document's lifetime.
     visibleChildren = this.query(
-      ">gridcolumn:not([hidden]):not([menuDisabled])",
+      ">gridcolumn:not([hidden]):not([menuDisabled])"
     );
     count = visibleChildren.length;
     if (Ext.Array.contains(visibleChildren, result.hideCandidate)) {
@@ -1801,7 +1801,7 @@ Ext.define("Ext.grid.column.Column", {
    */
   isLockable: function () {
     var result = {
-      result: this.lockable !== false,
+      result: this.lockable !== false
     };
 
     if (result.result) {
@@ -2074,7 +2074,7 @@ Ext.define("Ext.grid.column.Column", {
      */
     _alignMap: {
       start: "left",
-      end: "right",
+      end: "right"
     },
 
     /**
@@ -2091,7 +2091,7 @@ Ext.define("Ext.grid.column.Column", {
             Ext.baseCSSPrefix +
             'hidden-offsets">' +
             this.dirtyText +
-            "</span>",
+            "</span>"
         );
       }
     },
@@ -2153,7 +2153,7 @@ Ext.define("Ext.grid.column.Column", {
           me.hasSetSorter = true;
         }
       }
-    },
+    }
   },
 
   deprecated: {
@@ -2166,10 +2166,10 @@ Ext.define("Ext.grid.column.Column", {
           return function (value) {
             return Ext.util.Format[renderer](value);
           };
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 
   // intentionally omit getEditor and setEditor definitions bc we applyIf into columns
   // when the editing plugin is injected

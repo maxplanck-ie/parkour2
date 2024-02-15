@@ -59,7 +59,7 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
     extend: "Ext.Mixin",
 
     mixinConfig: {
-      id: "keyboard",
+      id: "keyboard"
     },
 
     config: {
@@ -115,14 +115,14 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
                 if (v) {
                   if (typeof v === "string" || typeof v === "function") {
                     v = {
-                      handler: v,
+                      handler: v
                     };
                   } else {
                     v = Ext.apply(
                       {
-                        handler: v.fn, // overwritten by v.handler
+                        handler: v.fn // overwritten by v.handler
                       },
-                      v,
+                      v
                     );
                   }
 
@@ -137,7 +137,7 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
           }
 
           return ret;
-        },
+        }
       },
 
       /**
@@ -147,7 +147,7 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
        * be set to `true`. Since `initKeyMap` is called by `Ext.Component` at the
        * proper time, this is not something application code normally handles.
        */
-      keyMapEnabled: null,
+      keyMapEnabled: null
     },
 
     /**
@@ -197,16 +197,16 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
               // class configs go through merge
               mapping = {
                 handler: mapping,
-                scope: defaultScope,
+                scope: defaultScope
               };
             } else if (mapping) {
               mapping = Ext.apply(
                 {
                   handler: mapping.fn, // mapping.handler will override
-                  scope: defaultScope, // mapping.scope will override
+                  scope: defaultScope // mapping.scope will override
                   // all other properties of mapping are kept
                 },
-                mapping,
+                mapping
               );
             }
 
@@ -329,7 +329,7 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
             destroyable: true,
             scope: me,
             keydown: "onKeyMapEvent",
-            keypress: "onKeyMapEvent",
+            keypress: "onKeyMapEvent"
           });
         }
 
@@ -342,7 +342,7 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
 
         _keyMapEvents: {
           charCode: "keypress",
-          keyCode: "keydown",
+          keyCode: "keydown"
         },
 
         matchEntry: function (key, entry, e) {
@@ -433,8 +433,8 @@ Ext.define("Ext.mixin.Keyboard", function (Keyboard) {
 
           entry.event = entry.event || me._keyMapEvents[type];
           return !isNaN(code) && (entry[type] = code);
-        },
-      }, // statics
-    }, // privates
+        }
+      } // statics
+    } // privates
   };
 });

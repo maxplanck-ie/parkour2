@@ -11,7 +11,7 @@ Ext.define("Ext.ux.DataView.Animated", {
    */
   defaults: {
     duration: 750,
-    idProperty: "id",
+    idProperty: "id"
   },
 
   /**
@@ -32,7 +32,7 @@ Ext.define("Ext.ux.DataView.Animated", {
       store = dataview.store,
       items = dataview.all,
       task = {
-        interval: 20,
+        interval: 20
       },
       duration = me.duration;
 
@@ -53,11 +53,11 @@ Ext.define("Ext.ux.DataView.Animated", {
             element.dom.id = Ext.util.Format.format(
               "{0}-{1}",
               dataview.id,
-              store.getAt(index).internalId,
+              store.getAt(index).internalId
             );
           }, this);
       },
-      dataview,
+      dataview
     );
 
     /**
@@ -86,7 +86,7 @@ Ext.define("Ext.ux.DataView.Animated", {
           // reDraw.call(this, store);
         }
       },
-      this,
+      this
     );
 
     // Buffer listenher so that rapid calls, for example a filter followed by a sort
@@ -94,7 +94,7 @@ Ext.define("Ext.ux.DataView.Animated", {
     dataview.store.on({
       datachanged: reDraw,
       scope: this,
-      buffer: 50,
+      buffer: 50
     });
 
     function reDraw() {
@@ -147,7 +147,7 @@ Ext.define("Ext.ux.DataView.Animated", {
               itemFly.getY() -
               parentElY -
               itemFly.getMargin("t") -
-              parentElPaddingTop,
+              parentElPaddingTop
           };
           oldPos[styleSide] = me.getItemX(itemFly);
         } else {
@@ -170,7 +170,7 @@ Ext.define("Ext.ux.DataView.Animated", {
             if (el) {
               el.destroy();
             }
-          },
+          }
         });
         delete item.dom;
       });
@@ -196,7 +196,7 @@ Ext.define("Ext.ux.DataView.Animated", {
             itemFly.getY() -
             parentElY -
             itemFly.getMargin("t") -
-            parentElPaddingTop,
+            parentElPaddingTop
         };
         newPositions[id][styleSide] = me.getItemX(itemFly);
 
@@ -253,7 +253,7 @@ Ext.define("Ext.ux.DataView.Animated", {
           itemFly.setOpacity(0);
           itemFly.animate({
             duration: duration,
-            opacity: 1,
+            opacity: 1
           });
         }
       });
@@ -379,5 +379,5 @@ Ext.define("Ext.ux.DataView.Animated", {
     });
 
     return remaining;
-  },
+  }
 });

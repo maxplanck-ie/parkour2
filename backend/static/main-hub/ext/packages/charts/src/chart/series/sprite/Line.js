@@ -59,7 +59,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
          * Absolute maximum y-value.
          * Larger values will be capped to avoid rendering issues.
          */
-        yCap: "default", // The 'default' processor is used here as we don't want this attribute to animate.
+        yCap: "default" // The 'default' processor is used here as we don't want this attribute to animate.
       },
 
       defaults: {
@@ -70,13 +70,13 @@ Ext.define("Ext.chart.series.sprite.Line", {
         preciseStroke: true,
         xAxis: null,
         yCap: Math.pow(2, 20),
-        yJump: 50,
+        yJump: 50
       },
 
       triggers: {
         dataX: "dataX,bbox,smooth",
         dataY: "dataY,bbox,smooth",
-        smooth: "smooth",
+        smooth: "smooth"
       },
 
       updaters: {
@@ -96,9 +96,9 @@ Ext.define("Ext.chart.series.sprite.Line", {
             delete this.smoothX;
             delete this.smoothY;
           }
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   list: null,
@@ -133,7 +133,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
       lineConfig = {
         type: "line",
         smooth: false,
-        step: step,
+        step: step
       };
 
     var rendererChanges,
@@ -213,7 +213,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
           null,
           params,
           0,
-          me.getSeries(),
+          me.getSeries()
         );
       }
 
@@ -344,7 +344,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
       lineConfig = {
         type: "line",
         smooth: true,
-        step: step,
+        step: step
       };
 
     ctx.beginPath();
@@ -448,7 +448,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
         null,
         params,
         0,
-        me.getSeries(),
+        me.getSeries()
       );
       if (typeof changes === "string") {
         labelCfg.text = changes;
@@ -539,7 +539,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
     surface,
     ctx,
     clip,
-    rect,
+    rect
   ) {
     var me = this,
       attr = me.attr,
@@ -625,29 +625,29 @@ Ext.define("Ext.chart.series.sprite.Line", {
         list.push(
           isValidMinX ? minX * xx + dx : null,
           isValidMinY ? minY * yy + dy : null,
-          idx[i],
+          idx[i]
         );
         list.push(
           isValidMaxX ? maxX * xx + dx : null,
           isValidMaxY ? maxY * yy + dy : null,
-          idx[i],
+          idx[i]
         );
       } else if (minX > maxX) {
         list.push(
           isValidMaxX ? maxX * xx + dx : null,
           isValidMaxY ? maxY * yy + dy : null,
-          idx[i],
+          idx[i]
         );
         list.push(
           isValidMinX ? minX * xx + dx : null,
           isValidMinY ? minY * yy + dy : null,
-          idx[i],
+          idx[i]
         );
       } else {
         list.push(
           isValidMaxX ? maxX * xx + dx : null,
           isValidMaxY ? maxY * yy + dy : null,
-          idx[i],
+          idx[i]
         );
       }
     }
@@ -680,7 +680,7 @@ Ext.define("Ext.chart.series.sprite.Line", {
       if (isSmooth && !isContinuousLine) {
         Ext.raise(
           "Line smoothing in only supported for gapless data, " +
-            "where all data points are finite numbers.",
+            "where all data points are finite numbers."
         );
       }
 
@@ -737,5 +737,5 @@ Ext.define("Ext.chart.series.sprite.Line", {
         }
       }
     }
-  },
+  }
 });

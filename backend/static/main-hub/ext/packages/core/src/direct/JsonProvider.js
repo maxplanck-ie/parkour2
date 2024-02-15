@@ -56,7 +56,7 @@ Ext.define("Ext.direct.JsonProvider", {
         data: e,
         xhr: response,
         code: Ext.direct.Manager.exceptions.PARSE,
-        message: "Error parsing json response: \n\n " + e,
+        message: "Error parsing json response: \n\n " + e
       });
 
       return [event];
@@ -85,10 +85,10 @@ Ext.define("Ext.direct.JsonProvider", {
       return new Ext.direct.ExceptionEvent({
         data: response,
         code: Ext.direct.Manager.exceptions.DATA,
-        message: "Invalid data: event type is not specified",
+        message: "Invalid data: event type is not specified"
       });
     }
 
     return Ext.create("direct." + response.type, response);
-  },
+  }
 });

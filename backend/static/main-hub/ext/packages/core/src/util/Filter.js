@@ -158,7 +158,7 @@ Ext.define(
        * @cfg {Object} convert.return The converted value.
        * @private
        */
-      convert: null,
+      convert: null
     },
 
     /**
@@ -257,7 +257,7 @@ Ext.define(
           }
         }
         return false;
-      },
+      }
     },
 
     /**
@@ -276,7 +276,7 @@ Ext.define(
 
     preventConvert: {
       in: 1,
-      notin: 1,
+      notin: 1
     },
 
     filter: function (item) {
@@ -352,7 +352,7 @@ Ext.define(
           value,
           !anyMatch, // startsWith
           !anyMatch && exact, // endsWith
-          !me.getCaseSensitive(),
+          !me.getCaseSensitive()
         );
 
       return function (item) {
@@ -464,8 +464,8 @@ Ext.define(
           result = Ext.coerce(result, v);
         }
         return result;
-      },
-    },
+      }
+    }
   },
   function () {
     var prototype = this.prototype,
@@ -567,7 +567,7 @@ Ext.define(
             }
           }
           return me.regex ? me.regex.test(candidate) : false;
-        },
+        }
       });
 
     // Operator type '==' is the same as operator type '='
@@ -581,5 +581,5 @@ Ext.define(
 
     operatorFns.eq = operatorFns["="];
     operatorFns.ne = operatorFns["!="];
-  },
+  }
 );

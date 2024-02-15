@@ -51,7 +51,7 @@ Ext.Array = (function () {
         "F",
         "F",
         "F",
-        "F",
+        "F"
       );
 
       lengthBefore = array.length; //41
@@ -562,7 +562,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.map must have a callback function passed as second argument.",
+                "Ext.Array.map must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -572,7 +572,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.map must have a callback function passed as second argument.",
+                "Ext.Array.map must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -607,7 +607,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.every must have a callback function passed as second argument.",
+                "Ext.Array.every must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -617,7 +617,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.every must have a callback function passed as second argument.",
+                "Ext.Array.every must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -652,7 +652,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.some must have a callback function passed as second argument.",
+                "Ext.Array.some must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -662,7 +662,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.some must have a callback function passed as second argument.",
+                "Ext.Array.some must have a callback function passed as second argument."
               );
               //</debug>
 
@@ -774,7 +774,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.filter must have a filter function passed as second argument.",
+                "Ext.Array.filter must have a filter function passed as second argument."
               );
               //</debug>
 
@@ -784,7 +784,7 @@ Ext.Array = (function () {
               //<debug>
               Ext.Assert.isFunction(
                 fn,
-                "Ext.Array.filter must have a filter function passed as second argument.",
+                "Ext.Array.filter must have a filter function passed as second argument."
               );
               //</debug>
 
@@ -1106,7 +1106,7 @@ Ext.Array = (function () {
                 }
                 if (++index >= length) {
                   throw new TypeError(
-                    "Reduce of empty array with no initial value",
+                    "Reduce of empty array with no initial value"
                   );
                 }
               }
@@ -1544,7 +1544,7 @@ Ext.Array = (function () {
           newItem = arguments[i];
           Array.prototype.push[Ext.isIterable(newItem) ? "apply" : "call"](
             target,
-            newItem,
+            newItem
           );
         }
         return target;
@@ -1559,7 +1559,7 @@ Ext.Array = (function () {
        */
       numericSortFn: function (a, b) {
         return a - b;
-      },
+      }
     };
 
   /**

@@ -8,13 +8,13 @@ Ext.define("Ext.layout.container.boxOverflow.None", {
   alternateClassName: "Ext.layout.boxOverflow.None",
   alias: [
     "box.overflow.none",
-    "box.overflow.None", // capitalized for 4.x compat
+    "box.overflow.None" // capitalized for 4.x compat
   ],
 
   mixins: ["Ext.mixin.Factoryable"],
 
   factoryConfig: {
-    defaultType: "none",
+    defaultType: "none"
   },
 
   isBoxOverflowHandler: true,
@@ -79,7 +79,7 @@ Ext.define("Ext.layout.container.boxOverflow.None", {
           "overflowchange",
           me.lastHiddenCount,
           hiddenCount,
-          hiddens,
+          hiddens
         );
         me.lastHiddenCount = hiddenCount;
       }
@@ -128,5 +128,5 @@ Ext.define("Ext.layout.container.boxOverflow.None", {
 
     innerCt.removeCls(me.getOverflowCls(layout.oppositeDirection));
     innerCt.addCls(me.getOverflowCls(layout.direction));
-  },
+  }
 });

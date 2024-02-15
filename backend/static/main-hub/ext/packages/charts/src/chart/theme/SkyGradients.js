@@ -6,7 +6,7 @@ Ext.define("Ext.chart.theme.SkyGradients", {
     baseColor: "#4ce0e7",
     gradients: {
       type: "linear",
-      degrees: 90,
-    },
-  },
+      degrees: 90
+    }
+  }
 });

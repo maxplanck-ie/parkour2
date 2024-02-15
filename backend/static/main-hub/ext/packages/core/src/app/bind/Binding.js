@@ -214,6 +214,6 @@ Ext.define("Ext.app.bind.Binding", {
 
       // Schedulable#sort === emptyFn
       //me.callParent();
-    },
-  },
+    }
+  }
 });

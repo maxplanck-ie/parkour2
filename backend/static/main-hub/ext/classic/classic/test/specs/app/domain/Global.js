@@ -13,8 +13,8 @@ describe("Ext.app.domain.Global", function () {
   it("should ignore case on event names", function () {
     ctrl.listen({
       global: {
-        foo: spy,
-      },
+        foo: spy
+      }
     });
 
     Ext.GlobalEvents.fireEvent("FOO");
@@ -25,8 +25,8 @@ describe("Ext.app.domain.Global", function () {
   it("listens to global events by id", function () {
     ctrl.listen({
       global: {
-        afterlayout: spy,
-      },
+        afterlayout: spy
+      }
     });
 
     panel = new Ext.panel.Panel({
@@ -35,7 +35,7 @@ describe("Ext.app.domain.Global", function () {
 
       html: "foo",
 
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
 
     expect(spy).toHaveBeenCalled();
@@ -44,13 +44,13 @@ describe("Ext.app.domain.Global", function () {
   it("should pass the event data & default the scope to the controller", function () {
     var data = [
       { foo: 1, bar: 2 },
-      { foo: 3, bar: 4 },
+      { foo: 3, bar: 4 }
     ];
 
     ctrl.listen({
       global: {
-        bar: spy,
-      },
+        bar: spy
+      }
     });
 
     Ext.GlobalEvents.fireEvent("bar", data);
@@ -63,14 +63,14 @@ describe("Ext.app.domain.Global", function () {
     var other = jasmine.createSpy();
     ctrl.listen({
       global: {
-        foo: spy,
-      },
+        foo: spy
+      }
     });
 
     ctrl.listen({
       global: {
-        bar: other,
-      },
+        bar: other
+      }
     });
 
     Ext.GlobalEvents.fireEvent("foo");
@@ -86,14 +86,14 @@ describe("Ext.app.domain.Global", function () {
   it("should remove all listeners when the controller is destroyed", function () {
     ctrl.listen({
       global: {
-        foo: spy,
-      },
+        foo: spy
+      }
     });
 
     ctrl.listen({
       global: {
-        bar: spy,
-      },
+        bar: spy
+      }
     });
 
     ctrl.destroy();
@@ -109,14 +109,14 @@ describe("Ext.app.domain.Global", function () {
 
     ctrl.listen({
       global: {
-        foo: spy,
-      },
+        foo: spy
+      }
     });
 
     ctrl2.listen({
       global: {
-        bar: other,
-      },
+        bar: other
+      }
     });
     Ext.GlobalEvents.fireEvent("foo");
     Ext.GlobalEvents.fireEvent("bar");

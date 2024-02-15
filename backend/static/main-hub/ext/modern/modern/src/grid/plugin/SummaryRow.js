@@ -15,8 +15,8 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
     emptyText: "",
     docked: "bottom",
     translatable: {
-      translationMethod: "csstransform",
-    },
+      translationMethod: "csstransform"
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "summaryrow",
@@ -48,7 +48,7 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
         remove: "doUpdateSummary",
         update: "doUpdateSummary",
         refresh: "doUpdateSummary",
-        clear: "doUpdateSummary",
+        clear: "doUpdateSummary"
       });
 
       grid.getHeaderContainer().on({
@@ -58,7 +58,7 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
         columnshow: "onColumnShow",
         columnhide: "onColumnHide",
         columnresize: "onColumnResize",
-        scope: me,
+        scope: me
       });
 
       if (grid.initialized) {
@@ -70,7 +70,7 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
             grid.insertAfter(me, headerContainer);
           },
           me,
-          { single: true },
+          { single: true }
         );
       }
 
@@ -177,7 +177,7 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
                 null,
                 [store.data.items.slice(), field, store],
                 0,
-                me,
+                me
               );
 
               break;
@@ -196,7 +196,7 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
               scope,
               [value, store, field, cell],
               0,
-              column,
+              column
             );
           }
         }
@@ -228,6 +228,6 @@ Ext.define("Ext.grid.plugin.SummaryRow", {
 
     getColumnCell: function (column) {
       return column.getSummaryCell();
-    },
-  },
+    }
+  }
 });

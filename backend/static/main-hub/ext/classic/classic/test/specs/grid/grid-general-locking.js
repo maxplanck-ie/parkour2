@@ -18,7 +18,7 @@ describe("grid-general-locking", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -51,16 +51,16 @@ describe("grid-general-locking", function () {
               text: "Row",
               dataIndex: "row",
               locked: true,
-              width: 50,
+              width: 50
             },
             {
               text: "Lorem",
-              dataIndex: "lorem",
-            },
-          ],
+              dataIndex: "lorem"
+            }
+          ]
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     navModel = grid.getNavigationModel();
   }
@@ -71,9 +71,9 @@ describe("grid-general-locking", function () {
         data: [
           [1, "Lorem"],
           [2, "Ipsum"],
-          [3, "Dolor"],
+          [3, "Dolor"]
         ],
-        fields: ["row", "lorem"],
+        fields: ["row", "lorem"]
       });
     });
 
@@ -84,11 +84,11 @@ describe("grid-general-locking", function () {
           rowLines: true,
           enableColumnMove: false,
           normalGridConfig: {
-            enableColumnHide: false,
+            enableColumnHide: false
           },
           lockedGridConfig: {
-            rowLines: false,
-          },
+            rowLines: false
+          }
         });
       });
 
@@ -126,16 +126,16 @@ describe("grid-general-locking", function () {
                 text: "Row",
                 dataIndex: "row",
                 locked: true,
-                width: 50,
+                width: 50
               },
               {
                 text: "Lorem",
                 stateId: stateId || null,
-                dataIndex: "lorem",
-              },
+                dataIndex: "lorem"
+              }
             ],
             stateful: true,
-            stateId: "foo",
+            stateId: "foo"
           });
           view = grid.getView();
           colRef = grid.getColumnManager().getColumns();
@@ -168,7 +168,7 @@ describe("grid-general-locking", function () {
                     saveAndRecreate(stateId);
 
                     expect(
-                      grid[partner].columnManager.getColumns()[0].getWidth(),
+                      grid[partner].columnManager.getColumns()[0].getWidth()
                     ).toBe(250);
                   });
 
@@ -177,7 +177,7 @@ describe("grid-general-locking", function () {
                     saveAndRecreate(stateId);
 
                     expect(
-                      grid[partner].columnManager.getColumns()[0].hidden,
+                      grid[partner].columnManager.getColumns()[0].hidden
                     ).toBe(true);
                   });
 
@@ -193,7 +193,7 @@ describe("grid-general-locking", function () {
                     saveAndRecreate(stateId);
 
                     expect(
-                      grid[partner].columnManager.getColumns()[0].sortState,
+                      grid[partner].columnManager.getColumns()[0].sortState
                     ).toBe("DESC");
                   });
 
@@ -216,7 +216,7 @@ describe("grid-general-locking", function () {
 
               testLockingPartner("locked");
               testLockingPartner("normal");
-            },
+            }
           );
         }
 
@@ -238,8 +238,8 @@ describe("grid-general-locking", function () {
             "field7",
             "field8",
             "field9",
-            "field10",
-          ],
+            "field10"
+          ]
         }),
         lockedGrid,
         lockedView,
@@ -250,7 +250,7 @@ describe("grid-general-locking", function () {
         lockedColumnCount,
         cfg,
         lockedGridConfig,
-        normalGridConfig,
+        normalGridConfig
       ) {
         var data = [],
           defaultCols = [],
@@ -260,7 +260,7 @@ describe("grid-general-locking", function () {
           defaultCols.push({
             text: "F" + i,
             dataIndex: "field" + i,
-            locked: i <= lockedColumnCount,
+            locked: i <= lockedColumnCount
           });
         }
 
@@ -275,13 +275,13 @@ describe("grid-general-locking", function () {
             field7: i + "." + 7,
             field8: i + "." + 8,
             field9: i + "." + 9,
-            field10: i + "." + 10,
+            field10: i + "." + 10
           });
         }
 
         store = new Ext.data.Store({
           model: GridEventModel,
-          data: data,
+          data: data
         });
 
         grid = new Ext.grid.Panel(
@@ -292,21 +292,21 @@ describe("grid-general-locking", function () {
               width: 1000,
               height: 500,
               viewConfig: {
-                mouseOverOutBuffer: 0,
+                mouseOverOutBuffer: 0
               },
               layout: "border",
               lockedGridConfig: Ext.apply(
                 {
                   collapsible: true,
-                  split: true,
+                  split: true
                 },
-                lockedGridConfig,
+                lockedGridConfig
               ),
               normalGridConfig: normalGridConfig,
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             },
-            cfg,
-          ),
+            cfg
+          )
         );
         view = grid.getView();
         lockedGrid = grid.lockedGrid;
@@ -317,7 +317,7 @@ describe("grid-general-locking", function () {
 
       it("should be able to lock columns", function () {
         makeGrid(0, {
-          enableLocking: true,
+          enableLocking: true
         });
         expect(grid.lockedGrid.isVisible()).toBe(false);
 
@@ -332,7 +332,7 @@ describe("grid-general-locking", function () {
         // Width should exactly shrinkwrap the columns
         expect(grid.lockedGrid.getWidth()).toBe(
           grid.lockedGrid.headerCt.getTableWidth() +
-            grid.lockedGrid.gridPanelBorderWidth,
+            grid.lockedGrid.gridPanelBorderWidth
         );
 
         grid.lockedGrid.collapse();
@@ -356,7 +356,7 @@ describe("grid-general-locking", function () {
           // Width should exactly shrinkwrap the columns
           expect(grid.lockedGrid.getWidth()).toBe(
             grid.lockedGrid.headerCt.getTableWidth() +
-              grid.lockedGrid.gridPanelBorderWidth,
+              grid.lockedGrid.gridPanelBorderWidth
           );
 
           grid.unlock(grid.columns[1]);
@@ -364,7 +364,7 @@ describe("grid-general-locking", function () {
           // Width should exactly shrinkwrap the columns
           expect(grid.lockedGrid.getWidth()).toBe(
             grid.lockedGrid.headerCt.getTableWidth() +
-              grid.lockedGrid.gridPanelBorderWidth,
+              grid.lockedGrid.gridPanelBorderWidth
           );
 
           // Now test column moving in locked side when floated
@@ -373,7 +373,7 @@ describe("grid-general-locking", function () {
           // Width should exactly shrinkwrap the columns
           expect(grid.lockedGrid.getWidth()).toBe(
             grid.lockedGrid.headerCt.getTableWidth() +
-              grid.lockedGrid.gridPanelBorderWidth,
+              grid.lockedGrid.gridPanelBorderWidth
           );
 
           grid.lockedGrid.headerCt.moveBefore(grid.columns[0], grid.columns[1]);
@@ -381,7 +381,7 @@ describe("grid-general-locking", function () {
           // Width should exactly shrinkwrap the columns
           expect(grid.lockedGrid.getWidth()).toBe(
             grid.lockedGrid.headerCt.getTableWidth() +
-              grid.lockedGrid.gridPanelBorderWidth,
+              grid.lockedGrid.gridPanelBorderWidth
           );
         });
       });
@@ -394,9 +394,9 @@ describe("grid-general-locking", function () {
         data: [
           [1, "Lorem"],
           [2, "Ipsum"],
-          [3, "Dolor"],
+          [3, "Dolor"]
         ],
-        fields: ["row", "lorem"],
+        fields: ["row", "lorem"]
       });
 
       createGrid();

@@ -12,7 +12,7 @@ Ext.define(
     uses: ["Ext.layout.Context"],
 
     factoryConfig: {
-      type: "layout",
+      type: "layout"
     },
 
     /**
@@ -49,7 +49,7 @@ Ext.define(
       readsWidth: 1,
       readsHeight: 1,
       setsWidth: 0,
-      setsHeight: 0,
+      setsHeight: 0
     },
 
     $configPrefixed: false,
@@ -651,12 +651,12 @@ Ext.define(
       for (i = 0; i < length; ++i) {
         delete items[i].$i;
       }
-    },
+    }
   },
   function () {
     var Layout = this;
 
     Layout.prototype.sizeModels = Layout.sizeModels =
       Ext.layout.SizeModel.sizeModels;
-  },
+  }
 );

@@ -13,10 +13,10 @@ describe("Ext.slider.Thumb", function () {
             hideEmptyLabel: false,
             minValue: 0,
             maxValue: 100,
-            animate: false,
+            animate: false
           },
-          config,
-        ),
+          config
+        )
       );
     };
     createThumb = function (config) {
@@ -41,8 +41,8 @@ describe("Ext.slider.Thumb", function () {
       beforeEach(function () {
         createThumb({
           slider: {
-            vertical: true,
-          },
+            vertical: true
+          }
         });
       });
 
@@ -63,10 +63,10 @@ describe("Ext.slider.Thumb", function () {
           createSlider(
             Ext.apply(
               {
-                values: [0, 60, 90],
+                values: [0, 60, 90]
               },
-              config,
-            ),
+              config
+            )
           );
 
           thumb0 = slider.thumbs[0];
@@ -96,14 +96,14 @@ describe("Ext.slider.Thumb", function () {
 
             dragConfig["drag without snapping"] = {
               config: {},
-              expected: 3,
+              expected: 3
             };
 
             dragConfig["drag with snapping"] = {
               config: {
-                increment: 5,
+                increment: 5
               },
-              expected: 5,
+              expected: 5
             };
 
             specFor(dragConfig, function (key, value) {
@@ -117,7 +117,7 @@ describe("Ext.slider.Thumb", function () {
                     xOffset =
                       trackLength *
                       (slider.calculateThumbPosition(
-                        value.expected - slider.getValue(0),
+                        value.expected - slider.getValue(0)
                       ) /
                         100);
 
@@ -159,7 +159,7 @@ describe("Ext.slider.Thumb", function () {
                   slider.el,
                   "click",
                   xy[0] + 100,
-                  xy[1] + 10,
+                  xy[1] + 10
                 );
               });
 
@@ -176,7 +176,7 @@ describe("Ext.slider.Thumb", function () {
                   slider.el,
                   "mousedown",
                   xy[0] + 10,
-                  xy[1] + 10,
+                  xy[1] + 10
                 );
               });
 
@@ -199,10 +199,10 @@ describe("Ext.slider.Thumb", function () {
               {
                 values: [0, 60, 90],
                 height: 214,
-                vertical: true,
+                vertical: true
               },
-              config,
-            ),
+              config
+            )
           );
 
           thumb0 = slider.thumbs[0];
@@ -219,14 +219,14 @@ describe("Ext.slider.Thumb", function () {
 
             dragConfig["drag without snapping"] = {
               config: {},
-              expected: 54,
+              expected: 54
             };
 
             dragConfig["drag with snapping"] = {
               config: {
-                increment: 10,
+                increment: 10
               },
-              expected: 50,
+              expected: 50
             };
 
             specFor(dragConfig, function (key, value) {
@@ -240,7 +240,7 @@ describe("Ext.slider.Thumb", function () {
                     yOffset =
                       trackLength *
                       (slider.calculateThumbPosition(
-                        slider.getValue(0) - value.expected,
+                        slider.getValue(0) - value.expected
                       ) /
                         100);
 
@@ -283,7 +283,7 @@ describe("Ext.slider.Thumb", function () {
                   slider.el,
                   "click",
                   xy[0] + 8,
-                  xy[1] + offset,
+                  xy[1] + offset
                 );
               });
 
@@ -300,7 +300,7 @@ describe("Ext.slider.Thumb", function () {
                   slider.el,
                   "mousedown",
                   xy[0] + 10,
-                  xy[1] - 10,
+                  xy[1] - 10
                 );
               });
 

@@ -143,5 +143,5 @@ Ext.define("Ext.plugin.Abstract", {
     return (
       scope || me.mixins.observable.resolveListenerScope.call(me, defaultScope)
     );
-  },
+  }
 });

@@ -8,7 +8,7 @@ describe("Ext.util.KeyNav", function () {
 
   beforeEach(function () {
     el = Ext.getBody().createChild({
-      id: "test-keyNav-el",
+      id: "test-keyNav-el"
     });
 
     createNav = function (config) {
@@ -35,7 +35,7 @@ describe("Ext.util.KeyNav", function () {
     describe("key options", function () {
       it("should fire for the left key", function () {
         createNav({
-          left: defaultFn,
+          left: defaultFn
         });
         fireKey(KEYS.left);
         expect(defaultFn).toHaveBeenCalled();
@@ -43,7 +43,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the right key", function () {
         createNav({
-          right: defaultFn,
+          right: defaultFn
         });
         fireKey(KEYS.right);
         expect(defaultFn).toHaveBeenCalled();
@@ -51,7 +51,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the up key", function () {
         createNav({
-          up: defaultFn,
+          up: defaultFn
         });
         fireKey(KEYS.up);
         expect(defaultFn).toHaveBeenCalled();
@@ -59,7 +59,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the down key", function () {
         createNav({
-          down: defaultFn,
+          down: defaultFn
         });
         fireKey(KEYS.down);
         expect(defaultFn).toHaveBeenCalled();
@@ -67,7 +67,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the pageUp key", function () {
         createNav({
-          pageUp: defaultFn,
+          pageUp: defaultFn
         });
         fireKey(KEYS.pageUp);
         expect(defaultFn).toHaveBeenCalled();
@@ -75,7 +75,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the pageDown key", function () {
         createNav({
-          pageDown: defaultFn,
+          pageDown: defaultFn
         });
         fireKey(KEYS.pageDown);
         expect(defaultFn).toHaveBeenCalled();
@@ -83,7 +83,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the del key", function () {
         createNav({
-          del: defaultFn,
+          del: defaultFn
         });
         fireKey(KEYS.del);
         expect(defaultFn).toHaveBeenCalled();
@@ -91,7 +91,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the home key", function () {
         createNav({
-          home: defaultFn,
+          home: defaultFn
         });
         fireKey(KEYS.home);
         expect(defaultFn).toHaveBeenCalled();
@@ -99,7 +99,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the end key", function () {
         createNav({
-          end: defaultFn,
+          end: defaultFn
         });
         fireKey(KEYS.end);
         expect(defaultFn).toHaveBeenCalled();
@@ -107,7 +107,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the enter key", function () {
         createNav({
-          enter: defaultFn,
+          enter: defaultFn
         });
         fireKey(KEYS.enter);
         expect(defaultFn).toHaveBeenCalled();
@@ -115,7 +115,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the esc key", function () {
         createNav({
-          esc: defaultFn,
+          esc: defaultFn
         });
         fireKey(KEYS.esc);
         expect(defaultFn).toHaveBeenCalled();
@@ -123,7 +123,7 @@ describe("Ext.util.KeyNav", function () {
 
       it("should fire for the tab key", function () {
         createNav({
-          tab: defaultFn,
+          tab: defaultFn
         });
         fireKey(KEYS.tab);
         expect(defaultFn).toHaveBeenCalled();
@@ -133,7 +133,7 @@ describe("Ext.util.KeyNav", function () {
     it("should bind multiple keys at once", function () {
       createNav({
         left: defaultFn,
-        right: defaultFn,
+        right: defaultFn
       });
       fireKey(KEYS.left);
       fireKey(KEYS.right);
@@ -147,7 +147,7 @@ describe("Ext.util.KeyNav", function () {
       createNav({
         left: function () {
           actual = this;
-        },
+        }
       });
       fireKey(KEYS.left);
       expect(actual).toBe(nav);
@@ -160,7 +160,7 @@ describe("Ext.util.KeyNav", function () {
         scope: scope,
         left: function () {
           actual = this;
-        },
+        }
       });
       fireKey(KEYS.left);
       expect(actual).toBe(scope);
@@ -172,7 +172,7 @@ describe("Ext.util.KeyNav", function () {
       createNav({
         enter: function (event) {
           realEvent = event;
-        },
+        }
       });
       fireKey(KEYS.enter);
       expect(realEvent.getXY()).toBeTruthy();
@@ -184,7 +184,7 @@ describe("Ext.util.KeyNav", function () {
   describe("enable/disable", function () {
     beforeEach(function () {
       createNav({
-        esc: defaultFn,
+        esc: defaultFn
       });
     });
 
@@ -216,7 +216,7 @@ describe("Ext.util.KeyNav", function () {
       createNav({
         tab: function (e) {
           ev = e;
-        },
+        }
       });
     });
 

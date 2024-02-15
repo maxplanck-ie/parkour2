@@ -40,7 +40,7 @@ Ext.define("Ext.draw.gradient.Linear", {
      * @cfg {Number} radians
      * The angle of rotation of the gradient in radians.
      */
-    radians: 0,
+    radians: 0
   },
 
   applyRadians: function (radians, oldRadians) {
@@ -91,7 +91,7 @@ Ext.define("Ext.draw.gradient.Linear", {
         cx + cos * l,
         cy + sin * l,
         cx - cos * l,
-        cy - sin * l,
+        cy - sin * l
       );
 
       for (i = 0; i < ln; i++) {
@@ -100,5 +100,5 @@ Ext.define("Ext.draw.gradient.Linear", {
       return gradient;
     }
     return Ext.util.Color.NONE;
-  },
+  }
 });

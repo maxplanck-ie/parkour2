@@ -156,5 +156,5 @@ Ext.define("Ext.util.StoreHolder", {
    * @param {Ext.data.AbstractStore} store The store being bound
    * @param {Boolean} initial True if this store is being bound as initialization of the instance.
    */
-  onBindStore: Ext.emptyFn,
+  onBindStore: Ext.emptyFn
 });

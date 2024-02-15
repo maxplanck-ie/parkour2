@@ -39,11 +39,11 @@ Ext.define("Ext.data.JsonPStore", {
       {
         proxy: {
           type: "jsonp",
-          reader: "json",
-        },
+          reader: "json"
+        }
       },
-      config,
+      config
     );
     this.callParent([config]);
-  },
+  }
 });

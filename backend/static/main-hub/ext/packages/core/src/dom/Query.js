@@ -132,7 +132,7 @@ Ext.define(
         if (window.DOMParser) {
           xmlDoc = new DOMParser().parseFromString(
             xmlString,
-            "application/xml",
+            "application/xml"
           );
         } else {
           xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
@@ -632,13 +632,13 @@ Ext.define(
         DQ = this;
         DQ.operators = Ext.Object.chain(Ext.util.Operators); // can capture now
         DQ._cache = cache = new Ext.util.LruCache({
-          maxSize: 200,
+          maxSize: 200
         });
         DQ._valueCache = valueCache = new Ext.util.LruCache({
-          maxSize: 200,
+          maxSize: 200
         });
         DQ._simpleCache = simpleCache = new Ext.util.LruCache({
-          maxSize: 200,
+          maxSize: 200
         });
       },
 
@@ -664,7 +664,7 @@ Ext.define(
 
         // setup fn preamble
         var fn = [
-            "var f = function(root) {\n var mode; ++batch; var n = root || document;\n",
+            "var f = function(root) {\n var mode; ++batch; var n = root || document;\n"
           ],
           lastPath,
           matchers = DQ.matchers,
@@ -737,7 +737,7 @@ Ext.define(
               Ext.raise({
                 sourceClass: "Ext.DomQuery",
                 sourceMethod: "compile",
-                msg: 'Error parsing selector. Parsing failed at "' + path + '"',
+                msg: 'Error parsing selector. Parsing failed at "' + path + '"'
               });
             }
           }
@@ -790,7 +790,7 @@ Ext.define(
               Ext.raise({
                 sourceClass: "Ext.DomQuery",
                 sourceMethod: "jsSelect",
-                msg: subPath + " is not a valid selector",
+                msg: subPath + " is not a valid selector"
               });
             }
             cache.add(subPath, query);
@@ -996,24 +996,24 @@ Ext.define(
           re: /^\.([\w\-\\]+)/,
           select: useClassList
             ? 'n = byClassName(n, "{1}");'
-            : 'n = byClassName(n, " {1} ");',
+            : 'n = byClassName(n, " {1} ");'
         },
         {
           re: /^\:([\w\-]+)(?:\(((?:[^\s>\/]*|.*?))\))?/,
-          select: 'n = byPseudo(n, "{1}", "{2}");',
+          select: 'n = byPseudo(n, "{1}", "{2}");'
         },
         {
           re: /^(?:([\[\{])(?:@)?([\w\-]+)\s?(?:(=|.=)\s?['"]?(.*?)["']?)?[\]\}])/,
-          select: 'n = byAttribute(n, "{2}", "{4}", "{3}", "{1}");',
+          select: 'n = byAttribute(n, "{2}", "{4}", "{3}", "{1}");'
         },
         {
           re: /^#([\w\-\\]+)/,
-          select: 'n = byId(n, "{1}");',
+          select: 'n = byId(n, "{1}");'
         },
         {
           re: /^@([\w\-\.]+)/,
-          select: 'return {firstChild:{nodeValue:attrValue(n, "{1}")}};',
-        },
+          select: 'return {firstChild:{nodeValue:attrValue(n, "{1}")}};'
+        }
       ],
 
       /**
@@ -1100,7 +1100,7 @@ Ext.define(
               (a == "even" && "2n") ||
                 (a == "odd" && "2n+1") ||
                 (!nthRe2.test(a) && "n+" + a) ||
-                a,
+                a
             ),
             f = (m[1] || 1) - 0,
             l = m[2] - 0,
@@ -1347,11 +1347,11 @@ Ext.define(
             }
           }
           return r;
-        },
-      },
+        }
+      }
     };
   },
   function () {
     this._init();
-  },
+  }
 );

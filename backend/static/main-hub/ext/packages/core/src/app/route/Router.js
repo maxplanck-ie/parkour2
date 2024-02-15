@@ -72,7 +72,7 @@ Ext.define("Ext.app.route.Router", {
       if (queueRoutes) {
         //create a queue
         queue = new Ext.app.route.Queue({
-          token: token,
+          token: token
         });
       }
 
@@ -115,7 +115,7 @@ Ext.define("Ext.app.route.Router", {
     var config = {
       url: url,
       action: action,
-      controller: controller,
+      controller: controller
     };
 
     if (Ext.isObject(action)) {
@@ -167,7 +167,7 @@ Ext.define("Ext.app.route.Router", {
         //route is recognized, return it and the arguments recognized if any
         return {
           route: route,
-          args: args,
+          args: args
         };
       }
     }
@@ -195,5 +195,5 @@ Ext.define("Ext.app.route.Router", {
    */
   clear: function () {
     this.routes = [];
-  },
+  }
 });

@@ -237,7 +237,7 @@ Ext.define("Ext.grid.CellEditor", {
       field.mon(field.inputEl, {
         mousedown: me.onCheckBoxMouseDown,
         click: me.onCheckBoxClick,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -313,5 +313,5 @@ Ext.define("Ext.grid.CellEditor", {
 
   getTreeNodeOffset: function (innerCell) {
     return innerCell.child(this.treeNodeSelector).getOffsetsTo(innerCell)[0];
-  },
+  }
 });

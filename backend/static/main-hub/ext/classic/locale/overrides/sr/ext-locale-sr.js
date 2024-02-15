@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "Septembar",
       "Oktobar",
       "Novembar",
-      "Decembar",
+      "Decembar"
     ];
 
     Ext.Date.dayNames = [
@@ -28,7 +28,7 @@ Ext.onReady(function () {
       "Sreda",
       "Četvrtak",
       "Petak",
-      "Subota",
+      "Subota"
     ];
   }
 
@@ -38,35 +38,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u0414\u0438\u043d\u002e",
       // Serbian Dinar
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.sr.view.View", {
   override: "Ext.view.View",
-  emptyText: "Ne postoji ni jedan slog",
+  emptyText: "Ne postoji ni jedan slog"
 });
 
 Ext.define("Ext.locale.sr.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} izabranih redova",
+  dragText: "{0} izabranih redova"
 });
 
 Ext.define("Ext.locale.sr.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Zatvori оvu »karticu«",
+  closeText: "Zatvori оvu »karticu«"
 });
 
 Ext.define("Ext.locale.sr.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Unešena vrednost nije pravilna",
+  invalidText: "Unešena vrednost nije pravilna"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.sr.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Učitavam...",
+  loadingText: "Učitavam..."
 });
 
 Ext.define("Ext.locale.sr.picker.Date", {
@@ -81,7 +81,7 @@ Ext.define("Ext.locale.sr.picker.Date", {
   monthYearText: "Izaberite mesec (Control+Gore/Dole za izbor godine)",
   todayTip: "{0} (Razmaknica)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.sr.toolbar.Paging", {
@@ -94,7 +94,7 @@ Ext.define("Ext.locale.sr.toolbar.Paging", {
   lastText: "Poslednja strana",
   refreshText: "Osveži",
   displayMsg: "Prikazana {0} - {1} od {2}",
-  emptyMsg: "Nemam šta prikazati",
+  emptyMsg: "Nemam šta prikazati"
 });
 
 Ext.define("Ext.locale.sr.form.field.Text", {
@@ -103,14 +103,14 @@ Ext.define("Ext.locale.sr.form.field.Text", {
   maxLengthText: "Maksimalna dužina ovog polja је {0}",
   blankText: "Polje је obavezno",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.sr.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Minimalna vrednost u polju је {0}",
   maxText: "Maksimalna vrednost u polju је {0}",
-  nanText: "{0} nije pravilan broj",
+  nanText: "{0} nije pravilan broj"
 });
 
 Ext.define("Ext.locale.sr.form.field.Date", {
@@ -121,20 +121,20 @@ Ext.define("Ext.locale.sr.form.field.Date", {
   maxText: "Datum u ovom polju mora biti pre {0}",
   invalidText: "{0} nije pravilan datum - zahtevani oblik je {1}",
   format: "d.m.y",
-  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.sr.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Učitavam...",
+      loadingText: "Učitavam..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.sr.form.field.VTypes", {
@@ -145,7 +145,7 @@ Ext.define("Ext.locale.sr.form.field.VTypes", {
     'Ovo polje prihavata URL adresu isključivo u obliku "http:/' +
     '/www.domen.com"',
   alphaText: "Ovo polje može sadržati isključivo slova i znak _",
-  alphanumText: "Ovo polje može sadržati само slova, brojeve i znak _",
+  alphanumText: "Ovo polje može sadržati само slova, brojeve i znak _"
 });
 
 Ext.define("Ext.locale.sr.grid.header.Container", {
@@ -154,14 +154,14 @@ Ext.define("Ext.locale.sr.grid.header.Container", {
   sortDescText: "Opadajući redosled",
   lockText: "Zaključaj kolonu",
   unlockText: "Otključaj kolonu",
-  columnsText: "Kolone",
+  columnsText: "Kolone"
 });
 
 Ext.define("Ext.locale.sr.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Naziv",
   valueText: "Vrednost",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.sr.window.MessageBox", {
@@ -170,11 +170,11 @@ Ext.define("Ext.locale.sr.window.MessageBox", {
     ok: "U redu",
     cancel: "Odustani",
     yes: "Da",
-    no: "Ne",
-  },
+    no: "Ne"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.sr.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

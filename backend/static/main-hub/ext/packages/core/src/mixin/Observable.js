@@ -67,7 +67,7 @@ Ext.define(
         "events",
         "hasListeners",
         "managedListeners",
-        "eventedBeforeEventNames",
+        "eventedBeforeEventNames"
       ];
 
     ListenerRemover.prototype.destroy = function () {
@@ -78,7 +78,7 @@ Ext.define(
       if (!observable.destroyed) {
         observable[this.managedListeners ? "mun" : "un"].apply(
           observable,
-          this.args,
+          this.args
         );
       }
     };
@@ -88,8 +88,8 @@ Ext.define(
       mixinConfig: {
         id: "observable",
         after: {
-          destroy: "destroyObservable",
-        },
+          destroy: "destroyObservable"
+        }
       },
 
       requires: ["Ext.util.Event"],
@@ -138,7 +138,7 @@ Ext.define(
           o.fireEventArgs = Ext.Function.createInterceptor(
             o.fireEventArgs,
             fn,
-            scope,
+            scope
           );
         },
 
@@ -268,7 +268,7 @@ Ext.define(
           }
 
           T.prototype.$noClearOnDestroy = scope;
-        },
+        }
       },
 
       /* End Definitions */
@@ -434,7 +434,7 @@ Ext.define(
           // of these are passed to this method.
           Observable.prepareClass(
             T,
-            T.prototype.$observableMixedIn ? undefined : data,
+            T.prototype.$observableMixedIn ? undefined : data
           );
         }
       },
@@ -452,13 +452,13 @@ Ext.define(
         args: 1,
         destroyable: 1,
         priority: 1,
-        order: 1,
+        order: 1
       },
 
       $orderToPriority: {
         before: 100,
         current: 0,
-        after: -100,
+        after: -100
       },
 
       /**
@@ -541,7 +541,7 @@ Ext.define(
         fn,
         scope,
         options,
-        /* private */ noDestroy,
+        /* private */ noDestroy
       ) {
         var me = this,
           managedListeners = (me.managedListeners = me.managedListeners || []),
@@ -568,7 +568,7 @@ Ext.define(
                   config.fn || config,
                   config.scope || options.scope || scope,
                   config.fn ? config : passedOptions,
-                  true,
+                  true
                 );
               }
             }
@@ -619,7 +619,7 @@ Ext.define(
                   item,
                   ename,
                   config.fn || config,
-                  config.scope || options.scope || scope,
+                  config.scope || options.scope || scope
                 );
               }
             }
@@ -638,7 +638,7 @@ Ext.define(
               item,
               ename,
               fn,
-              scope,
+              scope
             );
           }
         }
@@ -672,7 +672,7 @@ Ext.define(
           //<debug>
           if (namedScope.isController) {
             Ext.raise(
-              'scope: "controller" can only be specified on classes that derive from Ext.Component or Ext.Widget',
+              'scope: "controller" can only be specified on classes that derive from Ext.Component or Ext.Widget'
             );
           }
           //</debug>
@@ -708,7 +708,7 @@ Ext.define(
           ret = me.doFireEvent(
             eventName,
             args || emptyArray,
-            event ? event.bubble : false,
+            event ? event.bubble : false
           );
         }
         return ret;
@@ -805,7 +805,7 @@ Ext.define(
               return me.owner.fireEventArgs(me.eventName, me.args);
             }
           }
-        },
+        }
       },
 
       /**
@@ -839,9 +839,9 @@ Ext.define(
               fn: fn,
               scope: scope,
               fnArgs: fnArgs,
-              args: args,
+              args: args
             },
-            me.$eventedController,
+            me.$eventedController
           ),
           value;
 
@@ -1156,7 +1156,7 @@ Ext.define(
         scope,
         options,
         order,
-        /* private */ caller,
+        /* private */ caller
       ) {
         var me = this,
           namedScopes = Ext._namedScopes,
@@ -1210,7 +1210,7 @@ Ext.define(
                 innerScope || scope,
                 config.fn ? config : options,
                 order,
-                caller,
+                caller
               );
             }
           }
@@ -1290,7 +1290,7 @@ Ext.define(
                 me.doRemoveListener(
                   ename,
                   config.fn || config,
-                  config.scope || options.scope,
+                  config.scope || options.scope
                 );
               }
             }
@@ -1416,7 +1416,7 @@ Ext.define(
       purgeListeners: function () {
         if (Ext.global.console) {
           Ext.global.console.warn(
-            "Observable: purgeListeners has been deprecated. Please use clearListeners.",
+            "Observable: purgeListeners has been deprecated. Please use clearListeners."
           );
         }
         return this.clearListeners.apply(this, arguments);
@@ -1454,7 +1454,7 @@ Ext.define(
         item,
         ename,
         fn,
-        scope,
+        scope
       ) {
         if (
           isClear ||
@@ -1470,7 +1470,7 @@ Ext.define(
               managedListener.ename,
               managedListener.fn,
               managedListener.scope,
-              managedListener.options,
+              managedListener.options
             );
           }
 
@@ -1484,7 +1484,7 @@ Ext.define(
       purgeManagedListeners: function () {
         if (Ext.global.console) {
           Ext.global.console.warn(
-            "Observable: purgeManagedListeners has been deprecated. Please use clearManagedListeners.",
+            "Observable: purgeManagedListeners has been deprecated. Please use clearManagedListeners."
           );
         }
         return this.clearManagedListeners.apply(this, arguments);
@@ -1677,7 +1677,7 @@ Ext.define(
 
             // Build up the listener hash.
             relayers[oldName] = me.createRelayer(
-              prefix ? prefix + oldName : oldName,
+              prefix ? prefix + oldName : oldName
             );
           }
         }
@@ -1703,7 +1703,7 @@ Ext.define(
           return me.fireEventArgs.call(
             me,
             newName,
-            beginEnd ? arraySlice.apply(arguments, beginEnd) : arguments,
+            beginEnd ? arraySlice.apply(arguments, beginEnd) : arguments
           );
         };
       },
@@ -1845,7 +1845,7 @@ Ext.define(
           options,
           order,
           caller,
-          manager,
+          manager
         ) {
           var me = this,
             ret = false,
@@ -1874,7 +1874,7 @@ Ext.define(
                 ename +
                 "' listener to " +
                 me.$className +
-                " instance.  No function specified.",
+                " instance.  No function specified."
             );
           }
           //</debug>
@@ -1918,7 +1918,7 @@ Ext.define(
                 ename +
                 "' listener to " +
                 me.$className +
-                " instance.  No function specified.",
+                " instance.  No function specified."
             );
           }
           //</debug>
@@ -1935,16 +1935,16 @@ Ext.define(
 
         _initEvent: function (eventName) {
           return (this.events[eventName] = new Ext.util.Event(this, eventName));
-        },
+        }
       },
 
       deprecated: {
         "5.0": {
           methods: {
-            addEvents: null,
-          },
-        },
-      },
+            addEvents: null
+          }
+        }
+      }
     };
   },
   function () {
@@ -1979,7 +1979,7 @@ Ext.define(
               onClassMixedIn: function (U) {
                 prepareMixin.call(this, U);
                 this.callParent(arguments);
-              },
+              }
             });
           } else {
             // just us chickens, so add the method...
@@ -2020,7 +2020,7 @@ Ext.define(
           // chain)...
           this[ev] = 1;
         }
-      },
+      }
     };
 
     proto.HasListeners = Observable.HasListeners = HasListeners;
@@ -2059,7 +2059,7 @@ Ext.define(
        * is to use the {@link #on} method.
        * @param {Object} listeners The listeners
        */
-      setListeners: "addListener",
+      setListeners: "addListener"
     });
 
     //deprecated, will be removed in 5.0
@@ -2142,7 +2142,7 @@ Ext.define(
       beforeMethod: function (method, fn, scope) {
         getMethodEvent.call(this, method).before.push({
           fn: fn,
-          scope: scope,
+          scope: scope
         });
       },
 
@@ -2150,7 +2150,7 @@ Ext.define(
       afterMethod: function (method, fn, scope) {
         getMethodEvent.call(this, method).after.push({
           fn: fn,
-          scope: scope,
+          scope: scope
         });
       },
 
@@ -2179,9 +2179,9 @@ Ext.define(
             if (Ext.isDefined(Ext.global.console)) {
               Ext.global.console.log(en, arguments);
             }
-          },
+          }
         );
-      },
+      }
     });
-  },
+  }
 );

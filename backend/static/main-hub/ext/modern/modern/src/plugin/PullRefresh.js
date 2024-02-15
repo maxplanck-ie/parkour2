@@ -119,10 +119,10 @@ Ext.define("Ext.plugin.PullRefresh", {
       '<div class="' +
         Ext.baseCSSPrefix +
         'list-pullrefresh-updated">{updated}</div>',
-      "</div>",
+      "</div>"
     ].join(""),
 
-    translatable: true,
+    translatable: true
   },
 
   /**
@@ -181,9 +181,9 @@ Ext.define("Ext.plugin.PullRefresh", {
       children: [
         {
           reference: "innerElement",
-          className: this.refreshCls,
-        },
-      ],
+          className: this.refreshCls
+        }
+      ]
     };
   },
 
@@ -205,7 +205,7 @@ Ext.define("Ext.plugin.PullRefresh", {
 
     scroller.on({
       scroll: me.onScrollChange,
-      scope: me,
+      scope: me
     });
 
     me.updateView();
@@ -232,7 +232,7 @@ Ext.define("Ext.plugin.PullRefresh", {
       newList.on({
         order: "after",
         scrollablechange: me.initScrollable,
-        scope: me,
+        scope: me
       });
     }
 
@@ -240,7 +240,7 @@ Ext.define("Ext.plugin.PullRefresh", {
       oldList.un({
         order: "after",
         scrollablechange: me.initScrollable,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -261,7 +261,7 @@ Ext.define("Ext.plugin.PullRefresh", {
       page: 1,
       start: 0,
       callback: this.onLatestFetched,
-      scope: this,
+      scope: this
     });
   },
 
@@ -323,7 +323,7 @@ Ext.define("Ext.plugin.PullRefresh", {
     me.setIsSnappingBack(true);
     scroller.doScrollTo(null, 0, {
       callback: Ext.bind(me.onSnapBackEnd, me),
-      duration: me.getSnappingAnimationDuration(),
+      duration: me.getSnappingAnimationDuration()
     });
   },
 
@@ -368,14 +368,14 @@ Ext.define("Ext.plugin.PullRefresh", {
         scroller.getElement().onBefore({
           dragend: "onScrollerDragEnd",
           single: true,
-          scope: me,
+          scope: me
         });
       } else if (state === "release" && -y < pullHeight + 10) {
         me.setState("pull");
         scroller.getElement().unBefore({
           dragend: "onScrollerDragEnd",
           single: true,
-          scope: me,
+          scope: me
         });
       }
     }
@@ -439,9 +439,9 @@ Ext.define("Ext.plugin.PullRefresh", {
 
     innerElement.removeCls(
       ["loaded", "loading", "release", "pull"],
-      me.refreshCls,
+      me.refreshCls
     );
     innerElement.addCls(state, me.refreshCls);
     me.getPullTpl().overwrite(innerElement, templateConfig);
-  },
+  }
 });

@@ -25,8 +25,8 @@ describe("grid-moving-columns", function () {
         "field15",
         "field16",
         "field17",
-        "field18",
-      ],
+        "field18"
+      ]
     }),
     headerText = [],
     rowText = [],
@@ -65,7 +65,7 @@ describe("grid-moving-columns", function () {
       from.el.dom,
       "mousemove",
       fromMx + dragThresh,
-      fromMy,
+      fromMy
     );
 
     if (locked) {
@@ -78,7 +78,7 @@ describe("grid-moving-columns", function () {
         to.el.dom,
         "mousemove",
         onRight ? moveOffset + 1 : moveOffset - 1,
-        toMy,
+        toMy
       );
     }
 
@@ -100,7 +100,7 @@ describe("grid-moving-columns", function () {
         columns.push({
           dataIndex: "field" + i,
           text: "Field " + i,
-          width: 90,
+          width: 90
         });
       }
     }
@@ -126,9 +126,9 @@ describe("grid-moving-columns", function () {
           field15: 15,
           field16: 16,
           field17: 17,
-          field18: 18,
-        },
-      ],
+          field18: 18
+        }
+      ]
     });
 
     grid = new Ext.grid.Panel(
@@ -140,11 +140,11 @@ describe("grid-moving-columns", function () {
           height: 500,
           border: false,
           viewConfig: {
-            mouseOverOutBuffer: 0,
-          },
+            mouseOverOutBuffer: 0
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
 
     // Don't use renderTo since that may throw and we won't set "grid" and will then leak the component.
@@ -177,7 +177,7 @@ describe("grid-moving-columns", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
 
@@ -229,14 +229,14 @@ describe("grid-moving-columns", function () {
         view.getRow(view.lockedView.all.item(0)).childNodes,
         function (n) {
           rowText.push(n.textContent || n.innerText);
-        },
+        }
       );
 
       Ext.Array.each(
         view.getRow(view.normalView.all.item(0)).childNodes,
         function (n) {
           rowText.push(n.textContent || n.innerText);
-        },
+        }
       );
     }
 
@@ -277,38 +277,38 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             dataIndex: "field3",
-            header: "Field3",
+            header: "Field3"
           },
           {
             dataIndex: "field4",
-            header: "Field4",
+            header: "Field4"
           },
           {
             dataIndex: "field5",
-            header: "Field5",
+            header: "Field5"
           },
           {
             dataIndex: "field6",
-            header: "Field6",
+            header: "Field6"
           },
           {
             dataIndex: "field7",
-            header: "Field7",
-          },
+            header: "Field7"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
       var c0 = grid.getColumnManager().getColumns()[0],
         headerReorderer = grid.headerCt.findPlugin("gridheaderreorderer"),
@@ -367,7 +367,7 @@ describe("grid-moving-columns", function () {
         from.el.dom,
         "mousemove",
         fromMx + dragThresh,
-        fromMy,
+        fromMy
       );
 
       if (locked) {
@@ -380,7 +380,7 @@ describe("grid-moving-columns", function () {
           to.el.dom,
           "mousemove",
           onRight ? moveOffset + 1 : moveOffset - 1,
-          toMy,
+          toMy
         );
       }
 
@@ -431,7 +431,7 @@ describe("grid-moving-columns", function () {
       dragColumn(visibleColumns[3], visibleColumns[1]);
 
       expect(
-        Ext.dd.DragDropManager.dragOvers[grid.headerCt.reorderer.dropZone.id],
+        Ext.dd.DragDropManager.dragOvers[grid.headerCt.reorderer.dropZone.id]
       ).toBeUndefined();
     });
   });
@@ -442,31 +442,31 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             dataIndex: "field3",
             header: "Field3",
-            hidden: true,
+            hidden: true
           },
           {
             dataIndex: "field4",
-            header: "Field4",
+            header: "Field4"
           },
           {
             dataIndex: "field5",
-            header: "Field5",
-          },
+            header: "Field5"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -494,31 +494,31 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             dataIndex: "field3",
             header: "Field3",
-            hidden: true,
+            hidden: true
           },
           {
             dataIndex: "field4",
-            header: "Field4",
+            header: "Field4"
           },
           {
             dataIndex: "field5",
-            header: "Field5",
-          },
+            header: "Field5"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -545,31 +545,31 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             dataIndex: "field3",
             header: "Field3",
-            hidden: true,
+            hidden: true
           },
           {
             dataIndex: "field4",
-            header: "Field4",
+            header: "Field4"
           },
           {
             dataIndex: "field5",
-            header: "Field5",
-          },
+            header: "Field5"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -597,45 +597,45 @@ describe("grid-moving-columns", function () {
             columns: [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 dataIndex: "field3",
-                header: "Field3",
-              },
-            ],
+                header: "Field3"
+              }
+            ]
           },
           {
             header: "Group2",
             columns: [
               {
                 dataIndex: "field4",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
-                header: "Field6",
+                header: "Field6"
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
-              },
-            ],
-          },
+                header: "Field7"
+              }
+            ]
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -660,45 +660,45 @@ describe("grid-moving-columns", function () {
             columns: [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 dataIndex: "field3",
-                header: "Field3",
-              },
-            ],
+                header: "Field3"
+              }
+            ]
           },
           {
             header: "Group2",
             columns: [
               {
                 dataIndex: "field4",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
-                header: "Field6",
+                header: "Field6"
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
-              },
-            ],
-          },
+                header: "Field7"
+              }
+            ]
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       allColumns = grid.getColumnManager().getColumns();
@@ -732,47 +732,47 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             header: "Group 1",
             columns: [
               {
                 dataIndex: "field3",
-                header: "Field3",
+                header: "Field3"
               },
               {
                 dataIndex: "field4",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
-                header: "Field6",
-              },
-            ],
+                header: "Field6"
+              }
+            ]
           },
           {
             dataIndex: "field7",
-            header: "Field7",
+            header: "Field7"
           },
           {
             dataIndex: "field8",
-            header: "Field8",
-          },
+            header: "Field8"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -799,47 +799,47 @@ describe("grid-moving-columns", function () {
         [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             header: "Group 1",
             columns: [
               {
                 dataIndex: "field3",
-                header: "Field3",
+                header: "Field3"
               },
               {
                 dataIndex: "field4",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
-                header: "Field6",
-              },
-            ],
+                header: "Field6"
+              }
+            ]
           },
           {
             dataIndex: "field7",
-            header: "Field7",
+            header: "Field7"
           },
           {
             dataIndex: "field8",
-            header: "Field8",
-          },
+            header: "Field8"
+          }
         ],
         null,
         {
           enableColumnResize: false,
-          header: false,
-        },
+          header: false
+        }
       );
 
       colChangeSpy = spyOnEvent(grid, "columnschanged");
@@ -862,52 +862,52 @@ describe("grid-moving-columns", function () {
           [
             {
               dataIndex: "field1",
-              header: "Field1",
+              header: "Field1"
             },
             {
               dataIndex: "field2",
-              header: "Field2",
+              header: "Field2"
             },
             {
               header: "Group 1",
               columns: [
                 {
                   dataIndex: "field3",
-                  header: "Field3",
+                  header: "Field3"
                 },
                 {
                   dataIndex: "field4",
-                  header: "Field4",
-                },
-              ],
+                  header: "Field4"
+                }
+              ]
             },
             {
               header: "Group2",
               columns: [
                 {
                   dataIndex: "field5",
-                  header: "Field5",
+                  header: "Field5"
                 },
                 {
                   dataIndex: "field6",
-                  header: "Field6",
-                },
-              ],
+                  header: "Field6"
+                }
+              ]
             },
             {
               dataIndex: "field7",
-              header: "Field7",
+              header: "Field7"
             },
             {
               dataIndex: "field8",
-              header: "Field8",
-            },
+              header: "Field8"
+            }
           ],
           null,
           {
             enableColumnResize: false,
-            header: false,
-          },
+            header: false
+          }
         );
         var allColumns = grid.getColumnManager().getColumns();
 
@@ -941,52 +941,52 @@ describe("grid-moving-columns", function () {
           [
             {
               dataIndex: "field1",
-              header: "Field1",
+              header: "Field1"
             },
             {
               dataIndex: "field2",
-              header: "Field2",
+              header: "Field2"
             },
             {
               header: "Group 1",
               columns: [
                 {
                   dataIndex: "field3",
-                  header: "Field3",
+                  header: "Field3"
                 },
                 {
                   dataIndex: "field4",
-                  header: "Field4",
-                },
-              ],
+                  header: "Field4"
+                }
+              ]
             },
             {
               header: "Group2",
               columns: [
                 {
                   dataIndex: "field5",
-                  header: "Field5",
+                  header: "Field5"
                 },
                 {
                   dataIndex: "field6",
-                  header: "Field6",
-                },
-              ],
+                  header: "Field6"
+                }
+              ]
             },
             {
               dataIndex: "field7",
-              header: "Field7",
+              header: "Field7"
             },
             {
               dataIndex: "field8",
-              header: "Field8",
-            },
+              header: "Field8"
+            }
           ],
           null,
           {
             enableColumnResize: false,
-            header: false,
-          },
+            header: false
+          }
         );
 
         allColumns = grid.getColumnManager().getColumns();
@@ -1021,35 +1021,35 @@ describe("grid-moving-columns", function () {
             [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 header: "Group1",
                 columns: [
                   {
                     dataIndex: "field3",
-                    header: "Field3",
+                    header: "Field3"
                   },
                   {
                     dataIndex: "field4",
-                    header: "Field4",
-                  },
-                ],
+                    header: "Field4"
+                  }
+                ]
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
-              },
+                header: "Field5"
+              }
             ],
             null,
             {
               enableColumnResize: false,
-              header: false,
-            },
+              header: false
+            }
           );
 
           // Use mouse events to move the column to the LEFT of column 1
@@ -1090,7 +1090,7 @@ describe("grid-moving-columns", function () {
         var visibleColumnManager, column;
 
         makeGrid(null, null, {
-          enableLocking: true,
+          enableLocking: true
         });
 
         visibleColumnManager = grid.lockedGrid.getVisibleColumnManager();
@@ -1223,7 +1223,7 @@ describe("grid-moving-columns", function () {
         enableColumnResize: false,
         header: false,
         stateful: stateful,
-        stateId: "quux",
+        stateId: "quux"
       });
 
       // skipMove is useful when testing grid state for stateful unit tests.
@@ -1304,7 +1304,7 @@ describe("grid-moving-columns", function () {
       // test sequences, so look them up now.
       headers = {
         groupHeader: groupHeader,
-        subGroupHeader: subGroupHeader,
+        subGroupHeader: subGroupHeader
       };
 
       for (i = 0, len = sequence.length; i < len; i++) {
@@ -1356,12 +1356,12 @@ describe("grid-moving-columns", function () {
           {
             dataIndex: "field1",
             stateId: "foo1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
             stateId: "foo2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             header: "Group1",
@@ -1370,35 +1370,35 @@ describe("grid-moving-columns", function () {
               {
                 dataIndex: "field3",
                 stateId: "foo4",
-                header: "Field3",
+                header: "Field3"
               },
               {
                 dataIndex: "field4",
                 stateId: "foo5",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
                 stateId: "foo6",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
                 stateId: "foo7",
-                header: "Field6",
-              },
-            ],
+                header: "Field6"
+              }
+            ]
           },
           {
             dataIndex: "field7",
             stateId: "foo8",
-            header: "Field7",
+            header: "Field7"
           },
           {
             dataIndex: "field8",
             stateId: "foo9",
-            header: "Field8",
-          },
+            header: "Field8"
+          }
         ];
 
         new Ext.state.Provider();
@@ -1415,14 +1415,14 @@ describe("grid-moving-columns", function () {
           order: "1,2,4,5,6,3,7,8",
           // Move the first subheader in the first group to be the last subheader in the same group.
           sequence: [[2, 5, true]],
-          stateful: true,
+          stateful: true
         });
 
         runTest({
           columns: columns,
           order: "1,2,4,5,6,3,7,8",
           skipMove: true,
-          stateful: true,
+          stateful: true
         });
       });
     });
@@ -1431,41 +1431,41 @@ describe("grid-moving-columns", function () {
       var columns = [
         {
           dataIndex: "field1",
-          header: "Field1",
+          header: "Field1"
         },
         {
           dataIndex: "field2",
-          header: "Field2",
+          header: "Field2"
         },
         {
           header: "Group1",
           columns: [
             {
               dataIndex: "field3",
-              header: "Field3",
+              header: "Field3"
             },
             {
               dataIndex: "field4",
-              header: "Field4",
+              header: "Field4"
             },
             {
               dataIndex: "field5",
-              header: "Field5",
+              header: "Field5"
             },
             {
               dataIndex: "field6",
-              header: "Field6",
-            },
-          ],
+              header: "Field6"
+            }
+          ]
         },
         {
           dataIndex: "field7",
-          header: "Field7",
+          header: "Field7"
         },
         {
           dataIndex: "field8",
-          header: "Field8",
-        },
+          header: "Field8"
+        }
       ];
 
       describe("dragging all subheaders out of the group", function () {
@@ -1482,9 +1482,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 dropPosition: "before",
                 order: "1,2,3,4,5,6,7,8",
-                range: [2, 5],
+                range: [2, 5]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1497,10 +1497,10 @@ describe("grid-moving-columns", function () {
                   [5, "groupHeader", false],
                   [5, "groupHeader", false],
                   [5, "groupHeader", false],
-                  [5, "groupHeader", false],
-                ],
+                  [5, "groupHeader", false]
+                ]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1513,10 +1513,10 @@ describe("grid-moving-columns", function () {
                   [2, "groupHeader", true],
                   [2, "groupHeader", true],
                   [2, "groupHeader", true],
-                  [2, "groupHeader", true],
-                ],
+                  [2, "groupHeader", true]
+                ]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1526,9 +1526,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 dropPosition: "right",
                 order: "1,2,3,4,5,6,7,8",
-                range: [5, 2],
+                range: [5, 2]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1543,10 +1543,10 @@ describe("grid-moving-columns", function () {
                   [4, "groupHeader", true],
                   [3, "groupHeader", false],
                   [3, "groupHeader", false],
-                  [4, "groupHeader", true],
-                ],
+                  [4, "groupHeader", true]
+                ]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -1561,8 +1561,8 @@ describe("grid-moving-columns", function () {
               [3, 1, false],
               [4, 6, false],
               [4, 0, false],
-              [4, 2, false],
-            ],
+              [4, 2, false]
+            ]
           });
         });
 
@@ -1574,8 +1574,8 @@ describe("grid-moving-columns", function () {
               [3, 1, true],
               [4, 6, true],
               [4, 0, true],
-              [4, 2, true],
-            ],
+              [4, 2, true]
+            ]
           });
         });
 
@@ -1587,8 +1587,8 @@ describe("grid-moving-columns", function () {
               [3, 1, false],
               [4, 6, true],
               [4, 0, false],
-              [4, 2, true],
-            ],
+              [4, 2, true]
+            ]
           });
         });
       });
@@ -1598,7 +1598,7 @@ describe("grid-moving-columns", function () {
           runTest({
             columns: columns,
             order: "3,4,5,6,1,2,7,8",
-            sequence: [["groupHeader", 0, false]],
+            sequence: [["groupHeader", 0, false]]
           });
         });
 
@@ -1606,7 +1606,7 @@ describe("grid-moving-columns", function () {
           runTest({
             columns: columns,
             order: "1,3,4,5,6,2,7,8",
-            sequence: [["groupHeader", 0, true]],
+            sequence: [["groupHeader", 0, true]]
           });
         });
 
@@ -1614,7 +1614,7 @@ describe("grid-moving-columns", function () {
           runTest({
             columns: columns,
             order: "1,2,7,3,4,5,6,8",
-            sequence: [["groupHeader", 7, false]],
+            sequence: [["groupHeader", 7, false]]
           });
         });
 
@@ -1622,7 +1622,7 @@ describe("grid-moving-columns", function () {
           runTest({
             columns: columns,
             order: "1,2,7,8,3,4,5,6",
-            sequence: [["groupHeader", 7, true]],
+            sequence: [["groupHeader", 7, true]]
           });
         });
       });
@@ -1632,66 +1632,66 @@ describe("grid-moving-columns", function () {
       var columns = [
         {
           dataIndex: "field1",
-          header: "Field1",
+          header: "Field1"
         },
         {
           dataIndex: "field2",
-          header: "Field2",
+          header: "Field2"
         },
         {
           header: "Group1",
           columns: [
             {
               dataIndex: "field3",
-              header: "Field3",
+              header: "Field3"
             },
             {
               dataIndex: "field4",
-              header: "Field4",
+              header: "Field4"
             },
             {
               dataIndex: "field5",
-              header: "Field5",
+              header: "Field5"
             },
             {
               header: "Group2",
               columns: [
                 {
                   dataIndex: "field6",
-                  header: "Field6",
+                  header: "Field6"
                 },
                 {
                   dataIndex: "field7",
-                  header: "Field7",
+                  header: "Field7"
                 },
                 {
                   dataIndex: "field8",
-                  header: "Field8",
+                  header: "Field8"
                 },
                 {
                   dataIndex: "field9",
-                  header: "Field9",
-                },
-              ],
+                  header: "Field9"
+                }
+              ]
             },
             {
               dataIndex: "field10",
-              header: "Field10",
-            },
-          ],
+              header: "Field10"
+            }
+          ]
         },
         {
           dataIndex: "field11",
-          header: "Field11",
+          header: "Field11"
         },
         {
           dataIndex: "field12",
-          header: "Field12",
+          header: "Field12"
         },
         {
           dataIndex: "field13",
-          header: "Field13",
-        },
+          header: "Field13"
+        }
       ];
 
       describe("dragging all subheaders out of Group2", function () {
@@ -1720,7 +1720,7 @@ describe("grid-moving-columns", function () {
               dropPosition: "before",
               order: "1,2,3,4,5,6,7,8,9,10,11,12,13",
               range: [5, 8],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -1732,9 +1732,9 @@ describe("grid-moving-columns", function () {
                 [8, "subGroupHeader", false],
                 [8, "subGroupHeader", false],
                 [8, "subGroupHeader", false],
-                [8, "subGroupHeader", false],
+                [8, "subGroupHeader", false]
               ],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -1746,9 +1746,9 @@ describe("grid-moving-columns", function () {
                 [5, "subGroupHeader", true],
                 [5, "subGroupHeader", true],
                 [5, "subGroupHeader", true],
-                [5, "subGroupHeader", true],
+                [5, "subGroupHeader", true]
               ],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -1758,7 +1758,7 @@ describe("grid-moving-columns", function () {
               dropPosition: "right",
               order: "1,2,3,4,5,6,7,8,9,10,11,12,13",
               range: [8, 5],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -1770,9 +1770,9 @@ describe("grid-moving-columns", function () {
                 [6, "subGroupHeader", false],
                 [7, "subGroupHeader", true],
                 [6, "subGroupHeader", true],
-                [6, "subGroupHeader", false],
+                [6, "subGroupHeader", false]
               ],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -1783,9 +1783,9 @@ describe("grid-moving-columns", function () {
                 dropPosition: "before",
                 order: "1,2,3,4,5,6,7,8,9,10,11,12,13",
                 range: [5, 8],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1796,9 +1796,9 @@ describe("grid-moving-columns", function () {
                 dropPosition: "after",
                 order: "1,2,3,4,5,6,7,8,9,10,11,12,13",
                 range: [8, 5],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -1812,8 +1812,8 @@ describe("grid-moving-columns", function () {
                 [5, 2, false],
                 [6, 2, false],
                 [7, 2, false],
-                [8, 2, false],
-              ],
+                [8, 2, false]
+              ]
             });
           });
 
@@ -1825,8 +1825,8 @@ describe("grid-moving-columns", function () {
                 [8, 2, false],
                 [8, 2, false],
                 [8, 2, false],
-                [8, 2, false],
-              ],
+                [8, 2, false]
+              ]
             });
           });
 
@@ -1838,8 +1838,8 @@ describe("grid-moving-columns", function () {
                 [5, 9, true],
                 [5, 9, true],
                 [5, 9, true],
-                [5, 9, true],
-              ],
+                [5, 9, true]
+              ]
             });
           });
 
@@ -1851,8 +1851,8 @@ describe("grid-moving-columns", function () {
                 [8, 9, true],
                 [7, 9, true],
                 [6, 9, true],
-                [5, 9, true],
-              ],
+                [5, 9, true]
+              ]
             });
           });
 
@@ -1864,8 +1864,8 @@ describe("grid-moving-columns", function () {
                 [5, 9, false],
                 [5, 8, false],
                 [5, 7, false],
-                [5, 6, false],
-              ],
+                [5, 6, false]
+              ]
             });
           });
 
@@ -1877,8 +1877,8 @@ describe("grid-moving-columns", function () {
                 [8, 9, false],
                 [7, 8, false],
                 [6, 7, false],
-                [5, 6, false],
-              ],
+                [5, 6, false]
+              ]
             });
           });
         });
@@ -1899,9 +1899,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 dropPosition: "before",
                 order: "1,2,6,7,8,9,3,4,5,10,11,12,13",
-                range: [5, 8],
+                range: [5, 8]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1917,10 +1917,10 @@ describe("grid-moving-columns", function () {
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
-                  [8, "groupHeader", false],
-                ],
+                  [8, "groupHeader", false]
+                ]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1933,10 +1933,10 @@ describe("grid-moving-columns", function () {
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
-                  [5, "groupHeader", true],
-                ],
+                  [5, "groupHeader", true]
+                ]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1946,9 +1946,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 dropPosition: "right",
                 order: "1,2,3,4,5,10,6,7,8,9,11,12,13",
-                range: [8, 5],
+                range: [8, 5]
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -1961,11 +1961,11 @@ describe("grid-moving-columns", function () {
                   [6, "subGroupHeader", false],
                   [7, "subGroupHeader", true],
                   [6, "subGroupHeader", true],
-                  [6, "subGroupHeader", false],
+                  [6, "subGroupHeader", false]
                 ],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -1977,7 +1977,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "3,4,5,6,7,8,9,10,1,2,11,12,13",
-              sequence: [["groupHeader", 0, false]],
+              sequence: [["groupHeader", 0, false]]
             });
           });
 
@@ -1985,7 +1985,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,3,4,5,6,7,8,9,10,2,11,12,13",
-              sequence: [["groupHeader", 0, true]],
+              sequence: [["groupHeader", 0, true]]
             });
           });
 
@@ -1993,7 +1993,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,2,11,12,3,4,5,6,7,8,9,10,13",
-              sequence: [["groupHeader", 12, false]],
+              sequence: [["groupHeader", 12, false]]
             });
           });
 
@@ -2001,7 +2001,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,2,11,12,13,3,4,5,6,7,8,9,10",
-              sequence: [["groupHeader", 12, true]],
+              sequence: [["groupHeader", 12, true]]
             });
           });
         });
@@ -2012,7 +2012,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "6,7,8,9,1,2,3,4,5,10,11,12,13",
               sequence: [["subGroupHeader", 0, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2021,7 +2021,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,6,7,8,9,2,3,4,5,10,11,12,13",
               sequence: [["subGroupHeader", 0, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2030,7 +2030,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,11,12,6,7,8,9,13",
               sequence: [["subGroupHeader", 12, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2039,7 +2039,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,11,12,13,6,7,8,9",
               sequence: [["subGroupHeader", 12, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2048,7 +2048,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,6,7,8,9,3,4,5,10,11,12,13",
               sequence: [["subGroupHeader", 2, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2057,7 +2057,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,6,7,8,9,11,12,13",
               sequence: [["subGroupHeader", 9, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
         });
@@ -2066,11 +2066,11 @@ describe("grid-moving-columns", function () {
           var columns = [
             {
               dataIndex: "field1",
-              header: "Field1",
+              header: "Field1"
             },
             {
               dataIndex: "field2",
-              header: "Field2",
+              header: "Field2"
             },
             {
               header: "Group1",
@@ -2080,36 +2080,36 @@ describe("grid-moving-columns", function () {
                   columns: [
                     {
                       dataIndex: "field3",
-                      header: "Field3",
+                      header: "Field3"
                     },
                     {
                       dataIndex: "field4",
-                      header: "Field4",
+                      header: "Field4"
                     },
                     {
                       dataIndex: "field5",
-                      header: "Field5",
+                      header: "Field5"
                     },
                     {
                       dataIndex: "field6",
-                      header: "Field6",
-                    },
-                  ],
-                },
-              ],
+                      header: "Field6"
+                    }
+                  ]
+                }
+              ]
             },
             {
               dataIndex: "field7",
-              header: "Field7",
+              header: "Field7"
             },
             {
               dataIndex: "field8",
-              header: "Field8",
+              header: "Field8"
             },
             {
               dataIndex: "field9",
-              header: "Field9",
-            },
+              header: "Field9"
+            }
           ];
 
           function additionalSpec() {
@@ -2128,9 +2128,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,3,4,5,6,2,7,8,9",
                 sequence: [["subGroupHeader", 1, false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
 
             runTest(
@@ -2138,9 +2138,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,8,3,4,5,6,9",
                 sequence: [["subGroupHeader", 7, true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2151,9 +2151,9 @@ describe("grid-moving-columns", function () {
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", false]],
                 groupHeader: 0,
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2163,9 +2163,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -2175,11 +2175,11 @@ describe("grid-moving-columns", function () {
             var columns = [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 header: "Group1",
@@ -2189,36 +2189,36 @@ describe("grid-moving-columns", function () {
                     columns: [
                       {
                         dataIndex: "field3",
-                        header: "Field3",
+                        header: "Field3"
                       },
                       {
                         dataIndex: "field4",
-                        header: "Field4",
+                        header: "Field4"
                       },
                       {
                         dataIndex: "field5",
-                        header: "Field5",
-                      },
-                    ],
+                        header: "Field5"
+                      }
+                    ]
                   },
                   {
                     dataIndex: "field6",
-                    header: "Field6",
-                  },
-                ],
+                    header: "Field6"
+                  }
+                ]
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
+                header: "Field7"
               },
               {
                 dataIndex: "field8",
-                header: "Field8",
+                header: "Field8"
               },
               {
                 dataIndex: "field9",
-                header: "Field9",
-              },
+                header: "Field9"
+              }
             ];
 
             it("should work when the subgroupheader is dragged onto its ownerCt, before position", function () {
@@ -2226,7 +2226,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
 
@@ -2235,7 +2235,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,6,3,4,5,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
           });
@@ -2244,50 +2244,50 @@ describe("grid-moving-columns", function () {
             var columns = [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 header: "Group1",
                 columns: [
                   {
                     dataIndex: "field3",
-                    header: "Field3",
+                    header: "Field3"
                   },
                   {
                     header: "Group2",
                     columns: [
                       {
                         dataIndex: "field4",
-                        header: "Field4",
+                        header: "Field4"
                       },
                       {
                         dataIndex: "field5",
-                        header: "Field5",
+                        header: "Field5"
                       },
                       {
                         dataIndex: "field6",
-                        header: "Field6",
-                      },
-                    ],
-                  },
-                ],
+                        header: "Field6"
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
+                header: "Field7"
               },
               {
                 dataIndex: "field8",
-                header: "Field8",
+                header: "Field8"
               },
               {
                 dataIndex: "field9",
-                header: "Field9",
-              },
+                header: "Field9"
+              }
             ];
 
             it("should work when the subgroupheader is dragged onto its ownerCt, before position", function () {
@@ -2295,7 +2295,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,4,5,6,3,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
 
@@ -2304,7 +2304,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
           });
@@ -2320,8 +2320,8 @@ describe("grid-moving-columns", function () {
               [5, 0, false],
               [7, 9, false],
               [6, 4, false],
-              [7, 2, false],
-            ],
+              [7, 2, false]
+            ]
           });
         });
 
@@ -2333,8 +2333,8 @@ describe("grid-moving-columns", function () {
               [6, 12, true],
               [6, 3, true],
               [7, 10, true],
-              [6, 0, true],
-            ],
+              [6, 0, true]
+            ]
           });
         });
 
@@ -2346,8 +2346,8 @@ describe("grid-moving-columns", function () {
               [6, 4, false],
               [7, 9, false],
               [7, 1, true],
-              [7, 3, true],
-            ],
+              [7, 3, true]
+            ]
           });
         });
       });
@@ -2357,26 +2357,26 @@ describe("grid-moving-columns", function () {
       var columns = [
         {
           dataIndex: "field1",
-          header: "Field1",
+          header: "Field1"
         },
         {
           dataIndex: "field2",
-          header: "Field2",
+          header: "Field2"
         },
         {
           header: "Group1",
           columns: [
             {
               dataIndex: "field3",
-              header: "Field3",
+              header: "Field3"
             },
             {
               dataIndex: "field4",
-              header: "Field4",
+              header: "Field4"
             },
             {
               dataIndex: "field5",
-              header: "Field5",
+              header: "Field5"
             },
             {
               header: "Group2",
@@ -2386,54 +2386,54 @@ describe("grid-moving-columns", function () {
                   columns: [
                     {
                       dataIndex: "field6",
-                      header: "Field6",
+                      header: "Field6"
                     },
                     {
                       dataIndex: "field7",
-                      header: "Field7",
+                      header: "Field7"
                     },
                     {
                       dataIndex: "field8",
-                      header: "Field8",
+                      header: "Field8"
                     },
                     {
                       dataIndex: "field9",
-                      header: "Field9",
-                    },
-                  ],
+                      header: "Field9"
+                    }
+                  ]
                 },
                 {
                   dataIndex: "field10",
-                  header: "Field10",
+                  header: "Field10"
                 },
                 {
                   dataIndex: "field11",
-                  header: "Field11",
+                  header: "Field11"
                 },
                 {
                   dataIndex: "field12",
-                  header: "Field12",
-                },
-              ],
+                  header: "Field12"
+                }
+              ]
             },
             {
               dataIndex: "field13",
-              header: "Field13",
-            },
-          ],
+              header: "Field13"
+            }
+          ]
         },
         {
           dataIndex: "field14",
-          header: "Field14",
+          header: "Field14"
         },
         {
           dataIndex: "field15",
-          header: "Field15",
+          header: "Field15"
         },
         {
           dataIndex: "field16",
-          header: "Field16",
-        },
+          header: "Field16"
+        }
       ];
 
       describe("dragging all subheaders out of Group3", function () {
@@ -2450,9 +2450,9 @@ describe("grid-moving-columns", function () {
                 dropPosition: "before",
                 order: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
                 range: [5, 8],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2465,11 +2465,11 @@ describe("grid-moving-columns", function () {
                   [8, "subGroupHeader", false],
                   [8, "subGroupHeader", false],
                   [8, "subGroupHeader", false],
-                  [8, "subGroupHeader", false],
+                  [8, "subGroupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2480,9 +2480,9 @@ describe("grid-moving-columns", function () {
                 dropPosition: "right",
                 order: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
                 range: [8, 5],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2493,9 +2493,9 @@ describe("grid-moving-columns", function () {
                 dropPosition: "right",
                 order: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
                 range: [8, 5],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2508,11 +2508,11 @@ describe("grid-moving-columns", function () {
                   [6, "subGroupHeader", false],
                   [7, "subGroupHeader", true],
                   [6, "subGroupHeader", true],
-                  [6, "subGroupHeader", false],
+                  [6, "subGroupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -2534,11 +2534,11 @@ describe("grid-moving-columns", function () {
                   [5, 11, true],
                   [5, 11, true],
                   [5, 11, true],
-                  [5, 11, true],
+                  [5, 11, true]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2550,9 +2550,9 @@ describe("grid-moving-columns", function () {
                 [5, 12, false],
                 [5, 11, false],
                 [5, 10, false],
-                [5, 9, false],
+                [5, 9, false]
               ],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
         });
@@ -2574,11 +2574,11 @@ describe("grid-moving-columns", function () {
                   [5, 12, true],
                   [5, 12, true],
                   [5, 12, true],
-                  [5, 12, true],
+                  [5, 12, true]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2587,7 +2587,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               dropPosition: "after",
               order: "1,2,3,4,5,10,11,12,13,6,7,8,9,14,15,16",
-              range: [8, 5],
+              range: [8, 5]
             });
           });
 
@@ -2600,11 +2600,11 @@ describe("grid-moving-columns", function () {
                   [5, 12, false],
                   [5, 11, false],
                   [5, 10, false],
-                  [5, 9, false],
+                  [5, 9, false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2617,11 +2617,11 @@ describe("grid-moving-columns", function () {
                   [8, 12, false],
                   [7, 11, false],
                   [6, 10, false],
-                  [5, 9, false],
+                  [5, 9, false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2634,11 +2634,11 @@ describe("grid-moving-columns", function () {
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
-                  [8, "groupHeader", false],
+                  [8, "groupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2651,11 +2651,11 @@ describe("grid-moving-columns", function () {
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
-                  [5, "groupHeader", true],
+                  [5, "groupHeader", true]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -2680,11 +2680,11 @@ describe("grid-moving-columns", function () {
                   [5, "groupHeader", false],
                   [6, "groupHeader", false],
                   [7, "groupHeader", false],
-                  [8, "groupHeader", false],
+                  [8, "groupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2700,11 +2700,11 @@ describe("grid-moving-columns", function () {
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
                   [8, "groupHeader", false],
-                  [8, "groupHeader", false],
+                  [8, "groupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2717,11 +2717,11 @@ describe("grid-moving-columns", function () {
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
                   [5, "groupHeader", true],
-                  [5, "groupHeader", true],
+                  [5, "groupHeader", true]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2734,11 +2734,11 @@ describe("grid-moving-columns", function () {
                   [8, "groupHeader", true],
                   [7, "groupHeader", true],
                   [6, "groupHeader", true],
-                  [5, "groupHeader", true],
+                  [5, "groupHeader", true]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -2751,11 +2751,11 @@ describe("grid-moving-columns", function () {
                   [6, "groupHeader", false],
                   [7, "groupHeader", true],
                   [6, "groupHeader", true],
-                  [6, "groupHeader", false],
+                  [6, "groupHeader", false]
                 ],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              additionalSpec,
+              additionalSpec
             );
           });
         });
@@ -2767,7 +2767,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "3,4,5,6,7,8,9,10,11,12,13,1,2,14,15,16",
-              sequence: [["groupHeader", 0, false]],
+              sequence: [["groupHeader", 0, false]]
             });
           });
 
@@ -2775,7 +2775,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,3,4,5,6,7,8,9,10,11,12,13,2,14,15,16",
-              sequence: [["groupHeader", 0, true]],
+              sequence: [["groupHeader", 0, true]]
             });
           });
 
@@ -2783,7 +2783,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,2,14,15,3,4,5,6,7,8,9,10,11,12,13,16",
-              sequence: [["groupHeader", 15, false]],
+              sequence: [["groupHeader", 15, false]]
             });
           });
 
@@ -2791,7 +2791,7 @@ describe("grid-moving-columns", function () {
             runTest({
               columns: columns,
               order: "1,2,14,15,16,3,4,5,6,7,8,9,10,11,12,13",
-              sequence: [["groupHeader", 15, true]],
+              sequence: [["groupHeader", 15, true]]
             });
           });
         });
@@ -2802,7 +2802,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "6,7,8,9,10,11,12,1,2,3,4,5,13,14,15,16",
               sequence: [["subGroupHeader", 0, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2811,7 +2811,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,6,7,8,9,10,11,12,2,3,4,5,13,14,15,16",
               sequence: [["subGroupHeader", 0, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2820,7 +2820,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,13,14,15,6,7,8,9,10,11,12,16",
               sequence: [["subGroupHeader", 15, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2829,7 +2829,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,13,14,15,16,6,7,8,9,10,11,12",
               sequence: [["subGroupHeader", 15, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2838,7 +2838,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,6,7,8,9,10,11,12,3,4,5,13,14,15,16",
               sequence: [["subGroupHeader", 2, false]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
 
@@ -2847,7 +2847,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,13,6,7,8,9,10,11,12,14,15,16",
               sequence: [["subGroupHeader", 12, true]],
-              subGroupHeader: 1,
+              subGroupHeader: 1
             });
           });
         });
@@ -2858,7 +2858,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "6,7,8,9,1,2,3,4,5,10,11,12,13,14,15,16",
               sequence: [["subGroupHeader", 0, false]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2867,7 +2867,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,6,7,8,9,2,3,4,5,10,11,12,13,14,15,16",
               sequence: [["subGroupHeader", 0, true]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2876,7 +2876,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,11,12,13,14,15,6,7,8,9,16",
               sequence: [["subGroupHeader", 15, false]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2885,7 +2885,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,11,12,13,14,15,16,6,7,8,9",
               sequence: [["subGroupHeader", 15, true]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2894,7 +2894,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,6,7,8,9,3,4,5,10,11,12,13,14,15,16",
               sequence: [["subGroupHeader", 2, false]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2903,7 +2903,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               order: "1,2,3,4,5,10,11,12,13,6,7,8,9,14,15,16",
               sequence: [["subGroupHeader", 12, true]],
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2913,7 +2913,7 @@ describe("grid-moving-columns", function () {
               order: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
               sequence: [["subGroupHeader", "groupHeader", false]],
               groupHeader: 1,
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
 
@@ -2923,7 +2923,7 @@ describe("grid-moving-columns", function () {
               order: "1,2,3,4,5,10,11,12,6,7,8,9,13,14,15,16",
               sequence: [["subGroupHeader", "groupHeader", true]],
               groupHeader: 1,
-              subGroupHeader: 2,
+              subGroupHeader: 2
             });
           });
         });
@@ -2932,11 +2932,11 @@ describe("grid-moving-columns", function () {
           var columns = [
             {
               dataIndex: "field1",
-              header: "Field1",
+              header: "Field1"
             },
             {
               dataIndex: "field2",
-              header: "Field2",
+              header: "Field2"
             },
             {
               header: "Group1",
@@ -2949,38 +2949,38 @@ describe("grid-moving-columns", function () {
                       columns: [
                         {
                           dataIndex: "field3",
-                          header: "Field3",
+                          header: "Field3"
                         },
                         {
                           dataIndex: "field4",
-                          header: "Field4",
+                          header: "Field4"
                         },
                         {
                           dataIndex: "field5",
-                          header: "Field5",
+                          header: "Field5"
                         },
                         {
                           dataIndex: "field6",
-                          header: "Field6",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                          header: "Field6"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             },
             {
               dataIndex: "field7",
-              header: "Field7",
+              header: "Field7"
             },
             {
               dataIndex: "field8",
-              header: "Field8",
+              header: "Field8"
             },
             {
               dataIndex: "field9",
-              header: "Field9",
-            },
+              header: "Field9"
+            }
           ];
 
           function additionalSpec() {
@@ -3005,9 +3005,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,3,4,5,6,2,7,8,9",
                 sequence: [["subGroupHeader", 1, false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
 
             runTest(
@@ -3015,9 +3015,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,8,3,4,5,6,9",
                 sequence: [["subGroupHeader", 7, true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -3027,9 +3027,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,3,4,5,6,2,7,8,9",
                 sequence: [["subGroupHeader", 1, false]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
 
             runTest(
@@ -3037,9 +3037,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,8,3,4,5,6,9",
                 sequence: [["subGroupHeader", 7, true]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
           });
 
@@ -3049,9 +3049,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -3061,9 +3061,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -3073,9 +3073,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", false]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
           });
 
@@ -3085,9 +3085,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,3,4,5,6,7,8,9",
                 sequence: [["subGroupHeader", "groupHeader", true]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
           });
         });
@@ -3097,11 +3097,11 @@ describe("grid-moving-columns", function () {
             var columns = [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 header: "Group1",
@@ -3114,38 +3114,38 @@ describe("grid-moving-columns", function () {
                         columns: [
                           {
                             dataIndex: "field3",
-                            header: "Field3",
+                            header: "Field3"
                           },
                           {
                             dataIndex: "field4",
-                            header: "Field4",
+                            header: "Field4"
                           },
                           {
                             dataIndex: "field5",
-                            header: "Field5",
-                          },
-                        ],
-                      },
-                    ],
+                            header: "Field5"
+                          }
+                        ]
+                      }
+                    ]
                   },
                   {
                     dataIndex: "field6",
-                    header: "Field6",
-                  },
-                ],
+                    header: "Field6"
+                  }
+                ]
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
+                header: "Field7"
               },
               {
                 dataIndex: "field8",
-                header: "Field8",
+                header: "Field8"
               },
               {
                 dataIndex: "field9",
-                header: "Field9",
-              },
+                header: "Field9"
+              }
             ];
 
             describe("Group2 and Group3 are aligned left with a header to the right", function () {
@@ -3166,7 +3166,7 @@ describe("grid-moving-columns", function () {
                 expect(groupHeader.ownerCt).toBe(null);
                 expect(groupHeader.rendered).toBe(false);
                 expect(subGroupHeader.ownerCt).toBe(
-                  headerCt.down("[text=Group1]"),
+                  headerCt.down("[text=Group1]")
                 );
               }
 
@@ -3179,7 +3179,7 @@ describe("grid-moving-columns", function () {
               function test3() {
                 // Expect that Group2 is still the parent of Group3 and that Group2 and Group1 are siblings.
                 expect(headerCt.down("[text=Group3]").ownerCt).toBe(
-                  subGroupHeader,
+                  subGroupHeader
                 );
                 expect(subGroupHeader.ownerCt).toBe(groupHeader.ownerCt);
               }
@@ -3191,9 +3191,9 @@ describe("grid-moving-columns", function () {
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
                     groupHeader: 1,
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test1,
+                  test1
                 );
               });
 
@@ -3204,9 +3204,9 @@ describe("grid-moving-columns", function () {
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
                     groupHeader: 1,
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test1,
+                  test1
                 );
               });
 
@@ -3216,9 +3216,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test2,
+                  test2
                 );
               });
 
@@ -3228,9 +3228,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,6,3,4,5,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test2,
+                  test2
                 );
               });
 
@@ -3240,9 +3240,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
-                    subGroupHeader: 1,
+                    subGroupHeader: 1
                   },
-                  test3,
+                  test3
                 );
               });
 
@@ -3252,9 +3252,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,6,3,4,5,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
-                    subGroupHeader: 1,
+                    subGroupHeader: 1
                   },
-                  test3,
+                  test3
                 );
               });
             });
@@ -3264,18 +3264,18 @@ describe("grid-moving-columns", function () {
             var columns = [
               {
                 dataIndex: "field1",
-                header: "Field1",
+                header: "Field1"
               },
               {
                 dataIndex: "field2",
-                header: "Field2",
+                header: "Field2"
               },
               {
                 header: "Group1",
                 columns: [
                   {
                     dataIndex: "field3",
-                    header: "Field3",
+                    header: "Field3"
                   },
                   {
                     header: "Group2",
@@ -3285,34 +3285,34 @@ describe("grid-moving-columns", function () {
                         columns: [
                           {
                             dataIndex: "field4",
-                            header: "Field4",
+                            header: "Field4"
                           },
                           {
                             dataIndex: "field5",
-                            header: "Field5",
+                            header: "Field5"
                           },
                           {
                             dataIndex: "field6",
-                            header: "Field6",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
+                            header: "Field6"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
+                header: "Field7"
               },
               {
                 dataIndex: "field8",
-                header: "Field8",
+                header: "Field8"
               },
               {
                 dataIndex: "field9",
-                header: "Field9",
-              },
+                header: "Field9"
+              }
             ];
 
             describe("Group2 and Group3 are aligned right with a header to the left", function () {
@@ -3333,7 +3333,7 @@ describe("grid-moving-columns", function () {
                 expect(groupHeader.ownerCt).toBe(null);
                 expect(groupHeader.rendered).toBe(false);
                 expect(subGroupHeader.ownerCt).toBe(
-                  headerCt.down("[text=Group1]"),
+                  headerCt.down("[text=Group1]")
                 );
               }
 
@@ -3346,7 +3346,7 @@ describe("grid-moving-columns", function () {
               function test3() {
                 // Expect that Group2 is still the parent of Group3 and that Group2 and Group1 are siblings.
                 expect(headerCt.down("[text=Group3]").ownerCt).toBe(
-                  subGroupHeader,
+                  subGroupHeader
                 );
                 expect(subGroupHeader.ownerCt).toBe(groupHeader.ownerCt);
               }
@@ -3358,9 +3358,9 @@ describe("grid-moving-columns", function () {
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
                     groupHeader: 1,
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test1,
+                  test1
                 );
               });
 
@@ -3371,9 +3371,9 @@ describe("grid-moving-columns", function () {
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
                     groupHeader: 1,
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test1,
+                  test1
                 );
               });
 
@@ -3383,9 +3383,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,4,5,6,3,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test2,
+                  test2
                 );
               });
 
@@ -3395,9 +3395,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
-                    subGroupHeader: 2,
+                    subGroupHeader: 2
                   },
-                  test2,
+                  test2
                 );
               });
 
@@ -3407,9 +3407,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,4,5,6,3,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", false]],
-                    subGroupHeader: 1,
+                    subGroupHeader: 1
                   },
-                  test3,
+                  test3
                 );
               });
 
@@ -3419,9 +3419,9 @@ describe("grid-moving-columns", function () {
                     columns: columns,
                     order: "1,2,3,4,5,6,7,8,9",
                     sequence: [["subGroupHeader", "groupHeader", true]],
-                    subGroupHeader: 1,
+                    subGroupHeader: 1
                   },
-                  test3,
+                  test3
                 );
               });
             });
@@ -3435,11 +3435,11 @@ describe("grid-moving-columns", function () {
         var columns = [
           {
             dataIndex: "field1",
-            header: "Field1",
+            header: "Field1"
           },
           {
             dataIndex: "field2",
-            header: "Field2",
+            header: "Field2"
           },
           {
             header: "Group1",
@@ -3455,40 +3455,40 @@ describe("grid-moving-columns", function () {
                         columns: [
                           {
                             dataIndex: "field3",
-                            header: "Field3",
+                            header: "Field3"
                           },
                           {
                             dataIndex: "field4",
-                            header: "Field4",
+                            header: "Field4"
                           },
                           {
                             dataIndex: "field5",
-                            header: "Field5",
+                            header: "Field5"
                           },
                           {
                             dataIndex: "field6",
-                            header: "Field6",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+                            header: "Field6"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             dataIndex: "field7",
-            header: "Field7",
+            header: "Field7"
           },
           {
             dataIndex: "field8",
-            header: "Field8",
+            header: "Field8"
           },
           {
             dataIndex: "field9",
-            header: "Field9",
-          },
+            header: "Field9"
+          }
         ];
 
         function additionalSpec() {
@@ -3539,9 +3539,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "3,4,5,6,1,2,7,8,9",
                 sequence: [["subGroupHeader", 0, false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
 
             runTest(
@@ -3549,9 +3549,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,8,3,4,5,6,9",
                 sequence: [["subGroupHeader", 7, true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               },
-              additionalSpec,
+              additionalSpec
             );
           });
 
@@ -3561,9 +3561,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,3,4,5,6,2,7,8,9",
                 sequence: [["subGroupHeader", 0, true]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
 
             runTest(
@@ -3571,9 +3571,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,3,4,5,6,8,9",
                 sequence: [["subGroupHeader", 7, false]],
-                subGroupHeader: 2,
+                subGroupHeader: 2
               },
-              nestedSpec,
+              nestedSpec
             );
           });
 
@@ -3583,9 +3583,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,3,4,5,6,2,7,8,9",
                 sequence: [["subGroupHeader", 1, false]],
-                subGroupHeader: 3,
+                subGroupHeader: 3
               },
-              nestedSpec2,
+              nestedSpec2
             );
 
             runTest(
@@ -3593,9 +3593,9 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 order: "1,2,7,3,4,5,6,8,9",
                 sequence: [["subGroupHeader", 6, true]],
-                subGroupHeader: 3,
+                subGroupHeader: 3
               },
-              nestedSpec2,
+              nestedSpec2
             );
           });
         });
@@ -3608,9 +3608,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
-                  subGroupHeader: 1,
+                  subGroupHeader: 1
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
 
@@ -3620,9 +3620,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
-                  subGroupHeader: 1,
+                  subGroupHeader: 1
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
 
@@ -3632,9 +3632,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
-                  subGroupHeader: 2,
+                  subGroupHeader: 2
                 },
-                nestedSpec,
+                nestedSpec
               );
             });
 
@@ -3644,9 +3644,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
-                  subGroupHeader: 2,
+                  subGroupHeader: 2
                 },
-                nestedSpec,
+                nestedSpec
               );
             });
 
@@ -3656,9 +3656,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                nestedSpec2,
+                nestedSpec2
               );
             });
 
@@ -3668,9 +3668,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                nestedSpec2,
+                nestedSpec2
               );
             });
           });
@@ -3683,9 +3683,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
                   groupHeader: 1,
-                  subGroupHeader: 2,
+                  subGroupHeader: 2
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
 
@@ -3696,9 +3696,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
                   groupHeader: 1,
-                  subGroupHeader: 2,
+                  subGroupHeader: 2
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
 
@@ -3709,9 +3709,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
                   groupHeader: 1,
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                nestedSpec2,
+                nestedSpec2
               );
             });
 
@@ -3722,9 +3722,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
                   groupHeader: 1,
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                nestedSpec2,
+                nestedSpec2
               );
             });
           });
@@ -3744,9 +3744,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", false]],
                   groupHeader: 2,
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
 
@@ -3757,9 +3757,9 @@ describe("grid-moving-columns", function () {
                   order: "1,2,3,4,5,6,7,8,9",
                   sequence: [["subGroupHeader", "groupHeader", true]],
                   groupHeader: 2,
-                  subGroupHeader: 3,
+                  subGroupHeader: 3
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
           });
@@ -3773,12 +3773,12 @@ describe("grid-moving-columns", function () {
           {
             dataIndex: "field1",
             header: "Field1",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field2",
             header: "Field2",
-            locked: true,
+            locked: true
           },
           {
             header: "Group1",
@@ -3786,65 +3786,65 @@ describe("grid-moving-columns", function () {
             columns: [
               {
                 dataIndex: "field3",
-                header: "Field3",
+                header: "Field3"
               },
               {
                 dataIndex: "field4",
-                header: "Field4",
+                header: "Field4"
               },
               {
                 dataIndex: "field5",
-                header: "Field5",
+                header: "Field5"
               },
               {
                 dataIndex: "field6",
-                header: "Field6",
-              },
-            ],
+                header: "Field6"
+              }
+            ]
           },
           {
             dataIndex: "field7",
             header: "Field7",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field8",
             header: "Field8",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field9",
-            header: "Field9",
+            header: "Field9"
           },
           {
             header: "Group2",
             columns: [
               {
                 dataIndex: "field10",
-                header: "Field10",
+                header: "Field10"
               },
               {
                 dataIndex: "field11",
-                header: "Field11",
+                header: "Field11"
               },
               {
                 dataIndex: "field12",
-                header: "Field12",
+                header: "Field12"
               },
               {
                 dataIndex: "field13",
-                header: "Field13",
-              },
-            ],
+                header: "Field13"
+              }
+            ]
           },
           {
             dataIndex: "field14",
-            header: "Field14",
+            header: "Field14"
           },
           {
             dataIndex: "field15",
-            header: "Field15",
-          },
+            header: "Field15"
+          }
         ];
 
         // Note to get a group other than the first one, use the groupHeader cfg. This will always do:
@@ -3858,7 +3858,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               locked: true,
               order: "1,2,7,8,9,10,11,12,13,3,4,5,6,14,15",
-              sequence: [["groupHeader", 13, false]],
+              sequence: [["groupHeader", 13, false]]
             });
           });
 
@@ -3868,7 +3868,7 @@ describe("grid-moving-columns", function () {
               locked: true,
               order: "1,10,11,12,13,2,3,4,5,6,7,8,9,14,15",
               groupHeader: 1,
-              sequence: [["groupHeader", 0, true]],
+              sequence: [["groupHeader", 0, true]]
             });
           });
         });
@@ -3879,7 +3879,7 @@ describe("grid-moving-columns", function () {
               // TODO: better to use refs here if possible.
               // Group2 should be the owner of Group1.
               expect(
-                !!headerCt.down("[text=Group2]").down("[text=Group1]"),
+                !!headerCt.down("[text=Group2]").down("[text=Group1]")
               ).toBe(true);
             }
 
@@ -3888,7 +3888,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 locked: true,
                 order: "1,2,7,8,9,3,4,5,6,10,11,12,13,14,15",
-                sequence: [["groupHeader", 9, false]],
+                sequence: [["groupHeader", 9, false]]
               });
             });
 
@@ -3897,7 +3897,7 @@ describe("grid-moving-columns", function () {
                 columns: columns,
                 locked: true,
                 order: "1,2,7,8,9,10,11,12,13,3,4,5,6,14,15",
-                sequence: [["groupHeader", 12, true]],
+                sequence: [["groupHeader", 12, true]]
               });
             });
 
@@ -3907,9 +3907,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   locked: true,
                   order: "1,2,7,8,9,10,11,3,4,5,6,12,13,14,15",
-                  sequence: [["groupHeader", 10, true]],
+                  sequence: [["groupHeader", 10, true]]
                 },
-                additionalSpec,
+                additionalSpec
               );
 
               runTest(
@@ -3917,9 +3917,9 @@ describe("grid-moving-columns", function () {
                   columns: columns,
                   locked: true,
                   order: "1,2,7,8,9,10,11,12,3,4,5,6,13,14,15",
-                  sequence: [["groupHeader", 12, false]],
+                  sequence: [["groupHeader", 12, false]]
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
           });
@@ -3929,7 +3929,7 @@ describe("grid-moving-columns", function () {
               // TODO: better to use refs here if possible.
               // Group1 should be the owner of Group2.
               expect(
-                !!headerCt.down("[text=Group1]").down("[text=Group2]"),
+                !!headerCt.down("[text=Group1]").down("[text=Group2]")
               ).toBe(true);
             }
 
@@ -3939,7 +3939,7 @@ describe("grid-moving-columns", function () {
                 locked: true,
                 order: "1,2,10,11,12,13,3,4,5,6,7,8,9,14,15",
                 sequence: [["subGroupHeader", 2, false]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
 
@@ -3949,7 +3949,7 @@ describe("grid-moving-columns", function () {
                 locked: true,
                 order: "1,2,3,4,5,6,10,11,12,13,7,8,9,14,15",
                 sequence: [["subGroupHeader", 5, true]],
-                subGroupHeader: 1,
+                subGroupHeader: 1
               });
             });
 
@@ -3960,9 +3960,9 @@ describe("grid-moving-columns", function () {
                   locked: true,
                   order: "1,2,3,4,10,11,12,13,5,6,7,8,9,14,15",
                   sequence: [["subGroupHeader", 3, true]],
-                  subGroupHeader: 1,
+                  subGroupHeader: 1
                 },
-                additionalSpec,
+                additionalSpec
               );
 
               runTest(
@@ -3971,9 +3971,9 @@ describe("grid-moving-columns", function () {
                   locked: true,
                   order: "1,2,3,4,10,11,12,13,5,6,7,8,9,14,15",
                   sequence: [["subGroupHeader", 4, false]],
-                  subGroupHeader: 1,
+                  subGroupHeader: 1
                 },
-                additionalSpec,
+                additionalSpec
               );
             });
           });
@@ -3985,12 +3985,12 @@ describe("grid-moving-columns", function () {
           {
             dataIndex: "field1",
             header: "Field1",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field2",
             header: "Field2",
-            locked: true,
+            locked: true
           },
           {
             header: "Group1",
@@ -3998,48 +3998,48 @@ describe("grid-moving-columns", function () {
             columns: [
               {
                 dataIndex: "field3",
-                header: "Field3",
+                header: "Field3"
               },
               {
                 header: "Group3",
                 columns: [
                   {
                     dataIndex: "field4",
-                    header: "Field4",
+                    header: "Field4"
                   },
                   {
                     dataIndex: "field5",
-                    header: "Field5",
+                    header: "Field5"
                   },
                   {
                     dataIndex: "field6",
-                    header: "Field6",
-                  },
-                ],
+                    header: "Field6"
+                  }
+                ]
               },
               {
                 dataIndex: "field7",
-                header: "Field7",
+                header: "Field7"
               },
               {
                 dataIndex: "field8",
-                header: "Field8",
-              },
-            ],
+                header: "Field8"
+              }
+            ]
           },
           {
             dataIndex: "field9",
             header: "Field9",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field10",
             header: "Field10",
-            locked: true,
+            locked: true
           },
           {
             dataIndex: "field11",
-            header: "Field11",
+            header: "Field11"
           },
           {
             header: "Group2",
@@ -4049,36 +4049,36 @@ describe("grid-moving-columns", function () {
                 columns: [
                   {
                     dataIndex: "field12",
-                    header: "Field12",
+                    header: "Field12"
                   },
                   {
                     dataIndex: "field13",
-                    header: "Field13",
-                  },
-                ],
+                    header: "Field13"
+                  }
+                ]
               },
               {
                 dataIndex: "field14",
-                header: "Field14",
+                header: "Field14"
               },
               {
                 dataIndex: "field15",
-                header: "Field15",
+                header: "Field15"
               },
               {
                 dataIndex: "field16",
-                header: "Field16",
-              },
-            ],
+                header: "Field16"
+              }
+            ]
           },
           {
             dataIndex: "field17",
-            header: "Field17",
+            header: "Field17"
           },
           {
             dataIndex: "field18",
-            header: "Field18",
-          },
+            header: "Field18"
+          }
         ];
 
         // Note to get a group other than the first one, use the groupHeader cfg. This will always do:
@@ -4091,7 +4091,7 @@ describe("grid-moving-columns", function () {
               columns: columns,
               locked: true,
               order: "1,2,9,10,11,12,13,14,15,16,3,4,5,6,7,8,17,18",
-              sequence: [["groupHeader", 16, false]],
+              sequence: [["groupHeader", 16, false]]
             });
           });
 
@@ -4102,14 +4102,14 @@ describe("grid-moving-columns", function () {
                 groupHeader: 1,
                 locked: true,
                 order: "1,2,3,7,8,9,10,11,12,13,14,15,16,17,18,4,5,6",
-                sequence: [["groupHeader", 17, true]],
+                sequence: [["groupHeader", 17, true]]
               },
               function () {
                 // Check Group3 has indeed been moved out of its nesting.
                 expect(headerCt.down("[text=Group3]").ownerCt).not.toBe(
-                  headerCt.down("[text=Group1]"),
+                  headerCt.down("[text=Group1]")
                 );
-              },
+              }
             );
           });
 
@@ -4119,7 +4119,7 @@ describe("grid-moving-columns", function () {
               groupHeader: 2,
               locked: true,
               order: "1,12,13,14,15,16,2,3,4,5,6,7,8,9,10,11,17,18",
-              sequence: [["groupHeader", 1, false]],
+              sequence: [["groupHeader", 1, false]]
             });
           });
 
@@ -4130,14 +4130,14 @@ describe("grid-moving-columns", function () {
                 groupHeader: 3,
                 locked: true,
                 order: "1,2,3,4,5,6,7,8,9,10,12,13,11,14,15,16,17,18",
-                sequence: [["groupHeader", 9, true]],
+                sequence: [["groupHeader", 9, true]]
               },
               function () {
                 // Check Group4 has indeed been moved out of its nesting.
                 expect(headerCt.down("[text=Group4]").ownerCt).not.toBe(
-                  headerCt.down("[text=Group2]"),
+                  headerCt.down("[text=Group2]")
                 );
-              },
+              }
             );
           });
         });
@@ -4149,7 +4149,7 @@ describe("grid-moving-columns", function () {
                 function additionalSpec() {
                   // Group2 should be the owner of Group1.
                   expect(
-                    !!headerCt.down("[text=Group2]").down("[text=Group1]"),
+                    !!headerCt.down("[text=Group2]").down("[text=Group1]")
                   ).toBe(true);
                 }
 
@@ -4160,9 +4160,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,9,10,11,3,4,5,6,7,8,12,13,14,15,16,17,18",
                       sequence: [["groupHeader", "subGroupHeader", false]],
-                      subGroupHeader: 3,
+                      subGroupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4173,10 +4173,10 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,13,14,15,16,3,4,5,6,7,8,17,18",
-                      sequence: [["groupHeader", 15, true]],
+                      sequence: [["groupHeader", 15, true]]
                     });
                   },
-                  additionalSpec,
+                  additionalSpec
                 );
 
                 it("should work moving into the middle", function () {
@@ -4185,9 +4185,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,13,14,15,3,4,5,6,7,8,16,17,18",
-                      sequence: [["groupHeader", 14, true]],
+                      sequence: [["groupHeader", 14, true]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4195,9 +4195,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,13,3,4,5,6,7,8,14,15,16,17,18",
-                      sequence: [["groupHeader", 13, false]],
+                      sequence: [["groupHeader", 13, false]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4209,7 +4209,7 @@ describe("grid-moving-columns", function () {
                       .down("[text=Group2]")
                       .down("[text=Group4]")
                       .down("[text=Group1]")
-                      .down("[text=Group3]"),
+                      .down("[text=Group3]")
                   ).toBe(true);
                 }
 
@@ -4219,9 +4219,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,3,4,5,6,7,8,12,13,14,15,16,17,18",
-                      sequence: [["groupHeader", 11, false]],
+                      sequence: [["groupHeader", 11, false]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4231,9 +4231,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,13,3,4,5,6,7,8,14,15,16,17,18",
-                      sequence: [["groupHeader", 12, true]],
+                      sequence: [["groupHeader", 12, true]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4243,9 +4243,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,3,4,5,6,7,8,13,14,15,16,17,18",
-                      sequence: [["groupHeader", 11, true]],
+                      sequence: [["groupHeader", 11, true]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4253,9 +4253,9 @@ describe("grid-moving-columns", function () {
                       columns: columns,
                       locked: true,
                       order: "1,2,9,10,11,12,3,4,5,6,7,8,13,14,15,16,17,18",
-                      sequence: [["groupHeader", 12, false]],
+                      sequence: [["groupHeader", 12, false]]
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4265,7 +4265,7 @@ describe("grid-moving-columns", function () {
               describe("moving into Group2", function () {
                 function additionalSpec() {
                   expect(
-                    !!headerCt.down("[text=Group2]").down("[text=Group3]"),
+                    !!headerCt.down("[text=Group2]").down("[text=Group3]")
                   ).toBe(true);
                 }
 
@@ -4277,9 +4277,9 @@ describe("grid-moving-columns", function () {
                       order: "1,2,3,7,8,9,10,11,4,5,6,12,13,14,15,16,17,18",
                       sequence: [["groupHeader", "subGroupHeader", false]],
                       groupHeader: 1,
-                      subGroupHeader: 3,
+                      subGroupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4290,9 +4290,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,13,14,15,16,4,5,6,17,18",
                       sequence: [["groupHeader", 15, true]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4303,9 +4303,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,13,14,15,4,5,6,16,17,18",
                       sequence: [["groupHeader", 14, true]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4314,9 +4314,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,13,14,4,5,6,15,16,17,18",
                       sequence: [["groupHeader", 14, false]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4327,7 +4327,7 @@ describe("grid-moving-columns", function () {
                     !!headerCt
                       .down("[text=Group2]")
                       .down("[text=Group4]")
-                      .down("[text=Group3]"),
+                      .down("[text=Group3]")
                   ).toBe(true);
                 }
 
@@ -4338,9 +4338,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,4,5,6,12,13,14,15,16,17,18",
                       sequence: [["groupHeader", 11, false]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4351,9 +4351,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,13,4,5,6,14,15,16,17,18",
                       sequence: [["groupHeader", 12, true]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4364,9 +4364,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,4,5,6,13,14,15,16,17,18",
                       sequence: [["groupHeader", 11, true]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4375,9 +4375,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,7,8,9,10,11,12,4,5,6,13,14,15,16,17,18",
                       sequence: [["groupHeader", 12, false]],
-                      groupHeader: 1,
+                      groupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4389,7 +4389,7 @@ describe("grid-moving-columns", function () {
               describe("moving into Group1", function () {
                 function additionalSpec() {
                   expect(
-                    !!headerCt.down("[text=Group1]").down("[text=Group2]"),
+                    !!headerCt.down("[text=Group1]").down("[text=Group2]")
                   ).toBe(true);
                 }
 
@@ -4400,9 +4400,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,12,13,14,15,16,3,4,5,6,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", 2, false]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4414,10 +4414,10 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,6,7,8,12,13,14,15,16,9,10,11,17,18",
                       sequence: [["groupHeader", 7, true]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     });
                   },
-                  additionalSpec,
+                  additionalSpec
                 );
 
                 it("should work moving into the middle", function () {
@@ -4428,9 +4428,9 @@ describe("grid-moving-columns", function () {
                       order: "1,2,3,4,5,6,12,13,14,15,16,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", "subGroupHeader", true]],
                       groupHeader: 2,
-                      subGroupHeader: 1,
+                      subGroupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4440,9 +4440,9 @@ describe("grid-moving-columns", function () {
                       order: "1,2,3,12,13,14,15,16,4,5,6,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", "subGroupHeader", false]],
                       groupHeader: 2,
-                      subGroupHeader: 1,
+                      subGroupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4454,7 +4454,7 @@ describe("grid-moving-columns", function () {
                       .down("[text=Group1]")
                       .down("[text=Group3]")
                       .down("[text=Group2]")
-                      .down("[text=Group4]"),
+                      .down("[text=Group4]")
                   ).toBe(true);
                 }
 
@@ -4465,9 +4465,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,12,13,14,15,16,4,5,6,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", 3, false]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4478,9 +4478,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,6,12,13,14,15,16,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", 5, true]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4491,9 +4491,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,12,13,14,15,16,5,6,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", 4, false]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4502,9 +4502,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,12,13,14,15,16,6,7,8,9,10,11,17,18",
                       sequence: [["groupHeader", 4, true]],
-                      groupHeader: 2,
+                      groupHeader: 2
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4514,7 +4514,7 @@ describe("grid-moving-columns", function () {
               describe("moving into Group1", function () {
                 function additionalSpec() {
                   expect(
-                    !!headerCt.down("[text=Group1]").down("[text=Group4]"),
+                    !!headerCt.down("[text=Group1]").down("[text=Group4]")
                   ).toBe(true);
                 }
 
@@ -4525,9 +4525,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,12,13,3,4,5,6,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 2, false]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4538,9 +4538,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,6,7,8,12,13,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 7, true]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4552,9 +4552,9 @@ describe("grid-moving-columns", function () {
                       order: "1,2,3,12,13,4,5,6,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", "subGroupHeader", false]],
                       groupHeader: 3,
-                      subGroupHeader: 1,
+                      subGroupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4564,9 +4564,9 @@ describe("grid-moving-columns", function () {
                       order: "1,2,3,4,5,6,12,13,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", "subGroupHeader", true]],
                       groupHeader: 3,
-                      subGroupHeader: 1,
+                      subGroupHeader: 1
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4577,7 +4577,7 @@ describe("grid-moving-columns", function () {
                     !!headerCt
                       .down("[text=Group1]")
                       .down("[text=Group3]")
-                      .down("[text=Group4]"),
+                      .down("[text=Group4]")
                   ).toBe(true);
                 }
 
@@ -4588,9 +4588,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,12,13,4,5,6,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 3, false]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4601,9 +4601,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,6,12,13,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 5, true]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
 
@@ -4614,9 +4614,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,12,13,5,6,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 4, false]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
 
                   runTest(
@@ -4625,9 +4625,9 @@ describe("grid-moving-columns", function () {
                       locked: true,
                       order: "1,2,3,4,5,12,13,6,7,8,9,10,11,14,15,16,17,18",
                       sequence: [["groupHeader", 5, false]],
-                      groupHeader: 3,
+                      groupHeader: 3
                     },
-                    additionalSpec,
+                    additionalSpec
                   );
                 });
               });
@@ -4650,7 +4650,7 @@ describe("grid-moving-columns", function () {
               "phone1",
               "phone2",
               "phone3",
-              "phone4",
+              "phone4"
             ],
             data: [
               {
@@ -4660,9 +4660,9 @@ describe("grid-moving-columns", function () {
                 phone1: "555-111-1111",
                 phone2: "555-111-2222",
                 phone3: "555-111-3333",
-                phone4: "555-111-4444",
-              },
-            ],
+                phone4: "555-111-4444"
+              }
+            ]
           },
           columnLines: true,
           columns: [
@@ -4670,58 +4670,58 @@ describe("grid-moving-columns", function () {
               text: "Name",
               dataIndex: "name",
               flex: 1,
-              minWidth: 100,
+              minWidth: 100
             },
             {
               text: "Email",
               dataIndex: "email",
               flex: 1,
-              minWidth: 100,
+              minWidth: 100
             },
             {
               text: "Phone",
               columns: [
                 {
                   dataIndex: "phone1",
-                  text: "Phone 1",
+                  text: "Phone 1"
                 },
                 {
                   dataIndex: "phone2",
-                  text: "Phone 2",
+                  text: "Phone 2"
                 },
                 {
                   dataIndex: "phone3",
-                  text: "Phone 3",
+                  text: "Phone 3"
                 },
                 {
                   dataIndex: "phone4",
-                  text: "Phone 4",
-                },
-              ],
+                  text: "Phone 4"
+                }
+              ]
             },
             {
               text: "Phones",
               columns: [
                 {
                   dataIndex: "phone1",
-                  text: "Phones 1",
+                  text: "Phones 1"
                 },
                 {
                   dataIndex: "phone2",
-                  text: "Phones 2",
+                  text: "Phones 2"
                 },
                 {
                   dataIndex: "phone3",
-                  text: "Phones 3",
+                  text: "Phones 3"
                 },
                 {
                   dataIndex: "phone4",
-                  text: "Phones 4",
-                },
-              ],
-            },
+                  text: "Phones 4"
+                }
+              ]
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         store = grid.store;
 
@@ -4737,11 +4737,11 @@ describe("grid-moving-columns", function () {
           grid.getVisibleColumnManager().getColumns(),
           function (c) {
             headers += c.text;
-          },
+          }
         );
 
         expect(headers).toBe(
-          "EmailNamePhone 1Phone 2Phone 3Phone 4Phones 1Phones 2Phones 3Phones 4",
+          "EmailNamePhone 1Phone 2Phone 3Phone 4Phones 1Phones 2Phones 3Phones 4"
         );
       });
     });

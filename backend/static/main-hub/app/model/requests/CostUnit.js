@@ -4,11 +4,11 @@ Ext.define("MainHub.model.requests.CostUnit", {
   fields: [
     {
       type: "int",
-      name: "id",
+      name: "id"
     },
     {
       type: "string",
-      name: "name",
-    },
-  ],
+      name: "name"
+    }
+  ]
 });

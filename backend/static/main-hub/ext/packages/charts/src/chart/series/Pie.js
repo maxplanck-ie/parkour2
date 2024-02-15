@@ -148,10 +148,10 @@ Ext.define("Ext.chart.series.Pie", {
      *     });
      */
     highlightCfg: {
-      margin: 20,
+      margin: 20
     },
 
-    style: {},
+    style: {}
   },
 
   directions: ["X"],
@@ -160,7 +160,7 @@ Ext.define("Ext.chart.series.Pie", {
     if (Ext.isObject(newLabel) && !Ext.isString(newLabel.orientation)) {
       // Override default label orientation from '' to 'vertical'.
       Ext.apply((newLabel = Ext.Object.chain(newLabel)), {
-        orientation: "vertical",
+        orientation: "vertical"
       });
     }
     return this.callParent([newLabel, oldLabel]);
@@ -189,7 +189,7 @@ Ext.define("Ext.chart.series.Pie", {
         sprite.putMarker(
           "labels",
           { hidden: hidden[i] },
-          sprite.attr.attributeId,
+          sprite.attr.attributeId
         );
       }
     }
@@ -245,7 +245,7 @@ Ext.define("Ext.chart.series.Pie", {
       sprites[i].setAttributes({
         startAngle: lastAngle,
         endAngle: (lastAngle = unit ? clockwise * summation[i] * unit : 0),
-        globalAlpha: 1,
+        globalAlpha: 1
       });
     }
     if (recordCount < me.sprites.length) {
@@ -266,7 +266,7 @@ Ext.define("Ext.chart.series.Pie", {
       sprites[i].setAttributes({
         startAngle: totalAngle,
         endAngle: totalAngle,
-        globalAlpha: 0,
+        globalAlpha: 0
       });
     }
 
@@ -283,7 +283,7 @@ Ext.define("Ext.chart.series.Pie", {
   updateCenter: function (center) {
     this.setStyle({
       translationX: center[0] + this.getOffsetX(),
-      translationY: center[1] + this.getOffsetY(),
+      translationY: center[1] + this.getOffsetY()
     });
     this.doUpdateStyles();
   },
@@ -291,7 +291,7 @@ Ext.define("Ext.chart.series.Pie", {
   updateRadius: function (radius) {
     this.setStyle({
       startRho: radius * this.getDonut() * 0.01,
-      endRho: radius * this.getRadiusFactor() * 0.01,
+      endRho: radius * this.getRadiusFactor() * 0.01
     });
     this.doUpdateStyles();
   },
@@ -325,7 +325,7 @@ Ext.define("Ext.chart.series.Pie", {
     var radius = this.getRadius();
     this.setStyle({
       startRho: radius * donut * 0.01,
-      endRho: radius * this.getRadiusFactor() * 0.01,
+      endRho: radius * this.getRadiusFactor() * 0.01
     });
     this.doUpdateStyles();
   },
@@ -336,7 +336,7 @@ Ext.define("Ext.chart.series.Pie", {
 
   updateRotation: function (rotation) {
     this.setStyle({
-      rotationRads: rotation + this.rotationOffset,
+      rotationRads: rotation + this.rotationOffset
     });
     this.doUpdateStyles();
   },
@@ -373,7 +373,7 @@ Ext.define("Ext.chart.series.Pie", {
       field: me.getXField(), // for backward compatibility only (deprecated in 5.5)
       angleField: me.getXField(),
       radiusField: me.getYField(),
-      series: me,
+      series: me
     };
 
     for (i = 0; i < length; i++) {
@@ -386,7 +386,7 @@ Ext.define("Ext.chart.series.Pie", {
         }
         if (labelTpl.getField()) {
           labelTpl.setAttributes({
-            labelOverflowPadding: me.getLabelOverflowPadding(),
+            labelOverflowPadding: me.getLabelOverflowPadding()
           });
           labelTpl.fx.setCustomDurations({ callout: 200 });
         }
@@ -477,7 +477,7 @@ Ext.define("Ext.chart.series.Pie", {
               sprite: sprites[i],
               index: i,
               record: items[i],
-              field: me.getXField(),
+              field: me.getXField()
             };
           }
         }
@@ -523,7 +523,7 @@ Ext.define("Ext.chart.series.Pie", {
                 sprite: sprites[i],
                 index: i,
                 record: records[i],
-                field: me.getXField(),
+                field: me.getXField()
               };
             }
           }
@@ -559,9 +559,9 @@ Ext.define("Ext.chart.series.Pie", {
           mark: fill || style.strokeStyle || "black",
           disabled: hidden[i],
           series: me.getId(),
-          index: i,
+          index: i
         });
       }
     }
-  },
+  }
 });

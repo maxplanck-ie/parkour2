@@ -112,5 +112,5 @@ Ext.define("Ext.draw.sprite.AttributeParser", {
     return function (n) {
       return n in enums ? n : undefined;
     };
-  },
+  }
 });

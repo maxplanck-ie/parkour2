@@ -8,5 +8,5 @@ Ext.define("Ext.rtl.tree.Column", {
         ? Ext.baseCSSPrefix + "rtl"
         : "")
     );
-  },
+  }
 });

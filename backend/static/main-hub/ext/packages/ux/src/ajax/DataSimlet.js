@@ -35,7 +35,7 @@ Ext.define(
       buildNodes: function (node, path) {
         var me = this,
           nodeData = {
-            data: [],
+            data: []
           },
           len = node.length,
           children,
@@ -231,7 +231,7 @@ Ext.define(
         flush(); // make sure that last pesky summary goes...
 
         return summary;
-      },
+      }
     };
-  })(),
+  })()
 );

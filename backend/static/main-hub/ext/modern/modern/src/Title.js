@@ -16,7 +16,7 @@ Ext.define("Ext.Title", {
     /**
      * @cfg {String} title The title text
      */
-    title: "",
+    title: ""
   },
 
   /**
@@ -24,5 +24,5 @@ Ext.define("Ext.Title", {
    */
   updateTitle: function (newTitle) {
     this.setHtml(newTitle);
-  },
+  }
 });

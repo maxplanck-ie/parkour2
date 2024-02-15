@@ -5,7 +5,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
   requires: [
     "MainHub.components.BaseGrid",
     "MainHub.view.incominglibraries.CheckboxGroupingFeature",
-    "MainHub.view.incominglibraries.IncomingLibrariesController",
+    "MainHub.view.incominglibraries.IncomingLibrariesController"
   ],
 
   controller: "incominglibraries-incominglibraries",
@@ -20,7 +20,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
       itemId: "incoming-libraries-grid",
       store: "IncomingLibraries",
       customConfig: {
-        qualityCheckMenuOptions: ["passed", "compromised", "failed"],
+        qualityCheckMenuOptions: ["passed", "compromised", "failed"]
       },
 
       header: {
@@ -38,24 +38,24 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 boxLabelAlign: "before",
-                checked: true,
+                checked: true
               },
               {
                 boxLabel: "Show Samples",
                 itemId: "show-samples-checkbox",
                 cls: "grid-header-checkbox",
                 boxLabelAlign: "before",
-                checked: true,
-              },
-            ],
+                checked: true
+              }
+            ]
           },
           {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 320,
-          },
-        ],
+            width: 320
+          }
+        ]
       },
 
       columns: {
@@ -69,7 +69,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             hideable: false,
             tdCls: "no-dirty userEntry",
             // locked: true,
-            width: 35,
+            width: 35
           },
           {
             text: "Name",
@@ -82,7 +82,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             renderer: function (value, meta) {
               meta.tdStyle = "font-weight:bold";
               return value;
-            },
+            }
           },
           {
             text: "",
@@ -93,7 +93,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 30,
             renderer: function (value, meta) {
               return value.charAt(0);
-            },
+            }
           },
           {
             text: "Barcode",
@@ -101,7 +101,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             resizable: false,
             hideable: false,
             tdCls: "userEntry",
-            width: 90,
+            width: 90
           },
           {
             text: "Nuc. Type",
@@ -113,7 +113,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             renderer: function (value, meta) {
               meta.tdAttr = 'data-qtip="' + value + '"';
               return value;
-            },
+            }
           },
           {
             text: "Protocol",
@@ -125,14 +125,14 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             renderer: function (value, meta) {
               meta.tdAttr = 'data-qtip="' + value + '"';
               return value;
-            },
+            }
           },
           {
             text: "ng/µl",
             tooltip: "Concentration (user)",
             dataIndex: "concentration",
             tdCls: "userEntry",
-            width: 70,
+            width: 70
           },
           {
             text: "F/S",
@@ -146,7 +146,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               meta.tdAttr = 'data-qtip="' + record.get("name") + '"';
               return record ? record.getShortName() : "";
             },
-            hidden: true,
+            hidden: true
           },
           {
             text: "qPCR (nM)",
@@ -154,14 +154,14 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             dataIndex: "qpcr_result",
             tdCls: "userEntry",
             width: 85,
-            hidden: true,
+            hidden: true
           },
           {
             text: "bp",
             tooltip: "Mean Fragment Size (user)",
             dataIndex: "mean_fragment_size",
             tdCls: "userEntry",
-            width: 45,
+            width: 45
           },
           {
             text: "RQN",
@@ -171,7 +171,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 55,
             renderer: function (value) {
               return value === 11 ? "Determined by Facility" : value;
-            },
+            }
           },
 
           // Facility
@@ -184,9 +184,9 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             editor: {
               xtype: "numberfield",
               minValue: 1,
-              allowDecimals: false,
+              allowDecimals: false
             },
-            hidden: true,
+            hidden: true
           },
           {
             text: "ng/µl",
@@ -196,8 +196,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 90,
             editor: {
               xtype: "numberfield",
-              minValue: 0,
-            },
+              minValue: 0
+            }
           },
           {
             text: "µl",
@@ -208,8 +208,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             editor: {
               xtype: "numberfield",
               minValue: 0,
-              allowDecimals: false,
-            },
+              allowDecimals: false
+            }
           },
           {
             text: "ng",
@@ -219,8 +219,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 80,
             editor: {
               xtype: "numberfield",
-              minValue: 0,
-            },
+              minValue: 0
+            }
           },
           {
             text: "F/S",
@@ -235,7 +235,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               valueField: "id",
               store: "concentrationMethodsStore",
               matchFieldWidth: false,
-              forceSelection: true,
+              forceSelection: true
             },
             renderer: function (value, meta) {
               var store = Ext.getStore("concentrationMethodsStore");
@@ -247,7 +247,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
 
               return record ? record.getShortName() : "";
             },
-            hidden: true,
+            hidden: true
           },
           {
             text: "qPCR (nM)",
@@ -258,9 +258,9 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             editor: {
               xtype: "numberfield",
               id: "qPCRResultEditor",
-              minValue: 0,
+              minValue: 0
             },
-            hidden: true,
+            hidden: true
           },
           {
             text: "bp",
@@ -270,8 +270,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 80,
             editor: {
               xtype: "numberfield",
-              minValue: 0,
-            },
+              minValue: 0
+            }
           },
           {
             text: "RQN",
@@ -287,16 +287,16 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               displayField: "name",
               displayTpl: Ext.create(
                 "Ext.XTemplate",
-                '<tpl for=".">{value}</tpl>',
+                '<tpl for=".">{value}</tpl>'
               ),
               store: "rnaQualityStore",
               regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
-              regexText: "Only values between 1 and 10 are allowed.",
+              regexText: "Only values between 1 and 10 are allowed."
               // matchFieldWidth: false,
             },
             renderer: function (value) {
               return value === 11 ? "Determined by Facility" : value;
-            },
+            }
           },
           {
             text: "Comments",
@@ -305,14 +305,14 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             tdCls: "facilityEntry",
             width: 150,
             editor: {
-              xtype: "textfield",
+              xtype: "textfield"
             },
             renderer: function (value, meta) {
               meta.tdAttr = 'data-qtip="' + value + '"';
               return value;
-            },
-          },
-        ],
+            }
+          }
+        ]
       },
 
       features: [
@@ -337,15 +337,15 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 return Ext.Array.sum(
                   Ext.Array.pluck(
                     Ext.Array.pluck(children, "data"),
-                    "sequencing_depth",
-                  ),
+                    "sequencing_depth"
+                  )
                 );
               },
               getChecked: function (children) {
                 return children[0].get(this.owner.checkDataIndex)
                   ? "checked"
                   : "";
-              },
+              }
               // getTooltip: function (children) {
               //   var totalDepth = Ext.Array.sum(Ext.Array.pluck(Ext.Array.pluck(
               //     children, 'data'), 'sequencing_depth'));
@@ -355,10 +355,10 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               //     '<strong>Total Sequencing Depth:</strong> {1}',
               //     children.length, totalDepth);
               // }
-            },
-          ],
-        },
-      ],
-    },
-  ],
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });

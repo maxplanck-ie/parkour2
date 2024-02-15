@@ -24,7 +24,7 @@ Ext.define("Ext.chart.legend.Legend", {
      * `true` to allow series items to have their visibility
      * toggled by interaction with the legend items.
      */
-    toggleable: true,
+    toggleable: true
   },
 
   horizontalCls: Ext.baseCSSPrefix + "legend-horizontal",
@@ -61,5 +61,5 @@ Ext.define("Ext.chart.legend.Legend", {
         }
       }
     }
-  },
+  }
 });

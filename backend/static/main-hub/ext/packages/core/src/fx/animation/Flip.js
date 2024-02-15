@@ -17,7 +17,7 @@ Ext.define("Ext.fx.animation.Flip", {
 
     half: false,
 
-    out: null,
+    out: null
   },
 
   getData: function () {
@@ -78,15 +78,15 @@ Ext.define("Ext.fx.animation.Flip", {
     from.setTransform({
       rotateX: fromRotateX,
       rotateY: fromRotateY,
-      scale: fromScale,
+      scale: fromScale
     });
 
     to.setTransform({
       rotateX: toRotateX,
       rotateY: toRotateY,
-      scale: toScale,
+      scale: toScale
     });
 
     return this.callParent();
-  },
+  }
 });

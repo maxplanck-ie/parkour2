@@ -7,18 +7,18 @@ Ext.define("Ext.table.Table", {
 
   config: {
     baseCls: "x-table",
-    defaultType: "tablerow",
+    defaultType: "tablerow"
   },
 
   cachedConfig: {
-    fixedLayout: false,
+    fixedLayout: false
   },
 
   fixedLayoutCls: "x-table-fixed",
 
   updateFixedLayout: function (fixedLayout) {
     this.innerElement[fixedLayout ? "addCls" : "removeCls"](
-      this.fixedLayoutCls,
+      this.fixedLayoutCls
     );
-  },
+  }
 });

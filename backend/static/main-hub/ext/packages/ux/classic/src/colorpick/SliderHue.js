@@ -37,7 +37,7 @@ Ext.define("Ext.ux.colorpick.SliderHue", {
     el.createChild({
       tag: "img",
       cls: Ext.baseCSSPrefix + "colorpicker-hue-gradient",
-      src: src,
+      src: src
     });
   },
 
@@ -70,7 +70,7 @@ Ext.define("Ext.ux.colorpick.SliderHue", {
     // Position dragger
     el = dragHandle.getEl();
     el.setStyle({
-      top: top + "px",
+      top: top + "px"
     });
-  },
+  }
 });

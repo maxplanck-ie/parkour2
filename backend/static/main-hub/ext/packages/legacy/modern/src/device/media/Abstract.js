@@ -5,7 +5,7 @@ Ext.define("Ext.device.media.Abstract", {
   mixins: ["Ext.mixin.Observable"],
 
   config: {
-    src: null,
+    src: null
   },
 
   play: Ext.emptyFn,
@@ -18,5 +18,5 @@ Ext.define("Ext.device.media.Abstract", {
   getDuration: Ext.emptyFn,
 
   startRecord: Ext.emptyFn,
-  stopRecord: Ext.emptyFn,
+  stopRecord: Ext.emptyFn
 });

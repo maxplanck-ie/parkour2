@@ -6,9 +6,9 @@ describe("Ext.form.action.DirectLoad", function () {
       {
         namespace: "spec",
         type: "remoting",
-        url: "fake",
+        url: "fake"
       },
-      cfg,
+      cfg
     );
 
     provider = Ext.direct.Manager.addProvider(cfg);
@@ -45,8 +45,8 @@ describe("Ext.form.action.DirectLoad", function () {
       timeout: Ext.form.Basic.prototype.timeout,
       api: {
         load: "spec.TestDirect.load",
-        submit: "spec.TestDirect.submit",
-      },
+        submit: "spec.TestDirect.submit"
+      }
     });
 
     action = new Ext.form.action.DirectLoad(config);
@@ -70,18 +70,18 @@ describe("Ext.form.action.DirectLoad", function () {
         TestDirect: [
           {
             name: "load",
-            len: 1,
+            len: 1
           },
           {
             name: "load2",
-            len: 2,
+            len: 2
           },
           {
             name: "submit",
-            formHandler: true,
-          },
-        ],
-      },
+            formHandler: true
+          }
+        ]
+      }
     });
 
     loadSpy = makeSpy("load");
@@ -129,9 +129,9 @@ describe("Ext.form.action.DirectLoad", function () {
           api: {
             prefix: "spec.TestDirect",
             load: "load",
-            submit: "submit",
-          },
-        },
+            submit: "submit"
+          }
+        }
       });
 
       action.run();
@@ -161,16 +161,16 @@ describe("Ext.form.action.DirectLoad", function () {
     it("should pass the params as a single object argument if 'paramsAsHash' is true", function () {
       createAction({
         form: {
-          paramsAsHash: true,
+          paramsAsHash: true
         },
         params: {
-          foo: "bar",
-        },
+          foo: "bar"
+        }
       });
 
       action.run();
       expect(action.form.api.load.mostRecentCall.args[0]).toEqual({
-        foo: "bar",
+        foo: "bar"
       });
     });
 
@@ -178,14 +178,14 @@ describe("Ext.form.action.DirectLoad", function () {
       createAction({
         form: {
           api: {
-            load: "spec.TestDirect.load2",
+            load: "spec.TestDirect.load2"
           },
-          paramOrder: ["one", "two"],
+          paramOrder: ["one", "two"]
         },
         params: {
           one: "foo",
-          two: "bar",
-        },
+          two: "bar"
+        }
       });
 
       action.run();
@@ -201,13 +201,13 @@ describe("Ext.form.action.DirectLoad", function () {
           paramsAsHash: true,
           baseParams: {
             baseOne: "1",
-            baseTwo: "2",
-          },
+            baseTwo: "2"
+          }
         },
         params: {
           one: "1",
-          two: "2",
-        },
+          two: "2"
+        }
       });
 
       action.run();
@@ -216,18 +216,18 @@ describe("Ext.form.action.DirectLoad", function () {
         baseOne: "1",
         baseTwo: "2",
         one: "1",
-        two: "2",
+        two: "2"
       });
     });
 
     it("should pass the onSuccess callback function and the callback scope as the final 2 arguments", function () {
       createAction({
         form: {
-          paramsAsHash: true,
+          paramsAsHash: true
         },
         params: {
-          foo: "bar",
-        },
+          foo: "bar"
+        }
       });
 
       action.run();
@@ -241,13 +241,13 @@ describe("Ext.form.action.DirectLoad", function () {
       beforeEach(function () {
         // Grr, this is a kludge :(
         loadSpy.directCfg.metadata = {
-          params: ["foo", "bar"],
+          params: ["foo", "bar"]
         };
 
         createAction({
           form: {
-            metadata: { foo: 42, bar: false },
-          },
+            metadata: { foo: 42, bar: false }
+          }
         });
       });
 
@@ -259,7 +259,7 @@ describe("Ext.form.action.DirectLoad", function () {
 
         expect(loadSpy.mostRecentCall.args[3]).toEqual({
           metadata: { foo: -1, bar: true },
-          timeout: 30000,
+          timeout: 30000
         });
       });
 
@@ -268,7 +268,7 @@ describe("Ext.form.action.DirectLoad", function () {
 
         expect(loadSpy.mostRecentCall.args[3]).toEqual({
           metadata: { foo: 42, bar: false },
-          timeout: 30000,
+          timeout: 30000
         });
       });
     });
@@ -294,7 +294,7 @@ describe("Ext.form.action.DirectLoad", function () {
       createActionWithCallbackArgs(
         {},
         {},
-        { type: Ext.direct.Manager.exceptions.SERVER },
+        { type: Ext.direct.Manager.exceptions.SERVER }
       );
       action.run();
       expect(action.failureType).toEqual(Ext.form.action.Action.LOAD_FAILURE);
@@ -318,7 +318,7 @@ describe("Ext.form.action.DirectLoad", function () {
       createActionWithCallbackArgs(
         {},
         { success: true, data: { foo: "bar" } },
-        {},
+        {}
       );
     });
 

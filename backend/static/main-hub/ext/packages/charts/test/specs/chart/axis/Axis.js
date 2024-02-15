@@ -10,53 +10,53 @@ describe("Ext.chart.axis.Axis", function () {
             data: [
               {
                 name: "one",
-                value: 10,
+                value: 10
               },
               {
                 name: "two",
-                value: 7,
+                value: 7
               },
               {
                 name: "three",
-                value: 5,
+                value: 5
               },
               {
                 name: "four",
-                value: 2,
+                value: 2
               },
               {
                 name: "five",
-                value: 27,
-              },
-            ],
+                value: 27
+              }
+            ]
           },
           series: {
             type: "bar",
             xField: "name",
-            yField: "value",
-          },
+            yField: "value"
+          }
         },
         verticalNumeric = Ext.Object.merge({}, chartConfig, {
           axes: [
             {
               id: "left",
               type: "numeric",
-              position: "left",
+              position: "left"
             },
             {
               id: "bottom",
               type: "category",
-              position: "bottom",
+              position: "bottom"
             },
             {
               position: "right",
-              linkedTo: "left",
+              linkedTo: "left"
             },
             {
               position: "top",
-              linkedTo: "bottom",
-            },
-          ],
+              linkedTo: "bottom"
+            }
+          ]
         }),
         horizontalNumeric = Ext.Object.merge({}, chartConfig, {
           flipXY: true,
@@ -64,22 +64,22 @@ describe("Ext.chart.axis.Axis", function () {
             {
               id: "left",
               type: "category",
-              position: "left",
+              position: "left"
             },
             {
               id: "bottom",
               type: "numeric",
-              position: "bottom",
+              position: "bottom"
             },
             {
               position: "top",
-              linkedTo: "bottom",
+              linkedTo: "bottom"
             },
             {
               position: "right",
-              linkedTo: "left",
-            },
-          ],
+              linkedTo: "left"
+            }
+          ]
         });
 
       var axisProto = Ext.chart.axis.Axis.prototype,
@@ -104,7 +104,7 @@ describe("Ext.chart.axis.Axis", function () {
       verticalNumericChart.destroy();
 
       var horizontalNumericChart = new Ext.chart.CartesianChart(
-        horizontalNumeric,
+        horizontalNumeric
       );
       horizontalNumericChart.performLayout();
       horizontalNumericChart.destroy();
@@ -121,27 +121,27 @@ describe("Ext.chart.axis.Axis", function () {
     }
 
     var scopeObject = {
-      setTestScope: setTestScope,
+      setTestScope: setTestScope
     };
 
     var store = Ext.create("Ext.data.Store", {
       fields: ["x", "y"],
       data: [
         { x: 0, y: 0 },
-        { x: 1, y: 1 },
-      ],
+        { x: 1, y: 1 }
+      ]
     });
 
     var axisConfig = {
       type: "numeric",
-      position: "bottom",
+      position: "bottom"
     };
 
     function createContainer(options) {
       var config = {
         width: 400,
         height: 400,
-        layout: "fit",
+        layout: "fit"
       };
       Ext.apply(config, options);
       var container = Ext.create("Ext.container.Container", config);
@@ -151,14 +151,14 @@ describe("Ext.chart.axis.Axis", function () {
 
     function createController() {
       return Ext.create("Ext.app.ViewController", {
-        setTestScope: setTestScope,
+        setTestScope: setTestScope
       });
     }
 
     function createChart(options) {
       var config = {
         store: store,
-        axes: axisConfig,
+        axes: axisConfig
       };
       Ext.apply(config, options);
       var chart = Ext.create("Ext.chart.CartesianChart", config);
@@ -173,9 +173,9 @@ describe("Ext.chart.axis.Axis", function () {
         listeners: {
           test: {
             fn: "setTestScope",
-            scope: listenerScope,
-          },
-        },
+            scope: listenerScope
+          }
+        }
       });
     }
 
@@ -188,7 +188,7 @@ describe("Ext.chart.axis.Axis", function () {
           containerController = createController();
           chart = createChart();
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
           axis = chart.getAxes()[0];
@@ -203,7 +203,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -212,7 +212,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -221,7 +221,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to chart container controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(containerController);
@@ -241,7 +241,7 @@ describe("Ext.chart.axis.Axis", function () {
           testScope = undefined;
           chartController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer();
           container.add(chart);
@@ -257,7 +257,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -266,7 +266,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -275,7 +275,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to chart controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(chartController);
@@ -296,10 +296,10 @@ describe("Ext.chart.axis.Axis", function () {
           chartController = createController();
           containerController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
           axis = chart.getAxes()[0];
@@ -314,7 +314,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -323,7 +323,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -332,7 +332,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to chart controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(chartController);
@@ -365,7 +365,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -374,7 +374,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -383,7 +383,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should fail", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           expect(function () {
             axis.fireEvent("test", axis);
@@ -404,7 +404,7 @@ describe("Ext.chart.axis.Axis", function () {
           testScope = undefined;
           chart = createChart();
           container = createContainer({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container.add(chart);
           axis = chart.getAxes()[0];
@@ -419,7 +419,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -428,7 +428,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -437,7 +437,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should fail", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           expect(function () {
             axis.fireEvent("test", axis);
@@ -459,7 +459,7 @@ describe("Ext.chart.axis.Axis", function () {
           chartController = createController();
           chart = createChart({
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           axis = chart.getAxes()[0];
           axis.setTestScope = setTestScope;
@@ -472,7 +472,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -481,7 +481,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -490,7 +490,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(chartController);
@@ -510,7 +510,7 @@ describe("Ext.chart.axis.Axis", function () {
           testScope = undefined;
           chartController = createController();
           chart = createChart({
-            controller: chartController,
+            controller: chartController
           });
           axis = chart.getAxes()[0];
           axis.setTestScope = setTestScope;
@@ -523,7 +523,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -532,7 +532,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -541,7 +541,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(chartController);
@@ -562,7 +562,7 @@ describe("Ext.chart.axis.Axis", function () {
           chartController = createController();
           chart = createChart({
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container = createContainer();
           container.add(chart);
@@ -578,7 +578,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'this' should refer to the axis", function () {
           axis.on({
             test: "setTestScope",
-            scope: "this",
+            scope: "this"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(axis);
@@ -587,7 +587,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to an arbitrary object should refer to that object", function () {
           axis.on({
             test: "setTestScope",
-            scope: scopeObject,
+            scope: scopeObject
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(scopeObject);
@@ -596,7 +596,7 @@ describe("Ext.chart.axis.Axis", function () {
         it("listener scoped to 'controller' should refer to the chart controller", function () {
           axis.on({
             test: "setTestScope",
-            scope: "controller",
+            scope: "controller"
           });
           axis.fireEvent("test", axis);
           expect(testScope).toBe(chartController);
@@ -620,10 +620,10 @@ describe("Ext.chart.axis.Axis", function () {
           testScope = undefined;
           containerController = createController();
           chart = createChart({
-            axes: [],
+            axes: []
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
         });
@@ -670,7 +670,7 @@ describe("Ext.chart.axis.Axis", function () {
           chartController = createController();
           chart = createChart({
             axes: [],
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer();
           container.add(chart);
@@ -719,10 +719,10 @@ describe("Ext.chart.axis.Axis", function () {
           containerController = createController();
           chart = createChart({
             axes: [],
-            controller: chartController,
+            controller: chartController
           });
           container = createContainer({
-            controller: containerController,
+            controller: containerController
           });
           container.add(chart);
         });
@@ -767,7 +767,7 @@ describe("Ext.chart.axis.Axis", function () {
         beforeEach(function () {
           testScope = undefined;
           chart = createChart({
-            axes: [],
+            axes: []
           });
           container = createContainer();
           container.add(chart);
@@ -814,10 +814,10 @@ describe("Ext.chart.axis.Axis", function () {
         beforeEach(function () {
           testScope = undefined;
           chart = createChart({
-            axes: [],
+            axes: []
           });
           container = createContainer({
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container.add(chart);
         });
@@ -866,7 +866,7 @@ describe("Ext.chart.axis.Axis", function () {
           chart = createChart({
             axes: [],
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
         });
 
@@ -911,7 +911,7 @@ describe("Ext.chart.axis.Axis", function () {
           chartController = createController();
           chart = createChart({
             axes: [],
-            controller: chartController,
+            controller: chartController
           });
         });
 
@@ -957,7 +957,7 @@ describe("Ext.chart.axis.Axis", function () {
           chart = createChart({
             axes: [],
             controller: chartController,
-            defaultListenerScope: true,
+            defaultListenerScope: true
           });
           container = createContainer();
           container.add(chart);

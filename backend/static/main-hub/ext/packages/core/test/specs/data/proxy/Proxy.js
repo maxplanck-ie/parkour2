@@ -7,8 +7,8 @@ describe("Ext.data.proxy.Proxy", function () {
       fields: [
         { name: "name", type: "string" },
         { name: "age", type: "int" },
-        { name: "planet", type: "string" },
-      ],
+        { name: "planet", type: "string" }
+      ]
     },
     AlienModel,
     HumanModel,
@@ -18,8 +18,8 @@ describe("Ext.data.proxy.Proxy", function () {
       fields: [
         { name: "name", type: "string" },
         { name: "age", type: "int" },
-        { name: "planet", type: "string", defaultValue: "Earth" },
-      ],
+        { name: "planet", type: "string", defaultValue: "Earth" }
+      ]
     };
 
   beforeEach(function () {
@@ -81,8 +81,8 @@ describe("Ext.data.proxy.Proxy", function () {
         beforeEach(function () {
           proxy.setReader(
             new Ext.data.reader.Reader({
-              model: null,
-            }),
+              model: null
+            })
           );
 
           spyOn(proxy.getReader(), "setModel").andReturn(true);
@@ -100,13 +100,13 @@ describe("Ext.data.proxy.Proxy", function () {
       var spy,
         batchOperations = {
           create: [AlienModel, HumanModel],
-          update: [AlienModel],
+          update: [AlienModel]
         },
         batchListeners = {
           complete: {
             fn: Ext.emptyFn,
-            scope: this,
-          },
+            scope: this
+          }
         };
 
       it("should run Ext.data.Batch.prototype.add 2 times", function () {
@@ -127,7 +127,7 @@ describe("Ext.data.proxy.Proxy", function () {
     function completeWithData(data) {
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.JSON.encode(data),
+        responseText: Ext.JSON.encode(data)
       });
     }
 
@@ -140,12 +140,12 @@ describe("Ext.data.proxy.Proxy", function () {
           { name: "don" },
           { name: "evan" },
           { name: "nige" },
-          { name: "phil" },
+          { name: "phil" }
         ],
         metaData: {
           root: "data",
-          fields: ["occupation"],
-        },
+          fields: ["occupation"]
+        }
       },
       args,
       proxyArg,
@@ -160,14 +160,14 @@ describe("Ext.data.proxy.Proxy", function () {
             args = arguments;
             proxyArg = proxy;
             metaArg = meta;
-          },
-        },
+          }
+        }
       });
 
       proxy.read(
         new Ext.data.operation.Read({
-          url: "foo",
-        }),
+          url: "foo"
+        })
       );
       completeWithData(successData);
     });

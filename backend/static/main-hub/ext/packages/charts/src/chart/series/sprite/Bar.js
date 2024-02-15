@@ -34,16 +34,16 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         /**
          * @cfg {Number} [inGroupGapWidth=3] The gap between grouped bars.
          */
-        inGroupGapWidth: "number",
+        inGroupGapWidth: "number"
       },
       defaults: {
         minBarWidth: 2,
         maxBarWidth: 100,
         minGapWidth: 5,
         inGroupGapWidth: 3,
-        radius: 0,
-      },
-    },
+        radius: 0
+      }
+    }
   },
 
   drawLabel: function (text, dataX, dataStartY, dataY, labelId) {
@@ -115,7 +115,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         null,
         params,
         0,
-        me.getSeries(),
+        me.getSeries()
       );
       if (typeof changes === "string") {
         labelCfg.text = changes;
@@ -216,7 +216,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         null,
         [me, itemCfg, { store: me.getStore() }, index],
         0,
-        me.getSeries(),
+        me.getSeries()
       );
       Ext.apply(itemCfg, changes);
     }
@@ -284,7 +284,7 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         top - halfLineWidth,
         right,
         bottom - halfLineWidth,
-        i,
+        i
       );
 
       // We want 0 values to be passed to the renderer
@@ -295,10 +295,10 @@ Ext.define("Ext.chart.series.sprite.Bar", {
         "markers",
         {
           translationX: surfaceMatrix.x(center, top),
-          translationY: surfaceMatrix.y(center, top),
+          translationY: surfaceMatrix.y(center, top)
         },
         i,
-        true,
+        true
       );
     }
   },
@@ -342,5 +342,5 @@ Ext.define("Ext.chart.series.sprite.Bar", {
       }
     }
     return index;
-  },
+  }
 });

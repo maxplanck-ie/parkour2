@@ -62,14 +62,14 @@ Ext.define("Ext.form.field.Base", {
     '<tpl foreach="inputElAriaAttributes"> {$}="{.}"</tpl>',
     ' class="{fieldCls} {typeCls} {typeCls}-{ui} {editableCls} {inputCls}" autocomplete="off"/>',
     {
-      disableFormats: true,
-    },
+      disableFormats: true
+    }
   ],
 
   defaultBindProperty: "value",
 
   autoEl: {
-    role: "presentation",
+    role: "presentation"
   },
 
   subTplInsertions: [
@@ -79,7 +79,7 @@ Ext.define("Ext.form.field.Base", {
      * inside the input element (as attributes). If an `XTemplate` is used, the component's
      * {@link #getSubTplData subTpl data} serves as the context.
      */
-    "inputAttrTpl",
+    "inputAttrTpl"
   ],
 
   childEls: [
@@ -87,7 +87,7 @@ Ext.define("Ext.form.field.Base", {
      * @property {Ext.dom.Element} inputEl
      * The input Element for this Field. Only available after the field has been rendered.
      */
-    "inputEl",
+    "inputEl"
   ],
 
   /**
@@ -372,9 +372,9 @@ Ext.define("Ext.form.field.Base", {
         tabIdx: me.tabIndex,
         inputCls: me.inputCls,
         typeCls: Ext.baseCSSPrefix + "form-" + (me.isTextInput ? "text" : type),
-        ariaEl: me.ariaEl,
+        ariaEl: me.ariaEl
       },
-      me.subTplData,
+      me.subTplData
     );
 
     if (me.ariaRole) {
@@ -393,7 +393,7 @@ Ext.define("Ext.form.field.Base", {
         inputElAttr = {
           // Input fields start out as valid
           "aria-invalid": false,
-          "aria-readonly": !!me.readOnly,
+          "aria-readonly": !!me.readOnly
         };
 
         // aria-label is not present by default, and aria-labelledby
@@ -783,7 +783,7 @@ Ext.define("Ext.form.field.Base", {
         inputEl,
         Ext.supports.SpecialKeyDownRepeat ? "keydown" : "keypress",
         me.fireKey,
-        me,
+        me
       );
 
       for (i = 0; i < len; ++i) {
@@ -829,7 +829,7 @@ Ext.define("Ext.form.field.Base", {
     if (!task) {
       me.checkChangeTask = task = new Ext.util.DelayedTask(
         me.doCheckChangeTask,
-        me,
+        me
       );
     }
     if (!me.bindNotifyListener) {
@@ -840,7 +840,7 @@ Ext.define("Ext.form.field.Base", {
         "beforebindnotify",
         me.onBeforeNotify,
         me,
-        { destroyable: true },
+        { destroyable: true }
       );
     }
     task.delay(me.checkChangeBuffer);
@@ -1001,7 +1001,7 @@ Ext.define("Ext.form.field.Base", {
       // Add/remove invalid class
       me.inputEl[hasError ? "addCls" : "removeCls"]([
         invalidCls,
-        invalidCls + "-" + me.ui,
+        invalidCls + "-" + me.ui
       ]);
     }
     me.mixins.labelable.renderActiveError.call(me);
@@ -1111,10 +1111,10 @@ Ext.define("Ext.form.field.Base", {
       if (newBinding && newBinding.bindValidationField) {
         me.fieldBinding = newBinding.bindValidationField(
           "setValidationField",
-          me,
+          me
         );
       }
-    },
+    }
   },
 
   deprecated: {
@@ -1127,8 +1127,8 @@ Ext.define("Ext.form.field.Base", {
           this.bindChangeEvents(false);
           this.callParent(arguments);
           this.bindChangeEvents(true);
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

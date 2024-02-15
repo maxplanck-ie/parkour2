@@ -4,7 +4,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
 
   requires: [
     "MainHub.components.BaseGrid",
-    "MainHub.view.pooling.PoolingController",
+    "MainHub.view.pooling.PoolingController"
   ],
 
   controller: "pooling",
@@ -27,13 +27,13 @@ Ext.define("MainHub.view.pooling.Pooling", {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
-            width: 320,
-          },
-        ],
+            width: 320
+          }
+        ]
       },
 
       customConfig: {
-        qualityCheckMenuOptions: ["passed", "failed"],
+        qualityCheckMenuOptions: ["passed", "failed"]
       },
 
       viewConfig: {
@@ -47,7 +47,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
             rowClass = "library-not-prepared";
           }
           return rowClass;
-        },
+        }
       },
 
       columns: [
@@ -59,7 +59,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
           menuDisabled: true,
           hideable: false,
           tdCls: "no-dirty",
-          width: 35,
+          width: 35
         },
         {
           text: "Request",
@@ -68,7 +68,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
           menuDisabled: true,
           hideable: false,
           minWidth: 200,
-          flex: 1,
+          flex: 1
         },
         {
           text: "Name",
@@ -77,7 +77,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
           menuDisabled: true,
           hideable: false,
           minWidth: 200,
-          flex: 1,
+          flex: 1
         },
         {
           text: "Barcode",
@@ -86,52 +86,52 @@ Ext.define("MainHub.view.pooling.Pooling", {
           menuDisabled: true,
           hideable: false,
           renderer: "barcodeRenderer",
-          width: 95,
+          width: 95
         },
         {
           text: "Date",
           dataIndex: "create_time",
           width: 90,
-          renderer: Ext.util.Format.dateRenderer("d.m.Y"),
+          renderer: Ext.util.Format.dateRenderer("d.m.Y")
         },
         {
           text: "ng/µl",
           tooltip: "Concentration Library (ng/µl)",
           dataIndex: "concentration_library",
-          width: 100,
+          width: 100
         },
         {
           text: "bp",
           tooltip: "Mean Fragment Size (bp)",
           dataIndex: "mean_fragment_size",
-          width: 75,
+          width: 75
         },
         {
           text: "Coord",
           dataIndex: "coordinate",
-          width: 65,
+          width: 65
         },
         {
           text: "I7 ID",
           tooltip: "Index I7 ID",
           dataIndex: "index_i7_id",
-          width: 90,
+          width: 90
         },
         {
           text: "Index I7",
           dataIndex: "index_i7",
-          width: 90,
+          width: 90
         },
         {
           text: "I5 ID",
           tooltip: "Index I5 ID",
           dataIndex: "index_i5_id",
-          width: 90,
+          width: 90
         },
         {
           text: "Index I5",
           dataIndex: "index_i5",
-          width: 90,
+          width: 90
         },
         {
           text: "nM C1",
@@ -140,22 +140,22 @@ Ext.define("MainHub.view.pooling.Pooling", {
           editor: {
             xtype: "numberfield",
             decimalPrecision: 1,
-            minValue: 0,
+            minValue: 0
           },
-          width: 100,
+          width: 100
         },
         {
           text: "Depth (M)",
           tooltip: "Sequencing Depth (M)",
           dataIndex: "sequencing_depth",
-          width: 90,
+          width: 90
         },
         {
           text: "%",
           tooltip: "% library in Pool",
           dataIndex: "percentage_library",
-          width: 55,
-        },
+          width: 55
+        }
       ],
 
       features: [
@@ -196,16 +196,16 @@ Ext.define("MainHub.view.pooling.Pooling", {
               },
               getRealPoolSize: function (children) {
                 return Ext.sum(
-                  Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth"),
+                  Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth")
                 );
               },
               getPoolSize: function (children) {
                 return Ext.String.format("({0})", children[0].get("pool_size"));
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });

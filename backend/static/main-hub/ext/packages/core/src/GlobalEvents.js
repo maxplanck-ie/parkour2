@@ -143,7 +143,7 @@ Ext.define(
       touchmove: 1,
       pointermove: 1,
       MSPointerMove: 1,
-      unload: 1,
+      unload: 1
     },
 
     constructor: function () {
@@ -160,7 +160,7 @@ Ext.define(
 
     attachListeners: function () {
       Ext.get(window).on("resize", this.fireResize, this, {
-        buffer: this.resizeBuffer,
+        buffer: this.resizeBuffer
       });
       Ext.getDoc().on("mousedown", this.fireMouseDown, this);
     },
@@ -181,7 +181,7 @@ Ext.define(
         me.curWidth = w;
         me.fireEvent("resize", w, h);
       }
-    },
+    }
   },
   function (GlobalEvents) {
     /**
@@ -215,5 +215,5 @@ Ext.define(
     Ext.fireEvent = function () {
       return GlobalEvents.fireEvent.apply(GlobalEvents, arguments);
     };
-  },
+  }
 );

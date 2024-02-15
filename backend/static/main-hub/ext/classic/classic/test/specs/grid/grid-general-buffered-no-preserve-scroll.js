@@ -64,19 +64,19 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
           "username",
           {
             name: "replycount",
-            type: "int",
+            type: "int"
           },
           {
             name: "lastpost",
             mapping: "lastpost",
             type: "date",
-            dateFormat: "timestamp",
+            dateFormat: "timestamp"
           },
           "lastposter",
           "excerpt",
-          "threadid",
+          "threadid"
         ],
-        idProperty: "threadid",
+        idProperty: "threadid"
       });
 
     function getData(start, limit) {
@@ -87,7 +87,7 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
       for (i = start; i < end; ++i) {
         recs.push({
           threadid: i,
-          title: "Title" + i,
+          title: "Title" + i
         });
       }
       return recs;
@@ -109,8 +109,8 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
           status: 200,
           responseText: Ext.encode({
             total: total || 5000,
-            data: data,
-          }),
+            data: data
+          })
         });
 
         requests = Ext.Ajax.mockGetAllRequests();
@@ -130,9 +130,9 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
           url: "fakeUrl",
           reader: {
             type: "json",
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
       store.loadPage(1);
       satisfyRequests();
@@ -142,8 +142,8 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
         columns: [
           {
             text: "Title",
-            dataIndex: "title",
-          },
+            dataIndex: "title"
+          }
         ],
         store: store,
         width: 600,
@@ -155,13 +155,13 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
           listeners: {
             scroll: function () {
               scrollEventCount++;
-            },
-          },
+            }
+          }
         },
         renderTo: document.body,
         selModel: {
-          pruneRemoved: false,
-        },
+          pruneRemoved: false
+        }
       });
       view = grid.getView();
       bufferedRenderer = view.bufferedRenderer;
@@ -192,7 +192,7 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
         focus: true,
         callback: function () {
           scrollDone = true;
-        },
+        }
       });
 
       waitsFor(function () {
@@ -207,7 +207,7 @@ describe("grid-general-buffered-no-preserv-scroll", function () {
           refresh: function () {
             refreshed = true;
           },
-          single: true,
+          single: true
         });
         store.reload();
       });

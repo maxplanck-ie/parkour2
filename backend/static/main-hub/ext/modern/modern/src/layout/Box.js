@@ -62,7 +62,7 @@ Ext.define("Ext.layout.Box", {
      *
      * @since 6.2.0
      */
-    vertical: false,
+    vertical: false
   },
 
   alias: "layout.tablebox",
@@ -75,7 +75,7 @@ Ext.define("Ext.layout.Box", {
     this.callParent([container]);
 
     container.on("flexchange", "onItemFlexChange", this, {
-      delegate: "> component",
+      delegate: "> component"
     });
   },
 
@@ -83,5 +83,5 @@ Ext.define("Ext.layout.Box", {
     this.setOrient(vertical ? "vertical" : "horizontal");
   },
 
-  onItemFlexChange: Ext.emptyFn,
+  onItemFlexChange: Ext.emptyFn
 });

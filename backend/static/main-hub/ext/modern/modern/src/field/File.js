@@ -37,8 +37,8 @@ Ext.define("Ext.field.File", {
   config: {
     component: {
       xtype: "fileinput",
-      fastFocus: false,
-    },
+      fastFocus: false
+    }
   },
 
   proxyConfig: {
@@ -65,7 +65,7 @@ Ext.define("Ext.field.File", {
      *
      * @accessor
      */
-    capture: null,
+    capture: null
   },
 
   classCls: Ext.baseCSSPrefix + "filefield",
@@ -85,11 +85,11 @@ Ext.define("Ext.field.File", {
 
     me.getComponent().on({
       scope: this,
-      change: "onChange",
+      change: "onChange"
     });
   },
 
   onChange: function (me, value, startValue) {
     me.fireEvent("change", this, value, startValue);
-  },
+  }
 });

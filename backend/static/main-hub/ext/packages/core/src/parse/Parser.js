@@ -29,7 +29,7 @@ Ext.define("Ext.parse.Parser", function () {
       "Ext.parse.symbol.Constant",
       "Ext.parse.symbol.InfixRight",
       "Ext.parse.symbol.Paren",
-      "Ext.parse.symbol.Prefix",
+      "Ext.parse.symbol.Prefix"
     ],
 
     isParser: true,
@@ -47,7 +47,7 @@ Ext.define("Ext.parse.Parser", function () {
       constants: {
         null: null,
         false: false,
-        true: true,
+        true: true
       },
 
       /**
@@ -68,7 +68,7 @@ Ext.define("Ext.parse.Parser", function () {
         "+": 50,
         "-": 50,
         "*": 60,
-        "/": 60,
+        "/": 60
       },
 
       /**
@@ -81,7 +81,7 @@ Ext.define("Ext.parse.Parser", function () {
        */
       infixRight: {
         "&&": 30,
-        "||": 30,
+        "||": 30
       },
 
       /**
@@ -94,7 +94,7 @@ Ext.define("Ext.parse.Parser", function () {
       prefix: {
         "!": 0,
         "-": 0,
-        "+": 0,
+        "+": 0
       },
 
       /**
@@ -117,18 +117,18 @@ Ext.define("Ext.parse.Parser", function () {
         "(ident)": {
           arity: "ident",
           isIdent: true,
-          nud: ITSELF,
+          nud: ITSELF
         },
 
         "(literal)": {
           arity: "literal",
           isLiteral: true,
-          nud: ITSELF,
+          nud: ITSELF
         },
 
         "(": {
-          xclass: "Ext.parse.symbol.Paren",
-        },
+          xclass: "Ext.parse.symbol.Paren"
+        }
       },
 
       /**
@@ -136,8 +136,8 @@ Ext.define("Ext.parse.Parser", function () {
        * The tokenizer or a config object used to create one.
        */
       tokenizer: {
-        keywords: null, // we'll handle keywords here
-      },
+        keywords: null // we'll handle keywords here
+      }
     },
 
     /**
@@ -370,7 +370,7 @@ Ext.define("Ext.parse.Parser", function () {
         }
 
         this.tokenizer = ret;
-      },
-    },
+      }
+    }
   };
 });

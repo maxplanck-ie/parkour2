@@ -10,7 +10,7 @@ Ext.define(
     mousedownEvents: {
       mousedown: 1,
       pointerdown: 1,
-      touchstart: 1,
+      touchstart: 1
     },
 
     /**
@@ -85,7 +85,7 @@ Ext.define(
             shiftKey,
             metaKey,
             button,
-            relatedTarget,
+            relatedTarget
           ) {
             var event = doc.createEvent("MouseEvents"),
               view = doc.defaultView || window;
@@ -106,7 +106,7 @@ Ext.define(
                 shiftKey,
                 metaKey,
                 button,
-                relatedTarget,
+                relatedTarget
               );
             } else {
               // old Safari
@@ -139,7 +139,7 @@ Ext.define(
 
           fireEvent: function (target, type, event) {
             target.dispatchEvent(event);
-          },
+          }
         };
       } else if (document.createEventObject) {
         // else if (IE)
@@ -166,7 +166,7 @@ Ext.define(
             shiftKey,
             metaKey,
             button,
-            relatedTarget,
+            relatedTarget
           ) {
             var event = doc.createEventObject();
             event.bubbles = bubbles;
@@ -194,7 +194,7 @@ Ext.define(
 
           fireEvent: function (target, type, event) {
             target.fireEvent("on" + type, event);
-          },
+          }
         };
       }
 
@@ -210,7 +210,7 @@ Ext.define(
           submit: [true, true],
           reset: [true, false],
           resize: [true, false],
-          scroll: [true, false],
+          scroll: [true, false]
         },
         function (name, value) {
           var bubbles = value[0],
@@ -219,7 +219,7 @@ Ext.define(
             var e = API.createHtmlEvent(name, bubbles, cancelable);
             API.fireEvent(targetEl, name, e);
           };
-        },
+        }
       );
 
       //----------------
@@ -242,7 +242,7 @@ Ext.define(
               srcEvent.shiftKey,
               srcEvent.metaKey,
               srcEvent.button,
-              srcEvent.relatedTarget,
+              srcEvent.relatedTarget
             );
           API.fireEvent(targetEl, type, e);
         };
@@ -256,11 +256,11 @@ Ext.define(
           "mouseup",
           "mouseover",
           "mousemove",
-          "mouseout",
+          "mouseout"
         ],
         function (eventName) {
           dispatchers[eventName] = createMouseEventDispatcher(eventName, 1);
-        },
+        }
       );
 
       //----------------
@@ -272,7 +272,7 @@ Ext.define(
           focusout: [true, false],
           activate: [true, true],
           focus: [false, false],
-          blur: [false, false],
+          blur: [false, false]
         },
         function (name, value) {
           var bubbles = value[0],
@@ -283,11 +283,11 @@ Ext.define(
               name,
               bubbles,
               cancelable,
-              1,
+              1
             );
             API.fireEvent(targetEl, name, e);
           };
-        },
+        }
       );
 
       //---------
@@ -403,10 +403,10 @@ Ext.define(
            */
           clone: function () {
             return new this.self(this.browserEvent, this);
-          },
-        },
-      },
-    },
+          }
+        }
+      }
+    }
   },
   function () {
     var Event = this,
@@ -428,7 +428,7 @@ Ext.define(
         0: 0,
         1: 0,
         4: 1,
-        2: 2,
+        2: 2
       };
 
       Event.override({
@@ -452,7 +452,7 @@ Ext.define(
             }
 
             return fakeEvent;
-          },
+          }
         },
 
         constructor: function (event, info, touchesMap, identifiers) {
@@ -501,7 +501,7 @@ Ext.define(
           }
 
           return me.callParent([selector, maxDepth, returnEl]);
-        },
+        }
       });
 
       // We place these listeners to capture Tab and Shift-Tab key strokes
@@ -520,5 +520,5 @@ Ext.define(
       document.addEventListener("keydown", onKeyDown, true);
       document.addEventListener("keyup", onKeyUp, true);
     }
-  },
+  }
 );

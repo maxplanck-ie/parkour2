@@ -4,23 +4,23 @@ describe("Ext.direct.JsonProvider", function () {
       {
         type: "event",
         name: "foo",
-        data: { foo: "bar" },
+        data: { foo: "bar" }
       },
       {
         type: "event",
         name: "bar",
-        data: null,
+        data: null
       },
       {
         type: "event",
         name: "baz",
-        data: ["foo", "bar"],
+        data: ["foo", "bar"]
       },
       {
         type: "event",
         name: "qux",
-        data: "plugh",
-      },
+        data: "plugh"
+      }
     ];
 
   beforeEach(function () {
@@ -47,7 +47,7 @@ describe("Ext.direct.JsonProvider", function () {
       result.push({
         type: e.type,
         name: e.getName(),
-        data: e.getData(),
+        data: e.getData()
       });
     });
 
@@ -58,13 +58,13 @@ describe("Ext.direct.JsonProvider", function () {
     var events, result;
 
     events = provider.createEvents({
-      responseText: Ext.merge({}, eventData[0]),
+      responseText: Ext.merge({}, eventData[0])
     });
 
     result = {
       type: events[0].type,
       name: events[0].getName(),
-      data: events[0].getData(),
+      data: events[0].getData()
     };
 
     expect(result).toEqual(eventData[0]);
@@ -88,7 +88,7 @@ describe("Ext.direct.JsonProvider", function () {
       status: events[0].status,
       xhr: events[0].xhr,
       code: events[0].code,
-      message: events[0].message,
+      message: events[0].message
     };
 
     expect(result).toEqual({
@@ -97,7 +97,7 @@ describe("Ext.direct.JsonProvider", function () {
       code: Ext.direct.Manager.exceptions.PARSE,
       message:
         "Error parsing json response: \n\n" +
-        " Ext.JSON.decode(): You're trying to decode an invalid JSON String: blow up!",
+        " Ext.JSON.decode(): You're trying to decode an invalid JSON String: blow up!"
     });
   });
 });

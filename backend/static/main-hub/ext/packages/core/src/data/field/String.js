@@ -16,5 +16,5 @@ Ext.define("Ext.data.field.String", {
 
   getType: function () {
     return "string";
-  },
+  }
 });

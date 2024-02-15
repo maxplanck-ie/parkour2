@@ -273,7 +273,7 @@ Ext.define("Ext.data.schema.ManyToMany", {
             options,
             scope,
             leftRecords,
-            false,
+            false
           );
         };
       },
@@ -313,7 +313,7 @@ Ext.define("Ext.data.schema.ManyToMany", {
             rightRecord,
             node,
             fromReader,
-            readOptions,
+            readOptions
           ]);
 
         if (leftRecords) {
@@ -365,7 +365,7 @@ Ext.define("Ext.data.schema.ManyToMany", {
             session.adopt(records[i]);
           }
         }
-      },
+      }
     },
     function () {
       var Left = this; // Left is created but ManyToMany may not yet be created
@@ -375,12 +375,12 @@ Ext.define("Ext.data.schema.ManyToMany", {
           Ext.data.schema.ManyToMany.prototype.Right = Ext.define(null, {
             extend: Left,
             left: false,
-            side: "right",
+            side: "right"
           });
         },
         null,
-        "Ext.data.schema.ManyToMany",
+        "Ext.data.schema.ManyToMany"
       );
-    },
-  ),
+    }
+  )
 });

@@ -6,13 +6,13 @@
  */
 Ext.define("Ext.chart.axis.layout.Layout", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
   config: {
     /**
      * @cfg {Ext.chart.axis.Axis} axis The axis that the Layout is bound.
      */
-    axis: null,
+    axis: null
   },
 
   constructor: function (config) {
@@ -139,5 +139,5 @@ Ext.define("Ext.chart.axis.layout.Layout", {
     }
 
     out.steps = end - begin;
-  },
+  }
 });

@@ -33,7 +33,7 @@ Ext.define(
     alternateClassName: [
       "Ext.StoreMgr",
       "Ext.data.StoreMgr",
-      "Ext.StoreManager",
+      "Ext.StoreManager"
     ],
 
     singleton: true,
@@ -97,7 +97,7 @@ Ext.define(
           fields: fields,
           autoDestroy: true,
           autoCreated: true,
-          expanded: expand,
+          expanded: expand
         });
       }
 
@@ -121,7 +121,7 @@ Ext.define(
       // They will be able to run and render fine, and be bound to a generated Store later.
       var emptyStore = Ext.regStore("ext-empty-store", {
         proxy: "memory",
-        useModelWarning: false,
+        useModelWarning: false
       });
 
       emptyStore.isEmptyStore = true;
@@ -142,7 +142,7 @@ Ext.define(
     clear: function () {
       this.callParent();
       this.addEmptyStore();
-    },
+    }
   },
   function () {
     /**
@@ -197,5 +197,5 @@ Ext.define(
     };
 
     Ext.data.StoreManager.addEmptyStore();
-  },
+  }
 );

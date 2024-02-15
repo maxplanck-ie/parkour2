@@ -105,7 +105,7 @@ Ext.define("Ext.promise.Deferred", {
       consequence = new Ext.promise.Consequence(
         onFulfilled,
         onRejected,
-        onProgress,
+        onProgress
       );
 
     if (me.completed) {
@@ -171,7 +171,7 @@ Ext.define("Ext.promise.Deferred", {
                 isHandled = true;
                 me.reject(error);
               }
-            },
+            }
           );
         } catch (e1) {
           if (!isHandled) {
@@ -250,5 +250,5 @@ Ext.define("Ext.promise.Deferred", {
     }
 
     me.consequences = null;
-  },
+  }
 });

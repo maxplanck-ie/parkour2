@@ -11,13 +11,13 @@ Ext.define("Ext.chart.grid.HorizontalGrid3D", {
   inheritableStatics: {
     def: {
       processors: {
-        depth: "number",
+        depth: "number"
       },
 
       defaults: {
-        depth: 0,
-      },
-    },
+        depth: 0
+      }
+    }
   },
 
   render: function (surface, ctx, rect) {
@@ -70,5 +70,5 @@ Ext.define("Ext.chart.grid.HorizontalGrid3D", {
     ctx.moveTo(left, top);
     ctx.lineTo(left + depth, top - depth);
     ctx.stroke();
-  },
+  }
 });

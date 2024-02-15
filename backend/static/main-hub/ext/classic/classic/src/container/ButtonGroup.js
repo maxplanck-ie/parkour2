@@ -66,7 +66,7 @@ Ext.define("Ext.container.ButtonGroup", {
    * @inheritdoc
    */
   layout: {
-    type: "table",
+    type: "table"
   },
 
   defaultType: "button",
@@ -182,8 +182,8 @@ Ext.define("Ext.container.ButtonGroup", {
         c = this.callParent(arguments);
       }
       return c;
-    },
-  },
+    }
+  }
 
   /**
    * @cfg {Array} tools

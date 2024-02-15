@@ -4,15 +4,15 @@ Ext.define("MainHub.model.invoicing.BaseCost", {
   fields: [
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "price",
-      type: "float",
-    },
-  ],
+      type: "float"
+    }
+  ]
 });

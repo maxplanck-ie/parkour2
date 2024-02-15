@@ -45,7 +45,7 @@ describe("Ext.tip.Tip", function () {
         viewportHeight = Ext.Element.getViewportHeight();
       createTip({ constrainPosition: false }).showAt([
         viewportWidth + 1,
-        viewportHeight + 1,
+        viewportHeight + 1
       ]);
       var xy = tip.el.getXY();
       expect(xy[0]).toEqual(viewportWidth + 1);
@@ -88,7 +88,7 @@ describe("Ext.tip.Tip", function () {
       expect(
         tip.header.items.findBy(function (item) {
           return item.toolEl && item.type === "close";
-        }),
+        })
       ).not.toBeNull();
     });
 
@@ -127,14 +127,14 @@ describe("Ext.tip.Tip", function () {
       createTip({ html: '<div style="width: 200px;">x</div>' }).show();
 
       expect(tip.body.getWidth(true) + tip.body.getBorderWidth("lr")).toEqual(
-        200,
+        200
       );
     });
 
     it("should constrain the automatic width to at or above the configured minWidth", function () {
       createTip({
         html: '<div style="width: 20px;">x</div>',
-        minWidth: 60,
+        minWidth: 60
       }).show();
       expect(tip.el.getWidth()).toEqual(tip.minWidth);
     });

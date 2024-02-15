@@ -20,36 +20,36 @@ describe("Ext.layout.component.field.HtmlEditor", function () {
             // that we currently use in our test runner adds extra height to the
             // select element, throwing the layout numbers off.
             enableFont: false,
-            anchor: "100%",
-          },
-        ],
+            anchor: "100%"
+          }
+        ]
       }),
       layoutSpec = {
         el: {
-          xywh: "0 0 200 206",
+          xywh: "0 0 200 206"
         },
         body: {
-          xywh: "0 0 200 206",
+          xywh: "0 0 200 206"
         },
         items: {
           0: {
             el: {
-              xywh: "11 11 178 179",
+              xywh: "11 11 178 179"
             },
             containerEl: {
-              xywh: "11 11 178 179",
+              xywh: "11 11 178 179"
             },
             bodyEl: {
-              xywh: "11 11 178 179",
+              xywh: "11 11 178 179"
             },
             iframeEl: {
-              xywh: "12 39 176 150",
+              xywh: "12 39 176 150"
             },
             inputEl: {
-              xywh: "12 39 176 150",
-            },
-          },
-        },
+              xywh: "12 39 176 150"
+            }
+          }
+        }
       };
 
     expect(form).toHaveLayout(layoutSpec);
@@ -64,10 +64,10 @@ describe("Ext.layout.component.field.HtmlEditor", function () {
 
   it("should provide a natural height when configured without one", function () {
     htmlEditor = new Ext.form.field.HtmlEditor({
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     expect(htmlEditor.iframeEl.getHeight()).toBe(
-      htmlEditor.componentLayout.naturalHeight,
+      htmlEditor.componentLayout.naturalHeight
     );
   });
 
@@ -80,27 +80,27 @@ describe("Ext.layout.component.field.HtmlEditor", function () {
     }
     it("should stretch the iframe height when shrink wrapping height", function () {
       htmlEditor = new Ext.form.field.HtmlEditor({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(htmlEditor.iframeEl.getHeight()).toBe(
-        htmlEditor.componentLayout.naturalHeight,
+        htmlEditor.componentLayout.naturalHeight
       );
     });
 
     it("should stretch the iframe height when using a configured height", function () {
       htmlEditor = new Ext.form.field.HtmlEditor({
         renderTo: Ext.getBody(),
-        height: 800,
+        height: 800
       });
       expect(htmlEditor.iframeEl.getHeight()).toBe(800 - getHeightOffset());
     });
 
     it("should stretch the iframe correctly when changing from shrinkWrap to a configured height", function () {
       htmlEditor = new Ext.form.field.HtmlEditor({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(htmlEditor.iframeEl.getHeight()).toBe(
-        htmlEditor.componentLayout.naturalHeight,
+        htmlEditor.componentLayout.naturalHeight
       );
       htmlEditor.setHeight(800);
       expect(htmlEditor.iframeEl.getHeight()).toBe(800 - getHeightOffset());

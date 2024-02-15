@@ -9,7 +9,7 @@ Ext.define(
 
     // The constructor of Ext.util.Observable instances processes the config object by
     // calling Ext.apply(this, config); instead of this.initConfig(config);
-    $applyConfigs: true,
+    $applyConfigs: true
   },
   function (Observable) {
     var Super = Ext.mixin.Observable;
@@ -39,5 +39,5 @@ Ext.define(
      * @inheritdoc Ext.mixin.Observable#observe
      */
     Observable.observe = Observable.observeClass = Super.observe;
-  },
+  }
 );

@@ -91,6 +91,6 @@ Ext.define("Ext.util.Schedulable", {
      * This example assumes the item has a "dependencies" array to pass to the scheduler.
      */
     // Can't use Ext.emptyFn here to avoid setting $private: true on it
-    sort: function () {},
-  },
+    sort: function () {}
+  }
 });

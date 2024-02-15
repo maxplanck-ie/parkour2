@@ -7,7 +7,7 @@ Ext.define("Ext.fx.easing.Bounce", {
   config: {
     springTension: 0.3,
     acceleration: 30,
-    startVelocity: 0,
+    startVelocity: 0
   },
 
   getValue: function () {
@@ -16,5 +16,5 @@ Ext.define("Ext.fx.easing.Bounce", {
       powTime = theta * Math.pow(Math.E, -this.getSpringTension() * theta);
 
     return this.getStartValue() + this.getStartVelocity() * powTime;
-  },
+  }
 });

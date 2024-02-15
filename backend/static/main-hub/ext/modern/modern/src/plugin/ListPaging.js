@@ -59,7 +59,7 @@ Ext.define("Ext.plugin.ListPaging", {
       '<span class="{cssPrefix}loading-bottom"></span>',
       '<span class="{cssPrefix}loading-left"></span>',
       "</div>",
-      '<div class="{cssPrefix}list-paging-msg">{message}</div>',
+      '<div class="{cssPrefix}list-paging-msg">{message}</div>'
     ].join(""),
 
     /**
@@ -70,7 +70,7 @@ Ext.define("Ext.plugin.ListPaging", {
       xtype: "component",
       baseCls: Ext.baseCSSPrefix + "list-paging",
       scrollDock: "bottom",
-      hidden: true,
+      hidden: true
     },
 
     /**
@@ -102,7 +102,7 @@ Ext.define("Ext.plugin.ListPaging", {
      * @private
      * @cfg {Boolean} loading True if the plugin has initiated a Store load that has not yet completed
      */
-    loading: false,
+    loading: false
   },
 
   /**
@@ -123,13 +123,13 @@ Ext.define("Ext.plugin.ListPaging", {
     list.updateStore = Ext.Function.createInterceptor(
       list.updateStore,
       this.bindStore,
-      this,
+      this
     );
 
     if (this.getAutoPaging()) {
       scroller.on({
         scrollend: this.onScrollEnd,
-        scope: this,
+        scope: this
       });
     }
   },
@@ -143,7 +143,7 @@ Ext.define("Ext.plugin.ListPaging", {
         beforeload: this.onStoreBeforeLoad,
         load: this.onStoreLoad,
         filter: this.onFilter,
-        scope: this,
+        scope: this
       });
     }
 
@@ -152,7 +152,7 @@ Ext.define("Ext.plugin.ListPaging", {
         beforeload: this.onStoreBeforeLoad,
         load: this.onStoreLoad,
         filter: this.onFilter,
-        scope: this,
+        scope: this
       });
     }
   },
@@ -195,16 +195,16 @@ Ext.define("Ext.plugin.ListPaging", {
     config = Ext.merge(config, {
       html: this.getLoadTpl().apply({
         cssPrefix: Ext.baseCSSPrefix,
-        message: this.getLoadMoreText(),
+        message: this.getLoadMoreText()
       }),
       scrollDock: "bottom",
       listeners: {
         tap: {
           fn: this.loadNextPage,
           scope: this,
-          element: "element",
-        },
-      },
+          element: "element"
+        }
+      }
     });
 
     return Ext.factory(config, Ext.Component, this.getLoadMoreCmp());
@@ -271,8 +271,8 @@ Ext.define("Ext.plugin.ListPaging", {
     loadCmp.setHtml(
       template.apply({
         cssPrefix: Ext.baseCSSPrefix,
-        message: message,
-      }),
+        message: message
+      })
     );
 
     if (this.currentScrollToTopOnRefresh !== undefined) {
@@ -340,5 +340,5 @@ Ext.define("Ext.plugin.ListPaging", {
       me.setLoading(true);
       me.getList().getStore().nextPage({ addRecords: true });
     }
-  },
+  }
 });

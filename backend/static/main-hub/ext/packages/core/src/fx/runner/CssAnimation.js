@@ -24,7 +24,7 @@ Ext.define("Ext.fx.runner.CssAnimation", {
     Ext.getWin().on({
       animationstart: "onAnimationStart",
       animationend: "onAnimationEnd",
-      scope: this,
+      scope: this
     });
   },
 
@@ -157,7 +157,7 @@ Ext.define("Ext.fx.runner.CssAnimation", {
         "animation-timing-function": easings,
         "animation-delay": delays,
         "animation-direction": directions,
-        "animation-iteration-count": iterations,
+        "animation-iteration-count": iterations
       };
 
       //            Ext.apply(data[elementId], animation.origin);
@@ -186,7 +186,7 @@ Ext.define("Ext.fx.runner.CssAnimation", {
     rulesLength = rules.length;
     styleSheet.insertRule(
       "@" + this.vendorPrefix + "keyframes " + name + "{}",
-      rulesLength,
+      rulesLength
     );
 
     keyframesRule = rules[rulesLength];
@@ -208,7 +208,7 @@ Ext.define("Ext.fx.runner.CssAnimation", {
 
       keyframesRule.insertRule(
         percentage + "{" + styles.join(";") + "}",
-        rulesLength,
+        rulesLength
       );
     }
 
@@ -232,5 +232,5 @@ Ext.define("Ext.fx.runner.CssAnimation", {
     }
 
     return this;
-  },
+  }
 });

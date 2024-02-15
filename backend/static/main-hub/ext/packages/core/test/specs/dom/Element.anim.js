@@ -4,7 +4,7 @@ xdescribe("Ext.Element.anim", function () {
 
   beforeEach(function () {
     el = Ext.getBody().createChild({
-      id: "testElement",
+      id: "testElement"
     });
   });
 
@@ -33,7 +33,7 @@ xdescribe("Ext.Element.anim", function () {
         el.slideIn("t", {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -43,7 +43,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -57,7 +57,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -71,7 +71,7 @@ xdescribe("Ext.Element.anim", function () {
         el.slideOut("t", {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -81,7 +81,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -95,7 +95,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -109,7 +109,7 @@ xdescribe("Ext.Element.anim", function () {
         el.slideIn("t", {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -119,7 +119,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -133,7 +133,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -147,7 +147,7 @@ xdescribe("Ext.Element.anim", function () {
         el.switchOff({
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -157,7 +157,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -171,7 +171,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -185,7 +185,7 @@ xdescribe("Ext.Element.anim", function () {
         el.frame("#ff0000", 1, {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -195,7 +195,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -209,7 +209,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -223,7 +223,7 @@ xdescribe("Ext.Element.anim", function () {
         el.ghost("b", {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -233,7 +233,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -247,7 +247,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -261,7 +261,7 @@ xdescribe("Ext.Element.anim", function () {
         el.highlight("#0000ff", {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -271,7 +271,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -285,7 +285,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -299,7 +299,7 @@ xdescribe("Ext.Element.anim", function () {
         el.fadeIn({
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -309,7 +309,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -323,7 +323,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -337,7 +337,7 @@ xdescribe("Ext.Element.anim", function () {
         el.fadeOut({
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -347,7 +347,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -361,7 +361,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -375,7 +375,7 @@ xdescribe("Ext.Element.anim", function () {
         el.scale(100, 100, {
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -385,7 +385,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -399,7 +399,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -415,7 +415,7 @@ xdescribe("Ext.Element.anim", function () {
           y: 200,
           duration: 10,
           callback: callback,
-          scope: scope,
+          scope: scope
         });
       });
 
@@ -425,7 +425,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {
@@ -439,7 +439,7 @@ xdescribe("Ext.Element.anim", function () {
             return called;
           },
           1000,
-          "Callback to fire",
+          "Callback to fire"
         );
 
         runs(function () {

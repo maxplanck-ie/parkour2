@@ -12,5 +12,5 @@ Ext.define("MainHub.overrides.data.PageMap", {
     }
 
     return true;
-  },
+  }
 });

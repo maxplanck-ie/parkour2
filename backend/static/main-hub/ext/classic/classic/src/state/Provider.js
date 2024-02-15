@@ -12,7 +12,7 @@
  */
 Ext.define("Ext.state.Provider", {
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -176,5 +176,5 @@ Ext.define("Ext.state.Provider", {
       enc = "s:" + value;
     }
     return escape(enc);
-  },
+  }
 });

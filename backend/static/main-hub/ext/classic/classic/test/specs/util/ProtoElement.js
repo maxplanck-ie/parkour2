@@ -33,21 +33,21 @@ describe("Exet.util.ProtoElement", function () {
     describe("cls", function () {
       it("should accept an array of classes", function () {
         makeEl({
-          cls: ["foo", "bar"],
+          cls: ["foo", "bar"]
         });
         expect(el.writeTo({}).cls).toBe("foo bar");
       });
 
       it("should accept a single class name", function () {
         makeEl({
-          cls: "foo",
+          cls: "foo"
         });
         expect(el.writeTo({}).cls).toBe("foo");
       });
 
       it("should accept a string of classes", function () {
         makeEl({
-          cls: "foo bar baz",
+          cls: "foo bar baz"
         });
         expect(el.writeTo({}).cls).toBe("foo bar baz");
       });
@@ -56,11 +56,11 @@ describe("Exet.util.ProtoElement", function () {
     describe("style", function () {
       it("should accept a style string", function () {
         makeEl({
-          style: "border: 1px solid red; color: blue;",
+          style: "border: 1px solid red; color: blue;"
         });
         expect(el.writeTo({}).style).toEqual({
           border: "1px solid red",
-          color: "blue",
+          color: "blue"
         });
       });
 
@@ -68,12 +68,12 @@ describe("Exet.util.ProtoElement", function () {
         makeEl({
           style: {
             color: "red",
-            margin: "5px",
-          },
+            margin: "5px"
+          }
         });
         expect(el.writeTo({}).style).toEqual({
           color: "red",
-          margin: "5px",
+          margin: "5px"
         });
       });
 
@@ -82,14 +82,14 @@ describe("Exet.util.ProtoElement", function () {
           style: function () {
             return {
               color: "yellow",
-              padding: "2px",
+              padding: "2px"
             };
-          },
+          }
         });
 
         expect(el.writeTo({}).style).toEqual({
           color: "yellow",
-          padding: "2px",
+          padding: "2px"
         });
       });
     });
@@ -131,7 +131,7 @@ describe("Exet.util.ProtoElement", function () {
       describe("removeCls", function () {
         beforeEach(function () {
           makeEl({
-            cls: "foo bar baz",
+            cls: "foo bar baz"
           });
         });
 
@@ -189,25 +189,25 @@ describe("Exet.util.ProtoElement", function () {
       el.setStyle("color: red; margin: 3px;");
       expect(el.writeTo({}).style).toEqual({
         color: "red",
-        margin: "3px",
+        margin: "3px"
       });
     });
 
     it("should accept a prop/value", function () {
       el.setStyle("color", "green");
       expect(el.writeTo({}).style).toEqual({
-        color: "green",
+        color: "green"
       });
     });
 
     it("should accept a style object", function () {
       el.setStyle({
         color: "blue",
-        padding: "1px",
+        padding: "1px"
       });
       expect(el.writeTo({}).style).toEqual({
         color: "blue",
-        padding: "1px",
+        padding: "1px"
       });
     });
   });
@@ -241,7 +241,7 @@ describe("Exet.util.ProtoElement", function () {
     it("should write out the styles as an object if styleIsText is false", function () {
       el.setStyle("color", "red");
       expect(el.writeTo({}).style).toEqual({
-        color: "red",
+        color: "red"
       });
     });
 
@@ -331,7 +331,7 @@ describe("Exet.util.ProtoElement", function () {
         el.flush();
         el.setStyle("color", "blue");
         expect(el.writeTo({}).style).toEqual({
-          color: "blue",
+          color: "blue"
         });
       });
 
@@ -340,7 +340,7 @@ describe("Exet.util.ProtoElement", function () {
         el.flush();
         el.setStyle("margin", "2px");
         expect(el.writeTo({}).style).toEqual({
-          margin: "2px",
+          margin: "2px"
         });
       });
     });

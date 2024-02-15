@@ -3,6 +3,6 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporterModel", {
   alias: "viewmodel.metadataexporter-metadataexporter",
 
   data: {
-    galaxyStatus: "offline",
-  },
+    galaxyStatus: "offline"
+  }
 });

@@ -57,7 +57,7 @@ Ext.define("Ext.data.XmlStore", {
   requires: [
     "Ext.data.proxy.Ajax",
     "Ext.data.reader.Xml",
-    "Ext.data.writer.Xml",
+    "Ext.data.writer.Xml"
   ],
 
   constructor: function (config) {
@@ -66,12 +66,12 @@ Ext.define("Ext.data.XmlStore", {
         proxy: {
           type: "ajax",
           reader: "xml",
-          writer: "xml",
-        },
+          writer: "xml"
+        }
       },
-      config,
+      config
     );
 
     this.callParent([config]);
-  },
+  }
 });

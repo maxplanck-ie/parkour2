@@ -12,5 +12,5 @@ Ext.define("Ext.rtl.grid.CellEditor", {
       );
     }
     return offset;
-  },
+  }
 });

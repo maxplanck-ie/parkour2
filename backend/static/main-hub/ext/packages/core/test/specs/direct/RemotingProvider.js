@@ -7,81 +7,81 @@ describe("Ext.direct.RemotingProvider", function () {
         TestAction: [
           {
             len: 1,
-            name: "echo",
+            name: "echo"
           },
           {
             len: 1,
-            name: "directFail",
+            name: "directFail"
           },
           {
             name: "directForm",
-            formHandler: true,
+            formHandler: true
           },
           {
             len: 1,
             name: "directMetaNamed",
             metadata: {
               params: [],
-              strict: false,
-            },
+              strict: false
+            }
           },
           {
             len: 1,
             name: "directMetaOrdered",
             metadata: {
-              len: 2,
-            },
+              len: 2
+            }
           },
           {
             name: "directMetaFormNamed",
             formHandler: true,
             metadata: {
               params: [],
-              strict: false,
-            },
+              strict: false
+            }
           },
           {
             name: "directMetaFormOrdered",
             formHandler: true,
             metadata: {
-              len: 2,
-            },
-          },
+              len: 2
+            }
+          }
         ],
 
         "TestAction.Foo": [
           {
             len: 0,
-            name: "foo",
-          },
+            name: "foo"
+          }
         ],
 
         "TestAction.Foo.Bar": [
           {
             len: 0,
-            name: "bar",
-          },
+            name: "bar"
+          }
         ],
 
         "TestAction.Foo.Bar.Baz": [
           {
             len: 0,
-            name: "baz",
-          },
+            name: "baz"
+          }
         ],
 
         "TestAction.Foo.Qux": [
           {
             len: 0,
-            name: "qux",
-          },
-        ],
+            name: "qux"
+          }
+        ]
       },
 
       namespace: "Direct.foo.bar",
       type: "remoting",
       url: "/router",
-      id: "foo",
+      id: "foo"
     },
     directMethods = {
       echo: function (value) {
@@ -90,28 +90,28 @@ describe("Ext.direct.RemotingProvider", function () {
 
       directFail: function (value) {
         return {
-          type: "exception",
+          type: "exception"
         };
       },
 
       directForm: function (form) {
         return {
           success: true,
-          data: form,
+          data: form
         };
       },
 
       directMetaNamed: function (data, metadata) {
         return {
           data: data,
-          metadata: metadata,
+          metadata: metadata
         };
       },
 
       directMetaOrdered: function (data, metadata) {
         return {
           data: data,
-          metadata: metadata,
+          metadata: metadata
         };
       },
 
@@ -119,7 +119,7 @@ describe("Ext.direct.RemotingProvider", function () {
         return {
           success: true,
           data: form,
-          metadata: metadata,
+          metadata: metadata
         };
       },
 
@@ -127,7 +127,7 @@ describe("Ext.direct.RemotingProvider", function () {
         return {
           success: true,
           data: form,
-          metadata: metadata,
+          metadata: metadata
         };
       },
 
@@ -145,7 +145,7 @@ describe("Ext.direct.RemotingProvider", function () {
 
       qux: function () {
         return "qux";
-      },
+      }
     };
 
   // This simulation stub is *asynchronous* to allow call batching
@@ -204,7 +204,7 @@ describe("Ext.direct.RemotingProvider", function () {
       response = {
         type: "exception",
         tid: tid,
-        message: "Can't connect to the server",
+        message: "Can't connect to the server"
       };
 
       // Not connected
@@ -217,7 +217,7 @@ describe("Ext.direct.RemotingProvider", function () {
           tid: tid,
           action: action,
           method: method,
-          result: result,
+          result: result
         };
       } catch (e) {
         // Direct exception handling here
@@ -225,17 +225,17 @@ describe("Ext.direct.RemotingProvider", function () {
           type: "exception",
           tid: tid,
           message: e.toString(),
-          where: "internal",
+          where: "internal"
         };
       }
     }
 
     xhr = {
-      responseText: responseText != null ? responseText : Ext.encode(response),
+      responseText: responseText != null ? responseText : Ext.encode(response)
     };
 
     opt = {
-      transaction: transaction,
+      transaction: transaction
     };
 
     Ext.callback(callback, scope, [opt, success, xhr], 1);
@@ -445,7 +445,7 @@ describe("Ext.direct.RemotingProvider", function () {
 
           expect(args[0].headers).toEqual({
             blergo: "frobbe",
-            zingbong: 42,
+            zingbong: 42
           });
         });
       });
@@ -480,7 +480,7 @@ describe("Ext.direct.RemotingProvider", function () {
               return !!options;
             },
             "options never modified",
-            20,
+            20
           );
 
           runs(function () {
@@ -490,15 +490,15 @@ describe("Ext.direct.RemotingProvider", function () {
                 method: "echo",
                 type: "rpc",
                 tid: baseTid + 1,
-                data: ["foo"],
+                data: ["foo"]
               },
               {
                 action: "TestAction",
                 method: "echo",
                 type: "rpc",
                 tid: baseTid + 2,
-                data: ["bar"],
-              },
+                data: ["bar"]
+              }
             ]);
           });
         });
@@ -524,7 +524,7 @@ describe("Ext.direct.RemotingProvider", function () {
               return !!options;
             },
             "options never modified",
-            20,
+            20
           );
 
           runs(function () {
@@ -535,7 +535,7 @@ describe("Ext.direct.RemotingProvider", function () {
               method: "echo",
               type: "rpc",
               tid: baseTid + 2,
-              data: ["qux"],
+              data: ["qux"]
             });
           });
         });
@@ -563,7 +563,7 @@ describe("Ext.direct.RemotingProvider", function () {
               return !!options;
             },
             "options never modified",
-            20,
+            20
           );
 
           runs(function () {
@@ -574,7 +574,7 @@ describe("Ext.direct.RemotingProvider", function () {
               method: "echo",
               type: "rpc",
               tid: baseTid + 2,
-              data: ["qux"],
+              data: ["qux"]
             });
           });
         });
@@ -596,7 +596,7 @@ describe("Ext.direct.RemotingProvider", function () {
             method: "echo",
             type: "rpc",
             tid: baseTid + 1,
-            data: ["fred"],
+            data: ["fred"]
           });
         });
 
@@ -629,7 +629,7 @@ describe("Ext.direct.RemotingProvider", function () {
                 return !!options.length;
               },
               "options never modified",
-              20,
+              20
             );
 
             runs(function () {
@@ -641,22 +641,22 @@ describe("Ext.direct.RemotingProvider", function () {
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 1,
-                  data: ["fee"],
+                  data: ["fee"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 2,
-                  data: ["fie"],
+                  data: ["fie"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 3,
-                  data: ["foe"],
-                },
+                  data: ["foe"]
+                }
               ]);
             });
           });
@@ -676,7 +676,7 @@ describe("Ext.direct.RemotingProvider", function () {
                 return !!options.length;
               },
               "options never modified",
-              20,
+              20
             );
 
             runs(function () {
@@ -688,22 +688,22 @@ describe("Ext.direct.RemotingProvider", function () {
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 1,
-                  data: ["frobbe"],
+                  data: ["frobbe"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 2,
-                  data: ["throbbe"],
+                  data: ["throbbe"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 3,
-                  data: ["gurgle"],
-                },
+                  data: ["gurgle"]
+                }
               ]);
 
               expect(options[1].jsonData).toEqual([
@@ -712,22 +712,22 @@ describe("Ext.direct.RemotingProvider", function () {
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 4,
-                  data: ["bonzo"],
+                  data: ["bonzo"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 5,
-                  data: ["mymse"],
+                  data: ["mymse"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 6,
-                  data: ["splurge"],
-                },
+                  data: ["splurge"]
+                }
               ]);
             });
           });
@@ -748,7 +748,7 @@ describe("Ext.direct.RemotingProvider", function () {
                 return options.length === 3;
               },
               "3 Ajax requests",
-              300,
+              300
             );
 
             runs(function () {
@@ -760,22 +760,22 @@ describe("Ext.direct.RemotingProvider", function () {
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 1,
-                  data: ["Grumpy"],
+                  data: ["Grumpy"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 2,
-                  data: ["Sleepy"],
+                  data: ["Sleepy"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 3,
-                  data: ["Dopey"],
-                },
+                  data: ["Dopey"]
+                }
               ]);
 
               expect(options[1].jsonData).toEqual([
@@ -784,22 +784,22 @@ describe("Ext.direct.RemotingProvider", function () {
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 4,
-                  data: ["Bashful"],
+                  data: ["Bashful"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 5,
-                  data: ["Sneezy"],
+                  data: ["Sneezy"]
                 },
                 {
                   action: "TestAction",
                   method: "echo",
                   type: "rpc",
                   tid: baseTid + 6,
-                  data: ["Happy"],
-                },
+                  data: ["Happy"]
+                }
               ]);
 
               expect(options[2].jsonData).toEqual({
@@ -807,7 +807,7 @@ describe("Ext.direct.RemotingProvider", function () {
                 method: "echo",
                 type: "rpc",
                 tid: baseTid + 7,
-                data: ["Doc"],
+                data: ["Doc"]
               });
             });
           });
@@ -1118,7 +1118,7 @@ describe("Ext.direct.RemotingProvider", function () {
         it("runs w/ additional options", function () {
           runs(function () {
             ns.TestAction.echo("bar", echoResultAndOptions, this, {
-              victory: "Huzzah!",
+              victory: "Huzzah!"
             });
           });
 
@@ -1254,8 +1254,8 @@ describe("Ext.direct.RemotingProvider", function () {
           runs(function () {
             ns.TestAction.directMetaNamed("foo", echoResult, this, {
               metadata: {
-                bleh: "blah",
-              },
+                bleh: "blah"
+              }
             });
           });
 
@@ -1267,7 +1267,7 @@ describe("Ext.direct.RemotingProvider", function () {
         it("will pass ordered metadata", function () {
           runs(function () {
             ns.TestAction.directMetaOrdered("bar", echoResult, this, {
-              metadata: ["blerg", "blam", "frob"],
+              metadata: ["blerg", "blam", "frob"]
             });
           });
 
@@ -1295,23 +1295,23 @@ describe("Ext.direct.RemotingProvider", function () {
               layout: "form",
 
               api: {
-                submit: "TestAction.directForm",
+                submit: "TestAction.directForm"
               },
 
               items: [
                 {
                   xtype: "hiddenfield",
                   name: "hidden_foo",
-                  value: "hide the sacred foo from infoodels!",
+                  value: "hide the sacred foo from infoodels!"
                 },
                 {
                   xtype: "textfield",
                   name: "overt_foo",
-                  value: "behold the false, deceitful overt foo",
-                },
-              ],
+                  value: "behold the false, deceitful overt foo"
+                }
+              ]
             },
-            config,
+            config
           );
 
           form = Ext.widget(config);
@@ -1332,7 +1332,7 @@ describe("Ext.direct.RemotingProvider", function () {
             runs(function () {
               form.submit({
                 success: echoFormResult,
-                scope: this,
+                scope: this
               });
             });
 
@@ -1344,8 +1344,8 @@ describe("Ext.direct.RemotingProvider", function () {
                 success: true,
                 data: {
                   hidden_foo: "hide the sacred foo from infoodels!",
-                  overt_foo: "behold the false, deceitful overt foo",
-                },
+                  overt_foo: "behold the false, deceitful overt foo"
+                }
               });
             });
           });
@@ -1354,10 +1354,10 @@ describe("Ext.direct.RemotingProvider", function () {
             runs(function () {
               form.submit({
                 params: {
-                  simple_foo: "barf!",
+                  simple_foo: "barf!"
                 },
                 success: echoFormResult,
-                scope: this,
+                scope: this
               });
             });
 
@@ -1369,8 +1369,8 @@ describe("Ext.direct.RemotingProvider", function () {
                 data: {
                   hidden_foo: "hide the sacred foo from infoodels!",
                   overt_foo: "behold the false, deceitful overt foo",
-                  simple_foo: "barf!",
-                },
+                  simple_foo: "barf!"
+                }
               });
             });
           });
@@ -1378,12 +1378,12 @@ describe("Ext.direct.RemotingProvider", function () {
           it("should pass form baseParams to direct fn", function () {
             runs(function () {
               form.getForm().baseParams = {
-                MEGA_FOO: "ALL YOUR FOO ARE BELONG TO US!",
+                MEGA_FOO: "ALL YOUR FOO ARE BELONG TO US!"
               };
 
               form.submit({
                 success: echoFormResult,
-                scope: this,
+                scope: this
               });
             });
 
@@ -1395,8 +1395,8 @@ describe("Ext.direct.RemotingProvider", function () {
                 data: {
                   hidden_foo: "hide the sacred foo from infoodels!",
                   overt_foo: "behold the false, deceitful overt foo",
-                  MEGA_FOO: "ALL YOUR FOO ARE BELONG TO US!",
-                },
+                  MEGA_FOO: "ALL YOUR FOO ARE BELONG TO US!"
+                }
               });
             });
           });
@@ -1406,12 +1406,12 @@ describe("Ext.direct.RemotingProvider", function () {
               form.getForm().api.submit = "TestAction.directMetaFormNamed";
 
               form.getForm().metadata = {
-                foo: "bargh!",
+                foo: "bargh!"
               };
 
               form.submit({
                 success: echoFormResult,
-                scope: this,
+                scope: this
               });
             });
 
@@ -1422,11 +1422,11 @@ describe("Ext.direct.RemotingProvider", function () {
                 success: true,
                 data: {
                   hidden_foo: "hide the sacred foo from infoodels!",
-                  overt_foo: "behold the false, deceitful overt foo",
+                  overt_foo: "behold the false, deceitful overt foo"
                 },
 
                 // JSONified!
-                metadata: '{"foo":"bargh!"}',
+                metadata: '{"foo":"bargh!"}'
               });
             });
           });
@@ -1439,7 +1439,7 @@ describe("Ext.direct.RemotingProvider", function () {
 
               form.submit({
                 success: echoFormResult,
-                scope: this,
+                scope: this
               });
             });
 
@@ -1450,11 +1450,11 @@ describe("Ext.direct.RemotingProvider", function () {
                 success: true,
                 data: {
                   hidden_foo: "hide the sacred foo from infoodels!",
-                  overt_foo: "behold the false, deceitful overt foo",
+                  overt_foo: "behold the false, deceitful overt foo"
                 },
 
                 // JSONified!
-                metadata: '["bram","blam"]',
+                metadata: '["bram","blam"]'
               });
             });
           });
@@ -1487,7 +1487,7 @@ describe("Ext.direct.RemotingProvider", function () {
             });
           });
         });
-      },
+      }
     );
   });
 });

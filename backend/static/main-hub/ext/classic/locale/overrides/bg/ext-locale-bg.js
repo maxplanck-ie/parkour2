@@ -22,7 +22,7 @@ Ext.onReady(function () {
       "Септември",
       "Октомври",
       "Ноември",
-      "Декември",
+      "Декември"
     ];
 
     Ext.Date.monthNumbers = {
@@ -37,7 +37,7 @@ Ext.onReady(function () {
       Sep: 8,
       Oct: 9,
       Nov: 10,
-      Dec: 11,
+      Dec: 11
     };
 
     Ext.Date.dayNames = [
@@ -47,7 +47,7 @@ Ext.onReady(function () {
       "Сряда",
       "Четвъртък",
       "Петък",
-      "Събота",
+      "Събота"
     ];
   }
 
@@ -57,35 +57,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u043b\u0432",
       // Bulgarian Leva
-      dateFormat: "d.m.Y",
+      dateFormat: "d.m.Y"
     });
   }
 });
 
 Ext.define("Ext.locale.bg.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.bg.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} избрани колони",
+  dragText: "{0} избрани колони"
 });
 
 Ext.define("Ext.locale.bg.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Затвори таб",
+  closeText: "Затвори таб"
 });
 
 Ext.define("Ext.locale.bg.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Невалидна стойност на полето",
+  invalidText: "Невалидна стойност на полето"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.bg.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Зареждане...",
+  loadingText: "Зареждане..."
 });
 
 Ext.define("Ext.locale.bg.picker.Date", {
@@ -100,13 +100,13 @@ Ext.define("Ext.locale.bg.picker.Date", {
   monthYearText: "Избери месец (Control+Up/Down за преместване по години)",
   todayTip: "{0} (Spacebar)",
   format: "d.m.y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.bg.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Отмени",
+  cancelText: "Отмени"
 });
 
 Ext.define("Ext.locale.bg.toolbar.Paging", {
@@ -119,7 +119,7 @@ Ext.define("Ext.locale.bg.toolbar.Paging", {
   lastText: "Последна страница",
   refreshText: "Презареди",
   displayMsg: "Показвайки {0} - {1} от {2}",
-  emptyMsg: "Няма данни за показване",
+  emptyMsg: "Няма данни за показване"
 });
 
 Ext.define("Ext.locale.bg.form.field.Text", {
@@ -128,14 +128,14 @@ Ext.define("Ext.locale.bg.form.field.Text", {
   maxLengthText: "Максималната дължина на това поле е {0}",
   blankText: "Това поле е задължително",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.bg.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Минималната стойност за това поле е {0}",
   maxText: "Максималната стойност за това поле е {0}",
-  nanText: "{0} не е валидно число",
+  nanText: "{0} не е валидно число"
 });
 
 Ext.define("Ext.locale.bg.form.field.Date", {
@@ -146,20 +146,20 @@ Ext.define("Ext.locale.bg.form.field.Date", {
   maxText: "Датата в това поле трябва да е преди {0}",
   invalidText: "{0} не е валидна дата - трябва да бъде във формат {1}",
   format: "d.m.y",
-  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d",
+  altFormats: "d.m.y|d/m/Y|d-m-y|d-m-Y|d/m|d-m|dm|dmy|dmY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.bg.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Зареждане...",
+      loadingText: "Зареждане..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.bg.form.field.VTypes", {
@@ -168,14 +168,14 @@ Ext.define("Ext.locale.bg.form.field.VTypes", {
   urlText:
     'Това поле трябва да бъде URL във формат "http:/' + '/www.example.com"',
   alphaText: "Това поле трябва да съдържа само букви и _",
-  alphanumText: "Това поле трябва да съдържа само букви, цифри и _",
+  alphanumText: "Това поле трябва да съдържа само букви, цифри и _"
 });
 
 Ext.define(
   "Ext.locale.bg.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Моля, въведете URL за връзката:",
+    createLinkText: "Моля, въведете URL за връзката:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -183,76 +183,76 @@ Ext.define(
         bold: {
           title: "Bold (Ctrl+B)",
           text: "Удебелява избрания текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Italic (Ctrl+I)",
           text: "Прави избрания текст курсив.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Underline (Ctrl+U)",
           text: "Подчертава избрания текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Уголеми текста",
           text: "Уголемява размера на шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Намали текста",
           text: "Намалява размера на шрифта.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Цвят на маркирания текст",
           text: "Променя фоновия цвят на избрания текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Цвят на шрифта",
           text: "Променя цвета на избрания текст.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Ляво подравняване",
           text: "Подравнява текста на ляво.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Центриране",
           text: "Центрира текста.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Дясно подравняване",
           text: "Подравнява текста на дясно.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Неномериран списък",
           text: "Започва неномериран списък.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Номериран списък",
           text: "Започва номериран списък.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Хипервръзка",
           text: "Превръща избрания текст в хипервръзка.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Редактиране на кода",
           text: "Преминаване в режим на редактиране на кода.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.bg.grid.header.Container", {
@@ -261,14 +261,14 @@ Ext.define("Ext.locale.bg.grid.header.Container", {
   sortDescText: "Подреди в намаляващ ред",
   lockText: "Заключи колона",
   unlockText: "Отключи колона",
-  columnsText: "Колони",
+  columnsText: "Колони"
 });
 
 Ext.define("Ext.locale.bg.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Име",
   valueText: "Стойност",
-  dateFormat: "d.m.Y",
+  dateFormat: "d.m.Y"
 });
 
 Ext.define("Ext.locale.bg.window.MessageBox", {
@@ -277,11 +277,11 @@ Ext.define("Ext.locale.bg.window.MessageBox", {
     ok: "OK",
     cancel: "Отмени",
     yes: "Да",
-    no: "Не",
-  },
+    no: "Не"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.bg.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

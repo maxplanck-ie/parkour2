@@ -13,5 +13,5 @@ Ext.define("Ext.locale.it.form.field.Date", {
   maxText: "La data deve essere minore o uguale a {0}",
   ariaMaxText: "La data deve essere minore o uguale a {0}",
   invalidText: "{0} non \u00E8 una data valida, deve essere nel formato {1}",
-  formatText: "Il formato richiesto \u00E8 {1}",
+  formatText: "Il formato richiesto \u00E8 {1}"
 });

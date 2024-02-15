@@ -15,7 +15,7 @@ Ext.define("Ext.theme.blackberry.ContextMenu", {
      */
     layout: {
       type: "vbox",
-      pack: "center",
-    },
-  },
+      pack: "center"
+    }
+  }
 });

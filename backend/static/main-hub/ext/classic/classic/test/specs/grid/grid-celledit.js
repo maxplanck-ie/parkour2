@@ -14,8 +14,8 @@ describe("grid-celledit", function () {
         "field7",
         "field8",
         "field9",
-        "field10",
-      ],
+        "field10"
+      ]
     }),
     synchronousLoad = true,
     proxyStoreLoad = Ext.data.ProxyStore.prototype.load,
@@ -31,9 +31,9 @@ describe("grid-celledit", function () {
     return grid.getView().getCellInclusive(
       {
         row: rowIdx,
-        column: cellIdx,
+        column: cellIdx
       },
-      true,
+      true
     );
   }
 
@@ -80,7 +80,7 @@ describe("grid-celledit", function () {
                 return !!plugin.activeEditor;
               },
               "editing to start",
-              2000,
+              2000
             );
 
             runs(function () {
@@ -114,7 +114,7 @@ describe("grid-celledit", function () {
                 isEditing(x, y)
               );
             },
-            "move to cell " + x + "," + y + "",
+            "move to cell " + x + "," + y + ""
           );
         }
 
@@ -135,8 +135,8 @@ describe("grid-celledit", function () {
                 field: {
                   xtype: "textfield",
                   id: "field" + i,
-                  name: "field" + i,
-                },
+                  name: "field" + i
+                }
               });
             }
           }
@@ -152,13 +152,13 @@ describe("grid-celledit", function () {
               field7: i + "." + 7,
               field8: i + "." + 8,
               field9: i + "." + 9,
-              field10: i + "." + 10,
+              field10: i + "." + 10
             });
           }
 
           store = new Ext.data.Store({
             model: GridEventModel,
-            data: data,
+            data: data
           });
 
           if (pluginCfg !== null) {
@@ -176,12 +176,12 @@ describe("grid-celledit", function () {
                 height: 500,
                 bufferedRenderer: buffered,
                 viewConfig: {
-                  mouseOverOutBuffer: 0,
+                  mouseOverOutBuffer: 0
                 },
-                renderTo: Ext.getBody(),
+                renderTo: Ext.getBody()
               },
-              gridCfg,
-            ),
+              gridCfg
+            )
           );
           view = grid.getView();
           colRef = grid.getColumnManager().getColumns();
@@ -214,13 +214,13 @@ describe("grid-celledit", function () {
                 editor: {
                   completeOnEdit: false,
                   field: {
-                    xtype: "combobox",
-                  },
-                },
+                    xtype: "combobox"
+                  }
+                }
               },
               {
-                dataIndex: "field2",
-              },
+                dataIndex: "field2"
+              }
             ];
 
             makeGrid(colCfg);
@@ -229,11 +229,11 @@ describe("grid-celledit", function () {
             expect(
               plugin
                 .getEditor(plugin.context.record, plugin.context.column)
-                .isVisible(),
+                .isVisible()
             ).toBe(true);
             expect(
               plugin.getEditor(plugin.context.record, plugin.context.column)
-                .completeOnEdit,
+                .completeOnEdit
             ).toBe(false);
 
             grid.destroy();
@@ -244,17 +244,17 @@ describe("grid-celledit", function () {
             // Test for https://sencha.jira.com/browse/EXTJS-19961
             // Field must be of specified type on subsequent usage.
             expect(
-              plugin.activeEditor.field instanceof Ext.form.field.ComboBox,
+              plugin.activeEditor.field instanceof Ext.form.field.ComboBox
             ).toBe(true);
             expect(plugin.editing).toBe(true);
             expect(
               plugin
                 .getEditor(plugin.context.record, plugin.context.column)
-                .isVisible(),
+                .isVisible()
             ).toBe(true);
             expect(
               plugin.getEditor(plugin.context.record, plugin.context.column)
-                .completeOnEdit,
+                .completeOnEdit
             ).toBe(false);
           });
         });
@@ -262,15 +262,15 @@ describe("grid-celledit", function () {
         describe("resolveListenerScope", function () {
           it("should resolve the scope to the grid", function () {
             var fooScope = {
-              someFn: function () {},
+              someFn: function () {}
             };
 
             spyOn(fooScope, "someFn");
 
             makeGrid(null, {
               listeners: {
-                beforeedit: "someFn",
-              },
+                beforeedit: "someFn"
+              }
             });
             grid.resolveSatelliteListenerScope = function () {
               return fooScope;
@@ -288,8 +288,8 @@ describe("grid-celledit", function () {
                 renderer: function () {
                   return "foo";
                 },
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             triggerCellMouseEvent("dblclick", 0, 0);
             expect(plugin.getActiveEditor().field.getValue()).toBe("1.1");
@@ -302,8 +302,8 @@ describe("grid-celledit", function () {
                 renderer: function () {
                   return "foo";
                 },
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             store.first().set("field1", "");
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -317,8 +317,8 @@ describe("grid-celledit", function () {
                 renderer: function () {
                   return "foo";
                 },
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             store.first().set("field1", 0);
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -332,8 +332,8 @@ describe("grid-celledit", function () {
                 renderer: function () {
                   return "foo";
                 },
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             store.first().set("field1", null);
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -347,8 +347,8 @@ describe("grid-celledit", function () {
                 renderer: function () {
                   return "foo";
                 },
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             store.first().set("field1", undefined);
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -364,9 +364,9 @@ describe("grid-celledit", function () {
             editorParentNode = view.getCellByPosition(
               {
                 row: 0,
-                column: 0,
+                column: 0
               },
-              true,
+              true
             );
           });
 
@@ -386,7 +386,7 @@ describe("grid-celledit", function () {
                 field7: i + "." + 7,
                 field8: i + "." + 8,
                 field9: i + "." + 9,
-                field10: i + "." + 10,
+                field10: i + "." + 10
               });
             }
             store.add(data);
@@ -395,7 +395,7 @@ describe("grid-celledit", function () {
             expect(
               plugin
                 .getEditor(plugin.context.record, plugin.context.column)
-                .isVisible(),
+                .isVisible()
             ).toBe(true);
             expect(plugin.getActiveColumn()).toBe(colRef[0]);
             expect(plugin.getActiveRecord()).toBe(store.getAt(900));
@@ -409,14 +409,14 @@ describe("grid-celledit", function () {
 
             // CellEditors should be rendered into the grid view which they are editing, and should scroll along with the view.
             expect(plugin.getActiveEditor().el.dom.parentNode).toBe(
-              editorParentNode,
+              editorParentNode
             );
           });
 
           it("should be able to be trigger by passing a position", function () {
             plugin.startEditByPosition({
               row: 0,
-              column: 2,
+              column: 2
             });
             expect(plugin.editing).toBe(true);
             expect(plugin.getActiveColumn()).toBe(colRef[2]);
@@ -471,7 +471,7 @@ describe("grid-celledit", function () {
                   field7: i + "." + 7,
                   field8: i + "." + 8,
                   field9: i + "." + 9,
-                  field10: i + "." + 10,
+                  field10: i + "." + 10
                 });
               }
               store.add(data);
@@ -487,7 +487,7 @@ describe("grid-celledit", function () {
               runs(function () {
                 expect(Ext.getDetachedBody().contains(editorEl)).toBe(true);
               });
-            },
+            }
           );
 
           it("should continue editing after a refresh", function () {
@@ -563,16 +563,16 @@ describe("grid-celledit", function () {
                                 {
                                   dataIndex: "field1",
                                   locked: withLocking,
-                                  editor: new Ext.form.field.Text(),
+                                  editor: new Ext.form.field.Text()
                                 },
                                 {
-                                  dataIndex: "field2",
-                                },
+                                  dataIndex: "field2"
+                                }
                               ],
                               {},
                               {
-                                renderTo: beforeRender ? null : Ext.getBody(),
-                              },
+                                renderTo: beforeRender ? null : Ext.getBody()
+                              }
                             );
                             grid.destroy();
                             expect(CM.getCount()).toBe(count);
@@ -586,16 +586,16 @@ describe("grid-celledit", function () {
                                 {
                                   dataIndex: "field1",
                                   locked: withLocking,
-                                  field: new Ext.form.field.Text(),
+                                  field: new Ext.form.field.Text()
                                 },
                                 {
-                                  dataIndex: "field2",
-                                },
+                                  dataIndex: "field2"
+                                }
                               ],
                               {},
                               {
-                                renderTo: beforeRender ? null : Ext.getBody(),
-                              },
+                                renderTo: beforeRender ? null : Ext.getBody()
+                              }
                             );
                             grid.destroy();
                             expect(CM.getCount()).toBe(count);
@@ -610,17 +610,17 @@ describe("grid-celledit", function () {
                                   dataIndex: "field1",
                                   locked: withLocking,
                                   editor: {
-                                    xtype: "textfield",
-                                  },
+                                    xtype: "textfield"
+                                  }
                                 },
                                 {
-                                  dataIndex: "field2",
-                                },
+                                  dataIndex: "field2"
+                                }
                               ],
                               {},
                               {
-                                renderTo: beforeRender ? null : Ext.getBody(),
-                              },
+                                renderTo: beforeRender ? null : Ext.getBody()
+                              }
                             );
                             grid.destroy();
                             expect(CM.getCount()).toBe(count);
@@ -635,27 +635,27 @@ describe("grid-celledit", function () {
                                   dataIndex: "field1",
                                   locked: withLocking,
                                   field: {
-                                    xtype: "textfield",
-                                  },
+                                    xtype: "textfield"
+                                  }
                                 },
                                 {
-                                  dataIndex: "field2",
-                                },
+                                  dataIndex: "field2"
+                                }
                               ],
                               {},
                               {
-                                renderTo: beforeRender ? null : Ext.getBody(),
-                              },
+                                renderTo: beforeRender ? null : Ext.getBody()
+                              }
                             );
                             grid.destroy();
                             expect(CM.getCount()).toBe(count);
                           });
-                        },
+                        }
                       );
                     }
                     makeRenderSuite(false);
                     makeRenderSuite(true);
-                  },
+                  }
                 );
 
                 describe("after activation", function () {
@@ -666,11 +666,11 @@ describe("grid-celledit", function () {
                       {
                         dataIndex: "field1",
                         locked: withLocking,
-                        editor: new Ext.form.field.Text(),
+                        editor: new Ext.form.field.Text()
                       },
                       {
-                        dataIndex: "field2",
-                      },
+                        dataIndex: "field2"
+                      }
                     ]);
                     triggerCellMouseEvent("click", 0, 0);
                     grid.destroy();
@@ -684,11 +684,11 @@ describe("grid-celledit", function () {
                       {
                         dataIndex: "field1",
                         locked: withLocking,
-                        field: new Ext.form.field.Text(),
+                        field: new Ext.form.field.Text()
                       },
                       {
-                        dataIndex: "field2",
-                      },
+                        dataIndex: "field2"
+                      }
                     ]);
                     triggerCellMouseEvent("click", 0, 0);
                     grid.destroy();
@@ -703,12 +703,12 @@ describe("grid-celledit", function () {
                         dataIndex: "field1",
                         locked: withLocking,
                         editor: {
-                          xtype: "textfield",
-                        },
+                          xtype: "textfield"
+                        }
                       },
                       {
-                        dataIndex: "field2",
-                      },
+                        dataIndex: "field2"
+                      }
                     ]);
                     triggerCellMouseEvent("click", 0, 0);
                     grid.destroy();
@@ -723,19 +723,19 @@ describe("grid-celledit", function () {
                         dataIndex: "field1",
                         locked: withLocking,
                         field: {
-                          xtype: "textfield",
-                        },
+                          xtype: "textfield"
+                        }
                       },
                       {
-                        dataIndex: "field2",
-                      },
+                        dataIndex: "field2"
+                      }
                     ]);
                     triggerCellMouseEvent("click", 0, 0);
                     grid.destroy();
                     expect(CM.getCount()).toBe(count);
                   });
                 });
-              },
+              }
             );
           }
           makeCleanupSuite(false);
@@ -756,16 +756,16 @@ describe("grid-celledit", function () {
                     field: {
                       xtype: "textfield",
                       id: "field" + i,
-                      name: "field" + i,
-                    },
-                  }),
+                      name: "field" + i
+                    }
+                  })
                 );
               } else {
                 cols.push(
                   new Ext.grid.column.Column({
                     name: "F" + i,
-                    dataIndex: "field" + i,
-                  }),
+                    dataIndex: "field" + i
+                  })
                 );
               }
 
@@ -789,7 +789,7 @@ describe("grid-celledit", function () {
               makeGrid(
                 makeCols(),
                 { clicksToEdit: 1 },
-                { selType: "checkboxmodel" },
+                { selType: "checkboxmodel" }
               );
             });
 
@@ -1196,7 +1196,7 @@ describe("grid-celledit", function () {
                 jasmine.fireKeyEvent(
                   plugin.getActiveEditor().field.inputEl,
                   "keydown",
-                  ENTER,
+                  ENTER
                 );
               });
 
@@ -1235,7 +1235,7 @@ describe("grid-celledit", function () {
         describe("positioning", function () {
           function getCellXY(rowIdx, colIdx) {
             return Ext.fly(
-              view.getCell(store.getAt(rowIdx), colRef[colIdx]),
+              view.getCell(store.getAt(rowIdx), colRef[colIdx])
             ).getXY();
           }
 
@@ -1268,7 +1268,7 @@ describe("grid-celledit", function () {
             colRef[0].setEditor(new Ext.form.field.Trigger());
             triggerCellMouseEvent("dblclick", 0, 0);
             expect(plugin.getActiveEditor().field.getXType()).toBe(
-              "triggerfield",
+              "triggerfield"
             );
           });
 
@@ -1279,7 +1279,7 @@ describe("grid-celledit", function () {
             });
             triggerCellMouseEvent("dblclick", 0, 0);
             expect(plugin.getActiveEditor().field.getXType()).toBe(
-              "triggerfield",
+              "triggerfield"
             );
           });
 
@@ -1287,12 +1287,12 @@ describe("grid-celledit", function () {
             var called = false;
             makeGrid([
               {
-                dataIndex: "field1",
+                dataIndex: "field1"
               },
               {
                 dataIndex: "field2",
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
             colRef[0].setEditor(new Ext.form.field.Text());
@@ -1320,8 +1320,8 @@ describe("grid-celledit", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                field: field,
-              },
+                field: field
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
             colRef[0].setEditor(new Ext.form.field.Text());
@@ -1336,54 +1336,54 @@ describe("grid-celledit", function () {
                 dataIndex: "field1",
                 field: {
                   xtype: "textfield",
-                  itemId: "field1",
-                },
+                  itemId: "field1"
+                }
               },
               {
                 hidden: true,
                 dataIndex: "field2",
                 field: {
                   xtype: "textfield",
-                  itemId: "field2",
-                },
+                  itemId: "field2"
+                }
               },
               {
                 hidden: true,
                 dataIndex: "field3",
                 field: {
                   xtype: "textfield",
-                  itemId: "field3",
-                },
+                  itemId: "field3"
+                }
               },
               {
                 dataIndex: "field4",
                 field: {
                   xtype: "textfield",
-                  itemId: "field4",
-                },
+                  itemId: "field4"
+                }
               },
               {
                 dataIndex: "field5",
                 field: {
                   xtype: "textfield",
-                  itemId: "field5",
-                },
+                  itemId: "field5"
+                }
               },
               {
                 hidden: true,
                 dataIndex: "field6",
                 field: {
                   xtype: "textfield",
-                  itemId: "field6",
-                },
+                  itemId: "field6"
+                }
               },
               {
                 dataIndex: "field7",
                 field: {
                   xtype: "textfield",
-                  itemId: "field7",
-                },
-              },
+                  itemId: "field7"
+                }
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
           });
@@ -1426,7 +1426,7 @@ describe("grid-celledit", function () {
               });
               plugin.startEditByPosition({
                 row: 0,
-                column: 1,
+                column: 1
               });
               expect(c.column).toBe(colRef[3]);
             });
@@ -1439,7 +1439,7 @@ describe("grid-celledit", function () {
               });
               plugin.startEditByPosition({
                 row: 0,
-                column: 5,
+                column: 5
               });
               expect(c.column).toBe(colRef[4]);
             });
@@ -1477,28 +1477,28 @@ describe("grid-celledit", function () {
                 locked: true,
                 dataIndex: "field1",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 locked: true,
                 dataIndex: "field2",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 dataIndex: "field3",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 dataIndex: "field4",
                 field: {
-                  xtype: "textfield",
-                },
-              },
+                  xtype: "textfield"
+                }
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
           });
@@ -1534,7 +1534,7 @@ describe("grid-celledit", function () {
 
             // CellEditors should be rendered into the grid view which they are editing, and should scroll along with the view.
             expect(plugin.getActiveEditor().el.dom.parentNode).toBe(
-              context.cell,
+              context.cell
             );
 
             // The editing in the locked side should not have caused a scroll of the normal side
@@ -1564,7 +1564,7 @@ describe("grid-celledit", function () {
 
             // CellEditors should be rendered into the grid view which they are editing, and should scroll along with the view.
             expect(plugin.getActiveEditor().el.dom.parentNode).toBe(
-              context.cell,
+              context.cell
             );
           });
 
@@ -1577,7 +1577,7 @@ describe("grid-celledit", function () {
             plugin.on({
               beforeedit: function (a1, a2) {
                 context = a2;
-              },
+              }
             });
             triggerCellMouseEvent("dblclick", 0, 2);
 
@@ -1594,7 +1594,7 @@ describe("grid-celledit", function () {
             runs(function () {
               // CellEditors should be rendered into the grid view which they are editing, and should scroll along with the view.
               expect(plugin.getActiveEditor().el.dom.parentNode).toBe(
-                context.cell,
+                context.cell
               );
 
               plugin.completeEdit();
@@ -1630,7 +1630,7 @@ describe("grid-celledit", function () {
               expect(context.originalValue).toBe("1.3");
               expect(context.record).toBe(getRec(0));
               expect(context.row).toBe(
-                activeView.getRow(activeView.all.first()),
+                activeView.getRow(activeView.all.first())
               );
               expect(context.rowIdx).toBe(0);
               expect(context.store).toBe(store);
@@ -1638,7 +1638,7 @@ describe("grid-celledit", function () {
 
               // CellEditors should be rendered into the grid view which they are editing, and should scroll along with the view.
               expect(plugin.getActiveEditor().el.dom.parentNode).toBe(
-                context.cell,
+                context.cell
               );
             });
           });
@@ -1667,7 +1667,7 @@ describe("grid-celledit", function () {
               expect(
                 activeEditor &&
                   activeEditor.rendered &&
-                  activeEditor.el.dom.parentNode === activeContext.cell,
+                  activeEditor.el.dom.parentNode === activeContext.cell
               ).toBeTruthy();
             });
 
@@ -1678,7 +1678,7 @@ describe("grid-celledit", function () {
                 grid.actionableMode === false &&
                   grid.normalGrid.view.actionableMode === false &&
                   grid.lockedGrid.view.actionableMode === false &&
-                  Ext.Element.getActiveElement() === cell0_3.getCell(true),
+                  Ext.Element.getActiveElement() === cell0_3.getCell(true)
               ).toBe(true);
             });
 
@@ -1689,7 +1689,7 @@ describe("grid-celledit", function () {
               expect(
                 activeEditor &&
                   activeEditor.rendered &&
-                  activeEditor.el.dom.parentNode === activeContext.cell,
+                  activeEditor.el.dom.parentNode === activeContext.cell
               ).toBeTruthy();
             });
           });
@@ -1704,18 +1704,18 @@ describe("grid-celledit", function () {
               grid.getColumnManager().getColumns(),
               function (col) {
                 old.push(col.getEditor());
-              },
+              }
             );
             grid.reconfigure(null, [
               {
                 dataIndex: "field1",
                 field: {
-                  id: "newEd",
-                },
+                  id: "newEd"
+                }
               },
               {
-                dataIndex: "field2",
-              },
+                dataIndex: "field2"
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
           });
@@ -1812,9 +1812,9 @@ describe("grid-celledit", function () {
                   queryMode: "local",
                   store: store,
                   valueField: "field1",
-                  displayField: "field1",
-                },
-              },
+                  displayField: "field1"
+                }
+              }
             ]);
 
             startEditing(0, 0);
@@ -1825,7 +1825,7 @@ describe("grid-celledit", function () {
               jasmine.fireKeyEvent(
                 field.inputEl,
                 "keydown",
-                Ext.event.Event.ENTER,
+                Ext.event.Event.ENTER
               );
 
               expect(field.isExpanded).toBe(false);
@@ -1858,15 +1858,15 @@ describe("grid-celledit", function () {
                 locked: true,
                 dataIndex: "field1",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 dataIndex: "field4",
                 field: {
-                  xtype: "textfield",
-                },
-              },
+                  xtype: "textfield"
+                }
+              }
             ]);
 
             startEditing(0, 0);
@@ -1874,12 +1874,12 @@ describe("grid-celledit", function () {
             runs(function () {
               // We should be editing in the locked side
               expect(
-                plugin.getActiveEditor().context.view === grid.lockedGrid.view,
+                plugin.getActiveEditor().context.view === grid.lockedGrid.view
               ).toBe(true);
               expect(
                 plugin
                   .getActiveEditor()
-                  .context.isEqual(grid.lockedGrid.view.actionPosition),
+                  .context.isEqual(grid.lockedGrid.view.actionPosition)
               ).toBe(true);
 
               // This should Tab into the normal side
@@ -1899,7 +1899,7 @@ describe("grid-celledit", function () {
               expect(
                 plugin
                   .getActiveEditor()
-                  .context.isEqual(grid.normalGrid.view.actionPosition),
+                  .context.isEqual(grid.normalGrid.view.actionPosition)
               ).toBe(true);
             });
           });
@@ -1909,7 +1909,7 @@ describe("grid-celledit", function () {
           it("should not have the editors participate as part of a form", function () {
             var values;
             makeGrid(undefined, undefined, {
-              renderTo: null,
+              renderTo: null
             });
             var form = new Ext.form.Panel({
               renderTo: Ext.getBody(),
@@ -1917,15 +1917,15 @@ describe("grid-celledit", function () {
                 {
                   name: "foo",
                   xtype: "textfield",
-                  value: "v1",
+                  value: "v1"
                 },
                 {
                   name: "bar",
                   xtype: "textfield",
-                  value: "v2",
+                  value: "v2"
                 },
-                grid,
-              ],
+                grid
+              ]
             });
 
             startEditing(0, 0);
@@ -1934,7 +1934,7 @@ describe("grid-celledit", function () {
               values = form.getForm().getValues();
               expect(values).toEqual({
                 foo: "v1",
-                bar: "v2",
+                bar: "v2"
               });
 
               form.destroy();
@@ -1948,20 +1948,20 @@ describe("grid-celledit", function () {
               {
                 dataIndex: "name",
                 locked: true,
-                editor: "textfield",
+                editor: "textfield"
               },
               {
                 itemId: "ct",
                 columns: [
                   {
                     dataIndex: "email",
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    dataIndex: "phone",
-                  },
-                ],
-              },
+                    dataIndex: "phone"
+                  }
+                ]
+              }
             ]);
 
             var headerCt = grid.headerCt;
@@ -1989,10 +1989,10 @@ describe("grid-celledit", function () {
                   listeners: {
                     focus: function () {
                       buttonFocused = true;
-                    },
-                  },
-                },
-              ],
+                    }
+                  }
+                }
+              ]
             });
             // Make last column non editable
             delete colRef[4].field;
@@ -2049,7 +2049,7 @@ describe("grid-celledit", function () {
                 expect(plugin.getActiveColumn()).toBe(colRef[0]);
                 expect(plugin.getActiveRecord()).toBe(store.getAt(2));
               });
-            },
+            }
           ); // eo: it
 
           webkitIt(
@@ -2059,7 +2059,7 @@ describe("grid-celledit", function () {
               grid.on({
                 edit: function () {
                   view.refresh();
-                },
+                }
               });
 
               // Begin editing 1.1
@@ -2117,7 +2117,7 @@ describe("grid-celledit", function () {
                 expect(plugin.getActiveColumn()).toBe(colRef[0]);
                 expect(plugin.getActiveRecord()).toBe(store.getAt(2));
               });
-            },
+            }
           ); // eo: it
 
           webkitIt(
@@ -2127,7 +2127,7 @@ describe("grid-celledit", function () {
               grid.on({
                 edit: function () {
                   store.loadRecords(store.getRange());
-                },
+                }
               });
 
               // Begin editing 1.1
@@ -2185,7 +2185,7 @@ describe("grid-celledit", function () {
                 expect(plugin.getActiveColumn()).toBe(colRef[0]);
                 expect(plugin.getActiveRecord()).toBe(store.getAt(2));
               });
-            },
+            }
           ); // eo: it
 
           webkitIt(
@@ -2195,7 +2195,7 @@ describe("grid-celledit", function () {
               grid.on({
                 edit: function () {
                   store.loadRecords(store.getRange(0, 0));
-                },
+                }
               });
 
               // Begin editing 3.1
@@ -2221,7 +2221,7 @@ describe("grid-celledit", function () {
                 // Tab to 1.4
                 tabAndWaitFor(0, 3);
               });
-            },
+            }
           ); // eo: it
 
           webkitIt(
@@ -2234,7 +2234,7 @@ describe("grid-celledit", function () {
                 },
                 edit: function (editor, context) {
                   calls.push([1, context.column]);
-                },
+                }
               });
 
               triggerCellMouseEvent("dblclick", 0, 0);
@@ -2242,7 +2242,7 @@ describe("grid-celledit", function () {
               jasmine.fireKeyEvent(
                 Ext.Element.getActiveElement(),
                 "keydown",
-                TAB,
+                TAB
               );
               waitsFor(function () {
                 return isEditing(0, 1);
@@ -2253,10 +2253,10 @@ describe("grid-celledit", function () {
                   [0, colRef[0]],
                   [1, colRef[0]],
                   [0, colRef[1]],
-                  [1, colRef[1]],
+                  [1, colRef[1]]
                 ]);
               });
-            },
+            }
           ); // eo: it
 
           webkitIt("should be able to veto editing", function () {
@@ -2270,7 +2270,7 @@ describe("grid-celledit", function () {
                 if (context.column === colRef[2]) {
                   return false;
                 }
-              },
+              }
             });
 
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -2278,7 +2278,7 @@ describe("grid-celledit", function () {
             jasmine.fireKeyEvent(
               Ext.Element.getActiveElement(),
               "keydown",
-              TAB,
+              TAB
             );
             waitsFor(function () {
               return isEditing(0, 2);
@@ -2288,7 +2288,7 @@ describe("grid-celledit", function () {
               jasmine.fireKeyEvent(
                 Ext.Element.getActiveElement(),
                 "keydown",
-                TAB,
+                TAB
               );
               expect(plugin.editing).toBe(true);
               expect(plugin.context.column).toBe(colRef[2]);
@@ -2304,23 +2304,23 @@ describe("grid-celledit", function () {
                 [
                   {
                     dataIndex: "field1",
-                    editor: "textfield",
+                    editor: "textfield"
                   },
                   {
                     dataIndex: "field2",
-                    editor: "textfield",
+                    editor: "textfield"
                   },
                   {
                     dataIndex: "field3",
-                    editor: "textfield",
-                  },
+                    editor: "textfield"
+                  }
                 ],
                 {},
                 {
                   features: {
-                    ftype: "grouping",
-                  },
-                },
+                    ftype: "grouping"
+                  }
+                }
               );
               plugin.startEdit(0, 0);
               expect(plugin.editing).toBe(true);
@@ -2333,7 +2333,7 @@ describe("grid-celledit", function () {
               jasmine.fireKeyEvent(
                 Ext.Element.getActiveElement(),
                 "keydown",
-                TAB,
+                TAB
               );
               waits(20);
               runs(function () {
@@ -2341,7 +2341,7 @@ describe("grid-celledit", function () {
                 jasmine.fireKeyEvent(
                   Ext.Element.getActiveElement(),
                   "keydown",
-                  TAB,
+                  TAB
                 );
               });
               waits(20);
@@ -2350,7 +2350,7 @@ describe("grid-celledit", function () {
                 jasmine.fireKeyEvent(
                   Ext.Element.getActiveElement(),
                   "keydown",
-                  TAB,
+                  TAB
                 );
               });
               waits(20);
@@ -2358,7 +2358,7 @@ describe("grid-celledit", function () {
                 expect(plugin.getActiveColumn()).toBe(colRef[0]);
                 expect(plugin.getActiveRecord()).toBe(store.getAt(1));
               });
-            },
+            }
           );
         });
 
@@ -2398,28 +2398,28 @@ describe("grid-celledit", function () {
                 locked: true,
                 dataIndex: "field1",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 locked: true,
                 dataIndex: "field2",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 dataIndex: "field3",
                 field: {
-                  xtype: "textfield",
-                },
+                  xtype: "textfield"
+                }
               },
               {
                 dataIndex: "field4",
                 field: {
-                  xtype: "textfield",
-                },
-              },
+                  xtype: "textfield"
+                }
+              }
             ]);
             plugin = grid.view.editingPlugin;
             colRef = grid.getColumnManager().getColumns();
@@ -2439,19 +2439,19 @@ describe("grid-celledit", function () {
               inputField,
               "mousedown",
               editorxy[0],
-              editorxy[1],
+              editorxy[1]
             );
             jasmine.fireMouseEvent(
               inputField,
               "mousemove",
               editorxy[0],
-              editorxy[1],
+              editorxy[1]
             );
             jasmine.fireMouseEvent(
               cell00,
               "mousemove",
               cell00xy[0],
-              cell00xy[1],
+              cell00xy[1]
             );
             jasmine.fireMouseEvent(cell00, "mouseup", cell00xy[0], cell00xy[1]);
           });
@@ -2480,8 +2480,8 @@ describe("grid-celledit", function () {
                   grouping: false,
                   productionQuality: false,
                   tested: false,
-                  version: 0.01,
-                },
+                  version: 0.01
+                }
               });
               colRef = grid.getColumnManager().getColumns();
               plugin = grid.view.editingPlugin;
@@ -2513,14 +2513,14 @@ describe("grid-celledit", function () {
                 activeEditor.on({
                   complete: function () {
                     lastActiveEditor = activeEditor;
-                  },
+                  }
                 });
 
                 // Tab down from "grouping" to "productionQuality"
                 jasmine.fireKeyEvent(
                   activeEditor.field.inputEl,
                   "keydown",
-                  TAB,
+                  TAB
                 );
               });
 
@@ -2538,7 +2538,7 @@ describe("grid-celledit", function () {
                 jasmine.fireKeyEvent(
                   activeEditor.field.inputEl,
                   "keydown",
-                  TAB,
+                  TAB
                 );
               });
 
@@ -2568,7 +2568,7 @@ describe("grid-celledit", function () {
                 // At this time, the previously active editor should have been hidden
                 expect(lastActiveEditor.isVisible()).toBe(false);
               });
-            },
+            }
           );
         });
 
@@ -2579,13 +2579,13 @@ describe("grid-celledit", function () {
                 dataIndex: "field1",
                 editor: {
                   xtype: "combobox",
-                  store: ["Foo", "Bar", "Baz"],
-                },
-              },
+                  store: ["Foo", "Bar", "Baz"]
+                }
+              }
             ]);
             plugin.startEditByPosition({
               row: 0,
-              column: 0,
+              column: 0
             });
             var field = plugin.getActiveEditor().field;
             jasmine.waitForFocus(field);
@@ -2611,16 +2611,16 @@ describe("grid-celledit", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                editor: "textfield",
+                editor: "textfield"
               },
               {
                 dataIndex: "field2",
-                editor: "textfield",
+                editor: "textfield"
               },
               {
                 dataIndex: "field3",
-                editor: "textfield",
-              },
+                editor: "textfield"
+              }
             ]);
             store.sort("field1");
             plugin.startEdit(0, 0);
@@ -2633,7 +2633,7 @@ describe("grid-celledit", function () {
               jasmine.fireKeyEvent(
                 field.inputEl,
                 "keydown",
-                Ext.event.Event.TAB,
+                Ext.event.Event.TAB
               );
             });
 
@@ -2644,7 +2644,7 @@ describe("grid-celledit", function () {
             });
           });
         });
-      },
+      }
     );
   }
   createSuite(false);
@@ -2663,18 +2663,18 @@ describe("grid-celledit", function () {
             children: [
               {
                 text: "node2",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           width: 200,
           viewConfig: {
             plugins: {
               pluginId: "ddPlug",
-              ptype: "treeviewdragdrop",
-            },
+              ptype: "treeviewdragdrop"
+            }
           },
-          renderTo: document.body,
+          renderTo: document.body
         });
 
         grid = new Ext.grid.property.Grid({
@@ -2683,8 +2683,8 @@ describe("grid-celledit", function () {
           renderTo: document.body,
           source: {
             text: "abc",
-            autoFitColumns: true,
-          },
+            autoFitColumns: true
+          }
         });
         cellEditing = grid.findPlugin("cellediting");
       });
@@ -2740,7 +2740,7 @@ describe("grid-celledit", function () {
           runs(function () {
             jasmine.fireMouseEvent(tree.view.getNode(1), "mouseup");
           });
-        },
+        }
       );
     });
   });

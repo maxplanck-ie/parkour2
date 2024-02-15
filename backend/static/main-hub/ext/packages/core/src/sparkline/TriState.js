@@ -55,7 +55,7 @@ Ext.define("Ext.sparkline.TriState", {
      *         "1:": "red"
      *     }
      */
-    colorMap: {},
+    colorMap: {}
   },
 
   tipTpl: [
@@ -73,8 +73,8 @@ Ext.define("Ext.sparkline.TriState", {
           return "Win";
         }
         return v;
-      },
-    },
+      }
+    }
   ],
 
   applyColorMap: function (colorMap) {
@@ -125,7 +125,7 @@ Ext.define("Ext.sparkline.TriState", {
       isNull: this.values[region] == null,
       value: this.values[region],
       color: this.calcColor(this.values[region], region),
-      offset: region,
+      offset: region
     };
   },
 
@@ -186,5 +186,5 @@ Ext.define("Ext.sparkline.TriState", {
     canvas
       .drawRect(x, y, me.getBarWidth() - 1, height - 1, color, color)
       .append();
-  },
+  }
 });

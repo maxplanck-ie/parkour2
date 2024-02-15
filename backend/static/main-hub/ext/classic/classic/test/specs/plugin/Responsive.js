@@ -8,14 +8,14 @@ describe("Ext.plugin.Responsive", function () {
         landscape: {
           width: 1024,
           height: 768,
-          orientation: "landscape",
+          orientation: "landscape"
         },
         portrait: {
           width: 768,
           height: 1024,
-          orientation: "portrait",
-        },
-      },
+          orientation: "portrait"
+        }
+      }
     },
     env;
 
@@ -55,8 +55,8 @@ describe("Ext.plugin.Responsive", function () {
       env = environments.ipad.landscape;
       Responsive.context = {
         platform: {
-          tablet: true,
-        },
+          tablet: true
+        }
       };
     });
     afterEach(function () {
@@ -81,30 +81,30 @@ describe("Ext.plugin.Responsive", function () {
             responsiveFormulas: {
               narrow: function (state) {
                 return state.width < 800;
-              },
+              }
             },
             responsiveConfig: {
               "width < 800": {
-                region: "north",
+                region: "north"
               },
 
               "width >= 800": {
-                region: "west",
+                region: "west"
               },
 
               narrow: {
-                title: "Title - Narrow",
+                title: "Title - Narrow"
               },
               "!narrow": {
-                title: "Title - Not Narrow",
-              },
-            },
+                title: "Title - Not Narrow"
+              }
+            }
           },
           {
             title: "Center",
-            region: "center",
-          },
-        ],
+            region: "center"
+          }
+        ]
       });
     }
 
@@ -125,7 +125,7 @@ describe("Ext.plugin.Responsive", function () {
     describe("creation", function () {
       it("should be created using config object", function () {
         createPanel({
-          ptype: "responsive",
+          ptype: "responsive"
         });
 
         var child = panel.lookupReference("child");
@@ -135,8 +135,8 @@ describe("Ext.plugin.Responsive", function () {
       it("should be created using array of config objects", function () {
         createPanel([
           {
-            ptype: "responsive",
-          },
+            ptype: "responsive"
+          }
         ]);
 
         var child = panel.lookupReference("child");

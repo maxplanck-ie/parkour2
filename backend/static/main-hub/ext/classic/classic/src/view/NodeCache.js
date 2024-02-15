@@ -11,7 +11,7 @@ Ext.define(
   {
     requires: ["Ext.dom.CompositeElementLite"],
     statics: {
-      range: document.createRange && document.createRange(),
+      range: document.createRange && document.createRange()
     },
 
     constructor: function (view) {
@@ -100,7 +100,7 @@ Ext.define(
             "Discontiguous range would result from inserting " +
               nodes.length +
               " nodes at " +
-              insertPoint,
+              insertPoint
           );
         }
         //</debug>
@@ -303,7 +303,7 @@ Ext.define(
         me.view.dataSource.getRange(start, end),
         start,
         removed,
-        me.view,
+        me.view
       );
     },
 
@@ -469,7 +469,7 @@ Ext.define(
               el = elements[i];
               delete elements[i];
               removedRecords.push(
-                store.getByInternalId(el.getAttribute("data-recordId")),
+                store.getByInternalId(el.getAttribute("data-recordId"))
               );
               removedItems.push(el);
             }
@@ -479,7 +479,7 @@ Ext.define(
               delete elements[i];
               Ext.removeNode(el);
               removedRecords.push(
-                store.getByInternalId(el.getAttribute("data-recordId")),
+                store.getByInternalId(el.getAttribute("data-recordId"))
               );
               removedItems.push(el);
             }
@@ -489,7 +489,7 @@ Ext.define(
             removedRecords,
             removeStart,
             removedItems,
-            view,
+            view
           );
           me.endIndex -= removeCount;
         }
@@ -511,7 +511,7 @@ Ext.define(
             newRecords,
             me.startIndex,
             children,
-            view,
+            view
           );
         }
       }
@@ -530,7 +530,7 @@ Ext.define(
               el = elements[i];
               delete elements[i];
               removedRecords.push(
-                store.getByInternalId(el.getAttribute("data-recordId")),
+                store.getByInternalId(el.getAttribute("data-recordId"))
               );
               removedItems.push(el);
             }
@@ -540,7 +540,7 @@ Ext.define(
               delete elements[i];
               Ext.removeNode(el);
               removedRecords.push(
-                store.getByInternalId(el.getAttribute("data-recordId")),
+                store.getByInternalId(el.getAttribute("data-recordId"))
               );
               removedItems.push(el);
             }
@@ -550,7 +550,7 @@ Ext.define(
             removedRecords,
             me.startIndex,
             removedItems,
-            view,
+            view
           );
           me.startIndex = removeEnd;
         }
@@ -570,7 +570,7 @@ Ext.define(
           newRecords,
           me.endIndex + 1,
           children,
-          view,
+          view
         );
       }
       // Keep count consistent.
@@ -593,9 +593,9 @@ Ext.define(
         result += elements[i].offsetHeight;
       }
       return result;
-    },
+    }
   },
   function () {
     Ext.dom.CompositeElementLite.importElementMethods.call(this);
-  },
+  }
 );

@@ -84,10 +84,10 @@ Ext.define("Ext.chart.series.Bar", {
           y: 0,
           width: 0,
           height: 0,
-          radius: 0,
-        },
-      },
-    },
+          radius: 0
+        }
+      }
+    }
   },
 
   getItemForPoint: function (x, y) {
@@ -109,7 +109,7 @@ Ext.define("Ext.chart.series.Bar", {
     //<debug>
     if (!this.is3D && xAxis.type !== "category") {
       Ext.raise(
-        "'bar' series should be used with a 'category' axis. Please refer to the bar series docs.",
+        "'bar' series should be used with a 'category' axis. Please refer to the bar series docs."
       );
     }
     //</debug>
@@ -151,5 +151,5 @@ Ext.define("Ext.chart.series.Bar", {
       }
     }
     me.callParent(arguments);
-  },
+  }
 });

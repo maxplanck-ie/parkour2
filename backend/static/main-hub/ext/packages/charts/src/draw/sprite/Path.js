@@ -52,13 +52,13 @@ Ext.define("Ext.draw.sprite.Path", {
             n = new Ext.draw.Path(n);
           }
           return n;
-        },
+        }
       },
       aliases: {
-        d: "path",
+        d: "path"
       },
       triggers: {
-        path: "bbox",
+        path: "bbox"
       },
       updaters: {
         path: function (attr) {
@@ -71,9 +71,9 @@ Ext.define("Ext.draw.sprite.Path", {
           path.clear();
           this.updatePath(path, attr);
           this.scheduleUpdater(attr, "bbox", ["path"]);
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   updatePlainBBox: function (plain) {
@@ -192,5 +192,5 @@ Ext.define("Ext.draw.sprite.Path", {
    * @param {Object} attr The attribute object. Note: DO NOT use the `sprite.attr` instead of this
    * if you want to work with instancing.
    */
-  updatePath: function (path, attr) {},
+  updatePath: function (path, attr) {}
 });

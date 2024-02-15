@@ -82,8 +82,8 @@ Ext.define("Ext.form.action.Load", {
         method: this.getMethod(),
         url: this.getUrl(),
         headers: this.headers,
-        params: this.getParams(),
-      }),
+        params: this.getParams()
+      })
     );
   },
 
@@ -124,9 +124,9 @@ Ext.define("Ext.form.action.Load", {
       data = rs.records && rs.records[0] ? rs.records[0].data : null;
       return {
         success: rs.success,
-        data: data,
+        data: data
       };
     }
     return Ext.decode(response.responseText);
-  },
+  }
 });

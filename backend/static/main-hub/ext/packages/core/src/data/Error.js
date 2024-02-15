@@ -23,11 +23,11 @@ Ext.define("Ext.data.Error", {
      * @cfg {String} message
      * The message containing the description of the error.
      */
-    message: "",
+    message: ""
   },
 
   constructor: function (config) {
     this.initConfig(config);
     this.msg = this.message; // compat
-  },
+  }
 });

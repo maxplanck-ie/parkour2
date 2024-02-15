@@ -20,14 +20,14 @@ describe("Ext.data.schema.Namer", function () {
       extend: "Ext.data.Model",
 
       schema: {
-        namespace: "spec.data.namer",
-      },
+        namespace: "spec.data.namer"
+      }
     });
 
     Company = Ext.define("spec.data.namer.Company", {
       extend: "spec.data.namer.Base",
 
-      fields: ["name"],
+      fields: ["name"]
     });
 
     Department = Ext.define("spec.data.namer.Department", {
@@ -36,19 +36,19 @@ describe("Ext.data.schema.Namer", function () {
       fields: [
         "name",
         { name: "companyId", reference: "Company" },
-        { name: "managerId", reference: "User", unique: true },
+        { name: "managerId", reference: "User", unique: true }
       ],
 
       manyToMany: [
         {
           type: "User",
-          relation: "approved",
+          relation: "approved"
         },
         {
           type: "User",
-          relation: "qualified",
-        },
-      ],
+          relation: "qualified"
+        }
+      ]
     });
 
     User = Ext.define("spec.data.namer.User", {
@@ -57,10 +57,10 @@ describe("Ext.data.schema.Namer", function () {
       fields: [
         "name",
         { name: "companyId", reference: "Company" },
-        { name: "departmentId", reference: "Department" },
+        { name: "departmentId", reference: "Department" }
       ],
 
-      manyToMany: "#Group",
+      manyToMany: "#Group"
     });
 
     Group = Ext.define("spec.data.namer.Group", {
@@ -68,7 +68,7 @@ describe("Ext.data.schema.Namer", function () {
 
       fields: ["name"],
 
-      manyToMany: "User#",
+      manyToMany: "User#"
     });
 
     Ticket = Ext.define("spec.data.namer.Ticket", {
@@ -77,8 +77,8 @@ describe("Ext.data.schema.Namer", function () {
       fields: [
         "description",
         { name: "creatorId", reference: "User" },
-        { name: "assigneeId", reference: "User" },
-      ],
+        { name: "assigneeId", reference: "User" }
+      ]
     });
 
     Comment = Ext.define("spec.data.namer.Comment", {
@@ -87,8 +87,8 @@ describe("Ext.data.schema.Namer", function () {
       fields: [
         "name",
         { name: "ticketId", reference: { parent: "Ticket" } },
-        { name: "userId", reference: "User" },
-      ],
+        { name: "userId", reference: "User" }
+      ]
     });
 
     schema.eachAssociation(function (name) {
@@ -143,19 +143,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(Company.associations.departments.association.name).toBe(
-          "CompanyDepartments",
+          "CompanyDepartments"
         );
       });
 
       it("association kind should be many-to-one", function () {
         expect(Company.associations.departments.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("association has Company on the right", function () {
         expect(Company.associations.departments.association.right.type).toBe(
-          "Company",
+          "Company"
         );
       });
 
@@ -180,7 +180,7 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the users association", function () {
         expect(Company.associations.users.association.name).toBe(
-          "CompanyUsers",
+          "CompanyUsers"
         );
       });
 
@@ -190,7 +190,7 @@ describe("Ext.data.schema.Namer", function () {
 
       it("users has Company on the right", function () {
         expect(Company.associations.users.association.right.type).toBe(
-          "Company",
+          "Company"
         );
       });
 
@@ -219,19 +219,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the company association", function () {
         expect(Department.associations.company.association.name).toBe(
-          "CompanyDepartments",
+          "CompanyDepartments"
         );
       });
 
       it("company association should be many-to-one", function () {
         expect(Department.associations.company.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("company has Department on the left", function () {
         expect(Department.associations.company.association.left.type).toBe(
-          "Department",
+          "Department"
         );
       });
 
@@ -259,19 +259,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the approvedUsers association", function () {
         expect(Department.associations.approvedUsers.association.name).toBe(
-          "ApprovedDepartmentUsers",
+          "ApprovedDepartmentUsers"
         );
       });
 
       it("approvedUsers association should be many-to-many", function () {
         expect(Department.associations.approvedUsers.association.kind).toBe(
-          "many-to-many",
+          "many-to-many"
         );
       });
 
       it("approvedUsers has Department on the left", function () {
         expect(
-          Department.associations.approvedUsers.association.left.type,
+          Department.associations.approvedUsers.association.left.type
         ).toBe("Department");
       });
 
@@ -299,19 +299,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the qualifiedUsers association", function () {
         expect(Department.associations.qualifiedUsers.association.name).toBe(
-          "QualifiedDepartmentUsers",
+          "QualifiedDepartmentUsers"
         );
       });
 
       it("qualifiedUsers association should be many-to-many", function () {
         expect(Department.associations.qualifiedUsers.association.kind).toBe(
-          "many-to-many",
+          "many-to-many"
         );
       });
 
       it("qualifiedUsers has Department on the left", function () {
         expect(
-          Department.associations.qualifiedUsers.association.left.type,
+          Department.associations.qualifiedUsers.association.left.type
         ).toBe("Department");
       });
 
@@ -339,19 +339,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the manager association", function () {
         expect(Department.associations.manager.association.name).toBe(
-          "UserManagerDepartment",
+          "UserManagerDepartment"
         );
       });
 
       it("association should be one-to-one", function () {
         expect(Department.associations.manager.association.kind).toBe(
-          "one-to-one",
+          "one-to-one"
         );
       });
 
       it("manager has Department on the left", function () {
         expect(Department.associations.manager.association.left.type).toBe(
-          "Department",
+          "Department"
         );
       });
 
@@ -379,19 +379,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the users association", function () {
         expect(Department.associations.users.association.name).toBe(
-          "DepartmentUsers",
+          "DepartmentUsers"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(Department.associations.users.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("users has Department on the right", function () {
         expect(Department.associations.users.association.right.type).toBe(
-          "Department",
+          "Department"
         );
       });
 
@@ -451,19 +451,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.assigneeTickets.association.name).toBe(
-          "UserAssigneeTickets",
+          "UserAssigneeTickets"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(User.associations.assigneeTickets.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have User on the right", function () {
         expect(User.associations.assigneeTickets.association.right.type).toBe(
-          "User",
+          "User"
         );
       });
 
@@ -488,19 +488,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.creatorTickets.association.name).toBe(
-          "UserCreatorTickets",
+          "UserCreatorTickets"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(User.associations.creatorTickets.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have User on the right", function () {
         expect(User.associations.creatorTickets.association.right.type).toBe(
-          "User",
+          "User"
         );
       });
 
@@ -525,13 +525,13 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.department.association.name).toBe(
-          "DepartmentUsers",
+          "DepartmentUsers"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(User.associations.department.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
@@ -591,19 +591,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.approvedDepartments.association.name).toBe(
-          "ApprovedDepartmentUsers",
+          "ApprovedDepartmentUsers"
         );
       });
 
       it("association should be many-to-many", function () {
         expect(User.associations.approvedDepartments.association.kind).toBe(
-          "many-to-many",
+          "many-to-many"
         );
       });
 
       it("should have User on the right", function () {
         expect(
-          User.associations.approvedDepartments.association.right.type,
+          User.associations.approvedDepartments.association.right.type
         ).toBe("User");
       });
 
@@ -628,19 +628,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.approvedDepartments.association.name).toBe(
-          "ApprovedDepartmentUsers",
+          "ApprovedDepartmentUsers"
         );
       });
 
       it("association should be many-to-many", function () {
         expect(User.associations.qualifiedDepartments.association.kind).toBe(
-          "many-to-many",
+          "many-to-many"
         );
       });
 
       it("should have User on the right", function () {
         expect(
-          User.associations.qualifiedDepartments.association.right.type,
+          User.associations.qualifiedDepartments.association.right.type
         ).toBe("User");
       });
 
@@ -665,19 +665,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.managerDepartment.association.name).toBe(
-          "UserManagerDepartment",
+          "UserManagerDepartment"
         );
       });
 
       it("association should be one-to-one", function () {
         expect(User.associations.managerDepartment.association.kind).toBe(
-          "one-to-one",
+          "one-to-one"
         );
       });
 
       it("should have User on the right", function () {
         expect(User.associations.managerDepartment.association.right.type).toBe(
-          "User",
+          "User"
         );
       });
 
@@ -702,7 +702,7 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(User.associations.comments.association.name).toBe(
-          "UserComments",
+          "UserComments"
         );
       });
 
@@ -774,19 +774,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(Ticket.associations.comments.association.name).toBe(
-          "TicketComments",
+          "TicketComments"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(Ticket.associations.comments.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have the proper side", function () {
         expect(Ticket.associations.comments.association.right.type).toBe(
-          "Ticket",
+          "Ticket"
         );
       });
 
@@ -811,19 +811,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(Ticket.associations.assignee.association.name).toBe(
-          "UserAssigneeTickets",
+          "UserAssigneeTickets"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(Ticket.associations.assignee.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have the proper side", function () {
         expect(Ticket.associations.assignee.association.left.type).toBe(
-          "Ticket",
+          "Ticket"
         );
       });
 
@@ -848,19 +848,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(Ticket.associations.creator.association.name).toBe(
-          "UserCreatorTickets",
+          "UserCreatorTickets"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(Ticket.associations.creator.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have the proper side", function () {
         expect(Ticket.associations.creator.association.left.type).toBe(
-          "Ticket",
+          "Ticket"
         );
       });
 
@@ -889,19 +889,19 @@ describe("Ext.data.schema.Namer", function () {
 
       it("should properly name the association", function () {
         expect(Comment.associations.ticket.association.name).toBe(
-          "TicketComments",
+          "TicketComments"
         );
       });
 
       it("association should be many-to-one", function () {
         expect(Comment.associations.ticket.association.kind).toBe(
-          "many-to-one",
+          "many-to-one"
         );
       });
 
       it("should have Comment on the left", function () {
         expect(Comment.associations.ticket.association.left.type).toBe(
-          "Comment",
+          "Comment"
         );
       });
 

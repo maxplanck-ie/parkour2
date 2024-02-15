@@ -67,7 +67,7 @@ Ext.define(
           commonAncestor = Ext.dom.Element.getCommonAncestor(
             toElement,
             fromElement,
-            true,
+            true
           );
         node && node !== commonAncestor;
         node = node.parentNode
@@ -81,7 +81,7 @@ Ext.define(
           "focusleave",
           e,
           fromElement,
-          toElement,
+          toElement
         );
         me.publish(event, targets);
         if (event.stopped) {
@@ -104,7 +104,7 @@ Ext.define(
         "focusenter",
         e,
         toElement,
-        fromElement,
+        fromElement
       );
 
       // Publish the focusleave event for the bubble hierarchy
@@ -130,7 +130,7 @@ Ext.define(
       Ext.GlobalEvents.fireEvent("focus", {
         event: focusEnterEvent,
         toElement: toElement,
-        fromElement: fromElement,
+        fromElement: fromElement
       });
     },
 
@@ -138,7 +138,7 @@ Ext.define(
       eventName,
       browserEvent,
       target,
-      relatedTarget,
+      relatedTarget
     ) {
       var event = new Ext.event.Event(browserEvent);
 
@@ -148,7 +148,7 @@ Ext.define(
       event.target = target;
 
       return event;
-    },
+    }
   },
 
   function (Focus) {
@@ -192,7 +192,7 @@ Ext.define(
                   me.processFocusIn(
                     e,
                     Focus.previousActiveElement,
-                    document.body,
+                    document.body
                   );
                   Focus.previousActiveElement = null;
                 }
@@ -217,11 +217,11 @@ Ext.define(
             me.processFocusIn(
               e,
               Focus.previousActiveElement || document.body,
-              targetIsElement ? e.target : document.body,
+              targetIsElement ? e.target : document.body
             );
           }
-        },
+        }
       });
     }
-  },
+  }
 );

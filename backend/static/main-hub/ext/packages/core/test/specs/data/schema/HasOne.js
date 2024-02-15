@@ -7,7 +7,7 @@ describe("Ext.data.schema.HasOne", function () {
   function defineUser(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "name"],
+      fields: ["id", "name"]
     };
 
     if (options) {
@@ -20,7 +20,7 @@ describe("Ext.data.schema.HasOne", function () {
   function defineKey(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "salt"],
+      fields: ["id", "salt"]
     };
 
     if (options) {
@@ -33,7 +33,7 @@ describe("Ext.data.schema.HasOne", function () {
   function defineAvatar(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "src"],
+      fields: ["id", "src"]
     };
 
     if (options) {
@@ -81,7 +81,7 @@ describe("Ext.data.schema.HasOne", function () {
       it("should accept a string", function () {
         defineKey();
         defineUser({
-          hasOne: "Key",
+          hasOne: "Key"
         });
         expectFn("getKey");
         expectFn("setKey");
@@ -93,7 +93,7 @@ describe("Ext.data.schema.HasOne", function () {
         defineKey();
         defineAvatar();
         defineUser({
-          hasOne: ["Key", "Avatar"],
+          hasOne: ["Key", "Avatar"]
         });
         expectFn("getKey");
         expectFn("setKey");
@@ -107,8 +107,8 @@ describe("Ext.data.schema.HasOne", function () {
         defineKey();
         defineUser({
           hasOne: {
-            type: "Key",
-          },
+            type: "Key"
+          }
         });
         expectFn("getKey");
         expectFn("setKey");
@@ -122,12 +122,12 @@ describe("Ext.data.schema.HasOne", function () {
         defineUser({
           hasOne: [
             {
-              type: "Key",
+              type: "Key"
             },
             {
-              type: "Avatar",
-            },
-          ],
+              type: "Avatar"
+            }
+          ]
         });
         expectFn("getKey");
         expectFn("setKey");
@@ -145,8 +145,8 @@ describe("Ext.data.schema.HasOne", function () {
           defineUser({
             hasOne: {
               type: "Key",
-              role: "authenticator",
-            },
+              role: "authenticator"
+            }
           });
 
           expectFn("getAuthenticator");
@@ -162,8 +162,8 @@ describe("Ext.data.schema.HasOne", function () {
           defineUser({
             hasOne: {
               type: "Key",
-              getterName: "getAuthenticator",
-            },
+              getterName: "getAuthenticator"
+            }
           });
           expectFn("getAuthenticator");
           expectFn("setKey");
@@ -178,8 +178,8 @@ describe("Ext.data.schema.HasOne", function () {
           defineUser({
             hasOne: {
               type: "Key",
-              setterName: "setAuthenticator",
-            },
+              setterName: "setAuthenticator"
+            }
           });
           expectFn("getKey");
           expectFn("setAuthenticator");
@@ -195,9 +195,9 @@ describe("Ext.data.schema.HasOne", function () {
             hasOne: {
               type: "Key",
               inverse: {
-                role: "owner",
-              },
-            },
+                role: "owner"
+              }
+            }
           });
           expectFn("getKey");
           expectFn("setKey");
@@ -211,8 +211,8 @@ describe("Ext.data.schema.HasOne", function () {
           defineKey();
           defineUser({
             hasOne: {
-              child: "Key",
-            },
+              child: "Key"
+            }
           });
           expectFn("getKey");
           expectFn("setKey");
@@ -227,7 +227,7 @@ describe("Ext.data.schema.HasOne", function () {
         it("should setup methods on both classes", function () {
           defineKey();
           defineUser({
-            hasOne: "Key",
+            hasOne: "Key"
           });
           expectFn("getKey");
           expectFn("setKey");
@@ -239,7 +239,7 @@ describe("Ext.data.schema.HasOne", function () {
       describe("when the owner class does not exist", function () {
         it("should setup methods on both classes when the owner arrives", function () {
           defineUser({
-            hasOne: "Key",
+            hasOne: "Key"
           });
           expectNotFn("getKey");
           expectNotFn("setKey");
@@ -260,16 +260,16 @@ describe("Ext.data.schema.HasOne", function () {
         defineUser({
           hasOne: {
             type: "Key",
-            associationKey: "authenticator",
-          },
+            associationKey: "authenticator"
+          }
         });
 
         var user = User.load(1);
         Ext.Ajax.mockCompleteWithData({
           id: 1,
           key: {
-            id: 101,
-          },
+            id: 101
+          }
         });
         // Key is discussion, should be nothing
         expect(user.getKey()).toBeNull();
@@ -278,8 +278,8 @@ describe("Ext.data.schema.HasOne", function () {
         Ext.Ajax.mockCompleteWithData({
           id: 2,
           authenticator: {
-            id: 101,
-          },
+            id: 101
+          }
         });
         expect(user.getKey().id).toBe(101);
       });
@@ -290,8 +290,8 @@ describe("Ext.data.schema.HasOne", function () {
         defineKey();
         defineUser({
           hasOne: {
-            child: "Key",
-          },
+            child: "Key"
+          }
         });
 
         var user = new User({ id: 1 }),
@@ -310,7 +310,7 @@ describe("Ext.data.schema.HasOne", function () {
         defineKey();
         defineUser({
           fields: ["id", "name", "key_id"],
-          hasOne: "Key",
+          hasOne: "Key"
         });
 
         var user = new User({ id: 1 }),
@@ -326,8 +326,8 @@ describe("Ext.data.schema.HasOne", function () {
           fields: ["id", "name", "customField"],
           hasOne: {
             type: "Key",
-            foreignKey: "customField",
-          },
+            foreignKey: "customField"
+          }
         });
 
         var user = new User({ id: 1 }),
@@ -343,8 +343,8 @@ describe("Ext.data.schema.HasOne", function () {
       defineUser({
         hasOne: {
           model: "Key",
-          name: "authenticator",
-        },
+          name: "authenticator"
+        }
       });
       expectFn("getAuthenticator");
       expectFn("setAuthenticator");
@@ -357,8 +357,8 @@ describe("Ext.data.schema.HasOne", function () {
       defineUser({
         hasOne: {
           model: "Key",
-          associatedName: "authenticator",
-        },
+          associatedName: "authenticator"
+        }
       });
       expectFn("getAuthenticator");
       expectFn("setAuthenticator");
@@ -371,8 +371,8 @@ describe("Ext.data.schema.HasOne", function () {
       defineUser({
         hasOne: {
           model: "Key",
-          role: "authenticator",
-        },
+          role: "authenticator"
+        }
       });
 
       expectFn("getAuthenticator");

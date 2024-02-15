@@ -45,23 +45,23 @@ Ext.define("Ext.ux.Spotlight", {
       body = Ext.getBody();
 
     me.right = body.createChild({
-      cls: baseCls,
+      cls: baseCls
     });
     me.left = body.createChild({
-      cls: baseCls,
+      cls: baseCls
     });
     me.top = body.createChild({
-      cls: baseCls,
+      cls: baseCls
     });
     me.bottom = body.createChild({
-      cls: baseCls,
+      cls: baseCls
     });
 
     me.all = Ext.create("Ext.CompositeElement", [
       me.right,
       me.left,
       me.top,
-      me.bottom,
+      me.bottom
     ]);
   },
 
@@ -132,26 +132,26 @@ Ext.define("Ext.ux.Spotlight", {
         x: box.right,
         y: viewHeight,
         width: viewWidth - box.right,
-        height: 0,
+        height: 0
       },
       left: {
         x: 0,
         y: 0,
         width: box.x,
-        height: 0,
+        height: 0
       },
       top: {
         x: viewWidth,
         y: 0,
         width: 0,
-        height: box.y,
+        height: box.y
       },
       bottom: {
         x: 0,
         y: box.y + box.height,
         width: 0,
-        height: viewHeight - (box.y + box.height) + "px",
-      },
+        height: viewHeight - (box.y + box.height) + "px"
+      }
     };
 
     //where the element needs to finish
@@ -160,26 +160,26 @@ Ext.define("Ext.ux.Spotlight", {
         x: box.right,
         y: box.y,
         width: viewWidth - box.right + "px",
-        height: viewHeight - box.y + "px",
+        height: viewHeight - box.y + "px"
       },
       left: {
         x: 0,
         y: 0,
         width: box.x + "px",
-        height: box.y + box.height + "px",
+        height: box.y + box.height + "px"
       },
       top: {
         x: box.x,
         y: 0,
         width: viewWidth - box.x + "px",
-        height: box.y + "px",
+        height: box.y + "px"
       },
       bottom: {
         x: 0,
         y: box.y + box.height,
         width: box.x + box.width + "px",
-        height: viewHeight - (box.y + box.height) + "px",
-      },
+        height: viewHeight - (box.y + box.height) + "px"
+      }
     };
 
     //reverse the objects
@@ -197,10 +197,10 @@ Ext.define("Ext.ux.Spotlight", {
           me[side].animate({
             duration: me.duration,
             easing: me.easing,
-            to: to[side],
+            to: to[side]
           });
         },
-        this,
+        this
       );
     } else {
       Ext.Array.forEach(
@@ -209,7 +209,7 @@ Ext.define("Ext.ux.Spotlight", {
           me[side].setBox(Ext.apply(from[side], to[side]));
           me[side].repaint();
         },
-        this,
+        this
       );
     }
   },
@@ -224,5 +224,5 @@ Ext.define("Ext.ux.Spotlight", {
     delete me.el;
     delete me.all;
     me.callParent();
-  },
+  }
 });

@@ -35,7 +35,7 @@
  */
 Ext.define("Ext.resizer.Resizer", {
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
   uses: ["Ext.resizer.ResizeTracker", "Ext.Component"],
 
@@ -146,7 +146,7 @@ Ext.define("Ext.resizer.Resizer", {
     se: "southeast",
     sw: "southwest",
     nw: "northwest",
-    ne: "northeast",
+    ne: "northeast"
   },
 
   /**
@@ -160,7 +160,7 @@ Ext.define("Ext.resizer.Resizer", {
     se: { panX: false, panY: false },
     sw: { panX: false, panY: false },
     nw: { panX: false, panY: false },
-    ne: { panX: false, panY: false },
+    ne: { panX: false, panY: false }
   },
 
   /**
@@ -306,7 +306,7 @@ Ext.define("Ext.resizer.Resizer", {
         role: "presentation",
         cls: me.wrapCls,
         id: me.el.id + "-rzwrap",
-        style: wrapTarget.getStyle(["margin-top", "margin-bottom"]),
+        style: wrapTarget.getStyle(["margin-top", "margin-bottom"])
       });
 
       positioning = wrapTarget.getPositioning();
@@ -364,7 +364,7 @@ Ext.define("Ext.resizer.Resizer", {
       minHeight: me.minHeight,
       maxHeight: me.maxHeight,
       minWidth: me.minWidth,
-      maxWidth: me.maxWidth,
+      maxWidth: me.maxWidth
     });
 
     // Relay the ResizeTracker's superclass events as our own resize events
@@ -372,7 +372,7 @@ Ext.define("Ext.resizer.Resizer", {
       mousedown: me.onBeforeResize,
       drag: me.onResize,
       dragend: me.onResizeEnd,
-      scope: me,
+      scope: me
     });
 
     if (me.handles === "all") {
@@ -403,7 +403,7 @@ Ext.define("Ext.resizer.Resizer", {
           id: me.el.id + "-" + pos + "-handle",
           cls: Ext.String.format(handleCls, pos) + " " + unselectableCls,
           unselectable: "on",
-          role: "presentation",
+          role: "presentation"
         });
 
         handleEl.region = pos;
@@ -538,5 +538,5 @@ Ext.define("Ext.resizer.Resizer", {
     }
 
     me.callParent();
-  },
+  }
 });

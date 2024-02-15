@@ -6,8 +6,8 @@ Ext.define("Ext.theme.blackberry.slider.Thumb", {
       {
         tag: "div",
         className: Ext.baseCSSPrefix + "thumb-inner",
-        reference: "innerElement",
-      },
+        reference: "innerElement"
+      }
     ];
-  },
+  }
 });

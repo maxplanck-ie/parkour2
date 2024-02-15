@@ -120,7 +120,7 @@ Ext.define("Ext.draw.Animator", {
     Ext.draw.Animator.frameCallbacks[id] = {
       fn: callback,
       scope: scope,
-      once: true,
+      once: true
     };
     this.scheduled++;
     Ext.draw.Animator.ignite();
@@ -235,5 +235,5 @@ Ext.define("Ext.draw.Animator", {
       Ext.AnimationQueue.start(this.handleFrame, this);
       Ext.draw.Draw.beginUpdateIOS();
     }
-  },
+  }
 });

@@ -127,5 +127,5 @@ Ext.define("Ext.data.SortTypes", {
   asInt: function (s) {
     var val = parseInt(String(s).replace(this.stripCommasRe, ""), 10);
     return isNaN(val) ? 0 : val;
-  },
+  }
 });

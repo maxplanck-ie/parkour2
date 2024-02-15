@@ -31,7 +31,7 @@ Ext.Base = (function (flexSetter) {
               name +
               "' for '" +
               me.$className +
-              "'.",
+              "'."
           );
         }
         //</debug>
@@ -76,7 +76,7 @@ Ext.Base = (function (flexSetter) {
           set: function (value) {
             Ext.raise(message);
           },
-          configurable: true,
+          configurable: true
         });
       }
     },
@@ -132,7 +132,7 @@ Ext.Base = (function (flexSetter) {
     tick: function () {
       Reaper.timer = null;
       Reaper.flush();
-    },
+    }
   };
 
   // These static properties will be copied to every newly created class with {@link Ext#define}
@@ -161,7 +161,7 @@ Ext.Base = (function (flexSetter) {
     create: function () {
       return Ext.create.apply(
         Ext,
-        [this].concat(Array.prototype.slice.call(arguments, 0)),
+        [this].concat(Array.prototype.slice.call(arguments, 0))
       );
     },
 
@@ -348,7 +348,7 @@ Ext.Base = (function (flexSetter) {
                   fn = makeDeprecatedMethod(
                     displayName + oldName,
                     null,
-                    message,
+                    message
                   );
                 }
                 //</debug>
@@ -397,7 +397,7 @@ Ext.Base = (function (flexSetter) {
                   target,
                   displayName + oldName,
                   null,
-                  newName.message,
+                  newName.message
                 );
               } else {
                 addDeprecatedProperty(target, displayName + oldName);
@@ -503,7 +503,7 @@ Ext.Base = (function (flexSetter) {
     onExtended: function (fn, scope) {
       this.$onExtended.push({
         fn: fn,
-        scope: scope,
+        scope: scope
       });
 
       return this;
@@ -654,7 +654,7 @@ Ext.Base = (function (flexSetter) {
             Ext.raise(
               "Cannot use stock function for private method " +
                 (me.$className ? me.$className + "#" : "") +
-                name,
+                name
             );
           }
           //</debug>
@@ -1159,7 +1159,7 @@ Ext.Base = (function (flexSetter) {
       for (key in config) {
         cached[key] = {
           cached: true,
-          $value: config[key],
+          $value: config[key]
         };
       }
       this.addConfig(cached, isMixin);
@@ -1232,7 +1232,7 @@ Ext.Base = (function (flexSetter) {
       };
       this.override(aliasOneMember);
       delete aliasOneMember[alias];
-    }),
+    })
   });
 
   // Capture the set of static members on Ext.Base that we want to copy to all
@@ -1502,7 +1502,7 @@ Ext.Base = (function (flexSetter) {
         if (!method.$owner) {
           if (!method.caller) {
             throw new Error(
-              "Attempting to call a protected method from the public scope, which is not allowed",
+              "Attempting to call a protected method from the public scope, which is not allowed"
             );
           }
 
@@ -1518,7 +1518,7 @@ Ext.Base = (function (flexSetter) {
               methodName +
               ") found in the parent class (" +
               (Ext.getClassName(parentClass) || "Object") +
-              ")",
+              ")"
           );
         }
       }
@@ -1597,7 +1597,7 @@ Ext.Base = (function (flexSetter) {
         if (!method.$owner) {
           if (!method.caller) {
             throw new Error(
-              "Attempting to call a protected method from the public scope, which is not allowed",
+              "Attempting to call a protected method from the public scope, which is not allowed"
             );
           }
 
@@ -1613,7 +1613,7 @@ Ext.Base = (function (flexSetter) {
               methodName +
               ") found in the parent class (" +
               (Ext.getClassName(parentClass) || "Object") +
-              ")",
+              ")"
           );
         }
       }
@@ -1942,7 +1942,7 @@ Ext.Base = (function (flexSetter) {
 
         Reaper.add(me);
       }
-    },
+    }
   });
 
   /**

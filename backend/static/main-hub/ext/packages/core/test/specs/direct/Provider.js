@@ -13,9 +13,9 @@ describe("Ext.direct.Provider", function () {
     var request = Ext.apply(
       {
         id: Ext.id(),
-        abort: abortSpy,
+        abort: abortSpy
       },
-      config,
+      config
     );
 
     return request;

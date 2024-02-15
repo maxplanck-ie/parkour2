@@ -28,5 +28,5 @@ Ext.ns("Ext.util").Operators = {
   },
   "~=": function (a, v) {
     return a && (" " + a + " ").indexOf(" " + v + " ") != -1;
-  },
+  }
 };

@@ -50,7 +50,7 @@ Ext.define("Ext.draw.sprite.Ellipse", {
         /**
          * @cfg {Number} [axisRotation=0] The rotation of the sprite about its axis.
          */
-        axisRotation: "number",
+        axisRotation: "number"
       },
       aliases: {
         radius: "r",
@@ -59,23 +59,23 @@ Ext.define("Ext.draw.sprite.Ellipse", {
         centerX: "cx",
         centerY: "cy",
         radiusX: "rx",
-        radiusY: "ry",
+        radiusY: "ry"
       },
       defaults: {
         cx: 0,
         cy: 0,
         rx: 1,
         ry: 1,
-        axisRotation: 0,
+        axisRotation: 0
       },
       triggers: {
         cx: "path",
         cy: "path",
         rx: "path",
         ry: "path",
-        axisRotation: "path",
-      },
-    },
+        axisRotation: "path"
+      }
+    }
   },
 
   updatePlainBBox: function (plain) {
@@ -130,7 +130,7 @@ Ext.define("Ext.draw.sprite.Ellipse", {
       attr.axisRotation,
       0,
       Math.PI * 2,
-      false,
+      false
     );
-  },
+  }
 });

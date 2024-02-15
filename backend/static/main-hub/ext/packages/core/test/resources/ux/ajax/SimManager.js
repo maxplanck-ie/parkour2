@@ -50,7 +50,7 @@ Ext.define("Ext.ux.ajax.SimManager", {
     "Ext.data.Connection",
     "Ext.ux.ajax.SimXhr",
     "Ext.ux.ajax.Simlet",
-    "Ext.ux.ajax.JsonSimlet",
+    "Ext.ux.ajax.JsonSimlet"
   ],
 
   /**
@@ -124,7 +124,7 @@ Ext.define("Ext.ux.ajax.SimManager", {
       if (!("defaultSimlet" in me)) {
         me.defaultSimlet = new Ext.ux.ajax.Simlet({
           status: 404,
-          statusText: "Not Found",
+          statusText: "Not Found"
         });
       }
 
@@ -138,13 +138,13 @@ Ext.define("Ext.ux.ajax.SimManager", {
               requestOptions.method,
               requestOptions.url,
               options,
-              async,
+              async
             );
           if (!xhr) {
             xhr = this.callParent(arguments);
           }
           return xhr;
-        },
+        }
       });
 
       if (Ext.data.JsonP) {
@@ -169,7 +169,7 @@ Ext.define("Ext.ux.ajax.SimManager", {
             } else {
               this.callParent(arguments);
             }
-          },
+          }
         });
       }
     }
@@ -180,13 +180,13 @@ Ext.define("Ext.ux.ajax.SimManager", {
   openRequest: function (method, url, async) {
     var opt = {
       method: method,
-      url: url,
+      url: url
     };
     return this._openRequest.call(
       Ext.data.Connection.prototype,
       {},
       opt,
-      async,
+      async
     );
   },
 
@@ -222,5 +222,5 @@ Ext.define("Ext.ux.ajax.SimManager", {
     }
 
     return me;
-  },
+  }
 });

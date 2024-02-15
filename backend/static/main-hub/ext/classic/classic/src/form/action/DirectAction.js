@@ -8,7 +8,7 @@ Ext.define("Ext.form.action.DirectAction", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "directaction",
+    id: "directaction"
   },
 
   resolveMethod: function (type) {
@@ -26,7 +26,7 @@ Ext.define("Ext.form.action.DirectAction", {
           type +
           " action; form " +
           form.id +
-          " has no api object defined",
+          " has no api object defined"
       );
     }
     //</debug>
@@ -39,10 +39,10 @@ Ext.define("Ext.form.action.DirectAction", {
           fnName +
           " for " +
           type +
-          " action",
+          " action"
       );
     }
 
     return fn;
-  },
+  }
 });

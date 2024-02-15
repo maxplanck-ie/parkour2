@@ -17,7 +17,7 @@ describe("Ext.CompositeElementLite", function () {
 
   beforeEach(function () {
     mainRoot = Ext.getBody().createChild({
-      id: "mainRoot",
+      id: "mainRoot"
     });
 
     mainRoot.dom.innerHTML = [
@@ -45,7 +45,7 @@ describe("Ext.CompositeElementLite", function () {
       '<div class="child2" id="q"></div>',
       '<div class="child1" id="r"></div>',
       '<div class="child2" id="s"></div>',
-      '<div class="child1" id="t"></div>',
+      '<div class="child1" id="t"></div>'
     ].join("");
 
     makeCE = function (els) {

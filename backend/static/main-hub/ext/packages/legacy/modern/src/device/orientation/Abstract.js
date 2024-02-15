@@ -25,5 +25,5 @@ Ext.define("Ext.device.orientation.Abstract", {
 
   onDeviceOrientation: function (e) {
     this.doFireEvent("orientationchange", [e]);
-  },
+  }
 });

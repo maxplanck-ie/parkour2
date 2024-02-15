@@ -7,6 +7,6 @@ Ext.define("Ext.carousel.Item", {
   config: {
     baseCls: Ext.baseCSSPrefix + "carousel-item",
     component: null,
-    translatable: true,
-  },
+    translatable: true
+  }
 });

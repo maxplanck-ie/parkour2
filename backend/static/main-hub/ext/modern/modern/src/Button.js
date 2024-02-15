@@ -290,7 +290,7 @@ Ext.define("Ext.Button", {
      * @cfg {"left"/"right"/"center"} [textAlign="center"]
      * @since 6.0.1
      */
-    textAlign: null,
+    textAlign: null
   },
 
   config: {
@@ -409,7 +409,7 @@ Ext.define("Ext.Button", {
      * @cfg {String/Number} value
      * The value of this button.  Only applicable when used as an item of a {@link Ext.SegmentedButton Segmented Button}.
      */
-    value: null,
+    value: null
   },
 
   eventedConfig: {
@@ -419,7 +419,7 @@ Ext.define("Ext.Button", {
      *
      * @since 6.0.2
      */
-    pressed: false,
+    pressed: false
   },
 
   defaultBindProperty: "text",
@@ -428,21 +428,21 @@ Ext.define("Ext.Button", {
     {
       tag: "span",
       reference: "badgeElement",
-      hidden: true,
+      hidden: true
     },
     {
       tag: "span",
       classList: [
         Ext.baseCSSPrefix + "button-icon",
-        Ext.baseCSSPrefix + "font-icon",
+        Ext.baseCSSPrefix + "font-icon"
       ],
-      reference: "iconElement",
+      reference: "iconElement"
     },
     {
       tag: "span",
       reference: "textElement",
-      hidden: true,
-    },
+      hidden: true
+    }
   ],
 
   initialize: function () {
@@ -452,7 +452,7 @@ Ext.define("Ext.Button", {
       scope: this,
       tap: "onTap",
       touchstart: "onPress",
-      touchend: "onRelease",
+      touchend: "onRelease"
     });
   },
 
@@ -636,7 +636,7 @@ Ext.define("Ext.Button", {
   _textAlignCls: {
     left: Ext.baseCSSPrefix + "text-align-left",
     right: Ext.baseCSSPrefix + "text-align-right",
-    center: "",
+    center: ""
   },
 
   updateTextAlign: function (textAlign, oldValue) {
@@ -657,7 +657,7 @@ Ext.define("Ext.Button", {
     if (typeof autoEvent == "string") {
       autoEvent = {
         name: autoEvent,
-        scope: me.scope || me,
+        scope: me.scope || me
       };
     }
 
@@ -789,6 +789,6 @@ Ext.define("Ext.Button", {
       el.addCls(Ext.baseCSSPrefix + "shown");
       el.removeCls(Ext.baseCSSPrefix + "hidden");
       this.element.removeCls(Ext.baseCSSPrefix + "button-no-icon");
-    },
-  },
+    }
+  }
 });

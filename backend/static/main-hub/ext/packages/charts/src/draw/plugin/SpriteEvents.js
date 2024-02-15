@@ -90,13 +90,13 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
   mouseMoveEvents: {
     mousemove: true,
     mouseover: true,
-    mouseout: true,
+    mouseout: true
   },
 
   spriteMouseMoveEvents: {
     spritemousemove: true,
     spritemouseover: true,
-    spritemouseout: true,
+    spritemouseout: true
   },
 
   init: function (drawContainer) {
@@ -114,7 +114,7 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
       mouseout: handleEvent,
       // run our handlers before user code
       priority: 1001,
-      scope: this,
+      scope: this
     });
   },
 
@@ -174,5 +174,5 @@ Ext.define("Ext.draw.plugin.SpriteEvents", {
     }
 
     me.lastSprite = sprite;
-  },
+  }
 });

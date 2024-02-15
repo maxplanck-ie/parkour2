@@ -18,13 +18,13 @@ Ext.define("MainHub.store.incominglibraries.IncomingLibraries", {
     noCache: false, // to remove param "_dc",
     api: {
       read: "api/incoming_libraries/",
-      update: "api/incoming_libraries/edit/",
+      update: "api/incoming_libraries/edit/"
     },
     reader: {
       type: "json",
       rootProperty: "data",
       successProperty: "success",
-      messageProperty: "message",
+      messageProperty: "message"
     },
     writer: {
       type: "json",
@@ -42,21 +42,21 @@ Ext.define("MainHub.store.incominglibraries.IncomingLibraries", {
               return Ext.Object.merge(
                 {
                   pk: record.get("pk"),
-                  record_type: record.get("record_type"),
+                  record_type: record.get("record_type")
                 },
-                record.getChanges(),
+                record.getChanges()
               );
             }
           });
 
           return newData;
         },
-        scope: this,
-      },
-    },
+        scope: this
+      }
+    }
   },
 
   getId: function () {
     return "IncomingLibraries";
-  },
+  }
 });

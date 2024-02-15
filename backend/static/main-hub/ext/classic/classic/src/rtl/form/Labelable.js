@@ -3,5 +3,5 @@ Ext.define("Ext.rtl.form.Labelable", {
 
   getHorizontalPaddingStyle: function () {
     return this.getInherited().rtl ? "padding-left:" : "padding-right:";
-  },
+  }
 });

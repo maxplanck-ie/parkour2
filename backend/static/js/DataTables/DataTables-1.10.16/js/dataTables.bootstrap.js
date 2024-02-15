@@ -46,7 +46,7 @@
       "<'row'<'col-sm-6'l><'col-sm-6'f>>" +
       "<'row'<'col-sm-12'tr>>" +
       "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-    renderer: "bootstrap",
+    renderer: "bootstrap"
   });
 
   /* Default class modification */
@@ -54,7 +54,7 @@
     sWrapper: "dataTables_wrapper form-inline dt-bootstrap",
     sFilterInput: "form-control input-sm",
     sLengthSelect: "form-control input-sm",
-    sProcessing: "dataTables_processing panel panel-default",
+    sProcessing: "dataTables_processing panel panel-default"
   });
 
   /* Bootstrap paging button renderer */
@@ -64,7 +64,7 @@
     idx,
     buttons,
     page,
-    pages,
+    pages
   ) {
     var api = new DataTable.Api(settings);
     var classes = settings.oClasses;
@@ -133,7 +133,7 @@
               id:
                 idx === 0 && typeof button === "string"
                   ? settings.sTableId + "_" + button
-                  : null,
+                  : null
             })
               .append(
                 $("<a>", {
@@ -141,8 +141,8 @@
                   "aria-controls": settings.sTableId,
                   "aria-label": aria[button],
                   "data-dt-idx": counter,
-                  tabindex: settings.iTabIndex,
-                }).html(btnDisplay),
+                  tabindex: settings.iTabIndex
+                }).html(btnDisplay)
               )
               .appendTo(container);
 
@@ -168,7 +168,7 @@
 
     attach(
       $(host).empty().html('<ul class="pagination"/>').children("ul"),
-      buttons,
+      buttons
     );
 
     if (activeEl !== undefined) {

@@ -64,7 +64,7 @@ Ext.define(
       "Ext.mixin.Inheritable",
       "Ext.mixin.Bindable",
       "Ext.mixin.ComponentDelegation",
-      "Ext.mixin.Pluggable",
+      "Ext.mixin.Pluggable"
     ],
 
     isWidget: true,
@@ -118,7 +118,7 @@ Ext.define(
      * @protected
      */
     element: {
-      reference: "element",
+      reference: "element"
     },
 
     observableType: "component",
@@ -268,7 +268,7 @@ Ext.define(
        *         }
        *     });
        */
-      touchAction: null,
+      touchAction: null
     },
 
     config: {
@@ -294,7 +294,7 @@ Ext.define(
        *      ...
        *      }]
        */
-      userCls: null,
+      userCls: null
     },
 
     eventedConfig: {
@@ -326,7 +326,7 @@ Ext.define(
        * @accessor
        * @evented
        */
-      hidden: null,
+      hidden: null
     },
 
     /**
@@ -563,14 +563,14 @@ Ext.define(
           me,
           eventName,
           args,
-          bubbles,
+          bubbles
         );
 
       if (ret !== false) {
         ret = me.mixins.componentDelegation.doFireDelegatedEvent.call(
           me,
           eventName,
-          args,
+          args
         );
       }
 
@@ -604,9 +604,9 @@ Ext.define(
       if (!("children" in el)) {
         el = Ext.apply(
           {
-            children: me.getTemplate(),
+            children: me.getTemplate()
           },
-          el,
+          el
         );
       }
 
@@ -622,7 +622,7 @@ Ext.define(
     getSize: function () {
       return {
         width: this.getWidth(),
-        height: this.getHeight(),
+        height: this.getHeight()
       };
     },
 
@@ -710,7 +710,7 @@ Ext.define(
         renderTemplate = document.createDocumentFragment();
         renderElement = Ext.Element.create(
           me.processElementConfig.call(prototype),
-          true,
+          true
         );
         renderTemplate.appendChild(renderElement);
       } else {
@@ -746,7 +746,7 @@ Ext.define(
             Ext.raise(
               "Duplicate 'element' reference detected in '" +
                 me.$className +
-                "' template.",
+                "' template."
             );
           }
           //</debug>
@@ -774,7 +774,7 @@ Ext.define(
       //<debug>
       if (!element) {
         Ext.raise(
-          "No 'element' reference found in '" + me.$className + "' template.",
+          "No 'element' reference found in '" + me.$className + "' template."
         );
       }
       //</debug>
@@ -887,7 +887,7 @@ Ext.define(
       return this.mixins.inheritable.resolveListenerScope.call(
         this,
         defaultScope,
-        skipThis,
+        skipThis
       );
     },
 
@@ -1098,7 +1098,7 @@ Ext.define(
               delete this[name];
               return this.addElementReference(name, domNode);
             },
-            configurable: true,
+            configurable: true
           });
         }
       },
@@ -1186,7 +1186,7 @@ Ext.define(
         options,
         order,
         caller,
-        manager,
+        manager
       ) {
         var me = this,
           elementName = options && options.element,
@@ -1204,7 +1204,7 @@ Ext.define(
                 "' for this component. Available values are: '" +
                 me.referenceList.join("', '") +
                 "'",
-              me,
+              me
             );
           }
           //</debug>
@@ -1233,7 +1233,7 @@ Ext.define(
             options,
             order,
             caller,
-            manager,
+            manager
           );
           return;
         }
@@ -1248,7 +1248,7 @@ Ext.define(
           me,
           eventName,
           fn,
-          scope,
+          scope
         );
       },
 
@@ -1488,8 +1488,8 @@ Ext.define(
 
       updateUserCls: function (newCls, oldCls) {
         this.element.replaceCls(oldCls, newCls);
-      },
-    },
+      }
+    }
   },
   function (Widget) {
     var prototype = Widget.prototype;
@@ -1497,11 +1497,11 @@ Ext.define(
     // event options for listeners that use the "element" event options must also include
     // event options from Ext.Element
     (prototype.$elementEventOptions = Ext.Object.chain(
-      Ext.Element.prototype.$eventOptions,
+      Ext.Element.prototype.$eventOptions
     )).element = 1;
 
     (prototype.$eventOptions = Ext.Object.chain(
-      prototype.$eventOptions,
+      prototype.$eventOptions
     )).delegate = 1;
-  },
+  }
 );

@@ -47,8 +47,8 @@ Ext.define("Ext.data.ModelManager", {
 
         isRegistered: function (name) {
           return !!this.getModel(name);
-        },
-      },
-    },
-  },
+        }
+      }
+    }
+  }
 });

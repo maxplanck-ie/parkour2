@@ -13,5 +13,5 @@ Ext.define("Ext.event.gesture.SingleTouch", {
     if (e.touches.length > 1) {
       return this.cancel(e);
     }
-  },
+  }
 });

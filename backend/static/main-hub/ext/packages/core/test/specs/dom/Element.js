@@ -92,9 +92,9 @@ describe(
           it("should set the display class with hidden", function () {
             var el = Ext.dom.Element.create(
               {
-                hidden: true,
+                hidden: true
               },
-              true,
+              true
             );
 
             expect(el.className).toBe("x-hidden-display");
@@ -105,9 +105,9 @@ describe(
               var el = Ext.dom.Element.create(
                 {
                   classList: ["foo", "bar"],
-                  hidden: true,
+                  hidden: true
                 },
-                true,
+                true
               );
 
               expect(el.className).toBe("foo bar x-hidden-display");
@@ -117,9 +117,9 @@ describe(
               var el = Ext.dom.Element.create(
                 {
                   hidden: true,
-                  classList: ["foo", "bar"],
+                  classList: ["foo", "bar"]
                 },
-                true,
+                true
               );
 
               expect(el.className).toBe("x-hidden-display foo bar");
@@ -131,9 +131,9 @@ describe(
               var el = Ext.dom.Element.create(
                 {
                   className: "foo bar",
-                  hidden: true,
+                  hidden: true
                 },
-                true,
+                true
               );
 
               expect(el.className).toBe("foo bar x-hidden-display");
@@ -143,9 +143,9 @@ describe(
               var el = Ext.dom.Element.create(
                 {
                   hidden: true,
-                  className: "foo bar",
+                  className: "foo bar"
                 },
-                true,
+                true
               );
 
               expect(el.className).toBe("x-hidden-display foo bar");
@@ -253,7 +253,7 @@ describe(
                   expect(data.classList).toEqual(["foo", "bar"]);
                   expect(data.classMap).toEqual({
                     foo: true,
-                    bar: true,
+                    bar: true
                   });
                 });
               });
@@ -499,7 +499,7 @@ describe(
                   var data = element.getData();
                   expect(data.classList).toEqual(["baz"]);
                   expect(data.classMap).toEqual({
-                    baz: true,
+                    baz: true
                   });
                 });
               });
@@ -742,7 +742,7 @@ describe(
                   expect(data.classList).toEqual(["some", "stuff"]);
                   expect(data.classMap).toEqual({
                     some: true,
-                    stuff: true,
+                    stuff: true
                   });
                 });
               });
@@ -787,7 +787,7 @@ describe(
                   expect(data.classList).toEqual(["foo", "bar"]);
                   expect(data.classMap).toEqual({
                     foo: true,
-                    bar: true,
+                    bar: true
                   });
                 });
               });
@@ -929,7 +929,7 @@ describe(
 
               expect(element.dom.setAttribute).toHaveBeenCalledWith(
                 "align",
-                "center",
+                "center"
               );
             });
 
@@ -1050,7 +1050,7 @@ describe(
                   var newId = Ext.id();
                   wrap = element.wrap({
                     cls: "foo",
-                    id: newId,
+                    id: newId
                   });
                   expect(wrap.dom.className).toBe("foo");
                   expect(wrap.dom.id).toBe(newId);
@@ -1086,22 +1086,22 @@ describe(
                           cls: "bar",
                           children: [
                             {
-                              cls: "baz",
-                            },
-                          ],
-                        },
-                      ],
+                              cls: "baz"
+                            }
+                          ]
+                        }
+                      ]
                     },
                     false,
-                    ".baz",
+                    ".baz"
                   );
 
                   expect(element.dom.parentNode.className).toBe("baz");
                   expect(element.dom.parentNode.parentNode.className).toBe(
-                    "bar",
+                    "bar"
                   );
                   expect(
-                    element.dom.parentNode.parentNode.parentNode.className,
+                    element.dom.parentNode.parentNode.parentNode.className
                   ).toBe("foo");
                 });
               });
@@ -1111,7 +1111,7 @@ describe(
                   var child = element.createChild({
                     tag: "a",
                     html: "Foo",
-                    tabIndex: "0",
+                    tabIndex: "0"
                   });
 
                   jasmine.focusAndWait(child);
@@ -1128,7 +1128,7 @@ describe(
                   var child = element.createChild({
                       tag: "a",
                       html: "Foo",
-                      tabIndex: "0",
+                      tabIndex: "0"
                     }),
                     spy = jasmine.createSpy();
 
@@ -1185,7 +1185,7 @@ describe(
                   var child = element.createChild({
                     tag: "a",
                     html: "Foo",
-                    tabIndex: "0",
+                    tabIndex: "0"
                   });
 
                   jasmine.focusAndWait(child);
@@ -1202,7 +1202,7 @@ describe(
                   var child = element.createChild({
                       tag: "a",
                       html: "Foo",
-                      tabIndex: "0",
+                      tabIndex: "0"
                     }),
                     spy = jasmine.createSpy();
 
@@ -1280,7 +1280,7 @@ describe(
                     "click",
                     Ext.emptyFn,
                     fakeScope,
-                    options,
+                    options
                   );
                 });
               });
@@ -1299,7 +1299,7 @@ describe(
                     element,
                     "click",
                     Ext.emptyFn,
-                    fakeScope,
+                    fakeScope
                   );
                 });
               });
@@ -1315,7 +1315,7 @@ describe(
                   element.removeAllListeners();
 
                   expect(Ext.EventManager.removeAll).toHaveBeenCalledWith(
-                    element.dom,
+                    element.dom
                   );
                 });
               });
@@ -1328,7 +1328,7 @@ describe(
                   element.purgeAllListeners();
 
                   expect(Ext.EventManager.purgeElement).toHaveBeenCalledWith(
-                    element,
+                    element
                   );
                 });
 
@@ -1447,7 +1447,7 @@ describe(
               function createCmp(height) {
                 cmp = new Ext.Component({
                   height: height || 200,
-                  renderTo: Ext.getBody(),
+                  renderTo: Ext.getBody()
                 });
 
                 maskEl = Ext.getBody().mask({ msg: "Tom Sawyer" });
@@ -1480,7 +1480,7 @@ describe(
 
                 expect(element.getAttribute).toHaveBeenCalledWith(
                   "align",
-                  "ns1",
+                  "ns1"
                 );
               });
             });
@@ -1535,7 +1535,7 @@ describe(
               it("should return the attribute value if it belongs to the namespace", function () {
                 if (element3) {
                   expect(element3.getAttribute("qtip", "ext")).toEqual(
-                    "foobar",
+                    "foobar"
                   );
                 }
               });
@@ -1560,14 +1560,14 @@ describe(
             it("should return all attributes", function () {
               var el = Ext.getBody().createChild({
                 tag: "div",
-                foo: 42,
+                foo: 42
               });
 
               var attrs = el.getAttributes();
 
               expect(attrs).toEqual({
                 foo: "42",
-                id: el.id,
+                id: el.id
               });
 
               el.destroy();
@@ -1640,7 +1640,7 @@ describe(
 
                   Ext.fly(element.dom).setVisibilityMode(modeValue);
                   expect(Ext.fly(element.dom).getVisibilityMode()).toBe(
-                    modeValue,
+                    modeValue
                   );
                 });
               }
@@ -1661,7 +1661,7 @@ describe(
                   DISPLAY: Ext.baseCSSPrefix + "hidden-display",
                   VISIBILITY: Ext.baseCSSPrefix + "hidden-visibility",
                   OFFSETS: Ext.baseCSSPrefix + "hidden-offsets",
-                  CLIP: Ext.baseCSSPrefix + "hidden-clip",
+                  CLIP: Ext.baseCSSPrefix + "hidden-clip"
                 },
                 i;
 
@@ -1717,7 +1717,7 @@ describe(
               for (i = 0; i < modes.length; i++) {
                 makeSuite(modes[i]);
               }
-            },
+            }
           );
 
           describe("visibility", function () {
@@ -1778,7 +1778,7 @@ describe(
                 marginTop: "1px",
                 marginRight: "11px",
                 marginBottom: "21px",
-                marginLeft: "31px",
+                marginLeft: "31px"
               });
             });
 
@@ -1839,7 +1839,7 @@ describe(
                   b: 21,
                   bottom: 21,
                   l: 31,
-                  left: 31,
+                  left: 31
                 });
               });
 
@@ -1853,12 +1853,12 @@ describe(
                   b: 0,
                   bottom: 0,
                   l: 0,
-                  left: 0,
+                  left: 0
                 });
               });
             });
           });
-        },
+        }
       );
     }
 
@@ -2268,13 +2268,13 @@ describe(
         it("should return false if the element is in the dom and the cache contains an element with the same id", function () {
           // EXTJS-13702
           var el = Ext.getBody().createChild({
-            id: "foo",
+            id: "foo"
           });
 
           document.body.removeChild(el.dom);
 
           el = Ext.getBody().createChild({
-            id: "foo",
+            id: "foo"
           });
 
           expect(Ext.isGarbage(el.dom)).toBe(false);
@@ -2299,7 +2299,7 @@ describe(
             expect(Ext.isGarbage(g)).toBe(true);
           });
         }
-      },
+      }
     );
 
     describe("shim", function () {
@@ -2308,7 +2308,7 @@ describe(
       beforeEach(function () {
         element = Ext.getBody().createChild({
           style:
-            "position:absolute;left:250px;top:150px;width:200px;height:100px;",
+            "position:absolute;left:250px;top:150px;width:200px;height:100px;"
         });
       });
 
@@ -2377,7 +2377,7 @@ describe(
         element.enableShim();
 
         expect(element.shim.el.dom.getAttribute("src")).toBe(
-          Ext.SSL_SECURE_URL,
+          Ext.SSL_SECURE_URL
         );
       });
 
@@ -2425,7 +2425,7 @@ describe(
 
       it("should allow fixed positioning to be configured", function () {
         element.enableShim({
-          fixed: true,
+          fixed: true
         });
 
         expect(element.shim.el.getStyle("position")).toBe("fixed");
@@ -2548,7 +2548,7 @@ describe(
           x: 300,
           y: 400,
           width: 500,
-          height: 600,
+          height: 600
         });
 
         expectBox(300, 400, 500, 600);
@@ -2702,14 +2702,14 @@ describe(
             tag: "iframe",
             src: "about:blank",
             style:
-              "position:absolute;left:0px;top:0px;width:200px;height:100px;",
+              "position:absolute;left:0px;top:0px;width:200px;height:100px;"
           });
 
           var win = Ext.create("Ext.window.Window", {
             width: 100,
             height: 100,
             title: "Test",
-            shim: true,
+            shim: true
           }).show();
 
           jasmine.fireMouseEvent(win.resizer.south, "mousedown");
@@ -2733,13 +2733,13 @@ describe(
               x: -2,
               y: -2,
               w: 6,
-              h: 6,
+              h: 6
             }
           : {
               x: 4,
               y: 4,
               w: -4,
-              h: -4,
+              h: -4
             },
         element;
 
@@ -2753,11 +2753,11 @@ describe(
             } else {
               return actual >= value + deviation && actual <= value - deviation;
             }
-          },
+          }
         });
         element = Ext.getBody().createChild({
           style:
-            "position:absolute;left:250px;top:150px;width:200px;height:100px;",
+            "position:absolute;left:250px;top:150px;width:200px;height:100px;"
         });
       });
 
@@ -2802,7 +2802,7 @@ describe(
         element.enableShadow();
 
         expect(element.shadow.el).toHaveCls(
-          Ext.supports.CSS3BoxShadow ? "x-css-shadow" : "x-ie-shadow",
+          Ext.supports.CSS3BoxShadow ? "x-css-shadow" : "x-ie-shadow"
         );
       });
 
@@ -2849,7 +2849,7 @@ describe(
 
       it("should allow fixed positioning to be configured", function () {
         element.enableShadow({
-          fixed: true,
+          fixed: true
         });
 
         expect(element.shadow.el.getStyle("position")).toBe("fixed");
@@ -2865,7 +2865,7 @@ describe(
 
       it("should set the shadow's offset", function () {
         element.enableShadow({
-          offset: 10,
+          offset: 10
         });
 
         expect(element.shadow.offset).toBe(10);
@@ -2873,7 +2873,7 @@ describe(
 
       it("should set the shadow's mode", function () {
         element.enableShadow({
-          mode: "drop",
+          mode: "drop"
         });
 
         expect(element.shadow.mode).toBe("drop");
@@ -3000,7 +3000,7 @@ describe(
           x: 300,
           y: 400,
           width: 500,
-          height: 600,
+          height: 600
         });
 
         expectBox(300, 400, 500, 600);
@@ -3156,7 +3156,7 @@ describe(
           element.setStyle("opacity", "0.5");
 
           expect(element.shadow.el.getStyle("opacity")).toBe("0.5");
-        },
+        }
       );
 
       (Ext.toolkit === "classic" ? describe : xdescribe)(
@@ -3179,8 +3179,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3188,7 +3188,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3196,7 +3196,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3222,8 +3222,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3231,7 +3231,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3239,7 +3239,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3265,8 +3265,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3274,7 +3274,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3282,7 +3282,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3308,8 +3308,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3317,7 +3317,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3325,7 +3325,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3351,8 +3351,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3360,7 +3360,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3368,7 +3368,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3394,8 +3394,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3403,7 +3403,7 @@ describe(
                 return !shadow.el && !shadowEl.isVisible();
               },
               "Shadow was never hidden",
-              150,
+              150
             );
 
             waitsFor(
@@ -3411,7 +3411,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3434,8 +3434,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3443,7 +3443,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3465,8 +3465,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3474,7 +3474,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3496,8 +3496,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3505,7 +3505,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3527,8 +3527,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3536,7 +3536,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3558,8 +3558,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3567,7 +3567,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3589,8 +3589,8 @@ describe(
                 listeners: {
                   afteranimate: function () {
                     animationDone = true;
-                  },
-                },
+                  }
+                }
               });
 
               waitsFor(
@@ -3598,7 +3598,7 @@ describe(
                   return animationDone;
                 },
                 "Animation never completed",
-                100,
+                100
               );
 
               runs(function () {
@@ -3607,7 +3607,7 @@ describe(
               });
             });
           });
-        },
+        }
       );
 
       (Ext.toolkit === "classic" ? describe : xdescribe)(
@@ -3617,7 +3617,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3629,8 +3629,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3638,7 +3638,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3652,7 +3652,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3664,8 +3664,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3673,7 +3673,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3687,7 +3687,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3699,8 +3699,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3708,7 +3708,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3722,7 +3722,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3734,8 +3734,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3743,7 +3743,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3757,7 +3757,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3769,8 +3769,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3778,7 +3778,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3792,7 +3792,7 @@ describe(
             var animationDone = false;
 
             element.enableShadow({
-              animate: true,
+              animate: true
             });
 
             spyOn(element.shadow, "hide").andCallThrough();
@@ -3804,8 +3804,8 @@ describe(
               listeners: {
                 afteranimate: function () {
                   animationDone = true;
-                },
-              },
+                }
+              }
             });
 
             waitsFor(
@@ -3813,7 +3813,7 @@ describe(
                 return animationDone;
               },
               "Animation never completed",
-              300,
+              300
             );
 
             runs(function () {
@@ -3822,7 +3822,7 @@ describe(
               expectBox(350, 400, 200, 100);
             });
           });
-        },
+        }
       );
     });
 
@@ -3832,7 +3832,7 @@ describe(
       beforeEach(function () {
         element = Ext.getBody().createChild({
           style:
-            "position:absolute;left:250px;top:150px;width:200px;height:100px;",
+            "position:absolute;left:250px;top:150px;width:200px;height:100px;"
         });
       });
 
@@ -3901,7 +3901,7 @@ describe(
         element.enableShim();
         element.enableShadow({
           mode: "drop",
-          offset: 30,
+          offset: 30
         });
 
         expectShimBox(250, 150, 230, 130);
@@ -3910,7 +3910,7 @@ describe(
       it("should size the shim to include the target and shadow with mode=='sides'", function () {
         element.enableShadow({
           mode: "sides",
-          offset: 30,
+          offset: 30
         });
         element.enableShim();
 
@@ -3921,7 +3921,7 @@ describe(
         element.enableShim();
         element.enableShadow({
           mode: "frame",
-          offset: 30,
+          offset: 30
         });
 
         expectShimBox(220, 120, 260, 160);
@@ -3930,7 +3930,7 @@ describe(
       it("should size the shim to include the target and shadow with mode=='bottom'", function () {
         element.enableShadow({
           mode: "bottom",
-          offset: 30,
+          offset: 30
         });
         element.enableShim();
 
@@ -3978,10 +3978,10 @@ describe(
                   {
                     click: handler,
                     delegated: delegated,
-                    translate: false,
+                    translate: false
                   },
-                  opt,
-                ),
+                  opt
+                )
               );
             }
 
@@ -3989,10 +3989,10 @@ describe(
               element.removeListener(
                 Ext.apply(
                   {
-                    click: handler,
+                    click: handler
                   },
-                  opt,
-                ),
+                  opt
+                )
               );
             }
 
@@ -4014,12 +4014,12 @@ describe(
                   {
                     id: "child",
                     cls: "child",
-                    cn: { id: "grandchild", cls: "grandchild" },
+                    cn: { id: "grandchild", cls: "grandchild" }
                   },
                   {
-                    id: "child2",
-                  },
-                ],
+                    id: "child2"
+                  }
+                ]
               });
 
               child = document.getElementById("child");
@@ -4041,7 +4041,7 @@ describe(
                 expect(args[2]).toEqual({
                   click: handler,
                   delegated: delegated,
-                  translate: false,
+                  translate: false
                 });
                 expect(scope).toBe(element);
               });
@@ -4055,7 +4055,7 @@ describe(
                 expect(args[2]).toEqual({
                   click: handler,
                   delegated: delegated,
-                  translate: false,
+                  translate: false
                 });
                 expect(scope).toBe(element);
               });
@@ -4162,7 +4162,7 @@ describe(
                 it("should add capture listeners for direct events with delegate selector", function () {
                   addListener({
                     delegate: ".child",
-                    mouseenter: handler,
+                    mouseenter: handler
                   });
 
                   var event = element.events.mouseenter;
@@ -4191,19 +4191,19 @@ describe(
                   element.on({
                     click: function () {
                       results.push(1);
-                    },
+                    }
                   });
 
                   child.on({
                     click: function () {
                       results.push(2);
-                    },
+                    }
                   });
 
                   grandchild.on({
                     click: function () {
                       results.push(3);
-                    },
+                    }
                   });
 
                   fire(grandchild);
@@ -4216,21 +4216,21 @@ describe(
                     click: function () {
                       results.push(1);
                     },
-                    capture: true,
+                    capture: true
                   });
 
                   child.on({
                     click: function () {
                       results.push(2);
                     },
-                    capture: true,
+                    capture: true
                   });
 
                   grandchild.on({
                     click: function () {
                       results.push(3);
                     },
-                    capture: true,
+                    capture: true
                   });
 
                   fire(grandchild);
@@ -4240,13 +4240,13 @@ describe(
 
                 it("should stop bubbling when stopPropagation is called", function () {
                   element.on({
-                    click: handler,
+                    click: handler
                   });
 
                   grandchild.on({
                     click: function (e) {
                       e.stopPropagation();
-                    },
+                    }
                   });
 
                   fire(grandchild);
@@ -4259,12 +4259,12 @@ describe(
                     click: function (e) {
                       e.stopPropagation();
                     },
-                    capture: true,
+                    capture: true
                   });
 
                   grandchild.on({
                     click: handler,
-                    capture: true,
+                    capture: true
                   });
 
                   fire(grandchild);
@@ -4277,15 +4277,15 @@ describe(
                     click: function (e) {
                       e.stopPropagation();
                     },
-                    capture: true,
+                    capture: true
                   });
 
                   element.on({
-                    click: handler,
+                    click: handler
                   });
 
                   grandchild.on({
-                    click: handler2,
+                    click: handler2
                   });
 
                   fire(grandchild);
@@ -4299,7 +4299,7 @@ describe(
                   var parent = Ext.getBody().createChild(
                       { cn: [{}] },
                       null,
-                      true,
+                      true
                     ),
                     child = parent.firstChild,
                     parentFired = false;
@@ -4409,21 +4409,21 @@ describe(
                   handler4 = jasmine.createSpy();
 
                 element.on({
-                  click: handler,
+                  click: handler
                 });
 
                 element.on({
                   click: handler2,
-                  delegate: ".grandchild",
+                  delegate: ".grandchild"
                 });
 
                 element.on({
                   click: handler3,
-                  capture: true,
+                  capture: true
                 });
 
                 element.on({
-                  click: handler4,
+                  click: handler4
                 });
 
                 element.clearListeners();
@@ -4436,7 +4436,7 @@ describe(
                 expect(handler4).not.toHaveBeenCalled();
               });
             });
-          },
+          }
         );
       }
 
@@ -4458,7 +4458,7 @@ describe(
             touchend: jasmine.createSpy(),
             pointerdown: jasmine.createSpy(),
             pointermove: jasmine.createSpy(),
-            pointerup: jasmine.createSpy(),
+            pointerup: jasmine.createSpy()
           };
 
           target.on(listeners);
@@ -4472,7 +4472,7 @@ describe(
           events = {
             start: "pointerdown",
             move: "pointermove",
-            end: "pointerup",
+            end: "pointerup"
           };
 
           fire = function (type) {
@@ -4482,7 +4482,7 @@ describe(
           events = {
             start: "MSPointerDown",
             move: "MSPointerMove",
-            end: "MSPointerUp",
+            end: "MSPointerUp"
           };
 
           fire = function (type) {
@@ -4492,13 +4492,13 @@ describe(
           events = {
             start: "touchstart",
             move: "touchmove",
-            end: "touchend",
+            end: "touchend"
           };
 
           secondaryEvents = {
             start: "mousedown",
             move: "mousemove",
-            end: "mouseup",
+            end: "mouseup"
           };
 
           fire = function (type, secondary) {
@@ -4506,7 +4506,7 @@ describe(
               jasmine.fireMouseEvent(target, secondaryEvents[type], 100, 100);
             } else {
               jasmine.fireTouchEvent(target, events[type], [
-                { pageX: 1, pageY: 1 },
+                { pageX: 1, pageY: 1 }
               ]);
             }
           };
@@ -4514,7 +4514,7 @@ describe(
           events = {
             start: "mousedown",
             move: "mousemove",
-            end: "mouseup",
+            end: "mouseup"
           };
 
           fire = function (type) {
@@ -4528,13 +4528,13 @@ describe(
           expect(listeners.touchstart.callCount).toBe(1);
           expect(listeners.mousedown.callCount).toBe(1);
           expect(listeners.pointerdown.mostRecentCall.args[0].type).toBe(
-            "pointerdown",
+            "pointerdown"
           );
           expect(listeners.touchstart.mostRecentCall.args[0].type).toBe(
-            "touchstart",
+            "touchstart"
           );
           expect(listeners.mousedown.mostRecentCall.args[0].type).toBe(
-            "mousedown",
+            "mousedown"
           );
         });
 
@@ -4544,13 +4544,13 @@ describe(
           expect(listeners.touchmove.callCount).toBe(1);
           expect(listeners.mousemove.callCount).toBe(1);
           expect(listeners.pointermove.mostRecentCall.args[0].type).toBe(
-            "pointermove",
+            "pointermove"
           );
           expect(listeners.touchmove.mostRecentCall.args[0].type).toBe(
-            "touchmove",
+            "touchmove"
           );
           expect(listeners.mousemove.mostRecentCall.args[0].type).toBe(
-            "mousemove",
+            "mousemove"
           );
         });
 
@@ -4560,10 +4560,10 @@ describe(
           expect(listeners.touchend.callCount).toBe(1);
           expect(listeners.mouseup.callCount).toBe(1);
           expect(listeners.pointerup.mostRecentCall.args[0].type).toBe(
-            "pointerup",
+            "pointerup"
           );
           expect(listeners.touchend.mostRecentCall.args[0].type).toBe(
-            "touchend",
+            "touchend"
           );
           expect(listeners.mouseup.mostRecentCall.args[0].type).toBe("mouseup");
         });
@@ -4578,13 +4578,13 @@ describe(
             expect(listeners.touchstart.callCount).toBe(1);
             expect(listeners.mousedown.callCount).toBe(1);
             expect(listeners.pointerdown.mostRecentCall.args[0].type).toBe(
-              "pointerdown",
+              "pointerdown"
             );
             expect(listeners.touchstart.mostRecentCall.args[0].type).toBe(
-              "touchstart",
+              "touchstart"
             );
             expect(listeners.mousedown.mostRecentCall.args[0].type).toBe(
-              "mousedown",
+              "mousedown"
             );
           });
 
@@ -4594,13 +4594,13 @@ describe(
             expect(listeners.touchmove.callCount).toBe(1);
             expect(listeners.mousemove.callCount).toBe(1);
             expect(listeners.pointermove.mostRecentCall.args[0].type).toBe(
-              "pointermove",
+              "pointermove"
             );
             expect(listeners.touchmove.mostRecentCall.args[0].type).toBe(
-              "touchmove",
+              "touchmove"
             );
             expect(listeners.mousemove.mostRecentCall.args[0].type).toBe(
-              "mousemove",
+              "mousemove"
             );
           });
 
@@ -4610,13 +4610,13 @@ describe(
             expect(listeners.touchend.callCount).toBe(1);
             expect(listeners.mouseup.callCount).toBe(1);
             expect(listeners.pointerup.mostRecentCall.args[0].type).toBe(
-              "pointerup",
+              "pointerup"
             );
             expect(listeners.touchend.mostRecentCall.args[0].type).toBe(
-              "touchend",
+              "touchend"
             );
             expect(listeners.mouseup.mostRecentCall.args[0].type).toBe(
-              "mouseup",
+              "mouseup"
             );
           });
         }
@@ -4641,9 +4641,9 @@ describe(
           root = Ext.getBody().createChild({
             children: [
               {
-                cls: "foo",
-              },
-            ],
+                cls: "foo"
+              }
+            ]
           });
           root.on("click", spy, null, { delegate: ".foo" });
           doClick(root.first());
@@ -4654,9 +4654,9 @@ describe(
           root = Ext.getBody().createChild({
             children: [
               {
-                cls: "foo",
-              },
-            ],
+                cls: "foo"
+              }
+            ]
           });
           root.on("click", spy, null, { delegate: ".bar" });
           doClick(root.first());
@@ -4670,11 +4670,11 @@ describe(
                 cls: "foo",
                 children: [
                   {
-                    cls: "bar",
-                  },
-                ],
-              },
-            ],
+                    cls: "bar"
+                  }
+                ]
+              }
+            ]
           });
           var bar = root.down(".bar").dom;
           root.on("click", spy, null, { delegate: ".foo" });
@@ -4689,11 +4689,11 @@ describe(
                 cls: "foo",
                 children: [
                   {
-                    cls: "bar",
-                  },
-                ],
-              },
-            ],
+                    cls: "bar"
+                  }
+                ]
+              }
+            ]
           });
           var bar = root.down(".bar").dom,
             foo = root.down(".foo").dom;
@@ -4714,13 +4714,13 @@ describe(
                       cls: "bar",
                       children: [
                         {
-                          cls: "baz",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                          cls: "baz"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             });
 
             var foo = root.down(".foo"),
@@ -4734,7 +4734,7 @@ describe(
                 order.push("baz");
               },
               null,
-              { delegate: ".baz" },
+              { delegate: ".baz" }
             );
             bar.on("click", function () {
               order.push("bar");
@@ -4758,27 +4758,27 @@ describe(
                       id: "child1_1",
                       children: [
                         {
-                          cls: "foo",
-                        },
-                      ],
+                          cls: "foo"
+                        }
+                      ]
                     },
                     {
-                      cls: "foo",
-                    },
-                  ],
+                      cls: "foo"
+                    }
+                  ]
                 },
                 {
                   id: "child2",
                   children: [
                     {
-                      cls: "foo",
-                    },
-                  ],
+                      cls: "foo"
+                    }
+                  ]
                 },
                 {
-                  cls: "foo",
-                },
-              ],
+                  cls: "foo"
+                }
+              ]
             });
 
             var child1 = Ext.get("child1"),
@@ -4792,7 +4792,7 @@ describe(
                 order.push("root");
               },
               null,
-              { delegate: ".foo" },
+              { delegate: ".foo" }
             );
             child1.on(
               "click",
@@ -4800,7 +4800,7 @@ describe(
                 order.push("child1");
               },
               null,
-              { delegate: ".foo" },
+              { delegate: ".foo" }
             );
             child1_1.on(
               "click",
@@ -4808,7 +4808,7 @@ describe(
                 order.push("child1_1");
               },
               null,
-              { delegate: ".foo" },
+              { delegate: ".foo" }
             );
             child2.on(
               "click",
@@ -4816,7 +4816,7 @@ describe(
                 order.push("child2");
               },
               null,
-              { delegate: ".foo" },
+              { delegate: ".foo" }
             );
 
             doClick(child1_1.down(".foo", true), "click");
@@ -4836,10 +4836,10 @@ describe(
                 cn: {
                   id: "c3",
                   cn: {
-                    id: "c4",
-                  },
-                },
-              },
+                    id: "c4"
+                  }
+                }
+              }
             }),
             c2 = Ext.get(c1.dom.firstChild),
             c3 = Ext.get(c2.dom.firstChild),
@@ -4861,7 +4861,7 @@ describe(
               expect(o.el === c1).toBe(true);
             },
             null,
-            c1opts,
+            c1opts
           );
           c2.on(
             "click",
@@ -4872,7 +4872,7 @@ describe(
               expect(o.el === c2).toBe(true);
             },
             null,
-            c2opts,
+            c2opts
           );
           c3.on(
             "click",
@@ -4883,7 +4883,7 @@ describe(
               expect(o.el === c3).toBe(true);
             },
             null,
-            c3opts,
+            c3opts
           );
           c4.on(
             "click",
@@ -4896,7 +4896,7 @@ describe(
               expect(o.el === c4).toBe(true);
             },
             null,
-            c4opts,
+            c4opts
           );
           jasmine.fireMouseEvent(c4, "click");
 
@@ -4911,11 +4911,11 @@ describe(
                 id: "child",
                 cn: [
                   {
-                    id: "grandchild",
-                  },
-                ],
-              },
-            ],
+                    id: "grandchild"
+                  }
+                ]
+              }
+            ]
           }),
           child = Ext.get("child"),
           grandchild = Ext.get("grandchild"),
@@ -4924,21 +4924,21 @@ describe(
         parent.on({
           mousedown: function () {
             result.push("p");
-          },
+          }
         });
 
         parent.on({
           mousedown: function () {
             result.push("pc");
           },
-          capture: true,
+          capture: true
         });
 
         parent.on({
           mousedown: function () {
             result.push("pd");
           },
-          delegated: false,
+          delegated: false
         });
 
         parent.on({
@@ -4946,27 +4946,27 @@ describe(
             result.push("pdc");
           },
           delegated: false,
-          capture: true,
+          capture: true
         });
 
         child.on({
           mousedown: function () {
             result.push("c");
-          },
+          }
         });
 
         child.on({
           mousedown: function () {
             result.push("cc");
           },
-          capture: true,
+          capture: true
         });
 
         child.on({
           mousedown: function () {
             result.push("cd");
           },
-          delegated: false,
+          delegated: false
         });
 
         child.on({
@@ -4974,20 +4974,20 @@ describe(
             result.push("cdc");
           },
           delegated: false,
-          capture: true,
+          capture: true
         });
 
         grandchild.on({
           mousedown: function () {
             result.push("g");
-          },
+          }
         });
 
         grandchild.on({
           mousedown: function () {
             result.push("gc");
           },
-          capture: true,
+          capture: true
         });
 
         grandchild.on({
@@ -4995,14 +4995,14 @@ describe(
             result.push("gdc");
           },
           delegated: false,
-          capture: true,
+          capture: true
         });
 
         grandchild.on({
           mousedown: function () {
             result.push("gd");
           },
-          delegated: false,
+          delegated: false
         });
 
         jasmine.fireMouseEvent(grandchild, "mousedown");
@@ -5021,7 +5021,7 @@ describe(
             "gc",
             "g",
             "c",
-            "p",
+            "p"
           ]);
         } else {
           expect(result).toEqual([
@@ -5036,7 +5036,7 @@ describe(
             "gc",
             "g",
             "c",
-            "p",
+            "p"
           ]);
         }
 
@@ -5057,7 +5057,7 @@ describe(
         var el = Ext.getBody().createChild({});
 
         el.eventMap = {
-          click: "tap",
+          click: "tap"
         };
 
         el.on("click", "onClick");
@@ -5071,7 +5071,7 @@ describe(
         var el = Ext.getBody().createChild({});
 
         el.eventMap = {
-          click: "tap",
+          click: "tap"
         };
 
         el.on("cLicK", "onClick");
@@ -5087,7 +5087,7 @@ describe(
           handler = jasmine.createSpy();
 
         el.eventMap = {
-          click: "tap",
+          click: "tap"
         };
 
         el.on("click", handler);
@@ -5114,7 +5114,7 @@ describe(
           handler = jasmine.createSpy();
 
         el.eventMap = {
-          click: "tap",
+          click: "tap"
         };
 
         el.on("cLicK", handler);
@@ -5195,7 +5195,7 @@ describe(
             "custommousemove",
             e,
             false,
-            false,
+            false
           );
           expect(spy.callCount).toBe(1);
 
@@ -5206,7 +5206,7 @@ describe(
             "customtouchmove",
             e,
             false,
-            false,
+            false
           );
           expect(spy.callCount).toBe(1);
         });
@@ -5220,14 +5220,14 @@ describe(
             "custommousemove",
             e,
             false,
-            false,
+            false
           );
           Ext.event.publisher.Gesture.instance.fire(
             el,
             "customtouchmove",
             e,
             false,
-            false,
+            false
           );
           expect(spy).not.toHaveBeenCalled();
         });
@@ -5240,7 +5240,7 @@ describe(
             "custommousemove",
             e,
             false,
-            false,
+            false
           );
           expect(spy.callCount).toBe(1);
 
@@ -5251,21 +5251,21 @@ describe(
             "custommousemove",
             e,
             false,
-            false,
+            false
           );
           Ext.event.publisher.Gesture.instance.fire(
             el,
             "customtouchmove",
             e,
             false,
-            false,
+            false
           );
           expect(spy).not.toHaveBeenCalled();
         });
 
         it("should remove listeners correctly with destroyable", function () {
           el.on("custommousemove", spy, null, {
-            destroyable: true,
+            destroyable: true
           }).destroy();
 
           Ext.event.publisher.Gesture.instance.fire(
@@ -5273,14 +5273,14 @@ describe(
             "custommousemove",
             e,
             false,
-            false,
+            false
           );
           Ext.event.publisher.Gesture.instance.fire(
             el,
             "customtouchmove",
             e,
             false,
-            false,
+            false
           );
           expect(spy).not.toHaveBeenCalled();
         });
@@ -5297,7 +5297,7 @@ describe(
             "customtap",
             e,
             false,
-            false,
+            false
           );
           expect(spy.callCount).toBe(1);
 
@@ -5310,7 +5310,7 @@ describe(
             "customtap",
             e,
             false,
-            false,
+            false
           );
           expect(spy).not.toHaveBeenCalled();
         });
@@ -5319,7 +5319,7 @@ describe(
           var o = new Ext.mixin.Observable();
 
           o.mon(el, "customclick", spy, null, {
-            destroyable: true,
+            destroyable: true
           }).destroy();
 
           Ext.event.publisher.Gesture.instance.fire(
@@ -5327,12 +5327,12 @@ describe(
             "customtap",
             e,
             false,
-            false,
+            false
           );
           expect(spy).not.toHaveBeenCalled();
         });
       });
     });
   },
-  "/src/dom/Element.js",
+  "/src/dom/Element.js"
 );

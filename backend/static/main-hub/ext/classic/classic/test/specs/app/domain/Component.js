@@ -6,11 +6,11 @@ describe("Ext.app.domain.Component", function () {
       renderTo: Ext.getBody(),
 
       width: 100,
-      height: 100,
+      height: 100
     });
 
     ctrl = new Ext.app.Controller({
-      id: "foo",
+      id: "foo"
     });
   });
 
@@ -23,8 +23,8 @@ describe("Ext.app.domain.Component", function () {
 
     ctrl.control({
       panel: {
-        foo: handler,
-      },
+        foo: handler
+      }
     });
 
     panel.fireEvent("FOO");
@@ -37,8 +37,8 @@ describe("Ext.app.domain.Component", function () {
 
     ctrl.control({
       panel: {
-        foo: handler,
-      },
+        foo: handler
+      }
     });
 
     panel.fireEvent("foo");
@@ -52,9 +52,9 @@ describe("Ext.app.domain.Component", function () {
     ctrl.listen({
       component: {
         panel: {
-          bar: handler,
-        },
-      },
+          bar: handler
+        }
+      }
     });
 
     panel.fireEvent("bar");
@@ -77,13 +77,13 @@ describe("Ext.app.domain.Component", function () {
               id: "childMenu",
               items: [
                 {
-                  text: "A",
-                },
-              ],
-            }),
-          },
+                  text: "A"
+                }
+              ]
+            })
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -95,8 +95,8 @@ describe("Ext.app.domain.Component", function () {
     it("should find the owner of the menu as a descendant of the menu item", function () {
       ctrl.control({
         "#foobar menu": {
-          foo: handler,
-        },
+          foo: handler
+        }
       });
 
       Ext.getCmp("childMenu").fireEvent("foo");
@@ -107,8 +107,8 @@ describe("Ext.app.domain.Component", function () {
     it("should find the owner of the menu as a direct child of the menu item", function () {
       ctrl.control({
         "#foobar > menu": {
-          foo: handler,
-        },
+          foo: handler
+        }
       });
 
       Ext.getCmp("childMenu").fireEvent("foo");

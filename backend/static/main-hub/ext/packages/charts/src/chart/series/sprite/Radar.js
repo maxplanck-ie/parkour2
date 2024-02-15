@@ -75,5 +75,5 @@ Ext.define("Ext.chart.series.sprite.Radar", {
     }
     ctx.closePath();
     ctx.fillStroke(attr);
-  },
+  }
 });

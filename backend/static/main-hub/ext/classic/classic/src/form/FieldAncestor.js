@@ -20,11 +20,11 @@ Ext.define("Ext.form.FieldAncestor", {
   mixinConfig: {
     id: "fieldAncestor",
     after: {
-      initInheritedState: "initFieldInheritedState",
+      initInheritedState: "initFieldInheritedState"
     },
     before: {
-      doDestroy: "onBeforeDestroy",
-    },
+      doDestroy: "onBeforeDestroy"
+    }
   },
 
   /**
@@ -101,7 +101,7 @@ Ext.define("Ext.form.FieldAncestor", {
       scope: me,
       selector: "[isFormField]:not([excludeForm])",
       addHandler: me.onChildFieldAdd,
-      removeHandler: me.onChildFieldRemove,
+      removeHandler: me.onChildFieldRemove
     });
     me.initFieldDefaults();
   },
@@ -118,7 +118,7 @@ Ext.define("Ext.form.FieldAncestor", {
       if (inheritedFieldDefaults) {
         inheritedState.fieldDefaults = Ext.apply(
           Ext.Object.chain(inheritedFieldDefaults),
-          fieldDefaults,
+          fieldDefaults
         );
       } else {
         inheritedState.fieldDefaults = fieldDefaults;
@@ -192,5 +192,5 @@ Ext.define("Ext.form.FieldAncestor", {
 
   onBeforeDestroy: function () {
     this.monitor = Ext.destroy(this.monitor);
-  },
+  }
 });

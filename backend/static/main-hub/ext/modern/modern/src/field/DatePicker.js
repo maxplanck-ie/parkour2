@@ -150,9 +150,9 @@ Ext.define("Ext.field.DatePicker", {
 
     triggers: {
       expand: {
-        type: "date",
-      },
-    },
+        type: "date"
+      }
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "datepickerfield",
@@ -252,7 +252,7 @@ Ext.define("Ext.field.DatePicker", {
     picker.on({
       scope: this,
       change: "onPickerChange",
-      hide: "onPickerHide",
+      hide: "onPickerHide"
     });
 
     this._picker = picker;
@@ -319,5 +319,5 @@ Ext.define("Ext.field.DatePicker", {
     }
 
     this.callParent();
-  },
+  }
 });

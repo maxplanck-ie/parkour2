@@ -12,8 +12,8 @@ Ext.define("Ext.grid.cell.Expander", {
       reference: "iconElement",
       classList: [
         Ext.baseCSSPrefix + "icon-el",
-        Ext.baseCSSPrefix + "font-icon",
-      ],
-    },
-  ],
+        Ext.baseCSSPrefix + "font-icon"
+      ]
+    }
+  ]
 });

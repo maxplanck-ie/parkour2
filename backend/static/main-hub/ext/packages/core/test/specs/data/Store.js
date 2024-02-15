@@ -21,7 +21,7 @@ describe("Ext.data.Store", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -58,8 +58,8 @@ describe("Ext.data.Store", function () {
       Ext.applyIf(cfg, {
         asynchronousLoad: false,
         model: User,
-        data: withData ? [edRaw, abeRaw, aaronRaw, tommyRaw] : null,
-      }),
+        data: withData ? [edRaw, abeRaw, aaronRaw, tommyRaw] : null
+      })
     );
     if (withData) {
       assignRecs();
@@ -70,14 +70,14 @@ describe("Ext.data.Store", function () {
   function completeWithData(data) {
     Ext.Ajax.mockComplete({
       status: 200,
-      responseText: Ext.JSON.encode(data),
+      responseText: Ext.JSON.encode(data)
     });
   }
 
   function complete(status, text) {
     Ext.Ajax.mockComplete({
       status: status,
-      responseText: "",
+      responseText: ""
     });
   }
 
@@ -97,13 +97,13 @@ describe("Ext.data.Store", function () {
         {
           name: "age",
           type: "int",
-          sortType: customSort,
+          sortType: customSort
         },
         {
           name: "validField",
-          validators: "presence",
-        },
-      ],
+          validators: "presence"
+        }
+      ]
     });
 
     edRaw = {
@@ -113,7 +113,7 @@ describe("Ext.data.Store", function () {
       group: "code",
       old: false,
       age: 25,
-      valid: "yes",
+      valid: "yes"
     };
     abeRaw = {
       name: "Abe Elias",
@@ -122,7 +122,7 @@ describe("Ext.data.Store", function () {
       group: "admin",
       old: false,
       age: 20,
-      valid: "yes",
+      valid: "yes"
     };
     aaronRaw = {
       name: "Aaron Conran",
@@ -131,7 +131,7 @@ describe("Ext.data.Store", function () {
       group: "admin",
       old: true,
       age: 26,
-      valid: "yes",
+      valid: "yes"
     };
     tommyRaw = {
       name: "Tommy Maintz",
@@ -140,7 +140,7 @@ describe("Ext.data.Store", function () {
       group: "code",
       old: true,
       age: 70,
-      valid: "yes",
+      valid: "yes"
     };
   });
 
@@ -164,7 +164,7 @@ describe("Ext.data.Store", function () {
     describe("store manager", function () {
       it("should register if a storeId is passed", function () {
         createStore({
-          storeId: "foo",
+          storeId: "foo"
         });
         expect(Ext.data.StoreManager.get("foo")).toBe(store);
       });
@@ -174,7 +174,7 @@ describe("Ext.data.Store", function () {
       describe("configured on the store", function () {
         it("should create from a string", function () {
           createStore({
-            proxy: "jsonp",
+            proxy: "jsonp"
           });
           expect(store.getProxy() instanceof Ext.data.proxy.JsonP).toBe(true);
         });
@@ -183,8 +183,8 @@ describe("Ext.data.Store", function () {
           createStore({
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
+              url: "foo"
+            }
           });
           var proxy = store.getProxy();
           expect(proxy instanceof Ext.data.proxy.Ajax);
@@ -194,7 +194,7 @@ describe("Ext.data.Store", function () {
         it("should accept an instance", function () {
           var proxy = new Ext.data.proxy.Memory();
           createStore({
-            proxy: proxy,
+            proxy: proxy
           });
           expect(store.getProxy()).toBe(proxy);
         });
@@ -207,11 +207,11 @@ describe("Ext.data.Store", function () {
             fields: [],
 
             proxy: {
-              type: "ajax",
-            },
+              type: "ajax"
+            }
           });
           createStore({
-            model: "spec.ProxyWithModel",
+            model: "spec.ProxyWithModel"
           });
           expect(store.getProxy()).toBe(spec.ProxyWithModel.getProxy());
           Ext.undefine("spec.ProxyWithModel");
@@ -225,13 +225,13 @@ describe("Ext.data.Store", function () {
             fields: [],
 
             proxy: {
-              type: "ajax",
-            },
+              type: "ajax"
+            }
           });
           var proxy = new Ext.data.proxy.Ajax();
           createStore({
             model: "spec.ProxyWithModel",
-            proxy: proxy,
+            proxy: proxy
           });
           expect(store.getProxy()).toBe(proxy);
           Ext.undefine("spec.ProxyWithModel");
@@ -242,9 +242,9 @@ describe("Ext.data.Store", function () {
         it("should load the data instantly", function () {
           createStore({
             proxy: {
-              type: "memory",
+              type: "memory"
             },
-            data: [edRaw, abeRaw],
+            data: [edRaw, abeRaw]
           });
           expect(store.getCount()).toBe(2);
         });
@@ -253,7 +253,7 @@ describe("Ext.data.Store", function () {
       describe("using an implicit model", function () {
         it("should use the model's memory proxy when no proxy is defined on the store", function () {
           store = new Ext.data.Store({
-            fields: ["id", "height", "width"],
+            fields: ["id", "height", "width"]
           });
           expect(store.getProxy().isMemoryProxy).toBe(true);
           expect(store.getProxy()).toBe(store.getModel().getProxy());
@@ -264,8 +264,8 @@ describe("Ext.data.Store", function () {
             fields: ["id", "height", "width"],
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
+              url: "foo"
+            }
           });
           expect(store.getProxy().isAjaxProxy).toBe(true);
           expect(store.getProxy().url).toBe("foo");
@@ -277,18 +277,18 @@ describe("Ext.data.Store", function () {
             fields: ["id", "height", "width"],
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
+              url: "foo"
+            }
           });
           expect(store.getProxy().getModel()).toBe(store.getModel());
           expect(store.getProxy().getReader().getModel()).toBe(
-            store.getModel(),
+            store.getModel()
           );
         });
 
         it("should extend Ext.data.Model", function () {
           store = new Ext.data.Store({
-            fields: ["id", "height", "width"],
+            fields: ["id", "height", "width"]
           });
           expect(store.getModel().superclass.self).toBe(Ext.data.Model);
         });
@@ -299,7 +299,7 @@ describe("Ext.data.Store", function () {
       it("should not auto load by default", function () {
         spyOn(Ext.data.Store.prototype, "flushLoad").andReturn();
         createStore({
-          asynchronousLoad: true,
+          asynchronousLoad: true
         });
         waits(50);
         runs(function () {
@@ -312,7 +312,7 @@ describe("Ext.data.Store", function () {
           spyOn(Ext.data.Store.prototype, "flushLoad").andCallThrough();
           createStore({
             asynchronousLoad: true,
-            autoLoad: true,
+            autoLoad: true
           });
           waitsFor(function () {
             return store.flushLoad.callCount > 0;
@@ -324,10 +324,10 @@ describe("Ext.data.Store", function () {
 
         it("should pass the options if autoLoad is an object", function () {
           var p = {
-              foo: "bar",
+              foo: "bar"
             },
             o = {
-              params: p,
+              params: p
             },
             loadParams;
 
@@ -337,8 +337,8 @@ describe("Ext.data.Store", function () {
             listeners: {
               beforeload: function (s, operation) {
                 loadParams = operation.getParams();
-              },
-            },
+              }
+            }
           });
 
           // Capture parameter from load options to verify
@@ -352,7 +352,7 @@ describe("Ext.data.Store", function () {
     describe("fields", function () {
       it("should create a model with the configured fields", function () {
         createStore({
-          fields: ["id", "height", "width"],
+          fields: ["id", "height", "width"]
         });
         var Model = store.getModel(),
           fields = Model.getFields();
@@ -365,7 +365,7 @@ describe("Ext.data.Store", function () {
 
       it("should not be created with a class name", function () {
         createStore({
-          fields: ["id", "height", "width"],
+          fields: ["id", "height", "width"]
         });
         var Model = store.getModel();
         expect(Model.$className).toBe(null);
@@ -376,7 +376,7 @@ describe("Ext.data.Store", function () {
       describe("with no proxy", function () {
         it("should add any inline data", function () {
           createStore({
-            data: [edRaw, abeRaw],
+            data: [edRaw, abeRaw]
           });
           expect(store.first().id).toBe("ed@sencha.com");
           expect(store.last().id).toBe("abe@sencha.com");
@@ -390,9 +390,9 @@ describe("Ext.data.Store", function () {
               add: spy,
               load: spy,
               datachanged: spy,
-              refresh: spy,
+              refresh: spy
             },
-            data: [edRaw, abeRaw, tommyRaw],
+            data: [edRaw, abeRaw, tommyRaw]
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -405,7 +405,7 @@ describe("Ext.data.Store", function () {
             spyOn(proxy, "read").andCallThrough();
             createStore({
               proxy: proxy,
-              data: [abeRaw, tommyRaw],
+              data: [abeRaw, tommyRaw]
             });
             expect(store.first().id).toBe("abe@sencha.com");
             expect(store.last().id).toBe("tommy@sencha.com");
@@ -423,8 +423,8 @@ describe("Ext.data.Store", function () {
                 add: spy,
                 load: spy,
                 datachanged: spy,
-                refresh: spy,
-              },
+                refresh: spy
+              }
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -436,7 +436,7 @@ describe("Ext.data.Store", function () {
             spyOn(proxy, "read").andCallThrough();
             createStore({
               proxy: proxy,
-              data: [aaronRaw, edRaw],
+              data: [aaronRaw, edRaw]
             });
             expect(store.first().id).toBe("aaron@sencha.com");
             expect(store.last().id).toBe("ed@sencha.com");
@@ -454,8 +454,8 @@ describe("Ext.data.Store", function () {
                 add: spy,
                 load: spy,
                 datachanged: spy,
-                refresh: spy,
-              },
+                refresh: spy
+              }
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -466,7 +466,7 @@ describe("Ext.data.Store", function () {
     describe("buffered stores", function () {
       it("should create a BufferedStore if given buffered:true", function () {
         createStore({
-          buffered: true,
+          buffered: true
         });
 
         expect(store.isBufferedStore).toBe(true);
@@ -478,7 +478,7 @@ describe("Ext.data.Store", function () {
         spyOn(Ext.log, "warn");
 
         store = Ext.Factory.store({
-          type: "buffered",
+          type: "buffered"
         });
 
         expect(store.isBufferedStore).toBe(true);
@@ -554,11 +554,11 @@ describe("Ext.data.Store", function () {
           store.sort("age");
           store.add([
             {
-              age: 1,
+              age: 1
             },
             {
-              age: 1000,
-            },
+              age: 1000
+            }
           ]);
           expect(beginSpy.callCount).toBe(1);
           expect(endSpy.callCount).toBe(1);
@@ -619,7 +619,7 @@ describe("Ext.data.Store", function () {
       it("should be affected by filters", function () {
         store.getFilters().add({
           property: "group",
-          value: "admin",
+          value: "admin"
         });
         expect(store.first()).toBe(abeRec);
       });
@@ -643,7 +643,7 @@ describe("Ext.data.Store", function () {
       it("should be affected by filters", function () {
         store.getFilters().add({
           property: "group",
-          value: "admin",
+          value: "admin"
         });
         expect(store.last()).toBe(aaronRec);
       });
@@ -1005,10 +1005,10 @@ describe("Ext.data.Store", function () {
           proxy: {
             type: "memory",
             data: {
-              total: 1234,
+              total: 1234
             },
-            reader: "json",
-          },
+            reader: "json"
+          }
         });
         store.load();
         expect(store.getTotalCount()).toBe(1234);
@@ -1041,7 +1041,7 @@ describe("Ext.data.Store", function () {
         it("should create a model from an object config", function () {
           store.add({
             email: "foo@sencha.com",
-            name: "Foo",
+            name: "Foo"
           });
           var rec = store.first();
           expect(rec.isModel).toBe(true);
@@ -1054,12 +1054,12 @@ describe("Ext.data.Store", function () {
           store.add([
             {
               email: "personA@sencha.com",
-              name: "Person A",
+              name: "Person A"
             },
             {
               email: "personB@sencha.com",
-              name: "Person B",
-            },
+              name: "Person B"
+            }
           ]);
           expect(store.first().get("name")).toBe("Person A");
           expect(store.last().get("name")).toBe("Person B");
@@ -1069,12 +1069,12 @@ describe("Ext.data.Store", function () {
           store.add(
             {
               email: "personA@sencha.com",
-              name: "Person A",
+              name: "Person A"
             },
             {
               email: "personB@sencha.com",
-              name: "Person B",
-            },
+              name: "Person B"
+            }
           );
           expect(store.first().get("name")).toBe("Person A");
           expect(store.last().get("name")).toBe("Person B");
@@ -1174,7 +1174,7 @@ describe("Ext.data.Store", function () {
                 makeUser("e@sencha.com"),
                 makeUser("j@sencha.com"),
                 makeUser("o@sencha.com"),
-                makeUser("t@sencha.com"),
+                makeUser("t@sencha.com")
               );
 
               recs = [
@@ -1187,7 +1187,7 @@ describe("Ext.data.Store", function () {
                 makeUser("p@sencha.com"),
                 makeUser("q@sencha.com"),
                 makeUser("r@sencha.com"),
-                makeUser("s@sencha.com"),
+                makeUser("s@sencha.com")
               ];
             });
 
@@ -1203,7 +1203,7 @@ describe("Ext.data.Store", function () {
                 recs[5],
                 recs[2],
                 recs[8],
-                recs[0],
+                recs[0]
               );
 
               expect(spy.callCount).toBe(4);
@@ -1241,7 +1241,7 @@ describe("Ext.data.Store", function () {
                 recs[5],
                 recs[2],
                 recs[8],
-                recs[0],
+                recs[0]
               );
               var args = spy.mostRecentCall.args;
               expect(spy.callCount).toBe(1);
@@ -1254,7 +1254,7 @@ describe("Ext.data.Store", function () {
           it("should not call the event when the record is null", function () {
             store.on({
               add: spy,
-              datachanged: spy,
+              datachanged: spy
             });
             store.add(null);
             expect(spy).not.toHaveBeenCalled();
@@ -1263,7 +1263,7 @@ describe("Ext.data.Store", function () {
           it("should not call the event when the array is empty", function () {
             store.on({
               add: spy,
-              datachanged: spy,
+              datachanged: spy
             });
             store.add([]);
             expect(spy).not.toHaveBeenCalled();
@@ -1302,7 +1302,7 @@ describe("Ext.data.Store", function () {
         it("should create a model from an object config", function () {
           store.insert(0, {
             email: "foo@sencha.com",
-            name: "Foo",
+            name: "Foo"
           });
           var rec = store.first();
           expect(rec.isModel).toBe(true);
@@ -1315,12 +1315,12 @@ describe("Ext.data.Store", function () {
           store.insert(0, [
             {
               email: "personA@sencha.com",
-              name: "Person A",
+              name: "Person A"
             },
             {
               email: "personB@sencha.com",
-              name: "Person B",
-            },
+              name: "Person B"
+            }
           ]);
           expect(store.first().get("name")).toBe("Person A");
           expect(store.last().get("name")).toBe("Person B");
@@ -1360,7 +1360,7 @@ describe("Ext.data.Store", function () {
           store.filter("group", "code");
           var rec = store.insert(0, {
             email: "foo@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           expect(store.getAt(0)).toBe(rec);
         });
@@ -1369,7 +1369,7 @@ describe("Ext.data.Store", function () {
           store.filter("group", "code");
           var rec = store.insert(1, {
             email: "foo@sencha.com",
-            group: "code",
+            group: "code"
           })[0];
           store.getFilters().removeAll();
           expect(store.indexOf(rec)).toBe(3);
@@ -1379,7 +1379,7 @@ describe("Ext.data.Store", function () {
           store.filter("group", "code");
           var rec = store.insert(0, {
             email: "foo@sencha.com",
-            group: "admin",
+            group: "admin"
           })[0];
           store.getFilters().removeAll();
           expect(store.indexOf(rec)).toBe(0);
@@ -1425,7 +1425,7 @@ describe("Ext.data.Store", function () {
           it("should not call the event when the record is null", function () {
             store.on({
               add: spy,
-              datachanged: spy,
+              datachanged: spy
             });
             store.insert(0, null);
             expect(spy).not.toHaveBeenCalled();
@@ -1434,7 +1434,7 @@ describe("Ext.data.Store", function () {
           it("should not call the event when the array is empty", function () {
             store.on({
               add: spy,
-              datachanged: spy,
+              datachanged: spy
             });
             store.insert(0, []);
             expect(spy).not.toHaveBeenCalled();
@@ -1484,7 +1484,7 @@ describe("Ext.data.Store", function () {
 
             store.add(edRec);
             var expected = {
-              "ed@sencha.com": 1,
+              "ed@sencha.com": 1
             };
             expect(refreshMap).toEqual(expected);
 
@@ -1508,7 +1508,7 @@ describe("Ext.data.Store", function () {
                 store.add([edRec, abeRec]);
                 var expected = {
                   "ed@sencha.com": 1,
-                  "abe@sencha.com": 1,
+                  "abe@sencha.com": 1
                 };
 
                 expect(refreshMap).toEqual(expected);
@@ -1546,7 +1546,7 @@ describe("Ext.data.Store", function () {
                 var expected = {
                   "abe@sencha.com": 1,
                   "tommy@sencha.com": 1,
-                  "bar@sencha.com": 1,
+                  "bar@sencha.com": 1
                 };
 
                 expect(refreshMap).toEqual(expected);
@@ -1581,7 +1581,7 @@ describe("Ext.data.Store", function () {
 
               store.add([fooRec, edRec]);
               var expected = {
-                "ed@sencha.com": 1,
+                "ed@sencha.com": 1
               };
               expect(refreshMap).toEqual(expected);
 
@@ -1604,7 +1604,7 @@ describe("Ext.data.Store", function () {
 
             store.insert(0, tommyRec);
             var expected = {
-              "tommy@sencha.com": 1,
+              "tommy@sencha.com": 1
             };
             expect(refreshMap).toEqual(expected);
 
@@ -1628,7 +1628,7 @@ describe("Ext.data.Store", function () {
                 store.insert(0, [aaronRec, tommyRec]);
                 var expected = {
                   "aaron@sencha.com": 1,
-                  "tommy@sencha.com": 1,
+                  "tommy@sencha.com": 1
                 };
 
                 expect(refreshMap).toEqual(expected);
@@ -1666,7 +1666,7 @@ describe("Ext.data.Store", function () {
                 var expected = {
                   "abe@sencha.com": 1,
                   "tommy@sencha.com": 1,
-                  "bar@sencha.com": 1,
+                  "bar@sencha.com": 1
                 };
 
                 expect(refreshMap).toEqual(expected);
@@ -1701,7 +1701,7 @@ describe("Ext.data.Store", function () {
 
               store.insert(2, [fooRec, edRec]);
               var expected = {
-                "ed@sencha.com": 1,
+                "ed@sencha.com": 1
               };
               expect(refreshMap).toEqual(expected);
 
@@ -1716,7 +1716,7 @@ describe("Ext.data.Store", function () {
         beforeEach(function () {
           store.getSorters().add({
             property: "name",
-            direction: "ASC",
+            direction: "ASC"
           });
         });
 
@@ -1730,7 +1730,7 @@ describe("Ext.data.Store", function () {
           tommyRec.set("name", "cccc");
 
           var expected = {
-            "tommy@sencha.com": 1,
+            "tommy@sencha.com": 1
           };
           expect(refreshMap).toEqual(expected);
 
@@ -1853,7 +1853,7 @@ describe("Ext.data.Store", function () {
           var rec = makeUser("foo@sencha.com");
           expect(store.remove([edRec, rec, tommyRec])).toEqual([
             edRec,
-            tommyRec,
+            tommyRec
           ]);
         });
       });
@@ -1971,7 +1971,7 @@ describe("Ext.data.Store", function () {
             it("should not fire when the array is empty", function () {
               store.on({
                 remove: spy,
-                datachanged: spy,
+                datachanged: spy
               });
               store.on("remove", spy);
               store.remove([]);
@@ -1981,7 +1981,7 @@ describe("Ext.data.Store", function () {
             it("should not fire when the array is stripped of items not in the store", function () {
               store.on({
                 remove: spy,
-                datachanged: spy,
+                datachanged: spy
               });
               store.remove([makeUser("foo@sencha.com")]);
               expect(spy).not.toHaveBeenCalled();
@@ -2054,7 +2054,7 @@ describe("Ext.data.Store", function () {
           it("should not fire when the index is greater than the store bounds", function () {
             store.on({
               remove: spy,
-              datachanged: spy,
+              datachanged: spy
             });
             store.removeAt(100);
             expect(spy).not.toHaveBeenCalled();
@@ -2243,7 +2243,7 @@ describe("Ext.data.Store", function () {
       describe("construction", function () {
         it("should increment the loadCount when passing data with no proxy", function () {
           createStore({
-            data: [abeRaw],
+            data: [abeRaw]
           });
           expect(store.loadCount).toBe(1);
         });
@@ -2251,9 +2251,9 @@ describe("Ext.data.Store", function () {
         it("should increment the loadCount when passing data with a memory proxy", function () {
           createStore({
             proxy: {
-              type: "memory",
+              type: "memory"
             },
-            data: [abeRaw],
+            data: [abeRaw]
           });
           expect(store.loadCount).toBe(1);
         });
@@ -2280,8 +2280,8 @@ describe("Ext.data.Store", function () {
           createStore({
             proxy: {
               type: "ajax",
-              url: "/foo",
-            },
+              url: "/foo"
+            }
           });
         });
 
@@ -2308,8 +2308,8 @@ describe("Ext.data.Store", function () {
         createStore({
           proxy: {
             type: "ajax",
-            url: "/foo",
-          },
+            url: "/foo"
+          }
         });
         for (var i = 0; i < 5; ++i) {
           store.load();
@@ -2348,8 +2348,8 @@ describe("Ext.data.Store", function () {
           addStoreData();
           store.loadData([
             {
-              email: "foo@sencha.com",
-            },
+              email: "foo@sencha.com"
+            }
           ]);
           expect(store.first().get("email")).toBe("foo@sencha.com");
           expect(store.getCount()).toBe(1);
@@ -2360,10 +2360,10 @@ describe("Ext.data.Store", function () {
           store.loadData(
             [
               {
-                email: "foo@sencha.com",
-              },
+                email: "foo@sencha.com"
+              }
             ],
-            true,
+            true
           );
           expect(store.last().get("email")).toBe("foo@sencha.com");
           expect(store.getCount()).toBe(5);
@@ -2374,18 +2374,18 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "email",
-              value: "ed@sencha.com",
+              value: "ed@sencha.com"
             });
 
             expect(store.getCount()).toBe(1);
 
             store.loadData([
               {
-                email: "a@sencha.com",
+                email: "a@sencha.com"
               },
               {
-                email: "b@sencha.com",
-              },
+                email: "b@sencha.com"
+              }
             ]);
 
             expect(store.getCount()).toBe(0);
@@ -2403,7 +2403,7 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
 
             expect(store.getCount()).toBe(2);
@@ -2411,12 +2411,12 @@ describe("Ext.data.Store", function () {
             store.loadData([
               {
                 email: "a@sencha.com",
-                group: "admin",
+                group: "admin"
               },
               {
                 email: "b@sencha.com",
-                group: "code",
-              },
+                group: "code"
+              }
             ]);
 
             expect(store.getCount()).toBe(1);
@@ -2496,7 +2496,7 @@ describe("Ext.data.Store", function () {
           addStoreData();
           var rec = makeUser("foo@sencha.com");
           store.loadRecords([rec], {
-            addRecords: true,
+            addRecords: true
           });
           expect(store.last()).toBe(rec);
           expect(store.getCount()).toBe(5);
@@ -2507,14 +2507,14 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "email",
-              value: "ed@sencha.com",
+              value: "ed@sencha.com"
             });
 
             expect(store.getCount()).toBe(1);
 
             store.loadRecords([
               makeUser("a@sencha.com"),
-              makeUser("b@sencha.com"),
+              makeUser("b@sencha.com")
             ]);
 
             expect(store.getCount()).toBe(0);
@@ -2532,18 +2532,18 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
 
             expect(store.getCount()).toBe(2);
 
             store.loadRecords([
               makeUser("a@sencha.com", {
-                group: "admin",
+                group: "admin"
               }),
               makeUser("b@sencha.com", {
-                group: "code",
-              }),
+                group: "code"
+              })
             ]);
 
             expect(store.getCount()).toBe(1);
@@ -2603,8 +2603,8 @@ describe("Ext.data.Store", function () {
               "email",
               {
                 name: "name",
-                mapping: "person",
-              },
+                mapping: "person"
+              }
             ],
             proxy: {
               type: "memory",
@@ -2612,12 +2612,12 @@ describe("Ext.data.Store", function () {
                 type: "json",
                 rootProperty: "data",
                 successProperty: "success",
-                totalProperty: "myTotal",
-              },
-            },
+                totalProperty: "myTotal"
+              }
+            }
           });
           createStore({
-            model: "spec.UserWithReader",
+            model: "spec.UserWithReader"
           });
         });
 
@@ -2632,9 +2632,9 @@ describe("Ext.data.Store", function () {
               data: [
                 {
                   email: "foo@sencha.com",
-                  person: "The name",
-                },
-              ],
+                  person: "The name"
+                }
+              ]
             });
             var rec = store.first();
             expect(rec.$className).toBe("spec.UserWithReader");
@@ -2645,7 +2645,7 @@ describe("Ext.data.Store", function () {
             store.loadRawData({
               success: true,
               myTotal: 9876,
-              data: [],
+              data: []
             });
             expect(store.getTotalCount()).toBe(9876);
           });
@@ -2656,9 +2656,9 @@ describe("Ext.data.Store", function () {
               data: [
                 {
                   email: "foo@sencha.com",
-                  person: "The name",
-                },
-              ],
+                  person: "The name"
+                }
+              ]
             });
             expect(result).toBe(true);
           });
@@ -2669,9 +2669,9 @@ describe("Ext.data.Store", function () {
               data: [
                 {
                   email: "foo@sencha.com",
-                  person: "Name1",
-                },
-              ],
+                  person: "Name1"
+                }
+              ]
             });
             expect(result).toBe(false);
             expect(store.getCount()).toBe(0);
@@ -2684,9 +2684,9 @@ describe("Ext.data.Store", function () {
             success: true,
             data: [
               {
-                email: "foo@sencha.com",
-              },
-            ],
+                email: "foo@sencha.com"
+              }
+            ]
           });
           expect(store.first().get("email")).toBe("foo@sencha.com");
           expect(store.getCount()).toBe(1);
@@ -2699,13 +2699,13 @@ describe("Ext.data.Store", function () {
               success: true,
               data: [
                 {
-                  email: "foo@sencha.com",
-                },
-              ],
+                  email: "foo@sencha.com"
+                }
+              ]
             },
             {
-              addRecords: true,
-            },
+              addRecords: true
+            }
           );
           expect(store.last().get("email")).toBe("foo@sencha.com");
           expect(store.getCount()).toBe(5);
@@ -2716,18 +2716,18 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "email",
-              value: "ed@sencha.com",
+              value: "ed@sencha.com"
             });
 
             expect(store.getCount()).toBe(1);
 
             store.loadRawData([
               {
-                email: "a@sencha.com",
+                email: "a@sencha.com"
               },
               {
-                email: "b@sencha.com",
-              },
+                email: "b@sencha.com"
+              }
             ]);
 
             expect(store.getCount()).toBe(0);
@@ -2745,7 +2745,7 @@ describe("Ext.data.Store", function () {
             addStoreData();
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
 
             expect(store.getCount()).toBe(2);
@@ -2753,12 +2753,12 @@ describe("Ext.data.Store", function () {
             store.loadRawData([
               {
                 email: "a@sencha.com",
-                group: "admin",
+                group: "admin"
               },
               {
                 email: "b@sencha.com",
-                group: "code",
-              },
+                group: "code"
+              }
             ]);
 
             expect(store.getCount()).toBe(1);
@@ -2783,9 +2783,9 @@ describe("Ext.data.Store", function () {
               success: true,
               data: [
                 {
-                  email: "foo@sencha.com",
-                },
-              ],
+                  email: "foo@sencha.com"
+                }
+              ]
             };
           });
 
@@ -2826,9 +2826,9 @@ describe("Ext.data.Store", function () {
           success: true,
           data: [
             {
-              email: "foo@sencha.com",
-            },
-          ],
+              email: "foo@sencha.com"
+            }
+          ]
         };
         createStore({
           proxy: {
@@ -2837,9 +2837,9 @@ describe("Ext.data.Store", function () {
             reader: {
               type: "json",
               successProperty: "success",
-              rootProperty: "data",
-            },
-          },
+              rootProperty: "data"
+            }
+          }
         });
       });
 
@@ -2854,7 +2854,7 @@ describe("Ext.data.Store", function () {
           proxySpy = spyOn(store.getProxy(), "read").andReturn();
           collectionSortSpy = spyOn(
             store.getData(),
-            "sortItems",
+            "sortItems"
           ).andCallThrough();
         });
 
@@ -2862,7 +2862,7 @@ describe("Ext.data.Store", function () {
           function makeSorter(prop, dir) {
             return {
               property: prop,
-              direction: dir,
+              direction: dir
             };
           }
 
@@ -2878,7 +2878,7 @@ describe("Ext.data.Store", function () {
 
             // beforesort event passes Sorters as an array
             expect(beforeSortSpy.calls[0].args[1]).toEqual(
-              store.getSorters().getRange(),
+              store.getSorters().getRange()
             );
 
             store.getSorters().add(makeSorter("evilness", "DESC"));
@@ -2888,7 +2888,7 @@ describe("Ext.data.Store", function () {
 
             // beforesort event passes Sorters as an array
             expect(beforeSortSpy.calls[1].args[1]).toEqual(
-              store.getSorters().getRange(),
+              store.getSorters().getRange()
             );
 
             store.load();
@@ -2898,7 +2898,7 @@ describe("Ext.data.Store", function () {
 
             // beforesort event passes Sorters as an array
             expect(beforeSortSpy.calls[2].args[1]).toEqual(
-              store.getSorters().getRange(),
+              store.getSorters().getRange()
             );
 
             sorters = getOperation().getSorters();
@@ -2932,7 +2932,7 @@ describe("Ext.data.Store", function () {
 
             // beforesort event passes Sorters as an array
             expect(beforeSortSpy.calls[0].args[1]).toEqual(
-              store.getSorters().getRange(),
+              store.getSorters().getRange()
             );
 
             store.getSorters().add(makeSorter("evilness", "DESC"));
@@ -2942,7 +2942,7 @@ describe("Ext.data.Store", function () {
 
             // beforesort event passes Sorters as an array
             expect(beforeSortSpy.calls[1].args[1]).toEqual(
-              store.getSorters().getRange(),
+              store.getSorters().getRange()
             );
 
             store.load();
@@ -2957,7 +2957,7 @@ describe("Ext.data.Store", function () {
           function makeGrouper(prop, dir) {
             return {
               property: prop,
-              direction: dir,
+              direction: dir
             };
           }
 
@@ -2995,8 +2995,8 @@ describe("Ext.data.Store", function () {
                   { name: "description", type: "string" },
                   { name: "estimate", type: "float" },
                   { name: "rate", type: "float" },
-                  { name: "due", type: "date", dateFormat: "m/d/Y" },
-                ],
+                  { name: "due", type: "date", dateFormat: "m/d/Y" }
+                ]
               });
 
             var data = [
@@ -3007,7 +3007,7 @@ describe("Ext.data.Store", function () {
                 description: "Integrate 2.0 Forms with 2.0 Layouts",
                 estimate: 6,
                 rate: 150,
-                due: "06/24/2007",
+                due: "06/24/2007"
               },
               {
                 projectId: 100,
@@ -3016,7 +3016,7 @@ describe("Ext.data.Store", function () {
                 description: "Implement AnchorLayout",
                 estimate: 4,
                 rate: 150,
-                due: "06/25/2007",
+                due: "06/25/2007"
               },
               {
                 projectId: 100,
@@ -3025,7 +3025,7 @@ describe("Ext.data.Store", function () {
                 description: "Add support for multiple<br>types of anchors",
                 estimate: 4,
                 rate: 150,
-                due: "06/27/2007",
+                due: "06/27/2007"
               },
               {
                 projectId: 100,
@@ -3034,7 +3034,7 @@ describe("Ext.data.Store", function () {
                 description: "Testing and debugging",
                 estimate: 8,
                 rate: 0,
-                due: "06/29/2007",
+                due: "06/29/2007"
               },
 
               {
@@ -3044,7 +3044,7 @@ describe("Ext.data.Store", function () {
                 description: 'Add required rendering "hooks" to GridView',
                 estimate: 6,
                 rate: 100,
-                due: "07/01/2007",
+                due: "07/01/2007"
               },
               {
                 projectId: 101,
@@ -3053,7 +3053,7 @@ describe("Ext.data.Store", function () {
                 description: "Extend GridView and override rendering functions",
                 estimate: 6,
                 rate: 100,
-                due: "07/03/2007",
+                due: "07/03/2007"
               },
               {
                 projectId: 101,
@@ -3062,7 +3062,7 @@ describe("Ext.data.Store", function () {
                 description: "Extend Store with grouping functionality",
                 estimate: 4,
                 rate: 100,
-                due: "07/04/2007",
+                due: "07/04/2007"
               },
               {
                 projectId: 101,
@@ -3071,7 +3071,7 @@ describe("Ext.data.Store", function () {
                 description: "Default CSS Styling",
                 estimate: 2,
                 rate: 100,
-                due: "07/05/2007",
+                due: "07/05/2007"
               },
               {
                 projectId: 101,
@@ -3080,7 +3080,7 @@ describe("Ext.data.Store", function () {
                 description: "Testing and debugging",
                 estimate: 6,
                 rate: 100,
-                due: "07/06/2007",
+                due: "07/06/2007"
               },
 
               {
@@ -3090,7 +3090,7 @@ describe("Ext.data.Store", function () {
                 description: "Ext Grid plugin integration",
                 estimate: 4,
                 rate: 125,
-                due: "07/01/2007",
+                due: "07/01/2007"
               },
               {
                 projectId: 102,
@@ -3099,7 +3099,7 @@ describe("Ext.data.Store", function () {
                 description: "Summary creation during rendering phase",
                 estimate: 4,
                 rate: 125,
-                due: "07/02/2007",
+                due: "07/02/2007"
               },
               {
                 projectId: 102,
@@ -3108,7 +3108,7 @@ describe("Ext.data.Store", function () {
                 description: "Dynamic summary updates in editor grids",
                 estimate: 6,
                 rate: 125,
-                due: "07/05/2007",
+                due: "07/05/2007"
               },
               {
                 projectId: 102,
@@ -3117,7 +3117,7 @@ describe("Ext.data.Store", function () {
                 description: "Remote summary integration",
                 estimate: 4,
                 rate: 125,
-                due: "07/05/2007",
+                due: "07/05/2007"
               },
               {
                 projectId: 102,
@@ -3126,7 +3126,7 @@ describe("Ext.data.Store", function () {
                 description: "Summary renderers and calculators",
                 estimate: 4,
                 rate: 125,
-                due: "07/06/2007",
+                due: "07/06/2007"
               },
               {
                 projectId: 102,
@@ -3135,7 +3135,7 @@ describe("Ext.data.Store", function () {
                 description: "Integrate summaries with GroupingView",
                 estimate: 10,
                 rate: 125,
-                due: "07/11/2007",
+                due: "07/11/2007"
               },
               {
                 projectId: 102,
@@ -3144,15 +3144,15 @@ describe("Ext.data.Store", function () {
                 description: "Testing and debugging",
                 estimate: 8,
                 rate: 125,
-                due: "07/15/2007",
-              },
+                due: "07/15/2007"
+              }
             ];
 
             store = Ext.create("Ext.data.Store", {
               model: Task,
               data: data,
               sorters: { property: "due", direction: "ASC" },
-              groupField: "project",
+              groupField: "project"
             });
 
             expect(store.getAt(0).get("taskId")).toBe(112);
@@ -3196,7 +3196,7 @@ describe("Ext.data.Store", function () {
                 expect(store.getAt(14).get("taskId")).toBe(111);
                 expect(store.getAt(15).get("taskId")).toBe(110);
                 sorted++;
-              },
+              }
             });
             // This should switch the order within the two groups.
             // This becomes the primary sorter instead of evilness
@@ -3211,7 +3211,7 @@ describe("Ext.data.Store", function () {
           function makeFilter(prop, value) {
             return {
               property: prop,
-              value: value,
+              value: value
             };
           }
 
@@ -3247,11 +3247,11 @@ describe("Ext.data.Store", function () {
           it("should pass along params", function () {
             store.load({
               params: {
-                foo: "bar",
-              },
+                foo: "bar"
+              }
             });
             expect(getOperation().getParams()).toEqual({
-              foo: "bar",
+              foo: "bar"
             });
           });
         });
@@ -3260,14 +3260,14 @@ describe("Ext.data.Store", function () {
           describe("page", function () {
             it("should use the passed page", function () {
               store.load({
-                page: 7,
+                page: 7
               });
               expect(getOperation().getPage()).toBe(7);
             });
 
             it("should set the store currentPage", function () {
               store.load({
-                page: 7,
+                page: 7
               });
               expect(store.currentPage).toBe(7);
             });
@@ -3281,7 +3281,7 @@ describe("Ext.data.Store", function () {
           describe("start", function () {
             it("should use the passed start", function () {
               store.load({
-                start: 100,
+                start: 100
               });
               expect(getOperation().getStart()).toBe(100);
             });
@@ -3297,7 +3297,7 @@ describe("Ext.data.Store", function () {
           describe("limit", function () {
             it("should used the passed limit", function () {
               store.load({
-                limit: 12,
+                limit: 12
               });
               expect(getOperation().getLimit()).toBe(12);
             });
@@ -3316,7 +3316,7 @@ describe("Ext.data.Store", function () {
             describe("page", function () {
               it("should use the passed page", function () {
                 store.load({
-                  page: 7,
+                  page: 7
                 });
                 expect(getOperation().getPage()).toBe(7);
               });
@@ -3330,7 +3330,7 @@ describe("Ext.data.Store", function () {
             describe("start", function () {
               it("should use the passed start", function () {
                 store.load({
-                  start: 100,
+                  start: 100
                 });
                 expect(getOperation().getStart()).toBe(100);
               });
@@ -3344,7 +3344,7 @@ describe("Ext.data.Store", function () {
             describe("limit", function () {
               it("should used the passed limit", function () {
                 store.load({
-                  limit: 12,
+                  limit: 12
                 });
                 expect(getOperation().getLimit()).toBe(12);
               });
@@ -3377,7 +3377,7 @@ describe("Ext.data.Store", function () {
         it("should not be loading when the server returns a failed response", function () {
           store.load();
           completeWithData({
-            success: false,
+            success: false
           });
           expect(store.isLoading()).toBe(false);
         });
@@ -3406,7 +3406,7 @@ describe("Ext.data.Store", function () {
         describe("object paramter", function () {
           it("should take a callback parameter", function () {
             store.load({
-              callback: spy,
+              callback: spy
             });
             completeWithData(successData);
             expect(spy.callCount).toBe(1);
@@ -3415,7 +3415,7 @@ describe("Ext.data.Store", function () {
           it("should use a passed scope", function () {
             store.load({
               callback: spy,
-              scope: fakeScope,
+              scope: fakeScope
             });
             completeWithData(successData);
             expect(spy.mostRecentCall.object).toBe(fakeScope);
@@ -3423,7 +3423,7 @@ describe("Ext.data.Store", function () {
 
           it("should default the scope to the store", function () {
             store.load({
-              callback: spy,
+              callback: spy
             });
             completeWithData(successData);
             expect(spy.mostRecentCall.object).toBe(store);
@@ -3444,12 +3444,12 @@ describe("Ext.data.Store", function () {
                 success: true,
                 data: [
                   {
-                    email: "user1@sencha.com",
+                    email: "user1@sencha.com"
                   },
                   {
-                    email: "user2@sencha.com",
-                  },
-                ],
+                    email: "user2@sencha.com"
+                  }
+                ]
               });
               var args = spy.mostRecentCall.args;
               expect(args[0][0].get("email")).toBe("user1@sencha.com");
@@ -3463,7 +3463,7 @@ describe("Ext.data.Store", function () {
             it("should pass empty records, the operation and success status", function () {
               store.load(spy);
               completeWithData({
-                success: false,
+                success: false
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toEqual([]);
@@ -3566,7 +3566,7 @@ describe("Ext.data.Store", function () {
               store.on("load", spy);
               store.load();
               completeWithData({
-                success: false,
+                success: false
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toBe(store);
@@ -3611,7 +3611,7 @@ describe("Ext.data.Store", function () {
         it("should append records to the end when using append: true", function () {
           addStoreData();
           store.load({
-            addRecords: true,
+            addRecords: true
           });
           completeWithData(successData);
           expect(store.last().get("email")).toBe("foo@sencha.com");
@@ -3661,7 +3661,7 @@ describe("Ext.data.Store", function () {
           var spy = jasmine.createSpy();
 
           store.reload({
-            callback: spy,
+            callback: spy
           });
           completeWithData(successData);
           expect(spy.callCount).toBe(1);
@@ -3670,14 +3670,14 @@ describe("Ext.data.Store", function () {
         it("should use the params from the last load", function () {
           store.load({
             params: {
-              foo: "bar",
-            },
+              foo: "bar"
+            }
           });
           completeWithData(successData);
           var spy = spyOn(store.getProxy(), "read").andReturn();
           store.reload();
           expect(spy.mostRecentCall.args[0].getParams()).toEqual({
-            foo: "bar",
+            foo: "bar"
           });
         });
       });
@@ -3696,9 +3696,9 @@ describe("Ext.data.Store", function () {
         success: true,
         data: [
           {
-            email: "foo@sencha.com",
-          },
-        ],
+            email: "foo@sencha.com"
+          }
+        ]
       };
       createStore({
         proxy: {
@@ -3707,9 +3707,9 @@ describe("Ext.data.Store", function () {
           reader: {
             type: "json",
             successProperty: "success",
-            rootProperty: "data",
-          },
-        },
+            rootProperty: "data"
+          }
+        }
       });
       proxySpy = spyOn(store.getProxy(), "read").andCallThrough();
     });
@@ -3744,7 +3744,7 @@ describe("Ext.data.Store", function () {
       describe("page", function () {
         it("should favour a passed page param", function () {
           store.loadPage(10, {
-            page: 1234,
+            page: 1234
           });
           expect(getOperation().getPage()).toBe(1234);
         });
@@ -3758,7 +3758,7 @@ describe("Ext.data.Store", function () {
       describe("start", function () {
         it("should favour a passed start param", function () {
           store.loadPage(3, {
-            start: 789,
+            start: 789
           });
           expect(getOperation().getStart()).toBe(789);
         });
@@ -3772,7 +3772,7 @@ describe("Ext.data.Store", function () {
       describe("limit", function () {
         it("should favour a passed limit param", function () {
           store.loadPage(3, {
-            limit: 456,
+            limit: 456
           });
           expect(getOperation().getLimit()).toBe(456);
         });
@@ -3787,11 +3787,11 @@ describe("Ext.data.Store", function () {
         it("should pass the params object", function () {
           store.loadPage(1, {
             params: {
-              custom: true,
-            },
+              custom: true
+            }
           });
           expect(getOperation().getParams()).toEqual({
-            custom: true,
+            custom: true
           });
         });
       });
@@ -3811,18 +3811,18 @@ describe("Ext.data.Store", function () {
           success: true,
           data: [
             {
-              email: "user1@sencha.com",
-            },
-          ],
+              email: "user1@sencha.com"
+            }
+          ]
         });
         store.loadPage(2);
         completeWithData({
           success: true,
           data: [
             {
-              email: "user2@sencha.com",
-            },
-          ],
+              email: "user2@sencha.com"
+            }
+          ]
         });
         expect(store.getCount()).toBe(1);
         expect(store.indexOfId("user1@sencha.com")).toBe(-1);
@@ -3837,18 +3837,18 @@ describe("Ext.data.Store", function () {
           success: true,
           data: [
             {
-              email: "user1@sencha.com",
-            },
-          ],
+              email: "user1@sencha.com"
+            }
+          ]
         });
         store.loadPage(2);
         completeWithData({
           success: true,
           data: [
             {
-              email: "user2@sencha.com",
-            },
-          ],
+              email: "user2@sencha.com"
+            }
+          ]
         });
         expect(store.getCount()).toBe(2);
         expect(store.indexOfId("user1@sencha.com")).toBe(0);
@@ -3867,7 +3867,7 @@ describe("Ext.data.Store", function () {
       it("should be an instance of Ext.util.SorterCollection", function () {
         createStore();
         expect(store.getSorters() instanceof Ext.util.SorterCollection).toBe(
-          true,
+          true
         );
       });
 
@@ -3881,13 +3881,13 @@ describe("Ext.data.Store", function () {
           sorters: [
             {
               property: "foo",
-              direction: "DESC",
+              direction: "DESC"
             },
             {
               property: "bar",
-              direction: "ASC",
-            },
-          ],
+              direction: "ASC"
+            }
+          ]
         });
         expectSorter(store.getSorters().getAt(0), "foo", "DESC");
         expectSorter(store.getSorters().getAt(1), "bar", "ASC");
@@ -3903,8 +3903,8 @@ describe("Ext.data.Store", function () {
         createStore({
           listeners: {
             beforesort: spy,
-            sort: spy,
-          },
+            sort: spy
+          }
         });
         store.getSorters();
         expect(spy).not.toHaveBeenCalled();
@@ -3974,7 +3974,7 @@ describe("Ext.data.Store", function () {
 
       it("should return true if there are groupers and no sorters", function () {
         store.setGrouper({
-          property: "group",
+          property: "group"
         });
         expect(store.isSorted()).toBe(true);
       });
@@ -3984,7 +3984,7 @@ describe("Ext.data.Store", function () {
       describe("setting to true", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: false,
+            remoteSort: false
           });
           addStoreData();
           spyOn(store.getProxy(), "read").andCallThrough();
@@ -4007,14 +4007,14 @@ describe("Ext.data.Store", function () {
             store.load();
             completeWithData([
               {
-                name: "Z",
+                name: "Z"
               },
               {
-                name: "Y",
+                name: "Y"
               },
               {
-                name: "A",
-              },
+                name: "A"
+              }
             ]);
             expect(store.getAt(0).get("name")).toBe("Z");
             expect(store.getAt(1).get("name")).toBe("Y");
@@ -4035,7 +4035,7 @@ describe("Ext.data.Store", function () {
           it("should sort the local data", function () {
             createStore({
               remoteSort: true,
-              sorters: "name",
+              sorters: "name"
             });
             addStoreData();
 
@@ -4050,7 +4050,7 @@ describe("Ext.data.Store", function () {
         describe("with no sorters", function () {
           it("should not sort the data", function () {
             createStore({
-              remoteSort: true,
+              remoteSort: true
             });
             addStoreData();
             store.setRemoteSort(false);
@@ -4070,10 +4070,10 @@ describe("Ext.data.Store", function () {
             remoteSort: false,
             sorters: [
               {
-                property: "email",
-              },
+                property: "email"
+              }
             ],
-            data: [edRaw, tommyRaw, aaronRaw, abeRaw],
+            data: [edRaw, tommyRaw, aaronRaw, abeRaw]
           });
           expect(store.first().get("email")).toBe("aaron@sencha.com");
         });
@@ -4082,7 +4082,7 @@ describe("Ext.data.Store", function () {
       describe("dynamic sorters", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: false,
+            remoteSort: false
           });
           addStoreData();
         });
@@ -4094,12 +4094,12 @@ describe("Ext.data.Store", function () {
         it("should be able to use multiple sorters", function () {
           store.getSorters().add(
             {
-              property: "group",
+              property: "group"
             },
             {
               property: "evilness",
-              direction: "DESC",
-            },
+              direction: "DESC"
+            }
           );
           expect(store.first().get("email")).toBe("abe@sencha.com");
         });
@@ -4107,12 +4107,12 @@ describe("Ext.data.Store", function () {
         it("should trigger a sort when removing a sorter that is not the final sorter", function () {
           store.getSorters().add(
             {
-              property: "group",
+              property: "group"
             },
             {
               property: "evilness",
-              direction: "DESC",
-            },
+              direction: "DESC"
+            }
           );
           store.getSorters().remove("group");
           expect(store.first().get("email")).toBe("ed@sencha.com");
@@ -4181,7 +4181,7 @@ describe("Ext.data.Store", function () {
           it("should sort data", function () {
             store.sort("email");
             store.add({
-              email: "aaa@sencha.com",
+              email: "aaa@sencha.com"
             });
             expect(store.first().get("email")).toBe("aaa@sencha.com");
           });
@@ -4191,7 +4191,7 @@ describe("Ext.data.Store", function () {
             store.sort("email");
             store.on("datachanged", spy);
             store.add({
-              email: "aaa@sencha.com",
+              email: "aaa@sencha.com"
             });
             expect(spy.callCount).toBe(1);
           });
@@ -4237,9 +4237,9 @@ describe("Ext.data.Store", function () {
             remoteSort: true,
             sorters: [
               {
-                property: "evilness",
-              },
-            ],
+                property: "evilness"
+              }
+            ]
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -4248,7 +4248,7 @@ describe("Ext.data.Store", function () {
       describe("addSorted", function () {
         it("should insert the record into the correct position", function () {
           createStore({
-            remoteSort: true,
+            remoteSort: true
           });
           store.sort("email");
           store.loadData([aaronRaw, abeRaw, edRaw, tommyRaw]);
@@ -4260,7 +4260,7 @@ describe("Ext.data.Store", function () {
       describe("modifying the sorters", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: true,
+            remoteSort: true
           });
         });
 
@@ -4329,17 +4329,17 @@ describe("Ext.data.Store", function () {
             sortOnLoad: false,
             proxy: {
               type: "ajax",
-              url: "fakeurl",
-            },
+              url: "fakeurl"
+            }
           });
           store.load();
           completeWithData([
             {
-              name: "ZZZ",
+              name: "ZZZ"
             },
             {
-              name: "AAA",
-            },
+              name: "AAA"
+            }
           ]);
 
           expect(store.first().get("name")).toBe("ZZZ");
@@ -4350,17 +4350,17 @@ describe("Ext.data.Store", function () {
             remoteSort: true,
             proxy: {
               type: "ajax",
-              url: "fakeurl",
-            },
+              url: "fakeurl"
+            }
           });
           store.getSorters().add("name");
           completeWithData([
             {
-              name: "ZZZ",
+              name: "ZZZ"
             },
             {
-              name: "AAA",
-            },
+              name: "AAA"
+            }
           ]);
 
           expect(store.first().get("name")).toBe("ZZZ");
@@ -4371,8 +4371,8 @@ describe("Ext.data.Store", function () {
             remoteSort: true,
             proxy: {
               type: "ajax",
-              url: "fakeurl",
-            },
+              url: "fakeurl"
+            }
           });
           store.getSorters().add("name");
           addStoreData();
@@ -4386,7 +4386,7 @@ describe("Ext.data.Store", function () {
       beforeEach(function () {
         createStore({
           proxy: "memory",
-          remoteSort: true,
+          remoteSort: true
         });
         spy = jasmine.createSpy();
       });
@@ -4531,7 +4531,7 @@ describe("Ext.data.Store", function () {
       describe("remote async", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: true,
+            remoteSort: true
           });
           spy = jasmine.createSpy();
         });
@@ -4592,8 +4592,8 @@ describe("Ext.data.Store", function () {
           },
           groupchange: function () {
             groupOrdinal = ++callSequence;
-          },
-        },
+          }
+        }
       });
       spyOn(store, "load").andCallThrough();
       spyOn(store, "flushLoad").andCallThrough();
@@ -4605,7 +4605,7 @@ describe("Ext.data.Store", function () {
       store.sort("email");
       store.filter({
         property: "old",
-        value: true,
+        value: true
       });
 
       // There have been several load calls in this event handler.
@@ -4650,7 +4650,7 @@ describe("Ext.data.Store", function () {
     function groupBy(property, direction) {
       store.setGrouper({
         property: property || "group",
-        direction: direction,
+        direction: direction
       });
     }
 
@@ -4661,14 +4661,14 @@ describe("Ext.data.Store", function () {
     function sortBy(property, direction) {
       store.getSorters().add({
         property: property,
-        direction: direction,
+        direction: direction
       });
     }
 
     function filterBy(property, value) {
       store.getFilters().add({
         property: property,
-        value: value,
+        value: value
       });
     }
 
@@ -4689,7 +4689,7 @@ describe("Ext.data.Store", function () {
 
       it("should use whatever was set in the config when calling group()", function () {
         createStore({
-          groupDir: "DESC",
+          groupDir: "DESC"
         });
 
         store.group("email");
@@ -4774,7 +4774,7 @@ describe("Ext.data.Store", function () {
     describe("local", function () {
       beforeEach(function () {
         createStore({
-          remoteSort: false,
+          remoteSort: false
         });
         addStoreData();
       });
@@ -4784,8 +4784,8 @@ describe("Ext.data.Store", function () {
           createStore({
             remoteSort: false,
             grouper: {
-              property: "group",
-            },
+              property: "group"
+            }
           });
           addStoreData();
           groups = store.getGroups();
@@ -4826,7 +4826,7 @@ describe("Ext.data.Store", function () {
 
             store.add({
               email: "new@sencha.com",
-              group: "admin",
+              group: "admin"
             });
 
             var admins = store.getGroups().get("admin");
@@ -4839,7 +4839,7 @@ describe("Ext.data.Store", function () {
             expect(store.getGroups().get("test")).toBeUndefined();
             store.add({
               email: "new@sencha.com",
-              group: "test",
+              group: "test"
             });
             var tests = store.getGroups().get("test");
             expect(tests.getCount()).toBe(1);
@@ -4855,22 +4855,22 @@ describe("Ext.data.Store", function () {
               add: function () {
                 expect(admins.getCount()).toBe(3);
                 expect(admins.indexOfKey("new@sencha.com")).toBe(2);
-              },
+              }
             });
 
             store.add({
               email: "new@sencha.com",
-              group: "admin",
+              group: "admin"
             });
           });
 
           it("should position items correctly when adding multiple items", function () {
             groupBy();
             var new1 = makeUser("new1@sencha.com", {
-                group: "code",
+                group: "code"
               }),
               new2 = makeUser("new2@sencha.com", {
-                group: "admin",
+                group: "admin"
               });
             store.add([new1, new2]);
             expect(store.indexOf(new1)).toBe(5);
@@ -4903,7 +4903,7 @@ describe("Ext.data.Store", function () {
               remove: function () {
                 expect(admins.getCount()).toBe(1);
                 expect(admins.contains(abeRec)).toBe(false);
-              },
+              }
             });
 
             store.remove(abeRec);
@@ -4971,7 +4971,7 @@ describe("Ext.data.Store", function () {
                   { name: "Phil" },
                   { name: "Evan" },
                   { name: "Nige" },
-                  { name: "Alex" },
+                  { name: "Alex" }
                 ],
                 record;
 
@@ -4984,8 +4984,8 @@ describe("Ext.data.Store", function () {
                 data: data,
                 groupField: "name",
                 proxy: {
-                  type: "ajax",
-                },
+                  type: "ajax"
+                }
               });
 
               record = store.getAt(0);
@@ -5102,7 +5102,7 @@ describe("Ext.data.Store", function () {
               }
               // Inverted on purpose to test sorter
               return a < b ? 1 : -1;
-            },
+            }
           });
           var groups = store.getGroups();
           expect(groups.getAt(0).getGroupKey()).toBe("code");
@@ -5187,7 +5187,7 @@ describe("Ext.data.Store", function () {
           store.getFilters().add({
             filterFn: function (rec) {
               return rec.get("name") === "Ed Spencer";
-            },
+            }
           });
 
           var groups = store.getGroups();
@@ -5205,16 +5205,16 @@ describe("Ext.data.Store", function () {
                 return (
                   Ext.Array.indexOf(
                     ["Ed Spencer", "Aaron Conran"],
-                    rec.get("name"),
+                    rec.get("name")
                   ) > -1
                 );
-              },
+              }
             },
             {
               filterFn: function (rec) {
                 return rec.get("name") === "Aaron Conran";
-              },
-            },
+              }
+            }
           );
 
           var groups = store.getGroups();
@@ -5240,8 +5240,8 @@ describe("Ext.data.Store", function () {
             remoteSort: true,
             asynchronousLoad: true,
             grouper: {
-              property: "group",
-            },
+              property: "group"
+            }
           });
 
           // group() triggers a load, but being async, it does not get flushed
@@ -5253,7 +5253,7 @@ describe("Ext.data.Store", function () {
       describe("dynamic groupers", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: true,
+            remoteSort: true
           });
         });
 
@@ -5293,14 +5293,14 @@ describe("Ext.data.Store", function () {
           it("should trigger a load when adding a grouper", function () {
             spyOn(store, "load");
             store.setGrouper({
-              property: "group",
+              property: "group"
             });
             expect(store.load.callCount).toBe(1);
           });
 
           it("should not trigger a load when removing the grouper", function () {
             store.setGrouper({
-              property: "group",
+              property: "group"
             });
             spyOn(store, "load");
             store.setGrouper(null);
@@ -5312,7 +5312,7 @@ describe("Ext.data.Store", function () {
               store.getSorters().add("name");
               spyOn(store, "load");
               store.setGrouper({
-                property: "group",
+                property: "group"
               });
               expect(store.load.callCount).toBe(1);
             });
@@ -5320,7 +5320,7 @@ describe("Ext.data.Store", function () {
             it("should trigger a load when removing the grouper", function () {
               store.getSorters().add("name");
               store.setGrouper({
-                property: "group",
+                property: "group"
               });
               spyOn(store, "load");
               store.setGrouper(null);
@@ -5334,7 +5334,7 @@ describe("Ext.data.Store", function () {
         beforeEach(function () {
           createStore({
             remoteSort: true,
-            groupField: "group",
+            groupField: "group"
           });
           edRaw.group = "bots";
         });
@@ -5390,7 +5390,7 @@ describe("Ext.data.Store", function () {
       describe("local", function () {
         beforeEach(function () {
           createStore({
-            remoteSort: false,
+            remoteSort: false
           });
         });
 
@@ -5545,8 +5545,8 @@ describe("Ext.data.Store", function () {
             createStore({
               remoteSort: true,
               proxy: {
-                type: "memory",
-              },
+                type: "memory"
+              }
             });
           });
 
@@ -5559,9 +5559,9 @@ describe("Ext.data.Store", function () {
                   {
                     property: "evilness",
                     operator: ">",
-                    value: 50,
-                  },
-                ],
+                    value: 50
+                  }
+                ]
               });
               expect(spy.callCount).toBe(0);
             });
@@ -5718,8 +5718,8 @@ describe("Ext.data.Store", function () {
               remoteSort: true,
               proxy: {
                 type: "ajax",
-                url: "foo",
-              },
+                url: "foo"
+              }
             });
           });
           describe("adding", function () {
@@ -5897,7 +5897,7 @@ describe("Ext.data.Store", function () {
       it("should be an instance of Ext.util.FilterCollection", function () {
         createStore();
         expect(store.getFilters() instanceof Ext.util.FilterCollection).toBe(
-          true,
+          true
         );
       });
 
@@ -5911,13 +5911,13 @@ describe("Ext.data.Store", function () {
           filters: [
             {
               property: "foo",
-              value: "a",
+              value: "a"
             },
             {
               property: "bar",
-              value: "b",
-            },
-          ],
+              value: "b"
+            }
+          ]
         });
         var filter = store.getFilters().getAt(0);
         expect(filter.getProperty()).toBe("foo");
@@ -5937,8 +5937,8 @@ describe("Ext.data.Store", function () {
         var spy = jasmine.createSpy();
         createStore({
           listeners: {
-            filterchange: spy,
-          },
+            filterchange: spy
+          }
         });
         store.getFilters();
         expect(spy).not.toHaveBeenCalled();
@@ -6069,10 +6069,10 @@ describe("Ext.data.Store", function () {
             filters: [
               {
                 property: "group",
-                value: "code",
-              },
+                value: "code"
+              }
             ],
-            data: [aaronRaw, edRaw, tommyRaw, abeRaw],
+            data: [aaronRaw, edRaw, tommyRaw, abeRaw]
           });
           expect(store.getCount()).toBe(2);
           expect(store.first().get("email")).toBe("ed@sencha.com");
@@ -6082,7 +6082,7 @@ describe("Ext.data.Store", function () {
       describe("dynamic filters", function () {
         beforeEach(function () {
           createStore({
-            remoteFilter: false,
+            remoteFilter: false
           });
           addStoreData();
         });
@@ -6096,12 +6096,12 @@ describe("Ext.data.Store", function () {
           store.getFilters().add(
             {
               property: "group",
-              value: "code",
+              value: "code"
             },
             {
               property: "evilness",
-              value: 100,
-            },
+              value: 100
+            }
           );
           expect(store.first().get("email")).toBe("ed@sencha.com");
           expect(store.getCount()).toBe(1);
@@ -6111,12 +6111,12 @@ describe("Ext.data.Store", function () {
           store.getFilters().add(
             {
               property: "group",
-              value: "code",
+              value: "code"
             },
             {
               property: "evilness",
-              value: 100,
-            },
+              value: 100
+            }
           );
           store.getFilters().remove("evilness");
           expect(store.getCount()).toBe(2);
@@ -6168,8 +6168,8 @@ describe("Ext.data.Store", function () {
               store.filter("group", "code");
               store.add(
                 makeUser("foo@sencha.com", {
-                  group: "code",
-                }),
+                  group: "code"
+                })
               );
               expect(store.getCount()).toBe(3);
               expect(store.indexOfId("foo@sencha.com")).toBe(2);
@@ -6181,8 +6181,8 @@ describe("Ext.data.Store", function () {
               store.on("add", spy);
               store.add(
                 makeUser("foo@sencha.com", {
-                  group: "admin",
-                }),
+                  group: "admin"
+                })
               );
               expect(store.getCount()).toBe(2);
               expect(store.indexOfId("foo@sencha.com")).toBe(-1);
@@ -6193,8 +6193,8 @@ describe("Ext.data.Store", function () {
               store.filter("group", "code");
               store.add(
                 makeUser("foo@sencha.com", {
-                  group: "admin",
-                }),
+                  group: "admin"
+                })
               );
               store.clearFilter();
               expect(store.getCount()).toBe(5);
@@ -6235,7 +6235,7 @@ describe("Ext.data.Store", function () {
               filterFn: function (rec) {
                 // Includes Tommy/Ed
                 return rec.get("group") === "code";
-              },
+              }
             });
             store.clearFilter();
             expect(store.indexOf(tommyRec)).toBe(0);
@@ -6284,7 +6284,7 @@ describe("Ext.data.Store", function () {
         it("should be joined when adding to the store but the item will be filtered", function () {
           store.filter("group", "code");
           var rec = makeUser("new@sencha.com", {
-            group: "admin",
+            group: "admin"
           });
           store.add(rec);
           expect(rec.joined).toEqual([store]);
@@ -6296,7 +6296,7 @@ describe("Ext.data.Store", function () {
       describe("errors", function () {
         beforeEach(function () {
           createStore({
-            remoteFilter: true,
+            remoteFilter: true
           });
           addStoreData();
         });
@@ -6310,7 +6310,7 @@ describe("Ext.data.Store", function () {
         it("should raise an exception when calling addFilter with a filterFn", function () {
           expect(function () {
             store.addFilter({
-              filterFn: function () {},
+              filterFn: function () {}
             });
           }).toThrow();
         });
@@ -6318,7 +6318,7 @@ describe("Ext.data.Store", function () {
         it("should raise an exception when adding a filter with a filterFn", function () {
           expect(function () {
             store.getFilters().add({
-              filterFn: function () {},
+              filterFn: function () {}
             });
           }).toThrow();
         });
@@ -6332,9 +6332,9 @@ describe("Ext.data.Store", function () {
             filters: [
               {
                 property: "group",
-                value: "code",
-              },
-            ],
+                value: "code"
+              }
+            ]
           });
           expect(spy.callCount).toBe(0);
         });
@@ -6343,7 +6343,7 @@ describe("Ext.data.Store", function () {
       describe("modifying the filters", function () {
         beforeEach(function () {
           createStore({
-            remoteFilter: true,
+            remoteFilter: true
           });
         });
 
@@ -6352,7 +6352,7 @@ describe("Ext.data.Store", function () {
             spyOn(store, "load");
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             expect(store.load.callCount).toBe(1);
           });
@@ -6360,12 +6360,12 @@ describe("Ext.data.Store", function () {
           it("should trigger a load when adding to an existing filter", function () {
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             spyOn(store, "load");
             store.getFilters().add({
               property: "evilness",
-              value: 100,
+              value: 100
             });
             expect(store.load.callCount).toBe(1);
           });
@@ -6373,7 +6373,7 @@ describe("Ext.data.Store", function () {
           it("should trigger a load when removing the only filter", function () {
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             spyOn(store, "load");
             store.getFilters().remove("group");
@@ -6383,11 +6383,11 @@ describe("Ext.data.Store", function () {
           it("should trigger a load when removing a filter and there are others remaining", function () {
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             store.getFilters().add({
               property: "evilness",
-              value: 100,
+              value: 100
             });
             spyOn(store, "load");
             store.getFilters().remove("evilness");
@@ -6402,15 +6402,15 @@ describe("Ext.data.Store", function () {
             remoteFilter: true,
             proxy: {
               type: "ajax",
-              url: "fakeurl",
-            },
+              url: "fakeurl"
+            }
           });
         });
 
         it("should not filter the data when the store load has completed", function () {
           store.getFilters().add({
             property: "group",
-            value: "code",
+            value: "code"
           });
           completeWithData([aaronRaw, abeRaw]);
           expect(store.getCount()).toBe(2);
@@ -6419,7 +6419,7 @@ describe("Ext.data.Store", function () {
         it("should not filter the data when adding a record", function () {
           store.getFilters().add({
             property: "group",
-            value: "admin",
+            value: "admin"
           });
           store.add(edRaw);
           expect(store.getCount()).toBe(1);
@@ -6430,7 +6430,7 @@ describe("Ext.data.Store", function () {
     describe("events", function () {
       beforeEach(function () {
         createStore({
-          remoteFilter: true,
+          remoteFilter: true
         });
       });
 
@@ -6439,7 +6439,7 @@ describe("Ext.data.Store", function () {
         store.on("filterchange", spy);
         store.getFilters().add({
           property: "group",
-          value: "code",
+          value: "code"
         });
         expect(spy.callCount).toBe(1);
         var args = spy.mostRecentCall.args;
@@ -6453,12 +6453,12 @@ describe("Ext.data.Store", function () {
         var spy = jasmine.createSpy();
         store.getFilters().add({
           property: "group",
-          value: "code",
+          value: "code"
         });
         store.on("filterchange", spy);
         store.getFilters().add({
           property: "evilness",
-          value: 100,
+          value: 100
         });
         expect(spy.callCount).toBe(1);
         var args = spy.mostRecentCall.args;
@@ -6474,11 +6474,11 @@ describe("Ext.data.Store", function () {
         var spy = jasmine.createSpy();
         store.getFilters().add({
           property: "group",
-          value: "code",
+          value: "code"
         });
         store.getFilters().add({
           property: "evilness",
-          value: 100,
+          value: 100
         });
         store.on("filterchange", spy);
         store.getFilters().remove("group");
@@ -6494,7 +6494,7 @@ describe("Ext.data.Store", function () {
         var spy = jasmine.createSpy();
         store.getFilters().add({
           property: "group",
-          value: "admin",
+          value: "admin"
         });
         store.on("filterchange", spy);
         store.getFilters().remove("group");
@@ -6515,7 +6515,7 @@ describe("Ext.data.Store", function () {
             store.on("refresh", spy);
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             expect(spy.callCount).toBe(1);
             var args = spy.mostRecentCall.args;
@@ -6527,7 +6527,7 @@ describe("Ext.data.Store", function () {
             store.on("datachanged", spy);
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             expect(spy.callCount).toBe(1);
             var args = spy.mostRecentCall.args;
@@ -6540,7 +6540,7 @@ describe("Ext.data.Store", function () {
             var spy = jasmine.createSpy();
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             store.on("refresh", spy);
             store.getFilters().remove("group");
@@ -6553,7 +6553,7 @@ describe("Ext.data.Store", function () {
             var spy = jasmine.createSpy();
             store.getFilters().add({
               property: "group",
-              value: "code",
+              value: "code"
             });
             store.on("datachanged", spy);
             store.getFilters().remove("group");
@@ -6571,13 +6571,13 @@ describe("Ext.data.Store", function () {
       createStore({
         remoteSort: false,
         grouper: {
-          property: "group",
+          property: "group"
         },
         sorters: [
           {
-            property: "email",
-          },
-        ],
+            property: "email"
+          }
+        ]
       });
       addStoreData();
       aaronRec = store.getAt(0);
@@ -6595,7 +6595,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.first(true)).toEqual({
           admin: aaronRec,
-          code: edRec,
+          code: edRec
         });
       });
 
@@ -6614,7 +6614,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.last(true)).toEqual({
           admin: abeRec,
-          code: tommyRec,
+          code: tommyRec
         });
       });
 
@@ -6642,7 +6642,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.sum("evilness", true)).toEqual({
           admin: 75,
-          code: 85,
+          code: 85
         });
       });
 
@@ -6670,7 +6670,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.count(true)).toEqual({
           admin: 2,
-          code: 2,
+          code: 2
         });
       });
 
@@ -6698,7 +6698,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.min("age", true)).toEqual({
           admin: 20,
-          code: 25,
+          code: 25
         });
       });
 
@@ -6726,7 +6726,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.max("age", true)).toEqual({
           admin: 26,
-          code: 70,
+          code: 70
         });
       });
 
@@ -6754,7 +6754,7 @@ describe("Ext.data.Store", function () {
       it("should return in the correct grouped format", function () {
         expect(store.average("evilness", true)).toEqual({
           admin: 37.5,
-          code: 42.5,
+          code: 42.5
         });
       });
 
@@ -6785,7 +6785,7 @@ describe("Ext.data.Store", function () {
           },
           null,
           false,
-          "email",
+          "email"
         );
         expect(isArray).toBe(true);
       });
@@ -6807,7 +6807,7 @@ describe("Ext.data.Store", function () {
           },
           null,
           true,
-          "email",
+          "email"
         );
         expect(emails).toEqual(["ed@sencha.com", "tommy@sencha.com"]);
       });
@@ -6830,11 +6830,11 @@ describe("Ext.data.Store", function () {
             },
             null,
             true,
-            "email",
+            "email"
           );
           expect(result).toEqual({
             admin: "aaron@sencha.comabe@sencha.com",
-            code: "ed@sencha.comtommy@sencha.com",
+            code: "ed@sencha.comtommy@sencha.com"
           });
         });
       });
@@ -6889,7 +6889,7 @@ describe("Ext.data.Store", function () {
           store.on("datachanged", datachangedSpy);
           edRec.set({
             name: "Ned Spencer",
-            evilness: 9000,
+            evilness: 9000
           });
           expect(spy.callCount).toBe(1);
 
@@ -6901,7 +6901,7 @@ describe("Ext.data.Store", function () {
           store.on("update", spy);
           edRec.set({
             name: "Ned Spencer",
-            evilness: 9000,
+            evilness: 9000
           });
           var args = spy.mostRecentCall.args;
           expect(args[0]).toBe(store);
@@ -6915,7 +6915,7 @@ describe("Ext.data.Store", function () {
           store.remove(edRec);
           edRec.set({
             name: "Ned Spencer",
-            evilness: 9000,
+            evilness: 9000
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -7116,7 +7116,7 @@ describe("Ext.data.Store", function () {
     describe("committing records", function () {
       it("should commit valid phantoms", function () {
         var phantom = store.add({
-          validField: "Foo",
+          validField: "Foo"
         })[0];
         spyOn(phantom, "commit");
         store.commitChanges();
@@ -7125,7 +7125,7 @@ describe("Ext.data.Store", function () {
 
       it("should not commit invalid phantoms", function () {
         var phantom = store.add({
-          validField: null,
+          validField: null
         })[0];
         spyOn(phantom, "commit");
         store.commitChanges();
@@ -7199,7 +7199,7 @@ describe("Ext.data.Store", function () {
 
       it("should reject phantom records", function () {
         var phantom = store.add({
-          name: "X",
+          name: "X"
         })[0];
         var spy = spyOn(phantom, "reject");
         store.rejectChanges();
@@ -7208,7 +7208,7 @@ describe("Ext.data.Store", function () {
 
       it("should reject phantom + dirty records", function () {
         var phantom = store.add({
-          name: "X",
+          name: "X"
         })[0];
         phantom.set("name", "Y");
         var spy = spyOn(phantom, "reject");
@@ -7246,7 +7246,7 @@ describe("Ext.data.Store", function () {
       it("should reject phantom records", function () {
         var len = store.getDataSource().length,
           phantom = store.add({
-            name: "X",
+            name: "X"
           })[0];
 
         store.filter("name", "Pete");
@@ -7259,7 +7259,7 @@ describe("Ext.data.Store", function () {
       it("should reject phantom + dirty records", function () {
         var len = store.getDataSource().length,
           phantom = store.add({
-            name: "X",
+            name: "X"
           })[0];
 
         store.filter("name", "Molly");
@@ -7274,11 +7274,11 @@ describe("Ext.data.Store", function () {
     describe("removing phantoms", function () {
       it("should remove phantoms", function () {
         var phantom1 = store.insert(2, {
-          name: "X",
+          name: "X"
         })[0];
 
         var phantom2 = store.add({
-          name: "Y",
+          name: "Y"
         })[0];
 
         expect(store.getCount()).toBe(6);
@@ -7343,7 +7343,7 @@ describe("Ext.data.Store", function () {
     describe("events", function () {
       it("should not fire an update event for phantom records", function () {
         var phantom1 = store.insert(2, {
-          name: "X",
+          name: "X"
         })[0];
         var spy = jasmine.createSpy();
         store.on("update", spy);
@@ -7353,11 +7353,11 @@ describe("Ext.data.Store", function () {
 
       it("should fire a remove event for phantom records", function () {
         var phantom1 = store.insert(0, {
-          name: "X",
+          name: "X"
         })[0];
 
         var phantom2 = store.add({
-          name: "Y",
+          name: "Y"
         })[0];
         var spy = jasmine.createSpy();
         store.on("remove", spy);
@@ -7416,11 +7416,11 @@ describe("Ext.data.Store", function () {
           { name: "don" },
           { name: "evan" },
           { name: "nige" },
-          { name: "phil" },
+          { name: "phil" }
         ],
         metaData: {
-          root: "data",
-        },
+          root: "data"
+        }
       },
       args,
       storeArg,
@@ -7430,7 +7430,7 @@ describe("Ext.data.Store", function () {
       createStore({
         proxy: {
           type: "ajax",
-          url: "foo",
+          url: "foo"
         },
         listeners: {
           metachange: function (store, meta) {
@@ -7438,8 +7438,8 @@ describe("Ext.data.Store", function () {
             args = arguments;
             storeArg = store;
             metaArg = meta;
-          },
-        },
+          }
+        }
       });
 
       store.load();
@@ -7482,13 +7482,13 @@ describe("Ext.data.Store", function () {
         createStore({
           proxy: {
             type: "ajax",
-            url: "foo",
+            url: "foo"
           },
           listeners: {
             metachange: function (store, meta) {
               wasCalled = true;
-            },
-          },
+            }
+          }
         });
 
         store.load();
@@ -7502,13 +7502,13 @@ describe("Ext.data.Store", function () {
           disableMetaChangeEvent: true,
           proxy: {
             type: "ajax",
-            url: "foo",
+            url: "foo"
           },
           listeners: {
             metachange: function (store, meta) {
               wasCalled = true;
-            },
-          },
+            }
+          }
         });
 
         store.load();
@@ -7522,13 +7522,13 @@ describe("Ext.data.Store", function () {
           disableMetaChangeEvent: false,
           proxy: {
             type: "ajax",
-            url: "foo",
+            url: "foo"
           },
           listeners: {
             metachange: function (store, meta) {
               wasCalled = true;
-            },
-          },
+            }
+          }
         });
 
         store.load();
@@ -7542,19 +7542,19 @@ describe("Ext.data.Store", function () {
   describe("sync", function () {
     it("should not throw an exception if trackRemoved is false", function () {
       createStore({
-        autoSync: false,
+        autoSync: false
       });
       store.setTrackRemoved(false);
       store.add({
-        validField: "x",
+        validField: "x"
       });
       expect(function () {
         store.sync();
       }).not.toThrow();
       completeWithData([
         {
-          id: 1,
-        },
+          id: 1
+        }
       ]);
     });
   });
@@ -7565,9 +7565,9 @@ describe("Ext.data.Store", function () {
     beforeEach(function () {
       createStore(
         {
-          autoSync: true,
+          autoSync: true
         },
-        true,
+        true
       );
       spyOn(store, "sync").andCallFake(function () {
         // If the doSync flag is set, make the call.
@@ -7609,7 +7609,7 @@ describe("Ext.data.Store", function () {
           var recs = [
             makeUser("aaa@sencha.com"),
             makeUser("foo@sencha.com"),
-            makeUser("zzz@sencha.com"),
+            makeUser("zzz@sencha.com")
           ];
           Ext.Array.forEach(recs, function (rec, i) {
             rec.set("name", "foo" + i);
@@ -7623,7 +7623,7 @@ describe("Ext.data.Store", function () {
         it("should trigger a sync if the record is filtered out", function () {
           store.filter("name", "Foo");
           store.add({
-            name: "Bar",
+            name: "Bar"
           });
           expect(store.sync.callCount).toBe(1);
         });
@@ -7676,9 +7676,9 @@ describe("Ext.data.Store", function () {
           success: true,
           records: [
             {
-              id: "ed@sencha.com",
-            },
-          ],
+              id: "ed@sencha.com"
+            }
+          ]
         });
 
         // Upon success response, the removed queue is drained
@@ -7697,12 +7697,12 @@ describe("Ext.data.Store", function () {
           success: true,
           records: [
             {
-              id: "tommy@sencha.com",
+              id: "tommy@sencha.com"
             },
             {
-              id: "ed@sencha.com",
-            },
-          ],
+              id: "ed@sencha.com"
+            }
+          ]
         });
 
         // Upon success response, the removed queue is drained
@@ -7725,7 +7725,7 @@ describe("Ext.data.Store", function () {
     describe("loading", function () {
       it("should join when loaded as part of the constructor", function () {
         createStore({
-          data: [abeRaw],
+          data: [abeRaw]
         });
         expectJoined(store.getAt(0));
       });
@@ -7786,7 +7786,7 @@ describe("Ext.data.Store", function () {
       describe("with trackRemoved: true", function () {
         beforeEach(function () {
           createStore({
-            trackRemoved: true,
+            trackRemoved: true
           });
           addStoreData();
         });
@@ -7818,7 +7818,7 @@ describe("Ext.data.Store", function () {
       describe("with trackRemoved: false", function () {
         beforeEach(function () {
           createStore({
-            trackRemoved: false,
+            trackRemoved: false
           });
           addStoreData();
         });
@@ -7850,7 +7850,7 @@ describe("Ext.data.Store", function () {
       describe("with trackRemoved: true", function () {
         it("should keep the record joined until erased", function () {
           createStore({
-            trackRemoved: true,
+            trackRemoved: true
           });
           addStoreData();
 
@@ -7858,7 +7858,7 @@ describe("Ext.data.Store", function () {
           expectJoined(edRec);
           edRec.erase();
           completeWithData({
-            success: true,
+            success: true
           });
           expectNotJoined(edRec);
         });
@@ -7867,7 +7867,7 @@ describe("Ext.data.Store", function () {
       describe("with trackRemoved: false", function () {
         it("should not keep the record joined when dropped", function () {
           createStore({
-            trackRemoved: false,
+            trackRemoved: false
           });
           addStoreData();
 
@@ -7917,9 +7917,9 @@ describe("Ext.data.Store", function () {
     function createSessionStore(cfg) {
       cfg = Ext.apply(
         {
-          session: session,
+          session: session
         },
-        cfg,
+        cfg
       );
       createStore(cfg);
     }
@@ -7928,26 +7928,26 @@ describe("Ext.data.Store", function () {
       it("should pass the session record creator when using load", function () {
         createSessionStore({
           proxy: {
-            type: "ajax",
-          },
+            type: "ajax"
+          }
         });
         var spy = spyOn(store.getProxy(), "read").andReturn();
         store.load();
         expect(spy.mostRecentCall.args[0].getRecordCreator()).toBe(
-          session.recordCreator,
+          session.recordCreator
         );
       });
 
       it("should pass the record creator when using loadRawData", function () {
         createSessionStore({
           proxy: {
-            type: "ajax",
-          },
+            type: "ajax"
+          }
         });
         var spy = spyOn(store.getProxy().getReader(), "read").andCallThrough();
         store.loadRawData([]);
         expect(spy.mostRecentCall.args[1].recordCreator).toBe(
-          session.recordCreator,
+          session.recordCreator
         );
       });
     });
@@ -7960,7 +7960,7 @@ describe("Ext.data.Store", function () {
       describe("loading", function () {
         it("should set the session when loaded as part of the constructor", function () {
           createSessionStore({
-            data: [abeRaw],
+            data: [abeRaw]
           });
           expectSession(store.getAt(0));
         });
@@ -8057,7 +8057,7 @@ describe("Ext.data.Store", function () {
   describe("destroying", function () {
     it("should cancel a pending autoLoad", function () {
       createStore({
-        autoLoad: true,
+        autoLoad: true
       });
       spyOn(store, "load").andReturn();
       store.destroy();
@@ -8095,7 +8095,7 @@ describe("Ext.data.Store", function () {
       describe("proxy created by the store", function () {
         it("should destroy a stringified proxy and clear it from the store", function () {
           createStore({
-            proxy: "ajax",
+            proxy: "ajax"
           });
           var proxy = store.getProxy(),
             spy = spyOn(proxy, "destroy").andCallThrough();
@@ -8108,8 +8108,8 @@ describe("Ext.data.Store", function () {
         it("should destroy an object config proxy and clear it from the store", function () {
           createStore({
             proxy: {
-              type: "ajax",
-            },
+              type: "ajax"
+            }
           });
           var proxy = store.getProxy(),
             spy = spyOn(proxy, "destroy").andCallThrough();
@@ -8142,7 +8142,7 @@ describe("Ext.data.Store", function () {
             spy;
 
           createStore({
-            proxy: proxy,
+            proxy: proxy
           });
           spy = spyOn(proxy, "destroy").andCallThrough();
           store.destroy();
@@ -8155,7 +8155,7 @@ describe("Ext.data.Store", function () {
 
     it("should set the model to null with implicit fields", function () {
       createStore({
-        fields: ["foo", "bar"],
+        fields: ["foo", "bar"]
       });
       store.destroy();
       expect(store.model).toBeNull();
@@ -8170,14 +8170,14 @@ describe("Ext.data.Store", function () {
         store.setExtraKeys({
           byAge: {
             property: "age",
-            rootProperty: "data",
-          },
+            rootProperty: "data"
+          }
         });
       });
 
       it("should have the extraKeys updated when add fires", function () {
         var rec = makeUser("foo@sencha.com", {
-          age: 100,
+          age: 100
         });
 
         store.on("add", function () {
@@ -8240,10 +8240,10 @@ describe("Ext.data.Store", function () {
       expect(groups.items[0].getSorters().items.length).toBe(1);
       expect(groups.items[0].getSorters().items[0].getProperty()).toBe("age");
       expect(groups.items[0].getSorters().items[0] === sorters.items[0]).toBe(
-        true,
+        true
       );
       expect(groups.items[1].getSorters().items[0] === sorters.items[0]).toBe(
-        true,
+        true
       );
 
       // Admin should be [Aaron=26,Abe=20]
@@ -8271,7 +8271,7 @@ describe("Ext.data.Store", function () {
       it("should work going from no sorters to some sorters", function () {
         createStore({
           groupField: "group",
-          data: [abeRaw, edRaw, tommyRaw, aaronRaw],
+          data: [abeRaw, edRaw, tommyRaw, aaronRaw]
         });
         aaronRec = store.getById("aaron@sencha.com");
         abeRec = store.getById("abe@sencha.com");
@@ -8286,7 +8286,7 @@ describe("Ext.data.Store", function () {
           datachanged: checkCorrectness,
           refresh: checkCorrectness,
           sort: checkCorrectness,
-          single: true,
+          single: true
         });
 
         // This will sort into *DESCENDING* order because of the custom sorter on the age field
@@ -8299,7 +8299,7 @@ describe("Ext.data.Store", function () {
         counter = 0;
         store.on({
           refresh: checkNewGrouping,
-          single: true,
+          single: true
         });
 
         // Move Ed into the admin group.
@@ -8317,9 +8317,9 @@ describe("Ext.data.Store", function () {
           sorters: [
             {
               property: "evilness",
-              direction: "DESC",
-            },
-          ],
+              direction: "DESC"
+            }
+          ]
         });
         aaronRec = store.getById("aaron@sencha.com");
         abeRec = store.getById("abe@sencha.com");
@@ -8338,13 +8338,13 @@ describe("Ext.data.Store", function () {
         // The two groups must have inherited the sorter used by the store from the outset, before any sort has been performed.
         expect(groups.items[0].getSorters().items.length).toBe(1);
         expect(groups.items[0].getSorters().items[0].getProperty()).toBe(
-          "evilness",
+          "evilness"
         );
         expect(groups.items[0].getSorters().items[0] === sorters.items[0]).toBe(
-          true,
+          true
         );
         expect(groups.items[1].getSorters().items[0] === sorters.items[0]).toBe(
-          true,
+          true
         );
 
         // Admin should be [Abe=70,Aaron=5]
@@ -8359,7 +8359,7 @@ describe("Ext.data.Store", function () {
           datachanged: checkCorrectness,
           refresh: checkCorrectness,
           sort: checkCorrectness,
-          single: true,
+          single: true
         });
 
         // This will sort into *DESCENDING* order because of the custom sorter on the age field
@@ -8373,7 +8373,7 @@ describe("Ext.data.Store", function () {
         counter = 0;
         store.on({
           refresh: checkNewGrouping,
-          single: true,
+          single: true
         });
 
         // Move Ed into the admin group.

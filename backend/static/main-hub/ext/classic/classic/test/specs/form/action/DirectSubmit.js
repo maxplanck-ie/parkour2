@@ -6,9 +6,9 @@ describe("Ext.form.action.DirectSubmit", function () {
       {
         namespace: "spec",
         type: "remoting",
-        url: "fake",
+        url: "fake"
       },
-      cfg,
+      cfg
     );
 
     provider = Ext.direct.Manager.addProvider(cfg);
@@ -44,8 +44,8 @@ describe("Ext.form.action.DirectSubmit", function () {
       timeout: Ext.form.Basic.prototype.timeout,
       api: {
         load: "spec.TestDirect.load",
-        submit: "spec.TestDirect.submit",
-      },
+        submit: "spec.TestDirect.submit"
+      }
     });
 
     action = new Ext.form.action.DirectSubmit(config);
@@ -69,14 +69,14 @@ describe("Ext.form.action.DirectSubmit", function () {
         TestDirect: [
           {
             name: "load",
-            len: 1,
+            len: 1
           },
           {
             name: "submit",
-            formHandler: true,
-          },
-        ],
-      },
+            formHandler: true
+          }
+        ]
+      }
     });
 
     loadSpy = makeSpy("load");
@@ -101,7 +101,7 @@ describe("Ext.form.action.DirectSubmit", function () {
   it("should be registered in the action manager under the alias 'formaction.directsubmit'", function () {
     var inst = Ext.ClassManager.instantiateByAlias(
       "formaction.directsubmit",
-      {},
+      {}
     );
     expect(inst instanceof Ext.form.action.DirectSubmit).toBeTruthy();
   });
@@ -126,9 +126,9 @@ describe("Ext.form.action.DirectSubmit", function () {
           api: {
             prefix: "spec.TestDirect",
             load: "load",
-            submit: "submit",
-          },
-        },
+            submit: "submit"
+          }
+        }
       });
 
       action.run();
@@ -160,7 +160,7 @@ describe("Ext.form.action.DirectSubmit", function () {
       var fieldValues = { one: "1", two: "2", three: "3" },
         allParams = Ext.apply({}, fieldValues, {
           fromParams: "1",
-          fromBaseParams: "1",
+          fromBaseParams: "1"
         });
 
       createAction({
@@ -169,8 +169,8 @@ describe("Ext.form.action.DirectSubmit", function () {
           baseParams: { fromBaseParams: "1" },
           getValues: function () {
             return fieldValues;
-          },
-        },
+          }
+        }
       });
 
       spyOn(Ext, "removeNode");
@@ -226,8 +226,8 @@ describe("Ext.form.action.DirectSubmit", function () {
       it("should pass timeout parameter if it is specified in a form", function () {
         createAction({
           form: {
-            timeout: 42,
-          },
+            timeout: 42
+          }
         });
 
         action.run();
@@ -242,8 +242,8 @@ describe("Ext.form.action.DirectSubmit", function () {
       beforeEach(function () {
         createAction({
           form: {
-            metadata: { foo: 42, bar: false },
-          },
+            metadata: { foo: 42, bar: false }
+          }
         });
       });
 
@@ -255,7 +255,7 @@ describe("Ext.form.action.DirectSubmit", function () {
 
         expect(submitSpy.mostRecentCall.args[3]).toEqual({
           timeout: 30000,
-          metadata: { foo: -1, bar: true },
+          metadata: { foo: -1, bar: true }
         });
       });
 
@@ -264,7 +264,7 @@ describe("Ext.form.action.DirectSubmit", function () {
 
         expect(submitSpy.mostRecentCall.args[3]).toEqual({
           timeout: 30000,
-          metadata: { foo: 42, bar: false },
+          metadata: { foo: 42, bar: false }
         });
       });
     });
@@ -294,8 +294,8 @@ describe("Ext.form.action.DirectSubmit", function () {
         form: {
           isValid: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       action.run();
       expect(action.failureType).toEqual(Ext.form.action.Action.CLIENT_INVALID);
@@ -306,8 +306,8 @@ describe("Ext.form.action.DirectSubmit", function () {
         form: {
           isValid: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       spyOn(action.form, "afterAction");
       action.run();
@@ -321,7 +321,7 @@ describe("Ext.form.action.DirectSubmit", function () {
       createActionWithCallbackArgs(
         {},
         {},
-        { type: Ext.direct.Manager.exceptions.SERVER },
+        { type: Ext.direct.Manager.exceptions.SERVER }
       );
       action.run();
       expect(action.failureType).toBeDefined();
@@ -351,7 +351,7 @@ describe("Ext.form.action.DirectSubmit", function () {
       createActionWithCallbackArgs(
         {},
         { success: false, errors: { foo: "bar" } },
-        {},
+        {}
       );
       spyOn(action.form, "markInvalid");
       action.run();

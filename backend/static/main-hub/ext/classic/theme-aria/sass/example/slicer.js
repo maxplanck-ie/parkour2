@@ -53,20 +53,20 @@ function generateSlicerManifest() {
         x: window.scrollX + box.left,
         y: window.scrollY + box.top,
         w: box.right - box.left,
-        h: box.bottom - box.top,
+        h: box.bottom - box.top
       },
       radius: {
         tl: parseInt(style["border-top-left-radius"], 10) || 0,
         tr: parseInt(style["border-top-right-radius"], 10) || 0,
         br: parseInt(style["border-bottom-right-radius"], 10) || 0,
-        bl: parseInt(style["border-bottom-left-radius"], 10) || 0,
+        bl: parseInt(style["border-bottom-left-radius"], 10) || 0
       },
       border: {
         t: parseInt(style["border-top-width"], 10) || 0,
         r: parseInt(style["border-right-width"], 10) || 0,
         b: parseInt(style["border-bottom-width"], 10) || 0,
-        l: parseInt(style["border-left-width"], 10) || 0,
-      },
+        l: parseInt(style["border-left-width"], 10) || 0
+      }
     };
 
     if (el.id) {

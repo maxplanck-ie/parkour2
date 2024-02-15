@@ -13,11 +13,11 @@ describe("Ext.util.Positionable", function () {
             top: "7px",
             "z-index": 10,
             position: "absolute",
-            backgroundColor: "green",
-          },
+            backgroundColor: "green"
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -34,11 +34,11 @@ describe("Ext.util.Positionable", function () {
             top: "7px",
             "z-index": 10,
             position: "absolute",
-            backgroundColor: "green",
-          },
+            backgroundColor: "green"
+          }
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -51,8 +51,8 @@ describe("Ext.util.Positionable", function () {
         height: "100px",
         left: "15px",
         top: "20px",
-        position: "absolute",
-      },
+        position: "absolute"
+      }
     });
   });
 
@@ -75,7 +75,7 @@ describe("Ext.util.Positionable", function () {
           r: [120, 90],
           bl: [60, 120],
           b: [90, 120],
-          br: [120, 120],
+          br: [120, 120]
         },
         alignPositions = {
           tl: [0, 0],
@@ -86,7 +86,7 @@ describe("Ext.util.Positionable", function () {
           r: [-40, -20],
           bl: [0, -40],
           b: [-20, -40],
-          br: [-40, -40],
+          br: [-40, -40]
         },
         alignToEl;
 
@@ -99,8 +99,8 @@ describe("Ext.util.Positionable", function () {
             left: "60px",
             top: "60px",
             position: "absolute",
-            backgroundColor: "red",
-          },
+            backgroundColor: "red"
+          }
         });
       });
 
@@ -118,10 +118,10 @@ describe("Ext.util.Positionable", function () {
             positionable.alignTo(alignToEl, posString);
             xy = positionable.getXY();
             expect(xy[0]).toBe(
-              alignToPositions[alignToPos][0] + alignPositions[pos][0],
+              alignToPositions[alignToPos][0] + alignPositions[pos][0]
             );
             expect(xy[1]).toBe(
-              alignToPositions[alignToPos][1] + alignPositions[pos][1],
+              alignToPositions[alignToPos][1] + alignPositions[pos][1]
             );
           });
         });
@@ -213,7 +213,7 @@ describe("Ext.util.Positionable", function () {
           "br-r?": [55, 30],
           "br-bl?": [95, 60],
           "br-b?": [25, 60],
-          "br-br?": [55, 60],
+          "br-br?": [55, 60]
         },
         positions = ["tl", "t", "tr", "l", "c", "r", "bl", "b", "br"],
         alignToEl;
@@ -233,8 +233,8 @@ describe("Ext.util.Positionable", function () {
             height: "60px",
             left: "35px",
             top: "40px",
-            position: "absolute",
-          },
+            position: "absolute"
+          }
         });
       });
 
@@ -293,7 +293,7 @@ describe("Ext.util.Positionable", function () {
           //                 "l-tl!": [35, 20],
           //                 "l-t!": [65, 20],
           //                 "l-tr!": [95, 20],
-          "l-l!": [35, 50],
+          "l-l!": [35, 50]
           //                 "l-c!": [65, 50],
           //                 "l-r!": [95, 50],
           //                 "l-bl!": [35, 80],
@@ -363,8 +363,8 @@ describe("Ext.util.Positionable", function () {
             height: "60px",
             left: "35px",
             top: "40px",
-            position: "absolute",
-          },
+            position: "absolute"
+          }
         });
       });
 
@@ -406,7 +406,7 @@ describe("Ext.util.Positionable", function () {
             width: 40,
             height: 40,
             right: 61,
-            bottom: 67,
+            bottom: 67
           });
         });
 
@@ -422,7 +422,7 @@ describe("Ext.util.Positionable", function () {
             width: 30,
             height: 30,
             right: 56,
-            bottom: 62,
+            bottom: 62
           });
         });
 
@@ -437,7 +437,7 @@ describe("Ext.util.Positionable", function () {
             width: 40,
             height: 40,
             right: 46,
-            bottom: 47,
+            bottom: 47
           });
         });
 
@@ -453,7 +453,7 @@ describe("Ext.util.Positionable", function () {
             width: 30,
             height: 30,
             right: 41,
-            bottom: 42,
+            bottom: 42
           });
         });
       });
@@ -488,8 +488,8 @@ describe("Ext.util.Positionable", function () {
               width: "100px",
               top: "77px",
               left: "121px",
-              position: "absolute",
-            },
+              position: "absolute"
+            }
           });
 
           expect(positionable.getOffsetsTo(offsetEl)).toEqual([-100, -50]);
@@ -553,7 +553,7 @@ describe("Ext.util.Positionable", function () {
           expect(clientRegion.top).toBe(region.top);
           expect(clientRegion.right).toBe(region.right);
           expect(clientRegion.bottom).toBe(
-            region.bottom - scrollbarSize.height,
+            region.bottom - scrollbarSize.height
           );
           expect(clientRegion.left).toBe(region.left);
         });
@@ -567,7 +567,7 @@ describe("Ext.util.Positionable", function () {
           expect(clientRegion.top).toBe(region.top);
           expect(clientRegion.right).toBe(region.right - scrollbarSize.width);
           expect(clientRegion.bottom).toBe(
-            region.bottom - scrollbarSize.height,
+            region.bottom - scrollbarSize.height
           );
           expect(clientRegion.left).toBe(region.left);
         });
@@ -629,7 +629,7 @@ describe("Ext.util.Positionable", function () {
             x: 50,
             y: 60,
             width: 100,
-            height: 200,
+            height: 200
           });
           expect(positionable.getXY()).toEqual([50, 60]);
           expect(positionable.el.getWidth()).toBe(100);

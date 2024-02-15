@@ -183,7 +183,7 @@ export function remove(element) {
 export function classList(element) {
   return (" " + ((element && element.className) || "") + " ").replace(
     /\s+/gi,
-    " ",
+    " "
   );
 }
 

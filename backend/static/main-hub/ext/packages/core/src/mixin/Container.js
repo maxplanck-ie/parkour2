@@ -6,7 +6,7 @@ Ext.define("Ext.mixin.Container", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "container",
+    id: "container"
   },
 
   /**
@@ -25,7 +25,7 @@ Ext.define("Ext.mixin.Container", {
      * See the introductory docs for {@link Ext.container.Container} for more information
      * about references & reference holders.
      */
-    referenceHolder: false,
+    referenceHolder: false
   },
 
   /**
@@ -169,7 +169,7 @@ Ext.define("Ext.mixin.Container", {
 
     initContainerInheritedState: function (
       inheritedState,
-      inheritedStateInner,
+      inheritedStateInner
     ) {
       var me = this,
         controller = me.getController(),
@@ -219,12 +219,12 @@ Ext.define("Ext.mixin.Container", {
             reference +
             '" for ' +
             this.getId() +
-            " - not a valid identifier",
+            " - not a valid identifier"
         );
       }
       //</debug>
 
       return reference;
-    },
-  },
+    }
+  }
 });

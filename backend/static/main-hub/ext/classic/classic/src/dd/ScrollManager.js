@@ -25,7 +25,7 @@ Ext.define("Ext.dd.ScrollManager", {
     up: -1,
     left: -1,
     down: 1,
-    right: 1,
+    right: 1
   },
 
   constructor: function () {
@@ -33,7 +33,7 @@ Ext.define("Ext.dd.ScrollManager", {
     ddm.fireEvents = Ext.Function.createSequence(
       ddm.fireEvents,
       this.onFire,
-      this,
+      this
     );
     ddm.stopDrag = Ext.Function.createSequence(ddm.stopDrag, this.onStop, this);
     this.doScroll = this.doScroll.bind(this);
@@ -78,7 +78,7 @@ Ext.define("Ext.dd.ScrollManager", {
       if (animate) {
         if (animate === true) {
           animate = {
-            callback: afterScroll,
+            callback: afterScroll
           };
         } else {
           animate.callback = animate.callback
@@ -275,5 +275,5 @@ Ext.define("Ext.dd.ScrollManager", {
         els[id]._region = els[id].getRegion();
       }
     }
-  },
+  }
 });

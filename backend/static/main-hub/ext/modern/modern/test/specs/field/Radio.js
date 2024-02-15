@@ -12,7 +12,7 @@ describe("Ext.field.Radio", function () {
 
     fieldset = new Ext.form.FieldSet({
       defaultType: "radiofield",
-      items: fields,
+      items: fields
     });
 
     fieldset.renderTo(Ext.getBody());
@@ -26,12 +26,12 @@ describe("Ext.field.Radio", function () {
     it("should return the value of the radio configured with checked: true", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
           checked: true,
-          value: "blue",
-        },
+          value: "blue"
+        }
       ]);
 
       var fields = fieldset.query("radiofield");
@@ -43,12 +43,12 @@ describe("Ext.field.Radio", function () {
     it("should return the value of the checked radio when selection changes", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
           checked: true,
-          value: "blue",
-        },
+          value: "blue"
+        }
       ]);
 
       fieldset.items.first().check();
@@ -62,11 +62,11 @@ describe("Ext.field.Radio", function () {
     it("should return null if no item is checked", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
-          value: "blue",
-        },
+          value: "blue"
+        }
       ]);
 
       var fields = fieldset.query("radiofield");
@@ -89,14 +89,14 @@ describe("Ext.field.Radio", function () {
     it("should be able to have no item checked initially", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
-          value: "blue",
+          value: "blue"
         },
         {
-          value: "green",
-        },
+          value: "green"
+        }
       ]);
 
       expectChecked([false, false, false]);
@@ -105,15 +105,15 @@ describe("Ext.field.Radio", function () {
     it("should have the checked item checked, other items unchecked", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
           value: "blue",
-          checked: true,
+          checked: true
         },
         {
-          value: "green",
-        },
+          value: "green"
+        }
       ]);
 
       expectChecked([false, true, false]);
@@ -122,14 +122,14 @@ describe("Ext.field.Radio", function () {
     it("should uncheck the checked item when checking a new item", function () {
       makeGroup([
         {
-          value: "red",
+          value: "red"
         },
         {
-          value: "blue",
+          value: "blue"
         },
         {
-          value: "green",
-        },
+          value: "green"
+        }
       ]);
 
       fieldset.getAt(0).check();
@@ -146,14 +146,14 @@ describe("Ext.field.Radio", function () {
       makeGroup([
         {
           value: "red",
-          checked: true,
+          checked: true
         },
         {
-          value: "blue",
+          value: "blue"
         },
         {
-          value: "green",
-        },
+          value: "green"
+        }
       ]);
 
       fieldset.getAt(0).uncheck();
@@ -168,11 +168,11 @@ describe("Ext.field.Radio", function () {
       makeGroup([
         {
           value: "red",
-          checked: true,
+          checked: true
         },
         {
-          value: "blue",
-        },
+          value: "blue"
+        }
       ]);
 
       var f = fieldset.getAt(1);
@@ -201,7 +201,7 @@ describe("Ext.field.Radio", function () {
       f.on({
         change: changeSpy,
         check: checkSpy,
-        uncheck: uncheckSpy,
+        uncheck: uncheckSpy
       });
     }
 
@@ -211,11 +211,11 @@ describe("Ext.field.Radio", function () {
           beforeEach(function () {
             makeGroup([
               {
-                value: "red",
+                value: "red"
               },
               {
-                value: "blue",
-              },
+                value: "blue"
+              }
             ]);
           });
 
@@ -248,11 +248,11 @@ describe("Ext.field.Radio", function () {
             makeGroup([
               {
                 value: "red",
-                checked: true,
+                checked: true
               },
               {
-                value: "blue",
-              },
+                value: "blue"
+              }
             ]);
           });
 
@@ -281,11 +281,11 @@ describe("Ext.field.Radio", function () {
           beforeEach(function () {
             makeGroup([
               {
-                value: "red",
+                value: "red"
               },
               {
-                value: "blue",
-              },
+                value: "blue"
+              }
             ]);
           });
 
@@ -313,11 +313,11 @@ describe("Ext.field.Radio", function () {
             makeGroup([
               {
                 value: "red",
-                checked: true,
+                checked: true
               },
               {
-                value: "blue",
-              },
+                value: "blue"
+              }
             ]);
           });
 
@@ -352,11 +352,11 @@ describe("Ext.field.Radio", function () {
         beforeEach(function () {
           makeGroup([
             {
-              value: "red",
+              value: "red"
             },
             {
-              value: "blue",
-            },
+              value: "blue"
+            }
           ]);
         });
 
@@ -389,11 +389,11 @@ describe("Ext.field.Radio", function () {
           makeGroup([
             {
               value: "red",
-              checked: true,
+              checked: true
             },
             {
-              value: "blue",
-            },
+              value: "blue"
+            }
           ]);
         });
 
@@ -422,11 +422,11 @@ describe("Ext.field.Radio", function () {
         beforeEach(function () {
           makeGroup([
             {
-              value: "red",
+              value: "red"
             },
             {
-              value: "blue",
-            },
+              value: "blue"
+            }
           ]);
         });
 
@@ -454,11 +454,11 @@ describe("Ext.field.Radio", function () {
           makeGroup([
             {
               value: "red",
-              checked: true,
+              checked: true
             },
             {
-              value: "blue",
-            },
+              value: "blue"
+            }
           ]);
         });
 

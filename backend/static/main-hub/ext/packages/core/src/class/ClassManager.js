@@ -204,8 +204,8 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
     namespaceCache = {
       Ext: {
         name: "Ext",
-        value: Ext, // specially added for sandbox (Ext === global.Ext6)
-      },
+        value: Ext // specially added for sandbox (Ext === global.Ext6)
+      }
       /*
         'Ext.grid': {
             name: 'grid',
@@ -265,7 +265,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         //<debug>
         if (typeof className !== "string" || className.length < 1) {
           throw new Error(
-            "[Ext.ClassManager] Invalid classname, must be a string and must not be empty",
+            "[Ext.ClassManager] Invalid classname, must be a string and must not be empty"
           );
         }
         //</debug>
@@ -316,7 +316,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Manager.notify(
           className,
           Manager.createdListeners,
-          Manager.nameCreatedListeners,
+          Manager.nameCreatedListeners
         );
       },
 
@@ -329,7 +329,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
           scope,
           className,
           Manager.createdListeners,
-          Manager.nameCreatedListeners,
+          Manager.nameCreatedListeners
         );
       },
 
@@ -384,7 +384,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         var i,
           listener = {
             fn: fn,
-            scope: scope,
+            scope: scope
           };
 
         if (className) {
@@ -418,7 +418,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         for (var name in namespaces) {
           namespaceCache[name] = {
             name: name,
-            value: namespaces[name],
+            value: namespaces[name]
           };
         }
       },
@@ -468,12 +468,12 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
 
           if (i < 0) {
             entry = {
-              name: namespace,
+              name: namespace
             };
           } else {
             entry = {
               name: namespace.substring(i + 1),
-              parent: Manager.getNamespaceEntry(namespace.substring(0, i)),
+              parent: Manager.getNamespaceEntry(namespace.substring(0, i))
             };
           }
 
@@ -702,7 +702,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
           throw new Error(
             "[Ext.define] Invalid class name '" +
               className +
-              "' specified, must be a non-empty string",
+              "' specified, must be a non-empty string"
           );
         }
         //</debug>
@@ -718,7 +718,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
             Ext.log.warn(
               "[Ext.define] Duplicate class name '" +
                 className +
-                "' specified, must be a non-empty string",
+                "' specified, must be a non-empty string"
             );
           }
           ctor.name = className;
@@ -787,7 +787,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
             Ext.classSystemMonitor(
               className,
               "Ext.ClassManager#classCreated",
-              arguments,
+              arguments
             );
           //</debug>
 
@@ -979,7 +979,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
       instantiate: function () {
         //<debug>
         Ext.log.warn(
-          "Ext.ClassManager.instantiate() is deprecated.  Use Ext.create() instead.",
+          "Ext.ClassManager.instantiate() is deprecated.  Use Ext.create() instead."
         );
         //</debug>
         return Ext.create.apply(Ext, arguments);
@@ -1021,7 +1021,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
           instantiator = instantiators[length] = new Function(
             "c",
             "a",
-            "return new c(" + args.join(",") + ")",
+            "return new c(" + args.join(",") + ")"
           );
           //<debug>
           instantiator.name = "Ext.create" + length;
@@ -1053,7 +1053,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         fn,
         properties,
         position,
-        relativeTo,
+        relativeTo
       ) {
         if (!position) {
           position = "last";
@@ -1066,7 +1066,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         this.postprocessors[name] = {
           name: name,
           properties: properties || false,
-          fn: fn,
+          fn: fn
         };
 
         this.setDefaultPostprocessorPosition(name, position, relativeTo);
@@ -1124,12 +1124,12 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
             defaultPostprocessors,
             Math.max(0, index + offset),
             0,
-            name,
+            name
           );
         }
 
         return this;
-      },
+      }
     });
 
   /**
@@ -1201,7 +1201,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Ext.classSystemMonitor(
           name,
           "Ext.ClassManager#aliasPostProcessor",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -1215,7 +1215,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         this.addAlias(cls, alias);
       }
     },
-    ["xtype", "alias"],
+    ["xtype", "alias"]
   );
   //</feature>
 
@@ -1240,7 +1240,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
       Ext.classSystemMonitor(
         name,
         "Ext.ClassManager#singletonPostProcessor",
-        arguments,
+        arguments
       );
     //</debug>
 
@@ -1280,7 +1280,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Ext.classSystemMonitor(
           name,
           "Ext.ClassManager#alternateClassNamePostprocessor",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -1303,14 +1303,14 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
               alternate +
               "' for class: '" +
               name +
-              "'; must be a valid string",
+              "'; must be a valid string"
           );
         }
         //</debug>
 
         this.set(alternate, cls);
       }
-    },
+    }
   );
   //</feature>
 
@@ -1550,7 +1550,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
           throw new Error(
             "[Ext.create] Invalid class name or alias '" +
               name +
-              "' specified, must be a non-empty string",
+              "' specified, must be a non-empty string"
           );
         }
         //</debug>
@@ -1571,7 +1571,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
               "'; consider adding " +
               "Ext.require('" +
               name +
-              "') above Ext.onReady",
+              "') above Ext.onReady"
           );
         //</debug>
 
@@ -1583,13 +1583,13 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
       //<debug>
       if (!cls) {
         throw new Error(
-          "[Ext.create] Unrecognized class name / alias: " + name,
+          "[Ext.create] Unrecognized class name / alias: " + name
         );
       }
 
       if (typeof cls !== "function") {
         throw new Error(
-          "[Ext.create] Singleton '" + name + "' cannot be instantiated.",
+          "[Ext.create] Singleton '" + name + "' cannot be instantiated."
         );
       }
       //</debug>
@@ -1952,7 +1952,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Ext.classSystemMonitor(
           className,
           "Ext.ClassManager#undefine",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -2043,7 +2043,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
       }
 
       return root;
-    },
+    }
   });
 
   /**
@@ -2114,12 +2114,12 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Ext.classSystemMonitor(
           cls,
           "Ext.ClassManager#classNamePreprocessor",
-          arguments,
+          arguments
         );
       //</debug>
     },
     true,
-    "first",
+    "first"
   );
 
   Class.registerPreprocessor(
@@ -2130,7 +2130,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
         Ext.classSystemMonitor(
           cls,
           "Ext.ClassManager#aliasPreprocessor",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -2156,7 +2156,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
               alias +
               "' for class: '" +
               name +
-              "'; must be a valid string",
+              "'; must be a valid string"
           );
         }
         //</debug>
@@ -2195,7 +2195,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
           Ext.classSystemMonitor(
             cls,
             "Ext.ClassManager#aliasPreprocessor#afterClassCreated",
-            arguments,
+            arguments
           );
         //</debug>
 
@@ -2229,7 +2229,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
               xtype +
               "' for class: '" +
               name +
-              "'; must be a valid non-empty string",
+              "'; must be a valid non-empty string"
           );
         }
         //</debug>
@@ -2239,7 +2239,7 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
 
       data.alias = aliases;
     },
-    ["xtype", "alias"],
+    ["xtype", "alias"]
   );
 
   // load the cmd-5 style app manifest metadata now, if available...
@@ -2294,5 +2294,5 @@ Ext.ClassManager = (function (Class, alias, arraySlice, arrayFrom, global) {
   Ext.Function.alias,
   Array.prototype.slice,
   Ext.Array.from,
-  Ext.global,
+  Ext.global
 );

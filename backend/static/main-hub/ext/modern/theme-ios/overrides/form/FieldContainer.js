@@ -3,6 +3,6 @@ Ext.define("Ext.theme.ios.form.FieldContainer", {
 
   config: {
     fieldSeparators: true,
-    inputBorders: false,
-  },
+    inputBorders: false
+  }
 });

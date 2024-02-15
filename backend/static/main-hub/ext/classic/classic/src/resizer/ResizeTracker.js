@@ -105,9 +105,9 @@ Ext.define("Ext.resizer.ResizeTracker", {
           tag: "div",
           role: "presentation",
           cls: cls,
-          id: target.id + "-rzproxy",
+          id: target.id + "-rzproxy"
         },
-        Ext.getBody(),
+        Ext.getBody()
       );
     }
     proxy.removeCls(Ext.baseCSSPrefix + "proxy-el");
@@ -223,7 +223,7 @@ Ext.define("Ext.resizer.ResizeTracker", {
       width: box.width + widthAdjust,
       height: box.height + heightAdjust,
       x: box.x + adjustX,
-      y: box.y + adjustY,
+      y: box.y + adjustY
     };
 
     // Snap value between stops according to configured increments
@@ -256,7 +256,7 @@ Ext.define("Ext.resizer.ResizeTracker", {
       newBox.width = Ext.Number.constrain(
         newBox.width,
         me.minWidth,
-        me.maxWidth,
+        me.maxWidth
       );
 
       // Re-adjust the X position if we were dragging the west side
@@ -270,7 +270,7 @@ Ext.define("Ext.resizer.ResizeTracker", {
       newBox.height = Ext.Number.constrain(
         newBox.height,
         me.minHeight,
-        me.maxHeight,
+        me.maxHeight
       );
 
       // Re-adjust the Y position if we were dragging the north side
@@ -288,11 +288,11 @@ Ext.define("Ext.resizer.ResizeTracker", {
       // Calculate aspect ratio constrained values.
       newHeight = Math.min(
         Math.max(me.minHeight, newBox.width / ratio),
-        me.maxHeight,
+        me.maxHeight
       );
       newWidth = Math.min(
         Math.max(me.minWidth, newBox.height * ratio),
-        me.maxWidth,
+        me.maxWidth
       );
 
       // X axis: width-only change, height must obey
@@ -374,5 +374,5 @@ Ext.define("Ext.resizer.ResizeTracker", {
 
   convertRegionName: function (name) {
     return name;
-  },
+  }
 });

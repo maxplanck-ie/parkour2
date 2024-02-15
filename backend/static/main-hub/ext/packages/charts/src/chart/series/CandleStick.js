@@ -118,12 +118,12 @@ Ext.define("Ext.chart.series.CandleStick", {
      * @cfg {String} closeField
      * The store record field name that represents the closing value of the given period.
      */
-    closeField: null,
+    closeField: null
   },
 
   fieldCategoryY: ["Open", "High", "Low", "Close"],
 
   themeColorCount: function () {
     return 2;
-  },
+  }
 });

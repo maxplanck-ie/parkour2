@@ -4,7 +4,7 @@ describe("Ext.draw.sprite.Image", function () {
 
     beforeEach(function () {
       container = new Ext.draw.Container({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.draw.sprite.Image({
@@ -74,7 +74,7 @@ describe("Ext.draw.sprite.Image", function () {
           "1rzZleHX7PhYb+6braP0fBf/tOrfvALb4KzfQYqnCStYS8Ok4WUD479U7Kcj9Xwdx/ae0uOwYKQg" +
           "cMOhKFXCdzT1+tj3Vh/w8+e8S9euTgkEDK46PNIP+sc8CPXU6dDi/v17ft3Ynr1A3is9lE1XkUnu" +
           "agokC9yLTasQESIlJ1G643rGFc5BqVx+QcSb03o9AONTmrA53z8H0eVMzcGH0Y4AAAAAElFTkSuQ" +
-          "mCC",
+          "mCC"
       });
       surface.add(sprite);
       container.add(surface);
@@ -92,10 +92,10 @@ describe("Ext.draw.sprite.Image", function () {
         // Even though, (10,10) is not inside the circle, it's inside it's bounding box.
         var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
           sprite,
-          [60, 70],
+          [60, 70]
         );
         expect(result && result.sprite).toBe(sprite);
-      },
+      }
     );
 
     it("should return null, if the sprite's bounding box is hit, but the sprite is not visible", function () {
@@ -105,7 +105,7 @@ describe("Ext.draw.sprite.Image", function () {
       };
       var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
         sprite,
-        [60, 70],
+        [60, 70]
       );
       expect(result).toBe(null);
       sprite.isVisible = originalMethod;
@@ -114,7 +114,7 @@ describe("Ext.draw.sprite.Image", function () {
     it("should return null, if the sprite is visible, but it's bounding box is not hit", function () {
       var result = Ext.draw.sprite.Sprite.prototype.hitTest.call(
         sprite,
-        [210, 200],
+        [210, 200]
       );
       expect(result).toBe(null);
     });

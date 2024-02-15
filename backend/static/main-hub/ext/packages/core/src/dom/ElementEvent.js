@@ -158,5 +158,5 @@ Ext.define("Ext.dom.ElementEvent", {
     }
 
     me.callParent();
-  },
+  }
 });

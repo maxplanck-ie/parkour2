@@ -8,18 +8,18 @@ Ext.define("Ext.theme.windows.picker.Picker", {
       xtype: "toolbar",
       layout: {
         type: "hbox",
-        pack: "center",
-      },
+        pack: "center"
+      }
     },
     doneButton: {
       iconCls: "check2",
       ui: "round",
-      text: "",
+      text: ""
     },
     cancelButton: {
       iconCls: "delete",
       ui: "round",
-      text: "",
-    },
-  },
+      text: ""
+    }
+  }
 });

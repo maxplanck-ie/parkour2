@@ -7,7 +7,7 @@ describe("Ext.data.schema.BelongsTo", function () {
   function defineThread(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -20,7 +20,7 @@ describe("Ext.data.schema.BelongsTo", function () {
   function definePost(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -33,7 +33,7 @@ describe("Ext.data.schema.BelongsTo", function () {
   function defineUser(options) {
     var cfg = {
       extend: "Ext.data.Model",
-      fields: ["id", "title"],
+      fields: ["id", "title"]
     };
 
     if (options) {
@@ -81,7 +81,7 @@ describe("Ext.data.schema.BelongsTo", function () {
       it("should accept a string", function () {
         defineThread();
         definePost({
-          belongsTo: "Thread",
+          belongsTo: "Thread"
         });
         expectFn("getThread");
         expectFn("setThread");
@@ -92,7 +92,7 @@ describe("Ext.data.schema.BelongsTo", function () {
         defineThread();
         defineUser();
         definePost({
-          belongsTo: ["Thread", "User"],
+          belongsTo: ["Thread", "User"]
         });
         expectFn("getThread");
         expectFn("setThread");
@@ -106,8 +106,8 @@ describe("Ext.data.schema.BelongsTo", function () {
         defineThread();
         definePost({
           belongsTo: {
-            type: "Thread",
-          },
+            type: "Thread"
+          }
         });
         expectFn("getThread");
         expectFn("setThread");
@@ -120,12 +120,12 @@ describe("Ext.data.schema.BelongsTo", function () {
         definePost({
           belongsTo: [
             {
-              type: "Thread",
+              type: "Thread"
             },
             {
-              type: "User",
-            },
-          ],
+              type: "User"
+            }
+          ]
         });
         expectFn("getThread");
         expectFn("setThread");
@@ -143,8 +143,8 @@ describe("Ext.data.schema.BelongsTo", function () {
           definePost({
             belongsTo: {
               type: "Thread",
-              role: "discussion",
-            },
+              role: "discussion"
+            }
           });
 
           expectFn("getDiscussion");
@@ -159,8 +159,8 @@ describe("Ext.data.schema.BelongsTo", function () {
           definePost({
             belongsTo: {
               type: "Thread",
-              getterName: "getDiscussion",
-            },
+              getterName: "getDiscussion"
+            }
           });
           expectFn("getDiscussion");
           expectFn("setThread");
@@ -174,8 +174,8 @@ describe("Ext.data.schema.BelongsTo", function () {
           definePost({
             belongsTo: {
               type: "Thread",
-              setterName: "setDiscussion",
-            },
+              setterName: "setDiscussion"
+            }
           });
           expectFn("setDiscussion");
           expectFn("getThread");
@@ -190,9 +190,9 @@ describe("Ext.data.schema.BelongsTo", function () {
             belongsTo: {
               type: "Thread",
               inverse: {
-                role: "comments",
-              },
-            },
+                role: "comments"
+              }
+            }
           });
 
           expectFn("getThread");
@@ -207,8 +207,8 @@ describe("Ext.data.schema.BelongsTo", function () {
           defineThread();
           definePost({
             belongsTo: {
-              parent: "Thread",
-            },
+              parent: "Thread"
+            }
           });
 
           expectFn("getThread");
@@ -223,7 +223,7 @@ describe("Ext.data.schema.BelongsTo", function () {
         it("should setup methods on both classes", function () {
           defineThread();
           definePost({
-            belongsTo: "Thread",
+            belongsTo: "Thread"
           });
           expectFn("getThread");
           expectFn("setThread");
@@ -234,7 +234,7 @@ describe("Ext.data.schema.BelongsTo", function () {
       describe("when the owner class does not exist", function () {
         it("should setup methods on both classes when the owner arrives", function () {
           definePost({
-            belongsTo: "Thread",
+            belongsTo: "Thread"
           });
           expectNotFn("getThread");
           expectNotFn("setThread");
@@ -254,16 +254,16 @@ describe("Ext.data.schema.BelongsTo", function () {
         definePost({
           belongsTo: {
             type: "Thread",
-            associationKey: "discussion",
-          },
+            associationKey: "discussion"
+          }
         });
 
         var post = Post.load(1);
         Ext.Ajax.mockCompleteWithData({
           id: 1,
           thread: {
-            id: 101,
-          },
+            id: 101
+          }
         });
         // Key is discussion, should be nothing
         expect(post.getThread()).toBeNull();
@@ -272,8 +272,8 @@ describe("Ext.data.schema.BelongsTo", function () {
         Ext.Ajax.mockCompleteWithData({
           id: 2,
           discussion: {
-            id: 101,
-          },
+            id: 101
+          }
         });
         expect(post.getThread().id).toBe(101);
       });
@@ -284,8 +284,8 @@ describe("Ext.data.schema.BelongsTo", function () {
         defineThread();
         definePost({
           belongsTo: {
-            parent: "Thread",
-          },
+            parent: "Thread"
+          }
         });
 
         var thread = new Thread({ id: 1 }),
@@ -304,7 +304,7 @@ describe("Ext.data.schema.BelongsTo", function () {
         defineThread();
         definePost({
           fields: ["id", "name", "thread_id"],
-          belongsTo: "Thread",
+          belongsTo: "Thread"
         });
 
         var thread = new Thread({ id: 1 }),
@@ -320,8 +320,8 @@ describe("Ext.data.schema.BelongsTo", function () {
           fields: ["id", "name", "customField"],
           belongsTo: {
             type: "Thread",
-            foreignKey: "customField",
-          },
+            foreignKey: "customField"
+          }
         });
 
         var thread = new Thread({ id: 1 }),
@@ -337,8 +337,8 @@ describe("Ext.data.schema.BelongsTo", function () {
       definePost({
         belongsTo: {
           model: "Thread",
-          name: "discussion",
-        },
+          name: "discussion"
+        }
       });
       expectFn("getDiscussion");
       expectFn("setDiscussion");
@@ -350,8 +350,8 @@ describe("Ext.data.schema.BelongsTo", function () {
       definePost({
         belongsTo: {
           model: "Thread",
-          associatedName: "discussion",
-        },
+          associatedName: "discussion"
+        }
       });
       expectFn("getDiscussion");
       expectFn("setDiscussion");
@@ -363,8 +363,8 @@ describe("Ext.data.schema.BelongsTo", function () {
       definePost({
         belongsTo: {
           model: "Thread",
-          role: "discussion",
-        },
+          role: "discussion"
+        }
       });
 
       expectFn("getDiscussion");

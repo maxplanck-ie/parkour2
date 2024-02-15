@@ -32,7 +32,7 @@ describe("Ext.data.proxy.LocalStorage", function () {
           } else {
             var storageObject = proxy.getStorageObject();
             expect(window.localStorage.setItem === storageObject.setItem).toBe(
-              true,
+              true
             );
           }
         });
@@ -44,7 +44,7 @@ describe("Ext.data.proxy.LocalStorage", function () {
         expect(function () {
           new Ext.data.proxy.LocalStorage({ id: 1 });
         }).toThrow(
-          "Local Storage is not supported in this browser, please use another type of data proxy",
+          "Local Storage is not supported in this browser, please use another type of data proxy"
         );
       });
     });

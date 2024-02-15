@@ -13,7 +13,7 @@ Ext.define(
       //</feature>
 
       "Ext.draw.Animator",
-      "Ext.draw.Color",
+      "Ext.draw.Color"
     ],
 
     config: {
@@ -30,7 +30,7 @@ Ext.define(
        * Do not use this if you are not encountering 32-bit floating point errors problem,
        * since this will result in a performance penalty.
        */
-      highPrecision: false,
+      highPrecision: false
     },
 
     statics: {
@@ -166,7 +166,7 @@ Ext.define(
           rotation,
           start,
           end,
-          anticlockwise,
+          anticlockwise
         ) {
           var cos = Math.cos(rotation),
             sin = Math.sin(rotation);
@@ -178,7 +178,7 @@ Ext.define(
             sin / rx,
             cos / ry,
             -(cos * cx + sin * cy) / rx,
-            (sin * cx - cos * cy) / ry,
+            (sin * cx - cos * cy) / ry
           );
         },
 
@@ -212,7 +212,7 @@ Ext.define(
                   params[j + 2],
                   params[j + 3],
                   params[j + 4],
-                  params[j + 5],
+                  params[j + 5]
                 );
                 j += 6;
                 break;
@@ -248,8 +248,8 @@ Ext.define(
             }
           }
           this.$restore();
-        },
-      },
+        }
+      }
     },
 
     splitThreshold: 3000,
@@ -268,10 +268,10 @@ Ext.define(
           style: {
             width: "100%",
             height: "100%",
-            position: "relative",
-          },
-        },
-      ],
+            position: "relative"
+          }
+        }
+      ]
     },
 
     /**
@@ -282,7 +282,7 @@ Ext.define(
     createCanvas: function () {
       var canvas = Ext.Element.create({
         tag: "canvas",
-        cls: Ext.baseCSSPrefix + "surface-canvas",
+        cls: Ext.baseCSSPrefix + "surface-canvas"
       });
 
       // Emulate Canvas in IE8 with VML.
@@ -358,7 +358,7 @@ Ext.define(
       "createRadialGradient",
       "fillText",
       "strokeText",
-      "drawImage",
+      "drawImage"
     ],
 
     /**
@@ -417,7 +417,7 @@ Ext.define(
             x * xx + dx,
             y * yy + dy,
             w * xx,
-            h * yy,
+            h * yy
           );
         },
 
@@ -432,7 +432,7 @@ Ext.define(
             x * xx + dx,
             y * yy + dy,
             w * xx,
-            h * yy,
+            h * yy
           );
           this.updatePrecisionCompensate();
         },
@@ -448,7 +448,7 @@ Ext.define(
             x * xx + dx,
             y * yy + dy,
             w * xx,
-            h * yy,
+            h * yy
           );
           this.updatePrecisionCompensate();
         },
@@ -463,7 +463,7 @@ Ext.define(
             x * xx + dx,
             y * yy + dy,
             w * xx,
-            h * yy,
+            h * yy
           );
         },
 
@@ -499,7 +499,7 @@ Ext.define(
             radius * xx,
             startAngle,
             endAngle,
-            anticlockwise,
+            anticlockwise
           );
           this.updatePrecisionCompensate();
         },
@@ -522,7 +522,7 @@ Ext.define(
             y1 * yy + dy,
             x2 * xx + dx,
             y2 * yy + dy,
-            radius * xx,
+            radius * xx
           );
           this.updatePrecisionCompensate();
         },
@@ -565,7 +565,7 @@ Ext.define(
             comp.c,
             comp.d,
             0,
-            0,
+            0
           );
         },
 
@@ -585,7 +585,7 @@ Ext.define(
             comp.c,
             comp.d,
             0,
-            0,
+            0
           );
         },
 
@@ -648,7 +648,7 @@ Ext.define(
             cx * xx + dx,
             cy * yy + dy,
             x * xx + dx,
-            y * yy + dy,
+            y * yy + dy
           );
         },
 
@@ -666,7 +666,7 @@ Ext.define(
             c2x * xx + dx,
             c2y * yy + dy,
             x * xx + dx,
-            y * yy + dy,
+            y * yy + dy
           );
         },
 
@@ -683,7 +683,7 @@ Ext.define(
             x0 * xx + dx,
             y0 * yy + dy,
             x1 * xx + dx,
-            y1 * yy + dy,
+            y1 * yy + dy
           );
           this.updatePrecisionCompensate();
           return grad;
@@ -705,7 +705,7 @@ Ext.define(
             r0 * xx,
             x1 * xx + dx,
             y1 * xx + dy,
-            r1 * xx,
+            r1 * xx
           );
           this.updatePrecisionCompensate();
           return grad;
@@ -790,7 +790,7 @@ Ext.define(
           dst_x,
           dst_y,
           dw,
-          dh,
+          dh
         ) {
           switch (arguments.length) {
             case 3:
@@ -798,7 +798,7 @@ Ext.define(
                 this,
                 img_elem,
                 arg1 * xx + dx,
-                arg2 * yy + dy,
+                arg2 * yy + dy
               );
             case 5:
               return originalCtx.drawImage.call(
@@ -807,7 +807,7 @@ Ext.define(
                 arg1 * xx + dx,
                 arg2 * yy + dy,
                 arg3 * xx,
-                arg4 * yy,
+                arg4 * yy
               );
             case 9:
               return originalCtx.drawImage.call(
@@ -820,10 +820,10 @@ Ext.define(
                 dst_x * xx + dx,
                 dst_y * yy * dy,
                 dw * xx,
-                dh * yy,
+                dh * yy
               );
           }
-        },
+        }
       };
       Ext.apply(ctx, precisionOverrides);
       this.setDirty(true);
@@ -960,7 +960,7 @@ Ext.define(
 
       while (parent && parent.isSprite) {
         matrix.prependMatrix(
-          parent.matrix || (parent.attr && parent.attr.matrix),
+          parent.matrix || (parent.attr && parent.attr.matrix)
         );
         parent = parent.getParent();
       }
@@ -1043,13 +1043,13 @@ Ext.define(
           ctx.drawImage(
             canvas.dom,
             (rect[0] + xy[0]) * ratio,
-            (rect[1] + xy[1]) * ratio,
+            (rect[1] + xy[1]) * ratio
           );
         }
       }
       return {
         data: targetCanvas.toDataURL(),
-        type: "png",
+        type: "png"
       };
     },
 
@@ -1110,8 +1110,8 @@ Ext.define(
         me.canvases = [];
         me.contexts = [];
         me.activeCanvases = me.xSplits = me.ySplits = 0;
-      },
-    },
+      }
+    }
   },
   function () {
     var me = this,
@@ -1125,5 +1125,5 @@ Ext.define(
     }
 
     proto.splitThreshold = splitThreshold;
-  },
+  }
 );

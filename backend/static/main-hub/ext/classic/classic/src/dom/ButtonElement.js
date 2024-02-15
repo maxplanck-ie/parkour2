@@ -28,12 +28,12 @@ Ext.define("Ext.dom.ButtonElement", {
 
     component.btnWrap.setStyle(
       "table-layout",
-      !width || width === "auto" ? "" : "fixed",
+      !width || width === "auto" ? "" : "fixed"
     );
 
     component.btnEl.setStyle(
       "height",
-      !height || height === "auto" ? "" : "auto",
+      !height || height === "auto" ? "" : "auto"
     );
 
     return me;
@@ -52,7 +52,7 @@ Ext.define("Ext.dom.ButtonElement", {
         width = value || prop.width;
         component.btnWrap.setStyle(
           "table-layout",
-          !width || width === "auto" ? "" : "fixed",
+          !width || width === "auto" ? "" : "fixed"
         );
       }
 
@@ -61,7 +61,7 @@ Ext.define("Ext.dom.ButtonElement", {
 
         component.btnEl.setStyle(
           "height",
-          !height || height === "auto" ? "" : "auto",
+          !height || height === "auto" ? "" : "auto"
         );
       }
     }
@@ -74,7 +74,7 @@ Ext.define("Ext.dom.ButtonElement", {
 
     this.component.btnEl.setStyle(
       "height",
-      !height || height === "auto" ? "" : "auto",
+      !height || height === "auto" ? "" : "auto"
     );
 
     return this;
@@ -85,9 +85,9 @@ Ext.define("Ext.dom.ButtonElement", {
 
     this.component.btnWrap.setStyle(
       "table-layout",
-      !width || width === "auto" ? "" : "fixed",
+      !width || width === "auto" ? "" : "fixed"
     );
 
     return this;
-  },
+  }
 });

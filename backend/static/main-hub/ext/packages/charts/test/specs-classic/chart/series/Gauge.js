@@ -23,35 +23,35 @@ describe("Ext.chart.series.Gauge", function () {
             totalAngle: Math.PI,
             label: {
               fontSize: 12,
-              fontWeight: "bold",
+              fontWeight: "bold"
             },
             colors: ["maroon", "blue", "lightgray", "red"],
             sectors: [
               {
                 end: 300,
                 label: "Cold",
-                color: "dodgerblue",
+                color: "dodgerblue"
               },
               {
                 end: 600,
                 label: "Temp.",
-                color: "lightgray",
+                color: "lightgray"
               },
               {
                 end: 800,
                 label: "Hot",
-                color: "tomato",
-              },
+                color: "tomato"
+              }
             ],
             renderer: function (sprite, config, rendererData, spriteIndex) {
               indexes.push(spriteIndex);
-            },
+            }
           },
           listeners: {
             redraw: function () {
               redrawCount++;
-            },
-          },
+            }
+          }
         });
       });
 

@@ -166,5 +166,5 @@ Ext.define("Ext.data.field.Date", {
 
   getType: function () {
     return "date";
-  },
+  }
 });

@@ -151,14 +151,14 @@ Ext.define("Ext.tree.Column", {
     '<a href="{href}" role="link" target="{hrefTarget}" class="{textCls} {childCls}">{value}</a>',
     "<tpl else>",
     '<span class="{textCls} {childCls}">{value}</span>',
-    "</tpl>",
+    "</tpl>"
   ],
 
   // fields that will trigger a change in the ui that aren't likely to be bound to a column
   uiFields: {
     checked: 1,
     icon: 1,
-    iconCls: 1,
+    iconCls: 1
   },
 
   // fields that requires a full row render
@@ -170,7 +170,7 @@ Ext.define("Ext.tree.Column", {
     loading: 1,
     qtip: 1,
     qtitle: 1,
-    cls: 1,
+    cls: 1
   },
 
   initComponent: function () {
@@ -199,7 +199,7 @@ Ext.define("Ext.tree.Column", {
     rowIdx,
     colIdx,
     store,
-    view,
+    view
   ) {
     var me = this,
       cls = record.get("cls"),
@@ -218,7 +218,7 @@ Ext.define("Ext.tree.Column", {
       rowIdx,
       colIdx,
       store,
-      view,
+      view
     );
 
     return me.lookupTpl("cellTpl").apply(rendererData);
@@ -231,7 +231,7 @@ Ext.define("Ext.tree.Column", {
     rowIdx,
     colIdx,
     store,
-    view,
+    view
   ) {
     var me = this,
       innerRenderer = me.innerRenderer,
@@ -302,7 +302,7 @@ Ext.define("Ext.tree.Column", {
       // expander, elbow, checkbox).  This is used by the rtl override to add the
       // "x-rtl" class to these elements.
       childCls: me.getChildCls ? me.getChildCls() + " " : "",
-      value: value,
+      value: value
     };
   },
 
@@ -339,5 +339,5 @@ Ext.define("Ext.tree.Column", {
     }
 
     return me.callParent([record, changedFieldNames]);
-  },
+  }
 });

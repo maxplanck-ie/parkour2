@@ -10,5 +10,5 @@ Ext.define("Ext.rtl.layout.container.Absolute", {
     } else {
       return this.callParent([width, childContext]);
     }
-  },
+  }
 });

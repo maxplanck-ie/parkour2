@@ -166,7 +166,7 @@ Ext.define("Ext.data.TreeStore", {
      * @cfg {Number} pageSize
      * @hide
      */
-    pageSize: null, // Not valid for TreeStore. Paging parameters must not be passed.
+    pageSize: null // Not valid for TreeStore. Paging parameters must not be passed.
   },
 
   /**
@@ -208,7 +208,7 @@ Ext.define("Ext.data.TreeStore", {
    */
 
   _silentOptions: {
-    silent: true,
+    silent: true
   },
 
   implicitModel: "Ext.data.TreeModel",
@@ -278,7 +278,7 @@ Ext.define("Ext.data.TreeStore", {
     if (Ext.isDefined(me.nodeParameter)) {
       if (Ext.isDefined(Ext.global.console)) {
         Ext.global.console.warn(
-          "Ext.data.TreeStore: nodeParameter has been deprecated. Please use nodeParam instead.",
+          "Ext.data.TreeStore: nodeParameter has been deprecated. Please use nodeParam instead."
         );
       }
       me.nodeParam = me.nodeParameter;
@@ -306,7 +306,7 @@ Ext.define("Ext.data.TreeStore", {
           name: me.defaultRootProperty,
           type: "auto",
           defaultValue: null,
-          persist: false,
+          persist: false
         });
       }
     }
@@ -330,7 +330,7 @@ Ext.define("Ext.data.TreeStore", {
           me.load({
             callback: function () {
               me.fireEvent("sort", me, sorters);
-            },
+            }
           });
         }
       } else {
@@ -459,7 +459,7 @@ Ext.define("Ext.data.TreeStore", {
         me,
         record,
         Ext.data.Model.COMMIT,
-        modifiedFieldNames,
+        modifiedFieldNames
       );
     }
   },
@@ -551,7 +551,7 @@ Ext.define("Ext.data.TreeStore", {
             // Set visible field silently: do not fire update events to views.
             // Views will receive refresh event from onNodeFilter.
             node.set("visible", true, me._silentOptions);
-          },
+          }
         });
       }
       if (length) {
@@ -651,8 +651,8 @@ Ext.define("Ext.data.TreeStore", {
         me,
         {
           single: true,
-          priority: 1001,
-        },
+          priority: 1001
+        }
       );
     }
     // There are unloaded child nodes in the raw data because of the lazy configuration, load them then call back.
@@ -684,8 +684,8 @@ Ext.define("Ext.data.TreeStore", {
             node,
             reader.extractData(children, {
               model: node.childType,
-              recordCreator: me.recordCreator,
-            }),
+              recordCreator: me.recordCreator
+            })
           );
         }
 
@@ -712,7 +712,7 @@ Ext.define("Ext.data.TreeStore", {
               callbackArgs.push.apply(callbackArgs, args);
             }
             Ext.callback(callback, scope || node, callbackArgs);
-          },
+          }
         });
         // Requests for node expansion must be immediate
         me.flushLoad();
@@ -934,7 +934,7 @@ Ext.define("Ext.data.TreeStore", {
     return Ext.Array.filter(
       Ext.Object.getValues(this.byIdMap),
       this.filterNew,
-      this,
+      this
     );
   },
 
@@ -942,14 +942,14 @@ Ext.define("Ext.data.TreeStore", {
     return Ext.Array.filter(
       Ext.Object.getValues(this.byIdMap),
       this.filterRejects,
-      this,
+      this
     );
   },
 
   getUpdatedRecords: function () {
     return Ext.Array.filter(
       Ext.Object.getValues(this.byIdMap),
-      this.filterUpdated,
+      this.filterUpdated
     );
   },
 
@@ -1132,7 +1132,7 @@ Ext.define("Ext.data.TreeStore", {
       // to be calculated. See indexOfPreviousVisibleNode for explanation.
       else {
         storeInsertionPoint = me.indexOfPreviousVisibleNode(
-          node.previousSibling,
+          node.previousSibling
         );
       }
 
@@ -1179,8 +1179,8 @@ Ext.define("Ext.data.TreeStore", {
           node,
           reader.extractData(dataRoot, {
             model: node.childType,
-            recordCreator: me.recordCreator,
-          }),
+            recordCreator: me.recordCreator
+          })
         );
       }
     }
@@ -1299,9 +1299,9 @@ Ext.define("Ext.data.TreeStore", {
           depth: 0,
           index: 0,
           parentId: null,
-          allowDrag: false,
+          allowDrag: false
         },
-        newRoot,
+        newRoot
       );
       // Ensure the root has the default root id if it has no id.
       if (defaultRootId && newRoot[idProperty] === undefined) {
@@ -1373,7 +1373,7 @@ Ext.define("Ext.data.TreeStore", {
               newRoot,
               false,
               false,
-              oldOwner.getTreeStore() === me,
+              oldOwner.getTreeStore() === me
             )
           ) {
             return;
@@ -1401,7 +1401,7 @@ Ext.define("Ext.data.TreeStore", {
           isLast: true,
           depth: 0,
           index: 0,
-          parentId: null,
+          parentId: null
         });
 
         // We register the subtree before we proceed so relayed events (like
@@ -1647,7 +1647,7 @@ Ext.define("Ext.data.TreeStore", {
     // create one for them. The expanded: true will cause a load operation, so return.
     if (!node & !(node = this.getRoot())) {
       node = this.setRoot({
-        expanded: true,
+        expanded: true
       });
       return;
     }
@@ -1739,9 +1739,9 @@ Ext.define("Ext.data.TreeStore", {
       {
         node: options.node || node,
         internalScope: me,
-        internalCallback: me.onProxyLoad,
+        internalCallback: me.onProxyLoad
       },
-      options,
+      options
     );
 
     me.lastOptions = Ext.apply({}, options);
@@ -2306,7 +2306,7 @@ Ext.define("Ext.data.TreeStore", {
             me.filterNodes(
               childNodes[i],
               filterFn,
-              match || bottomUpFiltering,
+              match || bottomUpFiltering
             ) || matchingChildren;
         }
         if (bottomUpFiltering) {
@@ -2346,14 +2346,14 @@ Ext.define("Ext.data.TreeStore", {
       if (sorters) {
         sorters.on("endupdate", this.onSorterEndUpdate, this);
       }
-    },
+    }
   },
 
   deprecated: {
     5: {
       properties: {
-        tree: null,
-      },
-    },
-  },
+        tree: null
+      }
+    }
+  }
 });

@@ -50,9 +50,9 @@ Ext.define("Ext.field.Url", {
      * @inheritdoc
      */
     component: {
-      type: "url",
-    },
+      type: "url"
+    }
   },
 
-  classCls: Ext.baseCSSPrefix + "urlfield",
+  classCls: Ext.baseCSSPrefix + "urlfield"
 });

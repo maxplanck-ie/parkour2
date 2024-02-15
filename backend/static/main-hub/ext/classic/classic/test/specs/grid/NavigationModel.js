@@ -11,11 +11,8 @@ describe("Ext.grid.NavigationModel", function () {
         .getNavigationModel()
         .getPosition()
         .isEqual(
-          new Ext.grid.CellContext(column.getView()).setPosition(
-            rowIdx,
-            column,
-          ),
-        ),
+          new Ext.grid.CellContext(column.getView()).setPosition(rowIdx, column)
+        )
     ).toBe(true);
   }
 
@@ -23,9 +20,9 @@ describe("Ext.grid.NavigationModel", function () {
     return grid.getView().getCellInclusive(
       {
         row: rowIdx,
-        column: cellIdx,
+        column: cellIdx
       },
-      true,
+      true
     );
   }
 
@@ -52,8 +49,8 @@ describe("Ext.grid.NavigationModel", function () {
         "field7",
         "field8",
         "field9",
-        "field10",
-      ],
+        "field10"
+      ]
     }),
     view,
     colRef;
@@ -72,9 +69,9 @@ describe("Ext.grid.NavigationModel", function () {
           field7: 7,
           field8: 8,
           field9: 9,
-          field10: 10,
-        },
-      ],
+          field10: 10
+        }
+      ]
     });
     return store;
   }
@@ -98,7 +95,7 @@ describe("Ext.grid.NavigationModel", function () {
           text: "Field " + i,
           width: 90,
           // First column gets locked if we are doing locking tests
-          locked: locked && i === 1,
+          locked: locked && i === 1
         });
       }
     }
@@ -109,7 +106,7 @@ describe("Ext.grid.NavigationModel", function () {
       data = [];
       for (i = 0; i < dataCount; i++) {
         dataRow = {
-          id: "rec" + i,
+          id: "rec" + i
         };
         for (var j = 0; j < columns.length; j++) {
           dataRow[columns[j].dataIndex] = i + 1 + ", " + (j + 1);
@@ -133,13 +130,13 @@ describe("Ext.grid.NavigationModel", function () {
           viewConfig: Ext.apply(
             {
               mouseOverOutBuffer: false,
-              deferHighlight: false,
+              deferHighlight: false
             },
-            cfg.viewConfig,
-          ),
+            cfg.viewConfig
+          )
         },
-        cfg,
-      ),
+        cfg
+      )
     );
 
     // Don't use renderTo since that may throw and we won't set "grid"
@@ -191,7 +188,7 @@ describe("Ext.grid.NavigationModel", function () {
           view
             .getEl()
             .getRegion()
-            .contains(view.getCellByPosition(navModel.lastFocused).getRegion()),
+            .contains(view.getCellByPosition(navModel.lastFocused).getRegion())
         ).toBe(true);
 
         // Sort descending
@@ -202,7 +199,7 @@ describe("Ext.grid.NavigationModel", function () {
           view
             .getEl()
             .getRegion()
-            .contains(view.getCellByPosition(navModel.lastFocused).getRegion()),
+            .contains(view.getCellByPosition(navModel.lastFocused).getRegion())
         ).toBe(true);
       });
     });
@@ -254,7 +251,7 @@ describe("Ext.grid.NavigationModel", function () {
         describe("without locking", function () {
           it("should retain focus", function () {
             makeGrid(null, 10, {
-              bufferedRenderer: buffered,
+              bufferedRenderer: buffered
             });
             var cell = view.getCell(store.getAt(0), colRef[0]);
             focusAndWait(cell);
@@ -275,16 +272,16 @@ describe("Ext.grid.NavigationModel", function () {
               [
                 {
                   dataIndex: "field1",
-                  locked: true,
+                  locked: true
                 },
                 {
-                  dataIndex: "field2",
-                },
+                  dataIndex: "field2"
+                }
               ],
               10,
               {
-                bufferedRenderer: buffered,
-              },
+                bufferedRenderer: buffered
+              }
             );
           });
 
@@ -326,7 +323,7 @@ describe("Ext.grid.NavigationModel", function () {
       makeGrid(4, 100, null, null, true);
 
       navModel.setPosition(
-        new Ext.grid.CellContext(grid.lockedGrid.view).setPosition(0, 0),
+        new Ext.grid.CellContext(grid.lockedGrid.view).setPosition(0, 0)
       );
       expectPosition(0, 0);
 
@@ -404,7 +401,7 @@ describe("Ext.grid.NavigationModel", function () {
       makeGrid(4, 100);
 
       navModel.setPosition(
-        new Ext.grid.CellContext(grid.view).setPosition(0, 0),
+        new Ext.grid.CellContext(grid.view).setPosition(0, 0)
       );
       expectPosition(0, 0);
 
@@ -484,8 +481,8 @@ describe("Ext.grid.NavigationModel", function () {
         fields: [
           { name: "name", type: "string" },
           { name: "age", type: "int" },
-          { name: "location", type: "string" },
-        ],
+          { name: "location", type: "string" }
+        ]
       }),
       store,
       grid,
@@ -502,11 +499,11 @@ describe("Ext.grid.NavigationModel", function () {
             data: [
               { name: "Jimmy", age: 22, location: "United States" },
               { name: "Sally", age: 25, location: "England" },
-              { name: "Billy", age: 26, location: "Mexico" },
-            ],
+              { name: "Billy", age: 26, location: "Mexico" }
+            ]
           },
-          storeCfg,
-        ),
+          storeCfg
+        )
       );
       grid = Ext.create(
         "Ext.grid.Panel",
@@ -525,7 +522,7 @@ describe("Ext.grid.NavigationModel", function () {
               {
                 header: "Name",
                 flex: 1,
-                dataIndex: "name",
+                dataIndex: "name"
               },
               {
                 id: "locId",
@@ -540,9 +537,9 @@ describe("Ext.grid.NavigationModel", function () {
                   listeners: {
                     click: function (button) {
                       pos = grid.getSelectionModel().getPosition();
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               },
               {
                 xtype: "widgetcolumn",
@@ -551,13 +548,13 @@ describe("Ext.grid.NavigationModel", function () {
                 dataIndex: "age",
                 stopSelection: true,
                 widget: {
-                  xtype: "numberfield",
-                },
-              },
-            ],
+                  xtype: "numberfield"
+                }
+              }
+            ]
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
       navModel = grid.getNavigationModel();
       widgetColumn = grid.down("widgetcolumn");
@@ -612,7 +609,7 @@ describe("Ext.grid.NavigationModel", function () {
         jasmine.fireKeyEvent(
           Ext.Element.getActiveElement(),
           "keydown",
-          Ext.event.Event.RIGHT,
+          Ext.event.Event.RIGHT
         );
       });
 
@@ -628,7 +625,7 @@ describe("Ext.grid.NavigationModel", function () {
         jasmine.fireKeyEvent(
           Ext.Element.getActiveElement(),
           "keydown",
-          Ext.event.Event.RIGHT,
+          Ext.event.Event.RIGHT
         );
       });
 

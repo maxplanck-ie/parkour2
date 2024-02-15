@@ -8,7 +8,7 @@ describe("Ext.chart.interactions.PanZoom", function () {
           xtype: "toolbar",
           renderTo: document.body,
           width: 400,
-          height: 50,
+          height: 50
         });
         panel = Ext.create({
           xtype: "panel",
@@ -23,34 +23,34 @@ describe("Ext.chart.interactions.PanZoom", function () {
                 { x: 1, y: 2 },
                 { x: 2, y: 1 },
                 { x: 3, y: 3 },
-                { x: 4, y: 1 },
-              ],
+                { x: 4, y: 1 }
+              ]
             },
             interactions: {
               type: "panzoom",
-              zoomOnPanGesture: true,
+              zoomOnPanGesture: true
             },
             series: {
               type: "line",
               xField: "x",
-              yField: "y",
+              yField: "y"
             },
             axes: [
               {
                 type: "numeric",
-                position: "bottom",
+                position: "bottom"
               },
               {
                 type: "numeric",
-                position: "left",
-              },
-            ],
+                position: "left"
+              }
+            ]
           },
           listeners: {
             afterrender: function () {
               isAfterRender = true;
-            },
-          },
+            }
+          }
         });
       });
       waitsFor(function () {

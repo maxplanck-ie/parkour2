@@ -18,7 +18,7 @@ function interpolate(string, object) {
         value = JSON.stringify(value);
       } catch (e) {
         console.error(
-          "Stringifying object (likely a circular structure) failed.",
+          "Stringifying object (likely a circular structure) failed."
         );
       }
     }
@@ -57,5 +57,5 @@ module.exports = {
   isObject: isObject,
   isNumber: isNumber,
   interpolate: interpolate,
-  apply: apply,
+  apply: apply
 };

@@ -10,7 +10,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -114,7 +114,7 @@
         left: 0,
         top: 0,
         width: obj.width ? obj.width : obj.offsetWidth,
-        height: obj.height ? obj.height : obj.offsetHeight,
+        height: obj.height ? obj.height : obj.offsetHeight
       };
 
       if (obj.style.width !== "") {
@@ -149,7 +149,7 @@
       if (elem) {
         this.glue(elem);
       }
-    },
+    }
   };
 
   ZeroClipboard_TableTools.Client.prototype = {
@@ -201,7 +201,7 @@
         this.domElement.appendChild(this.div);
         this.div.innerHTML = this.getHTML(box.width, box.height).replace(
           /&/g,
-          "&amp;",
+          "&amp;"
         );
       }
     },
@@ -311,7 +311,7 @@
 
       if (this.domElement && this.div) {
         var box = ZeroClipboard_TableTools.getDOMObjectPosition(
-          this.domElement,
+          this.domElement
         );
         var style = this.div.style;
         style.left = "" + box.left + "px";
@@ -485,7 +485,7 @@
           }
         } // foreach event handler defined
       } // user defined handler for event
-    },
+    }
   };
 
   ZeroClipboard_TableTools.hasFlash = function () {
@@ -629,7 +629,7 @@
 
     return {
       str: header + body.join(newLine) + footer,
-      rows: body.length,
+      rows: body.length
     };
   };
 
@@ -678,7 +678,7 @@
 
     header: true,
 
-    footer: false,
+    footer: false
   };
 
   /**
@@ -803,7 +803,7 @@
       _ieExcel =
         _serialiser
           .serializeToString(
-            $.parseXML(excelStrings["xl/worksheets/sheet1.xml"]),
+            $.parseXML(excelStrings["xl/worksheets/sheet1.xml"])
           )
           .indexOf("xmlns:r") === -1;
     }
@@ -835,7 +835,7 @@
 
           for (i = 0, ien = attrs.length; i < ien; i++) {
             var attr = val.createAttribute(
-              attrs[i].name.replace(":", "_dt_b_namespace_token_"),
+              attrs[i].name.replace(":", "_dt_b_namespace_token_")
             );
             attr.value = attrs[i].value;
             worksheet.setAttributeNode(attr);
@@ -1091,7 +1091,7 @@
       "</cellStyles>" +
       '<dxfs count="0" />' +
       '<tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleMedium4" />' +
-      "</styleSheet>",
+      "</styleSheet>"
   };
   // Note we could use 3 `for` loops for the styles, but when gzipped there is
   // virtually no difference in size, since the above can be easily compressed
@@ -1104,14 +1104,14 @@
       style: 60,
       fmt: function (d) {
         return d / 100;
-      },
+      }
     }, // Precent with d.p.
     {
       match: /^\-?\d+\.?\d*%$/,
       style: 56,
       fmt: function (d) {
         return d / 100;
-      },
+      }
     }, // Percent
     { match: /^\-?\$[\d,]+.?\d*$/, style: 57 }, // Dollars
     { match: /^\-?£[\d,]+.?\d*$/, style: 58 }, // Pounds
@@ -1121,17 +1121,17 @@
       style: 61,
       fmt: function (d) {
         return -1 * d.replace(/[\(\)]/g, "");
-      },
+      }
     }, // Negative numbers indicated by brackets
     {
       match: /^\([\d,]+\.\d{2}\)$/,
       style: 62,
       fmt: function (d) {
         return -1 * d.replace(/[\(\)]/g, "");
-      },
+      }
     }, // Negative numbers indicated by brackets - 2d.p.
     { match: /^[\d,]+$/, style: 63 }, // Numbers with thousand separators
-    { match: /^[\d,]+\.\d{2}$/, style: 64 }, // Numbers with 2d.p. and thousands separators
+    { match: /^[\d,]+\.\d{2}$/, style: 64 } // Numbers with 2d.p. and thousands separators
   ];
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1207,17 +1207,17 @@
           "buttons.copySuccess",
           {
             _: "Copied %d rows to clipboard",
-            1: "Copied 1 row to clipboard",
+            1: "Copied 1 row to clipboard"
           },
-          data.rows,
+          data.rows
         ),
-        3000,
+        3000
       );
     },
 
     fieldSeparator: "\t",
 
-    fieldBoundary: "",
+    fieldBoundary: ""
   });
 
   // CSV save file
@@ -1242,7 +1242,7 @@
       _setText(flash, output);
     },
 
-    escapeChar: '"',
+    escapeChar: '"'
   });
 
   // Excel save file - this is really a CSV file using UTF-8 that Excel can read
@@ -1263,21 +1263,21 @@
 
       var xlsx = {
         _rels: {
-          ".rels": $.parseXML(excelStrings["_rels/.rels"]),
+          ".rels": $.parseXML(excelStrings["_rels/.rels"])
         },
         xl: {
           _rels: {
             "workbook.xml.rels": $.parseXML(
-              excelStrings["xl/_rels/workbook.xml.rels"],
-            ),
+              excelStrings["xl/_rels/workbook.xml.rels"]
+            )
           },
           "workbook.xml": $.parseXML(excelStrings["xl/workbook.xml"]),
           "styles.xml": $.parseXML(excelStrings["xl/styles.xml"]),
           worksheets: {
-            "sheet1.xml": rels,
-          },
+            "sheet1.xml": rels
+          }
         },
-        "[Content_Types].xml": $.parseXML(excelStrings["[Content_Types].xml"]),
+        "[Content_Types].xml": $.parseXML(excelStrings["[Content_Types].xml"])
       };
 
       var data = dt.buttons.exportData(config.exportOptions);
@@ -1323,9 +1323,9 @@
               cell = _createNode(rels, "c", {
                 attr: {
                   r: cellId,
-                  s: special.style,
+                  s: special.style
                 },
-                children: [_createNode(rels, "v", { text: val })],
+                children: [_createNode(rels, "v", { text: val })]
               });
 
               break;
@@ -1344,9 +1344,9 @@
               cell = _createNode(rels, "c", {
                 attr: {
                   t: "n",
-                  r: cellId,
+                  r: cellId
                 },
-                children: [_createNode(rels, "v", { text: row[i] })],
+                children: [_createNode(rels, "v", { text: row[i] })]
               });
             } else {
               // String output - replace non standard characters for text output
@@ -1357,17 +1357,17 @@
               cell = _createNode(rels, "c", {
                 attr: {
                   t: "inlineStr",
-                  r: cellId,
+                  r: cellId
                 },
                 children: {
                   row: _createNode(rels, "is", {
                     children: {
                       row: _createNode(rels, "t", {
-                        text: text,
-                      }),
-                    },
-                  }),
-                },
+                        text: text
+                      })
+                    }
+                  })
+                }
               });
             }
           }
@@ -1381,7 +1381,7 @@
 
       $("sheets sheet", xlsx.xl["workbook.xml"]).attr(
         "name",
-        _sheetname(config),
+        _sheetname(config)
       );
 
       if (config.customizeData) {
@@ -1394,9 +1394,9 @@
         mergeCells[0].appendChild(
           _createNode(rels, "mergeCell", {
             attr: {
-              ref: "A" + row + ":" + createCellPos(colspan) + row,
-            },
-          }),
+              ref: "A" + row + ":" + createCellPos(colspan) + row
+            }
+          })
         );
         mergeCells.attr("count", mergeCells.attr("count") + 1);
         $("row:eq(" + (row - 1) + ") c", rels).attr("s", "51"); // centre
@@ -1446,9 +1446,9 @@
               min: i + 1,
               max: i + 1,
               width: _excelColWidth(data, i),
-              customWidth: 1,
-            },
-          }),
+              customWidth: 1
+            }
+          })
         );
       }
 
@@ -1469,7 +1469,7 @@
 
     extension: ".xlsx",
 
-    createEmptyCells: false,
+    createEmptyCells: false
   });
 
   // PDF export
@@ -1511,8 +1511,8 @@
           size: config.pageSize,
           header: config.header ? data.header : null,
           footer: config.footer ? data.footer : null,
-          body: data.body,
-        }),
+          body: data.body
+        })
       );
 
       this.processing(false);
@@ -1524,7 +1524,7 @@
 
     pageSize: "A4",
 
-    newline: "\n",
+    newline: "\n"
   });
 
   return DataTable.Buttons;

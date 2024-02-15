@@ -47,5 +47,5 @@ Ext.define("Ext.data.session.ChildChangesVisitor", {
     bucket = result[name] || (result[name] = {});
     bucket = bucket[readKey] || (bucket[readKey] = []);
     bucket.push(Ext.apply({}, record.modified, record.data));
-  },
+  }
 });

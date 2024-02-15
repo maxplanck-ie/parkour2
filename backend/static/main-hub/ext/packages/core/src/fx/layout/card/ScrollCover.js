@@ -24,13 +24,13 @@ Ext.define("Ext.fx.layout.card.ScrollCover", {
       xy = this.calculateXY(containerSize);
       animConfig = {
         easing: this.getEasing(),
-        duration: this.getDuration(),
+        duration: this.getDuration()
       };
 
       inItem.renderElement.dom.style.setProperty(
         "visibility",
         "hidden",
-        "important",
+        "important"
       );
       inTranslate = inItem.setTranslatable(true).getTranslatable();
       outTranslate = outItem.setTranslatable(true).getTranslatable();
@@ -45,7 +45,7 @@ Ext.define("Ext.fx.layout.card.ScrollCover", {
       inTranslate.on({
         animationstart: "onInAnimationStart",
         animationend: "onInAnimationEnd",
-        scope: this,
+        scope: this
       });
       inTranslate.translateAnimated({ x: 0, y: 0 }, animConfig);
 
@@ -63,5 +63,5 @@ Ext.define("Ext.fx.layout.card.ScrollCover", {
       .getWrapper()
       .dom.style.removeProperty("z-index"); // Remove this when we can remove translatable
     this.currentEventController.resume();
-  },
+  }
 });

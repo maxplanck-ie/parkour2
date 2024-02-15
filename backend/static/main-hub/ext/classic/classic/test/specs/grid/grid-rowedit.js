@@ -27,8 +27,8 @@ describe("grid-rowedit", function () {
               "field7",
               "field8",
               "field9",
-              "field10",
-            ],
+              "field10"
+            ]
           });
 
         function triggerCellMouseEvent(type, rowIdx, cellIdx, button, x, y) {
@@ -56,7 +56,7 @@ describe("grid-rowedit", function () {
         function findCell(rowIdx, cellIdx) {
           return grid.getView().getCellInclusive({
             row: rowIdx,
-            column: cellIdx,
+            column: cellIdx
           });
         }
 
@@ -92,10 +92,10 @@ describe("grid-rowedit", function () {
                 field: {
                   xtype: "textfield",
                   id: "field" + i,
-                  allowBlank: i !== 1,
-                },
+                  allowBlank: i !== 1
+                }
               },
-              cfg,
+              cfg
             );
 
             // Columns 1 and 2 are locked if the locked config is true
@@ -130,13 +130,13 @@ describe("grid-rowedit", function () {
               field7: i + "." + 7,
               field8: i + "." + 8,
               field9: i + "." + 9,
-              field10: i + "." + 10,
+              field10: i + "." + 10
             });
           }
 
           store = new Ext.data.Store({
             model: GridEventModel,
-            data: data,
+            data: data
           });
 
           plugin = new Ext.grid.plugin.RowEditing(pluginCfg);
@@ -152,12 +152,12 @@ describe("grid-rowedit", function () {
                 height: 500,
                 bufferedRenderer: buffered,
                 viewConfig: {
-                  mouseOverOutBuffer: 0,
+                  mouseOverOutBuffer: 0
                 },
-                renderTo: Ext.getBody(),
+                renderTo: Ext.getBody()
               },
-              gridCfg,
-            ),
+              gridCfg
+            )
           );
 
           if (!hasCols) {
@@ -178,15 +178,15 @@ describe("grid-rowedit", function () {
         describe("resolveListenerScope", function () {
           it("should resolve the scope to the grid", function () {
             var fooScope = {
-              someFn: function () {},
+              someFn: function () {}
             };
 
             spyOn(fooScope, "someFn");
 
             makeGrid(null, {
               listeners: {
-                beforeedit: "someFn",
-              },
+                beforeedit: "someFn"
+              }
             });
             grid.resolveSatelliteListenerScope = function () {
               return fooScope;
@@ -210,12 +210,12 @@ describe("grid-rowedit", function () {
 
             // The editor of the 3rd column (first normal column) should be active
             expect(Ext.Element.getActiveElement() === ed.inputEl.dom).toBe(
-              true,
+              true
             );
 
             // The editor should be in the right container
             expect(ed.up("container") === plugin.editor.items.items[1]).toBe(
-              true,
+              true
             );
 
             // Locking the first normal column should not throw error.
@@ -224,7 +224,7 @@ describe("grid-rowedit", function () {
 
             // The editor should now be in the left container
             expect(ed.up("container") === plugin.editor.items.items[0]).toBe(
-              true,
+              true
             );
           });
         });
@@ -247,7 +247,7 @@ describe("grid-rowedit", function () {
                 field7: i + "." + 7,
                 field8: i + "." + 8,
                 field9: i + "." + 9,
-                field10: i + "." + 10,
+                field10: i + "." + 10
               });
             }
             store.add(data);
@@ -292,11 +292,11 @@ describe("grid-rowedit", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                editor: "textfield",
+                editor: "textfield"
               },
               {
-                dataIndex: "field2",
-              },
+                dataIndex: "field2"
+              }
             ]);
             triggerCellMouseEvent("dblclick", 0, 1);
             expect(plugin.editing).toBe(true);
@@ -317,20 +317,20 @@ describe("grid-rowedit", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                field: "displayfield",
+                field: "displayfield"
               },
               {
                 dataIndex: "field2",
-                field: "displayfield",
+                field: "displayfield"
               },
               {
                 dataIndex: "field3",
-                field: "displayfield",
+                field: "displayfield"
               },
               {
                 dataIndex: "field4",
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             triggerCellMouseEvent("dblclick", 0, 0);
             var toFocus = plugin.getEditor().items.getAt(3);
@@ -352,7 +352,7 @@ describe("grid-rowedit", function () {
 
           it("should scroll horizontally to display the field being edited", function () {
             makeGrid(null, null, null, {
-              width: 300,
+              width: 300
             });
             var rec = store.first(),
               x,
@@ -392,7 +392,7 @@ describe("grid-rowedit", function () {
 
           it("should commit changes with autoUpdate", function () {
             makeGrid(null, {
-              autoUpdate: true,
+              autoUpdate: true
             });
 
             startEdit(0, 0);
@@ -439,7 +439,7 @@ describe("grid-rowedit", function () {
               runs(function () {
                 expect(editor.activeField.getValue()).toBe("1.2");
                 expect(document.activeElement).toBe(
-                  editor.activeField.inputEl.dom,
+                  editor.activeField.inputEl.dom
                 );
               });
             });
@@ -456,7 +456,7 @@ describe("grid-rowedit", function () {
               runs(function () {
                 expect(editor.activeField.getValue()).toBe("1.1");
                 expect(document.activeElement).toBe(
-                  editor.activeField.inputEl.dom,
+                  editor.activeField.inputEl.dom
                 );
               });
             });
@@ -475,7 +475,7 @@ describe("grid-rowedit", function () {
               runs(function () {
                 expect(editor.activeField.getValue()).toBe("2.1");
                 expect(document.activeElement).toBe(
-                  editor.activeField.inputEl.dom,
+                  editor.activeField.inputEl.dom
                 );
               });
             });
@@ -492,7 +492,7 @@ describe("grid-rowedit", function () {
               runs(function () {
                 expect(editor.activeField.getValue()).toBe("1.5");
                 expect(document.activeElement).toBe(
-                  editor.activeField.inputEl.dom,
+                  editor.activeField.inputEl.dom
                 );
               });
             });
@@ -600,9 +600,9 @@ describe("grid-rowedit", function () {
                 dataIndex: "field1",
                 field: {
                   xtype: "textfield",
-                  fieldStyle: "text-transform: uppercase;",
-                },
-              },
+                  fieldStyle: "text-transform: uppercase;"
+                }
+              }
             ]);
             startEdit(store.first());
             var field = plugin.getEditor().items.getAt(0);
@@ -616,8 +616,8 @@ describe("grid-rowedit", function () {
                   {
                     dataIndex: "field1",
                     align: "right",
-                    field: "textfield",
-                  },
+                    field: "textfield"
+                  }
                 ]);
                 startEdit(store.first());
                 var field = plugin.getEditor().items.getAt(0);
@@ -636,15 +636,15 @@ describe("grid-rowedit", function () {
                         field: {
                           xtype: "textfield",
                           fieldStyle:
-                            "text-transform: uppercase; text-align: left;",
-                        },
-                      },
+                            "text-transform: uppercase; text-align: left;"
+                        }
+                      }
                     ]);
                     startEdit(store.first());
                     var field = plugin.getEditor().items.getAt(0);
                     expect(field.inputEl.getStyle("text-align")).toBe("left");
                     expect(field.inputEl.getStyle("text-transform")).toBe(
-                      "uppercase",
+                      "uppercase"
                     );
                   });
                 });
@@ -657,15 +657,15 @@ describe("grid-rowedit", function () {
                         align: "right",
                         field: {
                           xtype: "textfield",
-                          fieldStyle: "text-transform: uppercase",
-                        },
-                      },
+                          fieldStyle: "text-transform: uppercase"
+                        }
+                      }
                     ]);
                     startEdit(store.first());
                     var field = plugin.getEditor().items.getAt(0);
                     expect(field.inputEl.getStyle("text-align")).toBe("right");
                     expect(field.inputEl.getStyle("text-transform")).toBe(
-                      "uppercase",
+                      "uppercase"
                     );
                   });
                 });
@@ -682,16 +682,16 @@ describe("grid-rowedit", function () {
                           xtype: "textfield",
                           fieldStyle: {
                             textTransform: "uppercase",
-                            "text-align": "left",
-                          },
-                        },
-                      },
+                            "text-align": "left"
+                          }
+                        }
+                      }
                     ]);
                     startEdit(store.first());
                     var field = plugin.getEditor().items.getAt(0);
                     expect(field.inputEl.getStyle("text-align")).toBe("left");
                     expect(field.inputEl.getStyle("text-transform")).toBe(
-                      "uppercase",
+                      "uppercase"
                     );
                   });
 
@@ -704,16 +704,16 @@ describe("grid-rowedit", function () {
                           xtype: "textfield",
                           fieldStyle: {
                             textTransform: "uppercase",
-                            textAlign: "left",
-                          },
-                        },
-                      },
+                            textAlign: "left"
+                          }
+                        }
+                      }
                     ]);
                     startEdit(store.first());
                     var field = plugin.getEditor().items.getAt(0);
                     expect(field.inputEl.getStyle("text-align")).toBe("left");
                     expect(field.inputEl.getStyle("text-transform")).toBe(
-                      "uppercase",
+                      "uppercase"
                     );
                   });
                 });
@@ -727,16 +727,16 @@ describe("grid-rowedit", function () {
                         field: {
                           xtype: "textfield",
                           fieldStyle: {
-                            textTransform: "uppercase",
-                          },
-                        },
-                      },
+                            textTransform: "uppercase"
+                          }
+                        }
+                      }
                     ]);
                     startEdit(store.first());
                     var field = plugin.getEditor().items.getAt(0);
                     expect(field.inputEl.getStyle("text-align")).toBe("right");
                     expect(field.inputEl.getStyle("text-transform")).toBe(
-                      "uppercase",
+                      "uppercase"
                     );
                   });
                 });
@@ -773,31 +773,31 @@ describe("grid-rowedit", function () {
               [
                 {
                   dataIndex: "field1",
-                  field: "displayfield",
+                  field: "displayfield"
                 },
                 {
                   dataIndex: "field2",
-                  field: "displayfield",
+                  field: "displayfield"
                 },
                 {
                   dataIndex: "field3",
-                  field: "displayfield",
+                  field: "displayfield"
                 },
                 {
                   dataIndex: "field4",
                   field: "textfield",
-                  sortable: true,
-                },
+                  sortable: true
+                }
               ],
               {
                 clicksToMoveEditor: 1,
-                autoCancel: false,
+                autoCancel: false
               },
               null,
               {
                 trailingBufferZone: 10,
-                leadingBufferZone: 10,
-              },
+                leadingBufferZone: 10
+              }
             );
 
             for (var i = 11; i <= 100; ++i) {
@@ -811,7 +811,7 @@ describe("grid-rowedit", function () {
                 field7: i + "." + 7,
                 field8: i + "." + 8,
                 field9: i + "." + 9,
-                field10: i + "." + 10,
+                field10: i + "." + 10
               });
             }
 
@@ -832,7 +832,7 @@ describe("grid-rowedit", function () {
                 return plugin.editor._cachedNode || !grid.bufferedRenderer;
               },
               "scroll to the bottom",
-              10000,
+              10000
             );
 
             runs(function () {
@@ -851,7 +851,7 @@ describe("grid-rowedit", function () {
                 );
               },
               "view to scroll to top and RowEditor to reappear",
-              10000,
+              10000
             );
 
             runs(function () {
@@ -873,7 +873,7 @@ describe("grid-rowedit", function () {
             plugin.getEditor().items.items[3].setValue(99999999);
             plugin.completeEdit();
             expect(grid.getSelectionModel().getSelection()[0]).toEqual(
-              plugin.context.record,
+              plugin.context.record
             );
           });
         });
@@ -895,11 +895,11 @@ describe("grid-rowedit", function () {
                       .store.collect(this.column.dataIndex, false, true);
                     Ext.form.field.ComboBox.prototype.initComponent.apply(
                       this,
-                      arguments,
+                      arguments
                     );
-                  },
-                },
-              },
+                  }
+                }
+              }
             ]);
           });
 
@@ -928,13 +928,13 @@ describe("grid-rowedit", function () {
               {
                 dataIndex: "field1",
                 width: 100,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field2",
                 width: 200,
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             startEdit();
             expectWidths();
@@ -945,13 +945,13 @@ describe("grid-rowedit", function () {
               {
                 dataIndex: "field1",
                 flex: 1,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field2",
                 flex: 1,
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             startEdit();
             expectWidths();
@@ -962,18 +962,18 @@ describe("grid-rowedit", function () {
               {
                 dataIndex: "field1",
                 flex: 1,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field2",
                 width: 300,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field3",
                 width: 400,
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             startEdit();
             expectWidths();
@@ -986,13 +986,13 @@ describe("grid-rowedit", function () {
                 {
                   dataIndex: "field1",
                   width: 200,
-                  field: "textfield",
+                  field: "textfield"
                 },
                 {
                   dataIndex: "field2",
                   width: 300,
-                  field: "textfield",
-                },
+                  field: "textfield"
+                }
               ]);
               colRef = grid.getColumnManager().getColumns();
               startEdit();
@@ -1007,13 +1007,13 @@ describe("grid-rowedit", function () {
                 {
                   dataIndex: "field1",
                   width: 200,
-                  field: "textfield",
+                  field: "textfield"
                 },
                 {
                   dataIndex: "field2",
                   width: 300,
-                  field: "textfield",
-                },
+                  field: "textfield"
+                }
               ]);
               colRef = grid.getColumnManager().getColumns();
               startEdit();
@@ -1237,8 +1237,8 @@ describe("grid-rowedit", function () {
             makeGrid([
               {
                 width: 500,
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             triggerCellMouseEvent("dblclick", 0, 0);
             plugin.cancelEdit();
@@ -1253,12 +1253,12 @@ describe("grid-rowedit", function () {
             var field = new Ext.form.field.Text();
             makeGrid([
               {
-                dataIndex: "field1",
+                dataIndex: "field1"
               },
               {
                 dataIndex: "field2",
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
             colRef[0].setEditor(field);
@@ -1271,7 +1271,7 @@ describe("grid-rowedit", function () {
             colRef[0].setEditor(null);
             triggerCellMouseEvent("dblclick", 0, 0);
             expect(plugin.getEditor().items.first().getXType()).toBe(
-              "displayfield",
+              "displayfield"
             );
           });
 
@@ -1281,8 +1281,8 @@ describe("grid-rowedit", function () {
             makeGrid([
               {
                 dataIndex: "field1",
-                field: field,
-              },
+                field: field
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
             colRef[0].setEditor(new Ext.form.field.Text());
@@ -1296,33 +1296,33 @@ describe("grid-rowedit", function () {
               {
                 dataIndex: "field1",
                 hidden: true,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field2",
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field3",
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field4",
                 hidden: true,
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field5",
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field6",
-                field: "textfield",
+                field: "textfield"
               },
               {
                 dataIndex: "field7",
-                field: "textfield",
-              },
+                field: "textfield"
+              }
             ]);
             colRef = grid.getColumnManager().getColumns();
           });
@@ -1363,18 +1363,18 @@ describe("grid-rowedit", function () {
                 grid.getColumnManager().getColumns(),
                 function (col) {
                   old.push(col.getEditor());
-                },
+                }
               );
               grid.reconfigure(null, [
                 {
                   dataIndex: "field1",
                   field: {
-                    id: "newEd",
-                  },
+                    id: "newEd"
+                  }
                 },
                 {
-                  dataIndex: "field2",
-                },
+                  dataIndex: "field2"
+                }
               ]);
               colRef = grid.getColumnManager().getColumns();
             });
@@ -1388,14 +1388,14 @@ describe("grid-rowedit", function () {
             it("should update columns with no editors", function () {
               triggerCellMouseEvent("dblclick", 0, 1);
               expect(plugin.getEditor().items.getAt(1).getXType()).toBe(
-                "displayfield",
+                "displayfield"
               );
             });
 
             it("should use new editors", function () {
               triggerCellMouseEvent("dblclick", 0, 0);
               expect(plugin.getEditor().items.first().getItemId()).toBe(
-                "newEd",
+                "newEd"
               );
             });
           });
@@ -1406,8 +1406,8 @@ describe("grid-rowedit", function () {
               triggerCellMouseEvent("dblclick", 0, 0);
               grid.reconfigure(null, [
                 {
-                  dataIndex: "field1",
-                },
+                  dataIndex: "field1"
+                }
               ]);
               expect(plugin.editing).toBe(false);
               expect(plugin.getEditor().isVisible()).toBe(false);
@@ -1434,9 +1434,9 @@ describe("grid-rowedit", function () {
                 dataIndex: "field1",
                 field: {
                   xtype: "textfield",
-                  name: "field2",
-                },
-              },
+                  name: "field2"
+                }
+              }
             ]);
 
             triggerCellMouseEvent("dblclick", 0, 0);
@@ -1559,7 +1559,7 @@ describe("grid-rowedit", function () {
                 expectErrors([
                   "F1: " + f1.getErrors()[0],
                   "F2: " + f2.getErrors()[0],
-                  "F3: " + f3.getErrors()[0],
+                  "F3: " + f3.getErrors()[0]
                 ]);
               });
 
@@ -1577,13 +1577,13 @@ describe("grid-rowedit", function () {
                 clearFormDelay();
                 expectErrors([
                   "F1: " + f1.getErrors()[0],
-                  "F3: " + f3.getErrors()[0],
+                  "F3: " + f3.getErrors()[0]
                 ]);
                 f2.setValue("");
                 expectErrors([
                   "F1: " + f1.getErrors()[0],
                   "F2: " + f2.getErrors()[0],
-                  "F3: " + f3.getErrors()[0],
+                  "F3: " + f3.getErrors()[0]
                 ]);
               });
 
@@ -1603,12 +1603,12 @@ describe("grid-rowedit", function () {
                 expectErrors([
                   "F1: " + f1.getErrors()[0],
                   "F2: " + f2.getErrors()[0],
-                  "F3: " + f3.getErrors()[0],
+                  "F3: " + f3.getErrors()[0]
                 ]);
                 f2.setValue("Foo");
                 expectErrors([
                   "F1: " + f1.getErrors()[0],
-                  "F3: " + f3.getErrors()[0],
+                  "F3: " + f3.getErrors()[0]
                 ]);
               });
 
@@ -1654,14 +1654,14 @@ describe("grid-rowedit", function () {
                   xtype: "fieldcontainer",
                   items: {
                     name: "field1",
-                    xtype: "textfield",
-                  },
-                },
-              },
+                    xtype: "textfield"
+                  }
+                }
+              }
             ]);
             triggerCellMouseEvent("dblclick", 0, 0);
             expect(
-              plugin.getEditor().items.first().items.first().getValue(),
+              plugin.getEditor().items.first().items.first().getValue()
             ).toBe("1.1");
           });
         });
@@ -1724,7 +1724,7 @@ describe("grid-rowedit", function () {
               from.titleEl.dom,
               "mousedown",
               fromMx,
-              fromMy,
+              fromMy
             );
 
             // The initial move which tiggers the start of the drag
@@ -1732,7 +1732,7 @@ describe("grid-rowedit", function () {
               from.el.dom,
               "mousemove",
               fromMx + dragThresh,
-              fromMy,
+              fromMy
             );
 
             // The move to left of the centre of the target element
@@ -1772,14 +1772,14 @@ describe("grid-rowedit", function () {
                       dataIndex: "field6",
                       field: {
                         xtype: "textfield",
-                        id: "field6",
-                      },
+                        id: "field6"
+                      }
                     });
                     if (beforeFirstShow) {
                       startEdit();
                     }
                     expect(
-                      plugin.getEditor().getComponent("field6").getValue(),
+                      plugin.getEditor().getComponent("field6").getValue()
                     ).toBe("1.6");
                   });
 
@@ -1792,7 +1792,7 @@ describe("grid-rowedit", function () {
                       startEdit();
                     }
                     expect(
-                      plugin.getEditor().getComponent("field2"),
+                      plugin.getEditor().getComponent("field2")
                     ).toBeFalsy();
                     expect(Ext.getCmp("field2")).toBeFalsy();
                   });
@@ -1806,7 +1806,7 @@ describe("grid-rowedit", function () {
                       startEdit();
                     }
                     expect(plugin.getEditor().items.last().getItemId()).toBe(
-                      "field1",
+                      "field1"
                     );
                   });
 
@@ -1836,8 +1836,8 @@ describe("grid-rowedit", function () {
                         hidden: columns[i],
                         field: {
                           xtype: "textfield",
-                          id: "field" + i,
-                        },
+                          id: "field" + i
+                        }
                       });
                     }
                     return out;
@@ -1854,7 +1854,7 @@ describe("grid-rowedit", function () {
                       startEdit();
                     }
                     expect(plugin.getEditor().items.getAt(1).getItemId()).toBe(
-                      "field5",
+                      "field5"
                     );
                   });
 
@@ -1869,7 +1869,7 @@ describe("grid-rowedit", function () {
                       startEdit();
                     }
                     expect(plugin.getEditor().items.getAt(3).getItemId()).toBe(
-                      "field1",
+                      "field1"
                     );
                   });
 
@@ -1882,8 +1882,8 @@ describe("grid-rowedit", function () {
                         false,
                         true,
                         true,
-                        false,
-                      ]),
+                        false
+                      ])
                     );
                     if (!beforeFirstShow) {
                       startEdit();
@@ -1894,10 +1894,10 @@ describe("grid-rowedit", function () {
                       startEdit();
                     }
                     expect(plugin.getEditor().items.getAt(1).getItemId()).toBe(
-                      "field7",
+                      "field7"
                     );
                     expect(plugin.getEditor().items.getAt(4).getItemId()).toBe(
-                      "field1",
+                      "field1"
                     );
                   });
                 });
@@ -1908,56 +1908,56 @@ describe("grid-rowedit", function () {
                       {
                         text: "Locked",
                         dataIndex: "field10",
-                        locked: true,
+                        locked: true
                       },
                       {
                         columns: [
                           {
                             dataIndex: "field1",
-                            field: { id: "field1" },
+                            field: { id: "field1" }
                           },
                           {
                             dataIndex: "field2",
-                            field: { id: "field2" },
+                            field: { id: "field2" }
                           },
                           {
                             dataIndex: "field3",
-                            field: { id: "field3" },
-                          },
-                        ],
+                            field: { id: "field3" }
+                          }
+                        ]
                       },
                       {
                         columns: [
                           {
                             dataIndex: "field4",
-                            field: { id: "field4" },
+                            field: { id: "field4" }
                           },
                           {
                             dataIndex: "field5",
-                            field: { id: "field5" },
+                            field: { id: "field5" }
                           },
                           {
                             dataIndex: "field6",
-                            field: { id: "field6" },
-                          },
-                        ],
+                            field: { id: "field6" }
+                          }
+                        ]
                       },
                       {
                         columns: [
                           {
                             dataIndex: "field7",
-                            field: { id: "field7" },
+                            field: { id: "field7" }
                           },
                           {
                             dataIndex: "field8",
-                            field: { id: "field8" },
+                            field: { id: "field8" }
                           },
                           {
                             dataIndex: "field9",
-                            field: { id: "field9" },
-                          },
-                        ],
-                      },
+                            field: { id: "field9" }
+                          }
+                        ]
+                      }
                     ]);
                   });
 
@@ -1989,7 +1989,7 @@ describe("grid-rowedit", function () {
                       "field3",
                       "field7",
                       "field8",
-                      "field9",
+                      "field9"
                     ]);
                   });
 
@@ -2010,11 +2010,11 @@ describe("grid-rowedit", function () {
                       "field9",
                       "field4",
                       "field5",
-                      "field6",
+                      "field6"
                     ]);
                   });
                 });
-              },
+              }
             );
           }
           createLockingSuite(true);
@@ -2030,94 +2030,94 @@ describe("grid-rowedit", function () {
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Marge",
                   email: "marge@simpsons.com",
-                  phone: "555-222-1254",
-                },
-              ],
+                  phone: "555-222-1254"
+                }
+              ]
             });
 
             grid = Ext.create({
@@ -2132,19 +2132,19 @@ describe("grid-rowedit", function () {
                   flex: 1,
                   editor: {
                     xtype: "textarea",
-                    allowBlank: false,
-                  },
+                    allowBlank: false
+                  }
                 },
-                { header: "Phone", dataIndex: "phone", width: 140 },
+                { header: "Phone", dataIndex: "phone", width: 140 }
               ],
               selModel: "rowmodel",
               plugins: {
                 ptype: "rowediting",
-                clicksToEdit: 1,
+                clicksToEdit: 1
               },
               height: 400,
               width: 600,
-              renderTo: document.body,
+              renderTo: document.body
             });
             view = grid.view;
             plugin = grid.findPlugin("rowediting");
@@ -2163,7 +2163,7 @@ describe("grid-rowedit", function () {
                 scrollPos = plugin.editor.activeField.el.getScrollIntoViewXY(
                   view.el,
                   view.getScrollX(),
-                  viewYScroll,
+                  viewYScroll
                 );
 
               // The field being edited must already be fully scrolled into view by the editor positioning.
@@ -2178,10 +2178,10 @@ describe("grid-rowedit", function () {
               getDefaultColumns(
                 false,
                 {
-                  width: 200,
+                  width: 200
                 },
-                10,
-              ),
+                10
+              )
             );
             scroller.scrollBy(300);
 
@@ -2205,7 +2205,7 @@ describe("grid-rowedit", function () {
           it("should align itself to the existing horizontal scroll position on show", function () {
             makeGrid(null, null, true, {
               width: 400,
-              height: 200,
+              height: 200
             });
 
             // Scroll normal grid rightwards
@@ -2217,7 +2217,7 @@ describe("grid-rowedit", function () {
             // The normal grid has been scrolled.
             // Thr RowEditor should sync with it on show.
             expect(plugin.editor.normalColumnContainer.getScrollX()).toBe(
-              grid.normalGrid.getView().getScrollable().getPosition().x,
+              grid.normalGrid.getView().getScrollable().getPosition().x
             );
           });
         });
@@ -2227,13 +2227,13 @@ describe("grid-rowedit", function () {
             makeGrid(
               null,
               {
-                removeUnmodified: true,
+                removeUnmodified: true
               },
               true,
               {
                 width: 400,
-                height: 200,
-              },
+                height: 200
+              }
             );
             var storeCount = store.getCount();
 
@@ -2256,9 +2256,9 @@ describe("grid-rowedit", function () {
             jasmine.fireMouseEvent(
               cell.down(
                 "." + Ext.grid.column.Action.prototype.actionIconCls,
-                true,
+                true
               ),
-              type || "click",
+              type || "click"
             );
             return cell;
           }
@@ -2285,15 +2285,15 @@ describe("grid-rowedit", function () {
                     colIndex,
                     item,
                     event,
-                    record,
+                    record
                   ) {
                     store.remove(record);
-                  },
-                },
-              ],
+                  }
+                }
+              ]
             });
             makeGrid(columns, {
-              clicksToEdit: 1,
+              clicksToEdit: 1
             });
 
             // We can't catch any exceptions thrown by synthetic events,
@@ -2335,7 +2335,7 @@ describe("grid-rowedit", function () {
             it("should have aria-owns on the editor body", function () {
               expect(editor.body).toHaveAttr(
                 "aria-owns",
-                editor.floatingButtons.id,
+                editor.floatingButtons.id
               );
             });
 
@@ -2346,23 +2346,23 @@ describe("grid-rowedit", function () {
             it("should have aria-labelledby on the fields' inputEls", function () {
               expect(editor.items.getAt(0).inputEl).toHaveAttr(
                 "aria-labelledby",
-                colRef[0].id,
+                colRef[0].id
               );
               expect(editor.items.getAt(1).inputEl).toHaveAttr(
                 "aria-labelledby",
-                colRef[1].id,
+                colRef[1].id
               );
               expect(editor.items.getAt(2).inputEl).toHaveAttr(
                 "aria-labelledby",
-                colRef[2].id,
+                colRef[2].id
               );
               expect(editor.items.getAt(3).inputEl).toHaveAttr(
                 "aria-labelledby",
-                colRef[3].id,
+                colRef[3].id
               );
               expect(editor.items.getAt(4).inputEl).toHaveAttr(
                 "aria-labelledby",
-                colRef[4].id,
+                colRef[4].id
               );
             });
           });
@@ -2370,7 +2370,7 @@ describe("grid-rowedit", function () {
           describe("with hidden headers", function () {
             beforeEach(function () {
               makeGrid(null, null, null, {
-                hideHeaders: true,
+                hideHeaders: true
               });
 
               startEdit(0, 1);
@@ -2379,28 +2379,28 @@ describe("grid-rowedit", function () {
             it("should have aria-labels on the fields' inputEls", function () {
               expect(editor.items.getAt(0).inputEl).toHaveAttr(
                 "aria-label",
-                "F1",
+                "F1"
               );
               expect(editor.items.getAt(1).inputEl).toHaveAttr(
                 "aria-label",
-                "F2",
+                "F2"
               );
               expect(editor.items.getAt(2).inputEl).toHaveAttr(
                 "aria-label",
-                "F3",
+                "F3"
               );
               expect(editor.items.getAt(3).inputEl).toHaveAttr(
                 "aria-label",
-                "F4",
+                "F4"
               );
               expect(editor.items.getAt(4).inputEl).toHaveAttr(
                 "aria-label",
-                "F5",
+                "F5"
               );
             });
           });
         });
-      },
+      }
     );
   }
   createSuite(false);

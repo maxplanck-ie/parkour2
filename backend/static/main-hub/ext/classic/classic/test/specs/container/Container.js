@@ -13,7 +13,7 @@ describe("Ext.container.Container", function () {
     },
     warn: function (s) {
       return s;
-    },
+    }
   };
 
   beforeEach(function () {
@@ -31,7 +31,7 @@ describe("Ext.container.Container", function () {
   function makeContainer(cfg) {
     if (Ext.isArray(cfg)) {
       cfg = {
-        items: cfg,
+        items: cfg
       };
     }
     ct = new Ext.container.Container(cfg);
@@ -54,8 +54,8 @@ describe("Ext.container.Container", function () {
         Ext.apply(cfg, {
           renderTo: Ext.getBody(),
           scrollable: true,
-          defaultType: "component",
-        }),
+          defaultType: "component"
+        })
       );
       s = ct.getScrollable();
       s.on("scrollend", endSpy);
@@ -65,7 +65,7 @@ describe("Ext.container.Container", function () {
       return Ext.String.format(
         '<div style="width: {0}px; height: {1}px;"></div>',
         width,
-        height,
+        height
       );
     }
 
@@ -80,12 +80,12 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 flex: 1,
-                height: 400,
+                height: 400
               },
               {
-                html: sizeHtml(300, 400),
-              },
-            ],
+                html: sizeHtml(300, 400)
+              }
+            ]
           });
           s.scrollTo(100, 150);
           waitsFor(function () {
@@ -101,7 +101,7 @@ describe("Ext.container.Container", function () {
           runs(function () {
             expect(s.getPosition()).toEqual({
               x: 100,
-              y: 150,
+              y: 150
             });
           });
         });
@@ -116,12 +116,12 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 flex: 1,
-                width: 400,
+                width: 400
               },
               {
-                html: sizeHtml(400, 300),
-              },
-            ],
+                html: sizeHtml(400, 300)
+              }
+            ]
           });
           s.scrollTo(150, 100);
           waitsFor(function () {
@@ -137,7 +137,7 @@ describe("Ext.container.Container", function () {
           runs(function () {
             expect(s.getPosition()).toEqual({
               x: 150,
-              y: 100,
+              y: 100
             });
           });
         });
@@ -152,8 +152,8 @@ describe("Ext.container.Container", function () {
             x: 0,
             y: 0,
             maxWidth: 200,
-            maxHeight: 200,
-          }),
+            maxHeight: 200
+          })
         );
       }
 
@@ -164,13 +164,13 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 width: 300,
-                height: 400,
+                height: 400
               },
               {
                 width: 300,
-                height: 400,
-              },
-            ],
+                height: 400
+              }
+            ]
           });
           s.scrollTo(150, 150);
           waitsFor(function () {
@@ -186,7 +186,7 @@ describe("Ext.container.Container", function () {
           runs(function () {
             expect(s.getPosition()).toEqual({
               x: 150,
-              y: 150,
+              y: 150
             });
           });
         });
@@ -199,13 +199,13 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 width: 400,
-                height: 300,
+                height: 300
               },
               {
                 width: 400,
-                height: 300,
-              },
-            ],
+                height: 300
+              }
+            ]
           });
           s.scrollTo(150, 150);
           waitsFor(function () {
@@ -221,7 +221,7 @@ describe("Ext.container.Container", function () {
           runs(function () {
             expect(s.getPosition()).toEqual({
               x: 150,
-              y: 150,
+              y: 150
             });
           });
         });
@@ -234,17 +234,17 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 height: 200,
-                width: 100,
+                width: 100
               },
               {
                 height: 200,
-                width: 100,
+                width: 100
               },
               {
                 height: 200,
-                width: 100,
-              },
-            ],
+                width: 100
+              }
+            ]
           });
           s.scrollTo(null, 150);
           waitsFor(function () {
@@ -259,7 +259,7 @@ describe("Ext.container.Container", function () {
           runs(function () {
             expect(s.getPosition()).toEqual({
               x: 0,
-              y: 150,
+              y: 150
             });
           });
         });
@@ -286,9 +286,9 @@ describe("Ext.container.Container", function () {
             title: "Descendant",
             height: 100,
             width: 200,
-            constrain: true,
-          },
-        },
+            constrain: true
+          }
+        }
       });
       expect(ct.child("window")).toBeNull();
       expect(ct.down("window")).not.toBeNull();
@@ -299,21 +299,21 @@ describe("Ext.container.Container", function () {
         var p = new Ext.panel.Panel({
           width: 200,
           height: 200,
-          floating: true,
+          floating: true
         });
 
         makeContainer({
           renderTo: Ext.getBody(),
           width: 400,
           height: 400,
-          items: p,
+          items: p
         });
         p.show();
 
         Ext.suspendLayouts();
         ct.setSize(500, 500);
         p.add({
-          title: "X",
+          title: "X"
         });
         Ext.resumeLayouts(true);
         expect(p.items.first().rendered).toBe(true);
@@ -329,15 +329,15 @@ describe("Ext.container.Container", function () {
       makeContainer({
         renderTo: document.body,
         items: {
-          xtype: "panel",
-        },
+          xtype: "panel"
+        }
       });
       expect(Ext.Component.prototype.onRender.calls[0].args[0]).toEqual(
-        Ext.getBody(),
+        Ext.getBody()
       );
       expect(Ext.Component.prototype.onRender.calls[0].args[1]).toBeUndefined();
       expect(Ext.Component.prototype.onRender.calls[1].args[0]).toEqual(
-        ct.layout.innerCt,
+        ct.layout.innerCt
       );
       expect(Ext.Component.prototype.onRender.calls[1].args[1]).toEqual(0);
     });
@@ -351,7 +351,7 @@ describe("Ext.container.Container", function () {
 
     it("should have an item count 0 if an empty array is specified", function () {
       makeContainer({
-        items: [],
+        items: []
       });
       expect(ct.items.getCount()).toEqual(0);
     });
@@ -359,8 +359,8 @@ describe("Ext.container.Container", function () {
     it("should handle adding a single item configuration", function () {
       makeContainer({
         items: {
-          itemId: "first",
-        },
+          itemId: "first"
+        }
       });
       expect(ct.items.getCount()).toEqual(1);
       expect(ct.items.first().itemId).toEqual("first");
@@ -370,12 +370,12 @@ describe("Ext.container.Container", function () {
       makeContainer({
         items: [
           {
-            itemId: "item1",
+            itemId: "item1"
           },
           {
-            itemId: "item2",
-          },
-        ],
+            itemId: "item2"
+          }
+        ]
       });
       expect(ct.items.getCount()).toEqual(2);
       expect(ct.items.first().itemId).toEqual("item1");
@@ -388,14 +388,14 @@ describe("Ext.container.Container", function () {
       beforeEach(function () {
         items = [
           {
-            itemId: "item1",
+            itemId: "item1"
           },
           {
-            itemId: "item2",
+            itemId: "item2"
           },
           {
-            itemId: "item3",
-          },
+            itemId: "item3"
+          }
         ];
       });
 
@@ -409,7 +409,7 @@ describe("Ext.container.Container", function () {
           initComponent: function () {
             Ext.apply(this, { items: items });
             this.callParent();
-          },
+          }
         });
         ct = new Cls();
         expect(ct.items.getCount()).toBe(3);
@@ -421,7 +421,7 @@ describe("Ext.container.Container", function () {
           initComponent: function () {
             Ext.applyIf(this, { items: items });
             this.callParent();
-          },
+          }
         });
         ct = new Cls();
         expect(ct.items.getCount()).toBe(3);
@@ -434,9 +434,9 @@ describe("Ext.container.Container", function () {
       makeContainer({
         items: [
           {
-            itemId: "item",
-          },
-        ],
+            itemId: "item"
+          }
+        ]
       });
       expect(ct.items.first() instanceof Ext.Panel).toBeTruthy();
     });
@@ -446,9 +446,9 @@ describe("Ext.container.Container", function () {
         defaultType: "container",
         items: [
           {
-            itemId: "item",
-          },
-        ],
+            itemId: "item"
+          }
+        ]
       });
       expect(ct.items.first() instanceof Ext.container.Container);
     });
@@ -459,19 +459,19 @@ describe("Ext.container.Container", function () {
 
     beforeEach(function () {
       a = new Ext.Component({
-        itemId: "a",
+        itemId: "a"
       });
       b = new Ext.Component({
-        id: "b",
+        id: "b"
       });
       c = new Ext.Component({
-        itemId: "c",
+        itemId: "c"
       });
       d = new Ext.Component({
-        itemId: "d",
+        itemId: "d"
       });
       makeContainer({
-        items: [a, b, c, d],
+        items: [a, b, c, d]
       });
     });
 
@@ -511,7 +511,7 @@ describe("Ext.container.Container", function () {
       beforeEach(function () {
         floater = new Ext.Component({
           floating: true,
-          itemId: "floater",
+          itemId: "floater"
         });
       });
 
@@ -547,7 +547,7 @@ describe("Ext.container.Container", function () {
     it("should accept a single item", function () {
       makeContainer();
       var c = ct.add({
-        itemId: "foo",
+        itemId: "foo"
       });
       expect(ct.items.getCount()).toEqual(1);
       expect(ct.items.first()).toEqual(c);
@@ -603,7 +603,7 @@ describe("Ext.container.Container", function () {
     it("should fire the beforeadd event", function () {
       makeContainer();
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         c = new Ext.Component();
       spyOn(o, "fn");
@@ -626,7 +626,7 @@ describe("Ext.container.Container", function () {
     it("should fire the add event", function () {
       makeContainer();
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         c = new Ext.Component();
       spyOn(o, "fn");
@@ -642,10 +642,10 @@ describe("Ext.container.Container", function () {
     it("should fire the add event for floating items", function () {
       makeContainer();
       var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         },
         floatingPanel = Ext.create("Ext.panel.Panel", {
-          floating: true,
+          floating: true
         });
       spyOn(o, "fn");
       ct.on("add", o.fn);
@@ -688,7 +688,7 @@ describe("Ext.container.Container", function () {
 
     it("should insert to the lowest possible index if the specified index is too high", function () {
       makeContainer({
-        items: [{}, {}, {}],
+        items: [{}, {}, {}]
       });
       var c = ct.insert(100, {});
       expect(ct.items.last()).toEqual(c);
@@ -696,7 +696,7 @@ describe("Ext.container.Container", function () {
 
     it("should insert at at the end if we use -1", function () {
       makeContainer({
-        items: [{}, {}, {}],
+        items: [{}, {}, {}]
       });
       var c = ct.insert(-1, {});
       expect(ct.items.last()).toEqual(c);
@@ -704,7 +704,7 @@ describe("Ext.container.Container", function () {
 
     it("should put the item into the correct position", function () {
       makeContainer({
-        items: [{}, {}, {}],
+        items: [{}, {}, {}]
       });
       var c = ct.insert(1, {});
       expect(ct.items.getAt(1)).toEqual(c);
@@ -712,7 +712,7 @@ describe("Ext.container.Container", function () {
 
     it("should accept an array", function () {
       makeContainer({
-        items: [{}, {}, {}],
+        items: [{}, {}, {}]
       });
       var a = new Ext.Component(),
         b = new Ext.Component(),
@@ -733,7 +733,7 @@ describe("Ext.container.Container", function () {
         called = false;
 
       makeContainer({
-        items: [a, b, c, d, e],
+        items: [a, b, c, d, e]
       });
 
       ct.on("add", function () {
@@ -750,7 +750,7 @@ describe("Ext.container.Container", function () {
     describe("move", function () {
       it("should return false if the index doesn't exist in the container", function () {
         makeContainer({
-          items: [{}, {}, {}],
+          items: [{}, {}, {}]
         });
 
         expect(ct.move(4, 1)).toBe(false);
@@ -758,7 +758,7 @@ describe("Ext.container.Container", function () {
 
       it("should return false if the component doesn't exist in the container", function () {
         makeContainer({
-          items: [{}, {}, {}],
+          items: [{}, {}, {}]
         });
         var c = new Ext.Component();
 
@@ -775,7 +775,7 @@ describe("Ext.container.Container", function () {
           e = new Ext.Component();
 
         makeContainer({
-          items: [a, b, c, d, e],
+          items: [a, b, c, d, e]
         });
         ct.move(4, 1);
         expect(ct.items.indexOf(e)).toBe(1);
@@ -789,7 +789,7 @@ describe("Ext.container.Container", function () {
           e = new Ext.Component();
 
         makeContainer({
-          items: [a, b, c, d, e],
+          items: [a, b, c, d, e]
         });
         ct.move(c, 1);
         expect(ct.items.indexOf(c)).toBe(1);
@@ -800,7 +800,7 @@ describe("Ext.container.Container", function () {
           b = new Ext.Component();
 
         makeContainer({
-          items: [a, b],
+          items: [a, b]
         });
 
         var spy = jasmine.createSpy();
@@ -820,7 +820,7 @@ describe("Ext.container.Container", function () {
             args;
 
           makeContainer({
-            items: [{}, c, {}],
+            items: [{}, c, {}]
           });
           ct.on("childmove", spy);
           ct.move(1, 0);
@@ -836,7 +836,7 @@ describe("Ext.container.Container", function () {
           var spy = jasmine.createSpy();
 
           makeContainer({
-            items: [{}, {}, {}],
+            items: [{}, {}, {}]
           });
           ct.on("childmove", spy);
           ct.move(1, 1);
@@ -870,9 +870,9 @@ describe("Ext.container.Container", function () {
         var fromCfg = ct.moveBefore(
           {
             xtype: "panel",
-            title: "Foo",
+            title: "Foo"
           },
-          ref,
+          ref
         );
         expect(ct.items.getAt(0)).toBe(fromCfg);
         expect(fromCfg.getTitle()).toBe("Foo");
@@ -885,7 +885,7 @@ describe("Ext.container.Container", function () {
 
       it("should be able to add items from another container", function () {
         var other = new Ext.container.Container({
-          items: c,
+          items: c
         });
 
         makeContainer([ref]);
@@ -1018,7 +1018,7 @@ describe("Ext.container.Container", function () {
 
           beforeEach(function () {
             other = new Ext.container.Container({
-              items: c,
+              items: c
             });
           });
 
@@ -1084,9 +1084,9 @@ describe("Ext.container.Container", function () {
         var fromCfg = ct.moveAfter(
           {
             xtype: "panel",
-            title: "Foo",
+            title: "Foo"
           },
-          ref,
+          ref
         );
         expect(ct.items.getAt(1)).toBe(fromCfg);
         expect(fromCfg.getTitle()).toBe("Foo");
@@ -1099,7 +1099,7 @@ describe("Ext.container.Container", function () {
 
       it("should be able to add items from another container", function () {
         var other = new Ext.container.Container({
-          items: c,
+          items: c
         });
 
         makeContainer([ref]);
@@ -1232,7 +1232,7 @@ describe("Ext.container.Container", function () {
 
           beforeEach(function () {
             other = new Ext.container.Container({
-              items: c,
+              items: c
             });
           });
 
@@ -1277,14 +1277,14 @@ describe("Ext.container.Container", function () {
   describe("remove", function () {
     function makeContainer(items) {
       ct = new Ext.container.Container({
-        items: items || [a, b, c],
+        items: items || [a, b, c]
       });
     }
 
     var a, b, c;
     beforeEach(function () {
       a = new Ext.Component({
-        itemId: "item1",
+        itemId: "item1"
       });
       b = new Ext.Component();
       c = new Ext.Component();
@@ -1380,7 +1380,7 @@ describe("Ext.container.Container", function () {
     it("should remove a floater", function () {
       makeContainer();
       var floater = new Ext.Component({
-        floating: true,
+        floating: true
       });
       ct.add(floater);
       ct.remove(floater);
@@ -1428,7 +1428,7 @@ describe("Ext.container.Container", function () {
     it("should fire beforeremove", function () {
       makeContainer();
       var o = {
-        fn: Ext.emptyFn,
+        fn: Ext.emptyFn
       };
       spyOn(o, "fn");
       ct.on("beforeremove", o.fn);
@@ -1450,7 +1450,7 @@ describe("Ext.container.Container", function () {
     it("should fire the remove event", function () {
       makeContainer();
       var o = {
-        fn: Ext.emptyFn,
+        fn: Ext.emptyFn
       };
       spyOn(o, "fn");
       ct.on("remove", o.fn);
@@ -1496,7 +1496,7 @@ describe("Ext.container.Container", function () {
     it("should remove childEls from the cache by id", function () {
       makeContainer({
         xtype: "textfield",
-        id: "text1",
+        id: "text1"
       });
       ct.render(Ext.getBody());
 
@@ -1508,7 +1508,7 @@ describe("Ext.container.Container", function () {
       makeContainer({
         xtype: "textfield",
         inputId: "foo",
-        id: "text1",
+        id: "text1"
       });
       ct.render(Ext.getBody());
 
@@ -1522,13 +1522,13 @@ describe("Ext.container.Container", function () {
 
     function makeContainer(items) {
       ct = new Ext.container.Container({
-        items: items || [a, b, c],
+        items: items || [a, b, c]
       });
     }
 
     beforeEach(function () {
       a = new Ext.Component({
-        itemId: "item1",
+        itemId: "item1"
       });
       b = new Ext.Component();
       c = new Ext.Component();
@@ -1555,7 +1555,7 @@ describe("Ext.container.Container", function () {
 
     it("should remove all floating components", function () {
       var floater = new Ext.Component({
-        floating: true,
+        floating: true
       });
       makeContainer();
       ct.add(floater);
@@ -1576,7 +1576,7 @@ describe("Ext.container.Container", function () {
 
     it("should include floating items in the return statement", function () {
       var floater = new Ext.Component({
-          floating: true,
+          floating: true
         }),
         result;
       makeContainer();
@@ -1604,7 +1604,7 @@ describe("Ext.container.Container", function () {
     it("should remove childEls from the cache by id", function () {
       makeContainer({
         xtype: "textfield",
-        id: "text1",
+        id: "text1"
       });
       ct.render(Ext.getBody());
 
@@ -1615,7 +1615,7 @@ describe("Ext.container.Container", function () {
     it("should remove childEls from the cache by inputId", function () {
       makeContainer({
         xtype: "textfield",
-        inputId: "foo",
+        inputId: "foo"
       });
       ct.render(Ext.getBody());
 
@@ -1631,8 +1631,8 @@ describe("Ext.container.Container", function () {
           extend: "Ext.Component",
           xtype: "spec.cmp",
           config: {
-            foo: null,
-          },
+            foo: null
+          }
         });
       });
 
@@ -1643,11 +1643,11 @@ describe("Ext.container.Container", function () {
       it("should apply default to component config", function () {
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
           items: {
-            xtype: "spec.cmp",
-          },
+            xtype: "spec.cmp"
+          }
         });
 
         expect(ct.items.getAt(0).getFoo()).toBe(1);
@@ -1660,9 +1660,9 @@ describe("Ext.container.Container", function () {
 
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
-          items: cmp,
+          items: cmp
         });
 
         expect(cmp.setFoo).toHaveBeenCalledWith(1);
@@ -1672,12 +1672,12 @@ describe("Ext.container.Container", function () {
       it("should not apply default to component config if property exists in config", function () {
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
           items: {
             xtype: "spec.cmp",
-            foo: 2,
-          },
+            foo: 2
+          }
         });
 
         expect(ct.items.getAt(0).getFoo()).toBe(2);
@@ -1685,16 +1685,16 @@ describe("Ext.container.Container", function () {
 
       it("should not apply default to component instance if config is already set on the instance", function () {
         var cmp = new spec.Cmp({
-          foo: 2,
+          foo: 2
         });
 
         spyOn(cmp, "setFoo").andCallThrough();
 
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
-          items: cmp,
+          items: cmp
         });
 
         expect(cmp.setFoo).not.toHaveBeenCalled();
@@ -1706,7 +1706,7 @@ describe("Ext.container.Container", function () {
       beforeEach(function () {
         Ext.define("spec.Cmp", {
           extend: "Ext.Component",
-          xtype: "spec.cmp",
+          xtype: "spec.cmp"
         });
       });
 
@@ -1717,11 +1717,11 @@ describe("Ext.container.Container", function () {
       it("should apply default to component config", function () {
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
           items: {
-            xtype: "spec.cmp",
-          },
+            xtype: "spec.cmp"
+          }
         });
 
         expect(ct.items.getAt(0).foo).toBe(1);
@@ -1732,9 +1732,9 @@ describe("Ext.container.Container", function () {
 
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
-          items: cmp,
+          items: cmp
         });
 
         expect(cmp.foo).toBe(1);
@@ -1743,12 +1743,12 @@ describe("Ext.container.Container", function () {
       it("should not apply default to component config if property exists in config", function () {
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
           items: {
             xtype: "spec.cmp",
-            foo: 2,
-          },
+            foo: 2
+          }
         });
 
         expect(ct.items.getAt(0).foo).toBe(2);
@@ -1756,14 +1756,14 @@ describe("Ext.container.Container", function () {
 
       it("should not apply default to component instance if config is already set on the instance", function () {
         var cmp = new spec.Cmp({
-          foo: 2,
+          foo: 2
         });
 
         ct = makeContainer({
           defaults: {
-            foo: 1,
+            foo: 1
           },
-          items: cmp,
+          items: cmp
         });
 
         expect(cmp.foo).toBe(2);
@@ -1774,10 +1774,10 @@ describe("Ext.container.Container", function () {
       makeContainer({
         defaults: function () {
           return {
-            disabled: true,
+            disabled: true
           };
         },
-        items: [{}, {}],
+        items: [{}, {}]
       });
       expect(ct.items.first().disabled).toBeTruthy();
       expect(ct.items.last().disabled).toBeTruthy();
@@ -1786,11 +1786,11 @@ describe("Ext.container.Container", function () {
     it("should not apply defaults to component instances", function () {
       makeContainer({
         items: new Ext.Component({
-          disabled: false,
+          disabled: false
         }),
         defaults: {
-          disabled: true,
-        },
+          disabled: true
+        }
       });
       expect(ct.items.first().disabled).toBe(false);
     });
@@ -1798,12 +1798,12 @@ describe("Ext.container.Container", function () {
     it("should only apply defaults to configs if they don't exist", function () {
       makeContainer({
         items: {
-          disabled: false,
+          disabled: false
         },
         defaults: {
           disabled: true,
-          hidden: true,
-        },
+          hidden: true
+        }
       });
       expect(ct.items.first().disabled).toBeFalsy();
       expect(ct.items.first().hidden).toBeTruthy();
@@ -1821,18 +1821,18 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 foo: 3,
-                id: "child1",
+                id: "child1"
               },
               {
                 bar: 2,
                 itemId: "child2",
                 items: [
                   {
-                    foo: 5,
-                  },
-                ],
-              },
-            ],
+                    foo: 5
+                  }
+                ]
+              }
+            ]
           },
           {
             foo: 2,
@@ -1840,20 +1840,20 @@ describe("Ext.container.Container", function () {
             items: [
               {
                 foo: 7,
-                itemId: "child3",
+                itemId: "child3"
               },
               {
-                bar: 4,
-              },
-            ],
+                bar: 4
+              }
+            ]
           },
           {
-            bar: 3,
+            bar: 3
           },
           {
-            foo: 8,
-          },
-        ],
+            foo: 8
+          }
+        ]
       });
     });
 
@@ -1916,7 +1916,7 @@ describe("Ext.container.Container", function () {
       describe("selector is a component", function () {
         it("should return null if no match is found", function () {
           var cmp = Ext.create("Ext.Component", {
-            renderTo: document.body,
+            renderTo: document.body
           });
 
           expect(ct.child(cmp)).toBeNull();
@@ -1963,14 +1963,14 @@ describe("Ext.container.Container", function () {
                   id: id1,
                   items: [
                     {
-                      id: id2,
+                      id: id2
                     },
                     {
-                      itemId: "child2",
-                    },
-                  ],
-                },
-              ],
+                      itemId: "child2"
+                    }
+                  ]
+                }
+              ]
             });
           },
           name1,
@@ -2030,7 +2030,7 @@ describe("Ext.container.Container", function () {
       describe("selector is a component", function () {
         it("should return null if no match is found", function () {
           var cmp = Ext.create("Ext.Component", {
-            renderTo: document.body,
+            renderTo: document.body
           });
 
           expect(ct.down(cmp)).toBeNull();
@@ -2068,18 +2068,18 @@ describe("Ext.container.Container", function () {
                   id: "foo",
                   items: [
                     {
-                      id: id1,
+                      id: id1
                     },
                     {
                       items: [
                         {
-                          itemId: id2,
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
+                          itemId: id2
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
             });
           },
           name1,
@@ -2120,7 +2120,7 @@ describe("Ext.container.Container", function () {
         c3 = new Ext.Component();
 
       makeContainer({
-        items: [c1, c2, c3],
+        items: [c1, c2, c3]
       });
 
       ct.queryBy(function (c) {
@@ -2135,7 +2135,7 @@ describe("Ext.container.Container", function () {
         scope;
 
       makeContainer({
-        items: c1,
+        items: c1
       });
       ct.queryBy(function () {
         scope = this;
@@ -2150,7 +2150,7 @@ describe("Ext.container.Container", function () {
         c3 = new Ext.Component();
 
       makeContainer({
-        items: [c1, c2, c3],
+        items: [c1, c2, c3]
       });
       expect(ct.queryBy(function (c) {})).toEqual([c1, c2, c3]);
     });
@@ -2161,31 +2161,31 @@ describe("Ext.container.Container", function () {
         c3 = new Ext.Component();
 
       makeContainer({
-        items: [c1, c2, c3],
+        items: [c1, c2, c3]
       });
       expect(
         ct.queryBy(function (c) {
           return c !== c2;
-        }),
+        })
       ).toEqual([c1, c3]);
     });
 
     it("should retrieve items in nested containers", function () {
       var c1 = new Ext.Component(),
         c2 = new Ext.Container({
-          items: c1,
+          items: c1
         }),
         c3 = new Ext.Container({
-          items: c2,
+          items: c2
         });
 
       makeContainer({
-        items: c3,
+        items: c3
       });
       expect(
         ct.queryBy(function (c) {
           return c === c1;
-        }),
+        })
       ).toEqual([c1]);
     });
   });
@@ -2194,10 +2194,10 @@ describe("Ext.container.Container", function () {
     var a = new Ext.Component(),
       b = new Ext.Component(),
       c = new Ext.Component({
-        floating: true,
+        floating: true
       });
     makeContainer({
-      items: [a, b, c],
+      items: [a, b, c]
     });
     ct.destroy();
     expect(a.destroyed).toBe(true);
@@ -2214,8 +2214,8 @@ describe("Ext.container.Container", function () {
       privates: {
         getChildItemsToDisable: function () {
           return disableFn.call(this);
-        },
-      },
+        }
+      }
     });
 
     beforeEach(function () {
@@ -2235,7 +2235,7 @@ describe("Ext.container.Container", function () {
             },
             disable: function () {
               ++this.disableCount;
-            },
+            }
           });
           this.callParent();
         },
@@ -2248,7 +2248,7 @@ describe("Ext.container.Container", function () {
         onEnable: function () {
           ++this.onEnableCount;
           this.callParent(arguments);
-        },
+        }
       });
 
       disableFn = function () {
@@ -2264,9 +2264,9 @@ describe("Ext.container.Container", function () {
     function makeDisableCt(cfg) {
       cfg = Ext.apply(
         {
-          defaultType: "custom",
+          defaultType: "custom"
         },
-        cfg,
+        cfg
       );
       ct = new CT(cfg);
       a = ct.down("#a");
@@ -2287,7 +2287,7 @@ describe("Ext.container.Container", function () {
       Ext.Array.forEach(ids, function (id) {
         ret.push({
           xtype: "custom",
-          itemId: id,
+          itemId: id
         });
       });
       return ret;
@@ -2358,7 +2358,7 @@ describe("Ext.container.Container", function () {
         it("should disable children", function () {
           makeDisableCt({
             disabled: true,
-            items: makeItems(["a", "b", "c"]),
+            items: makeItems(["a", "b", "c"])
           });
           expectDisabled(a, b, c);
         });
@@ -2369,7 +2369,7 @@ describe("Ext.container.Container", function () {
           };
           makeDisableCt({
             disabled: true,
-            items: makeItems(["a", "b", "c"]),
+            items: makeItems(["a", "b", "c"])
           });
           expectDisabled(a, c);
           expectEnabled(b);
@@ -2382,14 +2382,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
           expectDisabled(a1, a2, a3, b1, b2, b3);
         });
@@ -2404,14 +2404,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
           expectDisabled(a1, a3, b2);
           expectEnabled(a2, b1, b3);
@@ -2424,14 +2424,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
           expectEnabled(a, b);
         });
@@ -2445,14 +2445,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
           expectOnDisabled(0, a1, a2, a3, b1, b2, b3);
         });
@@ -2464,14 +2464,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
           expectOnDisabled(0, a1, a2, a3, b1, b2, b3);
           ct.render(Ext.getBody());
@@ -2489,14 +2489,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
         });
 
@@ -2535,14 +2535,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
         });
 
@@ -2579,14 +2579,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
         });
 
@@ -2624,14 +2624,14 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 itemId: "a",
-                items: makeItems(["a1", "a2", "a3"]),
+                items: makeItems(["a1", "a2", "a3"])
               },
               {
                 xtype: "container",
                 itemId: "b",
-                items: makeItems(["b1", "b2", "b3"]),
-              },
-            ],
+                items: makeItems(["b1", "b2", "b3"])
+              }
+            ]
           });
         });
 
@@ -2669,9 +2669,9 @@ describe("Ext.container.Container", function () {
             {
               xtype: "container",
               itemId: "a",
-              items: makeItems(["a1"]),
-            },
-          ],
+              items: makeItems(["a1"])
+            }
+          ]
         });
         expect(ct.isMasked()).toBe(true);
         expect(a.isMasked()).toBe(false);
@@ -2685,9 +2685,9 @@ describe("Ext.container.Container", function () {
           makeDisableCt({
             items: [
               {
-                itemId: "a",
-              },
-            ],
+                itemId: "a"
+              }
+            ]
           });
 
           a.disable();
@@ -2706,9 +2706,9 @@ describe("Ext.container.Container", function () {
           makeDisableCt({
             items: [
               {
-                itemId: "a",
-              },
-            ],
+                itemId: "a"
+              }
+            ]
           });
 
           ct.disable();
@@ -2728,7 +2728,7 @@ describe("Ext.container.Container", function () {
           ct.disable();
 
           a = new Ext.Component({
-            disabled: true,
+            disabled: true
           });
 
           ct.add(a);
@@ -2755,7 +2755,7 @@ describe("Ext.container.Container", function () {
 
       makeContainer({
         listeners: { afterrender: mock.handler },
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(fireEventSpy.callCount).toEqual(1);
@@ -2767,7 +2767,7 @@ describe("Ext.container.Container", function () {
       makeContainer({
         listeners: { afterrender: mock.handler },
         renderTo: Ext.getBody(),
-        items: [],
+        items: []
       });
 
       expect(fireEventSpy.callCount).toEqual(1);
@@ -2779,7 +2779,7 @@ describe("Ext.container.Container", function () {
       makeContainer({
         listeners: { afterrender: mock.handler },
         renderTo: Ext.getBody(),
-        items: [{}, {}, {}],
+        items: [{}, {}, {}]
       });
 
       expect(fireEventSpy.callCount).toEqual(1);
@@ -2795,31 +2795,31 @@ describe("Ext.container.Container", function () {
           {
             xtype: "textfield",
             fieldLabel: "Name",
-            name: "name",
+            name: "name"
           },
           {
             xtype: "textfield",
             fieldLabel: "Email",
             name: "email",
-            vtype: "email",
+            vtype: "email"
           },
           {
             xtype: "numberfield",
             fieldLabel: "Age",
-            name: "age",
+            name: "age"
           },
           {
             xtype: "textfield",
             fieldLabel: "Country",
-            name: "country",
+            name: "country"
           },
           {
             xtype: "textareafield",
             fieldLabel: "Bio",
             labelAlign: "top",
-            name: "bio",
-          },
-        ],
+            name: "bio"
+          }
+        ]
       });
 
       age = container.getComponent(2);
@@ -2836,7 +2836,7 @@ describe("Ext.container.Container", function () {
 
     it("should return the next child using a selector", function () {
       expect(container.nextChild(age, "field[name=bio]")).toBe(
-        container.getComponent(4),
+        container.getComponent(4)
       );
     });
 
@@ -2858,31 +2858,31 @@ describe("Ext.container.Container", function () {
           {
             xtype: "textfield",
             fieldLabel: "Name",
-            name: "name",
+            name: "name"
           },
           {
             xtype: "textfield",
             fieldLabel: "Email",
             name: "email",
-            vtype: "email",
+            vtype: "email"
           },
           {
             xtype: "numberfield",
             fieldLabel: "Age",
-            name: "age",
+            name: "age"
           },
           {
             xtype: "textfield",
             fieldLabel: "Country",
-            name: "country",
+            name: "country"
           },
           {
             xtype: "textareafield",
             fieldLabel: "Bio",
             labelAlign: "top",
-            name: "bio",
-          },
-        ],
+            name: "bio"
+          }
+        ]
       });
 
       age = container.getComponent(2);
@@ -2899,7 +2899,7 @@ describe("Ext.container.Container", function () {
 
     it("should return the previous child using a selector", function () {
       expect(container.prevChild(age, "field[name=name]")).toBe(
-        container.getComponent(0),
+        container.getComponent(0)
       );
     });
 
@@ -2922,10 +2922,10 @@ describe("Ext.container.Container", function () {
             listeners: {
               beforerender: function () {
                 return false;
-              },
-            },
-          },
-        ],
+              }
+            }
+          }
+        ]
       });
 
       // Child not rendered
@@ -2944,9 +2944,9 @@ describe("Ext.container.Container", function () {
             store: {
               fields: ["field1"],
               data: [{ field1: "value1" }, { field1: "value2" }],
-              autoDestroy: true,
+              autoDestroy: true
             },
-            width: 200,
+            width: 200
           },
           {
             xtype: "gridpanel",
@@ -2954,12 +2954,12 @@ describe("Ext.container.Container", function () {
             store: {
               fields: ["field1"],
               data: [{ field1: "value1" }, { field1: "value2" }],
-              autoDestroy: true,
+              autoDestroy: true
             },
-            width: 200,
-          },
+            width: 200
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(container.layoutCounter).toBe(1);
       container.destroy();
@@ -2976,9 +2976,9 @@ describe("Ext.container.Container", function () {
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
-              width: 200,
+              width: 200
             },
             {
               xtype: "gridpanel",
@@ -2986,12 +2986,12 @@ describe("Ext.container.Container", function () {
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
-              width: 200,
-            },
+              width: 200
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         }),
         v1 = container.getComponent(0).view,
         v2 = container.getComponent(1).view;
@@ -3015,10 +3015,10 @@ describe("Ext.container.Container", function () {
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
               width: 200,
-              height: 100,
+              height: 100
             },
             {
               xtype: "gridpanel",
@@ -3026,13 +3026,13 @@ describe("Ext.container.Container", function () {
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
               width: 200,
-              height: 100,
-            },
+              height: 100
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         }),
         v1 = container.getComponent(0).view,
         v2 = container.getComponent(1).view;
@@ -3059,26 +3059,26 @@ describe("Ext.container.Container", function () {
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
               width: 200,
-              height: 100,
+              height: 100
             },
             {
               xtype: "gridpanel",
               columns: [
-                { text: "Col1", dataIndex: "field1", variableRowHeight: true },
+                { text: "Col1", dataIndex: "field1", variableRowHeight: true }
               ],
               store: {
                 fields: ["field1"],
                 data: [{ field1: "value1" }, { field1: "value2" }],
-                autoDestroy: true,
+                autoDestroy: true
               },
               width: 200,
-              height: 100,
-            },
+              height: 100
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         }),
         v1 = container.getComponent(0).view,
         v2 = container.getComponent(1).view;
@@ -3106,65 +3106,65 @@ describe("Ext.container.Container", function () {
         xtype: "component",
         id: "fa",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       fb = Ext.widget({
         xtype: "component",
         id: "fb",
         floating: true,
         shadow: false,
-        hidden: floatHidden,
+        hidden: floatHidden
       });
       fc = Ext.widget({
         xtype: "component",
         id: "fc",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       fd = Ext.widget({
         xtype: "component",
         id: "fd",
         floating: true,
         shadow: false,
-        hidden: floatHidden,
+        hidden: floatHidden
       });
       fe = Ext.widget({
         xtype: "component",
         id: "fe",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       ff = Ext.widget({
         xtype: "component",
         id: "ff",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       fg = Ext.widget({
         xtype: "component",
         id: "fg",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       fh = Ext.widget({
         xtype: "component",
         id: "fh",
         floating: true,
         shadow: false,
-        hidden: floatHidden,
+        hidden: floatHidden
       });
       fi = Ext.widget({
         xtype: "component",
         id: "fi",
         floating: true,
-        shadow: false,
+        shadow: false
       });
       fj = Ext.widget({
         xtype: "component",
         id: "fj",
         floating: true,
         shadow: false,
-        hidden: floatHidden,
+        hidden: floatHidden
       });
       aCfg = {
         renderTo: document.body,
@@ -3172,24 +3172,24 @@ describe("Ext.container.Container", function () {
         id: "a",
         animCollapse: false,
         header: {
-          items: [fg, fh],
+          items: [fg, fh]
         },
         items: [
           {
             xtype: "panel",
             id: "b",
             header: {
-              items: [fi, fj],
+              items: [fi, fj]
             },
             items: [
               {
                 xtype: "container",
                 id: "c",
-                items: [fa, fb, fc, fd, fe, ff],
-              },
-            ],
-          },
-        ],
+                items: [fa, fb, fc, fd, fe, ff]
+              }
+            ]
+          }
+        ]
       };
       if (cfg.hidden) {
         aCfg.hidden = true;
@@ -3239,7 +3239,7 @@ describe("Ext.container.Container", function () {
         createHierarchy();
         parent = Ext.widget({
           xtype: "panel",
-          renderTo: document.body,
+          renderTo: document.body
         });
         parent.add(b);
         parent.getInherited().foo = 1;
@@ -3403,7 +3403,7 @@ describe("Ext.container.Container", function () {
             expect(fj.hidden).toBe(true);
             expect(fj.el.isVisible()).toBe(false);
           });
-        },
+        }
       );
 
       function createShowExpandSuite(initialRenderHiddenOrCollapsed) {
@@ -3441,9 +3441,9 @@ describe("Ext.container.Container", function () {
                 expect(mode in c.getInherited()).toBe(false);
                 expect(mode in fa.getInherited()).toBe(false);
                 expect(mode in fb.getInherited()).toBe(
-                  mode === "hidden" ? true : false,
+                  mode === "hidden" ? true : false
                 );
-              },
+              }
             );
 
             it("should show hierarchically hidden floating descendant", function () {
@@ -3648,7 +3648,7 @@ describe("Ext.container.Container", function () {
                 expect(fj.el.isVisible()).toBe(false);
               }
             });
-          },
+          }
         );
       }
 
@@ -3667,7 +3667,7 @@ describe("Ext.container.Container", function () {
               xtype: "panel",
               renderTo: document.body,
               hidden: mode === "hidden",
-              collapsed: mode === "collapsed",
+              collapsed: mode === "collapsed"
             });
           });
 
@@ -3759,7 +3759,7 @@ describe("Ext.container.Container", function () {
             expect(fj.hidden).toBe(true);
             expect(fj.el.isVisible()).toBe(false);
           });
-        },
+        }
       );
 
       function createHiddenToVisibleMoveSuite(initialRenderHiddenOrCollapsed) {
@@ -3792,7 +3792,7 @@ describe("Ext.container.Container", function () {
               }
               parent = Ext.widget({
                 xtype: "panel",
-                renderTo: document.body,
+                renderTo: document.body
               });
             });
 
@@ -3806,7 +3806,7 @@ describe("Ext.container.Container", function () {
               expect(mode in c.getInherited()).toBe(false);
               expect(mode in fa.getInherited()).toBe(false);
               expect(mode in fb.getInherited()).toBe(
-                mode === "hidden" ? true : false,
+                mode === "hidden" ? true : false
               );
             });
 
@@ -3967,7 +3967,7 @@ describe("Ext.container.Container", function () {
                 expect(fj.el.isVisible()).toBe(false);
               }
             });
-          },
+          }
         );
       }
 
@@ -3985,8 +3985,8 @@ describe("Ext.container.Container", function () {
         makeContainer({
           items: {
             xtype: "component",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
         expect(ct.lookupReference("foo")).toBeNull();
       });
@@ -3997,8 +3997,8 @@ describe("Ext.container.Container", function () {
           items: {
             xtype: "component",
             itemId: "compA",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
       });
@@ -4015,11 +4015,11 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            },
-          },
+                  reference: "a"
+                }
+              }
+            }
+          }
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
       });
@@ -4031,17 +4031,17 @@ describe("Ext.container.Container", function () {
             {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             },
             {
               xtype: "container",
               items: {
                 xtype: "component",
                 itemId: "compB",
-                reference: "b",
-              },
-            },
-          ],
+                reference: "b"
+              }
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -4054,14 +4054,14 @@ describe("Ext.container.Container", function () {
             {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             },
             {
               xtype: "component",
               itemId: "compB",
-              reference: "b",
-            },
-          ],
+              reference: "b"
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -4082,11 +4082,11 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compC",
-                  reference: "c",
-                },
-              },
-            },
-          ],
+                  reference: "c"
+                }
+              }
+            }
+          ]
         });
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         expect(ct.lookupReference("b")).toBe(ct.down("#compB"));
@@ -4106,11 +4106,11 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            },
-          },
+                  reference: "a"
+                }
+              }
+            }
+          }
         });
         var ref = ct.down("#ref");
         expect(ref.lookupReference("a")).toBe(ref.down("#compA"));
@@ -4132,11 +4132,11 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
-            },
-          },
+                  reference: "b"
+                }
+              }
+            }
+          }
         });
         var ref = ct.down("#ref");
         expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
@@ -4159,11 +4159,11 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
-            },
-          },
+                  reference: "b"
+                }
+              }
+            }
+          }
         });
         expect(ct.lookupReference("b")).toBeNull();
       });
@@ -4179,9 +4179,9 @@ describe("Ext.container.Container", function () {
             items: {
               xtype: "container",
               itemId: "compB",
-              reference: "b",
-            },
-          },
+              reference: "b"
+            }
+          }
         });
 
         var inner = ct.down("#compA");
@@ -4201,8 +4201,8 @@ describe("Ext.container.Container", function () {
             dockedItems: {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4215,9 +4215,9 @@ describe("Ext.container.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4234,10 +4234,10 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
-              },
-            ],
+                  reference: "a"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
         });
@@ -4252,10 +4252,10 @@ describe("Ext.container.Container", function () {
                 itemId: "compA",
                 items: {
                   xtype: "component",
-                  reference: "b",
-                },
-              },
-            ],
+                  reference: "b"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4267,9 +4267,9 @@ describe("Ext.container.Container", function () {
               {
                 xtype: "container",
                 reference: "a>",
-                itemId: "compA",
-              },
-            ],
+                itemId: "compA"
+              }
+            ]
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4284,10 +4284,10 @@ describe("Ext.container.Container", function () {
                 reference: "a>",
                 items: {
                   xtype: "component",
-                  reference: "b",
-                },
-              },
-            ],
+                  reference: "b"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("b")).toBeNull();
         });
@@ -4311,13 +4311,13 @@ describe("Ext.container.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a.b.c.d.e")).toBe(ct.down("#compE"));
         });
@@ -4332,8 +4332,8 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   reference: "child",
-                  itemId: "compA",
-                },
+                  itemId: "compA"
+                }
               },
               {
                 xtype: "container",
@@ -4341,10 +4341,10 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   reference: "child",
-                  itemId: "compB",
-                },
-              },
-            ],
+                  itemId: "compB"
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("parent1.child")).toBe(ct.down("#compA"));
           expect(ct.lookupReference("parent2.child")).toBe(ct.down("#compB"));
@@ -4370,13 +4370,13 @@ describe("Ext.container.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           var inner = ct.down("#compC");
           expect(inner.lookupReference("d.e")).toBe(ct.down("#compE"));
@@ -4406,13 +4406,13 @@ describe("Ext.container.Container", function () {
                       items: {
                         xtype: "component",
                         reference: "e",
-                        itemId: "compE",
-                      },
-                    },
-                  },
-                },
-              },
-            ],
+                        itemId: "compE"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
           });
           expect(ct.lookupReference("a.b")).toBe(ct.down("#compB"));
           expect(ct.lookupReference("a.b.c")).toBe(ct.down("#compC"));
@@ -4434,9 +4434,9 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compB",
-                  reference: "b",
-                },
-              },
+                  reference: "b"
+                }
+              }
             });
             expect(ct.lookupReference("a.b")).toBe(ct.down("#compB"));
           });
@@ -4448,27 +4448,27 @@ describe("Ext.container.Container", function () {
       describe("adding", function () {
         it("should gain a reference to a direct child", function () {
           makeContainer({
-            referenceHolder: true,
+            referenceHolder: true
           });
           ct.add({
             xtype: "component",
             itemId: "compA",
-            reference: "a",
+            reference: "a"
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
 
         it("should gain a reference to an indirect child", function () {
           makeContainer({
-            referenceHolder: true,
+            referenceHolder: true
           });
           ct.add({
             xtype: "container",
             items: {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4478,13 +4478,13 @@ describe("Ext.container.Container", function () {
             items: {
               xtype: "component",
               itemId: "compA",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
 
           makeContainer({
             referenceHolder: true,
-            items: local,
+            items: local
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4493,13 +4493,13 @@ describe("Ext.container.Container", function () {
           makeContainer({
             referenceHolder: true,
             items: {
-              xtype: "container",
-            },
+              xtype: "container"
+            }
           });
           ct.items.first().add({
             xtype: "component",
             itemId: "compA",
-            reference: "a",
+            reference: "a"
           });
           expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
         });
@@ -4507,7 +4507,7 @@ describe("Ext.container.Container", function () {
         describe("chained references", function () {
           it("should gain a reference to an indirect child", function () {
             makeContainer({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.add({
               xtype: "container",
@@ -4515,8 +4515,8 @@ describe("Ext.container.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -4527,13 +4527,13 @@ describe("Ext.container.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
 
             makeContainer({
               referenceHolder: true,
-              items: local,
+              items: local
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -4543,13 +4543,13 @@ describe("Ext.container.Container", function () {
               referenceHolder: true,
               items: {
                 xtype: "container",
-                reference: "parent>",
-              },
+                reference: "parent>"
+              }
             });
             ct.items.first().add({
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
           });
@@ -4561,7 +4561,7 @@ describe("Ext.container.Container", function () {
 
             it("should gain a reference to an indirect child", function () {
               makePanel({
-                referenceHolder: true,
+                referenceHolder: true
               });
               ct.addDocked({
                 xtype: "container",
@@ -4569,8 +4569,8 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
+                  reference: "a"
+                }
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -4581,13 +4581,13 @@ describe("Ext.container.Container", function () {
                 items: {
                   xtype: "component",
                   itemId: "compA",
-                  reference: "a",
-                },
+                  reference: "a"
+                }
               });
 
               makePanel({
                 referenceHolder: true,
-                dockedItems: local,
+                dockedItems: local
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -4597,13 +4597,13 @@ describe("Ext.container.Container", function () {
                 referenceHolder: true,
                 dockedItems: {
                   xtype: "container",
-                  reference: "parent>",
-                },
+                  reference: "parent>"
+                }
               });
               ct.getDockedItems()[0].add({
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
+                reference: "a"
               });
               expect(ct.lookupReference("parent.a")).toBe(ct.down("#compA"));
             });
@@ -4617,27 +4617,27 @@ describe("Ext.container.Container", function () {
 
           it("should gain a reference to a direct child", function () {
             makePanel({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.addDocked({
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
 
           it("should gain a reference to an indirect child", function () {
             makePanel({
-              referenceHolder: true,
+              referenceHolder: true
             });
             ct.addDocked({
               xtype: "container",
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -4647,13 +4647,13 @@ describe("Ext.container.Container", function () {
               items: {
                 xtype: "component",
                 itemId: "compA",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
 
             makePanel({
               referenceHolder: true,
-              dockedItems: local,
+              dockedItems: local
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -4662,13 +4662,13 @@ describe("Ext.container.Container", function () {
             makePanel({
               referenceHolder: true,
               dockedItems: {
-                xtype: "container",
-              },
+                xtype: "container"
+              }
             });
             ct.getDockedItems()[0].add({
               xtype: "component",
               itemId: "compA",
-              reference: "a",
+              reference: "a"
             });
             expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
           });
@@ -4681,8 +4681,8 @@ describe("Ext.container.Container", function () {
             referenceHolder: true,
             items: {
               xtype: "component",
-              reference: "a",
-            },
+              reference: "a"
+            }
           });
           var c = ct.lookupReference("a");
           c.destroy();
@@ -4696,9 +4696,9 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               items: {
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           var c = ct.lookupReference("a");
           c.destroy();
@@ -4712,9 +4712,9 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               items: {
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           var c = ct.lookupReference("a");
           var removed = ct.remove(0);
@@ -4729,9 +4729,9 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               items: {
                 xtype: "component",
-                reference: "a",
-              },
-            },
+                reference: "a"
+              }
+            }
           });
           var c = ct.lookupReference("a");
           var removed = ct.remove(0, false);
@@ -4748,9 +4748,9 @@ describe("Ext.container.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             c.destroy();
@@ -4765,9 +4765,9 @@ describe("Ext.container.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             var removed = ct.remove(0);
@@ -4783,9 +4783,9 @@ describe("Ext.container.Container", function () {
                 reference: "parent>",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("parent.a");
             var removed = ct.remove(0, false);
@@ -4806,9 +4806,9 @@ describe("Ext.container.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var c = ct.lookupReference("parent.a");
               c.destroy();
@@ -4823,9 +4823,9 @@ describe("Ext.container.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var dock = ct.getDockedItems()[0];
 
@@ -4841,9 +4841,9 @@ describe("Ext.container.Container", function () {
                   reference: "parent>",
                   items: {
                     xtype: "component",
-                    reference: "a",
-                  },
-                },
+                    reference: "a"
+                  }
+                }
               });
               var dock = ct.getDockedItems()[0];
 
@@ -4864,8 +4864,8 @@ describe("Ext.container.Container", function () {
               referenceHolder: true,
               dockedItems: {
                 xtype: "component",
-                reference: "a",
-              },
+                reference: "a"
+              }
             });
             var c = ct.lookupReference("a");
             c.destroy();
@@ -4879,9 +4879,9 @@ describe("Ext.container.Container", function () {
                 xtype: "container",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var c = ct.lookupReference("a");
             c.destroy();
@@ -4895,9 +4895,9 @@ describe("Ext.container.Container", function () {
                 xtype: "container",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var dock = ct.getDockedItems()[0];
 
@@ -4912,9 +4912,9 @@ describe("Ext.container.Container", function () {
                 xtype: "container",
                 items: {
                   xtype: "component",
-                  reference: "a",
-                },
-              },
+                  reference: "a"
+                }
+              }
             });
             var dock = ct.getDockedItems()[0];
 
@@ -4929,21 +4929,21 @@ describe("Ext.container.Container", function () {
     describe("setup", function () {
       it("should not create references on the rootInheritedState if not requested", function () {
         var vp = new Ext.container.Viewport({
-          referenceHolder: true,
+          referenceHolder: true
         });
 
         var temp = new Ext.container.Container({
           items: {
             xtype: "component",
-            reference: "a",
-          },
+            reference: "a"
+          }
         });
 
         var c = temp.items.first();
 
         ct = new Ext.container.Container({
           referenceHolder: true,
-          items: temp,
+          items: temp
         });
 
         expect(vp.lookupReference("a")).toBeNull();
@@ -4959,7 +4959,7 @@ describe("Ext.container.Container", function () {
     beforeEach(function () {
       Controller = Ext.define("spec.TestController", {
         extend: "Ext.app.ViewController",
-        alias: "controller.test",
+        alias: "controller.test"
       });
     });
 
@@ -4975,8 +4975,8 @@ describe("Ext.container.Container", function () {
         items: {
           xtype: "component",
           itemId: "compA",
-          reference: "a",
-        },
+          reference: "a"
+        }
       });
       expect(ct.lookupReference("a")).toBe(ct.down("#compA"));
     });
@@ -4991,9 +4991,9 @@ describe("Ext.container.Container", function () {
             xtype: "container",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
-            },
-          },
+              custom: "callFn"
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -5009,10 +5009,10 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               itemId: "compA",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -5026,16 +5026,16 @@ describe("Ext.container.Container", function () {
             xtype: "container",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
+              custom: "callFn"
             },
             items: {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         ct.callFn = jasmine.createSpy();
         ct.down("#compA").fireEvent("custom");
@@ -5053,10 +5053,10 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         var c = ct.down("#compA");
         c.callFn = jasmine.createSpy();
@@ -5075,10 +5075,10 @@ describe("Ext.container.Container", function () {
               xtype: "container",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
         var c = ct.down("#compA");
         ct.callFn = jasmine.createSpy();
@@ -5093,14 +5093,14 @@ describe("Ext.container.Container", function () {
     describe("dynamic", function () {
       it("should fire on a direct parent", function () {
         makeContainer({
-          defaultListenerScope: true,
+          defaultListenerScope: true
         });
 
         var c = ct.add({
           xtype: "component",
           listeners: {
-            custom: "callFn",
-          },
+            custom: "callFn"
+          }
         });
 
         ct.callFn = jasmine.createSpy();
@@ -5112,15 +5112,15 @@ describe("Ext.container.Container", function () {
         makeContainer({
           defaultListenerScope: true,
           items: {
-            xtype: "container",
-          },
+            xtype: "container"
+          }
         });
 
         var c = ct.items.first().add({
           xtype: "component",
           listeners: {
-            custom: "callFn",
-          },
+            custom: "callFn"
+          }
         });
 
         ct.callFn = jasmine.createSpy();
@@ -5135,13 +5135,13 @@ describe("Ext.container.Container", function () {
             xtype: "component",
             itemId: "compA",
             listeners: {
-              custom: "callFn",
-            },
-          },
+              custom: "callFn"
+            }
+          }
         });
 
         var other = new Ext.container.Container({
-          defaultListenerScope: true,
+          defaultListenerScope: true
         });
 
         var c = ct.down("#compA");
@@ -5173,10 +5173,10 @@ describe("Ext.container.Container", function () {
               xtype: "component",
               itemId: "compB",
               listeners: {
-                custom: "callFn",
-              },
-            },
-          },
+                custom: "callFn"
+              }
+            }
+          }
         });
 
         var inner = ct.down("#compA"),
@@ -5212,7 +5212,7 @@ describe("Ext.container.Container", function () {
 
     function wrap(items) {
       return new Ext.container.Container({
-        items: items,
+        items: items
       });
     }
 
@@ -5245,7 +5245,7 @@ describe("Ext.container.Container", function () {
           c = comp();
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
         ct.cascade(spy);
         expectCalls([ct, a, b, c]);
@@ -5258,7 +5258,7 @@ describe("Ext.container.Container", function () {
           d = comp();
 
         makeContainer({
-          items: [d, b, a, c],
+          items: [d, b, a, c]
         });
         ct.cascade(spy);
         expectCalls([ct, d, b, a, c]);
@@ -5280,7 +5280,7 @@ describe("Ext.container.Container", function () {
           d = wrap([d1, d2, d3]);
 
         makeContainer({
-          items: [a, b, c, d],
+          items: [a, b, c, d]
         });
         ct.cascade(spy);
         expectCalls([ct, a, a1, a2, a3, b, b1, c, c1, c2, d, d1, d2, d3]);
@@ -5294,7 +5294,7 @@ describe("Ext.container.Container", function () {
           c = comp();
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
         ct.cascade(spy);
         expect(spy.calls[0].object).toBe(ct);
@@ -5310,7 +5310,7 @@ describe("Ext.container.Container", function () {
           scope = {};
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
         ct.cascade(spy, scope);
         expect(spy.calls[0].object).toBe(scope);
@@ -5327,7 +5327,7 @@ describe("Ext.container.Container", function () {
           c = comp();
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
         ct.cascade(spy);
         expectCalls([ct, a, b, c]);
@@ -5339,7 +5339,7 @@ describe("Ext.container.Container", function () {
           c = comp();
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
         ct.cascade(spy, null, [1, 2, 3]);
         expect(spy.calls[0].args).toEqual([1, 2, 3, ct]);
@@ -5352,7 +5352,7 @@ describe("Ext.container.Container", function () {
     describe("stopping iteration", function () {
       it("should stop iterating at the container if the callback returns false", function () {
         makeContainer({
-          items: [{}, {}, {}],
+          items: [{}, {}, {}]
         });
         spy = spy.andReturn(false);
         ct.cascade(spy);
@@ -5368,7 +5368,7 @@ describe("Ext.container.Container", function () {
           c = wrap([c1]);
 
         makeContainer({
-          items: [a, b, c],
+          items: [a, b, c]
         });
 
         spy = spy.andCallFake(function () {
@@ -5386,7 +5386,7 @@ describe("Ext.container.Container", function () {
           d = wrap([]);
 
         makeContainer({
-          items: [a, b, c, d],
+          items: [a, b, c, d]
         });
         spy = spy.andCallFake(function () {
           return this !== b;
@@ -5406,10 +5406,10 @@ describe("Ext.container.Container", function () {
           {
             renderTo: Ext.getBody(),
             width: 100,
-            height: 100,
+            height: 100
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -5421,14 +5421,14 @@ describe("Ext.container.Container", function () {
           items: [
             {
               xtype: "component",
-              html: "foo",
+              html: "foo"
             },
             {
               xtype: "component",
               itemId: "bar",
-              html: "bar",
-            },
-          ],
+              html: "bar"
+            }
+          ]
         });
 
         fooCmp = ct.items.getAt(0);

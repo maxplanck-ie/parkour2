@@ -4,7 +4,7 @@ describe("Ext.app.ViewController", function () {
   function makeContainer(cfg) {
     cfg = cfg || {};
     Ext.applyIf(cfg, {
-      controller: "test1",
+      controller: "test1"
     });
     ct = new Ext.container.Container(cfg);
     controller = ct.getController();
@@ -29,7 +29,7 @@ describe("Ext.app.ViewController", function () {
 
       method1: function () {},
 
-      method2: function () {},
+      method2: function () {}
     });
 
     Ext.define("spec.TestController2", {
@@ -40,7 +40,7 @@ describe("Ext.app.ViewController", function () {
 
       method1: function () {},
 
-      method2: function () {},
+      method2: function () {}
     });
 
     Ext.define("spec.TestController3", {
@@ -49,7 +49,7 @@ describe("Ext.app.ViewController", function () {
 
       method1: function () {},
 
-      method2: function () {},
+      method2: function () {}
     });
   });
 
@@ -75,8 +75,8 @@ describe("Ext.app.ViewController", function () {
 
       makeContainer({
         items: {
-          xtype: "component",
-        },
+          xtype: "component"
+        }
       });
       expect(count).toBe(1);
     });
@@ -85,7 +85,7 @@ describe("Ext.app.ViewController", function () {
       var ctrl = new spec.TestController2();
       spyOn(ctrl, "init");
       var c = new Ext.Component({
-        controller: ctrl,
+        controller: ctrl
       });
       expect(ctrl.init).toHaveBeenCalledWith(c);
       Ext.destroy(c);
@@ -101,7 +101,7 @@ describe("Ext.app.ViewController", function () {
         initComponent: function () {
           called = true;
           this.callParent();
-        },
+        }
       });
 
       doBeforeInit = function (ctrl) {
@@ -110,8 +110,8 @@ describe("Ext.app.ViewController", function () {
 
       var c = new C({
         controller: {
-          type: "test1",
-        },
+          type: "test1"
+        }
       });
 
       c.destroy();
@@ -121,7 +121,7 @@ describe("Ext.app.ViewController", function () {
       var ctrl = new spec.TestController2();
       spyOn(ctrl, "beforeInit");
       var c = new Ext.Component({
-        controller: ctrl,
+        controller: ctrl
       });
       expect(ctrl.beforeInit).toHaveBeenCalledWith(c);
       c.destroy();
@@ -135,7 +135,7 @@ describe("Ext.app.ViewController", function () {
           spy = spyOn(ctrl, "initViewModel");
 
         makeContainer({
-          controller: ctrl,
+          controller: ctrl
         });
         // Force VM creation
         ct.getViewModel();
@@ -149,7 +149,7 @@ describe("Ext.app.ViewController", function () {
 
         makeContainer({
           controller: ctrl,
-          viewModel: vm,
+          viewModel: vm
         });
         // Force VM creation
         ct.getViewModel();
@@ -166,7 +166,7 @@ describe("Ext.app.ViewController", function () {
 
         makeContainer({
           controller: ctrl,
-          viewModel: vm,
+          viewModel: vm
         });
         // Force VM creation
         ct.getViewModel();
@@ -181,8 +181,8 @@ describe("Ext.app.ViewController", function () {
         items: {
           xtype: "component",
           itemId: "compA",
-          reference: "a",
-        },
+          reference: "a"
+        }
       });
       var c = controller.lookupReference("a");
       expect(c).toBe(ct.down("#compA"));
@@ -198,7 +198,7 @@ describe("Ext.app.ViewController", function () {
     it("should return the view model of the view directly", function () {
       var vm = new Ext.app.ViewModel();
       makeContainer({
-        viewModel: vm,
+        viewModel: vm
       });
       expect(controller.getViewModel()).toBe(vm);
     });
@@ -210,9 +210,9 @@ describe("Ext.app.ViewController", function () {
         items: [
           {
             xtype: "container",
-            controller: "test2",
-          },
-        ],
+            controller: "test2"
+          }
+        ]
       });
       expect(ct.items.first().getController().getViewModel()).toBe(vm);
     });
@@ -226,9 +226,9 @@ describe("Ext.app.ViewController", function () {
         items: [
           {
             xtype: "container",
-            controller: "test2",
-          },
-        ],
+            controller: "test2"
+          }
+        ]
       });
       expect(controller.getStore("users")).toBe(null);
     });
@@ -239,9 +239,9 @@ describe("Ext.app.ViewController", function () {
         items: [
           {
             xtype: "container",
-            controller: "test2",
-          },
-        ],
+            controller: "test2"
+          }
+        ]
       });
       expect(ct.getViewModel()).toBeNull();
       expect(controller.getStore("users")).toBeNull();
@@ -251,13 +251,13 @@ describe("Ext.app.ViewController", function () {
       var vm = new Ext.app.ViewModel({
         stores: {
           users: {
-            fields: ["name"],
-          },
-        },
+            fields: ["name"]
+          }
+        }
       });
       makeContainer({
         renderTo: Ext.getBody(),
-        viewModel: vm,
+        viewModel: vm
       });
       expect(controller.getStore("users")).toBe(vm.getStore("users"));
     });
@@ -268,7 +268,7 @@ describe("Ext.app.ViewController", function () {
       var session = new Ext.data.Session();
       makeContainer({
         renderTo: Ext.getBody(),
-        session: session,
+        session: session
       });
       expect(controller.getSession()).toBe(session);
     });
@@ -288,11 +288,11 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getSession()).toBe(session);
     });
@@ -314,18 +314,18 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getSession()).toBe(session2);
     });
 
     it("should return null when no session is attached to the view", function () {
       makeContainer({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(controller.getSession()).toBeNull();
     });
@@ -343,11 +343,11 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getSession()).toBeNull();
     });
@@ -358,7 +358,7 @@ describe("Ext.app.ViewController", function () {
       var vm = new Ext.app.ViewModel();
       makeContainer({
         renderTo: Ext.getBody(),
-        viewModel: vm,
+        viewModel: vm
       });
       expect(controller.getViewModel()).toBe(vm);
     });
@@ -378,11 +378,11 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getViewModel()).toBe(vm);
     });
@@ -404,18 +404,18 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getViewModel()).toBe(vm2);
     });
 
     it("should return null when no viewModel is attached to the view", function () {
       makeContainer({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(controller.getViewModel()).toBeNull();
     });
@@ -433,11 +433,11 @@ describe("Ext.app.ViewController", function () {
               xtype: "container",
               items: {
                 xtype: "container",
-                controller: controller,
-              },
-            },
-          },
-        },
+                controller: controller
+              }
+            }
+          }
+        }
       });
       expect(controller.getViewModel()).toBeNull();
     });
@@ -451,14 +451,14 @@ describe("Ext.app.ViewController", function () {
           listen: {
             component: {
               container: {
-                custom: "method1",
-              },
-            },
-          },
+                custom: "method1"
+              }
+            }
+          }
         },
         items: {
-          xtype: "container",
-        },
+          xtype: "container"
+        }
       });
 
       spyOn(controller, "method1");
@@ -480,10 +480,10 @@ describe("Ext.app.ViewController", function () {
             {
               xtype: "container",
               listeners: {
-                custom: "method1",
-              },
-            },
-          ],
+                custom: "method1"
+              }
+            }
+          ]
         });
         spyOn(controller, "method1");
         ct.items.first().fireEvent("custom");
@@ -496,10 +496,10 @@ describe("Ext.app.ViewController", function () {
             {
               xtype: "container",
               listeners: {
-                custom: "method1",
-              },
-            },
-          ],
+                custom: "method1"
+              }
+            }
+          ]
         });
         spyOn(controller, "method1");
         var c = ct.items.first();
@@ -519,12 +519,12 @@ describe("Ext.app.ViewController", function () {
                 {
                   xtype: "component",
                   listeners: {
-                    custom: "method1",
-                  },
-                },
-              ],
-            },
-          ],
+                    custom: "method1"
+                  }
+                }
+              ]
+            }
+          ]
         });
         var child = ct.items.first().getController();
         spyOn(controller, "method1");
@@ -541,7 +541,7 @@ describe("Ext.app.ViewController", function () {
         beforeEach(function () {
           Ext.define("spec.Foo", {
             extend: "Ext.Widget",
-            xtype: "specfoo",
+            xtype: "specfoo"
           });
         });
 
@@ -555,10 +555,10 @@ describe("Ext.app.ViewController", function () {
               type: "test1",
               control: {
                 specfoo: {
-                  custom: "method1",
-                },
-              },
-            },
+                  custom: "method1"
+                }
+              }
+            }
           });
           controller = ct.getController();
           spyOn(controller, "method1");
@@ -573,19 +573,19 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: [
             {
               xtype: "container",
               items: {
                 xtype: "container",
-                itemId: "a",
-              },
-            },
-          ],
+                itemId: "a"
+              }
+            }
+          ]
         });
 
         var c = ct.down("#a");
@@ -601,19 +601,19 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: [
             {
               xtype: "container",
               items: {
                 xtype: "button",
-                itemId: "a",
-              },
-            },
-          ],
+                itemId: "a"
+              }
+            }
+          ]
         });
 
         var c = ct.down("#a");
@@ -629,10 +629,10 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
-          },
+                custom: "method1"
+              }
+            }
+          }
         });
         spyOn(controller, "method1");
         ct.fireEvent("custom");
@@ -645,10 +645,10 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
-          },
+                custom: "method1"
+              }
+            }
+          }
         });
         spyOn(controller, "method1");
         var other = new Ext.container.Container();
@@ -663,13 +663,13 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: {
-            xtype: "container",
-          },
+            xtype: "container"
+          }
         });
         spyOn(controller, "method1");
         controller.destroy();
@@ -683,14 +683,14 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               "#": {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: {
             xtype: "component",
-            itemId: "compA",
-          },
+            itemId: "compA"
+          }
         });
         spyOn(controller, "method1");
         ct.items.first().fireEvent("custom");
@@ -705,10 +705,10 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               "#": {
-                custom: "method1",
-              },
-            },
-          },
+                custom: "method1"
+              }
+            }
+          }
         });
         ct.on("custom", function () {
           ct.destroy();
@@ -724,9 +724,9 @@ describe("Ext.app.ViewController", function () {
             type: "test" + i,
             control: control || {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           };
         };
         it("should fire matched events up the hierarchy", function () {
@@ -740,10 +740,10 @@ describe("Ext.app.ViewController", function () {
                 controller: makeController(3),
                 items: {
                   xtype: "container",
-                  itemId: "compA",
-                },
-              },
-            },
+                  itemId: "compA"
+                }
+              }
+            }
           });
           var inner = ct.down("#compA"),
             ctrl3 = inner.up().getController(),
@@ -772,10 +772,10 @@ describe("Ext.app.ViewController", function () {
                 controller: makeController(3, {}),
                 items: {
                   xtype: "container",
-                  itemId: "compA",
-                },
-              },
-            },
+                  itemId: "compA"
+                }
+              }
+            }
           });
           var inner = ct.down("#compA"),
             ctrl3 = inner.up().getController(),
@@ -802,10 +802,10 @@ describe("Ext.app.ViewController", function () {
                 controller: makeController(3),
                 items: {
                   xtype: "container",
-                  itemId: "compA",
-                },
-              },
-            },
+                  itemId: "compA"
+                }
+              }
+            }
           });
           var inner = ct.down("#compA"),
             ctrl3 = inner.up().getController(),
@@ -832,10 +832,10 @@ describe("Ext.app.ViewController", function () {
                 controller: makeController(3),
                 items: {
                   xtype: "container",
-                  itemId: "compA",
-                },
-              },
-            },
+                  itemId: "compA"
+                }
+              }
+            }
           });
           var inner = ct.down("#compA"),
             ctrl3 = inner.up().getController(),
@@ -860,16 +860,16 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: {
             xtype: "container",
             listeners: {
-              custom: "method2",
-            },
-          },
+              custom: "method2"
+            }
+          }
         });
 
         var c = ct.items.first(),
@@ -893,16 +893,16 @@ describe("Ext.app.ViewController", function () {
             type: "test1",
             control: {
               container: {
-                custom: "method1",
-              },
-            },
+                custom: "method1"
+              }
+            }
           },
           items: {
             xtype: "container",
             listeners: {
-              custom: "method2",
-            },
-          },
+              custom: "method2"
+            }
+          }
         });
 
         var c = ct.items.first(),
@@ -924,10 +924,10 @@ describe("Ext.app.ViewController", function () {
           type: "test1",
           control: {
             "#": {
-              custom: "method1",
-            },
-          },
-        },
+              custom: "method1"
+            }
+          }
+        }
       });
 
       spyOn(controller, "method1");
@@ -944,10 +944,10 @@ describe("Ext.app.ViewController", function () {
           type: "test1",
           control: {
             "#": {
-              custom: "method1",
-            },
-          },
-        },
+              custom: "method1"
+            }
+          }
+        }
       });
 
       spyOn(controller, "method1");

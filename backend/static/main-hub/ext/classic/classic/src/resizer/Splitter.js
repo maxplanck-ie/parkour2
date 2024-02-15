@@ -26,7 +26,7 @@ Ext.define("Ext.resizer.Splitter", {
     Ext.baseCSSPrefix,
     'layout-split-{collapseDir}{childElCls}">',
     "</div>",
-    "</tpl>",
+    "</tpl>"
   ],
 
   isSplitter: true,
@@ -136,9 +136,9 @@ Ext.define("Ext.resizer.Splitter", {
       {
         xclass: "Ext.resizer.SplitterTracker",
         el: this.el,
-        splitter: this,
+        splitter: this
       },
-      this.tracker,
+      this.tracker
     );
   },
 
@@ -159,7 +159,7 @@ Ext.define("Ext.resizer.Splitter", {
 
     Ext.applyIf(me.renderData, {
       collapseDir: me.getCollapseDirection(),
-      collapsible: collapsible !== null ? collapsible : target.collapsible,
+      collapsible: collapsible !== null ? collapsible : target.collapsible
     });
 
     me.ariaRenderAttributes = me.ariaRenderAttributes || {};
@@ -198,7 +198,7 @@ Ext.define("Ext.resizer.Splitter", {
         expand: me.onTargetExpand,
         beforeexpand: me.onBeforeTargetExpand,
         beforecollapse: me.onBeforeTargetCollapse,
-        scope: me,
+        scope: me
       });
     }
 
@@ -258,7 +258,7 @@ Ext.define("Ext.resizer.Splitter", {
     }
 
     me.setOrientation(
-      dir === "top" || dir === "bottom" ? "horizontal" : "vertical",
+      dir === "top" || dir === "bottom" ? "horizontal" : "vertical"
     );
 
     return dir;
@@ -316,30 +316,30 @@ Ext.define("Ext.resizer.Splitter", {
 
   collapseDirProps: {
     top: {
-      cls: Ext.baseCSSPrefix + "layout-split-top",
+      cls: Ext.baseCSSPrefix + "layout-split-top"
     },
     right: {
-      cls: Ext.baseCSSPrefix + "layout-split-right",
+      cls: Ext.baseCSSPrefix + "layout-split-right"
     },
     bottom: {
-      cls: Ext.baseCSSPrefix + "layout-split-bottom",
+      cls: Ext.baseCSSPrefix + "layout-split-bottom"
     },
     left: {
-      cls: Ext.baseCSSPrefix + "layout-split-left",
-    },
+      cls: Ext.baseCSSPrefix + "layout-split-left"
+    }
   },
 
   orientationProps: {
     horizontal: {
       opposite: "vertical",
       fixedAxis: "height",
-      stretchedAxis: "width",
+      stretchedAxis: "width"
     },
     vertical: {
       opposite: "horizontal",
       fixedAxis: "width",
-      stretchedAxis: "height",
-    },
+      stretchedAxis: "height"
+    }
   },
 
   applyCollapseDirection: function () {
@@ -439,5 +439,5 @@ Ext.define("Ext.resizer.Splitter", {
     Ext.destroy(this.tracker);
 
     this.callParent();
-  },
+  }
 });

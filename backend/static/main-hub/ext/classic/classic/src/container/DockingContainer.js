@@ -58,7 +58,7 @@ Ext.define("Ext.container.DockingContainer", {
     top: { render: 1, visual: 1 },
     left: { render: 3, visual: 5 },
     right: { render: 5, visual: 7 },
-    bottom: { render: 7, visual: 3 },
+    bottom: { render: 7, visual: 3 }
   },
 
   /**
@@ -71,7 +71,7 @@ Ext.define("Ext.container.DockingContainer", {
     top: -1,
     left: -1,
     right: 1,
-    bottom: 1,
+    bottom: 1
   },
 
   /**
@@ -202,7 +202,7 @@ Ext.define("Ext.container.DockingContainer", {
   getDockedItems: function (selector, beforeBody) {
     var dockedItems = this.getComponentLayout().getDockedItems(
       "render",
-      beforeBody,
+      beforeBody
     );
 
     if (selector && dockedItems.length) {
@@ -350,5 +350,5 @@ Ext.define("Ext.container.DockingContainer", {
 
   setupDockingRenderTpl: function (renderTpl) {
     renderTpl.renderDockedItems = this.doRenderDockedItems;
-  },
+  }
 });

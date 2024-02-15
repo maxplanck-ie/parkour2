@@ -30,7 +30,7 @@ Ext.define("Ext.device.compass.Cordova", {
     this.activeWatchID = navigator.compass.watchHeading(
       config.callback,
       config.failure,
-      config,
+      config
     );
     return config;
   },
@@ -40,5 +40,5 @@ Ext.define("Ext.device.compass.Cordova", {
       navigator.compass.clearWatch(this.activeWatchID);
       this.activeWatchID = null;
     }
-  },
+  }
 });

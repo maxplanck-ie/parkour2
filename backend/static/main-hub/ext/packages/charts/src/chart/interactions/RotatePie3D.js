@@ -23,7 +23,7 @@ Ext.define("Ext.chart.interactions.RotatePie3D", {
       direction *
       Math.atan2(
         pageXY[1] - xy[1] - rect[3] * 0.5,
-        pageXY[0] - xy[0] - rect[2] * 0.5,
+        pageXY[0] - xy[0] - rect[2] * 0.5
       )
     );
   },
@@ -58,5 +58,5 @@ Ext.define("Ext.chart.interactions.RotatePie3D", {
     }
 
     return radius;
-  },
+  }
 });

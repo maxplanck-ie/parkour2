@@ -29,7 +29,7 @@ describe("Ext.app.route.Route", function () {
       handleRoute: function () {
         numArgs = arguments.length;
         actionExecuted = true;
-      },
+      }
     });
   });
 
@@ -46,7 +46,7 @@ describe("Ext.app.route.Route", function () {
       var route = new Ext.app.route.Route({
         controller: controller,
         action: "handleRoute",
-        url: "foo/bar",
+        url: "foo/bar"
       });
 
       expect(route.recognize(token)).toBeTruthy();
@@ -58,7 +58,7 @@ describe("Ext.app.route.Route", function () {
         var route = new Ext.app.route.Route({
           controller: controller,
           action: "handleRoute",
-          url: "foo/:id",
+          url: "foo/:id"
         });
 
         expect(route.recognize("foo/123")).toBeTruthy();
@@ -71,8 +71,8 @@ describe("Ext.app.route.Route", function () {
           url: "foo:id",
           conditions: {
             //makes :id param optional
-            ":id": "(?:(?:/){1}([%a-zA-Z0-9-_s,]+))?",
-          },
+            ":id": "(?:(?:/){1}([%a-zA-Z0-9-_s,]+))?"
+          }
         });
 
         expect(route.recognize("foo/123")).toBeTruthy();
@@ -85,7 +85,7 @@ describe("Ext.app.route.Route", function () {
       var route = new Ext.app.route.Route({
           controller: controller,
           action: "handleRoute",
-          url: "foo/bar",
+          url: "foo/bar"
         }),
         args = route.recognize(token);
 
@@ -99,7 +99,7 @@ describe("Ext.app.route.Route", function () {
           controller: controller,
           action: "handleRoute",
           url: "foo/bar",
-          caseInsensitive: true,
+          caseInsensitive: true
         }),
         args = route.recognize("FoO/bAr");
 
@@ -115,7 +115,7 @@ describe("Ext.app.route.Route", function () {
           controller: controller,
           action: "handleRoute",
           before: "beforeHandleRoute",
-          url: "foo/bar",
+          url: "foo/bar"
         }),
         args = route.recognize(token);
 
@@ -129,7 +129,7 @@ describe("Ext.app.route.Route", function () {
           controller: controller,
           action: "handleRoute",
           before: "beforeHandleRouteBlock",
-          url: "foo/bar",
+          url: "foo/bar"
         }),
         args = route.recognize(token);
 
@@ -143,7 +143,7 @@ describe("Ext.app.route.Route", function () {
     var route = new Ext.app.route.Route({
         controller: controller,
         action: "handleRoute",
-        url: "foo/bar",
+        url: "foo/bar"
       }),
       args = route.recognize(token),
       localCallbackExecuted = false;
@@ -161,7 +161,7 @@ describe("Ext.app.route.Route", function () {
           controller: controller,
           action: "handleRoute",
           before: "beforeHandleRoute",
-          url: "foo/:bar",
+          url: "foo/:bar"
         }),
         args = route.recognize(token);
 
@@ -174,7 +174,7 @@ describe("Ext.app.route.Route", function () {
       var route = new Ext.app.route.Route({
           controller: controller,
           action: "handleRoute",
-          url: "foo/:bar",
+          url: "foo/:bar"
         }),
         args = route.recognize(token);
 
@@ -189,7 +189,7 @@ describe("Ext.app.route.Route", function () {
       var route = new Ext.app.route.Route({
         controller: controller,
         action: "handleRoute",
-        url: "foo/:bar",
+        url: "foo/:bar"
       });
 
       controller.deactivate();
@@ -201,7 +201,7 @@ describe("Ext.app.route.Route", function () {
         controller: controller,
         action: "handleRoute",
         url: "foo/:bar",
-        allowInactive: true,
+        allowInactive: true
       });
 
       controller.deactivate();

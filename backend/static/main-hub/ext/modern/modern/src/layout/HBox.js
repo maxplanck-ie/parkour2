@@ -58,6 +58,6 @@ Ext.define("Ext.layout.HBox", {
   alias: "layout.hbox",
 
   config: {
-    vertical: false,
-  },
+    vertical: false
+  }
 });

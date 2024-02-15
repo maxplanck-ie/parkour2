@@ -43,7 +43,7 @@ Ext.define("Ext.form.field.Time", {
     "Ext.form.field.Date",
     "Ext.picker.Time",
     "Ext.view.BoundListKeyNav",
-    "Ext.Date",
+    "Ext.Date"
   ],
   alternateClassName: ["Ext.form.TimeField", "Ext.form.Time"],
 
@@ -205,8 +205,8 @@ Ext.define("Ext.form.field.Time", {
         "</tpl>" +
         "</tpl>",
       {
-        formatDate: me.formatDate.bind(me),
-      },
+        formatDate: me.formatDate.bind(me)
+      }
     );
 
     // Create a store of times.
@@ -307,7 +307,7 @@ Ext.define("Ext.form.field.Time", {
         d.getHours(),
         d.getMinutes(),
         d.getSeconds(),
-        d.getMilliseconds(),
+        d.getMilliseconds()
       );
     }
     // Invalid min/maxValue config should result in a null so that defaulting takes over
@@ -327,7 +327,7 @@ Ext.define("Ext.form.field.Time", {
       hours || 0,
       minutes || 0,
       seconds || 0,
-      0,
+      0
     );
   },
 
@@ -366,7 +366,7 @@ Ext.define("Ext.form.field.Time", {
 
         if (!date) {
           errors.push(
-            format(me.invalidText, item, Ext.Date.unescapeFormat(me.format)),
+            format(me.invalidText, item, Ext.Date.unescapeFormat(me.format))
           );
           continue;
         }
@@ -376,7 +376,7 @@ Ext.define("Ext.form.field.Time", {
       if (!date) {
         // If we don't have any data & a rawValue, it means an invalid time was entered.
         errors.push(
-          format(me.invalidText, raw, Ext.Date.unescapeFormat(me.format)),
+          format(me.invalidText, raw, Ext.Date.unescapeFormat(me.format))
         );
       }
     }
@@ -403,7 +403,7 @@ Ext.define("Ext.form.field.Time", {
 
     for (i = 0, len = items.length; i < len; i++) {
       formatted.push(
-        Ext.form.field.Date.prototype.formatDate.call(this, items[i]),
+        Ext.form.field.Date.prototype.formatDate.call(this, items[i])
       );
     }
 
@@ -455,7 +455,7 @@ Ext.define("Ext.form.field.Time", {
       // Use our initial safe date
       parsedDate = utilDate.parse(
         me.initDate + " " + value,
-        me.initDateFormat + " " + format,
+        me.initDateFormat + " " + format
       );
       if (parsedDate) {
         result = parsedDate;
@@ -491,9 +491,9 @@ Ext.define("Ext.form.field.Time", {
         maxValue: me.maxValue,
         increment: me.increment,
         format: me.format,
-        maxHeight: me.pickerMaxHeight,
+        maxHeight: me.pickerMaxHeight
       },
-      me.listConfig,
+      me.listConfig
     );
     return me.callParent();
   },
@@ -565,5 +565,5 @@ Ext.define("Ext.form.field.Time", {
 
   getValue: function () {
     return this.rawToValue(this.callParent(arguments));
-  },
+  }
 });

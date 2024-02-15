@@ -195,7 +195,7 @@
               "Redefining config as cached: " +
                 name +
                 " in class: " +
-                Cls.$className,
+                Cls.$className
             );
           }
           //</debug>
@@ -562,7 +562,7 @@
                   name +
                   " on " +
                   instance.$className +
-                  " instance.",
+                  " instance."
               );
             }
             //</debug>
@@ -765,7 +765,7 @@
                   name +
                   " on " +
                   instance.$className +
-                  " instance.",
+                  " instance."
               );
               //</debug>
               continue;
@@ -776,7 +776,7 @@
                   'No such config "' +
                     name +
                     '" for class ' +
-                    instance.$className,
+                    instance.$className
                 );
               }
               //</debug>
@@ -849,6 +849,6 @@
       }
 
       return ret;
-    },
+    }
   }; // prototype
 })(); // closure on whole file

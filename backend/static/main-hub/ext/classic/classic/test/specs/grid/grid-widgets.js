@@ -15,8 +15,8 @@ describe("grid-widgets", function () {
         "sequence4",
         "sequence5",
         "sequence6",
-        "sequence7",
-      ],
+        "sequence7"
+      ]
     });
 
   function getRowContextCount() {
@@ -55,7 +55,7 @@ describe("grid-widgets", function () {
         generateSequence(20, 1, 10),
         generateSequence(4, 10, 20),
         generateSequence(),
-        generateSequence(20, -1, 1),
+        generateSequence(20, -1, 1)
       ]);
     }
     return result;
@@ -63,7 +63,7 @@ describe("grid-widgets", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -80,8 +80,8 @@ describe("grid-widgets", function () {
           dataIndex: "progress",
           widget: {
             width: 90,
-            xtype: "button",
-          },
+            xtype: "button"
+          }
         },
         {
           text: "Progress",
@@ -90,8 +90,8 @@ describe("grid-widgets", function () {
           dataIndex: "progress",
           widget: {
             xtype: "progressbarwidget",
-            textTpl: ['{percent:number("0")}% done'],
-          },
+            textTpl: ['{percent:number("0")}% done']
+          }
         },
         {
           text: "Slider",
@@ -102,8 +102,8 @@ describe("grid-widgets", function () {
             xtype: "sliderwidget",
             minValue: 0,
             maxValue: 1,
-            decimalPrecision: 2,
-          },
+            decimalPrecision: 2
+          }
         },
         {
           text: "Line",
@@ -112,8 +112,8 @@ describe("grid-widgets", function () {
           xtype: "widgetcolumn",
           widget: {
             xtype: "sparklineline",
-            tipTpl: 'Value: {y:number("0.00")}',
-          },
+            tipTpl: 'Value: {y:number("0.00")}'
+          }
         },
         {
           text: "Bar",
@@ -121,8 +121,8 @@ describe("grid-widgets", function () {
           dataIndex: "sequence2",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinebar",
-          },
+            xtype: "sparklinebar"
+          }
         },
         {
           text: "Discrete",
@@ -130,8 +130,8 @@ describe("grid-widgets", function () {
           dataIndex: "sequence3",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinediscrete",
-          },
+            xtype: "sparklinediscrete"
+          }
         },
         {
           text: "Bullet",
@@ -139,8 +139,8 @@ describe("grid-widgets", function () {
           dataIndex: "sequence4",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinebullet",
-          },
+            xtype: "sparklinebullet"
+          }
         },
         {
           text: "Pie",
@@ -148,8 +148,8 @@ describe("grid-widgets", function () {
           dataIndex: "sequence5",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinepie",
-          },
+            xtype: "sparklinepie"
+          }
         },
         {
           text: "Box",
@@ -157,8 +157,8 @@ describe("grid-widgets", function () {
           dataIndex: "sequence6",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinebox",
-          },
+            xtype: "sparklinebox"
+          }
         },
         {
           text: "TriState",
@@ -166,9 +166,9 @@ describe("grid-widgets", function () {
           dataIndex: "sequence7",
           xtype: "widgetcolumn",
           widget: {
-            xtype: "sparklinetristate",
-          },
-        },
+            xtype: "sparklinetristate"
+          }
+        }
       ];
     }
 
@@ -178,7 +178,7 @@ describe("grid-widgets", function () {
 
     store = new Ext.data.ArrayStore({
       model: GridModel,
-      data: generateData(recordCount),
+      data: generateData(recordCount)
     });
 
     grid = new Ext.grid.Panel(
@@ -188,20 +188,20 @@ describe("grid-widgets", function () {
           store: store,
           deferRowRender: false,
           lockedGridConfig: {
-            deferRowRender: false,
+            deferRowRender: false
           },
           normalGridConfig: {
-            deferRowRender: false,
+            deferRowRender: false
           },
           width: 1000,
           height: 300,
           viewConfig: {
-            mouseOverOutBuffer: 0,
+            mouseOverOutBuffer: 0
           },
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     view = useLocking ? grid.normalGrid.getView() : grid.getView();
   }
@@ -245,10 +245,10 @@ describe("grid-widgets", function () {
       makeGrid(
         500,
         {
-          plugins: "bufferedrenderer",
+          plugins: "bufferedrenderer"
         },
         null,
-        true,
+        true
       );
 
       waits(100);
@@ -261,12 +261,12 @@ describe("grid-widgets", function () {
               view.bufferedRenderer.scrollTo(400, false, function () {
                 // No widgets should have been created during scroll through the whole dataset
                 expect(Ext.Object.getSize(Ext.ComponentMgr.all)).toBe(
-                  widgetCount,
+                  widgetCount
                 );
 
                 // Only need the requisite number of contexts to map the rendered size
                 expect(getRowContextCount()).toBe(
-                  view.bufferedRenderer.viewSize,
+                  view.bufferedRenderer.viewSize
                 );
               });
             });

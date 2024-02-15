@@ -7,5 +7,5 @@ Ext.define("Ext.field.trigger.SpinDown", {
   alias: "trigger.spindown",
   classCls: Ext.baseCSSPrefix + "spindowntrigger",
   handler: "onSpinDown",
-  scope: "this",
+  scope: "this"
 });

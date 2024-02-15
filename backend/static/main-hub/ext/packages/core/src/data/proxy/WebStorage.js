@@ -14,7 +14,7 @@ Ext.define("Ext.data.proxy.WebStorage", {
      * @cfg {String} id
      * The unique ID used as the key in which all record data are stored in the local storage object.
      */
-    id: undefined,
+    id: undefined
   },
 
   /**
@@ -45,7 +45,7 @@ Ext.define("Ext.data.proxy.WebStorage", {
     //<debug>
     if (this.getStorageObject() === undefined) {
       Ext.raise(
-        "Local Storage is not supported in this browser, please use another type of data proxy",
+        "Local Storage is not supported in this browser, please use another type of data proxy"
       );
     }
     //</debug>
@@ -53,7 +53,7 @@ Ext.define("Ext.data.proxy.WebStorage", {
     //<debug>
     if (this.getId() === undefined) {
       Ext.raise(
-        "No unique id was provided to the local storage proxy. See Ext.data.proxy.LocalStorage documentation for details",
+        "No unique id was provided to the local storage proxy. See Ext.data.proxy.LocalStorage documentation for details"
       );
     }
     //</debug>
@@ -196,8 +196,8 @@ Ext.define("Ext.data.proxy.WebStorage", {
         new Ext.data.ResultSet({
           records: records,
           total: records.length,
-          loaded: true,
-        }),
+          loaded: true
+        })
       );
       operation.setSuccessful(true);
     } else {
@@ -293,7 +293,7 @@ Ext.define("Ext.data.proxy.WebStorage", {
   setRecord: function (record, id) {
     if (id) {
       record.set("id", id, {
-        commit: true,
+        commit: true
       });
     } else {
       id = record.getId();
@@ -575,7 +575,7 @@ Ext.define("Ext.data.proxy.WebStorage", {
     }
 
     me.idGenerator = new Ext.data.identifier.Sequential({
-      seed: lastId ? lastId + 1 : 1,
+      seed: lastId ? lastId + 1 : 1
     });
   },
 
@@ -613,8 +613,8 @@ Ext.define("Ext.data.proxy.WebStorage", {
   getStorageObject: function () {
     //<debug>
     Ext.raise(
-      "The getStorageObject function has not been defined in your Ext.data.proxy.WebStorage subclass",
+      "The getStorageObject function has not been defined in your Ext.data.proxy.WebStorage subclass"
     );
     //</debug>
-  },
+  }
 });

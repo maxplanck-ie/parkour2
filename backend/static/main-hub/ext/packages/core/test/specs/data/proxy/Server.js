@@ -20,10 +20,10 @@ describe("Ext.data.proxy.Server", function () {
       config = {
         extraParams: {
           foo: true,
-          bar: false,
+          bar: false
         },
         reader: reader,
-        writer: writer,
+        writer: writer
       };
       proxy = new ServerProxy(config);
     });
@@ -97,7 +97,7 @@ describe("Ext.data.proxy.Server", function () {
       it("should use the proxy url", function () {
         proxy = new ServerProxy({
           url: "foo",
-          noCache: false,
+          noCache: false
         });
         var request = proxy.buildRequest(new Ext.data.operation.Read());
         expect(request.getUrl()).toBe("foo");
@@ -106,12 +106,12 @@ describe("Ext.data.proxy.Server", function () {
       it("should prefer the operation url", function () {
         proxy = new ServerProxy({
           url: "foo",
-          noCache: false,
+          noCache: false
         });
         var request = proxy.buildRequest(
           new Ext.data.operation.Read({
-            url: "bar",
-          }),
+            url: "bar"
+          })
         );
         expect(request.getUrl()).toBe("bar");
       });
@@ -120,13 +120,13 @@ describe("Ext.data.proxy.Server", function () {
 
   describe("buildUrl", function () {
     var request = new Ext.data.Request({
-        url: "keep",
+        url: "keep"
       }),
       configWithNoCache = {
-        noCache: false,
+        noCache: false
       },
       configWithCacheString = {
-        cacheString: "_cool",
+        cacheString: "_cool"
       };
 
     beforeEach(function () {
@@ -152,7 +152,7 @@ describe("Ext.data.proxy.Server", function () {
       it("should use the url on the proxy as a default", function () {
         proxy = new ServerProxy({
           url: "proxy",
-          noCache: false,
+          noCache: false
         });
         expect(proxy.buildUrl(new Ext.data.Request())).toBe("proxy");
       });
@@ -160,30 +160,30 @@ describe("Ext.data.proxy.Server", function () {
       it("should use the specified api by default", function () {
         proxy = new ServerProxy({
           api: {
-            read: "read",
+            read: "read"
           },
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
-              action: "read",
-            }),
-          ),
+              action: "read"
+            })
+          )
         ).toBe("read");
       });
 
       it("should use the url on the request by default", function () {
         proxy = new ServerProxy({
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
               action: "read",
-              url: "request",
-            }),
-          ),
+              url: "request"
+            })
+          )
         ).toBe("request");
       });
 
@@ -191,16 +191,16 @@ describe("Ext.data.proxy.Server", function () {
         proxy = new ServerProxy({
           url: "proxy",
           api: {
-            read: "read",
+            read: "read"
           },
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
-              action: "update",
-            }),
-          ),
+              action: "update"
+            })
+          )
         ).toBe("proxy");
       });
 
@@ -208,48 +208,48 @@ describe("Ext.data.proxy.Server", function () {
         proxy = new ServerProxy({
           url: "proxy",
           api: {
-            read: "read",
+            read: "read"
           },
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
-              action: "read",
-            }),
-          ),
+              action: "read"
+            })
+          )
         ).toBe("read");
       });
 
       it("should favour the request url over the proxy", function () {
         proxy = new ServerProxy({
           url: "proxy",
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
               action: "update",
-              url: "request",
-            }),
-          ),
+              url: "request"
+            })
+          )
         ).toBe("request");
       });
 
       it("should favour the request url over the api", function () {
         proxy = new ServerProxy({
           api: {
-            read: "read",
+            read: "read"
           },
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
               action: "read",
-              url: "request",
-            }),
-          ),
+              url: "request"
+            })
+          )
         ).toBe("request");
       });
 
@@ -257,17 +257,17 @@ describe("Ext.data.proxy.Server", function () {
         proxy = new ServerProxy({
           url: "proxy",
           api: {
-            read: "read",
+            read: "read"
           },
-          noCache: false,
+          noCache: false
         });
         expect(
           proxy.buildUrl(
             new Ext.data.Request({
               action: "read",
-              url: "request",
-            }),
-          ),
+              url: "request"
+            })
+          )
         ).toBe("request");
       });
     });
@@ -295,8 +295,8 @@ describe("Ext.data.proxy.Server", function () {
 
           grouper: grouper,
           sorters: sorters,
-          filters: filters,
-        }),
+          filters: filters
+        })
       );
     }
 
@@ -354,7 +354,7 @@ describe("Ext.data.proxy.Server", function () {
 
       it("should send a startParam of 0", function () {
         params = getParams(undefined, {
-          start: 0,
+          start: 0
         });
 
         expect(params.start).toBe(0);
@@ -409,7 +409,7 @@ describe("Ext.data.proxy.Server", function () {
     describe("the sort param", function () {
       beforeEach(function () {
         spyOn(Ext.data.proxy.Server.prototype, "encodeSorters").andReturn(
-          "sorters",
+          "sorters"
         );
       });
 
@@ -435,7 +435,7 @@ describe("Ext.data.proxy.Server", function () {
         getParams();
 
         expect(
-          Ext.data.proxy.Server.prototype.encodeSorters,
+          Ext.data.proxy.Server.prototype.encodeSorters
         ).toHaveBeenCalledWith(sorters);
       });
 
@@ -449,7 +449,7 @@ describe("Ext.data.proxy.Server", function () {
     describe("the filter param", function () {
       beforeEach(function () {
         spyOn(Ext.data.proxy.Server.prototype, "encodeFilters").andReturn(
-          "filters",
+          "filters"
         );
       });
 
@@ -475,7 +475,7 @@ describe("Ext.data.proxy.Server", function () {
         getParams();
 
         expect(
-          Ext.data.proxy.Server.prototype.encodeFilters,
+          Ext.data.proxy.Server.prototype.encodeFilters
         ).toHaveBeenCalledWith(filters);
       });
 
@@ -491,12 +491,12 @@ describe("Ext.data.proxy.Server", function () {
     it("should provide a default encoded string", function () {
       var sorter1 = new Ext.util.Sorter({
         property: "name",
-        direction: "ASC",
+        direction: "ASC"
       });
 
       var sorter2 = new Ext.util.Sorter({
         property: "age",
-        direction: "DESC",
+        direction: "DESC"
       });
 
       proxy = new Ext.data.proxy.Server();
@@ -504,12 +504,12 @@ describe("Ext.data.proxy.Server", function () {
       expect(Ext.decode(proxy.encodeSorters([sorter1, sorter2]))).toEqual([
         {
           property: "name",
-          direction: "ASC",
+          direction: "ASC"
         },
         {
           property: "age",
-          direction: "DESC",
-        },
+          direction: "DESC"
+        }
       ]);
     });
   });
@@ -522,13 +522,13 @@ describe("Ext.data.proxy.Server", function () {
 
       filter1 = new Ext.util.Filter({
         property: "name",
-        value: "Ed",
+        value: "Ed"
       });
 
       filter2 = new Ext.util.Filter({
         property: "age",
         value: 25,
-        operator: ">",
+        operator: ">"
       });
     });
 
@@ -540,13 +540,13 @@ describe("Ext.data.proxy.Server", function () {
       expect(Ext.decode(proxy.encodeFilters([filter1, filter2]))).toEqual([
         {
           property: "name",
-          value: "Ed",
+          value: "Ed"
         },
         {
           property: "age",
           value: 25,
-          operator: ">",
-        },
+          operator: ">"
+        }
       ]);
     });
 
@@ -554,18 +554,18 @@ describe("Ext.data.proxy.Server", function () {
       var f = new Ext.util.Filter({
         filterFn: function () {
           return true;
-        },
+        }
       });
       expect(Ext.decode(proxy.encodeFilters([filter1, f, filter2]))).toEqual([
         {
           property: "name",
-          value: "Ed",
+          value: "Ed"
         },
         {
           property: "age",
           value: 25,
-          operator: ">",
-        },
+          operator: ">"
+        }
       ]);
     });
 
@@ -580,14 +580,14 @@ describe("Ext.data.proxy.Server", function () {
         it("should encode " + v, function () {
           var f = new Ext.util.Filter({
             property: "name",
-            value: value,
+            value: value
           });
 
           expect(Ext.decode(proxy.encodeFilters([f]))).toEqual([
             {
               property: "name",
-              value: value,
-            },
+              value: value
+            }
           ]);
         });
       }
@@ -607,7 +607,7 @@ describe("Ext.data.proxy.Server", function () {
 
       expect(Ext.decode(proxy.encodeSorters([grouper], true))).toEqual({
         property: "name",
-        direction: "ASC",
+        direction: "ASC"
       });
     });
   });
@@ -622,14 +622,14 @@ describe("Ext.data.proxy.Server", function () {
     beforeEach(function () {
       model = Ext.define(modelName, {
         extend: "Ext.data.Model",
-        fields: ["id"],
+        fields: ["id"]
       });
     });
 
     describe("set the proxy's reader by reader instance", function () {
       beforeEach(function () {
         config = {
-          reader: reader,
+          reader: reader
         };
         proxy = new ServerProxy(config);
       });
@@ -655,7 +655,7 @@ describe("Ext.data.proxy.Server", function () {
           reader: sreader,
           proxy: proxy,
           model: model,
-          defaultReaderType: defaultReaderType,
+          defaultReaderType: defaultReaderType
         };
         proxy = new ServerProxy(config);
       });
@@ -680,14 +680,14 @@ describe("Ext.data.proxy.Server", function () {
     beforeEach(function () {
       model = Ext.define(modelName, {
         extend: "Ext.data.Model",
-        fields: ["id"],
+        fields: ["id"]
       });
     });
 
     describe("set the proxy's writer by writer instance", function () {
       beforeEach(function () {
         config = {
-          writer: writer,
+          writer: writer
         };
         proxy = new ServerProxy(config);
       });
@@ -712,7 +712,7 @@ describe("Ext.data.proxy.Server", function () {
         config = {
           writer: swriter,
           model: model,
-          defaultWriterType: defaultWriterType,
+          defaultWriterType: defaultWriterType
         };
         proxy = new ServerProxy(config);
       });
@@ -733,7 +733,7 @@ describe("Ext.data.proxy.Server", function () {
     beforeEach(function () {
       config = {
         reader: reader,
-        writer: writer,
+        writer: writer
       };
       proxy = new ServerProxy(config);
     });

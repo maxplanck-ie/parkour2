@@ -75,7 +75,7 @@ Ext.define("Ext.form.Label", {
 
     me.html = me.text ? Ext.util.Format.htmlEncode(me.text) : me.html || "";
     return Ext.apply(me.callParent(), {
-      htmlFor: me.forId || "",
+      htmlFor: me.forId || ""
     });
   },
 
@@ -105,5 +105,5 @@ Ext.define("Ext.form.Label", {
       me.updateLayout();
     }
     return me;
-  },
+  }
 });

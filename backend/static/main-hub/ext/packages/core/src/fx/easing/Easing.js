@@ -6,5 +6,5 @@ Ext.define("Ext.fx.easing.Easing", {
 
   constructor: function (easing) {
     return Ext.factory(easing, Ext.fx.easing.Linear, null, "easing");
-  },
+  }
 });

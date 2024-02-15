@@ -34,11 +34,11 @@ export default class Noty {
       afterClose: [],
       onClick: [],
       onHover: [],
-      onTemplate: [],
+      onTemplate: []
     };
     this.promises = {
       show: null,
-      close: null,
+      close: null
     };
     this.on("beforeShow", this.options.callbacks.beforeShow);
     this.on("onShow", this.options.callbacks.onShow);
@@ -140,7 +140,7 @@ export default class Noty {
     if (API.hasButtons(this)) {
       Object.keys(this.options.buttons).forEach((key) => {
         const btn = this.barDom.querySelector(
-          `#${this.options.buttons[key].id}`,
+          `#${this.options.buttons[key].id}`
         );
         Utils.addListener(btn, "click", (e) => {
           Utils.stopPropagation(e);
@@ -161,7 +161,7 @@ export default class Noty {
           API.fire(this, "onClick");
           this.close();
         },
-        false,
+        false
       );
     }
 
@@ -171,7 +171,7 @@ export default class Noty {
       () => {
         API.fire(this, "onHover");
       },
-      false,
+      false
     );
 
     if (this.options.timeout) Utils.addClass(this.barDom, "noty_has_timeout");
@@ -194,7 +194,7 @@ export default class Noty {
           Utils.stopPropagation(e);
           this.close();
         },
-        false,
+        false
       );
     }
 
@@ -350,7 +350,7 @@ export default class Noty {
       });
     } else if (typeof this.options.animation.close === "function") {
       this.promises.close = new Promise(
-        this.options.animation.close.bind(this),
+        this.options.animation.close.bind(this)
       );
     } else {
       Utils.addClass(this.barDom, this.options.animation.close);

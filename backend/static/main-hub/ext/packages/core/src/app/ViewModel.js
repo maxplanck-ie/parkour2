@@ -355,7 +355,7 @@ Ext.define("Ext.app.ViewModel", {
     "Ext.app.bind.TemplateBinding",
     // TODO: this is an injected dependency in onStoreBind, need to define so
     // cmd can detect it
-    "Ext.data.ChainedStore",
+    "Ext.data.ChainedStore"
   ],
 
   alias: "viewmodel.default", // also configures Factoryable
@@ -363,7 +363,7 @@ Ext.define("Ext.app.ViewModel", {
   isViewModel: true,
 
   factoryConfig: {
-    name: "viewModel",
+    name: "viewModel"
   },
 
   collectTimeout: 100,
@@ -399,7 +399,7 @@ Ext.define("Ext.app.ViewModel", {
       $value: null,
       merge: function (newValue, currentValue, target, mixinClass) {
         return this.mergeNew(newValue, currentValue, target, mixinClass);
-      },
+      }
     },
 
     /**
@@ -553,7 +553,7 @@ Ext.define("Ext.app.ViewModel", {
      * The Container that owns this `ViewModel` instance.
      * @since 5.0.0
      */
-    view: null,
+    view: null
   },
 
   constructor: function (config) {
@@ -713,7 +713,7 @@ Ext.define("Ext.app.ViewModel", {
         me,
         callback,
         scope,
-        options,
+        options
       );
     } else if (me.expressionRe.test(descriptor)) {
       // If we have '{foo}' alone it is a literal
@@ -726,7 +726,7 @@ Ext.define("Ext.app.ViewModel", {
         me,
         callback,
         scope,
-        options,
+        options
       );
     }
 
@@ -796,7 +796,7 @@ Ext.define("Ext.app.ViewModel", {
     if (reference.isModel) {
       reference = {
         type: reference.entityName,
-        id: reference.id,
+        id: reference.id
       };
     }
     // reference is backwards compat, type is preferred.
@@ -808,7 +808,7 @@ Ext.define("Ext.app.ViewModel", {
       //<debug>
       if (!reference.create && Ext.isEmpty(id)) {
         Ext.raise(
-          'No id specified. To create a phantom model, specify "create: true" as part of the reference.',
+          'No id specified. To create a phantom model, specify "create: true" as part of the reference.'
         );
       }
       //</debug>
@@ -983,7 +983,7 @@ Ext.define("Ext.app.ViewModel", {
         if (!(parent = me.getParent())) {
           scheduler = new Ext.util.Scheduler({
             // See Session#scheduler
-            preSort: "kind,-depth",
+            preSort: "kind,-depth"
           });
           scheduler.$owner = me;
         } else {
@@ -1135,7 +1135,7 @@ Ext.define("Ext.app.ViewModel", {
           continue;
         } else if (Ext.isString(cfg)) {
           cfg = {
-            source: cfg,
+            source: cfg
           };
         } else {
           cfg = Ext.apply({}, cfg);
@@ -1277,8 +1277,8 @@ Ext.define("Ext.app.ViewModel", {
       }
       me.$formulaData = data;
       return fn;
-    },
+    }
 
     // </editor-fold>
-  },
+  }
 });

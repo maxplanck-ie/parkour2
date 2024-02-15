@@ -14,7 +14,7 @@ describe("Ext.state.Stateful", function () {
 
       set: function (id, value) {
         stateData[id] = value;
-      },
+      }
     };
 
     makeComponent = function (cfg) {
@@ -62,18 +62,18 @@ describe("Ext.state.Stateful", function () {
     it("should not restore state if the component isn't stateful", function () {
       makeComponent({
         stateful: false,
-        stateId: "comp",
+        stateId: "comp"
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestaterestore: o.f1,
-        staterestore: o.f2,
+        staterestore: o.f2
       });
 
       comp.initState();
@@ -85,14 +85,14 @@ describe("Ext.state.Stateful", function () {
       makeComponent({ stateful: true });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestaterestore: o.f1,
-        staterestore: o.f2,
+        staterestore: o.f2
       });
 
       comp.initState();
@@ -103,18 +103,18 @@ describe("Ext.state.Stateful", function () {
     it("should not restore if there is no state data and stateful", function () {
       makeComponent({
         stateId: "comp",
-        stateful: true,
+        stateful: true
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestaterestore: o.f1,
-        staterestore: o.f2,
+        staterestore: o.f2
       });
 
       comp.initState();
@@ -125,21 +125,21 @@ describe("Ext.state.Stateful", function () {
     it("should not restore the state if beforestaterestore returns false and stateful", function () {
       makeComponent({
         stateId: "comp",
-        stateful: true,
+        stateful: true
       });
       Ext.state.Manager.set("comp", {
-        someVar: true,
+        someVar: true
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1").andReturn(false),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestaterestore: o.f1,
-        staterestore: o.f2,
+        staterestore: o.f2
       });
 
       comp.initState();
@@ -150,21 +150,21 @@ describe("Ext.state.Stateful", function () {
     it("should restore the state if all the appropriate conditions are met", function () {
       makeComponent({
         id: "comp",
-        stateful: true,
+        stateful: true
       });
       Ext.state.Manager.set("comp", {
-        someVar: true,
+        someVar: true
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestaterestore: o.f1,
-        staterestore: o.f2,
+        staterestore: o.f2
       });
 
       comp.initState();
@@ -177,7 +177,7 @@ describe("Ext.state.Stateful", function () {
   describe("state save", function () {
     var stateFn = function () {
       return {
-        param: 1,
+        param: 1
       };
     };
 
@@ -185,18 +185,18 @@ describe("Ext.state.Stateful", function () {
       makeComponent({
         stateful: false,
         stateId: "comp",
-        getState: stateFn,
+        getState: stateFn
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestatesave: o.f1,
-        statesave: o.f2,
+        statesave: o.f2
       });
 
       comp.saveState();
@@ -207,18 +207,18 @@ describe("Ext.state.Stateful", function () {
     it("should not save state if there is no stateId or autoGenId", function () {
       makeComponent({
         getState: stateFn,
-        stateful: true,
+        stateful: true
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestatesave: o.f1,
-        statesave: o.f2,
+        statesave: o.f2
       });
 
       comp.saveState();
@@ -230,21 +230,21 @@ describe("Ext.state.Stateful", function () {
       makeComponent({
         stateId: "comp",
         stateful: true,
-        getState: stateFn,
+        getState: stateFn
       });
       Ext.state.Manager.set("comp", {
-        someVar: true,
+        someVar: true
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1").andReturn(false),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestatesave: o.f1,
-        statesave: o.f2,
+        statesave: o.f2
       });
 
       comp.saveState();
@@ -256,25 +256,25 @@ describe("Ext.state.Stateful", function () {
       makeComponent({
         stateId: "comp",
         stateful: true,
-        getState: stateFn,
+        getState: stateFn
       });
       var o = {
         f1: function () {},
-        f2: function () {},
+        f2: function () {}
       };
       var spy1 = spyOn(o, "f1"),
         spy2 = spyOn(o, "f2");
 
       comp.on({
         beforestatesave: o.f1,
-        statesave: o.f2,
+        statesave: o.f2
       });
 
       comp.saveState();
       expect(spy1).toHaveBeenCalled();
       expect(spy2).toHaveBeenCalled();
       expect(Ext.state.Manager.get("comp")).toEqual({
-        param: 1,
+        param: 1
       });
     });
   });
@@ -285,10 +285,10 @@ describe("Ext.state.Stateful", function () {
         stateEvents: ["enable", "disable"],
         stateId: "comp",
         stateful: true,
-        saveDelay: 0,
+        saveDelay: 0
       });
       var o = {
-        fn: function () {},
+        fn: function () {}
       };
       spyOn(o, "fn");
       comp.on("statesave", o.fn);
@@ -301,10 +301,10 @@ describe("Ext.state.Stateful", function () {
         stateEvents: ["enable"],
         stateId: "comp",
         stateful: true,
-        saveDelay: 0,
+        saveDelay: 0
       });
       var o = {
-        fn: function () {},
+        fn: function () {}
       };
       spyOn(o, "fn");
       comp.on("statesave", o.fn);
@@ -317,10 +317,10 @@ describe("Ext.state.Stateful", function () {
         stateEvents: ["disable"],
         stateId: "comp",
         stateful: true,
-        saveDelay: 1,
+        saveDelay: 1
       });
       var o = {
-        fn: function () {},
+        fn: function () {}
       };
       spyOn(o, "fn");
       comp.on("statesave", o.fn);
@@ -338,7 +338,7 @@ describe("Ext.state.Stateful", function () {
   describe("getStateId", function () {
     it("should return a stateId if specified", function () {
       makeComponent({
-        stateId: "foo",
+        stateId: "foo"
       });
       expect(comp.getStateId()).toBe("foo");
     });
@@ -350,7 +350,7 @@ describe("Ext.state.Stateful", function () {
 
     it("should return the id if the id is not auto generated (implicitID = true)", function () {
       makeComponent({
-        id: "bar",
+        id: "bar"
       });
       expect(comp.getStateId()).toBe("bar");
     });
@@ -376,8 +376,8 @@ describe("Ext.state.Stateful", function () {
         defaults: { flex: 1 },
         items: [
           { xtype: "panel", html: "first item", itemId: "first" },
-          { xtype: "panel", html: "second item", itemId: "second" },
-        ],
+          { xtype: "panel", html: "second item", itemId: "second" }
+        ]
       });
     });
 

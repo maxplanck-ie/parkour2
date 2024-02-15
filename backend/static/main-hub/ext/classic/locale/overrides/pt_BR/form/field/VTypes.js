@@ -5,5 +5,5 @@ Ext.define("Ext.locale.pt_BR.form.field.VTypes", {
   urlText:
     'Este campo deve ser uma URL no formato "http:/' + '/www.dominio.com.br"',
   alphaText: "Este campo deve conter apenas letras e _",
-  alphanumText: "Este campo deve conter apenas letras, números e _",
+  alphanumText: "Este campo deve conter apenas letras, números e _"
 });

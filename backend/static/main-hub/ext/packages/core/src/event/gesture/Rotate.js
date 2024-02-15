@@ -103,13 +103,13 @@ Ext.define(
           me.fire("rotatestart", e, {
             touches: touches,
             angle: angle,
-            rotation: 0,
+            rotation: 0
           });
         } else {
           me.fire("rotate", e, {
             touches: touches,
             angle: angle,
-            rotation: angle - me.startAngle,
+            rotation: angle - me.startAngle
           });
         }
 
@@ -135,10 +135,10 @@ Ext.define(
       me.lastTouches = me.lastAngle = me.startAngle = null;
 
       return this.callParent();
-    },
+    }
   },
   function (Rotate) {
     var gestures = Ext.manifest.gestures;
     Rotate.instance = new Rotate(gestures && gestures.rotate);
-  },
+  }
 );

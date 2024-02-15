@@ -14,5 +14,5 @@ Ext.define("Ext.sparkline.Shape", {
   append: function () {
     this.target.appendShape(this);
     return this;
-  },
+  }
 });

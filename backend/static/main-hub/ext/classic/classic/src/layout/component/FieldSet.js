@@ -46,7 +46,7 @@ Ext.define("Ext.layout.component.FieldSet", {
       if (ownerContext.widthModel.shrinkWrap) {
         lastSize = this.lastComponentSize;
         ownerContext.setContentWidth(
-          (lastSize && lastSize.contentWidth) || this.defaultCollapsedWidth,
+          (lastSize && lastSize.contentWidth) || this.defaultCollapsedWidth
         );
       }
     }
@@ -72,7 +72,7 @@ Ext.define("Ext.layout.component.FieldSet", {
 
   calculateOwnerHeightFromContentHeight: function (
     ownerContext,
-    contentHeight,
+    contentHeight
   ) {
     var border = ownerContext.getBorderInfo(),
       legendContext = ownerContext.legendContext;
@@ -109,5 +109,5 @@ Ext.define("Ext.layout.component.FieldSet", {
   getLayoutItems: function () {
     var legend = this.owner.legend;
     return legend ? [legend] : [];
-  },
+  }
 });

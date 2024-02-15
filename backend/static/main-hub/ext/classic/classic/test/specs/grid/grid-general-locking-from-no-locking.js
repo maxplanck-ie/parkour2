@@ -60,12 +60,12 @@ describe("grid-generallocking-from-no-locking", function () {
         columns: [
           {
             dataIndex: "name",
-            text: "Name",
+            text: "Name"
           },
           {
             dataIndex: "age",
-            text: "Age",
-          },
+            text: "Age"
+          }
         ],
         selType: "checkboxmodel",
 
@@ -75,12 +75,12 @@ describe("grid-generallocking-from-no-locking", function () {
           fields: [
             {
               name: "name",
-              type: "string",
+              type: "string"
             },
             {
               name: "age",
-              type: "int",
-            },
+              type: "int"
+            }
           ],
           data: (function () {
             var data = [];
@@ -88,13 +88,13 @@ describe("grid-generallocking-from-no-locking", function () {
             while (len--) {
               data.unshift({
                 name: "User " + len,
-                age: Ext.Number.randomInt(0, 100),
+                age: Ext.Number.randomInt(0, 100)
               });
             }
             return data;
-          })(),
+          })()
         },
-        bbar: ["->", Ext.versions.extjs.version],
+        bbar: ["->", Ext.versions.extjs.version]
       });
       ageColumn = grid.down("gridcolumn[text=Age]");
       nameColumn = grid.down("gridcolumn[text=Name]");
@@ -139,7 +139,7 @@ describe("grid-generallocking-from-no-locking", function () {
         scroller.on({
           scrollend: function () {
             scrollFinished = true;
-          },
+          }
         });
 
         scroller.scrollBy(0, 100);
@@ -149,7 +149,7 @@ describe("grid-generallocking-from-no-locking", function () {
             return scrollFinished;
           },
           "scroll to be handled",
-          500,
+          500
         );
 
         // No errors must have been caught
@@ -174,7 +174,7 @@ describe("grid-generallocking-from-no-locking", function () {
 
       // Checkbox should have migrated to the locked side.
       expect(
-        grid.lockedGrid.getVisibleColumnManager().getColumns().length,
+        grid.lockedGrid.getVisibleColumnManager().getColumns().length
       ).toBe(2);
 
       // We want nothing more to happen here.
@@ -192,7 +192,7 @@ describe("grid-generallocking-from-no-locking", function () {
 
         // Checkbox should have migrated to the normal side.
         expect(
-          grid.normalGrid.getVisibleColumnManager().getColumns().length,
+          grid.normalGrid.getVisibleColumnManager().getColumns().length
         ).toBe(3);
       });
 

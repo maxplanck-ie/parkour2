@@ -4,7 +4,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
 
   requires: [
     "MainHub.view.flowcell.FlowcellWindow",
-    "MainHub.view.flowcell.PoolInfoWindow",
+    "MainHub.view.flowcell.PoolInfoWindow"
   ],
 
   mixins: ["MainHub.grid.SearchInputMixin"],
@@ -12,40 +12,40 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       parkourmonthpicker: {
-        select: "selectMonth",
+        select: "selectMonth"
       },
       "#flowcells-grid": {
         resize: "resize",
         itemcontextmenu: "showMenu",
         groupcontextmenu: "showGroupMenu",
         cellclick: "showPoolInfo",
-        edit: "editRecord",
+        edit: "editRecord"
       },
       "#check-column": {
-        beforecheckchange: "selectRecord",
+        beforecheckchange: "selectRecord"
       },
       "#load-button": {
-        click: "onLoadBtnClick",
+        click: "onLoadBtnClick"
       },
       "#download-benchtop-protocol-button": {
-        click: "downloadBenchtopProtocol",
+        click: "downloadBenchtopProtocol"
       },
       "#download-sample-sheet-button": {
-        click: "downloadSampleSheet",
+        click: "downloadSampleSheet"
       },
       "#search-field": {
-        change: "changeFilter",
+        change: "changeFilter"
       },
       "#cancel-button": {
-        click: "cancel",
+        click: "cancel"
       },
       "#save-button": {
-        click: "save",
-      },
-    },
+        click: "save"
+      }
+    }
   },
 
   activateView: function (view) {
@@ -63,7 +63,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "select",
       startMonthPicker,
       defaultStartDate,
-      "start",
+      "start"
     );
     endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
   },
@@ -97,7 +97,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     store.reload({
       callback: function () {
         grid.getView().features[0].collapseAll();
-      },
+      }
     });
   },
 
@@ -108,7 +108,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       if (record.get("flowcell") !== selectedLane.get("flowcell")) {
         new Noty({
           text: "You can only select lanes from the same flowcell.",
-          type: "warning",
+          type: "warning"
         }).show();
         return false;
       }
@@ -122,7 +122,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     if (selectedRecords.length > 0 && selectedRecords[0].flowcell !== groupId) {
       new Noty({
         text: "You can only select lanes from the same flowcell.",
-        type: "warning",
+        type: "warning"
       }).show();
       return false;
     }
@@ -171,7 +171,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     if (selectedLanes.length === 0) {
       new Noty({
         text: "You did not select any lanes.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -180,8 +180,8 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     form.submit({
       url: "api/flowcells/download_benchtop_protocol/",
       params: {
-        ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk")),
-      },
+        ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk"))
+      }
     });
   },
 
@@ -192,7 +192,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     if (selectedLanes.length === 0) {
       new Noty({
         text: "You did not select any lanes.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -202,8 +202,8 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       url: "api/flowcells/download_sample_sheet/",
       params: {
         ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk")),
-        flowcell_id: selectedLanes[0].flowcell,
-      },
+        flowcell_id: selectedLanes[0].flowcell
+      }
     });
   },
 
@@ -211,7 +211,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     if (e.getTarget(".pool-name") !== null) {
       Ext.create("MainHub.view.flowcell.PoolInfoWindow", {
         title: record.get("pool_name"),
-        pool: record.get("pool"),
+        pool: record.get("pool")
       });
     }
   },
@@ -223,11 +223,11 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       if (item.get("selected")) {
         records.push({
           pk: item.get("pk"),
-          flowcell: item.get("flowcell"),
+          flowcell: item.get("flowcell")
         });
       }
     });
 
     return records;
-  },
+  }
 });

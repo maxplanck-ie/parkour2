@@ -25,7 +25,7 @@ describe("Ext.dom.Query", function () {
       '<span id="myspan" class="myclass isSpan">' +
         '<span id="AAA" class="beginning">some</span>' +
         '<span id="BBB" class="ending">text</span>' +
-        "</span>",
+        "</span>"
     ],
     content = defs.join(""),
     elem,
@@ -405,7 +405,7 @@ describe("Ext.dom.Query", function () {
             '<y:b xmlns:y="yns">y1</y:b>',
             '<x:b xmlns:x="xns">x2</x:b>',
             '<y:b xmlns:y="yns">y2</y:b>',
-            "</a>",
+            "</a>"
           ].join("");
 
           if (typeof DOMParser != "undefined") {

@@ -72,7 +72,7 @@ Ext.define("Ext.chart.series.Polar", {
 
     xAxis: null,
 
-    yAxis: null,
+    yAxis: null
   },
 
   directions: ["X", "Y"],
@@ -81,7 +81,7 @@ Ext.define("Ext.chart.series.Polar", {
 
   deprecatedConfigs: {
     field: "angleField",
-    lengthField: "radiusField",
+    lengthField: "radiusField"
   },
 
   constructor: function (config) {
@@ -98,7 +98,7 @@ Ext.define("Ext.chart.series.Polar", {
               p +
               "' config has been deprecated. Please use the '" +
               me.deprecatedConfigs[p] +
-              "' config instead.",
+              "' config instead."
           );
         }
       }
@@ -155,7 +155,7 @@ Ext.define("Ext.chart.series.Polar", {
       centerX: 0,
       centerY: 0,
       rotationCenterX: 0,
-      rotationCenterY: 0,
+      rotationCenterY: 0
     };
   },
 
@@ -167,8 +167,8 @@ Ext.define("Ext.chart.series.Polar", {
     var sprites = this.getSprites();
     if (sprites && sprites[0]) {
       sprites[0].setAttributes({
-        baseRotation: rotation,
+        baseRotation: rotation
       });
     }
-  },
+  }
 });

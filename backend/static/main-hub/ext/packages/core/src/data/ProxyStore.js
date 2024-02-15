@@ -29,7 +29,7 @@ Ext.define("Ext.data.ProxyStore", {
     "Ext.data.Model",
     "Ext.data.proxy.Proxy",
     "Ext.data.proxy.Memory",
-    "Ext.data.operation.*",
+    "Ext.data.operation.*"
   ],
 
   config: {
@@ -134,7 +134,7 @@ Ext.define("Ext.data.ProxyStore", {
      *
      * @since 6.0.1
      */
-    asynchronousLoad: undefined,
+    asynchronousLoad: undefined
   },
 
   onClassExtended: function (cls, data, hooks) {
@@ -262,7 +262,7 @@ Ext.define("Ext.data.ProxyStore", {
           " The name '",
           configModel,
           "'",
-          " does not correspond to a valid model.",
+          " does not correspond to a valid model."
         );
       }
 
@@ -329,14 +329,14 @@ Ext.define("Ext.data.ProxyStore", {
           if (Ext.isString(proxy)) {
             proxy = {
               type: proxy,
-              model: model,
+              model: model
             };
           } else if (!proxy.model) {
             proxy = Ext.apply(
               {
-                model: model,
+                model: model
               },
-              proxy,
+              proxy
             );
           }
 
@@ -639,7 +639,7 @@ Ext.define("Ext.data.ProxyStore", {
     //<debug>
     if (me.isSyncing) {
       Ext.log.warn(
-        "Sync called while a sync operation is in progress. Consider configuring autoSync as false.",
+        "Sync called while a sync operation is in progress. Consider configuring autoSync as false."
       );
     }
     //</debug>
@@ -669,8 +669,8 @@ Ext.define("Ext.data.ProxyStore", {
       me.proxy.batch(
         Ext.apply(options, {
           operations: operations,
-          listeners: me.getBatchListeners(),
-        }),
+          listeners: me.getBatchListeners()
+        })
       );
     }
 
@@ -688,7 +688,7 @@ Ext.define("Ext.data.ProxyStore", {
       listeners = {
         scope: me,
         exception: me.onBatchException,
-        complete: me.onBatchComplete,
+        complete: me.onBatchComplete
       };
 
     if (me.batchUpdateMode === "operation") {
@@ -749,7 +749,7 @@ Ext.define("Ext.data.ProxyStore", {
     // Legacy option. Specifying a function was allowed.
     if (typeof options === "function") {
       options = {
-        callback: options,
+        callback: options
       };
     } else {
       // We may mutate the options object in setLoadOptions.
@@ -797,9 +797,9 @@ Ext.define("Ext.data.ProxyStore", {
       {
         internalScope: me,
         internalCallback: me.onProxyLoad,
-        scope: me,
+        scope: me
       },
-      options,
+      options
     );
     me.lastOptions = operation;
 
@@ -913,7 +913,7 @@ Ext.define("Ext.data.ProxyStore", {
         me,
         record,
         Ext.data.Model.COMMIT,
-        modifiedFieldNames,
+        modifiedFieldNames
       );
     }
   },
@@ -991,7 +991,7 @@ Ext.define("Ext.data.ProxyStore", {
     //<debug>
     if (!me.autoSyncSuspended) {
       Ext.log.warn(
-        "Mismatched call to resumeAutoSync - auto synchronization is currently not suspended.",
+        "Mismatched call to resumeAutoSync - auto synchronization is currently not suspended."
       );
     }
     //</debug>
@@ -1067,7 +1067,7 @@ Ext.define("Ext.data.ProxyStore", {
           scope: me,
           destroyable: true,
           beginprocessresponse: me.beginUpdate,
-          endprocessresponse: me.endUpdate,
+          endprocessresponse: me.endUpdate
         };
 
         if (!me.disableMetaChangeEvent) {
@@ -1083,8 +1083,8 @@ Ext.define("Ext.data.ProxyStore", {
         modelCfg = {
           extend: me.implicitModel,
           statics: {
-            defaultProxy: "memory",
-          },
+            defaultProxy: "memory"
+          }
         },
         proxy,
         model;
@@ -1140,6 +1140,6 @@ Ext.define("Ext.data.ProxyStore", {
           options.sorters = sorters.getRange();
         }
       }
-    },
-  },
+    }
+  }
 });

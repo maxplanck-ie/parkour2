@@ -15,7 +15,7 @@ Ext.define("Ext.form.field.Trigger", {
   alternateClassName: [
     "Ext.form.TriggerField",
     "Ext.form.TwinTriggerField",
-    "Ext.form.Trigger",
+    "Ext.form.Trigger"
   ],
 
   /**
@@ -35,10 +35,10 @@ Ext.define("Ext.form.field.Trigger", {
       //<debug>
       // TODO: can we make this warning depend on compat level?
       Ext.log.warn(
-        "Ext.form.field.Trigger is deprecated. Use Ext.form.field.Text instead.",
+        "Ext.form.field.Trigger is deprecated. Use Ext.form.field.Text instead."
       );
       //</debug>
-    },
+    }
   },
 
   onClassExtended: function () {
@@ -48,5 +48,5 @@ Ext.define("Ext.form.field.Trigger", {
   constructor: function (config) {
     this.self.warnDeprecated();
     this.callParent([config]);
-  },
+  }
 });

@@ -498,7 +498,7 @@ Ext.define("Ext.form.field.Number", {
 
     if (!me.readOnly) {
       me.setSpinValue(
-        Ext.Number.constrain(me.getValue() + me.step, me.minValue, me.maxValue),
+        Ext.Number.constrain(me.getValue() + me.step, me.minValue, me.maxValue)
       );
     }
   },
@@ -517,7 +517,7 @@ Ext.define("Ext.form.field.Number", {
 
     if (!me.readOnly) {
       me.setSpinValue(
-        Ext.Number.constrain(me.getValue() - me.step, me.minValue, me.maxValue),
+        Ext.Number.constrain(me.getValue() - me.step, me.minValue, me.maxValue)
       );
     }
   },
@@ -533,5 +533,5 @@ Ext.define("Ext.form.field.Number", {
       }
     }
     me.setValue(value);
-  },
+  }
 });

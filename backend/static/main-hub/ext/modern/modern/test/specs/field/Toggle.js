@@ -19,7 +19,7 @@ describe("Ext.field.Toggle", function () {
       describe("checked", function () {
         beforeEach(function () {
           createField({
-            value: 1,
+            value: 1
           });
         });
 

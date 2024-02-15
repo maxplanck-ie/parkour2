@@ -36,9 +36,9 @@ describe("Ext.toolbar.Paging", function () {
         reader: {
           type: "json",
           rootProperty: "data",
-          totalProperty: "total",
-        },
-      },
+          totalProperty: "total"
+        }
+      }
     });
     return store;
   }
@@ -53,20 +53,20 @@ describe("Ext.toolbar.Paging", function () {
 
     for (i = start; i < limit; ++i) {
       data.push({
-        name: "Item " + (i + 1),
+        name: "Item " + (i + 1)
       });
     }
 
     return Ext.encode({
       data: data,
-      total: total,
+      total: total
     });
   }
 
   function mockComplete(responseText, status) {
     Ext.Ajax.mockComplete({
       status: status || 200,
-      responseText: responseText,
+      responseText: responseText
     });
   }
 
@@ -76,7 +76,7 @@ describe("Ext.toolbar.Paging", function () {
 
     Ext.define("spec.PagingToolbarModel", {
       extend: "Ext.data.Model",
-      fields: ["name"],
+      fields: ["name"]
     });
     MockAjaxManager.addMethods();
   });
@@ -109,13 +109,13 @@ describe("Ext.toolbar.Paging", function () {
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
 
         bbar: {
-          xtype: "pagingtoolbar",
-        },
+          xtype: "pagingtoolbar"
+        }
       });
     });
 
@@ -146,7 +146,7 @@ describe("Ext.toolbar.Paging", function () {
     it("should be able to create without a store", function () {
       expect(function () {
         makeToolbar({
-          store: null,
+          store: null
         });
       }).not.toThrow();
     });
@@ -154,7 +154,7 @@ describe("Ext.toolbar.Paging", function () {
     it("should accept a store instance", function () {
       store = makeStore();
       makeToolbar({
-        store: store,
+        store: store
       });
       expect(tb.getStore()).toBe(store);
     });
@@ -162,8 +162,8 @@ describe("Ext.toolbar.Paging", function () {
     it("should accept a store config", function () {
       makeToolbar({
         store: {
-          model: "spec.PagingToolbarModel",
-        },
+          model: "spec.PagingToolbarModel"
+        }
       });
       expect(tb.getStore().model).toBe(spec.PagingToolbarModel);
     });
@@ -171,7 +171,7 @@ describe("Ext.toolbar.Paging", function () {
     it("should accept a store id", function () {
       store = makeStore();
       makeToolbar({
-        store: "pagingToolbarStore",
+        store: "pagingToolbarStore"
       });
       expect(tb.getStore()).toBe(store);
     });
@@ -181,7 +181,7 @@ describe("Ext.toolbar.Paging", function () {
       store.loadPage(2);
       mockComplete(makeData(20, 5));
       makeToolbar({
-        store: store,
+        store: store
       });
       expect(tb.down("#inputItem").getValue()).toBe(2);
     });
@@ -191,7 +191,7 @@ describe("Ext.toolbar.Paging", function () {
       store.loadPage(1);
       mockComplete(makeData(20, 10));
       makeToolbar({
-        store: store,
+        store: store
       });
       expect(tb.down("#afterTextItem").el.dom.innerHTML).toBe("of 4");
     });
@@ -210,7 +210,7 @@ describe("Ext.toolbar.Paging", function () {
       store.load();
       mockComplete(makeData(20, 10));
       makeToolbar({
-        store: store,
+        store: store
       });
 
       expect(tb.getPageData()).toEqual({
@@ -218,7 +218,7 @@ describe("Ext.toolbar.Paging", function () {
         currentPage: 1,
         pageCount: 1,
         fromRecord: 1,
-        toRecord: 20,
+        toRecord: 20
       });
     });
   });
@@ -229,9 +229,9 @@ describe("Ext.toolbar.Paging", function () {
         items: [
           {
             xtype: "button",
-            itemId: "foo",
-          },
-        ],
+            itemId: "foo"
+          }
+        ]
       });
       expect(tb.items.last().getItemId()).toBe("foo");
     });
@@ -242,16 +242,16 @@ describe("Ext.toolbar.Paging", function () {
         items: [
           {
             xtype: "button",
-            itemId: "foo",
-          },
-        ],
+            itemId: "foo"
+          }
+        ]
       });
       expect(tb.items.first().getItemId()).toBe("foo");
     });
 
     it("should add the info display if displayInfo is true", function () {
       makeToolbar({
-        displayInfo: true,
+        displayInfo: true
       });
       var items = tb.items;
       expect(items.getAt(items.getCount() - 2).isXType("tbfill")).toBe(true);
@@ -354,7 +354,7 @@ describe("Ext.toolbar.Paging", function () {
         makeStore();
         store.load();
         makeToolbar({
-          store: store,
+          store: store
         });
         expectDisabled("refresh");
       });
@@ -535,7 +535,7 @@ describe("Ext.toolbar.Paging", function () {
         currentPage: 3,
         pageCount: 4,
         fromRecord: 11,
-        toRecord: 15,
+        toRecord: 15
       });
     });
 
@@ -557,7 +557,7 @@ describe("Ext.toolbar.Paging", function () {
         currentPage: 0,
         pageCount: 0,
         fromRecord: 0,
-        toRecord: 0,
+        toRecord: 0
       });
     });
   });
@@ -639,11 +639,11 @@ describe("Ext.toolbar.Paging", function () {
             {
               text: "Name",
               dataIndex: "name",
-              width: 100,
-            },
+              width: 100
+            }
           ],
           bbar: makeToolbar(undefined, true),
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         grid.reconfigure(store);
@@ -697,7 +697,7 @@ describe("Ext.toolbar.Paging", function () {
               function (field, e) {
                 e.shiftKey = true;
                 Ext.toolbar.Paging.prototype.processKeyEvent.call(tb, field, e);
-              },
+              }
             );
             triggerKeyEvent(PAGE_DOWN);
             expect(tb.getInputItem().getValue()).toBe(3);
@@ -767,7 +767,7 @@ describe("Ext.toolbar.Paging", function () {
               function (field, e) {
                 e.shiftKey = true;
                 Ext.toolbar.Paging.prototype.processKeyEvent.call(tb, field, e);
-              },
+              }
             );
             triggerKeyEvent(PAGE_UP);
             expect(tb.getInputItem().getValue()).toBe(1);

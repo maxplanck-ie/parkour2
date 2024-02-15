@@ -87,7 +87,7 @@ Ext.define("Ext.util.Renderable", {
     '<tpl if="right"></div></tpl>',
     '<tpl if="left"></div></tpl>',
     "</tpl>",
-    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
   ],
 
   frameTableTpl: [
@@ -116,7 +116,7 @@ Ext.define("Ext.util.Renderable", {
     "</tr>",
     "</tpl>",
     "</table>",
-    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>",
+    "<tpl if=\"hasTabGuard\">{% this.renderTabGuard(out, values, 'after'); %}</tpl>"
   ],
 
   /**
@@ -174,7 +174,7 @@ Ext.define("Ext.util.Renderable", {
 
     // When a role is not defined it is akin to static
     undefined: true,
-    null: true,
+    null: true
   },
 
   statics: {
@@ -230,7 +230,7 @@ Ext.define("Ext.util.Renderable", {
 
       delete source[configName];
       configurator.add(renderConfig);
-    },
+    }
   },
 
   onClassMixedIn: function (targetClass) {
@@ -305,7 +305,7 @@ Ext.define("Ext.util.Renderable", {
       contentEl.removeCls([
         pre + "hidden",
         hidden + "display",
-        hidden + "offsets",
+        hidden + "offsets"
       ]);
       me.getContentTarget().appendChild(contentEl.dom);
     }
@@ -381,7 +381,7 @@ Ext.define("Ext.util.Renderable", {
         xy = me.el.getAlignToXY(
           me.alignTarget || me.floatParent.getTargetEl(),
           alignSpec,
-          alignOffset,
+          alignOffset
         );
         pos.x = xy[0] - pos.x;
         pos.y = xy[1] - pos.y;
@@ -389,7 +389,7 @@ Ext.define("Ext.util.Renderable", {
         xy = me.el.getAlignToXY(
           me.alignTarget || me.container,
           alignSpec,
-          alignOffset,
+          alignOffset
         );
         pos = me.el.translateXY(xy[0], xy[1]);
       }
@@ -504,9 +504,7 @@ Ext.define("Ext.util.Renderable", {
       frameInfo = me.getFrameInfo(),
       config = {
         tag: "div",
-        tpl: frameInfo
-          ? me.initFramingTpl(frameInfo.table)
-          : me.initRenderTpl(),
+        tpl: frameInfo ? me.initFramingTpl(frameInfo.table) : me.initRenderTpl()
       },
       layoutTargetCls = me.layoutTargetCls,
       protoEl = me.protoEl,
@@ -657,16 +655,16 @@ Ext.define("Ext.util.Renderable", {
         hasTabGuard: !!me.tabGuard,
         scrollerCls: me.scrollerCls,
         childElCls: "", // overridden in RTL
-        ariaEl: me.ariaEl,
+        ariaEl: me.ariaEl
       },
-      me.renderData,
+      me.renderData
     );
 
     // This code is similar (in fact, almost identical) to the one in getElConfig;
     // we duplicate it for performance reasons.
     if (ariaRole && !me.ariaUsesMainElement) {
       ariaAttr = {
-        role: ariaRole,
+        role: ariaRole
       };
 
       if (!me.ariaStaticRoles[ariaRole]) {
@@ -735,7 +733,7 @@ Ext.define("Ext.util.Renderable", {
       // See EXTJS-16233.
       if (Ext.isIE) {
         me.showListenerIE = Ext.on("show", me.onGlobalShow, me, {
-          destroyable: true,
+          destroyable: true
         });
       }
     }
@@ -974,7 +972,7 @@ Ext.define("Ext.util.Renderable", {
           me.render(me.renderTo || document.body);
         } else {
           me.render(
-            Ext.isBoolean(me.autoRender) ? Ext.getBody() : me.autoRender,
+            Ext.isBoolean(me.autoRender) ? Ext.getBody() : me.autoRender
           );
         }
       }
@@ -1222,7 +1220,7 @@ Ext.define("Ext.util.Renderable", {
         mcStyle: mcStyle,
         // can be optionally set by a subclass or override to be an extra class to
         // be applied to all framing elements (used by RTL)
-        frameElCls: "",
+        frameElCls: ""
       };
     },
 
@@ -1316,7 +1314,7 @@ Ext.define("Ext.util.Renderable", {
               bottom: borderBottomWidth,
               left: borderLeftWidth,
               width: borderLeftWidth + borderRightWidth,
-              height: borderTopWidth + borderBottomWidth,
+              height: borderTopWidth + borderBottomWidth
             },
             padding: {
               top: paddingTop,
@@ -1324,8 +1322,8 @@ Ext.define("Ext.util.Renderable", {
               bottom: paddingBottom,
               left: paddingLeft,
               width: paddingLeft + paddingRight,
-              height: paddingTop + paddingBottom,
-            },
+              height: paddingTop + paddingBottom
+            }
           };
         } else {
           frameInfo = false;
@@ -1340,7 +1338,7 @@ Ext.define("Ext.util.Renderable", {
               me.getXType() +
               ") and it " +
               "does not have any framing defined in the CSS template. In this case IE cannot figure out " +
-              "what sizes to use and thus framing on this component will be disabled.",
+              "what sizes to use and thus framing on this component will be disabled."
           );
         }
         //</debug>
@@ -1376,11 +1374,11 @@ Ext.define("Ext.util.Renderable", {
             role: "presentation",
             style: {
               position: "absolute",
-              top: "-10000px",
-            },
+              top: "-10000px"
+            }
           },
           null,
-          true,
+          true
         ));
 
       result.className = cls;
@@ -1558,6 +1556,6 @@ Ext.define("Ext.util.Renderable", {
     },
 
     // Cache the frame information object so as not to cause style recalculations
-    frameInfoCache: {},
-  }, // private
+    frameInfoCache: {}
+  } // private
 });

@@ -89,7 +89,7 @@
         Ext.classSystemMonitor(
           Class,
           ">> Ext.Class#onBeforeCreated",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -102,7 +102,7 @@
         Ext.classSystemMonitor(
           Class,
           "<< Ext.Class#onBeforeCreated",
-          arguments,
+          arguments
         );
       //</debug>
     },
@@ -117,7 +117,7 @@
       if (!Class) {
         Class = makeCtor(
           //<debug>
-          data.$className,
+          data.$className
           //</debug>
         );
       }
@@ -138,7 +138,7 @@
           data.preprocessors || ExtClass.defaultPreprocessors,
         registeredPreprocessors = this.preprocessors,
         hooks = {
-          onBeforeCreated: this.onBeforeCreated,
+          onBeforeCreated: this.onBeforeCreated
         },
         preprocessors = [],
         preprocessor,
@@ -235,7 +235,7 @@
       fn,
       properties,
       position,
-      relativeTo,
+      relativeTo
     ) {
       if (!position) {
         position = "last";
@@ -248,7 +248,7 @@
       this.preprocessors[name] = {
         name: name,
         properties: properties || false,
-        fn: fn,
+        fn: fn
       };
 
       this.setDefaultPreprocessorPosition(name, position, relativeTo);
@@ -350,12 +350,12 @@
           defaultPreprocessors,
           Math.max(0, index + offset),
           0,
-          name,
+          name
         );
       }
 
       return this;
-    },
+    }
   });
 
   /**
@@ -379,7 +379,7 @@
         Ext.classSystemMonitor(
           Class,
           "Ext.Class#extendPreProcessor",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -417,7 +417,7 @@
         delete data.onClassExtended;
       }
     },
-    true,
+    true
   ); // true to always run this preprocessor even w/o "extend" keyword
 
   /**
@@ -513,7 +513,7 @@
       Ext.classSystemMonitor(
         Class,
         "Ext.Class#inheritableStaticsPreprocessor",
-        arguments,
+        arguments
       );
     //</debug>
 
@@ -526,11 +526,11 @@
   Ext.createRuleFn = function (code) {
     return new Function(
       "$c",
-      "with($c) { try { return (" + code + "); } catch(e) { return false;}}",
+      "with($c) { try { return (" + code + "); } catch(e) { return false;}}"
     );
   };
   Ext.expressionCache = new Ext.util.Cache({
-    miss: Ext.createRuleFn,
+    miss: Ext.createRuleFn
   });
 
   Ext.ruleKeySortFn = ruleKeySortFn;
@@ -623,7 +623,7 @@
     "platformConfig",
     function (Class, data, hooks) {
       Class.addPlatformConfig(data);
-    },
+    }
   );
   //</feature>
 
@@ -832,7 +832,7 @@
         Ext.classSystemMonitor(
           Class,
           "Ext.Class#mixinsPreprocessor#beforeCreated",
-          arguments,
+          arguments
         );
       //</debug>
 
@@ -857,7 +857,7 @@
       Ext.classSystemMonitor(
         Class,
         "Ext.Class#extend-backwards-compatible",
-        arguments,
+        arguments
       );
     //</debug>
 
@@ -871,7 +871,7 @@
 
     if (!Parent) {
       throw new Error(
-        "[Ext.extend] Attempting to extend from a class which has not been loaded on the page.",
+        "[Ext.extend] Attempting to extend from a class which has not been loaded on the page."
       );
     }
 
@@ -891,7 +891,7 @@
       "platformConfig",
       //</feature>
       //<feature classSystem.config>
-      "config",
+      "config"
       //</feature>
     ];
 

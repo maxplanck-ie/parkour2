@@ -27,7 +27,7 @@ describe("Ext.util.HashMap", function () {
   describe("keyFn", function () {
     it("should have a default keyFn that returns the id of the object", function () {
       var o = {
-        id: "foo",
+        id: "foo"
       };
       hash.add(o);
       expect(hash.get("foo")).toBe(o);
@@ -37,10 +37,10 @@ describe("Ext.util.HashMap", function () {
       hash = new Ext.util.HashMap({
         keyFn: function () {
           return o.key;
-        },
+        }
       });
       var o = {
-        key: "foo",
+        key: "foo"
       };
       hash.add(o);
       expect(hash.get("foo")).toBe(o);
@@ -60,7 +60,7 @@ describe("Ext.util.HashMap", function () {
 
     it("should be able to add complex types", function () {
       var obj = {
-          foo: "bar",
+          foo: "bar"
         },
         arr = [obj];
 
@@ -91,7 +91,7 @@ describe("Ext.util.HashMap", function () {
     it("should support taking a single param", function () {
       var o = {
         id: "key",
-        foo: "bar",
+        foo: "bar"
       };
       hash.add(o);
       expect(hash.get("key")).toBe(o);
@@ -99,7 +99,7 @@ describe("Ext.util.HashMap", function () {
 
     it("should fire the add event", function () {
       var o = {
-        fn: Ext.emptyFn,
+        fn: Ext.emptyFn
       };
       spyOn(o, "fn");
       hash.on("add", o.fn);
@@ -135,7 +135,7 @@ describe("Ext.util.HashMap", function () {
     it("should fire the replace event", function () {
       hash.add("key", "val1");
       var o = {
-        fn: Ext.emptyFn,
+        fn: Ext.emptyFn
       };
       spyOn(o, "fn");
       hash.on("replace", o.fn);
@@ -206,7 +206,7 @@ describe("Ext.util.HashMap", function () {
       it("should fire the remove event", function () {
         hash.add("key", "val");
         var o = {
-          fn: Ext.emptyFn,
+          fn: Ext.emptyFn
         };
         spyOn(o, "fn");
         hash.on("remove", o.fn);
@@ -249,7 +249,7 @@ describe("Ext.util.HashMap", function () {
         it("should fire the remove event", function () {
           hash.add("key", "val");
           var o = {
-            fn: Ext.emptyFn,
+            fn: Ext.emptyFn
           };
           spyOn(o, "fn");
           hash.on("remove", o.fn);
@@ -269,7 +269,7 @@ describe("Ext.util.HashMap", function () {
           if (key == "drop") {
             return false;
           }
-        },
+        }
       };
       spy = spyOn(o, "fn").andCallThrough();
     });
@@ -396,7 +396,7 @@ describe("Ext.util.HashMap", function () {
 
     it("should fire the clear event", function () {
       var o = {
-        fn: Ext.emptyFn,
+        fn: Ext.emptyFn
       };
       spyOn(o, "fn");
       hash.on("clear", o.fn);

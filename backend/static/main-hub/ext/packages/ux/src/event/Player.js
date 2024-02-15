@@ -98,7 +98,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       change: 1,
       select: 1,
       error: 1,
-      abort: 1,
+      abort: 1
     };
 
   Ext.each(
@@ -109,7 +109,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       "mouseout",
       "mousedown",
       "mouseup",
-      "mousemove",
+      "mousemove"
     ],
     function (type) {
       bubbleEvents[type] =
@@ -127,9 +127,9 @@ Ext.define("Ext.ux.event.Player", function (Player) {
             altKey: false,
             shiftKey: false,
             metaKey: false,
-            button: 0,
+            button: 0
           };
-    },
+    }
   );
 
   Ext.each(["keydown", "keyup", "keypress"], function (type) {
@@ -144,7 +144,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
           shiftKey: false,
           metaKey: false,
           keyCode: 0,
-          charCode: 0,
+          charCode: 0
         };
   });
 
@@ -154,9 +154,9 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       defaults[type] = uiEvents[type] = {
         bubbles: type in bubbleEvents,
         cancelable: false,
-        detail: 1,
+        detail: 1
       };
-    },
+    }
   );
 
   var inputSpecialKeys = {
@@ -181,7 +181,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
           target.value.substring(0, start) + target.value.substring(start + 1);
       }
       this.setTextSelection(target, start, start);
-    },
+    }
   };
 
   return {
@@ -198,7 +198,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
      * each `click` event.
      */
     keyFrameEvents: {
-      click: true,
+      click: true
     },
 
     /**
@@ -224,8 +224,8 @@ Ext.define("Ext.ux.event.Player", function (Player) {
           //TODO ?
           //}
         },
-        inputSpecialKeys,
-      ),
+        inputSpecialKeys
+      )
     },
 
     tagPathRegEx: /(\w+)(?:\[(\d+)\])?/,
@@ -331,7 +331,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
         } else {
           range.moveEnd(
             "character",
-            this.offsetToRangeCharacterMove(el, endOffset),
+            this.offsetToRangeCharacterMove(el, endOffset)
           );
           range.moveStart("character", startCharMove);
         }
@@ -375,7 +375,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       // keyframe events are inserted after a keyFrameEvent is played.
       if (me.keyFrameEvents[eventDescriptor.type]) {
         Ext.Array.insert(me.eventQueue, index, [
-          { keyframe: true, ts: eventDescriptor.ts },
+          { keyframe: true, ts: eventDescriptor.ts }
         ]);
       }
     },
@@ -436,7 +436,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
         this.eventQueue,
         index == null ? this.queueIndex : index,
         1,
-        events,
+        events
       );
     },
 
@@ -549,7 +549,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
           options.bubbles,
           options.cancelable,
           options.view || me.attachTo,
-          options.detail,
+          options.detail
         );
       }
 
@@ -579,19 +579,16 @@ Ext.define("Ext.ux.event.Player", function (Player) {
           xlat.push(
             Ext.applyIf(
               { type: "keydown", charCode: chUp, keyCode: chUp },
-              event,
+              event
             ),
             Ext.applyIf({ type: "keypress", charCode: ch, keyCode: ch }, event),
-            Ext.applyIf(
-              { type: "keyup", charCode: chUp, keyCode: chUp },
-              event,
-            ),
+            Ext.applyIf({ type: "keyup", charCode: chUp, keyCode: chUp }, event)
           );
         }
       } else {
         xlat.push(
           Ext.applyIf({ type: "keydown", charCode: event.keyCode }, event),
-          Ext.applyIf({ type: "keyup", charCode: event.keyCode }, event),
+          Ext.applyIf({ type: "keyup", charCode: event.keyCode }, event)
         );
       }
 
@@ -628,7 +625,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
               me.setTextSelection(
                 target,
                 event.selection[0],
-                event.selection[1],
+                event.selection[1]
               );
             }
             return me.injectTypeEvent(target, event);
@@ -705,7 +702,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       "caret",
       "pos",
       "text",
-      "selection",
+      "selection"
     ],
 
     translateEvent: function (eventDescriptor, target) {
@@ -797,7 +794,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
       ieButtonCodeMap: {
         0: 1,
         1: 4,
-        2: 2,
+        2: 2
       },
 
       /**
@@ -863,7 +860,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
               options.shiftKey,
               options.metaKey,
               options.keyCode,
-              options.charCode,
+              options.charCode
             );
           } catch (ex) {
             // If it got here, that means key events aren't officially supported.
@@ -993,7 +990,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
               options.shiftKey,
               options.metaKey,
               options.button,
-              options.relatedTarget,
+              options.relatedTarget
             );
           } else {
             //Safari
@@ -1102,7 +1099,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
             options.bubbles,
             options.cancelable,
             view,
-            options.detail,
+            options.detail
           );
 
           target.dispatchEvent(customEvent);
@@ -1121,7 +1118,7 @@ Ext.define("Ext.ux.event.Player", function (Player) {
         }
 
         return true;
-      },
-    }, // statics
+      }
+    } // statics
   };
 });

@@ -43,7 +43,7 @@ describe("Ext.data.validator.Email", function () {
   describe("messages", function () {
     it("should accept a custom message", function () {
       v = new Ext.data.validator.Email({
-        message: "Foo",
+        message: "Foo"
       });
       expect(v.validate(undefined)).toBe("Foo");
     });

@@ -77,7 +77,7 @@ describe("grid-general-paging-buffered-renderer", function () {
             var name = Ext.String.format(
               "{0} {1}",
               firstNames[firstNameId],
-              lastNames[lastNameId],
+              lastNames[lastNameId]
             );
 
             data.push([name, dob]);
@@ -94,32 +94,32 @@ describe("grid-general-paging-buffered-renderer", function () {
             enablePaging: true,
             data: createFakeData(100),
             reader: {
-              type: "array",
-            },
+              type: "array"
+            }
           },
-          pageSize: 20,
+          pageSize: 20
         });
 
         grid = Ext.create("Ext.grid.Panel", {
           store: store,
           columns: [
             { text: "Name", width: 120, dataIndex: "Name" },
-            { text: "dob", flex: 1, dataIndex: "dob" },
+            { text: "dob", flex: 1, dataIndex: "dob" }
           ],
           dockedItems: [
             (ptoolbar = Ext.create("Ext.toolbar.Paging", {
               dock: "bottom",
-              store: store,
-            })),
+              store: store
+            }))
           ],
           renderTo: document.body,
           width: 500,
           height: 200,
           plugins: [
             {
-              ptype: "bufferedrenderer",
-            },
-          ],
+              ptype: "bufferedrenderer"
+            }
+          ]
         });
       });
 

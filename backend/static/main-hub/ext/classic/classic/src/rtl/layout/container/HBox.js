@@ -8,6 +8,6 @@ Ext.define("Ext.rtl.layout.container.HBox", {
     setScrollLeft: "rtlSetScrollLeft",
     scrollTo: "rtlScrollTo",
     beforeScrollerSuffix: "-after-scroller",
-    afterScrollerSuffix: "-before-scroller",
-  },
+    afterScrollerSuffix: "-before-scroller"
+  }
 });

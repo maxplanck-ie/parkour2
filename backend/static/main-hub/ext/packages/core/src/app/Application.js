@@ -257,7 +257,7 @@ Ext.define("Ext.app.Application", {
      */
     mainView: {
       $value: null,
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -274,7 +274,7 @@ Ext.define("Ext.app.Application", {
     glyphFontFamily: null,
 
     // Docs will go in subclasses
-    quickTips: true,
+    quickTips: true
   },
 
   onClassExtended: function (cls, data, hooks) {
@@ -305,7 +305,7 @@ Ext.define("Ext.app.Application", {
       Ext.app.setupPaths(
         namespace,
         "appFolder" in data ? data.appFolder : cls.superclass.appFolder,
-        data.paths,
+        data.paths
       );
     }
 
@@ -315,7 +315,7 @@ Ext.define("Ext.app.Application", {
       requires,
       namespace,
       "profile",
-      data.profiles,
+      data.profiles
     );
 
     // This hook is used in the classic toolkit to process other configs that need to
@@ -339,7 +339,7 @@ Ext.define("Ext.app.Application", {
             requires,
             Ext.bind(function () {
               return onBeforeClassCreated.apply(this, args);
-            }, this),
+            }, this)
           );
           return;
         }
@@ -407,7 +407,7 @@ Ext.define("Ext.app.Application", {
 
     for (i = 0; i < length; i++) {
       instance = Ext.create(profiles[i], {
-        application: me,
+        application: me
       });
 
       if (instance.isActive() && !current) {
@@ -448,7 +448,7 @@ Ext.define("Ext.app.Application", {
               name +
               "." +
               appProperty +
-              ". See the appProperty config.",
+              ". See the appProperty config."
           );
         }
         //</debug>
@@ -587,7 +587,7 @@ Ext.define("Ext.app.Application", {
 
     // Ensure the full component stack is available immediately.
     return view.create({
-      $initParent: this.viewport,
+      $initParent: this.viewport
     });
   },
 
@@ -654,7 +654,7 @@ Ext.define("Ext.app.Application", {
 
       controller = Ext.create(className, {
         application: me,
-        moduleClassName: className,
+        moduleClassName: className
       });
 
       controllers.add(controller);
@@ -728,5 +728,5 @@ Ext.define("Ext.app.Application", {
     return Ext.Array.map(profiles, function (profile) {
       return me.getModuleClassName(profile, "profile");
     });
-  },
+  }
 });

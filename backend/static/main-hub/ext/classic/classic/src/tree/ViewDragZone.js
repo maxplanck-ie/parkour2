@@ -57,11 +57,11 @@ Ext.define("Ext.tree.ViewDragZone", {
               if (view.isSelected(item)) {
                 fly(item).addCls(selectedRowCls);
               }
-            },
-          },
+            }
+          }
         });
       }
     }
     me.dragging = false;
-  },
+  }
 });

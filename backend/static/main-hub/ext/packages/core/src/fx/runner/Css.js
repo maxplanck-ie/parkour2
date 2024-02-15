@@ -22,7 +22,7 @@ Ext.define("Ext.fx.runner.Css", {
     "animation-iteration-count": true,
     "animation-direction": true,
     "animation-timing-function": true,
-    "animation-delay": true,
+    "animation-delay": true
   },
 
   lengthProperties: {
@@ -62,14 +62,14 @@ Ext.define("Ext.fx.runner.Css", {
     translateZ: true,
     translate3d: true,
     x: true,
-    y: true,
+    y: true
   },
 
   durationProperties: {
     "transition-duration": true,
     "transition-delay": true,
     "animation-duration": true,
-    "animation-delay": true,
+    "animation-delay": true
   },
 
   angleProperties: {
@@ -79,7 +79,7 @@ Ext.define("Ext.fx.runner.Css", {
     rotateZ: true,
     skew: true,
     skewX: true,
-    skewY: true,
+    skewY: true
   },
 
   lengthUnitRegex: /([a-z%]*)$/,
@@ -92,12 +92,12 @@ Ext.define("Ext.fx.runner.Css", {
 
   customProperties: {
     x: true,
-    y: true,
+    y: true
   },
 
   formattedNameCache: {
     x: "left",
-    y: "top",
+    y: "top"
   },
 
   transformMethods3d: [
@@ -112,7 +112,7 @@ Ext.define("Ext.fx.runner.Css", {
     "skewY",
     "scaleX",
     "scaleY",
-    "scaleZ",
+    "scaleZ"
   ],
 
   transformMethodsNo3d: [
@@ -122,7 +122,7 @@ Ext.define("Ext.fx.runner.Css", {
     "skewX",
     "skewY",
     "scaleX",
-    "scaleY",
+    "scaleY"
   ],
 
   constructor: function () {
@@ -147,7 +147,7 @@ Ext.define("Ext.fx.runner.Css", {
       styleElement.type = "text/css";
 
       (document.head || document.getElementsByTagName("head")[0]).appendChild(
-        styleElement,
+        styleElement
       );
 
       styleSheets = document.styleSheets;
@@ -291,7 +291,7 @@ Ext.define("Ext.fx.runner.Css", {
                 "' of property: '" +
                 name +
                 "' is not " +
-                "valid for animation. Only 'px' is allowed",
+                "valid for animation. Only 'px' is allowed"
             );
           }
           //</debug>
@@ -333,7 +333,7 @@ Ext.define("Ext.fx.runner.Css", {
         method = transformMethods[i];
 
         transformValues.push(
-          method + "(" + this.formatValue(value[method], method) + ")",
+          method + "(" + this.formatValue(value[method], method) + ")"
         );
       }
 
@@ -361,5 +361,5 @@ Ext.define("Ext.fx.runner.Css", {
       value = el.translateXY(null, parseInt(value, 10)).y;
     }
     return value + unit;
-  },
+  }
 });

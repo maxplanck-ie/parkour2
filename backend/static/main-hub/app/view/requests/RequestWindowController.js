@@ -7,30 +7,30 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "onRequestWindowBoxready",
+        boxready: "onRequestWindowBoxready"
       },
       "#libraries-in-request-grid": {
         refresh: "refreshLibrariesInRequestGrid",
         itemcontextmenu: "showContextMenu",
-        headercontextmenu: "showHeaderMenu",
+        headercontextmenu: "showHeaderMenu"
       },
       "#check-column": {
         beforecheckchange: "selectItem",
-        unselectall: "unselectAll",
+        unselectall: "unselectAll"
       },
       "#save-button": {
-        click: "save",
+        click: "save"
       },
       "#batch-add-button": {
-        click: "showBatchAddWindow",
-      },
-    },
+        click: "showBatchAddWindow"
+      }
+    }
   },
 
   refreshLibrariesInRequestGrid: function (grid) {
     var requestId = grid.up("window").record.get("pk");
     grid.getStore().reload({
-      url: Ext.String.format("api/requests/{0}/get_records/", requestId),
+      url: Ext.String.format("api/requests/{0}/get_records/", requestId)
     });
   },
 
@@ -56,7 +56,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       if (request.deep_seq_request_path !== "") {
         $("#uploaded-request-file")
           .html(
-            '<a href="javascript:void(0)" class="uploaded-request-link">uploaded</a>',
+            '<a href="javascript:void(0)" class="uploaded-request-link">uploaded</a>'
           )
           .on("click", function () {
             var link = document.createElement("a");
@@ -80,8 +80,8 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
         Ext.getStore("requestFilesStore").load({
           url: Ext.String.format("api/requests/{0}/get_files/", request.pk),
           params: {
-            file_ids: Ext.JSON.encode(request.files),
-          },
+            file_ids: Ext.JSON.encode(request.files)
+          }
         });
       }
     }
@@ -89,13 +89,13 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     // Load Cost Units
     Ext.getStore("CostUnits").reload({
       params: {
-        user_id: userId,
+        user_id: userId
       },
       callback: function (records, operation, success) {
         if (success && request) {
           costUnitCb.setValue(request.cost_unit);
         }
-      },
+      }
     });
 
     this.initializeTooltips();
@@ -108,7 +108,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       if (record.get("record_type") !== selectedItems[0].record_type) {
         new Noty({
           text: "You can only select items of the same type.",
-          type: "warning",
+          type: "warning"
         }).show();
         return false;
       }
@@ -137,7 +137,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
           text: Ext.String.format('Edit "{0}"', selectedItemName),
           handler: function () {
             me.editRecords(recordId, [selectedItem]);
-          },
+          }
         },
         {
           text: Ext.String.format('Delete "{0}"', selectedItemName),
@@ -146,7 +146,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
               title: "Delete record",
               message: Ext.String.format(
                 'Are you sure you want to delete "{0}"?',
-                selectedItemName,
+                selectedItemName
               ),
               buttons: Ext.Msg.YESNO,
               icon: Ext.Msg.QUESTION,
@@ -154,10 +154,10 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
                 if (btn === "yes") {
                   me.deleteRecord(selectedItem);
                 }
-              },
+              }
             });
-          },
-        },
+          }
+        }
       ];
     } else {
       menuItems = [
@@ -165,8 +165,8 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
           text: Ext.String.format("Edit {0} Items", selectedItems.length),
           handler: function () {
             me.editRecords(recordId, selectedItems);
-          },
-        },
+          }
+        }
       ];
     }
 
@@ -174,9 +174,9 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
-      items: menuItems,
+      items: menuItems
     }).showAt(e.getXY());
   },
 
@@ -191,29 +191,29 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
       items: [
         {
           text: "Select All Libraries",
           handler: function () {
             me.selectAll("Library");
-          },
+          }
         },
         {
           text: "Select All Samples",
           handler: function () {
             me.selectAll("Sample");
-          },
+          }
         },
         "-",
         {
           text: "Unselect All",
           handler: function () {
             me.unselectAll();
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -227,7 +227,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     ) {
       new Noty({
         text: "You can only select items of the same type.",
-        type: "warning",
+        type: "warning"
       }).show();
       return false;
     }
@@ -257,7 +257,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       scope: this,
       params: {
         request_id: requestId,
-        ids: Ext.JSON.encode(ids),
+        ids: Ext.JSON.encode(ids)
       },
 
       success: function (response) {
@@ -272,7 +272,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
           Ext.create("MainHub.view.libraries.BatchAddWindow", {
             mode: "edit",
             type: records[0].record_type,
-            records: obj.data,
+            records: obj.data
           });
         } else {
           new Noty({ text: obj.message, type: "error" }).show();
@@ -282,7 +282,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       failure: function (response) {
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -311,7 +311,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       failure: function (response) {
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -326,14 +326,14 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     } else {
       url = Ext.String.format(
         "api/requests/{0}/edit/",
-        wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get("pk"),
+        wnd.autoSaveRequestId ? wnd.autoSaveRequestId : wnd.record.get("pk")
       );
     }
 
     if (store.getCount() === 0) {
       new Noty({
         text: "No libraries/samples are added to the request.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -356,8 +356,8 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
           cost_unit: data.cost_unit,
           description: data.description,
           records: Ext.Array.pluck(store.data.items, "data"),
-          files: form.down("filegridfield").getValue(),
-        }),
+          files: form.down("filegridfield").getValue()
+        })
       },
 
       success: function (response) {
@@ -386,7 +386,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
         wnd.setLoading(false);
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -397,7 +397,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
         target: item,
         html: $(item).attr("tooltip-text"),
         dismissDelay: 15000,
-        maxWidth: 300,
+        maxWidth: 300
       });
     });
   },
@@ -407,14 +407,14 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
 
     if (form.isValid()) {
       Ext.create("MainHub.view.libraries.BatchAddWindow", {
-        mode: "add",
+        mode: "add"
       });
     } else {
       new Noty({
         text:
           "Please fill in all the required fields for " +
           "a request before adding new libraries/samples.",
-        type: "warning",
+        type: "warning"
       }).show();
     }
   },
@@ -437,11 +437,11 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
         selectedItems.push({
           pk: item.get("pk"),
           name: item.get("name"),
-          record_type: item.get("record_type"),
+          record_type: item.get("record_type")
         });
       }
     });
 
     return selectedItems;
-  },
+  }
 });

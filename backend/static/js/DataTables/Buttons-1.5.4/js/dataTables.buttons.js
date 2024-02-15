@@ -70,13 +70,13 @@
       dt: new DataTable.Api(dt),
       buttons: [],
       listenKeys: "",
-      namespace: "dtb" + _instCounter++,
+      namespace: "dtb" + _instCounter++
     };
 
     this.dom = {
       container: $("<" + this.c.dom.container.tag + "/>").addClass(
-        this.c.dom.container.className,
-      ),
+        this.c.dom.container.className
+      )
     };
 
     this._constructor();
@@ -354,7 +354,7 @@
 
       dtSettings._buttons.push({
         inst: this,
-        name: this.c.name,
+        name: this.c.name
       });
 
       for (var i = 0, ien = buttons.length; i < ien; i++) {
@@ -474,7 +474,7 @@
             built.buttons,
             built.conf.buttons,
             true,
-            attachPoint,
+            attachPoint
           );
         }
 
@@ -525,7 +525,7 @@
           dt.button(button),
           dt,
           button,
-          config,
+          config
         ]);
       };
 
@@ -613,7 +613,7 @@
         inserter: inserter,
         buttons: [],
         inCollection: inCollection,
-        collection: null,
+        collection: null
       };
     },
 
@@ -861,7 +861,7 @@
       }
 
       return conf;
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -976,7 +976,7 @@
           a.push({
             node: button.node,
             name: button.conf.name,
-            idx: idx,
+            idx: idx
           });
 
           if (button.buttons) {
@@ -1007,14 +1007,14 @@
         for (i = 0, ien = buttons.length; i < ien; i++) {
           ret.push({
             inst: inst,
-            node: buttons[i].node,
+            node: buttons[i].node
           });
         }
       } else if (typeof selector === "number") {
         // Main button index selector
         ret.push({
           inst: inst,
-          node: inst.s.buttons[selector].node,
+          node: inst.s.buttons[selector].node
         });
       } else if (typeof selector === "string") {
         if (selector.indexOf(",") !== -1) {
@@ -1032,7 +1032,7 @@
 
           ret.push({
             inst: inst,
-            node: buttons[$.inArray(selector, indexes)].node,
+            node: buttons[$.inArray(selector, indexes)].node
           });
         } else if (selector.indexOf(":name") !== -1) {
           // Button name selector
@@ -1042,7 +1042,7 @@
             if (buttons[i].name === name) {
               ret.push({
                 inst: inst,
-                node: buttons[i].node,
+                node: buttons[i].node
               });
             }
           }
@@ -1053,7 +1053,7 @@
             .each(function () {
               ret.push({
                 inst: inst,
-                node: this,
+                node: this
               });
             });
         }
@@ -1064,7 +1064,7 @@
         if (idx !== -1) {
           ret.push({
             inst: inst,
-            node: nodes[idx],
+            node: nodes[idx]
           });
         }
       }
@@ -1092,24 +1092,24 @@
     dom: {
       container: {
         tag: "div",
-        className: "dt-buttons",
+        className: "dt-buttons"
       },
       collection: {
         tag: "div",
-        className: "dt-button-collection",
+        className: "dt-button-collection"
       },
       button: {
         // Flash buttons will not work with `<button>` in IE - it has to be `<a>`
         tag: "ActiveXObject" in window ? "a" : "button",
         className: "dt-button",
         active: "active",
-        disabled: "disabled",
+        disabled: "disabled"
       },
       buttonLiner: {
         tag: "span",
-        className: "",
-      },
-    },
+        className: ""
+      }
+    }
   };
 
   /**
@@ -1148,7 +1148,7 @@
         config._collection.prepend(
           '<div class="dt-button-collection-title">' +
             config.collectionTitle +
-            "</div>",
+            "</div>"
         );
 
         config._collection
@@ -1162,12 +1162,12 @@
         if (multiLevel && position === "absolute") {
           config._collection.css({
             top: multiLevel.top,
-            left: multiLevel.left,
+            left: multiLevel.left
           });
         } else if (position === "absolute") {
           config._collection.css({
             top: hostPosition.top + host.outerHeight(),
-            left: hostPosition.left,
+            left: hostPosition.left
           });
 
           // calculate overflow when positioned beneath
@@ -1188,7 +1188,7 @@
           if (bottomOverflow > topOverflow || config.dropup) {
             config._collection.css(
               "top",
-              hostPosition.top - config._collection.outerHeight() - 5,
+              hostPosition.top - config._collection.outerHeight() - 5
             );
           }
 
@@ -1199,7 +1199,7 @@
               "left",
               hostPosition.left +
                 host.outerWidth() -
-                config._collection.outerWidth(),
+                config._collection.outerWidth()
             );
           }
 
@@ -1210,7 +1210,7 @@
           if (listRight > tableRight) {
             config._collection.css(
               "left",
-              hostPosition.left - (listRight - tableRight),
+              hostPosition.left - (listRight - tableRight)
             );
           }
 
@@ -1220,7 +1220,7 @@
           if (listOffsetRight > $(window).width()) {
             config._collection.css(
               "left",
-              hostPosition.left - (listOffsetRight - $(window).width()),
+              hostPosition.left - (listOffsetRight - $(window).width())
             );
           }
         } else {
@@ -1238,7 +1238,7 @@
             true,
             config.backgroundClassName,
             config.fade,
-            insertPoint,
+            insertPoint
           );
         }
 
@@ -1252,7 +1252,7 @@
             false,
             config.backgroundClassName,
             config.fade,
-            insertPoint,
+            insertPoint
           );
 
           $("body").off(".dtb-collection");
@@ -1268,7 +1268,7 @@
           // required to make it work...
           $("div.dt-button-background").on(
             "click.dtb-collection",
-            function () {},
+            function () {}
           );
 
           $("body")
@@ -1303,8 +1303,8 @@
       autoClose: false,
       fade: 400,
       attr: {
-        "aria-haspopup": true,
-      },
+        "aria-haspopup": true
+      }
     },
     copy: function (dt, conf) {
       if (_dtButtons.copyHtml5) {
@@ -1350,9 +1350,9 @@
           "buttons.pageLength",
           {
             "-1": "Show all rows",
-            _: "Show %d rows",
+            _: "Show %d rows"
           },
-          dt.page.len(),
+          dt.page.len()
         );
       };
 
@@ -1379,7 +1379,7 @@
             },
             destroy: function (dt, node, conf) {
               dt.off("length.dt" + conf.namespace);
-            },
+            }
           };
         }),
         init: function (dt, node, conf) {
@@ -1390,9 +1390,9 @@
         },
         destroy: function (dt, node, conf) {
           dt.off("length.dt" + conf.namespace);
-        },
+        }
       };
-    },
+    }
   });
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -1419,11 +1419,11 @@
         if (ctx._buttons) {
           return Buttons.buttonSelector(
             Buttons.instanceSelector(group, ctx._buttons),
-            selector,
+            selector
           );
         }
       },
-      true,
+      true
     );
 
     res._groupSelector = group;
@@ -1456,7 +1456,7 @@
       return this.each(function (set) {
         set.inst.active(set.node, flag);
       });
-    },
+    }
   );
 
   // Get / set button action
@@ -1473,7 +1473,7 @@
       return this.each(function (set) {
         set.inst.action(set.node, action);
       });
-    },
+    }
   );
 
   // Enable / disable buttons
@@ -1483,7 +1483,7 @@
       return this.each(function (set) {
         set.inst.enable(set.node, flag);
       });
-    },
+    }
   );
 
   // Disable buttons
@@ -1493,7 +1493,7 @@
       return this.each(function (set) {
         set.inst.disable(set.node);
       });
-    },
+    }
   );
 
   // Get button nodes
@@ -1507,11 +1507,11 @@
       $(
         this.each(function (set) {
           jq = jq.add(set.inst.node(set.node));
-        }),
+        })
       );
 
       return jq;
-    },
+    }
   );
 
   // Get / set button processing state
@@ -1528,7 +1528,7 @@
       return this.each(function (set) {
         set.inst.processing(set.node, flag);
       });
-    },
+    }
   );
 
   // Get / set button text (i.e. the button labels)
@@ -1545,7 +1545,7 @@
       return this.each(function (set) {
         set.inst.text(set.node, label);
       });
-    },
+    }
   );
 
   // Trigger a button's action
@@ -1556,7 +1556,7 @@
       return this.each(function (set) {
         set.inst.node(set.node).trigger("click");
       });
-    },
+    }
   );
 
   // Get the container elements
@@ -1580,7 +1580,7 @@
       });
 
       return jq;
-    },
+    }
   );
 
   // Add a new button
@@ -1620,7 +1620,7 @@
       });
 
       return this;
-    },
+    }
   );
 
   // Information box that can be used by buttons
@@ -1651,7 +1651,7 @@
     $('<div id="datatables_buttons_info" class="dt-button-info"/>')
       .html(title)
       .append(
-        $("<div/>")[typeof message === "string" ? "html" : "append"](message),
+        $("<div/>")[typeof message === "string" ? "html" : "append"](message)
       )
       .css("display", "none")
       .appendTo("body")
@@ -1685,7 +1685,7 @@
       filename: _filename(conf),
       title: _title(conf),
       messageTop: _message(this, conf.message || conf.messageTop, "top"),
-      messageBottom: _message(this, conf.messageBottom, "bottom"),
+      messageBottom: _message(this, conf.messageBottom, "bottom")
     };
   });
 
@@ -1788,7 +1788,7 @@
         columns: "",
         modifier: {
           search: "applied",
-          order: "applied",
+          order: "applied"
         },
         orthogonal: "display",
         stripHtml: true,
@@ -1804,11 +1804,11 @@
           },
           body: function (d) {
             return strip(d);
-          },
+          }
         },
-        customizeData: null,
+        customizeData: null
       },
-      inOpts,
+      inOpts
     );
 
     var strip = function (str) {
@@ -1819,7 +1819,7 @@
       // Always remove script tags
       str = str.replace(
         /<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi,
-        "",
+        ""
       );
 
       // Always remove comments
@@ -1897,7 +1897,7 @@
           cells[cellCounter],
           i,
           j,
-          cellNodes[cellCounter],
+          cellNodes[cellCounter]
         );
         cellCounter++;
       }
@@ -1908,7 +1908,7 @@
     var data = {
       header: header,
       footer: footer,
-      body: body,
+      body: body
     };
 
     if (config.customizeData) {
@@ -1951,7 +1951,7 @@
 
       return new Buttons(api, opts).container();
     },
-    cFeature: "B",
+    cFeature: "B"
   });
 
   return Buttons;

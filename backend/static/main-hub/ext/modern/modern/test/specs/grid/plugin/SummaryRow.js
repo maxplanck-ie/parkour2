@@ -17,32 +17,32 @@ describe("Ext.grid.plugin.SummaryRow", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              income: 1244.246,
+              income: 1244.246
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              income: 3444.985,
+              income: 3444.985
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              income: 2474.45,
+              income: 2474.45
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              income: 244.745,
-            },
+              income: 244.745
+            }
           ],
           groupField: "name",
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.grid.Grid(
@@ -55,22 +55,22 @@ describe("Ext.grid.plugin.SummaryRow", function () {
               dataIndex: "income",
               width: 100,
               summaryType: "sum",
-              summaryFormatter: 'number("0,000.00")',
+              summaryFormatter: 'number("0,000.00")'
             },
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
-            { header: "Phone", dataIndex: "phone", width: 100 },
+            { header: "Phone", dataIndex: "phone", width: 100 }
           ],
           plugins: [{ type: "summaryrow" }],
           height: 200,
-          width: 400,
+          width: 400
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -91,7 +91,7 @@ describe("Ext.grid.plugin.SummaryRow", function () {
 
     Controller = Ext.define("spec.TestController", {
       extend: "Ext.app.ViewController",
-      alias: "controller.test",
+      alias: "controller.test"
     });
   });
 
@@ -115,10 +115,10 @@ describe("Ext.grid.plugin.SummaryRow", function () {
             header: "Income",
             dataIndex: "income",
             width: 100,
-            summaryType: "count",
-          },
+            summaryType: "count"
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0).el.down(".x-inner-el", true).innerHTML).toBe("4");
@@ -132,14 +132,14 @@ describe("Ext.grid.plugin.SummaryRow", function () {
             dataIndex: "income",
             width: 100,
             summaryType: "sum",
-            summaryFormatter: 'number("0,000.00")',
-          },
+            summaryFormatter: 'number("0,000.00")'
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "7,408.43",
+        "7,408.43"
       );
     });
 
@@ -155,15 +155,15 @@ describe("Ext.grid.plugin.SummaryRow", function () {
             scope: {
               myTest: function (v, format) {
                 return Ext.util.Format.number(v, format);
-              },
-            },
-          },
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "7,408.43",
+        "7,408.43"
       );
     });
 
@@ -175,14 +175,14 @@ describe("Ext.grid.plugin.SummaryRow", function () {
             dataIndex: "income",
             width: 100,
             summaryType: "sum",
-            summaryRenderer: Ext.util.Format.numberRenderer("0,000.00"),
-          },
+            summaryRenderer: Ext.util.Format.numberRenderer("0,000.00")
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "7,408.43",
+        "7,408.43"
       );
     });
 
@@ -198,15 +198,15 @@ describe("Ext.grid.plugin.SummaryRow", function () {
             scope: {
               myTest: function (v) {
                 return Ext.util.Format.number(v, "0,000.00");
-              },
-            },
-          },
+              }
+            }
+          }
         ],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0).el.down(".x-inner-el", true).innerHTML).toBe(
-        "7,408.43",
+        "7,408.43"
       );
     });
   });

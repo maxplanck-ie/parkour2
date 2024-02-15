@@ -82,7 +82,7 @@ Ext.define("Ext.state.Stateful", {
      *          return state;
      *      }
      */
-    stateful: null,
+    stateful: null
   },
 
   /**
@@ -217,7 +217,7 @@ Ext.define("Ext.state.Stateful", {
           scope: me,
           interval: delay,
           repeat: 1,
-          fireIdleEvent: false,
+          fireIdleEvent: false
         });
       }
 
@@ -429,5 +429,5 @@ Ext.define("Ext.state.Stateful", {
     }
 
     // No callParent() here, it's a mixin.
-  },
+  }
 });

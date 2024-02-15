@@ -186,5 +186,5 @@ Ext.define("Ext.layout.container.Absolute", {
         me.done = false;
       }
     }
-  },
+  }
 });

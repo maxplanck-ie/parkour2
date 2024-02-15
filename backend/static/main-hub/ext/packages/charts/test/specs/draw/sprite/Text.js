@@ -7,7 +7,7 @@ describe("Ext.draw.sprite.Text", function () {
       fontStyle: "italic",
       fontWeight: "bold",
       fontSize: "34px/100px",
-      fontFamily: '"Times New Roman", serif',
+      fontFamily: '"Times New Roman", serif'
     };
 
     it("should not have a leading or trailing space", function () {
@@ -15,7 +15,7 @@ describe("Ext.draw.sprite.Text", function () {
       var fakeSprite = {
         setAttributes: function (attr) {
           font = attr.font;
-        },
+        }
       };
       proto.makeFontShorthand.call(fakeSprite, attr);
       expect(font.length).toEqual(Ext.String.trim(font).length);
@@ -26,11 +26,11 @@ describe("Ext.draw.sprite.Text", function () {
       var fakeSprite = {
         setAttributes: function (attr) {
           font = attr.font;
-        },
+        }
       };
       proto.makeFontShorthand.call(fakeSprite, attr);
       expect(font).toEqual(
-        'italic small-caps bold 34px/100px "Times New Roman", serif',
+        'italic small-caps bold 34px/100px "Times New Roman", serif'
       );
     });
 
@@ -38,7 +38,7 @@ describe("Ext.draw.sprite.Text", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
         fontWeight: "bold",
-        fontStyle: "italic",
+        fontStyle: "italic"
       });
       expect(sprite.attr.font).toEqual("italic bold 10px sans-serif");
     });
@@ -48,7 +48,7 @@ describe("Ext.draw.sprite.Text", function () {
     it('needs to handle "normal" values properly', function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "normal 24px Verdana",
+        font: "normal 24px Verdana"
       });
       expect(sprite.attr.fontStyle).toEqual("");
       expect(sprite.attr.fontVariant).toEqual("");
@@ -60,7 +60,7 @@ describe("Ext.draw.sprite.Text", function () {
     it('should ignore the "inherit" values', function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "inherit 24px Verdana",
+        font: "inherit 24px Verdana"
       });
       expect(sprite.attr.fontStyle).toEqual("");
       expect(sprite.attr.fontVariant).toEqual("");
@@ -72,7 +72,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should support font names with spaces in them", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: 'x-large/110% "New Century Schoolbook", serif',
+        font: 'x-large/110% "New Century Schoolbook", serif'
       });
       expect(sprite.attr.fontFamily).toEqual('"New Century Schoolbook", serif');
     });
@@ -80,7 +80,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should support font families with more than one font name", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "italic small-caps normal 13px/150% Arial, Helvetica, sans-serif",
+        font: "italic small-caps normal 13px/150% Arial, Helvetica, sans-serif"
       });
       expect(sprite.attr.fontFamily).toEqual("Arial, Helvetica, sans-serif");
     });
@@ -91,16 +91,16 @@ describe("Ext.draw.sprite.Text", function () {
       function () {
         var sprite = new Ext.draw.sprite.Text();
         sprite.setAttributes({
-          font: 'x-large/110% "New Century Schoolbook", serif',
+          font: 'x-large/110% "New Century Schoolbook", serif'
         });
         expect(sprite.attr.fontSize).toEqual("x-large");
-      },
+      }
     );
 
     it("should recognize percentage font sizes", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "80% sans-serif",
+        font: "80% sans-serif"
       });
       expect(sprite.attr.fontSize).toEqual("80%");
     });
@@ -108,7 +108,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should recognize absolute font sizes", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "small serif",
+        font: "small serif"
       });
       expect(sprite.attr.fontSize).toEqual("small");
     });
@@ -116,7 +116,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should recognize font weight values", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "italic 600 large Palatino, serif",
+        font: "italic 600 large Palatino, serif"
       });
       expect(sprite.attr.fontWeight).toEqual("600");
     });
@@ -124,7 +124,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should recognize font variant values", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "normal small-caps 120%/120% fantasy",
+        font: "normal small-caps 120%/120% fantasy"
       });
       expect(sprite.attr.fontVariant).toEqual("small-caps");
     });
@@ -132,7 +132,7 @@ describe("Ext.draw.sprite.Text", function () {
     it("should recognize font style values", function () {
       var sprite = new Ext.draw.sprite.Text();
       sprite.setAttributes({
-        font: "bold large oblique Palatino, serif",
+        font: "bold large oblique Palatino, serif"
       });
       expect(sprite.attr.fontStyle).toEqual("oblique");
     });

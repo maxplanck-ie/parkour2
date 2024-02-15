@@ -26,10 +26,10 @@ Ext.define("Ext.sparkline.CanvasBase", {
     return this.drawShape(
       [
         [x1, y1],
-        [x2, y2],
+        [x2, y2]
       ],
       lineColor,
-      lineWidth,
+      lineWidth
     );
   },
 
@@ -44,7 +44,7 @@ Ext.define("Ext.sparkline.CanvasBase", {
       radius,
       lineColor,
       fillColor,
-      lineWidth,
+      lineWidth
     ]);
   },
 
@@ -55,7 +55,7 @@ Ext.define("Ext.sparkline.CanvasBase", {
     startAngle,
     endAngle,
     lineColor,
-    fillColor,
+    fillColor
   ) {
     return this._genShape("PieSlice", [
       x,
@@ -64,7 +64,7 @@ Ext.define("Ext.sparkline.CanvasBase", {
       startAngle,
       endAngle,
       lineColor,
-      fillColor,
+      fillColor
     ]);
   },
 
@@ -153,5 +153,5 @@ Ext.define("Ext.sparkline.CanvasBase", {
     //<debug>
     Ext.raise("render not implemented");
     //</debug>
-  },
+  }
 });

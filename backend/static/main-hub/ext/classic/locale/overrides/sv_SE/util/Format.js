@@ -14,7 +14,7 @@ if (Ext.util && Ext.util.Format) {
       currencySign: "kr",
       currencyAtEnd: true,
       dateFormat: "Y-m-d",
-      currencySpacer: " ",
+      currencySpacer: " "
     },
     function () {
       var originalParse = Ext.Date.parse;
@@ -26,9 +26,9 @@ if (Ext.util && Ext.util.Format) {
             .replace("AM", "EM")
             .replace("PM", "FM"),
           format,
-          strict,
+          strict
         );
       };
-    },
+    }
   );
 }

@@ -4,8 +4,8 @@ Ext.define("Ext.theme.material.MessageBox", {
   config: {
     buttonToolbar: {
       layout: {
-        pack: "end",
-      },
-    },
-  },
+        pack: "end"
+      }
+    }
+  }
 });

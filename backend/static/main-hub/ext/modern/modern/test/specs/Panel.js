@@ -14,16 +14,16 @@ describe("Ext.Panel", function () {
       createPanel({
         viewModel: {
           data: {
-            foo: "aTitle",
-          },
+            foo: "aTitle"
+          }
         },
         header: {
           items: {
             xtype: "component",
             bind: "{foo}",
-            itemId: "foo",
-          },
-        },
+            itemId: "foo"
+          }
+        }
       });
       panel.getViewModel().notify();
       expect(panel.down("#foo").getHtml()).toBe("aTitle");
@@ -39,7 +39,7 @@ describe("Ext.Panel", function () {
 
       it("should create a header if title is provided", function () {
         createPanel({
-          title: "Foo",
+          title: "Foo"
         });
         expect(panel.getHeader().getTitle().getText()).toBe("Foo");
       });
@@ -47,7 +47,7 @@ describe("Ext.Panel", function () {
       it("should not create header if title is provided, but header:false", function () {
         createPanel({
           title: "Foo",
-          header: false,
+          header: false
         });
         expect(panel.getHeader()).toBeNull();
       });
@@ -58,7 +58,7 @@ describe("Ext.Panel", function () {
     describe("setTitle", function () {
       it("should update title when a header exists", function () {
         createPanel({
-          title: "Foo",
+          title: "Foo"
         });
 
         panel.setTitle("Bar");
@@ -68,7 +68,7 @@ describe("Ext.Panel", function () {
       it("should not create a header when header:false", function () {
         createPanel({
           title: "Foo",
-          header: false,
+          header: false
         });
 
         panel.setTitle("Bar");

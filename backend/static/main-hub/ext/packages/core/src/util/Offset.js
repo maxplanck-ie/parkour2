@@ -16,7 +16,7 @@ Ext.define("Ext.util.Offset", {
         return new this(obj[0], obj[1]);
       }
       return new this(obj.x, obj.y);
-    },
+    }
   },
 
   /* End Definitions */
@@ -75,5 +75,5 @@ Ext.define("Ext.util.Offset", {
 
   isZero: function () {
     return this.x === 0 && this.y === 0;
-  },
+  }
 });

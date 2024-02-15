@@ -18,13 +18,13 @@ Ext.define("Ext.fx.animation.Fade", {
 
     before: {
       display: null,
-      opacity: 0,
+      opacity: 0
     },
 
     after: {
-      opacity: null,
+      opacity: null
     },
-    reverse: null,
+    reverse: null
   },
 
   updateOut: function (newOut) {
@@ -38,5 +38,5 @@ Ext.define("Ext.fx.animation.Fade", {
       from.set("opacity", 0);
       to.set("opacity", 1);
     }
-  },
+  }
 });

@@ -87,7 +87,7 @@ Ext.define("Ext.mixin.Pluggable", function (Pluggable) {
        *      });
        *
        */
-      plugins: null,
+      plugins: null
     },
 
     /**
@@ -258,7 +258,7 @@ Ext.define("Ext.mixin.Pluggable", function (Pluggable) {
 
     privates: {
       statics: {
-        idSeed: 0,
+        idSeed: 0
       },
 
       /**
@@ -366,7 +366,7 @@ Ext.define("Ext.mixin.Pluggable", function (Pluggable) {
       createPlugin: function (config) {
         if (typeof config === "string") {
           config = {
-            type: config,
+            type: config
           };
         }
 
@@ -391,7 +391,7 @@ Ext.define("Ext.mixin.Pluggable", function (Pluggable) {
         }
 
         return ret;
-      },
-    },
+      }
+    }
   };
 });

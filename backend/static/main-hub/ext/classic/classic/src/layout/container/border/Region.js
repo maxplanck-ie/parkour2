@@ -39,7 +39,7 @@ Ext.define(
             state = me.addPropertyToState(state, "weight");
 
             return state;
-          },
+          }
         });
       }
     },
@@ -192,7 +192,7 @@ Ext.define(
       }
 
       return old;
-    },
+    }
   },
   function (Component) {
     var proto = Component.prototype;
@@ -200,5 +200,5 @@ Ext.define(
     // Aliases for v4 compat
     proto.setBorderRegion = proto.setRegion;
     proto.setRegionWeight = proto.setWeight;
-  },
+  }
 );

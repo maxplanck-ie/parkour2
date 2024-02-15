@@ -47,6 +47,6 @@ Ext.define("Ext.data.validator.Email", {
      * A matcher to check for simple emails. This may be overridden.
      */
     matcher:
-      /^(")?(?:[^\."])(?:(?:[\.])?(?:[\w\-!#$%&'*+\/=?\^_`{|}~]))*\1@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/,
-  },
+      /^(")?(?:[^\."])(?:(?:[\.])?(?:[\w\-!#$%&'*+\/=?\^_`{|}~]))*\1@(\w[\-\w]*\.){1,5}([A-Za-z]){2,6}$/
+  }
 });

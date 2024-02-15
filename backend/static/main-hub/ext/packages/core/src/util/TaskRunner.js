@@ -331,7 +331,7 @@ Ext.define(
                     prefix: "Error while running task",
                     stack: taskError.stack,
                     msg: taskError,
-                    level: "error",
+                    level: "error"
                   });
                   // </debug>
                   if (task.onError) {
@@ -433,7 +433,7 @@ Ext.define(
         me.timerId = Ext.defer(me.timerFn, timeout);
         me.nextExpires = expires;
       }
-    },
+    }
   },
   function () {
     var me = this,
@@ -493,7 +493,7 @@ Ext.define(
        */
       stop: function () {
         this.manager.stop(this);
-      },
+      }
     });
 
     proto = me.Task.prototype;
@@ -504,5 +504,5 @@ Ext.define(
      * @member Ext.util.TaskRunner.Task
      */
     proto.destroy = proto.stop;
-  },
+  }
 );

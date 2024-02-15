@@ -64,7 +64,7 @@ Ext.define("Ext.panel.Tool", {
      * @cfg {Number/String} glyph
      * @inheritdoc Ext.panel.Header#glyph
      */
-    glyph: null,
+    glyph: null
   },
 
   /**
@@ -103,7 +103,7 @@ Ext.define("Ext.panel.Tool", {
       "<tpl else>" +
       ">" +
       "</tpl>" +
-      "</div>",
+      "</div>"
   ],
 
   /**
@@ -251,7 +251,7 @@ Ext.define("Ext.panel.Tool", {
   keyMap: {
     scope: "this",
     SPACE: "onClick",
-    ENTER: "onClick",
+    ENTER: "onClick"
   },
 
   cacheHeight: true,
@@ -283,7 +283,7 @@ Ext.define("Ext.panel.Tool", {
     search: 1,
     toggle: 1,
     unpin: 1,
-    up: 1,
+    up: 1
   },
   //</debug>
 
@@ -293,7 +293,7 @@ Ext.define("Ext.panel.Tool", {
     //<debug>
     if (me.id && me._toolTypes[me.id]) {
       Ext.raise(
-        "When specifying a tool you should use the type option, the id can conflict now that tool is a Component",
+        "When specifying a tool you should use the type option, the id can conflict now that tool is a Component"
       );
     }
     //</debug>
@@ -318,7 +318,7 @@ Ext.define("Ext.panel.Tool", {
     Ext.applyIf(data, {
       className: me.calculateClassName(),
       glyph: glyph,
-      glyphFontFamily: glyphFontFamily,
+      glyphFontFamily: glyphFontFamily
     });
 
     return data;
@@ -352,7 +352,7 @@ Ext.define("Ext.panel.Tool", {
       mousedown: me.onMouseDown,
       mouseover: me.onMouseOver,
       mouseout: me.onMouseOut,
-      scope: me,
+      scope: me
     });
 
     tip = me.tooltip;
@@ -362,7 +362,7 @@ Ext.define("Ext.panel.Tool", {
   },
 
   tipAttrs: {
-    qtip: "data-qtip",
+    qtip: "data-qtip"
   },
 
   setTooltip: function (tooltip, type) {
@@ -387,10 +387,10 @@ Ext.define("Ext.panel.Tool", {
         Ext.tip.QuickTipManager.register(
           Ext.apply(
             {
-              target: id,
+              target: id
             },
-            tooltip,
-          ),
+            tooltip
+          )
         );
       } else if (el) {
         if (type && oldType && type !== oldType) {
@@ -558,7 +558,7 @@ Ext.define("Ext.panel.Tool", {
           me.scope,
           [me.toolOwner || me.ownerCt, me, e],
           0,
-          me,
+          me
         );
       }
 
@@ -632,6 +632,6 @@ Ext.define("Ext.panel.Tool", {
         toolEl.removeCls(oldCls);
         toolEl.addCls(this.calculateClassName());
       }
-    },
-  },
+    }
+  }
 });

@@ -38,7 +38,7 @@ Ext.define("Ext.grid.cell.Text", {
      *
      * Set it as an empty string if you want to hide cells that have 0s.
      */
-    zeroValue: null,
+    zeroValue: null
   },
 
   updateRawValue: function (rawValue) {
@@ -74,5 +74,5 @@ Ext.define("Ext.grid.cell.Text", {
       v = format(v);
     }
     me.setRawValue(v);
-  },
+  }
 });

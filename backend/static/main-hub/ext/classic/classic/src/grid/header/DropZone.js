@@ -37,10 +37,10 @@ Ext.define("Ext.grid.header.DropZone", {
         // tell the spec runner to ignore this element when checking if the dom is clean
         "data-sticky": true,
         //</debug>
-        html: "&#160;",
+        html: "&#160;"
       });
       this.indicatorXOffset = Math.floor(
-        (this.topIndicator.dom.offsetWidth + 1) / 2,
+        (this.topIndicator.dom.offsetWidth + 1) / 2
       );
     }
     return this.topIndicator;
@@ -55,7 +55,7 @@ Ext.define("Ext.grid.header.DropZone", {
         // tell the spec runner to ignore this element when checking if the dom is clean
         "data-sticky": true,
         //</debug>
-        html: "&#160;",
+        html: "&#160;"
       });
     }
     return this.bottomIndicator;
@@ -74,7 +74,7 @@ Ext.define("Ext.grid.header.DropZone", {
     return {
       pos: pos,
       header: Ext.getCmp(t.id),
-      node: t,
+      node: t
     };
   },
 
@@ -308,11 +308,11 @@ Ext.define("Ext.grid.header.DropZone", {
         dropPosition === "after"
           ? // Get the last header in the most deeply-nested header group and add one.
             visibleColumnManager.getHeaderIndex(
-              me.getNestedHeader(targetHeader, 1),
+              me.getNestedHeader(targetHeader, 1)
             ) + 1
           : // Get the first header in the most deeply-nested header group.
             visibleColumnManager.getHeaderIndex(
-              me.getNestedHeader(targetHeader, 0),
+              me.getNestedHeader(targetHeader, 0)
             );
 
       me.invalidateDrop();
@@ -404,7 +404,7 @@ Ext.define("Ext.grid.header.DropZone", {
         fromCt,
         dragHeader,
         visibleFromIdx,
-        visibleToIdx,
+        visibleToIdx
       );
 
       fromCtRoot.isDDMoveInGrid = false;
@@ -439,5 +439,5 @@ Ext.define("Ext.grid.header.DropZone", {
       }
       // Ext.grid.header.Container will handle the removal of empty groups, don't handle it here.
     }
-  },
+  }
 });

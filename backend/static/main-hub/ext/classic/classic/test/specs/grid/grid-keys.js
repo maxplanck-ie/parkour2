@@ -18,8 +18,8 @@ describe("grid-keys", function () {
               "field7",
               "field8",
               "field9",
-              "field10",
-            ],
+              "field10"
+            ]
           });
 
         var TAB = 9,
@@ -35,7 +35,7 @@ describe("grid-keys", function () {
         function clickAndKey(rowIdx, cellIdx, key, altKey) {
           var visibleCellIdx = view
             .getHeaderByCell(
-              view.getCellInclusive({ row: rowIdx, column: cellIdx }),
+              view.getCellInclusive({ row: rowIdx, column: cellIdx })
             )
             .getVisibleIndex();
 
@@ -61,9 +61,9 @@ describe("grid-keys", function () {
           return grid.getView().getCellInclusive(
             {
               row: rowIdx,
-              column: cellIdx,
+              column: cellIdx
             },
-            true,
+            true
           );
         }
 
@@ -75,7 +75,7 @@ describe("grid-keys", function () {
           for (i = 1; i <= 4; ++i) {
             defaultCols.push({
               name: "F" + i,
-              dataIndex: "field" + i,
+              dataIndex: "field" + i
             });
           }
 
@@ -91,13 +91,13 @@ describe("grid-keys", function () {
               field7: i + "." + 7,
               field8: i + "." + 8,
               field9: i + "." + 9,
-              field10: i + "." + 10,
+              field10: i + "." + 10
             });
           }
 
           store = new Ext.data.Store({
             model: GridEventModel,
-            data: data,
+            data: data
           });
 
           grid = new Ext.grid.Panel({
@@ -108,9 +108,9 @@ describe("grid-keys", function () {
             height: 500,
             bufferedRenderer: buffered,
             viewConfig: {
-              mouseOverOutBuffer: 0,
+              mouseOverOutBuffer: 0
             },
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           view = grid.getView();
         }
@@ -131,21 +131,21 @@ describe("grid-keys", function () {
               it("should move down a row when pressing the down key on the first row", function () {
                 clickAndKey(0, 0, DOWN);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(1),
+                  store.getAt(1)
                 );
               });
 
               it("should move down a row when pressing the down key on a middle row", function () {
                 clickAndKey(2, 0, DOWN);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(3),
+                  store.getAt(3)
                 );
               });
 
               it("should not move down a row when pressing the down key on the last row", function () {
                 clickAndKey(4, 0, DOWN);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(4),
+                  store.getAt(4)
                 );
               });
             });
@@ -154,21 +154,21 @@ describe("grid-keys", function () {
               it("should move up a row when pressing the up key on the last row", function () {
                 clickAndKey(4, 0, UP);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(3),
+                  store.getAt(3)
                 );
               });
 
               it("should move up a row when pressing the up key on a middle row", function () {
                 clickAndKey(3, 0, UP);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(2),
+                  store.getAt(2)
                 );
               });
 
               it("should not move up a row when pressing the up key on the first row", function () {
                 clickAndKey(0, 0, UP);
                 expect(grid.getSelectionModel().getSelection()[0]).toBe(
-                  store.getAt(0),
+                  store.getAt(0)
                 );
               });
             });
@@ -308,14 +308,14 @@ describe("grid-keys", function () {
                 makeGrid("cellmodel", [
                   {
                     hidden: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
-                  },
+                    dataIndex: "field3"
+                  }
                 ]);
                 clickAndKey(1, 1, LEFT);
                 expectSelection(0, 2);
@@ -325,18 +325,18 @@ describe("grid-keys", function () {
                 makeGrid("cellmodel", [
                   {
                     hidden: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(1, 2, LEFT);
                 expectSelection(0, 3);
@@ -345,19 +345,19 @@ describe("grid-keys", function () {
               it("should skip over hidden middle columns (left key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(0, 3, LEFT);
                 expectSelection(0, 0);
@@ -366,15 +366,15 @@ describe("grid-keys", function () {
               it("should skip over a hidden last column (left key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field3",
-                  },
+                    dataIndex: "field3"
+                  }
                 ]);
                 clickAndKey(1, 0, LEFT);
                 expectSelection(0, 1);
@@ -383,19 +383,19 @@ describe("grid-keys", function () {
               it("should skip over multiple hidden last columns (left key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
-                  },
-                  {
-                    hidden: true,
-                    dataIndex: "field3",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field4",
+                    dataIndex: "field3"
                   },
+                  {
+                    hidden: true,
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(1, 0, LEFT);
                 expectSelection(0, 1);
@@ -407,14 +407,14 @@ describe("grid-keys", function () {
                 makeGrid("cellmodel", [
                   {
                     hidden: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
-                  },
+                    dataIndex: "field3"
+                  }
                 ]);
                 clickAndKey(0, 2, RIGHT);
                 expectSelection(1, 1);
@@ -424,18 +424,18 @@ describe("grid-keys", function () {
                 makeGrid("cellmodel", [
                   {
                     hidden: true,
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(0, 3, RIGHT);
                 expectSelection(1, 2);
@@ -444,19 +444,19 @@ describe("grid-keys", function () {
               it("should skip over hidden middle columns (right key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field3",
+                    dataIndex: "field3"
                   },
                   {
-                    dataIndex: "field4",
-                  },
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(0, 0, RIGHT);
                 expectSelection(0, 3);
@@ -465,15 +465,15 @@ describe("grid-keys", function () {
               it("should skip over a hidden last column (right key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field3",
-                  },
+                    dataIndex: "field3"
+                  }
                 ]);
                 clickAndKey(0, 1, RIGHT);
                 expectSelection(1, 0);
@@ -482,19 +482,19 @@ describe("grid-keys", function () {
               it("should skip over multiple hidden last columns (right key)", function () {
                 makeGrid("cellmodel", [
                   {
-                    dataIndex: "field1",
+                    dataIndex: "field1"
                   },
                   {
-                    dataIndex: "field2",
-                  },
-                  {
-                    hidden: true,
-                    dataIndex: "field3",
+                    dataIndex: "field2"
                   },
                   {
                     hidden: true,
-                    dataIndex: "field4",
+                    dataIndex: "field3"
                   },
+                  {
+                    hidden: true,
+                    dataIndex: "field4"
+                  }
                 ]);
                 clickAndKey(0, 1, RIGHT);
                 expectSelection(1, 0);
@@ -502,7 +502,7 @@ describe("grid-keys", function () {
             });
           });
         });
-      },
+      }
     );
   }
   createSuite(false);

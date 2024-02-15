@@ -2,5 +2,5 @@
  * @private
  */
 Ext.define("Ext.device.globalization.Simulator", {
-  extend: "Ext.device.globalization.Abstract",
+  extend: "Ext.device.globalization.Abstract"
 });

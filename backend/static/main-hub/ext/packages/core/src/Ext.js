@@ -51,7 +51,7 @@ var Ext = Ext || {}; // jshint ignore:line
       "valueOf",
       "toLocaleString",
       "toString",
-      "constructor",
+      "constructor"
     ],
     emptyFn = function () {},
     privateFn = function () {},
@@ -200,9 +200,9 @@ var Ext = Ext || {}; // jshint ignore:line
 
   Ext.buildSettings = Ext.apply(
     {
-      baseCSSPrefix: "x-",
+      baseCSSPrefix: "x-"
     },
-    Ext.buildSettings || {},
+    Ext.buildSettings || {}
   );
 
   Ext.apply(Ext, {
@@ -358,8 +358,8 @@ var Ext = Ext || {}; // jshint ignore:line
     debugConfig: Ext.debugConfig ||
       manifest.debug || {
         hooks: {
-          "*": true,
-        },
+          "*": true
+        }
       },
     //</debug>
 
@@ -1079,7 +1079,7 @@ var Ext = Ext || {}; // jshint ignore:line
       },
       deprecate: function (message) {
         this.log(message, "warn");
-      },
+      }
     } || {
       //</feature>
       verbose: emptyFn,
@@ -1089,7 +1089,7 @@ var Ext = Ext || {}; // jshint ignore:line
       error: function (message) {
         throw new Error(message);
       },
-      deprecate: emptyFn,
+      deprecate: emptyFn
     },
 
     ariaWarn: function (target, msg) {
@@ -1101,14 +1101,14 @@ var Ext = Ext || {}; // jshint ignore:line
           Ext.ariaWarn.first = true;
           Ext.log.warn(
             "WAI-ARIA compatibility warnings can be suppressed " +
-              "by adding the following to application startup code:",
+              "by adding the following to application startup code:"
           );
           Ext.log.warn("    Ext.ariaWarn = Ext.emptyFn;");
         }
 
         Ext.log.warn({
           msg: msg,
-          dump: target,
+          dump: target
         });
       }
     },
@@ -1158,7 +1158,7 @@ var Ext = Ext || {}; // jshint ignore:line
 
         return result;
       };
-    })(),
+    })()
   }); // Ext.apply(Ext
 
   Ext.returnTrue.$nullFn = Ext.returnId.$nullFn = true;

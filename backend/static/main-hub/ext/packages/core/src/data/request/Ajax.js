@@ -53,9 +53,9 @@ Ext.define("Ext.data.request.Ajax", {
 
       return {
         success: success,
-        isException: isException,
+        isException: isException
       };
-    },
+    }
   },
 
   start: function (data) {
@@ -71,7 +71,7 @@ Ext.define("Ext.data.request.Ajax", {
       requestOptions,
       me.async,
       me.username,
-      me.password,
+      me.password
     );
 
     // XDR doesn't support setting any headers
@@ -80,7 +80,7 @@ Ext.define("Ext.data.request.Ajax", {
         xhr,
         options,
         requestOptions.data,
-        requestOptions.params,
+        requestOptions.params
       );
     }
 
@@ -180,7 +180,7 @@ Ext.define("Ext.data.request.Ajax", {
         requestOptions.url,
         async,
         username,
-        password,
+        password
       );
     } else {
       if (me.isXdr) {
@@ -202,7 +202,7 @@ Ext.define("Ext.data.request.Ajax", {
         //<debug>
       } else if (!Ext.isIE) {
         Ext.log.warn(
-          "Your browser does not support loading binary data using Ajax.",
+          "Your browser does not support loading binary data using Ajax."
         );
         //</debug>
       }
@@ -319,7 +319,7 @@ Ext.define("Ext.data.request.Ajax", {
       xdr = new XDomainRequest();
     } else {
       Ext.raise({
-        msg: "Your browser does not support CORS",
+        msg: "Your browser does not support CORS"
       });
     }
 
@@ -343,7 +343,7 @@ Ext.define("Ext.data.request.Ajax", {
         },
         function () {
           return new ActiveXObject("Microsoft.XMLHTTP"); // jshint ignore:line
-        },
+        }
       ],
       i = 0,
       len = options.length,
@@ -370,7 +370,7 @@ Ext.define("Ext.data.request.Ajax", {
 
     xhr.onload = Ext.Function.bind(me.onStateChange, me, [true]);
     xhr.onerror = xhr.ontimeout = Ext.Function.bind(me.onStateChange, me, [
-      false,
+      false
     ]);
   },
 
@@ -475,7 +475,7 @@ Ext.define("Ext.data.request.Ajax", {
       Ext.callback(options.callback, options.scope, [
         options,
         success,
-        response,
+        response
       ]);
     }
 
@@ -530,7 +530,7 @@ Ext.define("Ext.data.request.Ajax", {
       },
       getAllResponseHeaders: function () {
         return headers;
-      },
+      }
     };
 
     if (isXdr) {
@@ -640,12 +640,12 @@ Ext.define("Ext.data.request.Ajax", {
         "For i = 1 to len",
         "out.push(AscB(MidB(byteArray, i, 1)))",
         "Next",
-        "End Function",
+        "End Function"
       ].join("\n");
 
       Ext.getHead().dom.appendChild(scriptTag);
 
       this.self.vbScriptInjected = true;
-    },
-  },
+    }
+  }
 });

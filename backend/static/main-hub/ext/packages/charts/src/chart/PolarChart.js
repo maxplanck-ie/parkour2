@@ -34,7 +34,7 @@ Ext.define("Ext.chart.PolarChart", {
      * @cfg {Number} innerPadding The amount of inner padding in pixels.
      * Inner padding is the padding from the outermost angular axis to the series.
      */
-    innerPadding: 0,
+    innerPadding: 0
   },
 
   getDirectionForAxis: function (position) {
@@ -81,7 +81,7 @@ Ext.define("Ext.chart.PolarChart", {
       0,
       1,
       mainRect[0] - rect[0],
-      mainRect[1] - rect[1],
+      mainRect[1] - rect[1]
     );
     surface.inverseMatrix.set(
       1,
@@ -89,7 +89,7 @@ Ext.define("Ext.chart.PolarChart", {
       0,
       1,
       rect[0] - mainRect[0],
-      rect[1] - mainRect[1],
+      rect[1] - mainRect[1]
     );
   },
 
@@ -116,9 +116,9 @@ Ext.define("Ext.chart.PolarChart", {
           position: "angular",
           fields: firstSeries.xField || firstSeries.angleField,
           style: {
-            estStepSize: 1,
+            estStepSize: 1
           },
-          grid: true,
+          grid: true
         });
       }
     }
@@ -144,24 +144,24 @@ Ext.define("Ext.chart.PolarChart", {
         shrinkBox = Ext.apply({}, inset),
         width = Math.max(
           1,
-          chartRect[2] - chartRect[0] - inset.left - inset.right,
+          chartRect[2] - chartRect[0] - inset.left - inset.right
         ),
         height = Math.max(
           1,
-          chartRect[3] - chartRect[1] - inset.top - inset.bottom,
+          chartRect[3] - chartRect[1] - inset.top - inset.bottom
         ),
         mainRect = [
           inset.left,
           inset.top,
           width + chartRect[0],
-          height + chartRect[1],
+          height + chartRect[1]
         ],
         seriesList = me.getSeries(),
         innerWidth = width - inner * 2,
         innerHeight = height - inner * 2,
         center = [
           chartRect[0] + innerWidth * 0.5 + inner,
-          chartRect[1] + innerHeight * 0.5 + inner,
+          chartRect[1] + innerHeight * 0.5 + inner
         ],
         radius = Math.min(innerWidth, innerHeight) * 0.5,
         axes = me.getAxes(),
@@ -346,5 +346,5 @@ Ext.define("Ext.chart.PolarChart", {
   renderFrame: function () {
     this.refloatAxes();
     this.callParent();
-  },
+  }
 });

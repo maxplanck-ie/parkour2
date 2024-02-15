@@ -37,7 +37,7 @@ Ext.define("Ext.app.route.Queue", {
   queueAction: function (route, args) {
     this.queue.add({
       route: route,
-      args: args,
+      args: args
     });
   },
 
@@ -76,5 +76,5 @@ Ext.define("Ext.app.route.Queue", {
       //continue with queue execution
       this.runQueue();
     }
-  },
+  }
 });

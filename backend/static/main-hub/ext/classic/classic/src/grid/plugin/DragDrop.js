@@ -281,7 +281,7 @@ Ext.define("Ext.grid.plugin.DragDrop", {
   init: function (view) {
     Ext.applyIf(view, {
       copy: this.copy,
-      allowCopy: this.allowCopy,
+      allowCopy: this.allowCopy
     });
     view.on("render", this.onViewRender, this, { single: true });
   },
@@ -338,10 +338,10 @@ Ext.define("Ext.grid.plugin.DragDrop", {
             ddGroup: me.dragGroup || me.ddGroup,
             dragText: me.dragText,
             containerScroll: me.containerScroll,
-            scrollEl: scrollEl,
+            scrollEl: scrollEl
           },
-          me.dragZone,
-        ),
+          me.dragZone
+        )
       );
     }
 
@@ -350,11 +350,11 @@ Ext.define("Ext.grid.plugin.DragDrop", {
         Ext.apply(
           {
             view: view,
-            ddGroup: me.dropGroup || me.ddGroup,
+            ddGroup: me.dropGroup || me.ddGroup
           },
-          me.dropZone,
-        ),
+          me.dropZone
+        )
       );
     }
-  },
+  }
 });

@@ -53,7 +53,7 @@ Ext.define("Ext.data.amf.Encoder", {
   alias: "data.amf.Encoder",
 
   config: {
-    format: 3,
+    format: 3
   },
 
   /**
@@ -97,7 +97,7 @@ Ext.define("Ext.data.amf.Encoder", {
         writeXml: this.write0Xml,
         writeDate: this.write0Date,
         writeArray: this.write0Array,
-        writeGenericObject: this.write0GenericObject,
+        writeGenericObject: this.write0GenericObject
       },
 
       3: {
@@ -109,8 +109,8 @@ Ext.define("Ext.data.amf.Encoder", {
         writeXml: this.write3Xml,
         writeDate: this.write3Date,
         writeArray: this.write3Array,
-        writeGenericObject: this.write3GenericObject,
-      },
+        writeGenericObject: this.write3GenericObject
+      }
     }[protocol_version];
     if (funcs) {
       Ext.apply(this, funcs);
@@ -120,7 +120,7 @@ Ext.define("Ext.data.amf.Encoder", {
       Ext.raise(
         "Unsupported AMF format: " +
           protocol_version +
-          ". Only '3' (AMF3) is supported at this point.",
+          ". Only '3' (AMF3) is supported at this point."
       );
       //</debug>
       return; // return nothing
@@ -172,7 +172,7 @@ Ext.define("Ext.data.amf.Encoder", {
         "AMF Encoder: Unknown item type " +
           t +
           " can't be written to stream: " +
-          item,
+          item
       );
       //</debug>
     }
@@ -219,7 +219,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (typeof item !== "boolean") {
       Ext.log.warn(
-        "Encoder: writeBoolean argument is not a boolean. Coercing.",
+        "Encoder: writeBoolean argument is not a boolean. Coercing."
       );
     }
     // </debug>
@@ -239,7 +239,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (typeof item !== "boolean") {
       Ext.log.warn(
-        "Encoder: writeBoolean argument is not a boolean. Coercing.",
+        "Encoder: writeBoolean argument is not a boolean. Coercing."
       );
     }
     // </debug>
@@ -297,7 +297,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (typeof item !== "number" && !(item instanceof Number)) {
       Ext.log.warn(
-        "Encoder: writeNumber argument is not numeric. Can't coerce.",
+        "Encoder: writeNumber argument is not numeric. Can't coerce."
       );
     }
     // </debug>
@@ -333,7 +333,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (typeof item !== "number" && !(item instanceof Number)) {
       Ext.log.warn(
-        "Encoder: writeNumber argument is not numeric. Can't coerce.",
+        "Encoder: writeNumber argument is not numeric. Can't coerce."
       );
     }
     // </debug>
@@ -529,7 +529,7 @@ Ext.define("Ext.data.amf.Encoder", {
     }
     if (!this.isXmlDocument(xml)) {
       Ext.log.warn(
-        "Encoder: write3XmlWithType argument is not an xml document.",
+        "Encoder: write3XmlWithType argument is not an xml document."
       );
     }
     // </debug>
@@ -657,7 +657,7 @@ Ext.define("Ext.data.amf.Encoder", {
       function (x) {
         this.writeObject(x);
       },
-      this,
+      this
     );
   },
 
@@ -750,7 +750,7 @@ Ext.define("Ext.data.amf.Encoder", {
       function (x) {
         this.writeObject(x);
       },
-      this,
+      this
     );
   },
 
@@ -896,7 +896,7 @@ Ext.define("Ext.data.amf.Encoder", {
     for (i = 0; i < b.length; i++) {
       if (b[i] < 0 || b[i] > 255 || !Ext.isNumber(b[i])) {
         Ext.raise(
-          "ERROR: Value " + i + " being written outside byte range: " + b[i],
+          "ERROR: Value " + i + " being written outside byte range: " + b[i]
         );
       }
     }
@@ -1070,7 +1070,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (this.config.format != 0) {
       Ext.raise(
-        "Trying to write a packet on an AMF3 Encoder. Only AMF0 is supported!",
+        "Trying to write a packet on an AMF3 Encoder. Only AMF0 is supported!"
       );
     }
     if (!Ext.isArray(headers)) {
@@ -1089,7 +1089,7 @@ Ext.define("Ext.data.amf.Encoder", {
       this.writeAmfHeader(
         headers[i].name,
         headers[i].mustUnderstand,
-        headers[i].value,
+        headers[i].value
       );
     }
     // Write message count
@@ -1099,7 +1099,7 @@ Ext.define("Ext.data.amf.Encoder", {
       this.writeAmfMessage(
         messages[i].targetUri,
         messages[i].responseUri,
-        messages[i].body,
+        messages[i].body
       );
     }
   },
@@ -1115,7 +1115,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (this.config.format != 0) {
       Ext.raise(
-        "Trying to write a header on an AMF3 Encoder. Only AMF0 is supported!",
+        "Trying to write a header on an AMF3 Encoder. Only AMF0 is supported!"
       );
     }
     if (!Ext.isString(headerName)) {
@@ -1147,7 +1147,7 @@ Ext.define("Ext.data.amf.Encoder", {
     //<debug>
     if (this.config.format != 0) {
       Ext.raise(
-        "Trying to write a message on an AMF3 Encoder. Only AMF0 is supported!",
+        "Trying to write a message on an AMF3 Encoder. Only AMF0 is supported!"
       );
     }
     if (!Ext.isString(targetUri)) {
@@ -1168,5 +1168,5 @@ Ext.define("Ext.data.amf.Encoder", {
     this.writeBytes(this.encodeXInt(-1, 4));
     // write the paramters
     this.write0StrictArray(body);
-  },
+  }
 });

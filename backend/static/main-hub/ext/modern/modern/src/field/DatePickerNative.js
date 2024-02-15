@@ -36,5 +36,5 @@ Ext.define("Ext.field.DatePickerNative", {
     } catch (ex) {
       fail(ex);
     }
-  },
+  }
 });

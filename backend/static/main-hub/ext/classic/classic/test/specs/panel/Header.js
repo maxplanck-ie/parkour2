@@ -5,9 +5,9 @@ describe("Ext.panel.Header", function () {
     cfg = Ext.apply(
       {
         title: "foo",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      cfg,
+      cfg
     );
 
     return (header = new Ext.panel.Header(cfg));
@@ -21,7 +21,7 @@ describe("Ext.panel.Header", function () {
   describe("Title value", function () {
     it("should set it as configured", function () {
       makeHeader({
-        title: 10,
+        title: 10
       });
       expect(header.title.getText()).toBe(10);
     });
@@ -30,7 +30,7 @@ describe("Ext.panel.Header", function () {
   describe("setTitlePosition", function () {
     beforeEach(function () {
       makeHeader({
-        tools: [{ type: "close" }, { type: "pin" }],
+        tools: [{ type: "close" }, { type: "pin" }]
       });
     });
 
@@ -79,7 +79,7 @@ describe("Ext.panel.Header", function () {
         it("should have presentation role on titleCmp textEl", function () {
           expect(header.titleCmp.textEl).toHaveAttribute(
             "role",
-            "presentation",
+            "presentation"
           );
         });
 
@@ -107,7 +107,7 @@ describe("Ext.panel.Header", function () {
           it("should not change titleCmp textEl role", function () {
             expect(header.titleCmp.textEl).toHaveAttribute(
               "role",
-              "presentation",
+              "presentation"
             );
           });
 
@@ -177,9 +177,9 @@ describe("Ext.panel.Header", function () {
             makeHeader({
               tools: [
                 {
-                  type: "collapse",
-                },
-              ],
+                  type: "collapse"
+                }
+              ]
             });
           });
 
@@ -198,7 +198,7 @@ describe("Ext.panel.Header", function () {
           it("should have presentation role on titleCmp textEl", function () {
             expect(header.titleCmp.textEl).toHaveAttribute(
               "role",
-              "presentation",
+              "presentation"
             );
           });
 
@@ -214,9 +214,9 @@ describe("Ext.panel.Header", function () {
                 {
                   type: "close",
                   focusable: false,
-                  tabIndex: null,
-                },
-              ],
+                  tabIndex: null
+                }
+              ]
             });
           });
 
@@ -235,7 +235,7 @@ describe("Ext.panel.Header", function () {
           it("should have presentation role on titleCmp textEl", function () {
             expect(header.titleCmp.textEl).toHaveAttribute(
               "role",
-              "presentation",
+              "presentation"
             );
           });
 
@@ -251,9 +251,9 @@ describe("Ext.panel.Header", function () {
             isAccordionHeader: true,
             tools: [
               {
-                type: "collapse",
-              },
-            ],
+                type: "collapse"
+              }
+            ]
           });
         });
 

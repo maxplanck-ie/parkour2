@@ -55,7 +55,7 @@ Ext.define("Ext.form.field.File", {
   alternateClassName: [
     "Ext.form.FileUploadField",
     "Ext.ux.form.FileUploadField",
-    "Ext.form.File",
+    "Ext.form.File"
   ],
   requires: ["Ext.form.field.FileButton", "Ext.form.trigger.Component"],
 
@@ -86,8 +86,8 @@ Ext.define("Ext.form.field.File", {
       // 1. The input element does not receive focus when the field is focused. The button does.
       // 2. Preventing the default action of touchstart (translated from mousedown
       // on mobile browsers) prevents the browser's file dialog from opening.
-      preventMouseDown: false,
-    },
+      preventMouseDown: false
+    }
   },
 
   //<locale>
@@ -205,10 +205,10 @@ Ext.define("Ext.form.field.File", {
           inputName: me.getName(),
           listeners: {
             scope: me,
-            change: me.onFileChange,
-          },
+            change: me.onFileChange
+          }
         },
-        me.buttonConfig,
+        me.buttonConfig
       );
 
       return me.callParent([triggers]);
@@ -217,7 +217,7 @@ Ext.define("Ext.form.field.File", {
     else {
       Ext.raise(
         me.$className +
-          ' requires a valid trigger config containing "filebutton" specification',
+          ' requires a valid trigger config containing "filebutton" specification'
       );
     }
     // </debug>
@@ -423,6 +423,6 @@ Ext.define("Ext.form.field.File", {
       return this.button;
     },
 
-    getFocusClsEl: Ext.privateFn,
-  },
+    getFocusClsEl: Ext.privateFn
+  }
 });

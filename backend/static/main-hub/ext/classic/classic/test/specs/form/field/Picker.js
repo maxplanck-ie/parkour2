@@ -20,9 +20,9 @@ describe("Ext.form.field.Picker", function () {
             focusable: true,
             renderTo: Ext.getBody(),
             floating: true,
-            html: "foo",
+            html: "foo"
           });
-        },
+        }
       });
       component = new Ext.form.field.Picker(config);
     };
@@ -76,7 +76,7 @@ describe("Ext.form.field.Picker", function () {
   describe("expand", function () {
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -107,12 +107,12 @@ describe("Ext.form.field.Picker", function () {
 
       makeComponent({
         renderTo: Ext.getBody(),
-        matchFieldWidth: false,
+        matchFieldWidth: false
       });
 
       component.expand();
       expect(component.picker.getWidth()).not.toEqual(
-        component.inputEl.getWidth(),
+        component.inputEl.getWidth()
       );
     });
 
@@ -160,7 +160,7 @@ describe("Ext.form.field.Picker", function () {
   describe("collapse", function () {
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.expand();
     });
@@ -204,7 +204,7 @@ describe("Ext.form.field.Picker", function () {
     describe("single trigger", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -282,9 +282,9 @@ describe("Ext.form.field.Picker", function () {
           renderTo: Ext.getBody(),
           triggers: {
             clear: {
-              handler: Ext.emptyFn,
-            },
-          },
+              handler: Ext.emptyFn
+            }
+          }
         });
 
         picker = component.getPicker();
@@ -325,7 +325,7 @@ describe("Ext.form.field.Picker", function () {
   describe("keyboard access", function () {
     beforeEach(function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -362,11 +362,11 @@ describe("Ext.form.field.Picker", function () {
             items: [
               {
                 xtype: "component",
-                autoEl: "a",
-              },
-            ],
+                autoEl: "a"
+              }
+            ]
           });
-        },
+        }
       });
     });
 
@@ -374,7 +374,7 @@ describe("Ext.form.field.Picker", function () {
       beforeEach(function () {
         textfield = Ext.widget({
           renderTo: document.body,
-          xtype: "textfield",
+          xtype: "textfield"
         });
         blurFired = false;
       });
@@ -429,14 +429,14 @@ describe("Ext.form.field.Picker", function () {
         cellIdx,
         button,
         x,
-        y,
+        y
       ) {
         var target = view.getCellByPosition(
           {
             row: rowIdx,
-            column: cellIdx,
+            column: cellIdx
           },
-          true,
+          true
         );
         jasmine.fireMouseEvent(target, type, x, y, button);
       }
@@ -444,9 +444,9 @@ describe("Ext.form.field.Picker", function () {
         var target = view.getCellByPosition(
           {
             row: rowIdx,
-            column: cellIdx,
+            column: cellIdx
           },
-          true,
+          true
         );
 
         jasmine.fireKeyEvent(target, type, key);
@@ -460,9 +460,9 @@ describe("Ext.form.field.Picker", function () {
             "text",
             {
               name: "value",
-              type: "int",
-            },
-          ],
+              type: "int"
+            }
+          ]
         });
 
         MyField = Ext.define(null, {
@@ -477,15 +477,15 @@ describe("Ext.form.field.Picker", function () {
                 fields: [
                   {
                     type: "int",
-                    name: "a",
+                    name: "a"
                   },
-                  "b",
+                  "b"
                 ],
                 data: [
                   { a: 123, b: "123 Text" },
                   { a: 456, b: "456 Text" },
-                  { a: 789, b: "789 Text" },
-                ],
+                  { a: 789, b: "789 Text" }
+                ]
               }),
               floating: true,
               width: 100,
@@ -495,10 +495,10 @@ describe("Ext.form.field.Picker", function () {
                   text: "Value",
                   width: 70,
                   editor: {
-                    xtype: "numberfield",
+                    xtype: "numberfield"
                   },
                   dataIndex: "a",
-                  resizable: false,
+                  resizable: false
                 },
                 {
                   text: "Description",
@@ -506,22 +506,22 @@ describe("Ext.form.field.Picker", function () {
                   resizable: false,
                   flex: 1,
                   editor: {
-                    xtype: "textfield",
-                  },
-                },
+                    xtype: "textfield"
+                  }
+                }
               ],
               selType: "checkboxmodel",
               selModel: {
                 checkOnly: true,
-                allowDeselect: false,
+                allowDeselect: false
               },
               listeners: {
                 selectionchange: function (sm, selections) {
                   if (selections.length) {
                     me.setValue(selections[0].get("a"));
                   }
-                },
-              },
+                }
+              }
             });
 
             return pickerGrid;
@@ -538,7 +538,7 @@ describe("Ext.form.field.Picker", function () {
           },
           getValue: function () {
             return parseInt(this.callParent());
-          },
+          }
         });
 
         var pickerGrid,
@@ -568,9 +568,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 11,
                         text: "Child Of Node 1",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 2,
@@ -581,9 +581,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 22,
                         text: "Child Of Node 2",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 3,
@@ -594,9 +594,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 33,
                         text: "Child Of Node 3",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 4,
@@ -607,9 +607,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 44,
                         text: "Child Of Node 4",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 5,
@@ -620,9 +620,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 55,
                         text: "Child Of Node 5",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 6,
@@ -633,9 +633,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 66,
                         text: "Child Of Node 6",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 7,
@@ -646,9 +646,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 77,
                         text: "Child Of Node 7",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 8,
@@ -659,9 +659,9 @@ describe("Ext.form.field.Picker", function () {
                         id: 88,
                         text: "Child Of Node 8",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
+                        value: 456
+                      }
+                    ]
                   },
                   {
                     id: 9,
@@ -672,52 +672,52 @@ describe("Ext.form.field.Picker", function () {
                         id: 99,
                         text: "Child Of Node 9",
                         leaf: true,
-                        value: 456,
-                      },
-                    ],
-                  },
-                ],
-              },
+                        value: 456
+                      }
+                    ]
+                  }
+                ]
+              }
             }),
             columns: [
               {
                 xtype: "treecolumn",
                 dataIndex: "id",
                 text: "ID",
-                width: 170,
+                width: 170
               },
               {
                 text: "Second ",
-                dataIndex: "text",
+                dataIndex: "text"
               },
               {
                 text: "Value",
                 flex: 1,
                 dataIndex: "value",
-                editor: new MyField(),
+                editor: new MyField()
               },
               {
                 text: "Any Column 2",
-                width: 150,
+                width: 150
               },
               {
                 text: "Any Column 3",
-                width: 50,
-              },
+                width: 50
+              }
             ],
             bbar: [
               {
                 xtype: "button",
                 text: "To TOP ???",
-                tooltip: "Go To SELECTED Record?",
-              },
-            ],
+                tooltip: "Go To SELECTED Record?"
+              }
+            ]
           }),
           view;
 
         staticField = new Ext.form.field.Text({
           renderTo: document.body,
-          fieldLabel: "Test Field",
+          fieldLabel: "Test Field"
         });
 
         Ext.QuickTips.init();
@@ -735,8 +735,8 @@ describe("Ext.form.field.Picker", function () {
               view = treePanel.getView();
               treePanel.expandAll();
               view.focusRow(0);
-            },
-          },
+            }
+          }
         });
 
         // The boxready listener focuses the first row
@@ -760,7 +760,7 @@ describe("Ext.form.field.Picker", function () {
 
           // The CellEditor's field is focused
           expect(
-            Ext.Element.getActiveElement() === editorField.inputEl.dom,
+            Ext.Element.getActiveElement() === editorField.inputEl.dom
           ).toBe(true);
 
           // Focus on a cell elsewhere in the TreeGrid.
@@ -777,7 +777,7 @@ describe("Ext.form.field.Picker", function () {
           // The edit should have been canceled, and focus should move to the clicked cell
           expect(
             Ext.Element.getActiveElement() ===
-              view.getCellByPosition({ row: 0, column: 3 }, true),
+              view.getCellByPosition({ row: 0, column: 3 }, true)
           ).toBe(true);
 
           // Start editing row 0, column 2
@@ -795,7 +795,7 @@ describe("Ext.form.field.Picker", function () {
         runs(function () {
           // The edit should have been canceled, and focus should move to the document body
           expect(
-            Ext.Element.getActiveElement() === staticField.inputEl.dom,
+            Ext.Element.getActiveElement() === staticField.inputEl.dom
           ).toBe(true);
 
           // Start editing row 0, column 2
@@ -812,7 +812,7 @@ describe("Ext.form.field.Picker", function () {
           jasmine.fireKeyEvent(
             editorField.inputEl.dom,
             "keydown",
-            Ext.event.Event.DOWN,
+            Ext.event.Event.DOWN
           );
           expect(editorField.picker.isVisible()).toBe(true);
           staticField.inputEl.dom.focus();
@@ -831,7 +831,7 @@ describe("Ext.form.field.Picker", function () {
         runs(function () {
           // The edit should have been canceled, and focus should move to the document body
           expect(
-            Ext.Element.getActiveElement() === staticField.inputEl.dom,
+            Ext.Element.getActiveElement() === staticField.inputEl.dom
           ).toBe(true);
 
           // Start editing row 0, column 2
@@ -842,7 +842,7 @@ describe("Ext.form.field.Picker", function () {
           jasmine.fireKeyEvent(
             editorField.inputEl.dom,
             "keydown",
-            Ext.event.Event.DOWN,
+            Ext.event.Event.DOWN
           );
           expect(editorField.picker.isVisible()).toBe(true);
 
@@ -858,7 +858,7 @@ describe("Ext.form.field.Picker", function () {
 
           // The CellEditor's field is focused
           expect(
-            Ext.Element.getActiveElement() === pickerEditorField.inputEl.dom,
+            Ext.Element.getActiveElement() === pickerEditorField.inputEl.dom
           );
 
           staticField.inputEl.dom.focus();
@@ -877,7 +877,7 @@ describe("Ext.form.field.Picker", function () {
         runs(function () {
           // The edit should have been canceled, and focus should move to the document body
           expect(
-            Ext.Element.getActiveElement() === staticField.inputEl.dom,
+            Ext.Element.getActiveElement() === staticField.inputEl.dom
           ).toBe(true);
 
           // Start editing row 0, column 2
@@ -888,7 +888,7 @@ describe("Ext.form.field.Picker", function () {
           jasmine.fireKeyEvent(
             editorField.inputEl.dom,
             "keydown",
-            Ext.event.Event.DOWN,
+            Ext.event.Event.DOWN
           );
           expect(editorField.picker.isVisible()).toBe(true);
 
@@ -904,7 +904,7 @@ describe("Ext.form.field.Picker", function () {
 
           // The CellEditor's field is focused
           expect(
-            Ext.Element.getActiveElement() === pickerEditorField.inputEl.dom,
+            Ext.Element.getActiveElement() === pickerEditorField.inputEl.dom
           );
 
           // Click elsewhere in the TreeGrid
@@ -924,10 +924,10 @@ describe("Ext.form.field.Picker", function () {
           // The edit should have been canceled, and focus should move to the clicked cell
           expect(
             Ext.Element.getActiveElement() ===
-              view.getCellByPosition({ row: 0, column: 3 }, true),
+              view.getCellByPosition({ row: 0, column: 3 }, true)
           ).toBe(true);
         });
       });
-    },
+    }
   );
 });

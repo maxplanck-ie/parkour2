@@ -110,7 +110,7 @@ Ext.define("Ext.app.bind.Multi", {
       },
       //TODO - split bind options between us and the sub-binds (pass null for now)
       me,
-      null,
+      null
     );
 
     depth = binding.depth;
@@ -262,6 +262,6 @@ Ext.define("Ext.app.bind.Multi", {
 
       // Schedulable#sort === emptyFn
       //me.callParent();
-    },
-  },
+    }
+  }
 });

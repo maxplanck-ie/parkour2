@@ -5,7 +5,7 @@ Ext.define("Ext.mixin.ConfigState", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "configstate",
+    id: "configstate"
   },
 
   alternateStateConfig: "",
@@ -32,5 +32,5 @@ Ext.define("Ext.mixin.ConfigState", {
       me.setConfig(state);
       delete me.capturedConfigState;
     }
-  },
+  }
 });

@@ -69,7 +69,7 @@ Ext.define("Ext.state.LocalStorageProvider", {
 
     return new Ext.util.LocalStorage({
       id: id,
-      prefix: prefix,
+      prefix: prefix
     });
-  },
+  }
 });

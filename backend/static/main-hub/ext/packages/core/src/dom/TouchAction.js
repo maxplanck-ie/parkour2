@@ -43,7 +43,7 @@ Ext.define("Ext.dom.TouchAction", {
     "pinch-zoom double-tap-zoom",
     "pan-x pinch-zoom double-tap-zoom",
     "pan-y pinch-zoom double-tap-zoom",
-    "",
+    ""
   ],
 
   objectValues: [
@@ -62,7 +62,7 @@ Ext.define("Ext.dom.TouchAction", {
     { panX: false, panY: false, pinchZoom: true, doubleTapZoom: true },
     { panX: true, panY: false, pinchZoom: true, doubleTapZoom: true },
     { panX: false, panY: true, pinchZoom: true, doubleTapZoom: true },
-    { panX: true, panY: true, pinchZoom: true, doubleTapZoom: true },
+    { panX: true, panY: true, pinchZoom: true, doubleTapZoom: true }
   ],
 
   attributeName: "data-extTouchAction",
@@ -83,13 +83,13 @@ Ext.define("Ext.dom.TouchAction", {
         scope: me,
         translate: false,
         capture: true,
-        priority: 5000,
+        priority: 5000
       });
 
       Ext.on({
         scroll: "onScroll",
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
     }
 
@@ -503,5 +503,5 @@ Ext.define("Ext.dom.TouchAction", {
     } else {
       dom.setAttribute(attributeName, flags);
     }
-  },
+  }
 });

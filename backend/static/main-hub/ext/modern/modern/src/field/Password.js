@@ -69,8 +69,8 @@ Ext.define("Ext.field.Password", {
      * @inheritdoc
      */
     component: {
-      xtype: "passwordinput",
-    },
+      xtype: "passwordinput"
+    }
   },
 
   classCls: Ext.baseCSSPrefix + "passwordfield",
@@ -83,10 +83,10 @@ Ext.define("Ext.field.Password", {
       triggers = Ext.apply(
         {
           reveal: {
-            type: "reveal",
-          },
+            type: "reveal"
+          }
         },
-        triggers,
+        triggers
       );
     }
 
@@ -185,6 +185,6 @@ Ext.define("Ext.field.Password", {
       } else {
         this.hideRevealTrigger();
       }
-    },
-  },
+    }
+  }
 });

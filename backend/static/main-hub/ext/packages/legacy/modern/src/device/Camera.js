@@ -35,7 +35,7 @@ Ext.define("Ext.device.Camera", {
   requires: [
     "Ext.device.Communicator",
     "Ext.device.camera.Cordova",
-    "Ext.device.camera.Simulator",
+    "Ext.device.camera.Simulator"
   ],
 
   constructor: function () {
@@ -48,5 +48,5 @@ Ext.define("Ext.device.Camera", {
     }
 
     return Ext.create("Ext.device.camera.Simulator");
-  },
+  }
 });

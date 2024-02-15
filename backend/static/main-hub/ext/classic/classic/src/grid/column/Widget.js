@@ -170,7 +170,7 @@ Ext.define("Ext.grid.column.Widget", {
      * Currently {@link Ext.Button Button} and all subclasses of {@link Ext.form.field.Text TextField} default
      * to using `ui: "default"` when in a WidgetColumn except for in the "classic" theme, when they use ui "grid-cell".
      */
-    defaultWidgetUI: {},
+    defaultWidgetUI: {}
   },
 
   ignoreExport: true,
@@ -306,7 +306,7 @@ Ext.define("Ext.grid.column.Widget", {
     cellIndex,
     e,
     record,
-    row,
+    row
   ) {
     var target;
 
@@ -440,7 +440,7 @@ Ext.define("Ext.grid.column.Widget", {
         result = me.ownerGrid.createManagedWidget(
           me.getId(),
           me.widget,
-          record,
+          record
         );
         result.resolveListenerScope = me.listenerScopeFn;
         result.getWidgetRecord = me.widgetRecordDecorator;
@@ -503,7 +503,7 @@ Ext.define("Ext.grid.column.Widget", {
             if (widget.defaultBindProperty && dataIndex) {
               widget.setConfig(
                 widget.defaultBindProperty,
-                record.get(dataIndex),
+                record.get(dataIndex)
               );
             }
 
@@ -531,7 +531,7 @@ Ext.define("Ext.grid.column.Widget", {
                 me.scope,
                 [me, widget, record],
                 0,
-                me,
+                me
               );
             }
 
@@ -577,7 +577,7 @@ Ext.define("Ext.grid.column.Widget", {
           refresh: me.onViewRefresh,
           itemadd: me.onItemAdd,
           scope: me,
-          destroyable: true,
+          destroyable: true
         };
 
       // If we are set up to push a dataIndex property into the widget's defaultBindProperty
@@ -607,6 +607,6 @@ Ext.define("Ext.grid.column.Widget", {
 
     widgetColumnDecorator: function () {
       return this.$widgetColumn;
-    },
-  },
+    }
+  }
 });

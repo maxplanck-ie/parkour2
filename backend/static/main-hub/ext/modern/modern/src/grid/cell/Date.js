@@ -17,7 +17,7 @@ Ext.define("Ext.grid.cell.Date", {
      * A format string as used by {@link Ext.Date#format} to format values for this
      * column.
      */
-    format: "",
+    format: ""
   },
 
   updateColumn: function (column, oldColumn) {
@@ -47,5 +47,5 @@ Ext.define("Ext.grid.cell.Date", {
   writeValue: function () {
     var value = this.getValue();
     this.setRawValue(value ? Ext.Date.format(value, this.getFormat()) : null);
-  },
+  }
 });

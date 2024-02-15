@@ -28,18 +28,18 @@ describe("Ext.grid.plugin.RowEditing", function () {
             {
               name: "Homer",
               email: "homer@simpsons.com",
-              phone: "555-222-1244",
+              phone: "555-222-1244"
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
-              phone: "555-222-1254",
-            },
+              phone: "555-222-1254"
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     plugin = new Ext.grid.plugin.RowEditing(pluginCfg);
@@ -59,19 +59,19 @@ describe("Ext.grid.plugin.RowEditing", function () {
               dataIndex: "email",
               editor: {
                 xtype: "textfield",
-                allowBlank: false,
-              },
+                allowBlank: false
+              }
             },
-            { header: "Phone", dataIndex: "phone" },
+            { header: "Phone", dataIndex: "phone" }
           ],
           store: store,
           plugins: plugins || [plugin],
           width: 400,
           height: 400,
-          renderTo: document.body,
+          renderTo: document.body
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.view;
@@ -93,7 +93,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
     it("should work", function () {
       makeGrid(
         {
-          clicksToEdit: 2,
+          clicksToEdit: 2
         },
         {
           columns: [
@@ -103,8 +103,8 @@ describe("Ext.grid.plugin.RowEditing", function () {
               dataIndex: "email",
               editor: {
                 xtype: "textfield",
-                allowBlank: false,
-              },
+                allowBlank: false
+              }
             },
             { header: "Phone", dataIndex: "phone" },
             {
@@ -112,11 +112,11 @@ describe("Ext.grid.plugin.RowEditing", function () {
               widget: {
                 xtype: "button",
                 text: "Delete",
-                handler: onDeleteClick,
-              },
-            },
-          ],
-        },
+                handler: onDeleteClick
+              }
+            }
+          ]
+        }
       );
 
       var storeCount = store.getCount(),
@@ -159,7 +159,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
       jasmine.fireMouseEvent(
         Ext.fly(node).down(".x-grid-cell-inner", true),
-        "dblclick",
+        "dblclick"
       );
 
       expect(plugin.editor).toBeDefined();
@@ -180,7 +180,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
             defaultRenderer: function () {
               scope = this;
               return "some text";
-            },
+            }
           },
           { header: "Name", dataIndex: "name", editor: "textfield" },
           {
@@ -188,11 +188,11 @@ describe("Ext.grid.plugin.RowEditing", function () {
             dataIndex: "email",
             editor: {
               xtype: "textfield",
-              allowBlank: false,
-            },
+              allowBlank: false
+            }
           },
-          { header: "Phone", dataIndex: "phone" },
-        ],
+          { header: "Phone", dataIndex: "phone" }
+        ]
       });
 
       record = grid.store.getAt(0);
@@ -218,9 +218,9 @@ describe("Ext.grid.plugin.RowEditing", function () {
               { name: "Lisa" },
               { name: "Bart" },
               { name: "Homer" },
-              { name: "Marge" },
-            ],
-          },
+              { name: "Marge" }
+            ]
+          }
         });
 
         textfield = new Ext.form.field.Text();
@@ -233,11 +233,11 @@ describe("Ext.grid.plugin.RowEditing", function () {
               dataIndex: "email",
               editor: {
                 xtype: "textfield",
-                allowBlank: false,
-              },
+                allowBlank: false
+              }
             },
-            { header: "Phone", dataIndex: "phone", editor: textfield },
-          ],
+            { header: "Phone", dataIndex: "phone", editor: textfield }
+          ]
         });
 
         record = grid.store.getAt(0);
@@ -321,7 +321,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
         store.insert(index, {
           name: "Homer",
           email: "homer@simpsons.com",
-          phone: "555-222-1244",
+          phone: "555-222-1244"
         });
         record = store.getAt(index ? index - 1 : 0);
         plugin.startEdit(record, 0);
@@ -338,7 +338,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
       it("should be contained by and visible in the view", function () {
         makeGrid(null, {
-          height: 100,
+          height: 100
         });
 
         count = store.getCount();
@@ -363,7 +363,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
             beforeEach(function () {
               makeGrid(null, {
                 buffered: buffered,
-                height: 100,
+                height: 100
               });
 
               count = store.getCount();
@@ -404,9 +404,9 @@ describe("Ext.grid.plugin.RowEditing", function () {
             { name: "Lisa" },
             { name: "Bart" },
             { name: "Homer" },
-            { name: "Marge" },
-          ],
-        },
+            { name: "Marge" }
+          ]
+        }
       });
 
       makeGrid(null, {
@@ -417,10 +417,10 @@ describe("Ext.grid.plugin.RowEditing", function () {
             dataIndex: "email",
             editor: {
               xtype: "textfield",
-              allowBlank: false,
-            },
-          },
-        ],
+              allowBlank: false
+            }
+          }
+        ]
       });
 
       record = grid.store.getAt(0);
@@ -440,7 +440,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
         expect(
           Ext.fly(grid.view.getNode(record)).down(".x-grid-cell-inner", true)
-            .innerHTML,
+            .innerHTML
         ).toBe("utley");
         expect(store.getAt(0).get("name")).toBe("utley");
       });
@@ -456,8 +456,8 @@ describe("Ext.grid.plugin.RowEditing", function () {
         listeners: {
           canceledit: function (editor, context) {
             editorContext = context;
-          },
-        },
+          }
+        }
       });
 
       record = grid.store.getAt(0);
@@ -489,7 +489,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
       plugin.cancelEdit();
 
       expect(editorContext.newValues.name).not.toBe(
-        editorContext.originalValues.name,
+        editorContext.originalValues.name
       );
     });
 
@@ -509,14 +509,14 @@ describe("Ext.grid.plugin.RowEditing", function () {
             dataIndex: "name",
             width: 100,
             locked: true,
-            editor: true,
+            editor: true
           },
           { header: "Email", dataIndex: "email", width: 100, editor: true },
-          { header: "Phone", dataIndex: "phone", width: 100, editor: true },
+          { header: "Phone", dataIndex: "phone", width: 100, editor: true }
         ],
         plugins: {
-          ptype: "rowediting",
-        },
+          ptype: "rowediting"
+        }
       },
       node;
 
@@ -533,7 +533,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
       jasmine.fireMouseEvent(
         Ext.fly(node).down(".x-grid-cell-inner", true),
-        "dblclick",
+        "dblclick"
       );
 
       plugin = grid.findPlugin("rowediting");
@@ -547,7 +547,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
       jasmine.fireMouseEvent(
         Ext.fly(node).down(".x-grid-cell-inner", true),
-        "dblclick",
+        "dblclick"
       );
 
       plugin = grid.findPlugin("rowediting");
@@ -587,17 +587,17 @@ describe("Ext.grid.plugin.RowEditing", function () {
               {
                 features: {
                   ftype: "groupingsummary",
-                  groupHeaderTpl: "{name}",
+                  groupHeaderTpl: "{name}"
                 },
                 plugins: ["bufferedrenderer"],
                 lockedGridConfig: null,
-                normalGridConfig: null,
+                normalGridConfig: null
               },
-              suiteCfg,
+              suiteCfg
             ),
             {
-              groupField: "name",
-            },
+              groupField: "name"
+            }
           );
 
           normalView = grid.normalGrid.view;
@@ -614,7 +614,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
             jasmine.fireMouseEvent(
               Ext.fly(node).down(".x-grid-cell-inner", true),
-              "dblclick",
+              "dblclick"
             );
 
             // Now filter the store.  Make sure that the row that's clicked on has been filtered
@@ -640,7 +640,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
             jasmine.fireMouseEvent(
               Ext.fly(node).down(".x-grid-cell-inner", true),
-              "dblclick",
+              "dblclick"
             );
 
             store.filter("email", /home/);
@@ -696,7 +696,7 @@ describe("Ext.grid.plugin.RowEditing", function () {
     describe("1 click", function () {
       beforeEach(function () {
         makeGrid({
-          clicksToEdit: 1,
+          clicksToEdit: 1
         });
       });
 
@@ -843,25 +843,25 @@ describe("Ext.grid.plugin.RowEditing", function () {
       beforeEach(function () {
         makeGrid(
           {
-            clicksToEdit: 1,
+            clicksToEdit: 1
           },
           {
-            height: undefined,
+            height: undefined
           },
           {
             data: [
               {
                 name: "Lisa",
                 email: "lisa@simpsons.com",
-                phone: "555-111-1224",
+                phone: "555-111-1224"
               },
               {
                 name: "Bart",
                 email: "bart@simpsons.com",
-                phone: "555-222-1234",
-              },
-            ],
-          },
+                phone: "555-222-1234"
+              }
+            ]
+          }
         );
       });
 
@@ -870,8 +870,8 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
         expect(
           plugin.editor.floatingButtons.el.hasCls(
-            "x-grid-row-editor-buttons-bottom",
-          ),
+            "x-grid-row-editor-buttons-bottom"
+          )
         ).toBe(true);
       });
 
@@ -880,8 +880,8 @@ describe("Ext.grid.plugin.RowEditing", function () {
 
         expect(
           plugin.editor.floatingButtons.el.hasCls(
-            "x-grid-row-editor-buttons-top",
-          ),
+            "x-grid-row-editor-buttons-top"
+          )
         ).toBe(true);
       });
     });

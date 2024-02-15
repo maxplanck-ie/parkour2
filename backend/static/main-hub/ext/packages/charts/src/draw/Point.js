@@ -34,7 +34,7 @@ Ext.define("Ext.draw.Point", {
         point.constructor(x, y);
         return point;
       };
-    })(),
+    })()
   },
 
   /**
@@ -257,7 +257,7 @@ Ext.define("Ext.draw.Point", {
       -sin,
       cos,
       cx - cos * cx + cy * sin,
-      cy - cos * cy + cx * -sin,
+      cy - cos * cy + cx * -sin
     ]).transformPoint(this);
 
     return new Ext.draw.Point(point);
@@ -274,7 +274,7 @@ Ext.define("Ext.draw.Point", {
       return new Ext.draw.Point(matrix.transformPoint(this));
     } else if (arguments.length === 6) {
       return new Ext.draw.Point(
-        Ext.draw.Matrix.fly(arguments).transformPoint(this),
+        Ext.draw.Matrix.fly(arguments).transformPoint(this)
       );
     } else {
       Ext.raise("Invalid parameters.");
@@ -360,5 +360,5 @@ Ext.define("Ext.draw.Point", {
    */
   isNumber: function () {
     return Ext.isNumber(this.x) && Ext.isNumber(this.y);
-  },
+  }
 });

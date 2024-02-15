@@ -30,28 +30,28 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
         /**
          * @cfg {String} [ohlcType='candlestick'] Determines whether candlestick or ohlc is used.
          */
-        ohlcType: "enums(candlestick,ohlc)",
+        ohlcType: "enums(candlestick,ohlc)"
       },
       defaults: {
         raiseStyle: {
           strokeStyle: "green",
-          fillStyle: "green",
+          fillStyle: "green"
         },
         dropStyle: {
           strokeStyle: "red",
-          fillStyle: "red",
+          fillStyle: "red"
         },
         planar: false,
         barWidth: 15,
         padding: 3,
         lineJoin: "miter",
         miterLimit: 5,
-        ohlcType: "candlestick",
+        ohlcType: "candlestick"
       },
 
       triggers: {
         raiseStyle: "raiseStyle",
-        dropStyle: "dropStyle",
+        dropStyle: "dropStyle"
       },
 
       updaters: {
@@ -62,9 +62,9 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
         dropStyle: function () {
           this.dropTemplate &&
             this.dropTemplate.setAttributes(this.attr.dropStyle);
-        },
-      },
-    },
+        }
+      }
+    }
   },
 
   candlestick: function (ctx, open, high, low, close, mid, halfWidth) {
@@ -165,5 +165,5 @@ Ext.define("Ext.chart.series.sprite.CandleStick", {
     }
     ctx.fillStroke(template.attr);
     ctx.restore();
-  },
+  }
 });

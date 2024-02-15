@@ -176,7 +176,7 @@ Ext.define("Ext.ux.statusbar.StatusBar", {
     this.currIconCls = this.iconCls || this.defaultIconCls;
     this.statusEl = Ext.create("Ext.toolbar.TextItem", {
       cls: "x-status-text " + (this.currIconCls || ""),
-      text: this.text || this.defaultText || "",
+      text: this.text || this.defaultText || ""
     });
 
     if (right) {
@@ -324,14 +324,14 @@ Ext.define("Ext.ux.statusbar.StatusBar", {
           statusEl.el.show();
           me.setStatus({
             text: text,
-            iconCls: iconCls,
+            iconCls: iconCls
           });
-        },
+        }
       });
     } else {
       me.setStatus({
         text: text,
-        iconCls: iconCls,
+        iconCls: iconCls
       });
     }
     return me;
@@ -404,8 +404,8 @@ Ext.define("Ext.ux.statusbar.StatusBar", {
     }
     o = Ext.applyIf(o || {}, {
       text: this.busyText,
-      iconCls: this.busyIconCls,
+      iconCls: this.busyIconCls
     });
     return this.setStatus(o);
-  },
+  }
 });

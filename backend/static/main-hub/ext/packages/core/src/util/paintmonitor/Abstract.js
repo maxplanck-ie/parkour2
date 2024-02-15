@@ -9,7 +9,7 @@ Ext.define("Ext.util.paintmonitor.Abstract", {
 
     scope: null,
 
-    args: [],
+    args: []
   },
 
   eventName: "",
@@ -26,7 +26,7 @@ Ext.define("Ext.util.paintmonitor.Abstract", {
     this.monitorElement[bind ? "addEventListener" : "removeEventListener"](
       this.eventName,
       this.onElementPainted,
-      true,
+      true
     );
   },
 
@@ -39,9 +39,9 @@ Ext.define("Ext.util.paintmonitor.Abstract", {
   updateElement: function (element) {
     this.monitorElement = Ext.Element.create(
       {
-        classList: [Ext.baseCSSPrefix + "paint-monitor", this.monitorClass],
+        classList: [Ext.baseCSSPrefix + "paint-monitor", this.monitorClass]
       },
-      true,
+      true
     );
 
     element.appendChild(this.monitorElement);
@@ -70,5 +70,5 @@ Ext.define("Ext.util.paintmonitor.Abstract", {
     }
 
     me.callParent();
-  },
+  }
 });

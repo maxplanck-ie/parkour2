@@ -16,7 +16,7 @@ Ext.define("MainHub.store.requests.LibrariesInRequest", {
     reader: {
       type: "json",
       rootProperty: "data",
-      successProperty: "success",
-    },
-  },
+      successProperty: "success"
+    }
+  }
 });

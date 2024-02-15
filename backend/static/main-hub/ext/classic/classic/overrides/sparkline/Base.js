@@ -10,9 +10,9 @@ Ext.define("Ext.override.sparkline.Base", {
         id: "sparklines-tooltip",
         showDelay: 0,
         dismissDelay: 0,
-        hideDelay: 400,
+        hideDelay: 400
       });
-    },
+    }
   },
 
   onMouseMove: function (e) {
@@ -36,6 +36,6 @@ Ext.define("Ext.override.sparkline.Base", {
       var tip = this.tooltip;
       tip.target = this.el;
       tip.onTargetOver(tip.triggerEvent);
-    },
-  },
+    }
+  }
 });

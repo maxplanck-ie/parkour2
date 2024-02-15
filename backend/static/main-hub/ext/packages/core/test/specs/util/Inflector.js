@@ -63,7 +63,7 @@ describe("Ext.util.Inflector", function () {
     vertebra: "vertebrae",
     vita: "vitae",
     louse: "lice",
-    mouse: "mice",
+    mouse: "mice"
   };
 
   describe("pluralizing words", function () {
@@ -190,7 +190,7 @@ describe("Ext.util.Inflector", function () {
         function (form) {
           expect(Inflector.classify(form)).toEqual("User");
         },
-        this,
+        this
       );
     });
   });

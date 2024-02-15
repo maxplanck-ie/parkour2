@@ -25,10 +25,10 @@ Ext.define("Ext.fx.target.CompositeSprite", {
       sprite = sprites[i];
       out.push([
         sprite,
-        val !== undefined ? val : this.getFromPrim(sprite, attr),
+        val !== undefined ? val : this.getFromPrim(sprite, attr)
       ]);
     }
 
     return out;
-  },
+  }
 });

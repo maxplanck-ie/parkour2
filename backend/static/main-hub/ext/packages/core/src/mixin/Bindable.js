@@ -37,7 +37,7 @@ Ext.define("Ext.mixin.Bindable", {
      */
     bind: {
       $value: null,
-      lazy: true,
+      lazy: true
     },
 
     // @cmd-auto-dependency { aliasPrefix: 'controller.' }
@@ -183,7 +183,7 @@ Ext.define("Ext.mixin.Bindable", {
       lazy: true,
       merge: function (newValue, oldValue) {
         return this.mergeSets(newValue, oldValue);
-      },
+      }
     },
 
     /**
@@ -232,7 +232,7 @@ Ext.define("Ext.mixin.Bindable", {
      */
     session: {
       $value: null,
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -250,7 +250,7 @@ Ext.define("Ext.mixin.Bindable", {
       lazy: true,
       merge: function (newValue, oldValue) {
         return this.mergeSets(newValue, oldValue);
-      },
+      }
     },
 
     // @cmd-auto-dependency { aliasPrefix: 'viewmodel.', defaultType: 'default' }
@@ -272,8 +272,8 @@ Ext.define("Ext.mixin.Bindable", {
      */
     viewModel: {
       $value: null,
-      lazy: true,
-    },
+      lazy: true
+    }
   },
 
   /**
@@ -570,7 +570,7 @@ Ext.define("Ext.mixin.Bindable", {
           Ext.raise(
             me.$className +
               " has no defaultBindProperty - " +
-              "Please specify a bind object",
+              "Please specify a bind object"
           );
         }
         //</debug>
@@ -604,7 +604,7 @@ Ext.define("Ext.mixin.Bindable", {
                 me.$className +
                 " - missing a " +
                 b._config.names.set +
-                " method.",
+                " method."
             );
           }
           //</debug>
@@ -655,7 +655,7 @@ Ext.define("Ext.mixin.Bindable", {
             reference +
             '" for ' +
             this.getId() +
-            " - not a valid identifier",
+            " - not a valid identifier"
         );
       }
       return reference;
@@ -712,7 +712,7 @@ Ext.define("Ext.mixin.Bindable", {
 
           // Ensure that VM construction activity can reach the view (for
           // example events on stores)
-          view: me,
+          view: me
         };
 
         config.session = me.getSession();
@@ -907,6 +907,6 @@ Ext.define("Ext.mixin.Bindable", {
       } else {
         delete state.viewModel;
       }
-    },
-  }, // private
+    }
+  } // private
 });

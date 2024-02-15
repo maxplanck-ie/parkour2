@@ -43,7 +43,7 @@ Ext.define("Ext.device.Accelerometer", {
 
   requires: [
     "Ext.device.accelerometer.Cordova",
-    "Ext.device.accelerometer.Simulator",
+    "Ext.device.accelerometer.Simulator"
   ],
 
   constructor: function () {
@@ -53,5 +53,5 @@ Ext.define("Ext.device.Accelerometer", {
     }
 
     return Ext.create("Ext.device.accelerometer.Simulator");
-  },
+  }
 });

@@ -202,7 +202,7 @@ describe("Ext.Function", function () {
     describe("if no function is passed", function () {
       it("should return the same function", function () {
         expect(Ext.Function.createInterceptor(interceptedFn)).toEqual(
-          interceptedFn,
+          interceptedFn
         );
       });
     });
@@ -212,7 +212,7 @@ describe("Ext.Function", function () {
         interceptor = Ext.Function.createInterceptor(
           interceptedFn,
           interceptorFn,
-          fakeScope,
+          fakeScope
         );
         interceptor();
       });
@@ -237,7 +237,7 @@ describe("Ext.Function", function () {
           interceptedFn,
           function () {
             return false;
-          },
+          }
         );
 
         interceptor();
@@ -260,7 +260,7 @@ describe("Ext.Function", function () {
         it("should return null as a default", function () {
           interceptor = Ext.Function.createInterceptor(
             interceptedFn,
-            interceptorFn,
+            interceptorFn
           );
           expect(interceptor()).toBeNull();
         });
@@ -270,7 +270,7 @@ describe("Ext.Function", function () {
             interceptedFn,
             interceptorFn,
             null,
-            "Custom",
+            "Custom"
           );
           expect(interceptor()).toBe("Custom");
         });
@@ -280,7 +280,7 @@ describe("Ext.Function", function () {
             interceptedFn,
             interceptorFn,
             null,
-            false,
+            false
           );
           expect(interceptor()).toBe(false);
         });
@@ -292,7 +292,7 @@ describe("Ext.Function", function () {
         };
         interceptor = Ext.Function.createInterceptor(
           interceptedFn,
-          interceptorFn,
+          interceptorFn
         );
         expect(interceptor()).toBe("Original");
       });
@@ -316,7 +316,7 @@ describe("Ext.Function", function () {
           expect(fn).toHaveBeenCalledWith("foo");
         });
         unmockTimeout();
-      },
+      }
     );
     it("should use the specified scope as 'this'", function () {
       var scope = { x: "foo" },
@@ -485,7 +485,7 @@ describe("Ext.Function", function () {
         });
 
         unmockTimeout();
-      },
+      }
     );
     it("should use the specified scope as 'this'", function () {
       var scope = { x: 1 },
@@ -543,7 +543,7 @@ describe("Ext.Function", function () {
           expect(fn.calls.length).not.toBeLessThan(2);
           expect(fn.calls.length).not.toBeGreaterThan(3);
         },
-        2,
+        2
       );
       unmockTimeout();
     });
@@ -572,7 +572,7 @@ describe("Ext.Function", function () {
           phrases: [],
           addPhrase: function (phrase) {
             this.phrases.push(phrase);
-          },
+          }
         },
         addMeToo = jasmine.createSpy().andCallFake(function (phrase) {
           this.phrases.push(phrase + " too");
@@ -585,7 +585,7 @@ describe("Ext.Function", function () {
         "I like you",
         "I like you too",
         "I love you",
-        "I love you too",
+        "I love you too"
       ]);
       expect(addMeToo).toHaveBeenCalledWith("I like you");
       expect(addMeToo).toHaveBeenCalledWith("I love you");
@@ -596,10 +596,10 @@ describe("Ext.Function", function () {
           phrases: [],
           addPhrase: function (phrase) {
             this.phrases.push(phrase);
-          },
+          }
         },
         transcription = {
-          phrases: [],
+          phrases: []
         },
         transcriptPhrase = jasmine.createSpy().andCallFake(function (phrase) {
           this.phrases.push("He said: " + phrase);
@@ -609,14 +609,14 @@ describe("Ext.Function", function () {
         monologue,
         "addPhrase",
         transcriptPhrase,
-        transcription,
+        transcription
       );
       monologue.addPhrase("I like you");
       monologue.addPhrase("I love you");
       expect(monologue.phrases).toEqual(["I like you", "I love you"]);
       expect(transcription.phrases).toEqual([
         "He said: I like you",
-        "He said: I love you",
+        "He said: I love you"
       ]);
       expect(transcriptPhrase).toHaveBeenCalledWith("I like you");
       expect(transcriptPhrase).toHaveBeenCalledWith("I love you");

@@ -5,7 +5,7 @@ Ext.define("Ext.direct.Transaction", {
   alias: "direct.transaction",
 
   statics: {
-    TRANSACTION_ID: 0,
+    TRANSACTION_ID: 0
   },
 
   /**
@@ -40,5 +40,5 @@ Ext.define("Ext.direct.Transaction", {
 
   getProvider: function () {
     return this.provider;
-  },
+  }
 });

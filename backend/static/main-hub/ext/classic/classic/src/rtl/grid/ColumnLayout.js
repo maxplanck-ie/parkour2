@@ -66,5 +66,5 @@ Ext.define("Ext.rtl.grid.ColumnLayout", {
     }
 
     return me.callParent(arguments);
-  },
+  }
 });

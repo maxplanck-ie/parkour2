@@ -69,7 +69,7 @@ Ext.define(
       PARSE: "parse",
       DATA: "data",
       LOGIN: "login",
-      SERVER: "exception",
+      SERVER: "exception"
     },
 
     // Classes of Providers available to the application
@@ -83,7 +83,7 @@ Ext.define(
        * @cfg {String} [varName="Ext.REMOTING_API"]
        * Default variable name to use for Ext Direct API declaration.
        */
-      varName: "Ext.REMOTING_API",
+      varName: "Ext.REMOTING_API"
     },
 
     apiNotFoundError: "Ext Direct API was not found at {0}",
@@ -207,7 +207,7 @@ Ext.define(
       if (provider.relayedEvents) {
         relayers[provider.id] = me.relayEvents(
           provider,
-          provider.relayedEvents,
+          provider.relayedEvents
         );
       }
 
@@ -303,7 +303,7 @@ Ext.define(
             varName: varName,
             config: config,
             callback: callback,
-            scope: scope,
+            scope: scope
           });
         },
 
@@ -311,9 +311,9 @@ Ext.define(
           this.onApiLoadFailure({
             url: url,
             callback: callback,
-            scope: scope,
+            scope: scope
           });
-        },
+        }
       });
     },
 
@@ -506,7 +506,7 @@ Ext.define(
                 " action in " +
                 caller.$className +
                 " instance with id: " +
-                (caller.id != null ? caller.id : "unknown"),
+                (caller.id != null ? caller.id : "unknown")
             );
           }
           //</debug>
@@ -565,11 +565,11 @@ Ext.define(
       // Used for testing
       clearAllMethods: function () {
         this.remotingMethods = {};
-      },
-    },
+      }
+    }
   },
   function () {
     // Backwards compatibility
     Ext.Direct = Ext.direct.Manager;
-  },
+  }
 );

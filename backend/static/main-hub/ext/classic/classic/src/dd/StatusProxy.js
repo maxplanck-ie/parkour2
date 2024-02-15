@@ -14,7 +14,7 @@ Ext.define("Ext.dd.StatusProxy", {
       'dd-drop-icon" role="presentation"></div>' +
       '<div id="{id}-ghost" data-ref="ghost" class="' +
       Ext.baseCSSPrefix +
-      'dd-drag-ghost" role="presentation"></div>',
+      'dd-drag-ghost" role="presentation"></div>'
   ],
 
   repairCls: Ext.baseCSSPrefix + "dd-drag-repair",
@@ -40,7 +40,7 @@ Ext.define("Ext.dd.StatusProxy", {
       id: me.id || Ext.id(),
       cls: Ext.baseCSSPrefix + "dd-drag-proxy " + this.dropNotAllowed,
       shadow: config.shadow || false,
-      renderTo: Ext.getDetachedBody(),
+      renderTo: Ext.getDetachedBody()
     });
     me.callParent(arguments);
     this.dropStatus = this.dropNotAllowed;
@@ -162,11 +162,11 @@ Ext.define("Ext.dd.StatusProxy", {
         easing: "ease-out",
         to: {
           x: xy[0],
-          y: xy[1],
+          y: xy[1]
         },
         stopAnimation: true,
         callback: me.afterRepair,
-        scope: me,
+        scope: me
       });
     } else {
       me.afterRepair();
@@ -186,5 +186,5 @@ Ext.define("Ext.dd.StatusProxy", {
     }
     delete me.callback;
     delete me.scope;
-  },
+  }
 });

@@ -31,8 +31,8 @@ Ext.define("Ext.theme.blackberry.dataview.IndexBar", {
       "W",
       "X",
       "Y",
-      "Z",
-    ],
+      "Z"
+    ]
   },
 
   getElementConfig: function () {
@@ -47,13 +47,13 @@ Ext.define("Ext.theme.blackberry.dataview.IndexBar", {
           children: [
             {
               reference: "indicatorInner",
-              classList: ["x-indexbar-indicator-inner"],
-            },
-          ],
+              classList: ["x-indexbar-indicator-inner"]
+            }
+          ]
           // We want to skip the default list getElementConfig
         },
-        this.callSuper(),
-      ],
+        this.callSuper()
+      ]
     };
   },
 
@@ -74,13 +74,13 @@ Ext.define("Ext.theme.blackberry.dataview.IndexBar", {
 
       y = Math.min(
         Math.max(y, halfIndicatorHeight),
-        element.getHeight() - halfIndicatorHeight,
+        element.getHeight() - halfIndicatorHeight
       );
 
       if (isValidTarget) {
         indicatorInner.setHtml(target.getHtml().toUpperCase());
       }
       indicator.setTop(y - halfIndicatorHeight);
-    },
-  },
+    }
+  }
 });

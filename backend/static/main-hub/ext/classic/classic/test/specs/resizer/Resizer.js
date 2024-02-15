@@ -7,15 +7,15 @@ describe("Ext.resizer.Resizer", function () {
     target = new Ext.Component(
       Ext.apply(
         {
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        cfg,
-      ),
+        cfg
+      )
     );
 
     resizer = new Ext.resizer.Resizer({
       target: target,
-      handles: "all",
+      handles: "all"
     });
   }
 
@@ -30,8 +30,8 @@ describe("Ext.resizer.Resizer", function () {
         makeResizer({
           autoEl: {
             tag: "textarea",
-            html: "And any fool knows a dog needs a home, A shelter from pigs on the wing.",
-          },
+            html: "And any fool knows a dog needs a home, A shelter from pigs on the wing."
+          }
         });
       });
 
@@ -62,9 +62,9 @@ describe("Ext.resizer.Resizer", function () {
             (window = new Ext.window.Window({
               height: 100,
               width: 100,
-              title: "Child Window",
-            })),
-          ],
+              title: "Child Window"
+            }))
+          ]
         });
 
       window.show();
@@ -89,9 +89,9 @@ describe("Ext.resizer.Resizer", function () {
                 constrain: true,
                 height: 100,
                 width: 100,
-                title: "Child Window",
-              })),
-            ],
+                title: "Child Window"
+              }))
+            ]
           });
 
         window.show();
@@ -102,7 +102,7 @@ describe("Ext.resizer.Resizer", function () {
         // Window must NOT be allowed to resize outside its owning Panel's bounds
         expect(window.getWidth()).toBe(150);
         Ext.destroy(panel, window);
-      },
+      }
     );
   });
 
@@ -116,7 +116,7 @@ describe("Ext.resizer.Resizer", function () {
             "The Tragedy of Macbeth - Shakespeare <br>ACT I<br>SCENE I. A desert place.<br><br>Thunder and lightning. Enter three Witches",
             "First Witch: When shall we three meet again In thunder, lightning, or in rain?",
             "Second Witch: When the hurlyburly's done, When the battle's lost and won.",
-            "Third Witch: That will be ere the set of sun.",
+            "Third Witch: That will be ere the set of sun."
           ],
           outerPanel;
 
@@ -129,8 +129,8 @@ describe("Ext.resizer.Resizer", function () {
               html: macBeth[i],
               frame: true,
               resizable: true,
-              resizeHandles: "s,n",
-            }),
+              resizeHandles: "s,n"
+            })
           );
         }
 
@@ -138,10 +138,10 @@ describe("Ext.resizer.Resizer", function () {
           height: 600,
           width: 800,
           layout: {
-            type: "vbox",
+            type: "vbox"
           },
           items: panels,
-          renderTo: document.body,
+          renderTo: document.body
         });
 
         var panel1Top = panels[1].getY();
@@ -153,7 +153,7 @@ describe("Ext.resizer.Resizer", function () {
         // Layout should have correctred the top
         expect(panels[1].getY()).toBe(panel1Top);
         outerPanel.destroy();
-      },
+      }
     );
   });
 });

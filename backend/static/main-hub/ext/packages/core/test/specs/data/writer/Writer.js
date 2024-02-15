@@ -6,12 +6,12 @@ describe("Ext.data.writer.Writer", function () {
     buildWriter = function (cfg) {
       cfg = Ext.apply(
         {
-          writeAllFields: true,
+          writeAllFields: true
         },
-        cfg,
+        cfg
       );
       cfg = Ext.apply(cfg, {
-        model: spec.Article,
+        model: spec.Article
       });
       writer = new Ext.data.writer.Writer(cfg);
     };
@@ -22,17 +22,17 @@ describe("Ext.data.writer.Writer", function () {
         { name: "id", type: "int" },
         { name: "title", type: "string" },
         { name: "body", type: "string", writeName: "content" },
-        { name: "isRead", type: "boolean", persist: false },
-      ],
+        { name: "isRead", type: "boolean", persist: false }
+      ]
     });
 
     article = new Article({
       id: 1,
       title: "Foo",
-      body: "Bar",
+      body: "Bar"
     });
     operation = new Ext.data.operation.Create({
-      records: [article],
+      records: [article]
     });
   });
 
@@ -68,7 +68,7 @@ describe("Ext.data.writer.Writer", function () {
       expect(result).toEqual({
         id: 1,
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
     });
 
@@ -80,12 +80,12 @@ describe("Ext.data.writer.Writer", function () {
 
     it("should write the id as the clientIdProperty if the record is a phantom", function () {
       buildWriter({
-        clientIdProperty: "cid",
+        clientIdProperty: "cid"
       });
 
       article = new Article({
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
       operation.setRecords([article]);
 
@@ -93,7 +93,7 @@ describe("Ext.data.writer.Writer", function () {
       expect(result).toEqual({
         cid: article.id,
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
     });
 
@@ -105,7 +105,7 @@ describe("Ext.data.writer.Writer", function () {
       Article.prototype.clientIdProperty = "clientId";
       article = new Article({
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
       operation.setRecords([article]);
       var result = writer.getRecordData(article, operation);
@@ -115,7 +115,7 @@ describe("Ext.data.writer.Writer", function () {
       expect(result).toEqual({
         id: article.id,
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
     });
 
@@ -124,14 +124,14 @@ describe("Ext.data.writer.Writer", function () {
       article = new Article({
         id: 1,
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
 
       var result = writer.getRecordData(article, operation);
       expect(result).toEqual({
         id: 1,
         title: "Foo",
-        body: "Bar",
+        body: "Bar"
       });
     });
 
@@ -142,10 +142,10 @@ describe("Ext.data.writer.Writer", function () {
         article = new Article({
           id: 1,
           title: "Foo",
-          body: "Bar",
+          body: "Bar"
         });
         operation = new Ext.data.operation.Destroy({
-          records: [article],
+          records: [article]
         });
       });
       it("should return an object containing all fields", function () {
@@ -154,16 +154,16 @@ describe("Ext.data.writer.Writer", function () {
         expect(result).toEqual({
           id: 1,
           title: "Foo",
-          body: "Bar",
+          body: "Bar"
         });
       });
       it("should return an object with only the id if writeAllFields is false", function () {
         buildWriter({
-          writeAllFields: false,
+          writeAllFields: false
         });
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({
-          id: 1,
+          id: 1
         });
       });
     });
@@ -171,21 +171,21 @@ describe("Ext.data.writer.Writer", function () {
     describe("writeAllFields: false", function () {
       beforeEach(function () {
         buildWriter({
-          writeAllFields: false,
+          writeAllFields: false
         });
       });
 
       it("should return an object with only the id if nothing is modified", function () {
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({
-          id: 1,
+          id: 1
         });
       });
 
       it("should return an empty object if nothing is modified when writeRecordId = false", function () {
         buildWriter({
           writeAllFields: false,
-          writeRecordId: false,
+          writeRecordId: false
         });
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({});
@@ -196,32 +196,32 @@ describe("Ext.data.writer.Writer", function () {
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({
           id: 1,
-          title: "other",
+          title: "other"
         });
       });
 
       it("should return the modified fields except id if the record is a non-phantom and writeRecordId = false", function () {
         buildWriter({
           writeAllFields: false,
-          writeRecordId: false,
+          writeRecordId: false
         });
         article.set("title", "other");
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({
-          title: "other",
+          title: "other"
         });
       });
 
       it("should write all fields if the record is a phantom", function () {
         article = new Article({
           title: "Foo",
-          body: "Bar",
+          body: "Bar"
         });
         var result = writer.getRecordData(article, operation);
         expect(result).toEqual({
           id: article.id,
           title: "Foo",
-          body: "Bar",
+          body: "Bar"
         });
       });
 
@@ -237,9 +237,9 @@ describe("Ext.data.writer.Writer", function () {
                 name: "dateWriteFormat",
                 type: "date",
                 dateWriteFormat: "Y-m-d",
-                dateFormat: "Y|M|D",
-              },
-            ],
+                dateFormat: "Y|M|D"
+              }
+            ]
           });
         });
 
@@ -249,10 +249,10 @@ describe("Ext.data.writer.Writer", function () {
 
         it("should serialize Dates using the dateFormat", function () {
           var myModel = new MyModel({
-              myDate: new Date(1962, 5, 17),
+              myDate: new Date(1962, 5, 17)
             }),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({}),
             result = writer.getRecordData(myModel, operation);
@@ -262,10 +262,10 @@ describe("Ext.data.writer.Writer", function () {
         it("should respect the timestamp format", function () {
           var now = new Date();
           var myModel = new MyModel({
-              timestamp: new Date(Ext.Date.format(now, "U") * 1000),
+              timestamp: new Date(Ext.Date.format(now, "U") * 1000)
             }),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({}),
             result = writer.getRecordData(myModel, operation);
@@ -275,10 +275,10 @@ describe("Ext.data.writer.Writer", function () {
         it("should respect the time format", function () {
           var now = new Date();
           var myModel = new MyModel({
-              time: new Date(now.getTime()),
+              time: new Date(now.getTime())
             }),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({}),
             result = writer.getRecordData(myModel, operation);
@@ -288,7 +288,7 @@ describe("Ext.data.writer.Writer", function () {
         it("should send null for dates when the date is null", function () {
           var myModel = new MyModel({}),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({}),
             result = writer.getRecordData(myModel, operation);
@@ -297,13 +297,13 @@ describe("Ext.data.writer.Writer", function () {
 
         it("should give precedence to writeFormat", function () {
           var myModel = new MyModel({
-              dateWriteFormat: new Date(2012, 0, 1),
+              dateWriteFormat: new Date(2012, 0, 1)
             }),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({
-              dateFormat: "Y/m/d",
+              dateFormat: "Y/m/d"
             }),
             result = writer.getRecordData(myModel, operation);
 
@@ -312,13 +312,13 @@ describe("Ext.data.writer.Writer", function () {
 
         it("should give precedence to the writer dateFormat", function () {
           var myModel = new MyModel({
-              myDate: new Date(2012, 0, 1),
+              myDate: new Date(2012, 0, 1)
             }),
             operation = new Ext.data.operation.Create({
-              records: [myModel],
+              records: [myModel]
             }),
             writer = new Ext.data.writer.Writer({
-              dateFormat: "Y/m/d",
+              dateFormat: "Y/m/d"
             }),
             result = writer.getRecordData(myModel, operation);
 
@@ -336,21 +336,21 @@ describe("Ext.data.writer.Writer", function () {
               dateFormat: "Y/m/d",
               serialize: function () {
                 return "test";
-              },
-            },
-          ],
+              }
+            }
+          ]
         });
         var myModel = new MyModel({
-            myDate: "1962/06/17",
+            myDate: "1962/06/17"
           }),
           operation = new Ext.data.operation.Create({
-            records: [myModel],
+            records: [myModel]
           }),
           writer = new Ext.data.writer.Writer({}),
           result = writer.getRecordData(myModel, operation);
         delete result.id;
         expect(result).toEqual({
-          myDate: "test",
+          myDate: "test"
         });
         Ext.undefine("MyModel");
       });
@@ -365,8 +365,8 @@ describe("Ext.data.writer.Writer", function () {
           fields: [
             { name: "id", type: "int", writeName: "mapped_id" },
             { name: "title", type: "string", writeName: "mapped_title" },
-            { name: "body", type: "string", writeName: "mapped_body" },
-          ],
+            { name: "body", type: "string", writeName: "mapped_body" }
+          ]
         });
       }
 
@@ -374,11 +374,11 @@ describe("Ext.data.writer.Writer", function () {
         describe("with writeAllFields: false", function () {
           beforeEach(function () {
             operation = new Ext.data.operation.Destroy({
-              records: [article],
+              records: [article]
             });
             buildWriter({
               nameProperty: "writeName",
-              writeAllFields: false,
+              writeAllFields: false
             });
           });
 
@@ -388,19 +388,19 @@ describe("Ext.data.writer.Writer", function () {
               id: 123,
               title: "Foo",
               body: "Bar",
-              phantom: false, // <-- this is the key
+              phantom: false // <-- this is the key
             });
             operation.setRecords([article]);
             var result = writer.getRecordData(article, operation);
             expect(result).toEqual({
-              mapped_id: 123,
+              mapped_id: 123
             });
           });
 
           it("should fallback to the name", function () {
             var result = writer.getRecordData(article, operation);
             expect(result).toEqual({
-              id: 1,
+              id: 1
             });
           });
         });
@@ -409,32 +409,32 @@ describe("Ext.data.writer.Writer", function () {
       describe("update", function () {
         beforeEach(function () {
           operation = new Ext.data.operation.Update({
-            records: [article],
+            records: [article]
           });
         });
 
         it("should use the nameProperty", function () {
           buildWriter({
             writeAllFields: false,
-            nameProperty: "writeName",
+            nameProperty: "writeName"
           });
           article.set("body", "new body");
           var result = writer.getRecordData(article, operation);
           expect(result).toEqual({
             id: 1,
-            content: "new body",
+            content: "new body"
           });
         });
 
         it("should fall back to the name property", function () {
           buildWriter({
-            nameProperty: "writeName",
+            nameProperty: "writeName"
           });
           var result = writer.getRecordData(article, operation);
           expect(result).toEqual({
             id: 1,
             title: "Foo",
-            content: "Bar",
+            content: "Bar"
           });
         });
       });
@@ -443,25 +443,25 @@ describe("Ext.data.writer.Writer", function () {
         it("should use the nameProperty", function () {
           buildWriter({
             writeAllFields: false,
-            nameProperty: "writeName",
+            nameProperty: "writeName"
           });
           article.set("body", "new body");
           var result = writer.getRecordData(article, operation);
           expect(result).toEqual({
             id: 1,
-            content: "new body",
+            content: "new body"
           });
         });
 
         it("should fall back to the name property", function () {
           buildWriter({
-            nameProperty: "writeName",
+            nameProperty: "writeName"
           });
           var result = writer.getRecordData(article, operation);
           expect(result).toEqual({
             id: 1,
             title: "Foo",
-            content: "Bar",
+            content: "Bar"
           });
         });
 
@@ -470,14 +470,14 @@ describe("Ext.data.writer.Writer", function () {
           // in addition to the mapped id for non-phantom records
           buildWriter({
             writeAllFields: true,
-            nameProperty: "writeName",
+            nameProperty: "writeName"
           });
           redefineArticle();
           article = new Article({
             id: 123,
             title: "Foo",
             body: "Bar",
-            phantom: false, // <-- this is the key
+            phantom: false // <-- this is the key
           });
           operation.setRecords([article]);
           var result = writer.getRecordData(article, operation);
@@ -485,7 +485,7 @@ describe("Ext.data.writer.Writer", function () {
             mapped_id: 123,
             mapped_title: "Foo",
             mapped_body: "Bar",
-            phantom: false,
+            phantom: false
           });
         });
       });

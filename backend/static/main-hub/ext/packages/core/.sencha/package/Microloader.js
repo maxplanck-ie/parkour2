@@ -101,7 +101,7 @@ Ext.Microloader =
                 Boot.loadSync({
                   url: urls,
                   loadOrder: loadOrder,
-                  loadOrderMap: loadOrderMap,
+                  loadOrderMap: loadOrderMap
                 });
               } else {
                 Boot.load({
@@ -110,7 +110,7 @@ Ext.Microloader =
                   loadOrderMap: loadOrderMap,
                   sequential: true,
                   success: loadedFn,
-                  failure: loadedFn,
+                  failure: loadedFn
                 });
               }
             };
@@ -141,7 +141,7 @@ Ext.Microloader =
           while ((listener = _listeners.shift())) {
             listener();
           }
-        },
+        }
       };
 
     return Microloader;

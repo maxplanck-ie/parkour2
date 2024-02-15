@@ -67,7 +67,7 @@ Ext.define("Ext.perf.Monitor", {
     me.updateGC();
 
     Ext.log(
-      "Calibration: " + Math.round(calibration * 100) / 100 + " msec/sample",
+      "Calibration: " + Math.round(calibration * 100) / 100 + " msec/sample"
     );
     Ext.each(accumulators, function (accum) {
       Ext.log(accum.format(calibration));
@@ -94,12 +94,12 @@ Ext.define("Ext.perf.Monitor", {
       me.pure = {
         min: Number.MAX_VALUE,
         max: 0,
-        sum: 0,
+        sum: 0
       };
       me.total = {
         min: Number.MAX_VALUE,
         max: 0,
-        sum: 0,
+        sum: 0
       };
     });
   },
@@ -149,7 +149,7 @@ Ext.define("Ext.perf.Monitor", {
         //                    'Ext.XTemplate': 'applyOut'
         //                },
         render: {
-          "Ext.Component": "render",
+          "Ext.Component": "render"
         },
         //                fnishRender: {
         //                    'Ext.Component': 'finishRender'
@@ -185,8 +185,8 @@ Ext.define("Ext.perf.Monitor", {
         //                    'Ext.layout.Context': 'flush'
         //                },
         layout: {
-          "Ext.layout.Context": "run",
-        },
+          "Ext.layout.Context": "run"
+        }
       };
     }
 
@@ -266,5 +266,5 @@ Ext.define("Ext.perf.Monitor", {
         }
       }
     }
-  },
+  }
 });

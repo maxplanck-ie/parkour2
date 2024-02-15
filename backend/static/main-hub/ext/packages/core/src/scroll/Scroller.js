@@ -14,7 +14,7 @@ Ext.define(
     requires: ["Ext.util.CSS", "Ext.util.translatable.ScrollPosition"],
 
     factoryConfig: {
-      defaultType: "scroller",
+      defaultType: "scroller"
     },
 
     isScroller: true,
@@ -145,7 +145,7 @@ Ext.define(
        */
       size: null,
 
-      spacerXY: null,
+      spacerXY: null
     },
 
     snappableCls: Ext.baseCSSPrefix + "scroller-snappable",
@@ -202,7 +202,7 @@ Ext.define(
           this.$standardScrollElement = standard;
         }
         return standard ? doc.documentElement : doc.body;
-      },
+      }
     },
 
     constructor: function (config) {
@@ -215,7 +215,7 @@ Ext.define(
       me.onDomScrollEnd = Ext.Function.createBuffered(
         me.onDomScrollEnd,
         100,
-        me,
+        me
       );
     },
 
@@ -258,12 +258,12 @@ Ext.define(
 
       partners[partner.getId()] = {
         scroller: partner,
-        axis: axis,
+        axis: axis
       };
 
       otherPartners[me.getId()] = {
         scroller: me,
-        axis: axis,
+        axis: axis
       };
     },
 
@@ -290,7 +290,7 @@ Ext.define(
               "Cannot create Ext.scroll.Scroller instance. " +
                 "Element with id '" +
                 element +
-                "' not found.",
+                "' not found."
             );
           }
           //</debug>
@@ -308,7 +308,7 @@ Ext.define(
         me.scrollListener = eventSource.on({
           scroll: me.onDomScroll,
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
 
         return el;
@@ -348,7 +348,7 @@ Ext.define(
       var dom = this.getElement().dom;
       return {
         x: dom.clientWidth,
-        y: dom.clientHeight,
+        y: dom.clientHeight
       };
     },
 
@@ -402,7 +402,7 @@ Ext.define(
 
       return {
         width: width,
-        height: height,
+        height: height
       };
     },
 
@@ -435,12 +435,12 @@ Ext.define(
         dom = element.dom;
         size = {
           x: dom.scrollWidth,
-          y: dom.scrollHeight,
+          y: dom.scrollHeight
         };
       } else {
         size = {
           x: 0,
-          y: 0,
+          y: 0
         };
       }
 
@@ -468,7 +468,7 @@ Ext.define(
 
       return {
         x: x,
-        y: y,
+        y: y
       };
     },
 
@@ -501,7 +501,7 @@ Ext.define(
 
       return {
         x: x,
-        y: y,
+        y: y
       };
     },
 
@@ -611,7 +611,7 @@ Ext.define(
         newPosition = Ext.fly(el).getScrollIntoViewXY(
           myEl,
           position.x,
-          position.y,
+          position.y
         );
         newX = hscroll === false ? position.x : newPosition.x;
         newY = newPosition.y;
@@ -623,7 +623,7 @@ Ext.define(
               scrollend: "doHighlight",
               scope: me,
               single: true,
-              args: [el, highlight],
+              args: [el, highlight]
             });
           }
 
@@ -787,7 +787,7 @@ Ext.define(
 
           me.setSpacerXY({
             x: x,
-            y: y,
+            y: y
           });
           spacer.show();
         }
@@ -845,8 +845,8 @@ Ext.define(
            */
           getScroller: function () {
             return this;
-          },
-        },
+          }
+        }
       },
       "5.1.0": {
         methods: {
@@ -872,9 +872,9 @@ Ext.define(
            */
           scrollToEnd: function (animate) {
             return this.scrollTo(Infinity, Infinity, animate);
-          },
-        },
-      },
+          }
+        }
+      }
     },
 
     privates: {
@@ -893,9 +893,9 @@ Ext.define(
           spacer = me._spacer = element.createChild(
             {
               cls: me.spacerCls,
-              role: "presentation",
+              role: "presentation"
             },
-            element.dom.firstChild,
+            element.dom.firstChild
           );
 
           spacer.setVisibilityMode(2); // 'display' visibilityMode
@@ -949,7 +949,7 @@ Ext.define(
           c = me.component,
           result = {
             x: false,
-            y: false,
+            y: false
           },
           elRegion,
           myEl = me.getElement(),
@@ -994,14 +994,14 @@ Ext.define(
                   left: "-10000px",
                   top: "0",
                   width: "500px",
-                  height: "500px",
+                  height: "500px"
                 },
                 cn: {
-                  cls: this.spacerCls,
-                },
+                  cls: this.spacerCls
+                }
               },
               null,
-              true,
+              true
             ),
             stretcher = Ext.get(scrollTest.firstChild),
             sStyle = stretcher.dom.style;
@@ -1013,7 +1013,7 @@ Ext.define(
           while (tooHigh !== tooLow + 1) {
             stretcher.translate(
               0,
-              (maxScrollHeight = tooLow + Math.floor((tooHigh - tooLow) / 2)),
+              (maxScrollHeight = tooLow + Math.floor((tooHigh - tooLow) / 2))
             );
 
             // Force a synchronous layout to update the scrollHeight.
@@ -1028,7 +1028,7 @@ Ext.define(
           }
           stretcher.translate(
             0,
-            (Ext.scroll.Scroller.prototype.maxSpacerTranslate = tooLow),
+            (Ext.scroll.Scroller.prototype.maxSpacerTranslate = tooLow)
           );
 
           // Go through the same steps seeing how far we can push it with margin-top
@@ -1106,7 +1106,7 @@ Ext.define(
           if (animate) {
             if (!this._translatable) {
               this._translatable = new Ext.util.translatable.ScrollPosition({
-                element: element,
+                element: element
               });
             }
 
@@ -1226,7 +1226,7 @@ Ext.define(
               snapCoordinate +
               "scroll-snap-coordinate:" +
               snapCoordinate +
-              "}",
+              "}"
           );
         }
       },
@@ -1378,7 +1378,7 @@ Ext.define(
         if (element) {
           element.toggleCls(
             this.noScrollbarsCls,
-            this.getScrollbars() === false,
+            this.getScrollbars() === false
           );
         }
       },
@@ -1482,8 +1482,8 @@ Ext.define(
             // It may need to be restored again.
           }
         }
-      },
-    },
+      }
+    }
   },
   function (Scroller) {
     /**
@@ -1526,5 +1526,5 @@ Ext.define(
         }
       }, 100);
     });
-  },
+  }
 );

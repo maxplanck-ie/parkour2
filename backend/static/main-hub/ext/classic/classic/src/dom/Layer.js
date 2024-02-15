@@ -102,8 +102,8 @@ Ext.define("Ext.dom.Layer", {
         pel,
         config.dh || {
           tag: "div",
-          cls: cls, // primarily to give el 'position:absolute' or, if fixed, 'position:fixed'
-        },
+          cls: cls // primarily to give el 'position:absolute' or, if fixed, 'position:fixed'
+        }
       );
     }
 
@@ -152,7 +152,7 @@ Ext.define("Ext.dom.Layer", {
       me.shadowOffset = config.shadowOffset || 4;
       shadowConfig = {
         offset: me.shadowOffset,
-        fixed: config.fixed,
+        fixed: config.fixed
       };
 
       if (config.shadow !== true) {
@@ -166,7 +166,7 @@ Ext.define("Ext.dom.Layer", {
 
     if (config.shim) {
       me.enableShim({
-        fixed: config.fixed,
+        fixed: config.fixed
       });
     }
 
@@ -178,5 +178,5 @@ Ext.define("Ext.dom.Layer", {
     } else if (config.hidden === false) {
       me.show();
     }
-  },
+  }
 });

@@ -11,7 +11,7 @@ Ext.define("Ext.draw.sprite.Composite", {
   isComposite: true,
 
   config: {
-    sprites: [],
+    sprites: []
   },
 
   constructor: function (config) {
@@ -200,5 +200,5 @@ Ext.define("Ext.draw.sprite.Composite", {
     sprites.length = 0;
 
     me.callParent();
-  },
+  }
 });

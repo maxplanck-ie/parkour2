@@ -15,7 +15,7 @@ describe("Ext.data.schema.Schema", function () {
   describe("entity names", function () {
     function makeCls(name) {
       return {
-        $className: name,
+        $className: name
       };
     }
 
@@ -30,7 +30,7 @@ describe("Ext.data.schema.Schema", function () {
 
       it("should return the full classname", function () {
         expect(schema.getEntityName(makeCls("Foo.bar.baz.User"))).toBe(
-          "Foo.bar.baz.User",
+          "Foo.bar.baz.User"
         );
       });
     });
@@ -49,7 +49,7 @@ describe("Ext.data.schema.Schema", function () {
       it("should return the other parts of model name sans the namespace", function () {
         schema.setNamespace("spec.model");
         expect(schema.getEntityName(makeCls("spec.model.trading.Bid"))).toBe(
-          "trading.Bid",
+          "trading.Bid"
         );
       });
 
@@ -61,7 +61,7 @@ describe("Ext.data.schema.Schema", function () {
       it("should not remove an unrelated namespace", function () {
         schema.setNamespace("spec.model.");
         expect(schema.getEntityName(makeCls("spec.wodel.User"))).toBe(
-          "spec.wodel.User",
+          "spec.wodel.User"
         );
       });
     });
@@ -85,12 +85,12 @@ describe("Ext.data.schema.Schema", function () {
             {
               name: "addressId",
               reference: "Address",
-              unique: true,
-            },
-          ],
+              unique: true
+            }
+          ]
         });
         Ext.define("spec.Address", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
 
         expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -99,7 +99,7 @@ describe("Ext.data.schema.Schema", function () {
 
       it("should have associations when the non-key holder is declared first", function () {
         Ext.define("spec.Address", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
         Ext.define("spec.User", {
           extend: "Ext.data.Model",
@@ -107,9 +107,9 @@ describe("Ext.data.schema.Schema", function () {
             {
               name: "addressId",
               reference: "Address",
-              unique: true,
-            },
-          ],
+              unique: true
+            }
+          ]
         });
 
         expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -125,16 +125,16 @@ describe("Ext.data.schema.Schema", function () {
 
       it("should have associations when declaring the one first", function () {
         Ext.define("spec.User", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
         Ext.define("spec.Post", {
           extend: "Ext.data.Model",
           fields: [
             {
               name: "userId",
-              reference: "User",
-            },
-          ],
+              reference: "User"
+            }
+          ]
         });
 
         expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -147,12 +147,12 @@ describe("Ext.data.schema.Schema", function () {
           fields: [
             {
               name: "userId",
-              reference: "User",
-            },
-          ],
+              reference: "User"
+            }
+          ]
         });
         Ext.define("spec.User", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
 
         expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -169,11 +169,11 @@ describe("Ext.data.schema.Schema", function () {
       describe("association on the left", function () {
         it("should have associations when declaring the right first", function () {
           Ext.define("spec.User", {
-            extend: "Ext.data.Model",
+            extend: "Ext.data.Model"
           });
           Ext.define("spec.Group", {
             extend: "Ext.data.Model",
-            manyToMany: "User",
+            manyToMany: "User"
           });
 
           expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -183,10 +183,10 @@ describe("Ext.data.schema.Schema", function () {
         it("should have associations when declaring the left first", function () {
           Ext.define("spec.Group", {
             extend: "Ext.data.Model",
-            manyToMany: "User",
+            manyToMany: "User"
           });
           Ext.define("spec.User", {
-            extend: "Ext.data.Model",
+            extend: "Ext.data.Model"
           });
 
           expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -198,10 +198,10 @@ describe("Ext.data.schema.Schema", function () {
         it("should have associations when declaring the right first", function () {
           Ext.define("spec.User", {
             extend: "Ext.data.Model",
-            manyToMany: "Group",
+            manyToMany: "Group"
           });
           Ext.define("spec.Group", {
-            extend: "Ext.data.Model",
+            extend: "Ext.data.Model"
           });
 
           expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -210,11 +210,11 @@ describe("Ext.data.schema.Schema", function () {
 
         it("should have associations when declaring the left first", function () {
           Ext.define("spec.Group", {
-            extend: "Ext.data.Model",
+            extend: "Ext.data.Model"
           });
           Ext.define("spec.User", {
             extend: "Ext.data.Model",
-            manyToMany: "Group",
+            manyToMany: "Group"
           });
 
           expect(schema.hasAssociations(spec.User)).toBe(true);
@@ -229,7 +229,7 @@ describe("Ext.data.schema.Schema", function () {
       beforeEach(function () {
         schema.setNamespace("spec");
         Ext.define("spec.AssociatedModel", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
 
         Ext.define("spec.ParentModel", {
@@ -241,12 +241,12 @@ describe("Ext.data.schema.Schema", function () {
             setterName: "setAssocModel",
             name: "associatedModel",
             associationKey: "associatedModel",
-            foreignKey: "id",
-          },
+            foreignKey: "id"
+          }
         });
 
         Ext.define("spec.ChildModel", {
-          extend: "spec.ParentModel",
+          extend: "spec.ParentModel"
         });
       });
 
@@ -263,10 +263,10 @@ describe("Ext.data.schema.Schema", function () {
 
         // See if getter/setter names are respected:
         expect(typeof spec.ParentModel.prototype.getAssocModel).toBe(
-          "function",
+          "function"
         );
         expect(typeof spec.ParentModel.prototype.setAssocModel).toBe(
-          "function",
+          "function"
         );
 
         // See if roles are assigned properly:

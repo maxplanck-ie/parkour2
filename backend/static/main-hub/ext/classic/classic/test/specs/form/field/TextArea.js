@@ -5,7 +5,7 @@ describe("Ext.form.field.TextArea", function () {
     makeComponent = function (config) {
       config = config || {};
       Ext.applyIf(config, {
-        name: "test",
+        name: "test"
       });
 
       if (component) {
@@ -26,14 +26,14 @@ describe("Ext.form.field.TextArea", function () {
   it("should encode the input value in the template", function () {
     makeComponent({
       renderTo: Ext.getBody(),
-      value: 'test "  <br/> test',
+      value: 'test "  <br/> test'
     });
     expect(component.inputEl.dom.value).toBe('test "  <br/> test');
   });
 
   it("should be able to set a numeric value", function () {
     makeComponent({
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     component.setValue(100);
     expect(component.getValue()).toBe("100");
@@ -69,7 +69,7 @@ describe("Ext.form.field.TextArea", function () {
         name: "fieldName",
         value: "fieldValue",
         tabIndex: 5,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -110,13 +110,13 @@ describe("Ext.form.field.TextArea", function () {
 
       it("should have autocomplete = 'off'", function () {
         expect(component.inputEl.dom.getAttribute("autocomplete")).toEqual(
-          "off",
+          "off"
         );
       });
 
       it("should have tabindex set to the tabIndex config", function () {
         expect("" + component.inputEl.dom.getAttribute("tabIndex")).toEqual(
-          "5",
+          "5"
         );
       });
     });
@@ -144,14 +144,14 @@ describe("Ext.form.field.TextArea", function () {
         makeComponent({
           rows: 10,
           cols: 40,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.getWidth()).toBeGreaterThan(width);
         component.destroy();
         makeComponent({
           rows: 10,
           cols: 10,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.getWidth()).toBeLessThan(width);
       });
@@ -162,7 +162,7 @@ describe("Ext.form.field.TextArea", function () {
           rows: 10,
           cols: 40,
           width: 500,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.getWidth()).toBe(500);
       });
@@ -174,7 +174,7 @@ describe("Ext.form.field.TextArea", function () {
           width: 100,
           height: 100,
           labelAlign: "top",
-          fieldLabel: "A label",
+          fieldLabel: "A label"
         });
 
         var label = component.labelEl,
@@ -205,7 +205,7 @@ describe("Ext.form.field.TextArea", function () {
             grow: true,
             growMin: 40,
             growMax: 200,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -216,7 +216,7 @@ describe("Ext.form.field.TextArea", function () {
             growMin: 40,
             growMax: 500,
             renderTo: Ext.getBody(),
-            value: makeLines(10),
+            value: makeLines(10)
           });
           expect(component.getHeight()).toBeLessThan(500);
           expect(component.getHeight()).toBeGreaterThan(40);
@@ -256,7 +256,7 @@ describe("Ext.form.field.TextArea", function () {
 
         it("should work with markup", function () {
           component.setValue(
-            "<fake tag appears here with longer text that should cause the field to grow",
+            "<fake tag appears here with longer text that should cause the field to grow"
           );
           expect(component.getHeight()).toBeGreaterThan(40);
         });
@@ -269,7 +269,7 @@ describe("Ext.form.field.TextArea", function () {
             grow: true,
             growMin: 100,
             height: 150,
-            growMax: 700,
+            growMax: 700
           });
           component.setValue(makeLines(100));
           expect(component.getHeight()).toBe(150);
@@ -279,7 +279,7 @@ describe("Ext.form.field.TextArea", function () {
           makeComponent({
             grow: true,
             growMin: 100,
-            growMax: 700,
+            growMax: 700
           });
 
           var ct = new Ext.container.Container({
@@ -287,14 +287,14 @@ describe("Ext.form.field.TextArea", function () {
             layout: "fit",
             width: 150,
             height: 150,
-            items: component,
+            items: component
           });
           component.setValue(makeLines(100));
           expect(component.getHeight()).toBe(150);
           ct.destroy();
         });
       });
-    },
+    }
   );
 
   describe("readOnly", function () {
@@ -302,7 +302,7 @@ describe("Ext.form.field.TextArea", function () {
       it("should set the readonly attribute of the field when rendered", function () {
         makeComponent({
           readOnly: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         expect(component.inputEl.dom.readOnly).toBe(true);
       });
@@ -311,7 +311,7 @@ describe("Ext.form.field.TextArea", function () {
     describe("setReadOnly method", function () {
       it("should set the readOnly state of the field immediately if rendered", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setReadOnly(true);
         expect(component.inputEl.dom.readOnly).toBe(true);
@@ -331,7 +331,7 @@ describe("Ext.form.field.TextArea", function () {
       makeComponent({
         grow: true,
         preventScrollbars: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(component.inputEl.getStyle("overflow")).toEqual("hidden");
     });
@@ -339,7 +339,7 @@ describe("Ext.form.field.TextArea", function () {
       makeComponent({
         grow: true,
         preventScrollbars: false,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(component.inputEl.dom.style.overflow).not.toEqual("hidden");
     });
@@ -347,7 +347,7 @@ describe("Ext.form.field.TextArea", function () {
       makeComponent({
         grow: false,
         preventScrollbars: true,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expect(component.inputEl.getStyle("overflow")).not.toEqual("hidden");
     });
@@ -357,7 +357,7 @@ describe("Ext.form.field.TextArea", function () {
     var makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty =
       function (initialValue) {
         makeComponent({
-          value: initialValue,
+          value: initialValue
         });
         expect(component.getValue()).toBe(initialValue);
         expect(component.isDirty()).toBeFalsy();
@@ -365,13 +365,13 @@ describe("Ext.form.field.TextArea", function () {
 
     it("should not insert unspecified new lines", function () {
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial value",
+        "initial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        " initial  value ",
+        " initial  value "
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "  initial   value  ",
+        "  initial   value  "
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(" ");
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty("  ");
@@ -379,37 +379,37 @@ describe("Ext.form.field.TextArea", function () {
 
     it("should preserve new lines", function () {
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "\ninitial value",
+        "\ninitial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "\n\ninitial value",
+        "\n\ninitial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "   initial value",
+        "   initial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "   \ninitial value",
+        "   \ninitial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "\n   initial value",
+        "\n   initial value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial\nvalue",
+        "initial\nvalue"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial \n value",
+        "initial \n value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial \n\n value",
+        "initial \n\n value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial \n \n value",
+        "initial \n \n value"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial value\n",
+        "initial value\n"
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "initial value\n\n",
+        "initial value\n\n"
       );
     });
 
@@ -418,10 +418,10 @@ describe("Ext.form.field.TextArea", function () {
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(" \n ");
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty("  \n  ");
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        " \n \n ",
+        " \n \n "
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty(
-        "  \n  \n  ",
+        "  \n  \n  "
       );
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty("\n \n");
       makeComponentWithInitialValueAndExpectValueToBeExactAndNonDirty("\n  \n");
@@ -442,7 +442,7 @@ describe("Ext.form.field.TextArea", function () {
 
     it("should strip carriage returns from the initial value before render", function () {
       makeComponent({
-        value: s,
+        value: s
       });
       expectNoCarriageReturnsAndNotDirty();
     });
@@ -450,7 +450,7 @@ describe("Ext.form.field.TextArea", function () {
     it("should strip carriage returns from the initial value after render", function () {
       makeComponent({
         value: s,
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       expectNoCarriageReturnsAndNotDirty();
     });
@@ -463,7 +463,7 @@ describe("Ext.form.field.TextArea", function () {
 
     it("should strip carriage returns when we call setValue after rendering", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.setValue(s);
       expectNoCarriageReturns();
@@ -475,7 +475,7 @@ describe("Ext.form.field.TextArea", function () {
       it("should not allow only newlines and spaces when used with allowOnlyWhitespace: false", function () {
         makeComponent({
           allowOnlyWhitespace: false,
-          value: "  \n\n    \n\n",
+          value: "  \n\n    \n\n"
         });
         expect(component.getErrors()).toContain("This field is required");
       });
@@ -487,7 +487,7 @@ describe("Ext.form.field.TextArea", function () {
       makeComponent({
         renderTo: document.body,
         grow: true,
-        growMin: 50,
+        growMin: 50
       });
 
       expect(component.getHeight()).toBe(50);
@@ -498,7 +498,7 @@ describe("Ext.form.field.TextArea", function () {
         renderTo: document.body,
         value: "m\nm\nm\nm\nm\nm\nm",
         grow: true,
-        growMin: 50,
+        growMin: 50
       });
 
       expect(component.getHeight()).toBe(117);
@@ -509,7 +509,7 @@ describe("Ext.form.field.TextArea", function () {
         renderTo: document.body,
         value: "m\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm\nm",
         grow: true,
-        growMax: 200,
+        growMax: 200
       });
 
       expect(component.getHeight()).toBe(200);
@@ -520,7 +520,7 @@ describe("Ext.form.field.TextArea", function () {
         renderTo: document.body,
         grow: true,
         growMin: 50,
-        growMax: 100,
+        growMax: 100
       });
 
       expect(component.getHeight()).toBe(50);
@@ -547,7 +547,7 @@ describe("Ext.form.field.TextArea", function () {
     var dimensions = {
       1: "width",
       2: "height",
-      3: "width and height",
+      3: "width and height"
     };
 
     function makeLayoutSuite(shrinkWrap, autoFitErrors) {
@@ -615,10 +615,10 @@ describe("Ext.form.field.TextArea", function () {
                     '<span style="display:inline-block;width:' +
                     labelInnerWidth +
                     'px;background-color:red;">&nbsp;</span>',
-                  labelSeparator: "",
+                  labelSeparator: ""
                 },
-                cfg,
-              ),
+                cfg
+              )
             );
           }
 
@@ -637,39 +637,39 @@ describe("Ext.form.field.TextArea", function () {
               // TODO: EXTJS-12634
               (Ext.isIE8 ? xit : it)("should layout", function () {
                 create({
-                  labelAlign: labelAlign,
+                  labelAlign: labelAlign
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: labelWidth,
-                    h: height,
+                    h: height
                   },
                   ".x-form-item-label-inner": {
                     x: leftLabel
                       ? 0
                       : labelWidth - labelPadding - labelInnerWidth,
                     y: labelInnerY,
-                    w: labelInnerWidth,
+                    w: labelInnerWidth
                   },
                   bodyEl: {
                     x: labelWidth,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: labelWidth + borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -680,7 +680,7 @@ describe("Ext.form.field.TextArea", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   setError();
@@ -688,47 +688,47 @@ describe("Ext.form.field.TextArea", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: height,
+                      h: height
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: width - errorWidth,
                       y: 0,
                       w: errorWidth,
-                      h: height,
+                      h: height
                     },
                     errorEl: {
                       x: width - errorWidth + errorIconMargin,
                       y: (bodyHeight - errorIconSize) / 2,
                       w: errorIconSize,
-                      h: errorIconSize,
-                    },
+                      h: errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -737,7 +737,7 @@ describe("Ext.form.field.TextArea", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   var bdWidth =
@@ -751,38 +751,38 @@ describe("Ext.form.field.TextArea", function () {
                         shrinkWidth && autoFitErrors
                           ? width - errorWidth
                           : width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: height,
+                      h: height
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bdWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bdWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: autoFitErrors ? 0 : width - errorWidth,
                       y: autoFitErrors ? 0 : 0,
                       w: autoFitErrors ? 0 : errorWidth,
-                      h: autoFitErrors ? 0 : height,
+                      h: autoFitErrors ? 0 : height
                     },
                     errorEl: {
                       x: autoFitErrors
@@ -790,10 +790,10 @@ describe("Ext.form.field.TextArea", function () {
                         : width - errorWidth + errorIconMargin,
                       y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                       w: autoFitErrors ? 0 : errorIconSize,
-                      h: autoFitErrors ? 0 : errorIconSize,
-                    },
+                      h: autoFitErrors ? 0 : errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -802,7 +802,7 @@ describe("Ext.form.field.TextArea", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -810,47 +810,47 @@ describe("Ext.form.field.TextArea", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
                       x: 0,
                       y: 0,
                       w: labelWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     ".x-form-item-label-inner": {
                       x: leftLabel
                         ? 0
                         : labelWidth - labelPadding - labelInnerWidth,
                       y: labelInnerY,
-                      w: labelInnerWidth,
+                      w: labelInnerWidth
                     },
                     bodyEl: {
                       x: labelWidth,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: labelWidth + borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: labelWidth,
                       y: bodyHeight,
                       w: bodyWidth,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -859,26 +859,26 @@ describe("Ext.form.field.TextArea", function () {
                 function () {
                   create({
                     labelAlign: labelAlign,
-                    hideLabel: true,
+                    hideLabel: true
                   });
 
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
-                    },
+                      h: bodyHeight
+                    }
                   });
                   expect(component.errorWrapEl).toBeNull();
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -888,7 +888,7 @@ describe("Ext.form.field.TextArea", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   setError();
@@ -896,37 +896,37 @@ describe("Ext.form.field.TextArea", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: bodyWidth,
                       y: 0,
                       w: errorWidth,
-                      h: height,
+                      h: height
                     },
                     errorEl: {
                       x: bodyWidth + errorIconMargin,
                       y: (bodyHeight - errorIconSize) / 2,
                       w: errorIconSize,
-                      h: errorIconSize,
-                    },
+                      h: errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -936,7 +936,7 @@ describe("Ext.form.field.TextArea", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "side",
+                    msgTarget: "side"
                   });
 
                   var bdWidth =
@@ -950,37 +950,37 @@ describe("Ext.form.field.TextArea", function () {
                         shrinkWidth && autoFitErrors
                           ? width - errorWidth
                           : width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bdWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bdWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: autoFitErrors ? 0 : bodyWidth,
                       y: autoFitErrors ? 0 : 0,
                       w: autoFitErrors ? 0 : errorWidth,
-                      h: autoFitErrors ? 0 : height,
+                      h: autoFitErrors ? 0 : height
                     },
                     errorEl: {
                       x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                       y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                       w: autoFitErrors ? 0 : errorIconSize,
-                      h: autoFitErrors ? 0 : errorIconSize,
-                    },
+                      h: autoFitErrors ? 0 : errorIconSize
+                    }
                   });
-                },
+                }
               );
 
               // TODO: EXTJS-12634
@@ -990,7 +990,7 @@ describe("Ext.form.field.TextArea", function () {
                   create({
                     labelAlign: labelAlign,
                     hideLabel: true,
-                    msgTarget: "under",
+                    msgTarget: "under"
                   });
 
                   setError();
@@ -998,37 +998,37 @@ describe("Ext.form.field.TextArea", function () {
                   expect(component).toHaveLayout({
                     el: {
                       w: width,
-                      h: height,
+                      h: height
                     },
                     labelEl: {
-                      xywh: "0 0 0 0",
+                      xywh: "0 0 0 0"
                     },
                     bodyEl: {
                       x: 0,
                       y: 0,
                       w: bodyWidth,
-                      h: bodyHeight,
+                      h: bodyHeight
                     },
                     inputEl: {
                       x: borderWidth,
                       y: borderWidth,
                       w: bodyWidth - borderWidth * 2,
-                      h: bodyHeight - borderWidth * 2,
+                      h: bodyHeight - borderWidth * 2
                     },
                     errorWrapEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
+                      h: errorHeight
                     },
                     errorEl: {
                       x: 0,
                       y: bodyHeight,
                       w: width,
-                      h: errorHeight,
-                    },
+                      h: errorHeight
+                    }
                   });
-                },
+                }
               );
             });
           }
@@ -1042,38 +1042,38 @@ describe("Ext.form.field.TextArea", function () {
             function () {
               it("should layout", function () {
                 create({
-                  labelAlign: "top",
+                  labelAlign: "top"
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -1081,7 +1081,7 @@ describe("Ext.form.field.TextArea", function () {
               it("should layout with side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -1089,51 +1089,51 @@ describe("Ext.form.field.TextArea", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: labelHeight,
                     w: errorWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
               it("should layout with hidden side error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 width =
@@ -1146,37 +1146,37 @@ describe("Ext.form.field.TextArea", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: bdWidth,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bdWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bdWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : labelHeight,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : bodyHeight,
+                    h: autoFitErrors ? 0 : bodyHeight
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
@@ -1184,15 +1184,15 @@ describe("Ext.form.field.TextArea", function () {
                       ? 0
                       : labelHeight + (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
               it("should layout with under error", function () {
                 create({
                   labelAlign: "top",
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -1200,73 +1200,73 @@ describe("Ext.form.field.TextArea", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   ".x-form-item-label-inner": {
                     x: 0,
                     y: 0,
                     w: width,
-                    h: labelHeight,
+                    h: labelHeight
                   },
                   bodyEl: {
                     x: 0,
                     y: labelHeight,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: labelHeight + borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: labelHeight + bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
 
               it("should layout with hidden label", function () {
                 create({
                   labelAlign: "top",
-                  hideLabel: true,
+                  hideLabel: true
                 });
 
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
-                  },
+                    h: bodyHeight - borderWidth * 2
+                  }
                 });
                 expect(component.errorWrapEl).toBeNull();
               });
@@ -1275,7 +1275,7 @@ describe("Ext.form.field.TextArea", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 setError();
@@ -1283,35 +1283,35 @@ describe("Ext.form.field.TextArea", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: bodyWidth,
                     y: 0,
                     w: errorWidth,
-                    h: height,
+                    h: height
                   },
                   errorEl: {
                     x: bodyWidth + errorIconMargin,
                     y: (bodyHeight - errorIconSize) / 2,
                     w: errorIconSize,
-                    h: errorIconSize,
-                  },
+                    h: errorIconSize
+                  }
                 });
               });
 
@@ -1319,7 +1319,7 @@ describe("Ext.form.field.TextArea", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "side",
+                  msgTarget: "side"
                 });
 
                 var bdWidth =
@@ -1331,35 +1331,35 @@ describe("Ext.form.field.TextArea", function () {
                   el: {
                     w:
                       shrinkWidth && autoFitErrors ? width - errorWidth : width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bdWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bdWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: autoFitErrors ? 0 : bodyWidth,
                     y: autoFitErrors ? 0 : 0,
                     w: autoFitErrors ? 0 : errorWidth,
-                    h: autoFitErrors ? 0 : height,
+                    h: autoFitErrors ? 0 : height
                   },
                   errorEl: {
                     x: autoFitErrors ? 0 : bodyWidth + errorIconMargin,
                     y: autoFitErrors ? 0 : (bodyHeight - errorIconSize) / 2,
                     w: autoFitErrors ? 0 : errorIconSize,
-                    h: autoFitErrors ? 0 : errorIconSize,
-                  },
+                    h: autoFitErrors ? 0 : errorIconSize
+                  }
                 });
               });
 
@@ -1367,7 +1367,7 @@ describe("Ext.form.field.TextArea", function () {
                 create({
                   labelAlign: "top",
                   hideLabel: true,
-                  msgTarget: "under",
+                  msgTarget: "under"
                 });
 
                 setError();
@@ -1375,40 +1375,40 @@ describe("Ext.form.field.TextArea", function () {
                 expect(component).toHaveLayout({
                   el: {
                     w: width,
-                    h: height,
+                    h: height
                   },
                   labelEl: {
-                    xywh: "0 0 0 0",
+                    xywh: "0 0 0 0"
                   },
                   bodyEl: {
                     x: 0,
                     y: 0,
                     w: bodyWidth,
-                    h: bodyHeight,
+                    h: bodyHeight
                   },
                   inputEl: {
                     x: borderWidth,
                     y: borderWidth,
                     w: bodyWidth - borderWidth * 2,
-                    h: bodyHeight - borderWidth * 2,
+                    h: bodyHeight - borderWidth * 2
                   },
                   errorWrapEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
+                    h: errorHeight
                   },
                   errorEl: {
                     x: 0,
                     y: bodyHeight,
                     w: width,
-                    h: errorHeight,
-                  },
+                    h: errorHeight
+                  }
                 });
               });
-            },
+            }
           );
-        },
+        }
       );
     }
 

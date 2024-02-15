@@ -17,7 +17,7 @@ Ext.define("Ext.grid.cell.Number", {
      * A format string as used by {@link Ext.util.Format#number} to format values for
      * this column.
      */
-    format: "0,000.00",
+    format: "0,000.00"
   },
 
   classCls: Ext.baseCSSPrefix + "numbercell",
@@ -51,5 +51,5 @@ Ext.define("Ext.grid.cell.Number", {
       value = hasValue ? Ext.util.Format.number(value, this.getFormat()) : null;
     }
     this.setRawValue(value);
-  },
+  }
 });

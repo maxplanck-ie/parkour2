@@ -339,7 +339,7 @@ describe("Ext.data.Batch", function () {
   describe("pauseOnException/retry", function () {
     beforeEach(function () {
       makeBatch({
-        pauseOnException: true,
+        pauseOnException: true
       });
     });
 

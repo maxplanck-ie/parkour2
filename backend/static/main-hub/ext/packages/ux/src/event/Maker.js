@@ -56,5 +56,5 @@ Ext.define("Ext.ux.event.Maker", {
       }
     });
     return me.eventQueue;
-  },
+  }
 });

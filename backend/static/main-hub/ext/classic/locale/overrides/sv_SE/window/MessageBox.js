@@ -4,6 +4,6 @@ Ext.define("Ext.locale.sv_SE.window.MessageBox", {
     ok: "OK",
     cancel: "Avbryt",
     yes: "Ja",
-    no: "Nej",
-  },
+    no: "Nej"
+  }
 });

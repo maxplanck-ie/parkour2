@@ -55,7 +55,7 @@ Ext.define("Ext.data.operation.Read", {
      * Passed internally to loadRecords when the load completes
      * @private
      */
-    addRecords: false,
+    addRecords: false
   },
 
   doExecute: function () {
@@ -66,5 +66,5 @@ Ext.define("Ext.data.operation.Read", {
 
   allowWrite: function () {
     return false;
-  },
+  }
 });

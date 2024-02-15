@@ -74,7 +74,7 @@ Ext.define("Ext.theme.blackberry.TabMenuButton", {
     /**
      * @hide
      */
-    menuSide: "left",
+    menuSide: "left"
   },
 
   onMenuButtonTap: function (button) {
@@ -84,5 +84,5 @@ Ext.define("Ext.theme.blackberry.TabMenuButton", {
     }
 
     Ext.Viewport.hideMenu(this.getMenuSide());
-  },
+  }
 });

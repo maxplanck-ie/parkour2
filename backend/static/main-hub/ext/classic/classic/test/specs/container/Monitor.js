@@ -3,14 +3,14 @@ describe("Ext.container.Monitor", function () {
 
   beforeEach(function () {
     c1 = new Ext.Component({
-      foo: true,
+      foo: true
     });
     c2 = new Ext.Component();
     c3 = new Ext.Component({
-      foo: true,
+      foo: true
     });
     ct = new Ext.container.Container({
-      defaultType: "container",
+      defaultType: "container"
     });
 
     makeMon = function (cfg) {
@@ -19,8 +19,8 @@ describe("Ext.container.Monitor", function () {
           selector: "[foo]",
           addHandler: addSpy,
           removeHandler: removeSpy,
-          invalidateHandler: invalidateSpy,
-        },
+          invalidateHandler: invalidateSpy
+        }
       );
       mon.bind(ct);
       // Trigger the cache
@@ -29,13 +29,13 @@ describe("Ext.container.Monitor", function () {
 
     deepCt = function (depth, c) {
       var root = {
-          xtype: "container",
+          xtype: "container"
         },
         out = root;
 
       while (depth > 1) {
         out.items = {
-          xtype: "container",
+          xtype: "container"
         };
         out = out.items;
         --depth;
@@ -73,9 +73,9 @@ describe("Ext.container.Monitor", function () {
         dockedItems: [
           {
             xtype: "toolbar",
-            items: c1,
-          },
-        ],
+            items: c1
+          }
+        ]
       });
 
       makeMon();
@@ -88,9 +88,9 @@ describe("Ext.container.Monitor", function () {
       ct.add(
         new Ext.button.Button({
           menu: {
-            items: c1,
-          },
-        }),
+            items: c1
+          }
+        })
       );
       makeMon();
       expect(addSpy.calls.length).toBe(1);
@@ -139,7 +139,7 @@ describe("Ext.container.Monitor", function () {
 
       ct.addDocked({
         xtype: "toolbar",
-        items: c1,
+        items: c1
       });
       expect(addSpy.calls.length).toBe(1);
       expect(addSpy.calls[0].args[0]).toBe(c1);
@@ -162,9 +162,9 @@ describe("Ext.container.Monitor", function () {
       ct.add(
         new Ext.button.Button({
           menu: {
-            items: c1,
-          },
-        }),
+            items: c1
+          }
+        })
       );
 
       expect(addSpy.calls.length).toBe(1);
@@ -236,9 +236,9 @@ describe("Ext.container.Monitor", function () {
         dockedItems: [
           {
             xtype: "toolbar",
-            items: c1,
-          },
-        ],
+            items: c1
+          }
+        ]
       });
 
       makeMon();
@@ -252,9 +252,9 @@ describe("Ext.container.Monitor", function () {
       ct.add(
         new Ext.button.Button({
           menu: {
-            items: c1,
-          },
-        }),
+            items: c1
+          }
+        })
       );
 
       makeMon();
@@ -268,7 +268,7 @@ describe("Ext.container.Monitor", function () {
     it("should handle removal of items inside direct children of the target", function () {
       ct.add({
         xtype: "container",
-        items: c1,
+        items: c1
       });
       makeMon();
 
@@ -280,7 +280,7 @@ describe("Ext.container.Monitor", function () {
 
     it("should handle the removal of items in deep containers", function () {
       var inner = new Ext.container.Container({
-        items: c1,
+        items: c1
       });
       ct.add(deepCt(10, inner));
       makeMon();
@@ -293,7 +293,7 @@ describe("Ext.container.Monitor", function () {
 
     it("should handle the removal of a container that contains an item", function () {
       var inner = new Ext.container.Container({
-        items: c1,
+        items: c1
       });
 
       ct.add(inner);
@@ -308,7 +308,7 @@ describe("Ext.container.Monitor", function () {
 
     it("should handle the removal of a deep container that contains an item", function () {
       var inner = new Ext.container.Container({
-        items: c1,
+        items: c1
       });
 
       ct.add(deepCt(10, inner));
@@ -324,7 +324,7 @@ describe("Ext.container.Monitor", function () {
     it("should update the collection when removing children that contain items matching the selector", function () {
       ct.add({
         xtype: "container",
-        items: c1,
+        items: c1
       });
       makeMon();
 
@@ -335,7 +335,7 @@ describe("Ext.container.Monitor", function () {
     it("should update the collection when destroying a container that contains items", function () {
       ct.add({
         xtype: "container",
-        items: c1,
+        items: c1
       });
       makeMon();
       ct.items.first().destroy();
@@ -345,7 +345,7 @@ describe("Ext.container.Monitor", function () {
     describe("container listeners", function () {
       it("should remove the listeners on a direct child ct", function () {
         var inner = new Ext.container.Container({
-          items: c1,
+          items: c1
         });
         ct.add(inner);
         makeMon();
@@ -384,7 +384,7 @@ describe("Ext.container.Monitor", function () {
 
     it("should call the invalidateHandler when destroying a container", function () {
       var myCt = new Ext.container.Container({
-        items: c1,
+        items: c1
       });
       ct.add(myCt);
 

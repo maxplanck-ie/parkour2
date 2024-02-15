@@ -13,7 +13,7 @@ Ext.define("Ext.device.Globalization", {
 
   requires: [
     "Ext.device.globalization.Cordova",
-    "Ext.device.globalization.Simulator",
+    "Ext.device.globalization.Simulator"
   ],
 
   constructor: function () {
@@ -25,5 +25,5 @@ Ext.define("Ext.device.Globalization", {
     }
 
     return Ext.create("Ext.device.globalization.Simulator");
-  },
+  }
 });

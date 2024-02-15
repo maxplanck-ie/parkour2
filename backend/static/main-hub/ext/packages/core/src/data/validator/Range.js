@@ -37,7 +37,7 @@ Ext.define("Ext.data.validator.Range", {
      * @cfg {String} nanMessage
      * The error message to return when the value is not numeric.
      */
-    nanMessage: "Must be numeric",
+    nanMessage: "Must be numeric"
   },
 
   validateValue: function (value) {
@@ -46,5 +46,5 @@ Ext.define("Ext.data.validator.Range", {
       msg = this.getNanMessage();
     }
     return msg;
-  },
+  }
 });

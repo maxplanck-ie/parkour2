@@ -8,7 +8,7 @@ Ext.define("Ext.theme.material.navigation.Bar", {
       align: "left",
       ui: "back",
       hidden: true,
-      iconCls: "md-icon-arrow-back",
-    },
-  },
+      iconCls: "md-icon-arrow-back"
+    }
+  }
 });

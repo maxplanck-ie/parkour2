@@ -80,7 +80,7 @@ describe("Ext.Version", function () {
       if (c !== expected) {
         // give a better failure message than "expected 1 to be 0":
         expect("new Version(" + v1 + ").compareTo(" + v2 + ") == " + c).toBe(
-          expected,
+          expected
         );
       } else {
         expect(c).toBe(expected);
@@ -296,7 +296,7 @@ describe("Ext.Version", function () {
         ext: new Ext.Version("4.2.2.900"), // <== this is used for unnamed versions
         foo: new Ext.Version("3.0.2.123"),
         bar: new Ext.Version("1.5"), // special case here
-        jazz: new Ext.Version("5.2.2.456"),
+        jazz: new Ext.Version("5.2.2.456")
       };
 
     afterEach(function () {
@@ -528,7 +528,7 @@ describe("Ext.Version", function () {
 
         it("should find AND match", function () {
           var result = Ext.checkVersion({
-            and: ["4.2.2", "jazz@5.2.2"],
+            and: ["4.2.2", "jazz@5.2.2"]
           });
           expect(result).toBe(true);
         });
@@ -547,8 +547,8 @@ describe("Ext.Version", function () {
         var result = Ext.checkVersion({
           and: [
             "4.2.2", // T
-            "jazz@5.2.2", // T
-          ],
+            "jazz@5.2.2" // T
+          ]
         });
 
         expect(result).toBe(true);
@@ -559,8 +559,8 @@ describe("Ext.Version", function () {
           not: true,
           and: [
             "4.2.2", // T
-            "jazz@5.2.2", // T
-          ],
+            "jazz@5.2.2" // T
+          ]
         });
 
         expect(result).toBe(false);
@@ -571,10 +571,10 @@ describe("Ext.Version", function () {
           {
             or: [
               "4.2.1", // F
-              "jazz@5.2.2", // T
-            ],
+              "jazz@5.2.2" // T
+            ]
           },
-          true,
+          true
         );
 
         expect(result).toBe(true);
@@ -586,10 +586,10 @@ describe("Ext.Version", function () {
             not: true,
             or: [
               "4.2.1", // F
-              "jazz@5.2.2", // T
-            ],
+              "jazz@5.2.2" // T
+            ]
           },
-          true,
+          true
         );
 
         expect(result).toBe(false);
@@ -607,18 +607,18 @@ describe("Ext.Version", function () {
               {
                 or: [
                   "foo@3.2-4.1", // F
-                  "bar@1.2.2-2", // T
-                ],
+                  "bar@1.2.2-2" // T
+                ]
               },
-              "foo@2.2-3.0.1", // F
-            ],
+              "foo@2.2-3.0.1" // F
+            ]
           },
           {
             or: [
               "foo@3.2-4.1", // F
-              "bar@1.2.2-2", // T
-            ],
-          },
+              "bar@1.2.2-2" // T
+            ]
+          }
         ]);
 
         expect(result).toBe(true);

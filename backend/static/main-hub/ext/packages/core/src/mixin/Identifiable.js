@@ -6,7 +6,7 @@
  */
 Ext.define("Ext.mixin.Identifiable", {
   statics: {
-    uniqueIds: {},
+    uniqueIds: {}
   },
 
   isIdentifiable: true,
@@ -93,5 +93,5 @@ Ext.define("Ext.mixin.Identifiable", {
     this.getId = this.getOptimizedId;
 
     return id;
-  },
+  }
 });

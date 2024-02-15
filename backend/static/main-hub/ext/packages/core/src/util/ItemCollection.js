@@ -11,5 +11,5 @@ Ext.define("Ext.util.ItemCollection", {
 
   has: function (item) {
     return this.map.hasOwnProperty(item.getId());
-  },
+  }
 });

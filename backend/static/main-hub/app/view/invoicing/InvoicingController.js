@@ -7,24 +7,24 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#billing-period-combobox": {
-        select: "selectBillingPeriod",
+        select: "selectBillingPeriod"
       },
       "#invoicing-grid": {
-        resize: "resize",
+        resize: "resize"
       },
       "#download-report": {
-        click: "downloadReport",
+        click: "downloadReport"
       },
       "#upload-report": {
-        click: "uploadReport",
+        click: "uploadReport"
       },
       "#fixed-costs-grid,#preparation-costs-grid,#sequencing-costs-grid": {
-        edit: "editPrice",
-      },
-    },
+        edit: "editPrice"
+      }
+    }
   },
 
   activateView: function (view) {
@@ -37,7 +37,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
           billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
           billingPeriodCb.cancelFocus();
         }
-      },
+      }
     });
 
     // Load cost stores
@@ -57,8 +57,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     Ext.getStore("Invoicing").reload({
       params: {
         year: record.get("value")[0],
-        month: record.get("value")[1],
-      },
+        month: record.get("value")[1]
+      }
     });
 
     if (reportUrl !== "") {
@@ -76,14 +76,14 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     proxy.api.update = Ext.String.format(
       "{0}{1}/",
       proxy.api.read,
-      context.record.get("id"),
+      context.record.get("id")
     );
 
     store.sync({
       success: function (batch) {
         Ext.getCmp("invoicing-grid").getStore().reload();
         new Noty({ text: "The changes have been saved." }).show();
-      },
+      }
     });
   },
 
@@ -97,8 +97,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       method: "GET",
       params: {
         year: value[0],
-        month: value[1],
-      },
+        month: value[1]
+      }
     });
   },
 
@@ -116,7 +116,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
         if (!form.isValid()) {
           new Noty({
             text: "You did not select any file.",
-            type: "warning",
+            type: "warning"
           }).show();
           return;
         }
@@ -126,15 +126,15 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
           method: "POST",
           waitMsg: "Uploading...",
           params: {
-            month: value[0] + "-" + value[1],
+            month: value[0] + "-" + value[1]
           },
           success: function (f, action) {
             new Noty({ text: "Report has been successfully uploaded." }).show();
             billingPeriodCb.getStore().reload();
             uploadWindow.close();
-          },
+          }
         });
-      },
+      }
     });
   },
 
@@ -153,7 +153,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       return Ext.String.format(
         "{0}: {1}",
         item.flowcell_id,
-        item.sequencer_name,
+        item.sequencer_name
       );
     });
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', items.join("<br/>"));
@@ -172,7 +172,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       "</ul>",
       "</li>",
       "</tpl>",
-      "</ul>",
+      "</ul>"
     );
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', tpl.apply(value));
 
@@ -199,10 +199,10 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       0,
       false,
       true,
-      true,
+      true
     );
     var name = record.get("name");
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
     return name;
-  },
+  }
 });

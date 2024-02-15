@@ -70,14 +70,14 @@ Ext.define("Ext.grid.filters.filter.String", {
     labelSeparator: "",
     labelWidth: 29,
     margin: 0,
-    selectOnFocus: true,
+    selectOnFocus: true
   },
 
   menuDefaults: {
     // A menu with only form fields needs some body padding. Normally this padding
     // is managed by the items, but we have no normal menu items.
     bodyPadding: 3,
-    showSeparator: false,
+    showSeparator: false
   },
 
   /**
@@ -106,8 +106,8 @@ Ext.define("Ext.grid.filters.filter.String", {
       el: {
         click: function (e) {
           e.stopPropagation();
-        },
-      },
+        }
+      }
     });
   },
 
@@ -145,12 +145,12 @@ Ext.define("Ext.grid.filters.filter.String", {
         filterFn: function (rec) {
           return Ext.callback(me.filterFn, me.scope, [
             rec,
-            me.inputItem.getValue(),
+            me.inputItem.getValue()
           ]);
-        },
+        }
       });
     } else {
       return me.callParent([config, key]);
     }
-  },
+  }
 });

@@ -90,7 +90,7 @@ Ext.define("Ext.app.route.Route", {
       url;
 
     Ext.apply(me, config, {
-      conditions: {},
+      conditions: {}
     });
 
     url = me.url;
@@ -125,7 +125,7 @@ Ext.define("Ext.app.route.Route", {
         controller: controller,
         action: me.action,
         historyUrl: url,
-        args: args,
+        args: args
       });
     }
 
@@ -178,7 +178,7 @@ Ext.define("Ext.app.route.Route", {
         Ext.log.warn(
           "The before action: " +
             this.before +
-            " was not found on the controller. The action method will not be executed.",
+            " was not found on the controller. The action method will not be executed."
         );
       }
       //</debug>
@@ -295,7 +295,7 @@ Ext.define("Ext.app.route.Route", {
         //<debug>
         else {
           Ext.log.warn(
-            "The action: " + me.action + " was not found on the controller.",
+            "The action: " + me.action + " was not found on the controller."
           );
         }
         //</debug>
@@ -309,7 +309,7 @@ Ext.define("Ext.app.route.Route", {
         if (callback) {
           callback.call(scope, all);
         }
-      },
+      }
     };
-  },
+  }
 });

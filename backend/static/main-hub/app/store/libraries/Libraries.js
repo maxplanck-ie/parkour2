@@ -12,9 +12,9 @@ Ext.define("MainHub.store.libraries.Libraries", {
     noCache: false, // to remove param "_dc",
     reader: "json",
     extraParams: {
-      showAll: "True",
-    },
+      showAll: "True"
+    }
   },
 
-  lazyFill: true,
+  lazyFill: true
 });

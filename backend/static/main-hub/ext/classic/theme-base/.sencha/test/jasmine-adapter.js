@@ -29,7 +29,7 @@ SenchaTestRunner.bindings = {
 
   getTestResultsAsJson: function () {
     return JSON.stringify(SenchaTestRunner.results);
-  },
+  }
 };
 
 addGlobal("__pageIsReady");

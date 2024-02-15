@@ -5,9 +5,9 @@ describe("Ext.form.field.Radio", function () {
     config = Ext.apply(
       {
         name: "test",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     return (component = new Ext.form.field.Radio(config));
@@ -18,7 +18,7 @@ describe("Ext.form.field.Radio", function () {
 
     for (i = 0; i < count; i++) {
       cfg = {
-        inputValue: i + 1,
+        inputValue: i + 1
       };
 
       if (configFn) {
@@ -57,7 +57,7 @@ describe("Ext.form.field.Radio", function () {
   it("should render input with type='radio'", function () {
     makeComponent();
     expect(component.inputEl.dom.getAttribute("type").toLowerCase()).toEqual(
-      "radio",
+      "radio"
     );
   });
 
@@ -135,7 +135,7 @@ describe("Ext.form.field.Radio", function () {
 
       for (i = 0; i < 3; ++i) {
         handlers.push({
-          fn: function () {},
+          fn: function () {}
         });
         spies.push(spyOn(handlers[i], "fn"));
         radios.push(
@@ -143,8 +143,8 @@ describe("Ext.form.field.Radio", function () {
             renderTo: Ext.getBody(),
             name: "test",
             inputValue: i + 1,
-            handler: handlers[i].fn,
-          }),
+            handler: handlers[i].fn
+          })
         );
       }
 
@@ -163,7 +163,7 @@ describe("Ext.form.field.Radio", function () {
         checked: true,
         name: "test",
         inputValue: "the-input-value",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       radios = [component];
       expect(component.getModelData().test).toBe("the-input-value");
@@ -172,7 +172,7 @@ describe("Ext.form.field.Radio", function () {
       var component = new Ext.form.field.Radio({
         name: "test",
         inputValue: "the-input-value",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       radios = [component];
       expect(component.getModelData().test).toBeNull();

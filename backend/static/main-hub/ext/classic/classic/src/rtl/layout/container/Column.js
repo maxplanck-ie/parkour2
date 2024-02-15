@@ -27,5 +27,5 @@ Ext.define("Ext.rtl.layout.container.Column", {
     }
 
     return renderData;
-  },
+  }
 });

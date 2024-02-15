@@ -45,7 +45,7 @@ Ext.define("Ext.data.Session", {
     "Ext.data.matrix.Matrix",
     "Ext.data.session.ChangesVisitor",
     "Ext.data.session.ChildChangesVisitor",
-    "Ext.data.session.BatchVisitor",
+    "Ext.data.session.BatchVisitor"
   ],
 
   mixins: ["Ext.mixin.Dirty", "Ext.mixin.Observable"],
@@ -78,38 +78,38 @@ Ext.define("Ext.data.Session", {
       create: "C",
       read: "R",
       update: "U",
-      drop: "D",
-    },
+      drop: "D"
+    }
   },
 
   crudOperations: [
     {
       type: "R",
-      entityMethod: "readEntities",
+      entityMethod: "readEntities"
     },
     {
       type: "C",
-      entityMethod: "createEntities",
+      entityMethod: "createEntities"
     },
     {
       type: "U",
-      entityMethod: "updateEntities",
+      entityMethod: "updateEntities"
     },
     {
       type: "D",
-      entityMethod: "dropEntities",
-    },
+      entityMethod: "dropEntities"
+    }
   ],
 
   crudKeys: {
     C: 1,
     R: 1,
     U: 1,
-    D: 1,
+    D: 1
   },
 
   statics: {
-    nextId: 1,
+    nextId: 1
   },
 
   constructor: function (config) {
@@ -276,7 +276,7 @@ Ext.define("Ext.data.Session", {
           "A parent session already contains an entry for " +
             Model.entityName +
             ": " +
-            id,
+            id
         );
       }
     }
@@ -408,7 +408,7 @@ Ext.define("Ext.data.Session", {
   onInvalidAssociationEntity: function (entityType, id) {
     Ext.raise(
       "Unable to read association entity: " +
-        this.getModelIdentifier(entityType, id),
+        this.getModelIdentifier(entityType, id)
     );
   },
 
@@ -424,7 +424,7 @@ Ext.define("Ext.data.Session", {
   onInvalidEntityCreate: function (entityType, id) {
     Ext.raise(
       "Cannot create, record already not exists: " +
-        this.getModelIdentifier(entityType, id),
+        this.getModelIdentifier(entityType, id)
     );
   },
 
@@ -440,7 +440,7 @@ Ext.define("Ext.data.Session", {
   onInvalidEntityDrop: function (entityType, id) {
     Ext.raise(
       "Cannot drop, record does not exist: " +
-        this.getModelIdentifier(entityType, id),
+        this.getModelIdentifier(entityType, id)
     );
   },
 
@@ -456,7 +456,7 @@ Ext.define("Ext.data.Session", {
   onInvalidEntityRead: function (entityType, id) {
     Ext.raise(
       "Cannot read, record already not exists: " +
-        this.getModelIdentifier(entityType, id),
+        this.getModelIdentifier(entityType, id)
     );
   },
 
@@ -474,12 +474,12 @@ Ext.define("Ext.data.Session", {
     if (dropped) {
       Ext.raise(
         "Cannot update, record dropped: " +
-          this.getModelIdentifier(entityType, id),
+          this.getModelIdentifier(entityType, id)
       );
     } else {
       Ext.raise(
         "Cannot update, record does not exist: " +
-          this.getModelIdentifier(entityType, id),
+          this.getModelIdentifier(entityType, id)
       );
     }
   },
@@ -547,7 +547,7 @@ Ext.define("Ext.data.Session", {
   spawn: function () {
     return new this.self({
       schema: this.getSchema(),
-      parent: this,
+      parent: this
     });
   },
 
@@ -609,7 +609,7 @@ Ext.define("Ext.data.Session", {
         //<debug>
         if (!role) {
           Ext.raise(
-            "Invalid association key for " + entityName + ', "' + key + '"',
+            "Invalid association key for " + entityName + ', "' + key + '"'
           );
         }
         //</debug>
@@ -911,7 +911,7 @@ Ext.define("Ext.data.Session", {
         if (!ret) {
           if (identifier.clone) {
             ret = identifier.clone({
-              id: null,
+              id: null
             });
           } else {
             ret = identifier;
@@ -981,7 +981,7 @@ Ext.define("Ext.data.Session", {
             oldId +
             " to " +
             newId +
-            " id already exists",
+            " id already exists"
         );
       }
       //</debug>
@@ -1308,7 +1308,7 @@ Ext.define("Ext.data.Session", {
     // Record callbacks called because we are the "session" for the record.
 
     _setNoRefs: {
-      refs: false,
-    },
-  },
+      refs: false
+    }
+  }
 });

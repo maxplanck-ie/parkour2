@@ -17,5 +17,5 @@ Ext.define("Ext.rtl.dd.DD", {
     } else {
       el.setLocalXY(x, y);
     }
-  },
+  }
 });

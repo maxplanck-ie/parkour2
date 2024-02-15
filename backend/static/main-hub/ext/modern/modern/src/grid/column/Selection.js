@@ -21,7 +21,7 @@ Ext.define("Ext.grid.column.Selection", {
     this.grid.on({
       select: "onSelect",
       deselect: "onDeselect",
-      scope: this,
+      scope: this
     });
   },
 
@@ -71,5 +71,5 @@ Ext.define("Ext.grid.column.Selection", {
     } else {
       grid.deselect(record);
     }
-  },
+  }
 });

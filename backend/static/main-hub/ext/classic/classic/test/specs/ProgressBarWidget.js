@@ -6,10 +6,10 @@ describe("Ext.ProgressBarWidget", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          width: 100,
+          width: 100
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -20,7 +20,7 @@ describe("Ext.ProgressBarWidget", function () {
   describe("setValue", function () {
     it("should cast undefined to 0", function () {
       makeProgress({
-        value: 50,
+        value: 50
       });
       c.setValue(undefined);
       expect(c.getValue()).toBe(0);
@@ -28,7 +28,7 @@ describe("Ext.ProgressBarWidget", function () {
 
     it("should cast null to 0", function () {
       makeProgress({
-        value: 50,
+        value: 50
       });
       c.setValue(null);
       expect(c.getValue()).toBe(0);

@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "ยกร‘ยนรร’รยน",
       "ยตรร…ร’โฌร",
       "ลธรรลกร”ยกร’รยน",
-      "ลพร‘ยนรร’โฌร",
+      "ลพร‘ยนรร’โฌร"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -37,7 +37,7 @@ Ext.onReady(function () {
       "ยกร": 8,
       "ยตโฌ": 9,
       "ลธร": 10,
-      "ลพโฌ": 11,
+      "ลพโฌ": 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -53,7 +53,7 @@ Ext.onReady(function () {
       "ลธรร—ลพ",
       "ลธรรร‘รยบลฝร•",
       "รรยกรรฌ",
-      "ร รร’รรฌ",
+      "ร รร’รรฌ"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -67,35 +67,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u0e3f",
       // Thai Baht
-      dateFormat: "m/d/Y",
+      dateFormat: "m/d/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.th.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.th.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} ร ร…ร—รยกรกร…รฉรยทร‘รฉยงรรลฝรกยถร",
+  dragText: "{0} ร ร…ร—รยกรกร…รฉรยทร‘รฉยงรรลฝรกยถร"
 });
 
 Ext.define("Ext.locale.th.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "ยปร”ลฝรกยทรงยบยนร•รฉ",
+  closeText: "ยปร”ลฝรกยทรงยบยนร•รฉ"
 });
 
 Ext.define("Ext.locale.th.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "โฌรจร’ยขรยงยชรจรยงยนร•รฉรครรจยถรยกยตรฉรยง",
+  invalidText: "โฌรจร’ยขรยงยชรจรยงยนร•รฉรครรจยถรยกยตรฉรยง"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.th.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ...",
+  loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
 });
 
 Ext.define("Ext.locale.th.picker.Date", {
@@ -110,13 +110,13 @@ Ext.define("Ext.locale.th.picker.Date", {
   monthYearText: "ร ร…ร—รยกร ลฝร—รยน (Control+Up/Down to move years)",
   todayTip: "{0} (Spacebar)",
   format: "m/d/y",
-  startDay: 0,
+  startDay: 0
 });
 
 Ext.define("Ext.locale.th.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;ยตยกร…ยง&#160;",
-  cancelText: "รยกร ร…ร”ยก",
+  cancelText: "รยกร ร…ร”ยก"
 });
 
 Ext.define("Ext.locale.th.toolbar.Paging", {
@@ -129,7 +129,7 @@ Ext.define("Ext.locale.th.toolbar.Paging", {
   lastText: "รยนรฉร’รรลฝยทรฉร’ร",
   refreshText: "รร•ร ยฟรยช",
   displayMsg: "ยกร“ร…ร‘ยงรกรลฝยง {0} - {1} ลกร’ยก {2}",
-  emptyMsg: "รครรจรร•ยขรฉรรรร…รกรลฝยง",
+  emptyMsg: "รครรจรร•ยขรฉรรรร…รกรลฝยง"
 });
 
 Ext.define("Ext.locale.th.form.field.Text", {
@@ -138,14 +138,14 @@ Ext.define("Ext.locale.th.form.field.Text", {
   maxLengthText: "The maximum length for this field is {0}",
   blankText: "This field is required",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.th.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "The minimum value for this field is {0}",
   maxText: "The maximum value for this field is {0}",
-  nanText: "{0} is not a valid number",
+  nanText: "{0} is not a valid number"
 });
 
 Ext.define("Ext.locale.th.form.field.Date", {
@@ -156,20 +156,20 @@ Ext.define("Ext.locale.th.form.field.Date", {
   maxText: "The date in this field must be before {0}",
   invalidText: "{0} is not a valid date - it must be in the format {1}",
   format: "m/d/y",
-  altFormats: "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d",
+  altFormats: "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.th.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ...",
+      loadingText: "ยกร“ร…ร‘ยงรขรร…ลฝ..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.th.form.field.VTypes", {
@@ -179,14 +179,14 @@ Ext.define("Ext.locale.th.form.field.VTypes", {
   urlText:
     'This field should be a URL in the format "http:/' + '/www.example.com"',
   alphaText: "This field should only contain letters and _",
-  alphanumText: "This field should only contain letters, numbers and _",
+  alphanumText: "This field should only contain letters, numbers and _"
 });
 
 Ext.define(
   "Ext.locale.th.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Please enter the URL for the link:",
+    createLinkText: "Please enter the URL for the link:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -194,76 +194,76 @@ Ext.define(
         bold: {
           title: "Bold (Ctrl+B)",
           text: "Make the selected text bold.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Italic (Ctrl+I)",
           text: "Make the selected text italic.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Underline (Ctrl+U)",
           text: "Underline the selected text.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Grow Text",
           text: "Increase the font size.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Shrink Text",
           text: "Decrease the font size.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Text Highlight Color",
           text: "Change the background color of the selected text.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Font Color",
           text: "Change the color of the selected text.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Align Text Left",
           text: "Align text to the left.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Center Text",
           text: "Center text in the editor.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Align Text Right",
           text: "Align text to the right.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Bullet List",
           text: "Start a bulleted list.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Numbered List",
           text: "Start a numbered list.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Hyperlink",
           text: "Make the selected text a hyperlink.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Source Edit",
           text: "Switch to source editing mode.",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.th.grid.header.Container", {
@@ -272,21 +272,21 @@ Ext.define("Ext.locale.th.grid.header.Container", {
   sortDescText: "Sort Descending",
   lockText: "Lock Column",
   unlockText: "Unlock Column",
-  columnsText: "Columns",
+  columnsText: "Columns"
 });
 
 Ext.define("Ext.locale.th.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(None)",
   groupByText: "Group By This Field",
-  showGroupsText: "Show in Groups",
+  showGroupsText: "Show in Groups"
 });
 
 Ext.define("Ext.locale.th.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Name",
   valueText: "Value",
-  dateFormat: "m/j/Y",
+  dateFormat: "m/j/Y"
 });
 
 Ext.define("Ext.locale.th.window.MessageBox", {
@@ -295,11 +295,11 @@ Ext.define("Ext.locale.th.window.MessageBox", {
     ok: "ยตยกร…ยง",
     cancel: "รยกร ร…ร”ยก",
     yes: "รฃยชรจ",
-    no: "รครรจรฃยชรจ",
-  },
+    no: "รครรจรฃยชรจ"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.th.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

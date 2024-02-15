@@ -16,5 +16,5 @@ Ext.define("Ext.parse.symbol.InfixRight", {
     me.isBinary = true;
 
     return me;
-  },
+  }
 });

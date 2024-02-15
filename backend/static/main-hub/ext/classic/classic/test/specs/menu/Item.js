@@ -8,10 +8,10 @@ describe("Ext.menu.Item", function () {
       Ext.apply(
         {
           xtype: "menu",
-          items: itemCfg,
+          items: itemCfg
         },
-        menuCfg,
-      ),
+        menuCfg
+      )
     );
     menu.show();
 
@@ -49,7 +49,7 @@ describe("Ext.menu.Item", function () {
         it("should fire the handler", function () {
           makeMenu({
             text: "Foo",
-            handler: spy,
+            handler: spy
           });
           clickItem();
           expect(spy.callCount).toBe(1);
@@ -59,7 +59,7 @@ describe("Ext.menu.Item", function () {
           makeMenu({
             text: "Foo",
             handler: spy,
-            disabled: true,
+            disabled: true
           });
           clickItem();
           expect(spy).not.toHaveBeenCalled();
@@ -68,7 +68,7 @@ describe("Ext.menu.Item", function () {
         it("should pass the item and the event object", function () {
           makeMenu({
             text: "Foo",
-            handler: spy,
+            handler: spy
           });
           clickItem();
 
@@ -80,7 +80,7 @@ describe("Ext.menu.Item", function () {
         it("should default the scope to the item", function () {
           makeMenu({
             text: "Foo",
-            handler: spy,
+            handler: spy
           });
           clickItem();
           expect(spy.mostRecentCall.object).toBe(item);
@@ -91,7 +91,7 @@ describe("Ext.menu.Item", function () {
           makeMenu({
             text: "Foo",
             scope: o,
-            handler: spy,
+            handler: spy
           });
           clickItem();
           expect(spy.mostRecentCall.object).toBe(o);
@@ -103,11 +103,11 @@ describe("Ext.menu.Item", function () {
           makeMenu(
             {
               text: "Foo",
-              handler: "onFoo",
+              handler: "onFoo"
             },
             {
-              controller: ctrl,
-            },
+              controller: ctrl
+            }
           );
           clickItem();
           expect(spy.callCount).toBe(1);
@@ -119,7 +119,7 @@ describe("Ext.menu.Item", function () {
             text: "Foo",
             handler: spy.andCallFake(function () {
               visible = menu.isVisible();
-            }),
+            })
           });
           clickItem();
           expect(visible).toBe(false);
@@ -132,11 +132,11 @@ describe("Ext.menu.Item", function () {
             listeners: {
               click: function () {
                 order.push("click");
-              },
+              }
             },
             handler: function () {
               order.push("handler");
-            },
+            }
           });
           clickItem();
           expect(order).toEqual(["click", "handler"]);
@@ -148,9 +148,9 @@ describe("Ext.menu.Item", function () {
             listeners: {
               click: function () {
                 return false;
-              },
+              }
             },
-            handler: spy,
+            handler: spy
           });
           clickItem();
           expect(spy).not.toHaveBeenCalled();
@@ -162,9 +162,9 @@ describe("Ext.menu.Item", function () {
             listeners: {
               click: function () {
                 menu.destroy();
-              },
+              }
             },
-            handler: spy,
+            handler: spy
           });
           clickItem();
           expect(spy).not.toHaveBeenCalled();
@@ -176,8 +176,8 @@ describe("Ext.menu.Item", function () {
           makeMenu({
             text: "Foo",
             listeners: {
-              click: spy,
-            },
+              click: spy
+            }
           });
           clickItem();
           expect(spy.callCount).toBe(1);
@@ -187,9 +187,9 @@ describe("Ext.menu.Item", function () {
           makeMenu({
             text: "Foo",
             listeners: {
-              click: spy,
+              click: spy
             },
-            disabled: true,
+            disabled: true
           });
           clickItem();
           expect(spy).not.toHaveBeenCalled();
@@ -199,8 +199,8 @@ describe("Ext.menu.Item", function () {
           makeMenu({
             text: "Foo",
             listeners: {
-              click: spy,
-            },
+              click: spy
+            }
           });
           clickItem();
 
@@ -216,8 +216,8 @@ describe("Ext.menu.Item", function () {
             listeners: {
               click: spy.andCallFake(function () {
                 visible = menu.isVisible();
-              }),
-            },
+              })
+            }
           });
           clickItem();
           expect(visible).toBe(false);
@@ -229,7 +229,7 @@ describe("Ext.menu.Item", function () {
       it("should hide the menu with hideOnClick: true", function () {
         makeMenu({
           text: "Foo",
-          hideOnClick: true,
+          hideOnClick: true
         });
         clickItem();
         expect(menu.isVisible()).toBe(false);
@@ -238,7 +238,7 @@ describe("Ext.menu.Item", function () {
       it("should not hide the menu with hideOnClick: false", function () {
         makeMenu({
           text: "Foo",
-          hideOnClick: false,
+          hideOnClick: false
         });
         clickItem();
         expect(menu.isVisible()).toBe(true);
@@ -257,10 +257,10 @@ describe("Ext.menu.Item", function () {
             menu: {
               items: [
                 {
-                  text: "Bar",
-                },
-              ],
-            },
+                  text: "Bar"
+                }
+              ]
+            }
           });
 
           var item = menu.items.first(),
@@ -283,13 +283,13 @@ describe("Ext.menu.Item", function () {
                     text: "Baz",
                     menu: {
                       items: {
-                        text: "Qux",
-                      },
-                    },
-                  },
-                },
-              },
-            },
+                        text: "Qux"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           });
 
           var sub1 = expand(menu.items.first()),
@@ -320,11 +320,11 @@ describe("Ext.menu.Item", function () {
         makeMenu([
           {
             text: "menu item one",
-            href: "#ledzep",
+            href: "#ledzep"
           },
           {
-            text: "menu item two",
-          },
+            text: "menu item two"
+          }
         ]);
 
         menu.activeItem = menu.focusedItem = item;
@@ -335,7 +335,7 @@ describe("Ext.menu.Item", function () {
             return location.hash === "#ledzep";
           },
           "timed out waiting for hash to change",
-          1000,
+          1000
         );
 
         runs(function () {
@@ -356,12 +356,12 @@ describe("Ext.menu.Item", function () {
               listeners: {
                 click: function (cmp, e) {
                   e.preventDefault();
-                },
-              },
+                }
+              }
             },
             {
-              text: "menu item two",
-            },
+              text: "menu item two"
+            }
           ]);
 
           menu.activeItem = menu.focusedItem = item;
@@ -372,13 +372,13 @@ describe("Ext.menu.Item", function () {
               return location.hash === hashValue;
             },
             "timed out waiting for hash to change",
-            1000,
+            1000
           );
 
           runs(function () {
             expect(location.hash).toBe(hashValue);
           });
-        },
+        }
       );
     });
   });
@@ -388,7 +388,7 @@ describe("Ext.menu.Item", function () {
       it("should stop the event", function () {
         makeMenu({
           disabled: true,
-          href: "#menu",
+          href: "#menu"
         });
         clickItem();
         expect(location.hash).not.toBe("menu");
@@ -399,8 +399,8 @@ describe("Ext.menu.Item", function () {
       makeMenu([
         {
           text: "Foo",
-          disabled: true,
-        },
+          disabled: true
+        }
       ]);
       var item = menu.items.getAt(0);
       jasmine.fireMouseEvent(item.getEl(), "mouseover");
@@ -422,11 +422,11 @@ describe("Ext.menu.Item", function () {
             menu: {
               items: [
                 {
-                  text: "Sub1",
-                },
-              ],
-            },
-          },
+                  text: "Sub1"
+                }
+              ]
+            }
+          }
         ]);
 
         var item = menu.items.getAt(0),
@@ -452,8 +452,8 @@ describe("Ext.menu.Item", function () {
       makeMenu([
         {
           text: "The Office, UK",
-          menu: m,
-        },
+          menu: m
+        }
       ]);
 
       item.destroy();
@@ -476,21 +476,21 @@ describe("Ext.menu.Item", function () {
     it("should be able to bind properties higher up in the hierarchy", function () {
       var vm = new Ext.app.ViewModel({
         data: {
-          title: "someTitle",
-        },
+          title: "someTitle"
+        }
       });
       makeMenu(
         {
           text: "Foo",
           menu: {
             bind: {
-              title: "{title}",
-            },
-          },
+              title: "{title}"
+            }
+          }
         },
         {
-          viewModel: vm,
-        },
+          viewModel: vm
+        }
       );
       var subMenu = item.menu;
       // Render to force the VM to fire
@@ -504,7 +504,7 @@ describe("Ext.menu.Item", function () {
     describe("simple", function () {
       beforeEach(function () {
         makeMenu({
-          text: "foo",
+          text: "foo"
         });
 
         menu.show();
@@ -531,7 +531,7 @@ describe("Ext.menu.Item", function () {
       beforeEach(function () {
         makeMenu({
           text: "plain",
-          plain: true,
+          plain: true
         });
 
         menu.show();
@@ -562,10 +562,10 @@ describe("Ext.menu.Item", function () {
             menu: {
               items: [
                 {
-                  text: "sub-item",
-                },
-              ],
-            },
+                  text: "sub-item"
+                }
+              ]
+            }
           });
 
           menu.show();
@@ -583,7 +583,7 @@ describe("Ext.menu.Item", function () {
       describe("adding via setMenu", function () {
         beforeEach(function () {
           makeMenu({
-            text: "submenu",
+            text: "submenu"
           });
         });
 
@@ -592,9 +592,9 @@ describe("Ext.menu.Item", function () {
             item.setMenu({
               items: [
                 {
-                  text: "sub-item",
-                },
-              ],
+                  text: "sub-item"
+                }
+              ]
             });
 
             menu.show();
@@ -616,9 +616,9 @@ describe("Ext.menu.Item", function () {
             item.setMenu({
               items: [
                 {
-                  text: "sub-item",
-                },
-              ],
+                  text: "sub-item"
+                }
+              ]
             });
           });
 
@@ -639,10 +639,10 @@ describe("Ext.menu.Item", function () {
             menu: {
               items: [
                 {
-                  text: "sub-item",
-                },
-              ],
-            },
+                  text: "sub-item"
+                }
+              ]
+            }
           });
         });
 
@@ -682,7 +682,7 @@ describe("Ext.menu.Item", function () {
     it("should switch from using icon to glyph", function () {
       makeMenu({
         text: "Foo",
-        icon: "resources/images/foo.gif",
+        icon: "resources/images/foo.gif"
       });
 
       // Must start with icon
@@ -690,8 +690,8 @@ describe("Ext.menu.Item", function () {
       expect(
         Ext.String.endsWith(
           item.iconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -703,7 +703,7 @@ describe("Ext.menu.Item", function () {
     it("should switch from using icon to iconCls", function () {
       makeMenu({
         text: "Foo",
-        icon: "resources/images/foo.gif",
+        icon: "resources/images/foo.gif"
       });
 
       // Must start with icon
@@ -711,8 +711,8 @@ describe("Ext.menu.Item", function () {
       expect(
         Ext.String.endsWith(
           item.iconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
 
       item.setIconCls("foo-icon-class");
@@ -731,7 +731,7 @@ describe("Ext.menu.Item", function () {
     it("should switch from using iconCls to glyph", function () {
       makeMenu({
         text: "Foo",
-        iconCls: "foo-icon-class",
+        iconCls: "foo-icon-class"
       });
 
       // Must start with iconCls
@@ -740,7 +740,7 @@ describe("Ext.menu.Item", function () {
       // Hex 48 is "H". Must switch to using that with no background image
       item.setGlyph("x48@FontAwesome");
       expect(Ext.String.endsWith(item.iconEl.hasCls("foo-icon-class"))).toBe(
-        false,
+        false
       );
       expect(item.iconEl.getStyle("font-family")).toBe("FontAwesome");
       expect(item.iconEl.dom.innerHTML).toBe("H");
@@ -748,7 +748,7 @@ describe("Ext.menu.Item", function () {
     it("should switch from using iconCls to icon", function () {
       makeMenu({
         text: "Foo",
-        iconCls: "foo-icon-class",
+        iconCls: "foo-icon-class"
       });
 
       // Must start with iconCls
@@ -757,7 +757,7 @@ describe("Ext.menu.Item", function () {
       item.setIcon("resources/images/foo.gif");
 
       expect(Ext.String.endsWith(item.iconEl.hasCls("foo-icon-class"))).toBe(
-        false,
+        false
       );
 
       // iconEl must use the image as the background image
@@ -765,8 +765,8 @@ describe("Ext.menu.Item", function () {
       expect(
         Ext.String.endsWith(
           item.iconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
     });
   });
@@ -775,7 +775,7 @@ describe("Ext.menu.Item", function () {
     it("should switch from using glyph to icon", function () {
       makeMenu({
         text: "Foo",
-        glyph: "x48@FontAwesome",
+        glyph: "x48@FontAwesome"
       });
 
       // Hex 48 is "H". Must switch to using that with no background image
@@ -792,14 +792,14 @@ describe("Ext.menu.Item", function () {
       expect(
         Ext.String.endsWith(
           item.iconEl.getStyle("background-image").replace(/\"/g, ""),
-          "resources/images/foo.gif)",
-        ),
+          "resources/images/foo.gif)"
+        )
       ).toBe(true);
     });
     it("should switch from using glyph to iconCls", function () {
       makeMenu({
         text: "Foo",
-        glyph: "x48@FontAwesome",
+        glyph: "x48@FontAwesome"
       });
 
       // Hex 48 is "H". Must switch to using that with no background image

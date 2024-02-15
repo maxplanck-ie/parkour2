@@ -3,7 +3,7 @@ Ext.define("Ext.theme.blackberry.field.Search", {
 
   config: {
     component: {
-      type: "text",
-    },
-  },
+      type: "text"
+    }
+  }
 });

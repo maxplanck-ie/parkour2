@@ -35,5 +35,5 @@ Ext.define("Ext.device.browser.Abstract", {
   /**
    * Used to close the browser, if one is opened.
    */
-  close: Ext.emptyFn,
+  close: Ext.emptyFn
 });

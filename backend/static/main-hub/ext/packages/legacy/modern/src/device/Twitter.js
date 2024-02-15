@@ -18,5 +18,5 @@ Ext.define("Ext.device.Twitter", {
     } else {
       return Ext.create("Ext.device.twitter.Abstract");
     }
-  },
+  }
 });

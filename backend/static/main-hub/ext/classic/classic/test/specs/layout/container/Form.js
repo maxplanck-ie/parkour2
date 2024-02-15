@@ -8,20 +8,20 @@ describe("Ext.layout.container.Form", function () {
           items: [
             {
               id: "textfield0",
-              xtype: "textfield",
+              xtype: "textfield"
             },
             {
               id: "textfield1",
-              xtype: "textfield",
-            },
-          ],
+              xtype: "textfield"
+            }
+          ]
         }),
         table = panel.el.down("table").dom;
 
       // both original and dynamically added children
       panel.add({
         id: "textfield2",
-        xtype: "textfield",
+        xtype: "textfield"
       });
 
       expect(table.childNodes.length).toBe(3);
@@ -43,14 +43,14 @@ describe("Ext.layout.container.Form", function () {
       shrinkWrap: true,
       layout: {
         type: "form",
-        labelWidth: 100,
+        labelWidth: 100
       },
       items: [
         {
           fieldLabel: "Label",
-          xtype: "textfield",
-        },
-      ],
+          xtype: "textfield"
+        }
+      ]
     });
 
     expect(panel.getWidth()).toBe(267);

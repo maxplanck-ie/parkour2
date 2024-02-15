@@ -6,7 +6,7 @@ Ext.define("Ext.chart.theme.Category4Gradients", {
     colors: ["#ef5773", "#fcbd2a", "#4f770d", "#1d3eaa", "#9b001f"],
     gradients: {
       type: "linear",
-      degrees: 90,
-    },
-  },
+      degrees: 90
+    }
+  }
 });

@@ -23,7 +23,7 @@ describe("Ext.window.MessageBox", function () {
   it("should show up on top of another window", function () {
     var win = Ext.widget("window", {
       height: 200,
-      width: 200,
+      width: 200
     });
 
     win.show();
@@ -56,7 +56,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should create a header when `true`", function () {
         M = new Ext.window.MessageBox({
-          header: true,
+          header: true
         }).show();
 
         expect(M.header).toBeDefined();
@@ -65,8 +65,8 @@ describe("Ext.window.MessageBox", function () {
       it("should create a header when an object`", function () {
         M = new Ext.window.MessageBox({
           header: {
-            title: "GLUMR",
-          },
+            title: "GLUMR"
+          }
         }).show();
 
         expect(M.header).toBeDefined();
@@ -76,7 +76,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should not create a header when `false`", function () {
         M = new Ext.window.MessageBox({
-          header: false,
+          header: false
         }).show();
 
         expect(M.header).toBe(false);
@@ -124,7 +124,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should pass the title to the Header constructor", function () {
         M = new Ext.window.MessageBox({
-          title: "Mr. G",
+          title: "Mr. G"
         }).show();
 
         expect(M.header.getTitle().getText()).toBe("Mr. G");
@@ -132,7 +132,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should set the same title on the instance and on the Header", function () {
         M = new Ext.window.MessageBox({
-          title: "Kerfuffle",
+          title: "Kerfuffle"
         }).show();
 
         expect(M.title).toBe(M.header.getTitle().getText());
@@ -141,9 +141,9 @@ describe("Ext.window.MessageBox", function () {
       it("should give precedence to the title in the header config if both are present", function () {
         M = new Ext.window.MessageBox({
           header: {
-            title: "Zap!",
+            title: "Zap!"
           },
-          title: "Foo",
+          title: "Foo"
         }).show();
 
         expect(M.title).toBe("Zap!");
@@ -152,11 +152,11 @@ describe("Ext.window.MessageBox", function () {
       it('should not "win" if show is also called with a title config', function () {
         M = new Ext.window.MessageBox({
           header: {
-            title: "Zap!",
+            title: "Zap!"
           },
-          title: "Foo",
+          title: "Foo"
         }).show({
-          title: "Bar",
+          title: "Bar"
         });
 
         expect(M.title).toBe("Bar");
@@ -165,8 +165,8 @@ describe("Ext.window.MessageBox", function () {
       it("should accept empty string as a valid default header title", function () {
         M = new Ext.window.MessageBox({
           header: {
-            title: "",
-          },
+            title: ""
+          }
         });
 
         M.show({ title: "throbbe" });
@@ -193,8 +193,8 @@ describe("Ext.window.MessageBox", function () {
       it("should accept default value for iconCls", function () {
         M = new Ext.window.MessageBox({
           header: {
-            iconCls: "bonzo",
-          },
+            iconCls: "bonzo"
+          }
         });
 
         M.show({});
@@ -212,7 +212,7 @@ describe("Ext.window.MessageBox", function () {
         ok: "okText",
         yes: "yesText",
         no: "noText",
-        cancel: "cancelText",
+        cancel: "cancelText"
       };
     });
 
@@ -223,7 +223,7 @@ describe("Ext.window.MessageBox", function () {
     it("should apply custom text to the buttons", function () {
       var btns = M.msgButtons;
       M.show({
-        buttons: M.YESNO,
+        buttons: M.YESNO
       });
       expect(btns.yes.text).toBe("yesText");
       expect(btns.no.text).toBe("noText");
@@ -231,7 +231,7 @@ describe("Ext.window.MessageBox", function () {
       M.hide();
 
       M.show({
-        buttons: M.OKCANCEL,
+        buttons: M.OKCANCEL
       });
       expect(btns.ok.text).toBe("okText");
       expect(btns.cancel.text).toBe("cancelText");
@@ -240,14 +240,14 @@ describe("Ext.window.MessageBox", function () {
     it("should persist the custom text on each show", function () {
       var btns = M.msgButtons;
       M.show({
-        buttons: M.YES,
+        buttons: M.YES
       });
       expect(btns.yes.text).toBe("yesText");
 
       M.hide();
 
       M.show({
-        buttons: M.YES,
+        buttons: M.YES
       });
       expect(btns.yes.text).toBe("yesText");
     });
@@ -258,8 +258,8 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.YESNO,
         buttonText: {
           yes: "newYesText",
-          no: "newNoText",
-        },
+          no: "newNoText"
+        }
       });
       expect(btns.yes.text).toBe("newYesText");
       expect(btns.no.text).toBe("newNoText");
@@ -270,7 +270,7 @@ describe("Ext.window.MessageBox", function () {
     describe("buttons", function () {
       it("should use the OK shortcut", function () {
         M.show({
-          buttons: M.OK,
+          buttons: M.OK
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(false);
@@ -281,7 +281,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the YES shortcut", function () {
         M.show({
-          buttons: M.YES,
+          buttons: M.YES
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(true);
@@ -292,7 +292,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the NO shortcut", function () {
         M.show({
-          buttons: M.NO,
+          buttons: M.NO
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(false);
@@ -303,7 +303,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the CANCEL shortcut", function () {
         M.show({
-          buttons: M.CANCEL,
+          buttons: M.CANCEL
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(false);
@@ -314,7 +314,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the OKCANCEL shortcut", function () {
         M.show({
-          buttons: M.OKCANCEL,
+          buttons: M.OKCANCEL
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(false);
@@ -325,7 +325,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the YESNO shortcut", function () {
         M.show({
-          buttons: M.YESNO,
+          buttons: M.YESNO
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(true);
@@ -336,7 +336,7 @@ describe("Ext.window.MessageBox", function () {
 
       it("should use the YESNOCANCEL shortcut", function () {
         M.show({
-          buttons: M.YESNOCANCEL,
+          buttons: M.YESNOCANCEL
         });
         var btns = M.msgButtons;
         expect(btns.yes.isVisible()).toBe(true);
@@ -438,7 +438,7 @@ describe("Ext.window.MessageBox", function () {
         btn.onClick({
           button: 0,
           preventDefault: Ext.emptyFn,
-          stopEvent: Ext.emptyFn,
+          stopEvent: Ext.emptyFn
         });
       };
     });
@@ -453,7 +453,7 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.OK,
         callback: function (btn) {
           name = btn;
-        },
+        }
       });
       click("ok");
       expect(name).toBe("ok");
@@ -465,7 +465,7 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.CANCEL,
         callback: function (btn) {
           name = btn;
-        },
+        }
       });
       click("cancel");
       expect(name).toBe("cancel");
@@ -477,7 +477,7 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.YES,
         callback: function (btn) {
           name = btn;
-        },
+        }
       });
       click("yes");
       expect(name).toBe("yes");
@@ -489,7 +489,7 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.NO,
         callback: function (btn) {
           name = btn;
-        },
+        }
       });
       click("no");
       expect(name).toBe("no");
@@ -501,7 +501,7 @@ describe("Ext.window.MessageBox", function () {
         buttons: M.OKCANCEL,
         callback: function (btn) {
           name = btn;
-        },
+        }
       });
       click(M.down("tool"));
       expect(name).toBe("cancel");
@@ -512,7 +512,7 @@ describe("Ext.window.MessageBox", function () {
     it("should be closable by default", function () {
       M.show({
         title: "a",
-        msg: "b",
+        msg: "b"
       });
       expect(M.down("tool").isVisible()).toBe(true);
     });
@@ -521,7 +521,7 @@ describe("Ext.window.MessageBox", function () {
       M.show({
         title: "a",
         msg: "b",
-        closable: false,
+        closable: false
       });
       expect(M.down("tool").isVisible()).toBe(false);
     });
@@ -554,7 +554,7 @@ describe("Ext.window.MessageBox", function () {
           M.show({
             title: "throbbe",
             msg: "bonzo",
-            prompt: true,
+            prompt: true
           });
         });
 
@@ -565,7 +565,7 @@ describe("Ext.window.MessageBox", function () {
         it("should have aria-labelledby attribute on inputEl", function () {
           expect(M.textField.inputEl).toHaveAttribute(
             "aria-labelledby",
-            M.msg.id,
+            M.msg.id
           );
         });
       });
@@ -575,7 +575,7 @@ describe("Ext.window.MessageBox", function () {
           M.show({
             title: "changa",
             msg: "masala",
-            multiline: true,
+            multiline: true
           });
         });
 
@@ -586,7 +586,7 @@ describe("Ext.window.MessageBox", function () {
         it("should have aria-labelledby attribute on inputEl", function () {
           expect(M.textArea.inputEl).toHaveAttribute(
             "aria-labelledby",
-            M.msg.id,
+            M.msg.id
           );
         });
       });
@@ -607,7 +607,7 @@ describe("Ext.window.MessageBox", function () {
         "<li>list1 list1 list1</li>",
         "<li>list2 list2 list2</li>",
         "</ol>",
-        "line6<br>",
+        "line6<br>"
       ].join(""),
       minW = 250,
       minH = 110,
@@ -639,7 +639,7 @@ describe("Ext.window.MessageBox", function () {
         layout = {
           el: {
             h: [minH, maxH],
-            w: [minW, maxW],
+            w: [minW, maxW]
           },
           msg: {
             el: {
@@ -652,9 +652,9 @@ describe("Ext.window.MessageBox", function () {
                   displayBtmMargin +
                   footerPadTB +
                   tbH +
-                  framePadding),
-            },
-          },
+                  framePadding)
+            }
+          }
         };
 
       expect(mbox).toHaveLayout(layout);
@@ -674,7 +674,7 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         expect(mbox.el.getHeight()).toBeLessThan(mbox.el.getWidth());
@@ -688,7 +688,7 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         verifyMessageBoxLayout();
@@ -701,7 +701,7 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         verifyMessageBoxLayout();
@@ -714,7 +714,7 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         verifyMessageBoxLayout();
@@ -736,115 +736,115 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         expect(mbox).toHaveLayout({
           el: {
-            xywh: "0 0 582 229",
+            xywh: "0 0 582 229"
           },
           body: {
-            xywh: "0 0 572 168",
+            xywh: "0 0 572 168"
           },
           items: {
             "container-1004": {
               el: {
-                xywh: "5 27 572 168",
+                xywh: "5 27 572 168"
               },
               items: {
                 "container-1003": {
                   el: {
-                    xywh: "10 10 552 148",
+                    xywh: "10 10 552 148"
                   },
                   items: {
                     "messagebox-1001-displayfield": {
                       el: {
-                        xywh: "0 0 547 143",
+                        xywh: "0 0 547 143"
                       },
                       inputRow: {
-                        xywh: "0 0 547 143",
+                        xywh: "0 0 547 143"
                       },
                       bodyEl: {
-                        xywh: "0 0 547 143",
+                        xywh: "0 0 547 143"
                       },
                       inputEl: {
-                        xywh: "0 0 547 143",
-                      },
-                    },
-                  },
-                },
-              },
-            },
+                        xywh: "0 0 547 143"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           dockedItems: {
             "messagebox-1001_header": {
               el: {
-                xywh: "0 0 582 22",
+                xywh: "0 0 582 22"
               },
               body: {
-                xywh: "6 6 570 16",
+                xywh: "6 6 570 16"
               },
               items: {
                 "messagebox-1001_header_hd": {
                   el: {
-                    xywh: "6 6 553 16",
+                    xywh: "6 6 553 16"
                   },
                   textEl: {
-                    xywh: "6 6 553 16",
-                  },
+                    xywh: "6 6 553 16"
+                  }
                 },
                 "tool-1009": {
                   el: {
-                    xywh: "561 7 15 15",
+                    xywh: "561 7 15 15"
                   },
                   toolEl: {
-                    xywh: "561 7 15 15",
-                  },
-                },
-              },
+                    xywh: "561 7 15 15"
+                  }
+                }
+              }
             },
             "messagebox-1001-toolbar": {
               el: {
-                xywh: "5 198 572 26",
+                xywh: "5 198 572 26"
               },
               items: {
                 "button-1005": {
                   el: {
-                    xywh: "208 2 75 22",
+                    xywh: "208 2 75 22"
                   },
                   btnIconEl: {
-                    xywh: "211 21 0 0",
+                    xywh: "211 21 0 0"
                   },
                   btnInnerEl: {
-                    xywh: "211 5 69 16",
+                    xywh: "211 5 69 16"
                   },
                   btnWrap: {
-                    xywh: "211 8 69 13",
+                    xywh: "211 8 69 13"
                   },
                   btnEl: {
-                    xywh: "211 5 69 16",
-                  },
+                    xywh: "211 5 69 16"
+                  }
                 },
                 "button-1008": {
                   el: {
-                    xywh: "289 2 75 22",
+                    xywh: "289 2 75 22"
                   },
                   btnIconEl: {
-                    xywh: "292 21 0 0",
+                    xywh: "292 21 0 0"
                   },
                   btnInnerEl: {
-                    xywh: "292 5 69 16",
+                    xywh: "292 5 69 16"
                   },
                   btnWrap: {
-                    xywh: "292 8 69 13",
+                    xywh: "292 8 69 13"
                   },
                   btnEl: {
-                    xywh: "292 5 69 16",
-                  },
-                },
-              },
-            },
-          },
+                    xywh: "292 5 69 16"
+                  }
+                }
+              }
+            }
+          }
         });
       });
 
@@ -854,115 +854,115 @@ describe("Ext.window.MessageBox", function () {
           title: "TEXT",
           modal: true,
           buttons: Ext.MessageBox.OKCANCEL,
-          msg: longMsg,
+          msg: longMsg
         };
         mbox.show(cfg);
         expect(mbox).toHaveLayout({
           el: {
-            xywh: "0 0 260 257",
+            xywh: "0 0 260 257"
           },
           body: {
-            xywh: "0 0 250 196",
+            xywh: "0 0 250 196"
           },
           items: {
             "container-1004": {
               el: {
-                xywh: "5 27 250 196",
+                xywh: "5 27 250 196"
               },
               items: {
                 "container-1003": {
                   el: {
-                    xywh: "10 10 230 176",
+                    xywh: "10 10 230 176"
                   },
                   items: {
                     "messagebox-1001-displayfield": {
                       el: {
-                        xywh: "0 0 230 171",
+                        xywh: "0 0 230 171"
                       },
                       inputRow: {
-                        xywh: "0 0 230 171",
+                        xywh: "0 0 230 171"
                       },
                       bodyEl: {
-                        xywh: "0 0 230 171",
+                        xywh: "0 0 230 171"
                       },
                       inputEl: {
-                        xywh: "0 0 230 171",
-                      },
-                    },
-                  },
-                },
-              },
-            },
+                        xywh: "0 0 230 171"
+                      }
+                    }
+                  }
+                }
+              }
+            }
           },
           dockedItems: {
             "messagebox-1001_header": {
               el: {
-                xywh: "0 0 260 22",
+                xywh: "0 0 260 22"
               },
               body: {
-                xywh: "6 6 248 16",
+                xywh: "6 6 248 16"
               },
               items: {
                 "messagebox-1001_header_hd": {
                   el: {
-                    xywh: "6 6 231 16",
+                    xywh: "6 6 231 16"
                   },
                   textEl: {
-                    xywh: "6 6 231 16",
-                  },
+                    xywh: "6 6 231 16"
+                  }
                 },
                 "tool-1009": {
                   el: {
-                    xywh: "239 7 15 15",
+                    xywh: "239 7 15 15"
                   },
                   toolEl: {
-                    xywh: "239 7 15 15",
-                  },
-                },
-              },
+                    xywh: "239 7 15 15"
+                  }
+                }
+              }
             },
             "messagebox-1001-toolbar": {
               el: {
-                xywh: "5 226 250 26",
+                xywh: "5 226 250 26"
               },
               items: {
                 "button-1005": {
                   el: {
-                    xywh: "47 2 75 22",
+                    xywh: "47 2 75 22"
                   },
                   btnIconEl: {
-                    xywh: "50 21 0 0",
+                    xywh: "50 21 0 0"
                   },
                   btnInnerEl: {
-                    xywh: "50 5 69 16",
+                    xywh: "50 5 69 16"
                   },
                   btnWrap: {
-                    xywh: "50 8 69 13",
+                    xywh: "50 8 69 13"
                   },
                   btnEl: {
-                    xywh: "50 5 69 16",
-                  },
+                    xywh: "50 5 69 16"
+                  }
                 },
                 "button-1008": {
                   el: {
-                    xywh: "128 2 75 22",
+                    xywh: "128 2 75 22"
                   },
                   btnIconEl: {
-                    xywh: "131 21 0 0",
+                    xywh: "131 21 0 0"
                   },
                   btnInnerEl: {
-                    xywh: "131 5 69 16",
+                    xywh: "131 5 69 16"
                   },
                   btnWrap: {
-                    xywh: "131 8 69 13",
+                    xywh: "131 8 69 13"
                   },
                   btnEl: {
-                    xywh: "131 5 69 16",
-                  },
-                },
-              },
-            },
-          },
+                    xywh: "131 5 69 16"
+                  }
+                }
+              }
+            }
+          }
         });
       });
     });

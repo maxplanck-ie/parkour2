@@ -45,7 +45,7 @@ Ext.define("Ext.plugin.LazyItems", {
     comp.beforeRender = Ext.Function.createInterceptor(
       comp.beforeRender,
       this.beforeComponentRender,
-      this,
+      this
     );
   },
 
@@ -55,5 +55,5 @@ Ext.define("Ext.plugin.LazyItems", {
 
     // Remove the interceptor
     this.cmp.beforeComponentRender = null;
-  },
+  }
 });

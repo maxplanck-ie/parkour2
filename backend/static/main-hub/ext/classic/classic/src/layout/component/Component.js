@@ -169,7 +169,7 @@ Ext.define("Ext.layout.component.Component", {
       currentSize.width,
       currentSize.height,
       prevSize ? prevSize.width : undefined,
-      prevSize ? prevSize.height : undefined,
+      prevSize ? prevSize.height : undefined
     );
   },
 
@@ -201,7 +201,7 @@ Ext.define("Ext.layout.component.Component", {
 
       me.targetInfo = targetInfo = {
         padding: target.getPaddingInfo(),
-        border: target.getBorderInfo(),
+        border: target.getBorderInfo()
       };
     }
 
@@ -228,7 +228,7 @@ Ext.define("Ext.layout.component.Component", {
       ret = {
         gotWidth: false,
         gotHeight: false,
-        isContainer: (isContainer = !ownerContext.hasRawContent),
+        isContainer: (isContainer = !ownerContext.hasRawContent)
       },
       hv = dimensions || 3,
       zeroWidth,
@@ -391,7 +391,7 @@ Ext.define("Ext.layout.component.Component", {
           } else if (!widthModel.shrinkWrap) {
             // fixed width, so we need the width to determine the height...
             ready = (ownerContext.bodyContext || ownerContext).hasDomProp(
-              "width",
+              "width"
             ); // && (!ownerContext.bodyContext || ownerContext.bodyContext.hasDomProp('width'));
           } else if (
             isBoxParent ||
@@ -496,5 +496,5 @@ Ext.define("Ext.layout.component.Component", {
 
   measureOwnerWidth: function (ownerContext) {
     return ownerContext.el.getWidth();
-  },
+  }
 });

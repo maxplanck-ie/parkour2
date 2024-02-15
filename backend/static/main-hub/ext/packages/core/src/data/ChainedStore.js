@@ -17,7 +17,7 @@ Ext.define("Ext.data.ChainedStore", {
 
     remoteFilter: false,
 
-    remoteSort: false,
+    remoteSort: false
   },
 
   mixins: ["Ext.data.LocalStore"],
@@ -78,7 +78,7 @@ Ext.define("Ext.data.ChainedStore", {
         s = "Invalid source {0}specified for Ext.data.ChainedStore";
         s = Ext.String.format(
           s,
-          typeof original === "string" ? '"' + original + '" ' : "",
+          typeof original === "string" ? '"' + original + '" ' : ""
         );
         Ext.raise(s);
       }
@@ -157,7 +157,7 @@ Ext.define("Ext.data.ChainedStore", {
       this,
       details.item,
       details.oldKey,
-      details.newKey,
+      details.newKey
     );
   },
 
@@ -269,8 +269,8 @@ Ext.define("Ext.data.ChainedStore", {
 
     loadsSynchronously: function () {
       return this.getSource().loadsSynchronously();
-    },
-  },
+    }
+  }
 
   // Provides docs from the mixin
 

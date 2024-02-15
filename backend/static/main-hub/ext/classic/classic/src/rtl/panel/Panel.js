@@ -5,7 +5,7 @@ Ext.define("Ext.rtl.panel.Panel", {
     top: "top",
     right: "left",
     bottom: "bottom",
-    left: "right",
+    left: "right"
   },
 
   convertCollapseDir: function (collapseDir) {
@@ -14,5 +14,5 @@ Ext.define("Ext.rtl.panel.Panel", {
       collapseDir = this.rtlCollapseDirs[collapseDir];
     }
     return this.callParent(arguments);
-  },
+  }
 });

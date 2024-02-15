@@ -145,7 +145,7 @@ Ext.define("Ext.util.DelimitedValue", {
             '([^"\\' +
             delim +
             "\\r\\n]*))",
-          "gi",
+          "gi"
         )),
       dblQuoteRE =
         quoteREs[quote] ||
@@ -258,5 +258,5 @@ Ext.define("Ext.util.DelimitedValue", {
     }
 
     return result.join(me.lineBreak);
-  },
+  }
 });

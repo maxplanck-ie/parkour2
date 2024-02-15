@@ -42,7 +42,7 @@ Ext.define("Ext.data.proxy.Proxy", {
   requires: [
     "Ext.data.schema.Schema",
     "Ext.data.reader.Reader",
-    "Ext.data.writer.Writer",
+    "Ext.data.writer.Writer"
   ],
 
   uses: ["Ext.data.Batch", "Ext.data.operation.*", "Ext.data.Model"],
@@ -76,7 +76,7 @@ Ext.define("Ext.data.proxy.Proxy", {
      * valid Reader type name (e.g. 'json', 'xml').
      */
     reader: {
-      type: "json",
+      type: "json"
     },
 
     // @cmd-auto-dependency {aliasPrefix : "writer.", defaultPropertyName : "defaultWriterType"}
@@ -87,8 +87,8 @@ Ext.define("Ext.data.proxy.Proxy", {
      * a valid Writer type name (e.g. 'json', 'xml').
      */
     writer: {
-      type: "json",
-    },
+      type: "json"
+    }
   },
 
   /**
@@ -297,7 +297,7 @@ Ext.define("Ext.data.proxy.Proxy", {
       // so convert to the single options argument syntax
       options = {
         operations: options,
-        listeners: listeners,
+        listeners: listeners
       };
     }
 
@@ -305,13 +305,13 @@ Ext.define("Ext.data.proxy.Proxy", {
       if (Ext.isDefined(options.batch.runOperation)) {
         batch = Ext.applyIf(options.batch, {
           proxy: me,
-          listeners: {},
+          listeners: {}
         });
       }
     } else {
       options.batch = {
         proxy: me,
-        listeners: options.listeners || {},
+        listeners: options.listeners || {}
       };
     }
 
@@ -334,8 +334,8 @@ Ext.define("Ext.data.proxy.Proxy", {
             me.createOperation(action, {
               records: records,
               // Relay any additional params through to the Operation (and Request).
-              params: options.params,
-            }),
+              params: options.params
+            })
           );
         } else {
           rLen = records.length;
@@ -347,8 +347,8 @@ Ext.define("Ext.data.proxy.Proxy", {
               me.createOperation(action, {
                 records: [record],
                 // Relay any additional params through to the Operation (and Request).
-                params: options.params,
-              }),
+                params: options.params
+              })
             );
           }
         }
@@ -413,5 +413,5 @@ Ext.define("Ext.data.proxy.Proxy", {
     this.pendingOperations = null;
 
     this.callParent();
-  },
+  }
 });

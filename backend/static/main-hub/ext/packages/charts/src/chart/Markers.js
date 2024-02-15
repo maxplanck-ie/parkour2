@@ -66,7 +66,7 @@ Ext.define("Ext.chart.Markers", {
     attr,
     index,
     bypassNormalization,
-    keepRevision,
+    keepRevision
   ) {
     category = category || this.defaultCategory;
 
@@ -141,5 +141,5 @@ Ext.define("Ext.chart.Markers", {
     }
 
     template.attr = templateAttr;
-  },
+  }
 });

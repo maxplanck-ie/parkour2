@@ -6,6 +6,6 @@ Ext.define("Ext.fx.animation.WipeOut", {
 
   config: {
     // @hide
-    out: true,
-  },
+    out: true
+  }
 });

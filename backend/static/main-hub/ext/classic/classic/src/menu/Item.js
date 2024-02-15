@@ -39,7 +39,7 @@ Ext.define("Ext.menu.Item", {
      * @cfg {Number/String} glyph
      * @inheritdoc Ext.panel.Header#glyph
      */
-    glyph: null,
+    glyph: null
   },
 
   /**
@@ -218,7 +218,7 @@ Ext.define("Ext.menu.Item", {
     "</tpl>",
 
   autoEl: {
-    role: "presentation",
+    role: "presentation"
   },
 
   maskOnDisable: false,
@@ -446,7 +446,7 @@ Ext.define("Ext.menu.Item", {
       me.hideMenuTimer = Ext.defer(
         me.doHideMenu,
         Ext.isNumber(delay) ? delay : me.menuHideDelay,
-        me,
+        me
       );
     }
   },
@@ -483,7 +483,7 @@ Ext.define("Ext.menu.Item", {
         me.deferHideParentMenusTimer = Ext.defer(
           me.deferHideParentMenus,
           clickHideDelay,
-          me,
+          me
         );
       }
     }
@@ -631,7 +631,7 @@ Ext.define("Ext.menu.Item", {
       linkCls: me.linkCls,
       linkHrefCls: me.linkHrefCls,
       groupCls: me.group ? me.groupCls : "",
-      tabIndex: me.tabIndex,
+      tabIndex: me.tabIndex
     });
   },
 
@@ -691,7 +691,7 @@ Ext.define("Ext.menu.Item", {
       instanced = menu.isMenu;
       menu = me.menu = Ext.menu.Manager.get(menu, {
         ownerCmp: me,
-        focusOnToFront: false,
+        focusOnToFront: false
       });
       // We need to forcibly set this here because we could be passed
       // an existing menu, which means the config above won't get applied
@@ -829,10 +829,10 @@ Ext.define("Ext.menu.Item", {
         Ext.tip.QuickTipManager.register(
           Ext.apply(
             {
-              target: me.itemEl.id,
+              target: me.itemEl.id
             },
-            tooltip,
-          ),
+            tooltip
+          )
         );
         me.tooltip = tooltip;
       } else {
@@ -860,7 +860,7 @@ Ext.define("Ext.menu.Item", {
 
     cancelDeferHide: function () {
       window.clearTimeout(this.hideMenuTimer);
-    },
+    }
   },
 
   applyGlyph: function (glyph, oldGlyph) {
@@ -888,5 +888,5 @@ Ext.define("Ext.menu.Item", {
         iconEl.dom.innerHTML = "";
       }
     }
-  },
+  }
 });

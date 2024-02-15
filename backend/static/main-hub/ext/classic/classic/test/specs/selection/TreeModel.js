@@ -9,8 +9,8 @@ describe("Ext.selection.TreeModel", function () {
       root: root || data,
       animate: false,
       selModel: Ext.apply(cfg || {}, {
-        type: "treemodel",
-      }),
+        type: "treemodel"
+      })
     });
     selModel = tree.getSelectionModel();
     col = tree.down("treecolumn");
@@ -27,13 +27,13 @@ describe("Ext.selection.TreeModel", function () {
           children: [
             {
               id: "node1_1",
-              leaf: true,
+              leaf: true
             },
             {
               id: "node1_2",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           id: "node2",
@@ -41,13 +41,13 @@ describe("Ext.selection.TreeModel", function () {
           children: [
             {
               id: "node2_1",
-              leaf: true,
+              leaf: true
             },
             {
               id: "node2_2",
-              leaf: true,
-            },
-          ],
+              leaf: true
+            }
+          ]
         },
         {
           id: "node3",
@@ -55,15 +55,15 @@ describe("Ext.selection.TreeModel", function () {
           children: [
             {
               id: "node3_1",
-              leaf: true,
+              leaf: true
             },
             {
               id: "node3_2",
-              leaf: true,
-            },
-          ],
-        },
-      ],
+              leaf: true
+            }
+          ]
+        }
+      ]
     };
   });
 
@@ -92,23 +92,23 @@ describe("Ext.selection.TreeModel", function () {
             width: 200,
             sortable: true,
             dataIndex: "id",
-            locked: true,
+            locked: true
           },
           {
             renderer: function () {
               return String(++row);
-            },
-          },
+            }
+          }
         ],
         animate: false,
         selModel: {
-          type: "treemodel",
-        },
+          type: "treemodel"
+        }
       });
       selModel = tree.getSelectionModel();
       jasmine.fireMouseEvent(
         tree.view.lockedView.getCellByPosition({ row: 1, column: 0 }),
-        "click",
+        "click"
       );
       expect(selModel.isSelected(1)).toBe(true);
     });
@@ -161,17 +161,17 @@ describe("Ext.selection.TreeModel", function () {
                         expanded: true,
                         children: [
                           {
-                            id: "node5",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                            id: "node5"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
       var node = byId("node5");
       selModel.select(node);
@@ -200,17 +200,17 @@ describe("Ext.selection.TreeModel", function () {
                         expanded: true,
                         children: [
                           {
-                            id: "node5",
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                            id: "node5"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
       var node = byId("node4");
       selModel.select(node);
@@ -227,7 +227,7 @@ describe("Ext.selection.TreeModel", function () {
             expanded: true,
             children: [
               {
-                id: "node2",
+                id: "node2"
               },
               {
                 id: "node3",
@@ -238,18 +238,18 @@ describe("Ext.selection.TreeModel", function () {
                     expanded: true,
                     children: [
                       {
-                        id: "node5",
-                      },
-                    ],
+                        id: "node5"
+                      }
+                    ]
                   },
                   {
-                    id: "node6",
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    id: "node6"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
 
       var node2 = byId("node2"),
@@ -273,7 +273,7 @@ describe("Ext.selection.TreeModel", function () {
       var node, row, view;
       beforeEach(function () {
         makeTree({
-          selectOnExpanderClick: false,
+          selectOnExpanderClick: false
         });
         view = tree.getView();
         node = byId("node1");
@@ -299,7 +299,7 @@ describe("Ext.selection.TreeModel", function () {
       var node, row, view;
       beforeEach(function () {
         makeTree({
-          selectOnExpanderClick: true,
+          selectOnExpanderClick: true
         });
         view = tree.getView();
         node = byId("node1");

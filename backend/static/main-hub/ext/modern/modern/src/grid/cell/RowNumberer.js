@@ -23,5 +23,5 @@ Ext.define("Ext.grid.cell.RowNumberer", {
       }
       this.innerElement.dom.textContent = result + 1;
     }
-  },
+  }
 });

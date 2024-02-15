@@ -10,5 +10,5 @@ Ext.define("Ext.form.CheckboxManager", {
     return this.filterBy(function (item) {
       return item.name === name && item.getFormId() === formId;
     });
-  },
+  }
 });

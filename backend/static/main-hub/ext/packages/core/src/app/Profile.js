@@ -95,7 +95,7 @@ Ext.define("Ext.app.Profile", {
      */
     mainView: {
       $value: null,
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -205,7 +205,7 @@ Ext.define("Ext.app.Profile", {
      * This will load *MyApp.store.tablet.Users* and *MyApp.store.Products*.
      * @accessor
      */
-    stores: [],
+    stores: []
   },
 
   /**
@@ -291,7 +291,7 @@ Ext.define("Ext.app.Profile", {
         namespace,
         "model",
         data.models,
-        name,
+        name
       );
       Controller.processDependencies(
         proto,
@@ -299,7 +299,7 @@ Ext.define("Ext.app.Profile", {
         namespace,
         "store",
         data.stores,
-        name,
+        name
       );
       Controller.processDependencies(
         proto,
@@ -307,7 +307,7 @@ Ext.define("Ext.app.Profile", {
         namespace,
         "controller",
         data.controllers,
-        name,
+        name
       );
 
       if (views) {
@@ -318,7 +318,7 @@ Ext.define("Ext.app.Profile", {
             namespace,
             "view",
             views,
-            name,
+            name
           );
         } else {
           Ext.app.Profile.processViews(className, views, requires);
@@ -327,7 +327,7 @@ Ext.define("Ext.app.Profile", {
 
       Ext.require(
         requires,
-        Ext.Function.pass(onBeforeClassCreated, arguments, this),
+        Ext.Function.pass(onBeforeClassCreated, arguments, this)
       );
     };
   },
@@ -363,9 +363,9 @@ Ext.define("Ext.app.Profile", {
 
             body = Ext.apply(
               {
-                extend: s,
+                extend: s
               },
-              cls,
+              cls
             );
 
             delete body.xclass;
@@ -377,7 +377,7 @@ Ext.define("Ext.app.Profile", {
 
           requires.push(cls);
         }
-      },
-    },
-  },
+      }
+    }
+  }
 });

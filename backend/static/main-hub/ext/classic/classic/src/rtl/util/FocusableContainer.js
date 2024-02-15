@@ -9,6 +9,6 @@ Ext.define("Ext.rtl.util.FocusableContainer", {
       var fwd = this.getInherited().rtl ? !forward : forward;
 
       return this.callParent([e, fwd]);
-    },
-  },
+    }
+  }
 });

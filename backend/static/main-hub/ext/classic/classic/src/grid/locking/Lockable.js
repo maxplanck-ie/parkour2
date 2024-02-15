@@ -34,7 +34,7 @@ Ext.define(
       "Ext.grid.header.Container",
       "Ext.grid.locking.HeaderContainer",
       "Ext.view.Table",
-      "Ext.scroll.LockingScroller",
+      "Ext.scroll.LockingScroller"
     ],
 
     /**
@@ -132,7 +132,7 @@ Ext.define(
       "trailingBufferZone",
       "leadingBufferZone",
       "scrollToLoadBuffer",
-      "syncRowHeight",
+      "syncRowHeight"
     ],
     normalCfgCopy: ["scroll"],
     lockedCfgCopy: [],
@@ -229,7 +229,7 @@ Ext.define(
       me.scrollable = new Ext.scroll.LockingScroller({
         component: me,
         x: false,
-        y: true,
+        y: true
       });
 
       // This is just a "shell" Panel which acts as a Container for the two grids and must not use the features
@@ -266,7 +266,7 @@ Ext.define(
           );
         },
         features: allFeatures.lockedFeatures,
-        plugins: allPlugins.lockedPlugins,
+        plugins: allPlugins.lockedPlugins
       };
 
       normalGrid = {
@@ -292,7 +292,7 @@ Ext.define(
           );
         },
         features: allFeatures.normalFeatures,
-        plugins: allPlugins.normalPlugins,
+        plugins: allPlugins.normalPlugins
       };
 
       me.addCls(Ext.baseCSSPrefix + "grid-locked");
@@ -350,7 +350,7 @@ Ext.define(
         Ext.log.warn(
           'id specified on Lockable viewConfig, it will be shared between both views: "' +
             viewConfig.id +
-            '"',
+            '"'
         );
       }
       //</debug>
@@ -363,7 +363,7 @@ Ext.define(
       if (me.layout === Ext.panel.Table.prototype.layout) {
         me.layout = {
           type: "hbox",
-          align: "stretch",
+          align: "stretch"
         };
       }
       me.getLayout();
@@ -392,7 +392,7 @@ Ext.define(
         loadMask: loadMask,
         locked: lockedGrid,
         normal: normalGrid,
-        ownerGrid: me,
+        ownerGrid: me
       });
 
       // after creating the locking view we now have Grid instances for both locked and
@@ -404,7 +404,7 @@ Ext.define(
       lockedGrid.on({
         beginfloat: me.onBeginLockedFloat,
         endfloat: me.onEndLockedFloat,
-        scope: me,
+        scope: me
       });
 
       // Account for initially hidden columns, or user hide of columns in handlers called during grid construction
@@ -438,7 +438,7 @@ Ext.define(
         columnhide: me.delaySyncLockedWidth,
         sortchange: me.onLockedHeaderSortChange,
         columnresize: me.delaySyncLockedWidth,
-        scope: me,
+        scope: me
       });
 
       normalHeaderCt.on({
@@ -447,7 +447,7 @@ Ext.define(
         columnshow: me.delaySyncLockedWidth,
         columnhide: me.delaySyncLockedWidth,
         sortchange: me.onNormalHeaderSortChange,
-        scope: me,
+        scope: me
       });
 
       me.modifyHeaderCt();
@@ -456,9 +456,9 @@ Ext.define(
         me.addCls(Ext.baseCSSPrefix + "grid-locked-split");
         me.items[1] = Ext.apply(
           {
-            xtype: "splitter",
+            xtype: "splitter"
           },
-          me.split,
+          me.split
         );
       }
       me.items.push(normalGrid);
@@ -490,7 +490,7 @@ Ext.define(
          * @event load
          * @inheritdoc Ext.data.Store#load
          */
-        "load",
+        "load"
       ]);
 
       // Only need to relay from the normalGrid. Since it's created after the lockedGrid,
@@ -500,7 +500,7 @@ Ext.define(
          * @event viewready
          * @inheritdoc Ext.panel.Table#viewready
          */
-        "viewready",
+        "viewready"
       ]);
     },
 
@@ -514,7 +514,7 @@ Ext.define(
         xclass: "Ext.grid.locking.View",
         locked: this.lockedGrid,
         normal: this.normalGrid,
-        panel: this,
+        panel: this
       };
     },
 
@@ -524,7 +524,7 @@ Ext.define(
         normalHeaderCt = this.normalGrid.headerCt,
         headerCtHeight = Math.max(
           normalHeaderCt.getHeight(),
-          lockedHeaderCt.getHeight(),
+          lockedHeaderCt.getHeight()
         );
 
       // The two layouts are seperated and no longer share stretchmax height data upon
@@ -584,12 +584,12 @@ Ext.define(
           //<debug>
           if (isNaN(totalColumnWidth)) {
             Ext.raise(
-              "Locked columns in an unsized locked side do NOT support a flex width.",
+              "Locked columns in an unsized locked side do NOT support a flex width."
             );
           }
           //</debug>
           lockedGrid.setWidth(
-            totalColumnWidth + lockedGrid.gridPanelBorderWidth,
+            totalColumnWidth + lockedGrid.gridPanelBorderWidth
           );
         }
 
@@ -675,12 +675,12 @@ Ext.define(
 
           if (lockedGridVisible && lockedGrid.view.body.dom) {
             me.lockedScrollbarScroller.setSize({
-              x: lockedGrid.headerCt.getTableWidth(),
+              x: lockedGrid.headerCt.getTableWidth()
             });
           }
           if (normalGrid.view.body.dom) {
             me.normalScrollbarScroller.setSize({
-              x: normalGrid.headerCt.getTableWidth(),
+              x: normalGrid.headerCt.getTableWidth()
             });
           }
         }
@@ -701,34 +701,34 @@ Ext.define(
 
         lockedScrollbar.toggleCls(
           scrollbarVisibleCls,
-          lockedGridVisible && !!hasHorizontalScrollbar,
+          lockedGridVisible && !!hasHorizontalScrollbar
         );
         normalScrollbar.toggleCls(
           scrollbarVisibleCls,
-          !!hasHorizontalScrollbar,
+          !!hasHorizontalScrollbar
         );
 
         // Floated from collapsed views must overlay. THis raises them up.
         me.normalScrollbarClipper.toggleCls(
           me.scrollbarClipperCls + "-floated",
-          !!me.normalGrid.floatedFromCollapse,
+          !!me.normalGrid.floatedFromCollapse
         );
         me.normalScrollbar.toggleCls(
           me.scrollbarCls + "-floated",
-          !!me.normalGrid.floatedFromCollapse,
+          !!me.normalGrid.floatedFromCollapse
         );
         me.lockedScrollbarClipper.toggleCls(
           me.scrollbarClipperCls + "-floated",
-          !!me.lockedGrid.floatedFromCollapse,
+          !!me.lockedGrid.floatedFromCollapse
         );
         me.lockedScrollbar.toggleCls(
           me.scrollbarCls + "-floated",
-          !!me.lockedGrid.floatedFromCollapse,
+          !!me.lockedGrid.floatedFromCollapse
         );
 
         lockedScrollbar.setSize(
           me.lockedScrollbarClipper.dom.offsetWidth,
-          scrollbarHeight,
+          scrollbarHeight
         );
         normalScrollbar.setSize(normalViewWidth, scrollbarHeight);
 
@@ -743,7 +743,7 @@ Ext.define(
         me.scrollContainer.setBox(
           (viewWidth = lockedGridVisible
             ? lockedViewRegion.union(normalViewRegion)
-            : normalViewRegion),
+            : normalViewRegion)
         );
 
         // Account for the scrollbar being stuck at the right in RTL mode
@@ -755,10 +755,10 @@ Ext.define(
             scrollBodyDom.style.right = -scrollbarWidth + "px";
 
             normalGrid.headerCt.layout.innerCt.setWidth(
-              normalGrid.headerCt.layout.innerCt.getWidth() + scrollbarWidth,
+              normalGrid.headerCt.layout.innerCt.getWidth() + scrollbarWidth
             );
             me.verticalScrollbarScroller.setSize({
-              y: me.scrollable.getSize().y,
+              y: me.scrollable.getSize().y
             });
             me.verticalScrollbar.show();
           } else {
@@ -773,16 +773,16 @@ Ext.define(
     initScrollContainer: function () {
       var me = this,
         scrollContainer = (me.scrollContainer = me.body.insertFirst({
-          cls: [me.scrollContainerCls, me._rtlCls],
+          cls: [me.scrollContainerCls, me._rtlCls]
         })),
         scrollBody = (me.scrollBody = scrollContainer.appendChild({
-          cls: me.scrollBodyCls,
+          cls: me.scrollBodyCls
         })),
         lockedScrollbar = (me.lockedScrollbar = scrollContainer.appendChild({
-          cls: [me.scrollbarCls, me.scrollbarCls + "-locked", me._rtlCls],
+          cls: [me.scrollbarCls, me.scrollbarCls + "-locked", me._rtlCls]
         })),
         normalScrollbar = (me.normalScrollbar = scrollContainer.appendChild({
-          cls: [me.scrollbarCls, me._rtlCls],
+          cls: [me.scrollbarCls, me._rtlCls]
         })),
         lockedView = me.lockedGrid.view,
         normalView = me.normalGrid.view,
@@ -801,7 +801,7 @@ Ext.define(
       me.scrollable.setConfig({
         element: scrollBody,
         lockedScroller: lockedScroller,
-        normalScroller: normalScroller,
+        normalScroller: normalScroller
       });
 
       lockedScrollbarClipper = me.lockedScrollbarClipper =
@@ -809,13 +809,13 @@ Ext.define(
           cls: [
             me.scrollbarClipperCls,
             me.scrollbarClipperCls + "-locked",
-            me._rtlCls,
-          ],
+            me._rtlCls
+          ]
         });
 
       normalScrollbarClipper = me.normalScrollbarClipper =
         scrollBody.appendChild({
-          cls: [me.scrollbarClipperCls, me._rtlCls],
+          cls: [me.scrollbarClipperCls, me._rtlCls]
         });
 
       lockedScrollbarClipper.appendChild(lockedView.el);
@@ -831,14 +831,14 @@ Ext.define(
         element: lockedScrollbar,
         x: "scroll",
         y: false,
-        rtl: lockedScroller.getRtl && lockedScroller.getRtl(),
+        rtl: lockedScroller.getRtl && lockedScroller.getRtl()
       });
 
       normalScrollbarScroller = me.normalScrollbarScroller = new Scroller({
         element: normalScrollbar,
         x: "scroll",
         y: false,
-        rtl: normalScroller.getRtl && normalScroller.getRtl(),
+        rtl: normalScroller.getRtl && normalScroller.getRtl()
       });
 
       if (normalView.el._rtlScrollbarOnRight) {
@@ -848,13 +848,13 @@ Ext.define(
             top: 0,
             left: 0,
             bottom: 0,
-            width: Ext.getScrollbarSize().width + "px",
-          },
+            width: Ext.getScrollbarSize().width + "px"
+          }
         });
         me.verticalScrollbarScroller = new Scroller({
           element: me.verticalScrollbar,
           x: false,
-          y: true,
+          y: true
         });
         me.verticalScrollbarScroller.addPartner(me.scrollable, "y");
       }
@@ -883,23 +883,23 @@ Ext.define(
         len,
         column,
         cp = new Ext.grid.header.Container({
-          $initParent: me,
+          $initParent: me
         }),
         lockedHeaders = [],
         normalHeaders = [],
         lockedHeaderCt = {
           itemId: "lockedHeaderCt",
           stretchMaxPartner: "^^>>#normalHeaderCt",
-          items: lockedHeaders,
+          items: lockedHeaders
         },
         normalHeaderCt = {
           itemId: "normalHeaderCt",
           stretchMaxPartner: "^^>>#lockedHeaderCt",
-          items: normalHeaders,
+          items: normalHeaders
         },
         result = {
           locked: lockedHeaderCt,
-          normal: normalHeaderCt,
+          normal: normalHeaderCt
         },
         copy;
 
@@ -983,19 +983,19 @@ Ext.define(
       var me = this;
       me.lockedGrid.headerCt.getMenuItems = me.getMenuItems(
         me.lockedGrid.headerCt.getMenuItems,
-        true,
+        true
       );
       me.normalGrid.headerCt.getMenuItems = me.getMenuItems(
         me.normalGrid.headerCt.getMenuItems,
-        false,
+        false
       );
       me.lockedGrid.headerCt.showMenuBy = Ext.Function.createInterceptor(
         me.lockedGrid.headerCt.showMenuBy,
-        me.showMenuBy,
+        me.showMenuBy
       );
       me.normalGrid.headerCt.showMenuBy = Ext.Function.createInterceptor(
         me.normalGrid.headerCt.showMenuBy,
-        me.showMenuBy,
+        me.showMenuBy
       );
     },
 
@@ -1049,14 +1049,14 @@ Ext.define(
           iconCls: unlockCls,
           text: unlockText,
           handler: unlockHandler,
-          disabled: !locked,
+          disabled: !locked
         });
         o.push({
           itemId: "lockItem",
           iconCls: lockCls,
           text: lockText,
           handler: lockHandler,
-          disabled: locked,
+          disabled: locked
         });
         return o;
       };
@@ -1072,7 +1072,7 @@ Ext.define(
           me.syncLockedWidthTask ||
           (me.syncLockedWidthTask = new Ext.util.DelayedTask(
             me.syncLockedWidth,
-            me,
+            me
           ));
 
       if (me.reconfiguring) {
@@ -1195,7 +1195,7 @@ Ext.define(
       // Flag object indicating which views need to be cleared and refreshed.
       return {
         locked: !!lockedColCount,
-        normal: !!normalColCount,
+        normal: !!normalColCount
       };
     },
 
@@ -1269,7 +1269,7 @@ Ext.define(
             lockedView.bufferedRenderer.onViewResize(
               lockedView,
               0,
-              normalGrid.body.lastBox.height,
+              normalGrid.body.lastBox.height
             );
           }
         }
@@ -1575,7 +1575,7 @@ Ext.define(
       }
       return {
         normalFeatures: normalFeatures,
-        lockedFeatures: lockedFeatures,
+        lockedFeatures: lockedFeatures
       };
     },
 
@@ -1643,7 +1643,7 @@ Ext.define(
       return {
         topPlugins: topPlugins,
         normalPlugins: normalPlugins,
-        lockedPlugins: lockedPlugins,
+        lockedPlugins: lockedPlugins
       };
     },
 
@@ -1667,9 +1667,9 @@ Ext.define(
       }
 
       Ext.destroy(me.view, me.headerCt);
-    },
+    }
   },
   function () {
     this.borrow(Ext.Component, ["constructPlugin"]);
-  },
+  }
 );

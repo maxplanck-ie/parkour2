@@ -19,18 +19,18 @@ describe("Ext.grid.column.RowNumberer", function () {
             {
               name: "Homer",
               email: "homer@simpsons.com",
-              phone: "555-222-1244",
+              phone: "555-222-1244"
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
-              phone: "555-222-1254",
-            },
+              phone: "555-222-1254"
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.grid.Grid(
@@ -41,17 +41,17 @@ describe("Ext.grid.column.RowNumberer", function () {
             { xtype: "rownumberer" },
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", width: 100 },
-            { header: "Phone", dataIndex: "phone", width: 100 },
+            { header: "Phone", dataIndex: "phone", width: 100 }
           ],
           height: 200,
-          width: 400,
+          width: 400
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -64,7 +64,7 @@ describe("Ext.grid.column.RowNumberer", function () {
             children: [
               {
                 text: "detention",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "homework",
@@ -72,23 +72,23 @@ describe("Ext.grid.column.RowNumberer", function () {
                 children: [
                   {
                     text: "book report",
-                    leaf: true,
+                    leaf: true
                   },
                   {
                     text: "algebra",
-                    leaf: true,
-                  },
-                ],
+                    leaf: true
+                  }
+                ]
               },
               {
                 text: "buy lottery tickets",
-                leaf: true,
-              },
-            ],
-          },
+                leaf: true
+              }
+            ]
+          }
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     panel = new Ext.tree.Panel(
@@ -101,21 +101,21 @@ describe("Ext.grid.column.RowNumberer", function () {
           hideHeaders: true,
           columns: [
             {
-              xtype: "rownumberer",
+              xtype: "rownumberer"
             },
             {
               text: "Data",
               dataIndex: "text",
-              flex: 1,
-            },
-          ],
+              flex: 1
+            }
+          ]
         },
-        treeCfg,
-      ),
+        treeCfg
+      )
     );
     container = panel.container;
     panel.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
   }
 
@@ -148,7 +148,7 @@ describe("Ext.grid.column.RowNumberer", function () {
   describe("grids", function () {
     it("should create numbered rows", function () {
       createGrid({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el).toHaveCls("x-rownumberercell");
@@ -170,7 +170,7 @@ describe("Ext.grid.column.RowNumberer", function () {
   xdescribe("trees", function () {
     it("should create numbered rows", function () {
       createTree({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       expect(getCell(0, 0).el).toHaveCls("x-rownumberercell");

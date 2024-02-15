@@ -48,5 +48,5 @@ Ext.define("Ext.Evented", {
         data[cfg.names.set] = cfg.eventedSetter || cfg.getEventedSetter();
       }
     }
-  },
+  }
 });

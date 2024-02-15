@@ -8,9 +8,9 @@ describe("Ext.tab.Bar", function () {
   function makeBar(config) {
     config = Ext.apply(
       {
-        renderTo: document.body,
+        renderTo: document.body
       },
-      config,
+      config
     );
 
     tabBar = new Ext.tab.Bar(config);
@@ -22,12 +22,12 @@ describe("Ext.tab.Bar", function () {
         // mock event object can go here if needed
         getTarget: function () {
           return tab ? tab.el : null;
-        },
+        }
       },
       {
         // target el
-        id: targetId,
-      },
+        id: targetId
+      }
     );
   }
 
@@ -71,7 +71,7 @@ describe("Ext.tab.Bar", function () {
         xtype: "tabpanel",
         renderTo: document.body,
         width: 100,
-        height: 100,
+        height: 100
       });
 
       expect(tabPanel.getTabBar().getHeight()).toBe(27);
@@ -102,15 +102,15 @@ describe("Ext.tab.Bar", function () {
             closable: true,
             listeners: {
               close: closeListener,
-              destroy: destroyListener,
-            },
+              destroy: destroyListener
+            }
           },
           {
             id: "item2",
             title: "Tab 2",
-            closable: true,
-          },
-        ],
+            closable: true
+          }
+        ]
       });
       spyOn(tabPanel, "remove").andCallThrough();
       spyOn(tabPanel.getTabBar(), "remove").andCallThrough();
@@ -157,20 +157,20 @@ describe("Ext.tab.Bar", function () {
     describe("if the tab is enabled", function () {
       beforeEach(function () {
         cardLayout = {
-          setActiveItem: jasmine.createSpy(),
+          setActiveItem: jasmine.createSpy()
         };
 
         createTabBar({
-          cardLayout: cardLayout,
+          cardLayout: cardLayout
         });
 
         tabBar.add({
           xtype: "tab",
           id: "tab1",
           card: {
-            some: "card",
+            some: "card"
           },
-          tabBar: tabBar,
+          tabBar: tabBar
         });
 
         tabBar.render(document.body);
@@ -218,7 +218,7 @@ describe("Ext.tab.Bar", function () {
             function () {
               args = arguments;
             },
-            this,
+            this
           );
 
           doClick("tab1");
@@ -243,11 +243,11 @@ describe("Ext.tab.Bar", function () {
 
       beforeEach(function () {
         cardLayout = {
-          setActiveItem: jasmine.createSpy(),
+          setActiveItem: jasmine.createSpy()
         };
 
         createTabBar({
-          cardLayout: cardLayout,
+          cardLayout: cardLayout
         });
 
         tabBar.add(
@@ -255,19 +255,19 @@ describe("Ext.tab.Bar", function () {
             xtype: "tab",
             id: "tab1",
             card: {
-              some: "card",
+              some: "card"
             },
-            tabBar: tabBar,
+            tabBar: tabBar
           },
           {
             xtype: "tab",
             id: "tab2",
             disabled: true,
             card: {
-              other: "card",
+              other: "card"
             },
-            tabBar: tabBar,
-          },
+            tabBar: tabBar
+          }
         );
 
         tab1 = tabBar.items.items[0];
@@ -308,10 +308,10 @@ describe("Ext.tab.Bar", function () {
           {
             renderTo: Ext.getBody(),
             width: 300,
-            items: makeTabs(10),
+            items: makeTabs(10)
           },
-          cfg,
-        ),
+          cfg
+        )
       );
       items = tabBar.items;
     }
@@ -367,7 +367,7 @@ describe("Ext.tab.Bar", function () {
           tabPanel = new Ext.tab.Panel({
             renderTo: Ext.getBody(),
             width: 300,
-            items: makeTabs(10, "title"),
+            items: makeTabs(10, "title")
           });
           tabBar = tabPanel.getTabBar();
         });
@@ -398,7 +398,7 @@ describe("Ext.tab.Bar", function () {
 
     it("should not cause issue if there is no scroller", function () {
       makeScrollTabs({
-        width: 3000,
+        width: 3000
       });
       expect(function () {
         tabBar.ensureTabVisible(items.last());
@@ -412,9 +412,9 @@ describe("Ext.tab.Bar", function () {
         renderTo: document.body,
         width: 150,
         layout: {
-          overflowHandler: "menu",
+          overflowHandler: "menu"
         },
-        items: makeTabs(3),
+        items: makeTabs(3)
       });
     });
 
@@ -464,10 +464,10 @@ describe("Ext.tab.Bar", function () {
           {
             renderTo: Ext.getBody(),
             width: 300,
-            items: makeTabs(10),
+            items: makeTabs(10)
           },
-          cfg,
-        ),
+          cfg
+        )
       );
       items = tabBar.items;
     }
@@ -491,7 +491,7 @@ describe("Ext.tab.Bar", function () {
       describe("with ensureActiveVisibleOnChange: false", function () {
         beforeEach(function () {
           makeScrollTabs({
-            ensureActiveVisibleOnChange: false,
+            ensureActiveVisibleOnChange: false
           });
         });
 
@@ -543,7 +543,7 @@ describe("Ext.tab.Bar", function () {
       describe("with ensureActiveVisibleOnChange: true", function () {
         beforeEach(function () {
           makeScrollTabs({
-            ensureActiveVisibleOnChange: true,
+            ensureActiveVisibleOnChange: true
           });
         });
 
@@ -603,9 +603,9 @@ describe("Ext.tab.Bar", function () {
       tabBar.add({
         xtype: "tab",
         card: {
-          some: "card",
+          some: "card"
         },
-        tabBar: tabBar,
+        tabBar: tabBar
       });
 
       tab = tabBar.getComponent(0);
@@ -630,19 +630,19 @@ describe("Ext.tab.Bar", function () {
           {
             title: "Tab 1",
             html: "Tab 1",
-            id: "tab1",
+            id: "tab1"
           },
           {
             title: "Tab 2",
             html: "Tab 2",
-            id: "tab2",
+            id: "tab2"
           },
           {
             title: "Tab 3",
             html: "Tab 3",
-            id: "tab3",
-          },
-        ],
+            id: "tab3"
+          }
+        ]
       });
       tabBar = tabPanel.getTabBar();
     });
@@ -695,9 +695,9 @@ describe("Ext.tab.Bar", function () {
           items: [
             {
               xtype: "tab",
-              text: "foo",
-            },
-          ],
+              text: "foo"
+            }
+          ]
         });
       });
 
@@ -718,9 +718,9 @@ describe("Ext.tab.Bar", function () {
           items: [
             {
               xtype: "tab",
-              text: "bar",
-            },
-          ],
+              text: "bar"
+            }
+          ]
         });
       });
 
@@ -739,9 +739,9 @@ describe("Ext.tab.Bar", function () {
           items: [
             {
               xtype: "tab",
-              text: "foo",
-            },
-          ],
+              text: "foo"
+            }
+          ]
         });
 
         tabBar.remove(0);

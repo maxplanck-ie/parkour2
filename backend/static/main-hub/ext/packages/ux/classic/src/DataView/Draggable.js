@@ -84,15 +84,15 @@ Ext.define("Ext.ux.DataView.Draggable", {
       this,
       {
         itemSelector: dataview.itemSelector,
-        ghostConfig: {},
+        ghostConfig: {}
       },
-      config || {},
+      config || {}
     );
 
     Ext.applyIf(this.ghostConfig, {
       itemSelector: "img",
       cls: this.ghostCls,
-      tpl: this.ghostTpl,
+      tpl: this.ghostTpl
     });
   },
 
@@ -108,7 +108,7 @@ Ext.define("Ext.ux.DataView.Draggable", {
         getDragData: me.getDragData,
         getTreeNode: me.getTreeNode,
         afterRepair: me.afterRepair,
-        getRepairXY: me.getRepairXY,
+        getRepairXY: me.getRepairXY
       });
 
     /**
@@ -149,7 +149,7 @@ Ext.define("Ext.ux.DataView.Draggable", {
         copy: true,
         nodes: selected,
         records: selModel.getSelection(),
-        item: true,
+        item: true
       };
 
       if (selected.length === 1) {
@@ -226,7 +226,7 @@ Ext.define("Ext.ux.DataView.Draggable", {
       (store = me.ghost.store).loadRecords(records);
     } else {
       store = Ext.create("Ext.data.Store", {
-        model: records[0].self,
+        model: records[0].self
       });
 
       store.loadRecords(records);
@@ -235,10 +235,10 @@ Ext.define("Ext.ux.DataView.Draggable", {
         Ext.apply(
           {
             renderTo: document.createElement("div"),
-            store: store,
+            store: store
           },
-          me.ghostConfig,
-        ),
+          me.ghostConfig
+        )
       );
       me.ghost.container.skipGarbageCollection =
         me.ghost.el.skipGarbageCollection = true;
@@ -256,5 +256,5 @@ Ext.define("Ext.ux.DataView.Draggable", {
       ghost.destroy();
     }
     this.callParent();
-  },
+  }
 });

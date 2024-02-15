@@ -17,7 +17,7 @@ Ext.onReady(function () {
       "Sept",
       "Oct",
       "Nov",
-      "Déc",
+      "Déc"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -36,7 +36,7 @@ Ext.onReady(function () {
       "Septembre",
       "Octobre",
       "Novembre",
-      "Décembre",
+      "Décembre"
     ];
 
     Ext.Date.monthNumbers = {
@@ -59,7 +59,7 @@ Ext.onReady(function () {
       Novembre: 10,
       Nov: 10,
       Décembre: 11,
-      Déc: 11,
+      Déc: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -73,7 +73,7 @@ Ext.onReady(function () {
       "Mercredi",
       "Jeudi",
       "Vendredi",
-      "Samedi",
+      "Samedi"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -87,35 +87,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "$",
       // Canadian Dollar
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.fr_CA.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.fr_CA.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} ligne(s) sélectionné(s)",
+  dragText: "{0} ligne(s) sélectionné(s)"
 });
 
 Ext.define("Ext.locale.fr_CA.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Fermer cet onglet",
+  closeText: "Fermer cet onglet"
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "La valeur de ce champ est invalide",
+  invalidText: "La valeur de ce champ est invalide"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.fr_CA.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "En cours de chargement...",
+  loadingText: "En cours de chargement..."
 });
 
 Ext.define("Ext.locale.fr_CA.picker.Date", {
@@ -130,7 +130,7 @@ Ext.define("Ext.locale.fr_CA.picker.Date", {
   monthYearText:
     "Choissisez un mois (CTRL+Fléche haut ou bas pour changer d'année.)",
   todayTip: "{0} (Barre d'espace)",
-  format: "d/m/y",
+  format: "d/m/y"
 });
 
 Ext.define("Ext.locale.fr_CA.toolbar.Paging", {
@@ -143,7 +143,7 @@ Ext.define("Ext.locale.fr_CA.toolbar.Paging", {
   lastText: "Dernière page",
   refreshText: "Recharger la page",
   displayMsg: "Page courante {0} - {1} de {2}",
-  emptyMsg: "Aucune donnée à afficher",
+  emptyMsg: "Aucune donnée à afficher"
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.Text", {
@@ -152,7 +152,7 @@ Ext.define("Ext.locale.fr_CA.form.field.Text", {
   maxLengthText: "La longueur maximum de ce champ est de {0} caractères",
   blankText: "Ce champ est obligatoire",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.Number", {
@@ -160,12 +160,12 @@ Ext.define("Ext.locale.fr_CA.form.field.Number", {
   minText: "La valeur minimum de ce champ doit être de {0}",
   maxText: "La valeur maximum de ce champ doit être de {0}",
   nanText: "{0} n'est pas un nombre valide",
-  negativeText: "La valeur de ce champ ne peut être négative",
+  negativeText: "La valeur de ce champ ne peut être négative"
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.File", {
   override: "Ext.form.field.File",
-  buttonText: "Parcourir...",
+  buttonText: "Parcourir..."
 });
 
 Ext.define("Ext.locale.fr_CA.form.field.Date", {
@@ -176,20 +176,20 @@ Ext.define("Ext.locale.fr_CA.form.field.Date", {
   maxText: "La date de ce champ doit être après le {0}",
   invalidText:
     "{0} n'est pas une date valide - il doit être au format suivant: {1}",
-  format: "d/m/y",
+  format: "d/m/y"
 });
 
 Ext.define(
   "Ext.locale.fr_CA.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "En cours de chargement...",
+      loadingText: "En cours de chargement..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.fr_CA.form.field.VTypes", {
@@ -202,7 +202,7 @@ Ext.define("Ext.locale.fr_CA.form.field.VTypes", {
   alphaText:
     "Ce champ ne peut contenir que des lettres et le caractère souligné (_)",
   alphanumText:
-    "Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)",
+    "Ce champ ne peut contenir que des caractères alphanumériques ainsi que le caractère souligné (_)"
 });
 
 Ext.define("Ext.locale.fr_CA.grid.header.Container", {
@@ -211,14 +211,14 @@ Ext.define("Ext.locale.fr_CA.grid.header.Container", {
   sortDescText: "Tri descendant",
   lockText: "Verrouillé la colonne",
   unlockText: "Déverrouillé la colonne",
-  columnsText: "Colonnes",
+  columnsText: "Colonnes"
 });
 
 Ext.define("Ext.locale.fr_CA.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Propriété",
   valueText: "Valeur",
-  dateFormat: "d/m/Y",
+  dateFormat: "d/m/Y"
 });
 
 Ext.define("Ext.locale.fr_CA.window.MessageBox", {
@@ -227,11 +227,11 @@ Ext.define("Ext.locale.fr_CA.window.MessageBox", {
     ok: "OK",
     cancel: "Annuler",
     yes: "Oui",
-    no: "Non",
-  },
+    no: "Non"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.fr_CA.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

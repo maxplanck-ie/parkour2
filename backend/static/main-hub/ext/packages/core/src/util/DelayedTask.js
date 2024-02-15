@@ -44,7 +44,7 @@ Ext.util.DelayedTask = function (
   scope,
   args,
   cancelOnDelay,
-  fireIdleEvent,
+  fireIdleEvent
 ) {
   // @define Ext.util.DelayedTask
   // @uses Ext.GlobalEvents

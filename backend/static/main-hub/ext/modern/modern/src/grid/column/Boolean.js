@@ -59,11 +59,11 @@ Ext.define("Ext.grid.column.Boolean", {
     undefinedText: null,
 
     defaultEditor: {
-      xtype: "checkboxfield",
+      xtype: "checkboxfield"
     },
 
     cell: {
-      xtype: "booleancell",
-    },
-  },
+      xtype: "booleancell"
+    }
+  }
 });

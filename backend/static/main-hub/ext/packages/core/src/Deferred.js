@@ -128,7 +128,7 @@ Ext.define(
             !(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))
           ) {
             Ext.raise(
-              "Invalid parameter: expected an Array or Promise of an Array.",
+              "Invalid parameter: expected an Array or Promise of an Array."
             );
           }
           //</debug>
@@ -146,7 +146,7 @@ Ext.define(
               } else {
                 throw error;
               }
-            },
+            }
           );
         },
 
@@ -199,7 +199,7 @@ Ext.define(
             !(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))
           ) {
             Ext.raise(
-              "Invalid parameter: expected an Array or Promise of an Array.",
+              "Invalid parameter: expected an Array or Promise of an Array."
             );
           }
 
@@ -241,7 +241,7 @@ Ext.define(
                       },
                       function (reason) {
                         return deferred.reject(reason);
-                      },
+                      }
                     );
                 };
                 for (
@@ -260,7 +260,7 @@ Ext.define(
               }
 
               return deferred.promise;
-            },
+            }
           );
         },
 
@@ -285,7 +285,7 @@ Ext.define(
             return Deferred.all(Ext.Array.slice(arguments)).then(
               function (values) {
                 return memoizedFn.apply(scope, values);
-              },
+              }
             );
           };
         },
@@ -351,7 +351,7 @@ Ext.define(
 
               return fn.call(scope, value);
             },
-            initialValue,
+            initialValue
           );
         },
 
@@ -371,7 +371,7 @@ Ext.define(
           //<debug>
           if (!(Ext.isArray(values) || ExtPromise.is(values))) {
             Ext.raise(
-              "Invalid parameter: expected an Array or Promise of an Array.",
+              "Invalid parameter: expected an Array or Promise of an Array."
             );
           }
 
@@ -388,7 +388,7 @@ Ext.define(
               function (
                 previousValueOrPromise,
                 currentValueOrPromise,
-                currentIndex,
+                currentIndex
               ) {
                 return Deferred.resolved(previousValueOrPromise).then(
                   function (previousValue) {
@@ -398,13 +398,13 @@ Ext.define(
                           previousValue,
                           currentValue,
                           currentIndex,
-                          promisesOrValues,
+                          promisesOrValues
                         );
-                      },
+                      }
                     );
-                  },
+                  }
                 );
-              },
+              }
             ];
 
             if (initialValueSpecified) {
@@ -484,10 +484,10 @@ Ext.define(
                   results.push(result);
 
                   return results;
-                },
+                }
               );
             },
-            [],
+            []
           );
         },
 
@@ -512,7 +512,7 @@ Ext.define(
             !(Ext.isArray(promisesOrValues) || ExtPromise.is(promisesOrValues))
           ) {
             Ext.raise(
-              "Invalid parameter: expected an Array or Promise of an Array.",
+              "Invalid parameter: expected an Array or Promise of an Array."
             );
           }
 
@@ -562,7 +562,7 @@ Ext.define(
 
                   if (remainingToReject === 0) {
                     deferred.reject(
-                      new Error("Too few Promises were resolved."),
+                      new Error("Too few Promises were resolved.")
                     );
                   }
 
@@ -583,7 +583,7 @@ Ext.define(
               }
 
               return deferred.promise;
-            },
+            }
           );
         },
 
@@ -618,15 +618,15 @@ Ext.define(
               clearTimeout(timeoutId);
               timeoutId = null;
               deferred.reject(reason);
-            },
+            }
           );
 
           return deferred.promise;
-        },
-      },
+        }
+      }
     };
   },
   function (Deferred) {
     Deferred._ready();
-  },
+  }
 );

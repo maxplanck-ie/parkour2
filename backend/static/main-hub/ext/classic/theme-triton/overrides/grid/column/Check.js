@@ -6,5 +6,5 @@ Ext.define("Ext.theme.triton.grid.column.Check", {
   setRecordCheck: function (record, checked, cell) {
     this.callParent([record, checked, cell]);
     cell.syncRepaint();
-  },
+  }
 });

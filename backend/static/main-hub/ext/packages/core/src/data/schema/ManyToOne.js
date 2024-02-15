@@ -176,7 +176,7 @@ Ext.define("Ext.data.schema.ManyToOne", {
                 leftRecord,
                 field,
                 rightRecord.id,
-                undefined,
+                undefined
               );
             }
             seen[id] = true;
@@ -278,7 +278,7 @@ Ext.define("Ext.data.schema.ManyToOne", {
           rightRecord,
           node,
           fromReader,
-          readOptions,
+          readOptions
         ]),
         store,
         len,
@@ -336,7 +336,7 @@ Ext.define("Ext.data.schema.ManyToOne", {
           leftRecord[instanceName] = val;
         }
       }
-    },
+    }
   }),
 
   Right: Ext.define(null, {
@@ -479,7 +479,7 @@ Ext.define("Ext.data.schema.ManyToOne", {
           leftRecord,
           node,
           fromReader,
-          readOptions,
+          readOptions
         ]),
         rightRecord;
 
@@ -490,6 +490,6 @@ Ext.define("Ext.data.schema.ManyToOne", {
           delete leftRecord.data[this.role];
         }
       }
-    },
-  }),
+    }
+  })
 });

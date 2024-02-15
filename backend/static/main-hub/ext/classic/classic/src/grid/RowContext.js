@@ -57,7 +57,7 @@ Ext.define("Ext.grid.RowContext", {
         // tabbable state unreset, which might lead to undesired results.
         if (focusEl.isTabbable(true)) {
           focusEl.saveTabbableState({
-            includeHidden: true,
+            includeHidden: true
           });
         }
 
@@ -83,10 +83,10 @@ Ext.define("Ext.grid.RowContext", {
           parent: me.ownerGrid.lookupViewModel(),
           data: {
             record: me.record,
-            recordIndex: me.recordIndex,
-          },
+            recordIndex: me.recordIndex
+          }
         },
-        me.ownerGrid.rowViewModel,
+        me.ownerGrid.rowViewModel
       );
     }
 
@@ -95,10 +95,10 @@ Ext.define("Ext.grid.RowContext", {
         Ext.apply(
           {
             viewModel: me.viewModel,
-            _rowContext: me,
+            _rowContext: me
           },
-          widgetCfg,
-        ),
+          widgetCfg
+        )
       );
 
       // Components initialize binding on render.
@@ -140,5 +140,5 @@ Ext.define("Ext.grid.RowContext", {
     Ext.destroy(me.viewModel);
 
     me.callParent();
-  },
+  }
 });

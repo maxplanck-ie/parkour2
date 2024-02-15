@@ -9,17 +9,17 @@ Ext.define("Ext.fx.layout.card.Slide", {
   config: {
     inAnimation: {
       type: "slide",
-      easing: "ease-out",
+      easing: "ease-out"
     },
     outAnimation: {
       type: "slide",
       easing: "ease-out",
-      out: true,
-    },
+      out: true
+    }
   },
 
   updateReverse: function (reverse) {
     this.getInAnimation().setReverse(reverse);
     this.getOutAnimation().setReverse(reverse);
-  },
+  }
 });

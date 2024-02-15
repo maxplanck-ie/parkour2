@@ -14,16 +14,16 @@ describe("Modern Ext.draw.Matrix", function () {
     expect(matrix.inverse().elements).toEqual([-2, 1, 1.5, -0.5, 1, -2]);
     expect(matrix.inverse().inverse().equals(matrix)).toBeTruthy();
     expect(matrix.inverse().appendMatrix(matrix).elements).toEqual([
-      1, 0, 0, 1, 0, 0,
+      1, 0, 0, 1, 0, 0
     ]);
     expect(matrix.clone().appendMatrix(matrix.inverse()).elements).toEqual([
-      1, 0, 0, 1, 0, 0,
+      1, 0, 0, 1, 0, 0
     ]);
     expect(matrix.inverse().prependMatrix(matrix.clone()).elements).toEqual([
-      1, 0, 0, 1, 0, 0,
+      1, 0, 0, 1, 0, 0
     ]);
     expect(matrix.clone().prependMatrix(matrix.inverse()).elements).toEqual([
-      1, 0, 0, 1, 0, 0,
+      1, 0, 0, 1, 0, 0
     ]);
   });
 });

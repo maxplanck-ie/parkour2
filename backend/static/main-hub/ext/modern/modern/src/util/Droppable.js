@@ -3,7 +3,7 @@
  */
 Ext.define("Ext.util.Droppable", {
   mixins: {
-    observable: "Ext.mixin.Observable",
+    observable: "Ext.mixin.Observable"
   },
 
   config: {
@@ -11,7 +11,7 @@ Ext.define("Ext.util.Droppable", {
      * The base CSS class to apply to this component's element.
      * This will also be prepended to other elements within this component.
      */
-    baseCls: Ext.baseCSSPrefix + "droppable",
+    baseCls: Ext.baseCSSPrefix + "droppable"
   },
 
   /**
@@ -134,7 +134,7 @@ Ext.define("Ext.util.Droppable", {
         drag: this.onDrag,
         beforedragend: this.onBeforeDragEnd,
         dragend: this.onDragEnd,
-        scope: this,
+        scope: this
       });
 
       if (this.isDragOver(draggable)) {
@@ -148,7 +148,7 @@ Ext.define("Ext.util.Droppable", {
           this.el.removeCls(this.invalidCls);
         },
         scope: this,
-        single: true,
+        single: true
       });
       this.el.addCls(this.invalidCls);
     }
@@ -201,7 +201,7 @@ Ext.define("Ext.util.Droppable", {
       drag: this.onDrag,
       beforedragend: this.onBeforeDragEnd,
       dragend: this.onDragEnd,
-      scope: this,
+      scope: this
     });
 
     if (this.canDrop) {
@@ -224,7 +224,7 @@ Ext.define("Ext.util.Droppable", {
     }
     this.mgr.on({
       dragstart: this.onDragStart,
-      scope: this,
+      scope: this
     });
     this.disabled = false;
   },
@@ -235,7 +235,7 @@ Ext.define("Ext.util.Droppable", {
   disable: function () {
     this.mgr.un({
       dragstart: this.onDragStart,
-      scope: this,
+      scope: this
     });
     this.disabled = true;
   },
@@ -254,5 +254,5 @@ Ext.define("Ext.util.Droppable", {
    */
   isMonitoring: function () {
     return this.monitoring;
-  },
+  }
 });

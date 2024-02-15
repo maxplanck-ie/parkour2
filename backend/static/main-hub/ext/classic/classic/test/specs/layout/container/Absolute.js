@@ -17,9 +17,9 @@ describe("Ext.layout.container.Absolute", function () {
           hidden: true,
           x: 200,
           y: 100,
-          anchor: "-5 -50",
-        },
-      ],
+          anchor: "-5 -50"
+        }
+      ]
     });
 
     var c = ct.items.first();

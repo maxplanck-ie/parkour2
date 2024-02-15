@@ -5,8 +5,8 @@ describe("Ext.grid.Tree", function () {
       extend: "Ext.data.TreeModel",
       fields: ["id", "text", "secondaryId"],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     }),
     tree,
     container,
@@ -30,7 +30,7 @@ describe("Ext.grid.Tree", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -60,24 +60,24 @@ describe("Ext.grid.Tree", function () {
 
                     // Add cls. Tests must not throw errors with this present.
                     cls: "test-EXTJS-16367",
-                    children: nodes,
+                    children: nodes
                   },
-                  rootCfg,
-                ),
+                  rootCfg
+                )
               },
-              storeCfg,
-            ),
+              storeCfg
+            )
           )),
           width: 200,
-          height: 300,
+          height: 300
         },
-        cfg,
-      ),
+        cfg
+      )
     );
     rootNode = store.getRootNode();
     container = tree.container;
     tree.onContainerResize(container, {
-      height: container.element.getHeight(),
+      height: container.element.getHeight()
     });
 
     // Need because of async response to flex
@@ -101,21 +101,21 @@ describe("Ext.grid.Tree", function () {
                 id: "C",
                 text: "C",
                 secondaryId: "C",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "D",
                 text: "D",
                 secondaryId: "D",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "E",
             text: "E",
             secondaryId: "EE",
-            leaf: true,
+            leaf: true
           },
           {
             id: "F",
@@ -131,13 +131,13 @@ describe("Ext.grid.Tree", function () {
                     id: "H",
                     text: "H",
                     secondaryId: "HH",
-                    leaf: true,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    leaf: true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         id: "I",
@@ -153,17 +153,17 @@ describe("Ext.grid.Tree", function () {
                 id: "K",
                 text: "K",
                 secondaryId: "KK",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "L",
             text: "L",
             secondaryId: "LL",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       },
       {
         id: "M",
@@ -174,10 +174,10 @@ describe("Ext.grid.Tree", function () {
             id: "N",
             text: "N",
             secondaryId: "NN",
-            leaf: true,
-          },
-        ],
-      },
+            leaf: true
+          }
+        ]
+      }
     ];
 
     // Override so that we can control asynchronous loading
@@ -200,7 +200,7 @@ describe("Ext.grid.Tree", function () {
   describe("expand and collapse", function () {
     beforeEach(function () {
       makeTree(testNodes, {
-        rootVisible: true,
+        rootVisible: true
       });
     });
 
@@ -274,12 +274,12 @@ describe("Ext.grid.Tree", function () {
           {
             proxy: {
               type: "ajax",
-              url: "fake",
-            },
+              url: "fake"
+            }
           },
           {
-            expanded: true,
-          },
+            expanded: true
+          }
         );
       }).not.toThrow();
     });
@@ -287,7 +287,7 @@ describe("Ext.grid.Tree", function () {
     describe("with invisible root", function () {
       it("should expand the root node by default", function () {
         makeTree(null, {
-          rootVisible: false,
+          rootVisible: false
         });
 
         expect(rootNode.isExpanded()).toBe(true);
@@ -300,13 +300,13 @@ describe("Ext.grid.Tree", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           null,
           {
             // Pretend that the root node is loaded
-            loaded: true,
-          },
+            loaded: true
+          }
         );
 
         expect(rootNode.expand).not.toHaveBeenCalled();
@@ -318,15 +318,15 @@ describe("Ext.grid.Tree", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           {
             autoLoad: false,
             proxy: {
               type: "memory",
-              data: testNodes.children,
-            },
-          },
+              data: testNodes.children
+            }
+          }
         );
 
         expect(rootNode.isExpanded()).toBe(false);
@@ -336,16 +336,16 @@ describe("Ext.grid.Tree", function () {
         makeTree(
           null,
           {
-            rootVisible: false,
+            rootVisible: false
           },
           {
             // Pretend that we're loading the store
             loading: true,
             proxy: {
               type: "memory",
-              data: testNodes.children,
-            },
-          },
+              data: testNodes.children
+            }
+          }
         );
 
         expect(rootNode.isExpanded()).toBe(false);
@@ -358,7 +358,7 @@ describe("Ext.grid.Tree", function () {
       makeTree();
       store.setRootNode({
         expanded: true,
-        children: testNodes,
+        children: testNodes
       });
       expect(store.getCount()).toBe(4);
       expect(store.getAt(0).id).toBe("root");
@@ -371,7 +371,7 @@ describe("Ext.grid.Tree", function () {
       makeTree();
       tree.setRootNode({
         expanded: true,
-        children: testNodes,
+        children: testNodes
       });
       expect(store.getCount()).toBe(4);
       expect(store.getAt(0).id).toBe("root");
@@ -384,14 +384,14 @@ describe("Ext.grid.Tree", function () {
       var spy = jasmine.createSpy();
       var root2 = {
         expanded: true,
-        children: testNodes,
+        children: testNodes
       };
       makeTree();
       tree.on({
         beforeitemcollapse: spy,
         beforeitemexpand: spy,
         itemcollapse: spy,
-        itemexpand: spy,
+        itemexpand: spy
       });
       tree.setRootNode(root2);
 
@@ -420,17 +420,17 @@ describe("Ext.grid.Tree", function () {
                 id: "root",
                 text: "Root",
                 children: testNodes,
-                expanded: true,
-              },
-            },
-          },
+                expanded: true
+              }
+            }
+          }
         },
         items: {
           xtype: "tree",
           bind: {
-            store: "{nodes}",
-          },
-        },
+            store: "{nodes}"
+          }
+        }
       });
       var treepanel = tree.down("tree");
 
@@ -453,12 +453,12 @@ describe("Ext.grid.Tree", function () {
       makeTree(
         data,
         {
-          animate: animate,
+          animate: animate
         },
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     }
 
@@ -472,10 +472,10 @@ describe("Ext.grid.Tree", function () {
             children: [
               {
                 text: "B",
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
         var spy = jasmine.createSpy(),
           itemClickSpy = jasmine.createSpy(),
@@ -527,10 +527,10 @@ describe("Ext.grid.Tree", function () {
             children: [
               {
                 text: "B",
-                id: "b",
-              },
-            ],
-          },
+                id: "b"
+              }
+            ]
+          }
         ]);
         var rowCount = tree.query("gridrow").length;
 
@@ -554,7 +554,7 @@ describe("Ext.grid.Tree", function () {
       for (var i = 0; i < 100; i++) {
         testNodes[0].children.push({
           text: "Extra node " + i,
-          id: "extra-node-" + i,
+          id: "extra-node-" + i
         });
       }
       testNodes[0].expanded = true;
@@ -564,12 +564,12 @@ describe("Ext.grid.Tree", function () {
         {
           renderTo: document.body,
           height: 200,
-          width: 400,
+          width: 400
         },
         null,
         {
-          expanded: true,
-        },
+          expanded: true
+        }
       );
     });
 
@@ -586,7 +586,7 @@ describe("Ext.grid.Tree", function () {
   describe("autoexpand collapsed ancestors", function () {
     beforeEach(function () {
       makeTree(testNodes, {
-        height: 250,
+        height: 250
       });
     });
     it("should expand the whole path down to 'G' as well as 'G'", function () {
@@ -739,7 +739,7 @@ describe("Ext.grid.Tree", function () {
             function () {
               expectedScope = this;
             },
-            o,
+            o
           );
           expect(expectedScope).toBe(o);
         });
@@ -787,7 +787,7 @@ describe("Ext.grid.Tree", function () {
             function () {
               expectedScope = this;
             },
-            o,
+            o
           );
           expect(expectedScope).toBe(o);
         });
@@ -818,19 +818,19 @@ describe("Ext.grid.Tree", function () {
           asynchronousLoad: false,
           proxy: {
             type: "ajax",
-            url: "fakeUrl",
+            url: "fakeUrl"
           },
           root: {
             text: "Ext JS",
-            id: "src",
+            id: "src"
           },
           folderSort: true,
           sorters: [
             {
               property: "text",
-              direction: "ASC",
-            },
-          ],
+              direction: "ASC"
+            }
+          ]
         }),
         listeners: {
           beforeitemexpand: function () {
@@ -843,14 +843,14 @@ describe("Ext.grid.Tree", function () {
           },
           load: function () {
             loadOrder = order;
-          },
-        },
+          }
+        }
       });
       tree.getStore().getRoot().expand();
 
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.encode(testNodes),
+        responseText: Ext.encode(testNodes)
       });
 
       // The order of events expected: beforeitemexpand, beforeload, load.
@@ -867,8 +867,8 @@ describe("Ext.grid.Tree", function () {
         fields: ["id", "text", "secondaryId"],
         proxy: {
           type: "ajax",
-          url: "fakeUrl",
-        },
+          url: "fakeUrl"
+        }
       });
 
       makeTree(
@@ -882,21 +882,21 @@ describe("Ext.grid.Tree", function () {
                 id: "node1",
                 text: "Node1",
                 expandable: true,
-                expanded: true,
+                expanded: true
               },
               {
                 id: "node2",
                 text: "Node2",
                 expandable: true,
-                expanded: false,
-              },
-            ],
-          },
+                expanded: false
+              }
+            ]
+          }
         },
         {
           model: ProxyModel,
-          root: null,
-        },
+          root: null
+        }
       );
 
       expect(tree.query("gridrow").length).toBe(3);
@@ -906,9 +906,9 @@ describe("Ext.grid.Tree", function () {
         status: 200,
         responseText: Ext.encode([
           {
-            id: "node1.1",
-          },
-        ]),
+            id: "node1.1"
+          }
+        ])
       });
       expect(tree.query("gridrow").length).toBe(4);
     });
@@ -921,84 +921,84 @@ describe("Ext.grid.Tree", function () {
         children: [
           {
             text: "foo",
-            leaf: true,
+            leaf: true
           },
           {
             text: "bar",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 1",
             children: [
               {
                 text: "foo",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "bar",
-                leaf: true,
-              },
-            ],
-          },
-        ],
+                leaf: true
+              }
+            ]
+          }
+        ]
       },
       {
         text: "Top 2",
         children: [
           {
             text: "foo",
-            leaf: true,
+            leaf: true
           },
           {
             text: "wonk",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 2",
             children: [
               {
                 text: "foo",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "wonk",
-                leaf: true,
-              },
-            ],
-          },
-        ],
+                leaf: true
+              }
+            ]
+          }
+        ]
       },
       {
         text: "Top 3",
         children: [
           {
             text: "zarg",
-            leaf: true,
+            leaf: true
           },
           {
             text: "bar",
-            leaf: true,
+            leaf: true
           },
           {
             text: "Second level 3",
             children: [
               {
                 text: "zarg",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "bar",
-                leaf: true,
-              },
-            ],
-          },
-        ],
-      },
+                leaf: true
+              }
+            ]
+          }
+        ]
+      }
     ];
 
     beforeEach(function () {
       makeTree(treeData, {
-        rootVisible: false,
+        rootVisible: false
       });
     });
 
@@ -1021,7 +1021,7 @@ describe("Ext.grid.Tree", function () {
         filterFn: function (node) {
           return node.get("text") === "foo";
         },
-        id: "testFilter",
+        id: "testFilter"
       });
 
       rootNode.childNodes[0].expand();
@@ -1051,7 +1051,7 @@ describe("Ext.grid.Tree", function () {
         filterFn: function (node) {
           return node.get("text") === "bar";
         },
-        id: "testFilter",
+        id: "testFilter"
       });
 
       expect(tree.query("gridrow").length).toBe(5);
@@ -1105,9 +1105,9 @@ describe("Ext.grid.Tree", function () {
         sorters: [
           {
             property: "text",
-            direction: "ASC",
-          },
-        ],
+            direction: "ASC"
+          }
+        ]
       });
       tree.expandAll();
       bNode = tree.getStore().getNodeById("B");
@@ -1116,7 +1116,7 @@ describe("Ext.grid.Tree", function () {
       // MUST be leaf: true so that the automatically prepended sort by leaf status has no effect.
       bNode.insertChild(0, {
         text: "Z",
-        leaf: true,
+        leaf: true
       });
 
       // Check that we have disrupted the sorted state.
@@ -1156,22 +1156,22 @@ describe("Ext.grid.Tree", function () {
             children: [
               {
                 text: "A",
-                leaf: true,
+                leaf: true
               },
               {
                 text: "B",
-                leaf: true,
-              },
-            ],
-          },
-        },
+                leaf: true
+              }
+            ]
+          }
+        }
       });
 
       var oldRoot = tree.getRootNode();
 
       // The old root should have fireEventArgs overridden
       expect(oldRoot.fireEventArgs).not.toBe(
-        Ext.data.TreeModel.prototype.fireEventArgs,
+        Ext.data.TreeModel.prototype.fireEventArgs
       );
 
       tree.getStore().setRoot({
@@ -1180,18 +1180,18 @@ describe("Ext.grid.Tree", function () {
         children: [
           {
             text: "New A",
-            leaf: true,
+            leaf: true
           },
           {
             text: "New B",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       });
 
       // The old root should have the non-overridden fireEventArgs
       expect(oldRoot.fireEventArgs).toBe(
-        Ext.data.TreeModel.prototype.fireEventArgs,
+        Ext.data.TreeModel.prototype.fireEventArgs
       );
     });
   });
@@ -1203,9 +1203,9 @@ describe("Ext.grid.Tree", function () {
         sorters: [
           {
             property: "text",
-            direction: "ASC",
-          },
-        ],
+            direction: "ASC"
+          }
+        ]
       });
       rootNode.expand();
       var aNode = tree.getStore().getNodeById("A");
@@ -1225,7 +1225,7 @@ describe("Ext.grid.Tree", function () {
   describe("bottom up filtering", function () {
     it("should show path to all filtered in leaf nodes", function () {
       makeTree(testNodes, null, {
-        filterer: "bottomup",
+        filterer: "bottomup"
       });
       tree.expandAll();
 
@@ -1237,7 +1237,7 @@ describe("Ext.grid.Tree", function () {
       store.filter({
         property: "text",
         operator: "=",
-        value: "H",
+        value: "H"
       });
 
       // These nodes must be available

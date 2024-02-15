@@ -20,7 +20,7 @@ Ext.define("Ext.grid.column.RowNumberer", {
   sortable: false,
 
   cell: {
-    xtype: "rownumberercell",
+    xtype: "rownumberercell"
   },
 
   onAdded: function (parent, instanced) {
@@ -31,7 +31,7 @@ Ext.define("Ext.grid.column.RowNumberer", {
     me.storeListeners = me.grid.getStore().on({
       datachanged: me.checkWidth,
       scope: me,
-      destroyable: true,
+      destroyable: true
     });
   },
 
@@ -48,5 +48,5 @@ Ext.define("Ext.grid.column.RowNumberer", {
 
   applyWidth: function (w) {
     return w;
-  },
+  }
 });

@@ -25,16 +25,16 @@ describe("Ext.data.validator.Validator", function () {
       return Ext.data.validator.Validator.create(
         Ext.apply(
           {
-            type: type,
+            type: type
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     };
 
     it("should create a presence validator", function () {
       expect(factory("presence") instanceof Ext.data.validator.Presence).toBe(
-        true,
+        true
       );
     });
 
@@ -53,24 +53,24 @@ describe("Ext.data.validator.Validator", function () {
     it("should create a format validator", function () {
       expect(
         factory("format", {
-          matcher: /foo/,
-        }) instanceof Ext.data.validator.Format,
+          matcher: /foo/
+        }) instanceof Ext.data.validator.Format
       ).toBe(true);
     });
 
     it("should create an inclusion validator", function () {
       expect(
         factory("inclusion", {
-          list: [],
-        }) instanceof Ext.data.validator.Inclusion,
+          list: []
+        }) instanceof Ext.data.validator.Inclusion
       ).toBe(true);
     });
 
     it("should create an exclusion validator", function () {
       expect(
         factory("exclusion", {
-          list: [],
-        }) instanceof Ext.data.validator.Exclusion,
+          list: []
+        }) instanceof Ext.data.validator.Exclusion
       ).toBe(true);
     });
 
@@ -85,11 +85,11 @@ describe("Ext.data.validator.Validator", function () {
     beforeEach(function () {
       Ext.define("Ext.data.validator.Custom", {
         extend: "Ext.data.validator.Validator",
-        alias: "data.validator.custom",
+        alias: "data.validator.custom"
       });
 
       validator = Ext.data.validator.Validator.create({
-        type: "custom",
+        type: "custom"
       });
     });
 
@@ -111,11 +111,11 @@ describe("Ext.data.validator.Validator", function () {
           extend: "Ext.data.Model",
           fields: ["test"],
           validators: {
-            test: validator,
-          },
+            test: validator
+          }
         }),
         record = new Model({
-          test: "Foo",
+          test: "Foo"
         });
 
       record.isValid();

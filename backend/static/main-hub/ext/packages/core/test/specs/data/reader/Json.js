@@ -6,7 +6,7 @@ describe("Ext.data.reader.Json", function () {
     Ext.data.Model.schema.setNamespace("spec");
     Ext.define("spec.JsonReader", {
       extend: "Ext.data.Model",
-      fields: [{ name: "inter", type: "int" }],
+      fields: [{ name: "inter", type: "int" }]
     });
 
     reader = new Ext.data.JsonReader({
@@ -14,7 +14,7 @@ describe("Ext.data.reader.Json", function () {
       totalProperty: "totalProp",
       messageProperty: "messageProp",
       successProperty: "successProp",
-      model: "spec.JsonReader",
+      model: "spec.JsonReader"
     });
   });
 
@@ -35,7 +35,7 @@ describe("Ext.data.reader.Json", function () {
 
     beforeEach(function () {
       data = {
-        inter: 1,
+        inter: 1
       };
     });
 
@@ -64,7 +64,7 @@ describe("Ext.data.reader.Json", function () {
 
     beforeEach(function () {
       Model = Ext.define(null, {
-        extend: "Ext.data.Model",
+        extend: "Ext.data.Model"
       });
 
       reader.destroy();
@@ -78,7 +78,7 @@ describe("Ext.data.reader.Json", function () {
 
     it("should copy the model", function () {
       reader = new Ext.data.reader.Json({
-        model: Model,
+        model: Model
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
@@ -88,7 +88,7 @@ describe("Ext.data.reader.Json", function () {
     it("should copy the record", function () {
       reader = new Ext.data.reader.Json({
         model: Model,
-        record: "foo",
+        record: "foo"
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
@@ -97,9 +97,9 @@ describe("Ext.data.reader.Json", function () {
       var result = reader.read([
         {
           foo: {
-            x: 1,
-          },
-        },
+            x: 1
+          }
+        }
       ]);
       expect(result.getRecords()[0].get("x")).toBe(1);
     });
@@ -107,14 +107,14 @@ describe("Ext.data.reader.Json", function () {
     it("should copy the totalProperty", function () {
       reader = new Ext.data.reader.Json({
         model: Model,
-        totalProperty: "aTotal",
+        totalProperty: "aTotal"
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
       expect(copy.getTotalProperty()).toBe("aTotal");
 
       var result = reader.read({
-        aTotal: 1000,
+        aTotal: 1000
       });
       expect(result.getTotal()).toBe(1000);
     });
@@ -122,14 +122,14 @@ describe("Ext.data.reader.Json", function () {
     it("should copy the successProperty", function () {
       reader = new Ext.data.reader.Json({
         model: Model,
-        successProperty: "aSuccess",
+        successProperty: "aSuccess"
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
       expect(copy.getSuccessProperty()).toBe("aSuccess");
 
       var result = reader.read({
-        aSuccess: false,
+        aSuccess: false
       });
       expect(result.getSuccess()).toBe(false);
     });
@@ -137,14 +137,14 @@ describe("Ext.data.reader.Json", function () {
     it("should copy the messageProperty", function () {
       reader = new Ext.data.reader.Json({
         model: Model,
-        messageProperty: "aMessage",
+        messageProperty: "aMessage"
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
       expect(copy.getMessageProperty()).toBe("aMessage");
 
       var result = reader.read({
-        aMessage: "Some Message",
+        aMessage: "Some Message"
       });
       expect(result.getMessage()).toBe("Some Message");
     });
@@ -152,14 +152,14 @@ describe("Ext.data.reader.Json", function () {
     it("should copy the rootProperty", function () {
       reader = new Ext.data.reader.Json({
         model: Model,
-        rootProperty: "aRoot",
+        rootProperty: "aRoot"
       });
       copy = new Ext.data.reader.Json();
       copy.copyFrom(reader);
       expect(copy.getRootProperty()).toBe("aRoot");
 
       var result = reader.read({
-        aRoot: [{}, {}, {}, {}],
+        aRoot: [{}, {}, {}, {}]
       });
       expect(result.getCount()).toBe(4);
     });
@@ -169,7 +169,7 @@ describe("Ext.data.reader.Json", function () {
     it("should not use the raw data object for the model if set to true", function () {
       reader.setPreserveRawData(true);
       var o = {
-        inter: 1,
+        inter: 1
       };
 
       var rec = reader.readRecords([o]).getRecords()[0];
@@ -181,7 +181,7 @@ describe("Ext.data.reader.Json", function () {
     it("should be able to modify the raw data object for the model if set to false", function () {
       reader.setPreserveRawData(false);
       var o = {
-        inter: 1,
+        inter: 1
       };
 
       var rec = reader.readRecords([o]).getRecords()[0];
@@ -200,10 +200,10 @@ describe("Ext.data.reader.Json", function () {
         reader = new Ext.data.reader.Json(
           Ext.applyIf(
             {
-              model: "spec.JsonReader",
+              model: "spec.JsonReader"
             },
-            cfg,
-          ),
+            cfg
+          )
         );
         reader.buildExtractors(true);
       };
@@ -220,10 +220,10 @@ describe("Ext.data.reader.Json", function () {
         successProperty: function () {
           actual = this;
           return true;
-        },
+        }
       });
       reader.getSuccess({
-        success: true,
+        success: true
       });
       expect(actual).toBe(reader);
     });
@@ -237,26 +237,26 @@ describe("Ext.data.reader.Json", function () {
         createReader();
         expect(
           reader.getTotal({
-            total: 5,
-          }),
+            total: 5
+          })
         ).toBe(5);
       });
 
       it("should have no getTotal method if the totalProperty isn't specified", function () {
         createReader({
-          totalProperty: "",
+          totalProperty: ""
         });
         expect(reader.getTotal).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          totalProperty: "foo",
+          totalProperty: "foo"
         });
         expect(
           reader.getTotal({
-            foo: 10,
-          }),
+            foo: 10
+          })
         ).toBe(10);
       });
 
@@ -264,83 +264,83 @@ describe("Ext.data.reader.Json", function () {
         createReader({
           totalProperty: function (data) {
             return data.big.chain.total;
-          },
+          }
         });
         expect(
           reader.getTotal({
             big: {
               chain: {
-                total: 65,
-              },
-            },
-          }),
+                total: 65
+              }
+            }
+          })
         ).toBe(65);
       });
 
       describe("JSON", function () {
         it("should read dot notation", function () {
           createReader({
-            totalProperty: "big.chain.total",
+            totalProperty: "big.chain.total"
           });
           expect(
             reader.getTotal({
               big: {
                 chain: {
-                  total: 43,
-                },
-              },
-            }),
+                  total: 43
+                }
+              }
+            })
           ).toBe(43);
         });
 
         it("should read array notation for numeric values", function () {
           createReader({
-            totalProperty: "values[0]",
+            totalProperty: "values[0]"
           });
           expect(
             reader.getTotal({
-              values: [9],
-            }),
+              values: [9]
+            })
           ).toBe(9);
         });
 
         it("should read array notation for property names", function () {
           createReader({
-            totalProperty: '["foo-bar"]',
+            totalProperty: '["foo-bar"]'
           });
           expect(
             reader.getTotal({
-              "foo-bar": 16,
-            }),
+              "foo-bar": 16
+            })
           ).toBe(16);
         });
 
         it("should read array/dot notation", function () {
           createReader({
-            totalProperty: "big[0].chain.total",
+            totalProperty: "big[0].chain.total"
           });
           expect(
             reader.getTotal({
               big: [
                 {
                   chain: {
-                    total: 17,
-                  },
-                },
-              ],
-            }),
+                    total: 17
+                  }
+                }
+              ]
+            })
           ).toBe(17);
         });
 
         it("should not read dot chains if simple accessors are used", function () {
           createReader({
             totalProperty: "some.big.chain",
-            useSimpleAccessors: true,
+            useSimpleAccessors: true
           });
           expect(
             reader.getTotal({
-              "some.big.chain": 88,
-            }),
+              "some.big.chain": 88
+            })
           ).toBe(88);
         });
       });
@@ -351,26 +351,26 @@ describe("Ext.data.reader.Json", function () {
         createReader();
         expect(
           reader.getSuccess({
-            success: true,
-          }),
+            success: true
+          })
         ).toBe(true);
       });
 
       it("should have no getSuccess method if the successProperty isn't specified", function () {
         createReader({
-          successProperty: "",
+          successProperty: ""
         });
         expect(reader.getSuccess).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          successProperty: "foo",
+          successProperty: "foo"
         });
         expect(
           reader.getSuccess({
-            foo: false,
-          }),
+            foo: false
+          })
         ).toBe(false);
       });
 
@@ -378,83 +378,83 @@ describe("Ext.data.reader.Json", function () {
         createReader({
           successProperty: function (data) {
             return data.big.chain.success;
-          },
+          }
         });
         expect(
           reader.getSuccess({
             big: {
               chain: {
-                success: true,
-              },
-            },
-          }),
+                success: true
+              }
+            }
+          })
         ).toBe(true);
       });
 
       describe("JSON", function () {
         it("should read dot notation", function () {
           createReader({
-            successProperty: "big.chain.success",
+            successProperty: "big.chain.success"
           });
           expect(
             reader.getSuccess({
               big: {
                 chain: {
-                  success: true,
-                },
-              },
-            }),
+                  success: true
+                }
+              }
+            })
           ).toBe(true);
         });
 
         it("should read array notation for numeric values", function () {
           createReader({
-            successProperty: "values[0]",
+            successProperty: "values[0]"
           });
           expect(
             reader.getSuccess({
-              values: [false],
-            }),
+              values: [false]
+            })
           ).toBe(false);
         });
 
         it("should read array notation for property names", function () {
           createReader({
-            successProperty: '["foo-bar"]',
+            successProperty: '["foo-bar"]'
           });
           expect(
             reader.getSuccess({
-              "foo-bar": false,
-            }),
+              "foo-bar": false
+            })
           ).toBe(false);
         });
 
         it("should read array/dot notation", function () {
           createReader({
-            successProperty: "big[0].chain.success",
+            successProperty: "big[0].chain.success"
           });
           expect(
             reader.getSuccess({
               big: [
                 {
                   chain: {
-                    success: true,
-                  },
-                },
-              ],
-            }),
+                    success: true
+                  }
+                }
+              ]
+            })
           ).toBe(true);
         });
 
         it("should not read dot chains if simple accessors are used", function () {
           createReader({
             successProperty: "some.big.chain",
-            useSimpleAccessors: true,
+            useSimpleAccessors: true
           });
           expect(
             reader.getSuccess({
-              "some.big.chain": true,
-            }),
+              "some.big.chain": true
+            })
           ).toBe(true);
         });
       });
@@ -468,19 +468,19 @@ describe("Ext.data.reader.Json", function () {
 
       it("should have no getMessage method if the messageProperty isn't specified", function () {
         createReader({
-          successProperty: "",
+          successProperty: ""
         });
         expect(reader.getSuccess).toBeUndefined();
       });
 
       it("should read the specified property name", function () {
         createReader({
-          messageProperty: "foo",
+          messageProperty: "foo"
         });
         expect(
           reader.getMessage({
-            foo: false,
-          }),
+            foo: false
+          })
         ).toBe(false);
       });
 
@@ -488,83 +488,83 @@ describe("Ext.data.reader.Json", function () {
         createReader({
           messageProperty: function (data) {
             return data.big.chain.message;
-          },
+          }
         });
         expect(
           reader.getMessage({
             big: {
               chain: {
-                message: "msg",
-              },
-            },
-          }),
+                message: "msg"
+              }
+            }
+          })
         ).toBe("msg");
       });
 
       describe("JSON", function () {
         it("should read dot notation", function () {
           createReader({
-            messageProperty: "big.chain.message",
+            messageProperty: "big.chain.message"
           });
           expect(
             reader.getMessage({
               big: {
                 chain: {
-                  message: "some message",
-                },
-              },
-            }),
+                  message: "some message"
+                }
+              }
+            })
           ).toBe("some message");
         });
 
         it("should read array notation for numeric values", function () {
           createReader({
-            messageProperty: "values[0]",
+            messageProperty: "values[0]"
           });
           expect(
             reader.getMessage({
-              values: ["a message"],
-            }),
+              values: ["a message"]
+            })
           ).toBe("a message");
         });
 
         it("should read array notation for property names", function () {
           createReader({
-            messageProperty: '["foo-bar"]',
+            messageProperty: '["foo-bar"]'
           });
           expect(
             reader.getMessage({
-              "foo-bar": "new msg",
-            }),
+              "foo-bar": "new msg"
+            })
           ).toBe("new msg");
         });
 
         it("should read array/dot notation", function () {
           createReader({
-            messageProperty: "big[0].chain.message",
+            messageProperty: "big[0].chain.message"
           });
           expect(
             reader.getMessage({
               big: [
                 {
                   chain: {
-                    message: "stuff",
-                  },
-                },
-              ],
-            }),
+                    message: "stuff"
+                  }
+                }
+              ]
+            })
           ).toBe("stuff");
         });
 
         it("should not read dot chains if simple accessors are used", function () {
           createReader({
             messageProperty: "some.big.chain",
-            useSimpleAccessors: true,
+            useSimpleAccessors: true
           });
           expect(
             reader.getMessage({
-              "some.big.chain": "data",
-            }),
+              "some.big.chain": "data"
+            })
           ).toBe("data");
         });
       });
@@ -580,7 +580,7 @@ describe("Ext.data.reader.Json", function () {
       it("default to a function returning the main object root isn't specified", function () {
         var data = [];
         createReader({
-          rootProperty: "",
+          rootProperty: ""
         });
         expect(reader.getRoot(data)).toBe(data);
       });
@@ -588,12 +588,12 @@ describe("Ext.data.reader.Json", function () {
       it("should read the specified property name", function () {
         var data = [];
         createReader({
-          rootProperty: "foo",
+          rootProperty: "foo"
         });
         expect(
           reader.getRoot({
-            foo: data,
-          }),
+            foo: data
+          })
         ).toBe(data);
       });
 
@@ -602,16 +602,16 @@ describe("Ext.data.reader.Json", function () {
         createReader({
           rootProperty: function (data) {
             return data.big.chain.root;
-          },
+          }
         });
         expect(
           reader.getRoot({
             big: {
               chain: {
-                root: data,
-              },
-            },
-          }),
+                root: data
+              }
+            }
+          })
         ).toBe(data);
       });
 
@@ -619,58 +619,58 @@ describe("Ext.data.reader.Json", function () {
         it("should read dot notation", function () {
           var data = [];
           createReader({
-            rootProperty: "big.chain.root",
+            rootProperty: "big.chain.root"
           });
           expect(
             reader.getRoot({
               big: {
                 chain: {
-                  root: data,
-                },
-              },
-            }),
+                  root: data
+                }
+              }
+            })
           ).toBe(data);
         });
 
         it("should read array notation for numeric values", function () {
           var data = [];
           createReader({
-            rootProperty: "values[0]",
+            rootProperty: "values[0]"
           });
           expect(
             reader.getRoot({
-              values: [data],
-            }),
+              values: [data]
+            })
           ).toBe(data);
         });
 
         it("should read array notation for property names", function () {
           var data = [];
           createReader({
-            rootProperty: '["foo-bar"]',
+            rootProperty: '["foo-bar"]'
           });
           expect(
             reader.getRoot({
-              "foo-bar": data,
-            }),
+              "foo-bar": data
+            })
           ).toBe(data);
         });
 
         it("should read array/dot notation", function () {
           var data = [];
           createReader({
-            rootProperty: "big[0].chain.root",
+            rootProperty: "big[0].chain.root"
           });
           expect(
             reader.getRoot({
               big: [
                 {
                   chain: {
-                    root: data,
-                  },
-                },
-              ],
-            }),
+                    root: data
+                  }
+                }
+              ]
+            })
           ).toBe(data);
         });
 
@@ -678,12 +678,12 @@ describe("Ext.data.reader.Json", function () {
           var data = [];
           createReader({
             rootProperty: "some.big.chain",
-            useSimpleAccessors: true,
+            useSimpleAccessors: true
           });
           expect(
             reader.getRoot({
-              "some.big.chain": data,
-            }),
+              "some.big.chain": data
+            })
           ).toBe(data);
         });
       });
@@ -691,19 +691,19 @@ describe("Ext.data.reader.Json", function () {
 
     describe("fields", function () {
       var rawOptions = {
-        recordCreator: Ext.identityFn,
+        recordCreator: Ext.identityFn
       };
 
       beforeEach(function () {
         createReader = function (fields, simple) {
           Ext.define("spec.JsonFieldTest", {
             extend: "Ext.data.Model",
-            fields: fields,
+            fields: fields
           });
           reader = new Ext.data.reader.Json({
             model: "spec.JsonFieldTest",
             fields: fields,
-            useSimpleAccessors: simple || false,
+            useSimpleAccessors: simple || false
           });
         };
       });
@@ -724,8 +724,8 @@ describe("Ext.data.reader.Json", function () {
         createReader([
           {
             name: "field",
-            mapping: "somethingElse",
-          },
+            mapping: "somethingElse"
+          }
         ]);
         var result = reader
           .readRecords([{ somethingElse: "a value" }], rawOptions)
@@ -739,8 +739,8 @@ describe("Ext.data.reader.Json", function () {
             name: "field",
             mapping: function (o) {
               return o.complex.chain.value;
-            },
-          },
+            }
+          }
         ]);
         var result = reader
           .readRecords(
@@ -748,12 +748,12 @@ describe("Ext.data.reader.Json", function () {
               {
                 complex: {
                   chain: {
-                    value: 2,
-                  },
-                },
-              },
+                    value: 2
+                  }
+                }
+              }
             ],
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result.field).toBe(2);
@@ -763,16 +763,16 @@ describe("Ext.data.reader.Json", function () {
         createReader([
           {
             name: "field",
-            mapping: undefined,
+            mapping: undefined
           },
           {
             name: "field2",
-            mapping: null,
+            mapping: null
           },
           {
             name: "field3",
-            mapping: "",
-          },
+            mapping: ""
+          }
         ]);
         var result = reader
           .readRecords(
@@ -780,10 +780,10 @@ describe("Ext.data.reader.Json", function () {
               {
                 field: "val",
                 field2: "val2",
-                field3: "val3",
-              },
+                field3: "val3"
+              }
             ],
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
 
@@ -796,17 +796,17 @@ describe("Ext.data.reader.Json", function () {
         createReader([
           {
             name: "field",
-            mapping: 0,
-          },
+            mapping: 0
+          }
         ]);
         var result1 = reader
           .readRecords(
             [
               {
-                0: "woo",
-              },
+                0: "woo"
+              }
             ],
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         var result2 = reader.readRecords([["T"]], rawOptions).getRecords()[0];
@@ -818,21 +818,21 @@ describe("Ext.data.reader.Json", function () {
         createReader([
           {
             name: "field",
-            mapping: "foo",
-          },
+            mapping: "foo"
+          }
         ]);
         var result = reader
           .readRecords(
             [
               {
-                notFoo: "x",
-              },
+                notFoo: "x"
+              }
             ],
-            rawOptions,
+            rawOptions
           )
           .getRecords()[0];
         expect(result).toEqual({
-          notFoo: "x",
+          notFoo: "x"
         });
         expect(result.hasOwnProperty("field")).toBe(false);
       });
@@ -842,19 +842,19 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "some.value",
-            },
+              mapping: "some.value"
+            }
           ]);
           var result = reader
             .readRecords(
               [
                 {
                   some: {
-                    value: "mapped",
-                  },
-                },
+                    value: "mapped"
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("mapped");
@@ -864,8 +864,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "some.value",
-            },
+              mapping: "some.value"
+            }
           ]);
           var result = reader
             .readRecords(
@@ -873,10 +873,10 @@ describe("Ext.data.reader.Json", function () {
                 {
                   some: {
                     // 'value' is undefined
-                  },
-                },
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBeUndefined(); // default value
@@ -886,8 +886,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "some.deep.nested.value",
-            },
+              mapping: "some.deep.nested.value"
+            }
           ]);
           var result = reader
             .readRecords(
@@ -895,10 +895,10 @@ describe("Ext.data.reader.Json", function () {
                 {
                   some: {
                     // 'deep' and children are undefined
-                  },
-                },
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBeUndefined(); // default value
@@ -908,17 +908,17 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "values[0]",
-            },
+              mapping: "values[0]"
+            }
           ]);
           var result = reader
             .readRecords(
               [
                 {
-                  values: ["a"],
-                },
+                  values: ["a"]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("a");
@@ -928,17 +928,17 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["a-prop"]',
-            },
+              mapping: '["a-prop"]'
+            }
           ]);
           var result = reader
             .readRecords(
               [
                 {
-                  "a-prop": "woo",
-                },
+                  "a-prop": "woo"
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("woo");
@@ -948,8 +948,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "big[0].chain.value",
-            },
+              mapping: "big[0].chain.value"
+            }
           ]);
           var result = reader
             .readRecords(
@@ -958,13 +958,13 @@ describe("Ext.data.reader.Json", function () {
                   big: [
                     {
                       chain: {
-                        value: 45,
-                      },
-                    },
-                  ],
-                },
+                        value: 45
+                      }
+                    }
+                  ]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe(45);
@@ -974,8 +974,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "big[0].deep.chain.value",
-            },
+              mapping: "big[0].deep.chain.value"
+            }
           ]);
           var result = reader
             .readRecords(
@@ -985,12 +985,12 @@ describe("Ext.data.reader.Json", function () {
                     {
                       deep: {
                         // 'chain' and children are undefined
-                      },
-                    },
-                  ],
-                },
+                      }
+                    }
+                  ]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBeUndefined(); // default value
@@ -1001,19 +1001,19 @@ describe("Ext.data.reader.Json", function () {
             [
               {
                 name: "field",
-                mapping: "a.long.name",
-              },
+                mapping: "a.long.name"
+              }
             ],
-            true,
+            true
           );
           var result = reader
             .readRecords(
               [
                 {
-                  "a.long.name": "sixty",
-                },
+                  "a.long.name": "sixty"
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
 
@@ -1025,19 +1025,19 @@ describe("Ext.data.reader.Json", function () {
             [
               {
                 name: "field",
-                mapping: "a.long.name",
-              },
+                mapping: "a.long.name"
+              }
             ],
-            true,
+            true
           );
           var result = reader
             .readRecords(
               [
                 {
                   // 'a.long.name' is undefined
-                },
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBeUndefined();
@@ -1047,18 +1047,18 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["foo.bar.baz"]',
-            },
+              mapping: '["foo.bar.baz"]'
+            }
           ]);
 
           var result = reader
             .readRecords(
               [
                 {
-                  "foo.bar.baz": "x",
-                },
+                  "foo.bar.baz": "x"
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1068,8 +1068,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "[2].foo",
-            },
+              mapping: "[2].foo"
+            }
           ]);
 
           var result = reader
@@ -1079,11 +1079,11 @@ describe("Ext.data.reader.Json", function () {
                   1,
                   2,
                   {
-                    foo: "x",
-                  },
-                ],
+                    foo: "x"
+                  }
+                ]
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1093,8 +1093,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '[2]["complex-name"]',
-            },
+              mapping: '[2]["complex-name"]'
+            }
           ]);
 
           var result = reader
@@ -1104,11 +1104,11 @@ describe("Ext.data.reader.Json", function () {
                   1,
                   2,
                   {
-                    "complex-name": "x",
-                  },
-                ],
+                    "complex-name": "x"
+                  }
+                ]
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1118,8 +1118,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "[2][1]",
-            },
+              mapping: "[2][1]"
+            }
           ]);
 
           var result = reader
@@ -1132,8 +1132,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "foo.bar",
-            },
+              mapping: "foo.bar"
+            }
           ]);
 
           var result = reader
@@ -1141,11 +1141,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   foo: {
-                    bar: "x",
-                  },
-                },
+                    bar: "x"
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1155,8 +1155,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: 'foo["complex-name"]',
-            },
+              mapping: 'foo["complex-name"]'
+            }
           ]);
 
           var result = reader
@@ -1164,11 +1164,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   foo: {
-                    "complex-name": "x",
-                  },
-                },
+                    "complex-name": "x"
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1178,18 +1178,18 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: "foo[2]",
-            },
+              mapping: "foo[2]"
+            }
           ]);
 
           var result = reader
             .readRecords(
               [
                 {
-                  foo: [1, 2, 3, 4],
-                },
+                  foo: [1, 2, 3, 4]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe(3);
@@ -1199,8 +1199,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["complex-name"].foo',
-            },
+              mapping: '["complex-name"].foo'
+            }
           ]);
 
           var result = reader
@@ -1208,11 +1208,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   "complex-name": {
-                    foo: "x",
-                  },
-                },
+                    foo: "x"
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1222,8 +1222,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["complex-name"]["other-prop"]',
-            },
+              mapping: '["complex-name"]["other-prop"]'
+            }
           ]);
 
           var result = reader
@@ -1231,11 +1231,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   "complex-name": {
-                    "other-prop": "x",
-                  },
-                },
+                    "other-prop": "x"
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1245,18 +1245,18 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["complex-name"][1]',
-            },
+              mapping: '["complex-name"][1]'
+            }
           ]);
 
           var result = reader
             .readRecords(
               [
                 {
-                  "complex-name": [1, 2, 3, 4],
-                },
+                  "complex-name": [1, 2, 3, 4]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe(2);
@@ -1266,8 +1266,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: 'foo["complex-name"][2]',
-            },
+              mapping: 'foo["complex-name"][2]'
+            }
           ]);
 
           var result = reader
@@ -1275,11 +1275,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   foo: {
-                    "complex-name": [1, 2, 3, 4],
-                  },
-                },
+                    "complex-name": [1, 2, 3, 4]
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe(3);
@@ -1289,8 +1289,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: 'foo[1]["complex-name"]',
-            },
+              mapping: 'foo[1]["complex-name"]'
+            }
           ]);
 
           var result = reader
@@ -1300,12 +1300,12 @@ describe("Ext.data.reader.Json", function () {
                   foo: [
                     1,
                     {
-                      "complex-name": "x",
-                    },
-                  ],
-                },
+                      "complex-name": "x"
+                    }
+                  ]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1315,8 +1315,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["complex-name"].foo[1]',
-            },
+              mapping: '["complex-name"].foo[1]'
+            }
           ]);
 
           var result = reader
@@ -1324,11 +1324,11 @@ describe("Ext.data.reader.Json", function () {
               [
                 {
                   "complex-name": {
-                    foo: [1, 2, 3],
-                  },
-                },
+                    foo: [1, 2, 3]
+                  }
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe(2);
@@ -1338,8 +1338,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '["complex-name"][1].foo',
-            },
+              mapping: '["complex-name"][1].foo'
+            }
           ]);
 
           var result = reader
@@ -1349,12 +1349,12 @@ describe("Ext.data.reader.Json", function () {
                   "complex-name": [
                     1,
                     {
-                      foo: "x",
-                    },
-                  ],
-                },
+                      foo: "x"
+                    }
+                  ]
+                }
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1364,8 +1364,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '[1].foo["complex-name"]',
-            },
+              mapping: '[1].foo["complex-name"]'
+            }
           ]);
 
           var result = reader
@@ -1375,12 +1375,12 @@ describe("Ext.data.reader.Json", function () {
                   1,
                   {
                     foo: {
-                      "complex-name": "x",
-                    },
-                  },
-                ],
+                      "complex-name": "x"
+                    }
+                  }
+                ]
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1390,8 +1390,8 @@ describe("Ext.data.reader.Json", function () {
           createReader([
             {
               name: "field",
-              mapping: '[1]["complex-name"].foo',
-            },
+              mapping: '[1]["complex-name"].foo'
+            }
           ]);
 
           var result = reader
@@ -1401,12 +1401,12 @@ describe("Ext.data.reader.Json", function () {
                   1,
                   {
                     "complex-name": {
-                      foo: "x",
-                    },
-                  },
-                ],
+                      foo: "x"
+                    }
+                  }
+                ]
               ],
-              rawOptions,
+              rawOptions
             )
             .getRecords()[0];
           expect(result.field).toBe("x");
@@ -1430,13 +1430,13 @@ describe("Ext.data.reader.Json", function () {
             type: "string",
             convert: function (v) {
               return "modified/" + v;
-            },
+            }
           },
           {
             name: "withMap",
-            mapping: "someMap",
-          },
-        ],
+            mapping: "someMap"
+          }
+        ]
       });
 
       // Created in global beforeEach
@@ -1448,7 +1448,7 @@ describe("Ext.data.reader.Json", function () {
         successProperty: "successProp",
         totalProperty: "totalProp",
         messageProperty: "message",
-        model: "spec.JsonReaderTest",
+        model: "spec.JsonReaderTest"
       });
 
       data1 = {
@@ -1457,7 +1457,7 @@ describe("Ext.data.reader.Json", function () {
         inter: 8675,
         floater: 1.23,
         string: "Ed",
-        class: "person",
+        class: "person"
       };
 
       data2 = {
@@ -1466,26 +1466,26 @@ describe("Ext.data.reader.Json", function () {
         inter: 309,
         floater: 4.56,
         string: "Nick",
-        class: "person",
+        class: "person"
       };
 
       result1 = reader.readRecords({
         data: [data1],
         successProp: true,
-        totalProp: 2,
+        totalProp: 2
       });
 
       result2 = reader.readRecords({
         data: [data2],
         successProp: false,
         totalProp: 6,
-        message: "Failed",
+        message: "Failed"
       });
 
       result3 = reader.readRecords({
         data: data2,
         successProp: true,
-        totalProp: 6,
+        totalProp: 6
       });
     });
 
@@ -1536,7 +1536,7 @@ describe("Ext.data.reader.Json", function () {
         data: [data2],
         successProp: false,
         totalProp: 6,
-        message: "Failed",
+        message: "Failed"
       });
       expect(result2.getRecords()).toEqual([]);
       expect(result2.getTotal()).toBe(0);
@@ -1552,7 +1552,7 @@ describe("Ext.data.reader.Json", function () {
     it("should be able to load a single record", function () {
       var data = reader
         .readRecords({
-          data: data1,
+          data: data1
         })
         .getRecords()[0]
         .getData();
@@ -1567,7 +1567,7 @@ describe("Ext.data.reader.Json", function () {
       var data = reader
         .readRecords({
           data: [data1, new spec.JsonReaderTest(data2)],
-          successProp: true,
+          successProp: true
         })
         .getRecords()[1]
         .getData();
@@ -1583,13 +1583,13 @@ describe("Ext.data.reader.Json", function () {
         var records = reader
           .readRecords(
             {
-              data: [data1, data2],
+              data: [data1, data2]
             },
             {
               recordCreator: function (o) {
                 return o;
-              },
-            },
+              }
+            }
           )
           .getRecords();
         expect(records[0]).toEqual(data1);
@@ -1602,20 +1602,20 @@ describe("Ext.data.reader.Json", function () {
             {
               data: [
                 {
-                  someMap: "foo",
-                },
-              ],
+                  someMap: "foo"
+                }
+              ]
             },
             {
               recordCreator: function (o) {
                 return o;
-              },
-            },
+              }
+            }
           )
           .getRecords();
         expect(records[0]).toEqual({
           withMap: "foo",
-          someMap: "foo",
+          someMap: "foo"
         });
       });
     });
@@ -1627,7 +1627,7 @@ describe("Ext.data.reader.Json", function () {
     beforeEach(function () {
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["id", "name", "email"],
+        fields: ["id", "name", "email"]
       });
 
       // Created in global beforeEach
@@ -1636,7 +1636,7 @@ describe("Ext.data.reader.Json", function () {
       reader = new Ext.data.reader.Json({
         model: "spec.User",
         rootProperty: "users",
-        record: "user",
+        record: "user"
       });
 
       data = {
@@ -1645,17 +1645,17 @@ describe("Ext.data.reader.Json", function () {
             user: {
               id: 1,
               name: "Ed Spencer",
-              email: "ed@sencha.com",
-            },
+              email: "ed@sencha.com"
+            }
           },
           {
             user: {
               id: 2,
               name: "Abe Elias",
-              email: "abe@sencha.com",
-            },
-          },
-        ],
+              email: "abe@sencha.com"
+            }
+          }
+        ]
       };
 
       resultSet = reader.readRecords(data);
@@ -1684,7 +1684,7 @@ describe("Ext.data.reader.Json", function () {
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
         fields: ["name"],
-        onLoad: function () {},
+        onLoad: function () {}
       });
 
       // Created in global beforeEach
@@ -1698,7 +1698,7 @@ describe("Ext.data.reader.Json", function () {
     it("should call the template method for each record", function () {
       var spy = spyOn(spec.User.prototype, "onLoad");
       reader = new Ext.data.reader.Json({
-        model: "spec.User",
+        model: "spec.User"
       });
       reader.read([
         { id: 1 },
@@ -1707,7 +1707,7 @@ describe("Ext.data.reader.Json", function () {
         { id: 4 },
         { id: 5 },
         { id: 6 },
-        { id: 7 },
+        { id: 7 }
       ]);
       expect(spy.callCount).toBe(7);
     });
@@ -1722,22 +1722,22 @@ describe("Ext.data.reader.Json", function () {
         fields: [
           {
             name: "userId",
-            reference: "User",
-          },
-        ],
+            reference: "User"
+          }
+        ]
       });
       reader = new Ext.data.reader.Json({
-        model: "spec.User",
+        model: "spec.User"
       });
       reader.read([
         {
           id: 1,
           orders: [
             {
-              id: 1,
-            },
-          ],
-        },
+              id: 1
+            }
+          ]
+        }
       ]);
       expect(count).toBe(1);
       Ext.undefine("spec.Order");
@@ -1754,8 +1754,8 @@ describe("Ext.data.reader.Json", function () {
             {
               line1: "525 University Avenue",
               line2: "Suite 23",
-              town: "Palo Alto",
-            },
+              town: "Palo Alto"
+            }
           ],
           orders: [
             {
@@ -1768,8 +1768,8 @@ describe("Ext.data.reader.Json", function () {
                   quantity: 2,
                   product: {
                     id: 1000,
-                    name: "MacBook Pro",
-                  },
+                    name: "MacBook Pro"
+                  }
                 },
                 {
                   id: 21,
@@ -1777,10 +1777,10 @@ describe("Ext.data.reader.Json", function () {
                   quantity: 1,
                   product: {
                     id: 1001,
-                    name: "iPhone",
-                  },
-                },
-              ],
+                    name: "iPhone"
+                  }
+                }
+              ]
             },
             {
               id: 51,
@@ -1792,14 +1792,14 @@ describe("Ext.data.reader.Json", function () {
                   quantity: 1,
                   product: {
                     id: 1002,
-                    name: "iPad",
-                  },
-                },
-              ],
-            },
-          ],
-        },
-      ],
+                    name: "iPad"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
     };
 
     beforeEach(function () {
@@ -1811,27 +1811,27 @@ describe("Ext.data.reader.Json", function () {
         hasMany: [
           {
             type: "spec.Order",
-            role: "orders",
+            role: "orders"
           },
           {
             type: "spec.Address",
-            role: "addresses",
-          },
+            role: "addresses"
+          }
         ],
         proxy: {
           type: "rest",
           reader: {
             type: "json",
-            rootProperty: "users",
-          },
-        },
+            rootProperty: "users"
+          }
+        }
       });
 
       spyOn(Ext.log, "warn");
 
       Ext.define("spec.Address", {
         extend: "Ext.data.Model",
-        fields: ["id", "line1", "line2", "town"],
+        fields: ["id", "line1", "line2", "town"]
       });
 
       Ext.define("spec.Order", {
@@ -1841,13 +1841,13 @@ describe("Ext.data.reader.Json", function () {
         hasMany: {
           type: "spec.OrderItem",
           role: "orderItems",
-          associationKey: "order_items",
-        },
+          associationKey: "order_items"
+        }
       });
 
       Ext.define("spec.OrderItem", {
         extend: "Ext.data.Model",
-        fields: ["id", "price", "quantity", "order_id", "product_id"],
+        fields: ["id", "price", "quantity", "order_id", "product_id"]
       });
 
       Ext.define("spec.Product", {
@@ -1859,9 +1859,9 @@ describe("Ext.data.reader.Json", function () {
           role: "orderItems",
           inverse: {
             getterName: "getProduct",
-            associationKey: "product",
-          },
-        },
+            associationKey: "product"
+          }
+        }
       });
 
       // Created in global beforeEach
@@ -1880,8 +1880,8 @@ describe("Ext.data.reader.Json", function () {
       return new Ext.data.reader.Json(
         Ext.apply({}, config, {
           model: "spec.User",
-          rootProperty: "users",
-        }),
+          rootProperty: "users"
+        })
       );
     }
 
@@ -1935,17 +1935,17 @@ describe("Ext.data.reader.Json", function () {
             "name",
             {
               name: "projectId",
-              reference: "Project",
-            },
-          ],
+              reference: "Project"
+            }
+          ]
         });
         reader = new Ext.data.reader.Json({
-          model: "spec.Employee",
+          model: "spec.Employee"
         });
         expect(function () {
           reader.read({
             id: 1,
-            name: "Foo",
+            name: "Foo"
           });
         }).not.toThrow();
       });
@@ -1974,9 +1974,9 @@ describe("Ext.data.reader.Json", function () {
       var meta = {
         foo: {
           bar: {
-            baz: o,
-          },
-        },
+            baz: o
+          }
+        }
       };
       reader.readRecords(meta);
       expect(reader.onMetaChange).toHaveBeenCalledWith(o);
@@ -1986,16 +1986,16 @@ describe("Ext.data.reader.Json", function () {
   describe("reading xhr", function () {
     var goodResponse = {
         responseText:
-          '{ "success": true, "users": [{"name": "Ben", "location": "Boston"}, {"name": "Mike", "location": "Redwood City"}, {"name": "Nick", "location": "Kansas City"}] }',
+          '{ "success": true, "users": [{"name": "Ben", "location": "Boston"}, {"name": "Mike", "location": "Redwood City"}, {"name": "Nick", "location": "Kansas City"}] }'
       },
       badResponse = {
-        responseText: "this is not JSON",
+        responseText: "this is not JSON"
       };
 
     beforeEach(function () {
       Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name", "location"],
+        fields: ["name", "location"]
       });
 
       // Created in global beforeEach
@@ -2005,8 +2005,8 @@ describe("Ext.data.reader.Json", function () {
         rootProperty: "users",
         model: "spec.User",
         listeners: {
-          exception: function (reader, response, errorMsg, eOpts) {},
-        },
+          exception: function (reader, response, errorMsg, eOpts) {}
+        }
       });
     });
 

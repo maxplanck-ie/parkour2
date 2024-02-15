@@ -137,7 +137,7 @@ Ext.define("Ext.button.Button", {
     "Ext.menu.Manager",
     "Ext.util.ClickRepeater",
     "Ext.util.TextMetrics",
-    "Ext.Glyph",
+    "Ext.Glyph"
   ],
 
   mixins: ["Ext.mixin.Queryable"],
@@ -179,7 +179,7 @@ Ext.define("Ext.button.Button", {
      * @cfg {Number/String} glyph
      * @inheritdoc Ext.panel.Header#glyph
      */
-    glyph: null,
+    glyph: null
   },
 
   /* End Definitions */
@@ -434,7 +434,7 @@ Ext.define("Ext.button.Button", {
     scope: "this",
     SPACE: "onEnterKey",
     ENTER: "onEnterKey",
-    DOWN: "onDownKey",
+    DOWN: "onDownKey"
   },
 
   defaultBindProperty: "text",
@@ -442,7 +442,7 @@ Ext.define("Ext.button.Button", {
   childEls: ["btnEl", "btnWrap", "btnInnerEl", "btnIconEl", "arrowEl"],
 
   publishes: {
-    pressed: 1,
+    pressed: 1
   },
 
   /**
@@ -578,7 +578,7 @@ Ext.define("Ext.button.Button", {
   autoEl: {
     tag: "a",
     hidefocus: "on",
-    unselectable: "on",
+    unselectable: "on"
   },
 
   hasFrameTable: function () {
@@ -721,7 +721,7 @@ Ext.define("Ext.button.Button", {
             "menu button '" +
             me.id +
             "' behavior will conflict with " +
-            "toggling.",
+            "toggling."
         );
       }
 
@@ -732,7 +732,7 @@ Ext.define("Ext.button.Button", {
             "(http://www.w3.org/TR/wai-aria-practices/#menubutton), " +
             "menu button '" +
             me.id +
-            "' cannot behave as a link.",
+            "' cannot behave as a link."
         );
       }
 
@@ -747,7 +747,7 @@ Ext.define("Ext.button.Button", {
             me.id +
             "' should display the menu " +
             "on SPACE and ENTER keys, which will conflict with the " +
-            "button handler.",
+            "button handler."
         );
       }
     }
@@ -870,7 +870,7 @@ Ext.define("Ext.button.Button", {
       menu = Ext.menu.Manager.get(menu, {
         // Use ownerCmp as the upward link. Menus *must have no ownerCt* - they are global floaters.
         // Upward navigation is done using the up() method.
-        ownerCmp: me,
+        ownerCmp: me
       });
       // We need to forcibly set this here because we could be passed an existing menu, which means
       // the config above won't get applied during creation.
@@ -886,7 +886,7 @@ Ext.define("Ext.button.Button", {
       me.mon(menu, {
         scope: me,
         show: me.onMenuShow,
-        hide: me.onMenuHide,
+        hide: me.onMenuHide
       });
 
       // If the button wasn't initially configured with a menu or has previously been unset then we need
@@ -961,14 +961,14 @@ Ext.define("Ext.button.Button", {
         scope: me,
         mouseover: me.onMouseOver,
         mouseout: me.onMouseOut,
-        mousedown: me.onMouseDown,
+        mousedown: me.onMouseDown
       };
       if (me.split) {
         btnListeners.mousemove = me.onMouseMove;
       }
     } else {
       btnListeners = {
-        scope: me,
+        scope: me
       };
     }
 
@@ -982,11 +982,11 @@ Ext.define("Ext.button.Button", {
       me.mon(
         new Ext.util.ClickRepeater(
           btn,
-          Ext.isObject(me.repeat) ? me.repeat : {},
+          Ext.isObject(me.repeat) ? me.repeat : {}
         ),
         "click",
         me.onRepeatClick,
-        me,
+        me
       );
     } else {
       // If the activation event already has a handler, make a note to add the handler later
@@ -1080,7 +1080,7 @@ Ext.define("Ext.button.Button", {
       textAlignCls: btnCls + "-" + me.getTextAlign(),
       arrowElCls: me._arrowElCls,
       arrowElStyle: me.arrowVisible ? "" : "display:none",
-      tabIndex: me.tabIndex,
+      tabIndex: me.tabIndex
     };
   },
 
@@ -1135,7 +1135,7 @@ Ext.define("Ext.button.Button", {
     return href
       ? Ext.urlAppend(
           href,
-          Ext.Object.toQueryString(Ext.apply({}, me.params, me.baseParams)),
+          Ext.Object.toQueryString(Ext.apply({}, me.params, me.baseParams))
         )
       : false;
   },
@@ -1299,7 +1299,7 @@ Ext.define("Ext.button.Button", {
       "glyphchange",
       me,
       glyph && glyph.glyphConfig,
-      oldGlyph && oldGlyph.glyphConfig,
+      oldGlyph && oldGlyph.glyphConfig
     );
     return me;
   },
@@ -1326,10 +1326,10 @@ Ext.define("Ext.button.Button", {
           Ext.tip.QuickTipManager.register(
             Ext.apply(
               {
-                target: me.el.id,
+                target: me.el.id
               },
-              tooltip,
-            ),
+              tooltip
+            )
           );
           me.tooltip = tooltip;
         } else {
@@ -1997,7 +1997,7 @@ Ext.define("Ext.button.Button", {
       btnWrap: "_btnWrapCls",
       btnEl: "_btnCls",
       btnIconEl: "_baseIconCls",
-      btnInnerEl: "_innerCls",
+      btnInnerEl: "_innerCls"
     },
 
     addUIToElement: function () {
@@ -2061,7 +2061,7 @@ Ext.define("Ext.button.Button", {
       if (btnEl) {
         btnEl[me._hasIcon() ? "addCls" : "removeCls"]([
           hasIconCls,
-          hasIconCls + "-" + me.iconAlign,
+          hasIconCls + "-" + me.iconAlign
         ]);
       }
     },
@@ -2098,6 +2098,6 @@ Ext.define("Ext.button.Button", {
     wrapPrimaryEl: function (dom) {
       this.el = new Ext.dom.ButtonElement(dom);
       this.callParent([dom]);
-    },
-  },
+    }
+  }
 });

@@ -7,14 +7,14 @@ Ext.define("Ext.chart.legend.LegendBase", {
     itemTpl: [
       '<span class="',
       Ext.baseCSSPrefix,
-      "legend-item-marker {[ values.disabled ? Ext.baseCSSPrefix + 'legend-item-inactive' : '' ]}\" style=\"background:{mark};\"></span>{name}",
+      "legend-item-marker {[ values.disabled ? Ext.baseCSSPrefix + 'legend-item-inactive' : '' ]}\" style=\"background:{mark};\"></span>{name}"
     ],
     inline: true,
 
     horizontalHeight: 64,
     verticalWidth: 150,
 
-    scrollable: false, // for IE11 vertical align
+    scrollable: false // for IE11 vertical align
   },
 
   constructor: function (config) {
@@ -55,5 +55,5 @@ Ext.define("Ext.chart.legend.LegendBase", {
   onItemTap: function (container, target, index, e) {
     this.callParent(arguments);
     this.toggleItem(index);
-  },
+  }
 });

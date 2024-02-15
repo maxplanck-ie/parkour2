@@ -142,7 +142,7 @@ Ext.define("Ext.layout.component.Auto", {
 
   calculateOwnerHeightFromContentHeight: function (
     ownerContext,
-    contentHeight,
+    contentHeight
   ) {
     return contentHeight + ownerContext.getFrameInfo().height;
   },
@@ -156,7 +156,7 @@ Ext.define("Ext.layout.component.Auto", {
       owner = me.owner,
       height = me.calculateOwnerHeightFromContentHeight(
         ownerContext,
-        contentHeight,
+        contentHeight
       ),
       constrainedHeight,
       dirty,
@@ -168,7 +168,7 @@ Ext.define("Ext.layout.component.Auto", {
       constrainedHeight = Ext.Number.constrain(
         height,
         owner.minHeight,
-        owner.maxHeight,
+        owner.maxHeight
       );
 
       if (constrainedHeight === height) {
@@ -199,7 +199,7 @@ Ext.define("Ext.layout.component.Auto", {
       owner = me.owner,
       width = me.calculateOwnerWidthFromContentWidth(
         ownerContext,
-        contentWidth,
+        contentWidth
       ),
       constrainedWidth,
       dirty,
@@ -211,7 +211,7 @@ Ext.define("Ext.layout.component.Auto", {
       constrainedWidth = Ext.Number.constrain(
         width,
         owner.minWidth,
-        owner.maxWidth,
+        owner.maxWidth
       );
 
       if (constrainedWidth === width) {
@@ -235,5 +235,5 @@ Ext.define("Ext.layout.component.Auto", {
 
       ownerContext.setWidth(width, dirty);
     }
-  },
+  }
 });

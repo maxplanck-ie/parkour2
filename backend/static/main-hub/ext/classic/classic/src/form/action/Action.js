@@ -272,7 +272,7 @@ Ext.define("Ext.form.action.Action", {
       success: me.onSuccess,
       failure: me.onFailure,
       scope: me,
-      timeout: (me.timeout || me.form.timeout) * 1000,
+      timeout: (me.timeout || me.form.timeout) * 1000
     };
   },
 
@@ -311,6 +311,6 @@ Ext.define("Ext.form.action.Action", {
      * in the response's data property.
      * @static
      */
-    LOAD_FAILURE: "load",
-  },
+    LOAD_FAILURE: "load"
+  }
 });

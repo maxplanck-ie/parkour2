@@ -5,5 +5,5 @@ Ext.define("Ext.rtl.grid.plugin.RowEditing", {
     var cfg = this.callParent();
     cfg.rtl = this.grid.getInherited().rtl;
     return cfg;
-  },
+  }
 });

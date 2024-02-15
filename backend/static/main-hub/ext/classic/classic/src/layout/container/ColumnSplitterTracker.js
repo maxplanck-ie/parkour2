@@ -38,5 +38,5 @@ Ext.define("Ext.layout.container.ColumnSplitterTracker", {
     }
 
     owner.updateLayout();
-  },
+  }
 });

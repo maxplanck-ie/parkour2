@@ -8,7 +8,7 @@ describe("Ext.form.field.Trigger", function () {
       config = config || {};
       Ext.applyIf(config, {
         name: "test",
-        width: 100,
+        width: 100
       });
 
       // Suppress console warning about Trigger field being deprecated
@@ -61,7 +61,7 @@ describe("Ext.form.field.Trigger", function () {
     beforeEach(function () {
       makeComponent({
         triggerCls: "my-triggerCls",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -71,7 +71,7 @@ describe("Ext.form.field.Trigger", function () {
       });
       it("should be a child of the bodyEl", function () {
         expect(
-          component.triggerWrap.dom.parentNode === component.bodyEl.dom,
+          component.triggerWrap.dom.parentNode === component.bodyEl.dom
         ).toBe(true);
       });
       it("should have a class of 'x-form-trigger-wrap'", function () {
@@ -104,7 +104,7 @@ describe("Ext.form.field.Trigger", function () {
     beforeEach(function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        onTriggerClick: (spy = jasmine.createSpy()),
+        onTriggerClick: (spy = jasmine.createSpy())
       });
     });
 
@@ -126,7 +126,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should hide the trigger elements when set to true", function () {
         makeComponent({
           hideTrigger: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         allTriggersHidden = true;
         component.triggerEl.each(function (e) {
@@ -140,7 +140,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should not hide the trigger elements when set to false", function () {
         makeComponent({
           hideTrigger: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         allTriggersHidden = true;
         component.triggerEl.each(function (e) {
@@ -159,8 +159,8 @@ describe("Ext.form.field.Trigger", function () {
           triggers: {
             trigger1: { hidden: false },
             trigger2: { hidden: false },
-            trigger3: { hidden: false },
-          },
+            trigger3: { hidden: false }
+          }
         });
         allTriggersHidden = true;
         component.triggerEl.each(function (e) {
@@ -179,8 +179,8 @@ describe("Ext.form.field.Trigger", function () {
           triggers: {
             trigger1: { hidden: true },
             trigger2: { hidden: true },
-            trigger3: { hidden: true },
-          },
+            trigger3: { hidden: true }
+          }
         });
         allTriggersVisible = true;
         component.triggerEl.each(function (e) {
@@ -201,8 +201,8 @@ describe("Ext.form.field.Trigger", function () {
           triggers: {
             trigger1: { hidden: true },
             trigger2: { hidden: false },
-            trigger3: { hidden: true },
-          },
+            trigger3: { hidden: true }
+          }
         });
         triggerVisible = "Failed";
         component.triggerEl.each(function (e) {
@@ -219,8 +219,8 @@ describe("Ext.form.field.Trigger", function () {
           triggers: {
             trigger1: {},
             trigger2: { hidden: true },
-            trigger3: {},
-          },
+            trigger3: {}
+          }
         });
         triggerHidden = "Failed";
         component.triggerEl.each(function (e) {
@@ -236,7 +236,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should hide the trigger elements when passed true", function () {
         makeComponent({
           hideTrigger: false,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setHideTrigger(true);
         allTriggersHidden = true;
@@ -254,8 +254,8 @@ describe("Ext.form.field.Trigger", function () {
           triggers: {
             trigger1: { hidden: false },
             trigger2: { hidden: false },
-            trigger3: { hidden: false },
-          },
+            trigger3: { hidden: false }
+          }
         });
         component.setHideTrigger(true);
         allTriggersHidden = true;
@@ -270,7 +270,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should unhide the trigger elements when passed false", function () {
         makeComponent({
           hideTrigger: true,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setHideTrigger(false);
         allTriggersVisible = true;
@@ -291,9 +291,9 @@ describe("Ext.form.field.Trigger", function () {
               initComponent: function () {
                 this.setHideTrigger(true);
                 this.callParent();
-              },
+              }
             },
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           allTriggersHidden = true;
           component.triggerEl.each(function (e) {
@@ -312,9 +312,9 @@ describe("Ext.form.field.Trigger", function () {
               initComponent: function () {
                 this.setHideTrigger(false);
                 this.callParent();
-              },
+              }
             },
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           allTriggersVisible = true;
           component.triggerEl.each(function (e) {
@@ -334,7 +334,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should set the input to readOnly when set to false", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          editable: false,
+          editable: false
         });
         expect(component.inputEl.dom.readOnly + "").toEqual("true");
       });
@@ -342,7 +342,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should not set the input to readOnly when set to true", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          editable: true,
+          editable: true
         });
         expect(component.inputEl.dom.readOnly + "").toEqual("false");
       });
@@ -352,7 +352,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should set the input to readOnly when passed false", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          editable: true,
+          editable: true
         });
         component.setEditable(false);
         expect(component.inputEl.dom.readOnly + "").toEqual("true");
@@ -361,7 +361,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should not set the input to readOnly when passed true", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          editable: false,
+          editable: false
         });
         component.setEditable(true);
         expect(component.inputEl.dom.readOnly + "").toEqual("false");
@@ -375,7 +375,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should set the input to readOnly when set to true", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          readOnly: true,
+          readOnly: true
         });
 
         expect(component.inputEl.dom.readOnly + "").toEqual("true");
@@ -385,7 +385,7 @@ describe("Ext.form.field.Trigger", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           readOnly: true,
-          onTriggerClick: (spy = jasmine.createSpy()),
+          onTriggerClick: (spy = jasmine.createSpy())
         });
 
         var trigger = component.getTrigger("trigger1");
@@ -397,7 +397,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should not set the input to readOnly when set to false", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          readOnly: false,
+          readOnly: false
         });
         expect(component.inputEl.dom.readOnly + "").toEqual("false");
       });
@@ -405,7 +405,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should hide trigger when readOnly when set to true", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          readOnly: true,
+          readOnly: true
         });
         expect(component.getTrigger("trigger1").isVisible()).toBe(false);
       });
@@ -415,8 +415,8 @@ describe("Ext.form.field.Trigger", function () {
           renderTo: Ext.getBody(),
           readOnly: true,
           triggers: {
-            trigger1: { hideOnReadOnly: false },
-          },
+            trigger1: { hideOnReadOnly: false }
+          }
         });
         expect(component.getTrigger("trigger1").isVisible()).toBe(true);
       });
@@ -427,7 +427,7 @@ describe("Ext.form.field.Trigger", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           readOnly: false,
-          onTriggerClick: (spy = jasmine.createSpy()),
+          onTriggerClick: (spy = jasmine.createSpy())
         });
         clickOn(component.getTrigger("trigger1").el.dom);
         expect(spy).toHaveBeenCalled();
@@ -438,7 +438,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should set the input to readOnly when passing true", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          readOnly: false,
+          readOnly: false
         });
         component.setReadOnly(true);
         expect(component.inputEl.dom.readOnly + "").toEqual("true");
@@ -448,7 +448,7 @@ describe("Ext.form.field.Trigger", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           readOnly: false,
-          onTriggerClick: (spy = jasmine.createSpy()),
+          onTriggerClick: (spy = jasmine.createSpy())
         });
         component.setReadOnly(true);
         clickOn(component.getTrigger("trigger1").el.dom);
@@ -458,7 +458,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should not set the input to readOnly when passing false", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          readOnly: true,
+          readOnly: true
         });
         component.setReadOnly(false);
         expect(component.inputEl.dom.readOnly + "").toEqual("false");
@@ -469,8 +469,8 @@ describe("Ext.form.field.Trigger", function () {
           renderTo: Ext.getBody(),
           readOnly: false,
           triggers: {
-            trigger1: { hideOnReadOnly: false },
-          },
+            trigger1: { hideOnReadOnly: false }
+          }
         });
         component.setReadOnly(true);
         expect(component.getTrigger("trigger1").isVisible()).toBe(true);
@@ -480,7 +480,7 @@ describe("Ext.form.field.Trigger", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           readOnly: true,
-          onTriggerClick: (spy = jasmine.createSpy()),
+          onTriggerClick: (spy = jasmine.createSpy())
         });
         component.setReadOnly(false);
         clickOn(component.getTrigger("trigger1").el.dom);
@@ -500,12 +500,12 @@ describe("Ext.form.field.Trigger", function () {
         listeners: {
           blur: function () {
             called = true;
-          },
-        },
+          }
+        }
       });
 
       tf = new Ext.form.field.Text({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       component.focus();
@@ -524,7 +524,7 @@ describe("Ext.form.field.Trigger", function () {
       var called = false;
 
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       component.focus();
@@ -558,7 +558,7 @@ describe("Ext.form.field.Trigger", function () {
     describe("single trigger", function () {
       beforeEach(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -590,7 +590,7 @@ describe("Ext.form.field.Trigger", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           trigger2Cls: "foo",
-          onTrigger2Click: Ext.emptyFn,
+          onTrigger2Click: Ext.emptyFn
         });
       });
 
@@ -621,7 +621,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should add a custom overCls on mouseover if specified", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          triggerCls: "bar",
+          triggerCls: "bar"
         });
         triggerEvent(overEvent, 0);
         expect(hasCls("bar-over", 0)).toBe(true);
@@ -630,7 +630,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should remove a custom overCls on mouseout if specified", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          triggerCls: "bar",
+          triggerCls: "bar"
         });
         triggerEvent(overEvent, 0);
         triggerEvent(outEvent, 0);
@@ -640,7 +640,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should add a custom clickCls on mousedown if specified", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          triggerCls: "bar",
+          triggerCls: "bar"
         });
         triggerEvent("mousedown", 0);
         expect(hasCls("bar-click", 0)).toBe(true);
@@ -649,7 +649,7 @@ describe("Ext.form.field.Trigger", function () {
       it("should remove a custom clickCls on mouseup if specified", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          triggerCls: "bar",
+          triggerCls: "bar"
         });
         triggerEvent("mousedown", 0);
         triggerEvent("mouseup", 0);
@@ -658,7 +658,7 @@ describe("Ext.form.field.Trigger", function () {
 
       it("should not attempt to add an overCls if none exists", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         triggerEvent(overEvent, 0);
         expect(hasCls("undefined-over", 0)).toBe(false);
@@ -666,7 +666,7 @@ describe("Ext.form.field.Trigger", function () {
 
       it("should not attempt to add a clickCls if none exists", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         triggerEvent("mousedown", 0);
         expect(hasCls("undefined-over", 0)).toBe(false);

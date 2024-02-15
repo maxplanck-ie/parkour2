@@ -18,8 +18,8 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
 
     toolbar: {
       xtype: "pagingtoolbar",
-      docked: "bottom",
-    },
+      docked: "bottom"
+    }
   },
 
   init: function (grid) {
@@ -37,7 +37,7 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
 
     me.gridListeners = me.storeListeners = Ext.destroy(
       me.gridListeners,
-      me.storeListeners,
+      me.storeListeners
     );
 
     if (oldGrid) {
@@ -49,7 +49,7 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
         updatevisiblecount: "onUpdateVisibleCount",
         storechange: "onStoreChanged",
         destroyable: true,
-        scope: me,
+        scope: me
       });
 
       me.bindStore(grid.getStore());
@@ -73,7 +73,7 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
       refresh: "onTotalCountChange",
       clear: "onTotalCountChange",
       destroyable: true,
-      scope: me,
+      scope: me
     });
 
     /* we have two scenarios:
@@ -108,7 +108,7 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
       totalCount: totalCount,
       totalPages: Ext.Number.isFinite(pageCount) ? pageCount : 1,
       currentPage: store.currentPage,
-      pageSize: pageSize,
+      pageSize: pageSize
     };
   },
 
@@ -143,17 +143,17 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
       toolbar.getSliderField().on({
         change: "onPageChange",
         drag: "onPageSliderDrag",
-        scope: me,
+        scope: me
       });
 
       toolbar.getNextButton().on({
         tap: "onNextPageTap",
-        scope: me,
+        scope: me
       });
 
       toolbar.getPrevButton().on({
         tap: "onPreviousPageTap",
-        scope: me,
+        scope: me
       });
     }
   },
@@ -264,6 +264,6 @@ Ext.define("Ext.grid.plugin.PagingToolbar", {
 
       toolbar.getNextButton().setDisabled(currentPage === totalPages);
       toolbar.getPrevButton().setDisabled(currentPage === 1);
-    },
-  },
+    }
+  }
 });

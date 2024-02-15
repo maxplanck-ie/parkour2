@@ -20,7 +20,7 @@ Ext.onReady(function () {
       "Septiembre",
       "Octubre",
       "Noviembre",
-      "Diciembre",
+      "Diciembre"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -39,7 +39,7 @@ Ext.onReady(function () {
       Sep: 8,
       Oct: 9,
       Nov: 10,
-      Dic: 11,
+      Dic: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -55,7 +55,7 @@ Ext.onReady(function () {
       "Miércoles",
       "Jueves",
       "Viernes",
-      "Sábado",
+      "Sábado"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -75,7 +75,7 @@ Ext.onReady(function () {
         "if (!h || h == 12) { h = 0; }\n" +
         "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
       s: "(A\\.?M\\.?|P\\.?M\\.?|a\\.?m\\.?|p\\.?m\\.?)",
-      calcAtEnd: true,
+      calcAtEnd: true
     };
 
     Ext.Date.parseCodes.S.s = "(?:st|nd|rd|th)";
@@ -87,7 +87,7 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "\u20ac",
       // Spanish Euro
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });

@@ -156,8 +156,8 @@ Ext.define("Ext.Toolbar", {
      */
     layout: {
       type: "hbox",
-      align: "center",
-    },
+      align: "center"
+    }
   },
 
   border: false,
@@ -172,7 +172,7 @@ Ext.define("Ext.Toolbar", {
     if (config.docked == "left" || config.docked == "right") {
       config.layout = {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       };
     }
 
@@ -186,7 +186,7 @@ Ext.define("Ext.Toolbar", {
     if (typeof title == "string") {
       title = {
         title: title,
-        centered: true,
+        centered: true
       };
     }
 
@@ -262,10 +262,10 @@ Ext.define("Ext.Toolbar", {
     if (config === "->") {
       config = {
         xtype: "component",
-        flex: 1,
+        flex: 1
       };
     }
 
     return this.callParent([config]);
-  },
+  }
 });

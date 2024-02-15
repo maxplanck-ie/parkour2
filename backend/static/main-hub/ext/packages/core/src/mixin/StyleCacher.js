@@ -5,7 +5,7 @@ Ext.define("Ext.mixin.StyleCacher", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "stylecacher",
+    id: "stylecacher"
   },
 
   getCachedStyle: function (el, style) {
@@ -20,5 +20,5 @@ Ext.define("Ext.mixin.StyleCacher", {
     }
 
     return cache[style];
-  },
+  }
 });

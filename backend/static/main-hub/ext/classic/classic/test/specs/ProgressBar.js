@@ -6,10 +6,10 @@ describe("Ext.ProgressBar", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          width: 100,
+          width: 100
         },
-        config,
-      ),
+        config
+      )
     );
   }
 
@@ -48,7 +48,7 @@ describe("Ext.ProgressBar", function () {
     describe("value with no text config", function () {
       beforeEach(function () {
         makeProgress({
-          value: 0.42,
+          value: 0.42
         });
       });
 
@@ -68,7 +68,7 @@ describe("Ext.ProgressBar", function () {
     describe("with text config", function () {
       beforeEach(function () {
         makeProgress({
-          text: "0/100",
+          text: "0/100"
         });
       });
 
@@ -89,7 +89,7 @@ describe("Ext.ProgressBar", function () {
   describe("setValue", function () {
     it("should cast undefined to 0", function () {
       makeProgress({
-        value: 50,
+        value: 50
       });
       c.setValue(undefined);
       expect(c.getValue()).toBe(0);
@@ -97,7 +97,7 @@ describe("Ext.ProgressBar", function () {
 
     it("should cast null to 0", function () {
       makeProgress({
-        value: 50,
+        value: 50
       });
       c.setValue(null);
       expect(c.getValue()).toBe(0);
@@ -158,7 +158,7 @@ describe("Ext.ProgressBar", function () {
         scope: c,
         fn: function () {
           this.updateText("Bar");
-        },
+        }
       });
 
       waitsFor(function () {
@@ -182,7 +182,7 @@ describe("Ext.ProgressBar", function () {
       var innerHtml;
       c.wait({
         interval: 100,
-        duration: 1000,
+        duration: 1000
       });
 
       waitsFor(function () {
@@ -264,7 +264,7 @@ describe("Ext.ProgressBar", function () {
     describe("with text", function () {
       beforeEach(function () {
         makeProgress({
-          text: "Complete 10%",
+          text: "Complete 10%"
         });
       });
 

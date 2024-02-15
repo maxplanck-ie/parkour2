@@ -44,7 +44,7 @@ describe("Ext.form.Panel", function () {
         function () {
           createPanel();
           expect(panel[name]).toBe(value);
-        },
+        }
       );
     }
 
@@ -55,7 +55,7 @@ describe("Ext.form.Panel", function () {
       labelWidth: undef,
       labelAlign: undef,
       ariaRole: "presentation",
-      bodyAriaRole: "form",
+      bodyAriaRole: "form"
     };
 
     for (cfg in expected) {
@@ -106,9 +106,9 @@ describe("Ext.form.Panel", function () {
     it("should copy properties to a sub-field if those properties are not already configured on the field", function () {
       createPanel({
         fieldDefaults: {
-          dummyConfig: "foo",
+          dummyConfig: "foo"
         },
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       var field = panel.add({ xtype: "textfield", name: "myfield" });
       expect(field.dummyConfig).toBe("foo");
@@ -117,13 +117,13 @@ describe("Ext.form.Panel", function () {
     it("should not copy properties to a sub-field if those properties are already configured on the field", function () {
       createPanel({
         fieldDefaults: {
-          dummyConfig: "foo",
-        },
+          dummyConfig: "foo"
+        }
       });
       var field = panel.add({
         xtype: "textfield",
         name: "myfield",
-        dummyConfig: "bar",
+        dummyConfig: "bar"
       });
       expect(field.dummyConfig).toBe("bar");
     });
@@ -132,7 +132,7 @@ describe("Ext.form.Panel", function () {
       createPanel({
         renderTo: Ext.getBody(),
         fieldDefaults: {
-          dummyConfig: "foo",
+          dummyConfig: "foo"
         },
         items: {
           xtype: "container",
@@ -142,11 +142,11 @@ describe("Ext.form.Panel", function () {
               xtype: "container",
               items: {
                 xtype: "textfield",
-                itemId: "foo",
-              },
-            },
-          },
-        },
+                itemId: "foo"
+              }
+            }
+          }
+        }
       });
       var field = panel.down("#foo");
       expect(field.dummyConfig).toBe("foo");
@@ -159,9 +159,9 @@ describe("Ext.form.Panel", function () {
         minButtonWidth: 1234,
         buttons: [
           {
-            text: "foo",
-          },
-        ],
+            text: "foo"
+          }
+        ]
       };
       createPanel(panelCfg);
       var docked = panel.getDockedItems();
@@ -174,9 +174,9 @@ describe("Ext.form.Panel", function () {
         buttons: [
           {
             text: "foo",
-            minWidth: 2345,
-          },
-        ],
+            minWidth: 2345
+          }
+        ]
       };
       createPanel(panelCfg);
       var docked = panel.getDockedItems();
@@ -206,7 +206,7 @@ describe("Ext.form.Panel", function () {
     it("should call the startPolling method if the 'pollForChanges' config is true", function () {
       createPanel({
         pollForChanges: true,
-        startPolling: jasmine.createSpy(),
+        startPolling: jasmine.createSpy()
       });
       expect(panel.startPolling).toHaveBeenCalled();
     });
@@ -215,7 +215,7 @@ describe("Ext.form.Panel", function () {
       createPanel({
         pollForChanges: true,
         pollInterval: 12345,
-        startPolling: jasmine.createSpy(),
+        startPolling: jasmine.createSpy()
       });
       expect(panel.startPolling).toHaveBeenCalledWith(12345);
     });
@@ -235,7 +235,7 @@ describe("Ext.form.Panel", function () {
   describe("ARIA", function () {
     beforeEach(function () {
       createPanel({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 

@@ -6,12 +6,12 @@ describe("Ext.app.domain.Direct", function () {
 
     provFoo = new Ext.direct.RemotingProvider({
       id: "foo",
-      url: "/foo",
+      url: "/foo"
     });
 
     provBar = new Ext.direct.PollingProvider({
       id: "bar",
-      url: "/bar",
+      url: "/bar"
     });
 
     handlerFoo = jasmine.createSpy("event handler foo");
@@ -24,9 +24,9 @@ describe("Ext.app.domain.Direct", function () {
     ctrl.listen({
       direct: {
         "#foo": {
-          foo: handlerFoo,
-        },
-      },
+          foo: handlerFoo
+        }
+      }
     });
 
     provFoo.fireEvent("FOO");
@@ -38,9 +38,9 @@ describe("Ext.app.domain.Direct", function () {
     ctrl.listen({
       direct: {
         "#foo": {
-          foo: handlerFoo,
-        },
-      },
+          foo: handlerFoo
+        }
+      }
     });
 
     provFoo.fireEvent("foo");
@@ -52,12 +52,12 @@ describe("Ext.app.domain.Direct", function () {
     ctrl.listen({
       direct: {
         "#foo": {
-          bar: handlerFoo,
+          bar: handlerFoo
         },
         "#bar": {
-          bar: handlerBar,
-        },
-      },
+          bar: handlerBar
+        }
+      }
     });
 
     provBar.fireEvent("bar");
@@ -71,9 +71,9 @@ describe("Ext.app.domain.Direct", function () {
     ctrl.listen({
       direct: {
         "*": {
-          baz: handlerFoo,
-        },
-      },
+          baz: handlerFoo
+        }
+      }
     });
 
     provFoo.fireEvent("baz");
@@ -84,15 +84,15 @@ describe("Ext.app.domain.Direct", function () {
 
   it("passes event arguments correctly", function () {
     var data = {
-      responseText: Ext.encode([{ type: "event", name: "foo", data: "bar" }]),
+      responseText: Ext.encode([{ type: "event", name: "foo", data: "bar" }])
     };
 
     ctrl.listen({
       direct: {
         "*": {
-          data: handlerFoo,
-        },
-      },
+          data: handlerFoo
+        }
+      }
     });
 
     provBar.onData({}, true, data);
@@ -102,8 +102,8 @@ describe("Ext.app.domain.Direct", function () {
       new Ext.direct.Event({
         type: "event",
         name: "foo",
-        data: "bar",
-      }),
+        data: "bar"
+      })
     );
   });
 });

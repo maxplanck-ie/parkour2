@@ -33,7 +33,7 @@ Ext.define(
           element: element,
           callback: me.onElementPainted,
           scope: me,
-          args: [element],
+          args: [element]
         });
       }
     },
@@ -52,9 +52,9 @@ Ext.define(
 
     onElementPainted: function (element) {
       Ext.TaskQueue.requestRead("fire", this, [element, "painted", [element]]);
-    },
+    }
   },
   function (ElementPaint) {
     ElementPaint.instance = new ElementPaint();
-  },
+  }
 );

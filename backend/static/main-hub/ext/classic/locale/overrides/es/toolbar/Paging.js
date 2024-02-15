@@ -8,5 +8,5 @@ Ext.define("Ext.locale.es.toolbar.Paging", {
   lastText: "Última página",
   refreshText: "Actualizar",
   displayMsg: "Mostrando {0} - {1} de {2}",
-  emptyMsg: "Sin datos para mostrar",
+  emptyMsg: "Sin datos para mostrar"
 });

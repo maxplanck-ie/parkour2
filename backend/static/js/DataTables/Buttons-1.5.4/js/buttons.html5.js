@@ -10,7 +10,7 @@
   if (typeof define === "function" && define.amd) {
     // AMD
     define(["jquery", "datatables.net", "datatables.net-buttons"], function (
-      $,
+      $
     ) {
       return factory($, window, document);
     });
@@ -130,11 +130,11 @@
         // note: your browser will automatically convert UTF-16 U+FEFF to EF BB BF
         if (
           /^\s*(?:text\/\S*|application\/xml|\S*\/\S*\+xml)\s*;.*charset\s*=\s*utf-8/i.test(
-            blob.type,
+            blob.type
           )
         ) {
           return new Blob([String.fromCharCode(0xfeff), blob], {
-            type: blob.type,
+            type: blob.type
           });
         }
         return blob;
@@ -151,7 +151,7 @@
           dispatch_all = function () {
             dispatch(
               filesaver,
-              "writestart progress write writeend".split(" "),
+              "writestart progress write writeend".split(" ")
             );
           },
           // on any filesys errors revert to saving with object URLs
@@ -164,7 +164,7 @@
                   ? reader.result
                   : reader.result.replace(
                       /^data:[^;]*;/,
-                      "data:attachment/file;",
+                      "data:attachment/file;"
                     );
                 var popup = view.open(url, "_blank");
                 if (!popup) view.location.href = url;
@@ -215,7 +215,7 @@
         return new FileSaver(
           blob,
           name || blob.name || "download",
-          no_auto_bom,
+          no_auto_bom
         );
       };
     // IE 10+ (native saveAs)
@@ -248,7 +248,7 @@
   })(
     (typeof self !== "undefined" && self) ||
       (typeof window !== "undefined" && window) ||
-      this.content,
+      this.content
   );
 
   // Expose file saver on the DataTables API. Can't attach to `DataTables.Buttons`
@@ -334,7 +334,7 @@
 
     return {
       str: header + body.join(newLine) + footer,
-      rows: body.length,
+      rows: body.length
     };
   };
 
@@ -401,7 +401,7 @@
       _ieExcel =
         _serialiser
           .serializeToString(
-            $.parseXML(excelStrings["xl/worksheets/sheet1.xml"]),
+            $.parseXML(excelStrings["xl/worksheets/sheet1.xml"])
           )
           .indexOf("xmlns:r") === -1;
     }
@@ -434,7 +434,7 @@
 
           for (i = 0, ien = attrs.length; i < ien; i++) {
             var attr = val.createAttribute(
-              attrs[i].name.replace(":", "_dt_b_namespace_token_"),
+              attrs[i].name.replace(":", "_dt_b_namespace_token_")
             );
             attr.value = attrs[i].value;
             worksheet.setAttributeNode(attr);
@@ -775,7 +775,7 @@
       "</cellStyles>" +
       '<dxfs count="0" />' +
       '<tableStyles count="0" defaultTableStyle="TableStyleMedium9" defaultPivotStyle="PivotStyleMedium4" />' +
-      "</styleSheet>",
+      "</styleSheet>"
   };
   // Note we could use 3 `for` loops for the styles, but when gzipped there is
   // virtually no difference in size, since the above can be easily compressed
@@ -790,14 +790,14 @@
       style: 60,
       fmt: function (d) {
         return d / 100;
-      },
+      }
     }, // Precent with d.p.
     {
       match: /^\-?\d+\.?\d*%$/,
       style: 56,
       fmt: function (d) {
         return d / 100;
-      },
+      }
     }, // Percent
     { match: /^\-?\$[\d,]+.?\d*$/, style: 57 }, // Dollars
     { match: /^\-?£[\d,]+.?\d*$/, style: 58 }, // Pounds
@@ -809,17 +809,17 @@
       style: 61,
       fmt: function (d) {
         return -1 * d.replace(/[\(\)]/g, "");
-      },
+      }
     }, // Negative numbers indicated by brackets
     {
       match: /^\([\d,]+\.\d{2}\)$/,
       style: 62,
       fmt: function (d) {
         return -1 * d.replace(/[\(\)]/g, "");
-      },
+      }
     }, // Negative numbers indicated by brackets - 2d.p.
     { match: /^\-?[\d,]+$/, style: 63 }, // Numbers with thousand separators
-    { match: /^\-?[\d,]+\.\d{2}$/, style: 64 }, // Numbers with 2 d.p. and thousands separators
+    { match: /^\-?[\d,]+\.\d{2}$/, style: 64 } // Numbers with 2 d.p. and thousands separators
   ];
 
   /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -850,7 +850,7 @@
         overflow: "hidden",
         position: "fixed",
         top: 0,
-        left: 0,
+        left: 0
       });
 
       if (info.title) {
@@ -888,11 +888,11 @@
                 "buttons.copySuccess",
                 {
                   1: "Copied one row to clipboard",
-                  _: "Copied %d rows to clipboard",
+                  _: "Copied %d rows to clipboard"
                 },
-                exportData.rows,
+                exportData.rows
               ),
-              2000,
+              2000
             );
 
             this.processing(false);
@@ -907,15 +907,15 @@
           dt.i18n(
             "buttons.copyKeys",
             "Press <i>ctrl</i> or <i>\u2318</i> + <i>C</i> to copy the table data<br>to your system clipboard.<br><br>" +
-              "To cancel, click this message or press escape.",
+              "To cancel, click this message or press escape."
           ) +
-          "</span>",
+          "</span>"
       ).append(hiddenDiv);
 
       dt.buttons.info(
         dt.i18n("buttons.copyTitle", "Copy to clipboard"),
         message,
-        0,
+        0
       );
 
       // Select the text so when the user activates their system clipboard
@@ -960,7 +960,7 @@
 
     messageTop: "*",
 
-    messageBottom: "*",
+    messageBottom: "*"
   };
 
   //
@@ -1010,7 +1010,7 @@
       _saveAs(
         new Blob([output], { type: "text/csv" + charset }),
         info.filename,
-        true,
+        true
       );
 
       this.processing(false);
@@ -1032,7 +1032,7 @@
 
     header: true,
 
-    footer: false,
+    footer: false
   };
 
   //
@@ -1072,19 +1072,19 @@
 
       var xlsx = {
         _rels: {
-          ".rels": getXml("_rels/.rels"),
+          ".rels": getXml("_rels/.rels")
         },
         xl: {
           _rels: {
-            "workbook.xml.rels": getXml("xl/_rels/workbook.xml.rels"),
+            "workbook.xml.rels": getXml("xl/_rels/workbook.xml.rels")
           },
           "workbook.xml": getXml("xl/workbook.xml"),
           "styles.xml": getXml("xl/styles.xml"),
           worksheets: {
-            "sheet1.xml": rels,
-          },
+            "sheet1.xml": rels
+          }
         },
-        "[Content_Types].xml": getXml("[Content_Types].xml"),
+        "[Content_Types].xml": getXml("[Content_Types].xml")
       };
 
       var data = dt.buttons.exportData(config.exportOptions);
@@ -1131,9 +1131,9 @@
               cell = _createNode(rels, "c", {
                 attr: {
                   r: cellId,
-                  s: special.style,
+                  s: special.style
                 },
-                children: [_createNode(rels, "v", { text: val })],
+                children: [_createNode(rels, "v", { text: val })]
               });
 
               break;
@@ -1152,9 +1152,9 @@
               cell = _createNode(rels, "c", {
                 attr: {
                   t: "n",
-                  r: cellId,
+                  r: cellId
                 },
-                children: [_createNode(rels, "v", { text: row[i] })],
+                children: [_createNode(rels, "v", { text: row[i] })]
               });
             } else {
               // String output - replace non standard characters for text output
@@ -1162,13 +1162,13 @@
                 ? originalContent
                 : originalContent.replace(
                     /[\x00-\x09\x0B\x0C\x0E-\x1F\x7F-\x9F]/g,
-                    "",
+                    ""
                   );
 
               cell = _createNode(rels, "c", {
                 attr: {
                   t: "inlineStr",
-                  r: cellId,
+                  r: cellId
                 },
                 children: {
                   row: _createNode(rels, "is", {
@@ -1176,12 +1176,12 @@
                       row: _createNode(rels, "t", {
                         text: text,
                         attr: {
-                          "xml:space": "preserve",
-                        },
-                      }),
-                    },
-                  }),
-                },
+                          "xml:space": "preserve"
+                        }
+                      })
+                    }
+                  })
+                }
               });
             }
           }
@@ -1203,9 +1203,9 @@
         mergeCells[0].appendChild(
           _createNode(rels, "mergeCell", {
             attr: {
-              ref: "A" + row + ":" + createCellPos(colspan) + row,
-            },
-          }),
+              ref: "A" + row + ":" + createCellPos(colspan) + row
+            }
+          })
         );
         mergeCells.attr("count", parseFloat(mergeCells.attr("count")) + 1);
         $("row:eq(" + (row - 1) + ") c", rels).attr("s", "51"); // centre
@@ -1259,9 +1259,9 @@
               min: i + 1,
               max: i + 1,
               width: _excelColWidth(data, i),
-              customWidth: 1,
-            },
-          }),
+              customWidth: 1
+            }
+          })
         );
       }
 
@@ -1274,9 +1274,9 @@
               dataStartRow +
               ":" +
               createCellPos(data.header.length - 1) +
-              dataEndRow,
-          },
-        }),
+              dataEndRow
+          }
+        })
       );
 
       // Workbook modifications
@@ -1290,7 +1290,7 @@
             attr: {
               name: "_xlnm._FilterDatabase",
               localSheetId: "0",
-              hidden: 1,
+              hidden: 1
             },
             text:
               _sheetname(config) +
@@ -1298,8 +1298,8 @@
               dataStartRow +
               ":" +
               createCellPos(data.header.length - 1) +
-              dataEndRow,
-          }),
+              dataEndRow
+          })
         );
       }
 
@@ -1318,7 +1318,7 @@
       var zipConfig = {
         type: "blob",
         mimeType:
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       };
 
       _addToZip(zip, xlsx);
@@ -1356,7 +1356,7 @@
 
     autoFilter: false,
 
-    sheetName: "",
+    sheetName: ""
   };
 
   //
@@ -1386,9 +1386,9 @@
           $.map(data.header, function (d) {
             return {
               text: typeof d === "string" ? d : d + "",
-              style: "tableHeader",
+              style: "tableHeader"
             };
-          }),
+          })
         );
       }
 
@@ -1400,9 +1400,9 @@
             }
             return {
               text: typeof d === "string" ? d : d + "",
-              style: i % 2 ? "tableBodyEven" : "tableBodyOdd",
+              style: i % 2 ? "tableBodyEven" : "tableBodyOdd"
             };
-          }),
+          })
         );
       }
 
@@ -1411,9 +1411,9 @@
           $.map(data.footer, function (d) {
             return {
               text: typeof d === "string" ? d : d + "",
-              style: "tableFooter",
+              style: "tableFooter"
             };
-          }),
+          })
         );
       }
 
@@ -1424,10 +1424,10 @@
           {
             table: {
               headerRows: 1,
-              body: rows,
+              body: rows
             },
-            layout: "noBorders",
-          },
+            layout: "noBorders"
+          }
         ],
         styles: {
           tableHeader: {
@@ -1435,34 +1435,34 @@
             fontSize: 11,
             color: "white",
             fillColor: "#2d4154",
-            alignment: "center",
+            alignment: "center"
           },
           tableBodyEven: {},
           tableBodyOdd: {
-            fillColor: "#f3f3f3",
+            fillColor: "#f3f3f3"
           },
           tableFooter: {
             bold: true,
             fontSize: 11,
             color: "white",
-            fillColor: "#2d4154",
+            fillColor: "#2d4154"
           },
           title: {
             alignment: "center",
-            fontSize: 15,
+            fontSize: 15
           },
-          message: {},
+          message: {}
         },
         defaultStyle: {
-          fontSize: 10,
-        },
+          fontSize: 10
+        }
       };
 
       if (info.messageTop) {
         doc.content.unshift({
           text: info.messageTop,
           style: "message",
-          margin: [0, 0, 0, 12],
+          margin: [0, 0, 0, 12]
         });
       }
 
@@ -1470,7 +1470,7 @@
         doc.content.push({
           text: info.messageBottom,
           style: "message",
-          margin: [0, 0, 0, 12],
+          margin: [0, 0, 0, 12]
         });
       }
 
@@ -1478,7 +1478,7 @@
         doc.content.unshift({
           text: info.title,
           style: "title",
-          margin: [0, 0, 0, 12],
+          margin: [0, 0, 0, 12]
         });
       }
 
@@ -1519,7 +1519,7 @@
 
     customize: null,
 
-    download: "download",
+    download: "download"
   };
 
   return DataTable.Buttons;

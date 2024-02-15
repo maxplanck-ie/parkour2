@@ -12,7 +12,7 @@ Ext.define("Ext.data.validator.Inclusion", {
      * The error message to return when the passed value does not exist
      * in the specified {@link #list}.
      */
-    message: "Is not in the list of acceptable values",
+    message: "Is not in the list of acceptable values"
   },
 
   //<debug>
@@ -24,5 +24,5 @@ Ext.define("Ext.data.validator.Inclusion", {
   },
   //</debug>
 
-  inclusion: true,
+  inclusion: true
 });

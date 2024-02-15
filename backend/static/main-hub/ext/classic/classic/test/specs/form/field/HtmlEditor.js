@@ -11,10 +11,10 @@ describe("Ext.form.field.HtmlEditor", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          xtype: "htmleditor",
+          xtype: "htmleditor"
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 

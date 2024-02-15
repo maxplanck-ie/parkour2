@@ -4,7 +4,7 @@ describe("Ext.data.Request", function () {
   describe("instantiation", function () {
     var action = "create",
       config = {
-        action: action,
+        action: action
       };
 
     it("should have correct configuration options", function () {

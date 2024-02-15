@@ -11,21 +11,21 @@ describe("Ext.data.identifier.Uuid", function () {
     // Purposefully NOT clearing the cache here, since the global
     // uuid gets created.
     Generator.all = {
-      uuid: Ext.data.identifier.Uuid.Global,
+      uuid: Ext.data.identifier.Uuid.Global
     };
   });
 
   describe("defaults", function () {
     it("should create a global instance with the id 'uuid", function () {
       expect(
-        Ext.Factory.dataIdentifier("uuid") instanceof Ext.data.identifier.Uuid,
+        Ext.Factory.dataIdentifier("uuid") instanceof Ext.data.identifier.Uuid
       ).toBe(true);
     });
   });
 
   it("should allow creation of a new instance", function () {
     make({
-      id: "foo",
+      id: "foo"
     });
     expect(Ext.Factory.dataIdentifier("foo")).toBe(idgen);
     expect(Ext.Factory.dataIdentifier("uuid")).not.toBe(idgen);
@@ -38,7 +38,7 @@ describe("Ext.data.identifier.Uuid", function () {
         clockSeq: 0x3123,
         // &~0x100 turns off multicast (which must be ON in the result)
         salt: { hi: 0xdead & ~0x0100, lo: 0xbadbeef },
-        timestamp: { hi: 0xdefaced, lo: 0xbadf00d },
+        timestamp: { hi: 0xdefaced, lo: 0xbadf00d }
       });
 
       //                                  time_mid      clock_hi (low 6 bits)

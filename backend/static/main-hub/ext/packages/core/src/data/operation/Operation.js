@@ -112,7 +112,7 @@ Ext.define("Ext.data.operation.Operation", {
      * Scope to run the {@link #internalCallback}
      * @private
      */
-    internalScope: null,
+    internalScope: null
   },
 
   /**
@@ -419,7 +419,7 @@ Ext.define("Ext.data.operation.Operation", {
         me.getScope() || me,
         me.getRecords(),
         me,
-        me.wasSuccessful(),
+        me.wasSuccessful()
       );
       me.setCallback(null);
       me.setScope(null);
@@ -500,5 +500,5 @@ Ext.define("Ext.data.operation.Operation", {
    */
   allowWrite: function () {
     return true;
-  },
+  }
 });

@@ -59,7 +59,7 @@ Ext.define("Ext.data.schema.Role", {
 
   _internalReadOptions: {
     recordsOnly: true,
-    asRoot: true,
+    asRoot: true
   },
 
   constructor: function (association, config) {
@@ -88,7 +88,7 @@ Ext.define("Ext.data.schema.Role", {
     Ext.raise(
       'Only the "many" for an association may be processed. "' +
         this.role +
-        '" is not valid.',
+        '" is not valid.'
     );
   },
 
@@ -153,7 +153,7 @@ Ext.define("Ext.data.schema.Role", {
         disableMetaChangeEvent: true,
         pageSize: null,
         remoteFilter: true,
-        trackRemoved: !session,
+        trackRemoved: !session
       },
       store;
 
@@ -164,8 +164,8 @@ Ext.define("Ext.data.schema.Role", {
           id: me.$roleFilterId,
           property: me.inverse.field, // @TODO filterProperty
           value: id,
-          exactMatch: true,
-        },
+          exactMatch: true
+        }
       ];
     } else if (foreignKeyName) {
       config.filters = [
@@ -173,8 +173,8 @@ Ext.define("Ext.data.schema.Role", {
           id: me.$roleFilterId,
           property: foreignKeyName, // @TODO filterProperty
           value: id,
-          exactMatch: true,
-        },
+          exactMatch: true
+        }
       ];
       config.foreignKeyName = foreignKeyName;
     }
@@ -192,7 +192,7 @@ Ext.define("Ext.data.schema.Role", {
         scope: me,
         add: "onAddToMany",
         remove: "onRemoveFromMany",
-        clear: "onRemoveFromMany",
+        clear: "onRemoveFromMany"
       });
     }
 
@@ -211,7 +211,7 @@ Ext.define("Ext.data.schema.Role", {
     options,
     scope,
     records,
-    allowInfer,
+    allowInfer
   ) {
     // Consider the Comment entity with a ticketId to a Ticket entity. The Comment
     // is on the left (the FK holder's side) so we are implementing the guts of
@@ -276,7 +276,7 @@ Ext.define("Ext.data.schema.Role", {
         session,
         inverseRecord,
         records,
-        isComplete || inverseRecord.phantom,
+        isComplete || inverseRecord.phantom
       );
       store.$source = sourceStore;
 
@@ -307,7 +307,7 @@ Ext.define("Ext.data.schema.Role", {
             Ext.callback(options.callback, scope, args);
           },
           null,
-          { single: true },
+          { single: true }
         );
       } else {
         // Trigger straight away
@@ -365,14 +365,14 @@ Ext.define("Ext.data.schema.Role", {
     if (reader && !reader.isReader) {
       if (Ext.isString(reader)) {
         reader = {
-          type: reader,
+          type: reader
         };
       }
       Ext.applyIf(reader, {
         model: Model,
         rootProperty: root,
         useSimpleAccessors: useSimpleAccessors,
-        type: me.defaultReaderType,
+        type: me.defaultReaderType
       });
       reader = me.reader = Ext.createByAlias("reader." + reader.type, reader);
     }
@@ -424,7 +424,7 @@ Ext.define("Ext.data.schema.Role", {
         reader = new fromReader.self({
           model: Model,
           useSimpleAccessors: useSimpleAccessors,
-          rootProperty: root,
+          rootProperty: root
         });
       }
       me.reader = reader;
@@ -445,7 +445,7 @@ Ext.define("Ext.data.schema.Role", {
     if (typeof options === "function") {
       options = {
         callback: options,
-        scope: scope || defaultScope,
+        scope: scope || defaultScope
       };
     } else if (options) {
       options = Ext.apply({}, options);
@@ -582,7 +582,7 @@ Ext.define("Ext.data.schema.Role", {
           'No foreignKey specified for "' +
             me.association.left.role +
             '" by ' +
-            leftRecord.$className,
+            leftRecord.$className
         );
       }
       //</debug>
@@ -611,10 +611,10 @@ Ext.define("Ext.data.schema.Role", {
       if (Ext.isFunction(options)) {
         options = {
           callback: options,
-          scope: scope || leftRecord,
+          scope: scope || leftRecord
         };
       }
       return leftRecord.save(options);
     }
-  },
+  }
 });

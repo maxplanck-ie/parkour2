@@ -3,6 +3,6 @@ Ext.define("Ext.theme.blackberry.field.Toggle", {
 
   config: {
     activeLabel: "On",
-    inactiveLabel: "Off",
-  },
+    inactiveLabel: "Off"
+  }
 });

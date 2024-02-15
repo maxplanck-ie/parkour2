@@ -19,11 +19,11 @@ Ext.define("Ext.fx.Manager", {
     "Ext.fx.target.CompositeElementCSS",
     "Ext.fx.target.Sprite",
     "Ext.fx.target.CompositeSprite",
-    "Ext.fx.target.Component",
+    "Ext.fx.target.Component"
   ],
 
   mixins: {
-    queue: "Ext.fx.Queue",
+    queue: "Ext.fx.Queue"
   },
 
   /* End Definitions */
@@ -71,13 +71,13 @@ Ext.define("Ext.fx.Manager", {
       if (target.tagName || Ext.isString(target) || target.isFly) {
         target = Ext.get(target);
         targetObj = new Ext.fx.target["Element" + (useCSS3 ? "CSS" : "")](
-          target,
+          target
         );
       }
       // Element
       else if (target.dom) {
         targetObj = new Ext.fx.target["Element" + (useCSS3 ? "CSS" : "")](
-          target,
+          target
         );
       }
       // Element Composite
@@ -129,7 +129,7 @@ Ext.define("Ext.fx.Manager", {
       task = me.task = {
         run: me.runner,
         interval: me.interval,
-        scope: me,
+        scope: me
       };
       //Ext.log('--->> Starting task');
       me.taskRunner.start(task);
@@ -318,7 +318,7 @@ Ext.define("Ext.fx.Manager", {
       target = this.targetArr[targetId] = {
         id: targetId,
         el: anim.target,
-        anims: {},
+        anims: {}
       };
     }
 
@@ -341,9 +341,9 @@ Ext.define("Ext.fx.Manager", {
               : anim.easing,
           // This is where the magic happens. The anim calculates what its new attributes should
           // be based on the current frame and returns those as a hash of values.
-          attrs: anim.runAnim(elapsedTime),
-        },
-      ],
+          attrs: anim.runAnim(elapsedTime)
+        }
+      ]
     };
 
     return target;
@@ -393,7 +393,7 @@ Ext.define("Ext.fx.Manager", {
               target.el.setAttr(
                 animWrap.attributes,
                 false,
-                animWrap.isLastFrame,
+                animWrap.isLastFrame
               );
 
               // If this particular anim is at the last frame end it
@@ -406,5 +406,5 @@ Ext.define("Ext.fx.Manager", {
         }
       }
     }
-  },
+  }
 });

@@ -34,7 +34,7 @@ Ext.define("Ext.grid.filters.filter.SingleFilter", {
       // Now we're acting on user configs so let's not futz with any assumed settings.
       filter = me.createFilter({
         operator: me.operator,
-        value: value,
+        value: value
       });
 
       if (me.active) {
@@ -71,5 +71,5 @@ Ext.define("Ext.grid.filters.filter.SingleFilter", {
     if (!this.menu || this.active) {
       this.active = false;
     }
-  },
+  }
 });

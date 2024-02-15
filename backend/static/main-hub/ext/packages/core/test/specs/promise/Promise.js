@@ -67,7 +67,7 @@ describe("Ext.promise.Promise", function () {
       function (v) {
         reason = v;
         done = true;
-      },
+      }
     );
 
     waitsFor(function () {
@@ -130,7 +130,7 @@ describe("Ext.promise.Promise", function () {
       "expected value",
       [1, 2, 3],
       {},
-      new Error("error message"),
+      new Error("error message")
     ];
 
     describe("returns a Promise that will resolve with the specified value", function () {
@@ -181,7 +181,7 @@ describe("Ext.promise.Promise", function () {
 
       MockThirdPartyPromise.prototype.then = function (
         successCallback,
-        failureCallback,
+        failureCallback
       ) {
         this.successCallback = successCallback;
         this.failureCallback = failureCallback;
@@ -283,7 +283,7 @@ describe("Ext.promise.Promise", function () {
 
       it("returns true for any then()-able", function () {
         promise = {
-          then: function () {},
+          then: function () {}
         };
 
         expect(ExtPromise.is(promise)).toBe(true);
@@ -307,7 +307,7 @@ describe("Ext.promise.Promise", function () {
         "value",
         [1, 2, 3],
         {},
-        new Error("error message"),
+        new Error("error message")
       ];
 
       Ext.each(values, function (value) {
@@ -368,7 +368,7 @@ describe("Ext.promise.Promise", function () {
         promise = ExtPromise.all([
           Deferred.resolved(1),
           Deferred.resolved(2),
-          Deferred.resolved(3),
+          Deferred.resolved(3)
         ]);
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -406,7 +406,7 @@ describe("Ext.promise.Promise", function () {
 
       it("Promise of an Array with one resolved Promise", function () {
         promise = ExtPromise.all(
-          Deferred.resolved([Deferred.resolved("expected value")]),
+          Deferred.resolved([Deferred.resolved("expected value")])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -417,8 +417,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
-          ]),
+            Deferred.resolved(3)
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [1, 2, 3], true);
@@ -428,7 +428,7 @@ describe("Ext.promise.Promise", function () {
     describe("returns a new Promise that will reject with the error associated with the first Promise in the specified Array of Promise(s) or value(s) that rejects", function () {
       it("Array with one rejected Promise", function () {
         promise = ExtPromise.all([
-          Deferred.rejected(new Error("error message")),
+          Deferred.rejected(new Error("error message"))
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -438,7 +438,7 @@ describe("Ext.promise.Promise", function () {
         promise = ExtPromise.all([
           Deferred.resolved(1),
           Deferred.rejected(new Error("error message")),
-          Deferred.resolved(3),
+          Deferred.resolved(3)
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -450,7 +450,7 @@ describe("Ext.promise.Promise", function () {
           2,
           Deferred.rejected(new Error("error message")),
           Deferred.resolved(4),
-          new Deferred().promise,
+          new Deferred().promise
         ]);
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -461,7 +461,7 @@ describe("Ext.promise.Promise", function () {
     describe("returns a new Promise that will reject with the error associated with the first Promise in the specified resolved Promise of an Array of Promise(s) or value(s) that rejects", function () {
       it("Promise of an Array with one rejected Promise", function () {
         promise = ExtPromise.all(
-          Deferred.resolved([Deferred.rejected(new Error("error message"))]),
+          Deferred.resolved([Deferred.rejected(new Error("error message"))])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -472,8 +472,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.rejected(new Error("error message")),
-            Deferred.resolved(3),
-          ]),
+            Deferred.resolved(3)
+          ])
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -487,8 +487,8 @@ describe("Ext.promise.Promise", function () {
             2,
             Deferred.rejected(new Error("error message")),
             Deferred.resolved(4),
-            new Deferred().promise,
-          ]),
+            new Deferred().promise
+          ])
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -509,7 +509,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return ExtPromise.all();
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -517,7 +517,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return ExtPromise.all(1);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -525,7 +525,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return ExtPromise.all(1, 2, 3);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
     });
@@ -579,7 +579,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.any([
           Deferred.resolved(1),
           Deferred.resolved(2),
-          Deferred.resolved(3),
+          Deferred.resolved(3)
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToOneOf(promise, [1, 2, 3]);
@@ -589,7 +589,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.any([
           Deferred.rejected("error message"),
           Deferred.resolved("expected value"),
-          Deferred.rejected("error message"),
+          Deferred.rejected("error message")
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, "expected value", true);
@@ -599,7 +599,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.any([
           new Deferred().promise,
           Deferred.resolved("expected value"),
-          Deferred.rejected("error message"),
+          Deferred.rejected("error message")
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, "expected value", true);
@@ -610,7 +610,7 @@ describe("Ext.promise.Promise", function () {
           new Deferred().promise,
           Deferred.resolved(1),
           Deferred.rejected("error message"),
-          Deferred.resolved(2),
+          Deferred.resolved(2)
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToOneOf(promise, [1, 2]);
@@ -638,7 +638,7 @@ describe("Ext.promise.Promise", function () {
 
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.any(
-          Deferred.resolved([Deferred.resolved("expected value")]),
+          Deferred.resolved([Deferred.resolved("expected value")])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, "expected value", true);
@@ -649,8 +649,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
-          ]),
+            Deferred.resolved(3)
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToOneOf(promise, [1, 2, 3]);
@@ -661,8 +661,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.rejected("error message"),
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
-          ]),
+            Deferred.rejected("error message")
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, "expected value", true);
@@ -673,8 +673,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             new Deferred().promise,
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
-          ]),
+            Deferred.rejected("error message")
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, "expected value", true);
@@ -686,8 +686,8 @@ describe("Ext.promise.Promise", function () {
             new Deferred().promise,
             Deferred.resolved(1),
             Deferred.rejected("error message"),
-            Deferred.resolved(2),
-          ]),
+            Deferred.resolved(2)
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToOneOf(promise, [1, 2]);
@@ -711,7 +711,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.any([
           Deferred.rejected("error message"),
           Deferred.rejected("error message"),
-          Deferred.rejected("error message"),
+          Deferred.rejected("error message")
         ]);
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "No Promises were resolved.");
@@ -727,7 +727,7 @@ describe("Ext.promise.Promise", function () {
 
       it("Promise of an Array with one rejected Promise", function () {
         promise = Deferred.any(
-          Deferred.resolved([Deferred.rejected("error message")]),
+          Deferred.resolved([Deferred.rejected("error message")])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "No Promises were resolved.");
@@ -738,8 +738,8 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.rejected("error message"),
             Deferred.rejected("error message"),
-            Deferred.rejected("error message"),
-          ]),
+            Deferred.rejected("error message")
+          ])
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "No Promises were resolved.");
@@ -759,7 +759,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.any();
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -767,7 +767,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.any(1);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -775,7 +775,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.any(1, 2, 3);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
     });
@@ -837,7 +837,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.some(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2, 3]);
@@ -848,9 +848,9 @@ describe("Ext.promise.Promise", function () {
           [
             Deferred.rejected("error message"),
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ],
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -861,9 +861,9 @@ describe("Ext.promise.Promise", function () {
           [
             new Deferred().promise,
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ],
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -875,9 +875,9 @@ describe("Ext.promise.Promise", function () {
             Deferred.rejected("error message"),
             Deferred.resolved(1),
             Deferred.rejected("error message"),
-            Deferred.resolved(2),
+            Deferred.resolved(2)
           ],
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2]);
@@ -889,9 +889,9 @@ describe("Ext.promise.Promise", function () {
             new Deferred().promise,
             Deferred.resolved(1),
             Deferred.rejected("error message"),
-            Deferred.resolved(2),
+            Deferred.resolved(2)
           ],
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2]);
@@ -920,7 +920,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.some(
           Deferred.resolved([Deferred.resolved("expected value")]),
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -931,9 +931,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2, 3]);
@@ -944,9 +944,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.rejected("error message"),
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ]),
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -957,9 +957,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             new Deferred().promise,
             Deferred.resolved("expected value"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ]),
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, ["expected value"], true);
@@ -971,9 +971,9 @@ describe("Ext.promise.Promise", function () {
             Deferred.rejected("error message"),
             Deferred.resolved(1),
             Deferred.rejected("error message"),
-            Deferred.resolved(2),
+            Deferred.resolved(2)
           ]),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2]);
@@ -985,9 +985,9 @@ describe("Ext.promise.Promise", function () {
             new Deferred().promise,
             Deferred.resolved(1),
             Deferred.rejected("error message"),
-            Deferred.resolved(2),
+            Deferred.resolved(2)
           ]),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesToSomeOf(promise, 2, [1, 2]);
@@ -1001,7 +1001,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1011,7 +1011,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1021,7 +1021,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1031,7 +1031,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1040,15 +1040,15 @@ describe("Ext.promise.Promise", function () {
           [
             Deferred.rejected("error message"),
             Deferred.rejected("error message"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ],
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1057,15 +1057,15 @@ describe("Ext.promise.Promise", function () {
           [
             Deferred.rejected("error message"),
             Deferred.rejected("error message"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ],
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
     });
@@ -1077,7 +1077,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1087,33 +1087,33 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
       it("Promise of an Array with one rejected Promise with one resolved value requested", function () {
         promise = Deferred.some(
           Deferred.resolved([Deferred.rejected("error message")]),
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
       it("Promise of an Array with one rejected Promise with multiple resolved values requested", function () {
         promise = Deferred.some(
           Deferred.resolved([Deferred.rejected("error message")]),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1122,15 +1122,15 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.rejected("error message"),
             Deferred.rejected("error message"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ]),
-          1,
+          1
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
 
@@ -1139,15 +1139,15 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.rejected("error message"),
             Deferred.rejected("error message"),
-            Deferred.rejected("error message"),
+            Deferred.rejected("error message")
           ]),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(
           promise,
           Error,
-          "Too few Promises were resolved.",
+          "Too few Promises were resolved."
         );
       });
     });
@@ -1156,7 +1156,7 @@ describe("Ext.promise.Promise", function () {
       it("Error: error message", function () {
         promise = Deferred.some(
           Deferred.rejected(new Error("error message")),
-          2,
+          2
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1168,7 +1168,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.some();
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -1176,7 +1176,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.some(1);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -1184,7 +1184,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.some(1, 2, 3);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -1278,7 +1278,7 @@ describe("Ext.promise.Promise", function () {
       it("rejected Promise with 100 ms delay", function () {
         promise = Deferred.delay(
           Deferred.rejected(new Error("error message")),
-          100,
+          100
         );
 
         var start = Ext.now();
@@ -1292,7 +1292,7 @@ describe("Ext.promise.Promise", function () {
           function (error) {
             expect(Ext.now() - start).toBeGE(84);
             throw error;
-          },
+          }
         );
 
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1324,7 +1324,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise that rejects in 50 ms with a 100 ms timeout", function () {
         promise = Deferred.timeout(
           Deferred.delay(Deferred.rejected(new Error("error message")), 50),
-          100,
+          100
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -1345,7 +1345,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise that rejects in 50 ms with a 100 ms timeout", function () {
         promise = Deferred.timeout(
           Deferred.delay(Deferred.rejected(new Error("error message")), 100),
-          50,
+          50
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -1382,7 +1382,7 @@ describe("Ext.promise.Promise", function () {
           },
           function (error) {
             throw error;
-          },
+          }
         );
 
         eventuallyResolvesTo(promise, [fib(12), fib(12)], true);
@@ -1393,7 +1393,7 @@ describe("Ext.promise.Promise", function () {
 
         promise = ExtPromise.all([
           memoFn(Deferred.resolved(12)),
-          memoFn(Deferred.resolved(12)),
+          memoFn(Deferred.resolved(12))
         ]).then(
           function (value) {
             expect(fibonacci.calls).toBe(1);
@@ -1401,7 +1401,7 @@ describe("Ext.promise.Promise", function () {
           },
           function (error) {
             throw error;
-          },
+          }
         );
 
         eventuallyResolvesTo(promise, [fib(12), fib(12)], true);
@@ -1421,7 +1421,7 @@ describe("Ext.promise.Promise", function () {
           },
           function (error) {
             throw error;
-          },
+          }
         );
 
         eventuallyResolvesTo(promise, fib(12), true);
@@ -1439,7 +1439,7 @@ describe("Ext.promise.Promise", function () {
           },
           function (error) {
             throw error;
-          },
+          }
         );
 
         eventuallyResolvesTo(promise, fib(12), true);
@@ -1516,7 +1516,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.map(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6], true);
@@ -1525,7 +1525,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and resolved Promises", function () {
         promise = Deferred.map(
           [1, Deferred.resolved(2), Deferred.resolved(3), 4],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6, 8], true);
@@ -1554,7 +1554,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of a sparse Array", function () {
         promise = Deferred.map(
           Deferred.resolved([, 2, , 4, 5]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [, 4, , 8, 10], true);
@@ -1563,7 +1563,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.map(
           Deferred.resolved([Deferred.resolved(1)]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2], true);
@@ -1574,9 +1574,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6], true);
@@ -1585,7 +1585,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values and resolved Promises", function () {
         promise = Deferred.map(
           Deferred.resolved([1, Deferred.resolved(2), Deferred.resolved(3), 4]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6, 8], true);
@@ -1626,7 +1626,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.map(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6], true);
@@ -1635,7 +1635,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and resolved Promises", function () {
         promise = Deferred.map(
           [1, Deferred.resolved(2), Deferred.resolved(3), 4],
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6, 8], true);
@@ -1658,7 +1658,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values", function () {
         promise = Deferred.map(
           Deferred.resolved([1, 2, 3]),
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6], true);
@@ -1667,7 +1667,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of a sparse Array", function () {
         promise = Deferred.map(
           Deferred.resolved([, 2, , 4, 5]),
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [, 4, , 8, 10], true);
@@ -1676,7 +1676,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.map(
           Deferred.resolved([Deferred.resolved(1)]),
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2], true);
@@ -1687,9 +1687,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6], true);
@@ -1698,7 +1698,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values and resolved Promises", function () {
         promise = Deferred.map(
           Deferred.resolved([1, Deferred.resolved(2), Deferred.resolved(3), 4]),
-          doublePromiseFunction,
+          doublePromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, [2, 4, 6, 8], true);
@@ -1709,7 +1709,7 @@ describe("Ext.promise.Promise", function () {
       it("Array with one rejected Promise", function () {
         promise = Deferred.map(
           [Deferred.rejected(new Error("error message"))],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1718,7 +1718,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and a rejected Promise", function () {
         promise = Deferred.map(
           [1, Deferred.rejected(new Error("error message")), 3],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1729,9 +1729,9 @@ describe("Ext.promise.Promise", function () {
           [
             Deferred.resolved(1),
             Deferred.rejected(new Error("error message")),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1744,9 +1744,9 @@ describe("Ext.promise.Promise", function () {
             2,
             Deferred.rejected(new Error("error message")),
             Deferred.resolved(4),
-            new Deferred().promise,
+            new Deferred().promise
           ],
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1757,7 +1757,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one rejected Promise", function () {
         promise = Deferred.map(
           Deferred.resolved([Deferred.rejected(new Error("error message"))]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1768,9 +1768,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             1,
             Deferred.rejected(new Error("error message")),
-            3,
+            3
           ]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1781,9 +1781,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.rejected(new Error("error message")),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1796,9 +1796,9 @@ describe("Ext.promise.Promise", function () {
             2,
             Deferred.rejected(new Error("error message")),
             Deferred.resolved(4),
-            new Deferred().promise,
+            new Deferred().promise
           ]),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1833,7 +1833,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.map(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1842,7 +1842,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and resolved Promises", function () {
         promise = Deferred.map(
           [1, Deferred.resolved(2), Deferred.resolved(3), 4],
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1865,7 +1865,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of a sparse Array", function () {
         promise = Deferred.map(
           Deferred.resolved([, 2, , 4, 5]),
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1874,7 +1874,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.map(
           Deferred.resolved([Deferred.resolved(1)]),
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1885,9 +1885,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1896,7 +1896,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values and resolved Promises", function () {
         promise = Deferred.map(
           Deferred.resolved([1, Deferred.resolved(2), Deferred.resolved(3), 4]),
-          rejectFunction,
+          rejectFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1907,7 +1907,7 @@ describe("Ext.promise.Promise", function () {
       it("Error: error message", function () {
         promise = Deferred.map(
           Deferred.rejected(new Error("error message")),
-          doubleFunction,
+          doubleFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -1919,7 +1919,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.map();
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -1927,7 +1927,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.map(1);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -1935,7 +1935,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.map(1, 2, 3);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -2040,7 +2040,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, 2, 3, 4],
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2062,7 +2062,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [, 2, , 4, 5],
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2084,7 +2084,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1)],
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2093,7 +2093,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 6, true);
@@ -2103,7 +2103,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2113,7 +2113,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2122,7 +2122,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and resolved Promises", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 10, true);
@@ -2132,7 +2132,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2142,7 +2142,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2160,7 +2160,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([]),
           sumFunction,
-          Deferred.resolved(0),
+          Deferred.resolved(0)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 0, true);
@@ -2182,7 +2182,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2198,7 +2198,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3, 4]),
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2208,7 +2208,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3, 4]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2217,7 +2217,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of a sparse Array", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2227,7 +2227,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2237,7 +2237,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2246,7 +2246,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 1, true);
@@ -2256,7 +2256,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2266,7 +2266,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2277,9 +2277,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 6, true);
@@ -2290,10 +2290,10 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2304,10 +2304,10 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2316,7 +2316,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values and resolved Promises", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 10, true);
@@ -2326,7 +2326,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
           sumFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2336,7 +2336,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
           sumFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2372,7 +2372,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2394,7 +2394,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, 2, 3, 4],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2416,7 +2416,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [, 2, , 4, 5],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2432,7 +2432,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1)],
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2442,7 +2442,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1)],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2451,7 +2451,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of resolved Promises", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 6, true);
@@ -2461,7 +2461,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2471,7 +2471,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2480,7 +2480,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and resolved Promises", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 10, true);
@@ -2490,7 +2490,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2500,7 +2500,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), 3, Deferred.resolved(4)],
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2518,7 +2518,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([]),
           sumPromiseFunction,
-          Deferred.resolved(0),
+          Deferred.resolved(0)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 0, true);
@@ -2534,7 +2534,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2544,7 +2544,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2553,7 +2553,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3, 4]),
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 10, true);
@@ -2563,7 +2563,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3, 4]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2573,7 +2573,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3, 4]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2582,7 +2582,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of a sparse Array", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2592,7 +2592,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2602,7 +2602,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 21, true);
@@ -2611,7 +2611,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one resolved Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 1, true);
@@ -2621,7 +2621,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2631,7 +2631,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 11, true);
@@ -2642,9 +2642,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 6, true);
@@ -2655,10 +2655,10 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2669,10 +2669,10 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 16, true);
@@ -2681,7 +2681,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array of values and resolved Promises", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
-          sumPromiseFunction,
+          sumPromiseFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 10, true);
@@ -2691,7 +2691,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
           sumPromiseFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2701,7 +2701,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), 3, Deferred.resolved(4)]),
           sumPromiseFunction,
-          Deferred.resolved(10),
+          Deferred.resolved(10)
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyResolvesTo(promise, 20, true);
@@ -2712,7 +2712,7 @@ describe("Ext.promise.Promise", function () {
       it("Array with one rejected Promise", function () {
         promise = Deferred.reduce(
           [Deferred.rejected(new Error("error message"))],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2721,7 +2721,7 @@ describe("Ext.promise.Promise", function () {
       it("Array of values and a rejected Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.rejected(new Error("error message")), 3],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2732,9 +2732,9 @@ describe("Ext.promise.Promise", function () {
           [
             Deferred.resolved(1),
             Deferred.rejected(new Error("error message")),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2747,9 +2747,9 @@ describe("Ext.promise.Promise", function () {
             2,
             Deferred.rejected(new Error("error message")),
             Deferred.resolved(4),
-            new Deferred().promise,
+            new Deferred().promise
           ],
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2760,7 +2760,7 @@ describe("Ext.promise.Promise", function () {
       it("Promise of an Array with one rejected Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.rejected(new Error("error message"))]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2771,9 +2771,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             1,
             Deferred.rejected(new Error("error message")),
-            3,
+            3
           ]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2784,9 +2784,9 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.rejected(new Error("error message")),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2799,9 +2799,9 @@ describe("Ext.promise.Promise", function () {
             2,
             Deferred.rejected(new Error("error message")),
             Deferred.resolved(4),
-            new Deferred().promise,
+            new Deferred().promise
           ]),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2812,7 +2812,7 @@ describe("Ext.promise.Promise", function () {
       it("Error: error message", function () {
         promise = Deferred.reduce(
           Deferred.rejected(new Error("error message")),
-          sumFunction,
+          sumFunction
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2848,7 +2848,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [Deferred.resolved(1), Deferred.resolved(2), Deferred.resolved(3)],
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2858,7 +2858,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, Deferred.resolved(2), Deferred.resolved(3), 4],
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2876,7 +2876,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, 2, 3]),
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2886,7 +2886,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([, 2, , 4, 5]),
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2896,7 +2896,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([Deferred.resolved(1)]),
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2907,10 +2907,10 @@ describe("Ext.promise.Promise", function () {
           Deferred.resolved([
             Deferred.resolved(1),
             Deferred.resolved(2),
-            Deferred.resolved(3),
+            Deferred.resolved(3)
           ]),
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2920,7 +2920,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           Deferred.resolved([1, Deferred.resolved(2), Deferred.resolved(3), 4]),
           rejectFunction,
-          10,
+          10
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2932,7 +2932,7 @@ describe("Ext.promise.Promise", function () {
         promise = Deferred.reduce(
           [1, 2, 3],
           sumFunction,
-          Deferred.rejected(new Error("error message")),
+          Deferred.rejected(new Error("error message"))
         );
         expect(promise instanceof ExtPromise).toBe(true);
         eventuallyRejectedWith(promise, Error, "error message");
@@ -2958,7 +2958,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.reduce();
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -2966,7 +2966,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.reduce(1);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -2974,7 +2974,7 @@ describe("Ext.promise.Promise", function () {
         expect(function () {
           return Deferred.reduce(1, 2, 3);
         }).toThrow(
-          "Invalid parameter: expected an Array or Promise of an Array.",
+          "Invalid parameter: expected an Array or Promise of an Array."
         );
       });
 
@@ -2999,7 +2999,7 @@ describe("Ext.promise.Promise", function () {
       it("a Promise of a non-function parameter", function () {
         expect(function () {
           return Deferred.reduce(
-            Deferred.resolved([1, 2, 3], "not a function"),
+            Deferred.resolved([1, 2, 3], "not a function")
           );
         }).toThrow("Invalid parameter: expected a function.");
       });
@@ -3067,7 +3067,7 @@ describe("Ext.promise.Promise", function () {
 
           var transformedProgressHandler = jasmine.createSpy();
           transformedProgressHandler.andReturn(
-            "transformed transformed progress",
+            "transformed transformed progress"
           );
 
           var transformedTransformedProgressHandler = jasmine.createSpy();
@@ -3087,12 +3087,12 @@ describe("Ext.promise.Promise", function () {
 
             expect(transformedProgressHandler.callCount).toBe(1);
             expect(transformedProgressHandler.calls[0].args).toEqual([
-              "transformed progress",
+              "transformed progress"
             ]);
 
             expect(transformedTransformedProgressHandler.callCount).toBe(1);
             expect(transformedTransformedProgressHandler.calls[0].args).toEqual(
-              ["transformed transformed progress"],
+              ["transformed transformed progress"]
             );
 
             done();
@@ -3110,7 +3110,7 @@ describe("Ext.promise.Promise", function () {
             promise = Deferred.resolved("resolved value");
 
             promise.then({
-              success: onResolved,
+              success: onResolved
             });
 
             Ext.asap(function () {
@@ -3127,7 +3127,7 @@ describe("Ext.promise.Promise", function () {
 
             promise.then({
               success: onResolved,
-              scope: targetScope,
+              scope: targetScope
             });
 
             Ext.asap(function () {
@@ -3150,7 +3150,7 @@ describe("Ext.promise.Promise", function () {
             promise.then({
               success: onResolved,
               failure: onRejected,
-              progress: onProgress,
+              progress: onProgress
             });
 
             Ext.asap(function () {
@@ -3175,7 +3175,7 @@ describe("Ext.promise.Promise", function () {
               success: onResolved,
               failure: onRejected,
               progress: onProgress,
-              scope: targetScope,
+              scope: targetScope
             });
 
             Ext.asap(function () {
@@ -3199,7 +3199,7 @@ describe("Ext.promise.Promise", function () {
             promise = Deferred.rejected("rejection reason");
 
             promise.then({
-              failure: onRejected,
+              failure: onRejected
             });
 
             Ext.asap(function () {
@@ -3216,7 +3216,7 @@ describe("Ext.promise.Promise", function () {
 
             promise.then({
               failure: onRejected,
-              scope: targetScope,
+              scope: targetScope
             });
 
             Ext.asap(function () {
@@ -3240,7 +3240,7 @@ describe("Ext.promise.Promise", function () {
             promise.then({
               success: onResolved,
               failure: onRejected,
-              progress: onProgress,
+              progress: onProgress
             });
 
             Ext.asap(function () {
@@ -3265,7 +3265,7 @@ describe("Ext.promise.Promise", function () {
               success: onResolved,
               failure: onRejected,
               progress: onProgress,
-              scope: targetScope,
+              scope: targetScope
             });
             Ext.asap(function () {
               expect(onResolved.callCount).toBe(0);
@@ -3290,7 +3290,7 @@ describe("Ext.promise.Promise", function () {
             promise = deferred.promise;
 
             promise.then({
-              progress: onProgress,
+              progress: onProgress
             });
 
             Ext.asap(function () {
@@ -3311,7 +3311,7 @@ describe("Ext.promise.Promise", function () {
 
             promise.then({
               progress: onProgress,
-              scope: targetScope,
+              scope: targetScope
             });
 
             Ext.asap(function () {
@@ -3338,7 +3338,7 @@ describe("Ext.promise.Promise", function () {
             promise.then({
               success: onResolved,
               failure: onRejected,
-              progress: onProgress,
+              progress: onProgress
             });
 
             Ext.asap(function () {
@@ -3365,7 +3365,7 @@ describe("Ext.promise.Promise", function () {
               success: onResolved,
               failure: onRejected,
               progress: onProgress,
-              scope: targetScope,
+              scope: targetScope
             });
 
             Ext.asap(function () {
@@ -3465,7 +3465,7 @@ describe("Ext.promise.Promise", function () {
           promise = Deferred.rejected(error);
 
           promise.otherwise({
-            fn: onRejected,
+            fn: onRejected
           });
 
           promise.then(null, function () {
@@ -3491,7 +3491,7 @@ describe("Ext.promise.Promise", function () {
 
           promise.otherwise({
             fn: onRejected,
-            scope: targetScope,
+            scope: targetScope
           });
 
           promise.then(null, function () {
@@ -3516,7 +3516,7 @@ describe("Ext.promise.Promise", function () {
           promise = Deferred.resolved("value");
 
           promise.otherwise({
-            fn: onRejected,
+            fn: onRejected
           });
 
           promise.then(function () {
@@ -3540,7 +3540,7 @@ describe("Ext.promise.Promise", function () {
         };
 
         promise = Deferred.rejected(new Error("error message")).otherwise(
-          onRejected,
+          onRejected
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3553,7 +3553,7 @@ describe("Ext.promise.Promise", function () {
         };
 
         promise = Deferred.rejected(new Error("error message")).otherwise(
-          onRejected,
+          onRejected
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3566,7 +3566,7 @@ describe("Ext.promise.Promise", function () {
         };
 
         promise = Deferred.rejected(new Error("error message")).otherwise(
-          onRejected,
+          onRejected
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3579,7 +3579,7 @@ describe("Ext.promise.Promise", function () {
         };
 
         promise = Deferred.rejected(
-          new Error("original error message"),
+          new Error("original error message")
         ).otherwise(onRejected);
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3676,7 +3676,7 @@ describe("Ext.promise.Promise", function () {
           promise = Deferred.resolved("value");
 
           promise.always({
-            fn: onComplete,
+            fn: onComplete
           });
 
           promise.then(function () {
@@ -3699,7 +3699,7 @@ describe("Ext.promise.Promise", function () {
 
           promise.always({
             fn: onComplete,
-            scope: targetScope,
+            scope: targetScope
           });
 
           promise.then(function () {
@@ -3721,7 +3721,7 @@ describe("Ext.promise.Promise", function () {
           promise = Deferred.rejected(new Error("error message"));
 
           promise.always({
-            fn: onComplete,
+            fn: onComplete
           });
 
           promise.then(null, function () {
@@ -3744,7 +3744,7 @@ describe("Ext.promise.Promise", function () {
 
           promise.always({
             fn: onComplete,
-            scope: targetScope,
+            scope: targetScope
           });
 
           promise.then(null, function () {
@@ -3791,7 +3791,7 @@ describe("Ext.promise.Promise", function () {
           function (reason) {
             expect(reason.message).toBe("callback error message");
             done();
-          },
+          }
         );
 
         /*
@@ -3815,7 +3815,7 @@ describe("Ext.promise.Promise", function () {
         }
 
         promise = Deferred.rejected(new Error("rejection reason")).always(
-          onComplete,
+          onComplete
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3830,7 +3830,7 @@ describe("Ext.promise.Promise", function () {
         }
 
         promise = Deferred.rejected(new Error("rejection reason")).always(
-          onComplete,
+          onComplete
         );
 
         expect(promise instanceof ExtPromise).toBe(true);
@@ -3844,7 +3844,7 @@ describe("Ext.promise.Promise", function () {
             expect(reason.message).toBe("rejection value");
             //?? expect(reason.message).toBe('callback error message');
             done();
-          },
+          }
         );
 
         /*
@@ -3900,7 +3900,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise,
           Ext.promise.Promise.CancellationError,
-          "cancellation reason",
+          "cancellation reason"
         );
       });
 
@@ -3925,7 +3925,7 @@ describe("Ext.promise.Promise", function () {
         eventuallyRejectedWith(
           promise.then(),
           Ext.promise.Promise.CancellationError,
-          "cancellation reason",
+          "cancellation reason"
         );
       });
     });
@@ -3948,7 +3948,7 @@ describe("Ext.promise.Promise", function () {
           var error;
           try {
             expect(Logger.log).to.be.calledOnce.and.calledWith(
-              "Promise resolved with value: " + value,
+              "Promise resolved with value: " + value
             );
             done();
           } catch (e) {
@@ -3966,7 +3966,7 @@ describe("Ext.promise.Promise", function () {
           var error;
           try {
             expect(Logger.log).to.be.calledOnce.and.calledWith(
-              "Test Promise resolved with value: " + value,
+              "Test Promise resolved with value: " + value
             );
             done();
           } catch (e) {
@@ -3984,7 +3984,7 @@ describe("Ext.promise.Promise", function () {
           var error;
           try {
             expect(Logger.log).to.be.calledOnce.and.calledWith(
-              "Promise rejected with reason: " + reason,
+              "Promise rejected with reason: " + reason
             );
             done();
           } catch (e) {
@@ -4002,7 +4002,7 @@ describe("Ext.promise.Promise", function () {
           var error;
           try {
             expect(Logger.log).to.be.calledOnce.and.calledWith(
-              "Test Promise rejected with reason: " + reason,
+              "Test Promise rejected with reason: " + reason
             );
             done();
           } catch (e) {
@@ -4143,7 +4143,7 @@ describe("Ext.promise.Promise", function () {
           args = ["a", "b", "c"];
           fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
-            verifyArgs(verifyScope(fn2, targetScope), args),
+            verifyArgs(verifyScope(fn2, targetScope), args)
           ];
           promise = Deferred.sequence(fns, targetScope, "a", "b", "c");
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4161,7 +4161,7 @@ describe("Ext.promise.Promise", function () {
           fns = [
             verifyScope(fn1, targetScope),
             verifyScope(fn2, targetScope),
-            verifyScope(fn3, targetScope),
+            verifyScope(fn3, targetScope)
           ];
           promise = Deferred.sequence(fns, targetScope);
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4173,7 +4173,7 @@ describe("Ext.promise.Promise", function () {
           fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
             verifyArgs(verifyScope(fn2, targetScope), args),
-            verifyArgs(verifyScope(fn3, targetScope), args),
+            verifyArgs(verifyScope(fn3, targetScope), args)
           ];
           promise = Deferred.sequence(fns, targetScope, "a", "b", "c");
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4226,7 +4226,7 @@ describe("Ext.promise.Promise", function () {
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
           expect(promise instanceof ExtPromise).toBe(true);
           eventuallyResolvesTo(promise, [1], true);
@@ -4250,14 +4250,14 @@ describe("Ext.promise.Promise", function () {
           args = ["a", "b", "c"];
           fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
-            verifyArgs(verifyScope(fn2, targetScope), args),
+            verifyArgs(verifyScope(fn2, targetScope), args)
           ];
           promise = Deferred.sequence(
             Deferred.resolved(fns),
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
           expect(promise instanceof ExtPromise).toBe(true);
           eventuallyResolvesTo(promise, [1, 2], true);
@@ -4274,7 +4274,7 @@ describe("Ext.promise.Promise", function () {
           fns = [
             verifyScope(fn1, targetScope),
             verifyScope(fn2, targetScope),
-            verifyScope(fn3, targetScope),
+            verifyScope(fn3, targetScope)
           ];
           promise = Deferred.sequence(Deferred.resolved(fns), targetScope);
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4286,14 +4286,14 @@ describe("Ext.promise.Promise", function () {
           fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
             verifyArgs(verifyScope(fn2, targetScope), args),
-            verifyArgs(verifyScope(fn3, targetScope), args),
+            verifyArgs(verifyScope(fn3, targetScope), args)
           ];
           promise = Deferred.sequence(
             Deferred.resolved(fns),
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
           expect(promise instanceof ExtPromise).toBe(true);
           eventuallyResolvesTo(promise, [1, 2, 3], true);
@@ -4303,7 +4303,7 @@ describe("Ext.promise.Promise", function () {
       describe("returns a new Promise that will reject with the Error associated with the specified rejected Promise of an Array of functions", function () {
         it("Error: error message", function () {
           promise = Deferred.sequence(
-            Deferred.rejected(new Error("error message")),
+            Deferred.rejected(new Error("error message"))
           );
           expect(promise instanceof ExtPromise).toBe(true);
           eventuallyRejectedWith(promise, Error, "error message");
@@ -4437,7 +4437,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4449,7 +4449,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4461,7 +4461,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -4475,7 +4475,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4487,7 +4487,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4499,7 +4499,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -4509,7 +4509,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.sequence();
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
 
@@ -4517,7 +4517,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.sequence(1);
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
       });
@@ -4612,7 +4612,7 @@ describe("Ext.promise.Promise", function () {
         it("Array of two functions with the optional scope specified", function () {
           var fns = [
             verifyScope(fn1, targetScope),
-            verifyScope(fn2, targetScope),
+            verifyScope(fn2, targetScope)
           ];
 
           promise = Deferred.parallel(fns, targetScope);
@@ -4625,7 +4625,7 @@ describe("Ext.promise.Promise", function () {
           var args = ["a", "b", "c"];
           var fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
-            verifyArgs(verifyScope(fn2, targetScope), args),
+            verifyArgs(verifyScope(fn2, targetScope), args)
           ];
 
           promise = Deferred.parallel(fns, targetScope, "a", "b", "c");
@@ -4647,7 +4647,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyScope(fn1, targetScope),
             verifyScope(fn2, targetScope),
-            verifyScope(fn3, targetScope),
+            verifyScope(fn3, targetScope)
           ];
 
           promise = Deferred.parallel(fns, targetScope);
@@ -4661,7 +4661,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
             verifyArgs(verifyScope(fn2, targetScope), args),
-            verifyArgs(verifyScope(fn3, targetScope), args),
+            verifyArgs(verifyScope(fn3, targetScope), args)
           ];
 
           promise = Deferred.parallel(fns, targetScope, "a", "b", "c");
@@ -4727,7 +4727,7 @@ describe("Ext.promise.Promise", function () {
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
 
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4746,7 +4746,7 @@ describe("Ext.promise.Promise", function () {
         it("Promise of an Array of two functions with the optional scope specified", function () {
           var fns = [
             verifyScope(fn1, targetScope),
-            verifyScope(fn2, targetScope),
+            verifyScope(fn2, targetScope)
           ];
 
           promise = Deferred.parallel(Deferred.resolved(fns), targetScope);
@@ -4759,7 +4759,7 @@ describe("Ext.promise.Promise", function () {
           var args = ["a", "b", "c"];
           var fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
-            verifyArgs(verifyScope(fn2, targetScope), args),
+            verifyArgs(verifyScope(fn2, targetScope), args)
           ];
 
           promise = Deferred.parallel(
@@ -4767,7 +4767,7 @@ describe("Ext.promise.Promise", function () {
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
 
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4787,7 +4787,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyScope(fn1, targetScope),
             verifyScope(fn2, targetScope),
-            verifyScope(fn3, targetScope),
+            verifyScope(fn3, targetScope)
           ];
 
           promise = Deferred.parallel(Deferred.resolved(fns), targetScope);
@@ -4801,7 +4801,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyArgs(verifyScope(fn1, targetScope), args),
             verifyArgs(verifyScope(fn2, targetScope), args),
-            verifyArgs(verifyScope(fn3, targetScope), args),
+            verifyArgs(verifyScope(fn3, targetScope), args)
           ];
 
           promise = Deferred.parallel(
@@ -4809,7 +4809,7 @@ describe("Ext.promise.Promise", function () {
             targetScope,
             "a",
             "b",
-            "c",
+            "c"
           );
 
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4820,7 +4820,7 @@ describe("Ext.promise.Promise", function () {
       describe("returns a new Promise that will reject with the Error associated with the specified rejected Promise of an Array of functions", function () {
         it("Error: error message", function () {
           promise = Deferred.parallel(
-            Deferred.rejected(new Error("error message")),
+            Deferred.rejected(new Error("error message"))
           );
 
           expect(promise instanceof ExtPromise).toBe(true);
@@ -4970,7 +4970,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4983,7 +4983,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -4996,7 +4996,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -5011,7 +5011,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5024,7 +5024,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5037,7 +5037,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -5047,7 +5047,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.parallel();
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
 
@@ -5055,7 +5055,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.parallel(1);
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
       });
@@ -5144,7 +5144,7 @@ describe("Ext.promise.Promise", function () {
         it("Array of two functions with an initial value and scope", function () {
           var fns = [
             verifyScope(createAppenderFn("b"), targetScope),
-            verifyScope(createAppenderFn("c"), targetScope),
+            verifyScope(createAppenderFn("c"), targetScope)
           ];
 
           promise = Deferred.pipeline(fns, "a", targetScope);
@@ -5157,7 +5157,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             createAppenderFn("a"),
             createAppenderFn("b"),
-            createAppenderFn("c"),
+            createAppenderFn("c")
           ];
 
           promise = Deferred.pipeline(fns);
@@ -5170,7 +5170,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             createAppenderFn("b"),
             createAppenderFn("c"),
-            createAppenderFn("d"),
+            createAppenderFn("d")
           ];
 
           promise = Deferred.pipeline(fns, "a");
@@ -5183,7 +5183,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyScope(createAppenderFn("b"), targetScope),
             verifyScope(createAppenderFn("c"), targetScope),
-            verifyScope(createAppenderFn("d"), targetScope),
+            verifyScope(createAppenderFn("d"), targetScope)
           ];
 
           promise = Deferred.pipeline(fns, "a", targetScope);
@@ -5269,7 +5269,7 @@ describe("Ext.promise.Promise", function () {
         it("Promise of an Array of two functions with an initial value and scope", function () {
           var fns = [
             verifyScope(createAppenderFn("b"), targetScope),
-            verifyScope(createAppenderFn("c"), targetScope),
+            verifyScope(createAppenderFn("c"), targetScope)
           ];
 
           promise = Deferred.pipeline(Deferred.resolved(fns), "a", targetScope);
@@ -5282,7 +5282,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             createAppenderFn("a"),
             createAppenderFn("b"),
-            createAppenderFn("c"),
+            createAppenderFn("c")
           ];
 
           promise = Deferred.pipeline(Deferred.resolved(fns));
@@ -5295,7 +5295,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             createAppenderFn("b"),
             createAppenderFn("c"),
-            createAppenderFn("d"),
+            createAppenderFn("d")
           ];
 
           promise = Deferred.pipeline(Deferred.resolved(fns), "a");
@@ -5308,7 +5308,7 @@ describe("Ext.promise.Promise", function () {
           var fns = [
             verifyScope(createAppenderFn("b"), targetScope),
             verifyScope(createAppenderFn("c"), targetScope),
-            verifyScope(createAppenderFn("d"), targetScope),
+            verifyScope(createAppenderFn("d"), targetScope)
           ];
 
           promise = Deferred.pipeline(Deferred.resolved(fns), "a", targetScope);
@@ -5321,7 +5321,7 @@ describe("Ext.promise.Promise", function () {
       describe("returns a new Promise that will reject with the Error associated with the specified rejected Promise of an Array of functions", function () {
         it("Error: error message", function () {
           promise = Deferred.pipeline(
-            Deferred.rejected(new Error("error message")),
+            Deferred.rejected(new Error("error message"))
           );
 
           expect(promise instanceof ExtPromise).toBe(true);
@@ -5471,7 +5471,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5484,7 +5484,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5497,7 +5497,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -5512,7 +5512,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5525,7 +5525,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
 
@@ -5538,7 +5538,7 @@ describe("Ext.promise.Promise", function () {
           eventuallyRejectedWith(
             promise,
             Error,
-            "Invalid parameter: expected a function.",
+            "Invalid parameter: expected a function."
           );
         });
       });
@@ -5548,7 +5548,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.pipeline();
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
 
@@ -5556,7 +5556,7 @@ describe("Ext.promise.Promise", function () {
           expect(function () {
             return Deferred.pipeline(1);
           }).toThrow(
-            "Invalid parameter: expected an Array or Promise of an Array.",
+            "Invalid parameter: expected an Array or Promise of an Array."
           );
         });
       });

@@ -28,7 +28,7 @@ Ext.define(
           all[name.toLowerCase()] =
           all[name] =
             cls.prototype;
-      },
+      }
     },
 
     onClassExtended: function (cls, data) {
@@ -76,9 +76,9 @@ Ext.define(
       }
 
       return new me.self(me.getCurrentConfig());
-    },
+    }
   },
   function () {
     this.register(this.prototype.type, this);
-  },
+  }
 );

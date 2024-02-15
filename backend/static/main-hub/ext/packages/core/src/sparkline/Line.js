@@ -106,7 +106,7 @@ Ext.define("Ext.sparkline.Line", {
      *        "50:": "red"
      *    }
      */
-    valueSpots: null,
+    valueSpots: null
   },
 
   tipTpl: "&#9679; {prefix}{y}{suffix}",
@@ -150,7 +150,7 @@ Ext.define("Ext.sparkline.Line", {
       y: this.yvalues[region],
       color: this.getLineColor(),
       fillColor: this.getFillColor(),
-      offset: region,
+      offset: region
     };
   },
 
@@ -177,7 +177,7 @@ Ext.define("Ext.sparkline.Line", {
           me.canvasTop,
           vertex[0],
           me.canvasTop + me.getHeight(),
-          highlightLineColor,
+          highlightLineColor
         )
         .append();
     }
@@ -284,17 +284,17 @@ Ext.define("Ext.sparkline.Line", {
     canvasTop,
     canvasHeight,
     canvasWidth,
-    rangey,
+    rangey
   ) {
     var normalRangeMin = this.getNormalRangeMin(),
       normalRangeMax = this.getNormalRangeMax(),
       ytop =
         canvasTop +
         Math.round(
-          canvasHeight - canvasHeight * ((normalRangeMax - this.miny) / rangey),
+          canvasHeight - canvasHeight * ((normalRangeMax - this.miny) / rangey)
         ),
       height = Math.round(
-        (canvasHeight * (normalRangeMax - normalRangeMin)) / rangey,
+        (canvasHeight * (normalRangeMax - normalRangeMin)) / rangey
       );
     this.canvas
       .drawRect(
@@ -303,7 +303,7 @@ Ext.define("Ext.sparkline.Line", {
         canvasWidth,
         height,
         undefined,
-        this.normalRangeColor,
+        this.normalRangeColor
       )
       .append();
   },
@@ -455,7 +455,7 @@ Ext.define("Ext.sparkline.Line", {
         vertex = [
           xPos,
           canvasTop +
-            Math.round(canvasHeight - canvasHeight * ((y - this.miny) / Y)),
+            Math.round(canvasHeight - canvasHeight * ((y - this.miny) / Y))
         ];
         path.push(vertex);
         vertices.push(vertex);
@@ -513,11 +513,11 @@ Ext.define("Ext.sparkline.Line", {
                 Math.round((xValues[i] - me.minx) * (canvasWidth / rangeX)),
               canvasTop +
                 Math.round(
-                  canvasHeight - canvasHeight * ((yValues[i] - me.miny) / Y),
+                  canvasHeight - canvasHeight * ((yValues[i] - me.miny) / Y)
                 ),
               spotRadius,
               null,
-              color,
+              color
             )
             .append();
         }
@@ -528,15 +528,15 @@ Ext.define("Ext.sparkline.Line", {
         .drawCircle(
           canvasLeft +
             Math.round(
-              (xValues[xValues.length - 1] - me.minx) * (canvasWidth / rangeX),
+              (xValues[xValues.length - 1] - me.minx) * (canvasWidth / rangeX)
             ),
           canvasTop +
             Math.round(
-              canvasHeight - canvasHeight * ((yValues[yvallast] - me.miny) / Y),
+              canvasHeight - canvasHeight * ((yValues[yvallast] - me.miny) / Y)
             ),
           spotRadius,
           null,
-          spotColor,
+          spotColor
         )
         .append();
     }
@@ -548,11 +548,11 @@ Ext.define("Ext.sparkline.Line", {
             canvasLeft + Math.round((x - me.minx) * (canvasWidth / rangeX)),
             canvasTop +
               Math.round(
-                canvasHeight - canvasHeight * ((me.minyorg - me.miny) / Y),
+                canvasHeight - canvasHeight * ((me.minyorg - me.miny) / Y)
               ),
             spotRadius,
             null,
-            minSpotColor,
+            minSpotColor
           )
           .append();
       }
@@ -563,11 +563,11 @@ Ext.define("Ext.sparkline.Line", {
             canvasLeft + Math.round((x - me.minx) * (canvasWidth / rangeX)),
             canvasTop +
               Math.round(
-                canvasHeight - canvasHeight * ((me.maxyorg - me.miny) / Y),
+                canvasHeight - canvasHeight * ((me.maxyorg - me.miny) / Y)
               ),
             spotRadius,
             null,
-            maxSpotColor,
+            maxSpotColor
           )
           .append();
       }
@@ -580,5 +580,5 @@ Ext.define("Ext.sparkline.Line", {
       me.updateDisplay();
     }
     canvas.render();
-  },
+  }
 });

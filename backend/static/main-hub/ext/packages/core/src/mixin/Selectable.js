@@ -11,8 +11,8 @@ Ext.define(
     mixinConfig: {
       id: "selectable",
       after: {
-        updateStore: "updateStore",
-      },
+        updateStore: "updateStore"
+      }
     },
 
     /**
@@ -82,18 +82,18 @@ Ext.define(
       selection: null,
 
       twoWayBindable: {
-        selection: 1,
+        selection: 1
       },
 
       publishes: {
-        selection: 1,
-      },
+        selection: 1
+      }
     },
 
     modes: {
       SINGLE: true,
       SIMPLE: true,
-      MULTI: true,
+      MULTI: true
     },
 
     selectableEventHooks: {
@@ -102,10 +102,10 @@ Ext.define(
       update: "onSelectionStoreUpdate",
       clear: {
         fn: "onSelectionStoreClear",
-        priority: 1000,
+        priority: 1000
       },
       load: "refreshSelection",
-      refresh: "refreshSelection",
+      refresh: "refreshSelection"
     },
 
     constructor: function () {
@@ -498,7 +498,7 @@ Ext.define(
     onItemSelect: Ext.emptyFn,
     onItemDeselect: Ext.emptyFn,
     onLastFocusChanged: Ext.emptyFn,
-    onEditorKey: Ext.emptyFn,
+    onEditorKey: Ext.emptyFn
   },
   function () {
     /**
@@ -563,5 +563,5 @@ Ext.define(
      * @inheritdoc Ext.mixin.Selectable#disableSelection
      * @deprecated 2.0.0 Please use {@link #disableSelection} instead.
      */
-  },
+  }
 );

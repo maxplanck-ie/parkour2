@@ -16,12 +16,12 @@ describe("Ext.data.Model", function () {
         { forename: "Don", surname: "Griffin" },
         { forename: "Phil", surname: "Guerrant" },
         { forename: "Kevin", surname: "Krohe" },
-        { forename: "Evan", surname: "Trimboli" },
+        { forename: "Evan", surname: "Trimboli" }
       ];
 
       var store = new Ext.data.Store({
         model: Ext.data.Model,
-        data: data,
+        data: data
       });
 
       // The raw data object should be inported directly as the records' data objects
@@ -43,7 +43,7 @@ describe("Ext.data.Model", function () {
     beforeEach(function () {
       A = Ext.define("spec.A", {
         extend: Ext.data.Model,
-        fields: ["id", "name", "key"],
+        fields: ["id", "name", "key"]
       });
     });
 
@@ -97,16 +97,16 @@ describe("Ext.data.Model", function () {
     describe("entityName", function () {
       beforeEach(function () {
         Ext.define("specModel", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
         Ext.define("spec.A", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
         Ext.define("spec.B", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
         Ext.define("spec.model.sub.C", {
-          extend: "Ext.data.Model",
+          extend: "Ext.data.Model"
         });
       });
 
@@ -135,9 +135,9 @@ describe("Ext.data.Model", function () {
         cfg = Ext.apply(
           {
             extend: Ext.data.Model,
-            fields: fields,
+            fields: fields
           },
-          cfg,
+          cfg
         );
         A = Ext.define("spec.A", cfg);
       }
@@ -146,9 +146,9 @@ describe("Ext.data.Model", function () {
         cfg = Ext.apply(
           {
             extend: A,
-            fields: fields,
+            fields: fields
           },
-          cfg,
+          cfg
         );
 
         // This will warn about redefining field 'id'
@@ -168,8 +168,8 @@ describe("Ext.data.Model", function () {
       it("should be able to define an object field and default the type to auto", function () {
         defineA([
           {
-            name: "id",
-          },
+            name: "id"
+          }
         ]);
         var field = A.getField("id");
         expect(field.isField).toBe(true);
@@ -181,8 +181,8 @@ describe("Ext.data.Model", function () {
         defineA([
           {
             name: "id",
-            type: "int",
-          },
+            type: "int"
+          }
         ]);
         expect(A.getField("id").getType()).toBe("int");
       });
@@ -222,8 +222,8 @@ describe("Ext.data.Model", function () {
           defineA([
             {
               name: "id",
-              type: "int",
-            },
+              type: "int"
+            }
           ]);
           var field = A.getField("id");
           expect(field.getType()).toBe("int");
@@ -231,7 +231,7 @@ describe("Ext.data.Model", function () {
 
         it("should create an idField when the name isn't the default", function () {
           defineA([], {
-            idProperty: "name",
+            idProperty: "name"
           });
           expect(A.getField("name").isField).toBe(true);
         });
@@ -240,8 +240,8 @@ describe("Ext.data.Model", function () {
           defineA([
             {
               name: "id",
-              type: "int",
-            },
+              type: "int"
+            }
           ]);
           expect(A.getField("id").defaultValue).toBeNull();
         });
@@ -250,8 +250,8 @@ describe("Ext.data.Model", function () {
           defineA([
             {
               name: "id",
-              type: "int",
-            },
+              type: "int"
+            }
           ]);
           expect(A.getField("id").allowNull).toBe(true);
         });
@@ -289,8 +289,8 @@ describe("Ext.data.Model", function () {
           defineB([
             {
               name: "id",
-              type: "int",
-            },
+              type: "int"
+            }
           ]);
 
           expect(A.getField("id").getType()).toBe("auto");
@@ -302,11 +302,11 @@ describe("Ext.data.Model", function () {
           defineB(["bField"]);
           Ext.define("spec.C", {
             extend: B,
-            fields: ["cField"],
+            fields: ["cField"]
           });
           Ext.define("spec.D", {
             extend: spec.C,
-            fields: ["dField"],
+            fields: ["dField"]
           });
 
           var fields = spec.C.getFields();
@@ -484,7 +484,7 @@ describe("Ext.data.Model", function () {
         describe("versionProperty", function () {
           it("should append versionProperty if it's not declared as a field", function () {
             defineA(["foo"], {
-              versionProperty: "version",
+              versionProperty: "version"
             });
 
             var fields = spec.A.getFields(),
@@ -505,13 +505,13 @@ describe("Ext.data.Model", function () {
                 "foo",
                 {
                   name: "version",
-                  type: "int",
+                  type: "int"
                 },
-                "bar",
+                "bar"
               ],
               {
-                versionProperty: "version",
-              },
+                versionProperty: "version"
+              }
             );
 
             var fields = spec.A.getFields(),
@@ -570,8 +570,8 @@ describe("Ext.data.Model", function () {
                 "baz",
                 {
                   name: "foo",
-                  type: "int",
-                },
+                  type: "int"
+                }
               ]);
               expectOrdinal("foo", 1, B);
             });
@@ -579,7 +579,7 @@ describe("Ext.data.Model", function () {
             it("should append a custom id field to the end", function () {
               defineA(["id", "foo"]);
               defineB(["bar"], {
-                idProperty: "customId",
+                idProperty: "customId"
               });
               expectOrdinal("customId", 3, B);
             });
@@ -617,8 +617,8 @@ describe("Ext.data.Model", function () {
                 "bar",
                 {
                   name: "foo",
-                  type: "int",
-                },
+                  type: "int"
+                }
               ]);
               expect(B.getField("foo").definedBy).toBe(B);
             });
@@ -635,13 +635,13 @@ describe("Ext.data.Model", function () {
                 name: "bar",
                 calculate: function (data) {
                   return data.foo * 2;
-                },
-              },
+                }
+              }
             ]);
 
             defineB();
             var rec = new B({
-              foo: 10,
+              foo: 10
             });
             expect(rec.get("bar")).toBe(20);
           });
@@ -654,17 +654,17 @@ describe("Ext.data.Model", function () {
                 name: "bar",
                 calculate: function (data) {
                   return data.foo * 2;
-                },
-              },
+                }
+              }
             ]);
 
             defineB();
             var rec = new A({
-              foo: 10,
+              foo: 10
             });
             expect(rec.get("bar")).toBe(20);
             rec = new B({
-              foo: 20,
+              foo: 20
             });
             expect(rec.get("bar")).toBe(40);
           });
@@ -678,9 +678,9 @@ describe("Ext.data.Model", function () {
           {
             extend: Ext.data.Model,
             fields: ["id"],
-            proxy: proxy,
+            proxy: proxy
           },
-          cfg,
+          cfg
         );
         A = Ext.define("spec.A", cfg);
       }
@@ -698,8 +698,8 @@ describe("Ext.data.Model", function () {
       it("should use the defaultProxy instead of the schema proxy", function () {
         defineA(null, {
           statics: {
-            defaultProxy: { type: "memory" },
-          },
+            defaultProxy: { type: "memory" }
+          }
         });
         var schema = A.schema,
           schemaConfig = schema.constructProxy(A),
@@ -717,7 +717,7 @@ describe("Ext.data.Model", function () {
       it("should create a proxy from a config", function () {
         defineA({
           type: "ajax",
-          url: "/foo",
+          url: "/foo"
         });
         expect(A.getProxy().getUrl()).toBe("/foo");
       });
@@ -725,13 +725,13 @@ describe("Ext.data.Model", function () {
       it("should infer the reader type from the proxy", function () {
         Ext.define("spec.CustomReader", {
           extend: "Ext.data.reader.Json",
-          alias: "reader.custom",
+          alias: "reader.custom"
         });
 
         Ext.define("spec.CustomProxy", {
           extend: "Ext.data.proxy.Ajax",
           alias: "proxy.custom",
-          reader: "custom",
+          reader: "custom"
         });
 
         defineA("custom");
@@ -751,9 +751,9 @@ describe("Ext.data.Model", function () {
         function defineB(proxy, cfg) {
           cfg = Ext.apply(
             {
-              extend: A,
+              extend: A
             },
-            cfg,
+            cfg
           );
 
           if (proxy) {
@@ -766,7 +766,7 @@ describe("Ext.data.Model", function () {
         it("should inherit a config from the parent", function () {
           defineA({
             type: "ajax",
-            url: "/foo",
+            url: "/foo"
           });
           defineB();
           expect(B.getProxy().getUrl()).toBe("/foo");
@@ -775,11 +775,11 @@ describe("Ext.data.Model", function () {
         it("should override anything on the parent", function () {
           defineA({
             type: "ajax",
-            url: "/foo",
+            url: "/foo"
           });
           defineB({
             type: "ajax",
-            url: "/bar",
+            url: "/bar"
           });
           expect(B.getProxy().getUrl()).toBe("/bar");
         });
@@ -787,7 +787,7 @@ describe("Ext.data.Model", function () {
         it("should clone an existing instance", function () {
           defineA({
             type: "ajax",
-            url: "/foo",
+            url: "/foo"
           });
           // trigger creation
           A.getProxy();
@@ -799,7 +799,7 @@ describe("Ext.data.Model", function () {
         it("should not modify the super instance", function () {
           defineA({
             type: "ajax",
-            url: "/foo",
+            url: "/foo"
           });
           defineB();
           B.getProxy().setUrl("/bar");
@@ -809,8 +809,8 @@ describe("Ext.data.Model", function () {
         it("should not use the defaultProxy when defaultProxy is defined on parent", function () {
           defineA(null, {
             statics: {
-              defaultProxy: { type: "memory" },
-            },
+              defaultProxy: { type: "memory" }
+            }
           });
           defineB();
           var schema = B.schema,
@@ -846,9 +846,9 @@ describe("Ext.data.Model", function () {
           {
             extend: Ext.data.Model,
             fields: fields || ["id", "name"],
-            identifier: identifier,
+            identifier: identifier
           },
-          cfg,
+          cfg
         );
         A = Ext.define("spec.A", cfg);
       }
@@ -857,7 +857,7 @@ describe("Ext.data.Model", function () {
         idgen = null;
         var Generator = Ext.data.identifier.Generator;
         Generator.all = {
-          uuid: Generator.all.uuid,
+          uuid: Generator.all.uuid
         }; // clear generator id map
       });
 
@@ -884,7 +884,7 @@ describe("Ext.data.Model", function () {
       it("should create an identifier from a config object", function () {
         defineA({
           type: "sequential",
-          prefix: "foo",
+          prefix: "foo"
         });
 
         var r = new A();
@@ -901,8 +901,8 @@ describe("Ext.data.Model", function () {
             // sequential is the default
             id: "x",
             prefix: "ID_",
-            seed: 1000,
-          },
+            seed: 1000
+          }
         });
         defineA("x");
 
@@ -918,9 +918,9 @@ describe("Ext.data.Model", function () {
           cfg = Ext.apply(
             {
               extend: A,
-              identifier: identifier,
+              identifier: identifier
             },
-            cfg,
+            cfg
           );
 
           B = Ext.define("spec.B", cfg);
@@ -929,7 +929,7 @@ describe("Ext.data.Model", function () {
         describe("defined on the subclass", function () {
           it("should use a string type", function () {
             defineA({
-              type: "negative",
+              type: "negative"
             });
 
             defineB("sequential");
@@ -943,11 +943,11 @@ describe("Ext.data.Model", function () {
 
           it("should use an object type", function () {
             defineA({
-              type: "negative",
+              type: "negative"
             });
 
             defineB({
-              type: "sequential",
+              type: "sequential"
             });
 
             var a = new A();
@@ -960,7 +960,7 @@ describe("Ext.data.Model", function () {
           it("should use an instance", function () {
             idgen = new Ext.data.identifier.Sequential();
             defineA({
-              type: "sequential",
+              type: "sequential"
             });
 
             defineB(idgen);
@@ -972,7 +972,7 @@ describe("Ext.data.Model", function () {
           it("should clone an instance if it's cloneable", function () {
             defineA({
               type: "sequential",
-              prefix: "foo",
+              prefix: "foo"
             });
             defineB();
             idgen = B.identifier;
@@ -991,7 +991,7 @@ describe("Ext.data.Model", function () {
               type: "sequential",
               prefix: "ID_",
               seed: 1000,
-              id: "xxx",
+              id: "xxx"
             });
             defineB();
             expect(B.identifier).toBe(A.identifier);
@@ -1034,11 +1034,11 @@ describe("Ext.data.Model", function () {
               fields: fields || [
                 {
                   name: "name",
-                  validators: validatorCfg,
-                },
-              ],
+                  validators: validatorCfg
+                }
+              ]
             },
-            cfg,
+            cfg
           );
           A = Ext.define("spec.A", cfg);
         }
@@ -1051,7 +1051,7 @@ describe("Ext.data.Model", function () {
         it("should accept an object configuration", function () {
           defineA({
             type: "format",
-            matcher: /foo/,
+            matcher: /foo/
           });
           expectError(A, "name", null, [formatMsg]);
         });
@@ -1071,12 +1071,12 @@ describe("Ext.data.Model", function () {
         it("should accept an array of configs", function () {
           defineA([
             {
-              type: "presence",
+              type: "presence"
             },
             {
               type: "format",
-              matcher: /foo/,
-            },
+              matcher: /foo/
+            }
           ]);
           expectError(A, "name", null, [presenceMsg, formatMsg]);
         });
@@ -1088,7 +1088,7 @@ describe("Ext.data.Model", function () {
             },
             function () {
               return "Fail2";
-            },
+            }
           ]);
           expectError(A, "name", null, ["Fail1", "Fail2"]);
         });
@@ -1097,12 +1097,12 @@ describe("Ext.data.Model", function () {
           defineA(null, [
             {
               name: "name",
-              validators: "presence",
+              validators: "presence"
             },
             {
               name: "email",
-              validators: "email",
-            },
+              validators: "email"
+            }
           ]);
           expectError(A, "name", null, [presenceMsg]);
           expectError(A, "email", null, [emailMsg]);
@@ -1115,9 +1115,9 @@ describe("Ext.data.Model", function () {
             {
               extend: Ext.data.Model,
               fields: fields || ["id", "name", "rank", "email"],
-              validators: validators,
+              validators: validators
             },
-            cfg,
+            cfg
           );
           A = Ext.define("spec.A", cfg);
         }
@@ -1127,8 +1127,8 @@ describe("Ext.data.Model", function () {
             defineA([
               {
                 field: "name",
-                type: "presence",
-              },
+                type: "presence"
+              }
             ]);
             expectError(A, "name", null, [presenceMsg]);
           });
@@ -1137,13 +1137,13 @@ describe("Ext.data.Model", function () {
             defineA([
               {
                 field: "name",
-                type: "presence",
+                type: "presence"
               },
               {
                 field: "name",
                 type: "format",
-                matcher: /foo/,
-              },
+                matcher: /foo/
+              }
             ]);
             expectError(A, "name", null, [presenceMsg, formatMsg]);
           });
@@ -1152,12 +1152,12 @@ describe("Ext.data.Model", function () {
             defineA([
               {
                 field: "name",
-                type: "presence",
+                type: "presence"
               },
               {
                 field: "email",
-                type: "email",
-              },
+                type: "email"
+              }
             ]);
 
             expectError(A, "name", null, [presenceMsg]);
@@ -1172,8 +1172,8 @@ describe("Ext.data.Model", function () {
             defineA([
               {
                 field: "name",
-                fn: fn,
-              },
+                fn: fn
+              }
             ]);
 
             expectError(A, "name", null, ["Failed"]);
@@ -1183,7 +1183,7 @@ describe("Ext.data.Model", function () {
         describe("object style", function () {
           it("should accept a string", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             expectError(A, "name", null, [presenceMsg]);
           });
@@ -1193,7 +1193,7 @@ describe("Ext.data.Model", function () {
               return "Failed";
             };
             defineA({
-              name: fn,
+              name: fn
             });
             expectError(A, "name", null, ["Failed"]);
           });
@@ -1202,15 +1202,15 @@ describe("Ext.data.Model", function () {
             defineA({
               name: {
                 type: "format",
-                matcher: /foo/,
-              },
+                matcher: /foo/
+              }
             });
             expectError(A, "name", null, [formatMsg]);
           });
 
           it("should accept an array of strings", function () {
             defineA({
-              name: ["presence", "email"],
+              name: ["presence", "email"]
             });
             expectError(A, "name", null, [presenceMsg, emailMsg]);
           });
@@ -1224,7 +1224,7 @@ describe("Ext.data.Model", function () {
               };
 
             defineA({
-              name: [fn1, fn2],
+              name: [fn1, fn2]
             });
             expectError(A, "name", null, ["Fail1", "Fail2"]);
           });
@@ -1234,17 +1234,17 @@ describe("Ext.data.Model", function () {
               name: [
                 {
                   type: "format",
-                  matcher: /foo/,
+                  matcher: /foo/
                 },
                 {
                   type: "length",
-                  min: 3,
-                },
-              ],
+                  min: 3
+                }
+              ]
             });
             expectError(A, "name", "x", [
               formatMsg,
-              "Length must be at least 3",
+              "Length must be at least 3"
             ]);
           });
 
@@ -1258,22 +1258,22 @@ describe("Ext.data.Model", function () {
                 "email",
                 {
                   type: "length",
-                  min: 3,
+                  min: 3
                 },
-                fn,
-              ],
+                fn
+              ]
             });
             expectError(A, "name", "x", [
               emailMsg,
               "Length must be at least 3",
-              "Fail",
+              "Fail"
             ]);
           });
 
           it("should be able to declare multiple fields at once", function () {
             defineA({
               name: "presence",
-              email: "email",
+              email: "email"
             });
 
             expectError(A, "name", null, [presenceMsg]);
@@ -1288,9 +1288,9 @@ describe("Ext.data.Model", function () {
             {
               extend: Ext.data.Model,
               fields: fields,
-              validators: validators,
+              validators: validators
             },
-            cfg,
+            cfg
           );
           A = Ext.define("spec.A", cfg);
         }
@@ -1301,15 +1301,15 @@ describe("Ext.data.Model", function () {
               [
                 {
                   field: "name",
-                  type: "presence",
-                },
+                  type: "presence"
+                }
               ],
               [
                 {
                   name: "name",
-                  validators: "email",
-                },
-              ],
+                  validators: "email"
+                }
+              ]
             );
             expectError(A, "name", null, [presenceMsg, emailMsg]);
           });
@@ -1319,18 +1319,18 @@ describe("Ext.data.Model", function () {
               [
                 {
                   field: "name",
-                  type: "presence",
-                },
+                  type: "presence"
+                }
               ],
               [
                 {
                   name: "name",
                   validators: {
                     type: "format",
-                    matcher: /foo/,
-                  },
-                },
-              ],
+                    matcher: /foo/
+                  }
+                }
+              ]
             );
             expectError(A, "name", null, [presenceMsg, formatMsg]);
           });
@@ -1340,8 +1340,8 @@ describe("Ext.data.Model", function () {
               [
                 {
                   field: "name",
-                  type: "presence",
-                },
+                  type: "presence"
+                }
               ],
               [
                 {
@@ -1350,10 +1350,10 @@ describe("Ext.data.Model", function () {
                     "email",
                     function () {
                       return "Fail";
-                    },
-                  ],
-                },
-              ],
+                    }
+                  ]
+                }
+              ]
             );
             expectError(A, "name", null, [presenceMsg, emailMsg, "Fail"]);
           });
@@ -1364,14 +1364,14 @@ describe("Ext.data.Model", function () {
             it("should merge with a string", function () {
               defineA(
                 {
-                  name: "presence",
+                  name: "presence"
                 },
                 [
                   {
                     name: "name",
-                    validators: "email",
-                  },
-                ],
+                    validators: "email"
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1379,17 +1379,17 @@ describe("Ext.data.Model", function () {
             it("should merge with an object", function () {
               defineA(
                 {
-                  name: "presence",
+                  name: "presence"
                 },
                 [
                   {
                     name: "name",
                     validators: {
                       type: "format",
-                      matcher: /foo/,
-                    },
-                  },
-                ],
+                      matcher: /foo/
+                    }
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, formatMsg]);
             });
@@ -1397,14 +1397,14 @@ describe("Ext.data.Model", function () {
             it("should merge with an array", function () {
               defineA(
                 {
-                  name: "presence",
+                  name: "presence"
                 },
                 [
                   {
                     name: "name",
-                    validators: ["email"],
-                  },
-                ],
+                    validators: ["email"]
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1415,15 +1415,15 @@ describe("Ext.data.Model", function () {
               defineA(
                 {
                   name: {
-                    type: "presence",
-                  },
+                    type: "presence"
+                  }
                 },
                 [
                   {
                     name: "name",
-                    validators: "email",
-                  },
-                ],
+                    validators: "email"
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1432,18 +1432,18 @@ describe("Ext.data.Model", function () {
               defineA(
                 {
                   name: {
-                    type: "presence",
-                  },
+                    type: "presence"
+                  }
                 },
                 [
                   {
                     name: "name",
                     validators: {
                       type: "format",
-                      matcher: /foo/,
-                    },
-                  },
-                ],
+                      matcher: /foo/
+                    }
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, formatMsg]);
             });
@@ -1452,15 +1452,15 @@ describe("Ext.data.Model", function () {
               defineA(
                 {
                   name: {
-                    type: "presence",
-                  },
+                    type: "presence"
+                  }
                 },
                 [
                   {
                     name: "name",
-                    validators: ["email"],
-                  },
-                ],
+                    validators: ["email"]
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1470,14 +1470,14 @@ describe("Ext.data.Model", function () {
             it("should merge with a string", function () {
               defineA(
                 {
-                  name: ["presence"],
+                  name: ["presence"]
                 },
                 [
                   {
                     name: "name",
-                    validators: "email",
-                  },
-                ],
+                    validators: "email"
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1485,17 +1485,17 @@ describe("Ext.data.Model", function () {
             it("should merge with an object", function () {
               defineA(
                 {
-                  name: ["presence"],
+                  name: ["presence"]
                 },
                 [
                   {
                     name: "name",
                     validators: {
                       type: "format",
-                      matcher: /foo/,
-                    },
-                  },
-                ],
+                      matcher: /foo/
+                    }
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, formatMsg]);
             });
@@ -1503,14 +1503,14 @@ describe("Ext.data.Model", function () {
             it("should merge with an array", function () {
               defineA(
                 {
-                  name: ["presence"],
+                  name: ["presence"]
                 },
                 [
                   {
                     name: "name",
-                    validators: ["email"],
-                  },
-                ],
+                    validators: ["email"]
+                  }
+                ]
               );
               expectError(A, "name", null, [presenceMsg, emailMsg]);
             });
@@ -1524,9 +1524,9 @@ describe("Ext.data.Model", function () {
             {
               extend: Ext.data.Model,
               fields: fields || ["name", "email"],
-              validators: validators,
+              validators: validators
             },
-            cfg,
+            cfg
           );
           A = Ext.define("spec.A", cfg);
         }
@@ -1536,9 +1536,9 @@ describe("Ext.data.Model", function () {
             {
               extend: A,
               fields: fields || [],
-              validators: validators,
+              validators: validators
             },
-            cfg,
+            cfg
           );
 
           B = Ext.define("spec.B", cfg);
@@ -1549,8 +1549,8 @@ describe("Ext.data.Model", function () {
             defineA(null, [
               {
                 name: "name",
-                validators: "presence",
-              },
+                validators: "presence"
+              }
             ]);
             defineB();
             expectError(B, "name", null, [presenceMsg]);
@@ -1558,7 +1558,7 @@ describe("Ext.data.Model", function () {
 
           it("should use the superclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             defineB();
             expectError(B, "name", null, [presenceMsg]);
@@ -1567,7 +1567,7 @@ describe("Ext.data.Model", function () {
           it("should use the subclass model validator", function () {
             defineA();
             defineB({
-              name: "presence",
+              name: "presence"
             });
             expectError(B, "name", null, [presenceMsg]);
           });
@@ -1575,14 +1575,14 @@ describe("Ext.data.Model", function () {
           it("should combine a field validator & a superclass model validator", function () {
             defineA(
               {
-                name: "email",
+                name: "email"
               },
               [
                 {
                   name: "name",
-                  validators: "presence",
-                },
-              ],
+                  validators: "presence"
+                }
+              ]
             );
             defineB();
             expectError(B, "name", null, [emailMsg, presenceMsg]);
@@ -1592,21 +1592,21 @@ describe("Ext.data.Model", function () {
             defineA(null, [
               {
                 name: "name",
-                validators: "presence",
-              },
+                validators: "presence"
+              }
             ]);
             defineB({
-              name: "email",
+              name: "email"
             });
             expectError(B, "name", null, [emailMsg, presenceMsg]);
           });
 
           it("should combine a superclass model validator & subclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             defineB({
-              name: "email",
+              name: "email"
             });
             expectError(B, "name", null, [presenceMsg, emailMsg]);
           });
@@ -1614,21 +1614,21 @@ describe("Ext.data.Model", function () {
           it("should combine a field validator, superclass model validator & subclass model validator", function () {
             defineA(
               {
-                name: "presence",
+                name: "presence"
               },
               [
                 {
                   name: "name",
                   validators: {
                     type: "format",
-                    matcher: /foo/,
-                  },
-                },
-              ],
+                    matcher: /foo/
+                  }
+                }
+              ]
             );
 
             defineB({
-              name: "email",
+              name: "email"
             });
 
             expectError(B, "name", null, [presenceMsg, emailMsg, formatMsg]);
@@ -1638,7 +1638,7 @@ describe("Ext.data.Model", function () {
             it("should not push subclass validators onto the superclass", function () {
               defineA();
               defineB({
-                name: "presence",
+                name: "presence"
               });
               expectError(A, "name", null, []);
               expectError(B, "name", null, [presenceMsg]);
@@ -1646,10 +1646,10 @@ describe("Ext.data.Model", function () {
 
             it("should retain superclass validators", function () {
               defineA({
-                name: "presence",
+                name: "presence"
               });
               defineB({
-                name: "email",
+                name: "email"
               });
               expectError(A, "name", null, [presenceMsg]);
               expectError(B, "name", null, [presenceMsg, emailMsg]);
@@ -1666,8 +1666,8 @@ describe("Ext.data.Model", function () {
             defineA(null, [
               {
                 name: "name",
-                validators: "presence",
-              },
+                validators: "presence"
+              }
             ]);
             defineB(null, ["name"]);
             expectError(B, "name", null, []);
@@ -1677,21 +1677,21 @@ describe("Ext.data.Model", function () {
             defineA(null, [
               {
                 name: "name",
-                validators: "presence",
-              },
+                validators: "presence"
+              }
             ]);
             defineB(null, [
               {
                 name: "name",
-                validators: "email",
-              },
+                validators: "email"
+              }
             ]);
             expectError(B, "name", null, [emailMsg]);
           });
 
           it("should inherit a superclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             defineB(["name"]);
             expectError(B, "name", null, [presenceMsg]);
@@ -1701,22 +1701,22 @@ describe("Ext.data.Model", function () {
             defineA();
             defineB(
               {
-                name: "presence",
+                name: "presence"
               },
-              ["name"],
+              ["name"]
             );
             expectError(B, "name", null, [presenceMsg]);
           });
 
           it("should combine a field validator & a superclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             defineB(null, [
               {
                 name: "name",
-                validators: "email",
-              },
+                validators: "email"
+              }
             ]);
             expectError(B, "name", null, [presenceMsg, emailMsg]);
           });
@@ -1725,49 +1725,49 @@ describe("Ext.data.Model", function () {
             defineA();
             defineB(
               {
-                name: "presence",
+                name: "presence"
               },
               [
                 {
                   name: "name",
-                  validators: "email",
-                },
-              ],
+                  validators: "email"
+                }
+              ]
             );
             expectError(B, "name", null, [presenceMsg, emailMsg]);
           });
 
           it("should combine a superclass model validator & a subclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
             defineB(
               {
-                name: "email",
+                name: "email"
               },
-              ["name"],
+              ["name"]
             );
             expectError(B, "name", null, [presenceMsg, emailMsg]);
           });
 
           it("should combine a field validator, superclass model validator & subclass model validator", function () {
             defineA({
-              name: "presence",
+              name: "presence"
             });
 
             defineB(
               {
-                name: "email",
+                name: "email"
               },
               [
                 {
                   name: "name",
                   validators: {
                     type: "format",
-                    matcher: /foo/,
-                  },
-                },
-              ],
+                    matcher: /foo/
+                  }
+                }
+              ]
             );
 
             expectError(B, "name", null, [presenceMsg, emailMsg, formatMsg]);
@@ -1779,8 +1779,8 @@ describe("Ext.data.Model", function () {
               defineB(null, [
                 {
                   name: "name",
-                  validators: "presence",
-                },
+                  validators: "presence"
+                }
               ]);
 
               expectError(A, "name", null, []);
@@ -1791,14 +1791,14 @@ describe("Ext.data.Model", function () {
               defineA(null, [
                 {
                   name: "name",
-                  validators: "presence",
-                },
+                  validators: "presence"
+                }
               ]);
               defineB(null, [
                 {
                   name: "name",
-                  validators: "email",
-                },
+                  validators: "email"
+                }
               ]);
 
               expectError(A, "name", null, [presenceMsg]);
@@ -1809,9 +1809,9 @@ describe("Ext.data.Model", function () {
               defineA();
               defineB(
                 {
-                  name: "presence",
+                  name: "presence"
                 },
-                ["name"],
+                ["name"]
               );
 
               expectError(A, "name", null, []);
@@ -1820,13 +1820,13 @@ describe("Ext.data.Model", function () {
 
             it("should retain superclass validators", function () {
               defineA({
-                name: "presence",
+                name: "presence"
               });
               defineB(
                 {
-                  name: "email",
+                  name: "email"
                 },
-                ["name"],
+                ["name"]
               );
               expectError(A, "name", null, [presenceMsg]);
               expectError(B, "name", null, [presenceMsg, emailMsg]);
@@ -1850,9 +1850,9 @@ describe("Ext.data.Model", function () {
         {
           extend: Ext.data.Model,
           fields: ["id"],
-          proxy: proxy,
+          proxy: proxy
         },
-        cfg,
+        cfg
       );
       A = Ext.define("spec.A", cfg);
     }
@@ -1867,14 +1867,14 @@ describe("Ext.data.Model", function () {
       defineA();
       A.setProxy({
         type: "ajax",
-        url: "/foo",
+        url: "/foo"
       });
       expect(A.getProxy().getUrl()).toBe("/foo");
     });
 
     it("should be able to set an instance", function () {
       var proxy = new Ext.data.proxy.Ajax({
-        url: "/foo",
+        url: "/foo"
       });
       defineA();
       A.setProxy(proxy);
@@ -1885,7 +1885,7 @@ describe("Ext.data.Model", function () {
     it("should have the instance method call the static method", function () {
       defineA({
         type: "ajax",
-        url: "/foo",
+        url: "/foo"
       });
       var proxy = A.getProxy();
 
@@ -1905,10 +1905,10 @@ describe("Ext.data.Model", function () {
           fields: ["id", "name", "age"],
           proxy: proxy || {
             type: "ajax",
-            url: "/foo",
-          },
+            url: "/foo"
+          }
         },
-        cfg,
+        cfg
       );
       A = Ext.define("spec.A", cfg);
     }
@@ -1916,9 +1916,9 @@ describe("Ext.data.Model", function () {
     function make(id, loadOptions, session) {
       rec = new A(
         {
-          id: id,
+          id: id
         },
-        session,
+        session
       );
       if (loadOptions) {
         rec.load(loadOptions);
@@ -1949,7 +1949,7 @@ describe("Ext.data.Model", function () {
       function complete(data, status) {
         Ext.Ajax.mockComplete({
           status: status || 200,
-          responseText: Ext.JSON.encode(data),
+          responseText: Ext.JSON.encode(data)
         });
       }
 
@@ -1957,7 +1957,7 @@ describe("Ext.data.Model", function () {
         make(3, {});
         expect(function () {
           complete({
-            id: 100,
+            id: 100
           });
         }).toThrow();
       });
@@ -2010,7 +2010,7 @@ describe("Ext.data.Model", function () {
             make(3, {});
             rec.load({
               success: successSpy,
-              callback: callbackSpy,
+              callback: callbackSpy
             });
             complete({});
             expect(successSpy).toHaveBeenCalled();
@@ -2026,7 +2026,7 @@ describe("Ext.data.Model", function () {
             for (i = 0; i < 3; ++i) {
               rec.load({
                 success: successSpy,
-                callback: callbackSpy,
+                callback: callbackSpy
               });
             }
             complete({});
@@ -2042,11 +2042,11 @@ describe("Ext.data.Model", function () {
 
             make(3, {
               success: firstSuccess,
-              callback: firstCallback,
+              callback: firstCallback
             });
             rec.load({
               success: secondSuccess,
-              callback: secondCallback,
+              callback: secondCallback
             });
             complete({});
             expect(firstSuccess).toHaveBeenCalled();
@@ -2062,7 +2062,7 @@ describe("Ext.data.Model", function () {
             make(3, {});
             rec.load({
               failure: failureSpy,
-              callback: callbackSpy,
+              callback: callbackSpy
             });
             complete(null, 500);
             expect(failureSpy).toHaveBeenCalled();
@@ -2078,7 +2078,7 @@ describe("Ext.data.Model", function () {
             for (i = 0; i < 3; ++i) {
               rec.load({
                 failure: failureSpy,
-                callback: callbackSpy,
+                callback: callbackSpy
               });
             }
             complete(null, 500);
@@ -2093,7 +2093,7 @@ describe("Ext.data.Model", function () {
           make(3, {});
           complete({
             name: "foo",
-            age: 20,
+            age: 20
           });
           expect(rec.get("name")).toBe("foo");
           expect(rec.get("age")).toBe(20);
@@ -2102,7 +2102,7 @@ describe("Ext.data.Model", function () {
         it("should only set returned data", function () {
           make(2, {});
           complete({
-            name: "foo",
+            name: "foo"
           });
           expect(rec.get("name")).toBe("foo");
           expect(rec.get("age")).toBeUndefined();
@@ -2114,7 +2114,7 @@ describe("Ext.data.Model", function () {
           rec.load();
           complete({
             name: "foo",
-            age: 20,
+            age: 20
           });
           expect(rec.get("name")).toBe("foo");
           expect(rec.get("age")).toBe(20);
@@ -2124,7 +2124,7 @@ describe("Ext.data.Model", function () {
           make(3, {});
           complete({
             name: "foo",
-            age: 20,
+            age: 20
           });
           expect(rec.dirty).toBe(false);
         });
@@ -2139,9 +2139,9 @@ describe("Ext.data.Model", function () {
                 "content",
                 {
                   name: "aId",
-                  reference: "A",
-                },
-              ],
+                  reference: "A"
+                }
+              ]
             });
           });
 
@@ -2152,7 +2152,7 @@ describe("Ext.data.Model", function () {
           it("should be able to load associations", function () {
             make(3, {});
             complete({
-              posts: [{ id: 1 }, { id: 2 }, { id: 3 }],
+              posts: [{ id: 1 }, { id: 2 }, { id: 3 }]
             });
 
             var posts = rec.posts();
@@ -2172,21 +2172,21 @@ describe("Ext.data.Model", function () {
                   "content",
                   {
                     name: "postId",
-                    reference: "Post",
-                  },
-                ],
+                    reference: "Post"
+                  }
+                ]
               });
 
               var session = new Ext.data.Session(),
                 post = session.createRecord("Post", {
                   id: 2,
                   aId: 3,
-                  content: "Foo",
+                  content: "Foo"
                 }),
                 comment = session.createRecord("Comment", {
                   id: 132,
                   postId: 3,
-                  content: "Bar",
+                  content: "Bar"
                 });
 
               make(3, {}, session);
@@ -2199,11 +2199,11 @@ describe("Ext.data.Model", function () {
                     aId: 3,
                     comments: [
                       {
-                        id: 132,
-                      },
-                    ],
-                  },
-                ],
+                        id: 132
+                      }
+                    ]
+                  }
+                ]
               });
 
               var posts = rec.posts();
@@ -2242,7 +2242,7 @@ describe("Ext.data.Model", function () {
         it("should set a custom idProperty", function () {
           var CustomId = Ext.define("spec.CustomId", {
             extend: "Ext.data.Model",
-            idProperty: "foo",
+            idProperty: "foo"
           });
 
           rec = CustomId.load(1);
@@ -2296,12 +2296,12 @@ describe("Ext.data.Model", function () {
         it("should trigger the success callback", function () {
           var spy = jasmine.createSpy();
           make(17, {
-            success: spy,
+            success: spy
           });
 
           complete({
             id: 17,
-            name: "TheName",
+            name: "TheName"
           });
 
           expect(spy).toHaveBeenCalled();
@@ -2310,11 +2310,11 @@ describe("Ext.data.Model", function () {
         it("should pass a record and the operation", function () {
           var spy = jasmine.createSpy();
           make(17, {
-            success: spy,
+            success: spy
           });
           complete({
             id: 17,
-            name: "TheName",
+            name: "TheName"
           });
           var args = spy.mostRecentCall.args;
           expect(args[0]).toBe(rec);
@@ -2325,17 +2325,17 @@ describe("Ext.data.Model", function () {
           var spy = jasmine.createSpy();
 
           make(17, {
-            success: spy,
+            success: spy
           });
           complete([
             {
               id: 17,
-              name: "Foo",
+              name: "Foo"
             },
             {
               id: 107,
-              name: "Bar",
-            },
+              name: "Bar"
+            }
           ]);
           expect(spy.mostRecentCall.args[0]).toBe(rec);
           expect(spy.callCount).toBe(1);
@@ -2344,7 +2344,7 @@ describe("Ext.data.Model", function () {
         it("should default the scope to the instance", function () {
           var spy = jasmine.createSpy();
           make(100, {
-            success: spy,
+            success: spy
           });
           complete({});
           expect(spy.mostRecentCall.object).toBe(rec);
@@ -2356,7 +2356,7 @@ describe("Ext.data.Model", function () {
 
           make(100, {
             scope: o,
-            success: spy,
+            success: spy
           });
           complete({});
           expect(spy.mostRecentCall.object).toBe(o);
@@ -2368,7 +2368,7 @@ describe("Ext.data.Model", function () {
 
           make(100, {
             success: successSpy,
-            callback: callbackSpy,
+            callback: callbackSpy
           });
           complete({});
           expect(successSpy).toHaveBeenCalled();
@@ -2382,7 +2382,7 @@ describe("Ext.data.Model", function () {
 
             make(100, {
               failure: failureSpy,
-              success: successSpy,
+              success: successSpy
             });
             complete([]);
             expect(successSpy).not.toHaveBeenCalled();
@@ -2395,7 +2395,7 @@ describe("Ext.data.Model", function () {
         it("should trigger the failure callback", function () {
           var spy = jasmine.createSpy();
           make(17, {
-            failure: spy,
+            failure: spy
           });
           complete(null, 500);
           expect(spy).toHaveBeenCalled();
@@ -2405,7 +2405,7 @@ describe("Ext.data.Model", function () {
           var spy = jasmine.createSpy();
 
           make(17, {
-            failure: spy,
+            failure: spy
           });
           complete(null, 500);
           var args = spy.mostRecentCall.args;
@@ -2417,7 +2417,7 @@ describe("Ext.data.Model", function () {
           var spy = jasmine.createSpy();
 
           make(100, {
-            failure: spy,
+            failure: spy
           });
           complete(null, 500);
           expect(spy.mostRecentCall.object).toBe(rec);
@@ -2429,7 +2429,7 @@ describe("Ext.data.Model", function () {
 
           make(100, {
             scope: o,
-            failure: spy,
+            failure: spy
           });
           complete(null, 500);
           expect(spy.mostRecentCall.object).toBe(o);
@@ -2441,7 +2441,7 @@ describe("Ext.data.Model", function () {
 
           make(100, {
             failure: failureSpy,
-            callback: callbackSpy,
+            callback: callbackSpy
           });
           complete(null, 500);
           expect(failureSpy).toHaveBeenCalled();
@@ -2454,7 +2454,7 @@ describe("Ext.data.Model", function () {
           var spy = jasmine.createSpy();
 
           make(100, {
-            callback: spy,
+            callback: spy
           });
           complete({});
           expect(spy.mostRecentCall.object).toBe(rec);
@@ -2466,7 +2466,7 @@ describe("Ext.data.Model", function () {
 
           make(100, {
             scope: o,
-            callback: spy,
+            callback: spy
           });
           complete({});
           expect(spy.mostRecentCall.object).toBe(o);
@@ -2475,7 +2475,7 @@ describe("Ext.data.Model", function () {
         it("should receive the model, operation & success=true when successful", function () {
           var spy = jasmine.createSpy();
           make(17, {
-            callback: spy,
+            callback: spy
           });
           complete({});
           var args = spy.mostRecentCall.args;
@@ -2487,7 +2487,7 @@ describe("Ext.data.Model", function () {
         it("should receive rec, operation & success=false when failed", function () {
           var spy = jasmine.createSpy();
           make(17, {
-            callback: spy,
+            callback: spy
           });
           complete(null, 500);
           var args = spy.mostRecentCall.args;
@@ -2504,7 +2504,7 @@ describe("Ext.data.Model", function () {
             },
             callback: function () {
               order.push("callback");
-            },
+            }
           });
           complete({});
           expect(order).toEqual(["success", "callback"]);
@@ -2518,7 +2518,7 @@ describe("Ext.data.Model", function () {
             },
             callback: function () {
               order.push("callback");
-            },
+            }
           });
           complete(null, 500);
           expect(order).toEqual(["fail", "callback"]);
@@ -2535,8 +2535,8 @@ describe("Ext.data.Model", function () {
           if (success) {
             op.process(
               new Ext.data.ResultSet({
-                success: true,
-              }),
+                success: true
+              })
             );
           } else {
             op.setException("Failed");
@@ -2547,7 +2547,7 @@ describe("Ext.data.Model", function () {
       beforeEach(function () {
         defineA();
         rec = new A({
-          id: 17,
+          id: 17
         });
         spy = jasmine.createSpy();
       });
@@ -2580,7 +2580,7 @@ describe("Ext.data.Model", function () {
 
           it("should pass the record and the operation", function () {
             rec.save({
-              success: spy,
+              success: spy
             });
             var args = spy.mostRecentCall.args;
             expect(args[0]).toBe(rec);
@@ -2590,7 +2590,7 @@ describe("Ext.data.Model", function () {
 
           it("should default the scope to the model", function () {
             rec.save({
-              success: spy,
+              success: spy
             });
             expect(spy.mostRecentCall.object).toBe(rec);
           });
@@ -2599,14 +2599,14 @@ describe("Ext.data.Model", function () {
             var o = {};
             rec.save({
               success: spy,
-              scope: o,
+              scope: o
             });
             expect(spy.mostRecentCall.object).toBe(o);
           });
 
           it("should not call failure", function () {
             rec.save({
-              failure: spy,
+              failure: spy
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -2619,7 +2619,7 @@ describe("Ext.data.Model", function () {
 
           it("should pass the record and the operation", function () {
             rec.save({
-              failure: spy,
+              failure: spy
             });
             var args = spy.mostRecentCall.args;
             expect(args[0]).toBe(rec);
@@ -2629,7 +2629,7 @@ describe("Ext.data.Model", function () {
 
           it("should default the scope to the model", function () {
             rec.save({
-              failure: spy,
+              failure: spy
             });
             expect(spy.mostRecentCall.object).toBe(rec);
           });
@@ -2638,14 +2638,14 @@ describe("Ext.data.Model", function () {
             var o = {};
             rec.save({
               failure: spy,
-              scope: o,
+              scope: o
             });
             expect(spy.mostRecentCall.object).toBe(o);
           });
 
           it("should not call success", function () {
             rec.save({
-              success: spy,
+              success: spy
             });
             expect(spy).not.toHaveBeenCalled();
           });
@@ -2656,7 +2656,7 @@ describe("Ext.data.Model", function () {
             it("should pass the record, operation & success", function () {
               setupCallback(true);
               rec.save({
-                callback: spy,
+                callback: spy
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toBe(rec);
@@ -2670,7 +2670,7 @@ describe("Ext.data.Model", function () {
             it("should pass the record, operation & success", function () {
               setupCallback(false);
               rec.save({
-                callback: spy,
+                callback: spy
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toBe(rec);
@@ -2683,7 +2683,7 @@ describe("Ext.data.Model", function () {
           it("should default the scope to the model", function () {
             setupCallback(true);
             rec.save({
-              callback: spy,
+              callback: spy
             });
             expect(spy.mostRecentCall.object).toBe(rec);
           });
@@ -2693,7 +2693,7 @@ describe("Ext.data.Model", function () {
             var o = {};
             rec.save({
               callback: spy,
-              scope: o,
+              scope: o
             });
             expect(spy.mostRecentCall.object).toBe(o);
           });
@@ -2747,7 +2747,7 @@ describe("Ext.data.Model", function () {
               rec.erase({
                 success: function () {
                   val = after;
-                },
+                }
               });
               after = true;
               expect(val).toBe(false);
@@ -2755,7 +2755,7 @@ describe("Ext.data.Model", function () {
 
             it("should pass the record and the operation", function () {
               rec.erase({
-                success: spy,
+                success: spy
               });
               var args = spy.mostRecentCall.args,
                 op = args[1];
@@ -2767,7 +2767,7 @@ describe("Ext.data.Model", function () {
 
             it("should default the scope to the model", function () {
               rec.erase({
-                success: spy,
+                success: spy
               });
               expect(spy.mostRecentCall.object).toBe(rec);
             });
@@ -2776,7 +2776,7 @@ describe("Ext.data.Model", function () {
               var o = {};
               rec.erase({
                 success: spy,
-                scope: o,
+                scope: o
               });
               expect(spy.mostRecentCall.object).toBe(o);
             });
@@ -2785,7 +2785,7 @@ describe("Ext.data.Model", function () {
           describe("failure", function () {
             it("should never call this", function () {
               rec.erase({
-                failure: spy,
+                failure: spy
               });
               expect(spy).not.toHaveBeenCalled();
             });
@@ -2798,7 +2798,7 @@ describe("Ext.data.Model", function () {
               rec.erase({
                 callback: function () {
                   val = after;
-                },
+                }
               });
               after = true;
               expect(val).toBe(false);
@@ -2806,7 +2806,7 @@ describe("Ext.data.Model", function () {
 
             it("should pass the record, operation & success", function () {
               rec.erase({
-                callback: spy,
+                callback: spy
               });
               var args = spy.mostRecentCall.args,
                 op = args[1];
@@ -2819,7 +2819,7 @@ describe("Ext.data.Model", function () {
 
             it("should default the scope to the model", function () {
               rec.erase({
-                callback: spy,
+                callback: spy
               });
               expect(spy.mostRecentCall.object).toBe(rec);
             });
@@ -2828,7 +2828,7 @@ describe("Ext.data.Model", function () {
               var o = {};
               rec.erase({
                 callback: spy,
-                scope: o,
+                scope: o
               });
               expect(spy.mostRecentCall.object).toBe(o);
             });
@@ -2843,8 +2843,8 @@ describe("Ext.data.Model", function () {
             if (success) {
               op.process(
                 new Ext.data.ResultSet({
-                  success: true,
-                }),
+                  success: true
+                })
               );
             } else {
               op.setException("Failed");
@@ -2854,7 +2854,7 @@ describe("Ext.data.Model", function () {
 
         beforeEach(function () {
           rec = new A({
-            id: 17,
+            id: 17
           });
         });
 
@@ -2909,7 +2909,7 @@ describe("Ext.data.Model", function () {
 
             it("should pass the record and the operation", function () {
               rec.erase({
-                success: spy,
+                success: spy
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toBe(rec);
@@ -2919,7 +2919,7 @@ describe("Ext.data.Model", function () {
 
             it("should default the scope to the model", function () {
               rec.erase({
-                success: spy,
+                success: spy
               });
               expect(spy.mostRecentCall.object).toBe(rec);
             });
@@ -2928,14 +2928,14 @@ describe("Ext.data.Model", function () {
               var o = {};
               rec.erase({
                 success: spy,
-                scope: o,
+                scope: o
               });
               expect(spy.mostRecentCall.object).toBe(o);
             });
 
             it("should not call failure", function () {
               rec.erase({
-                failure: spy,
+                failure: spy
               });
               expect(spy).not.toHaveBeenCalled();
             });
@@ -2948,7 +2948,7 @@ describe("Ext.data.Model", function () {
 
             it("should pass the record and the operation", function () {
               rec.erase({
-                failure: spy,
+                failure: spy
               });
               var args = spy.mostRecentCall.args;
               expect(args[0]).toBe(rec);
@@ -2958,7 +2958,7 @@ describe("Ext.data.Model", function () {
 
             it("should default the scope to the model", function () {
               rec.erase({
-                failure: spy,
+                failure: spy
               });
               expect(spy.mostRecentCall.object).toBe(rec);
             });
@@ -2967,14 +2967,14 @@ describe("Ext.data.Model", function () {
               var o = {};
               rec.erase({
                 failure: spy,
-                scope: o,
+                scope: o
               });
               expect(spy.mostRecentCall.object).toBe(o);
             });
 
             it("should not call success", function () {
               rec.erase({
-                success: spy,
+                success: spy
               });
               expect(spy).not.toHaveBeenCalled();
             });
@@ -2985,7 +2985,7 @@ describe("Ext.data.Model", function () {
               it("should pass the record, operation & success", function () {
                 setupCallback(true);
                 rec.erase({
-                  callback: spy,
+                  callback: spy
                 });
                 var args = spy.mostRecentCall.args;
                 expect(args[0]).toBe(rec);
@@ -2999,7 +2999,7 @@ describe("Ext.data.Model", function () {
               it("should pass the record, operation & success", function () {
                 setupCallback(false);
                 rec.erase({
-                  callback: spy,
+                  callback: spy
                 });
                 var args = spy.mostRecentCall.args;
                 expect(args[0]).toBe(rec);
@@ -3012,7 +3012,7 @@ describe("Ext.data.Model", function () {
             it("should default the scope to the model", function () {
               setupCallback(true);
               rec.erase({
-                callback: spy,
+                callback: spy
               });
               expect(spy.mostRecentCall.object).toBe(rec);
             });
@@ -3022,7 +3022,7 @@ describe("Ext.data.Model", function () {
               var o = {};
               rec.erase({
                 callback: spy,
-                scope: o,
+                scope: o
               });
               expect(spy.mostRecentCall.object).toBe(o);
             });
@@ -3041,9 +3041,9 @@ describe("Ext.data.Model", function () {
           {
             name: "id",
             type: type || "auto",
-            dateFormat: dateFormat,
-          },
-        ],
+            dateFormat: dateFormat
+          }
+        ]
       });
     }
 
@@ -3065,7 +3065,7 @@ describe("Ext.data.Model", function () {
 
       it("should use a specified idand not be phantom", function () {
         rec = new A({
-          id: "foo",
+          id: "foo"
         });
         expect(rec.id).toBe("foo");
         expect(rec.phantom).toBe(false);
@@ -3086,7 +3086,7 @@ describe("Ext.data.Model", function () {
 
       it("should use a specified id and not be phantom", function () {
         rec = new A({
-          id: "foo",
+          id: "foo"
         });
         expect(rec.id).toBe("foo");
         expect(rec.phantom).toBe(false);
@@ -3094,7 +3094,7 @@ describe("Ext.data.Model", function () {
 
       it("should run the converter and not be phantom", function () {
         rec = new A({
-          id: 2,
+          id: 2
         });
         expect(rec.id).toBe("2");
         expect(rec.phantom).toBe(false);
@@ -3115,7 +3115,7 @@ describe("Ext.data.Model", function () {
 
       it("should use a specified id and not be phantom", function () {
         rec = new A({
-          id: 32,
+          id: 32
         });
         expect(rec.id).toBe(32);
         expect(rec.phantom).toBe(false);
@@ -3123,7 +3123,7 @@ describe("Ext.data.Model", function () {
 
       it("should run the converter and not be phantom", function () {
         rec = new A({
-          id: "600",
+          id: "600"
         });
         expect(rec.id).toBe(600);
         expect(rec.phantom).toBe(false);
@@ -3145,7 +3145,7 @@ describe("Ext.data.Model", function () {
       it("should use a specified id and not be phantom", function () {
         var d = new Date();
         rec = new A({
-          id: d,
+          id: d
         });
         expect(rec.id).toBe(d);
         expect(rec.phantom).toBe(false);
@@ -3154,7 +3154,7 @@ describe("Ext.data.Model", function () {
       it("should run the converter and not be phantom", function () {
         var now = new Date().getTime();
         rec = new A({
-          id: "2012-01-01",
+          id: "2012-01-01"
         });
 
         expect(Ext.Date.format(rec.id, "Y-m-d")).toBe("2012-01-01");
@@ -3190,7 +3190,7 @@ describe("Ext.data.Model", function () {
               } else {
                 return v;
               }
-            },
+            }
           },
           {
             name: "convertAndDefaultValue",
@@ -3202,25 +3202,25 @@ describe("Ext.data.Model", function () {
                 return v;
               }
             },
-            defaultValue: 16,
+            defaultValue: 16
           },
           {
             name: "defaultOnly",
-            defaultValue: "foo",
+            defaultValue: "foo"
           },
           {
             name: "objField",
-            defaultValue: {},
+            defaultValue: {}
           },
           {
             name: "arrField",
-            defaultValue: [],
+            defaultValue: []
           },
           {
             name: "dateField",
-            defaultValue: now,
-          },
-        ],
+            defaultValue: now
+          }
+        ]
       });
       convertAndDefaultValueCalled = convertOnlyCalled = false;
     });
@@ -3239,7 +3239,7 @@ describe("Ext.data.Model", function () {
 
     it("should assign an underlying data object", function () {
       o = new A({
-        nothing: "Foo",
+        nothing: "Foo"
       });
       expect(o.get("nothing")).toBe("Foo");
     });
@@ -3250,13 +3250,13 @@ describe("Ext.data.Model", function () {
         fields: [
           {
             name: "the-field",
-            convert: Ext.identityFn,
-          },
-        ],
+            convert: Ext.identityFn
+          }
+        ]
       });
 
       o = new TheModel({
-        "the-field": "foo",
+        "the-field": "foo"
       });
       expect(o.get("the-field")).toBe("foo");
     });
@@ -3306,21 +3306,21 @@ describe("Ext.data.Model", function () {
       describe("with a value", function () {
         it("should set the id", function () {
           o = new A({
-            id: 3,
+            id: 3
           });
           expect(o.id).toBe(3);
         });
 
         it("should set phantom: false", function () {
           o = new A({
-            id: 3,
+            id: 3
           });
           expect(o.phantom).toBe(false);
         });
 
         it("should modify the idProperty field", function () {
           o = new A({
-            id: 3,
+            id: 3
           });
           expect(o.get("id")).toBe(3);
         });
@@ -3328,7 +3328,7 @@ describe("Ext.data.Model", function () {
         it("should not call the id generator", function () {
           spyOn(A.identifier, "generate");
           o = new A({
-            id: 1,
+            id: 1
           });
           expect(A.identifier.generate).not.toHaveBeenCalled();
         });
@@ -3339,18 +3339,18 @@ describe("Ext.data.Model", function () {
           extend: "Ext.data.Model",
           fields: [
             {
-              name: "pageId",
+              name: "pageId"
             },
             {
-              name: "browserId",
+              name: "browserId"
             },
             {
               name: "id",
               convert: function (v, rec) {
                 return rec.get("pageId") + rec.get("browserId");
-              },
-            },
-          ],
+              }
+            }
+          ]
         });
 
         var t = new Record({ pageId: "foo", browserId: "bar", id: "xx" });
@@ -3371,7 +3371,7 @@ describe("Ext.data.Model", function () {
         useReturnFromConvert = true;
         returnFromConvert = undefined;
         o = new A({
-          convertOnly: "foo",
+          convertOnly: "foo"
         });
         expect(convertOnlyCalled).toBe(true);
         expect(o.get("convertOnly")).toBe("foo");
@@ -3386,19 +3386,19 @@ describe("Ext.data.Model", function () {
 
       it("should only assign the defaultValue if the value is undefined", function () {
         o = new A({
-          defaultOnly: null,
+          defaultOnly: null
         });
         expect(o.get("defaultOnly")).toBeNull();
         o = new A({
-          defaultOnly: "",
+          defaultOnly: ""
         });
         expect(o.get("defaultOnly")).toBe("");
         o = new A({
-          defaultOnly: false,
+          defaultOnly: false
         });
         expect(o.get("defaultOnly")).toBe(false);
         o = new A({
-          defaultOnly: 0,
+          defaultOnly: 0
         });
         expect(o.get("defaultOnly")).toBe(0);
       });
@@ -3430,7 +3430,7 @@ describe("Ext.data.Model", function () {
     describe("both", function () {
       it("should call convert if the value is defined", function () {
         o = new A({
-          convertAndDefaultValue: 11,
+          convertAndDefaultValue: 11
         });
         expect(convertAndDefaultValueCalled).toBe(true);
         expect(o.get("convertAndDefaultValue")).toBe(11);
@@ -3450,7 +3450,7 @@ describe("Ext.data.Model", function () {
         useReturnFromConvert = true;
         returnFromConvert = undefined;
         o = new A({
-          convertAndDefaultValue: 11,
+          convertAndDefaultValue: 11
         });
         expect(convertAndDefaultValueCalled).toBe(true);
         expect(o.get("convertAndDefaultValue")).toBe(16);
@@ -3464,7 +3464,7 @@ describe("Ext.data.Model", function () {
     beforeEach(function () {
       A = Ext.define("spec.A", {
         extend: Ext.data.Model,
-        fields: ["aField"],
+        fields: ["aField"]
       });
     });
 
@@ -3475,14 +3475,14 @@ describe("Ext.data.Model", function () {
 
     it("should return a value that was in the fields collection", function () {
       o = new A({
-        aField: "foo",
+        aField: "foo"
       });
       expect(o.get("foo"));
     });
 
     it("should return a value not in the fields collection", function () {
       o = new A({
-        other: "foo",
+        other: "foo"
       });
       expect(o.get("other"));
     });
@@ -3490,7 +3490,7 @@ describe("Ext.data.Model", function () {
     it("should return the value unchanged", function () {
       var v = {};
       o = new A({
-        aField: v,
+        aField: v
       });
       expect(o.get("aField")).toBe(v);
     });
@@ -3506,20 +3506,20 @@ describe("Ext.data.Model", function () {
           fields: [
             {
               name: "id",
-              type: "int",
+              type: "int"
             },
             "name",
             {
               name: "dob",
-              type: "date",
+              type: "date"
             },
             {
               name: "rank",
-              type: "int",
-            },
-          ],
+              type: "int"
+            }
+          ]
         },
-        cfg,
+        cfg
       );
       Person = Ext.define("spec.Person", cfg);
     };
@@ -3543,7 +3543,7 @@ describe("Ext.data.Model", function () {
         o = new Person();
         var result = o.set({
           name: "Foo",
-          rank: 4,
+          rank: 4
         });
         expect(o.get("name")).toBe("Foo");
         expect(o.get("rank")).toBe(4);
@@ -3562,11 +3562,11 @@ describe("Ext.data.Model", function () {
         definePerson();
         o = new Person({
           name: "Foo",
-          rank: 3,
+          rank: 3
         });
         var result = o.set({
           name: "Bar",
-          rank: 3,
+          rank: 3
         });
         expect(result).toEqual(["name"]);
       });
@@ -3578,9 +3578,9 @@ describe("Ext.data.Model", function () {
         cfg = Ext.apply(
           {
             extend: Ext.data.Model,
-            fields: fields,
+            fields: fields
           },
-          cfg,
+          cfg
         );
         A = Ext.define("spec.A", cfg);
       };
@@ -3598,8 +3598,8 @@ describe("Ext.data.Model", function () {
           {
             name: "doubleAge",
             depends: "age",
-            convert: spy,
-          },
+            convert: spy
+          }
         ]);
         o = new A();
         spy.reset();
@@ -3615,11 +3615,11 @@ describe("Ext.data.Model", function () {
           {
             name: "b",
             depends: "a",
-            convert: spy,
-          },
+            convert: spy
+          }
         ]);
         o = new A({
-          a: 1,
+          a: 1
         });
         spy.reset();
         o.set("a", 1);
@@ -3637,8 +3637,8 @@ describe("Ext.data.Model", function () {
             convert: function (v, rec) {
               called = true;
               return rec.get("age") * 2;
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         var result = o.set("age", 10);
@@ -3656,13 +3656,13 @@ describe("Ext.data.Model", function () {
             depends: ["a", "b"],
             convert: function (v, rec) {
               return rec.get("a") + rec.get("b");
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         var result = o.set({
           a: 1,
-          b: 3,
+          b: 3
         });
         expect(o.get("c")).toBe(4);
         expect(result).toEqual(["a", "b", "c"]);
@@ -3677,12 +3677,12 @@ describe("Ext.data.Model", function () {
             depends: ["a", "b"],
             convert: function (v, rec) {
               return rec.get("a") + rec.get("b");
-            },
-          },
+            }
+          }
         ]);
         o = new A({
           a: 1,
-          b: 1,
+          b: 1
         });
         var result = o.set("a", 2);
         expect(o.get("c")).toBe(3);
@@ -3700,22 +3700,22 @@ describe("Ext.data.Model", function () {
             depends: "a",
             convert: function (v, rec) {
               return rec.get("a") + 1;
-            },
+            }
           },
           {
             name: "c",
             depends: "b",
             convert: function (v, rec) {
               return rec.get("b") + 1;
-            },
+            }
           },
           {
             name: "d",
             depends: "c",
             convert: function (v, rec) {
               return rec.get("c") + 1;
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         var result = o.set("a", 1);
@@ -3733,19 +3733,19 @@ describe("Ext.data.Model", function () {
             depends: "a",
             convert: function (v, rec) {
               return rec.get("a") + 1;
-            },
+            }
           },
           {
             name: "c",
             depends: "b",
             convert: function (v, rec) {
               return rec.get("b") + 1;
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         var result = o.set("b", 3, {
-          convert: false,
+          convert: false
         });
         expect(o.get("c")).toBe(4);
         expect(result).toEqual(["b", "c"]);
@@ -3759,7 +3759,7 @@ describe("Ext.data.Model", function () {
             depends: "a",
             convert: function (v, rec) {
               return rec.get("a") + 1;
-            },
+            }
           },
           "c",
           {
@@ -3767,13 +3767,13 @@ describe("Ext.data.Model", function () {
             depends: "c",
             convert: function (v, rec) {
               return rec.get("c") + 1;
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         var result = o.set({
           a: 1,
-          c: 1,
+          c: 1
         });
         expect(o.get("b")).toBe(2);
         expect(o.get("d")).toBe(2);
@@ -3788,20 +3788,20 @@ describe("Ext.data.Model", function () {
             depends: "a",
             convert: function (v, rec) {
               return rec.get("a") + 1;
-            },
+            }
           },
           {
             name: "c",
             depends: "b",
             convert: function (v, rec) {
               return rec.get("b") + 1;
-            },
-          },
+            }
+          }
         ]);
         o = new A();
         o.set({
           a: 1,
-          b: 100,
+          b: 100
         });
         expect(o.get("b")).toBe(2);
         expect(o.get("c")).toBe(3);
@@ -3816,9 +3816,9 @@ describe("Ext.data.Model", function () {
             {
               name: "addressId",
               reference: "Address",
-              unique: true,
-            },
-          ],
+              unique: true
+            }
+          ]
         });
         o = new Person();
         expect(function () {
@@ -3846,7 +3846,7 @@ describe("Ext.data.Model", function () {
     it("should not call the store if there are no modified fields", function () {
       definePerson();
       o = new Person({
-        rank: 1,
+        rank: 1
       });
       spyOn(o, "callJoined");
       o.set("rank", 1);
@@ -3866,7 +3866,7 @@ describe("Ext.data.Model", function () {
           definePerson();
           o = new Person();
           o.set("rank", "1", {
-            convert: true,
+            convert: true
           });
           expect(o.get("rank")).toBe(1);
         });
@@ -3875,7 +3875,7 @@ describe("Ext.data.Model", function () {
           definePerson();
           o = new Person();
           o.set("rank", "1", {
-            convert: false,
+            convert: false
           });
           expect(o.get("rank")).toBe("1");
         });
@@ -3885,11 +3885,11 @@ describe("Ext.data.Model", function () {
           o = new Person();
           o.set(
             {
-              rank: "1",
+              rank: "1"
             },
             {
-              convert: true,
-            },
+              convert: true
+            }
           );
           expect(o.get("rank")).toBe(1);
         });
@@ -3901,7 +3901,7 @@ describe("Ext.data.Model", function () {
         });
 
         var opt = {
-          commit: true,
+          commit: true
         };
 
         it("should default to false", function () {
@@ -3912,7 +3912,7 @@ describe("Ext.data.Model", function () {
 
         it("should have no modified fields", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           o.set("rank", 2, opt);
           expect(o.isModified("rank")).toBe(false);
@@ -3920,7 +3920,7 @@ describe("Ext.data.Model", function () {
 
         it("should not be dirty", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           o.set("rank", 2, opt);
           expect(o.dirty).toBe(false);
@@ -3928,7 +3928,7 @@ describe("Ext.data.Model", function () {
 
         it("should call commit even if no fields were modified", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           spyOn(o, "commit");
           o.set("rank", 1, opt);
@@ -3937,34 +3937,34 @@ describe("Ext.data.Model", function () {
 
         it("should pass the modified fields to commit", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           spyOn(o, "commit");
           o.set(
             {
               name: "Foo",
-              rank: 2,
+              rank: 2
             },
-            opt,
+            opt
           );
           expect(o.commit.mostRecentCall.args[1]).toEqual(["name", "rank"]);
         });
 
         it("should call commit with silent: true if the silent option is passed", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           spyOn(o, "commit");
           o.set("rank", 2, {
             commit: true,
-            silent: true,
+            silent: true
           });
           expect(o.commit.mostRecentCall.args[0]).toBe(true);
         });
 
         it("should not trigger the normal after edit call", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           spyOn(o, "callJoined");
           o.set("rank", 2, opt);
@@ -3978,7 +3978,7 @@ describe("Ext.data.Model", function () {
           definePerson();
           o = new Person();
           var result = o.set("rank", 1, {
-            dirty: false,
+            dirty: false
           });
           expect(result).toEqual(["rank"]);
         });
@@ -3990,7 +3990,7 @@ describe("Ext.data.Model", function () {
           o = new Person();
           spyOn(o, "callJoined");
           o.set("rank", 1, {
-            silent: true,
+            silent: true
           });
           expect(o.callJoined).not.toHaveBeenCalled();
         });
@@ -4016,16 +4016,16 @@ describe("Ext.data.Model", function () {
             name: "calc",
             calculate: function (data) {
               return data.name + data.rank + data.serialNumber;
-            },
-          },
-        ],
+            }
+          }
+        ]
       });
 
       field = Type.getField("calc");
       rec = new Type({
         name: "Don",
         rank: "Peon",
-        serialNumber: "1234",
+        serialNumber: "1234"
       });
     });
 
@@ -4042,12 +4042,12 @@ describe("Ext.data.Model", function () {
           record = rec;
           modifiedFieldNames = mods;
           mods.sort(); // ensure consistent order
-        },
+        }
       });
 
       rec.set({
         name: "Evan",
-        serialNumber: "4321",
+        serialNumber: "4321"
       });
 
       expect(record).toBe(rec);
@@ -4068,22 +4068,22 @@ describe("Ext.data.Model", function () {
         fields: [
           {
             name: "id",
-            type: "int",
+            type: "int"
           },
           "name",
           {
             name: "dob",
-            type: "date",
+            type: "date"
           },
           {
             name: "rank",
-            type: "int",
+            type: "int"
           },
           {
             name: "active",
-            persist: false,
-          },
-        ],
+            persist: false
+          }
+        ]
       });
     });
 
@@ -4103,14 +4103,14 @@ describe("Ext.data.Model", function () {
           o = new Person({
             id: 1,
             name: "Foo",
-            rank: 3,
+            rank: 3
           });
           expect(o.dirty).toBe(false);
         });
 
         it("should not be dirty when setting a value and it doesn't change", function () {
           o = new Person({
-            rank: 1,
+            rank: 1
           });
           o.set("rank", 1);
           expect(o.dirty).toBe(false);
@@ -4138,7 +4138,7 @@ describe("Ext.data.Model", function () {
           o = new Person();
           o.set({
             name: "X",
-            rank: 17,
+            rank: 17
           });
           expect(o.dirty).toBe(true);
         });
@@ -4146,11 +4146,11 @@ describe("Ext.data.Model", function () {
         it("should be dirty when reverting only a single modified field", function () {
           o = new Person({
             rank: 1,
-            name: "Foo",
+            name: "Foo"
           });
           o.set({
             rank: 2,
-            name: "Bar",
+            name: "Bar"
           });
           o.set("rank", 1);
           expect(o.dirty).toBe(true);
@@ -4159,11 +4159,11 @@ describe("Ext.data.Model", function () {
         it("should be not dirty when reverting all modified fields", function () {
           o = new Person({
             rank: 1,
-            name: "Foo",
+            name: "Foo"
           });
           o.set({
             rank: 2,
-            name: "Bar",
+            name: "Bar"
           });
           o.set("rank", 1);
           o.set("name", "Foo");
@@ -4173,7 +4173,7 @@ describe("Ext.data.Model", function () {
         it("should not set dirty if the dirty: false option is passed", function () {
           o = new Person();
           o.set("rank", 1, {
-            dirty: false,
+            dirty: false
           });
           expect(o.dirty).toBe(false);
         });
@@ -4190,7 +4190,7 @@ describe("Ext.data.Model", function () {
           it("should not have modified fields when constructed with data", function () {
             o = new Person({
               name: "Foo",
-              rank: 1,
+              rank: 1
             });
             expect(o.isModified("name")).toBe(false);
             expect(o.isModified("rank")).toBe(false);
@@ -4199,7 +4199,7 @@ describe("Ext.data.Model", function () {
           it("should not have a modified field if the value doesn't change", function () {
             o = new Person({
               name: "Foo",
-              rank: 1,
+              rank: 1
             });
             o.set("name", "Foo");
             expect(o.isModified("name")).toBe(false);
@@ -4221,7 +4221,7 @@ describe("Ext.data.Model", function () {
             o = new Person();
             o.set({
               name: "Foo",
-              rank: 3,
+              rank: 3
             });
             expect(o.isModified("name")).toBe(true);
             expect(o.isModified("rank")).toBe(true);
@@ -4236,11 +4236,11 @@ describe("Ext.data.Model", function () {
           it("should not be modified when reverting a field", function () {
             o = new Person({
               name: "Foo",
-              rank: 1,
+              rank: 1
             });
             o.set({
               name: "Bar",
-              rank: 3,
+              rank: 3
             });
             o.set("name", "Foo");
             expect(o.isModified("name")).toBe(false);
@@ -4250,7 +4250,7 @@ describe("Ext.data.Model", function () {
           it("should not be modified when passing dirty: false", function () {
             o = new Person();
             o.set("rank", 1, {
-              dirty: false,
+              dirty: false
             });
             expect(o.isModified("rank")).toBe(false);
           });
@@ -4264,7 +4264,7 @@ describe("Ext.data.Model", function () {
 
           it("should return the previous value when modified", function () {
             o = new Person({
-              rank: 1,
+              rank: 1
             });
             o.set("rank", 2);
             expect(o.getModified("rank")).toBe(1);
@@ -4272,7 +4272,7 @@ describe("Ext.data.Model", function () {
 
           it("should return the original value when modified", function () {
             o = new Person({
-              rank: 1,
+              rank: 1
             });
             o.set("rank", 2);
             o.set("rank", 3);
@@ -4282,7 +4282,7 @@ describe("Ext.data.Model", function () {
 
           it("should return undefined if the modified value is set back to the original", function () {
             o = new Person({
-              rank: 1,
+              rank: 1
             });
             o.set("rank", 2);
             o.set("rank", 1);
@@ -4299,7 +4299,7 @@ describe("Ext.data.Model", function () {
 
         it("should return the previous value when the value changes", function () {
           o = new Person({
-            name: "Foo",
+            name: "Foo"
           });
           o.set("name", "Bar");
           expect(o.getPrevious("name")).toBe("Foo");
@@ -4307,7 +4307,7 @@ describe("Ext.data.Model", function () {
 
         it("should return the most recent previous value when the value changes", function () {
           o = new Person({
-            name: "Foo",
+            name: "Foo"
           });
           o.set("name", "Bar");
           o.set("name", "Baz");
@@ -4318,7 +4318,7 @@ describe("Ext.data.Model", function () {
 
         it("should not update the previousValue if the value doesn't change", function () {
           o = new Person({
-            name: "Foo",
+            name: "Foo"
           });
           o.set("name", "Bar");
           o.set("name", "Bar");
@@ -4337,7 +4337,7 @@ describe("Ext.data.Model", function () {
       it("should update the modified values during editing", function () {
         o = new Person({
           name: "Foo",
-          rank: 1,
+          rank: 1
         });
         o.beginEdit();
         o.set("name", "Bar");
@@ -4347,7 +4347,7 @@ describe("Ext.data.Model", function () {
       it("should update the previous values during editing", function () {
         o = new Person({
           name: "Foo",
-          rank: 1,
+          rank: 1
         });
         o.beginEdit();
         o.set("name", "Bar");
@@ -4372,12 +4372,12 @@ describe("Ext.data.Model", function () {
         it("should restore data values to the previous state", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.beginEdit();
           o.set({
             name: "Name2",
-            rank: 2,
+            rank: 2
           });
           o.cancelEdit();
           expect(o.get("name")).toBe("Name1");
@@ -4387,7 +4387,7 @@ describe("Ext.data.Model", function () {
         it("should restore modified values to the previous state", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.set("name", "Name2");
           o.beginEdit();
@@ -4400,21 +4400,21 @@ describe("Ext.data.Model", function () {
         it("should restore the previousValues state", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.set("name", "Name2");
           o.set({
             name: "Name3",
-            rank: 3,
+            rank: 3
           });
           o.beginEdit();
           o.set({
             name: "Name4",
-            rank: 4,
+            rank: 4
           });
           o.set({
             name: "Name5",
-            rank: 5,
+            rank: 5
           });
           o.cancelEdit();
           expect(o.getPrevious("Name2"));
@@ -4441,12 +4441,12 @@ describe("Ext.data.Model", function () {
         it("should not modify the data values", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.beginEdit();
           o.set({
             name: "Name2",
-            rank: 2,
+            rank: 2
           });
           o.endEdit();
           expect(o.get("name")).toBe("Name2");
@@ -4456,7 +4456,7 @@ describe("Ext.data.Model", function () {
         it("should not modify the modified values", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.set("name", "Name2");
           o.beginEdit();
@@ -4469,17 +4469,17 @@ describe("Ext.data.Model", function () {
         it("should restore the previousValues", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.set("name", "Name2");
           o.beginEdit();
           o.set({
             name: "Name3",
-            rank: 3,
+            rank: 3
           });
           o.set({
             name: "Name4",
-            rank: 4,
+            rank: 4
           });
           o.endEdit();
           expect(o.getPrevious("name")).toBe("Name1");
@@ -4489,7 +4489,7 @@ describe("Ext.data.Model", function () {
         it("should not modify the dirty state", function () {
           o = new Person({
             name: "Name1",
-            rank: 1,
+            rank: 1
           });
           o.beginEdit();
           o.set("rank", 2);
@@ -4506,7 +4506,7 @@ describe("Ext.data.Model", function () {
               record = rec;
               modifiedFieldNames = mods;
               mods.sort(); // to ensure order
-            },
+            }
           });
 
           o.beginEdit();
@@ -4553,7 +4553,7 @@ describe("Ext.data.Model", function () {
               afterEdit: function (rec, mods) {
                 record = rec;
                 modifiedFieldNames = mods;
-              },
+              }
             });
 
             o.beginEdit();
@@ -4585,11 +4585,11 @@ describe("Ext.data.Model", function () {
       it("should have no modified fields", function () {
         o = new Person({
           name: "Name1",
-          rank: 1,
+          rank: 1
         });
         o.set({
           name: "Name2",
-          rank: 2,
+          rank: 2
         });
         o.commit();
         expect(o.isModified("name")).toBe(false);
@@ -4599,14 +4599,14 @@ describe("Ext.data.Model", function () {
       it("should have no effect on previous values", function () {
         o = new Person({
           name: "Name1",
-          rank: 1,
+          rank: 1
         });
         expect(o.getPrevious("name")).toBeUndefined();
         expect(o.getPrevious("rank")).toBeUndefined();
 
         o.set({
           name: "Name2",
-          rank: 2,
+          rank: 2
         });
 
         expect(o.getPrevious("name")).toBe("Name1");
@@ -4642,7 +4642,7 @@ describe("Ext.data.Model", function () {
             afterCommit: function (rec, mods) {
               record = rec;
               modifiedFieldNames = mods;
-            },
+            }
           });
 
           o.commit(false, ["foo"]);
@@ -4672,11 +4672,11 @@ describe("Ext.data.Model", function () {
       it("should have no modified fields", function () {
         o = new Person({
           name: "Name1",
-          rank: 1,
+          rank: 1
         });
         o.set({
           name: "Name2",
-          rank: 2,
+          rank: 2
         });
         o.reject();
         expect(o.isModified("name")).toBe(false);
@@ -4686,14 +4686,14 @@ describe("Ext.data.Model", function () {
       it("should update previous values", function () {
         o = new Person({
           name: "Name1",
-          rank: 1,
+          rank: 1
         });
         expect(o.getPrevious("name")).toBeUndefined();
         expect(o.getPrevious("rank")).toBeUndefined();
 
         o.set({
           name: "Name2",
-          rank: 2,
+          rank: 2
         });
 
         expect(o.getPrevious("name")).toBe("Name1");
@@ -4712,7 +4712,7 @@ describe("Ext.data.Model", function () {
         expect(o.phantom).toBe(true);
 
         o = new Person({
-          id: 1,
+          id: 1
         });
         o.set("name", "Foo");
         o.reject();
@@ -4761,9 +4761,9 @@ describe("Ext.data.Model", function () {
           "age",
           {
             name: "withConvert",
-            convert: convertSpy,
-          },
-        ],
+            convert: convertSpy
+          }
+        ]
       });
     });
 
@@ -4815,7 +4815,7 @@ describe("Ext.data.Model", function () {
 
       it("should set dropped records to be erased", function () {
         var rec = new User({
-          id: 1,
+          id: 1
         });
         rec.drop();
         expect(rec.erased).toBe(false);
@@ -4889,7 +4889,7 @@ describe("Ext.data.Model", function () {
       it("should return field values to their original states", function () {
         var rec = new User({
           name: "Foo",
-          age: 1,
+          age: 1
         });
         rec.set("name", "Bar");
         rec.set("age", 100);
@@ -4901,7 +4901,7 @@ describe("Ext.data.Model", function () {
       it("should not run converters when restoring data", function () {
         var rec = new User({
           name: "Foo",
-          age: 1,
+          age: 1
         });
         rec.set("name", "Bar");
         rec.set("age", 100);
@@ -4928,7 +4928,7 @@ describe("Ext.data.Model", function () {
 
       it("should clear the dropped state", function () {
         var rec = new User({
-          id: 1,
+          id: 1
         });
         rec.drop();
         rec.reject();
@@ -4938,7 +4938,7 @@ describe("Ext.data.Model", function () {
       describe("notifying joined parties", function () {
         it("should not call afterEdit when restoring values", function () {
           var rec = new User({
-              name: "Foo",
+              name: "Foo"
             }),
             spy;
           rec.set("name", "Bar");
@@ -4950,7 +4950,7 @@ describe("Ext.data.Model", function () {
 
         it("should call afterReject", function () {
           var rec = new User({
-              name: "Foo",
+              name: "Foo"
             }),
             spy;
           rec.set("name", "Bar");
@@ -4962,7 +4962,7 @@ describe("Ext.data.Model", function () {
 
         it("should not call afterReject with silent: true", function () {
           var rec = new User({
-              name: "Foo",
+              name: "Foo"
             }),
             spy;
           rec.set("name", "Bar");
@@ -4979,7 +4979,7 @@ describe("Ext.data.Model", function () {
     beforeEach(function () {
       A = Ext.define(null, {
         extend: "Ext.data.Model",
-        fields: ["id", "name"],
+        fields: ["id", "name"]
       });
     });
 
@@ -4990,18 +4990,18 @@ describe("Ext.data.Model", function () {
     it("should return all the fields in the model", function () {
       var rec = new A({
         id: 1,
-        name: "Foo",
+        name: "Foo"
       });
       expect(rec.getData()).toEqual({
         id: 1,
-        name: "Foo",
+        name: "Foo"
       });
     });
 
     it("should include non-field data", function () {
       var rec = new A({
         id: 1,
-        other: "val",
+        other: "val"
       });
       expect(rec.getData().other).toBe("val");
     });
@@ -5017,26 +5017,26 @@ describe("Ext.data.Model", function () {
             "name",
             {
               name: "age",
-              persist: false,
+              persist: false
             },
             {
               name: "created",
               serialize: function (v) {
                 return Ext.Date.format(v, "Y-m-d");
-              },
+              }
             },
             {
               name: "addressId",
-              reference: "Address",
-            },
-          ],
+              reference: "Address"
+            }
+          ]
         });
 
         rec = new User({
           id: 1,
           age: 100,
           created: new Date(2000, 6, 15),
-          name: "Foo",
+          name: "Foo"
         });
       });
 
@@ -5056,19 +5056,19 @@ describe("Ext.data.Model", function () {
               "title",
               {
                 name: "content",
-                persist: false,
+                persist: false
               },
               {
                 name: "userId",
-                reference: "User",
+                reference: "User"
               },
               {
                 name: "created",
                 serialize: function (v) {
                   return Ext.Date.format(v, "Y-m-d");
-                },
-              },
-            ],
+                }
+              }
+            ]
           });
 
           Address = Ext.define("spec.Address", {
@@ -5077,16 +5077,16 @@ describe("Ext.data.Model", function () {
               "id",
               {
                 name: "street",
-                persist: false,
+                persist: false
               },
               "city",
               {
                 name: "created",
                 serialize: function (v) {
                   return Ext.Date.format(v, "Y-m-d");
-                },
-              },
-            ],
+                }
+              }
+            ]
           });
         });
 
@@ -5101,33 +5101,33 @@ describe("Ext.data.Model", function () {
             id: 1,
             age: 100,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
         it("should not include associated data with associated: false", function () {
           expect(
             rec.getData({
-              associated: false,
-            }),
+              associated: false
+            })
           ).toEqual({
             id: 1,
             age: 100,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
         it("should include associated data with associated: true", function () {
           rec.posts().add({
             id: 101,
-            content: "X",
+            content: "X"
           });
 
           expect(
             rec.getData({
-              associated: true,
-            }),
+              associated: true
+            })
           ).toEqual({
             id: 1,
             age: 100,
@@ -5137,9 +5137,9 @@ describe("Ext.data.Model", function () {
               {
                 id: 101,
                 content: "X",
-                userId: 1,
-              },
-            ],
+                userId: 1
+              }
+            ]
           });
         });
 
@@ -5151,7 +5151,7 @@ describe("Ext.data.Model", function () {
                 content: "A",
                 title: "B",
                 userId: 1,
-                created: new Date(2005, 3, 22),
+                created: new Date(2005, 3, 22)
               });
               rec.posts().first().set("title", "X");
               rec.setAddress(
@@ -5159,26 +5159,26 @@ describe("Ext.data.Model", function () {
                   id: 2001,
                   street: "B",
                   city: "C",
-                  created: new Date(2008, 10, 3),
-                }),
+                  created: new Date(2008, 10, 3)
+                })
               );
               rec.getAddress().set("city", "Q");
 
               expect(
                 rec.getData({
                   associated: true,
-                  changes: true,
-                }),
+                  changes: true
+                })
               ).toEqual({
                 addressId: 2001,
                 address: {
-                  city: "Q",
+                  city: "Q"
                 },
                 posts: [
                   {
-                    title: "X",
-                  },
-                ],
+                    title: "X"
+                  }
+                ]
               });
             });
           });
@@ -5190,7 +5190,7 @@ describe("Ext.data.Model", function () {
                 content: "A",
                 title: "B",
                 userId: 1,
-                created: new Date(2005, 3, 22),
+                created: new Date(2005, 3, 22)
               });
               rec.posts().first().set("title", "X");
               rec.setAddress(
@@ -5198,8 +5198,8 @@ describe("Ext.data.Model", function () {
                   id: 2001,
                   street: "B",
                   city: "C",
-                  created: new Date(2008, 10, 3),
-                }),
+                  created: new Date(2008, 10, 3)
+                })
               );
               rec.getAddress().set("city", "Q");
 
@@ -5207,21 +5207,21 @@ describe("Ext.data.Model", function () {
                 rec.getData({
                   associated: true,
                   changes: true,
-                  critical: true,
-                }),
+                  critical: true
+                })
               ).toEqual({
                 id: 1,
                 addressId: 2001,
                 address: {
                   id: 2001,
-                  city: "Q",
+                  city: "Q"
                 },
                 posts: [
                   {
                     id: 1001,
-                    title: "X",
-                  },
-                ],
+                    title: "X"
+                  }
+                ]
               });
             });
           });
@@ -5233,7 +5233,7 @@ describe("Ext.data.Model", function () {
                 content: "A",
                 title: "B",
                 userId: 1,
-                created: new Date(2005, 3, 22),
+                created: new Date(2005, 3, 22)
               });
               rec.posts().first().set("title", "X");
               rec.posts().first().set("content", "Y");
@@ -5242,8 +5242,8 @@ describe("Ext.data.Model", function () {
                   id: 2001,
                   street: "B",
                   city: "C",
-                  created: new Date(2008, 10, 3),
-                }),
+                  created: new Date(2008, 10, 3)
+                })
               );
               rec.getAddress().set("city", "Q");
               rec.getAddress().set("street", "Z");
@@ -5252,21 +5252,21 @@ describe("Ext.data.Model", function () {
                 rec.getData({
                   associated: true,
                   changes: true,
-                  critical: true,
-                }),
+                  critical: true
+                })
               ).toEqual({
                 id: 1,
                 addressId: 2001,
                 address: {
                   id: 2001,
-                  city: "Q",
+                  city: "Q"
                 },
                 posts: [
                   {
                     id: 1001,
-                    title: "X",
-                  },
-                ],
+                    title: "X"
+                  }
+                ]
               });
             });
           });
@@ -5278,22 +5278,22 @@ describe("Ext.data.Model", function () {
                 content: "A",
                 title: "B",
                 userId: 1,
-                created: new Date(2005, 3, 22),
+                created: new Date(2005, 3, 22)
               });
               rec.setAddress(
                 new Address({
                   id: 2001,
                   street: "B",
                   city: "C",
-                  created: new Date(2008, 10, 3),
-                }),
+                  created: new Date(2008, 10, 3)
+                })
               );
 
               expect(
                 rec.getData({
                   associated: true,
-                  serialize: true,
-                }),
+                  serialize: true
+                })
               ).toEqual({
                 id: 1,
                 age: 100,
@@ -5304,7 +5304,7 @@ describe("Ext.data.Model", function () {
                   id: 2001,
                   street: "B",
                   city: "C",
-                  created: "2008-11-03",
+                  created: "2008-11-03"
                 },
                 posts: [
                   {
@@ -5312,9 +5312,9 @@ describe("Ext.data.Model", function () {
                     content: "A",
                     title: "B",
                     userId: 1,
-                    created: "2005-04-22",
-                  },
-                ],
+                    created: "2005-04-22"
+                  }
+                ]
               });
             });
           });
@@ -5329,7 +5329,7 @@ describe("Ext.data.Model", function () {
             id: 1,
             age: 20,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
@@ -5338,13 +5338,13 @@ describe("Ext.data.Model", function () {
 
           expect(
             rec.getData({
-              changes: false,
-            }),
+              changes: false
+            })
           ).toEqual({
             id: 1,
             age: 20,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
@@ -5353,10 +5353,10 @@ describe("Ext.data.Model", function () {
 
           expect(
             rec.getData({
-              changes: true,
-            }),
+              changes: true
+            })
           ).toEqual({
-            name: "Bar",
+            name: "Bar"
           });
         });
       });
@@ -5367,10 +5367,10 @@ describe("Ext.data.Model", function () {
 
           expect(
             rec.getData({
-              changes: true,
-            }),
+              changes: true
+            })
           ).toEqual({
-            name: "Bar",
+            name: "Bar"
           });
         });
 
@@ -5380,10 +5380,10 @@ describe("Ext.data.Model", function () {
           expect(
             rec.getData({
               changes: true,
-              critical: false,
-            }),
+              critical: false
+            })
           ).toEqual({
-            name: "Bar",
+            name: "Bar"
           });
         });
 
@@ -5393,11 +5393,11 @@ describe("Ext.data.Model", function () {
           expect(
             rec.getData({
               changes: true,
-              critical: true,
-            }),
+              critical: true
+            })
           ).toEqual({
             id: 1,
-            name: "Bar",
+            name: "Bar"
           });
         });
       });
@@ -5408,32 +5408,32 @@ describe("Ext.data.Model", function () {
             id: 1,
             age: 100,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
         it("should include all fields with persist: false", function () {
           expect(
             rec.getData({
-              persist: false,
-            }),
+              persist: false
+            })
           ).toEqual({
             id: 1,
             age: 100,
             created: new Date(2000, 6, 15),
-            name: "Foo",
+            name: "Foo"
           });
         });
 
         it("should include only persist fields with persist: true", function () {
           expect(
             rec.getData({
-              persist: true,
-            }),
+              persist: true
+            })
           ).toEqual({
             id: 1,
             name: "Foo",
-            created: new Date(2000, 6, 15),
+            created: new Date(2000, 6, 15)
           });
         });
       });
@@ -5444,33 +5444,33 @@ describe("Ext.data.Model", function () {
             id: 1,
             name: "Foo",
             age: 100,
-            created: new Date(2000, 6, 15),
+            created: new Date(2000, 6, 15)
           });
         });
 
         it("should not serialize with serialize: false", function () {
           expect(
             rec.getData({
-              serialize: false,
-            }),
+              serialize: false
+            })
           ).toEqual({
             id: 1,
             name: "Foo",
             age: 100,
-            created: new Date(2000, 6, 15),
+            created: new Date(2000, 6, 15)
           });
         });
 
         it("should serialize with serialize: true", function () {
           expect(
             rec.getData({
-              serialize: true,
-            }),
+              serialize: true
+            })
           ).toEqual({
             id: 1,
             name: "Foo",
             age: 100,
-            created: "2000-07-15",
+            created: "2000-07-15"
           });
         });
       });
@@ -5480,7 +5480,7 @@ describe("Ext.data.Model", function () {
       var rec;
       function read(Model, data) {
         var reader = new Ext.data.reader.Json({
-          model: Model,
+          model: Model
         });
         return reader.read(data).getRecords()[0];
       }
@@ -5491,7 +5491,7 @@ describe("Ext.data.Model", function () {
         beforeEach(function () {
           User = Ext.define("spec.User", {
             extend: "Ext.data.Model",
-            fields: ["id", "name"],
+            fields: ["id", "name"]
           });
 
           Post = Ext.define("spec.Post", {
@@ -5501,9 +5501,9 @@ describe("Ext.data.Model", function () {
               "content",
               {
                 name: "userId",
-                reference: "User",
-              },
-            ],
+                reference: "User"
+              }
+            ]
           });
 
           Comment = Ext.define("spec.Comment", {
@@ -5513,9 +5513,9 @@ describe("Ext.data.Model", function () {
               "content",
               {
                 name: "postId",
-                reference: "Post",
-              },
-            ],
+                reference: "Post"
+              }
+            ]
           });
         });
 
@@ -5529,7 +5529,7 @@ describe("Ext.data.Model", function () {
         describe("the one", function () {
           it("should not include the key if the item does not exist", function () {
             rec = read(Post, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -5537,7 +5537,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(Post, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -5550,15 +5550,15 @@ describe("Ext.data.Model", function () {
               id: 1,
               user: {
                 id: 17,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
               user: {
                 id: 17,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
           });
 
@@ -5567,8 +5567,8 @@ describe("Ext.data.Model", function () {
               id: 1,
               user: {
                 id: 17,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
             expect(rec.getAssociatedData().user.posts).toBeUndefined();
           });
@@ -5577,7 +5577,7 @@ describe("Ext.data.Model", function () {
         describe("the many", function () {
           it("should not include the key if the store does not exist", function () {
             rec = read(User, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -5585,7 +5585,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(User, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -5596,11 +5596,11 @@ describe("Ext.data.Model", function () {
           it("should include the key if the store exists but is empty", function () {
             rec = read(User, {
               id: 1,
-              posts: [],
+              posts: []
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
-              posts: [],
+              posts: []
             });
           });
 
@@ -5611,19 +5611,19 @@ describe("Ext.data.Model", function () {
                 {
                   id: 1,
                   content: "PostA",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 2,
                   content: "PostB",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 3,
                   content: "PostC",
-                  userId: 17,
-                },
-              ],
+                  userId: 17
+                }
+              ]
             });
 
             var data = rec.getAssociatedData();
@@ -5632,19 +5632,19 @@ describe("Ext.data.Model", function () {
                 {
                   id: 1,
                   content: "PostA",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 2,
                   content: "PostB",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 3,
                   content: "PostC",
-                  userId: 17,
-                },
-              ],
+                  userId: 17
+                }
+              ]
             });
           });
 
@@ -5655,14 +5655,14 @@ describe("Ext.data.Model", function () {
                 {
                   id: 1,
                   content: "PostA",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 2,
                   content: "PostB",
-                  userId: 17,
-                },
-              ],
+                  userId: 17
+                }
+              ]
             });
 
             var postsStore = rec.posts(),
@@ -5685,21 +5685,21 @@ describe("Ext.data.Model", function () {
                 {
                   id: 1,
                   content: "PostA",
-                  userId: 17,
+                  userId: 17
                 },
                 {
                   id: 2,
                   content: "PostB",
-                  userId: 17,
-                },
-              ],
+                  userId: 17
+                }
+              ]
             });
 
             var postsStore = rec.posts();
             var post1 = postsStore.getAt(0);
 
             var data = post1.getData({
-              associated: true,
+              associated: true
             }); // same as getData(true)
 
             expect(data).toEqual({
@@ -5716,15 +5716,15 @@ describe("Ext.data.Model", function () {
                   {
                     id: 1,
                     content: "PostA",
-                    userId: 17,
+                    userId: 17
                   },
                   {
                     id: 2,
                     content: "PostB",
-                    userId: 17,
-                  },
-                ],
-              },
+                    userId: 17
+                  }
+                ]
+              }
             });
           });
         }); // the many
@@ -5740,13 +5740,13 @@ describe("Ext.data.Model", function () {
                 comments: [
                   {
                     id: 42,
-                    content: "This is wrong!",
+                    content: "This is wrong!"
                   },
                   {
                     id: 427,
-                    content: "No, you are wrong!",
-                  },
-                ],
+                    content: "No, you are wrong!"
+                  }
+                ]
               },
               {
                 id: 2,
@@ -5754,19 +5754,19 @@ describe("Ext.data.Model", function () {
                 comments: [
                   {
                     id: 420,
-                    content: "This is wrong too!",
+                    content: "This is wrong too!"
                   },
                   {
                     id: 4270,
-                    content: "No, you are wrong again!",
+                    content: "No, you are wrong again!"
                   },
                   {
                     id: 4271,
-                    content: "Yeah, you are wrong again!",
-                  },
-                ],
-              },
-            ],
+                    content: "Yeah, you are wrong again!"
+                  }
+                ]
+              }
+            ]
           };
 
           beforeEach(function () {
@@ -5777,7 +5777,7 @@ describe("Ext.data.Model", function () {
 
           it("should not include associations in data object", function () {
             expect(rec.data).toEqual({
-              id: 17,
+              id: 17
             });
           });
 
@@ -5800,14 +5800,14 @@ describe("Ext.data.Model", function () {
                     {
                       id: 42,
                       content: "This is wrong!",
-                      postId: 1,
+                      postId: 1
                     },
                     {
                       id: 427,
                       content: "No, you are wrong!",
-                      postId: 1,
-                    },
-                  ],
+                      postId: 1
+                    }
+                  ]
                 },
                 {
                   id: 2,
@@ -5817,21 +5817,21 @@ describe("Ext.data.Model", function () {
                     {
                       id: 420,
                       content: "This is wrong too!",
-                      postId: 2,
+                      postId: 2
                     },
                     {
                       id: 4270,
                       content: "No, you are wrong again!",
-                      postId: 2,
+                      postId: 2
                     },
                     {
                       id: 4271,
                       content: "Yeah, you are wrong again!",
-                      postId: 2,
-                    },
-                  ],
-                },
-              ],
+                      postId: 2
+                    }
+                  ]
+                }
+              ]
             });
           });
 
@@ -5842,7 +5842,7 @@ describe("Ext.data.Model", function () {
             expect(posts.getAt(0).data).toEqual({
               id: 1,
               content: "PostA",
-              userId: 17,
+              userId: 17
             });
           });
 
@@ -5864,7 +5864,7 @@ describe("Ext.data.Model", function () {
                   {
                     id: 1,
                     content: "PostA",
-                    userId: 17,
+                    userId: 17
                     // this recursion should be skipped
                   },
                   {
@@ -5875,21 +5875,21 @@ describe("Ext.data.Model", function () {
                       {
                         id: 420,
                         content: "This is wrong too!",
-                        postId: 2,
+                        postId: 2
                       },
                       {
                         id: 4270,
                         content: "No, you are wrong again!",
-                        postId: 2,
+                        postId: 2
                       },
                       {
                         id: 4271,
                         content: "Yeah, you are wrong again!",
-                        postId: 2,
-                      },
-                    ],
-                  },
-                ],
+                        postId: 2
+                      }
+                    ]
+                  }
+                ]
               },
               comments: [
                 {
@@ -5906,7 +5906,7 @@ describe("Ext.data.Model", function () {
                         {
                           id: 1,
                           content: "PostA",
-                          userId: 17,
+                          userId: 17
                           // this recursion should be skipped
                         },
                         {
@@ -5917,23 +5917,23 @@ describe("Ext.data.Model", function () {
                             {
                               id: 420,
                               content: "This is wrong too!",
-                              postId: 2,
+                              postId: 2
                             },
                             {
                               id: 4270,
                               content: "No, you are wrong again!",
-                              postId: 2,
+                              postId: 2
                             },
                             {
                               id: 4271,
                               content: "Yeah, you are wrong again!",
-                              postId: 2,
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  },
+                              postId: 2
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
                 },
                 {
                   id: 427,
@@ -5949,7 +5949,7 @@ describe("Ext.data.Model", function () {
                         {
                           id: 1,
                           content: "PostA",
-                          userId: 17,
+                          userId: 17
                           // this recursion should be skipped
                         },
                         {
@@ -5960,25 +5960,25 @@ describe("Ext.data.Model", function () {
                             {
                               id: 420,
                               content: "This is wrong too!",
-                              postId: 2,
+                              postId: 2
                             },
                             {
                               id: 4270,
                               content: "No, you are wrong again!",
-                              postId: 2,
+                              postId: 2
                             },
                             {
                               id: 4271,
                               content: "Yeah, you are wrong again!",
-                              postId: 2,
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  },
-                },
-              ],
+                              postId: 2
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                }
+              ]
             });
           });
 
@@ -6005,7 +6005,7 @@ describe("Ext.data.Model", function () {
                     {
                       id: 1,
                       content: "PostA",
-                      userId: 17,
+                      userId: 17
                     },
                     {
                       id: 2,
@@ -6015,27 +6015,27 @@ describe("Ext.data.Model", function () {
                         {
                           id: 420,
                           content: "This is wrong too!",
-                          postId: 2,
+                          postId: 2
                         },
                         {
                           id: 4270,
                           content: "No, you are wrong again!",
-                          postId: 2,
+                          postId: 2
                         },
                         {
                           id: 4271,
                           content: "Yeah, you are wrong again!",
-                          postId: 2,
-                        },
-                      ],
-                    },
-                  ],
+                          postId: 2
+                        }
+                      ]
+                    }
+                  ]
                 },
                 comments: [
                   {
                     id: 42,
                     content: "This is wrong!",
-                    postId: 1,
+                    postId: 1
                     // back to where we started, so only shallow
                   },
                   {
@@ -6052,7 +6052,7 @@ describe("Ext.data.Model", function () {
                           {
                             id: 1,
                             content: "PostA",
-                            userId: 17,
+                            userId: 17
                           },
                           {
                             id: 2,
@@ -6062,26 +6062,26 @@ describe("Ext.data.Model", function () {
                               {
                                 id: 420,
                                 content: "This is wrong too!",
-                                postId: 2,
+                                postId: 2
                               },
                               {
                                 id: 4270,
                                 content: "No, you are wrong again!",
-                                postId: 2,
+                                postId: 2
                               },
                               {
                                 id: 4271,
                                 content: "Yeah, you are wrong again!",
-                                postId: 2,
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    },
-                  },
-                ],
-              },
+                                postId: 2
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
             });
           });
 
@@ -6094,7 +6094,7 @@ describe("Ext.data.Model", function () {
             var post = rec.posts().getAt(0);
             var comments = post.comments();
             expect(comments.getCount()).toBe(
-              nestedData.posts[0].comments.length,
+              nestedData.posts[0].comments.length
             );
           });
 
@@ -6104,7 +6104,7 @@ describe("Ext.data.Model", function () {
             expect(comments.getAt(0).data).toEqual({
               id: 42,
               content: "This is wrong!",
-              postId: 1, // filled in by loading
+              postId: 1 // filled in by loading
             });
           });
 
@@ -6114,7 +6114,7 @@ describe("Ext.data.Model", function () {
             expect(comments.getAt(1).data).toEqual({
               id: 427,
               content: "No, you are wrong!",
-              postId: 1, // filled in by loading
+              postId: 1 // filled in by loading
             });
           });
 
@@ -6137,7 +6137,7 @@ describe("Ext.data.Model", function () {
             expect(posts.getAt(1).data).toEqual({
               id: 2,
               content: "PostB",
-              userId: 17,
+              userId: 17
             });
           });
 
@@ -6150,7 +6150,7 @@ describe("Ext.data.Model", function () {
             var post = rec.posts().getAt(1);
             var comments = post.comments();
             expect(comments.getCount()).toBe(
-              nestedData.posts[1].comments.length,
+              nestedData.posts[1].comments.length
             );
           });
           it("should load proper first comment for PostB", function () {
@@ -6159,7 +6159,7 @@ describe("Ext.data.Model", function () {
             expect(comments.getAt(0).data).toEqual({
               id: 420,
               content: "This is wrong too!",
-              postId: 2, // filled in by loading
+              postId: 2 // filled in by loading
             });
           });
 
@@ -6169,7 +6169,7 @@ describe("Ext.data.Model", function () {
             expect(comments.getAt(1).data).toEqual({
               id: 4270,
               content: "No, you are wrong again!",
-              postId: 2, // filled in by loading
+              postId: 2 // filled in by loading
             });
           });
 
@@ -6179,7 +6179,7 @@ describe("Ext.data.Model", function () {
             expect(comments.getAt(2).data).toEqual({
               id: 4271,
               content: "Yeah, you are wrong again!",
-              postId: 2, // filled in by loading
+              postId: 2 // filled in by loading
             });
           });
 
@@ -6214,14 +6214,14 @@ describe("Ext.data.Model", function () {
               {
                 name: "passportId",
                 unique: true,
-                reference: "Passport",
-              },
-            ],
+                reference: "Passport"
+              }
+            ]
           });
 
           Passport = Ext.define("spec.Passport", {
             extend: "Ext.data.Model",
-            fields: ["id", "expires"],
+            fields: ["id", "expires"]
           });
         });
 
@@ -6234,7 +6234,7 @@ describe("Ext.data.Model", function () {
         describe("the key holder", function () {
           it("should not include the key if the item does not exist", function () {
             rec = read(Person, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -6242,7 +6242,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(Person, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -6255,8 +6255,8 @@ describe("Ext.data.Model", function () {
               id: 1,
               passport: {
                 id: 22,
-                expires: "2000-01-01",
-              },
+                expires: "2000-01-01"
+              }
             });
 
             // Inline associations should *not* arrive on the "data" object:
@@ -6271,8 +6271,8 @@ describe("Ext.data.Model", function () {
               passportId: 22,
               passport: {
                 id: 22,
-                expires: "2000-01-01",
-              },
+                expires: "2000-01-01"
+              }
             });
           });
 
@@ -6281,8 +6281,8 @@ describe("Ext.data.Model", function () {
               id: 1,
               passport: {
                 id: 22,
-                expires: "2000-01-01",
-              },
+                expires: "2000-01-01"
+              }
             });
             var data = rec.getAssociatedData();
             expect(data.passport.user).toBeUndefined();
@@ -6292,7 +6292,7 @@ describe("Ext.data.Model", function () {
         describe("the non key holder", function () {
           it("should not include the key if the item does not exist", function () {
             rec = read(Passport, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -6300,7 +6300,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(Passport, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -6313,15 +6313,15 @@ describe("Ext.data.Model", function () {
               id: 1,
               person: {
                 id: 45,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
               person: {
                 id: 45,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
           });
 
@@ -6330,8 +6330,8 @@ describe("Ext.data.Model", function () {
               id: 1,
               person: {
                 id: 45,
-                name: "Foo",
-              },
+                name: "Foo"
+              }
             });
 
             // Connect the records to each other so that the association is
@@ -6359,10 +6359,10 @@ describe("Ext.data.Model", function () {
               {
                 name: "profileId",
                 reference: "Profile",
-                unique: true,
-              },
+                unique: true
+              }
             ],
-            manyToMany: "Group",
+            manyToMany: "Group"
           });
 
           Group = Ext.define("spec.Group", {
@@ -6373,14 +6373,14 @@ describe("Ext.data.Model", function () {
               {
                 name: "profileId",
                 reference: "Profile",
-                unique: true,
-              },
-            ],
+                unique: true
+              }
+            ]
           });
 
           Profile = Ext.define("spec.Profile", {
             extend: "Ext.data.Model",
-            fields: ["id", "content"],
+            fields: ["id", "content"]
           });
         });
 
@@ -6394,7 +6394,7 @@ describe("Ext.data.Model", function () {
         describe("the left", function () {
           it("should not include the key if the item is not loaded", function () {
             rec = read(User, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -6402,7 +6402,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(User, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -6413,11 +6413,11 @@ describe("Ext.data.Model", function () {
           it("should include the key if the store exists but is empty", function () {
             rec = read(User, {
               id: 1,
-              groups: [],
+              groups: []
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
-              groups: [],
+              groups: []
             });
           });
 
@@ -6427,17 +6427,17 @@ describe("Ext.data.Model", function () {
               groups: [
                 {
                   id: 1,
-                  name: "GroupA",
+                  name: "GroupA"
                 },
                 {
                   id: 2,
-                  name: "GroupB",
+                  name: "GroupB"
                 },
                 {
                   id: 3,
-                  name: "GroupC",
-                },
-              ],
+                  name: "GroupC"
+                }
+              ]
             });
 
             var data = rec.getAssociatedData();
@@ -6445,17 +6445,17 @@ describe("Ext.data.Model", function () {
               groups: [
                 {
                   id: 1,
-                  name: "GroupA",
+                  name: "GroupA"
                 },
                 {
                   id: 2,
-                  name: "GroupB",
+                  name: "GroupB"
                 },
                 {
                   id: 3,
-                  name: "GroupC",
-                },
-              ],
+                  name: "GroupC"
+                }
+              ]
             });
           });
 
@@ -6465,13 +6465,13 @@ describe("Ext.data.Model", function () {
               groups: [
                 {
                   id: 1,
-                  name: "GroupA",
+                  name: "GroupA"
                 },
                 {
                   id: 2,
-                  name: "GroupB",
-                },
-              ],
+                  name: "GroupB"
+                }
+              ]
             });
 
             // Inline associations should *not* arrive on the "data" object:
@@ -6508,18 +6508,18 @@ describe("Ext.data.Model", function () {
                   name: "GroupA",
                   profile: {
                     id: 22,
-                    content: "Foo",
-                  },
+                    content: "Foo"
+                  }
                 },
                 {
                   id: 2,
                   name: "GroupB",
                   profile: {
                     id: 33,
-                    content: "Bar",
-                  },
-                },
-              ],
+                    content: "Bar"
+                  }
+                }
+              ]
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
@@ -6530,8 +6530,8 @@ describe("Ext.data.Model", function () {
                   profileId: 22,
                   profile: {
                     id: 22,
-                    content: "Foo",
-                  },
+                    content: "Foo"
+                  }
                 },
                 {
                   id: 2,
@@ -6539,10 +6539,10 @@ describe("Ext.data.Model", function () {
                   profileId: 33,
                   profile: {
                     id: 33,
-                    content: "Bar",
-                  },
-                },
-              ],
+                    content: "Bar"
+                  }
+                }
+              ]
             });
           });
         });
@@ -6550,7 +6550,7 @@ describe("Ext.data.Model", function () {
         describe("the right", function () {
           it("should not include the key if the item is not loaded", function () {
             rec = read(Group, {
-              id: 1,
+              id: 1
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({});
@@ -6558,7 +6558,7 @@ describe("Ext.data.Model", function () {
 
           it("should not trigger the item to load", function () {
             rec = read(Group, {
-              id: 1,
+              id: 1
             });
             // Trigger it the first time, second time we ask it shouldn't be there
             rec.getAssociatedData();
@@ -6569,11 +6569,11 @@ describe("Ext.data.Model", function () {
           it("should include the key if the store exists but is empty", function () {
             rec = read(Group, {
               id: 1,
-              users: [],
+              users: []
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
-              users: [],
+              users: []
             });
           });
 
@@ -6583,17 +6583,17 @@ describe("Ext.data.Model", function () {
               users: [
                 {
                   id: 1,
-                  name: "UserA",
+                  name: "UserA"
                 },
                 {
                   id: 2,
-                  name: "UserB",
+                  name: "UserB"
                 },
                 {
                   id: 3,
-                  name: "UserC",
-                },
-              ],
+                  name: "UserC"
+                }
+              ]
             });
 
             var data = rec.getAssociatedData();
@@ -6601,17 +6601,17 @@ describe("Ext.data.Model", function () {
               users: [
                 {
                   id: 1,
-                  name: "UserA",
+                  name: "UserA"
                 },
                 {
                   id: 2,
-                  name: "UserB",
+                  name: "UserB"
                 },
                 {
                   id: 3,
-                  name: "UserC",
-                },
-              ],
+                  name: "UserC"
+                }
+              ]
             });
           });
 
@@ -6621,13 +6621,13 @@ describe("Ext.data.Model", function () {
               users: [
                 {
                   id: 1,
-                  name: "UserA",
+                  name: "UserA"
                 },
                 {
                   id: 2,
-                  name: "UserB",
-                },
-              ],
+                  name: "UserB"
+                }
+              ]
             });
 
             // Inline associations should *not* arrive on the "data" object:
@@ -6665,18 +6665,18 @@ describe("Ext.data.Model", function () {
                   name: "UserA",
                   profile: {
                     id: 22,
-                    content: "Foo",
-                  },
+                    content: "Foo"
+                  }
                 },
                 {
                   id: 2,
                   name: "UserB",
                   profile: {
                     id: 33,
-                    content: "Bar",
-                  },
-                },
-              ],
+                    content: "Bar"
+                  }
+                }
+              ]
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
@@ -6687,8 +6687,8 @@ describe("Ext.data.Model", function () {
                   profileId: 22,
                   profile: {
                     id: 22,
-                    content: "Foo",
-                  },
+                    content: "Foo"
+                  }
                 },
                 {
                   id: 2,
@@ -6696,10 +6696,10 @@ describe("Ext.data.Model", function () {
                   profileId: 33,
                   profile: {
                     id: 33,
-                    content: "Bar",
-                  },
-                },
-              ],
+                    content: "Bar"
+                  }
+                }
+              ]
             });
           });
         });
@@ -6711,7 +6711,7 @@ describe("Ext.data.Model", function () {
           beforeEach(function () {
             User = Ext.define("spec.User", {
               extend: "Ext.data.Model",
-              fields: ["id", "name"],
+              fields: ["id", "name"]
             });
 
             Ext.define("spec.Order", {
@@ -6721,9 +6721,9 @@ describe("Ext.data.Model", function () {
                 "date",
                 {
                   name: "userId",
-                  reference: "User",
-                },
-              ],
+                  reference: "User"
+                }
+              ]
             });
 
             Ext.define("spec.OrderItem", {
@@ -6733,19 +6733,19 @@ describe("Ext.data.Model", function () {
                 "price",
                 {
                   name: "orderId",
-                  reference: "Order",
+                  reference: "Order"
                 },
                 {
                   name: "productId",
                   unique: true,
-                  reference: "Product",
-                },
-              ],
+                  reference: "Product"
+                }
+              ]
             });
 
             Ext.define("spec.Product", {
               extend: "Ext.data.Model",
-              fields: ["id", "name"],
+              fields: ["id", "name"]
             });
           });
 
@@ -6771,8 +6771,8 @@ describe("Ext.data.Model", function () {
                       productId: 1,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
+                        name: "Product1"
+                      }
                     },
                     {
                       id: 2,
@@ -6780,8 +6780,8 @@ describe("Ext.data.Model", function () {
                       productId: 2,
                       product: {
                         id: 2,
-                        name: "Product2",
-                      },
+                        name: "Product2"
+                      }
                     },
                     {
                       id: 3,
@@ -6789,10 +6789,10 @@ describe("Ext.data.Model", function () {
                       productId: 1,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
-                    },
-                  ],
+                        name: "Product1"
+                      }
+                    }
+                  ]
                 },
                 {
                   id: 2,
@@ -6804,8 +6804,8 @@ describe("Ext.data.Model", function () {
                       productId: 2,
                       product: {
                         id: 2,
-                        name: "Product2",
-                      },
+                        name: "Product2"
+                      }
                     },
                     {
                       id: 5,
@@ -6813,8 +6813,8 @@ describe("Ext.data.Model", function () {
                       productId: 3,
                       product: {
                         id: 3,
-                        name: "Product3",
-                      },
+                        name: "Product3"
+                      }
                     },
                     {
                       id: 6,
@@ -6822,12 +6822,12 @@ describe("Ext.data.Model", function () {
                       productId: 1,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
-                    },
-                  ],
-                },
-              ],
+                        name: "Product1"
+                      }
+                    }
+                  ]
+                }
+              ]
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
@@ -6844,8 +6844,8 @@ describe("Ext.data.Model", function () {
                       orderId: 1,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
+                        name: "Product1"
+                      }
                     },
                     {
                       id: 2,
@@ -6854,8 +6854,8 @@ describe("Ext.data.Model", function () {
                       orderId: 1,
                       product: {
                         id: 2,
-                        name: "Product2",
-                      },
+                        name: "Product2"
+                      }
                     },
                     {
                       id: 3,
@@ -6864,10 +6864,10 @@ describe("Ext.data.Model", function () {
                       orderId: 1,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
-                    },
-                  ],
+                        name: "Product1"
+                      }
+                    }
+                  ]
                 },
                 {
                   id: 2,
@@ -6881,8 +6881,8 @@ describe("Ext.data.Model", function () {
                       orderId: 2,
                       product: {
                         id: 2,
-                        name: "Product2",
-                      },
+                        name: "Product2"
+                      }
                     },
                     {
                       id: 5,
@@ -6891,8 +6891,8 @@ describe("Ext.data.Model", function () {
                       orderId: 2,
                       product: {
                         id: 3,
-                        name: "Product3",
-                      },
+                        name: "Product3"
+                      }
                     },
                     {
                       id: 6,
@@ -6901,12 +6901,12 @@ describe("Ext.data.Model", function () {
                       orderId: 2,
                       product: {
                         id: 1,
-                        name: "Product1",
-                      },
-                    },
-                  ],
-                },
-              ],
+                        name: "Product1"
+                      }
+                    }
+                  ]
+                }
+              ]
             });
           });
         });
@@ -6915,7 +6915,7 @@ describe("Ext.data.Model", function () {
           var Ticket;
           beforeEach(function () {
             Ext.define("spec.User", {
-              extend: "Ext.data.Model",
+              extend: "Ext.data.Model"
             });
 
             Ticket = Ext.define("spec.Ticket", {
@@ -6927,18 +6927,18 @@ describe("Ext.data.Model", function () {
                   unique: true,
                   reference: {
                     type: "User",
-                    role: "creator",
-                  },
+                    role: "creator"
+                  }
                 },
                 {
                   name: "ownerId",
                   unique: true,
                   reference: {
                     type: "User",
-                    role: "owner",
-                  },
-                },
-              ],
+                    role: "owner"
+                  }
+                }
+              ]
             });
           });
 
@@ -6953,23 +6953,23 @@ describe("Ext.data.Model", function () {
               id: 1,
               creator: {
                 id: 1,
-                name: "Foo",
+                name: "Foo"
               },
               owner: {
                 id: 2,
-                name: "Bar",
-              },
+                name: "Bar"
+              }
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
               creator: {
                 id: 1,
-                name: "Foo",
+                name: "Foo"
               },
               owner: {
                 id: 2,
-                name: "Bar",
-              },
+                name: "Bar"
+              }
             });
           });
         });
@@ -6988,11 +6988,11 @@ describe("Ext.data.Model", function () {
                     type: "Node",
                     role: "parent",
                     inverse: {
-                      role: "children",
-                    },
-                  },
-                },
-              ],
+                      role: "children"
+                    }
+                  }
+                }
+              ]
             });
           });
 
@@ -7007,13 +7007,13 @@ describe("Ext.data.Model", function () {
                   children: [
                     {
                       id: 5,
-                      text: "Child1.1",
+                      text: "Child1.1"
                     },
                     {
                       id: 6,
-                      text: "Child1.2",
-                    },
-                  ],
+                      text: "Child1.2"
+                    }
+                  ]
                 },
                 {
                   id: 3,
@@ -7021,9 +7021,9 @@ describe("Ext.data.Model", function () {
                   children: [
                     {
                       id: 7,
-                      text: "Child2.1",
-                    },
-                  ],
+                      text: "Child2.1"
+                    }
+                  ]
                 },
                 {
                   id: 4,
@@ -7031,19 +7031,19 @@ describe("Ext.data.Model", function () {
                   children: [
                     {
                       id: 8,
-                      text: "Child3.1",
+                      text: "Child3.1"
                     },
                     {
                       id: 9,
-                      text: "Child3.2",
+                      text: "Child3.2"
                     },
                     {
                       id: 10,
-                      text: "Child3.3",
-                    },
-                  ],
-                },
-              ],
+                      text: "Child3.3"
+                    }
+                  ]
+                }
+              ]
             });
             var data = rec.getAssociatedData();
             expect(data).toEqual({
@@ -7056,14 +7056,14 @@ describe("Ext.data.Model", function () {
                     {
                       id: 5,
                       parentId: 2,
-                      text: "Child1.1",
+                      text: "Child1.1"
                     },
                     {
                       id: 6,
                       parentId: 2,
-                      text: "Child1.2",
-                    },
-                  ],
+                      text: "Child1.2"
+                    }
+                  ]
                 },
                 {
                   id: 3,
@@ -7073,9 +7073,9 @@ describe("Ext.data.Model", function () {
                     {
                       id: 7,
                       parentId: 3,
-                      text: "Child2.1",
-                    },
-                  ],
+                      text: "Child2.1"
+                    }
+                  ]
                 },
                 {
                   id: 4,
@@ -7085,21 +7085,21 @@ describe("Ext.data.Model", function () {
                     {
                       id: 8,
                       parentId: 4,
-                      text: "Child3.1",
+                      text: "Child3.1"
                     },
                     {
                       id: 9,
                       parentId: 4,
-                      text: "Child3.2",
+                      text: "Child3.2"
                     },
                     {
                       id: 10,
                       parentId: 4,
-                      text: "Child3.3",
-                    },
-                  ],
-                },
-              ],
+                      text: "Child3.3"
+                    }
+                  ]
+                }
+              ]
             });
           });
         });
@@ -7109,7 +7109,7 @@ describe("Ext.data.Model", function () {
           beforeEach(function () {
             Organization = Ext.define("spec.Organization", {
               extend: "Ext.data.Model",
-              fields: ["id", "name"],
+              fields: ["id", "name"]
             });
 
             Ext.define("spec.Group", {
@@ -7119,9 +7119,9 @@ describe("Ext.data.Model", function () {
                 "name",
                 {
                   name: "organizationId",
-                  reference: "Organization",
-                },
-              ],
+                  reference: "Organization"
+                }
+              ]
             });
 
             Ext.define("spec.User", {
@@ -7131,9 +7131,9 @@ describe("Ext.data.Model", function () {
                 "name",
                 {
                   name: "groupId",
-                  reference: "Group",
-                },
-              ],
+                  reference: "Group"
+                }
+              ]
             });
           });
 
@@ -7155,9 +7155,9 @@ describe("Ext.data.Model", function () {
                   users: [
                     {
                       id: 1,
-                      name: "Foo",
-                    },
-                  ],
+                      name: "Foo"
+                    }
+                  ]
                 },
                 {
                   id: 2,
@@ -7165,9 +7165,9 @@ describe("Ext.data.Model", function () {
                   users: [
                     {
                       id: 1,
-                      name: "Foo",
-                    },
-                  ],
+                      name: "Foo"
+                    }
+                  ]
                 },
                 {
                   id: 3,
@@ -7175,11 +7175,11 @@ describe("Ext.data.Model", function () {
                   users: [
                     {
                       id: 1,
-                      name: "Foo",
-                    },
-                  ],
-                },
-              ],
+                      name: "Foo"
+                    }
+                  ]
+                }
+              ]
             });
 
             var groups = rec.getAssociatedData().groups;
@@ -7187,17 +7187,17 @@ describe("Ext.data.Model", function () {
             expect(groups[0].users[0]).toEqual({
               id: 1,
               groupId: 1,
-              name: "Foo",
+              name: "Foo"
             });
             expect(groups[1].users[0]).toEqual({
               id: 1,
               groupId: 2,
-              name: "Foo",
+              name: "Foo"
             });
             expect(groups[2].users[0]).toEqual({
               id: 1,
               groupId: 3,
-              name: "Foo",
+              name: "Foo"
             });
           });
         });
@@ -7213,9 +7213,9 @@ describe("Ext.data.Model", function () {
         {
           extend: Ext.data.Model,
           fields: fields || ["id", "name", "rank"],
-          validators: validators,
+          validators: validators
         },
-        cfg,
+        cfg
       );
       A = Ext.define("spec.A", cfg);
     }
@@ -7235,7 +7235,7 @@ describe("Ext.data.Model", function () {
         o = new A({
           id: 100,
           name: "Foo",
-          rank: 1234,
+          rank: 1234
         });
 
         var idSpy = spyOn(o.getField("id"), "validate"),
@@ -7251,10 +7251,10 @@ describe("Ext.data.Model", function () {
       describe("when valid", function () {
         beforeEach(function () {
           defineA({
-            name: "presence",
+            name: "presence"
           });
           o = new A({
-            name: "x",
+            name: "x"
           });
         });
 
@@ -7273,7 +7273,7 @@ describe("Ext.data.Model", function () {
       describe("when not valid", function () {
         it("should return an ErrorCollection", function () {
           defineA({
-            name: "presence",
+            name: "presence"
           });
           o = new A();
           var errors = o.validate();
@@ -7284,23 +7284,23 @@ describe("Ext.data.Model", function () {
           defineA(null, [
             {
               name: "name",
-              validators: "presence",
+              validators: "presence"
             },
             {
               name: "rank",
               validators: {
                 type: "format",
-                matcher: /\d+/,
-              },
+                matcher: /\d+/
+              }
             },
             {
               name: "email",
-              validators: "email",
-            },
+              validators: "email"
+            }
           ]);
 
           o = new A({
-            name: "X",
+            name: "X"
           });
 
           var errors = o.validate(),
@@ -7321,8 +7321,8 @@ describe("Ext.data.Model", function () {
           defineA(null, [
             {
               name: "name",
-              validators: ["presence", "email"],
-            },
+              validators: ["presence", "email"]
+            }
           ]);
 
           o = new A();
@@ -7350,11 +7350,11 @@ describe("Ext.data.Model", function () {
 
       it("should return true if all fields in the model are valid", function () {
         defineA({
-          name: "presence",
+          name: "presence"
         });
 
         var o = new A({
-          name: "Foo",
+          name: "Foo"
         });
         expect(o.isValid()).toBe(true);
       });
@@ -7362,23 +7362,23 @@ describe("Ext.data.Model", function () {
       it("should return false if only some fields are valid", function () {
         defineA({
           name: "presence",
-          rank: "presence",
+          rank: "presence"
         });
 
         var o = new A({
           name: "foo",
-          rank: null,
+          rank: null
         });
         expect(o.isValid()).toBe(false);
       });
 
       it("should return false if all fields in the model are not valid", function () {
         defineA({
-          name: "presence",
+          name: "presence"
         });
 
         var o = new A({
-          name: null,
+          name: null
         });
         expect(o.isValid()).toBe(false);
       });
@@ -7387,11 +7387,11 @@ describe("Ext.data.Model", function () {
     describe("validation via getValidation", function () {
       it("should return true if all fields in the model are valid", function () {
         defineA({
-          name: "presence",
+          name: "presence"
         });
 
         var o = new A({
-          name: "Foo",
+          name: "Foo"
         });
         expect(o.getValidation().isValid()).toBe(true);
       });
@@ -7399,23 +7399,23 @@ describe("Ext.data.Model", function () {
       it("should return false if only some fields are valid", function () {
         defineA({
           name: "presence",
-          rank: "presence",
+          rank: "presence"
         });
 
         var o = new A({
           name: "foo",
-          rank: null,
+          rank: null
         });
         expect(o.getValidation().isValid()).toBe(false);
       });
 
       it("should return false if all fields in the model are not valid", function () {
         defineA({
-          name: "presence",
+          name: "presence"
         });
 
         var o = new A({
-          name: null,
+          name: null
         });
         expect(o.getValidation().isValid()).toBe(false);
       });
@@ -7437,7 +7437,7 @@ describe("Ext.data.Model", function () {
           { name: "phone", type: "string", convert: null },
           { name: "color", type: "string" },
           { name: "description", type: "string" },
-          { name: "initial", type: "string" },
+          { name: "initial", type: "string" }
         ],
 
         validators: {
@@ -7447,12 +7447,12 @@ describe("Ext.data.Model", function () {
           first: { type: "exclusion", list: ["Ed"] },
           formatField: { type: "format", matcher: /123/ },
           email: "email",
-          phone: { type: "presence", message: "Phone number required" },
+          phone: { type: "presence", message: "Phone number required" }
         },
 
         doValidate: function () {
           //
-        },
+        }
       });
 
       //            instance = new User({
@@ -7477,7 +7477,7 @@ describe("Ext.data.Model", function () {
           color: "not a valid color",
           first: "Ed",
           formatField: "abc",
-          email: "abc",
+          email: "abc"
         });
 
         errors = instance.validate();
@@ -7491,7 +7491,7 @@ describe("Ext.data.Model", function () {
           last: "Griffin",
           formatField: "123",
           email: "don@sencha.com",
-          phone: "555-1212",
+          phone: "555-1212"
         });
 
         errors = instance.validate();
@@ -7585,8 +7585,8 @@ describe("Ext.data.Model", function () {
           {
             name: "initial",
             type: "string",
-            convert: convert4,
-          },
+            convert: convert4
+          }
         ],
 
         validations: [
@@ -7601,13 +7601,13 @@ describe("Ext.data.Model", function () {
           {
             type: "presence",
             field: "phone",
-            message: "Phone number required",
-          },
+            message: "Phone number required"
+          }
         ],
 
         doValidate: function () {
           //
-        },
+        }
       });
 
       //            instance = new User({
@@ -7634,7 +7634,7 @@ describe("Ext.data.Model", function () {
           color: "not a valid color",
           first: "Ed",
           formatField: "abc",
-          email: "abc",
+          email: "abc"
         });
 
         errors = instance.validate();
@@ -7648,7 +7648,7 @@ describe("Ext.data.Model", function () {
           last: "Griffin",
           formatField: "123",
           email: "don@sencha.com",
-          phone: "555-1212",
+          phone: "555-1212"
         });
 
         errors = instance.validate();
@@ -7713,7 +7713,7 @@ describe("Ext.data.Model", function () {
     beforeEach(function () {
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
-        fields: ["name", "age", "startDate"],
+        fields: ["name", "age", "startDate"]
       });
     });
 
@@ -7736,7 +7736,7 @@ describe("Ext.data.Model", function () {
         user = new User({
           name: "Foo",
           age: 12,
-          startDate: aDate,
+          startDate: aDate
         });
         other = user.copy();
         expect(other.get("name")).toBe("Foo");
@@ -7747,7 +7747,7 @@ describe("Ext.data.Model", function () {
 
       it("should copy across non-fields", function () {
         user = new User({
-          nonField: 100,
+          nonField: 100
         });
         other = user.copy();
         expect(other.get("nonField")).toBe(100);
@@ -7755,7 +7755,7 @@ describe("Ext.data.Model", function () {
 
       it("should not be dirty/phantom/modified", function () {
         user = new User({
-          name: "Foo",
+          name: "Foo"
         });
         user.set("name", "Bar");
         other = user.copy();
@@ -7767,7 +7767,7 @@ describe("Ext.data.Model", function () {
       describe("the id", function () {
         it("should copy the id", function () {
           user = new User({
-            id: 1,
+            id: 1
           });
           other = user.copy();
           expect(other.id).toBe(1);
@@ -7781,7 +7781,7 @@ describe("Ext.data.Model", function () {
 
         it("should use a passed id", function () {
           user = new User({
-            id: 10,
+            id: 10
           });
           other = user.copy(20);
           expect(other.id).toBe(20);
@@ -7789,7 +7789,7 @@ describe("Ext.data.Model", function () {
 
         it("should allow an id of 0", function () {
           user = new User({
-            id: 1,
+            id: 1
           });
           other = user.copy(0);
           expect(other.id).toBe(0);
@@ -7828,7 +7828,7 @@ describe("Ext.data.Model", function () {
         user = new User({
           name: "Foo",
           age: 12,
-          startDate: aDate,
+          startDate: aDate
         });
         other = user.clone();
         expect(other.get("name")).toBe("Foo");
@@ -7839,7 +7839,7 @@ describe("Ext.data.Model", function () {
 
       it("should copy across non-fields", function () {
         user = new User({
-          nonField: 100,
+          nonField: 100
         });
         other = user.clone();
         expect(other.get("nonField")).toBe(100);
@@ -7854,7 +7854,7 @@ describe("Ext.data.Model", function () {
 
         it("should copy across the modified state", function () {
           user = new User({
-            name: "Foo",
+            name: "Foo"
           });
           user.set("name", "Bar");
           other = user.clone();
@@ -7863,7 +7863,7 @@ describe("Ext.data.Model", function () {
 
         it("should copy across the dirty state", function () {
           user = new User({
-            name: "Foo",
+            name: "Foo"
           });
           user.set("name", "Bar");
           other = user.clone();
@@ -7904,7 +7904,7 @@ describe("Ext.data.Model", function () {
     beforeEach(function () {
       A = Ext.define("spec.A", {
         extend: "Ext.data.Model",
-        fields: ["id", "name"],
+        fields: ["id", "name"]
       });
     });
 
@@ -7915,7 +7915,7 @@ describe("Ext.data.Model", function () {
 
     it("should mark the record as dropped", function () {
       var rec = new A({
-        id: 1,
+        id: 1
       });
 
       rec.drop();
@@ -7924,7 +7924,7 @@ describe("Ext.data.Model", function () {
 
     it("should not erase the record if it is not a phantom", function () {
       var rec = new A({
-        id: 1,
+        id: 1
       });
 
       rec.drop();
@@ -7941,7 +7941,7 @@ describe("Ext.data.Model", function () {
 
     it("should call afterDrop", function () {
       var rec = new A({
-        id: 1,
+        id: 1
       });
       spyOn(rec, "callJoined");
       rec.drop();
@@ -7964,15 +7964,15 @@ describe("Ext.data.Model", function () {
               name: "addressId",
               unique: true,
               reference: {
-                child: "Address",
-              },
-            },
-          ],
+                child: "Address"
+              }
+            }
+          ]
         });
 
         Ext.define("spec.Address", {
           extend: "Ext.data.Model",
-          fields: ["id", "city"],
+          fields: ["id", "city"]
         });
 
         Ext.define("spec.OrderItem", {
@@ -7984,25 +7984,25 @@ describe("Ext.data.Model", function () {
             {
               name: "orderId",
               reference: {
-                parent: "Order",
-              },
-            },
-          ],
+                parent: "Order"
+              }
+            }
+          ]
         });
 
         order = new spec.Order({
-          id: 1,
+          id: 1
         });
 
         address = new spec.Address({
-          id: 201,
+          id: 201
         });
         order.setAddress(address);
 
         orderItems = order.orderItems();
         orderItem = orderItems.add({
           id: 101,
-          orderId: 1,
+          orderId: 1
         })[0];
       });
 
@@ -8043,7 +8043,7 @@ describe("Ext.data.Model", function () {
       User = Ext.define("spec.User", {
         extend: "Ext.data.Model",
         fields: ["name"],
-        versionProperty: "version",
+        versionProperty: "version"
       });
     });
 
@@ -8056,7 +8056,7 @@ describe("Ext.data.Model", function () {
       var user = new User({
         id: 1,
         name: "Foo",
-        version: 5,
+        version: 5
       });
       user.set("name", "Bar");
       user.commit();
@@ -8065,7 +8065,7 @@ describe("Ext.data.Model", function () {
 
     it("should not increment the versionProperty when committing a phantom", function () {
       var user = new User({
-        name: "Foo",
+        name: "Foo"
       });
       expect(user.get("version")).toBe(1);
       user.set("name", "Bar");
@@ -8076,7 +8076,7 @@ describe("Ext.data.Model", function () {
     it("should not increment the versionProperty when rejecting", function () {
       var user = new User({
         id: 1,
-        name: "X",
+        name: "X"
       });
       user.set("name", "Bar");
       user.reject();

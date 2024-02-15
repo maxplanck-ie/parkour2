@@ -170,7 +170,7 @@
           msg: msg,
           level: "error",
           dump: err,
-          stack: true,
+          stack: true
         });
         //</debug>
 
@@ -200,7 +200,7 @@
      */
     handle: function () {
       return this.ignore;
-    },
+    }
   });
 })();
 
@@ -224,7 +224,7 @@ Ext.deprecated = function (suggestion) {
         "." +
         fail.$name +
         '" has been removed. ' +
-        suggestion,
+        suggestion
     );
   }
 

@@ -216,7 +216,7 @@ Ext.define("Ext.menu.Manager", {
     Ext.on({
       mousedown: me.checkActiveMenus,
       scroll: me.onGlobalScroll,
-      scope: me,
+      scope: me
     });
-  },
+  }
 });

@@ -181,7 +181,7 @@ Ext.define("Ext.drag.Source", {
      * `true` (or an animation configuration) to animate the {@link #proxy} (which may be
      * the {@link #element}) back to the original position after drag.
      */
-    revert: false,
+    revert: false
   },
 
   /**
@@ -364,18 +364,18 @@ Ext.define("Ext.drag.Source", {
     if (constrain && !constrain.$isClass) {
       if (constrain.isRegion) {
         constrain = {
-          region: constrain,
+          region: constrain
         };
       } else if (constrain.isElement || !Ext.isObject(constrain)) {
         constrain = {
-          element: constrain,
+          element: constrain
         };
       }
       constrain = Ext.apply(
         {
-          source: this,
+          source: this
         },
-        constrain,
+        constrain
       );
       constrain = Ext.Factory.dragConstraint(constrain);
     }
@@ -386,7 +386,7 @@ Ext.define("Ext.drag.Source", {
     if (element && !this.getHandle()) {
       element.setTouchAction({
         panX: false,
-        panY: false,
+        panY: false
       });
     }
     this.callParent([element, oldElement]);
@@ -490,7 +490,7 @@ Ext.define("Ext.drag.Source", {
           dragstart: "handleDragStart",
           drag: "handleDragMove",
           dragend: "handleDragEnd",
-          dragcancel: "handleDragCancel",
+          dragcancel: "handleDragCancel"
         },
         handle = this.getHandle();
 
@@ -565,10 +565,10 @@ Ext.define("Ext.drag.Source", {
               callback: function () {
                 proxyEl.removeCls(me.revertCls);
                 me.dragCleanup(info);
-              },
+              }
             },
-            revert,
-          ),
+            revert
+          )
         );
       } else {
         me.dragCleanup(info);
@@ -706,6 +706,6 @@ Ext.define("Ext.drag.Source", {
      *
      * @private
      */
-    setup: Ext.privateFn,
-  },
+    setup: Ext.privateFn
+  }
 });

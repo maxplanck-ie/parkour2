@@ -215,7 +215,7 @@ Ext.define(
        * @property {RegExp} alphanumMask
        * The keystroke filter mask to be applied on alphanumeric input. Defaults to: /[a-z0-9_]/i
        */
-      alphanumMask: /[a-z0-9_]/i,
+      alphanumMask: /[a-z0-9_]/i
     };
-  })(),
+  })()
 );

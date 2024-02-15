@@ -5,7 +5,7 @@ Ext.define("Ext.mixin.Hookable", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "hookable",
+    id: "hookable"
   },
 
   bindHook: function (
@@ -13,7 +13,7 @@ Ext.define("Ext.mixin.Hookable", {
     boundMethod,
     bindingMethod,
     preventDefault,
-    extraArgs,
+    extraArgs
   ) {
     if (!bindingMethod) {
       bindingMethod = boundMethod;
@@ -55,7 +55,7 @@ Ext.define("Ext.mixin.Hookable", {
       preventDefault: !!preventDefault,
       boundFn: boundFn,
       bindingMethod: bindingMethod,
-      bindingScope: this,
+      bindingScope: this
     };
 
     return this;
@@ -92,5 +92,5 @@ Ext.define("Ext.mixin.Hookable", {
     }
 
     return this;
-  },
+  }
 });

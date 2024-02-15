@@ -9,9 +9,9 @@ describe("Ext.window.Window", function () {
         width: 200,
         height: 200,
         x: 10,
-        y: 10,
+        y: 10
       },
-      config,
+      config
     );
 
     win = new Ext.window.Window(config);
@@ -94,7 +94,7 @@ describe("Ext.window.Window", function () {
       beforeEach(function () {
         makeWindow({
           closable: true,
-          collapsible: true,
+          collapsible: true
         });
 
         header = win.header;
@@ -123,7 +123,7 @@ describe("Ext.window.Window", function () {
         collapsed: true,
         width: 200,
         height: 100,
-        expandOnShow: true,
+        expandOnShow: true
       });
       win.show();
       expect(win.getHeight()).toBe(100);
@@ -137,7 +137,7 @@ describe("Ext.window.Window", function () {
         collapsed: true,
         width: 200,
         height: 100,
-        expandOnShow: false,
+        expandOnShow: false
       });
       win.show();
       expect(win.getHeight()).toBe(win.header.getHeight());
@@ -153,7 +153,7 @@ describe("Ext.window.Window", function () {
         collapsed: true,
         width: 200,
         height: 100,
-        expandOnShow: true,
+        expandOnShow: true
       });
       win = new Ext.window.Window({
         title: "Foo",
@@ -161,7 +161,7 @@ describe("Ext.window.Window", function () {
         collapsed: true,
         width: 200,
         height: 100,
-        expandOnShow: true,
+        expandOnShow: true
       });
       win.show();
       win1.show();
@@ -186,9 +186,9 @@ describe("Ext.window.Window", function () {
         items: [
           {
             xtype: "textfield",
-            width: 200,
-          },
-        ],
+            width: 200
+          }
+        ]
       });
 
       win.showAt([0, 0]);
@@ -214,9 +214,9 @@ describe("Ext.window.Window", function () {
         items: [
           {
             xtype: "textfield",
-            width: 200,
-          },
-        ],
+            width: 200
+          }
+        ]
       });
 
       win.showAt([0, 0]);
@@ -277,11 +277,11 @@ describe("Ext.window.Window", function () {
               tbar: [
                 {
                   id: "button",
-                  text: "Go",
-                },
-              ],
-            },
-          ],
+                  text: "Go"
+                }
+              ]
+            }
+          ]
         });
 
         win = new Ext.window.Window({
@@ -290,7 +290,7 @@ describe("Ext.window.Window", function () {
           width: 300,
           height: 300,
           x: 0,
-          y: 0,
+          y: 0
         }).show(Ext.getCmp("button").getEl().dom);
         fxQueue = Ext.fx.Manager.getFxQueue(win.ghostPanel.id);
       });
@@ -327,13 +327,13 @@ describe("Ext.window.Window", function () {
             height: 100,
             width: 100,
             constrain: true,
-            autoShow: true,
-          },
-        ],
+            autoShow: true
+          }
+        ]
       });
       win = Ext.getCmp("constrainedWin");
       expect(container.body.getRegion().contains(win.el.getRegion())).toBe(
-        true,
+        true
       );
     });
   });
@@ -355,9 +355,9 @@ describe("Ext.window.Window", function () {
             height: 100,
             width: 100,
             constrain: true,
-            autoShow: true,
-          },
-        ],
+            autoShow: true
+          }
+        ]
       });
       win = Ext.getCmp("constrainedWin");
       pos = win.el.getXY();
@@ -397,9 +397,9 @@ describe("Ext.window.Window", function () {
             width: 100,
             constraintInsets: "20 -20 -20 20",
             constrain: true,
-            autoShow: true,
-          },
-        ],
+            autoShow: true
+          }
+        ]
       });
       win = Ext.getCmp("constrainedWin");
       win.setPosition([0, 0]);
@@ -427,7 +427,7 @@ describe("Ext.window.Window", function () {
       win.setPosition([500, 500]);
       expect(win.getLocalXY()).toEqual([
         x + diff + box.right,
-        y + diff + box.bottom,
+        y + diff + box.bottom
       ]);
     });
   });
@@ -438,7 +438,7 @@ describe("Ext.window.Window", function () {
         height: 100,
         width: 100,
         header: false,
-        maximized: true,
+        maximized: true
       });
       expect(function () {
         win.show();
@@ -450,7 +450,7 @@ describe("Ext.window.Window", function () {
     it("should be able to configured as maximized with no dimensions", function () {
       win = new Ext.window.Window({
         title: "Foo",
-        maximized: true,
+        maximized: true
       });
       win.show();
       expect(win.getWidth()).toBe(Ext.dom.Element.getViewportWidth());
@@ -461,7 +461,7 @@ describe("Ext.window.Window", function () {
       win = new Ext.window.Window({
         title: "Foo",
         maximized: true,
-        constrainHeader: true,
+        constrainHeader: true
       });
       expect(function () {
         win.show();
@@ -478,7 +478,7 @@ describe("Ext.window.Window", function () {
           title: "Win",
           collapsible: true,
           maximizable: true,
-          autoShow: true,
+          autoShow: true
         });
         win.maximize();
       });
@@ -514,7 +514,7 @@ describe("Ext.window.Window", function () {
           title: "Win",
           collapsible: true,
           maximizable: true,
-          autoShow: true,
+          autoShow: true
         });
       });
 
@@ -573,7 +573,7 @@ describe("Ext.window.Window", function () {
           height: 100,
           title: "Win",
           maximizable: true,
-          autoShow: true,
+          autoShow: true
         });
         win.maximize();
         expect(win.getSize()).toEqual(Ext.getBody().getViewSize());
@@ -585,7 +585,7 @@ describe("Ext.window.Window", function () {
           height: 100,
           title: "Win",
           maximizable: true,
-          autoShow: true,
+          autoShow: true
         });
         win.maximize();
         win.restore();
@@ -603,7 +603,7 @@ describe("Ext.window.Window", function () {
             height: "30%",
             title: "Win",
             maximizable: true,
-            autoShow: true,
+            autoShow: true
           });
 
           var initSize = win.getSize();
@@ -613,7 +613,7 @@ describe("Ext.window.Window", function () {
           var size = win.getSize();
           expect(size.width).toBe(initSize.width);
           expect(size.height).toBe(initSize.height);
-        },
+        }
       );
 
       it("should restore a shrink wrapped height", function () {
@@ -626,14 +626,14 @@ describe("Ext.window.Window", function () {
             {
               xtype: "component",
               style: "border: 1px solid red;",
-              html: '<div style="height: 98px;"></div>',
+              html: '<div style="height: 98px;"></div>'
             },
             {
               xtype: "component",
               style: "border: 1px solid blue;",
-              html: '<div style="height: 98px;"></div>',
-            },
-          ],
+              html: '<div style="height: 98px;"></div>'
+            }
+          ]
         });
         var frameSize = win.getHeight() - 200;
         win.maximize();
@@ -652,14 +652,14 @@ describe("Ext.window.Window", function () {
             {
               xtype: "component",
               style: "border: 1px solid red;",
-              html: '<div style="width: 48px;"></div>',
+              html: '<div style="width: 48px;"></div>'
             },
             {
               xtype: "component",
               style: "border: 1px solid blue;",
-              html: '<div style="width: 98px;"></div>',
-            },
-          ],
+              html: '<div style="width: 98px;"></div>'
+            }
+          ]
         });
         var frameSize = win.getWidth() - 100;
         win.maximize();
@@ -676,7 +676,7 @@ describe("Ext.window.Window", function () {
           maximizable: true,
           autoShow: true,
           x: 40,
-          y: 70,
+          y: 70
         });
         win.maximize();
         win.restore();
@@ -707,7 +707,7 @@ describe("Ext.window.Window", function () {
           style: {
             position: "absolute",
             top: 100,
-            left: 100,
+            left: 100
           },
           height: 500,
           width: 500,
@@ -719,10 +719,10 @@ describe("Ext.window.Window", function () {
               title: "Win",
               constrainHeader: true,
               maximizable: true,
-              autoShow: true,
-            },
+              autoShow: true
+            }
           ],
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         panelBody = panel.body;
@@ -739,7 +739,7 @@ describe("Ext.window.Window", function () {
         win.maximize();
 
         expect(win.getY()).toBe(
-          panelBody.getY() + panelBody.getBorderWidth("t"),
+          panelBody.getY() + panelBody.getBorderWidth("t")
         );
       });
 
@@ -754,14 +754,14 @@ describe("Ext.window.Window", function () {
       describe("without animation", function () {
         it("should disable the drag/drop", function () {
           makeWindow({
-            maximized: true,
+            maximized: true
           });
           expect(win.dd.disabled).toBe(true);
         });
 
         it("should disable the resizer", function () {
           makeWindow({
-            maximized: true,
+            maximized: true
           });
           expect(win.resizer.disabled).toBe(true);
         });
@@ -770,7 +770,7 @@ describe("Ext.window.Window", function () {
           makeWindow({
             maximized: true,
             maximizable: true,
-            closable: false,
+            closable: false
           });
           var tool = win.tools[0];
           expect(tool.type).toBe("restore");
@@ -785,8 +785,8 @@ describe("Ext.window.Window", function () {
             maximizable: true,
             closable: false,
             listeners: {
-              maximize: spy,
-            },
+              maximize: spy
+            }
           });
           expect(spy.callCount).toBe(0);
         });
@@ -796,7 +796,7 @@ describe("Ext.window.Window", function () {
             makeWindow({
               maximized: true,
               maximizable: true,
-              closable: false,
+              closable: false
             });
             win.restore();
             expect(win.tools[0].type).toBe("maximize");
@@ -806,7 +806,7 @@ describe("Ext.window.Window", function () {
             makeWindow({
               maximized: true,
               width: 250,
-              height: 250,
+              height: 250
             });
             win.restore();
             expect(win.getWidth()).toBe(250);
@@ -817,7 +817,7 @@ describe("Ext.window.Window", function () {
             makeWindow({
               maximized: true,
               width: 250,
-              height: 250,
+              height: 250
             });
             win.restore();
             expect(win.getX()).toBe(10);
@@ -830,7 +830,7 @@ describe("Ext.window.Window", function () {
               width: 250,
               height: 250,
               x: null,
-              y: null,
+              y: null
             });
             win.restore();
             expect(win.getX()).toBe(0);
@@ -856,7 +856,7 @@ describe("Ext.window.Window", function () {
         beforeEach(function () {
           animTarget = Ext.getBody().createChild({
             style:
-              "width: 100px; height: 100px; position: absolute; top: 50px; left: 50px",
+              "width: 100px; height: 100px; position: absolute; top: 50px; left: 50px"
           });
         });
 
@@ -867,7 +867,7 @@ describe("Ext.window.Window", function () {
 
         it("should disable the drag/drop", function () {
           makeAnimWindow({
-            maximized: true,
+            maximized: true
           });
           waitsForAnim();
           runs(function () {
@@ -877,7 +877,7 @@ describe("Ext.window.Window", function () {
 
         it("should disable the resizer", function () {
           makeAnimWindow({
-            maximized: true,
+            maximized: true
           });
           waitsForAnim();
           runs(function () {
@@ -889,7 +889,7 @@ describe("Ext.window.Window", function () {
           makeAnimWindow({
             maximized: true,
             maximizable: true,
-            closable: false,
+            closable: false
           });
           waitsForAnim();
           runs(function () {
@@ -907,8 +907,8 @@ describe("Ext.window.Window", function () {
             maximizable: true,
             closable: false,
             listeners: {
-              maximize: spy,
-            },
+              maximize: spy
+            }
           });
           waitsForAnim();
           runs(function () {
@@ -921,7 +921,7 @@ describe("Ext.window.Window", function () {
             makeAnimWindow({
               maximized: true,
               maximizable: true,
-              closable: false,
+              closable: false
             });
             waitsForAnim();
             runs(function () {
@@ -937,7 +937,7 @@ describe("Ext.window.Window", function () {
             makeAnimWindow({
               maximized: true,
               width: 250,
-              height: 250,
+              height: 250
             });
             waitsForAnim();
             runs(function () {
@@ -954,7 +954,7 @@ describe("Ext.window.Window", function () {
             makeAnimWindow({
               maximized: true,
               width: 250,
-              height: 250,
+              height: 250
             });
             waitsForAnim();
             runs(function () {
@@ -973,7 +973,7 @@ describe("Ext.window.Window", function () {
               width: 250,
               height: 250,
               x: null,
-              y: null,
+              y: null
             });
             waitsForAnim();
             runs(function () {
@@ -997,7 +997,7 @@ describe("Ext.window.Window", function () {
         height: 100,
         width: 300,
         x: 0,
-        y: 0,
+        y: 0
       });
       win.show();
     });
@@ -1043,8 +1043,8 @@ describe("Ext.window.Window", function () {
       tools: [{ type: "pin" }],
       header: {
         title: "Title",
-        titlePosition: 2,
-      },
+        titlePosition: 2
+      }
     }).show();
 
     win.ghost();
@@ -1069,11 +1069,11 @@ describe("Ext.window.Window", function () {
       tools: [{ type: "pin" }],
       header: {
         title: "Title",
-        titlePosition: 2,
+        titlePosition: 2
       },
       items: {
-        xtype: "textfield",
-      },
+        xtype: "textfield"
+      }
     }).show();
     var t = win.down("textfield");
 
@@ -1125,16 +1125,16 @@ describe("Ext.window.Window", function () {
       tools: [{ type: "pin" }],
       header: {
         title: "Title",
-        titlePosition: 2,
+        titlePosition: 2
       },
       items: [
         {
-          xtype: "textfield",
+          xtype: "textfield"
         },
         {
-          xtype: "textfield",
-        },
-      ],
+          xtype: "textfield"
+        }
+      ]
     }).show();
     var ts = win.query("textfield");
 
@@ -1171,7 +1171,7 @@ describe("Ext.window.Window", function () {
       height: 200,
       width: 200,
       maximizable: true,
-      minimizable: true,
+      minimizable: true
     }).show();
 
     var header = win.header;
@@ -1203,7 +1203,7 @@ describe("Ext.window.Window", function () {
 
       makeWindow({
         defaultFocus: cmp,
-        items: cmp,
+        items: cmp
       });
 
       waitForFocus(cmp);
@@ -1218,15 +1218,15 @@ describe("Ext.window.Window", function () {
             defaultFocus: 1,
             buttons: [
               {
-                text: "A",
+                text: "A"
               },
               {
                 text: "B",
-                itemId: "b",
-              },
-            ],
+                itemId: "b"
+              }
+            ]
           },
-          true,
+          true
         );
 
         cmp = win.down("#b");
@@ -1244,9 +1244,9 @@ describe("Ext.window.Window", function () {
           defaultType: "textfield",
           buttons: [
             {
-              text: "Foo",
-            },
-          ],
+              text: "Foo"
+            }
+          ]
         });
 
         waitForFocus(win);
@@ -1262,15 +1262,15 @@ describe("Ext.window.Window", function () {
           defaultType: "textfield",
           items: [
             {
-              itemId: "foo",
+              itemId: "foo"
             },
             {
-              itemId: "bar",
+              itemId: "bar"
             },
             {
-              itemId: "baz",
-            },
-          ],
+              itemId: "baz"
+            }
+          ]
         });
 
         cmp = win.down("#bar");
@@ -1287,17 +1287,17 @@ describe("Ext.window.Window", function () {
           items: [
             {
               itemId: "foo",
-              foo: 1,
+              foo: 1
             },
             {
               itemId: "bar",
-              foo: 2,
+              foo: 2
             },
             {
               itemId: "baz",
-              foo: 3,
-            },
-          ],
+              foo: 3
+            }
+          ]
         });
 
         cmp = win.down("#baz");
@@ -1314,17 +1314,17 @@ describe("Ext.window.Window", function () {
           items: [
             {
               itemId: "foo",
-              foo: 1,
+              foo: 1
             },
             {
               itemId: "bar",
-              foo: 2,
+              foo: 2
             },
             {
               itemId: "baz",
-              foo: 3,
-            },
-          ],
+              foo: 3
+            }
+          ]
         });
 
         cmp = win.down("#bar");
@@ -1340,15 +1340,15 @@ describe("Ext.window.Window", function () {
           defaultType: "textfield",
           items: [
             {
-              itemId: "foo",
+              itemId: "foo"
             },
             {
-              itemId: "bar",
+              itemId: "bar"
             },
             {
-              itemId: "baz",
-            },
-          ],
+              itemId: "baz"
+            }
+          ]
         });
 
         waitForFocus(win);
@@ -1363,9 +1363,9 @@ describe("Ext.window.Window", function () {
         items: [
           {
             xtype: "textfield",
-            itemId: "username",
-          },
-        ],
+            itemId: "username"
+          }
+        ]
       });
 
       cmp = win.down("#username");
@@ -1385,7 +1385,7 @@ describe("Ext.window.Window", function () {
       beforeEach(function () {
         btn = new Ext.button.Button({
           renderTo: Ext.getBody(),
-          text: "button",
+          text: "button"
         });
 
         makeWindow({
@@ -1395,9 +1395,9 @@ describe("Ext.window.Window", function () {
             {
               xtype: "textfield",
               fieldLabel: "foo",
-              itemId: "foo",
-            },
-          ],
+              itemId: "foo"
+            }
+          ]
         });
 
         cmp = win.down("#foo");
@@ -1427,7 +1427,7 @@ describe("Ext.window.Window", function () {
     it("should restore position", function () {
       makeWindow({
         stateful: true,
-        stateId: "foo",
+        stateId: "foo"
       });
 
       win.setPosition(20, 20);
@@ -1436,7 +1436,7 @@ describe("Ext.window.Window", function () {
 
       makeWindow({
         stateful: true,
-        stateId: "foo",
+        stateId: "foo"
       });
 
       expect(win.getPosition()).toEqual([20, 20]);
@@ -1446,7 +1446,7 @@ describe("Ext.window.Window", function () {
       var panel = new Ext.panel.Panel({
           renderTo: document.body,
           width: 500,
-          height: 500,
+          height: 500
         }),
         position;
 
@@ -1454,9 +1454,9 @@ describe("Ext.window.Window", function () {
         {
           stateful: true,
           stateId: "foo",
-          constrain: true,
+          constrain: true
         },
-        true,
+        true
       );
 
       panel.add(win).show();
@@ -1469,9 +1469,9 @@ describe("Ext.window.Window", function () {
         {
           stateful: true,
           stateId: "foo",
-          constrain: true,
+          constrain: true
         },
-        true,
+        true
       );
 
       panel.add(win).show();
@@ -1495,7 +1495,7 @@ describe("Ext.window.Window", function () {
     describe("initTabGuards", function () {
       function expectTabbables(numberOfEls) {
         var tabbables = win.el.findTabbableElements({
-          skipSelf: true,
+          skipSelf: true
         });
 
         expect(tabbables.length).toBe(numberOfEls);
@@ -1505,7 +1505,7 @@ describe("Ext.window.Window", function () {
         beforeEach(function () {
           makeWindow({
             title: "frobbe",
-            closable: false,
+            closable: false
           });
         });
 
@@ -1523,7 +1523,7 @@ describe("Ext.window.Window", function () {
         it("should add tab guards when an item is docked", function () {
           win.addDocked({
             xtype: "button",
-            text: "foo",
+            text: "foo"
           });
 
           expectTabbables(3);
@@ -1532,7 +1532,7 @@ describe("Ext.window.Window", function () {
         it("should add tab guards when a child component is added", function () {
           win.add({
             xtype: "textfield",
-            fieldLabel: "Throbbe",
+            fieldLabel: "Throbbe"
           });
 
           expectTabbables(3);
@@ -1548,9 +1548,9 @@ describe("Ext.window.Window", function () {
               items: [
                 {
                   xtype: "button",
-                  text: "frobbe",
-                },
-              ],
+                  text: "frobbe"
+                }
+              ]
             });
 
             var btn = win.down("button");
@@ -1567,9 +1567,9 @@ describe("Ext.window.Window", function () {
               dockedItems: [
                 {
                   xtype: "button",
-                  text: "sploosh!",
-                },
-              ],
+                  text: "sploosh!"
+                }
+              ]
             });
 
             var btn = win.down("button");
@@ -1648,7 +1648,7 @@ describe("Ext.window.Window", function () {
           before = new Ext.button.Button({
             renderTo: docBody,
             id: "beforeButton",
-            text: "before",
+            text: "before"
           });
 
           makeWindow({
@@ -1668,25 +1668,25 @@ describe("Ext.window.Window", function () {
               {
                 xtype: "textfield",
                 name: "foo",
-                fieldLabel: "foo",
+                fieldLabel: "foo"
               },
               {
                 xtype: "textfield",
                 name: "bar",
-                fieldLabel: "bar",
-              },
+                fieldLabel: "bar"
+              }
             ],
 
             // Buttons toolbar is there to test that bottom tab guard
             // is below it in the tab order.
             buttons: [
               {
-                text: "OK",
+                text: "OK"
               },
               {
-                text: "Cancel",
-              },
-            ],
+                text: "Cancel"
+              }
+            ]
           });
 
           tool = win.down("tool");
@@ -1698,7 +1698,7 @@ describe("Ext.window.Window", function () {
           after = new Ext.button.Button({
             renderTo: docBody,
             id: "afterButton",
-            text: "after",
+            text: "after"
           });
         });
 
@@ -1825,7 +1825,7 @@ describe("Ext.window.Window", function () {
             before = new Ext.button.Button({
               renderTo: docBody,
               id: "beforeButton",
-              text: "before",
+              text: "before"
             });
 
             // This window should have no tools at all
@@ -1834,13 +1834,13 @@ describe("Ext.window.Window", function () {
 
               modal: modal,
               closable: false,
-              draggable: false,
+              draggable: false
             });
 
             after = new Ext.button.Button({
               renderTo: docBody,
               id: "afterButton",
-              text: "after",
+              text: "after"
             });
           });
 
@@ -1884,21 +1884,21 @@ describe("Ext.window.Window", function () {
             listeners: {
               click: function () {
                 win2 = win1.add({
-                  xtype: "testtwowindow",
+                  xtype: "testtwowindow"
                 });
                 win2.show();
-              },
-            },
+              }
+            }
           },
           {
             xtype: "button",
-            text: "Test Button 1",
+            text: "Test Button 1"
           },
           {
             xtype: "button",
-            text: " Test Button 2",
-          },
-        ],
+            text: " Test Button 2"
+          }
+        ]
       });
 
       Ext.define("spec.window.TestTwoWindow", {
@@ -1911,24 +1911,24 @@ describe("Ext.window.Window", function () {
         defaultType: "button",
         items: [
           {
-            xtype: "textfield",
+            xtype: "textfield"
           },
           {
-            xtype: "textfield",
-          },
-          {
-            xtype: "button",
-            text: "Open Window 3",
+            xtype: "textfield"
           },
           {
             xtype: "button",
-            text: "Test Button 3",
+            text: "Open Window 3"
           },
           {
             xtype: "button",
-            text: " Test Button 4",
+            text: "Test Button 3"
           },
-        ],
+          {
+            xtype: "button",
+            text: " Test Button 4"
+          }
+        ]
       });
     });
 
@@ -1959,14 +1959,14 @@ describe("Ext.window.Window", function () {
                 text: "Open Window 1",
                 handler: function () {
                   win1 = Ext.create({
-                    xtype: "testonewindow",
+                    xtype: "testonewindow"
                   });
                   win1.show();
-                },
-              },
-            ],
-          },
-        ],
+                }
+              }
+            ]
+          }
+        ]
       });
 
       button1 = rootPanel.down("button[text=Open Window 1]");
@@ -1998,10 +1998,10 @@ describe("Ext.window.Window", function () {
 
     it("should focus the window by default", function () {
       win = makeWindow({
-        modal: true,
+        modal: true
       });
       field = new Ext.form.field.Text({
-        renderTo: document.body,
+        renderTo: document.body
       });
       field.focus();
 
@@ -2020,7 +2020,7 @@ describe("Ext.window.Window", function () {
     it("should hide the window if configured with maskClickAction: 'hide'", function () {
       win = makeWindow({
         modal: true,
-        maskClickAction: "hide",
+        maskClickAction: "hide"
       });
       jasmine.fireMouseEvent(win.zIndexManager.mask, "click");
       expect(win.isVisible()).toBe(false);
@@ -2029,7 +2029,7 @@ describe("Ext.window.Window", function () {
     it("should destroy the window if configured with maskClickAction: 'destroy'", function () {
       win = makeWindow({
         modal: true,
-        maskClickAction: "destroy",
+        maskClickAction: "destroy"
       });
       jasmine.fireMouseEvent(win.zIndexManager.mask, "click");
       expect(win.destroyed).toBe(true);
@@ -2041,8 +2041,8 @@ describe("Ext.window.Window", function () {
         listeners: {
           maskclick: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       jasmine.fireMouseEvent(win.zIndexManager.mask, "click");
       expect(win.isVisible()).toBe(true);
@@ -2054,8 +2054,8 @@ describe("Ext.window.Window", function () {
         listeners: {
           maskclick: function () {
             return false;
-          },
-        },
+          }
+        }
       });
       jasmine.fireMouseEvent(win.zIndexManager.mask, "click");
       expect(win.destroyed).toBe(false);
@@ -2079,7 +2079,7 @@ describe("Ext.window.Window", function () {
         x: 100,
         y: 100,
         style: {
-          backgroundColor: "yellow",
+          backgroundColor: "yellow"
         },
         items: {
           id: "child-window",
@@ -2088,8 +2088,8 @@ describe("Ext.window.Window", function () {
           constrainHeader: true,
           autoShow: true,
           height: 100,
-          width: 200,
-        },
+          width: 200
+        }
       });
       var childWindow = outer.down("#child-window");
 
@@ -2099,7 +2099,7 @@ describe("Ext.window.Window", function () {
 
       // Even though the drag dragged down to y=10000, the header sticks at the bottom
       expect(childWindow.getY()).toBe(
-        outer.getRegion().bottom - childWindow.header.getHeight(),
+        outer.getRegion().bottom - childWindow.header.getHeight()
       );
     });
   });

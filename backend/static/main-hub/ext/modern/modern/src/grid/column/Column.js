@@ -84,7 +84,7 @@ Ext.define("Ext.grid.column.Column", {
      * a different type of cell, simply provide this config and the desired `xtype`.
      */
     cell: {
-      xtype: "gridcell",
+      xtype: "gridcell"
     },
 
     /**
@@ -228,7 +228,7 @@ Ext.define("Ext.grid.column.Column", {
      */
     defaultEditor: {
       xtype: "textfield",
-      required: true,
+      required: true
     },
 
     /**
@@ -324,7 +324,7 @@ Ext.define("Ext.grid.column.Column", {
      * {@link Ext.grid.plugin.Summary Summary Rows} for this column.
      */
     summaryCell: {
-      xtype: "summarycell",
+      xtype: "summarycell"
     },
 
     /**
@@ -424,7 +424,7 @@ Ext.define("Ext.grid.column.Column", {
      * {@link #width} or {@link #flex}.
      * @readonly
      */
-    computedWidth: null,
+    computedWidth: null
   },
 
   classCls: Ext.baseCSSPrefix + "gridcolumn",
@@ -448,16 +448,16 @@ Ext.define("Ext.grid.column.Column", {
       children: [
         {
           reference: "textElement",
-          className: Ext.baseCSSPrefix + "text-el",
+          className: Ext.baseCSSPrefix + "text-el"
         },
         {
           reference: "sortIconElement",
           classList: [
             Ext.baseCSSPrefix + "sort-icon-el",
-            Ext.baseCSSPrefix + "font-icon",
-          ],
-        },
-      ],
+            Ext.baseCSSPrefix + "font-icon"
+          ]
+        }
+      ]
     });
 
     // Hook for subclasses to insert extra elements
@@ -467,7 +467,7 @@ Ext.define("Ext.grid.column.Column", {
 
     template.push({
       reference: "resizerElement",
-      className: Ext.baseCSSPrefix + "resizer-el",
+      className: Ext.baseCSSPrefix + "resizer-el"
     });
 
     return template;
@@ -524,7 +524,7 @@ Ext.define("Ext.grid.column.Column", {
     me.element.on({
       tap: "onColumnTap",
       longpress: "onColumnLongPress",
-      scope: this,
+      scope: this
     });
   },
 
@@ -573,7 +573,7 @@ Ext.define("Ext.grid.column.Column", {
       me.resizeListener = Ext.destroy(listener);
     } else if (!listener) {
       me.resizeListener = me.on("resize", me.onFlexResize, me, {
-        destroyable: true,
+        destroyable: true
       });
     }
   },
@@ -611,7 +611,7 @@ Ext.define("Ext.grid.column.Column", {
       if (oldDirection) {
         element.removeCls([
           sortedCls,
-          sortedCls + "-" + oldDirection.toLowerCase(),
+          sortedCls + "-" + oldDirection.toLowerCase()
         ]);
       }
 
@@ -664,7 +664,7 @@ Ext.define("Ext.grid.column.Column", {
 
   getInnerHtmlElement: function () {
     return this.textElement;
-  },
+  }
 
   /**
    * @method getEditor

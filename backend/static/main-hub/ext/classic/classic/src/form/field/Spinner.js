@@ -65,9 +65,9 @@ Ext.define(
           upHandler: "onSpinnerUpClick",
           downHandler: "onSpinnerDownClick",
           endHandler: "onSpinEnd",
-          scope: "this",
-        },
-      },
+          scope: "this"
+        }
+      }
     },
 
     /**
@@ -176,11 +176,11 @@ Ext.define(
         me.spinnerKeyNav = new Ext.util.KeyNav(me.inputEl, {
           scope: me,
           up: me.spinUp,
-          down: me.spinDown,
+          down: me.spinDown
         });
         me.inputEl.on({
           keyup: me.onInputElKeyUp,
-          scope: me,
+          scope: me
         });
       }
 
@@ -294,11 +294,11 @@ Ext.define(
       Ext.destroyMembers(this, "spinnerKeyNav");
 
       this.callParent();
-    },
+    }
   },
   function (Spinner) {
     Spinner.prototype.onSpinEnd = Ext.Function.createBuffered(function () {
       this.fireEvent("spinend", this);
     }, 100);
-  },
+  }
 );

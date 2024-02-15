@@ -47,7 +47,7 @@ Ext.define("Ext.fx.Anim", {
   /* Begin Definitions */
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   requires: [
@@ -55,7 +55,7 @@ Ext.define("Ext.fx.Anim", {
     "Ext.fx.Animator",
     "Ext.fx.Easing",
     "Ext.fx.CubicBezier",
-    "Ext.fx.PropertyHandler",
+    "Ext.fx.PropertyHandler"
   ],
 
   /* End Definitions */
@@ -320,7 +320,7 @@ Ext.define("Ext.fx.Anim", {
           +curve[1],
           +curve[2],
           +curve[3],
-          +curve[4],
+          +curve[4]
         );
       }
     }
@@ -379,7 +379,7 @@ Ext.define("Ext.fx.Anim", {
           end,
           me.damper,
           initialFrom[attr],
-          attr,
+          attr
         );
       }
     }
@@ -536,7 +536,7 @@ Ext.define("Ext.fx.Anim", {
     return (
       this.paused === false && this.running === true && this.isAnimator !== true
     );
-  },
+  }
 });
 
 /**

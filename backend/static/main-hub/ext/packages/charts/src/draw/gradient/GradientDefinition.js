@@ -32,5 +32,5 @@ Ext.define("Ext.draw.gradient.GradientDefinition", {
       return gradient || str;
     }
     return str;
-  },
+  }
 });

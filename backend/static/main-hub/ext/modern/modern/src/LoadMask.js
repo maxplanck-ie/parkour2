@@ -55,7 +55,7 @@ Ext.define("Ext.LoadMask", {
      * True to show the loading indicator on this {@link Ext.LoadMask}.
      * @accessor
      */
-    indicator: true,
+    indicator: true
   },
 
   getTemplate: function () {
@@ -78,17 +78,17 @@ Ext.define("Ext.LoadMask", {
                   { tag: "span", cls: prefix + "loading-top" },
                   { tag: "span", cls: prefix + "loading-right" },
                   { tag: "span", cls: prefix + "loading-bottom" },
-                  { tag: "span", cls: prefix + "loading-left" },
-                ],
-              },
-            ],
+                  { tag: "span", cls: prefix + "loading-left" }
+                ]
+              }
+            ]
           },
           //the element used to display the {@link #message}
           {
-            reference: "messageElement",
-          },
-        ],
-      },
+            reference: "messageElement"
+          }
+        ]
+      }
     ];
   },
 
@@ -122,7 +122,7 @@ Ext.define("Ext.LoadMask", {
    */
   updateIndicator: function (newIndicator) {
     this[newIndicator ? "removeCls" : "addCls"](
-      Ext.baseCSSPrefix + "indicator-hidden",
+      Ext.baseCSSPrefix + "indicator-hidden"
     );
-  },
+  }
 });

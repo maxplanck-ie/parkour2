@@ -168,7 +168,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
       top: {},
       right: {},
       bottom: {},
-      left: {},
+      left: {}
     },
 
     minZoom: null,
@@ -224,16 +224,16 @@ Ext.define("Ext.chart.interactions.PanZoom", {
       items: [
         {
           text: "Pan",
-          value: "pan",
+          value: "pan"
         },
         {
           text: "Zoom",
-          value: "zoom",
-        },
-      ],
+          value: "zoom"
+        }
+      ]
     },
 
-    hideLabelInGesture: false, // Ext.os.is.Android
+    hideLabelInGesture: false // Ext.os.is.Android
   },
 
   stopAnimationBeforeSync: true,
@@ -341,7 +341,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           0,
           0,
           (e.getX() - xy[0] - rect[0]) / me.startX,
-          me.startY / (e.getY() - xy[1] - rect[1]),
+          me.startY / (e.getY() - xy[1] - rect[1])
         );
       } else {
         me.transformAxesBy(
@@ -349,7 +349,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           e.getX() - xy[0] - rect[0] - me.startX,
           e.getY() - xy[1] - rect[1] - me.startY,
           1,
-          1,
+          1
         );
       }
       me.sync();
@@ -381,7 +381,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           e.touches[0].point.x - x,
           e.touches[0].point.y - y,
           e.touches[1].point.x - x,
-          e.touches[1].point.y - y,
+          e.touches[1].point.y - y
         ],
         xDistance = Math.max(44, Math.abs(newPoints[2] - newPoints[0])),
         yDistance = Math.max(44, Math.abs(newPoints[3] - newPoints[1]));
@@ -412,7 +412,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           e.touches[0].point.x - x,
           e.touches[0].point.y - y,
           e.touches[1].point.x - x,
-          e.touches[1].point.y - y,
+          e.touches[1].point.y - y
         ],
         xDistance = Math.max(44, abs(newPoints[2] - newPoints[0])),
         yDistance = Math.max(44, abs(newPoints[3] - newPoints[1])),
@@ -425,7 +425,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
         (rect[2] * (zoomX - 1)) / 2 + newPoints[2] - lastPoints[2] * zoomX,
         (rect[3] * (zoomY - 1)) / 2 + newPoints[3] - lastPoints[3] * zoomY,
         zoomX,
-        zoomY,
+        zoomY
       );
       me.sync();
       return false;
@@ -581,7 +581,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
           sx,
           sy,
           this.minZoom || axisCfg.minZoom,
-          this.maxZoom || axisCfg.maxZoom,
+          this.maxZoom || axisCfg.maxZoom
         ) || result;
     }
     return result;
@@ -595,7 +595,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
     sx,
     sy,
     minZoom,
-    maxZoom,
+    maxZoom
   ) {
     var me = this,
       visibleLength = oldVisibleRange[1] - oldVisibleRange[0],
@@ -636,7 +636,7 @@ Ext.define("Ext.chart.interactions.PanZoom", {
       (oldVisibleRange[0] + oldVisibleRange[1] - visibleLength) * 0.5 -
         (pan / length) * visibleLength,
       (oldVisibleRange[0] + oldVisibleRange[1] + visibleLength) * 0.5 -
-        (pan / length) * visibleLength,
+        (pan / length) * visibleLength
     ]);
     return (
       Math.abs(left - axis.getVisibleRange()[0]) > 1e-10 ||
@@ -647,5 +647,5 @@ Ext.define("Ext.chart.interactions.PanZoom", {
   destroy: function () {
     this.setModeToggleButton(null);
     this.callParent();
-  },
+  }
 });

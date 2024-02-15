@@ -4,5 +4,5 @@ Ext.define("Ext.locale.es.form.field.Text", {
   maxLengthText: "El tamaño máximo para este campo es de {0}",
   blankText: "Este campo es obligatorio",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });

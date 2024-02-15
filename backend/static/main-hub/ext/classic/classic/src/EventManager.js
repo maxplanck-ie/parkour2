@@ -69,7 +69,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.dom.Element#addListener to attach an event listener.",
+          "Use Ext.dom.Element#addListener to attach an event listener."
       );
       //</debug>
       Ext.get(element).addListener(eventName, fn, scope, options);
@@ -87,7 +87,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.on('resize', fn) to attach a window resize listener.",
+          "Use Ext.on('resize', fn) to attach a window resize listener."
       );
       //</debug>
       Ext.GlobalEvents.on("resize", fn, scope, options);
@@ -104,7 +104,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.getWin().on('unload', fn) to attach a window unload listener.",
+          "Use Ext.getWin().on('unload', fn) to attach a window unload listener."
       );
       //</debug>
       Ext.getWin().on("unload", fn, scope, options);
@@ -123,7 +123,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Call clearListeners() on a Ext.dom.Element to remove all listeners.",
+          "Call clearListeners() on a Ext.dom.Element to remove all listeners."
       );
       //</debug>
       Ext.get(element).clearListeners();
@@ -140,7 +140,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Call clearListeners() on a Ext.dom.Element to remove all listeners.",
+          "Call clearListeners() on a Ext.dom.Element to remove all listeners."
       );
       //</debug>
       Ext.get(element).clearListeners();
@@ -163,7 +163,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.dom.Element#removeListener to remove an event listener.",
+          "Use Ext.dom.Element#removeListener to remove an event listener."
       );
       //</debug>
       Ext.get(element).removeListener(eventName, fn, scope, options);
@@ -179,7 +179,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.on('resize', fn) to detach a window resize listener.",
+          "Use Ext.on('resize', fn) to detach a window resize listener."
       );
       //</debug>
       Ext.GlobalEvents.un("resize", fn, scope);
@@ -195,7 +195,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager is deprecated. " +
-          "Use Ext.getWin().un('unload', fn) to detach a window unload listener.",
+          "Use Ext.getWin().un('unload', fn) to detach a window unload listener."
       );
       //</debug>
       Ext.getWin().un("unload", fn, scope);
@@ -210,7 +210,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.stopEvent() is deprecated. " +
-          "Call stopEvent() directly on the Ext.event.Event instance instead.",
+          "Call stopEvent() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       this.stopPropagation(event);
@@ -226,7 +226,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.stopPropagation() is deprecated. " +
-          "Call stopPropagation() directly on the Ext.event.Event instance instead.",
+          "Call stopPropagation() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       event = event.browserEvent || event;
@@ -246,7 +246,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.preventDefault() is deprecated. " +
-          "Call preventDefault() directly on the Ext.event.Event instance instead.",
+          "Call preventDefault() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       event = event.browserEvent || event;
@@ -276,7 +276,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getId() is deprecated. " +
-          "Call Ext.get() to assign ids to elements.",
+          "Call Ext.get() to assign ids to elements."
       );
       //</debug>
       element = Ext.get(element);
@@ -293,7 +293,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getRelatedTarget() is deprecated. " +
-          "Call getRelatedTarget() directly on the Ext.event.Event instance instead.",
+          "Call getRelatedTarget() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       event = event.browserEvent || event;
@@ -318,7 +318,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getPageX() is deprecated. " +
-          "Call getX() directly on the Ext.event.Event instance instead.",
+          "Call getX() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       return this.getPageXY(event)[0];
@@ -334,7 +334,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getPageXY() is deprecated. " +
-          "Call getXY() directly on the Ext.event.Event instance instead.",
+          "Call getXY() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       event = event.browserEvent || event;
@@ -367,7 +367,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getPageY() is deprecated. " +
-          "Call getY() directly on the Ext.event.Event instance instead.",
+          "Call getY() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       return this.getPageXY(event)[1];
@@ -383,7 +383,7 @@ Ext.define(
       //<debug>
       Ext.log.warn(
         "Ext.EventManager.getTarget() is deprecated. " +
-          "Call getTarget() directly on the Ext.event.Event instance instead.",
+          "Call getTarget() directly on the Ext.event.Event instance instead."
       );
       //</debug>
       event = event.browserEvent || event;
@@ -416,7 +416,7 @@ Ext.define(
         }
       : function (node) {
           return node && node.nodeType === 3 ? node.parentNode : node;
-        },
+        }
   },
   function (EventManager) {
     /**
@@ -432,5 +432,5 @@ Ext.define(
      * @inheritdoc Ext.EventManager#removeListener
      */
     EventManager.un = EventManager.removeListener;
-  },
+  }
 );

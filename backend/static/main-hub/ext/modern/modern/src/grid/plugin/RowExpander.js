@@ -22,9 +22,9 @@ Ext.define("Ext.grid.plugin.RowExpander", {
       ignore: true,
       ignoreExport: true,
       cell: {
-        xtype: "expandercell",
-      },
-    },
+        xtype: "expandercell"
+      }
+    }
   },
 
   expanderSelector:
@@ -51,7 +51,7 @@ Ext.define("Ext.grid.plugin.RowExpander", {
       grid.element.on({
         tap: "onGridTap",
         delegate: me.expanderSelector,
-        scope: me,
+        scope: me
       });
     }
   },
@@ -64,5 +64,5 @@ Ext.define("Ext.grid.plugin.RowExpander", {
     cell.toggleCls(this.expandedCls);
 
     row.toggleCollapsed();
-  },
+  }
 });

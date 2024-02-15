@@ -21,5 +21,5 @@ Ext.define("Ext.rtl.layout.container.Box", {
     }
 
     return renderData;
-  },
+  }
 });

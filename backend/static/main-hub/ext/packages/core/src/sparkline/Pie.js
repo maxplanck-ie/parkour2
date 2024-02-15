@@ -27,7 +27,7 @@ Ext.define("Ext.sparkline.Pie", {
       "#66aa00",
       "#dd4477",
       "#0099c6",
-      "#990099",
+      "#990099"
     ],
 
     /**
@@ -38,7 +38,7 @@ Ext.define("Ext.sparkline.Pie", {
     /**
      * @cfg {String} [borderColor=#000] Border color of line round slices.
      */
-    borderColor: "#000",
+    borderColor: "#000"
   },
 
   tipTpl: '&#9679; {value} ({percent:number("0.0")}%)',
@@ -87,7 +87,7 @@ Ext.define("Ext.sparkline.Pie", {
       value: this.values[region],
       percent: (this.values[region] / this.total) * 100,
       color: sliceColors[region % sliceColors.length],
-      offset: region,
+      offset: region
     };
   },
 
@@ -133,7 +133,7 @@ Ext.define("Ext.sparkline.Pie", {
           start,
           end,
           null,
-          color,
+          color
         );
       }
       next = end;
@@ -162,7 +162,7 @@ Ext.define("Ext.sparkline.Pie", {
           Math.floor(radius - borderWidth / 2),
           me.getBorderColor(),
           null,
-          borderWidth,
+          borderWidth
         )
         .append();
     }
@@ -181,5 +181,5 @@ Ext.define("Ext.sparkline.Pie", {
       me.updateDisplay();
     }
     canvas.render();
-  },
+  }
 });

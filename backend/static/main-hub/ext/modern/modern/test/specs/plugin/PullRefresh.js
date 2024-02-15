@@ -16,13 +16,13 @@ describe("Ext.plugin.PullRefresh", function () {
         { id: 12, title: "Second Item" },
         { id: 13, title: "Third Item" },
         { id: 14, title: "Fourth Item" },
-        { id: 15, title: "Fifth Item" },
+        { id: 15, title: "Fifth Item" }
       ],
 
       proxy: {
         type: "ajax",
-        url: "notreal",
-      },
+        url: "notreal"
+      }
     });
 
     proxy = store.getProxy();
@@ -31,7 +31,7 @@ describe("Ext.plugin.PullRefresh", function () {
     list = new Ext.List({
       plugins: ["pullrefresh"],
       store: store,
-      displayField: "title",
+      displayField: "title"
     });
 
     plugin = list.getPlugins()[0];
@@ -89,7 +89,7 @@ describe("Ext.plugin.PullRefresh", function () {
       beforeEach(function () {
         operation = new Ext.data.operation.Read({
           model: model,
-          records: [],
+          records: []
         });
       });
 
@@ -118,7 +118,7 @@ describe("Ext.plugin.PullRefresh", function () {
           { id: 9, title: "New Ninth Item" },
           { id: 10, title: "New Tenth Item" },
           { id: 11, title: "Updated First Item" },
-          { id: 12, title: "Updated Second Item" },
+          { id: 12, title: "Updated Second Item" }
         ];
 
         Ext.each(
@@ -126,12 +126,12 @@ describe("Ext.plugin.PullRefresh", function () {
           function (data, i) {
             newRecords[i] = new model(data);
           },
-          this,
+          this
         );
 
         operation = new Ext.data.operation.Read({
           records: newRecords,
-          model: model,
+          model: model
         });
 
         plugin.onLatestFetched(newRecords, operation);
@@ -158,7 +158,7 @@ describe("Ext.plugin.PullRefresh", function () {
           { id: 2, title: "New Second Item" },
           { id: 3, title: "New Third Item" },
           { id: 4, title: "New Fourth Item" },
-          { id: 5, title: "New Fifth Item" },
+          { id: 5, title: "New Fifth Item" }
         ];
 
         Ext.each(
@@ -166,12 +166,12 @@ describe("Ext.plugin.PullRefresh", function () {
           function (data, i) {
             newRecords[i] = new model(data);
           },
-          this,
+          this
         );
 
         operation = new Ext.data.operation.Read({
           records: newRecords,
-          model: model,
+          model: model
         });
       });
 

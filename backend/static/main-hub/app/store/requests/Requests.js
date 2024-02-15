@@ -19,12 +19,12 @@ Ext.define("MainHub.store.requests.Requests", {
     reader: {
       type: "json",
       rootProperty: "results",
-      totalProperty: "count",
+      totalProperty: "count"
     },
     extraParams: {
-      showAll: "True",
-    },
+      showAll: "True"
+    }
   },
 
-  remoteFilter: true,
+  remoteFilter: true
 });

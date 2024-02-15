@@ -34,7 +34,7 @@ Ext.define("Ext.form.field.FileButton", {
 
   autoEl: {
     tag: "div",
-    unselectable: "on",
+    unselectable: "on"
   },
 
   /*
@@ -49,7 +49,7 @@ Ext.define("Ext.form.field.FileButton", {
     'type="file" size="1" name="{inputName}" unselectable="on" ',
     '<tpl if="accept != null">accept="{accept}"</tpl>',
     '<tpl if="tabIndex != null">tabindex="{tabIndex}"</tpl>',
-    ">",
+    ">"
   ],
 
   keyMap: null,
@@ -92,7 +92,7 @@ Ext.define("Ext.form.field.FileButton", {
       keydown: me.handlePrompt,
       change: me.fireChange,
       focus: me.onFileFocus,
-      blur: me.onFileBlur,
+      blur: me.onFileBlur
     };
 
     if (me.useTabGuards) {
@@ -103,8 +103,8 @@ Ext.define("Ext.form.field.FileButton", {
         "data-tabguard": "true",
         style: {
           height: 0,
-          width: 0,
-        },
+          width: 0
+        }
       };
 
       cfg.tabIndex = me.tabIndex != null ? me.tabIndex : 0;
@@ -150,9 +150,9 @@ Ext.define("Ext.form.field.FileButton", {
         tag: "input",
         type: "file",
         size: 1,
-        unselectable: "on",
+        unselectable: "on"
       },
-      me.afterInputGuard,
+      me.afterInputGuard
     ); // Nothing special happens outside of IE/Edge
 
     // This is our focusEl
@@ -174,7 +174,7 @@ Ext.define("Ext.form.field.FileButton", {
       mousedown: me.handlePrompt,
       keydown: me.handlePrompt,
       focus: me.onFileFocus,
-      blur: me.onFileBlur,
+      blur: me.onFileBlur
     };
 
     if (me.useTabGuards) {
@@ -328,6 +328,6 @@ Ext.define("Ext.form.field.FileButton", {
       } else {
         me.fileInputEl.dom.setAttribute("tabIndex", tabIndex);
       }
-    },
-  },
+    }
+  }
 });

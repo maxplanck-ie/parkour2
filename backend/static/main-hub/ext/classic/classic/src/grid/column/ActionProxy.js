@@ -45,5 +45,5 @@ Ext.define("Ext.grid.column.ActionProxy", {
   on: function () {
     // Allow the Action to attach its destroy listener.
     return this.column.on.apply(this.column, arguments);
-  },
+  }
 });

@@ -34,7 +34,7 @@ Ext.define("Ext.ux.FiddleCheckColumn", {
     '{childElCls}" style="{triggerStyle}"></div>',
     "</tpl>",
     "</div>",
-    "{%this.renderContainer(out,values)%}",
+    "{%this.renderContainer(out,values)%}"
   ],
 
   constructor: function (config) {
@@ -49,7 +49,7 @@ Ext.define("Ext.ux.FiddleCheckColumn", {
       hideable: false,
       tdCls: "no-tip no-dirty",
       defaultRenderer: me.defaultRenderer,
-      checked: false,
+      checked: false
     });
 
     me.callParent([config]);
@@ -91,5 +91,5 @@ Ext.define("Ext.ux.FiddleCheckColumn", {
         record.set(dataIndex, false);
       }
     }
-  },
+  }
 });

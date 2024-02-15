@@ -18,7 +18,7 @@ Ext.onReady(function () {
       "september",
       "oktober",
       "november",
-      "december",
+      "december"
     ];
 
     Ext.Date.dayNames = [
@@ -28,7 +28,7 @@ Ext.onReady(function () {
       "onsdag",
       "torsdag",
       "fredag",
-      "lördag",
+      "lördag"
     ];
 
     Ext.Date.formatCodes.a = "(m.getHours() < 12 ? 'em' : 'fm')";
@@ -40,7 +40,7 @@ Ext.onReady(function () {
         "if (!h || h == 12) { h = 0; }\n" +
         "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
       s: "(em|fm|EM|FM)",
-      calcAtEnd: true,
+      calcAtEnd: true
     };
     Ext.Date.parseCodes.A = {
       g: 1,
@@ -49,7 +49,7 @@ Ext.onReady(function () {
         "if (!h || h == 12) { h = 0; }\n" +
         "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
       s: "(EM|FM|em|fm)",
-      calcAtEnd: true,
+      calcAtEnd: true
     };
   }
 });

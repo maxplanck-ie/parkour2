@@ -20,9 +20,9 @@ Ext.define("Ext.form.field.Picker", {
       picker: {
         handler: "onTriggerClick",
         scope: "this",
-        focusOnMousedown: true,
-      },
-    },
+        focusOnMousedown: true
+      }
+    }
   },
 
   renderConfig: {
@@ -32,13 +32,13 @@ Ext.define("Ext.form.field.Picker", {
      * selecting a value from the picker. In this state, the picker can also be opened by clicking directly on the input
      * field itself.
      */
-    editable: true,
+    editable: true
   },
 
   keyMap: {
     scope: "this",
     DOWN: "onDownArrow",
-    ESC: "onEsc",
+    ESC: "onEsc"
   },
   keyMapTarget: "inputEl",
 
@@ -225,7 +225,7 @@ Ext.define("Ext.form.field.Picker", {
         if (!me.ariaEl.dom.hasAttribute("aria-owns")) {
           me.ariaEl.dom.setAttribute(
             "aria-owns",
-            picker.listEl ? picker.listEl.id : picker.el.id,
+            picker.listEl ? picker.listEl.id : picker.el.id
           );
         }
 
@@ -242,14 +242,14 @@ Ext.define("Ext.form.field.Picker", {
         touchstart: me.collapseIf,
         scope: me,
         delegated: false,
-        destroyable: true,
+        destroyable: true
       });
 
       // Scrolling of anything which causes this field to move should collapse
       me.scrollListeners = Ext.on({
         scroll: me.onGlobalScroll,
         scope: me,
-        destroyable: true,
+        destroyable: true
       });
 
       // Buffer is used to allow any layouts to complete before we align
@@ -443,6 +443,6 @@ Ext.define("Ext.form.field.Picker", {
       if (!this.picker.owns(scroller.getElement())) {
         this.collapse();
       }
-    },
-  },
+    }
+  }
 });

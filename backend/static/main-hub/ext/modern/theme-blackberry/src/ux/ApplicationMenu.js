@@ -15,13 +15,13 @@ Ext.define("Ext.theme.blackberry.ApplicationMenu", {
      */
     layout: {
       type: "hbox",
-      pack: "center",
+      pack: "center"
     },
 
     defaults: {
       flex: 0,
       iconAlign: "top",
-      ui: "tab",
-    },
-  },
+      ui: "tab"
+    }
+  }
 });

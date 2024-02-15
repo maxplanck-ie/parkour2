@@ -10,14 +10,14 @@ describe(
         children: [
           { id: "child1", style: "position:absolute;" },
           { id: "child2", style: "position:absolute;" },
-          { id: "child3", style: "position:absolute;" },
-        ],
+          { id: "child3", style: "position:absolute;" }
+        ]
       });
 
       input = Ext.getBody().createChild({
         id: "ExtElementInputHelper",
         tag: "input",
-        type: "text",
+        type: "text"
       });
 
       child1 = Ext.get("child1");
@@ -51,7 +51,7 @@ describe(
               top: 10,
               right: 10,
               bottom: 10,
-              left: 10,
+              left: 10
             });
           });
         });
@@ -64,7 +64,7 @@ describe(
               top: 10,
               right: 10,
               bottom: 10,
-              left: 10,
+              left: 10
             });
           });
         });
@@ -75,7 +75,7 @@ describe(
               top: 10,
               right: 5,
               bottom: 10,
-              left: 5,
+              left: 5
             });
           });
         });
@@ -86,7 +86,7 @@ describe(
               top: 10,
               right: 5,
               bottom: 15,
-              left: 5,
+              left: 5
             });
           });
         });
@@ -97,7 +97,7 @@ describe(
               top: 10,
               right: 5,
               bottom: 15,
-              left: 0,
+              left: 0
             });
           });
         });
@@ -107,7 +107,7 @@ describe(
     describe("unitizeBox", function () {
       it("should return a string", function () {
         expect(Ext.Element.unitizeBox("10 5 15 0")).toEqual(
-          "10px 5px 15px 0px",
+          "10px 5px 15px 0px"
         );
       });
     });
@@ -162,7 +162,7 @@ describe(
             : window.innerWidth,
           height: Ext.isIE8
             ? document.documentElement.scrollHeight
-            : window.innerHeight,
+            : window.innerHeight
         });
       });
     });
@@ -170,7 +170,7 @@ describe(
     describe("getOrientation", function () {
       it("should return the correct orientation", function () {
         expect(Ext.Element.getOrientation()).toEqual(
-          window.innerHeight > window.innerWidth ? "portrait" : "landscape",
+          window.innerHeight > window.innerWidth ? "portrait" : "landscape"
         );
       });
     });
@@ -196,5 +196,5 @@ describe(
       });
     });
   },
-  "/src/dom/Element.static.js",
+  "/src/dom/Element.static.js"
 );

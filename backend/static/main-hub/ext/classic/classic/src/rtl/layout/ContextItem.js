@@ -20,5 +20,5 @@ Ext.define("Ext.rtl.layout.ContextItem", {
       ++count;
     }
     return count;
-  },
+  }
 });

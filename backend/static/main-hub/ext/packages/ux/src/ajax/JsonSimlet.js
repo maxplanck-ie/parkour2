@@ -31,5 +31,5 @@ Ext.define("Ext.ux.ajax.JsonSimlet", {
 
   doPost: function (ctx) {
     return this.doGet(ctx);
-  },
+  }
 });

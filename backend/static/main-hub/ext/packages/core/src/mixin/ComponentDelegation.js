@@ -8,7 +8,7 @@ Ext.define(
   {
     extend: "Ext.Mixin",
     mixinConfig: {
-      id: "componentDelegation",
+      id: "componentDelegation"
     },
 
     privates: {
@@ -25,7 +25,7 @@ Ext.define(
         options,
         order,
         caller,
-        manager,
+        manager
       ) {
         var me = this,
           delegatedEvents,
@@ -58,7 +58,7 @@ Ext.define(
               eventName +
               "' listener to component: '" +
               me.id +
-              "' - 'delegate' and 'target' event options are incompatible.",
+              "' - 'delegate' and 'target' event options are incompatible."
           );
         }
         //</debug>
@@ -171,7 +171,7 @@ Ext.define(
         if (this.clearPropertiesOnDestroy) {
           this.$delegatedEvents = null;
         }
-      },
+      }
     },
 
     onClassMixedIn: function (T) {
@@ -187,7 +187,7 @@ Ext.define(
       T.prototype.HasListeners = T.HasListeners = HasListeners;
       HasListeners.prototype = T.hasListeners =
         new Ext.mixin.ComponentDelegation.HasDelegatedListeners();
-    },
+    }
   },
   function (ComponentDelegation) {
     // Here We set up a HasListeners instance ($hasDelegatedListeners) that will be incremented
@@ -215,5 +215,5 @@ Ext.define(
     HasDelegatedListeners.prototype =
       ComponentDelegation.prototype.$hasDelegatedListeners =
         new Ext.mixin.Observable.HasListeners();
-  },
+  }
 );

@@ -24,7 +24,7 @@ Ext.define("Ext.util.Wrapper", {
     this.bindHook(wrappedElement, boundMethodName, "onBoundSizeChange");
     wrappedElement[boundMethodName].call(
       wrappedElement,
-      wrappedElement.getStyleValue(sizeName),
+      wrappedElement.getStyleValue(sizeName)
     );
   },
 
@@ -81,5 +81,5 @@ Ext.define("Ext.util.Wrapper", {
     }
 
     me.callParent();
-  },
+  }
 });

@@ -41,7 +41,7 @@ Ext.define("Ext.event.gesture.Recognizer", {
 
   config: {
     onRecognized: Ext.emptyFn,
-    callbackScope: null,
+    callbackScope: null
   },
 
   constructor: function (config) {
@@ -72,7 +72,7 @@ Ext.define("Ext.event.gesture.Recognizer", {
       eventName,
       e,
       info,
-      isCancel,
+      isCancel
     );
   },
 
@@ -92,5 +92,5 @@ Ext.define("Ext.event.gesture.Recognizer", {
   reset: function () {
     this.isStarted = false;
     return false;
-  },
+  }
 });

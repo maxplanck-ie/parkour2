@@ -20,7 +20,7 @@ Ext.define(
        * be considered a doubletap
        */
       tapDistance: 24,
-      maxDuration: 300,
+      maxDuration: 300
     },
 
     handledEvents: ["singletap", "doubletap"],
@@ -77,7 +77,7 @@ Ext.define(
         scale = Ext.Element.getViewportScale(),
         // account for scale so that move distance is actual screen pixels, not page pixels
         distance = Math.round(
-          Math.abs(point.getDistanceTo(me.lastStartPoint) * scale),
+          Math.abs(point.getDistanceTo(me.lastStartPoint) * scale)
         );
 
       if (distance >= me.getMoveDistance()) {
@@ -107,7 +107,7 @@ Ext.define(
           scale = Ext.Element.getViewportScale();
           // account for scale so that move distance is actual screen pixels, not page pixels
           distance = Math.round(
-            Math.abs(point.getDistanceTo(me.startPoint) * scale),
+            Math.abs(point.getDistanceTo(me.startPoint) * scale)
           );
 
           if (distance <= me.getTapDistance()) {
@@ -120,7 +120,7 @@ Ext.define(
 
             me.fire("doubletap", e, {
               touch: e.changedTouches[0],
-              duration: duration,
+              duration: duration
             });
 
             return me.callParent([e]);
@@ -155,10 +155,10 @@ Ext.define(
       me.lastStartPoint = me.startPoint = me.singleTapTimer = null;
 
       return me.callParent();
-    },
+    }
   },
   function (DoubleTap) {
     var gestures = Ext.manifest.gestures;
     DoubleTap.instance = new DoubleTap(gestures && gestures.doubleTap);
-  },
+  }
 );

@@ -71,7 +71,7 @@ Ext.JSON = new (function () {
       "\r": "\\r",
       '"': '\\"',
       "\\": "\\\\",
-      "\x0b": "\\u000b", //ie doesn't handle \v
+      "\x0b": "\\u000b" //ie doesn't handle \v
     },
     charToReplace = /[\\\"\x00-\x1f\x7f-\uffff]/g,
     encodeString = function (s) {
@@ -269,7 +269,7 @@ Ext.JSON = new (function () {
       Ext.raise({
         sourceClass: "Ext.JSON",
         sourceMethod: "decode",
-        msg: "You're trying to decode an invalid JSON String: " + json,
+        msg: "You're trying to decode an invalid JSON String: " + json
       });
     }
   };

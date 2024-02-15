@@ -36,7 +36,7 @@ Ext.define("Ext.overrides.util.Positionable", {
     offsets,
     animate,
     monitorScroll,
-    callback,
+    callback
   ) {
     var me = this,
       scroll = !Ext.isEmpty(monitorScroll),
@@ -46,7 +46,7 @@ Ext.define("Ext.overrides.util.Positionable", {
           anchorToEl,
           alignment,
           offsets,
-          animate,
+          animate
         );
         Ext.callback(callback, me);
       },
@@ -56,14 +56,14 @@ Ext.define("Ext.overrides.util.Positionable", {
     me.removeAnchor();
     Ext.apply(anchor, {
       fn: action,
-      scroll: scroll,
+      scroll: scroll
     });
 
     Ext.on("resize", action, null);
 
     if (scroll) {
       Ext.getWin().on("scroll", action, null, {
-        buffer: !isNaN(monitorScroll) ? monitorScroll : 50,
+        buffer: !isNaN(monitorScroll) ? monitorScroll : 50
       });
     }
     action(); // align immediately
@@ -91,7 +91,7 @@ Ext.define("Ext.overrides.util.Positionable", {
     element,
     position,
     offsets,
-    /* private (documented in ext) */ animate,
+    /* private (documented in ext) */ animate
   ) {
     var me = this,
       el = me.el,
@@ -110,11 +110,11 @@ Ext.define("Ext.overrides.util.Positionable", {
       element,
       position,
       offsets,
-      me.minHeight || 150,
+      me.minHeight || 150
     );
     me.setXY(
       [newRegion.x, newRegion.y],
-      el.anim && !!animate ? el.anim(animate) : false,
+      el.anim && !!animate ? el.anim(animate) : false
     );
 
     // Impose calculated height constraint.
@@ -176,7 +176,7 @@ Ext.define("Ext.overrides.util.Positionable", {
         x: box.left,
         y: box.top,
         width: box.right - box.left,
-        height: box.bottom - box.top,
+        height: box.bottom - box.top
       };
     }
 
@@ -189,19 +189,19 @@ Ext.define("Ext.overrides.util.Positionable", {
             listeners: {
               afteranimate: Ext.Function.bind(me.afterSetPosition, me, [
                 box.x,
-                box.y,
-              ]),
-            },
+                box.y
+              ])
+            }
           },
-          animate,
-        ),
+          animate
+        )
       );
     } else {
       me.callParent([box]);
     }
 
     return me;
-  },
+  }
 
   /**
    * @method setX

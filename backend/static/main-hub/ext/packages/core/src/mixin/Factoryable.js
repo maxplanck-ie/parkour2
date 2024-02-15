@@ -170,7 +170,7 @@ Ext.Factory.prototype = {
 
   clearCache: function () {
     this.cache = {};
-  },
+  }
 };
 
 /**
@@ -300,7 +300,7 @@ Ext.define("Ext.mixin.Factoryable", {
       // allow targetClass to override the create method
       targetClass.create = createFn;
     }
-  },
+  }
 
   /**
    * @property {Object} [factoryConfig]

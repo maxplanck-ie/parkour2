@@ -98,7 +98,7 @@ Ext.define("Ext.selection.CellModel", {
         me.gridListeners = grid.on({
           columnmove: me.onColumnMove,
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
       }
     }
@@ -200,7 +200,7 @@ Ext.define("Ext.selection.CellModel", {
         if (row !== -1) {
           pos = {
             row: row,
-            column: oldPos ? oldPos.column : 0,
+            column: oldPos ? oldPos.column : 0
           };
         } else {
           pos = null;
@@ -208,7 +208,7 @@ Ext.define("Ext.selection.CellModel", {
       } else if (typeof pos === "number") {
         pos = {
           row: pos,
-          column: 0,
+          column: 0
         };
       }
     }
@@ -240,7 +240,7 @@ Ext.define("Ext.selection.CellModel", {
           columnHeader: position.column,
           // IMPORTANT: The historic API for columns has been to include hidden columns
           // in the index. So we must report the index of the column in the "all" ColumnManager.
-          column: position.view.getColumnManager().indexOf(position.column),
+          column: position.view.getColumnManager().indexOf(position.column)
         }
       : position;
   },
@@ -262,7 +262,7 @@ Ext.define("Ext.selection.CellModel", {
   setCurrentPosition: function (
     pos,
     suppressEvent,
-    /* private */ preventCheck,
+    /* private */ preventCheck
   ) {
     if (pos && !pos.isCellContext) {
       pos = new Ext.grid.CellContext(this.view).setPosition({
@@ -272,7 +272,7 @@ Ext.define("Ext.selection.CellModel", {
         column:
           typeof pos.column === "number"
             ? this.view.getColumnManager().getColumns()[pos.column]
-            : pos.column,
+            : pos.column
       });
     }
     return this.setPosition(pos, suppressEvent, preventCheck);
@@ -339,7 +339,7 @@ Ext.define("Ext.selection.CellModel", {
         column:
           typeof column === "number"
             ? view.getColumnManager().getColumns()[column]
-            : column,
+            : column
       });
       return testPos.record === pos.record && testPos.column === pos.column;
     }
@@ -452,7 +452,7 @@ Ext.define("Ext.selection.CellModel", {
           me,
           record,
           pos.rowIdx,
-          pos.colIdx,
+          pos.colIdx
         )) !== false &&
       commitFn() !== false
     ) {
@@ -538,7 +538,7 @@ Ext.define("Ext.selection.CellModel", {
         if (column && view.store.indexOfId(record.getId()) !== -1) {
           newPos = new Ext.grid.CellContext(view).setPosition({
             row: record,
-            column: column,
+            column: column
           });
           me.setPosition(newPos);
         }
@@ -554,5 +554,5 @@ Ext.define("Ext.selection.CellModel", {
    */
   selectByPosition: function (position, suppressEvent) {
     this.setPosition(position, suppressEvent);
-  },
+  }
 });

@@ -52,7 +52,7 @@ describe("Ext.event.publisher.Focus", function () {
         '<div id="c16" tabindex="-1" style="width:50px;height:100%"></div>',
         '<div id="c18" tabindex="-1" style="width:50px;height:100%"></div>',
         "</div>",
-        "</div>",
+        "</div>"
       ],
       i,
       len;
@@ -346,7 +346,7 @@ describe("Ext.event.publisher.Focus", function () {
       // Wait for focus to have moved to c[1]
       jasmine.waitForFocus(
         c[1],
-        "Focus to move from a[1]>b[2]>c[3] to a[1]>b[1]>c[1]",
+        "Focus to move from a[1]>b[2]>c[3] to a[1]>b[1]>c[1]"
       );
 
       // a[1]'s focusmove event must NOT have been fired during suspension

@@ -8,7 +8,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
       container = new Ext.draw.Container({
         width: 200,
         height: 200,
-        renderTo: document.body,
+        renderTo: document.body
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.chart.legend.sprite.Item({
@@ -17,14 +17,14 @@ describe("Ext.chart.legend.sprite.Item", function () {
         marker: {
           type: "rect",
           fillStyle: "red",
-          strokeStyle: "black",
+          strokeStyle: "black"
         },
         label: {
           text: "Hello",
-          fontSize: 40,
+          fontSize: 40
         },
         series: null,
-        record: null,
+        record: null
       });
       surface.add(sprite);
       container.add(surface);
@@ -51,7 +51,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
       container = new Ext.draw.Container({
         width: 200,
         height: 200,
-        renderTo: document.body,
+        renderTo: document.body
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.chart.legend.sprite.Item({
@@ -62,13 +62,13 @@ describe("Ext.chart.legend.sprite.Item", function () {
           size: size,
           path: "M20.375,12.833h-2.209V10c0,0,0,0,0-0.001c0-2.389,1.945-4.333,4.334-4.333c2.391,0,4.335,1.944,4.335,4.333c0,0,0,0,0,0v2.834h2V9.999h-0.001c-0.001-3.498-2.836-6.333-6.334-6.333S16.166,6.502,16.166,10v2.833H3.125V25h17.25V12.833z",
           fillStyle: "red",
-          strokeStyle: "black",
+          strokeStyle: "black"
         },
         label: {
-          text: "Hello",
+          text: "Hello"
         },
         series: null,
-        record: null,
+        record: null
       });
       surface.add(sprite);
       container.add(surface);
@@ -95,7 +95,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
       container = new Ext.draw.Container({
         width: 200,
         height: 200,
-        renderTo: document.body,
+        renderTo: document.body
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.chart.legend.sprite.Item({
@@ -105,13 +105,13 @@ describe("Ext.chart.legend.sprite.Item", function () {
           type: "circle",
           size: size,
           fillStyle: "red",
-          strokeStyle: "black",
+          strokeStyle: "black"
         },
         label: {
-          text: "Hello",
+          text: "Hello"
         },
         series: null,
-        record: null,
+        record: null
       });
       surface.add(sprite);
       container.add(surface);
@@ -123,7 +123,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
 
       expect(mbb.y - lbb.y).toBeCloseTo(
         lbb.y + lbb.height - (mbb.y + mbb.height),
-        precision,
+        precision
       );
 
       Ext.destroy(sprite, surface, container);
@@ -141,7 +141,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
       container = new Ext.draw.Container({
         width: 200,
         height: 200,
-        renderTo: document.body,
+        renderTo: document.body
       });
       surface = new Ext.draw.Surface();
       sprite = new Ext.chart.legend.sprite.Item({
@@ -151,13 +151,13 @@ describe("Ext.chart.legend.sprite.Item", function () {
           type: "circle",
           size: size,
           fillStyle: "red",
-          strokeStyle: "black",
+          strokeStyle: "black"
         },
         label: {
-          text: "Hello",
+          text: "Hello"
         },
         series: null,
-        record: null,
+        record: null
       });
       surface.add(sprite);
       container.add(surface);
@@ -169,7 +169,7 @@ describe("Ext.chart.legend.sprite.Item", function () {
 
       expect(lbb.x - (mbb.x + mbb.width)).toBeCloseTo(
         sprite.attr.markerLabelGap,
-        precision,
+        precision
       );
 
       Ext.destroy(sprite, surface, container);

@@ -54,7 +54,7 @@ Ext.define("Ext.util.Scheduler", {
      * The number of milliseconds to delay notification after the first `schedule`
      * request.
      */
-    tickDelay: 5,
+    tickDelay: 5
   },
 
   /**
@@ -570,11 +570,11 @@ Ext.define("Ext.util.Scheduler", {
         "Schedule item: " +
           item.getFullName() +
           " - " +
-          (this.scheduledCount + 1),
+          (this.scheduledCount + 1)
       );
       if (item.order <= this.notifyIndex) {
         Ext.log.warn(
-          "Suboptimal order: " + item.order + " < " + this.notifyIndex,
+          "Suboptimal order: " + item.order + " < " + this.notifyIndex
         );
       }
       this.callParent([item]);
@@ -586,8 +586,8 @@ Ext.define("Ext.util.Scheduler", {
       }
       this.callParent([item]);
       Ext.log(
-        "Unschedule item: " + item.getFullName() + " - " + this.scheduledCount,
+        "Unschedule item: " + item.getFullName() + " - " + this.scheduledCount
       );
-    },
-  },
+    }
+  }
 });

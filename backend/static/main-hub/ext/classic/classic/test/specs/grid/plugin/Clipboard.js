@@ -30,31 +30,31 @@ describe("Ext.grid.plugin.Clipboard", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              age: 14,
+              age: 14
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              age: 12,
+              age: 12
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              age: 44,
+              age: 44
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              age: 41,
-            },
+              age: 41
+            }
           ],
-          autoDestroy: true,
+          autoDestroy: true
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     cellediting = new Ext.grid.plugin.CellEditing(editorCfg);
@@ -68,7 +68,7 @@ describe("Ext.grid.plugin.Clipboard", function () {
               header: "Name",
               dataIndex: "name",
               editor: "textfield",
-              locked: locked,
+              locked: locked
             },
             {
               header: "Email",
@@ -76,21 +76,21 @@ describe("Ext.grid.plugin.Clipboard", function () {
               flex: 1,
               editor: {
                 xtype: "textfield",
-                allowBlank: false,
-              },
+                allowBlank: false
+              }
             },
             { header: "Phone", dataIndex: "phone", editor: "textfield" },
-            { header: "Age", dataIndex: "age", editor: "textfield" },
+            { header: "Age", dataIndex: "age", editor: "textfield" }
           ],
           store: store,
           selModel: "spreadsheet",
           plugins: [cellediting, clipboard],
           width: 400,
           height: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     view = grid.view;
@@ -124,7 +124,7 @@ describe("Ext.grid.plugin.Clipboard", function () {
       "keydown",
       key,
       /*shift*/ null,
-      /*ctrl*/ true,
+      /*ctrl*/ true
     );
   }
 

@@ -3,7 +3,7 @@ describe("Ext.data.validator.Format", function () {
 
   function validate(value, matcher) {
     v = new Ext.data.validator.Format({
-      matcher: matcher,
+      matcher: matcher
     });
     return v.validate(value);
   }
@@ -34,7 +34,7 @@ describe("Ext.data.validator.Format", function () {
     it("should accept a custom message", function () {
       v = new Ext.data.validator.Format({
         message: "Foo",
-        matcher: /^foo$/,
+        matcher: /^foo$/
       });
       expect(v.validate("bar")).toBe("Foo");
     });
@@ -43,7 +43,7 @@ describe("Ext.data.validator.Format", function () {
   describe("runtime changes", function () {
     it("should be able to have a new matcher applied", function () {
       v = new Ext.data.validator.Format({
-        matcher: /^foo/,
+        matcher: /^foo/
       });
       expect(v.validate("bar")).toBe(v.getMessage());
       v.setMatcher(/^bar/);

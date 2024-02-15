@@ -29,5 +29,5 @@ Ext.define("Ext.device.Orientation", {
 
   constructor: function () {
     return Ext.create("Ext.device.orientation.HTML5");
-  },
+  }
 });

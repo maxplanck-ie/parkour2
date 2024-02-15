@@ -69,13 +69,13 @@ Ext.define("Ext.panel.Title", {
      * @inheritdoc Ext.panel.Header#cfg-titleRotation
      * @accessor
      */
-    rotation: null,
+    rotation: null
   },
 
   autoEl: {
     role: "presentation",
     // Required for Opera
-    unselectable: "on",
+    unselectable: "on"
   },
 
   // In most cases the panel header title is purely presentational
@@ -120,25 +120,25 @@ Ext.define("Ext.panel.Title", {
   _textAlignClasses: {
     left: Ext.baseCSSPrefix + "title-align-left",
     center: Ext.baseCSSPrefix + "title-align-center",
-    right: Ext.baseCSSPrefix + "title-align-right",
+    right: Ext.baseCSSPrefix + "title-align-right"
   },
 
   _iconAlignClasses: {
     top: Ext.baseCSSPrefix + "title-icon-top",
     right: Ext.baseCSSPrefix + "title-icon-right",
     bottom: Ext.baseCSSPrefix + "title-icon-bottom",
-    left: Ext.baseCSSPrefix + "title-icon-left",
+    left: Ext.baseCSSPrefix + "title-icon-left"
   },
 
   _rotationClasses: {
     0: Ext.baseCSSPrefix + "title-rotate-none",
     1: Ext.baseCSSPrefix + "title-rotate-right",
-    2: Ext.baseCSSPrefix + "title-rotate-left",
+    2: Ext.baseCSSPrefix + "title-rotate-left"
   },
 
   _rotationAngles: {
     1: 90,
-    2: 270,
+    2: 270
   },
 
   baseCls: Ext.baseCSSPrefix + "title",
@@ -177,7 +177,7 @@ Ext.define("Ext.panel.Title", {
       lastX = lastBox.x;
       el.setStyle(
         me._getVerticalAdjustDirection(),
-        lastX + (rotation === 1 ? lastBox.width : -lastBox.height) + "px",
+        lastX + (rotation === 1 ? lastBox.width : -lastBox.height) + "px"
       );
     }
     this.callParent();
@@ -247,7 +247,7 @@ Ext.define("Ext.panel.Title", {
       iconAlignCls: me._iconAlignClasses[iconAlign],
       glyph: glyph,
       glyphCls: glyph ? me._glyphCls : "",
-      glyphFontFamily: glyphFontFamily,
+      glyphFontFamily: glyphFontFamily
     };
   },
 
@@ -265,9 +265,9 @@ Ext.define("Ext.panel.Title", {
         itemCls: me._itemCls,
         textCls: me._textCls,
         iconMarkup: null,
-        iconBeforeTitle: null,
+        iconBeforeTitle: null
       },
-      me.callParent(),
+      me.callParent()
     );
 
     if (me._hasIcon()) {
@@ -412,7 +412,7 @@ Ext.define("Ext.panel.Title", {
         left: "",
         top: "",
         height: "",
-        width: "",
+        width: ""
       });
 
       me.lastBox = null;
@@ -473,7 +473,7 @@ Ext.define("Ext.panel.Title", {
 
         el.dom.insertAdjacentHTML(
           isBefore ? "afterbegin" : "beforeend",
-          me.getIconMarkup(),
+          me.getIconMarkup()
         );
 
         iconWrapEl = me.iconWrapEl = el[isBefore ? "first" : "last"]();
@@ -483,6 +483,6 @@ Ext.define("Ext.panel.Title", {
       if (iconWrapEl) {
         iconWrapEl.setDisplayed(hasIcon);
       }
-    },
-  },
+    }
+  }
 });

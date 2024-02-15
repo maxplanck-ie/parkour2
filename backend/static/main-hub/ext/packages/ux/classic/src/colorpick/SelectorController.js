@@ -41,28 +41,28 @@ Ext.define("Ext.ux.colorpick.SelectorController", {
   onColorMapHandleDrag: function (xPercent, yPercent) {
     this.changeHSV({
       s: xPercent,
-      v: 1 - yPercent,
+      v: 1 - yPercent
     });
   },
 
   // Updates HSV Value in the model and downstream RGB settings
   onValueSliderHandleDrag: function (yPercent) {
     this.changeHSV({
-      v: 1 - yPercent,
+      v: 1 - yPercent
     });
   },
 
   // Updates HSV Saturation in the model and downstream RGB settings
   onSaturationSliderHandleDrag: function (yPercent) {
     this.changeHSV({
-      s: 1 - yPercent,
+      s: 1 - yPercent
     });
   },
 
   // Updates Hue in the model and downstream RGB settings
   onHueSliderHandleDrag: function (yPercent) {
     this.changeHSV({
-      h: 1 - yPercent,
+      h: 1 - yPercent
     });
   },
 
@@ -71,9 +71,9 @@ Ext.define("Ext.ux.colorpick.SelectorController", {
       color = view.getColor(),
       newColor = Ext.applyIf(
         {
-          a: 1 - yPercent,
+          a: 1 - yPercent
         },
-        color,
+        color
       );
 
     view.setColor(newColor);
@@ -123,5 +123,5 @@ Ext.define("Ext.ux.colorpick.SelectorController", {
     refs.satSlider.setSaturation(s);
     refs.valueSlider.setValue(v);
     refs.alphaSlider.setAlpha(a);
-  },
+  }
 });

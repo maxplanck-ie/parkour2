@@ -9,8 +9,8 @@ Ext.define("MainHub.store.invoicing.FixedCosts", {
   sorters: [
     {
       property: "name",
-      direction: "ASC",
-    },
+      direction: "ASC"
+    }
   ],
 
   proxy: {
@@ -21,11 +21,11 @@ Ext.define("MainHub.store.invoicing.FixedCosts", {
     noCache: false, // to remove param "_dc",
     actionMethods: {
       read: "GET",
-      update: "PUT",
+      update: "PUT"
     },
     api: {
       read: "api/fixed_costs/",
-      update: "",
-    },
-  },
+      update: ""
+    }
+  }
 });

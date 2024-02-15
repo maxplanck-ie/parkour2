@@ -55,7 +55,7 @@ Ext.define("Ext.google.data.EventsProxy", {
     return {
       items: me.sanitizeItems(items),
       success: data.success,
-      error: data.error,
+      error: data.error
     };
   },
 
@@ -162,8 +162,8 @@ Ext.define("Ext.google.data.EventsProxy", {
             timeMin: Ext.Date.format(start, "C"),
             timeMax: Ext.Date.format(next, "C"),
             singleEvents: true,
-            maxResults: 2500,
-          }),
+            maxResults: 2500
+          })
         );
 
         start = next;
@@ -176,7 +176,7 @@ Ext.define("Ext.google.data.EventsProxy", {
     buildCreateApiRequests: function (request) {
       var record = request.getRecords()[0]; // batch not currently supported!
       return gapi.client.calendar.events.insert(
-        this.toApiEvent(request.getJsonData(), record.get("allDay")),
+        this.toApiEvent(request.getJsonData(), record.get("allDay"))
       );
     },
 
@@ -200,8 +200,8 @@ Ext.define("Ext.google.data.EventsProxy", {
           gapi.client.calendar.events.move({
             destination: currCalendarId,
             calendarId: prevCalendarId,
-            eventId: eventId,
-          }),
+            eventId: eventId
+          })
         );
       }
 
@@ -228,8 +228,8 @@ Ext.define("Ext.google.data.EventsProxy", {
       // ['delete'] to make YUI happy
       return gapi.client.calendar.events["delete"]({
         calendarId: data.calendarId,
-        eventId: data.id,
+        eventId: data.id
       });
-    },
-  },
+    }
+  }
 });

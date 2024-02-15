@@ -52,7 +52,7 @@ Ext.define("Ext.fx.State", {
     "word-spacing": true,
     "z-index": true,
     zoom: true,
-    transform: true,
+    transform: true
   },
 
   constructor: function (data) {
@@ -97,7 +97,7 @@ Ext.define("Ext.fx.State", {
         rotateY: 0,
         rotateZ: 0,
         skewX: 0,
-        skewY: 0,
+        skewY: 0
       };
     }
 
@@ -253,5 +253,5 @@ Ext.define("Ext.fx.State", {
 
   getData: function () {
     return this.data;
-  },
+  }
 });

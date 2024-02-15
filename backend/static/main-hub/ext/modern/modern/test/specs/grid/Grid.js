@@ -3,7 +3,7 @@
 describe("Ext.grid.Grid", function () {
   var Model = Ext.define(null, {
     extend: "Ext.data.Model",
-    fields: ["f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9"],
+    fields: ["f1", "f2", "f3", "f4", "f5", "f6", "f7", "f8", "f9"]
   });
 
   var TestGrid = Ext.define(null, {
@@ -13,16 +13,16 @@ describe("Ext.grid.Grid", function () {
     $testRefresh: function () {
       var container = this.container;
       this.onContainerResize(container, {
-        height: container.element.getHeight(),
+        height: container.element.getHeight()
       });
-    },
+    }
   });
 
   var grid, store, colMap;
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -51,13 +51,13 @@ describe("Ext.grid.Grid", function () {
         f6: "f6" + i,
         f7: "f7" + i,
         f8: "f8" + i,
-        f9: "f9" + i,
+        f9: "f9" + i
       });
     }
 
     store = new Ext.data.Store({
       model: Model,
-      data: data,
+      data: data
     });
   }
 
@@ -79,32 +79,32 @@ describe("Ext.grid.Grid", function () {
           dataIndex: "f1",
           width: 100,
           text: "F1",
-          itemId: "colf1",
+          itemId: "colf1"
         },
         {
           dataIndex: "f2",
           width: 100,
           text: "F2",
-          itemId: "colf2",
+          itemId: "colf2"
         },
         {
           dataIndex: "f3",
           width: 100,
           text: "F3",
-          itemId: "colf3",
+          itemId: "colf3"
         },
         {
           dataIndex: "f4",
           width: 100,
           text: "F4",
-          itemId: "colf4",
+          itemId: "colf4"
         },
         {
           dataIndex: "f5",
           width: 100,
           text: "F5",
-          itemId: "colf5",
-        },
+          itemId: "colf5"
+        }
       ];
     }
 
@@ -120,10 +120,10 @@ describe("Ext.grid.Grid", function () {
           width: 600,
           height: 1200,
           store: store,
-          columns: columns,
+          columns: columns
         },
-        gridOptions,
-      ),
+        gridOptions
+      )
     );
     setColMap();
   }
@@ -205,7 +205,7 @@ describe("Ext.grid.Grid", function () {
     it("should be able to be configured with no columns", function () {
       expect(function () {
         makeGrid(null, null, null, {
-          preventColumns: true,
+          preventColumns: true
         });
       }).not.toThrow();
     });
@@ -221,7 +221,7 @@ describe("Ext.grid.Grid", function () {
 
           it("should be hidden if configured as hidden", function () {
             makeGrid(null, null, {
-              hideHeaders: true,
+              hideHeaders: true
             });
             renderWithRefresh();
             expect(grid.getHeaderContainer().getHeight()).toBe(0);
@@ -240,7 +240,7 @@ describe("Ext.grid.Grid", function () {
 
           it("should be able to show headers", function () {
             makeGrid(null, null, {
-              hideHeaders: true,
+              hideHeaders: true
             });
             renderWithRefresh();
             var ct = grid.getHeaderContainer();
@@ -253,8 +253,8 @@ describe("Ext.grid.Grid", function () {
             makeGrid(null, null, {
               hideHeaders: true,
               headerContainer: {
-                height: 100,
-              },
+                height: 100
+              }
             });
             renderWithRefresh();
             var ct = grid.getHeaderContainer();
@@ -266,8 +266,8 @@ describe("Ext.grid.Grid", function () {
           it("should restore a configured height when hiding", function () {
             makeGrid(null, null, {
               headerContainer: {
-                height: 100,
-              },
+                height: 100
+              }
             });
             renderWithRefresh();
             var ct = grid.getHeaderContainer();
@@ -285,19 +285,19 @@ describe("Ext.grid.Grid", function () {
           makeGrid(
             [
               {
-                width: 300,
+                width: 300
               },
               {
-                flex: 1,
+                flex: 1
               },
               {
-                width: 150,
-              },
+                width: 150
+              }
             ],
             null,
             {
-              hideHeaders: true,
-            },
+              hideHeaders: true
+            }
           );
           renderWithRefresh();
           expectSizes();
@@ -307,16 +307,16 @@ describe("Ext.grid.Grid", function () {
           makeGrid(
             [
               {
-                width: 100,
+                width: 100
               },
               {
-                flex: 1,
-              },
+                flex: 1
+              }
             ],
             null,
             {
-              hideHeaders: true,
-            },
+              hideHeaders: true
+            }
           );
           renderWithRefresh();
           expectSizes();
@@ -330,16 +330,16 @@ describe("Ext.grid.Grid", function () {
             [
               {
                 width: 100,
-                itemId: "colf1",
+                itemId: "colf1"
               },
               {
-                flex: 1,
-              },
+                flex: 1
+              }
             ],
             null,
             {
-              hideHeaders: true,
-            },
+              hideHeaders: true
+            }
           );
           renderWithRefresh();
           expectSizes();
@@ -351,26 +351,26 @@ describe("Ext.grid.Grid", function () {
           makeGrid(
             [
               {
-                width: 100,
+                width: 100
               },
               {
-                flex: 1,
+                flex: 1
               },
               {
                 width: 100,
                 itemId: "colf3",
-                hidden: true,
+                hidden: true
               },
               {
                 flex: 1,
                 itemId: "colf4",
-                hidden: true,
-              },
+                hidden: true
+              }
             ],
             null,
             {
-              hideHeaders: true,
-            },
+              hideHeaders: true
+            }
           );
           renderWithRefresh();
           expectSizes();
@@ -383,24 +383,24 @@ describe("Ext.grid.Grid", function () {
           makeGrid(
             [
               {
+                width: 100
+              },
+              {
+                flex: 1
+              },
+              {
                 width: 100,
+                itemId: "colf3"
               },
               {
                 flex: 1,
-              },
-              {
-                width: 100,
-                itemId: "colf3",
-              },
-              {
-                flex: 1,
-                itemId: "colf4",
-              },
+                itemId: "colf4"
+              }
             ],
             null,
             {
-              hideHeaders: true,
-            },
+              hideHeaders: true
+            }
           );
           renderWithRefresh();
           expectSizes();
@@ -413,15 +413,15 @@ describe("Ext.grid.Grid", function () {
           makeGrid([
             {
               flex: 1,
-              itemId: "colf1",
+              itemId: "colf1"
             },
             {
               width: 200,
-              itemId: "colf2",
+              itemId: "colf2"
             },
             {
-              flex: 1,
-            },
+              flex: 1
+            }
           ]);
           renderWithRefresh();
           expectSizes();
@@ -444,16 +444,16 @@ describe("Ext.grid.Grid", function () {
         makeGrid([
           {
             align: "left",
-            itemId: "colf1",
+            itemId: "colf1"
           },
           {
             align: "center",
-            itemId: "colf2",
+            itemId: "colf2"
           },
           {
             align: "right",
-            itemId: "colf3",
-          },
+            itemId: "colf3"
+          }
         ]);
         renderWithRefresh();
 
@@ -468,9 +468,9 @@ describe("Ext.grid.Grid", function () {
             align: "center",
             itemId: "colf1",
             cell: {
-              align: "right",
-            },
-          },
+              align: "right"
+            }
+          }
         ]);
         renderWithRefresh();
         expectAlignCls(colMap.colf1, "x-align-right");
@@ -483,8 +483,8 @@ describe("Ext.grid.Grid", function () {
           makeGrid([
             {
               itemId: "colf1",
-              resizable: true,
-            },
+              resizable: true
+            }
           ]);
           renderWithRefresh();
 
@@ -496,17 +496,17 @@ describe("Ext.grid.Grid", function () {
             [
               {
                 itemId: "colf1",
-                resizable: false,
-              },
+                resizable: false
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -518,17 +518,17 @@ describe("Ext.grid.Grid", function () {
             [
               {
                 itemId: "colf1",
-                resizable: true,
-              },
+                resizable: true
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -540,17 +540,17 @@ describe("Ext.grid.Grid", function () {
             [
               {
                 itemId: "colf1",
-                resizable: false,
-              },
+                resizable: false
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -566,17 +566,17 @@ describe("Ext.grid.Grid", function () {
             [
               {
                 itemId: "colf1",
-                resizable: true,
-              },
+                resizable: true
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -592,17 +592,17 @@ describe("Ext.grid.Grid", function () {
               {
                 itemId: "colf1",
                 resizable: true,
-                width: 100,
-              },
+                width: 100
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -622,17 +622,17 @@ describe("Ext.grid.Grid", function () {
               {
                 itemId: "colf1",
                 flex: 1,
-                resizable: true,
-              },
+                resizable: true
+              }
             ],
             null,
             {
               plugins: [
                 {
-                  type: "columnresizing",
-                },
-              ],
-            },
+                  type: "columnresizing"
+                }
+              ]
+            }
           );
           renderWithRefresh();
 
@@ -651,8 +651,8 @@ describe("Ext.grid.Grid", function () {
           var spy = jasmine.createSpy();
           makeGrid(null, null, {
             listeners: {
-              columnadd: spy,
-            },
+              columnadd: spy
+            }
           });
           renderWithRefresh();
           expect(spy).not.toHaveBeenCalled();
@@ -665,7 +665,7 @@ describe("Ext.grid.Grid", function () {
           makeGrid(null, null);
           grid.on("columnadd", spy);
           col = grid.addColumn({
-            dataIndex: "f9",
+            dataIndex: "f9"
           });
           expect(spy.callCount).toBe(1);
           expect(spy.mostRecentCall.args[0]).toBe(grid);
@@ -681,7 +681,7 @@ describe("Ext.grid.Grid", function () {
           renderWithRefresh();
           grid.on("columnadd", spy);
           col = grid.addColumn({
-            dataIndex: "f9",
+            dataIndex: "f9"
           });
           expect(spy.callCount).toBe(1);
           expect(spy.mostRecentCall.args[0]).toBe(grid);
@@ -700,7 +700,7 @@ describe("Ext.grid.Grid", function () {
           makeGrid(null, null);
           grid.on("columnadd", spy);
           col = grid.insertColumn(0, {
-            dataIndex: "f9",
+            dataIndex: "f9"
           });
           expect(spy.callCount).toBe(1);
           expect(spy.mostRecentCall.args[0]).toBe(grid);
@@ -716,7 +716,7 @@ describe("Ext.grid.Grid", function () {
           renderWithRefresh();
           grid.on("columnadd", spy);
           col = grid.insertColumn(0, {
-            dataIndex: "f9",
+            dataIndex: "f9"
           });
           expect(spy.callCount).toBe(1);
           expect(spy.mostRecentCall.args[0]).toBe(grid);
@@ -765,8 +765,8 @@ describe("Ext.grid.Grid", function () {
               "spec.CustomColumn",
               Ext.apply(cfg, {
                 extend: "Ext.grid.column.Column",
-                xtype: "customcolumn",
-              }),
+                xtype: "customcolumn"
+              })
             );
           }
 
@@ -776,26 +776,26 @@ describe("Ext.grid.Grid", function () {
 
           it("should not apply the defaultWidth if a width is specified", function () {
             defineIt({
-              width: 200,
+              width: 200
             });
             makeGrid([
               {
                 xtype: "customcolumn",
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBe(200);
           });
 
           it("should not apply the defaultWidth if a flex is specified", function () {
             defineIt({
-              flex: 1,
+              flex: 1
             });
             makeGrid([
               {
                 xtype: "customcolumn",
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBeNull();
           });
@@ -805,8 +805,8 @@ describe("Ext.grid.Grid", function () {
             makeGrid([
               {
                 xtype: "customcolumn",
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBe(100);
           });
@@ -817,8 +817,8 @@ describe("Ext.grid.Grid", function () {
             makeGrid([
               {
                 width: 200,
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBe(200);
           });
@@ -827,8 +827,8 @@ describe("Ext.grid.Grid", function () {
             makeGrid([
               {
                 flex: 1,
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBeNull();
           });
@@ -836,8 +836,8 @@ describe("Ext.grid.Grid", function () {
           it("should apply the defaultWidth if there is no width/flex", function () {
             makeGrid([
               {
-                itemId: "colf1",
-              },
+                itemId: "colf1"
+              }
             ]);
             expect(colMap.colf1.getWidth()).toBe(100);
           });
@@ -853,18 +853,18 @@ describe("Ext.grid.Grid", function () {
                   {
                     width: 100,
                     itemId: "colf1",
-                    dataIndex: "f1",
+                    dataIndex: "f1"
                   },
                   {
                     width: 200,
                     itemId: "colf2",
-                    dataIndex: "f2",
+                    dataIndex: "f2"
                   },
                   {
                     width: 350,
                     itemId: "colf3",
-                    dataIndex: "f3",
-                  },
+                    dataIndex: "f3"
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -877,18 +877,18 @@ describe("Ext.grid.Grid", function () {
                   {
                     flex: 1,
                     itemId: "colf1",
-                    dataIndex: "f1",
+                    dataIndex: "f1"
                   },
                   {
                     flex: 1,
                     itemId: "colf2",
-                    dataIndex: "f2",
+                    dataIndex: "f2"
                   },
                   {
                     flex: 2,
                     itemId: "colf3",
-                    dataIndex: "f3",
-                  },
+                    dataIndex: "f3"
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -901,18 +901,18 @@ describe("Ext.grid.Grid", function () {
                   {
                     width: 400,
                     itemId: "colf1",
-                    dataIndex: "f1",
+                    dataIndex: "f1"
                   },
                   {
                     flex: 1,
                     itemId: "colf2",
-                    dataIndex: "f2",
+                    dataIndex: "f2"
                   },
                   {
                     flex: 1,
                     itemId: "colf3",
-                    dataIndex: "f3",
-                  },
+                    dataIndex: "f3"
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -925,18 +925,18 @@ describe("Ext.grid.Grid", function () {
                 makeGrid(
                   [
                     {
-                      flex: 1,
+                      flex: 1
                     },
                     {
-                      width: 300,
-                    },
+                      width: 300
+                    }
                   ],
                   null,
                   {
                     listeners: {
-                      columnresize: spy,
-                    },
-                  },
+                      columnresize: spy
+                    }
+                  }
                 );
                 renderWithRefresh();
                 expect(spy).not.toHaveBeenCalled();
@@ -949,22 +949,22 @@ describe("Ext.grid.Grid", function () {
               makeGrid([
                 {
                   flex: 1,
-                  itemId: "colf1",
+                  itemId: "colf1"
                 },
                 {
                   width: 200,
-                  itemId: "colf2",
+                  itemId: "colf2"
                 },
                 {
                   flex: 1,
                   itemId: "colf3",
-                  hidden: true,
+                  hidden: true
                 },
                 {
                   width: 200,
                   itemId: "colf4",
-                  hidden: true,
-                },
+                  hidden: true
+                }
               ]);
               renderWithRefresh();
               expectSizes();
@@ -1007,28 +1007,28 @@ describe("Ext.grid.Grid", function () {
                 makeGrid(
                   [
                     {
-                      flex: 1,
+                      flex: 1
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
                       itemId: "colf3",
-                      hidden: true,
+                      hidden: true
                     },
                     {
                       width: 200,
                       itemId: "colf4",
-                      hidden: true,
-                    },
+                      hidden: true
+                    }
                   ],
                   null,
                   {
                     listeners: {
-                      columnresize: spy,
-                    },
-                  },
+                      columnresize: spy
+                    }
+                  }
                 );
                 renderWithRefresh();
                 expectSizes();
@@ -1044,16 +1044,16 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
                 grid.addColumn({
-                  width: 100,
+                  width: 100
                 });
                 expectSizes();
               });
@@ -1064,18 +1064,18 @@ describe("Ext.grid.Grid", function () {
 
                   makeGrid([
                     {
-                      width: 100,
+                      width: 100
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
 
                   grid.on("columnresize", spy);
                   grid.addColumn({
-                    width: 300,
+                    width: 300
                   });
                   expectSizes();
                   expect(spy).not.toHaveBeenCalled();
@@ -1087,25 +1087,25 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
 
                   grid.on("columnresize", spy);
                   grid.addColumn({
-                    width: 300,
+                    width: 300
                   });
                   expectSizes();
                   expect(spy.callCount).toBe(1);
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1115,16 +1115,16 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
                 grid.addColumn({
-                  flex: 1,
+                  flex: 1
                 });
                 expectSizes();
               });
@@ -1135,18 +1135,18 @@ describe("Ext.grid.Grid", function () {
 
                   makeGrid([
                     {
-                      width: 100,
+                      width: 100
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
 
                   grid.on("columnresize", spy);
                   grid.addColumn({
-                    flex: 1,
+                    flex: 1
                   });
                   expectSizes();
                   expect(spy).not.toHaveBeenCalled();
@@ -1158,25 +1158,25 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
 
                   grid.on("columnresize", spy);
                   grid.addColumn({
-                    flex: 1,
+                    flex: 1
                   });
                   expectSizes();
                   expect(spy.callCount).toBe(1);
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1188,15 +1188,15 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
-                    itemId: "colf2",
+                    itemId: "colf2"
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1211,11 +1211,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       width: 100,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1232,12 +1232,12 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       width: 200,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1249,7 +1249,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1260,14 +1260,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     flex: 1,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    width: 200,
+                    width: 200
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1281,15 +1281,15 @@ describe("Ext.grid.Grid", function () {
 
                   makeGrid([
                     {
-                      width: 100,
+                      width: 100
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1306,15 +1306,15 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1326,7 +1326,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf3);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf3.getComputedWidth(),
+                    colMap.colf3.getComputedWidth()
                   );
                 });
               });
@@ -1338,15 +1338,15 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
-                    itemId: "colf2",
+                    itemId: "colf2"
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1357,15 +1357,15 @@ describe("Ext.grid.Grid", function () {
               it("should hide the cells", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
-                    itemId: "colf2",
+                    itemId: "colf2"
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1384,11 +1384,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       width: 100,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1405,12 +1405,12 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       width: 200,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1422,7 +1422,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1433,14 +1433,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     flex: 1,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    width: 200,
+                    width: 200
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1452,14 +1452,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     flex: 1,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    width: 200,
+                    width: 200
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1478,15 +1478,15 @@ describe("Ext.grid.Grid", function () {
 
                   makeGrid([
                     {
-                      width: 100,
+                      width: 100
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1503,15 +1503,15 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1523,7 +1523,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf3);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf3.getComputedWidth(),
+                    colMap.colf3.getComputedWidth()
                   );
                 });
               });
@@ -1535,16 +1535,16 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
                     itemId: "colf2",
-                    hidden: true,
+                    hidden: true
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1555,16 +1555,16 @@ describe("Ext.grid.Grid", function () {
               it("should show the cells", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
                     itemId: "colf2",
-                    hidden: true,
+                    hidden: true
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1586,11 +1586,11 @@ describe("Ext.grid.Grid", function () {
                     {
                       width: 100,
                       itemId: "colf1",
-                      hidden: true,
+                      hidden: true
                     },
                     {
-                      width: 200,
-                    },
+                      width: 200
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1607,13 +1607,13 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       width: 200,
                       itemId: "colf2",
-                      hidden: true,
-                    },
+                      hidden: true
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1625,7 +1625,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1637,14 +1637,14 @@ describe("Ext.grid.Grid", function () {
                   {
                     flex: 1,
                     itemId: "colf1",
-                    hidden: true,
+                    hidden: true
                   },
                   {
-                    width: 200,
+                    width: 200
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1657,14 +1657,14 @@ describe("Ext.grid.Grid", function () {
                   {
                     flex: 1,
                     itemId: "colf1",
-                    hidden: true,
+                    hidden: true
                   },
                   {
-                    width: 200,
+                    width: 200
                   },
                   {
-                    flex: 1,
-                  },
+                    flex: 1
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1684,16 +1684,16 @@ describe("Ext.grid.Grid", function () {
 
                   makeGrid([
                     {
-                      width: 100,
+                      width: 100
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
                       itemId: "colf3",
-                      hidden: true,
-                    },
+                      hidden: true
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1711,15 +1711,15 @@ describe("Ext.grid.Grid", function () {
                     {
                       flex: 1,
                       itemId: "colf1",
-                      hidden: true,
+                      hidden: true
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1731,7 +1731,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf3);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf3.getComputedWidth(),
+                    colMap.colf3.getComputedWidth()
                   );
                 });
               });
@@ -1743,12 +1743,12 @@ describe("Ext.grid.Grid", function () {
               it("should size cells correctly", function () {
                 makeGrid([
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
                     width: 200,
-                    itemId: "colf2",
-                  },
+                    itemId: "colf2"
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1761,12 +1761,12 @@ describe("Ext.grid.Grid", function () {
                   var spy = jasmine.createSpy();
                   makeGrid([
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       width: 200,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1777,7 +1777,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf2);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf2.getComputedWidth(),
+                    colMap.colf2.getComputedWidth()
                   );
                 });
 
@@ -1786,12 +1786,12 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       width: 200,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1803,13 +1803,13 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.calls[0].args[0]).toBe(grid);
                   expect(spy.calls[0].args[1]).toBe(colMap.colf2);
                   expect(spy.calls[0].args[2]).toBe(
-                    colMap.colf2.getComputedWidth(),
+                    colMap.colf2.getComputedWidth()
                   );
 
                   expect(spy.calls[1].args[0]).toBe(grid);
                   expect(spy.calls[1].args[1]).toBe(colMap.colf1);
                   expect(spy.calls[1].args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
               });
@@ -1820,14 +1820,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     flex: 1,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1840,15 +1840,15 @@ describe("Ext.grid.Grid", function () {
                   var spy = jasmine.createSpy();
                   makeGrid([
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
-                      width: 200,
+                      width: 200
                     },
                     {
                       flex: 1,
-                      itemId: "colf3",
-                    },
+                      itemId: "colf3"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1863,8 +1863,8 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
-                    },
+                      itemId: "colf1"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1879,12 +1879,12 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       flex: 2,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1896,13 +1896,13 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.calls[0].args[0]).toBe(grid);
                   expect(spy.calls[0].args[1]).toBe(colMap.colf1);
                   expect(spy.calls[0].args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
 
                   expect(spy.calls[1].args[0]).toBe(grid);
                   expect(spy.calls[1].args[1]).toBe(colMap.colf2);
                   expect(spy.calls[1].args[2]).toBe(
-                    colMap.colf2.getComputedWidth(),
+                    colMap.colf2.getComputedWidth()
                   );
                 });
               });
@@ -1913,14 +1913,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     width: 100,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -1935,11 +1935,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       width: 100,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 400,
-                    },
+                      width: 400
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1950,7 +1950,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                 });
 
@@ -1959,11 +1959,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       width: 300,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 300,
-                    },
+                      width: 300
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1978,12 +1978,12 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       width: 200,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       flex: 1,
-                      itemId: "colf2",
-                    },
+                      itemId: "colf2"
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -1995,13 +1995,13 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.calls[0].args[0]).toBe(grid);
                   expect(spy.calls[0].args[1]).toBe(colMap.colf1);
                   expect(spy.calls[0].args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
 
                   expect(spy.calls[1].args[0]).toBe(grid);
                   expect(spy.calls[1].args[1]).toBe(colMap.colf2);
                   expect(spy.calls[1].args[2]).toBe(
-                    colMap.colf2.getComputedWidth(),
+                    colMap.colf2.getComputedWidth()
                   );
                 });
               });
@@ -2012,14 +2012,14 @@ describe("Ext.grid.Grid", function () {
                 makeGrid([
                   {
                     flex: 1,
-                    itemId: "colf1",
+                    itemId: "colf1"
                   },
                   {
-                    flex: 1,
+                    flex: 1
                   },
                   {
-                    width: 200,
-                  },
+                    width: 200
+                  }
                 ]);
                 renderWithRefresh();
                 expectSizes();
@@ -2035,11 +2035,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 400,
-                    },
+                      width: 400
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -2050,7 +2050,7 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.mostRecentCall.args[0]).toBe(grid);
                   expect(spy.mostRecentCall.args[1]).toBe(colMap.colf1);
                   expect(spy.mostRecentCall.args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
                   expect(colMap.colf1.el.getWidth()).toBe(100);
                 });
@@ -2060,11 +2060,11 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
-                      width: 300,
-                    },
+                      width: 300
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -2079,15 +2079,15 @@ describe("Ext.grid.Grid", function () {
                   makeGrid([
                     {
                       flex: 1,
-                      itemId: "colf1",
+                      itemId: "colf1"
                     },
                     {
                       flex: 1,
-                      itemId: "colf2",
+                      itemId: "colf2"
                     },
                     {
-                      width: 100,
-                    },
+                      width: 100
+                    }
                   ]);
                   renderWithRefresh();
                   expectSizes();
@@ -2100,13 +2100,13 @@ describe("Ext.grid.Grid", function () {
                   expect(spy.calls[0].args[0]).toBe(grid);
                   expect(spy.calls[0].args[1]).toBe(colMap.colf1);
                   expect(spy.calls[0].args[2]).toBe(
-                    colMap.colf1.getComputedWidth(),
+                    colMap.colf1.getComputedWidth()
                   );
 
                   expect(spy.calls[1].args[0]).toBe(grid);
                   expect(spy.calls[1].args[1]).toBe(colMap.colf2);
                   expect(spy.calls[1].args[2]).toBe(
-                    colMap.colf2.getComputedWidth(),
+                    colMap.colf2.getComputedWidth()
                   );
                 });
               });
@@ -2125,15 +2125,15 @@ describe("Ext.grid.Grid", function () {
             dataIndex: "f1",
             text: "F1",
             width: 100,
-            itemId: "colf1",
+            itemId: "colf1"
           },
           {
             dataIndex: "f2",
             text: "F2",
             width: 100,
             itemId: "colf2",
-            hidden: true,
-          },
+            hidden: true
+          }
         ];
       });
 
@@ -2146,8 +2146,8 @@ describe("Ext.grid.Grid", function () {
           var spy = jasmine.createSpy();
           makeGrid(colDefaults, null, {
             listeners: {
-              columnshow: spy,
-            },
+              columnshow: spy
+            }
           });
           renderWithRefresh();
           expect(spy).not.toHaveBeenCalled();
@@ -2191,15 +2191,15 @@ describe("Ext.grid.Grid", function () {
             dataIndex: "f1",
             text: "F1",
             width: 100,
-            itemId: "colf1",
+            itemId: "colf1"
           },
           {
             dataIndex: "f2",
             text: "F2",
             width: 100,
             itemId: "colf2",
-            hidden: true,
-          },
+            hidden: true
+          }
         ];
       });
 
@@ -2212,8 +2212,8 @@ describe("Ext.grid.Grid", function () {
           var spy = jasmine.createSpy();
           makeGrid(colDefaults, null, {
             listeners: {
-              columnhide: spy,
-            },
+              columnhide: spy
+            }
           });
           renderWithRefresh();
           expect(spy).not.toHaveBeenCalled();
@@ -2299,7 +2299,7 @@ describe("Ext.grid.Grid", function () {
     function completeWithData(theData) {
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.encode(theData),
+        responseText: Ext.encode(theData)
       });
     }
 
@@ -2311,7 +2311,7 @@ describe("Ext.grid.Grid", function () {
         recs.push({
           name: "Name " + i,
           email: "dev_" + i + "@sencha.com",
-          phone: "1-717-" + i,
+          phone: "1-717-" + i
         });
       }
 
@@ -2329,27 +2329,27 @@ describe("Ext.grid.Grid", function () {
                   {
                     name: "Lisa",
                     email: "lisa@simpsons.com",
-                    phone: "555-111-1224",
+                    phone: "555-111-1224"
                   },
                   {
                     name: "Bart",
                     email: "bart@simpsons.com",
-                    phone: "555-222-1234",
+                    phone: "555-222-1234"
                   },
                   {
                     name: "Homer",
                     email: "homer@simpsons.com",
-                    phone: "555-222-1244",
+                    phone: "555-222-1244"
                   },
                   {
                     name: "Marge",
                     email: "marge@simpsons.com",
-                    phone: "555-222-1254",
-                  },
-                ],
+                    phone: "555-222-1254"
+                  }
+                ]
               },
-              storeCfg,
-            ),
+              storeCfg
+            )
           );
         } else {
           store = storeCfg;
@@ -2366,14 +2366,14 @@ describe("Ext.grid.Grid", function () {
             columns: [
               { text: "Name", dataIndex: "name", width: 100 },
               { text: "Email", dataIndex: "email", width: 100 },
-              { text: "Phone", dataIndex: "phone", width: 100 },
+              { text: "Phone", dataIndex: "phone", width: 100 }
             ],
             height: 200,
             width: 400,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
 
       waits(100);
@@ -2396,10 +2396,10 @@ describe("Ext.grid.Grid", function () {
               columns: [
                 { text: "Name", dataIndex: "name", width: 100 },
                 { text: "Email", dataIndex: "email", width: 100 },
-                { text: "Phone", dataIndex: "phone", width: 100 },
-              ],
-            },
-          ],
+                { text: "Phone", dataIndex: "phone", width: 100 }
+              ]
+            }
+          ]
         });
 
         runs(function () {
@@ -2408,12 +2408,12 @@ describe("Ext.grid.Grid", function () {
 
           // HeaderContainer has one header group
           expect(
-            grid.getHeaderContainer().query(">gridheadergroup").length,
+            grid.getHeaderContainer().query(">gridheadergroup").length
           ).toBe(1);
 
           // And there are leaf subcolumns
           expect(
-            grid.getHeaderContainer().query(">gridheadergroup>column").length,
+            grid.getHeaderContainer().query(">gridheadergroup>column").length
           ).toBe(3);
         });
       });
@@ -2424,16 +2424,16 @@ describe("Ext.grid.Grid", function () {
             {
               text: "Name",
               dataIndex: "name",
-              width: 100,
+              width: 100
             },
             {
               text: "Contact Details",
               columns: [
                 { text: "Email", dataIndex: "email", width: 100 },
-                { text: "Phone", dataIndex: "phone", width: 100 },
-              ],
-            },
-          ],
+                { text: "Phone", dataIndex: "phone", width: 100 }
+              ]
+            }
+          ]
         });
 
         runs(function () {

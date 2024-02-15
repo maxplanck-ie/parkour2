@@ -142,7 +142,7 @@ Ext.define("Ext.menu.CheckItem", {
     me.callParent();
     Ext.apply(me.renderData, {
       checkboxCls: me.checkboxCls,
-      showCheckbox: me.showCheckbox,
+      showCheckbox: me.showCheckbox
     });
 
     ariaAttr = me.ariaRenderAttributes || (me.ariaRenderAttributes = {});
@@ -252,7 +252,7 @@ Ext.define("Ext.menu.CheckItem", {
     if (ariaDom && me.menu) {
       ariaDom.setAttribute(
         "aria-label",
-        Ext.String.formatEncode(me.submenuText, text),
+        Ext.String.formatEncode(me.submenuText, text)
       );
     }
   },
@@ -298,5 +298,5 @@ Ext.define("Ext.menu.CheckItem", {
         me.fireEvent("checkchange", me, checked);
       }
     }
-  },
+  }
 });

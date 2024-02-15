@@ -29,7 +29,7 @@ Ext.define("Ext.parse.Symbol", {
     var me = this,
       ret = {
         at: me.at,
-        arity: me.arity,
+        arity: me.arity
       },
       i;
 
@@ -100,5 +100,5 @@ Ext.define("Ext.parse.Symbol", {
         me.nud = nud;
       }
     }
-  },
+  }
 });

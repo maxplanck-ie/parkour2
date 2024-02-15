@@ -34,7 +34,7 @@ Ext.define("Ext.picker.Date", {
     "Ext.util.ClickRepeater",
     "Ext.util.KeyNav",
     "Ext.fx.Manager",
-    "Ext.picker.Month",
+    "Ext.picker.Month"
   ],
   alias: "widget.datepicker",
   alternateClassName: "Ext.DatePicker",
@@ -321,7 +321,7 @@ Ext.define("Ext.picker.Date", {
     "prevEl",
     "nextEl",
     "middleBtnEl",
-    "footerEl",
+    "footerEl"
   ],
 
   border: true,
@@ -392,16 +392,16 @@ Ext.define("Ext.picker.Date", {
       renderTodayBtn: function (values, out) {
         Ext.DomHelper.generateMarkup(
           values.$comp.todayBtn.getRenderTree(),
-          out,
+          out
         );
       },
       renderMonthBtn: function (values, out) {
         Ext.DomHelper.generateMarkup(
           values.$comp.monthBtn.getRenderTree(),
-          out,
+          out
         );
-      },
-    },
+      }
+    }
   ],
 
   // Default value used to initialise each date in the DatePicker.
@@ -491,8 +491,8 @@ Ext.define("Ext.picker.Date", {
       listeners: {
         click: me.doShowMonthPicker,
         arrowclick: me.doShowMonthPicker,
-        scope: me,
-      },
+        scope: me
+      }
     });
 
     if (me.showToday) {
@@ -506,14 +506,14 @@ Ext.define("Ext.picker.Date", {
         tabIndex: -1,
         ariaRole: "presentation",
         handler: me.selectToday,
-        scope: me,
+        scope: me
       });
     }
 
     me.callParent();
 
     Ext.applyIf(me, {
-      renderData: {},
+      renderData: {}
     });
 
     Ext.apply(me.renderData, {
@@ -526,7 +526,7 @@ Ext.define("Ext.picker.Date", {
       ariaMaxText: encode(me.ariaMaxText),
       ariaDisabledDaysText: encode(me.ariaDisabledDaysText),
       ariaDisabledDatesText: encode(me.ariaDisabledDatesText),
-      days: days,
+      days: days
     });
 
     me.protoEl.unselectable();
@@ -537,7 +537,7 @@ Ext.define("Ext.picker.Date", {
       padding = me.parseBox(me.padding),
       widthEl = Ext.getBody().createChild({
         cls: me.baseCls + " " + me.borderBoxCls,
-        style: "position:absolute;top:-1000px;left:-1000px;",
+        style: "position:absolute;top:-1000px;left:-1000px;"
       });
 
     me.self.prototype.width = widthEl.getWidth() + padding.left + padding.right;
@@ -564,8 +564,8 @@ Ext.define("Ext.picker.Date", {
       mousewheel: me.handleMouseWheel,
       click: {
         fn: me.handleDateClick,
-        delegate: dateCellSelector,
-      },
+        delegate: dateCellSelector
+      }
     });
   },
 
@@ -591,13 +591,13 @@ Ext.define("Ext.picker.Date", {
     me.prevRepeater = new Ext.util.ClickRepeater(me.prevEl, {
       handler: me.showPrevMonth,
       scope: me,
-      mousedownStopEvent: true,
+      mousedownStopEvent: true
     });
 
     me.nextRepeater = new Ext.util.ClickRepeater(me.nextEl, {
       handler: me.showNextMonth,
       scope: me,
-      mousedownStopEvent: true,
+      mousedownStopEvent: true
     });
 
     me.keyNav = new Ext.util.KeyNav(
@@ -728,10 +728,10 @@ Ext.define("Ext.picker.Date", {
 
             // Space key causes scrolling, too :(
             e.preventDefault();
-          },
+          }
         },
-        me.keyNavConfig,
-      ),
+        me.keyNavConfig
+      )
     );
 
     if (me.disabled) {
@@ -970,7 +970,7 @@ Ext.define("Ext.picker.Date", {
         duration: 200,
         callback: function () {
           picker.setVisible(!isHide);
-        },
+        }
       };
 
     if (isHide) {
@@ -1080,8 +1080,8 @@ Ext.define("Ext.picker.Date", {
           cancelclick: me.onCancelClick,
           okclick: me.onOkClick,
           yeardblclick: me.onOkClick,
-          monthdblclick: me.onOkClick,
-        },
+          monthdblclick: me.onOkClick
+        }
       });
       if (!me.disableAnim) {
         // hide the element if we're animating to prevent an initial flicker
@@ -1327,7 +1327,7 @@ Ext.define("Ext.picker.Date", {
       previousMonth.getFullYear(),
       previousMonth.getMonth(),
       prevStart,
-      me.initHour,
+      me.initHour
     );
 
     if (me.showToday) {
@@ -1361,7 +1361,7 @@ Ext.define("Ext.picker.Date", {
 
       cell.setAttribute(
         "aria-label",
-        eDate.format(current, ariaTitleDateFormat),
+        eDate.format(current, ariaTitleDateFormat)
       );
 
       // Here and below we can't use title attribute instead of data-qtip
@@ -1476,7 +1476,7 @@ Ext.define("Ext.picker.Date", {
         me.nextRepeater,
         me.prevRepeater,
         me.todayBtn,
-        me.todayElSpan,
+        me.todayElSpan
       );
     }
 
@@ -1519,6 +1519,6 @@ Ext.define("Ext.picker.Date", {
       if (doButton && todayBtn) {
         todayBtn.setDisabled(me.todayDisabled || disabled);
       }
-    },
-  },
+    }
+  }
 });

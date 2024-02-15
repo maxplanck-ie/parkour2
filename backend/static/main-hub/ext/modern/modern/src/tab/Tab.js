@@ -50,7 +50,7 @@ Ext.define(
        * The title of the card that this tab is bound to.
        * @accessor
        */
-      title: "&nbsp;",
+      title: "&nbsp;"
     },
 
     updateIconCls: function (newCls, oldCls) {
@@ -90,7 +90,7 @@ Ext.define(
         this.element.removeCls(activeCls);
         this.fireEvent("deactivate", this);
       }
-    },
+    }
   },
   function () {
     this.override({
@@ -100,7 +100,7 @@ Ext.define(
 
       deactivate: function () {
         this.setActive(false);
-      },
+      }
     });
-  },
+  }
 );

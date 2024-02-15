@@ -348,7 +348,7 @@ Ext.define("Ext.tab.Panel", {
      * is docked horizontally, or the width of the widest tab when the tabBar is
      * docked vertically.
      */
-    tabStretchMax: true,
+    tabStretchMax: true
   },
 
   /**
@@ -425,7 +425,7 @@ Ext.define("Ext.tab.Panel", {
     top: 0,
     right: 1,
     bottom: 0,
-    left: 2,
+    left: 2
   },
 
   /**
@@ -462,10 +462,10 @@ Ext.define("Ext.tab.Panel", {
           owner: me,
           deferredRender: me.deferredRender,
           itemCls: me.itemCls,
-          activeItem: activeTab,
+          activeItem: activeTab
         },
-        me.layout,
-      ),
+        me.layout
+      )
     );
 
     if (tabBarHeaderPosition != null) {
@@ -624,10 +624,10 @@ Ext.define("Ext.tab.Panel", {
           vertical: dock === "left" || dock === "right",
           plain: me.plain,
           tabStretchMax: me.getTabStretchMax(),
-          tabPanel: me,
+          tabPanel: me
         },
-        tabBar,
-      ),
+        tabBar
+      )
     );
   },
 
@@ -680,7 +680,7 @@ Ext.define("Ext.tab.Panel", {
         tooltip: item.tooltip,
         tabBar: tabBar,
         tabPosition: tabBar.dock,
-        rotation: tabBar.getTabRotation(),
+        rotation: tabBar.getTabRotation()
       };
 
     if (item.closeText !== undefined) {
@@ -713,7 +713,7 @@ Ext.define("Ext.tab.Panel", {
       iconchange: me.onItemIconChange,
       iconclschange: me.onItemIconClsChange,
       glyphchange: me.onItemGlyphChange,
-      titlechange: me.onItemTitleChange,
+      titlechange: me.onItemTitleChange
     });
 
     if (item.isPanel) {
@@ -835,7 +835,7 @@ Ext.define("Ext.tab.Panel", {
       iconchange: me.onItemIconChange,
       iconclschange: me.onItemIconClsChange,
       glyphchange: me.onItemGlyphChange,
-      titlechange: me.onItemTitleChange,
+      titlechange: me.onItemTitleChange
     });
 
     if (item.tab && !me.destroying && item.tab.ownerCt === me.tabBar) {
@@ -883,7 +883,7 @@ Ext.define("Ext.tab.Panel", {
       else if (
         item.tab &&
         (toActivate = me.tabBar.items.indexOf(
-          me.tabBar.findNextActivatable(item.tab),
+          me.tabBar.findNextActivatable(item.tab)
         )) !== -1
       ) {
         me.setActiveTab(toActivate);
@@ -896,6 +896,6 @@ Ext.define("Ext.tab.Panel", {
         delete item.tab.card;
         delete item.tab;
       }
-    },
-  },
+    }
+  }
 });

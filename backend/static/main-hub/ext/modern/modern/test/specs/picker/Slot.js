@@ -24,10 +24,10 @@ describe("Ext.picker.Slot", function () {
               data.push({ text: i, value: i });
             }
             return data;
-          })(),
-        },
+          })()
+        }
       ],
-      value: value ? value : null,
+      value: value ? value : null
     });
     slot = picker.getAt(0);
     viewport.add(picker);
@@ -61,7 +61,7 @@ describe("Ext.picker.Slot", function () {
           return scrollComplete;
         },
         "slot to scroll selection into view",
-        800,
+        800
       );
       runs(function () {
         expect(spy).toHaveBeenCalled();
@@ -85,7 +85,7 @@ describe("Ext.picker.Slot", function () {
           return scrollComplete;
         },
         "slot to scroll selection into view",
-        800,
+        800
       );
       runs(function () {
         bar = picker.bar;
@@ -115,7 +115,7 @@ describe("Ext.picker.Slot", function () {
           return scrollComplete;
         },
         "slot to scroll selection into view",
-        800,
+        800
       );
       runs(function () {
         scrollComplete = false;
@@ -129,7 +129,7 @@ describe("Ext.picker.Slot", function () {
           return scrollComplete;
         },
         "scroll to top of scrollable area",
-        800,
+        800
       );
       runs(function () {
         scrollComplete = false;
@@ -147,7 +147,7 @@ describe("Ext.picker.Slot", function () {
           return scrollComplete;
         },
         "slot to scroll selection into view",
-        800,
+        800
       );
       runs(function () {
         // at this point, the original selection should be scrolled into view, regardless of the previous scroll pos

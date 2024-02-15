@@ -28,5 +28,5 @@ Ext.define("Ext.util.TaskManager", {
 
   alternateClassName: ["Ext.TaskManager"],
 
-  singleton: true,
+  singleton: true
 });

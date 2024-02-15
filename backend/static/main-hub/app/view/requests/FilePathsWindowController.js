@@ -5,9 +5,9 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   config: {
     control: {
       "#": {
-        afterrender: "onAfterRender",
-      },
-    },
+        afterrender: "onAfterRender"
+      }
+    }
   },
 
   onAfterRender: function (wnd) {
@@ -29,8 +29,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 borderRight: "1px solid #d4d4d4",
                 width: "30%",
                 display: "inline-block",
-                wordWrap: "break-word",
-              },
+                wordWrap: "break-word"
+              }
             },
             {
               xtype: "label",
@@ -41,7 +41,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 display: "inline-block",
                 width: "60%",
                 wordWrap: "break-word",
-                cursor: "copy",
+                cursor: "copy"
               },
               listeners: {
                 render: function (label) {
@@ -52,25 +52,25 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                     Ext.tip.QuickTipManager.register({
                       target: label.getEl(),
                       text: "Click to copy",
-                      showDelay: 600,
+                      showDelay: 600
                     });
                   });
                   label.getEl().on("mouseout", function () {
                     Ext.tip.QuickTipManager.unregister(label.getEl());
                   });
-                },
-              },
-            },
+                }
+              }
+            }
           ],
           style: {
             width: "100%",
             borderTop: "1px solid #d4d4d4",
             borderBottom: "1px solid #d4d4d4",
-            marginBottom: "5px",
-          },
+            marginBottom: "5px"
+          }
         });
       }
     }
     requestNameTextarea.setText(wnd.record.data.name);
-  },
+  }
 });

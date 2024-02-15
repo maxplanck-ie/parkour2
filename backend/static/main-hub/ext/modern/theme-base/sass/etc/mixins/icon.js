@@ -32,6 +32,6 @@ exports.init = function (runtime) {
       }
 
       return new Fashion.List(newItems);
-    },
+    }
   });
 };

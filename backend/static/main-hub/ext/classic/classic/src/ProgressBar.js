@@ -37,7 +37,7 @@ Ext.define("Ext.ProgressBar", {
     "Ext.Template",
     "Ext.CompositeElement",
     "Ext.TaskManager",
-    "Ext.layout.component.ProgressBar",
+    "Ext.layout.component.ProgressBar"
   ],
 
   uses: ["Ext.fx.Anim"],
@@ -90,7 +90,7 @@ Ext.define("Ext.ProgressBar", {
     '<div role="presentation">{text}</div>',
     "</div>",
     "</tpl>",
-    "</div>",
+    "</div>"
   ],
 
   componentLayout: "progressbar",
@@ -102,7 +102,7 @@ Ext.define("Ext.ProgressBar", {
   autoEl: {
     "aria-valuemin": "0",
     "aria-valuenow": "0",
-    "aria-valuemax": "100",
+    "aria-valuemax": "100"
   },
 
   /**
@@ -123,7 +123,7 @@ Ext.define("Ext.ProgressBar", {
     return Ext.apply(data, {
       internalText: !me.hasOwnProperty("textEl"),
       text: me.text || Math.round(value * 100) + "%",
-      percentage: value * 100,
+      percentage: value * 100
     });
   },
 
@@ -195,8 +195,8 @@ Ext.define("Ext.ProgressBar", {
       me.updateText(
         textTpl.apply({
           value: value,
-          percent: value * 100,
-        }),
+          percent: value * 100
+        })
       );
     } else if (!me.text && me.autoText !== false) {
       me.autoText = true;
@@ -216,14 +216,14 @@ Ext.define("Ext.ProgressBar", {
           Ext.apply(
             {
               from: {
-                width: oldValue * 100 + "%",
+                width: oldValue * 100 + "%"
               },
               to: {
-                width: value * 100 + "%",
-              },
+                width: value * 100 + "%"
+              }
             },
-            me.animate,
-          ),
+            me.animate
+          )
         );
       } else {
         me.bar.setStyle("width", value * 100 + "%");
@@ -346,7 +346,7 @@ Ext.define("Ext.ProgressBar", {
           me.updateProgress(
             (((i + inc) % inc) + 1) * (100 / inc) * 0.01,
             null,
-            o.animate,
+            o.animate
           );
         },
         interval: o.interval || 1000,
@@ -357,7 +357,7 @@ Ext.define("Ext.ProgressBar", {
           }
           me.reset();
         },
-        scope: scope,
+        scope: scope
       });
     }
     return me;
@@ -426,5 +426,5 @@ Ext.define("Ext.ProgressBar", {
     }
 
     me.callParent();
-  },
+  }
 });

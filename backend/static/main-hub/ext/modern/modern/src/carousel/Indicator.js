@@ -13,7 +13,7 @@ Ext.define("Ext.carousel.Indicator", {
      */
     baseCls: Ext.baseCSSPrefix + "carousel-indicator",
 
-    direction: "horizontal",
+    direction: "horizontal"
   },
 
   /**
@@ -35,7 +35,7 @@ Ext.define("Ext.carousel.Indicator", {
 
     this.element.on({
       tap: "onTap",
-      scope: this,
+      scope: this
     });
   },
 
@@ -56,8 +56,8 @@ Ext.define("Ext.carousel.Indicator", {
   addIndicator: function () {
     this.indicators.push(
       this.element.createChild({
-        tag: "span",
-      }),
+        tag: "span"
+      })
     );
   },
 
@@ -123,5 +123,5 @@ Ext.define("Ext.carousel.Indicator", {
     indicators.length = 0;
 
     this.callParent();
-  },
+  }
 });

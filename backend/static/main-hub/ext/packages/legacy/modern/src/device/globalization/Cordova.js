@@ -20,7 +20,7 @@ Ext.define("Ext.device.globalization.Cordova", {
       config.date,
       config.success,
       config.error,
-      config,
+      config
     );
   },
   stringToDate: function (config) {
@@ -29,7 +29,7 @@ Ext.define("Ext.device.globalization.Cordova", {
       config.dateString,
       config.success,
       config.error,
-      config,
+      config
     );
   },
   getDatePattern: function (config) {
@@ -37,7 +37,7 @@ Ext.define("Ext.device.globalization.Cordova", {
     navigator.globalization.getDatePattern(
       config.success,
       config.error,
-      config,
+      config
     );
   },
   getDateNames: function (config) {
@@ -50,7 +50,7 @@ Ext.define("Ext.device.globalization.Cordova", {
       config.date,
       config.success,
       config.error,
-      config,
+      config
     );
   },
   getFirstDayOfWeek: function (config) {
@@ -63,7 +63,7 @@ Ext.define("Ext.device.globalization.Cordova", {
       config.number,
       config.success,
       config.error,
-      config,
+      config
     );
   },
   stringToNumber: function (config) {
@@ -72,7 +72,7 @@ Ext.define("Ext.device.globalization.Cordova", {
       config.string,
       config.success,
       config.error,
-      config,
+      config
     );
   },
   getNumberPattern: function (config) {
@@ -80,7 +80,7 @@ Ext.define("Ext.device.globalization.Cordova", {
     navigator.globalization.getNumberPattern(
       config.success,
       config.error,
-      config,
+      config
     );
   },
   getCurrencyPattern: function (config) {
@@ -88,7 +88,7 @@ Ext.define("Ext.device.globalization.Cordova", {
     navigator.globalization.getCurrencyPattern(
       config.currencyCode,
       config.success,
-      config.error,
+      config.error
     );
-  },
+  }
 });

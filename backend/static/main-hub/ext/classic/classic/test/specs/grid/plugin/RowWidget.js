@@ -12,7 +12,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.31,
         0.49,
         "9/1 12:00am",
-        "Services",
+        "Services"
       ],
       ["AT&T Inc.", 31.61, -0.48, -1.54, "9/1 12:00am", "Services"],
       ["Boeing Co.", 75.43, 0.53, 0.71, "9/1 12:00am", "Manufacturing"],
@@ -24,7 +24,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.51,
         1.28,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       ["Exxon Mobil Corp", 68.1, -0.43, -0.64, "9/1 12:00am", "Manufacturing"],
       [
@@ -33,7 +33,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         -0.08,
         -0.23,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "General Motors Corporation",
@@ -41,7 +41,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         1.09,
         3.74,
         "9/1 12:00am",
-        "Automotive",
+        "Automotive"
       ],
       ["Hewlett-Packard Co.", 36.53, -0.03, -0.08, "9/1 12:00am", "Computer"],
       ["Honeywell Intl Inc", 38.77, 0.05, 0.13, "9/1 12:00am", "Manufacturing"],
@@ -52,7 +52,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.44,
         0.54,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Johnson & Johnson", 64.72, 0.06, 0.09, "9/1 12:00am", "Medical"],
       ["JP Morgan & Chase & Co", 45.73, 0.07, 0.15, "9/1 12:00am", "Finance"],
@@ -68,7 +68,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.01,
         0.02,
         "9/1 12:00am",
-        "Manufacturing",
+        "Manufacturing"
       ],
       [
         "United Technologies Corporation",
@@ -76,7 +76,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.55,
         0.88,
         "9/1 12:00am",
-        "Computer",
+        "Computer"
       ],
       ["Verizon Communications", 35.57, 0.39, 1.11, "9/1 12:00am", "Services"],
       ["Wal-Mart Stores, Inc.", 45.45, 0.73, 1.63, "9/1 12:00am", "Retail"],
@@ -86,8 +86,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
         0.24,
         0.81,
         "9/1 12:00am",
-        "Services",
-      ],
+        "Services"
+      ]
     ],
     store,
     expander,
@@ -116,7 +116,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
       fields: [
         {
-          name: "id",
+          name: "id"
         },
         { name: "company" },
         { name: "price", type: "float" },
@@ -140,9 +140,9 @@ describe("Ext.grid.plugin.RowWidget", function () {
             }
 
             return 0;
-          },
-        },
-      ],
+          }
+        }
+      ]
     });
     Ext.define("spec.RowWidgetOrder", {
       extend: "Ext.data.Model",
@@ -159,20 +159,20 @@ describe("Ext.grid.plugin.RowWidget", function () {
             parent: "spec.RowWidgetCompany",
             inverse: {
               role: "orders",
-              autoLoad: false,
-            },
-          },
+              autoLoad: false
+            }
+          }
         },
         { name: "productCode" },
         { name: "quantity", type: "number" },
         { name: "date", type: "date", dateFormat: "Y-m-d" },
-        { name: "shipped", type: "boolean" },
+        { name: "shipped", type: "boolean" }
       ],
 
       proxy: {
         type: "memory",
         reader: {
-          type: "json",
+          type: "json"
         },
         data: [
           {
@@ -181,7 +181,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "4ada2f18-f47f-4de0-80bd-9f7985288066",
             quantity: 38,
             date: "2015-10-08",
-            shipped: true,
+            shipped: true
           },
           {
             id: 2,
@@ -189,7 +189,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "ae571587-9914-4d39-8b61-e3a5d74fe374",
             quantity: 21,
             date: "2015-10-04",
-            shipped: false,
+            shipped: false
           },
           {
             id: 3,
@@ -197,7 +197,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "c20bb4e1-7403-4960-b8e0-73cf3164fb6a",
             quantity: 51,
             date: "2015-10-11",
-            shipped: true,
+            shipped: true
           },
           {
             id: 4,
@@ -205,7 +205,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "1f11be60-45cc-4b61-a0a0-9ce7e1ee0f21",
             quantity: 37,
             date: "2015-10-11",
-            shipped: false,
+            shipped: false
           },
           {
             id: 5,
@@ -213,7 +213,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "ae3fa072-ef44-4c1e-9f99-f79c02b32cac",
             quantity: 93,
             date: "2015-10-15",
-            shipped: false,
+            shipped: false
           },
           {
             id: 6,
@@ -221,7 +221,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "fa15a121-dbe2-4240-bca9-a444b25ad009",
             quantity: 42,
             date: "2015-10-18",
-            shipped: true,
+            shipped: true
           },
           {
             id: 7,
@@ -229,7 +229,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "4671cbbe-1f44-4786-8a19-587844e0375a",
             quantity: 59,
             date: "2015-10-06",
-            shipped: true,
+            shipped: true
           },
           {
             id: 8,
@@ -237,7 +237,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "be3489f3-0b4c-487b-82e4-75e04c74522e",
             quantity: 11,
             date: "2015-10-11",
-            shipped: false,
+            shipped: false
           },
           {
             id: 9,
@@ -245,7 +245,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e4204450-780c-4f4a-a154-445502d8ae54",
             quantity: 42,
             date: "2015-10-07",
-            shipped: true,
+            shipped: true
           },
           {
             id: 10,
@@ -253,7 +253,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "2c84bc96-ee6a-4529-b4ee-6b45f998b94e",
             quantity: 22,
             date: "2015-10-07",
-            shipped: true,
+            shipped: true
           },
           {
             id: 11,
@@ -261,7 +261,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "928053ba-cff5-463a-b541-76b011eaa31a",
             quantity: 9,
             date: "2015-10-07",
-            shipped: true,
+            shipped: true
           },
           {
             id: 12,
@@ -269,7 +269,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "efb730b5-abb2-4233-9932-88a9dd7890e9",
             quantity: 2,
             date: "2015-10-12",
-            shipped: false,
+            shipped: false
           },
           {
             id: 13,
@@ -277,7 +277,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "975107a1-e573-48f0-8e28-a60cc2d5a7a4",
             quantity: 93,
             date: "2015-10-11",
-            shipped: false,
+            shipped: false
           },
           {
             id: 14,
@@ -285,7 +285,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "5d3b6fea-599b-4b20-841f-f2530db563be",
             quantity: 9,
             date: "2015-10-07",
-            shipped: false,
+            shipped: false
           },
           {
             id: 15,
@@ -293,7 +293,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "c2198f11-b7a9-4608-9fb4-365cf4b1d86c",
             quantity: 1,
             date: "2015-10-02",
-            shipped: true,
+            shipped: true
           },
           {
             id: 16,
@@ -301,7 +301,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b24ebecb-b311-4143-98bd-870e24fc3ac9",
             quantity: 36,
             date: "2015-10-10",
-            shipped: true,
+            shipped: true
           },
           {
             id: 17,
@@ -309,7 +309,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "bca404d2-bb07-4a72-a48c-56ee21bf4d99",
             quantity: 61,
             date: "2015-10-09",
-            shipped: false,
+            shipped: false
           },
           {
             id: 18,
@@ -317,7 +317,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "00a0e766-58ff-4bfe-9071-c6f7f1461a6f",
             quantity: 2,
             date: "2015-10-02",
-            shipped: false,
+            shipped: false
           },
           {
             id: 19,
@@ -325,7 +325,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "800f9182-3c14-4530-b086-e154a3015ddb",
             quantity: 61,
             date: "2015-10-06",
-            shipped: true,
+            shipped: true
           },
           {
             id: 20,
@@ -333,7 +333,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "f1e3098e-fda6-4d3a-aad5-6fef3287fdda",
             quantity: 59,
             date: "2015-10-18",
-            shipped: true,
+            shipped: true
           },
           {
             id: 21,
@@ -341,7 +341,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "3e61402a-cb2b-4af7-8346-0e6da4a46bbf",
             quantity: 25,
             date: "2015-10-10",
-            shipped: false,
+            shipped: false
           },
           {
             id: 22,
@@ -349,7 +349,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "2a0af36b-5734-4d6f-b792-768accd1854a",
             quantity: 91,
             date: "2015-10-01",
-            shipped: true,
+            shipped: true
           },
           {
             id: 23,
@@ -357,7 +357,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e7c5936b-7f42-422a-8656-db1868210e74",
             quantity: 16,
             date: "2015-10-13",
-            shipped: false,
+            shipped: false
           },
           {
             id: 24,
@@ -365,7 +365,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "d9a4c94f-5b48-452e-a498-685bd97e0136",
             quantity: 12,
             date: "2015-10-12",
-            shipped: true,
+            shipped: true
           },
           {
             id: 25,
@@ -373,7 +373,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "d288a020-d1f8-4524-b1b6-7db3cceb03da",
             quantity: 32,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 26,
@@ -381,7 +381,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "97de6635-d7ec-456c-9bfd-d41544dc80d5",
             quantity: 98,
             date: "2015-10-15",
-            shipped: true,
+            shipped: true
           },
           {
             id: 27,
@@ -389,7 +389,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b474e520-6b69-4490-a558-da04eba9cd89",
             quantity: 80,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 28,
@@ -397,7 +397,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "d520859d-853b-43f9-9736-ef22d320ef9c",
             quantity: 70,
             date: "2015-10-05",
-            shipped: true,
+            shipped: true
           },
           {
             id: 29,
@@ -405,7 +405,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "f8113ed0-f085-46a5-abe9-7036bdc3d181",
             quantity: 86,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 30,
@@ -413,7 +413,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8c3ad2bf-0fa9-4155-b28d-6f74019360d9",
             quantity: 88,
             date: "2015-10-01",
-            shipped: true,
+            shipped: true
           },
           {
             id: 31,
@@ -421,7 +421,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8bab58c2-9f09-4fd8-a7ff-774e40efad27",
             quantity: 60,
             date: "2015-10-18",
-            shipped: false,
+            shipped: false
           },
           {
             id: 32,
@@ -429,7 +429,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8a54720d-6a69-43ad-ae1f-d246986b7e0c",
             quantity: 65,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 33,
@@ -437,7 +437,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "6a6e4c90-44f1-4c28-91c6-09eaa81ba693",
             quantity: 54,
             date: "2015-10-15",
-            shipped: false,
+            shipped: false
           },
           {
             id: 34,
@@ -445,7 +445,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "aefefa7a-b766-45e0-bf31-50eceb981bc4",
             quantity: 93,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 35,
@@ -453,7 +453,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8f5668dc-2ea0-44ec-8c83-97cd6bba40cb",
             quantity: 15,
             date: "2015-10-10",
-            shipped: false,
+            shipped: false
           },
           {
             id: 36,
@@ -461,7 +461,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "0714d7eb-2f7c-44ec-9e95-8c50230aa9a8",
             quantity: 27,
             date: "2015-10-05",
-            shipped: false,
+            shipped: false
           },
           {
             id: 37,
@@ -469,7 +469,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "f27c1913-b8a8-443e-91d7-a2d07132593c",
             quantity: 52,
             date: "2015-10-02",
-            shipped: true,
+            shipped: true
           },
           {
             id: 38,
@@ -477,7 +477,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e25995e4-0d41-488b-b583-5d349bc2c2df",
             quantity: 72,
             date: "2015-10-09",
-            shipped: true,
+            shipped: true
           },
           {
             id: 39,
@@ -485,7 +485,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "243889ec-8b0a-434a-a417-a2af75397591",
             quantity: 54,
             date: "2015-10-13",
-            shipped: false,
+            shipped: false
           },
           {
             id: 40,
@@ -493,7 +493,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "4701cf80-5db4-4ca6-9c9b-4dafaf010b43",
             quantity: 14,
             date: "2015-10-12",
-            shipped: false,
+            shipped: false
           },
           {
             id: 41,
@@ -501,7 +501,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "5302455b-197c-467a-aa82-8070fd610a27",
             quantity: 48,
             date: "2015-10-15",
-            shipped: false,
+            shipped: false
           },
           {
             id: 42,
@@ -509,7 +509,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "27e47796-6088-4704-9390-defa5f9bf57f",
             quantity: 53,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 43,
@@ -517,7 +517,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "031180d7-f0da-40c1-add1-22389f9d6abe",
             quantity: 12,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 44,
@@ -525,7 +525,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "49b185cf-b9f5-4384-b8f3-215893a2d099",
             quantity: 48,
             date: "2015-10-13",
-            shipped: false,
+            shipped: false
           },
           {
             id: 45,
@@ -533,7 +533,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e3016946-a5f2-4725-9fa9-ecf1aee6182a",
             quantity: 70,
             date: "2015-10-13",
-            shipped: true,
+            shipped: true
           },
           {
             id: 46,
@@ -541,7 +541,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "76d5f887-3ab1-431a-a870-757bf0061799",
             quantity: 33,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 47,
@@ -549,7 +549,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "82de1b5c-e4a8-4f6e-a15c-ae90322a8cbd",
             quantity: 38,
             date: "2015-10-06",
-            shipped: false,
+            shipped: false
           },
           {
             id: 48,
@@ -557,7 +557,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "993e950d-4ce4-4163-ae45-15e0e0bb14b0",
             quantity: 32,
             date: "2015-10-16",
-            shipped: true,
+            shipped: true
           },
           {
             id: 49,
@@ -565,7 +565,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "1fe285bc-dc9a-44b1-833b-e3f90885ad7e",
             quantity: 72,
             date: "2015-10-08",
-            shipped: false,
+            shipped: false
           },
           {
             id: 50,
@@ -573,7 +573,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a9879b6f-b010-4276-bfbe-07cfff6e3d43",
             quantity: 19,
             date: "2015-10-15",
-            shipped: true,
+            shipped: true
           },
           {
             id: 51,
@@ -581,7 +581,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "112da126-5922-42d2-8861-eb876d90ceed",
             quantity: 100,
             date: "2015-10-01",
-            shipped: false,
+            shipped: false
           },
           {
             id: 52,
@@ -589,7 +589,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "ca937b79-9966-46cc-bdce-82a7761f7c7f",
             quantity: 13,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 53,
@@ -597,7 +597,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8ce21bb8-fc2d-43e5-924a-0213b4266242",
             quantity: 56,
             date: "2015-10-07",
-            shipped: true,
+            shipped: true
           },
           {
             id: 54,
@@ -605,7 +605,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e512122b-71d8-4bc9-ab07-0dd377ef7419",
             quantity: 97,
             date: "2015-10-02",
-            shipped: true,
+            shipped: true
           },
           {
             id: 55,
@@ -613,7 +613,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a87cd322-4781-4ba3-bf20-64d7783dcf61",
             quantity: 56,
             date: "2015-10-14",
-            shipped: true,
+            shipped: true
           },
           {
             id: 56,
@@ -621,7 +621,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "0fdc6605-fad9-4c76-9af0-7d8624bf60ba",
             quantity: 38,
             date: "2015-10-02",
-            shipped: false,
+            shipped: false
           },
           {
             id: 57,
@@ -629,7 +629,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "3c442ff2-abfe-43a2-88a7-335097df870e",
             quantity: 33,
             date: "2015-10-09",
-            shipped: false,
+            shipped: false
           },
           {
             id: 58,
@@ -637,7 +637,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "85deedb1-9493-4427-9a23-3911b4202aa1",
             quantity: 91,
             date: "2015-10-05",
-            shipped: true,
+            shipped: true
           },
           {
             id: 59,
@@ -645,7 +645,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "81b74525-7b47-4ccd-a177-d4cbb6af4768",
             quantity: 57,
             date: "2015-10-16",
-            shipped: true,
+            shipped: true
           },
           {
             id: 60,
@@ -653,7 +653,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "52cf5cdb-475a-46b3-9ed7-db4343377837",
             quantity: 33,
             date: "2015-10-12",
-            shipped: false,
+            shipped: false
           },
           {
             id: 61,
@@ -661,7 +661,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "4532dcfa-7d6f-4537-bce8-b2e804851810",
             quantity: 55,
             date: "2015-10-08",
-            shipped: false,
+            shipped: false
           },
           {
             id: 62,
@@ -669,7 +669,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "5dd61e1f-b57a-49f5-9756-0e10bdb64e17",
             quantity: 81,
             date: "2015-10-17",
-            shipped: true,
+            shipped: true
           },
           {
             id: 63,
@@ -677,7 +677,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "4041f1f0-2af2-455c-8f32-308839a7e4aa",
             quantity: 3,
             date: "2015-10-01",
-            shipped: false,
+            shipped: false
           },
           {
             id: 64,
@@ -685,7 +685,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a66ed669-91c2-4735-9180-7f2cdfdbbb22",
             quantity: 52,
             date: "2015-10-01",
-            shipped: false,
+            shipped: false
           },
           {
             id: 65,
@@ -693,7 +693,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "5041e892-a6f1-4802-abb4-65aaf267bcaf",
             quantity: 38,
             date: "2015-10-10",
-            shipped: false,
+            shipped: false
           },
           {
             id: 66,
@@ -701,7 +701,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "3046ced4-a66e-4c55-9b34-fdf48ade73df",
             quantity: 67,
             date: "2015-10-08",
-            shipped: false,
+            shipped: false
           },
           {
             id: 67,
@@ -709,7 +709,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "8300ad8a-100d-4034-8737-a1a15c297d2c",
             quantity: 4,
             date: "2015-10-11",
-            shipped: true,
+            shipped: true
           },
           {
             id: 68,
@@ -717,7 +717,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "01e5e215-7eed-42ba-bda5-b1f4fdfba651",
             quantity: 91,
             date: "2015-10-08",
-            shipped: false,
+            shipped: false
           },
           {
             id: 69,
@@ -725,7 +725,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "9a62a393-98f7-4543-aa48-e998efdae9e0",
             quantity: 16,
             date: "2015-10-10",
-            shipped: false,
+            shipped: false
           },
           {
             id: 70,
@@ -733,7 +733,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "6a5220df-2a1f-46fa-8a10-9674bfb88000",
             quantity: 22,
             date: "2015-10-14",
-            shipped: false,
+            shipped: false
           },
           {
             id: 71,
@@ -741,7 +741,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b9e2688b-b5c0-4398-8d80-8de8717364eb",
             quantity: 94,
             date: "2015-10-01",
-            shipped: false,
+            shipped: false
           },
           {
             id: 72,
@@ -749,7 +749,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "152887fd-b2c1-4b17-8db6-bdbe925078cb",
             quantity: 2,
             date: "2015-10-03",
-            shipped: false,
+            shipped: false
           },
           {
             id: 73,
@@ -757,7 +757,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e689c83a-0661-474f-8221-b265e1458351",
             quantity: 75,
             date: "2015-10-07",
-            shipped: true,
+            shipped: true
           },
           {
             id: 74,
@@ -765,7 +765,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "ecbafa1e-8fce-4d42-a5da-c200a8fad281",
             quantity: 85,
             date: "2015-10-09",
-            shipped: true,
+            shipped: true
           },
           {
             id: 75,
@@ -773,7 +773,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a538a290-9aee-46f2-afd6-1c87f3d17c46",
             quantity: 73,
             date: "2015-10-05",
-            shipped: false,
+            shipped: false
           },
           {
             id: 76,
@@ -781,7 +781,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b652d7f6-7fad-44e4-b35c-f439e44f9aa8",
             quantity: 21,
             date: "2015-10-04",
-            shipped: true,
+            shipped: true
           },
           {
             id: 77,
@@ -789,7 +789,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e6d46772-2aeb-4bec-8c69-cf598bd87680",
             quantity: 100,
             date: "2015-10-13",
-            shipped: false,
+            shipped: false
           },
           {
             id: 78,
@@ -797,7 +797,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a4add82a-af04-4da8-bd0a-79158e107ecc",
             quantity: 4,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 79,
@@ -805,7 +805,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "2d922da7-b2d2-4c56-82c7-3645294f17dd",
             quantity: 66,
             date: "2015-10-09",
-            shipped: false,
+            shipped: false
           },
           {
             id: 80,
@@ -813,7 +813,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "676f536a-15ff-4e8d-a554-10c3f1ab1f17",
             quantity: 76,
             date: "2015-10-16",
-            shipped: false,
+            shipped: false
           },
           {
             id: 81,
@@ -821,7 +821,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "595f56e3-79c7-41e8-8415-e6895a1a85eb",
             quantity: 72,
             date: "2015-10-10",
-            shipped: true,
+            shipped: true
           },
           {
             id: 82,
@@ -829,7 +829,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b2c819cb-2ba9-4f4c-ae71-6ad974c4de44",
             quantity: 56,
             date: "2015-10-13",
-            shipped: true,
+            shipped: true
           },
           {
             id: 83,
@@ -837,7 +837,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "3e6abcef-2398-4e6d-b7c5-6d66fead48fa",
             quantity: 97,
             date: "2015-10-11",
-            shipped: false,
+            shipped: false
           },
           {
             id: 84,
@@ -845,7 +845,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "735250d0-3c0c-4f0b-8de6-6319a063eb19",
             quantity: 69,
             date: "2015-10-13",
-            shipped: true,
+            shipped: true
           },
           {
             id: 85,
@@ -853,7 +853,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "d336e7c2-0448-4693-813f-5a851cc405a2",
             quantity: 16,
             date: "2015-10-06",
-            shipped: false,
+            shipped: false
           },
           {
             id: 86,
@@ -861,7 +861,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "a25c7ba7-0592-449a-b445-4313a040af9e",
             quantity: 73,
             date: "2015-10-13",
-            shipped: false,
+            shipped: false
           },
           {
             id: 87,
@@ -869,7 +869,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e245cbe1-f212-4dde-bc0f-e450226e1c8b",
             quantity: 30,
             date: "2015-10-17",
-            shipped: false,
+            shipped: false
           },
           {
             id: 88,
@@ -877,7 +877,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "b83bd24b-bd23-4ee5-aeb7-8ea90ce6c29d",
             quantity: 3,
             date: "2015-10-04",
-            shipped: true,
+            shipped: true
           },
           {
             id: 89,
@@ -885,7 +885,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "cea3b7c8-6622-4d2a-8fff-141f71d754f4",
             quantity: 39,
             date: "2015-10-13",
-            shipped: true,
+            shipped: true
           },
           {
             id: 90,
@@ -893,7 +893,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "7d0af54a-4bb6-4a3a-87ee-02d7b1d2e325",
             quantity: 90,
             date: "2015-10-01",
-            shipped: false,
+            shipped: false
           },
           {
             id: 91,
@@ -901,7 +901,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "9b0635e2-b69c-4ad3-9e04-8bec4743da05",
             quantity: 24,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 92,
@@ -909,7 +909,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "e044d02f-5a25-4b73-a811-ae59dd50d691",
             quantity: 65,
             date: "2015-10-06",
-            shipped: false,
+            shipped: false
           },
           {
             id: 93,
@@ -917,7 +917,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "deed5afb-9345-47b1-b17a-10c0732322e6",
             quantity: 67,
             date: "2015-10-05",
-            shipped: false,
+            shipped: false
           },
           {
             id: 94,
@@ -925,7 +925,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "193f8eaa-e32b-47bc-94d9-41b788a21393",
             quantity: 50,
             date: "2015-10-06",
-            shipped: true,
+            shipped: true
           },
           {
             id: 95,
@@ -933,7 +933,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "5dc3c2b6-376f-4eba-881a-3a176a27d03c",
             quantity: 87,
             date: "2015-10-03",
-            shipped: true,
+            shipped: true
           },
           {
             id: 96,
@@ -941,7 +941,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "9bcd6569-aa74-4da0-8417-bf975141e0d1",
             quantity: 60,
             date: "2015-10-17",
-            shipped: true,
+            shipped: true
           },
           {
             id: 97,
@@ -949,7 +949,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "94ea0790-4ced-437d-8c45-12eed25b4e6d",
             quantity: 60,
             date: "2015-10-11",
-            shipped: true,
+            shipped: true
           },
           {
             id: 98,
@@ -957,7 +957,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "042a63a6-f3f8-4154-86c0-b45ebd044b9f",
             quantity: 9,
             date: "2015-10-15",
-            shipped: false,
+            shipped: false
           },
           {
             id: 99,
@@ -965,7 +965,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "eff2e580-dc1b-4faa-bef0-76a2a1bb50a3",
             quantity: 77,
             date: "2015-10-16",
-            shipped: true,
+            shipped: true
           },
           {
             id: 100,
@@ -973,15 +973,15 @@ describe("Ext.grid.plugin.RowWidget", function () {
             productCode: "d6d751d9-c70e-48dc-b09d-3a3587d308e6",
             quantity: 32,
             date: "2015-10-01",
-            shipped: false,
-          },
-        ],
-      },
+            shipped: false
+          }
+        ]
+      }
     });
     store = new Ext.data.Store({
       model: "spec.RowWidgetCompany",
       data: dummyData,
-      autoDestroy: true,
+      autoDestroy: true
     });
 
     expander = new Ext.grid.plugin.RowWidget(
@@ -990,11 +990,11 @@ describe("Ext.grid.plugin.RowWidget", function () {
           widget: {
             xtype: "button",
             isExpanderButton: true,
-            bind: "{record.company}",
-          },
+            bind: "{record.company}"
+          }
         },
-        rowWidgetCfg || {},
-      ),
+        rowWidgetCfg || {}
+      )
     );
 
     columns = gridCfg.columns || [
@@ -1005,8 +1005,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
       {
         text: "Last Updated",
         renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-        dataIndex: "lastChange",
-      },
+        dataIndex: "lastChange"
+      }
     ];
 
     (grid = new Ext.grid.Panel(
@@ -1015,7 +1015,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
           store: store,
           columns: columns,
           viewConfig: {
-            forceFit: true,
+            forceFit: true
           },
           width: 600,
           height: 300,
@@ -1023,10 +1023,10 @@ describe("Ext.grid.plugin.RowWidget", function () {
           title: "Widget Rows, Collapse and Force Fit",
           renderTo: document.body,
           leadingBufferZone: 1,
-          trailingBufferZone: 1,
+          trailingBufferZone: 1
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     )),
       (view = grid.getView()),
       (scroller = view.isLockingView
@@ -1067,7 +1067,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
       jasmine.fireMouseEvent(
         grid.view.el.query(".x-grid-row-expander")[0],
-        "mousedown",
+        "mousedown"
       );
 
       expect(getRowBodyTr(0).isVisible()).toBe(false);
@@ -1080,7 +1080,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
       jasmine.fireMouseEvent(
         grid.view.el.query(".x-grid-row-expander")[0],
-        "click",
+        "click"
       );
 
       expect(getRowBodyTr(0).isVisible()).toBe(true);
@@ -1099,8 +1099,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
           Ext.Component.fromElement(
             grid.view.all
               .item(0)
-              .down("." + Ext.baseCSSPrefix + "grid-rowbody", true).firstChild,
-          ),
+              .down("." + Ext.baseCSSPrefix + "grid-rowbody", true).firstChild
+          )
       ).toBe(true);
 
       // Flush the VM's data so we can work synchronously
@@ -1117,7 +1117,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
       jasmine.fireMouseEvent(
         grid.view.el.query(".x-grid-row-expander")[0],
-        "click",
+        "click"
       );
 
       expect(getRowBodyTr(0).isVisible()).toBe(false);
@@ -1143,16 +1143,16 @@ describe("Ext.grid.plugin.RowWidget", function () {
             callback: function (success, record, item) {
               jasmine.fireMouseEvent(
                 Ext.fly(item).query(".x-grid-row-expander")[0],
-                "click",
+                "click"
               );
               done = ++idx === storeCount;
-            },
+            }
           });
           return done;
         },
         "all rows to be expanded",
         30000,
-        Ext.isIE8 ? 50 : undefined,
+        Ext.isIE8 ? 50 : undefined
       );
       // Wait up to 30 seconds for all rows to be expanded.
       // for IE8, pause 50ms between checks to let the browser work.
@@ -1161,7 +1161,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         // The total component count should be the initial count plus one row widget for every RENDERED row.
         // So that's "viewSize" widgets created.
         expect(Ext.ComponentQuery.query("*").length).toBe(
-          widgetCount + viewSize + grid.freeRowContexts.length,
+          widgetCount + viewSize + grid.freeRowContexts.length
         );
       });
     });
@@ -1171,7 +1171,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         var viewBottom, rowBottom;
 
         makeGrid(null, {
-          scrollIntoViewOnExpand: true,
+          scrollIntoViewOnExpand: true
         });
 
         expander.toggleRow(12, store.getAt(12));
@@ -1186,12 +1186,12 @@ describe("Ext.grid.plugin.RowWidget", function () {
         function makeLockedGrid(tall) {
           var smallWidget = {
               xtype: "button",
-              bind: "{record.company}",
+              bind: "{record.company}"
             },
             tallWidget = {
               xtype: "button",
               bind: "{record.company}",
-              height: 100,
+              height: 100
             };
 
           makeGrid(
@@ -1201,21 +1201,21 @@ describe("Ext.grid.plugin.RowWidget", function () {
                   text: "Company",
                   width: 200,
                   dataIndex: "company",
-                  locked: true,
+                  locked: true
                 },
                 {
                   text: "Price",
                   renderer: Ext.util.Format.usMoney,
-                  dataIndex: "price",
+                  dataIndex: "price"
                 },
-                { text: "Change", dataIndex: "change" },
-              ],
+                { text: "Change", dataIndex: "change" }
+              ]
             },
             {
               scrollIntoViewOnExpand: true,
               widget: tall ? tallWidget : smallWidget,
-              lockedWidget: tall ? smallWidget : tallWidget,
-            },
+              lockedWidget: tall ? smallWidget : tallWidget
+            }
           );
         }
 
@@ -1265,21 +1265,21 @@ describe("Ext.grid.plugin.RowWidget", function () {
                 text: "Company",
                 width: 200,
                 dataIndex: "company",
-                locked: true,
+                locked: true
               },
               {
                 text: "Price",
                 renderer: Ext.util.Format.usMoney,
-                dataIndex: "price",
+                dataIndex: "price"
               },
               { text: "Change", dataIndex: "change" },
               { text: "% Change", dataIndex: "pctChange" },
               {
                 text: "Last Updated",
                 renderer: Ext.util.Format.dateRenderer("m/d/Y"),
-                dataIndex: "lastChange",
-              },
-            ],
+                dataIndex: "lastChange"
+              }
+            ]
           },
           {
             widget: {
@@ -1287,23 +1287,23 @@ describe("Ext.grid.plugin.RowWidget", function () {
               defaultBindProperty: "company",
               setCompany: function (company) {
                 this.setText(company.get("company"));
-              },
+              }
             },
             lockedWidget: {
               xtype: "component",
               defaultBindProperty: "company",
               setCompany: function (company) {
                 this.setHtml(company.get("industry"));
-              },
-            },
-          },
+              }
+            }
+          }
         );
       });
 
       it("should not expand in response to mousedown", function () {
         jasmine.fireMouseEvent(
           grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-          "mousedown",
+          "mousedown"
         );
 
         expect(getRowBodyTr(0, true).isVisible()).toBe(false);
@@ -1312,13 +1312,13 @@ describe("Ext.grid.plugin.RowWidget", function () {
       it("should expand on click", function () {
         jasmine.fireMouseEvent(
           grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-          "click",
+          "click"
         );
 
         expect(getRowBodyTr(0, true).isVisible()).toBe(true);
 
         expect(grid.lockedGrid.view.body.getHeight()).toBe(
-          grid.normalGrid.view.body.getHeight(),
+          grid.normalGrid.view.body.getHeight()
         );
       });
 
@@ -1329,7 +1329,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         // click to collapse
         jasmine.fireMouseEvent(
           grid.lockedGrid.view.el.query(".x-grid-row-expander")[0],
-          "click",
+          "click"
         );
 
         // The rowbody row of item 0 should not be visible
@@ -1344,18 +1344,17 @@ describe("Ext.grid.plugin.RowWidget", function () {
             Ext.Component.fromElement(
               grid.lockedGrid.view.all
                 .item(0)
-                .down("." + Ext.baseCSSPrefix + "grid-rowbody", true)
-                .firstChild,
-            ),
+                .down("." + Ext.baseCSSPrefix + "grid-rowbody", true).firstChild
+            )
         ).toBe(true);
         expect(widget.el.dom.textContent || widget.el.dom.innerText).toBe(
-          store.getAt(0).get("industry"),
+          store.getAt(0).get("industry")
         );
 
         // Check thetwo rows (one on each side) are synched in height
         // The lockedWidget specifies that it be the industry field.
         expect(grid.lockedGrid.view.all.item(0).getHeight()).toBe(
-          grid.normalGrid.view.all.item(0).getHeight(),
+          grid.normalGrid.view.all.item(0).getHeight()
         );
       });
     });
@@ -1383,8 +1382,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
               { text: "Price", dataIndex: "price", locked: true },
               { text: "Change", dataIndex: "change" },
               { text: "% Change", dataIndex: "pctChange" },
-              { text: "Last Updated", dataIndex: "lastChange" },
-            ],
+              { text: "Last Updated", dataIndex: "lastChange" }
+            ]
           });
 
           var lockedNode = grid.view.getNode(store.getAt(1)),
@@ -1404,8 +1403,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
               { text: "Price", dataIndex: "price", locked: true },
               { text: "Change", dataIndex: "change" },
               { text: "% Change", dataIndex: "pctChange" },
-              { text: "Last Updated", dataIndex: "lastChange" },
-            ],
+              { text: "Last Updated", dataIndex: "lastChange" }
+            ]
           });
 
           // Get the expander elements to click on
@@ -1425,7 +1424,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
           // Locked side's item 0 should have synced height
           expect(normalView.all.item(0, true).offsetHeight).toBe(
-            item0ExpandedHeight,
+            item0ExpandedHeight
           );
 
           normalView.setScrollY(1000);
@@ -1439,7 +1438,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
           runs(function () {
             // We scrolled the normal view, and the locked view should have had its newly rendered row 0 height synced
             expect(lockedView.all.item(0, true).offsetHeight).toBe(
-              item0ExpandedHeight,
+              item0ExpandedHeight
             );
           });
         });
@@ -1470,15 +1469,15 @@ describe("Ext.grid.plugin.RowWidget", function () {
                     defaultBindProperty: "company",
                     setCompany: function (company) {
                       this.setText(company.get("company"));
-                    },
-                  },
-                },
-              ],
+                    }
+                  }
+                }
+              ]
             });
 
             this.callParent(arguments);
-          },
-        },
+          }
+        }
       });
 
       expect(grid.view.features.length).toBe(1);
@@ -1491,8 +1490,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
           { text: "Price", dataIndex: "price" },
           { text: "Change", dataIndex: "change" },
           { text: "% Change", dataIndex: "pctChange" },
-          { text: "Last Updated", dataIndex: "lastChange" },
-        ],
+          { text: "Last Updated", dataIndex: "lastChange" }
+        ]
       });
 
       // Grid columns + row expander column = 5.
@@ -1500,8 +1499,8 @@ describe("Ext.grid.plugin.RowWidget", function () {
       expect(
         parseInt(
           grid.body.down(".x-grid-cell-rowbody", true).getAttribute("colspan"),
-          10,
-        ),
+          10
+        )
       ).toBe(5);
     });
 
@@ -1509,7 +1508,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
       makeGrid({
         leadingBufferZone: 2,
         trailingBufferZone: 2,
-        height: 100,
+        height: 100
       });
 
       expect(bufferedRenderer).toBeDefined();
@@ -1538,13 +1537,13 @@ describe("Ext.grid.plugin.RowWidget", function () {
       describe("no initial locked columns", function () {
         beforeEach(function () {
           makeGrid({
-            enableLocking: true,
+            enableLocking: true
           });
         });
 
         it("should add the expander column to the normal grid", function () {
           expect(expander.expanderColumn.up("tablepanel")).toBe(
-            grid.normalGrid,
+            grid.normalGrid
           );
         });
 
@@ -1557,7 +1556,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
           grid.lock(grid.columnManager.getColumns()[1]);
 
           expect(expander.expanderColumn.up("tablepanel")).toBe(
-            grid.lockedGrid,
+            grid.lockedGrid
           );
         });
       });
@@ -1570,14 +1569,14 @@ describe("Ext.grid.plugin.RowWidget", function () {
               { text: "Price", dataIndex: "price" },
               { text: "Change", dataIndex: "change" },
               { text: "% Change", dataIndex: "pctChange" },
-              { text: "Last Updated", dataIndex: "lastChange" },
-            ],
+              { text: "Last Updated", dataIndex: "lastChange" }
+            ]
           });
         });
 
         it("should add the expander column to the locked grid", function () {
           expect(expander.expanderColumn.up("tablepanel")).toBe(
-            grid.lockedGrid,
+            grid.lockedGrid
           );
         });
 
@@ -1591,7 +1590,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
 
           expect(grid.lockedGrid);
           expect(expander.expanderColumn.up("tablepanel")).toBe(
-            grid.normalGrid,
+            grid.normalGrid
           );
         });
       });
@@ -1606,7 +1605,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         {
           leadingBufferZone: 10,
           trailingBufferZone: 10,
-          height: 200,
+          height: 200
         },
         {
           widget: {
@@ -1614,13 +1613,13 @@ describe("Ext.grid.plugin.RowWidget", function () {
             bind: {},
             layout: {
               type: "hbox",
-              align: "stretchmax",
+              align: "stretchmax"
             },
             items: [
               {
                 xtype: "component",
                 html: lorem,
-                maxWidth: 300,
+                maxWidth: 300
               },
               {
                 xtype: "grid",
@@ -1628,44 +1627,44 @@ describe("Ext.grid.plugin.RowWidget", function () {
                 autoLoad: true,
                 bind: {
                   store: "{record.orders}",
-                  title: "Orders for {record.name}",
+                  title: "Orders for {record.name}"
                 },
                 columns: [
                   {
                     text: "Order Id",
                     dataIndex: "id",
-                    width: 75,
+                    width: 75
                   },
                   {
                     text: "Procuct code",
                     dataIndex: "productCode",
-                    width: 290,
+                    width: 290
                   },
                   {
                     text: "Quantity",
                     dataIndex: "quantity",
                     xtype: "numbercolumn",
                     width: 75,
-                    align: "right",
+                    align: "right"
                   },
                   {
                     xtype: "datecolumn",
                     format: "Y-m-d",
                     width: 120,
                     text: "Date",
-                    dataIndex: "date",
+                    dataIndex: "date"
                   },
                   {
                     text: "Shipped",
                     xtype: "checkcolumn",
                     dataIndex: "shipped",
-                    width: 75,
-                  },
-                ],
-              },
-            ],
-          },
-        },
+                    width: 75
+                  }
+                ]
+              }
+            ]
+          }
+        }
       );
       loadSpy = spyOn(Ext.data.ProxyStore.prototype, "load").andCallThrough();
     });
@@ -1708,7 +1707,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         },
         "scroll to end",
         20000,
-        50,
+        50
       );
 
       // No more loads.
@@ -1730,14 +1729,14 @@ describe("Ext.grid.plugin.RowWidget", function () {
         },
         "scroll to end",
         20000,
-        50,
+        50
       );
 
       runs(function () {
         lastRow = view.all.last(true);
         jasmine.fireMouseEvent(
           Ext.fly(lastRow).down(".x-grid-row-expander"),
-          "click",
+          "click"
         );
       });
       waitsFor(
@@ -1750,7 +1749,7 @@ describe("Ext.grid.plugin.RowWidget", function () {
         },
         "scroll to end",
         20000,
-        50,
+        50
       );
 
       // Last row should still be the same

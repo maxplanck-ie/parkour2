@@ -32,15 +32,15 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
             at: 4,
             arity: "ident",
-            value: "bar",
-          },
-        ],
+            value: "bar"
+          }
+        ]
       });
     });
 
@@ -56,20 +56,20 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
             at: 4,
             arity: "ident",
-            value: "b.r",
+            value: "b.r"
           },
           {
             at: 8,
             arity: "ident",
-            value: "zip",
-          },
-        ],
+            value: "zip"
+          }
+        ]
       });
     });
 
@@ -90,7 +90,7 @@ describe("Ext.app.bind.Parser", function () {
           lhs: {
             at: 0,
             arity: "literal",
-            value: 2,
+            value: 2
           },
           rhs: {
             at: 5,
@@ -99,27 +99,27 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 2,
               arity: "ident",
-              value: "foo",
+              value: "foo"
             },
             fmt: [
               {
                 at: 6,
                 arity: "ident",
-                value: "bar",
+                value: "bar"
               },
               {
                 at: 10,
                 arity: "ident",
-                value: "zip",
-              },
-            ],
-          },
+                value: "zip"
+              }
+            ]
+          }
         },
         rhs: {
           at: 14,
           arity: "literal",
-          value: 3,
-        },
+          value: 3
+        }
       });
     });
 
@@ -136,7 +136,7 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
@@ -146,22 +146,22 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 4,
               arity: "ident",
-              value: "bar",
+              value: "bar"
             },
             args: [
               {
                 at: 8,
                 arity: "literal",
-                value: 0.314,
+                value: 0.314
               },
               {
                 at: 13,
                 arity: "literal",
-                value: "abc()",
-              },
-            ],
-          },
-        ],
+                value: "abc()"
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -169,7 +169,7 @@ describe("Ext.app.bind.Parser", function () {
       //                                    111111111122222 2222 23333333333444444444
       //                          0123456789012345678901234 5678 90123456789012345678
       var expr = parseExpression(
-        "foo:bar(10,\"abc()\"): zip('xyz',null,true, false )",
+        "foo:bar(10,\"abc()\"): zip('xyz',null,true, false )"
       );
       var data = expr.dump();
 
@@ -180,7 +180,7 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
@@ -190,20 +190,20 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 4,
               arity: "ident",
-              value: "bar",
+              value: "bar"
             },
             args: [
               {
                 at: 8,
                 arity: "literal",
-                value: 10,
+                value: 10
               },
               {
                 at: 11,
                 arity: "literal",
-                value: "abc()",
-              },
-            ],
+                value: "abc()"
+              }
+            ]
           },
           {
             at: 24,
@@ -212,32 +212,32 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 21,
               arity: "ident",
-              value: "zip",
+              value: "zip"
             },
             args: [
               {
                 at: 25,
                 arity: "literal",
-                value: "xyz",
+                value: "xyz"
               },
               {
                 at: 31,
                 arity: "literal",
-                value: null,
+                value: null
               },
               {
                 at: 36,
                 arity: "literal",
-                value: true,
+                value: true
               },
               {
                 at: 42,
                 arity: "literal",
-                value: false,
-              },
-            ],
-          },
-        ],
+                value: false
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -254,7 +254,7 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
@@ -264,7 +264,7 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 4,
               arity: "ident",
-              value: "bar",
+              value: "bar"
             },
             args: [
               {
@@ -278,8 +278,8 @@ describe("Ext.app.bind.Parser", function () {
                   operand: {
                     at: 9,
                     arity: "ident",
-                    value: "d.rp",
-                  },
+                    value: "d.rp"
+                  }
                 },
                 fmt: [
                   {
@@ -289,21 +289,21 @@ describe("Ext.app.bind.Parser", function () {
                     operand: {
                       at: 14,
                       arity: "ident",
-                      value: "zip",
+                      value: "zip"
                     },
                     args: [
                       {
                         at: 18,
                         arity: "literal",
-                        value: 42,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                        value: 42
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -311,7 +311,7 @@ describe("Ext.app.bind.Parser", function () {
       //                                    1111111111222222222 2333333333 34444444444
       //                          01234567890123456789012345678 9012345678 90123456789
       var expr = parseExpression(
-        'foo:bar(10,"abc()",@derp:zip(\'{"a(:)a"}\',2.1e-07))',
+        'foo:bar(10,"abc()",@derp:zip(\'{"a(:)a"}\',2.1e-07))'
       );
       var data = expr.dump();
 
@@ -322,7 +322,7 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 0,
           arity: "ident",
-          value: "foo",
+          value: "foo"
         },
         fmt: [
           {
@@ -332,18 +332,18 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 4,
               arity: "ident",
-              value: "bar",
+              value: "bar"
             },
             args: [
               {
                 at: 8,
                 arity: "literal",
-                value: 10,
+                value: 10
               },
               {
                 at: 11,
                 arity: "literal",
-                value: "abc()",
+                value: "abc()"
               },
               {
                 at: 24,
@@ -356,8 +356,8 @@ describe("Ext.app.bind.Parser", function () {
                   operand: {
                     at: 20,
                     arity: "ident",
-                    value: "derp",
-                  },
+                    value: "derp"
+                  }
                 },
                 fmt: [
                   {
@@ -367,26 +367,26 @@ describe("Ext.app.bind.Parser", function () {
                     operand: {
                       at: 25,
                       arity: "ident",
-                      value: "zip",
+                      value: "zip"
                     },
                     args: [
                       {
                         at: 29,
                         arity: "literal",
-                        value: '{"a(:)a"}',
+                        value: '{"a(:)a"}'
                       },
                       {
                         at: 41,
                         arity: "literal",
-                        value: 2.1e-7,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                        value: 2.1e-7
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
     });
 
@@ -394,7 +394,7 @@ describe("Ext.app.bind.Parser", function () {
       //                                    111111111122222222223333333333444444
       //                          0123456789012345678901234567890123456789012345
       var expr = parseExpression(
-        " f :bar(@derp:zip(42):boo:zoo(2)):woot(21):waz",
+        " f :bar(@derp:zip(42):boo:zoo(2)):woot(21):waz"
       );
       var data = expr.dump();
 
@@ -405,7 +405,7 @@ describe("Ext.app.bind.Parser", function () {
         operand: {
           at: 1,
           arity: "ident",
-          value: "f",
+          value: "f"
         },
         fmt: [
           {
@@ -415,7 +415,7 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 4,
               arity: "ident",
-              value: "bar",
+              value: "bar"
             },
             args: [
               {
@@ -429,8 +429,8 @@ describe("Ext.app.bind.Parser", function () {
                   operand: {
                     at: 9,
                     arity: "ident",
-                    value: "derp",
-                  },
+                    value: "derp"
+                  }
                 },
                 fmt: [
                   {
@@ -440,20 +440,20 @@ describe("Ext.app.bind.Parser", function () {
                     operand: {
                       at: 14,
                       arity: "ident",
-                      value: "zip",
+                      value: "zip"
                     },
                     args: [
                       {
                         at: 18,
                         arity: "literal",
-                        value: 42,
-                      },
-                    ],
+                        value: 42
+                      }
+                    ]
                   },
                   {
                     at: 22,
                     arity: "ident",
-                    value: "boo",
+                    value: "boo"
                   },
                   {
                     at: 29,
@@ -462,19 +462,19 @@ describe("Ext.app.bind.Parser", function () {
                     operand: {
                       at: 26,
                       arity: "ident",
-                      value: "zoo",
+                      value: "zoo"
                     },
                     args: [
                       {
                         at: 30,
                         arity: "literal",
-                        value: 2,
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
+                        value: 2
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           },
           {
             at: 38,
@@ -483,22 +483,22 @@ describe("Ext.app.bind.Parser", function () {
             operand: {
               at: 34,
               arity: "ident",
-              value: "woot",
+              value: "woot"
             },
             args: [
               {
                 at: 39,
                 arity: "literal",
-                value: 21,
-              },
-            ],
+                value: 21
+              }
+            ]
           },
           {
             at: 43,
             arity: "ident",
-            value: "waz",
-          },
-        ],
+            value: "waz"
+          }
+        ]
       });
     });
   }); // operators
@@ -561,7 +561,7 @@ describe("Ext.app.bind.Parser", function () {
         },
         divide: function (v, factor) {
           return v / factor;
-        },
+        }
       });
 
       expect(s).toBe(6);

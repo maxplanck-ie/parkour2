@@ -30,7 +30,7 @@ Ext.define("Ext.rtl.grid.column.Column", {
   privates: {
     _alignMap: {
       start: "right",
-      end: "left",
-    },
-  },
+      end: "left"
+    }
+  }
 });

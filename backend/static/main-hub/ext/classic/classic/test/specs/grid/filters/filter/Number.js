@@ -29,30 +29,30 @@ describe("Ext.grid.filters.filter.Number", function () {
               name: "Lisa",
               email: "lisa@simpsons.com",
               phone: "555-111-1224",
-              age: 14,
+              age: 14
             },
             {
               name: "Bart",
               email: "bart@simpsons.com",
               phone: "555-222-1234",
-              age: 12,
+              age: 12
             },
             {
               name: "Homer",
               email: "homer@simpsons.com",
               phone: "555-222-1244",
-              age: 44,
+              age: 44
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
               phone: "555-222-1254",
-              age: 42,
-            },
-          ],
+              age: 42
+            }
+          ]
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -64,46 +64,46 @@ describe("Ext.grid.filters.filter.Number", function () {
           columns: [
             {
               dataIndex: "name",
-              width: 100,
+              width: 100
             },
             {
               dataIndex: "email",
-              width: 100,
+              width: 100
             },
             {
               dataIndex: "phone",
               width: 100,
-              hidden: true,
+              hidden: true
             },
             {
               dataIndex: "age",
               filter: Ext.apply(
                 {
                   type: "number",
-                  updateBuffer: 0,
+                  updateBuffer: 0
                 },
-                listCfg,
+                listCfg
               ),
-              width: 100,
-            },
+              width: 100
+            }
           ],
 
           // We need programmatic mouseover events to be handled inline so we can test effects.
           viewConfig: {
             mouseOverOutBuffer: false,
-            deferHighlight: false,
+            deferHighlight: false
           },
           plugins: [
             {
-              ptype: "gridfilters",
-            },
+              ptype: "gridfilters"
+            }
           ],
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
 
     columnFilter = grid.columnManager.getHeaderByDataIndex("age").filter;
@@ -173,7 +173,7 @@ describe("Ext.grid.filters.filter.Number", function () {
 
       it("should accept 0 for lt", function () {
         columnFilter.setValue({
-          lt: 0,
+          lt: 0
         });
         var filter = store.getFilters().first();
         expect(filter.getOperator()).toBe("lt");
@@ -182,7 +182,7 @@ describe("Ext.grid.filters.filter.Number", function () {
 
       it("should accept 0 for eq", function () {
         columnFilter.setValue({
-          eq: 0,
+          eq: 0
         });
         var filter = store.getFilters().first();
         expect(filter.getOperator()).toBe("eq");
@@ -191,7 +191,7 @@ describe("Ext.grid.filters.filter.Number", function () {
 
       it("should accept 0 for gt", function () {
         columnFilter.setValue({
-          gt: 0,
+          gt: 0
         });
         var filter = store.getFilters().first();
         expect(filter.getOperator()).toBe("gt");
@@ -256,7 +256,7 @@ describe("Ext.grid.filters.filter.Number", function () {
       spyOn(Ext.grid.filters.filter.Number.prototype, "setValue").andCallFake(
         function () {
           endTime = new Date().getTime();
-        },
+        }
       );
     });
 
@@ -268,11 +268,11 @@ describe("Ext.grid.filters.filter.Number", function () {
       ms = 500;
 
       expect(ms).toBe(
-        Ext.grid.filters.filter.Base.prototype.config.updateBuffer,
+        Ext.grid.filters.filter.Base.prototype.config.updateBuffer
       );
 
       createGrid({
-        updateBuffer: ms,
+        updateBuffer: ms
       });
       showMenu();
 
@@ -296,7 +296,7 @@ describe("Ext.grid.filters.filter.Number", function () {
       // the updateBuffer config is variable.
       ms = 250;
       createGrid({
-        updateBuffer: ms,
+        updateBuffer: ms
       });
 
       expect(columnFilter.getUpdateBuffer()).toBe(ms);
@@ -315,7 +315,7 @@ describe("Ext.grid.filters.filter.Number", function () {
 
         expect(endTime - startTime).toBeAtLeast(ms - 100);
         expect(timer).toBeLE(
-          Ext.grid.filters.filter.Base.prototype.config.updateBuffer,
+          Ext.grid.filters.filter.Base.prototype.config.updateBuffer
         );
       });
     });
@@ -330,15 +330,15 @@ describe("Ext.grid.filters.filter.Number", function () {
           createGrid({
             active: state,
             value: {
-              eq: new Date(),
-            },
+              eq: new Date()
+            }
           });
 
           spyOn(columnFilter, "addStoreFilter");
 
           showMenu();
           expect(columnFilter.addStoreFilter).not.toHaveBeenCalled();
-        },
+        }
       );
     }
 
@@ -395,7 +395,7 @@ describe("Ext.grid.filters.filter.Number", function () {
 
         it("should " + maybe + " check the Filters menu item", function () {
           createGrid({
-            active: active,
+            active: active
           });
 
           showMenu();
@@ -410,8 +410,8 @@ describe("Ext.grid.filters.filter.Number", function () {
             active: active,
             value: {
               gt: 10,
-              lt: 20,
-            },
+              lt: 20
+            }
           });
 
           showMenu();
@@ -428,20 +428,20 @@ describe("Ext.grid.filters.filter.Number", function () {
 
             createGrid(
               {
-                active: active,
+                active: active
               },
               {
                 listeners: {
                   filterchange: function () {
                     ++called;
-                  },
-                },
-              },
+                  }
+                }
+              }
             );
 
             showMenu();
             columnFilter.setValue({
-              eq: 5,
+              eq: 5
             });
 
             expect(called).toBe(1);
@@ -466,8 +466,8 @@ describe("Ext.grid.filters.filter.Number", function () {
               createGrid({
                 active: false,
                 value: {
-                  eq: val,
-                },
+                  eq: val
+                }
               });
 
               len = store.data.length;
@@ -477,7 +477,7 @@ describe("Ext.grid.filters.filter.Number", function () {
               columnFilter.setActive(true);
 
               expect(store.data.length).toBe(0);
-            },
+            }
           );
         }
 
@@ -495,14 +495,14 @@ describe("Ext.grid.filters.filter.Number", function () {
               showMenu();
 
               columnFilter.setValue({
-                eq: val,
+                eq: val
               });
 
               columnFilter.setActive(false);
               columnFilter.setActive(true);
 
               expect(store.data.length).toBe(0);
-            },
+            }
           );
         }
 
@@ -519,8 +519,8 @@ describe("Ext.grid.filters.filter.Number", function () {
             function () {
               createGrid({
                 value: {
-                  eq: val,
-                },
+                  eq: val
+                }
               });
 
               showMenu();
@@ -529,7 +529,7 @@ describe("Ext.grid.filters.filter.Number", function () {
               columnFilter.setActive(false);
 
               expect(store.data.length > 0).toBe(true);
-            },
+            }
           );
         }
 
@@ -550,7 +550,7 @@ describe("Ext.grid.filters.filter.Number", function () {
               showMenu();
 
               columnFilter.setValue({
-                eq: val,
+                eq: val
               });
 
               expect(store.data.length).toBe(0);
@@ -558,7 +558,7 @@ describe("Ext.grid.filters.filter.Number", function () {
               columnFilter.setActive(false);
 
               expect(store.data.length).toBe(len);
-            },
+            }
           );
         }
 

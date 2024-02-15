@@ -5,5 +5,5 @@ Ext.define("Ext.locale.it.grid.PropertyColumnModel", {
   valueText: "Value",
   dateFormat: "j/m/Y",
   trueText: "vero",
-  falseText: "falso",
+  falseText: "falso"
 });

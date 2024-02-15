@@ -75,5 +75,5 @@ Ext.define("Ext.util.Queue", {
     }
 
     return obj;
-  },
+  }
 });

@@ -177,14 +177,14 @@ Ext.define("Ext.layout.container.CheckboxGroup", {
       if (widthShrinkWrap) {
         ownerContext.setContentWidth(
           table.offsetWidth + targetPadding.width,
-          true,
+          true
         );
       }
 
       if (heightShrinkWrap) {
         ownerContext.setContentHeight(
           table.offsetHeight + targetPadding.height,
-          true,
+          true
         );
       }
     }
@@ -460,9 +460,9 @@ Ext.define("Ext.layout.container.CheckboxGroup", {
           tag: "td",
           cls: this.owner.groupCls,
           vAlign: "top",
-          role: "presentation",
+          role: "presentation"
         },
-        true,
+        true
       );
     }
 
@@ -552,5 +552,5 @@ Ext.define("Ext.layout.container.CheckboxGroup", {
     targetNode = column.children[itemIndex];
 
     column.insertBefore(item.el.dom, targetNode || null);
-  },
+  }
 });

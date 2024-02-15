@@ -188,14 +188,14 @@ Ext.Loader = new (function () {
        * @cfg {String} scriptCharset
        * Optional charset to specify encoding of dynamic script content.
        */
-      scriptCharset: undefined,
+      scriptCharset: undefined
     },
     // These configs are delegated to Ext.Script and may need different names:
     delegatedConfigs = {
       disableCaching: true,
       disableCachingParam: true,
       preserveScripts: true,
-      scriptChainDelay: "loadDelay",
+      scriptChainDelay: "loadDelay"
     };
 
   Ext.apply(Loader, {
@@ -493,7 +493,7 @@ Ext.Loader = new (function () {
           Loader.syncModeEnabled = wasEnabled;
 
           return ret;
-        },
+        }
       });
 
       selector.exclude(excludes);
@@ -550,7 +550,7 @@ Ext.Loader = new (function () {
             Loader.checkReady();
           },
           Loader,
-          missingClassNames,
+          missingClassNames
         );
 
         if (!_config.enabled) {
@@ -559,7 +559,7 @@ Ext.Loader = new (function () {
               "Missing required class" +
               (missingClassNames.length > 1 ? "es" : "") +
               ": " +
-              missingClassNames.join(", "),
+              missingClassNames.join(", ")
           );
         }
 
@@ -568,7 +568,7 @@ Ext.Loader = new (function () {
             url: urls,
             // scope will be this options object so we can pass these along:
             _classNames: missingClassNames,
-            _urlByClass: urlByClass,
+            _urlByClass: urlByClass
           });
         } else {
           // need to call checkReady here, as the _missingCoun
@@ -697,7 +697,7 @@ Ext.Loader = new (function () {
               missingClasses.join("', '") +
               "'. Please check the source code of their " +
               "corresponding files for possible typos: '" +
-              missingPaths.join("', '"),
+              missingPaths.join("', '")
           );
         }
       }
@@ -848,9 +848,9 @@ Ext.Loader = new (function () {
           success: Loader.onLoadSuccess,
           failure: Loader.onLoadFailure,
           sync: Loader.syncModeEnabled,
-          _classNames: [],
+          _classNames: []
         },
-        params,
+        params
       );
 
       options.userScope = options.scope;
@@ -908,7 +908,7 @@ Ext.Loader = new (function () {
           scope: scope,
           onLoad: onLoad,
           onError: onError,
-          _classNames: [],
+          _classNames: []
         };
 
       Loader.loadScripts(request);
@@ -963,14 +963,14 @@ Ext.Loader = new (function () {
             Ext.log.error("[Loader] The following classes failed to load:");
             for (var name in Loader.missingQueue) {
               Ext.log.error(
-                "[Loader] " + name + " from " + Loader.missingQueue[name],
+                "[Loader] " + name + " from " + Loader.missingQueue[name]
               );
             }
           }
         }, 1000);
       }
       //</debug>
-    },
+    }
   });
 
   /**
@@ -1131,7 +1131,7 @@ Ext.Loader = new (function () {
         for (i = 0, ln = dependencies.length; i < ln; i++) {
           dependency = dependencies[i];
           (requiredMap[dependency] || (requiredMap[dependency] = [])).push(
-            className,
+            className
           );
         }
 
@@ -1153,7 +1153,7 @@ Ext.Loader = new (function () {
                   "' mutually require each other. Path: " +
                   deadlockPath.join(" -> ") +
                   " -> " +
-                  deadlockPath[0],
+                  deadlockPath[0]
               );
             }
 
@@ -1205,14 +1205,14 @@ Ext.Loader = new (function () {
           }
 
           continueFn.call(me, cls, data, hooks);
-        },
+        }
       );
 
       return false;
     },
     true,
     "after",
-    "className",
+    "className"
   );
 
   /**

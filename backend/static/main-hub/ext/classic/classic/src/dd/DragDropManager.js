@@ -194,7 +194,7 @@ Ext.define(
       Ext.getWin().on({
         unload: me._onUnload,
         resize: me._onResize,
-        scope: me,
+        scope: me
       });
     },
 
@@ -480,7 +480,7 @@ Ext.define(
           translate: false,
           fn: me.handleMouseUp,
           capture: false,
-          priority: -1000,
+          priority: -1000
         },
         // Mousemove events do not need to be captured because they do not contend
         // with scroll events - they're only processed when a drag has begun.
@@ -488,12 +488,12 @@ Ext.define(
         pointermove = {
           translate: false,
           fn: me.handleMouseMove,
-          capture: false,
+          capture: false
         },
         listeners = {
           capture: true,
           destroyable: true,
-          scope: me,
+          scope: me
         },
         supports = Ext.supports;
 
@@ -798,7 +798,7 @@ Ext.define(
         e = e.chain({
           target:
             me.elementFromPoint(e.clientX, e.clientY) ||
-            document.documentElement,
+            document.documentElement
         });
         if (overDragEl) {
           dragEl.style.visibility = "visible";
@@ -1226,7 +1226,7 @@ Ext.define(
         pos.y,
         pos.x + el.offsetWidth,
         pos.y + el.offsetHeight,
-        pos.x,
+        pos.x
       );
 
       overlap = curRegion.intersect(loc);
@@ -1292,7 +1292,7 @@ Ext.define(
       var oWrapper = this.elementCache[id];
       if (!oWrapper || !oWrapper.el) {
         oWrapper = this.elementCache[id] = new this.ElementWrapper(
-          Ext.getDom(id),
+          Ext.getDom(id)
         );
       }
       return oWrapper;
@@ -1400,7 +1400,7 @@ Ext.define(
 
       return {
         top: top,
-        left: left,
+        left: left
       };
     },
 
@@ -1474,11 +1474,11 @@ Ext.define(
       }
 
       return false;
-    },
+    }
   },
   function (DragDropManager) {
     Ext.onInternalReady(function () {
       DragDropManager.addListeners();
     });
-  },
+  }
 );

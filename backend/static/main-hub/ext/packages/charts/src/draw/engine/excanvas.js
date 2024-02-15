@@ -182,7 +182,7 @@ if (!document.createElement("canvas").getContext) {
           //el.getContext().setCoordsize_()
         }
         return el;
-      },
+      }
     };
 
     function onPropertyChange(e) {
@@ -225,7 +225,7 @@ if (!document.createElement("canvas").getContext) {
       return [
         [1, 0, 0],
         [0, 1, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
     }
 
@@ -398,7 +398,7 @@ if (!document.createElement("canvas").getContext) {
       violet: "#EE82EE",
       wheat: "#F5DEB3",
       whitesmoke: "#F5F5F5",
-      yellowgreen: "#9ACD32",
+      yellowgreen: "#9ACD32"
     };
 
     function getRgbHslContent(styleString) {
@@ -495,7 +495,7 @@ if (!document.createElement("canvas").getContext) {
       variant: "normal",
       weight: "normal",
       size: 10,
-      family: "sans-serif",
+      family: "sans-serif"
     };
 
     // Internal text style cache
@@ -519,7 +519,7 @@ if (!document.createElement("canvas").getContext) {
         variant: style.fontVariant || DEFAULT_STYLE.variant,
         weight: style.fontWeight || DEFAULT_STYLE.weight,
         size: style.fontSize || DEFAULT_STYLE.size,
-        family: style.fontFamily || DEFAULT_STYLE.family,
+        family: style.fontFamily || DEFAULT_STYLE.family
       });
     }
 
@@ -571,7 +571,7 @@ if (!document.createElement("canvas").getContext) {
 
     var lineCapMap = {
       butt: "flat",
-      round: "round",
+      round: "round"
     };
 
     function processLineCap(lineCap) {
@@ -668,7 +668,7 @@ if (!document.createElement("canvas").getContext) {
       aCP2x,
       aCP2y,
       aX,
-      aY,
+      aY
     ) {
       var p = getCoords(this, aX, aY);
       var cp1 = getCoords(this, aCP1x, aCP1y);
@@ -685,7 +685,7 @@ if (!document.createElement("canvas").getContext) {
         cp2x: cp2.x,
         cp2y: cp2.y,
         x: p.x,
-        y: p.y,
+        y: p.y
       });
       self.currentX_ = p.x;
       self.currentY_ = p.y;
@@ -700,11 +700,11 @@ if (!document.createElement("canvas").getContext) {
 
       var cp1 = {
         x: this.currentX_ + (2.0 / 3.0) * (cp.x - this.currentX_),
-        y: this.currentY_ + (2.0 / 3.0) * (cp.y - this.currentY_),
+        y: this.currentY_ + (2.0 / 3.0) * (cp.y - this.currentY_)
       };
       var cp2 = {
         x: cp1.x + (p.x - this.currentX_) / 3.0,
-        y: cp1.y + (p.y - this.currentY_) / 3.0,
+        y: cp1.y + (p.y - this.currentY_) / 3.0
       };
 
       bezierCurveTo(this, cp1, cp2, p);
@@ -716,7 +716,7 @@ if (!document.createElement("canvas").getContext) {
       aRadius,
       aStartAngle,
       aEndAngle,
-      aClockwise,
+      aClockwise
     ) {
       aRadius *= Z;
       var arcType = aClockwise ? "at" : "wa";
@@ -745,7 +745,7 @@ if (!document.createElement("canvas").getContext) {
         xStart: pStart.x,
         yStart: pStart.y,
         xEnd: pEnd.x,
-        yEnd: pEnd.y,
+        yEnd: pEnd.y
       });
     };
 
@@ -800,7 +800,7 @@ if (!document.createElement("canvas").getContext) {
       aR0,
       aX1,
       aY1,
-      aR1,
+      aR1
     ) {
       var gradient = new CanvasGradient_("gradientradial");
       gradient.x0_ = aX0;
@@ -884,7 +884,7 @@ if (!document.createElement("canvas").getContext) {
         mr(d.x / Z),
         "px; rotation:",
         mr((Math.atan(m[0][1] / m[1][1]) * 180) / Math.PI),
-        ";",
+        ";"
       );
 
       vmlStr.push(
@@ -911,7 +911,7 @@ if (!document.createElement("canvas").getContext) {
         (h - sy - sh) / h,
         '"',
         " />",
-        "</g_vml_:group>",
+        "</g_vml_:group>"
       );
 
       this.element_.insertAdjacentHTML("BeforeEnd", vmlStr.join(""));
@@ -953,7 +953,7 @@ if (!document.createElement("canvas").getContext) {
         ' stroked="',
         !aFill,
         '"',
-        ' path="',
+        ' path="'
       );
 
       var min = { x: null, y: null };
@@ -988,7 +988,7 @@ if (!document.createElement("canvas").getContext) {
               ",",
               mr(p.x),
               ",",
-              mr(p.y),
+              mr(p.y)
             );
             break;
           case "at":
@@ -1011,7 +1011,7 @@ if (!document.createElement("canvas").getContext) {
               " ",
               mr(p.xEnd),
               ",",
-              mr(p.yEnd),
+              mr(p.yEnd)
             );
             break;
         }
@@ -1083,7 +1083,7 @@ if (!document.createElement("canvas").getContext) {
         'px"',
         ' color="',
         color,
-        '" />',
+        '" />'
       );
     }
 
@@ -1128,7 +1128,7 @@ if (!document.createElement("canvas").getContext) {
           var p0 = getCoords(ctx, fillStyle.x0_, fillStyle.y0_);
           focus = {
             x: (p0.x - min.x) / width,
-            y: (p0.y - min.y) / height,
+            y: (p0.y - min.y) / height
           };
 
           width /= arcScaleX * Z;
@@ -1186,7 +1186,7 @@ if (!document.createElement("canvas").getContext) {
           focus.x,
           ",",
           focus.y,
-          '" />',
+          '" />'
         );
       } else if (fillStyle instanceof CanvasPattern_) {
         if (width && height) {
@@ -1204,7 +1204,7 @@ if (!document.createElement("canvas").getContext) {
             //' size="', w, 'px ', h, 'px"',
             ' src="',
             fillStyle.src_,
-            '" />',
+            '" />'
           );
         }
       } else {
@@ -1216,7 +1216,7 @@ if (!document.createElement("canvas").getContext) {
           color,
           '" opacity="',
           opacity,
-          '" />',
+          '" />'
         );
       }
     }
@@ -1235,7 +1235,7 @@ if (!document.createElement("canvas").getContext) {
       var m = ctx.m_;
       return {
         x: Z * (aX * m[0][0] + aY * m[1][0] + m[2][0]) - Z2,
-        y: Z * (aX * m[0][1] + aY * m[1][1] + m[2][1]) - Z2,
+        y: Z * (aX * m[0][1] + aY * m[1][1] + m[2][1]) - Z2
       };
     }
 
@@ -1284,7 +1284,7 @@ if (!document.createElement("canvas").getContext) {
       var m1 = [
         [1, 0, 0],
         [0, 1, 0],
-        [aX, aY, 1],
+        [aX, aY, 1]
       ];
 
       setM(this, matrixMultiply(m1, this.m_), false);
@@ -1297,7 +1297,7 @@ if (!document.createElement("canvas").getContext) {
       var m1 = [
         [c, s, 0],
         [-s, c, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
 
       setM(this, matrixMultiply(m1, this.m_), false);
@@ -1309,7 +1309,7 @@ if (!document.createElement("canvas").getContext) {
       var m1 = [
         [aX, 0, 0],
         [0, aY, 0],
-        [0, 0, 1],
+        [0, 0, 1]
       ];
 
       setM(this, matrixMultiply(m1, this.m_), true);
@@ -1319,7 +1319,7 @@ if (!document.createElement("canvas").getContext) {
       var m1 = [
         [m11, m12, 0],
         [m21, m22, 0],
-        [dx, dy, 1],
+        [dx, dy, 1]
       ];
 
       setM(this, matrixMultiply(m1, this.m_), true);
@@ -1329,7 +1329,7 @@ if (!document.createElement("canvas").getContext) {
       var m = [
         [m11, m12, 0],
         [m21, m22, 0],
-        [dx, dy, 1],
+        [dx, dy, 1]
       ];
 
       setM(this, m, true);
@@ -1350,7 +1350,7 @@ if (!document.createElement("canvas").getContext) {
 
       var fontStyle = getComputedStyle(
         processFontStyle(this.font),
-        this.element_,
+        this.element_
       );
 
       var fontStyleString = buildStyle(fontStyle);
@@ -1412,7 +1412,7 @@ if (!document.createElement("canvas").getContext) {
         !stroke,
         '" stroked="',
         !!stroke,
-        '" style="position:absolute;width:1px;height:1px;left:0px;top:0px;">',
+        '" style="position:absolute;width:1px;height:1px;left:0px;top:0px;">'
       );
 
       if (stroke) {
@@ -1423,7 +1423,7 @@ if (!document.createElement("canvas").getContext) {
           this,
           lineStr,
           { x: -left, y: 0 },
-          { x: right, y: fontStyle.size },
+          { x: right, y: fontStyle.size }
         );
       }
 
@@ -1455,7 +1455,7 @@ if (!document.createElement("canvas").getContext) {
         textAlign,
         ";font:",
         encodeHtmlAttribute(fontStyleString),
-        '" /></g_vml_:line>',
+        '" /></g_vml_:line>'
       );
 
       this.element_.insertAdjacentHTML("beforeEnd", lineStr.join(""));
@@ -1516,7 +1516,7 @@ if (!document.createElement("canvas").getContext) {
       this.colors_.push({
         offset: aOffset,
         color: aColor.color,
-        alpha: aColor.alpha,
+        alpha: aColor.alpha
       });
     };
 

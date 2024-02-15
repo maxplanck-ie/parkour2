@@ -14,12 +14,12 @@ Ext.define("Ext.chart.series.sprite.Area", {
         /**
          * @cfg {Boolean} [step=false] 'true' if the area is represented with steps instead of lines.
          */
-        step: "bool",
+        step: "bool"
       },
       defaults: {
-        step: false,
-      },
-    },
+        step: false
+      }
+    }
   },
 
   renderClipped: function (surface, ctx, clip) {
@@ -50,7 +50,7 @@ Ext.define("Ext.chart.series.sprite.Area", {
       end = Math.min(dataX.length - 1, this.binarySearch(max) + 1),
       renderer = attr.renderer,
       rendererData = {
-        store: store,
+        store: store
       },
       rendererConfig,
       rendererChanges;
@@ -122,7 +122,7 @@ Ext.define("Ext.chart.series.sprite.Area", {
             null,
             [me, markerCfg, rendererData, i],
             0,
-            series,
+            series
           );
           Ext.apply(markerCfg, rendererChanges);
         }
@@ -141,7 +141,7 @@ Ext.define("Ext.chart.series.sprite.Area", {
             null,
             [me, markerCfg, rendererData, i],
             0,
-            series,
+            series
           );
           Ext.apply(markerCfg, rendererChanges);
         }
@@ -153,5 +153,5 @@ Ext.define("Ext.chart.series.sprite.Area", {
       attr.matrix.toContext(ctx);
     }
     ctx.stroke();
-  },
+  }
 });

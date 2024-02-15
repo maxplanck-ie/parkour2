@@ -22,11 +22,11 @@ describe("Ext.app.route.Router", function () {
       handleRoute: function () {
         numArgs += arguments.length;
         actionExecuted = true;
-      },
+      }
     });
 
     other = new Ext.app.Controller({
-      handleRoute: Ext.emptyFn,
+      handleRoute: Ext.emptyFn
     });
   });
 
@@ -57,17 +57,17 @@ describe("Ext.app.route.Router", function () {
       Router.connect("foo/bar", {
         action: "handleRoute",
         before: "beforeHandleRoute",
-        controller: controller,
+        controller: controller
       });
       Router.connect("foo/bar", {
         action: "handleRoute",
         before: "beforeHandleRoute",
-        controller: controller,
+        controller: controller
       });
       Router.connect("foo/bar", {
         action: "handleRoute",
         before: "beforeHandleRoute",
-        controller: controller,
+        controller: controller
       });
 
       expect(Router.routes.length).toBe(3);
@@ -77,11 +77,11 @@ describe("Ext.app.route.Router", function () {
       Router.draw(function (map) {
         map.connect("foo/bar", {
           controller: controller,
-          action: "handleRoute",
+          action: "handleRoute"
         });
         map.connect("foo/bar", {
           controller: controller,
-          action: "handleRoute",
+          action: "handleRoute"
         });
       });
 
@@ -124,7 +124,7 @@ describe("Ext.app.route.Router", function () {
     Router.onStateChange("bar");
     expect(Router.application.fireEvent).toHaveBeenCalledWith(
       "unmatchedroute",
-      "bar",
+      "bar"
     );
   });
 
@@ -136,9 +136,9 @@ describe("Ext.app.route.Router", function () {
       token2,
       {
         action: "handleRoute",
-        before: "beforeHandleRoute",
+        before: "beforeHandleRoute"
       },
-      controller,
+      controller
     );
 
     Router.onStateChange("foo/bar|foo2/2");

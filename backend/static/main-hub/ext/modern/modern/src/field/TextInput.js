@@ -14,14 +14,14 @@ Ext.define("Ext.field.TextInput", {
   beforeTemplate: [
     {
       reference: "beforeElement",
-      cls: Ext.baseCSSPrefix + "before-el",
-    },
+      cls: Ext.baseCSSPrefix + "before-el"
+    }
   ],
 
   afterTemplate: [
     {
       reference: "afterElement",
-      cls: Ext.baseCSSPrefix + "after-el",
-    },
-  ],
+      cls: Ext.baseCSSPrefix + "after-el"
+    }
+  ]
 });

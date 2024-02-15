@@ -10,12 +10,12 @@ Ext.define("Ext.device.orientation.HTML5", {
 
     this.onDeviceOrientation = Ext.Function.bind(
       this.onDeviceOrientation,
-      this,
+      this
     );
     window.addEventListener(
       "deviceorientation",
       this.onDeviceOrientation,
-      true,
+      true
     );
-  },
+  }
 });

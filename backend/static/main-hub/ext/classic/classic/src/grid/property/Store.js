@@ -13,7 +13,7 @@ Ext.define("Ext.grid.property.Store", {
   requires: [
     "Ext.grid.property.Reader",
     "Ext.data.proxy.Memory",
-    "Ext.grid.property.Property",
+    "Ext.grid.property.Property"
   ],
 
   /**
@@ -30,8 +30,8 @@ Ext.define("Ext.grid.property.Store", {
       {
         data: source,
         model: Ext.grid.property.Property,
-        proxy: me.getProxy(),
-      },
+        proxy: me.getProxy()
+      }
     ]);
   },
 
@@ -41,7 +41,7 @@ Ext.define("Ext.grid.property.Store", {
     if (!proxy) {
       proxy = this.proxy = new Ext.data.proxy.Memory({
         model: Ext.grid.property.Property,
-        reader: this.getReader(),
+        reader: this.getReader()
       });
     }
     return proxy;
@@ -52,7 +52,7 @@ Ext.define("Ext.grid.property.Store", {
     var reader = this.reader;
     if (!reader) {
       reader = this.reader = new Ext.grid.property.Reader({
-        model: Ext.grid.property.Property,
+        model: Ext.grid.property.Property
       });
     }
     return reader;
@@ -133,5 +133,5 @@ Ext.define("Ext.grid.property.Store", {
   doDestroy: function () {
     Ext.destroy(this.reader, this.proxy);
     this.callParent();
-  },
+  }
 });

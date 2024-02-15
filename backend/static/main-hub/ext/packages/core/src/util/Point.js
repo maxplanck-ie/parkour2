@@ -56,7 +56,7 @@ Ext.define(
         }
 
         return object;
-      },
+      }
     },
 
     /**
@@ -209,7 +209,7 @@ Ext.define(
         deltaY = this.y - point.y;
 
       return Math.atan2(deltaY, deltaX) * this.radianToDegreeConstant;
-    },
+    }
   },
   function () {
     /**
@@ -218,5 +218,5 @@ Ext.define(
      * @inheritdoc Ext.util.Region#translateBy
      */
     this.prototype.translate = this.prototype.translateBy;
-  },
+  }
 );

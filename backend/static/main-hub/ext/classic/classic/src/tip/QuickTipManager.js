@@ -123,9 +123,9 @@ Ext.define("Ext.tip.QuickTipManager", {
             sticky: true,
             //</debug>
             disabled: me.disabled,
-            id: "ext-quicktips-tip",
+            id: "ext-quicktips-tip"
           },
-          config,
+          config
         ),
         className = tipConfig.className,
         xtype = tipConfig.xtype;
@@ -146,7 +146,7 @@ Ext.define("Ext.tip.QuickTipManager", {
           Ext.raise({
             sourceClass: "Ext.tip.QuickTipManager",
             sourceMethod: "init",
-            msg: "Cannot init QuickTipManager: no document body",
+            msg: "Cannot init QuickTipManager: no document body"
           });
         }
         //</debug>
@@ -278,5 +278,5 @@ Ext.define("Ext.tip.QuickTipManager", {
     var tip = this.tip;
 
     tip.register.apply(tip, arguments);
-  },
+  }
 });

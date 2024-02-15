@@ -84,5 +84,5 @@ Ext.define("Ext.grid.column.Date", {
   updater: function (cell, value) {
     Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
       Ext.grid.column.Date.prototype.defaultRenderer.call(this, value);
-  },
+  }
 });

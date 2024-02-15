@@ -5,27 +5,27 @@ Ext.define("Ext.layout.wrapper.BoxDock", {
   config: {
     direction: "horizontal",
     element: {
-      className: Ext.baseCSSPrefix + "dock",
+      className: Ext.baseCSSPrefix + "dock"
     },
     bodyElement: {
-      className: Ext.baseCSSPrefix + "dock-body",
+      className: Ext.baseCSSPrefix + "dock-body"
     },
     innerWrapper: null,
     sizeState: false,
-    container: null,
+    container: null
   },
 
   positionMap: {
     top: "start",
     left: "start",
     bottom: "end",
-    right: "end",
+    right: "end"
   },
 
   constructor: function (config) {
     this.items = {
       start: [],
-      end: [],
+      end: []
     };
 
     this.itemsCount = 0;
@@ -198,5 +198,5 @@ Ext.define("Ext.layout.wrapper.BoxDock", {
     me.unlink(["_bodyElement", "_element"]);
 
     me.callParent();
-  },
+  }
 });

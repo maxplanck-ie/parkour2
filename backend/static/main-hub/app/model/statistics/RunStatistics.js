@@ -4,78 +4,78 @@ Ext.define("MainHub.model.statistics.RunStatistics", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "flowcell_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "sequencer",
-      type: "string",
+      type: "string"
     },
     {
       name: "read_length",
-      type: "string",
+      type: "string"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "pool",
-      type: "string",
+      type: "string"
     },
     {
       name: "request",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_preparation",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_type",
-      type: "string",
+      type: "string"
     },
     {
       name: "loading_concentration",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "cluster_pf",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "reads_pf",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "undetermined_indices",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "phix",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "read_1",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "read_2",
       type: "float",
-      allowNull: true,
-    },
-  ],
+      allowNull: true
+    }
+  ]
 });

@@ -44,8 +44,8 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
     extjsGestures: {
       start: { event: "click", handler: "onInfoGesture" },
       move: { event: "mousemove", handler: "onInfoGesture" },
-      end: { event: "mouseleave", handler: "onInfoGesture" },
-    },
+      end: { event: "mouseleave", handler: "onInfoGesture" }
+    }
 
     // TODO:ps The trigger above should be 'itemclick', not 'click'.
   },
@@ -69,5 +69,5 @@ Ext.define("Ext.chart.interactions.ItemInfo", {
       me.item = item;
     }
     return false;
-  },
+  }
 });

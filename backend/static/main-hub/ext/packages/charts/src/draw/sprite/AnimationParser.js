@@ -28,7 +28,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         if (color1 && color1.isColor && color2 && color2.isColor) {
           return [
             [color1.r, color1.g, color1.b, color1.a],
-            [color2.r, color2.g, color2.b, color2.a],
+            [color2.r, color2.g, color2.b, color2.a]
           ];
         } else {
           return [color1 || color2, color2 || color1];
@@ -42,14 +42,14 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
             compute(from[0], to[0], delta),
             compute(from[1], to[1], delta),
             compute(from[2], to[2], delta),
-            compute(from[3], to[3], delta),
+            compute(from[3], to[3], delta)
           ];
         }
       },
       serve: function (array) {
         var color = Ext.util.Color.fly(array[0], array[1], array[2], array[3]);
         return color.toString();
-      },
+      }
     },
 
     number: {
@@ -63,7 +63,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         } else {
           return compute(from, to, delta);
         }
-      },
+      }
     },
 
     angle: {
@@ -82,7 +82,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         } else {
           return compute(from, to, delta);
         }
-      },
+      }
     },
 
     path: {
@@ -99,7 +99,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           lastStripe = toStripes[toLength - 1],
           endPoint = [
             lastStripe[lastStripe.length - 2],
-            lastStripe[lastStripe.length - 1],
+            lastStripe[lastStripe.length - 1]
           ];
 
         for (i = fromLength; i < toLength; i++) {
@@ -126,14 +126,14 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
               endPoint[0],
               endPoint[1],
               endPoint[0],
-              endPoint[1],
+              endPoint[1]
             );
           }
 
           lastStripe = toStripes[toStripes.length - 1];
           endPoint = [
             lastStripe[lastStripe.length - 2],
-            lastStripe[lastStripe.length - 1],
+            lastStripe[lastStripe.length - 1]
           ];
           for (j = fromLength; j < toLength; j += 6) {
             fromStripe.push(
@@ -142,7 +142,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
               endPoint[0],
               endPoint[1],
               endPoint[0],
-              endPoint[1],
+              endPoint[1]
             );
           }
           for (i = 0; i < toStripe.length; i++) {
@@ -178,7 +178,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           }
         }
         return toStripes.temp;
-      },
+      }
     },
 
     data: {
@@ -215,7 +215,7 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
         }
 
         return target;
-      },
+      }
     },
 
     text: {
@@ -224,10 +224,10 @@ Ext.define("Ext.draw.sprite.AnimationParser", function () {
           from.substr(0, Math.round(from.length * (1 - delta))) +
           to.substr(Math.round(to.length * (1 - delta)))
         );
-      },
+      }
     },
 
     limited: "number",
-    limited01: "number",
+    limited01: "number"
   };
 });

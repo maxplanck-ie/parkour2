@@ -22,7 +22,7 @@ Ext.onReady(function () {
       "9月",
       "10月",
       "11月",
-      "12月",
+      "12月"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -41,7 +41,7 @@ Ext.onReady(function () {
       9: 8,
       10: 9,
       11: 10,
-      12: 11,
+      12: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -56,7 +56,7 @@ Ext.onReady(function () {
       "水曜日",
       "木曜日",
       "金曜日",
-      "土曜日",
+      "土曜日"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -73,7 +73,7 @@ Ext.onReady(function () {
         "if (!h || h == 12) { h = 0; }\n" +
         "} else { if (!h || h < 12) { h = (h || 0) + 12; }}",
       s: "(午前|午後)",
-      calcAtEnd: true,
+      calcAtEnd: true
     };
 
     Ext.Date.parseCodes.a = Ext.Date.parseCodes.A = parseCodes;
@@ -85,30 +85,30 @@ Ext.onReady(function () {
       decimalSeparator: ".",
       currencySign: "\u00a5",
       // Japanese Yen
-      dateFormat: "Y/m/d",
+      dateFormat: "Y/m/d"
     });
   }
 });
 
 Ext.define("Ext.locale.ja.LoadMask", {
   override: "Ext.LoadMask",
-  msg: "読み込み中...",
+  msg: "読み込み中..."
 });
 
 Ext.define("Ext.locale.ja.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.ja.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} 行選択",
+  dragText: "{0} 行選択"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.ja.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "読み込み中...",
+  loadingText: "読み込み中..."
 });
 
 Ext.define("Ext.locale.ja.picker.Date", {
@@ -127,13 +127,13 @@ Ext.define("Ext.locale.ja.picker.Date", {
   ariaTitle: "{0}",
   ariaTitleDateFormat: "Y\u5e74m\u6708d\u65e5",
   longDayFormat: "Y\u5e74m\u6708d\u65e5",
-  monthYearFormat: "Y\u5e74m\u6708",
+  monthYearFormat: "Y\u5e74m\u6708"
 });
 
 Ext.define("Ext.locale.ja.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "キャンセル",
+  cancelText: "キャンセル"
 });
 
 Ext.define("Ext.locale.ja.toolbar.Paging", {
@@ -146,12 +146,12 @@ Ext.define("Ext.locale.ja.toolbar.Paging", {
   lastText: "最後のページ",
   refreshText: "更新",
   displayMsg: "{2} 件中 {0} - {1} を表示",
-  emptyMsg: "表示するデータがありません。",
+  emptyMsg: "表示するデータがありません。"
 });
 
 Ext.define("Ext.locale.ja.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "フィールドの値が不正です。",
+  invalidText: "フィールドの値が不正です。"
 });
 
 Ext.define("Ext.locale.ja.form.field.Text", {
@@ -160,12 +160,12 @@ Ext.define("Ext.locale.ja.form.field.Text", {
   maxLengthText: "このフィールドの最大値は {0} です。",
   blankText: "必須項目です。",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.ja.form.field.File", {
   override: "Ext.form.field.File",
-  buttonText: "参照...",
+  buttonText: "参照..."
 });
 
 Ext.define("Ext.locale.ja.form.field.Number", {
@@ -174,7 +174,7 @@ Ext.define("Ext.locale.ja.form.field.Number", {
   minText: "このフィールドの最小値は {0} です。",
   maxText: "このフィールドの最大値は {0} です。",
   nanText: "{0} は数値ではありません。",
-  negativeText: "負の値は無効です。",
+  negativeText: "負の値は無効です。"
 });
 
 Ext.define("Ext.locale.ja.form.field.Date", {
@@ -185,20 +185,20 @@ Ext.define("Ext.locale.ja.form.field.Date", {
   maxText: "このフィールドの日付は、 {0} 以前の日付に設定してください。",
   invalidText: "{0} は間違った日付入力です。 - 入力形式は「{1}」です。",
   format: "Y/m/d",
-  altFormats: "y/m/d|m/d/y|m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d",
+  altFormats: "y/m/d|m/d/y|m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.ja.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "読み込み中...",
+      loadingText: "読み込み中..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ja.form.field.VTypes", {
@@ -206,14 +206,14 @@ Ext.define("Ext.locale.ja.form.field.VTypes", {
   emailText: 'メールアドレスを"user@example.com"の形式で入力してください。',
   urlText: 'URLを"http:/' + '/www.example.com"の形式で入力してください。',
   alphaText: '半角英字と"_"のみです。',
-  alphanumText: '半角英数と"_"のみです。',
+  alphanumText: '半角英数と"_"のみです。'
 });
 
 Ext.define(
   "Ext.locale.ja.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "リンクのURLを入力してください:",
+    createLinkText: "リンクのURLを入力してください:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -221,102 +221,102 @@ Ext.define(
         bold: {
           title: "太字 (コントロール+B)",
           text: "選択テキストを太字にします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "斜体 (コントロール+I)",
           text: "選択テキストを斜体にします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "下線 (コントロール+U)",
           text: "選択テキストに下線を引きます。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "文字を大きく",
           text: "フォントサイズを大きくします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "文字を小さく",
           text: "フォントサイズを小さくします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "文字のハイライト",
           text: "選択テキストの背景色を変更します。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "文字の色",
           text: "選択テキストの色を変更します。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "左揃え",
           text: "テキストを左揃えにします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "中央揃え",
           text: "テキストを中央揃えにします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "右揃え",
           text: "テキストを右揃えにします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "番号なし箇条書き",
           text: "番号なし箇条書きを開始します。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "番号付き箇条書き",
           text: "番号付き箇条書きを開始します。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "ハイパーリンク",
           text: "選択テキストをハイパーリンクにします。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "ソース編集",
           text: "ソース編集モードに切り替えます。",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.ja.grid.header.Container", {
   override: "Ext.grid.header.Container",
   sortAscText: "昇順",
   sortDescText: "降順",
-  columnsText: "カラム",
+  columnsText: "カラム"
 });
 
 Ext.define("Ext.locale.ja.grid.column.Date", {
   override: "Ext.grid.column.Date",
-  format: "Y/m/d",
+  format: "Y/m/d"
 });
 
 Ext.define("Ext.locale.ja.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(なし)",
   groupByText: "このカラムでグルーピング",
-  showGroupsText: "グルーピング",
+  showGroupsText: "グルーピング"
 });
 
 Ext.define("Ext.locale.ja.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "名称",
   valueText: "値",
-  dateFormat: "Y/m/d",
+  dateFormat: "Y/m/d"
 });
 
 Ext.define("Ext.locale.ja.form.field.Time", {
@@ -326,17 +326,17 @@ Ext.define("Ext.locale.ja.form.field.Time", {
   invalidText: "{0} は間違った時刻入力です。",
   format: "g:i A",
   altFormats:
-    "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H",
+    "g:ia|g:iA|g:i a|g:i A|h:i|g:i|H:i|ga|ha|gA|h a|g a|g A|gi|hi|gia|hia|g|H"
 });
 
 Ext.define("Ext.locale.ja.form.CheckboxGroup", {
   override: "Ext.form.CheckboxGroup",
-  blankText: "このグループから最低１つのアイテムを選択しなければなりません。",
+  blankText: "このグループから最低１つのアイテムを選択しなければなりません。"
 });
 
 Ext.define("Ext.locale.ja.form.RadioGroup", {
   override: "Ext.form.RadioGroup",
-  blankText: "このグループから１つのアイテムを選択しなければなりません。",
+  blankText: "このグループから１つのアイテムを選択しなければなりません。"
 });
 
 Ext.define("Ext.locale.ja.window.MessageBox", {
@@ -345,11 +345,11 @@ Ext.define("Ext.locale.ja.window.MessageBox", {
     ok: "OK",
     cancel: "キャンセル",
     yes: "はい",
-    no: "いいえ",
-  },
+    no: "いいえ"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.ja.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

@@ -23,7 +23,7 @@ Ext.define("Ext.fx.animation.Cube", {
      */
     direction: "right",
 
-    out: false,
+    out: false
   },
 
   //    getData: function() {
@@ -123,11 +123,11 @@ Ext.define("Ext.fx.animation.Cube", {
       toOpacity = 1,
       transformFrom = {
         rotateY: 0,
-        translateZ: 0,
+        translateZ: 0
       },
       transformTo = {
         rotateY: 0,
-        translateZ: 0,
+        translateZ: 0
       };
 
     if (direction == "left" || direction == "right") {
@@ -152,5 +152,5 @@ Ext.define("Ext.fx.animation.Cube", {
     to.set("opacity", toOpacity);
 
     return this.callParent(arguments);
-  },
+  }
 });

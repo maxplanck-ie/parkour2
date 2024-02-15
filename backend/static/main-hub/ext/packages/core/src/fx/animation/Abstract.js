@@ -55,7 +55,7 @@ Ext.define("Ext.fx.animation.Abstract", {
 
     preserveEndState: false,
 
-    replacePrevious: true,
+    replacePrevious: true
   },
 
   STATE_FROM: "0%",
@@ -210,7 +210,7 @@ Ext.define("Ext.fx.animation.Abstract", {
       onBeforeStart: me.getOnBeforeStart(),
       scope: me.getScope(),
       preserveEndState: me.getPreserveEndState(),
-      replacePrevious: me.getReplacePrevious(),
+      replacePrevious: me.getReplacePrevious()
     };
-  },
+  }
 });

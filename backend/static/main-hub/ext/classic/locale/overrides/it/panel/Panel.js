@@ -3,5 +3,5 @@ Ext.define("Ext.locale.it.panel.Panel", {
 
   closeToolText: "Chiudi",
   collapseToolText: "Riduci",
-  expandToolText: "Espandi",
+  expandToolText: "Espandi"
 });

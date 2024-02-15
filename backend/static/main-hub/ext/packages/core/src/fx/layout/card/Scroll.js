@@ -9,7 +9,7 @@ Ext.define("Ext.fx.layout.card.Scroll", {
   alias: "fx.layout.card.scroll",
 
   config: {
-    duration: 150,
+    duration: 150
   },
 
   constructor: function (config) {
@@ -75,7 +75,7 @@ Ext.define("Ext.fx.layout.card.Scroll", {
         if (reverse) {
           easing.setConfig({
             startValue: containerWidth,
-            endValue: 0,
+            endValue: 0
           });
 
           containerElement.dom.scrollLeft = containerWidth;
@@ -83,7 +83,7 @@ Ext.define("Ext.fx.layout.card.Scroll", {
         } else {
           easing.setConfig({
             startValue: 0,
-            endValue: containerWidth,
+            endValue: containerWidth
           });
 
           inElement.setLeft(containerWidth);
@@ -92,7 +92,7 @@ Ext.define("Ext.fx.layout.card.Scroll", {
         if (reverse) {
           easing.setConfig({
             startValue: containerHeight,
-            endValue: 0,
+            endValue: 0
           });
 
           containerElement.dom.scrollTop = containerHeight;
@@ -100,7 +100,7 @@ Ext.define("Ext.fx.layout.card.Scroll", {
         } else {
           easing.setConfig({
             startValue: 0,
-            endValue: containerHeight,
+            endValue: containerHeight
           });
 
           inElement.setTop(containerHeight);
@@ -163,5 +163,5 @@ Ext.define("Ext.fx.layout.card.Scroll", {
     Ext.AnimationQueue.stop(this.doAnimationFrame, this);
     me.isAnimating = false;
     me.fireEvent("animationend", me);
-  },
+  }
 });

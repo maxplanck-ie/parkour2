@@ -41,8 +41,8 @@ describe("Ext.Toolbar", function () {
           beforeEach(function () {
             createToolbar({
               title: {
-                title: "test",
-              },
+                title: "test"
+              }
             });
           });
 

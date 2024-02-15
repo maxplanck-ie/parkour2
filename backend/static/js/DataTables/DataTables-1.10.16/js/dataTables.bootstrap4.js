@@ -46,7 +46,7 @@
       "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
       "<'row'<'col-sm-12'tr>>" +
       "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-    renderer: "bootstrap",
+    renderer: "bootstrap"
   });
 
   /* Default class modification */
@@ -55,7 +55,7 @@
     sFilterInput: "form-control form-control-sm",
     sLengthSelect: "form-control form-control-sm",
     sProcessing: "dataTables_processing card",
-    sPageButton: "paginate_button page-item",
+    sPageButton: "paginate_button page-item"
   });
 
   /* Bootstrap paging button renderer */
@@ -65,7 +65,7 @@
     idx,
     buttons,
     page,
-    pages,
+    pages
   ) {
     var api = new DataTable.Api(settings);
     var classes = settings.oClasses;
@@ -134,7 +134,7 @@
               id:
                 idx === 0 && typeof button === "string"
                   ? settings.sTableId + "_" + button
-                  : null,
+                  : null
             })
               .append(
                 $("<a>", {
@@ -143,8 +143,8 @@
                   "aria-label": aria[button],
                   "data-dt-idx": counter,
                   tabindex: settings.iTabIndex,
-                  class: "page-link",
-                }).html(btnDisplay),
+                  class: "page-link"
+                }).html(btnDisplay)
               )
               .appendTo(container);
 
@@ -170,7 +170,7 @@
 
     attach(
       $(host).empty().html('<ul class="pagination"/>').children("ul"),
-      buttons,
+      buttons
     );
 
     if (activeEl !== undefined) {

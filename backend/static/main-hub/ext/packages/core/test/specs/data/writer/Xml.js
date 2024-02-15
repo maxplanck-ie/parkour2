@@ -7,7 +7,7 @@ describe("Ext.data.writer.Xml", function () {
     simpleData = {
       id: 1,
       title: "Article 1",
-      body: "content1",
+      body: "content1"
     },
     recContent =
       "<record><id>1</id><title>Article 1</title><body>content1</body></record>",
@@ -18,9 +18,9 @@ describe("Ext.data.writer.Xml", function () {
     buildWriter = function (cfg) {
       cfg = Ext.apply(
         {
-          writeAllFields: true,
+          writeAllFields: true
         },
-        cfg,
+        cfg
       );
 
       writer = new Ext.data.writer.Xml(cfg);
@@ -31,8 +31,8 @@ describe("Ext.data.writer.Xml", function () {
       fields: [
         { name: "id", type: "int" },
         { name: "title", type: "string" },
-        { name: "body", type: "string", writeName: "content" },
-      ],
+        { name: "body", type: "string", writeName: "content" }
+      ]
     });
 
     buildRecords = function (recs) {
@@ -45,7 +45,7 @@ describe("Ext.data.writer.Xml", function () {
 
     makeOperation = function (records) {
       return new Ext.data.operation.Create({
-        records: records,
+        records: records
       });
     };
   });
@@ -79,20 +79,20 @@ describe("Ext.data.writer.Xml", function () {
       buildWriter();
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getXmlData()).toBe(simpleXml);
     });
 
     it("should append any header", function () {
       buildWriter({
-        header: "foo",
+        header: "foo"
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getXmlData()).toBe("foo" + simpleXml);
     });
@@ -103,41 +103,41 @@ describe("Ext.data.writer.Xml", function () {
       buildWriter();
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getXmlData()).toBe(simpleXml);
     });
 
     it("should use any custom root specified", function () {
       buildWriter({
-        documentRoot: "customRoot",
+        documentRoot: "customRoot"
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getXmlData()).toBe(
-        simpleXml.replace(/xmlData/g, "customRoot"),
+        simpleXml.replace(/xmlData/g, "customRoot")
       );
     });
 
     it("should exclude the root if the root is empty and there's 1 record", function () {
       buildWriter({
-        documentRoot: "",
+        documentRoot: ""
       });
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
       expect(request.getXmlData()).toBe(recContent);
     });
 
     it("should force the defaultDocumentRoot if root is empty and there's more than 1 record", function () {
       buildWriter({
-        documentRoot: "",
+        documentRoot: ""
       });
       var request = writer.write(
         new Ext.data.Request({
@@ -147,17 +147,17 @@ describe("Ext.data.writer.Xml", function () {
               {
                 id: 2,
                 title: "Article 2",
-                body: "content2",
-              },
-            ]),
-          ),
-        }),
+                body: "content2"
+              }
+            ])
+          )
+        })
       );
       var content = [
         "<xmlData>",
         recContent,
         recContent.replace(/1/g, "2"),
-        "</xmlData>",
+        "</xmlData>"
       ];
       expect(request.getXmlData()).toBe(content.join(""));
     });
@@ -165,7 +165,7 @@ describe("Ext.data.writer.Xml", function () {
     it("should respect a custom defaultDocumentRoot", function () {
       buildWriter({
         documentRoot: "",
-        defaultDocumentRoot: "otherRoot",
+        defaultDocumentRoot: "otherRoot"
       });
       var request = writer.write(
         new Ext.data.Request({
@@ -175,17 +175,17 @@ describe("Ext.data.writer.Xml", function () {
               {
                 id: 2,
                 title: "Article 2",
-                body: "content2",
-              },
-            ]),
-          ),
-        }),
+                body: "content2"
+              }
+            ])
+          )
+        })
       );
       var content = [
         "<otherRoot>",
         recContent,
         recContent.replace(/1/g, "2"),
-        "</otherRoot>",
+        "</otherRoot>"
       ];
       expect(request.getXmlData()).toBe(content.join(""));
     });
@@ -198,19 +198,19 @@ describe("Ext.data.writer.Xml", function () {
           {
             id: 10,
             title: "Article 10",
-            body: "content10",
-          },
+            body: "content10"
+          }
         ];
       };
 
       buildWriter({
-        transform: transformFn,
+        transform: transformFn
       });
 
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
 
       var expectedXml =
@@ -227,22 +227,22 @@ describe("Ext.data.writer.Xml", function () {
           {
             id: 10,
             title: "Article 10",
-            body: "content10",
-          },
+            body: "content10"
+          }
         ];
       };
 
       buildWriter({
         transform: {
           fn: transformFn,
-          scope: mockScope,
-        },
+          scope: mockScope
+        }
       });
 
       var request = writer.write(
         new Ext.data.Request({
-          operation: makeOperation(buildRecords([simpleData])),
-        }),
+          operation: makeOperation(buildRecords([simpleData]))
+        })
       );
 
       var expectedXml =
@@ -259,29 +259,29 @@ describe("Ext.data.writer.Xml", function () {
           fields: [
             {
               name: "systemNumber",
-              mapping: "@SystemNumber",
+              mapping: "@SystemNumber"
             },
             {
               name: "systemName",
-              mapping: "SystemName",
+              mapping: "SystemName"
             },
             {
               name: "assetId",
-              mapping: "SystemMaster>AssetId",
+              mapping: "SystemMaster>AssetId"
             },
             {
               name: "agilentModel",
-              mapping: "SystemMaster>AgilentModel",
+              mapping: "SystemMaster>AgilentModel"
             },
             {
               name: "serialNumber",
-              mapping: "SystemMaster>SerialNumber",
+              mapping: "SystemMaster>SerialNumber"
             },
             {
               name: "OCN",
-              mapping: "SystemMaster>OCN",
-            },
-          ],
+              mapping: "SystemMaster>OCN"
+            }
+          ]
         }),
         // The compound record path means that a <SystemCatalog> element will wrap
         // the sequence of <SystemInfo> elements, so we do not need a documentRoot
@@ -291,7 +291,7 @@ describe("Ext.data.writer.Xml", function () {
           writeRecordId: false,
           documentRoot: false,
           writeAllFields: true,
-          nameProperty: "mapping",
+          nameProperty: "mapping"
         }),
         records = [
           new Model({
@@ -300,7 +300,7 @@ describe("Ext.data.writer.Xml", function () {
             assetId: "DE3208",
             agilentModel: "E5505A",
             serialNumber: "US44101357",
-            OCN: "DES-0653",
+            OCN: "DES-0653"
           }),
           new Model({
             systemNumber: "73645514",
@@ -308,13 +308,13 @@ describe("Ext.data.writer.Xml", function () {
             assetId: "PD123456",
             agilentModel: "X1234Z",
             serialNumber: "US12345678",
-            OCN: "FOO-1234",
-          }),
+            OCN: "FOO-1234"
+          })
         ],
         request = writer.write(
           new Ext.data.Request({
-            operation: makeOperation(records),
-          }),
+            operation: makeOperation(records)
+          })
         );
 
       // Should recreate nested XML as per field mappings
@@ -338,7 +338,7 @@ describe("Ext.data.writer.Xml", function () {
           "<OCN>FOO-1234</OCN>" +
           "</SystemMaster>" +
           "</SystemInfo>" +
-          "</SystemCatalog>",
+          "</SystemCatalog>"
       );
     });
   });

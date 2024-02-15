@@ -29,11 +29,11 @@ Ext.define(
         } else {
           delete me.border;
         }
-      },
-    },
+      }
+    }
   },
   function () {
     Ext.namespace("Ext.theme.is").Neptune = true;
     Ext.theme.name = "Neptune";
-  },
+  }
 );

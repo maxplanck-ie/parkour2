@@ -63,7 +63,7 @@ Ext.define(
        * UUID generator instance. By specifying an id other then 'uuid', a unique generator instance
        * will be created for the Model.
        */
-      id: null,
+      id: null
     },
 
     /**
@@ -222,12 +222,12 @@ Ext.define(
 
           return parts.join("-");
         };
-      },
-    },
+      }
+    }
   },
   function () {
     this.Global = new this({
-      id: "uuid",
+      id: "uuid"
     });
-  },
+  }
 );

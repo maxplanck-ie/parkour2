@@ -4,7 +4,7 @@ describe("Ext.picker.Time", function () {
   beforeEach(function () {
     makeComponent = function (config) {
       config = Ext.applyIf(config || {}, {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component = new Ext.picker.Time(config);
     };
@@ -75,7 +75,7 @@ describe("Ext.picker.Time", function () {
 
     it("should honor the 'format' config when rendering the times", function () {
       makeComponent({
-        format: "G,i,s",
+        format: "G,i,s"
       });
       waitsFor(componentHasTimes);
       runs(function () {
@@ -87,7 +87,7 @@ describe("Ext.picker.Time", function () {
   describe("increment", function () {
     it("should set the number of minutes between times in the list", function () {
       makeComponent({
-        increment: 30,
+        increment: 30
       });
       waitsFor(componentHasTimes);
       runs(function () {
@@ -108,7 +108,7 @@ describe("Ext.picker.Time", function () {
         date.setMilliseconds(0);
       }
       makeComponent({
-        minValue: date,
+        minValue: date
       });
       waitsFor(componentHasTimes);
       runs(function () {
@@ -120,7 +120,7 @@ describe("Ext.picker.Time", function () {
     describe("setMinValue method", function () {
       it("should set the minValue config", function () {
         makeComponent({
-          minValue: new Date("1/1/2011 06:30:00"),
+          minValue: new Date("1/1/2011 06:30:00")
         });
         var newMinValue = new Date("1/1/2011 08:45:00");
 
@@ -130,7 +130,7 @@ describe("Ext.picker.Time", function () {
 
       it("should update the list to match the new minValue", function () {
         makeComponent({
-          minValue: new Date("1/1/2011 06:30:00"),
+          minValue: new Date("1/1/2011 06:30:00")
         });
         var newMinValue = new Date("1/1/2011 08:45:00");
         // opera 10.5 awful bug fix !!!
@@ -148,7 +148,7 @@ describe("Ext.picker.Time", function () {
   describe("maxValue", function () {
     it("should be used as the maximum time in the list", function () {
       makeComponent({
-        maxValue: new Date("1/1/2011 21:30:00"),
+        maxValue: new Date("1/1/2011 21:30:00")
       });
       waitsFor(componentHasTimes);
       runs(function () {
@@ -160,7 +160,7 @@ describe("Ext.picker.Time", function () {
     describe("setMaxValue method", function () {
       it("should set the maxValue config", function () {
         makeComponent({
-          maxValue: new Date("1/1/2011 21:30:00"),
+          maxValue: new Date("1/1/2011 21:30:00")
         });
         var newMaxValue = new Date("1/1/2011 13:15:00");
         component.setMaxValue(newMaxValue);
@@ -169,7 +169,7 @@ describe("Ext.picker.Time", function () {
 
       it("should update the list to match the new maxValue", function () {
         makeComponent({
-          maxValue: new Date("1/1/2011 21:30:00"),
+          maxValue: new Date("1/1/2011 21:30:00")
         });
         var newMaxValue = new Date("1/1/2011 13:15:00");
         component.setMaxValue(newMaxValue);

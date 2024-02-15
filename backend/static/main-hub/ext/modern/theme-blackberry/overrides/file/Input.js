@@ -6,5 +6,5 @@ Ext.define("Ext.theme.blackberry.field.Input", {
 
     this.input.replaceCls(prefix + oldType, prefix + newType);
     this.callParent(arguments);
-  },
+  }
 });

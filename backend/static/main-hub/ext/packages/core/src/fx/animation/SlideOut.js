@@ -7,6 +7,6 @@ Ext.define("Ext.fx.animation.SlideOut", {
 
   config: {
     // @hide
-    out: true,
-  },
+    out: true
+  }
 });

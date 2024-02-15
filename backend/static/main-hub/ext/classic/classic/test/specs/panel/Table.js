@@ -11,35 +11,35 @@ describe("Ext.panel.Table", function () {
                 {
                   name: "Lisa",
                   email: "lisa@simpsons.com",
-                  phone: "555-111-1224",
+                  phone: "555-111-1224"
                 },
                 {
                   name: "Bart",
                   email: "bart@simpsons.com",
-                  phone: "555-222-1234",
+                  phone: "555-222-1234"
                 },
                 {
                   name: "Homer",
                   email: "homer@simpsons.com",
-                  phone: "555-222-1244",
+                  phone: "555-222-1244"
                 },
                 {
                   name: "Marge",
                   email: "marge@simpsons.com",
-                  phone: "555-222-1254",
-                },
-              ],
+                  phone: "555-222-1254"
+                }
+              ]
             },
             proxy: {
               type: "memory",
               reader: {
                 type: "json",
-                rootProperty: "items",
-              },
-            },
+                rootProperty: "items"
+              }
+            }
           },
-          storeCfg,
-        ),
+          storeCfg
+        )
       );
 
       grid = Ext.create(
@@ -51,13 +51,13 @@ describe("Ext.panel.Table", function () {
             columns: [
               { header: "Name", dataIndex: "name", width: 100 },
               { header: "Email", dataIndex: "email", flex: 1 },
-              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
+              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
             ],
             height: 200,
-            width: 400,
+            width: 400
           },
-          gridCfg,
-        ),
+          gridCfg
+        )
       );
     },
     store,
@@ -73,8 +73,8 @@ describe("Ext.panel.Table", function () {
       createGrid(
         {},
         {
-          forceFit: true,
-        },
+          forceFit: true
+        }
       );
 
       expect(grid.forceFit).toBe(true);
@@ -90,10 +90,10 @@ describe("Ext.panel.Table", function () {
             items: [
               { header: "Name", dataIndex: "name", width: 100 },
               { header: "Email", dataIndex: "email", flex: 1 },
-              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
-            ],
-          }),
-        },
+              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
+            ]
+          })
+        }
       );
 
       expect(grid.forceFit).toBe(true);
@@ -116,7 +116,7 @@ describe("Ext.panel.Table", function () {
               dataIndex: "name",
               hideable: false,
               width: 35,
-              locked: true,
+              locked: true
             },
             { text: "Email", dataIndex: "email", flex: 1 },
             { text: "Phone", dataIndex: "phone" },
@@ -130,9 +130,9 @@ describe("Ext.panel.Table", function () {
             { text: "Phone", dataIndex: "phone" },
             { text: "Phone", dataIndex: "phone" },
             { text: "Phone", dataIndex: "phone" },
-            { text: "Phone", dataIndex: "phone" },
+            { text: "Phone", dataIndex: "phone" }
           ],
-          renderTo: document.body,
+          renderTo: document.body
         });
       }).not.toThrow();
     });

@@ -36,7 +36,7 @@ Ext.define(
         "#66aa00",
         "#dd4477",
         "#0099c6",
-        "#990099",
+        "#990099"
       ],
 
       /**
@@ -85,7 +85,7 @@ Ext.define(
       /**
        * @inheritdoc Ext.sparkline.TriState
        */
-      colorMap: null,
+      colorMap: null
     },
 
     tipTpl: "&#9679; {prefix}{value}{suffix}",
@@ -224,7 +224,7 @@ Ext.define(
                 }
               } else {
                 stackRanges[i] += Math.abs(
-                  val - (val < 0 ? stackMax : stackMin),
+                  val - (val < 0 ? stackMax : stackMin)
                 );
               }
               numValues.push(val);
@@ -305,7 +305,7 @@ Ext.define(
           isNull: value === null,
           value: value,
           color: this.calcColor(i, value, region),
-          offset: region,
+          offset: region
         });
       }
       return result;
@@ -406,9 +406,9 @@ Ext.define(
         }
         canvas.drawRect(x, y, barWidth - 1, height - 1, color, color).append();
       }
-    },
+    }
   },
   function (cls) {
     cls.onClassCreated(cls);
-  },
+  }
 );

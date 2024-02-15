@@ -10,52 +10,52 @@ describe("mixed layout tests", function () {
             autoScroll: true,
             layout: {
               type: "vbox",
-              align: "stretch",
+              align: "stretch"
             },
             items: [
               {
                 heigt: 400,
                 layout: {
                   type: "hbox",
-                  align: "stretch",
+                  align: "stretch"
                 },
                 items: [
                   {
                     flex: 1,
                     layout: {
                       type: "hbox",
-                      align: "stretch",
+                      align: "stretch"
                     },
                     items: [
                       {
                         flex: 1,
                         layout: {
                           type: "vbox",
-                          align: "stretch",
+                          align: "stretch"
                         },
                         items: [
                           {
                             flex: 1,
                             items: [
                               {
-                                title: "Title",
-                              },
-                            ],
-                          },
-                        ],
+                                title: "Title"
+                              }
+                            ]
+                          }
+                        ]
                       },
                       {
                         flex: 1,
                         layout: {
                           type: "vbox",
-                          align: "stretch",
+                          align: "stretch"
                         },
                         items: [
                           {
                             height: 3000,
                             layout: {
                               type: "vbox",
-                              align: "stretch",
+                              align: "stretch"
                             },
                             items: [
                               {
@@ -76,27 +76,27 @@ describe("mixed layout tests", function () {
                                             layout: "fit",
                                             items: [
                                               {
-                                                title: "Title",
-                                              },
-                                            ],
-                                          },
-                                        ],
-                                      },
-                                    ],
-                                  },
-                                ],
-                              },
-                            ],
-                          },
-                        ],
-                      },
-                    ],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                                                title: "Title"
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
     }).not.toThrow();
     vp.destroy();

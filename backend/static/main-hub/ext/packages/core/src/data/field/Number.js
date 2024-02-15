@@ -13,5 +13,5 @@ Ext.define("Ext.data.field.Number", {
 
   parse: function (v) {
     return parseFloat(String(v).replace(this.stripRe, ""));
-  },
+  }
 });

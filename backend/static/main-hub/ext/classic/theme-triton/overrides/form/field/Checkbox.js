@@ -8,7 +8,7 @@ Ext.define("Ext.theme.triton.form.field.Checkbox", {
 
     Ext.on({
       show: "onGlobalShow",
-      scope: this,
+      scope: this
     });
   },
 
@@ -40,5 +40,5 @@ Ext.define("Ext.theme.triton.form.field.Checkbox", {
     if (cmp.isAncestor(this)) {
       this.getFocusClsEl().syncRepaint();
     }
-  },
+  }
 });

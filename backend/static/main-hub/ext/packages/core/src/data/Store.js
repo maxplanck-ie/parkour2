@@ -209,7 +209,7 @@ Ext.define("Ext.data.Store", {
 
     // This ensures that we have Ext.util.Collection and all of its requirements.
     "Ext.util.GroupCollection",
-    "Ext.util.DelayedTask",
+    "Ext.util.DelayedTask"
   ],
 
   uses: ["Ext.data.StoreManager", "Ext.util.Grouper"],
@@ -260,7 +260,7 @@ Ext.define("Ext.data.Store", {
      *
      * @since  5.0.0
      */
-    session: null,
+    session: null
   },
 
   /**
@@ -275,7 +275,7 @@ Ext.define("Ext.data.Store", {
    * Used as a parameter to loadRecords
    */
   addRecordsOptions: {
-    addRecords: true,
+    addRecords: true
   },
 
   /**
@@ -310,7 +310,7 @@ Ext.define("Ext.data.Store", {
         if (this.self !== Ext.data.Store) {
           Ext.raise(
             "buffered config not supported on derived Store classes. " +
-              "Please derive from Ext.data.BufferedStore.",
+              "Please derive from Ext.data.BufferedStore."
           );
         }
         //</debug>
@@ -321,7 +321,7 @@ Ext.define("Ext.data.Store", {
       //<debug>
       if (config.remoteGroup) {
         Ext.log.warn(
-          "Ext.data.Store: remoteGroup has been removed. Use remoteSort instead.",
+          "Ext.data.Store: remoteGroup has been removed. Use remoteSort instead."
         );
       }
       //</debug>
@@ -558,7 +558,7 @@ Ext.define("Ext.data.Store", {
       record,
       type,
       modifiedFieldNames,
-      info,
+      info
     );
   },
 
@@ -587,7 +587,7 @@ Ext.define("Ext.data.Store", {
       record,
       modifiedFieldNames || null,
       undefined,
-      type,
+      type
     );
   },
 
@@ -902,9 +902,9 @@ Ext.define("Ext.data.Store", {
         records,
         operation.getAddRecords()
           ? {
-              addRecords: true,
+              addRecords: true
             }
-          : undefined,
+          : undefined
       );
     } else {
       me.loading = false;
@@ -997,9 +997,9 @@ Ext.define("Ext.data.Store", {
           data,
           session
             ? {
-                recordCreator: session.recordCreator,
+                recordCreator: session.recordCreator
               }
-            : undefined,
+            : undefined
         ),
       records = result.getRecords(),
       success = result.getSuccess();
@@ -1089,9 +1089,9 @@ Ext.define("Ext.data.Store", {
         page: page,
         start: (page - 1) * size,
         limit: size,
-        addRecords: !me.getClearOnPageLoad(),
+        addRecords: !me.getClearOnPageLoad()
       },
-      options,
+      options
     );
 
     me.read(options);
@@ -1437,8 +1437,8 @@ Ext.define("Ext.data.Store", {
           .processLoad(me, associatedEntity, records, me.getSession());
       }
       return records;
-    },
-  },
+    }
+  }
 
   // Provides docs from the mixin
   /**

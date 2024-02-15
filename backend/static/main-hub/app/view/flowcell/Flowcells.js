@@ -5,7 +5,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
   requires: [
     "MainHub.components.BaseGrid",
     "MainHub.components.MonthPicker",
-    "MainHub.view.flowcell.FlowcellsController",
+    "MainHub.view.flowcell.FlowcellsController"
   ],
 
   controller: "flowcells",
@@ -29,7 +29,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             fieldLabel: "From",
             labelWidth: 37,
             labelStyle: "color: white;",
-            margin: "0 15px 0 0",
+            margin: "0 15px 0 0"
           },
           {
             xtype: "parkourmonthpicker",
@@ -37,14 +37,14 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             fieldLabel: "To",
             labelWidth: 20,
             labelStyle: "color: white;",
-            margin: "0 15px 0 0",
+            margin: "0 15px 0 0"
           },
           {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 320,
+            width: 320
           },
           {
             xtype: "button",
@@ -52,10 +52,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             text: "Load",
             iconCls: "x-fa fa-plus",
             style: {
-              border: "1px solid #ffffffbe !important",
-            },
-          },
-        ],
+              border: "1px solid #ffffffbe !important"
+            }
+          }
+        ]
       },
 
       customConfig: {
@@ -65,14 +65,14 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             Ext.each(d.panel.columns, function (col) {
               col.autoSize();
             });
-          },
-        },
+          }
+        }
       },
 
       columns: {
         defaults: {
           minWidth: 150,
-          flex: 1,
+          flex: 1
         },
         items: [
           {
@@ -85,13 +85,13 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             tdCls: "no-dirty",
             minWidth: 35,
             width: 35,
-            flex: 0,
+            flex: 0
           },
           {
             text: "Lane",
             dataIndex: "name",
             hideable: false,
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Pool",
@@ -101,43 +101,43 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             renderer: function (value) {
               return Ext.String.format(
                 '<a href="javascript:void(0)" class="pool-name">{0}</a>',
-                value,
+                value
               );
-            },
+            }
           },
           {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer(),
-            filter: { type: "date" },
+            filter: { type: "date" }
           },
           {
             text: "Request",
             dataIndex: "request",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Length",
             tooltip: "Read Length",
             dataIndex: "read_length_name",
-            filter: { type: "list" },
+            filter: { type: "list" }
           },
           {
             text: "Index I7",
             dataIndex: "index_i7_show",
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Index I5",
             dataIndex: "index_i5_show",
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Sequencer",
             dataIndex: "sequencer_name",
-            filter: { type: "list" },
+            filter: { type: "list" }
           },
           /*  {
           text: 'Equal nucl.',
@@ -149,7 +149,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           {
             text: "Library protocol",
             dataIndex: "protocol",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Loading Conc.",
@@ -159,8 +159,8 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0,
-            },
+              minValue: 0
+            }
           },
           {
             text: "PhiX %",
@@ -169,10 +169,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0,
-            },
-          },
-        ],
+              minValue: 0
+            }
+          }
+        ]
       },
 
       features: [
@@ -188,10 +188,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
               },
               getDate: function (children) {
                 return Ext.util.Format.date(children[0].get("create_time"));
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
 
       dockedItems: [
@@ -202,28 +202,28 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             {
               itemId: "download-benchtop-protocol-button",
               text: "Download Benchtop Protocol",
-              iconCls: "fa fa-file-excel-o fa-lg",
+              iconCls: "fa fa-file-excel-o fa-lg"
             },
             {
               itemId: "download-sample-sheet-button",
               text: "Download Sample Sheet",
-              iconCls: "fa fa-file-excel-o fa-lg",
+              iconCls: "fa fa-file-excel-o fa-lg"
             },
             "->",
             {
               itemId: "cancel-button",
               iconCls: "fa fa-ban fa-lg",
-              text: "Cancel",
+              text: "Cancel"
             },
             {
               // xtype: 'button',
               itemId: "save-button",
               iconCls: "fa fa-floppy-o fa-lg",
-              text: "Save",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+              text: "Save"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });

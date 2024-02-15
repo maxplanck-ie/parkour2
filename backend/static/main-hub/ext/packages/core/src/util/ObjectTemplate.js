@@ -53,7 +53,7 @@ Ext.define("Ext.util.ObjectTemplate", {
       return template.isObjectTemplate
         ? template
         : new Ext.util.ObjectTemplate(template, options);
-    },
+    }
   },
 
   /**
@@ -176,6 +176,6 @@ Ext.define("Ext.util.ObjectTemplate", {
       }
 
       return fn;
-    },
-  },
+    }
+  }
 });

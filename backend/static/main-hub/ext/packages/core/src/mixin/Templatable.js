@@ -5,7 +5,7 @@ Ext.define("Ext.mixin.Templatable", {
   extend: "Ext.Mixin",
 
   mixinConfig: {
-    id: "templatable",
+    id: "templatable"
   },
 
   referenceAttributeName: "reference",
@@ -14,14 +14,14 @@ Ext.define("Ext.mixin.Templatable", {
 
   getElementConfig: function () {
     return {
-      reference: "element",
+      reference: "element"
     };
   },
 
   getElementTemplate: function () {
     var elementTemplate = document.createDocumentFragment();
     elementTemplate.appendChild(
-      Ext.Element.create(this.getElementConfig(), true),
+      Ext.Element.create(this.getElementConfig(), true)
     );
     return elementTemplate;
   },
@@ -57,5 +57,5 @@ Ext.define("Ext.mixin.Templatable", {
       referenceNode.removeAttribute(referenceAttributeName);
       this.linkElement(reference, referenceNode);
     }
-  },
+  }
 });

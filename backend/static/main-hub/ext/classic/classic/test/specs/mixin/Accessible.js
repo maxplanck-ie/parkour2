@@ -4,9 +4,9 @@ describe("Ext.mixin.Accessible", function () {
   function makeComponent(config) {
     config = Ext.apply(
       {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     return (c = new Ext.Component(config));
@@ -15,9 +15,9 @@ describe("Ext.mixin.Accessible", function () {
   function makeContainer(config) {
     config = Ext.apply(
       {
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       },
-      config,
+      config
     );
 
     return (cnt = new Ext.container.Container(config));
@@ -47,7 +47,7 @@ describe("Ext.mixin.Accessible", function () {
             reference: "foo",
             ariaLabelledBy: function () {
               return this.reference;
-            },
+            }
           },
           {
             xtype: "container",
@@ -55,7 +55,7 @@ describe("Ext.mixin.Accessible", function () {
               {
                 xtype: "component",
                 reference: "bar",
-                ariaLabelledBy: "qux",
+                ariaLabelledBy: "qux"
               },
               {
                 xtype: "container",
@@ -63,13 +63,13 @@ describe("Ext.mixin.Accessible", function () {
                   {
                     xtype: "component",
                     reference: "qux",
-                    ariaDescribedBy: ["foo", "bar"],
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    ariaDescribedBy: ["foo", "bar"]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       });
 
       foo = cnt.down("[reference=foo]");

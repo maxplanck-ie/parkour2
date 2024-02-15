@@ -19,7 +19,7 @@ describe("Ext.form.field.Hidden", function () {
   it("should not take up any height", function () {
     var ct = new Ext.container.Container({
       renderTo: Ext.getBody(),
-      items: makeComponent(),
+      items: makeComponent()
     });
     expect(ct.getHeight()).toBe(0);
     ct.destroy();
@@ -34,7 +34,7 @@ describe("Ext.form.field.Hidden", function () {
   it("should render as input hidden", function () {
     makeComponent({
       name: "test",
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
     expect(component.inputEl.dom.type).toEqual("hidden");
   });

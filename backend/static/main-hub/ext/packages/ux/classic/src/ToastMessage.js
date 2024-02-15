@@ -29,12 +29,12 @@ Ext.define(
     defaultTypes: {
       error: "Error",
       warning: "Warning",
-      default: "Information",
+      default: "Information"
     },
 
     colors: {
       error: "#ff6c80",
-      warning: "#d7bf0c",
+      warning: "#d7bf0c"
     },
 
     constructor: function (config) {
@@ -49,7 +49,7 @@ Ext.define(
         width: 250,
         minHeight: 150,
         // height: 'auto',
-        align: this.align,
+        align: this.align
       });
 
       config.title = this._get_title(config.title);
@@ -94,7 +94,7 @@ Ext.define(
       }
 
       return msg;
-    },
+    }
   },
 
   function (ToastMessage) {
@@ -109,11 +109,11 @@ Ext.define(
           html: msg,
           msgType: msgType,
           autoClose: autoClose,
-          align: align,
+          align: align
         };
       }
 
       return new ToastMessage(config);
     };
-  },
+  }
 );

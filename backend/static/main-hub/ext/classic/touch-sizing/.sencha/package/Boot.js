@@ -63,7 +63,7 @@ Ext.Boot =
          * @cfg {String} charset
          * Optional charset to specify encoding of dynamic content.
          */
-        charset: undefined,
+        charset: undefined
       },
       cssRe = /\.css(?:\?|$)/i,
       resolverEl = doc.createElement("a"),
@@ -71,7 +71,7 @@ Ext.Boot =
       _environment = {
         browser: isBrowser,
         node: !isBrowser && typeof require === "function",
-        phantom: typeof phantom !== "undefined" && phantom.fs,
+        phantom: typeof phantom !== "undefined" && phantom.fs
       },
       _tags = (Ext.platformTags = {}),
       //<debug>
@@ -179,7 +179,7 @@ Ext.Boot =
               "Tizen",
               "Firefox",
               "Safari",
-              "Windows Phone",
+              "Windows Phone"
             ],
             isEventSupported = function (name, tag) {
               if (tag === undefined) {
@@ -259,7 +259,7 @@ Ext.Boot =
             ie10: isIE10,
             windows: isIE10 || uaTags.Trident,
             tizen: uaTags.Tizen,
-            firefox: uaTags.Firefox,
+            firefox: uaTags.Firefox
           });
         },
 
@@ -370,7 +370,7 @@ Ext.Boot =
                   state === "loaded" ||
                   state === "complete", // IE only
                 el: script,
-                prop: "src",
+                prop: "src"
               });
             }
           }
@@ -613,7 +613,7 @@ Ext.Boot =
                 result = {
                   content: content,
                   status: status,
-                  exception: exception,
+                  exception: exception
                 };
                 if (complete) {
                   complete.call(scope, result);
@@ -647,7 +647,7 @@ Ext.Boot =
 
         notifyAll: function (entry) {
           entry.notifyRequests();
-        },
+        }
       };
 
     /*
@@ -667,7 +667,7 @@ Ext.Boot =
 
       _apply(cfg, {
         urls: urls,
-        charset: charset,
+        charset: charset
       });
       _apply(this, cfg);
     }
@@ -704,7 +704,7 @@ Ext.Boot =
         indexMap,
         loadOrder,
         includeUses,
-        skipLoaded,
+        skipLoaded
       ) {
         var item = loadOrder[index],
           len,
@@ -819,7 +819,7 @@ Ext.Boot =
                 indexMap,
                 loadOrder,
                 includeUses,
-                skipLoaded,
+                skipLoaded
               );
             } else {
               unmapped.push(url[i]);
@@ -912,7 +912,7 @@ Ext.Boot =
             url = me.prepareUrl(urls[i]);
             entry = Boot.getEntry(url, {
               buster: me.buster,
-              charset: me.charset,
+              charset: me.charset
             });
             entry.requests.push(me);
             entries.push(entry);
@@ -1030,7 +1030,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     /*
@@ -1073,7 +1073,7 @@ Ext.Boot =
       _apply(cfg, {
         charset: charset,
         buster: buster,
-        requests: [],
+        requests: []
       });
       _apply(this, cfg);
     }
@@ -1328,7 +1328,7 @@ Ext.Boot =
           async: false,
           complete: function (response) {
             me.onContentLoaded(response);
-          },
+          }
         });
         me.evaluate();
         me.notifyRequests();
@@ -1375,7 +1375,7 @@ Ext.Boot =
                 complete: function (response) {
                   me.onContentLoaded(response);
                   me.notifyRequests();
-                },
+                }
               });
             }
           }
@@ -1489,7 +1489,7 @@ Ext.Boot =
             listener(this);
           }
         }
-      },
+      }
     };
 
     /*
@@ -1503,7 +1503,7 @@ Ext.Boot =
     Ext.disableCacheBuster = function (disable, path) {
       var date = new Date();
       date.setTime(
-        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000,
+        date.getTime() + (disable ? 10 * 365 : -1) * 24 * 60 * 60 * 1000
       );
       date = date.toGMTString();
       doc.cookie = "ext-cache=1; expires=" + date + "; path=" + (path || "/");
@@ -1563,7 +1563,7 @@ if (!Function.prototype.bind) {
             // avoid the slice/concat if the caller does not supply args
             return method.apply(
               me,
-              t.length ? args.concat(slice.call(t)) : args,
+              t.length ? args.concat(slice.call(t)) : args
             );
           };
         }

@@ -97,7 +97,7 @@ Ext.define(
        * `true` to reverse the animation direction. For example, if the animation direction was set to 'left', it would
        * then use 'right'.
        */
-      reverse: false,
+      reverse: false
     },
 
     /**
@@ -119,7 +119,7 @@ Ext.define(
       left: "right",
       right: "left",
       up: "down",
-      down: "up",
+      down: "up"
     },
 
     /**
@@ -170,7 +170,7 @@ Ext.define(
       if (me.running[el.id]) {
         me.onTransitionEnd(null, el, {
           config: config,
-          after: after,
+          after: after
         });
       }
 
@@ -185,7 +185,7 @@ Ext.define(
         }
         this.onTransitionEnd(null, el, {
           config: config,
-          after: after,
+          after: after
         });
         return me;
       }
@@ -211,7 +211,7 @@ Ext.define(
           el.parent().setStyle({
             // See https://sencha.jira.com/browse/TOUCH-1498
             "-webkit-perspective": "1200",
-            "-webkit-transform-style": "preserve-3d",
+            "-webkit-transform-style": "preserve-3d"
           });
         }
 
@@ -223,7 +223,7 @@ Ext.define(
         el.on("transitionend", me.onTransitionEnd, me, {
           single: true,
           config: config,
-          after: after,
+          after: after
         });
 
         for (property in config.to) {
@@ -269,7 +269,7 @@ Ext.define(
       if (config.is3d) {
         el.parent().setStyle({
           "-webkit-perspective": "",
-          "-webkit-transform-style": "",
+          "-webkit-transform-style": ""
         });
       }
 
@@ -282,7 +282,7 @@ Ext.define(
       }
 
       delete me.running[el.id];
-    },
+    }
   },
   function () {
     Ext.Anim.seed = 1000;
@@ -311,14 +311,14 @@ Ext.define(
             config.before = Ext.createInterceptor(
               config.before,
               anim.before,
-              anim.scope,
+              anim.scope
             );
           }
           if (config.after && anim.after) {
             config.after = Ext.createInterceptor(
               config.after,
               anim.after,
-              anim.scope,
+              anim.scope
             );
           }
           config = Ext.apply({}, config, anim);
@@ -367,13 +367,13 @@ Ext.define(
 
           this.from = {
             opacity: fromOpacity,
-            "z-index": zIndex,
+            "z-index": zIndex
           };
           this.to = {
             opacity: toOpacity,
-            "z-index": zIndex,
+            "z-index": zIndex
           };
-        },
+        }
       }),
 
       /**
@@ -435,14 +435,14 @@ Ext.define(
             "-webkit-transform":
               "translate3d(" + fromX + "px, " + fromY + "px, 0)",
             "z-index": zIndex,
-            opacity: currentOpacity - 0.01,
+            opacity: currentOpacity - 0.01
           };
           this.to = {
             "-webkit-transform": "translate3d(" + toX + "px, " + toY + "px, 0)",
             "z-index": zIndex,
-            opacity: currentOpacity,
+            opacity: currentOpacity
           };
-        },
+        }
       }),
 
       /**
@@ -478,16 +478,16 @@ Ext.define(
             "-webkit-transform": "scale(" + fromScale + ")",
             "-webkit-transform-origin": "50% 50%",
             opacity: fromOpacity,
-            "z-index": fromZ,
+            "z-index": fromZ
           };
 
           this.to = {
             "-webkit-transform": "scale(" + toScale + ")",
             "-webkit-transform-origin": "50% 50%",
             opacity: toOpacity,
-            "z-index": toZ,
+            "z-index": toZ
           };
-        },
+        }
       }),
 
       /**
@@ -529,7 +529,7 @@ Ext.define(
               "deg) scale(" +
               fromScale +
               ")",
-            "-webkit-backface-visibility": "hidden",
+            "-webkit-backface-visibility": "hidden"
           };
           this.to = {
             "-webkit-transform":
@@ -540,9 +540,9 @@ Ext.define(
               "deg) scale(" +
               toScale +
               ")",
-            "-webkit-backface-visibility": "hidden",
+            "-webkit-backface-visibility": "hidden"
           };
-        },
+        }
       }),
 
       /**
@@ -618,7 +618,7 @@ Ext.define(
               "deg)" +
               (showTranslateZ ? " translateZ(" + fromZ + "px)" : "") +
               fromTranslate,
-            "-webkit-transform-origin": origin,
+            "-webkit-transform-origin": origin
           };
           this.to = {
             "-webkit-transform":
@@ -630,10 +630,10 @@ Ext.define(
               toZ +
               "px)" +
               toTranslate,
-            "-webkit-transform-origin": origin,
+            "-webkit-transform-origin": origin
           };
         },
-        duration: 250,
+        duration: 250
       }),
 
       /**
@@ -657,19 +657,19 @@ Ext.define(
               "-webkit-mask-size":
                 el.getWidth() * 3 + "px " + el.getHeight() + "px",
               "z-index": zIndex,
-              "-webkit-mask-position-x": 0,
+              "-webkit-mask-position-x": 0
             };
             this.to = {
               "-webkit-mask-image": mask,
               "-webkit-mask-size":
                 el.getWidth() * 3 + "px " + el.getHeight() + "px",
               "z-index": zIndex,
-              "-webkit-mask-position-x": -el.getWidth() * 2 + "px",
+              "-webkit-mask-position-x": -el.getWidth() * 2 + "px"
             };
           }
         },
-        duration: 500,
-      }),
+        duration: 500
+      })
     };
-  },
+  }
 );

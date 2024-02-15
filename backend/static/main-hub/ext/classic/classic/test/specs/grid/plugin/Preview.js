@@ -11,22 +11,22 @@ describe("Ext.ux.PreviewPlugin", function () {
         title: "Preview Test",
         store: {
           data: [{ name: "foo", description: "foo description" }],
-          fields: ["name", "description"],
+          fields: ["name", "description"]
         },
         columns: [
           {
             text: "Name",
-            dataIndex: "name",
-          },
+            dataIndex: "name"
+          }
         ],
         plugins: [
           {
             ptype: "preview",
             bodyField: "description",
             expanded: true,
-            pluginId: "preview",
-          },
-        ],
+            pluginId: "preview"
+          }
+        ]
       });
     }).not.toThrow();
 

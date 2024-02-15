@@ -14,7 +14,7 @@ Ext.define("Ext.slider.Widget", {
      * @cfg {Boolean} vertical
      * Orients the slider vertically rather than horizontally.
      */
-    vertical: false,
+    vertical: false
   },
 
   config: {
@@ -62,8 +62,8 @@ Ext.define("Ext.slider.Widget", {
      * to the bound value.
      */
     twoWayBindable: {
-      value: 1,
-    },
+      value: 1
+    }
   },
 
   decimalPrecision: 0,
@@ -77,7 +77,7 @@ Ext.define("Ext.slider.Widget", {
       mousedown: "onMouseDown",
       dragstart: "cancelDrag",
       drag: "cancelDrag",
-      dragend: "cancelDrag",
+      dragend: "cancelDrag"
     },
     children: [
       {
@@ -86,11 +86,11 @@ Ext.define("Ext.slider.Widget", {
         children: [
           {
             reference: "innerEl",
-            cls: Ext.baseCSSPrefix + "slider-inner",
-          },
-        ],
-      },
-    ],
+            cls: Ext.baseCSSPrefix + "slider-inner"
+          }
+        ]
+      }
+    ]
   },
 
   thumbCls: Ext.baseCSSPrefix + "slider-thumb",
@@ -114,7 +114,7 @@ Ext.define("Ext.slider.Widget", {
           i,
           (value[i] = me.normalizeValue(value[i])),
           animate,
-          true,
+          true
         );
       }
     } else {
@@ -126,10 +126,10 @@ Ext.define("Ext.slider.Widget", {
 
   updateVertical: function (vertical, oldVertical) {
     this.element.removeCls(
-      Ext.baseCSSPrefix + "slider-" + (oldVertical ? "vert" : "horz"),
+      Ext.baseCSSPrefix + "slider-" + (oldVertical ? "vert" : "horz")
     );
     this.element.addCls(
-      Ext.baseCSSPrefix + "slider-" + (vertical ? "vert" : "horz"),
+      Ext.baseCSSPrefix + "slider-" + (vertical ? "vert" : "horz")
     );
   },
 
@@ -153,7 +153,7 @@ Ext.define("Ext.slider.Widget", {
     if (!result) {
       thumbConfig = {
         cls: me.thumbCls,
-        style: {},
+        style: {}
       };
       thumbConfig["data-thumbIndex"] = ordinal;
       result = me.thumbs[ordinal] = me.innerEl.createChild(thumbConfig);
@@ -232,7 +232,7 @@ Ext.define("Ext.slider.Widget", {
       Ext.getDoc().on({
         scope: me,
         capture: true,
-        selectstart: me.stopSelect,
+        selectstart: me.stopSelect
       });
 
       thumb = e.getTarget("." + me.thumbCls, null, true);
@@ -280,7 +280,7 @@ Ext.define("Ext.slider.Widget", {
     index = parseInt(thumb.getAttribute("data-thumbIndex"), 10);
     value = Ext.util.Format.round(
       me.reversePixelValue(trackPoint),
-      me.decimalPrecision,
+      me.decimalPrecision
     );
     if (index) {
       me.setThumbValue(index, value, undefined, true);
@@ -310,7 +310,7 @@ Ext.define("Ext.slider.Widget", {
     for (; i < len; i++) {
       thumb = thumbs[i];
       value = me.reversePercentageValue(
-        parseInt(thumb.dom.style[me.getThumbPositionStyle()], 10),
+        parseInt(thumb.dom.style[me.getThumbPositionStyle()], 10)
       );
       dist = Math.abs(value - clickValue);
 
@@ -384,7 +384,7 @@ Ext.define("Ext.slider.Widget", {
     Ext.getDoc().un({
       scope: me,
       capture: true,
-      selectstart: me.stopSelect,
+      selectstart: me.stopSelect
     });
     delete me.animateOnSetValue; // expose "undefined" on prototype
   },
@@ -432,7 +432,7 @@ Ext.define("Ext.slider.Widget", {
 
     thumb = me.getThumb(index);
     thumbValue = me.reversePercentageValue(
-      parseInt(thumb.dom.style[me.getThumbPositionStyle()], 10),
+      parseInt(thumb.dom.style[me.getThumbPositionStyle()], 10)
     );
 
     // ensures value is contstrained and snapped
@@ -447,13 +447,13 @@ Ext.define("Ext.slider.Widget", {
         // Perhaps this should go on each thumb element rather than the outer element.
         me.element.set({
           "aria-valuenow": value,
-          "aria-valuetext": value,
+          "aria-valuetext": value
         });
 
         me.moveThumb(
           thumb,
           me.calculateThumbPosition(value),
-          Ext.isDefined(animate) ? animate !== false : me.animate,
+          Ext.isDefined(animate) ? animate !== false : me.animate
         );
         me.fireEvent("change", me, value, thumb);
       }
@@ -498,8 +498,8 @@ Ext.define("Ext.slider.Widget", {
     for (; i < len; i++) {
       values.push(
         me.reversePercentageValue(
-          parseInt(me.thumbs[i].dom.style[me.getThumbPositionStyle()], 10),
-        ),
+          parseInt(me.thumbs[i].dom.style[me.getThumbPositionStyle()], 10)
+        )
       );
     }
     return values;
@@ -533,7 +533,7 @@ Ext.define("Ext.slider.Widget", {
         target: thumb,
         duration: 350,
         from: from,
-        to: to,
+        to: to
       });
     }
   },
@@ -660,10 +660,10 @@ Ext.define("Ext.slider.Widget", {
     };
     listeners = {
       mousemove: onMouseMove,
-      mouseup: onMouseupWrap,
+      mouseup: onMouseupWrap
     };
 
     // Funnel mousemove events and the final mouseup event back into the gadget
     Ext.getDoc().on(listeners);
-  },
+  }
 });

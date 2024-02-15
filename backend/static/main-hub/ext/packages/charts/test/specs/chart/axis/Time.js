@@ -12,18 +12,18 @@ describe("Ext.chart.axis.Time", function () {
             data: [
               { value: 1, time: new Date("Jun 01 2015 12:00") },
               { value: 3, time: new Date("Jun 01 2015 13:00") },
-              { value: 2, time: new Date("Jun 01 2015 14:00") },
-            ],
+              { value: 2, time: new Date("Jun 01 2015 14:00") }
+            ]
           }),
           series: {
             type: "line",
             xField: "time",
-            yField: "value",
+            yField: "value"
           },
           axes: [
             {
               type: "numeric",
-              position: "left",
+              position: "left"
             },
             {
               type: "time",
@@ -32,9 +32,9 @@ describe("Ext.chart.axis.Time", function () {
               renderer: function () {
                 axisRendererCallCount++;
                 return (lastAxisRendererResult = "hello");
-              },
-            },
-          ],
+              }
+            }
+          ]
         });
       chart.performLayout();
       expect(axisRendererCallCount).toBeGreaterThan(3);
@@ -47,7 +47,7 @@ describe("Ext.chart.axis.Time", function () {
       runs(function () {
         timeAxis.getSegmenter().setStep({
           unit: Ext.Date.HOUR,
-          step: 1,
+          step: 1
         });
       });
 

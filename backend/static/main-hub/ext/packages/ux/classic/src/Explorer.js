@@ -9,7 +9,7 @@ Ext.define("Ext.ux.Explorer", {
   requires: [
     "Ext.layout.container.Border",
     "Ext.toolbar.Breadcrumb",
-    "Ext.tree.Panel",
+    "Ext.tree.Panel"
   ],
 
   config: {
@@ -20,7 +20,7 @@ Ext.define("Ext.ux.Explorer", {
     breadcrumb: {
       dock: "top",
       xtype: "breadcrumb",
-      reference: "breadcrumb",
+      reference: "breadcrumb"
     },
 
     /**
@@ -53,7 +53,7 @@ Ext.define("Ext.ux.Explorer", {
         'explorer-item-text">{text}</div>' +
         "</div>" +
         "</div>" +
-        "</tpl>",
+        "</tpl>"
     },
 
     /**
@@ -70,8 +70,8 @@ Ext.define("Ext.ux.Explorer", {
       xtype: "treepanel",
       reference: "tree",
       region: "west",
-      width: 200,
-    },
+      width: 200
+    }
   },
 
   renderConfig: {
@@ -80,7 +80,7 @@ Ext.define("Ext.ux.Explorer", {
      * The selected node
      * @accessor
      */
-    selection: null,
+    selection: null
   },
 
   layout: "border",
@@ -112,10 +112,10 @@ Ext.define("Ext.ux.Explorer", {
       Ext.apply(
         {
           store: store,
-          selection: store.getRoot(),
+          selection: store.getRoot()
         },
-        breadcrumb,
-      ),
+        breadcrumb
+      )
     );
 
     breadcrumb.on("selectionchange", "_onBreadcrumbSelectionChange", this);
@@ -130,16 +130,16 @@ Ext.define("Ext.ux.Explorer", {
      * The backing store for the content view
      */
     var contentStore = (this.contentStore = new Ext.data.Store({
-      model: this.getStore().model,
+      model: this.getStore().model
     }));
 
     contentView = Ext.create(
       Ext.apply(
         {
-          store: contentStore,
+          store: contentStore
         },
-        contentView,
-      ),
+        contentView
+      )
     );
 
     return contentView;
@@ -149,10 +149,10 @@ Ext.define("Ext.ux.Explorer", {
     tree = Ext.create(
       Ext.apply(
         {
-          store: this.getStore(),
+          store: this.getStore()
         },
-        tree,
-      ),
+        tree
+      )
     );
 
     tree.on("selectionchange", "_onTreeSelectionChange", this);
@@ -208,6 +208,6 @@ Ext.define("Ext.ux.Explorer", {
      */
     _onBreadcrumbSelectionChange: function (breadcrumb, selection) {
       this.setSelection(selection);
-    },
-  },
+    }
+  }
 });

@@ -5,12 +5,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
     "MainHub.view.metadataexporter.MetadataExporterController",
     "MainHub.view.metadataexporter.MetadataExporterModel",
     "MainHub.view.metadataexporter.MetadataBaseGrid",
-    "MainHub.view.metadataexporter.Samples",
+    "MainHub.view.metadataexporter.Samples"
   ],
 
   controller: "metadataexporter-metadataexporter",
   viewModel: {
-    type: "metadataexporter-metadataexporter",
+    type: "metadataexporter-metadataexporter"
   },
 
   title: "Metadata Exporter",
@@ -32,7 +32,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
       itemId: "tabs",
       defaults: {
         styleHtmlContent: true,
-        layout: "fit",
+        layout: "fit"
       },
       items: [
         {
@@ -48,20 +48,20 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
               defaults: {
                 anchor: "100%",
                 labelWidth: 100,
-                allowBlank: false,
+                allowBlank: false
               },
               items: [
                 {
                   name: "name",
                   fieldLabel: "Request",
                   emptyText: "Request",
-                  readOnly: true,
+                  readOnly: true
                 },
                 {
                   name: "study_title",
                   fieldLabel: "Title",
                   emptyText:
-                    "Title of the study as would be used in a publication",
+                    "Title of the study as would be used in a publication"
                 },
                 {
                   xtype: "combobox",
@@ -76,8 +76,8 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
                   listConfig: {
                     getInnerTpl: function () {
                       return '<span data-qtip="{description}">{name}</span>';
-                    },
-                  },
+                    }
+                  }
                 },
                 {
                   name: "study_abstract",
@@ -85,12 +85,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
                   fieldLabel: "Abstract",
                   emptyText:
                     "Briefly describe the goals, purpose, and scope of the study",
-                  height: 75,
+                  height: 75
                 },
                 {
                   xtype: "container",
                   html: "<hr />",
-                  margin: "5px 0 7px",
+                  margin: "5px 0 7px"
                 },
                 {
                   name: "galaxy_url",
@@ -100,7 +100,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
                   enableKeyEvents: true,
                   allowBlank: true,
                   regex: new RegExp(/^(https?:\/\/.*):?(\d*)\/?(.*)$/),
-                  regexText: "Enter a valid Galaxy URL with a protocol.",
+                  regexText: "Enter a valid Galaxy URL with a protocol."
                 },
                 {
                   name: "galaxy_api_key",
@@ -108,40 +108,40 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
                   fieldLabel: "Galaxy API Key",
                   emptyText: "Galaxy API Key",
                   allowBlank: true,
-                  enableKeyEvents: true,
+                  enableKeyEvents: true
                 },
                 {
                   xtype: "fieldcontainer",
                   fieldLabel: "Galaxy Status",
                   layout: "hbox",
                   defaults: {
-                    xtype: "container",
+                    xtype: "container"
                   },
                   items: [
                     {
                       margin: "8px 5px 0 0",
                       bind: {
-                        html: '<div class="status galaxy-status-{galaxyStatus}"></div>',
-                      },
+                        html: '<div class="status galaxy-status-{galaxyStatus}"></div>'
+                      }
                     },
                     {
                       margin: "8px 20px 0 0",
                       bind: {
-                        html: "{galaxyStatus}",
-                      },
+                        html: "{galaxyStatus}"
+                      }
                     },
                     {
                       xtype: "button",
                       itemId: "refresh-galaxy-status-button",
                       iconCls: "fa fa-lg fa-refresh",
                       ui: "header",
-                      text: "Refresh",
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
+                      text: "Refresh"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
         },
         {
           title: "Samples",
@@ -150,12 +150,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
             {
               xtype: "metadata-samples",
               itemId: "samples-grid",
-              store: "ENASamples",
-            },
-          ],
-        },
-      ],
-    },
+              store: "ENASamples"
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   bbar: [
@@ -163,12 +163,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataExporter", {
     {
       itemId: "download-button",
       iconCls: "fa fa-download fa-lg",
-      text: "Download",
+      text: "Download"
     },
     {
       itemId: "upload-button",
       iconCls: "fa fa-upload fa-lg",
-      text: "Upload to Galaxy",
-    },
-  ],
+      text: "Upload to Galaxy"
+    }
+  ]
 });

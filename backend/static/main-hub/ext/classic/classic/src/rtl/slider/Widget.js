@@ -7,5 +7,5 @@ Ext.define("Ext.rtl.slider.Widget", {
     if (this.getInherited().rtl) {
       this.horizontalProp = "right";
     }
-  },
+  }
 });

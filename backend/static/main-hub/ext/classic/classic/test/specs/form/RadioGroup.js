@@ -6,10 +6,10 @@ describe("Ext.form.RadioGroup", function () {
       Ext.apply(
         {
           renderTo: Ext.getBody(),
-          items: items,
+          items: items
         },
-        cfg,
-      ),
+        cfg
+      )
     );
   }
 
@@ -23,24 +23,24 @@ describe("Ext.form.RadioGroup", function () {
       makeGroup([
         {
           name: "foo",
-          inputValue: "a",
+          inputValue: "a"
         },
         {
           name: "foo",
-          inputValue: "b",
+          inputValue: "b"
         },
         {
           name: "foo",
-          inputValue: "c",
-        },
+          inputValue: "c"
+        }
       ]);
 
       group.setValue({
-        foo: "b",
+        foo: "b"
       });
 
       expect(group.getValue()).toEqual({
-        foo: "b",
+        foo: "b"
       });
     });
 
@@ -49,38 +49,38 @@ describe("Ext.form.RadioGroup", function () {
         var vm = new Ext.app.ViewModel({
           data: {
             theValue: {
-              foo: "b",
-            },
-          },
+              foo: "b"
+            }
+          }
         });
 
         makeGroup(
           [
             {
               name: "foo",
-              inputValue: "a",
+              inputValue: "a"
             },
             {
               name: "foo",
-              inputValue: "b",
+              inputValue: "b"
             },
             {
               name: "foo",
-              inputValue: "c",
-            },
+              inputValue: "c"
+            }
           ],
           {
             viewModel: vm,
             bind: {
-              value: "{theValue}",
-            },
-          },
+              value: "{theValue}"
+            }
+          }
         );
 
         vm.notify();
 
         expect(group.getValue()).toEqual({
-          foo: "b",
+          foo: "b"
         });
       });
 
@@ -90,40 +90,40 @@ describe("Ext.form.RadioGroup", function () {
           alias: "viewmodel.bar",
           data: {
             theValue: {
-              foo: "b",
-            },
-          },
+              foo: "b"
+            }
+          }
         });
 
         makeGroup(
           [
             {
               name: "foo",
-              inputValue: "a",
+              inputValue: "a"
             },
             {
               name: "foo",
-              inputValue: "b",
+              inputValue: "b"
             },
             {
               name: "foo",
-              inputValue: "c",
-            },
+              inputValue: "c"
+            }
           ],
           {
             viewModel: {
-              type: "bar",
+              type: "bar"
             },
             bind: {
-              value: "{theValue}",
-            },
-          },
+              value: "{theValue}"
+            }
+          }
         );
 
         group.getViewModel().notify();
 
         expect(group.getValue()).toEqual({
-          foo: "b",
+          foo: "b"
         });
         Ext.undefine("spec.Bar");
         Ext.Factory.viewModel.instance.clearCache();
@@ -135,14 +135,14 @@ describe("Ext.form.RadioGroup", function () {
     beforeEach(function () {
       makeGroup([
         {
-          name: "foo",
+          name: "foo"
         },
         {
-          name: "bar",
+          name: "bar"
         },
         {
-          name: "baz",
-        },
+          name: "baz"
+        }
       ]);
     });
 
@@ -172,12 +172,12 @@ describe("Ext.form.RadioGroup", function () {
             allowBlank: false,
             items: [
               {
-                name: "foo",
+                name: "foo"
               },
               {
-                name: "bar",
-              },
-            ],
+                name: "bar"
+              }
+            ]
           });
 
           expect(group2).toHaveAttr("aria-required", "true");

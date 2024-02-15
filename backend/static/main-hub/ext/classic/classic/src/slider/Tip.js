@@ -102,7 +102,7 @@ Ext.define("Ext.slider.Tip", {
       dragstart: me.onSlide,
       drag: me.onSlide,
       dragend: me.hide,
-      destroy: me.destroy,
+      destroy: me.destroy
     });
   },
   /**
@@ -130,5 +130,5 @@ Ext.define("Ext.slider.Tip", {
    */
   getText: function (thumb) {
     return String(thumb.value);
-  },
+  }
 });

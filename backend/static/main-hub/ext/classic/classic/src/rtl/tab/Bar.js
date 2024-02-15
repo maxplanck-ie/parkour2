@@ -15,7 +15,7 @@ Ext.define("Ext.rtl.tab.Bar", {
       tabHeight,
       closeWidth,
       closeHeight,
-      direction,
+      direction
     ) {
       var closeXY, closeX, closeY, xy;
 
@@ -38,6 +38,6 @@ Ext.define("Ext.rtl.tab.Bar", {
       }
 
       return xy;
-    },
-  },
+    }
+  }
 });

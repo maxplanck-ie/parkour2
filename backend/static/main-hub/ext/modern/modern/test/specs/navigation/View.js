@@ -4,7 +4,7 @@ describe("Ext.navigation.View", function () {
       config = Ext.apply(config, {
         renderTo: Ext.getBody(),
         width: 300,
-        height: 400,
+        height: 400
       });
 
       view = Ext.create("Ext.navigation.View", config);
@@ -34,15 +34,15 @@ describe("Ext.navigation.View", function () {
       createView({
         items: [
           {
-            html: "item 1",
+            html: "item 1"
           },
           {
-            html: "item 2",
-          },
+            html: "item 2"
+          }
         ],
         listeners: {
-          activeitemchange: spy,
-        },
+          activeitemchange: spy
+        }
       });
       // in EXTJS-21865 this throws an error
       view.setActiveItem(1);
@@ -58,16 +58,16 @@ describe("Ext.navigation.View", function () {
       createView({
         items: [
           {
-            html: "item 1",
-          },
+            html: "item 1"
+          }
         ],
         listeners: {
-          add: spy,
-        },
+          add: spy
+        }
       });
       // in EXTJS-21865 this throws an error
       view.add({
-        html: "item 4",
+        html: "item 4"
       });
       waitsFor(function () {
         return !!spy.callCount;
@@ -81,22 +81,22 @@ describe("Ext.navigation.View", function () {
       createView({
         items: [
           {
-            html: "item 1",
+            html: "item 1"
           },
           {
-            html: "item 2",
+            html: "item 2"
           },
           {
-            html: "item 3",
-          },
+            html: "item 3"
+          }
         ],
         listeners: {
-          add: spy,
-        },
+          add: spy
+        }
       });
       view.removeAll();
       view.add({
-        html: "item 4",
+        html: "item 4"
       });
       waitsFor(function () {
         return !!spy.callCount;

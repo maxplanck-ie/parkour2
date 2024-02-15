@@ -142,7 +142,7 @@ Ext.define("Ext.util.CSS", function () {
           // must cache an object like this until IE<8 is deprecated.
           rules[Ext.String.trim(selectorText[j]).toLowerCase()] = {
             parentStyleSheet: styleSheet,
-            cssRule: cssRule,
+            cssRule: cssRule
           };
         }
       }
@@ -277,7 +277,7 @@ Ext.define("Ext.util.CSS", function () {
         styleSheet = rule.parentStyleSheet;
         index = Ext.Array.indexOf(
           styleSheet.cssRules || styleSheet.rules,
-          rule.cssRule,
+          rule.cssRule
         );
         if (styleSheet.deleteRule) {
           styleSheet.deleteRule(index);
@@ -286,6 +286,6 @@ Ext.define("Ext.util.CSS", function () {
         }
         delete rules[selector];
       }
-    },
+    }
   };
 });

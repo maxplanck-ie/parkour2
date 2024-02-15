@@ -2,7 +2,7 @@ describe("Ext.grid.column.Column", function () {
   var defaultColumns = [
       { header: "Name", dataIndex: "name", width: 100 },
       { header: "Email", dataIndex: "email", flex: 1 },
-      { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
+      { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
     ],
     grid,
     store,
@@ -19,17 +19,17 @@ describe("Ext.grid.column.Column", function () {
             {
               name: "Homer",
               email: "homer@simpsons.com",
-              phone: "555-222-1244",
+              phone: "555-222-1244"
             },
             {
               name: "Marge",
               email: "marge@simpsons.com",
-              phone: "555-222-1254",
-            },
-          ],
+              phone: "555-222-1254"
+            }
+          ]
         },
-        storeCfg,
-      ),
+        storeCfg
+      )
     );
 
     grid = new Ext.grid.Panel(
@@ -39,10 +39,10 @@ describe("Ext.grid.column.Column", function () {
           columns: defaultColumns,
           height: 200,
           width: 400,
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         },
-        gridCfg,
-      ),
+        gridCfg
+      )
     );
     colRef = grid.getColumnManager().getColumns();
   }
@@ -63,12 +63,12 @@ describe("Ext.grid.column.Column", function () {
         col = new Ext.grid.column.Column({
           columns: [
             {
-              text: "Foo",
+              text: "Foo"
             },
             {
-              text: "Bar",
-            },
-          ],
+              text: "Bar"
+            }
+          ]
         });
       }).not.toThrow();
     });
@@ -89,15 +89,15 @@ describe("Ext.grid.column.Column", function () {
             text: "A",
             columns: [
               {
-                text: "A1",
+                text: "A1"
               },
               {
-                text: "A2",
+                text: "A2"
               },
               {
-                text: "A3",
-              },
-            ],
+                text: "A3"
+              }
+            ]
           },
           {
             text: "B",
@@ -106,27 +106,27 @@ describe("Ext.grid.column.Column", function () {
                 text: "B1",
                 columns: [
                   {
-                    text: "B11",
+                    text: "B11"
                   },
                   {
-                    text: "B12",
-                  },
-                ],
+                    text: "B12"
+                  }
+                ]
               },
               {
                 text: "B2",
                 columns: [
                   {
-                    text: "B21",
-                  },
-                ],
-              },
-            ],
+                    text: "B21"
+                  }
+                ]
+              }
+            ]
           },
           {
-            text: "C",
-          },
-        ],
+            text: "C"
+          }
+        ]
       });
 
       expect(grid.down("gridcolumn[text=A1]").headerId).toBe("h1");
@@ -149,15 +149,15 @@ describe("Ext.grid.column.Column", function () {
         text: "A",
         columns: [
           {
-            text: "A1",
+            text: "A1"
           },
           {
-            text: "A2",
+            text: "A2"
           },
           {
-            text: "A3",
-          },
-        ],
+            text: "A3"
+          }
+        ]
       });
 
       createGrid(null, {
@@ -170,27 +170,27 @@ describe("Ext.grid.column.Column", function () {
                 text: "B1",
                 columns: [
                   {
-                    text: "B11",
+                    text: "B11"
                   },
                   {
-                    text: "B12",
-                  },
-                ],
+                    text: "B12"
+                  }
+                ]
               },
               {
                 text: "B2",
                 columns: [
                   {
-                    text: "B21",
-                  },
-                ],
-              },
-            ],
+                    text: "B21"
+                  }
+                ]
+              }
+            ]
           },
           {
-            text: "C",
-          },
-        ],
+            text: "C"
+          }
+        ]
       });
 
       expect(grid.down("gridcolumn[text=A1]").headerId).toBe("h6");
@@ -216,10 +216,10 @@ describe("Ext.grid.column.Column", function () {
       columns[1].items = {
         xtype: "textfield",
         flex: 1,
-        margin: "2",
+        margin: "2"
       };
       createGrid(null, {
-        columns: columns,
+        columns: columns
       });
       var textField = colRef[1].down("textfield");
 
@@ -227,7 +227,7 @@ describe("Ext.grid.column.Column", function () {
       jasmine.fireMouseEvent(
         textField.inputEl,
         "click",
-        textField.inputEl.getX() + 20,
+        textField.inputEl.getX() + 20
       );
 
       // That click into the text field should not have sorted the columns
@@ -242,32 +242,32 @@ describe("Ext.grid.column.Column", function () {
         border: false,
         columns: [
           {
-            text: "Column A",
+            text: "Column A"
           },
           {
             text: "Column B",
             columns: [
               {
-                text: "Column C",
-              },
-            ],
+                text: "Column C"
+              }
+            ]
           },
           {
             text: "Column D",
             columns: [
               {
-                text: "Column E",
+                text: "Column E"
               },
               {
                 text: "Column<br/>F",
                 columns: [
                   {
-                    text: "Column G",
-                  },
-                ],
-              },
-            ],
-          },
+                    text: "Column G"
+                  }
+                ]
+              }
+            ]
+          }
         ],
         width: 400,
         renderTo: Ext.getBody(),
@@ -278,8 +278,8 @@ describe("Ext.grid.column.Column", function () {
             this.headerCt.el
               .select("span.x-column-header-text")
               .setStyle("display", "block");
-          },
-        },
+          }
+        }
       });
 
       expect(grid.headerCt).toHaveLayout({
@@ -288,7 +288,7 @@ describe("Ext.grid.column.Column", function () {
           0: {
             el: { xywh: "0 0 100 80" },
             textEl: { xywh: "6 33 87 13" },
-            titleEl: { xywh: "0 0 99 80" },
+            titleEl: { xywh: "0 0 99 80" }
           },
           1: {
             el: { xywh: "100 0 100 80" },
@@ -298,9 +298,9 @@ describe("Ext.grid.column.Column", function () {
               0: {
                 el: { xywh: "0 22 [99,100] 58" },
                 textEl: { xywh: "6 44 [87,88] 13" },
-                titleEl: { xywh: "0 23 [99,100] 57" },
-              },
-            },
+                titleEl: { xywh: "0 23 [99,100] 57" }
+              }
+            }
           },
           2: {
             el: { xywh: "200 0 200 80" },
@@ -310,7 +310,7 @@ describe("Ext.grid.column.Column", function () {
               0: {
                 el: { xywh: "0 22 100 58" },
                 textEl: { xywh: "6 44 87 13" },
-                titleEl: { xywh: "0 23 99 57" },
+                titleEl: { xywh: "0 23 99 57" }
               },
               1: {
                 el: { xywh: "100 22 100 58" },
@@ -320,13 +320,13 @@ describe("Ext.grid.column.Column", function () {
                   0: {
                     el: { xywh: "0 35 100 22" },
                     textEl: { xywh: "6 39 87 13" },
-                    titleEl: { xywh: "0 36 99 21" },
-                  },
-                },
-              },
-            },
-          },
-        },
+                    titleEl: { xywh: "0 36 99 21" }
+                  }
+                }
+              }
+            }
+          }
+        }
       });
     });
   });
@@ -339,26 +339,26 @@ describe("Ext.grid.column.Column", function () {
       store = new Ext.data.Store({
         fields: ["name"],
         data: {
-          items: [{ name: "A" }],
+          items: [{ name: "A" }]
         },
         proxy: {
           type: "memory",
           reader: {
             type: "json",
-            rootProperty: "items",
-          },
-        },
+            rootProperty: "items"
+          }
+        }
       });
       grid = new Ext.grid.Panel({
         store: store,
         columns: [
           {
             dataIndex: "name",
-            editor: { xtype: "textfield", id: "nameEditor" },
-          },
+            editor: { xtype: "textfield", id: "nameEditor" }
+          }
         ],
         plugins: [cellEditingPlugin],
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -372,7 +372,7 @@ describe("Ext.grid.column.Column", function () {
     it("should destroy the editor field that was created using the editing plugin's getEditor method", function () {
       var field = cellEditingPlugin.getEditor(
         store.getAt(0),
-        grid.headerCt.items.getAt(0),
+        grid.headerCt.items.getAt(0)
       );
       grid.destroy();
       expect(field.destroyed).toBe(true);
@@ -397,14 +397,14 @@ describe("Ext.grid.column.Column", function () {
                 header: "Name",
                 columns: {
                   header: "Foo",
-                  dataIndex: "foo",
-                },
+                  dataIndex: "foo"
+                }
               },
               { header: "Email", dataIndex: "email", flex: 1 },
-              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
-            ],
-          }),
-        },
+              { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
+            ]
+          })
+        }
       );
 
       expect(grid.query("[isRootHeader]").length).toBe(1);
@@ -417,9 +417,9 @@ describe("Ext.grid.column.Column", function () {
           columns: [
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", flex: 1 },
-            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
-          ],
-        },
+            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
+          ]
+        }
       );
 
       expect(grid.query("[isColumn]").length).toBe(3);
@@ -434,19 +434,19 @@ describe("Ext.grid.column.Column", function () {
               header: "Name",
               columns: {
                 header: "Foo",
-                dataIndex: "foo",
-              },
+                dataIndex: "foo"
+              }
             },
             {
               header: "Email",
               columns: {
                 header: "Bar",
-                dataIndex: "bar",
-              },
+                dataIndex: "bar"
+              }
             },
-            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
-          ],
-        },
+            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
+          ]
+        }
       );
 
       expect(grid.query("[isGroupHeader]").length).toBe(2);
@@ -459,9 +459,9 @@ describe("Ext.grid.column.Column", function () {
           columns: [
             { header: "Name", dataIndex: "name", width: 100 },
             { header: "Email", dataIndex: "email", flex: 1 },
-            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true },
-          ],
-        },
+            { header: "Phone", dataIndex: "phone", flex: 1, hidden: true }
+          ]
+        }
       );
 
       expect(grid.query("[isGroupHeader]").length).toBe(0);
@@ -488,22 +488,20 @@ describe("Ext.grid.column.Column", function () {
             createGrid(
               {},
               {
-                columns: [
-                  { text: emptyValues[i], dataIndex: "phone", flex: 1 },
-                ],
-              },
+                columns: [{ text: emptyValues[i], dataIndex: "phone", flex: 1 }]
+              }
             );
 
             expect(colRef[0].titleEl).toHaveCls(
-              Ext.baseCSSPrefix + "column-header-inner-empty",
+              Ext.baseCSSPrefix + "column-header-inner-empty"
             );
 
             colRef[0].setText("Phone");
 
             expect(colRef[0].titleEl).not.toHaveCls(
-              Ext.baseCSSPrefix + "column-header-inner-empty",
+              Ext.baseCSSPrefix + "column-header-inner-empty"
             );
-          },
+          }
         );
 
         it(
@@ -514,20 +512,20 @@ describe("Ext.grid.column.Column", function () {
             createGrid(
               {},
               {
-                columns: [{ text: "Foo", dataIndex: "phone", flex: 1 }],
-              },
+                columns: [{ text: "Foo", dataIndex: "phone", flex: 1 }]
+              }
             );
 
             expect(colRef[0].titleEl).not.toHaveCls(
-              Ext.baseCSSPrefix + "column-header-inner-empty",
+              Ext.baseCSSPrefix + "column-header-inner-empty"
             );
 
             colRef[0].setText(emptyValues[i]);
 
             expect(colRef[0].titleEl).toHaveCls(
-              Ext.baseCSSPrefix + "column-header-inner-empty",
+              Ext.baseCSSPrefix + "column-header-inner-empty"
             );
-          },
+          }
         );
       }
     });

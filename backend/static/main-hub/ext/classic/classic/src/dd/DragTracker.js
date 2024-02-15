@@ -11,7 +11,7 @@ Ext.define("Ext.dd.DragTracker", {
   uses: ["Ext.util.Region"],
 
   mixins: {
-    observable: "Ext.util.Observable",
+    observable: "Ext.util.Observable"
   },
 
   /**
@@ -186,7 +186,7 @@ Ext.define("Ext.dd.DragTracker", {
       Ext.getWin().on({
         touchstart: "onWindowTouchStart",
         scope: me,
-        capture: true,
+        capture: true
       });
     }
   },
@@ -240,7 +240,7 @@ Ext.define("Ext.dd.DragTracker", {
     me.handleListeners = {
       scope: me,
       delegate: me.delegate,
-      dragstart: me.onDragStart,
+      dragstart: me.onDragStart
     };
 
     // If the element is part of a component which is scrollable by touch
@@ -251,7 +251,7 @@ Ext.define("Ext.dd.DragTracker", {
       me.handleListeners.mousedown = {
         fn: me.onMouseDown,
         delegate: me.delegate,
-        translate: false,
+        translate: false
       };
       me.handleListeners.contextmenu = function (e) {
         e.stopEvent();
@@ -266,7 +266,7 @@ Ext.define("Ext.dd.DragTracker", {
     if (!Ext.supports.TouchEvents && (me.trackOver || me.overCls)) {
       Ext.apply(me.handleListeners, {
         mouseover: me.onMouseOver,
-        mouseout: me.onMouseOut,
+        mouseout: me.onMouseOut
       });
     }
     me.mon(me.handle, me.handleListeners);
@@ -278,7 +278,7 @@ Ext.define("Ext.dd.DragTracker", {
       left: me.onResizeKeyDown,
       right: me.onResizeKeyDown,
       down: me.onResizeKeyDown,
-      scope: me,
+      scope: me
     });
   },
 
@@ -340,7 +340,7 @@ Ext.define("Ext.dd.DragTracker", {
 
             if (!cls) {
               cls = el.delegateCls = [handleCls, "-", el.region, "-over"].join(
-                "",
+                ""
               );
             }
 
@@ -352,7 +352,7 @@ Ext.define("Ext.dd.DragTracker", {
           "mouseover",
           me,
           e,
-          me.delegate ? e.getTarget(me.delegate, target) : me.handle,
+          me.delegate ? e.getTarget(me.delegate, target) : me.handle
         );
       }
     }
@@ -425,7 +425,7 @@ Ext.define("Ext.dd.DragTracker", {
       capture: true,
       mouseup: me.onMouseUp,
       mousemove: me.onMouseMove,
-      selectstart: me.stopSelect,
+      selectstart: me.stopSelect
     });
 
     // Flag for the onMouseMove method.
@@ -440,7 +440,7 @@ Ext.define("Ext.dd.DragTracker", {
         me.triggerStart,
         me.autoStart === true ? 1000 : me.autoStart,
         me,
-        [e],
+        [e]
       );
     }
   },
@@ -520,7 +520,7 @@ Ext.define("Ext.dd.DragTracker", {
       mouseup: me.onMouseUp,
       selectstart: me.stopSelect,
       capture: true,
-      scope: me,
+      scope: me
     });
     me.clearStart();
     me.active = false;
@@ -726,6 +726,6 @@ Ext.define("Ext.dd.DragTracker", {
         xy[1] += constrainTo.top - dr.top; // overflowed the top
       }
       return xy;
-    },
-  },
+    }
+  }
 });

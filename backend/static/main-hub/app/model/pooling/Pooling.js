@@ -4,79 +4,79 @@ Ext.define("MainHub.model.pooling.Pooling", {
   fields: [
     {
       name: "request",
-      type: "int",
+      type: "int"
     },
     {
       name: "request_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "pool",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "pool_size",
-      type: "string",
+      type: "string"
     },
     {
       name: "concentration_library",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "mean_fragment_size",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "concentration_c1",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "sequencing_depth",
-      type: "float",
+      type: "float"
     },
     {
       name: "percentage_library",
-      type: "string",
+      type: "string"
     },
     {
       name: "coordinate",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i7_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i7",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5",
-      type: "string",
+      type: "string"
     },
     {
       name: "quality_check",
       type: "string",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "comment",
-      type: "string",
-    },
-  ],
+      type: "string"
+    }
+  ]
 });

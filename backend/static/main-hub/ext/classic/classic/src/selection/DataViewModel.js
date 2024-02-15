@@ -72,7 +72,7 @@ Ext.define("Ext.selection.DataViewModel", {
         me.navigationListeners = me.navigationModel.on({
           navigate: me.onNavigate,
           scope: me,
-          destroyable: true,
+          destroyable: true
         });
       }
     }
@@ -132,5 +132,5 @@ Ext.define("Ext.selection.DataViewModel", {
     this.bindComponent();
     Ext.destroy(this.keyNav);
     this.callParent();
-  },
+  }
 });

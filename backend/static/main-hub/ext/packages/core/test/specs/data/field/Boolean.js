@@ -99,7 +99,7 @@ describe("Ext.data.field.Boolean", function () {
     describe("allowNull", function () {
       beforeEach(function () {
         make({
-          allowNull: true,
+          allowNull: true
         });
       });
 

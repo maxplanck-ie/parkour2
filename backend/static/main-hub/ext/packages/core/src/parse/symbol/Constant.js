@@ -27,5 +27,5 @@ Ext.define("Ext.parse.symbol.Constant", {
     me.isLiteral = true;
 
     return me;
-  },
+  }
 });

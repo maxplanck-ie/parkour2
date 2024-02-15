@@ -64,7 +64,7 @@ Ext.define(
       "Ext.grid.selection.Cells",
       "Ext.grid.selection.Rows",
       "Ext.grid.selection.Columns",
-      "Ext.grid.selection.SelectionExtender", // TODO: cmd-auto-dependency
+      "Ext.grid.selection.SelectionExtender" // TODO: cmd-auto-dependency
     ],
 
     alias: "selection.spreadsheet",
@@ -81,7 +81,7 @@ Ext.define(
        */
       columnSelect: {
         $value: false,
-        lazy: true,
+        lazy: true
       },
 
       /**
@@ -93,7 +93,7 @@ Ext.define(
        */
       cellSelect: {
         $value: true,
-        lazy: true,
+        lazy: true
       },
 
       /**
@@ -104,7 +104,7 @@ Ext.define(
        */
       rowSelect: {
         $value: true,
-        lazy: true,
+        lazy: true
       },
 
       /**
@@ -113,7 +113,7 @@ Ext.define(
        */
       dragSelect: {
         $value: true,
-        lazy: true,
+        lazy: true
       },
 
       /**
@@ -149,8 +149,8 @@ Ext.define(
        */
       extensible: {
         $value: true,
-        lazy: true,
-      },
+        lazy: true
+      }
     },
 
     /**
@@ -329,14 +329,14 @@ Ext.define(
             view.grid.on({
               viewcreated: me.onViewCreated,
               scope: me,
-              single: true,
+              single: true
             });
           }
           me.gridListeners = view.ownerGrid.on({
             columnschanged: me.onColumnsChanged,
             columnmove: me.onColumnMove,
             scope: me,
-            destroyable: true,
+            destroyable: true
           });
 
           storeListeners = me.getStoreListeners();
@@ -351,7 +351,7 @@ Ext.define(
           me.navigationListeners = me.navigationModel.on({
             navigate: me.onNavigate,
             scope: me,
-            destroyable: true,
+            destroyable: true
           });
 
           // Add class to add special cursor pointer to column headers
@@ -400,7 +400,7 @@ Ext.define(
         setRecordCheck: Ext.emptyFn,
 
         // It uses our isRowSelected to test whether a row is checked
-        isRecordChecked: Ext.emptyFn,
+        isRecordChecked: Ext.emptyFn
       };
     },
 
@@ -448,7 +448,7 @@ Ext.define(
           cm = me.view.ownerGrid.getVisibleColumnManager();
           range = Ext.Array.sort(
             [cm.indexOf(sel.lastColumnSelected), cm.indexOf(header)],
-            Ext.Array.numericSortFn,
+            Ext.Array.numericSortFn
           );
           for (i = range[0]; i <= range[1]; i++) {
             me.selectColumn(cm.getHeaderAtIndex(i), true);
@@ -552,7 +552,7 @@ Ext.define(
      */
     getCellContext: function (record, column) {
       return new Ext.grid.CellContext(
-        this.view.ownerGrid.getView(),
+        this.view.ownerGrid.getView()
       ).setPosition(record, column);
     },
 
@@ -895,7 +895,7 @@ Ext.define(
         me.viewListeners,
         me.selected,
         me.navigationListeners,
-        me.extensible,
+        me.extensible
       );
       if (scrollEls) {
         Ext.dd.ScrollManager.unregister(scrollEls);
@@ -923,7 +923,7 @@ Ext.define(
         y: 2,
         xy: 3,
         both: 3,
-        true: 3, // reserved word MUST be quoted when used an a property name
+        true: 3 // reserved word MUST be quoted when used an a property name
       },
 
       /**
@@ -936,8 +936,8 @@ Ext.define(
           keyup: {
             element: "el",
             fn: this.onViewKeyUp,
-            scope: this,
-          },
+            scope: this
+          }
         };
       },
 
@@ -1028,8 +1028,8 @@ Ext.define(
             : this.updateSelectionExtender,
           this,
           {
-            single: true,
-          },
+            single: true
+          }
         );
       },
 
@@ -1095,7 +1095,7 @@ Ext.define(
             view.ownerGrid,
             "beforereconfigure",
             me.onBeforeReconfigure,
-            me,
+            me
           );
         }
 
@@ -1104,7 +1104,7 @@ Ext.define(
 
         if (me.getDragSelect()) {
           view.on("render", me.onViewRender, me, {
-            single: true,
+            single: true
           });
         }
       },
@@ -1130,7 +1130,7 @@ Ext.define(
           vthresh: 50,
           hthresh: 50,
           frequency: 300,
-          increment: 100,
+          increment: 100
         };
         Ext.dd.ScrollManager.register(el);
 
@@ -1223,7 +1223,7 @@ Ext.define(
           // Add the listener after the view has potentially been corrected
           Ext.getBody().on("mouseup", me.onMouseUp, me, {
             single: true,
-            view: sel.view,
+            view: sel.view
           });
 
           // Only begin the drag process if configured to select what they asked for
@@ -1330,8 +1330,8 @@ Ext.define(
               .setPosition(
                 new Ext.grid.CellContext(header.getView()).setPosition(
                   record,
-                  header,
-                ),
+                  header
+                )
               );
           }
           me.lastOverColumn = header;
@@ -1363,7 +1363,7 @@ Ext.define(
               if (record) {
                 e.position = new Ext.grid.CellContext(view).setPosition(
                   record,
-                  view.getHeaderByCell(cell),
+                  view.getHeaderByCell(cell)
                 );
               }
             }
@@ -1431,7 +1431,7 @@ Ext.define(
           // At that point, we can use navigateEvent.position
           pos = new Ext.grid.CellContext(view).setPosition(
             record,
-            navigateEvent.column,
+            navigateEvent.column
           ),
           keyEvent = navigateEvent.keyEvent,
           ctrlKey = keyEvent.ctrlKey,
@@ -1521,7 +1521,7 @@ Ext.define(
               // First shift
               if (!sel.getRangeSize()) {
                 sel.setRangeStart(
-                  navigateEvent.previousPosition || me.getCellContext(0, 0),
+                  navigateEvent.previousPosition || me.getCellContext(0, 0)
                 );
               }
               sel.setRangeEnd(pos);
@@ -1677,7 +1677,7 @@ Ext.define(
               row: row,
               // IMPORTANT: The historic API for columns has been to include hidden columns
               // in the index. So we must index into the "all" ColumnManager.
-              column: column,
+              column: column
             });
 
             return sel.contains(testPos);
@@ -1698,7 +1698,7 @@ Ext.define(
           !(selected.isRows || selected.isCells || selected.isColumns)
         ) {
           Ext.raise(
-            "SpreadsheelModel#setSelected must be passed an instance of Ext.grid.selection.Selection",
+            "SpreadsheelModel#setSelected must be passed an instance of Ext.grid.selection.Selection"
           );
         }
         //</debug>
@@ -1773,7 +1773,7 @@ Ext.define(
           editRenderer: "&#160;",
           tdCls: me.rowNumbererTdCls,
           cls: me.rowNumbererHeaderCls,
-          locked: me.hasLockedHeader,
+          locked: me.hasLockedHeader
         };
       },
 
@@ -1883,7 +1883,7 @@ Ext.define(
             me,
             sel.getCount()
               ? me.store.getRange.apply(sel.view.dataSource, sel.getRowRange())
-              : [],
+              : []
           );
         }
         grid.fireEvent("selectionchange", grid, sel);
@@ -1940,7 +1940,7 @@ Ext.define(
         }
         if (extensible === true || typeof extensible === "string") {
           extensible = {
-            axes: me.axesConfigs[extensible],
+            axes: me.axesConfigs[extensible]
           };
         } else {
           extensible = Ext.Object.chain(extensible); // don't mutate the user's config
@@ -1971,7 +1971,7 @@ Ext.define(
             "beforeselectionextend",
             me.view.ownerGrid,
             sel,
-            extension,
+            extension
           ) !== false
         ) {
           sel.extendRange(extension);
@@ -2101,8 +2101,8 @@ Ext.define(
         if (sel && sel.isRows) {
           this.callParent(arguments);
         }
-      },
-    },
+      }
+    }
   },
   function (SpreadsheetModel) {
     var RowNumberer = Ext.ClassManager.get("Ext.grid.column.RowNumberer");
@@ -2113,5 +2113,5 @@ Ext.define(
         Ext.baseCSSPrefix +
         "ssm-row-numberer-cell";
     }
-  },
+  }
 );

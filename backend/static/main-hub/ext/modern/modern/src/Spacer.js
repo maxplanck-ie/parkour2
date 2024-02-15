@@ -141,5 +141,5 @@ Ext.define("Ext.Spacer", {
     }
 
     this.callParent([config]);
-  },
+  }
 });

@@ -51,7 +51,7 @@
       '<"' +
       toolbar_prefix +
       'bl ui-corner-br"ip>',
-    renderer: "jqueryui",
+    renderer: "jqueryui"
   });
 
   $.extend(DataTable.ext.classes, {
@@ -82,14 +82,14 @@
 
     /* Misc */
     sHeaderTH: "ui-state-default",
-    sFooterTH: "ui-state-default",
+    sFooterTH: "ui-state-default"
   });
 
   DataTable.ext.renderer.header.jqueryui = function (
     settings,
     cell,
     column,
-    classes,
+    classes
   ) {
     // Calculate what the unsorted class should be
     var noSortAppliedClass = sort_prefix + "caret-2-n-s";
@@ -109,7 +109,7 @@
       .addClass("DataTables_sort_wrapper")
       .append(cell.contents())
       .append(
-        $("<span/>").addClass(classes.sSortIcon + " " + noSortAppliedClass),
+        $("<span/>").addClass(classes.sSortIcon + " " + noSortAppliedClass)
       )
       .appendTo(cell);
 
@@ -128,7 +128,7 @@
             ? classes.sSortAsc
             : columns[colIdx] == "desc"
               ? classes.sSortDesc
-              : column.sSortingClass,
+              : column.sSortingClass
         );
 
       cell
@@ -147,14 +147,14 @@
             "caret-1-n" +
             " " +
             sort_prefix +
-            "caret-1-s",
+            "caret-1-s"
         )
         .addClass(
           columns[colIdx] == "asc"
             ? sort_prefix + "triangle-1-n"
             : columns[colIdx] == "desc"
               ? sort_prefix + "triangle-1-s"
-              : noSortAppliedClass,
+              : noSortAppliedClass
         );
     });
   };
@@ -167,11 +167,11 @@
     $.extend(true, DataTable.TableTools.classes, {
       container: "DTTT_container ui-buttonset ui-buttonset-multi",
       buttons: {
-        normal: "DTTT_button ui-button ui-state-default",
+        normal: "DTTT_button ui-button ui-state-default"
       },
       collection: {
-        container: "DTTT_collection ui-buttonset ui-buttonset-multi",
-      },
+        container: "DTTT_collection ui-buttonset ui-buttonset-multi"
+      }
     });
   }
 

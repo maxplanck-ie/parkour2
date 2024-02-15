@@ -4,10 +4,10 @@ describe("Ext.picker.Color", function () {
       colorPicker = new Ext.picker.Color(
         Ext.apply(
           {
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          config,
-        ),
+          config
+        )
       );
     };
 
@@ -16,7 +16,7 @@ describe("Ext.picker.Color", function () {
       toHaveSelected: function (color) {
         var el = this.actual.el.down("a.color-" + color, true);
         return Ext.fly(el).hasCls(colorPicker.selectedCls);
-      },
+      }
     });
   });
 
@@ -30,7 +30,7 @@ describe("Ext.picker.Color", function () {
   describe("initialisation", function () {
     beforeEach(function () {
       createPicker({
-        value: "003300",
+        value: "003300"
       });
     });
 
@@ -93,7 +93,7 @@ describe("Ext.picker.Color", function () {
     describe("when picker isn't rendered", function () {
       beforeEach(function () {
         createPicker({
-          renderTo: undefined,
+          renderTo: undefined
         });
       });
 

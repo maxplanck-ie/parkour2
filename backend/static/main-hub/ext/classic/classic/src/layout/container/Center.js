@@ -48,7 +48,7 @@ Ext.define("Ext.layout.container.Center", {
   renderTpl: [
     '<div id="{ownerId}-targetEl" data-ref="targetEl" class="{targetElCls}" role="presentation">' +
       "{%this.renderBody(out, values)%}" +
-      "</div>",
+      "</div>"
   ],
 
   targetElCls: Ext.baseCSSPrefix + "center-target",
@@ -163,14 +163,14 @@ Ext.define("Ext.layout.container.Center", {
   setItemHeight: function (itemContext, info) {
     var ratio = parseFloat(itemContext.target.height) / 100;
     itemContext.setHeight(
-      Math.round((info.targetSize.height - info.margins.height) * ratio),
+      Math.round((info.targetSize.height - info.margins.height) * ratio)
     );
   },
 
   setItemWidth: function (itemContext, info) {
     var ratio = parseFloat(itemContext.target.width) / 100;
     itemContext.setWidth(
-      Math.round((info.targetSize.width - info.margins.width) * ratio),
+      Math.round((info.targetSize.width - info.margins.width) * ratio)
     );
-  },
+  }
 });

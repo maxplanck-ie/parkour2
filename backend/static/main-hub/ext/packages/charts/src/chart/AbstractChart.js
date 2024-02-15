@@ -92,7 +92,7 @@ Ext.define("Ext.chart.AbstractChart", {
     "Ext.chart.legend.Legend",
     "Ext.chart.legend.SpriteLegend",
     "Ext.chart.legend.store.Store",
-    "Ext.data.Store",
+    "Ext.data.Store"
   ],
 
   isChart: true,
@@ -369,7 +369,7 @@ Ext.define("Ext.chart.AbstractChart", {
       top: 10,
       left: 10,
       right: 10,
-      bottom: 10,
+      bottom: 10
     },
 
     /**
@@ -470,7 +470,7 @@ Ext.define("Ext.chart.AbstractChart", {
      * Note that series can also own highlight items.
      * This notion is separate from this one and should not be used at the same time.
      */
-    highlightItem: null,
+    highlightItem: null
   },
 
   /**
@@ -511,7 +511,7 @@ Ext.define("Ext.chart.AbstractChart", {
     overlay: 6, // This surface will typically contain chart labels
     // and interaction sprites like crosshair lines.
     legend: 7, // SpriteLegend surface.
-    title: 8, // Reserved.
+    title: 8 // Reserved.
   },
 
   constructor: function (config) {
@@ -541,12 +541,12 @@ Ext.define("Ext.chart.AbstractChart", {
   applyAnimation: function (newAnimation, oldAnimation) {
     if (!newAnimation) {
       newAnimation = {
-        duration: 0,
+        duration: 0
       };
     } else if (newAnimation === true) {
       newAnimation = {
         easing: "easeInOut",
-        duration: 500,
+        duration: 500
       };
     }
     return oldAnimation
@@ -557,7 +557,7 @@ Ext.define("Ext.chart.AbstractChart", {
   getAnimation: function () {
     if (this.animationSuspendCount) {
       return {
-        duration: 0,
+        duration: 0
       };
     } else {
       return this.callParent();
@@ -608,7 +608,7 @@ Ext.define("Ext.chart.AbstractChart", {
         // Series may not have had their own animation to begin with,
         // so fall back to chart's animation in that case.
         series.setAnimation(
-          (animation.duration && animation) || me.getAnimation(),
+          (animation.duration && animation) || me.getAnimation()
         );
       }
     }
@@ -738,7 +738,7 @@ Ext.define("Ext.chart.AbstractChart", {
         item = items[i];
         if (item.type) {
           Ext.raise(
-            "To add custom sprites to the chart use the 'sprites' config.",
+            "To add custom sprites to the chart use the 'sprites' config."
           );
         } else {
           this.items.push(item);
@@ -782,7 +782,7 @@ Ext.define("Ext.chart.AbstractChart", {
       ) {
         if (isUpdateOld) {
           oldBackground.setAttributes({
-            src: newBackground.src,
+            src: newBackground.src
           });
         } else {
           surface.remove(oldBackground, true);
@@ -791,7 +791,7 @@ Ext.define("Ext.chart.AbstractChart", {
       } else {
         if (isUpdateOld) {
           oldBackground.setAttributes({
-            fillStyle: newBackground,
+            fillStyle: newBackground
           });
         } else {
           surface.remove(oldBackground, true);
@@ -803,9 +803,9 @@ Ext.define("Ext.chart.AbstractChart", {
                 x: 0,
                 y: 0,
                 width: 0,
-                height: 0,
-              },
-            },
+                height: 0
+              }
+            }
           });
         }
       }
@@ -813,7 +813,7 @@ Ext.define("Ext.chart.AbstractChart", {
     if (width && height) {
       oldBackground.setAttributes({
         width: width,
-        height: height,
+        height: height
       });
     }
     oldBackground.setAnimation(this.getAnimation());
@@ -860,7 +860,7 @@ Ext.define("Ext.chart.AbstractChart", {
       if (seriesItem) {
         seriesItem.setHiddenByIndex(
           record.get("index"),
-          record.get("disabled"),
+          record.get("disabled")
         );
         this.redraw();
       }
@@ -898,7 +898,7 @@ Ext.define("Ext.chart.AbstractChart", {
     if (id === undefined) {
       Ext.raise(
         "Chart component id is undefined. " +
-          "Please ensure the component has an id.",
+          "Please ensure the component has an id."
       );
     }
     if (id in map) {
@@ -1134,7 +1134,7 @@ Ext.define("Ext.chart.AbstractChart", {
         seriesColors = me.circularCopyArray(
           colors,
           colorIndex,
-          seriesColorCount,
+          seriesColorCount
         );
         colorIndex += seriesColorCount;
         seriesItem.updateChartColors(seriesColors);
@@ -1397,7 +1397,7 @@ Ext.define("Ext.chart.AbstractChart", {
         else {
           if (Ext.isString(series)) {
             series = {
-              type: series,
+              type: series
             };
           }
           series.chart = me;
@@ -1433,7 +1433,7 @@ Ext.define("Ext.chart.AbstractChart", {
       if (Ext.isBoolean(legend)) {
         result = Ext.create("legend." + me.defaultLegendType, {
           docked: "bottom",
-          chart: me,
+          chart: me
         });
       } else {
         legend.docked = legend.docked || "bottom";
@@ -1458,7 +1458,7 @@ Ext.define("Ext.chart.AbstractChart", {
       me.getItems();
       me.legendStore = new Ext.chart.legend.store.Store({
         chart: me,
-        store: me.legendStore,
+        store: me.legendStore
       });
       me.refreshLegendStore();
       me.legendStore.on("update", "onUpdateLegendStore", me);
@@ -1508,7 +1508,7 @@ Ext.define("Ext.chart.AbstractChart", {
         interaction,
         null,
         oldMap[(interaction.getId && interaction.getId()) || interaction.id],
-        "interaction",
+        "interaction"
       );
       if (interaction) {
         interaction.setChart(me);
@@ -1562,7 +1562,7 @@ Ext.define("Ext.chart.AbstractChart", {
         datachanged: "onDataChanged",
         update: "onDataChanged",
         scope: me,
-        order: "after",
+        order: "after"
       });
       if (oldStore.autoDestroy) {
         oldStore.destroy();
@@ -1573,7 +1573,7 @@ Ext.define("Ext.chart.AbstractChart", {
         datachanged: "onDataChanged",
         update: "onDataChanged",
         scope: me,
-        order: "after",
+        order: "after"
       });
     }
 
@@ -1609,7 +1609,7 @@ Ext.define("Ext.chart.AbstractChart", {
 
     background.setAttributes({
       width: chartRect[2],
-      height: chartRect[3],
+      height: chartRect[3]
     });
 
     return result;
@@ -1787,7 +1787,7 @@ Ext.define("Ext.chart.AbstractChart", {
       me.on({
         redraw: me.onDataChanged,
         scope: me,
-        single: true,
+        single: true
       });
       return;
     }
@@ -1855,12 +1855,12 @@ Ext.define("Ext.chart.AbstractChart", {
   updateHighlightItem: function (newHighlightItem, oldHighlightItem) {
     if (oldHighlightItem) {
       oldHighlightItem.series.setAttributesForItem(oldHighlightItem, {
-        highlighted: false,
+        highlighted: false
       });
     }
     if (newHighlightItem) {
       newHighlightItem.series.setAttributesForItem(newHighlightItem, {
-        highlighted: true,
+        highlighted: true
       });
       this.fireEvent("itemhighlight", this, newHighlightItem, oldHighlightItem);
     }
@@ -1868,7 +1868,7 @@ Ext.define("Ext.chart.AbstractChart", {
       "itemhighlightchange",
       this,
       newHighlightItem,
-      oldHighlightItem,
+      oldHighlightItem
     );
   },
 
@@ -1948,5 +1948,5 @@ Ext.define("Ext.chart.AbstractChart", {
     }
 
     return ans;
-  },
+  }
 });

@@ -12,7 +12,7 @@ Ext.define("Ext.fx.layout.card.Abstract", {
 
     reverse: null,
 
-    layout: null,
+    layout: null
   },
 
   updateLayout: function (layout) {
@@ -60,5 +60,5 @@ Ext.define("Ext.fx.layout.card.Abstract", {
       me.fireEvent("destroy", this);
     }
     me.callParent();
-  },
+  }
 });

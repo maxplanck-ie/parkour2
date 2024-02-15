@@ -74,7 +74,7 @@ Ext.define("Ext.button.Segmented", {
      * Default {@link Ext.Component#ui ui} to use for buttons in this segmented button.
      * Buttons can override this default by specifying their own UI
      */
-    defaultUI: "default",
+    defaultUI: "default"
   },
 
   beforeRenderConfig: {
@@ -135,7 +135,7 @@ Ext.define("Ext.button.Segmented", {
      *     // Remove all pressed buttons, and set value to null
      *     button.setValue(null);
      */
-    value: undefined,
+    value: undefined
   },
 
   /**
@@ -261,7 +261,7 @@ Ext.define("Ext.button.Segmented", {
       else {
         // no matched button. fail.
         Ext.raise(
-          "Invalid value '" + value + "' for segmented button: '" + me.id + "'",
+          "Invalid value '" + value + "' for segmented button: '" + me.id + "'"
         );
       }
       //</debug>
@@ -332,7 +332,7 @@ Ext.define("Ext.button.Segmented", {
               me.id +
               "' cannot contain multiple items with value: '" +
               value +
-              "'",
+              "'"
           );
         }
       }
@@ -344,7 +344,7 @@ Ext.define("Ext.button.Segmented", {
       show: syncItemClasses,
       beforetoggle: "_onBeforeItemToggle",
       toggle: "_onItemToggle",
-      scope: me,
+      scope: me
     });
 
     if (me.getAllowToggle()) {
@@ -400,7 +400,7 @@ Ext.define("Ext.button.Segmented", {
 
     if (this.rendered) {
       Ext.raise(
-        "Changing the ui config of a segmented button after render is not supported.",
+        "Changing the ui config of a segmented button after render is not supported."
       );
     } else if (items) {
       if (items.items) {
@@ -424,7 +424,7 @@ Ext.define("Ext.button.Segmented", {
   updateAllowDepress: function (newAllowDepress, oldAllowDepress) {
     if (this.rendered && newAllowDepress !== oldAllowDepress) {
       Ext.raise(
-        "Changing the allowDepress config of a segmented button after render is not supported.",
+        "Changing the allowDepress config of a segmented button after render is not supported."
       );
     }
   },
@@ -432,7 +432,7 @@ Ext.define("Ext.button.Segmented", {
   updateAllowMultiple: function (newAllowMultiple, oldAllowMultiple) {
     if (this.rendered && newAllowMultiple !== oldAllowMultiple) {
       Ext.raise(
-        "Changing the allowMultiple config of a segmented button after render is not supported.",
+        "Changing the allowMultiple config of a segmented button after render is not supported."
       );
     }
   },
@@ -440,7 +440,7 @@ Ext.define("Ext.button.Segmented", {
   updateAllowToggle: function (newAllowToggle, oldAllowToggle) {
     if (this.rendered && newAllowToggle !== oldAllowToggle) {
       Ext.raise(
-        "Changing the allowToggle config of a segmented button after render is not supported.",
+        "Changing the allowToggle config of a segmented button after render is not supported."
       );
     }
   },
@@ -448,7 +448,7 @@ Ext.define("Ext.button.Segmented", {
   updateVertical: function (newVertical, oldVertical) {
     if (this.rendered && newVertical !== oldVertical) {
       Ext.raise(
-        "Changing the orientation of a segmented button after render is not supported.",
+        "Changing the orientation of a segmented button after render is not supported."
       );
     }
   },
@@ -618,6 +618,6 @@ Ext.define("Ext.button.Segmented", {
         //add lastCls to the first visible button
         visibleItems[ln - 1].addCls(lastCls);
       }
-    },
-  },
+    }
+  }
 });

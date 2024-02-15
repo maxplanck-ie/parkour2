@@ -10,5 +10,5 @@ Ext.define("Ext.rtl.layout.container.Border", {
       me.horzPositionProp = "right";
     }
     me.callParent(arguments);
-  },
+  }
 });

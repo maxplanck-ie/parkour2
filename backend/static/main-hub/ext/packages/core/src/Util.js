@@ -15,7 +15,7 @@ Ext.apply(Ext, {
     // these two are private, used to indicate that listeners were declared on the
     // class body with either an unspecified scope, or scope:'controller'
     self: { isSelf: 1 },
-    "self.controller": { isSelf: 1, isController: 1 },
+    "self.controller": { isSelf: 1, isController: 1 }
   },
 
   escapeId: (function () {
@@ -90,7 +90,7 @@ Ext.apply(Ext, {
           'No method named "' +
             callback +
             '" on ' +
-            (scope.$className || "scope object"),
+            (scope.$className || "scope object")
         );
       }
       //</debug>
@@ -371,7 +371,7 @@ Ext.apply(Ext, {
         Ext.raise({
           sourceClass: "Ext",
           sourceMethod: "extend",
-          msg: "Attempting to extend from a class which has not been loaded on the page.",
+          msg: "Attempting to extend from a class which has not been loaded on the page."
         });
       }
       //</debug>
@@ -544,7 +544,7 @@ Ext.apply(Ext, {
       // at least in iE9 the div is not 100px - the scrollbar size is removed!
       Ext._scrollbarSize = scrollbarSize = {
         width: div.offsetWidth - div.clientWidth,
-        height: div.offsetHeight - div.clientHeight,
+        height: div.offsetHeight - div.clientHeight
       };
 
       db.removeChild(div);
@@ -582,14 +582,14 @@ Ext.apply(Ext, {
         number: 1,
         string: 1,
         boolean: 1,
-        undefined: 1,
+        undefined: 1
       },
       toStringTypes = {
         "[object Array]": "array",
         "[object Date]": "date",
         "[object Boolean]": "boolean",
         "[object Number]": "number",
-        "[object RegExp]": "regexp",
+        "[object RegExp]": "regexp"
       };
 
     return function (value) {
@@ -632,7 +632,7 @@ Ext.apply(Ext, {
       Ext.raise({
         sourceClass: "Ext",
         sourceMethod: "typeOf",
-        msg: 'Failed to determine the type of "' + value + '".',
+        msg: 'Failed to determine the type of "' + value + '".'
       });
       //</debug>
 
@@ -683,7 +683,7 @@ Ext.apply(Ext, {
       else if (Ext.isObject(config) && "type" in config) {
         return manager.instantiateByAlias(
           aliasNamespace + "." + config.type,
-          config,
+          config
         );
       }
     }
@@ -706,7 +706,7 @@ Ext.apply(Ext, {
     if ("xtype" in config) {
       newInstance = manager.instantiateByAlias(
         "widget." + config.xtype,
-        config,
+        config
       );
     } else if ("xclass" in config) {
       newInstance = Ext.create(config.xclass, config);
@@ -985,5 +985,5 @@ Ext.apply(Ext, {
       var nullLog = function () {};
       nullLog.info = nullLog.warn = nullLog.error = Ext.emptyFn;
       return nullLog;
-    })(),
+    })()
 });

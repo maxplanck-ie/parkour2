@@ -67,7 +67,7 @@ Ext.define(
       return {
         min: Number.MAX_VALUE,
         max: 0,
-        sum: 0,
+        sum: 0
       };
     }
 
@@ -86,7 +86,7 @@ Ext.define(
         avg: 0,
         min: set.min,
         max: set.max,
-        sum: 0,
+        sum: 0
       };
 
       if (count) {
@@ -113,7 +113,7 @@ Ext.define(
       },
 
       statics: {
-        getTimestamp: getTimestamp,
+        getTimestamp: getTimestamp
       },
 
       format: function (calibration) {
@@ -135,13 +135,13 @@ Ext.define(
               //', max={[this.time(values.max)]}',
               ")",
               "</tpl>",
-              "</tpl>",
+              "</tpl>"
             ].join(""),
             {
               time: function (t) {
                 return Math.round(t * 100) / 100;
-              },
-            },
+              }
+            }
           );
         }
 
@@ -161,7 +161,7 @@ Ext.define(
           childCount: me.childCount,
           depth: me.maxDepth,
           pure: setToJSON(me.count, me.childCount, calibration, me.pure),
-          total: setToJSON(me.count, me.childCount, calibration, me.total),
+          total: setToJSON(me.count, me.childCount, calibration, me.total)
         };
       },
 
@@ -171,7 +171,7 @@ Ext.define(
             accum: me,
             leave: leaveFrame,
             childTime: 0,
-            parent: currentFrame,
+            parent: currentFrame
           };
 
         ++me.depth;
@@ -239,10 +239,10 @@ Ext.define(
         Ext.ClassManager.onCreated(tapFunc, me, className);
 
         return me;
-      },
+      }
     };
   },
   function () {
     Ext.perf.getTimestamp = this.getTimestamp;
-  },
+  }
 );

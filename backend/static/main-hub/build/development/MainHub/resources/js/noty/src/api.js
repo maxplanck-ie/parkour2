@@ -7,7 +7,7 @@ const DocTitleProps = {
   originalTitle: null,
   count: 0,
   changed: false,
-  timer: -1,
+  timer: -1
 };
 
 export const docTitle = {
@@ -46,7 +46,7 @@ export const docTitle = {
       document.title = DocTitleProps.originalTitle;
       DocTitleProps.changed = false;
     }
-  },
+  }
 };
 
 export const DefaultMaxVisible = 5;
@@ -54,8 +54,8 @@ export const DefaultMaxVisible = 5;
 export const Queues = {
   global: {
     maxVisible: DefaultMaxVisible,
-    queue: [],
-  },
+    queue: []
+  }
 };
 
 export const Store = {};
@@ -70,7 +70,7 @@ export let Defaults = {
   closeWith: ["click"],
   animation: {
     open: "noty_effects_open",
-    close: "noty_effects_close",
+    close: "noty_effects_close"
   },
   id: false,
   force: false,
@@ -86,18 +86,18 @@ export let Defaults = {
     afterClose: null,
     onClick: null,
     onHover: null,
-    onTemplate: null,
+    onTemplate: null
   },
   sounds: {
     sources: [],
     volume: 1,
-    conditions: [],
+    conditions: []
   },
   titleCount: {
-    conditions: [],
+    conditions: []
   },
   modal: false,
-  visibilityControl: false,
+  visibilityControl: false
 };
 
 /**
@@ -117,7 +117,7 @@ export function getQueueCounts(queueName = "global") {
 
   return {
     current: count,
-    maxVisible: max,
+    maxVisible: max
   };
 }
 
@@ -179,7 +179,7 @@ export function ghostFix(ref) {
   let ghost = document.createElement("div");
   ghost.setAttribute("id", ghostID);
   Utils.css(ghost, {
-    height: Utils.outerHeight(ref.barDom) + "px",
+    height: Utils.outerHeight(ref.barDom) + "px"
   });
 
   ref.barDom.insertAdjacentHTML("afterend", ghost.outerHTML);
@@ -207,7 +207,7 @@ export function build(ref) {
   ref.barDom.setAttribute("id", ref.id);
   Utils.addClass(
     ref.barDom,
-    `noty_bar noty_type__${ref.options.type} noty_theme__${ref.options.theme}`,
+    `noty_bar noty_type__${ref.options.type} noty_theme__${ref.options.theme}`
   );
 
   ref.barDom.innerHTML = markup;
@@ -325,7 +325,7 @@ export function queueClose(ref) {
     if (ref.options.progressBar && ref.progressDom) {
       Utils.css(ref.progressDom, {
         transition: `width ${ref.options.timeout}ms linear`,
-        width: "0%",
+        width: "0%"
       });
     }
 
@@ -349,7 +349,7 @@ export function dequeueClose(ref) {
     if (ref.options.progressBar && ref.progressDom) {
       Utils.css(ref.progressDom, {
         transition: "width 0ms linear",
-        width: "100%",
+        width: "100%"
       });
     }
   }

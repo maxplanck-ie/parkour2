@@ -29,8 +29,8 @@ describe("Ext.drag.Source", function () {
         height: "20px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     });
   }
 
@@ -50,8 +50,8 @@ describe("Ext.drag.Source", function () {
         height: "100px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid blue",
-      },
+        border: "1px solid blue"
+      }
     });
   }
 
@@ -69,7 +69,7 @@ describe("Ext.drag.Source", function () {
       "dragmove",
       dragSpy.andCallFake(function (source, info) {
         dragSpy.mostRecentCall.dragInfo = info;
-      }),
+      })
     );
   }
 
@@ -114,9 +114,9 @@ describe("Ext.drag.Source", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -129,9 +129,9 @@ describe("Ext.drag.Source", function () {
         {
           id: touchId,
           x: xy[0] + (offsetX || 0),
-          y: xy[1] + (offsetY || 0),
+          y: xy[1] + (offsetY || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -143,9 +143,9 @@ describe("Ext.drag.Source", function () {
         {
           id: touchId,
           x: cursorTrack[0] + (x || 0),
-          y: cursorTrack[1] + (y || 0),
+          y: cursorTrack[1] + (y || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -160,9 +160,9 @@ describe("Ext.drag.Source", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -181,9 +181,9 @@ describe("Ext.drag.Source", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -224,8 +224,8 @@ describe("Ext.drag.Source", function () {
         height: "20px",
         left: "50px",
         top: "50px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     };
     dragSpy = jasmine.createSpy();
   });
@@ -283,7 +283,7 @@ describe("Ext.drag.Source", function () {
 
     it("should destroy the element with autoDestroy: true", function () {
       makeSource({
-        autoDestroy: true,
+        autoDestroy: true
       });
 
       source.destroy();
@@ -292,7 +292,7 @@ describe("Ext.drag.Source", function () {
 
     it("should not destroy the element with autoDestroy: false", function () {
       makeSource({
-        autoDestroy: false,
+        autoDestroy: false
       });
 
       source.destroy();
@@ -389,7 +389,7 @@ describe("Ext.drag.Source", function () {
             });
 
           makeSource({
-            describe: spy,
+            describe: spy
           });
 
           source.on("dragmove", dragSpy);
@@ -414,14 +414,14 @@ describe("Ext.drag.Source", function () {
           var spy = jasmine.createSpy();
 
           makeSource({
-            describe: spy,
+            describe: spy
           });
 
           startDrag();
           moveBy(10, 10);
           runs(function () {
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
           });
           endDrag();
@@ -438,7 +438,7 @@ describe("Ext.drag.Source", function () {
 
           var T = Ext.define(null, {
             extend: "Ext.drag.Source",
-            describe: spy,
+            describe: spy
           });
 
           makeSource({}, T);
@@ -466,7 +466,7 @@ describe("Ext.drag.Source", function () {
 
           var T = Ext.define(null, {
             extend: "Ext.drag.Source",
-            describe: spy,
+            describe: spy
           });
 
           makeSource({}, T);
@@ -475,7 +475,7 @@ describe("Ext.drag.Source", function () {
           moveBy(10, 10);
           runs(function () {
             expect(spy.mostRecentCall.args[0] instanceof Ext.drag.Info).toBe(
-              true,
+              true
             );
           });
           endDrag();
@@ -889,14 +889,14 @@ describe("Ext.drag.Source", function () {
         "dragmove",
         spy.andCallFake(function (source, info) {
           spy.mostRecentCall.dragInfo = info.clone();
-        }),
+        })
       );
       expect(source.getProxy().$className).toBe("Ext.drag.proxy.Original");
       startDrag();
       moveBy(10, 10);
       runs(function () {
         expect(spy.mostRecentCall.dragInfo.proxy.element).toBe(
-          source.getElement(),
+          source.getElement()
         );
       });
       endDrag();
@@ -960,15 +960,15 @@ describe("Ext.drag.Source", function () {
 
         makeSource({
           proxy: {
-            type: "none",
-          },
+            type: "none"
+          }
         });
 
         source.on(
           "dragmove",
           spy.andCallFake(function (source, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
 
         startDrag();
@@ -992,13 +992,13 @@ describe("Ext.drag.Source", function () {
           "dragmove",
           spy.andCallFake(function (source, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         startDrag();
         moveBy(10, 10);
         runs(function () {
           expect(spy.mostRecentCall.dragInfo.proxy.element).toBe(
-            source.getElement(),
+            source.getElement()
           );
         });
         endDrag();
@@ -1021,8 +1021,8 @@ describe("Ext.drag.Source", function () {
           proxy: {
             type: "placeholder",
             html: "TheText",
-            cls: "foo",
-          },
+            cls: "foo"
+          }
         });
       });
 
@@ -1033,7 +1033,7 @@ describe("Ext.drag.Source", function () {
           "dragmove",
           spy.andCallFake(function (source, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
 
         startDrag();
@@ -1055,7 +1055,7 @@ describe("Ext.drag.Source", function () {
           "dragmove",
           spy.andCallFake(function (source, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         startDrag();
         // Go past threshhold
@@ -1075,7 +1075,7 @@ describe("Ext.drag.Source", function () {
           "dragmove",
           spy.andCallFake(function (source, info) {
             spy.mostRecentCall.dragInfo = info.clone();
-          }),
+          })
         );
         startDrag();
         // Go past threshhold
@@ -1105,7 +1105,7 @@ describe("Ext.drag.Source", function () {
 
     it("should add the cls when dragging starts and remove when it ends", function () {
       makeSource({
-        activeCls: "foo",
+        activeCls: "foo"
       });
       startDrag();
       moveBy(10, 10);
@@ -1120,7 +1120,7 @@ describe("Ext.drag.Source", function () {
       makeDragEl();
       dragEl.dom.className = "bar";
       makeSource({
-        activeCls: "foo",
+        activeCls: "foo"
       });
 
       startDrag();
@@ -1147,7 +1147,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to clear a cls", function () {
             makeSource({
-              activeCls: "foo",
+              activeCls: "foo"
             });
             source.setActiveCls("");
             startDrag();
@@ -1159,7 +1159,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to change a cls", function () {
             makeSource({
-              activeCls: "foo",
+              activeCls: "foo"
             });
             source.setActiveCls("bar");
             startDrag();
@@ -1188,7 +1188,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to clear a cls", function () {
             makeSource({
-              activeCls: "foo",
+              activeCls: "foo"
             });
             dragBy(100, 100);
             runs(function () {
@@ -1203,7 +1203,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to change a cls", function () {
             makeSource({
-              activeCls: "foo",
+              activeCls: "foo"
             });
             dragBy(100, 100);
             runs(function () {
@@ -1236,7 +1236,7 @@ describe("Ext.drag.Source", function () {
 
         it("should be able to clear a cls", function () {
           makeSource({
-            activeCls: "foo",
+            activeCls: "foo"
           });
           startDrag();
           moveBy(100, 100);
@@ -1251,7 +1251,7 @@ describe("Ext.drag.Source", function () {
 
         it("should be able to change a cls", function () {
           makeSource({
-            activeCls: "foo",
+            activeCls: "foo"
           });
           startDrag();
           moveBy(100, 100);
@@ -1325,8 +1325,8 @@ describe("Ext.drag.Source", function () {
             proxy: {
               type: "placeholder",
               html: "Foo",
-              cursorOffset: [0, 0],
-            },
+              cursorOffset: [0, 0]
+            }
           });
         });
 
@@ -1377,8 +1377,8 @@ describe("Ext.drag.Source", function () {
               top: top + "px",
               width: "20px",
               height: "20px",
-              position: "absolute",
-            },
+              position: "absolute"
+            }
           };
         }
 
@@ -1388,15 +1388,15 @@ describe("Ext.drag.Source", function () {
             height: "200px",
             position: "absolute",
             left: "50px",
-            top: "50px",
+            top: "50px"
           },
           children: preventChildren
             ? []
             : [
                 getChild("foo", 10, 10),
                 getChild("bar", 100, 100),
-                getChild("foo", 150, 150),
-              ],
+                getChild("foo", 150, 150)
+              ]
         });
       }
 
@@ -1409,9 +1409,9 @@ describe("Ext.drag.Source", function () {
             {
               id: touchId,
               x: center[0],
-              y: center[1],
+              y: center[1]
             },
-            handle,
+            handle
           );
         });
         waitsForAnimation();
@@ -1434,7 +1434,7 @@ describe("Ext.drag.Source", function () {
       it("should not drag when the drag is on the element (non handle) with a handle", function () {
         makeDragElWithHandles();
         makeSource({
-          handle: ".foo",
+          handle: ".foo"
         });
         dragBy(100, 100);
         runsExpectXY(50, 50);
@@ -1443,7 +1443,7 @@ describe("Ext.drag.Source", function () {
       it("should not drag when the drag is on a child element that does not match the handle", function () {
         makeDragElWithHandles();
         makeSource({
-          handle: ".foo",
+          handle: ".foo"
         });
         var handle = dragEl.child(".bar");
         startHandleDrag(handle);
@@ -1455,7 +1455,7 @@ describe("Ext.drag.Source", function () {
       it("should drag when the drag is on a matching handle", function () {
         makeDragElWithHandles();
         makeSource({
-          handle: ".foo",
+          handle: ".foo"
         });
         var handle = dragEl.child(".foo");
         startHandleDrag(handle);
@@ -1467,7 +1467,7 @@ describe("Ext.drag.Source", function () {
       it("should be able to use multiple handles", function () {
         makeDragElWithHandles();
         makeSource({
-          handle: ".foo",
+          handle: ".foo"
         });
         var handle = dragEl.child(".foo");
         startHandleDrag(handle);
@@ -1489,20 +1489,20 @@ describe("Ext.drag.Source", function () {
             top: "10px",
             width: "40px",
             height: "40px",
-            position: "absolute",
+            position: "absolute"
           },
           children: [
             {
               children: [
                 {
-                  cls: "foo",
-                },
-              ],
-            },
-          ],
+                  cls: "foo"
+                }
+              ]
+            }
+          ]
         });
         makeSource({
-          handle: ".foo",
+          handle: ".foo"
         });
         var handle = dragEl.down(".foo");
         startHandleDrag(handle);
@@ -1532,7 +1532,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to clear a handle", function () {
             makeSource({
-              handle: ".foo",
+              handle: ".foo"
             });
             source.setHandle(null);
             dragBy(100, 100);
@@ -1541,7 +1541,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to change a handle", function () {
             makeSource({
-              handle: ".foo",
+              handle: ".foo"
             });
             source.setHandle(".bar");
             var handle = dragEl.child(".foo");
@@ -1578,7 +1578,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to clear a handle", function () {
             makeSource({
-              handle: ".foo",
+              handle: ".foo"
             });
             var handle = dragEl.child(".foo");
             startHandleDrag(handle);
@@ -1594,7 +1594,7 @@ describe("Ext.drag.Source", function () {
 
           it("should be able to change a handle", function () {
             makeSource({
-              handle: ".foo",
+              handle: ".foo"
             });
             var handle = dragEl.child(".foo");
             startHandleDrag(handle);
@@ -1631,8 +1631,8 @@ describe("Ext.drag.Source", function () {
               width: "600px",
               height: "600px",
               top: "50px",
-              left: "50px",
-            },
+              left: "50px"
+            }
           });
           child = parent.first();
           dragEl = child.createChild(defaultElCfg);
@@ -1645,7 +1645,7 @@ describe("Ext.drag.Source", function () {
         it("should accept an id", function () {
           setupElements();
           makeSource({
-            constrain: parent.id,
+            constrain: parent.id
           });
           dragBy(-400, -400);
           runsExpectXY(50, 50);
@@ -1654,7 +1654,7 @@ describe("Ext.drag.Source", function () {
         it("should accept a DOM element", function () {
           setupElements();
           makeSource({
-            constrain: parent.dom,
+            constrain: parent.dom
           });
           dragBy(-400, -400);
           runsExpectXY(50, 50);
@@ -1663,7 +1663,7 @@ describe("Ext.drag.Source", function () {
         it("should accept an element reference", function () {
           setupElements();
           makeSource({
-            constrain: parent,
+            constrain: parent
           });
           dragBy(-400, -400);
           runsExpectXY(50, 50);
@@ -1671,7 +1671,7 @@ describe("Ext.drag.Source", function () {
 
         it("should use a specified region", function () {
           makeSource({
-            constrain: new Ext.util.Region(30, 200, 200, 30),
+            constrain: new Ext.util.Region(30, 200, 200, 30)
           });
           dragBy(-400, -400);
           runsExpectXY(30, 30);
@@ -1686,8 +1686,8 @@ describe("Ext.drag.Source", function () {
         it("should not move the element on the vertical axis", function () {
           makeSource({
             constrain: {
-              horizontal: true,
-            },
+              horizontal: true
+            }
           });
           startDrag();
           moveBy(100, 100);
@@ -1705,7 +1705,7 @@ describe("Ext.drag.Source", function () {
           runsExpectXY(150, 150);
           runs(function () {
             source.setConstrain({
-              horizontal: true,
+              horizontal: true
             });
           });
           dragBy(100, 100);
@@ -1715,8 +1715,8 @@ describe("Ext.drag.Source", function () {
         it("should be able to clear constraint after initial drag", function () {
           makeSource({
             constrain: {
-              horizontal: true,
-            },
+              horizontal: true
+            }
           });
           dragBy(100, 100);
           runsExpectXY(150, 50);
@@ -1736,8 +1736,8 @@ describe("Ext.drag.Source", function () {
         it("should not move the element on the horizontal axis", function () {
           makeSource({
             constrain: {
-              vertical: true,
-            },
+              vertical: true
+            }
           });
           startDrag();
           moveBy(100, 100);
@@ -1753,7 +1753,7 @@ describe("Ext.drag.Source", function () {
           runsExpectXY(150, 150);
           runs(function () {
             source.setConstrain({
-              vertical: true,
+              vertical: true
             });
           });
           dragBy(100, 100);
@@ -1763,8 +1763,8 @@ describe("Ext.drag.Source", function () {
         it("should be able to clear constraint after initial drag", function () {
           makeSource({
             constrain: {
-              vertical: true,
-            },
+              vertical: true
+            }
           });
           dragBy(100, 100);
           runsExpectXY(50, 150);
@@ -1785,8 +1785,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the min", function () {
             makeSource({
               constrain: {
-                x: [20, null],
-              },
+                x: [20, null]
+              }
             });
             dragBy(-50, 0);
             runsExpectXY(20, 50);
@@ -1798,7 +1798,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(100, 50);
             runs(function () {
               source.setConstrain({
-                x: [20, null],
+                x: [20, null]
               });
             });
             dragBy(-100, 0);
@@ -1808,8 +1808,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear constraint after initial drag", function () {
             makeSource({
               constrain: {
-                x: [20, null],
-              },
+                x: [20, null]
+              }
             });
             dragBy(-50, 0);
             runsExpectXY(20, 50);
@@ -1825,8 +1825,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the max", function () {
             makeSource({
               constrain: {
-                x: [null, 200],
-              },
+                x: [null, 200]
+              }
             });
             dragBy(300, 0);
             runsExpectXY(200, 50);
@@ -1838,7 +1838,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(100, 50);
             runs(function () {
               source.setConstrain({
-                x: [null, 200],
+                x: [null, 200]
               });
             });
             dragBy(200, 0);
@@ -1848,8 +1848,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear constraint after initial drag", function () {
             makeSource({
               constrain: {
-                x: [null, 100],
-              },
+                x: [null, 100]
+              }
             });
             dragBy(200, 0);
             runsExpectXY(100, 50);
@@ -1865,8 +1865,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the min/max", function () {
             makeSource({
               constrain: {
-                x: [30, 60],
-              },
+                x: [30, 60]
+              }
             });
             startDrag();
             moveBy(-40, 0);
@@ -1882,7 +1882,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(100, 50);
             runs(function () {
               source.setConstrain({
-                x: [50, 150],
+                x: [50, 150]
               });
             });
             startDrag();
@@ -1896,8 +1896,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear the constraint after an initial drag", function () {
             makeSource({
               constrain: {
-                x: [30, 70],
-              },
+                x: [30, 70]
+              }
             });
             dragBy(100, 0);
             runsExpectXY(70, 50);
@@ -1917,8 +1917,8 @@ describe("Ext.drag.Source", function () {
           it("should not limit y axis", function () {
             makeSource({
               constrain: {
-                x: [20, 80],
-              },
+                x: [20, 80]
+              }
             });
             startDrag();
             moveBy(100, 100);
@@ -1941,8 +1941,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the min", function () {
             makeSource({
               constrain: {
-                y: [20, null],
-              },
+                y: [20, null]
+              }
             });
             dragBy(0, -50);
             runsExpectXY(50, 20);
@@ -1954,7 +1954,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(50, 100);
             runs(function () {
               source.setConstrain({
-                y: [20, null],
+                y: [20, null]
               });
             });
             dragBy(0, -100);
@@ -1964,8 +1964,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear constraint after initial drag", function () {
             makeSource({
               constrain: {
-                y: [20, null],
-              },
+                y: [20, null]
+              }
             });
             dragBy(0, -50);
             runsExpectXY(50, 20);
@@ -1981,8 +1981,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the max", function () {
             makeSource({
               constrain: {
-                y: [null, 200],
-              },
+                y: [null, 200]
+              }
             });
             dragBy(0, 300);
             runsExpectXY(50, 200);
@@ -1994,7 +1994,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(50, 100);
             runs(function () {
               source.setConstrain({
-                y: [null, 200],
+                y: [null, 200]
               });
             });
             dragBy(0, 200);
@@ -2004,8 +2004,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear constraint after initial drag", function () {
             makeSource({
               constrain: {
-                y: [null, 100],
-              },
+                y: [null, 100]
+              }
             });
             dragBy(0, 200);
             runsExpectXY(50, 100);
@@ -2021,8 +2021,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the min/max", function () {
             makeSource({
               constrain: {
-                y: [30, 60],
-              },
+                y: [30, 60]
+              }
             });
             startDrag();
             moveBy(0, -40);
@@ -2038,7 +2038,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(50, 100);
             runs(function () {
               source.setConstrain({
-                y: [50, 150],
+                y: [50, 150]
               });
             });
             startDrag();
@@ -2052,8 +2052,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear the constraint after an initial drag", function () {
             makeSource({
               constrain: {
-                y: [30, 70],
-              },
+                y: [30, 70]
+              }
             });
             dragBy(0, 100);
             runsExpectXY(50, 70);
@@ -2073,8 +2073,8 @@ describe("Ext.drag.Source", function () {
           it("should not limit x axis", function () {
             makeSource({
               constrain: {
-                y: [20, 80],
-              },
+                y: [20, 80]
+              }
             });
             startDrag();
             moveBy(100, 100);
@@ -2099,8 +2099,8 @@ describe("Ext.drag.Source", function () {
                 width: "400px",
                 height: "400px",
                 top: "50px",
-                left: "50px",
-              },
+                left: "50px"
+              }
             });
             dragEl = parent.createChild(defaultElCfg);
           });
@@ -2112,8 +2112,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the parent element", function () {
             makeSource({
               constrain: {
-                element: true,
-              },
+                element: true
+              }
             });
 
             startDrag();
@@ -2135,8 +2135,8 @@ describe("Ext.drag.Source", function () {
           it("should adjust if the element moves", function () {
             makeSource({
               constrain: {
-                element: true,
-              },
+                element: true
+              }
             });
 
             dragBy(800, 800);
@@ -2154,7 +2154,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(200, 200);
             runs(function () {
               source.setConstrain({
-                element: true,
+                element: true
               });
             });
             dragBy(-400, -400);
@@ -2164,8 +2164,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear the constraint after an initial drag", function () {
             makeSource({
               constrain: {
-                element: true,
-              },
+                element: true
+              }
             });
             dragBy(800, 800);
             runsExpectXY(430, 430);
@@ -2180,8 +2180,8 @@ describe("Ext.drag.Source", function () {
             parent.setStyle("border", "20px solid yellow");
             makeSource({
               constrain: {
-                element: true,
-              },
+                element: true
+              }
             });
 
             startDrag();
@@ -2212,8 +2212,8 @@ describe("Ext.drag.Source", function () {
                 width: "600px",
                 height: "600px",
                 top: "50px",
-                left: "50px",
-              },
+                left: "50px"
+              }
             });
             child = parent.first();
             dragEl = child.createChild(defaultElCfg);
@@ -2227,8 +2227,8 @@ describe("Ext.drag.Source", function () {
             it("should accept an id", function () {
               makeSource({
                 constrain: {
-                  element: parent.id,
-                },
+                  element: parent.id
+                }
               });
               dragBy(-400, -400);
               runsExpectXY(50, 50);
@@ -2237,8 +2237,8 @@ describe("Ext.drag.Source", function () {
             it("should accept a DOM element", function () {
               makeSource({
                 constrain: {
-                  element: parent.dom,
-                },
+                  element: parent.dom
+                }
               });
               dragBy(-400, -400);
               runsExpectXY(50, 50);
@@ -2247,8 +2247,8 @@ describe("Ext.drag.Source", function () {
             it("should accept an element reference", function () {
               makeSource({
                 constrain: {
-                  element: parent,
-                },
+                  element: parent
+                }
               });
               dragBy(-400, -400);
               runsExpectXY(50, 50);
@@ -2258,8 +2258,8 @@ describe("Ext.drag.Source", function () {
           it("should constrain to the parent element", function () {
             makeSource({
               constrain: {
-                element: parent,
-              },
+                element: parent
+              }
             });
 
             startDrag();
@@ -2281,8 +2281,8 @@ describe("Ext.drag.Source", function () {
           it("should adjust if the element moves", function () {
             makeSource({
               constrain: {
-                element: parent,
-              },
+                element: parent
+              }
             });
 
             dragBy(800, 800);
@@ -2300,7 +2300,7 @@ describe("Ext.drag.Source", function () {
             runsExpectXY(200, 200);
             runs(function () {
               source.setConstrain({
-                element: parent,
+                element: parent
               });
             });
             dragBy(-400, -400);
@@ -2310,8 +2310,8 @@ describe("Ext.drag.Source", function () {
           it("should be able to clear the constraint after an initial drag", function () {
             makeSource({
               constrain: {
-                element: parent,
-              },
+                element: parent
+              }
             });
             dragBy(800, 800);
             runsExpectXY(630, 630);
@@ -2326,8 +2326,8 @@ describe("Ext.drag.Source", function () {
             parent.setStyle("border", "20px solid yellow");
             makeSource({
               constrain: {
-                element: parent,
-              },
+                element: parent
+              }
             });
 
             startDrag();
@@ -2363,8 +2363,8 @@ describe("Ext.drag.Source", function () {
         it("should constrain to the region", function () {
           makeSource({
             constrain: {
-              region: region,
-            },
+              region: region
+            }
           });
           startDrag();
           // top left
@@ -2388,7 +2388,7 @@ describe("Ext.drag.Source", function () {
           runsExpectXY(150, 150);
           runs(function () {
             source.setConstrain({
-              region: region,
+              region: region
             });
           });
           dragBy(-400, -400);
@@ -2398,8 +2398,8 @@ describe("Ext.drag.Source", function () {
         it("should be able to clear the constraint after an initial drag", function () {
           makeSource({
             constrain: {
-              region: region,
-            },
+              region: region
+            }
           });
           dragBy(800, 800);
           runsExpectXY(380, 330);
@@ -2424,8 +2424,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   x: [20, null],
-                  region: new Ext.util.Region(0, 1500, 1500, 40),
-                },
+                  region: new Ext.util.Region(0, 1500, 1500, 40)
+                }
               });
 
               dragBy(-50, 0);
@@ -2436,8 +2436,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   x: [40, null],
-                  region: new Ext.util.Region(0, 1500, 1500, 20),
-                },
+                  region: new Ext.util.Region(0, 1500, 1500, 20)
+                }
               });
 
               dragBy(-50, 0);
@@ -2450,8 +2450,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   x: [null, 400],
-                  region: new Ext.util.Region(0, 300, 1500, 0),
-                },
+                  region: new Ext.util.Region(0, 300, 1500, 0)
+                }
               });
 
               dragBy(300, 0);
@@ -2463,8 +2463,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   x: [null, 100],
-                  region: new Ext.util.Region(0, 200, 1500, 0),
-                },
+                  region: new Ext.util.Region(0, 200, 1500, 0)
+                }
               });
 
               dragBy(300, 0);
@@ -2479,8 +2479,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   y: [20, null],
-                  region: new Ext.util.Region(40, 1500, 1500, 0),
-                },
+                  region: new Ext.util.Region(40, 1500, 1500, 0)
+                }
               });
 
               dragBy(0, -50);
@@ -2491,8 +2491,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   y: [40, null],
-                  region: new Ext.util.Region(20, 1500, 1500, 0),
-                },
+                  region: new Ext.util.Region(20, 1500, 1500, 0)
+                }
               });
 
               dragBy(0, -50);
@@ -2505,8 +2505,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   y: [null, 400],
-                  region: new Ext.util.Region(0, 1500, 300, 0),
-                },
+                  region: new Ext.util.Region(0, 1500, 300, 0)
+                }
               });
 
               dragBy(0, 300);
@@ -2518,8 +2518,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   y: [null, 100],
-                  region: new Ext.util.Region(0, 1500, 200, 0),
-                },
+                  region: new Ext.util.Region(0, 1500, 200, 0)
+                }
               });
 
               dragBy(0, 300);
@@ -2538,8 +2538,8 @@ describe("Ext.drag.Source", function () {
           it("should expand a single number", function () {
             makeSource({
               constrain: {
-                snap: 50,
-              },
+                snap: 50
+              }
             });
             dragBy(26, 26);
             runsExpectXY(100, 100);
@@ -2551,8 +2551,8 @@ describe("Ext.drag.Source", function () {
             it("should snap to the nearest value", function () {
               makeSource({
                 constrain: {
-                  snap: { x: 30 },
-                },
+                  snap: { x: 30 }
+                }
               });
               startDrag();
               moveBy(15, 0);
@@ -2582,8 +2582,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   snap: { x: 10 },
-                  x: [10, 160],
-                },
+                  x: [10, 160]
+                }
               });
 
               startDrag();
@@ -2606,7 +2606,7 @@ describe("Ext.drag.Source", function () {
               runsExpectXY(60, 50);
               runs(function () {
                 source.setConstrain({
-                  snap: { x: 50 },
+                  snap: { x: 50 }
                 });
               });
               startDrag();
@@ -2620,8 +2620,8 @@ describe("Ext.drag.Source", function () {
             it("should be able to clear snap after an initial drag", function () {
               makeSource({
                 constrain: {
-                  snap: { x: 50 },
-                },
+                  snap: { x: 50 }
+                }
               });
               dragBy(30, 0);
               runsExpectXY(100, 50);
@@ -2639,8 +2639,8 @@ describe("Ext.drag.Source", function () {
             it("should not affect the y value", function () {
               makeSource({
                 constrain: {
-                  snap: { x: 40 },
-                },
+                  snap: { x: 40 }
+                }
               });
 
               startDrag();
@@ -2663,9 +2663,9 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   snap: {
-                    x: spy,
-                  },
-                },
+                    x: spy
+                  }
+                }
               });
 
               startDrag();
@@ -2674,7 +2674,7 @@ describe("Ext.drag.Source", function () {
                 // Gets called twice on startup
                 expect(spy.callCount).toBe(3);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(60);
               });
@@ -2682,7 +2682,7 @@ describe("Ext.drag.Source", function () {
               runs(function () {
                 expect(spy.callCount).toBe(4);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(160);
               });
@@ -2690,7 +2690,7 @@ describe("Ext.drag.Source", function () {
               runs(function () {
                 expect(spy.callCount).toBe(5);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(190);
               });
@@ -2708,9 +2708,9 @@ describe("Ext.drag.Source", function () {
                       } else {
                         return 400;
                       }
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               });
 
               startDrag();
@@ -2733,8 +2733,8 @@ describe("Ext.drag.Source", function () {
             it("should snap to the nearest value", function () {
               makeSource({
                 constrain: {
-                  snap: { y: 30 },
-                },
+                  snap: { y: 30 }
+                }
               });
               startDrag();
               moveBy(0, 15);
@@ -2764,8 +2764,8 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   snap: { y: 10 },
-                  y: [10, 160],
-                },
+                  y: [10, 160]
+                }
               });
 
               startDrag();
@@ -2788,7 +2788,7 @@ describe("Ext.drag.Source", function () {
               runsExpectXY(50, 60);
               runs(function () {
                 source.setConstrain({
-                  snap: { y: 50 },
+                  snap: { y: 50 }
                 });
               });
               startDrag();
@@ -2802,8 +2802,8 @@ describe("Ext.drag.Source", function () {
             it("should be able to clear snap after an initial drag", function () {
               makeSource({
                 constrain: {
-                  snap: { y: 50 },
-                },
+                  snap: { y: 50 }
+                }
               });
               dragBy(0, 30);
               runsExpectXY(50, 100);
@@ -2821,8 +2821,8 @@ describe("Ext.drag.Source", function () {
             it("should not affect the x value", function () {
               makeSource({
                 constrain: {
-                  snap: { y: 40 },
-                },
+                  snap: { y: 40 }
+                }
               });
 
               startDrag();
@@ -2845,9 +2845,9 @@ describe("Ext.drag.Source", function () {
               makeSource({
                 constrain: {
                   snap: {
-                    y: spy,
-                  },
-                },
+                    y: spy
+                  }
+                }
               });
 
               startDrag();
@@ -2856,7 +2856,7 @@ describe("Ext.drag.Source", function () {
                 // Gets called twice on startup
                 expect(spy.callCount).toBe(3);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(60);
               });
@@ -2864,7 +2864,7 @@ describe("Ext.drag.Source", function () {
               runs(function () {
                 expect(spy.callCount).toBe(4);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(160);
               });
@@ -2872,7 +2872,7 @@ describe("Ext.drag.Source", function () {
               runs(function () {
                 expect(spy.callCount).toBe(5);
                 expect(
-                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info,
+                  spy.mostRecentCall.args[0] instanceof Ext.drag.Info
                 ).toBe(true);
                 expect(spy.mostRecentCall.args[1]).toBe(190);
               });
@@ -2890,9 +2890,9 @@ describe("Ext.drag.Source", function () {
                       } else {
                         return 400;
                       }
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               });
 
               startDrag();
@@ -2917,9 +2917,9 @@ describe("Ext.drag.Source", function () {
                 constrain: {
                   snap: {
                     x: 30,
-                    y: 40,
-                  },
-                },
+                    y: 40
+                  }
+                }
               });
 
               startDrag();
@@ -2943,9 +2943,9 @@ describe("Ext.drag.Source", function () {
                     x: 30,
                     y: function (info, y) {
                       return y < 100 ? 50 : 150;
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               });
 
               startDrag();
@@ -2969,9 +2969,9 @@ describe("Ext.drag.Source", function () {
                     x: function (info, x) {
                       return x < 80 ? 10 : 200;
                     },
-                    y: 40,
-                  },
-                },
+                    y: 40
+                  }
+                }
               });
 
               startDrag();
@@ -2997,9 +2997,9 @@ describe("Ext.drag.Source", function () {
                     },
                     y: function (info, y) {
                       return y < 100 ? 50 : 150;
-                    },
-                  },
-                },
+                    }
+                  }
+                }
               });
 
               startDrag();

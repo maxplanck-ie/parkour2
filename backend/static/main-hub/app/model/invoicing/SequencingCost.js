@@ -4,11 +4,11 @@ Ext.define("MainHub.model.invoicing.SequencingCost", {
   fields: [
     {
       name: "sequencer",
-      type: "int",
+      type: "int"
     },
     {
       name: "read_length",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

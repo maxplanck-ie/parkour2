@@ -211,7 +211,7 @@ Ext.define("Ext.layout.container.Table", {
       tdEl.set({
         colSpan: item.colspan || 1,
         rowSpan: item.rowspan || 1,
-        cls: me.cellCls + " " + (item.cellCls || ""),
+        cls: me.cellCls + " " + (item.cellCls || "")
       });
 
       // If at the end of a row, remove any extra cells
@@ -262,14 +262,14 @@ Ext.define("Ext.layout.container.Table", {
       if (widthShrinkWrap) {
         ownerContext.setContentWidth(
           table.offsetWidth + targetPadding.width,
-          true,
+          true
         );
       }
 
       if (heightShrinkWrap) {
         ownerContext.setContentHeight(
           table.offsetHeight + targetPadding.height,
-          true,
+          true
         );
       }
     }
@@ -319,7 +319,7 @@ Ext.define("Ext.layout.container.Table", {
       // Add the cell info to the list
       cells.push({
         rowIdx: rowIdx,
-        cellIdx: cellIdx,
+        cellIdx: cellIdx
       });
 
       // Increment
@@ -351,10 +351,10 @@ Ext.define("Ext.layout.container.Table", {
             id: me.owner.id + "-tbody",
             "data-ref": "tbody",
             role: "presentation",
-            cn: rows,
-          },
+            cn: rows
+          }
         },
-        me.tableAttrs,
+        me.tableAttrs
       ),
       tdAttrs = me.tdAttrs,
       i,
@@ -383,7 +383,7 @@ Ext.define("Ext.layout.container.Table", {
         tr = rows[rowIdx] = {
           tag: "tr",
           role: "presentation",
-          cn: [],
+          cn: []
         };
         if (me.trAttrs) {
           Ext.apply(tr, me.trAttrs);
@@ -393,7 +393,7 @@ Ext.define("Ext.layout.container.Table", {
       // If no cell present, create and insert one
       cell = tr.cn[cellIdx] = {
         tag: "td",
-        role: "presentation",
+        role: "presentation"
       };
       if (tdAttrs) {
         Ext.apply(cell, tdAttrs);
@@ -401,7 +401,7 @@ Ext.define("Ext.layout.container.Table", {
       Ext.apply(cell, {
         colSpan: item.colspan || 1,
         rowSpan: item.rowspan || 1,
-        cls: me.cellCls + " " + (item.cellCls || ""),
+        cls: me.cellCls + " " + (item.cellCls || "")
       });
 
       me.configureItem(item);
@@ -419,5 +419,5 @@ Ext.define("Ext.layout.container.Table", {
     return (
       item.el.dom.parentNode === this.tbody.dom.rows[rowIdx].cells[cellIdx]
     );
-  },
+  }
 });

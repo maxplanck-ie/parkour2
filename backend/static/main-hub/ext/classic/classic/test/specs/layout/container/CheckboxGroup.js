@@ -15,10 +15,10 @@ describe("Ext.layout.container.CheckboxGroup", function () {
           { id: "cb4", boxLabel: "cb4" },
           { id: "cb5", boxLabel: "cb5" },
           { id: "cb6", boxLabel: "cb6" },
-          { id: "cb7", boxLabel: "cb7" },
-        ],
+          { id: "cb7", boxLabel: "cb7" }
+        ]
       },
-      config,
+      config
     );
 
     return (checkboxGroup = new Ext.form.CheckboxGroup(config));
@@ -75,7 +75,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
   function createCheckbox(id) {
     return new Ext.form.field.Checkbox({
       id: id,
-      boxLabel: id,
+      boxLabel: id
     });
   }
 
@@ -86,7 +86,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
   describe("layout initialization", function () {
     it("should distribute items automatically with columns: 'auto'", function () {
       makeGroup({
-        columns: "auto",
+        columns: "auto"
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -120,7 +120,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
 
     it("should distribute items horizontally", function () {
       makeGroup({
-        columns: 3,
+        columns: 3
       });
 
       var rows = checkboxGroup.layout.tBodyNode.childNodes;
@@ -135,7 +135,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
     it("should distribute items vertically", function () {
       makeGroup({
         columns: 3,
-        vertical: true,
+        vertical: true
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -148,7 +148,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
 
     it("should distribute items vertically with only one column", function () {
       makeGroup({
-        columns: 1,
+        columns: 1
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -163,7 +163,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         "cb4",
         "cb5",
         "cb6",
-        "cb7",
+        "cb7"
       );
     });
   });
@@ -174,8 +174,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: "auto",
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -197,8 +197,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       makeGroup({
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -221,8 +221,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: 3,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var rows = checkboxGroup.layout.tBodyNode.childNodes;
@@ -233,7 +233,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       expect(rows.length).toBe(2);
@@ -260,8 +260,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         vertical: true,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -273,7 +273,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       expect(columns.length).toBe(3);
@@ -287,8 +287,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: 1,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -299,7 +299,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       expect(columns.length).toBe(1);
@@ -309,7 +309,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         "cb1",
         "cb2",
         "cb3",
-        "cb4",
+        "cb4"
       );
     });
   });
@@ -320,8 +320,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: "auto",
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -342,8 +342,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: "auto",
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -364,8 +364,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: 3,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var rows = checkboxGroup.layout.tBodyNode.childNodes;
@@ -374,7 +374,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       checkboxGroup.remove(Ext.getCmp("cb0"));
@@ -391,8 +391,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         vertical: true,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -401,7 +401,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       checkboxGroup.remove(Ext.getCmp("cb0"));
@@ -419,8 +419,8 @@ describe("Ext.layout.container.CheckboxGroup", function () {
         columns: 1,
         items: [
           { id: "cb0", boxLabel: "cb0" },
-          { id: "cb1", boxLabel: "cb1" },
-        ],
+          { id: "cb1", boxLabel: "cb1" }
+        ]
       });
 
       var columns = checkboxGroup.layout.rowNodes[0].childNodes;
@@ -429,7 +429,7 @@ describe("Ext.layout.container.CheckboxGroup", function () {
       checkboxGroup.add(
         createCheckbox("cb2"),
         createCheckbox("cb3"),
-        createCheckbox("cb4"),
+        createCheckbox("cb4")
       );
 
       checkboxGroup.remove(Ext.getCmp("cb0"));

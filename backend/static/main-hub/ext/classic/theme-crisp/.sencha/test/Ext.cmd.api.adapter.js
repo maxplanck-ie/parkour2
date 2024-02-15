@@ -16,7 +16,7 @@ Ext.cmd.api.adapter = {
     var structure = {
       hash: "" + spec.id,
       fileName: spec.fileName,
-      description: spec.description,
+      description: spec.description
     };
     return structure;
   },
@@ -27,7 +27,7 @@ Ext.cmd.api.adapter = {
         fileName: suite.fileName,
         suites: [],
         specs: [],
-        description: suite.description,
+        description: suite.description
       },
       specs = suite.specs_,
       spLen = specs.length,
@@ -107,5 +107,5 @@ Ext.cmd.api.adapter = {
     me.flushTestResults();
     me.captureCoverage();
     this.api.stopWorkItem(me.success);
-  },
+  }
 };

@@ -11,7 +11,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
   alias: "sprite.axis",
   type: "axis",
   mixins: {
-    markerHolder: "Ext.chart.MarkerHolder",
+    markerHolder: "Ext.chart.MarkerHolder"
   },
 
   requires: ["Ext.draw.sprite.Text"],
@@ -170,7 +170,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         /**
          * @cfg {Boolean} 'true' if the estimated step size is adjusted by text size.
          */
-        enlargeEstStepSizeByText: "bool",
+        enlargeEstStepSizeByText: "bool"
       },
 
       defaults: {
@@ -203,7 +203,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         scalingCenterX: 0,
         // Override default
         strokeStyle: "black",
-        enlargeEstStepSizeByText: false,
+        enlargeEstStepSizeByText: false
       },
 
       triggers: {
@@ -222,12 +222,12 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
         dataMax: "layout",
         visibleMin: "layout",
         visibleMax: "layout",
-        enlargeEstStepSizeByText: "layout",
+        enlargeEstStepSizeByText: "layout"
       },
       updaters: {
-        layout: "layoutUpdater",
-      },
-    },
+        layout: "layoutUpdater"
+      }
+    }
   },
 
   config: {
@@ -271,7 +271,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
     /**
      * @cfg {Ext.chart.axis.Axis} axis The axis represented by this sprite.
      */
-    axis: null,
+    axis: null
   },
 
   thickness: 0,
@@ -304,7 +304,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
       context = {
         attr: attr,
         segmenter: me.getSegmenter(),
-        renderer: me.defaultRenderer,
+        renderer: me.defaultRenderer
       };
 
     if (position === "left" || position === "right") {
@@ -360,7 +360,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           snaps.max,
           snaps.getLabel(snaps.max),
           snaps.steps + 1,
-          snaps,
+          snaps
         );
       }
     } else {
@@ -464,11 +464,11 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               (position / (attr.max + 1)) * Math.PI * 2 + attr.baseRotation;
             ctx.moveTo(
               attr.centerX + attr.length * Math.cos(position),
-              attr.centerY + attr.length * Math.sin(position),
+              attr.centerY + attr.length * Math.sin(position)
             );
             ctx.lineTo(
               attr.centerX + (attr.length + majorTickSize) * Math.cos(position),
-              attr.centerY + (attr.length + majorTickSize) * Math.sin(position),
+              attr.centerY + (attr.length + majorTickSize) * Math.sin(position)
             );
           });
           break;
@@ -482,11 +482,11 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               gaugeAngles.start;
             ctx.moveTo(
               attr.centerX + attr.length * Math.cos(position),
-              attr.centerY + attr.length * Math.sin(position),
+              attr.centerY + attr.length * Math.sin(position)
             );
             ctx.lineTo(
               attr.centerX + (attr.length + majorTickSize) * Math.cos(position),
-              attr.centerY + (attr.length + majorTickSize) * Math.sin(position),
+              attr.centerY + (attr.length + majorTickSize) * Math.sin(position)
             );
           });
           break;
@@ -556,14 +556,14 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 surface.roundPixel(
                   titlePadding +
                     (clipRect[2] - titlePadding - tickPadding) / 2 +
-                    dx,
+                    dx
                 ) - halfLineWidth;
           }
           label.setAttributes(
             {
-              translationX: translation,
+              translationX: translation
             },
-            true,
+            true
           );
           break;
         case "right":
@@ -583,14 +583,14 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 surface.roundPixel(
                   tickPadding +
                     (clipRect[2] - tickPadding - titlePadding) / 2 +
-                    dx,
+                    dx
                 ) + halfLineWidth;
           }
           label.setAttributes(
             {
-              translationX: translation,
+              translationX: translation
             },
-            true,
+            true
           );
           break;
         case "top":
@@ -599,10 +599,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             {
               translationY:
                 surface.roundPixel(
-                  titlePadding + (clipRect[3] - titlePadding - tickPadding) / 2,
-                ) - halfLineWidth,
+                  titlePadding + (clipRect[3] - titlePadding - tickPadding) / 2
+                ) - halfLineWidth
             },
-            true,
+            true
           );
           break;
         case "bottom":
@@ -611,34 +611,34 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             {
               translationY:
                 surface.roundPixel(
-                  tickPadding + (clipRect[3] - tickPadding - titlePadding) / 2,
-                ) + halfLineWidth,
+                  tickPadding + (clipRect[3] - tickPadding - titlePadding) / 2
+                ) + halfLineWidth
             },
-            true,
+            true
           );
           break;
         case "radial":
           label.setAttributes(
             {
-              translationX: attr.centerX,
+              translationX: attr.centerX
             },
-            true,
+            true
           );
           break;
         case "angular":
           label.setAttributes(
             {
-              translationY: attr.centerY,
+              translationY: attr.centerY
             },
-            true,
+            true
           );
           break;
         case "gauge":
           label.setAttributes(
             {
-              translationY: attr.centerY,
+              translationY: attr.centerY
             },
-            true,
+            true
           );
           break;
       }
@@ -655,7 +655,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               null,
               [axis, labelText, layoutContext, lastLabelText],
               0,
-              axis,
+              axis
             );
           } else {
             text = segmenter.renderer(labelText, layoutContext, lastLabelText);
@@ -664,9 +664,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           label.setAttributes(
             {
               text: String(text),
-              translationY: surface.roundPixel(position * yy + dy),
+              translationY: surface.roundPixel(position * yy + dy)
             },
-            true,
+            true
           );
           label.applyTransformations();
           thickness = Math.max(thickness, label.getBBox().width + tickPadding);
@@ -695,7 +695,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               null,
               [axis, labelText, layoutContext, lastLabelText],
               0,
-              axis,
+              axis
             );
           } else {
             text = segmenter.renderer(labelText, layoutContext, lastLabelText);
@@ -704,9 +704,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           label.setAttributes(
             {
               text: String(text),
-              translationX: surface.roundPixel(position * xx + dx),
+              translationX: surface.roundPixel(position * xx + dx)
             },
-            true,
+            true
           );
           label.applyTransformations();
           thickness = Math.max(thickness, label.getBBox().height + tickPadding);
@@ -735,7 +735,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               null,
               [axis, labelText, layoutContext, lastLabelText],
               0,
-              axis,
+              axis
             );
           } else {
             text = segmenter.renderer(labelText, layoutContext, lastLabelText);
@@ -754,9 +754,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                   attr.centerY -
                   (surface.roundPixel(position) / attr.max) *
                     attr.length *
-                    Math.sin(attr.baseRotation + Math.PI / 2),
+                    Math.sin(attr.baseRotation + Math.PI / 2)
               },
-              true,
+              true
             );
             label.applyTransformations();
             bbox = label.attr.matrix.transformBBox(label.getBBox(true));
@@ -781,7 +781,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               null,
               [axis, labelText, layoutContext, lastLabelText],
               0,
-              axis,
+              axis
             );
           } else {
             text = segmenter.renderer(labelText, layoutContext, lastLabelText);
@@ -790,7 +790,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           thickness = Math.max(
             thickness,
             Math.max(attr.majorTickSize, attr.minorTickSize) +
-              (attr.lineCap !== "butt" ? attr.lineWidth * 0.5 : 0),
+              (attr.lineCap !== "butt" ? attr.lineWidth * 0.5 : 0)
           );
           if (typeof text !== "undefined") {
             var angle =
@@ -801,9 +801,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 translationX:
                   attr.centerX + (attr.length + labelOffset) * Math.cos(angle),
                 translationY:
-                  attr.centerY + (attr.length + labelOffset) * Math.sin(angle),
+                  attr.centerY + (attr.length + labelOffset) * Math.sin(angle)
               },
-              true,
+              true
             );
             label.applyTransformations();
             bbox = label.attr.matrix.transformBBox(label.getBBox(true));
@@ -829,7 +829,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               null,
               [axis, labelText, layoutContext, lastLabelText],
               0,
-              axis,
+              axis
             );
           } else {
             text = segmenter.renderer(labelText, layoutContext, lastLabelText);
@@ -848,9 +848,9 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 translationX:
                   attr.centerX + (attr.length + labelOffset) * Math.cos(angle),
                 translationY:
-                  attr.centerY + (attr.length + labelOffset) * Math.sin(angle),
+                  attr.centerY + (attr.length + labelOffset) * Math.sin(angle)
               },
-              true,
+              true
             );
             label.applyTransformations();
             bbox = label.attr.matrix.transformBBox(label.getBBox(true));
@@ -919,14 +919,14 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             attr.length,
             0,
             Math.PI * 2,
-            true,
+            true
           );
           break;
         case "gauge":
           gaugeAngles = me.getGaugeAngles();
           ctx.moveTo(
             attr.centerX + Math.cos(gaugeAngles.start) * attr.length,
-            attr.centerY + Math.sin(gaugeAngles.start) * attr.length,
+            attr.centerY + Math.sin(gaugeAngles.start) * attr.length
           );
           ctx.arc(
             attr.centerX,
@@ -934,7 +934,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             attr.length,
             gaugeAngles.start,
             gaugeAngles.end,
-            true,
+            true
           );
           break;
       }
@@ -953,7 +953,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
     offset = Math.PI * 2 - offset;
     return {
       start: offset,
-      end: offset - angle,
+      end: offset - angle
     };
   },
 
@@ -985,10 +985,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               alignment + "-" + (i % 2 ? "odd" : "even"),
               {
                 y: anchor,
-                height: lastAnchor - anchor,
+                height: lastAnchor - anchor
               },
               (j = i),
-              true,
+              true
             );
             lastAnchor = anchor;
           });
@@ -998,10 +998,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             alignment + "-" + (j % 2 ? "odd" : "even"),
             {
               y: anchor,
-              height: lastAnchor - anchor,
+              height: lastAnchor - anchor
             },
             j,
-            true,
+            true
           );
         } else if (position === "top" || position === "bottom") {
           lastAnchor = attr.min * xx + dx + startGap;
@@ -1010,10 +1010,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               alignment + "-even",
               {
                 x: 0,
-                width: lastAnchor,
+                width: lastAnchor
               },
               -1,
-              true,
+              true
             );
           }
           me.iterate(majorTicks, function (position, labelText, i) {
@@ -1022,10 +1022,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               alignment + "-" + (i % 2 ? "odd" : "even"),
               {
                 x: anchor,
-                width: lastAnchor - anchor,
+                width: lastAnchor - anchor
               },
               (j = i),
-              true,
+              true
             );
             lastAnchor = anchor;
           });
@@ -1035,10 +1035,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             alignment + "-" + (j % 2 ? "odd" : "even"),
             {
               x: anchor,
-              width: lastAnchor - anchor,
+              width: lastAnchor - anchor
             },
             j,
-            true,
+            true
           );
         } else if (position === "radial") {
           me.iterate(majorTicks, function (position, labelText, i) {
@@ -1050,10 +1050,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               alignment + "-" + (i % 2 ? "odd" : "even"),
               {
                 scalingX: anchor,
-                scalingY: anchor,
+                scalingY: anchor
               },
               i,
-              true,
+              true
             );
             lastAnchor = anchor;
           });
@@ -1071,10 +1071,10 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
                 rotationCenterX: 0,
                 rotationCenterY: 0,
                 scalingX: attr.length,
-                scalingY: attr.length,
+                scalingY: attr.length
               },
               i,
-              true,
+              true
             );
             lastAnchor = anchor;
           });
@@ -1145,7 +1145,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             x: x,
             y: limit.line.y - titleBBox.height / 2,
             textAlign: titlePosition,
-            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle,
+            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle
           });
         }
       }
@@ -1180,7 +1180,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
             x: limit.line.x + titleBBox.height / 2,
             y: y,
             fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle,
-            rotationRads: Math.PI / 2,
+            rotationRads: Math.PI / 2
           });
         }
       }
@@ -1207,7 +1207,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
           titles.setAttributesFor(titles.position - 1, {
             x: attr.centerX,
             y: attr.centerY - value - titleBBox.height / 2,
-            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle,
+            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle
           });
         }
       }
@@ -1246,7 +1246,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
               0.5 * attr.length * Math.sin(value) -
               ((titleFlip * titleBBox.height) / 2) * Math.cos(value),
             rotationRads: titleFlip === 1 ? value : value - Math.PI,
-            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle,
+            fillStyle: limit.line.title.fillStyle || limit.line.strokeStyle
           });
         }
       }
@@ -1276,7 +1276,7 @@ Ext.define("Ext.chart.axis.sprite.Axis", {
       me.renderLimits(rect);
       ctx.stroke();
     }
-  },
+  }
 });
 
 /*

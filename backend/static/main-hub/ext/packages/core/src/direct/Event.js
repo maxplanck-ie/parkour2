@@ -31,5 +31,5 @@ Ext.define("Ext.direct.Event", {
    */
   getData: function () {
     return this.data;
-  },
+  }
 });

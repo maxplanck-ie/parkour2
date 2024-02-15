@@ -22,9 +22,9 @@ Ext.define("Ext.draw.ContainerBase", {
       children: [
         {
           reference: "innerElement",
-          className: "x-inner",
-        },
-      ],
+          className: "x-inner"
+        }
+      ]
     };
   },
 
@@ -45,16 +45,16 @@ Ext.define("Ext.draw.ContainerBase", {
     if (image.type === "svg-markup") {
       items = {
         xtype: "container",
-        html: image.data,
+        html: image.data
       };
     } else {
       items = {
         xtype: "image",
         mode: "img",
         style: {
-          overflow: "hidden",
+          overflow: "hidden"
         },
-        src: image.data,
+        src: image.data
       };
     }
 
@@ -71,8 +71,8 @@ Ext.define("Ext.draw.ContainerBase", {
       listeners: {
         hide: function () {
           Ext.Viewport.remove(this);
-        },
-      },
+        }
+      }
     }).show();
-  },
+  }
 });

@@ -45,7 +45,7 @@ Ext.define(
 
         elastic: function (p, x) {
           return pow(2, 10 * --p) * cos((20 * p * pi * (x || 1)) / 3);
-        },
+        }
       },
       easingsMap = {},
       name,
@@ -93,10 +93,10 @@ Ext.define(
 
     return {
       singleton: true,
-      easingMap: easingsMap,
+      easingMap: easingsMap
     };
   },
   function (Cls) {
     Ext.apply(Cls, Cls.easingMap);
-  },
+  }
 );

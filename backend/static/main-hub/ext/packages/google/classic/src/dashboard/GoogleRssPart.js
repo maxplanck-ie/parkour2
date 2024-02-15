@@ -12,14 +12,14 @@ Ext.define("Ext.ux.dashboard.GoogleRssPart", {
     layout: "fit",
     items: {
       xclass: "Ext.ux.dashboard.GoogleRssView",
-      feedUrl: "{feedUrl}",
-    },
+      feedUrl: "{feedUrl}"
+    }
   },
 
   type: "google-rss",
 
   config: {
-    suggestedFeed: "http://rss.slashdot.org/Slashdot/slashdot",
+    suggestedFeed: "http://rss.slashdot.org/Slashdot/slashdot"
   },
 
   formTitleAdd: "Add RSS Feed",
@@ -45,7 +45,7 @@ Ext.define("Ext.ux.dashboard.GoogleRssPart", {
       },
       me,
       false,
-      suggestion,
+      suggestion
     );
-  },
+  }
 });

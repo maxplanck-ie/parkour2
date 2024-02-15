@@ -40,11 +40,11 @@ Ext.define("Ext.ux.desktop.StartMenu", {
           vertical: true,
           width: 100,
           layout: {
-            align: "stretch",
-          },
+            align: "stretch"
+          }
         },
-        me.toolConfig,
-      ),
+        me.toolConfig
+      )
     );
 
     me.addDocked(me.toolbar);
@@ -60,5 +60,5 @@ Ext.define("Ext.ux.desktop.StartMenu", {
   addToolItem: function () {
     var cmp = this.toolbar;
     cmp.add.apply(cmp, arguments);
-  },
+  }
 }); // StartMenu

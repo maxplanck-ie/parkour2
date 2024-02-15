@@ -14,7 +14,7 @@ Ext.define("MainHub.view.incominglibraries.CheckboxGroupingFeature", {
           method: "POST",
           scope: this,
           params: {
-            data: Ext.JSON.encode({ result: checked }),
+            data: Ext.JSON.encode({ result: checked })
           },
 
           success: function (response) {
@@ -30,7 +30,7 @@ Ext.define("MainHub.view.incominglibraries.CheckboxGroupingFeature", {
           failure: function (response) {
             new Noty({ text: response.statusText, type: "error" }).show();
             console.error(response);
-          },
+          }
         });
       } else {
         this.callParent(arguments);
@@ -41,5 +41,5 @@ Ext.define("MainHub.view.incominglibraries.CheckboxGroupingFeature", {
   updateCheckbox: function (groupRecord, checked) {
     groupRecord.items[0].set("samples_submitted", checked);
     this.view.refreshView();
-  },
+  }
 });

@@ -14,7 +14,7 @@ Ext.define("Ext.util.LruCache", {
      * @cfg {Number} maxSize The maximum size the cache is allowed to grow to before further additions cause
      * removal of the least recently used entry.
      */
-    maxSize: null,
+    maxSize: null
   },
 
   /**
@@ -31,7 +31,7 @@ Ext.define("Ext.util.LruCache", {
       prev: last,
       next: null,
       key: key,
-      value: newValue,
+      value: newValue
     };
 
     if (last) {
@@ -70,7 +70,7 @@ Ext.define("Ext.util.LruCache", {
           prev: sibling.prev,
           next: sibling,
           key: key,
-          value: newValue,
+          value: newValue
         };
       }
 
@@ -253,7 +253,7 @@ Ext.define("Ext.util.LruCache", {
         me.removeAtKey(me.first.key);
       }
     }
-  },
+  }
 
   /**
    * @method containsKey

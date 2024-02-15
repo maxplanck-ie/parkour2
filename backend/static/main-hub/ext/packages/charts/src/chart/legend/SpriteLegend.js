@@ -11,7 +11,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     "Ext.chart.legend.sprite.Item",
     "Ext.chart.legend.sprite.Border",
     "Ext.draw.overrides.hittest.All",
-    "Ext.draw.Animator",
+    "Ext.draw.Animator"
   ],
 
   config: {
@@ -50,7 +50,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
      */
     size: {
       width: 0,
-      height: 0,
+      height: 0
     },
 
     /**
@@ -67,7 +67,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     padding: 10,
 
     label: {
-      preciseMeasurement: true,
+      preciseMeasurement: true
     },
 
     marker: {},
@@ -86,12 +86,12 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
      */
     border: {
       $value: {
-        type: "legendborder",
+        type: "legendborder"
       },
       // The config should be processed at the time of the 'getSprites' call,
       // when we already have the legend surface, otherwise the border sprite
       // will not be added to the surface.
-      lazy: true,
+      lazy: true
     },
 
     /**
@@ -99,7 +99,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
      * This can be a gradient object, image, or color. This config works similarly
      * to the {@link Ext.chart.AbstractChart#background} config.
      */
-    background: null,
+    background: null
   },
 
   sprites: null,
@@ -109,12 +109,12 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     border: 1,
     // Item sprites should have a higher zIndex than border,
     // or they won't react to clicks.
-    item: 2,
+    item: 2
   },
 
   oldSize: {
     width: 0,
-    height: 0,
+    height: 0
   },
 
   constructor: function (config) {
@@ -138,7 +138,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     if (border) {
       border.isLegendBorder = true;
       border.setAttributes({
-        zIndex: this.spriteZIndexes.border,
+        zIndex: this.spriteZIndexes.border
       });
     }
 
@@ -163,7 +163,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     if (!this.scheduledLayoutId) {
       this.scheduledLayoutId = Ext.draw.Animator.schedule(
         "performLayout",
-        this,
+        this
       );
     }
   },
@@ -380,7 +380,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
       bbox = bboxes[i];
       sprite.setAttributes({
         translationX: startX + x,
-        translationY: startY + y,
+        translationY: startY + y
       });
       if (bbox.width > columnWidth) {
         columnWidth = bbox.width;
@@ -399,7 +399,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
         x: startX - gap,
         y: startY - gap,
         width: paddedItemsWidth + gap * 2,
-        height: paddedItemsHeight + gap * 2,
+        height: paddedItemsHeight + gap * 2
       });
     }
 
@@ -470,7 +470,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
         marker: markerConfig,
         label: labelConfig,
         series: data.series,
-        record: record,
+        record: record
       };
 
       sprite = surface.add(legendItemConfig);
@@ -549,15 +549,15 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     if (sprite) {
       label = sprite.getLabel();
       label.setAttributes({
-        text: data.name,
+        text: data.name
       });
 
       sprite.setAttributes({
-        enabled: !data.disabled,
+        enabled: !data.disabled
       });
       sprite.setConfig({
         series: data.series,
-        record: record,
+        record: record
       });
 
       markerConfig = series.getMarkerStyleByIndex(data.index);
@@ -565,7 +565,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
       marker = sprite.getMarker();
       marker.setAttributes({
         fillStyle: markerConfig.fillStyle,
-        strokeStyle: markerConfig.strokeStyle,
+        strokeStyle: markerConfig.strokeStyle
       });
       sprite.layoutUpdater(sprite.attr);
     }
@@ -618,7 +618,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     background = chart.refreshBackground(surface, newBackground, oldBackground);
     if (background) {
       background.setAttributes({
-        zIndex: me.spriteZIndexes.background,
+        zIndex: me.spriteZIndexes.background
       });
     }
 
@@ -636,13 +636,13 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
     ) {
       background.setAttributes({
         width: surfaceRect[2],
-        height: surfaceRect[3],
+        height: surfaceRect[3]
       });
     }
   },
 
   themeableConfigs: {
-    background: true,
+    background: true
   },
 
   updateTheme: function (theme) {
@@ -804,7 +804,7 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
           // This will trigger AbstractChart.onUpdateLegendStore.
           record.set("disabled", !disabled);
           sprite.setAttributes({
-            enabled: disabled,
+            enabled: disabled
           });
         }
       }
@@ -814,5 +814,5 @@ Ext.define("Ext.chart.legend.SpriteLegend", {
   destroy: function () {
     this.cancelLayout();
     this.callParent();
-  },
+  }
 });

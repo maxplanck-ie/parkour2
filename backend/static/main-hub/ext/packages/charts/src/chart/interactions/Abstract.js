@@ -10,7 +10,7 @@ Ext.define(
     xtype: "interaction",
 
     mixins: {
-      observable: "Ext.mixin.Observable",
+      observable: "Ext.mixin.Observable"
     },
 
     config: {
@@ -21,7 +21,7 @@ Ext.define(
        * @private
        */
       gestures: {
-        tap: "onGesture",
+        tap: "onGesture"
       },
 
       /**
@@ -32,7 +32,7 @@ Ext.define(
       /**
        * @cfg {Boolean} enabled 'true' if the interaction is enabled.
        */
-      enabled: true,
+      enabled: true
     },
 
     /**
@@ -149,7 +149,7 @@ Ext.define(
             if (me.getEnabled() && (!(name in locks) || locks[name] === me)) {
               result = (Ext.isFunction(fn) ? fn : me[fn]).apply(
                 this,
-                arguments,
+                arguments
               );
               if (result === false && e && e.stopPropagation) {
                 e.stopPropagation();
@@ -157,7 +157,7 @@ Ext.define(
               return result;
             }
           }),
-          me,
+          me
         );
       }
 
@@ -259,11 +259,11 @@ Ext.define(
       me.setChart(null);
       delete me.listeners;
       me.callParent();
-    },
+    }
   },
   function () {
     if (Ext.os.is.Android4) {
       this.prototype.throttleGap = 40;
     }
-  },
+  }
 );

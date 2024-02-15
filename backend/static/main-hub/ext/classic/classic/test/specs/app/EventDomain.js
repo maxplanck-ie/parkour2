@@ -7,7 +7,7 @@ describe("Ext.app.EventDomain", function () {
       component: Ext.app.domain.Component,
       controller: Ext.app.domain.Controller,
       store: Ext.app.domain.Store,
-      direct: Ext.app.domain.Direct,
+      direct: Ext.app.domain.Direct
     });
   });
 
@@ -15,7 +15,7 @@ describe("Ext.app.EventDomain", function () {
     it("Ext.Component for component domain", function () {
       expect(Ext.app.domain.Component.monitoredClasses).toEqual([
         Ext.Widget,
-        Ext.Component,
+        Ext.Component
       ]);
     });
   });

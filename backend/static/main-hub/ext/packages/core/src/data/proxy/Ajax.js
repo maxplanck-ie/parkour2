@@ -222,7 +222,7 @@ Ext.define("Ext.data.proxy.Ajax", {
     create: "POST",
     read: "GET",
     update: "POST",
-    destroy: "POST",
+    destroy: "POST"
   },
 
   config: {
@@ -296,8 +296,8 @@ Ext.define("Ext.data.proxy.Ajax", {
       create: "POST",
       read: "GET",
       update: "POST",
-      destroy: "POST",
-    },
+      destroy: "POST"
+    }
   },
 
   doRequest: function (operation) {
@@ -320,7 +320,7 @@ Ext.define("Ext.data.proxy.Ajax", {
       callback: me.createRequestCallback(request, operation),
       method: method,
       useDefaultXhrHeader: me.getUseDefaultXhrHeader(),
-      disableCaching: false, // explicitly set it to false, ServerProxy handles caching
+      disableCaching: false // explicitly set it to false, ServerProxy handles caching
     });
 
     if (method.toUpperCase() !== "GET" && me.getParamsAsJson()) {
@@ -411,5 +411,5 @@ Ext.define("Ext.data.proxy.Ajax", {
     this.lastRequest = null;
 
     this.callParent();
-  },
+  }
 });

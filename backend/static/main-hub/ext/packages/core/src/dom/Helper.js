@@ -129,13 +129,13 @@ Ext.define("Ext.dom.Helper", function () {
     aeValues = ["AfterEnd", "nextSibling"],
     bb_ae_PositionHash = {
       beforebegin: bbValues,
-      afterend: aeValues,
+      afterend: aeValues
     },
     fullPositionHash = {
       beforebegin: bbValues,
       afterend: aeValues,
       afterbegin: ["AfterBegin", "firstChild"],
-      beforeend: ["BeforeEnd", "lastChild"],
+      beforeend: ["BeforeEnd", "lastChild"]
     };
 
   return {
@@ -205,7 +205,7 @@ Ext.define("Ext.dom.Helper", function () {
                   me.attributeTransform[attr] || attr,
                   '="',
                   val,
-                  '"',
+                  '"'
                 );
               }
             }
@@ -452,7 +452,7 @@ Ext.define("Ext.dom.Helper", function () {
           }
           el.parentNode.insertBefore(
             frag,
-            where === beforebegin ? el : el.nextSibling,
+            where === beforebegin ? el : el.nextSibling
           );
           return el[(where === beforebegin ? "previous" : "next") + "Sibling"];
         } else {
@@ -489,7 +489,7 @@ Ext.define("Ext.dom.Helper", function () {
         sourceMethod: "insertHtml",
         htmlToInsert: html,
         targetElement: el,
-        msg: 'Illegal insertion point reached: "' + where + '"',
+        msg: 'Illegal insertion point reached: "' + where + '"'
       });
       //</debug>
     },
@@ -587,7 +587,7 @@ Ext.define("Ext.dom.Helper", function () {
         if (bb_ae_PositionHash[where]) {
           el.parentNode.insertBefore(
             newNode,
-            where === beforebegin ? el : el.nextSibling,
+            where === beforebegin ? el : el.nextSibling
           );
         } else if (el.firstChild && where === afterbegin) {
           el.insertBefore(newNode, el.firstChild);
@@ -616,6 +616,6 @@ Ext.define("Ext.dom.Helper", function () {
      */
     createHtml: function (spec) {
       return this.markup(spec);
-    },
+    }
   };
 });

@@ -4,11 +4,11 @@ Ext.define("MainHub.model.flowcell.PoolInfo", {
   fields: [
     {
       name: "protocol_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "request_name",
-      type: "string",
-    },
-  ],
+      type: "string"
+    }
+  ]
 });

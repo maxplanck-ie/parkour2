@@ -20,8 +20,8 @@ describe("Ext.drag.Info", function () {
         top: top + "px",
         left: left + "px",
         width: (width || 50) + "px",
-        height: (height || 50) + "px",
-      },
+        height: (height || 50) + "px"
+      }
     });
   }
 
@@ -41,8 +41,8 @@ describe("Ext.drag.Info", function () {
         height: "20px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     });
   }
 
@@ -62,8 +62,8 @@ describe("Ext.drag.Info", function () {
         height: "100px",
         left: x + "px",
         top: y + "px",
-        border: "1px solid blue",
-      },
+        border: "1px solid blue"
+      }
     });
   }
 
@@ -119,9 +119,9 @@ describe("Ext.drag.Info", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -134,9 +134,9 @@ describe("Ext.drag.Info", function () {
         {
           id: touchId,
           x: xy[0] + (offsetX || 0),
-          y: xy[1] + (offsetY || 0),
+          y: xy[1] + (offsetY || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -148,9 +148,9 @@ describe("Ext.drag.Info", function () {
         {
           id: touchId,
           x: cursorTrack[0] + (x || 0),
-          y: cursorTrack[1] + (y || 0),
+          y: cursorTrack[1] + (y || 0)
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -165,9 +165,9 @@ describe("Ext.drag.Info", function () {
         {
           id: touchId,
           x: x,
-          y: y,
+          y: y
         },
-        target,
+        target
       );
     });
     waitsForAnimation();
@@ -202,8 +202,8 @@ describe("Ext.drag.Info", function () {
         height: "20px",
         left: "50px",
         top: "50px",
-        border: "1px solid red",
-      },
+        border: "1px solid red"
+      }
     };
   });
 
@@ -219,7 +219,7 @@ describe("Ext.drag.Info", function () {
   function makeData(xy) {
     return {
       x: xy[0],
-      y: xy[1],
+      y: xy[1]
     };
   }
 
@@ -277,7 +277,7 @@ describe("Ext.drag.Info", function () {
         "dragmove",
         spy.andCallFake(function (source, info) {
           spy.mostRecentCall.dragInfo = info.clone();
-        }),
+        })
       );
     });
 
@@ -318,7 +318,7 @@ describe("Ext.drag.Info", function () {
 
     it("should update to a new target", function () {
       var other = new Ext.drag.Target({
-        element: makeFloatEl("green", 100, 0),
+        element: makeFloatEl("green", 100, 0)
       });
 
       startDrag();
@@ -366,7 +366,7 @@ describe("Ext.drag.Info", function () {
         height: "20px",
         left: "40px",
         top: "40px",
-        position: "absolute",
+        position: "absolute"
       });
       makeSource();
       source.on("dragmove", spy);
@@ -413,7 +413,7 @@ describe("Ext.drag.Info", function () {
         dragSpy = jasmine.createSpy();
 
       makeSource({
-        describe: describeSpy,
+        describe: describeSpy
       });
 
       source.on("dragmove", dragSpy);
@@ -423,7 +423,7 @@ describe("Ext.drag.Info", function () {
       runs(function () {
         expect(describeSpy.callCount).toBe(1);
         expect(describeSpy.mostRecentCall.args[0]).toBe(
-          dragSpy.mostRecentCall.args[1],
+          dragSpy.mostRecentCall.args[1]
         );
       });
     });
@@ -436,7 +436,7 @@ describe("Ext.drag.Info", function () {
             info.setData("type2", "bar");
 
             expect(info.types).toEqual(["type1", "type2"]);
-          },
+          }
         });
 
         startDrag();
@@ -450,7 +450,7 @@ describe("Ext.drag.Info", function () {
         makeSource({
           describe: function (info) {
             info.setData("foo", 1);
-          },
+          }
         });
         source.on("dragmove", spy);
         startDrag(50, 50);
@@ -468,7 +468,7 @@ describe("Ext.drag.Info", function () {
         makeSource({
           describe: function (info) {
             info.setData("foo", 1);
-          },
+          }
         });
 
         startDrag();
@@ -482,7 +482,7 @@ describe("Ext.drag.Info", function () {
           makeSource({
             describe: function (info) {
               info.setData("foo", 1);
-            },
+            }
           });
 
           startDrag();
@@ -496,7 +496,7 @@ describe("Ext.drag.Info", function () {
             describe: function (info) {
               info.setData("foo", 1);
               info.setData("bar", 2);
-            },
+            }
           });
 
           startDrag();
@@ -512,7 +512,7 @@ describe("Ext.drag.Info", function () {
           makeSource({
             describe: function (info) {
               info.setData("foo", o);
-            },
+            }
           });
 
           startDrag();
@@ -529,7 +529,7 @@ describe("Ext.drag.Info", function () {
           makeSource({
             describe: function (info) {
               info.setData("foo", dataSpy);
-            },
+            }
           });
 
           startDrag();
@@ -542,7 +542,7 @@ describe("Ext.drag.Info", function () {
             expect(dataSpy.mostRecentCall.object).toBe(source);
             // The info from the drop spy
             expect(dataSpy.mostRecentCall.args[0]).toBe(
-              spy.mostRecentCall.args[1],
+              spy.mostRecentCall.args[1]
             );
           });
         });
@@ -553,7 +553,7 @@ describe("Ext.drag.Info", function () {
           makeSource({
             describe: function (info) {
               info.setData("foo", dataSpy);
-            },
+            }
           });
 
           startDrag();
@@ -575,7 +575,7 @@ describe("Ext.drag.Info", function () {
               info.setData("foo", function () {
                 return 2;
               });
-            },
+            }
           });
 
           startDrag();
@@ -593,7 +593,7 @@ describe("Ext.drag.Info", function () {
               info.setData("bar", function () {
                 return 2;
               });
-            },
+            }
           });
 
           startDrag();
@@ -611,7 +611,7 @@ describe("Ext.drag.Info", function () {
               info.setData("foo", function () {
                 return o;
               });
-            },
+            }
           });
 
           startDrag();
@@ -633,7 +633,7 @@ describe("Ext.drag.Info", function () {
 
             info.clearData("type1");
             expect(info.types).toEqual(["type2"]);
-          },
+          }
         });
 
         startDrag();
@@ -646,7 +646,7 @@ describe("Ext.drag.Info", function () {
           describe: function (info) {
             info.setData("type1", "foo");
             info.clearData("type1");
-          },
+          }
         });
 
         startDrag();
@@ -674,7 +674,7 @@ describe("Ext.drag.Info", function () {
         "dragmove",
         spy.andCallFake(function (source, info) {
           spy.mostRecentCall.dragInfo = info.clone();
-        }),
+        })
       );
     }
 
@@ -708,8 +708,8 @@ describe("Ext.drag.Info", function () {
         makeDataSource({
           constrain: {
             x: [20, 80],
-            y: [30, 90],
-          },
+            y: [30, 90]
+          }
         });
 
         startDrag();
@@ -768,8 +768,8 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             constrain: {
               x: [20, 80],
-              y: [30, 90],
-            },
+              y: [30, 90]
+            }
           });
 
           startDrag();
@@ -804,14 +804,14 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             proxy: {
               type: "placeholder",
-              cursorOffset: [0, 0],
-            },
+              cursorOffset: [0, 0]
+            }
           });
           startDrag();
           moveBy(10, 10);
           runs(function () {
             expect(spy.mostRecentCall.args[1].proxy.element).not.toBe(
-              source.getElement(),
+              source.getElement()
             );
           });
           endDrag();
@@ -821,8 +821,8 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             proxy: {
               type: "placeholder",
-              cursorOffset: [0, 0],
-            },
+              cursorOffset: [0, 0]
+            }
           });
 
           startDrag();
@@ -835,12 +835,12 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             proxy: {
               type: "placeholder",
-              cursorOffset: [0, 0],
+              cursorOffset: [0, 0]
             },
             constrain: {
               x: [20, 80],
-              y: [30, 90],
-            },
+              y: [30, 90]
+            }
           });
 
           startDrag();
@@ -863,8 +863,8 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             proxy: {
               type: "placeholder",
-              cursorOffset: [0, 0],
-            },
+              cursorOffset: [0, 0]
+            }
           });
           startOffsetDrag(25, 25);
           moveBy(10, 10);
@@ -895,8 +895,8 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             constrain: {
               x: [20, 80],
-              y: [30, 90],
-            },
+              y: [30, 90]
+            }
           });
 
           startDrag();
@@ -931,8 +931,8 @@ describe("Ext.drag.Info", function () {
           makeDataSource({
             proxy: {
               type: "placeholder",
-              html: "Foo",
-            },
+              html: "Foo"
+            }
           });
           startDrag();
           moveBy(150, 150);

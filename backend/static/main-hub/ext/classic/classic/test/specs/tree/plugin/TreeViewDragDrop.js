@@ -3,8 +3,8 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
       extend: "Ext.data.TreeModel",
       fields: ["id", "text", "secondaryId"],
       proxy: {
-        type: "memory",
-      },
+        type: "memory"
+      }
     }),
     testNodes = [
       {
@@ -21,21 +21,21 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
                 id: "C",
                 text: "C",
                 secondaryId: "C",
-                leaf: true,
+                leaf: true
               },
               {
                 id: "D",
                 text: "D",
                 secondaryId: "D",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "E",
             text: "E",
             secondaryId: "EE",
-            leaf: true,
+            leaf: true
           },
           {
             id: "F",
@@ -51,13 +51,13 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
                     id: "H",
                     text: "H",
                     secondaryId: "HH",
-                    leaf: true,
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    leaf: true
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         id: "I",
@@ -73,17 +73,17 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
                 id: "K",
                 text: "K",
                 secondaryId: "KK",
-                leaf: true,
-              },
-            ],
+                leaf: true
+              }
+            ]
           },
           {
             id: "L",
             text: "L",
             secondaryId: "LL",
-            leaf: true,
-          },
-        ],
+            leaf: true
+          }
+        ]
       },
       {
         id: "M",
@@ -94,10 +94,10 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
             id: "N",
             text: "N",
             secondaryId: "NN",
-            leaf: true,
-          },
-        ],
-      },
+            leaf: true
+          }
+        ]
+      }
     ],
     tree,
     view,
@@ -116,10 +116,10 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
         plugins: {
           ptype: "treeviewdragdrop",
           dragZone: {
-            animRepair: false,
-          },
+            animRepair: false
+          }
         },
-        loadMask: false,
+        loadMask: false
       },
       store: (store = new Ext.data.TreeStore(
         Ext.apply(
@@ -131,14 +131,14 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
                 id: "root",
                 text: "Root",
                 expanded: true,
-                children: nodes || testNodes,
+                children: nodes || testNodes
               },
-              rootCfg,
-            ),
+              rootCfg
+            )
           },
-          storeCfg,
-        ),
-      )),
+          storeCfg
+        )
+      ))
     });
     tree = new Ext.tree.Panel(cfg);
     view = tree.view;
@@ -183,16 +183,16 @@ describe("Ext.tree.plugin.TreeViewDragDrop", function () {
         columns: [
           {
             xtype: "treecolumn",
-            dataIndex: "text",
+            dataIndex: "text"
           },
           {
             xtype: "widgetcolumn",
             dataIndex: "secondaryId",
             widget: {
-              xtype: "textfield",
-            },
-          },
-        ],
+              xtype: "textfield"
+            }
+          }
+        ]
       });
     });
 

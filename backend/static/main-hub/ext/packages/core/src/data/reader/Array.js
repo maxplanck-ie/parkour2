@@ -49,7 +49,7 @@ Ext.define("Ext.data.reader.Array", {
      * @cfg
      * @inheritdoc
      */
-    successProperty: undefined,
+    successProperty: undefined
 
     /**
      * @cfg {Boolean} preserveRawData
@@ -74,5 +74,5 @@ Ext.define("Ext.data.reader.Array", {
   getModelData: function (raw) {
     // Can't preserve raw data here
     return {};
-  },
+  }
 });

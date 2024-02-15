@@ -74,8 +74,8 @@ describe("AbstractManager", function () {
       expect(
         manager.create({
           type: "filter",
-          filterFn: Ext.emptyFn,
-        }) instanceof Ext.util.Filter,
+          filterFn: Ext.emptyFn
+        }) instanceof Ext.util.Filter
       ).toBe(true);
     });
 
@@ -84,10 +84,10 @@ describe("AbstractManager", function () {
       expect(
         manager.create(
           {
-            filterFn: Ext.emptyFn,
+            filterFn: Ext.emptyFn
           },
-          "filter",
-        ) instanceof Ext.util.Filter,
+          "filter"
+        ) instanceof Ext.util.Filter
       ).toBe(true);
     });
 
@@ -96,7 +96,7 @@ describe("AbstractManager", function () {
       var filter = manager.create({
         type: "filter",
         property: "name",
-        value: "x",
+        value: "x"
       });
 
       expect(filter.getProperty()).toBe("name");
@@ -114,7 +114,7 @@ describe("AbstractManager", function () {
       var spy = jasmine.createSpy("spy");
       manager.onAvailable("item", spy);
       manager.register({
-        id: "other",
+        id: "other"
       });
       expect(spy.callCount).toBe(0);
     });
@@ -123,7 +123,7 @@ describe("AbstractManager", function () {
       var spy = jasmine.createSpy("spy");
       manager.onAvailable("item", spy);
       manager.register({
-        id: "item",
+        id: "item"
       });
       expect(spy.callCount).toBe(1);
     });
@@ -131,7 +131,7 @@ describe("AbstractManager", function () {
     it("should fire the function if the onAvailable is bound when the item already exists", function () {
       var spy = jasmine.createSpy("spy");
       manager.register({
-        id: "item",
+        id: "item"
       });
       manager.onAvailable("item", spy);
       expect(spy.callCount).toBe(1);
@@ -184,7 +184,7 @@ describe("AbstractManager", function () {
         first = 0,
         second = 0,
         o = {
-          id: "item",
+          id: "item"
         };
 
       manager.onAvailable("item", fn1);
@@ -211,7 +211,7 @@ describe("AbstractManager", function () {
 
       for (; i < 5; ++i) {
         manager.register({
-          id: "id" + i,
+          id: "id" + i
         });
       }
       manager.each(spy);
@@ -251,12 +251,12 @@ describe("AbstractManager", function () {
 
     it("should return the correct count after adding items", function () {
       manager.register({
-        id: "a",
+        id: "a"
       });
       expect(manager.getCount()).toBe(1);
 
       manager.register({
-        id: "b",
+        id: "b"
       });
       expect(manager.getCount()).toBe(2);
     });

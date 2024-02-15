@@ -213,7 +213,7 @@ Ext.define("Ext.util.Geolocation", {
     /**
      * @private
      */
-    provider: undefined,
+    provider: undefined
   },
 
   updateMaximumAge: function () {
@@ -250,7 +250,7 @@ Ext.define("Ext.util.Geolocation", {
         false,
         false,
         true,
-        "This device does not support Geolocation.",
+        "This device does not support Geolocation."
       );
     }
     return config;
@@ -296,7 +296,7 @@ Ext.define("Ext.util.Geolocation", {
       provider.getCurrentPosition(
         Ext.bind(me.fireUpdate, me),
         Ext.bind(me.fireError, me),
-        me.parseOptions(),
+        me.parseOptions()
       );
     }
 
@@ -361,7 +361,7 @@ Ext.define("Ext.util.Geolocation", {
         function (error) {
           failFunction(null, error);
         },
-        positionOptions || me.parseOptions(),
+        positionOptions || me.parseOptions()
       );
     } catch (e) {
       failFunction(e.message);
@@ -385,7 +385,7 @@ Ext.define("Ext.util.Geolocation", {
       altitude: coords.altitude,
       altitudeAccuracy: coords.altitudeAccuracy,
       heading: coords.heading,
-      speed: coords.speed,
+      speed: coords.speed
     });
 
     me.fireEvent("locationupdate", me);
@@ -402,7 +402,7 @@ Ext.define("Ext.util.Geolocation", {
       errorCode == error.TIMEOUT,
       errorCode == error.PERMISSION_DENIED,
       errorCode == error.POSITION_UNAVAILABLE,
-      error.message == undefined ? null : error.message,
+      error.message == undefined ? null : error.message
     );
   },
 
@@ -413,7 +413,7 @@ Ext.define("Ext.util.Geolocation", {
     var timeout = this.getTimeout(),
       ret = {
         maximumAge: this.getMaximumAge(),
-        enableHighAccuracy: this.getAllowHighAccuracy(),
+        enableHighAccuracy: this.getAllowHighAccuracy()
       };
 
     //Google doesn't like Infinity
@@ -426,5 +426,5 @@ Ext.define("Ext.util.Geolocation", {
   destroy: function () {
     this.setAutoUpdate(false);
     this.callParent();
-  },
+  }
 });

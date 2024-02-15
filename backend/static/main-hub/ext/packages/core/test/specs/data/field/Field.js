@@ -64,14 +64,14 @@ describe("Ext.data.field.Field", function () {
 
     it("should configure the name", function () {
       make({
-        name: "foo",
+        name: "foo"
       });
       expect(field.getName()).toBe("foo");
     });
 
     it("should configure allowBlank", function () {
       make({
-        allowBlank: false,
+        allowBlank: false
       });
       expect(field.getAllowBlank()).toBe(false);
     });
@@ -79,7 +79,7 @@ describe("Ext.data.field.Field", function () {
     describe("allowNull", function () {
       it("should configure a value", function () {
         make({
-          allowNull: true,
+          allowNull: true
         });
         expect(field.getAllowNull()).toBe(true);
       });
@@ -87,7 +87,7 @@ describe("Ext.data.field.Field", function () {
       it("should default to true for fields with a reference (FK)", function () {
         make({
           // Feign a reference here
-          reference: {},
+          reference: {}
         });
         expect(field.getAllowNull()).toBe(true);
       });
@@ -97,7 +97,7 @@ describe("Ext.data.field.Field", function () {
       it("should configure a fn", function () {
         var fn = function () {};
         make({
-          convert: fn,
+          convert: fn
         });
         expect(field.getConvert()).toBe(fn);
       });
@@ -105,14 +105,14 @@ describe("Ext.data.field.Field", function () {
       describe("calculated", function () {
         it("should have calculated false if the convert function has < 2 args", function () {
           make({
-            convert: function (a) {},
+            convert: function (a) {}
           });
           expect(field.calculated).toBe(false);
         });
 
         it("should have calculated true if the convert function has >= 2 args", function () {
           make({
-            convert: function (a, b) {},
+            convert: function (a, b) {}
           });
           expect(field.calculated).toBe(true);
         });
@@ -122,21 +122,21 @@ describe("Ext.data.field.Field", function () {
     describe("defaultValue", function () {
       it("should configure a number", function () {
         make({
-          defaultValue: 3,
+          defaultValue: 3
         });
         expect(field.getDefaultValue()).toBe(3);
       });
 
       it("should configure a string", function () {
         make({
-          defaultValue: "foo",
+          defaultValue: "foo"
         });
         expect(field.getDefaultValue()).toBe("foo");
       });
 
       it("should configure a bool", function () {
         make({
-          defaultValue: true,
+          defaultValue: true
         });
         expect(field.getDefaultValue()).toBe(true);
       });
@@ -145,7 +145,7 @@ describe("Ext.data.field.Field", function () {
         var spy = jasmine.createSpy().andReturn(8);
         make({
           defaultValue: 7,
-          convert: spy,
+          convert: spy
         });
         expect(field.getDefaultValue()).toBe(7);
         expect(spy).not.toHaveBeenCalled();
@@ -155,14 +155,14 @@ describe("Ext.data.field.Field", function () {
     describe("depends", function () {
       it("should accept a single string", function () {
         make({
-          depends: "foo",
+          depends: "foo"
         });
         expect(field.getDepends()).toEqual(["foo"]);
       });
 
       it("should accept an array", function () {
         make({
-          depends: ["foo", "bar", "baz"],
+          depends: ["foo", "bar", "baz"]
         });
         expect(field.getDepends()).toEqual(["foo", "bar", "baz"]);
       });
@@ -172,7 +172,7 @@ describe("Ext.data.field.Field", function () {
           make({
             calculate: function (data) {
               return data.foo + data.bar;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo", "bar"]);
         });
@@ -181,7 +181,7 @@ describe("Ext.data.field.Field", function () {
           make({
             calculate: function (data) {
               return data.foo + data.foo + data.foo;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo"]);
         });
@@ -190,19 +190,19 @@ describe("Ext.data.field.Field", function () {
           make({
             calculate: function (asdf) {
               return asdf.foo + asdf.bar;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo", "bar"]);
         });
 
         it("should ignore properties that are from other objects", function () {
           var o = {
-            foo2: 1,
+            foo2: 1
           };
           make({
             calculate: function (data) {
               return data.foo1 + o.foo2 + data.foo3;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo1", "foo3"]);
         });
@@ -211,7 +211,7 @@ describe("Ext.data.field.Field", function () {
           make({
             calculate: function (data) {
               return data.foo1 + data.foo2;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo1", "foo2"]);
         });
@@ -221,7 +221,7 @@ describe("Ext.data.field.Field", function () {
             depends: "foo3",
             calculate: function (data) {
               return data.foo1 + data.foo2;
-            },
+            }
           });
           expect(field.getDepends()).toEqual(["foo3"]);
         });
@@ -230,7 +230,7 @@ describe("Ext.data.field.Field", function () {
 
     it("should configure the mapping", function () {
       make({
-        mapping: "some.obj.key",
+        mapping: "some.obj.key"
       });
       expect(field.getMapping()).toBe("some.obj.key");
     });
@@ -238,14 +238,14 @@ describe("Ext.data.field.Field", function () {
     describe("persist", function () {
       it("should configure a true value", function () {
         make({
-          persist: true,
+          persist: true
         });
         expect(field.getPersist()).toBe(true);
       });
 
       it("should configure a false value", function () {
         make({
-          persist: false,
+          persist: false
         });
         expect(field.getPersist()).toBe(false);
       });
@@ -256,7 +256,7 @@ describe("Ext.data.field.Field", function () {
 
           it("should default to true", function () {
             make({
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(true);
           });
@@ -264,7 +264,7 @@ describe("Ext.data.field.Field", function () {
           it("should configure a true value", function () {
             make({
               persist: true,
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(true);
           });
@@ -272,7 +272,7 @@ describe("Ext.data.field.Field", function () {
           it("should configure a false value", function () {
             make({
               persist: false,
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(false);
           });
@@ -283,7 +283,7 @@ describe("Ext.data.field.Field", function () {
 
           it("should default to true", function () {
             make({
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(true);
           });
@@ -291,7 +291,7 @@ describe("Ext.data.field.Field", function () {
           it("should configure a true value", function () {
             make({
               persist: true,
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(true);
           });
@@ -299,7 +299,7 @@ describe("Ext.data.field.Field", function () {
           it("should configure a false value", function () {
             make({
               persist: false,
-              convert: fn,
+              convert: fn
             });
             expect(field.getPersist()).toBe(false);
           });
@@ -311,7 +311,7 @@ describe("Ext.data.field.Field", function () {
 
         it("should default to false", function () {
           make({
-            calculate: fn,
+            calculate: fn
           });
           expect(field.getPersist()).toBe(false);
         });
@@ -319,7 +319,7 @@ describe("Ext.data.field.Field", function () {
         it("should configure a true value", function () {
           make({
             persist: true,
-            calculate: fn,
+            calculate: fn
           });
           expect(field.getPersist()).toBe(true);
         });
@@ -327,7 +327,7 @@ describe("Ext.data.field.Field", function () {
         it("should configure a false value", function () {
           make({
             persist: false,
-            calculate: fn,
+            calculate: fn
           });
           expect(field.getPersist()).toBe(false);
         });
@@ -337,7 +337,7 @@ describe("Ext.data.field.Field", function () {
     describe("sortType", function () {
       it("should accept a string from Ext.data.SortTypes", function () {
         make({
-          sortType: "asDate",
+          sortType: "asDate"
         });
         expect(field.getSortType()).toBe(stypes.asDate);
       });
@@ -345,7 +345,7 @@ describe("Ext.data.field.Field", function () {
       it("should accept a custom sorter fn", function () {
         var fn = function () {};
         make({
-          sortType: fn,
+          sortType: fn
         });
         expect(field.getSortType()).toBe(fn);
       });
@@ -359,7 +359,7 @@ describe("Ext.data.field.Field", function () {
 
     beforeEach(function () {
       make({
-        sortType: fn,
+        sortType: fn
       });
     });
 
@@ -509,7 +509,7 @@ describe("Ext.data.field.Field", function () {
   describe("factory", function () {
     var factory = function (type) {
       field = Ext.data.field.Field.create({
-        type: type,
+        type: type
       });
     };
 
@@ -581,7 +581,7 @@ describe("Ext.data.field.Field", function () {
     function defineA(validators) {
       A = Ext.define(null, {
         extend: "Ext.data.field.Field",
-        validators: validators,
+        validators: validators
       });
     }
 
@@ -609,7 +609,7 @@ describe("Ext.data.field.Field", function () {
     it("should accept an object", function () {
       defineA({
         type: "format",
-        matcher: /foo/,
+        matcher: /foo/
       });
       expectError(A, null, null, [formatMsg]);
     });
@@ -626,11 +626,11 @@ describe("Ext.data.field.Field", function () {
         "presence",
         {
           type: "format",
-          matcher: /foo/,
+          matcher: /foo/
         },
         function () {
           return "Fail";
-        },
+        }
       ]);
       expectError(A, null, null, [presenceMsg, formatMsg, "Fail"]);
     });
@@ -640,10 +640,10 @@ describe("Ext.data.field.Field", function () {
       expectError(
         A,
         {
-          validators: "email",
+          validators: "email"
         },
         null,
-        [presenceMsg, emailMsg],
+        [presenceMsg, emailMsg]
       );
     });
 
@@ -653,7 +653,7 @@ describe("Ext.data.field.Field", function () {
       function defineB(validators) {
         B = Ext.define(null, {
           extend: A,
-          validators: validators,
+          validators: validators
         });
       }
 
@@ -672,7 +672,7 @@ describe("Ext.data.field.Field", function () {
           defineA("presence");
           defineB({
             type: "format",
-            matcher: /foo/,
+            matcher: /foo/
           });
           expectError(B, null, null, [presenceMsg, formatMsg]);
         });
@@ -691,24 +691,24 @@ describe("Ext.data.field.Field", function () {
             "email",
             {
               type: "format",
-              matcher: /foo/,
+              matcher: /foo/
             },
             function () {
               return "Fail";
-            },
+            }
           ]);
           expectError(B, null, null, [
             presenceMsg,
             emailMsg,
             formatMsg,
-            "Fail",
+            "Fail"
           ]);
         });
 
         it("should merge an object and a string", function () {
           defineA({
             type: "format",
-            matcher: /foo/,
+            matcher: /foo/
           });
           defineB("presence");
           expectError(B, null, null, [formatMsg, presenceMsg]);
@@ -727,18 +727,18 @@ describe("Ext.data.field.Field", function () {
             "email",
             {
               type: "format",
-              matcher: /foo/,
+              matcher: /foo/
             },
             function () {
               return "Fail";
-            },
+            }
           ]);
           defineB("presence");
           expectError(B, null, null, [
             emailMsg,
             formatMsg,
             "Fail",
-            presenceMsg,
+            presenceMsg
           ]);
         });
 

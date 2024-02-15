@@ -59,10 +59,10 @@ Ext.define("Ext.ux.dd.CellFieldDropZone", {
           me.view = v;
           Ext.ux.dd.CellFieldDropZone.superclass.constructor.call(
             me,
-            me.view.el,
+            me.view.el
           );
         },
-        single: true,
+        single: true
       });
     } else {
       grid.on("render", me.init, me, { single: true });
@@ -89,7 +89,7 @@ Ext.define("Ext.ux.dd.CellFieldDropZone", {
           node: cell,
           record: v.getRecord(row),
           fieldName: me.grid.getVisibleColumnManager().getColumns()[columnIndex]
-            .dataIndex,
+            .dataIndex
         };
       }
     }
@@ -151,5 +151,5 @@ Ext.define("Ext.ux.dd.CellFieldDropZone", {
 
   callCellDrop: function (fieldName, value) {
     Ext.callback(this.onCellDropFn, null, [fieldName, value], 0, this.grid);
-  },
+  }
 });

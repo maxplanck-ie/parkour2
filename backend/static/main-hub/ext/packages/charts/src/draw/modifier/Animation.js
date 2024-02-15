@@ -84,7 +84,7 @@ Ext.define("Ext.draw.modifier.Animation", {
      *         'cx,cy': 1000
      *     }
      */
-    customDurations: {},
+    customDurations: {}
   },
 
   constructor: function (config) {
@@ -437,8 +437,8 @@ Ext.define("Ext.draw.modifier.Animation", {
             timer.source,
             timer.target,
             timer.easing(delta),
-            attr[name],
-          ),
+            attr[name]
+          )
         );
         any = true;
       }
@@ -507,5 +507,5 @@ Ext.define("Ext.draw.modifier.Animation", {
   destroy: function () {
     this.stop();
     this.callParent();
-  },
+  }
 });

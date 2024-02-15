@@ -93,5 +93,5 @@ Ext.define("Ext.util.LineSegment", {
    */
   toString: function () {
     return this.point1.toString() + " " + this.point2.toString();
-  },
+  }
 });

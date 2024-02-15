@@ -29,7 +29,7 @@ Ext.onReady(function () {
       "September",
       "Oktober",
       "November",
-      "Desember",
+      "Desember"
     ];
 
     Ext.Date.getShortMonthName = function (month) {
@@ -48,7 +48,7 @@ Ext.onReady(function () {
       Sep: 8,
       Okt: 9,
       Nov: 10,
-      Des: 11,
+      Des: 11
     };
 
     Ext.Date.getMonthNumber = function (name) {
@@ -64,7 +64,7 @@ Ext.onReady(function () {
       "Rabu",
       "Kamis",
       "Jumat",
-      "Sabtu",
+      "Sabtu"
     ];
 
     Ext.Date.getShortDayName = function (day) {
@@ -76,7 +76,7 @@ Ext.onReady(function () {
       ok: "OK",
       cancel: "Batal",
       yes: "Ya",
-      no: "Tidak",
+      no: "Tidak"
     };
   }
 
@@ -86,35 +86,35 @@ Ext.onReady(function () {
       decimalSeparator: ",",
       currencySign: "Rp",
       // Indonesian Rupiah
-      dateFormat: "d/m/Y",
+      dateFormat: "d/m/Y"
     });
   }
 });
 
 Ext.define("Ext.locale.id.view.View", {
   override: "Ext.view.View",
-  emptyText: "",
+  emptyText: ""
 });
 
 Ext.define("Ext.locale.id.grid.plugin.DragDrop", {
   override: "Ext.grid.plugin.DragDrop",
-  dragText: "{0} baris terpilih",
+  dragText: "{0} baris terpilih"
 });
 
 Ext.define("Ext.locale.id.tab.Tab", {
   override: "Ext.tab.Tab",
-  closeText: "Tutup tab ini",
+  closeText: "Tutup tab ini"
 });
 
 Ext.define("Ext.locale.id.form.field.Base", {
   override: "Ext.form.field.Base",
-  invalidText: "Isian belum benar",
+  invalidText: "Isian belum benar"
 });
 
 // changing the msg text below will affect the LoadMask
 Ext.define("Ext.locale.id.view.AbstractView", {
   override: "Ext.view.AbstractView",
-  loadingText: "Pemuatan...",
+  loadingText: "Pemuatan..."
 });
 
 Ext.define("Ext.locale.id.picker.Date", {
@@ -129,13 +129,13 @@ Ext.define("Ext.locale.id.picker.Date", {
   monthYearText: "Pilih bulan (Kontrol+Atas/Bawah untuk pindah tahun)",
   todayTip: "{0} (Spacebar)",
   format: "d/m/y",
-  startDay: 1,
+  startDay: 1
 });
 
 Ext.define("Ext.locale.id.picker.Month", {
   override: "Ext.picker.Month",
   okText: "&#160;OK&#160;",
-  cancelText: "Batal",
+  cancelText: "Batal"
 });
 
 Ext.define("Ext.locale.id.toolbar.Paging", {
@@ -148,7 +148,7 @@ Ext.define("Ext.locale.id.toolbar.Paging", {
   lastText: "Hal. Akhir",
   refreshText: "Segarkan",
   displayMsg: "Menampilkan {0} - {1} dari {2}",
-  emptyMsg: "Data tidak ditemukan",
+  emptyMsg: "Data tidak ditemukan"
 });
 
 Ext.define("Ext.locale.id.form.field.Text", {
@@ -157,14 +157,14 @@ Ext.define("Ext.locale.id.form.field.Text", {
   maxLengthText: "Panjang maksimal untuk field ini adalah {0}",
   blankText: "Field ini wajib diisi",
   regexText: "",
-  emptyText: null,
+  emptyText: null
 });
 
 Ext.define("Ext.locale.id.form.field.Number", {
   override: "Ext.form.field.Number",
   minText: "Nilai minimal untuk field ini adalah {0}",
   maxText: "Nilai maksimal untuk field ini adalah {0}",
-  nanText: "{0} bukan angka",
+  nanText: "{0} bukan angka"
 });
 
 Ext.define("Ext.locale.id.form.field.Date", {
@@ -176,20 +176,20 @@ Ext.define("Ext.locale.id.form.field.Date", {
   invalidText: "{0} tanggal salah - Harus dalam format {1}",
   format: "d/m/y",
   //altFormats        : "m/d/Y|m-d-y|m-d-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
-  altFormats: "d/m/Y|d-m-y|d-m-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d",
+  altFormats: "d/m/Y|d-m-y|d-m-Y|m/d|m-d|md|mdy|mdY|d|Y-m-d"
 });
 
 Ext.define(
   "Ext.locale.id.form.field.ComboBox",
   {
     override: "Ext.form.field.ComboBox",
-    valueNotFoundText: undefined,
+    valueNotFoundText: undefined
   },
   function () {
     Ext.apply(Ext.form.field.ComboBox.prototype.defaultListConfig, {
-      loadingText: "Pemuatan...",
+      loadingText: "Pemuatan..."
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.id.form.field.VTypes", {
@@ -198,14 +198,14 @@ Ext.define("Ext.locale.id.form.field.VTypes", {
   urlText:
     'Field ini harus dalam format URL seperti "http:/' + '/www.example.com"',
   alphaText: "Field ini harus terdiri dari huruf dan _",
-  alphanumText: "Field ini haris terdiri dari huruf, angka dan _",
+  alphanumText: "Field ini haris terdiri dari huruf, angka dan _"
 });
 
 Ext.define(
   "Ext.locale.id.form.field.HtmlEditor",
   {
     override: "Ext.form.field.HtmlEditor",
-    createLinkText: "Silakan masukkan URL untuk tautan:",
+    createLinkText: "Silakan masukkan URL untuk tautan:"
   },
   function () {
     Ext.apply(Ext.form.field.HtmlEditor.prototype, {
@@ -213,76 +213,76 @@ Ext.define(
         bold: {
           title: "Tebal (Ctrl+B)",
           text: "Buat tebal teks terpilih",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         italic: {
           title: "Miring (CTRL+I)",
           text: "Buat miring teks terpilih",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         underline: {
           title: "Garisbawah (CTRl+U)",
           text: "Garisbawahi teks terpilih",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         increasefontsize: {
           title: "Perbesar teks",
           text: "Perbesar ukuran fonta",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         decreasefontsize: {
           title: "Perkecil teks",
           text: "Perkecil ukuran fonta",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         backcolor: {
           title: "Sorot Warna Teks",
           text: "Ubah warna latar teks terpilih",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         forecolor: {
           title: "Warna Fonta",
           text: "Ubah warna teks terpilih",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyleft: {
           title: "Rata Kiri",
           text: "Ratakan teks ke kiri",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifycenter: {
           title: "Rata Tengah",
           text: "Ratakan teks ke tengah editor",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         justifyright: {
           title: "Rata Kanan",
           text: "Ratakan teks ke kanan",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertunorderedlist: {
           title: "Daftar Bulet",
           text: "Membuat daftar berbasis bulet",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         insertorderedlist: {
           title: "Daftar Angka",
           text: "Membuat daftar berbasis angka",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         createlink: {
           title: "Hipertaut",
           text: "Buat teks terpilih sebagai Hipertaut",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
         },
         sourceedit: {
           title: "Edit Kode Sumber",
           text: "Pindah dalam mode kode sumber",
-          cls: Ext.baseCSSPrefix + "html-editor-tip",
-        },
-      },
+          cls: Ext.baseCSSPrefix + "html-editor-tip"
+        }
+      }
     });
-  },
+  }
 );
 
 Ext.define("Ext.locale.id.grid.header.Container", {
@@ -291,21 +291,21 @@ Ext.define("Ext.locale.id.grid.header.Container", {
   sortDescText: "Urut Turun",
   lockText: "Kancing Kolom",
   unlockText: "Lepas Kunci Kolom",
-  columnsText: "Kolom",
+  columnsText: "Kolom"
 });
 
 Ext.define("Ext.locale.id.grid.GroupingFeature", {
   override: "Ext.grid.feature.Grouping",
   emptyGroupText: "(Kosong)",
   groupByText: "Kelompokkan Berdasar Field Ini",
-  showGroupsText: "Tampil Dalam Kelompok",
+  showGroupsText: "Tampil Dalam Kelompok"
 });
 
 Ext.define("Ext.locale.id.grid.PropertyColumnModel", {
   override: "Ext.grid.PropertyColumnModel",
   nameText: "Nama",
   valueText: "Nilai",
-  dateFormat: "d/m/Y",
+  dateFormat: "d/m/Y"
 });
 
 Ext.define("Ext.locale.id.window.MessageBox", {
@@ -314,11 +314,11 @@ Ext.define("Ext.locale.id.window.MessageBox", {
     ok: "OK",
     cancel: "Batal",
     yes: "Ya",
-    no: "Tidak",
-  },
+    no: "Tidak"
+  }
 });
 
 // This is needed until we can refactor all of the locales into individual files
 Ext.define("Ext.locale.id.Component", {
-  override: "Ext.Component",
+  override: "Ext.Component"
 });

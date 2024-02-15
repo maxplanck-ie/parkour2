@@ -37,5 +37,5 @@ Ext.define("Ext.data.amf.Proxy", {
    * @cfg
    * @inheritdoc
    */
-  reader: "amf",
+  reader: "amf"
 });

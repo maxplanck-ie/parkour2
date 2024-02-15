@@ -94,7 +94,7 @@ Ext.define("Ext.direct.PollingProvider", {
     me.pollTask = Ext.TaskManager.newTask({
       run: me.runPoll,
       interval: me.interval,
-      scope: me,
+      scope: me
     });
   },
 
@@ -125,14 +125,14 @@ Ext.define("Ext.direct.PollingProvider", {
         Ext.raise(
           "Cannot resolve Ext Direct API method " +
             fnName +
-            " for PollingProvider",
+            " for PollingProvider"
         );
       }
       //</debug>
     } else if (Ext.isFunction(url)) {
       //<debug>
       Ext.log.warn(
-        "Using a function for url is deprecated, use pollFn instead.",
+        "Using a function for url is deprecated, use pollFn instead."
       );
       //</debug>
 
@@ -166,7 +166,7 @@ Ext.define("Ext.direct.PollingProvider", {
       Ext.raise(
         "Attempting to configure PollProvider " +
           me.id +
-          " with interval that is less than 100ms.",
+          " with interval that is less than 100ms."
       );
     }
     //</debug>
@@ -194,7 +194,7 @@ Ext.define("Ext.direct.PollingProvider", {
         args = pollFn.directCfg.method.getArgs({
           params: baseParams !== undefined ? baseParams : {},
           callback: me.onPollFn,
-          scope: me,
+          scope: me
         });
 
         pollFn.apply(window, args);
@@ -204,7 +204,7 @@ Ext.define("Ext.direct.PollingProvider", {
           callback: me.onData,
           scope: me,
           params: baseParams,
-          headers: me.getHeaders(),
+          headers: me.getHeaders()
         };
 
         if (me.timeout != null) {
@@ -245,7 +245,7 @@ Ext.define("Ext.direct.PollingProvider", {
         data: null,
         code: Ext.direct.Manager.exceptions.TRANSPORT,
         message: "Unable to connect to the server.",
-        xhr: response,
+        xhr: response
       });
 
       me.fireEvent("data", me, event);
@@ -273,6 +273,6 @@ Ext.define("Ext.direct.PollingProvider", {
       return (
         config && config.type === "polling" && (config.url || config.pollFn)
       );
-    },
-  },
+    }
+  }
 });

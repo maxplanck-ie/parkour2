@@ -70,7 +70,7 @@ Ext.define("Ext.util.FilterCollection", {
       }
     } else {
       filterConfig = {
-        root: filterRoot,
+        root: filterRoot
       };
 
       if (Ext.isFunction(filter)) {
@@ -178,5 +178,5 @@ Ext.define("Ext.util.FilterCollection", {
     // that is not really useful to filter the filters themselves, but we do have the
     // default options for Filterable baked in, so we'll do.
     return this.$filterable || this;
-  },
+  }
 });

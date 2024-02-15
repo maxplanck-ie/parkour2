@@ -49,11 +49,11 @@ Ext.define("Ext.grid.column.Date", {
     format: null,
 
     defaultEditor: {
-      xtype: "datepickerfield",
+      xtype: "datepickerfield"
     },
 
     cell: {
-      xtype: "datecell",
-    },
-  },
+      xtype: "datecell"
+    }
+  }
 });

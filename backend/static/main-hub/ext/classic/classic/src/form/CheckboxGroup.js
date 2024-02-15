@@ -60,13 +60,13 @@ Ext.define(
     isCheckboxGroup: true,
 
     mixins: {
-      field: "Ext.form.field.Field",
+      field: "Ext.form.field.Field"
     },
 
     requires: [
       "Ext.layout.container.CheckboxGroup",
       "Ext.form.field.Checkbox",
-      "Ext.form.field.Base",
+      "Ext.form.field.Base"
     ],
 
     /**
@@ -146,7 +146,7 @@ Ext.define(
 
     // Checkbox and radio groups start as valid
     ariaRenderAttributes: {
-      "aria-invalid": false,
+      "aria-invalid": false
     },
 
     initComponent: function () {
@@ -529,13 +529,13 @@ Ext.define(
       }
 
       return isValid;
-    },
+    }
   },
   function () {
     this.borrow(Ext.form.field.Base, [
       "markInvalid",
       "clearInvalid",
-      "setError",
+      "setError"
     ]);
-  },
+  }
 );

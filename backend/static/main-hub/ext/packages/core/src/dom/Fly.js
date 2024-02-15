@@ -16,7 +16,7 @@ Ext.define(
     validNodeTypes: {
       1: 1, // ELEMENT_NODE
       9: 1, // DOCUMENT_NODE
-      11: 1, // DOCUMENT_FRAGMENT_NODE
+      11: 1 // DOCUMENT_FRAGMENT_NODE
     },
 
     /**
@@ -60,7 +60,7 @@ Ext.define(
       function () {
         Ext.raise(
           "Cannot use addListener() on Ext.dom.Fly instances. " +
-            "Please use Ext.get() to retrieve an Ext.dom.Element instance instead.",
+            "Please use Ext.get() to retrieve an Ext.dom.Element instance instead."
         );
       } ||
       //</debug>
@@ -71,11 +71,11 @@ Ext.define(
       function () {
         Ext.raise(
           "Cannot use removeListener() on Ext.dom.Fly instances. " +
-            "Please use Ext.get() to retrieve an Ext.dom.Element instance instead.",
+            "Please use Ext.get() to retrieve an Ext.dom.Element instance instead."
         );
       } ||
       //</debug>
-      null,
+      null
   },
   function (Fly) {
     var flyweights = {},
@@ -164,12 +164,12 @@ Ext.define(
     Ext.getDetachedBody = function () {
       if (!detachedBodyEl) {
         Ext.detachedBodyEl = detachedBodyEl = new Fly(
-          document.createElement("div"),
+          document.createElement("div")
         );
         detachedBodyEl.isDetachedBody = true;
       }
 
       return detachedBodyEl;
     };
-  },
+  }
 );

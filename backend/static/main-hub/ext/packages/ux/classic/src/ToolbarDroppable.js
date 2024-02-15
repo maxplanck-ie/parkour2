@@ -36,7 +36,7 @@ Ext.define("Ext.ux.ToolbarDroppable", {
 
     this.toolbar.on({
       scope: this,
-      render: this.createDropTarget,
+      render: this.createDropTarget
     });
   },
 
@@ -51,7 +51,7 @@ Ext.define("Ext.ux.ToolbarDroppable", {
      */
     this.dropTarget = Ext.create("Ext.dd.DropTarget", this.toolbar.getEl(), {
       notifyOver: Ext.Function.bind(this.notifyOver, this),
-      notifyDrop: Ext.Function.bind(this.notifyDrop, this),
+      notifyDrop: Ext.Function.bind(this.notifyDrop, this)
     });
   },
 
@@ -144,7 +144,7 @@ Ext.define("Ext.ux.ToolbarDroppable", {
   createItem: function (data) {
     //<debug>
     Ext.raise(
-      "The createItem method must be implemented in the ToolbarDroppable plugin",
+      "The createItem method must be implemented in the ToolbarDroppable plugin"
     );
     //</debug>
   },
@@ -153,5 +153,5 @@ Ext.define("Ext.ux.ToolbarDroppable", {
    * @method
    * Called after a new button has been created and added to the toolbar. Add any required cleanup logic here
    */
-  afterLayout: Ext.emptyFn,
+  afterLayout: Ext.emptyFn
 });

@@ -6,5 +6,5 @@ Ext.define("Ext.locale.sv_SE.form.field.VTypes", {
     'Detta fält ska innehålla en länk (URL) i formatet "http:/' +
     '/www.domän.se"',
   alphaText: 'Detta fält får bara innehålla bokstäver och "_"',
-  alphanumText: 'Detta fält får bara innehålla bokstäver, nummer och "_"',
+  alphanumText: 'Detta fält får bara innehålla bokstäver, nummer och "_"'
 });

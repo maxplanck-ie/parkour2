@@ -29,7 +29,7 @@ Ext.define(
         "tr-tl": "r0-l0",
         "tr-l": "r0-l50",
         "br-l": "r100-l50",
-        "br-bl": "r100-l100",
+        "br-bl": "r100-l100"
       },
       rtlAlignMap = {
         "tl-tr": "r0-l0",
@@ -39,7 +39,7 @@ Ext.define(
         "tr-tl": "l0-r0",
         "tr-l": "l0-r50",
         "br-l": "l100-r50",
-        "br-bl": "l100-r100",
+        "br-bl": "l100-r100"
       },
       adjustParams = [],
       zeroOffset = new ExtUtil.Offset(0, 0),
@@ -127,7 +127,7 @@ Ext.define(
         result,
         relativePosition,
         anchorSize,
-        inside,
+        inside
       ) {
         var minOverlap = Math.ceil(anchorSize.x / 2) + 2,
           anchorPos,
@@ -155,7 +155,7 @@ Ext.define(
               Math.max(result.top, target.top),
               x,
               Math.min(result.bottom, target.bottom),
-              x,
+              x
             );
 
             if (target.getHeight() > minOverlap) {
@@ -179,7 +179,7 @@ Ext.define(
                   if (inside) {
                     y = Math.min(
                       Math.max(y, inside.top),
-                      inside.bottom - result.getHeight(),
+                      inside.bottom - result.getHeight()
                     );
                   }
 
@@ -189,7 +189,7 @@ Ext.define(
                     Math.max(result.top, target.top),
                     x,
                     Math.min(result.bottom, target.bottom),
-                    x,
+                    x
                   );
                   overlapLength = overlapLine.getHeight();
 
@@ -203,7 +203,7 @@ Ext.define(
                   }
                 }
                 overlapLine.setHeight(
-                  Math.max(overlapLength, anchorSize.x + 4),
+                  Math.max(overlapLength, anchorSize.x + 4)
                 );
 
                 // Arrow would be off the edge
@@ -215,7 +215,7 @@ Ext.define(
             result.anchor = anchorPos.alignTo({
               target: overlapLine,
               align: isBefore ? "l-r" : "r-l",
-              overlap: true,
+              overlap: true
             });
             result.anchor.position = isBefore ? "right" : "left";
           }
@@ -230,7 +230,7 @@ Ext.define(
               y,
               Math.min(result.right, target.right),
               y,
-              Math.max(result.left, target.left),
+              Math.max(result.left, target.left)
             );
 
             if (target.getWidth() > minOverlap) {
@@ -254,7 +254,7 @@ Ext.define(
                   if (inside) {
                     x = Math.min(
                       Math.max(x, inside.left),
-                      inside.right - result.getWidth(),
+                      inside.right - result.getWidth()
                     );
                   }
 
@@ -264,7 +264,7 @@ Ext.define(
                     y,
                     Math.min(result.right, target.right),
                     y,
-                    Math.max(result.left, target.left),
+                    Math.max(result.left, target.left)
                   );
                   overlapLength = overlapLine.getWidth();
 
@@ -288,7 +288,7 @@ Ext.define(
             result.anchor = anchorPos.alignTo({
               target: overlapLine,
               align: isBefore ? "t-b" : "b-t",
-              overlap: true,
+              overlap: true
             });
             result.anchor.position = isBefore ? "bottom" : "top";
           }
@@ -305,8 +305,8 @@ Ext.define(
             result.setHeight(
               Math.max(
                 result.getHeight() + inside.bottom - result.bottom,
-                minHeight,
-              ),
+                minHeight
+              )
             );
             result.constrainHeight = true;
           }
@@ -314,7 +314,7 @@ Ext.define(
           else if (result.bottom <= target.top && result.top < inside.top) {
             newHeight = Math.max(
               result.getHeight() + result.top - inside.top,
-              minHeight,
+              minHeight
             );
             result.adjust(result.getHeight() - newHeight);
             result.constrainHeight = true;
@@ -336,8 +336,8 @@ Ext.define(
             result.setWidth(
               Math.max(
                 result.getWidth() + inside.right - result.right,
-                minWidth,
-              ),
+                minWidth
+              )
             );
             result.constrainWidth = true;
           }
@@ -345,7 +345,7 @@ Ext.define(
           else if (result.right <= target.left && result.left < inside.left) {
             newWidth = Math.max(
               result.getWidth() + result.left - inside.left,
-              minWidth,
+              minWidth
             );
             result.adjust(0, 0, 0, result.getWidth() - newWidth);
             result.constrainWidth = true;
@@ -431,7 +431,7 @@ Ext.define(
               msg:
                 'Attemmpted to align an element with an invalid position: "' +
                 align +
-                '"',
+                '"'
             });
           }
           //</debug>
@@ -441,7 +441,7 @@ Ext.define(
             myOffset: parts[2],
             otherEdge: parts[4],
             otherOffset: parts[5],
-            constrain: constrain[2],
+            constrain: constrain[2]
           };
 
           // t-l, b-r etc.
@@ -464,7 +464,7 @@ Ext.define(
           // TOP=0, RIGHT=1, BOTTOM=2, LEFT=3, INSIDE=undefined
           result.position = relativePositions[result.myEdge];
           return result;
-        },
+        }
       },
       /* End Definitions */
 
@@ -692,7 +692,7 @@ Ext.define(
           } else {
             newP = {
               x: p.x,
-              y: p.y,
+              y: p.y
             };
           }
 
@@ -916,7 +916,7 @@ Ext.define(
 
           // Start with requested position.
           result = Region.from(me).translateBy(
-            me.getAlignToVector(targetPlusAnchorOffset, align),
+            me.getAlignToVector(targetPlusAnchorOffset, align)
           );
 
           // If they ASKED for it to intersect (eg: c-c, tl-c). we must honour that, and not exclude it.
@@ -933,7 +933,7 @@ Ext.define(
               result,
               align.position,
               anchorSize,
-              inside,
+              inside
             );
           }
         }
@@ -988,7 +988,7 @@ Ext.define(
               if (result.contains(position)) {
                 position.exclude(result, {
                   inside: inside,
-                  centerOnSideChange: false,
+                  centerOnSideChange: false
                 });
               }
             }
@@ -1007,7 +1007,7 @@ Ext.define(
                   allowY: allowYTranslate,
                   offset: offset,
                   anchorHeight: anchorSize ? anchorSize.y : 0,
-                  centerOnSideChange: !!anchorSize,
+                  centerOnSideChange: !!anchorSize
                 });
               } else if (
                 options.minWidth &&
@@ -1022,7 +1022,7 @@ Ext.define(
               ) {
                 result.setPosition(result.x, 0);
                 result.setHeight(
-                  Math.max(inside.getHeight(), options.minHeight),
+                  Math.max(inside.getHeight(), options.minHeight)
                 );
                 result.constrainHeight = true;
               }
@@ -1036,7 +1036,7 @@ Ext.define(
                   result,
                   align.position,
                   anchorSize,
-                  inside,
+                  inside
                 );
               }
             }
@@ -1091,14 +1091,14 @@ Ext.define(
             (t = me.top - other.bottom - anchorHeight + offset.y),
             "b-t",
             0,
-            Math.abs(t),
+            Math.abs(t)
           ]);
           translations.push([
             0,
             (t = me.bottom - other.top + anchorHeight + offset.y),
             "t-b",
             2,
-            Math.abs(t),
+            Math.abs(t)
           ]);
         } else {
           centerOnSideChange = false;
@@ -1109,14 +1109,14 @@ Ext.define(
             0,
             "r-l",
             3,
-            Math.abs(t),
+            Math.abs(t)
           ]);
           translations.push([
             (t = me.right - other.left + anchorHeight + offset.x),
             0,
             "l-r",
             1,
-            Math.abs(t),
+            Math.abs(t)
           ]);
         } else {
           centerOnSideChange = false;
@@ -1153,7 +1153,7 @@ Ext.define(
               result = {
                 align: t[2],
                 position: t[3],
-                distance: t[4],
+                distance: t[4]
               };
               break;
             }
@@ -1173,7 +1173,7 @@ Ext.define(
                     region: testRegion,
                     align: t[2],
                     position: t[3],
-                    distance: t[4],
+                    distance: t[4]
                   };
                 }
               }
@@ -1190,7 +1190,7 @@ Ext.define(
                     region: testRegion,
                     align: t[2],
                     position: t[3],
-                    distance: t[4],
+                    distance: t[4]
                   };
                 }
               }
@@ -1211,7 +1211,7 @@ Ext.define(
                   align: t[2],
                   position: t[3],
                   distance: t[4],
-                  area: intersection,
+                  area: intersection
                 };
               }
             }
@@ -1246,7 +1246,7 @@ Ext.define(
                   axisLock: true,
                   inside: inside,
                   minHeight: options.minHeight,
-                  minWidth: options.minWidth,
+                  minWidth: options.minWidth
                 });
                 if (inside.contains(t)) {
                   other.setPosition(t.x, t.y);
@@ -1285,15 +1285,15 @@ Ext.define(
           typeof align === "string" ? this.getAlignInfo(align, rtl) : align;
 
         var myAnchorPoint = this["getAnchorPoint_" + align.myEdge](
-            align.myOffset,
+            align.myOffset
           ),
           targetAnchorPoint = target["getAnchorPoint_" + align.otherEdge](
-            align.otherOffset,
+            align.otherOffset
           );
 
         return [
           targetAnchorPoint[0] - myAnchorPoint[0],
-          targetAnchorPoint[1] - myAnchorPoint[1],
+          targetAnchorPoint[1] - myAnchorPoint[1]
         ];
       },
 
@@ -1303,7 +1303,7 @@ Ext.define(
       getAnchorPoint_b: function (offset) {
         return [
           this.x + Math.round(this.getWidth() * (offset / 100)),
-          this.bottom,
+          this.bottom
         ];
       },
       getAnchorPoint_l: function (offset) {
@@ -1312,13 +1312,13 @@ Ext.define(
       getAnchorPoint_r: function (offset) {
         return [
           this.right,
-          this.y + Math.round(this.getHeight() * (offset / 100)),
+          this.y + Math.round(this.getHeight() * (offset / 100))
         ];
       },
       getAnchorPoint_c: function () {
         return [
           this.x + Math.round(this.getWidth() / 2),
-          this.y + Math.round(this.getHeight() / 2),
+          this.y + Math.round(this.getHeight() / 2)
         ];
       },
 
@@ -1352,7 +1352,7 @@ Ext.define(
       getSize: function () {
         return {
           width: this.right - this.x,
-          height: this.bottom - this.y,
+          height: this.bottom - this.y
         };
       },
 
@@ -1460,9 +1460,9 @@ Ext.define(
       getOffsetsTo: function (offsetsTo) {
         return {
           x: this.x - offsetsTo.x,
-          y: this.y - offsetsTo.y,
+          y: this.y - offsetsTo.y
         };
-      },
+      }
     };
   },
   function (Region) {
@@ -1474,5 +1474,5 @@ Ext.define(
       Object.freeze(Region.EMPTY);
     }
     //</debug>
-  },
+  }
 );

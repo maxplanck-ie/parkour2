@@ -4,35 +4,35 @@ Ext.define("MainHub.model.Record", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "record_type",
-      type: "string",
+      type: "string"
     },
     {
       name: "status",
       type: "int",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "barcode",
-      type: "string",
+      type: "string"
     },
     {
       name: "is_converted",
       type: "bool",
-      defaultValue: false,
+      defaultValue: false
     },
     {
       name: "selected",
       type: "bool",
-      defaultValue: false,
-    },
+      defaultValue: false
+    }
   ],
 
   getRecordType: function () {
@@ -51,5 +51,5 @@ Ext.define("MainHub.model.Record", {
   getPoolPaths: function () {
     var pool = this.get("pool");
     return pool;
-  },
+  }
 });

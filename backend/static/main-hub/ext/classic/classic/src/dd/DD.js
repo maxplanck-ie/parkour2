@@ -96,11 +96,11 @@ Ext.define("Ext.dd.DD", {
     if (!this.deltaSetXY) {
       vpSize = this.cachedViewportSize = {
         width: EL.getDocumentWidth(),
-        height: EL.getDocumentHeight(),
+        height: EL.getDocumentHeight()
       };
       aCoord = [
         Math.max(0, Math.min(oCoord.x, vpSize.width - elSize.width)),
-        Math.max(0, Math.min(oCoord.y, vpSize.height - elSize.height)),
+        Math.max(0, Math.min(oCoord.y, vpSize.height - elSize.height))
       ];
       fly.setXY(aCoord);
       newLeft = this.getLocalX(fly);
@@ -112,15 +112,12 @@ Ext.define("Ext.dd.DD", {
         fly,
         Math.max(
           0,
-          Math.min(oCoord.x + this.deltaSetXY[0], vpSize.width - elSize.width),
+          Math.min(oCoord.x + this.deltaSetXY[0], vpSize.width - elSize.width)
         ),
         Math.max(
           0,
-          Math.min(
-            oCoord.y + this.deltaSetXY[1],
-            vpSize.height - elSize.height,
-          ),
-        ),
+          Math.min(oCoord.y + this.deltaSetXY[1], vpSize.height - elSize.height)
+        )
       );
     }
 
@@ -290,7 +287,7 @@ Ext.define("Ext.dd.DD", {
 
   setLocalXY: function (el, x, y) {
     el.setLocalXY(x, y);
-  },
+  }
 
   //////////////////////////////////////////////////////////////////////////
   // Debugging ygDragDrop events that can be overridden

@@ -15,34 +15,34 @@ describe("Ext.app.Controller", function () {
         return expected
           ? Ext.isFunction(actual) && actual === expected
           : Ext.isFunction(actual);
-      },
+      }
     });
 
     Ext.define("TestController.view.FooPanel", {
       extend: "Ext.panel.Panel",
-      xtype: "foopanel",
+      xtype: "foopanel"
     });
 
     Ext.define("TestController.view.BarPanel", {
       extend: "Ext.panel.Panel",
-      xtype: "barpanel",
+      xtype: "barpanel"
     });
 
     Ext.define("TestController.view.BazPanel", {
       extend: "Ext.panel.Panel",
-      xtype: "bazpanel",
+      xtype: "bazpanel"
     });
 
     Ext.define("TestController.model.Test", {
       extend: "Ext.data.Model",
 
-      fields: [],
+      fields: []
     });
 
     Ext.define("TestController.store.Test", {
       extend: "Ext.data.Store",
 
-      model: "TestController.model.Test",
+      model: "TestController.model.Test"
     });
 
     Ext.define("TestController.controller.Events", {
@@ -52,8 +52,8 @@ describe("Ext.app.Controller", function () {
         this.control({
           foopanel: {
             resize: this.onPanelFooResize,
-            UPPERCUSTOM: this.onCustomEvent,
-          },
+            UPPERCUSTOM: this.onCustomEvent
+          }
         });
       },
 
@@ -63,7 +63,7 @@ describe("Ext.app.Controller", function () {
 
       onCustomEvent: function () {
         customEventFired = true;
-      },
+      }
     });
 
     fooPanel = new TestController.view.FooPanel({
@@ -73,7 +73,7 @@ describe("Ext.app.Controller", function () {
       width: 100,
       height: 100,
 
-      renderTo: document.body,
+      renderTo: document.body
     });
   });
 
@@ -117,12 +117,12 @@ describe("Ext.app.Controller", function () {
       var names = Controller.getFullName(
         "Model@Name.space.foo",
         "model",
-        "Nonexisting",
+        "Nonexisting"
       );
 
       expect(names).toEqual({
         absoluteName: "Name.space.foo.Model",
-        shortName: "Model",
+        shortName: "Model"
       });
     });
 
@@ -130,12 +130,12 @@ describe("Ext.app.Controller", function () {
       var names = Controller.getFullName(
         "foo.Model@Name.space",
         "model",
-        "Nonexisting",
+        "Nonexisting"
       );
 
       expect(names).toEqual({
         absoluteName: "Name.space.foo.Model",
-        shortName: "foo.Model",
+        shortName: "foo.Model"
       });
     });
 
@@ -148,14 +148,14 @@ describe("Ext.app.Controller", function () {
           var names = Controller.getFullName(
             "TestController.DefinedModel",
             "model",
-            "TestController",
+            "TestController"
           );
 
           expect(names).toEqual({
             absoluteName: "TestController.DefinedModel",
-            shortName: "TestController.DefinedModel",
+            shortName: "TestController.DefinedModel"
           });
-        },
+        }
       );
     });
 
@@ -163,12 +163,12 @@ describe("Ext.app.Controller", function () {
       var names = Controller.getFullName(
         "StoreNotLoadedYet",
         "store",
-        "TestController",
+        "TestController"
       );
 
       expect(names).toEqual({
         absoluteName: "TestController.store.StoreNotLoadedYet",
-        shortName: "StoreNotLoadedYet",
+        shortName: "StoreNotLoadedYet"
       });
     });
 
@@ -176,12 +176,12 @@ describe("Ext.app.Controller", function () {
       var names = Controller.getFullName(
         "Dotted.Foo",
         "view",
-        "TestController",
+        "TestController"
       );
 
       expect(names).toEqual({
         absoluteName: "TestController.view.Dotted.Foo",
-        shortName: "Dotted.Foo",
+        shortName: "Dotted.Foo"
       });
     });
 
@@ -190,7 +190,7 @@ describe("Ext.app.Controller", function () {
 
       expect(names).toEqual({
         absoluteName: "Some.bogus.Class",
-        shortName: "Some.bogus.Class",
+        shortName: "Some.bogus.Class"
       });
     });
 
@@ -204,7 +204,7 @@ describe("Ext.app.Controller", function () {
           models: "Foo",
           views: "Foo",
           stores: "Foo",
-          controllers: "Bar",
+          controllers: "Bar"
         });
       });
 
@@ -216,7 +216,7 @@ describe("Ext.app.Controller", function () {
           "TestController.model.Foo",
           "TestController.view.Foo",
           "TestController.store.Foo",
-          "TestController.controller.Bar",
+          "TestController.controller.Bar"
         ]);
       });
     });
@@ -249,7 +249,7 @@ describe("Ext.app.Controller", function () {
           models: ["Bar"],
           views: ["Bar"],
           stores: ["Bar"],
-          controllers: ["Baz"],
+          controllers: ["Baz"]
         });
       });
 
@@ -262,7 +262,7 @@ describe("Ext.app.Controller", function () {
           "TestController.model.Bar",
           "TestController.view.Bar",
           "TestController.store.Bar",
-          "TestController.controller.Baz",
+          "TestController.controller.Baz"
         ]);
 
         Ext.app.clearNamespaces();
@@ -297,7 +297,7 @@ describe("Ext.app.Controller", function () {
           models: ["Baz"],
           views: ["Baz"],
           stores: ["Baz"],
-          controllers: ["Qux"],
+          controllers: ["Qux"]
         });
       });
 
@@ -310,7 +310,7 @@ describe("Ext.app.Controller", function () {
           "TestController.model.Baz",
           "TestController.view.Baz",
           "TestController.store.Baz",
-          "TestController.controller.Qux",
+          "TestController.controller.Qux"
         ]);
       });
     });
@@ -343,7 +343,7 @@ describe("Ext.app.Controller", function () {
           models: ["Plugh"],
           views: ["Plugh"],
           stores: ["Plugh"],
-          controllers: ["Xyzzy"],
+          controllers: ["Xyzzy"]
         });
       });
 
@@ -356,7 +356,7 @@ describe("Ext.app.Controller", function () {
           "Foo.model.Plugh",
           "Foo.view.Plugh",
           "Foo.store.Plugh",
-          "Foo.controller.Xyzzy",
+          "Foo.controller.Xyzzy"
         ]);
       });
     });
@@ -387,7 +387,7 @@ describe("Ext.app.Controller", function () {
           models: ["Splurge@TestController.model"],
           views: ["Splurge@TestController.view"],
           stores: ["Splurge@TestController.store"],
-          controllers: ["Mymse@TestController.controller"],
+          controllers: ["Mymse@TestController.controller"]
         });
       });
 
@@ -400,7 +400,7 @@ describe("Ext.app.Controller", function () {
           "TestController.model.Splurge",
           "TestController.view.Splurge",
           "TestController.store.Splurge",
-          "TestController.controller.Mymse",
+          "TestController.controller.Mymse"
         ]);
       });
     });
@@ -431,7 +431,7 @@ describe("Ext.app.Controller", function () {
           models: ["Fully.qualified.model.Flob"],
           views: ["Fully.qualified.view.Flob"],
           stores: ["Fully.qualified.store.Flob"],
-          controllers: ["Fully.qualified.controller.Flob"],
+          controllers: ["Fully.qualified.controller.Flob"]
         });
       });
 
@@ -444,7 +444,7 @@ describe("Ext.app.Controller", function () {
           "Fully.qualified.model.Flob",
           "Fully.qualified.view.Flob",
           "Fully.qualified.store.Flob",
-          "Fully.qualified.controller.Flob",
+          "Fully.qualified.controller.Flob"
         ]);
       });
     });
@@ -463,7 +463,7 @@ describe("Ext.app.Controller", function () {
 
     it("creates correct getter for Controller Flob", function () {
       expect(
-        Class.prototype.getFullyQualifiedControllerFlobController,
+        Class.prototype.getFullyQualifiedControllerFlobController
       ).toBeFunction();
     });
   });
@@ -476,39 +476,39 @@ describe("Ext.app.Controller", function () {
         refs: [
           {
             ref: "fooPanel",
-            selector: "foopanel",
+            selector: "foopanel"
           },
           {
             ref: "barPanel",
             selector: "barpanel",
             xtype: "barpanel",
-            autoCreate: true,
+            autoCreate: true
           },
           {
             ref: "bazPanel",
             selector: "bazpanel",
             xtype: "bazpanel",
-            forceCreate: true,
+            forceCreate: true
           },
           {
             ref: "quxPanel",
             xtype: "barpanel",
-            autoCreate: true,
+            autoCreate: true
           },
           {
             ref: "fredComponent",
-            autoCreate: true,
+            autoCreate: true
           },
           {
             ref: "destroyed",
             xtype: "component",
-            autoCreate: true,
-          },
-        ],
+            autoCreate: true
+          }
+        ]
       });
 
       ctrl = new TestController.controller.Refs({
-        id: "foo",
+        id: "foo"
       });
     });
 
@@ -616,7 +616,7 @@ describe("Ext.app.Controller", function () {
 
         init: function () {
           called3 = true;
-        },
+        }
       });
 
       Ext.define("TestController.controller.Child2", {
@@ -626,7 +626,7 @@ describe("Ext.app.Controller", function () {
 
         init: function () {
           called2 = true;
-        },
+        }
       });
 
       Ext.define("TestController.controller.Child1", {
@@ -636,13 +636,13 @@ describe("Ext.app.Controller", function () {
 
         init: function () {
           called1 = true;
-        },
+        }
       });
 
       Ext.define("TestController.controller.Parent", {
         extend: "Ext.app.Controller",
 
-        controllers: ["Child1"],
+        controllers: ["Child1"]
       });
 
       Ext.define("TestController.Application", {
@@ -650,7 +650,7 @@ describe("Ext.app.Controller", function () {
 
         name: "TestController",
 
-        controllers: ["Parent"],
+        controllers: ["Parent"]
       });
 
       new TestController.Application();
@@ -690,11 +690,11 @@ describe("Ext.app.Controller", function () {
           { specName: "lowercase", eventName: "uppercustom" },
           { specName: "uppercase", eventName: "UPPERCUSTOM" },
           { specName: "camelCase", eventName: "upperCustom" },
-          { specName: "mixed case", eventName: "UpPErCustoM" },
+          { specName: "mixed case", eventName: "UpPErCustoM" }
         ],
         function (obj) {
           ignoreCase(obj);
-        },
+        }
       );
     });
   });
@@ -704,7 +704,7 @@ describe("Ext.app.Controller", function () {
 
     beforeEach(function () {
       ctrl = new TestController.controller.Events({
-        id: "foo",
+        id: "foo"
       });
       ctrl.init();
     });
@@ -748,7 +748,7 @@ describe("Ext.app.Controller", function () {
   describe("allows unit testing:", function () {
     beforeEach(function () {
       ctrl = new TestController.controller.Events({
-        id: "bar",
+        id: "bar"
       });
 
       spyOn(ctrl, "onPanelFooResize");

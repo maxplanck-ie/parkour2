@@ -13,14 +13,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           hideLabel: true,
           layout: {
             type: "hbox",
-            align: "stretch",
+            align: "stretch"
           },
           width: 300,
           height: 50,
           items: {
             xtype: "component",
-            flex: 1,
-          },
+            flex: 1
+          }
         });
         // Simulate bodyCls setting padding: 1px
         fc.bodyEl.setStyle("padding", "1px");
@@ -35,14 +35,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           hideLabel: true,
           layout: {
             type: "hbox",
-            align: "stretch",
+            align: "stretch"
           },
           width: 50,
           height: 300,
           items: {
             xtype: "component",
-            flex: 1,
-          },
+            flex: 1
+          }
         });
         // Simulate bodyCls setting padding: 1px
         fc.bodyEl.setStyle("padding", "1px");
@@ -61,8 +61,8 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           layout: "hbox",
           items: {
             flex: 1,
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(fc.getWidth()).toBe(500);
@@ -89,8 +89,8 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           layout: "vbox",
           items: {
             flex: 1,
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         expect(fc.getHeight()).toBe(200);
@@ -118,8 +118,8 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           layout: "hbox",
           items: {
             flex: 1,
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         var labelWidth = fc.labelWidth + fc.labelPad;
@@ -139,8 +139,8 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           layout: "vbox",
           items: {
             flex: 1,
-            xtype: "component",
-          },
+            xtype: "component"
+          }
         });
 
         var labelHeight = fc.labelEl.getHeight();
@@ -162,7 +162,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              width: 50,
+              width: 50
             },
             {
               xtype: "fieldcontainer",
@@ -170,14 +170,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               margin: 0,
               items: {
                 xtype: "component",
-                width: 48,
-              },
+                width: 48
+              }
             },
             {
               xtype: "component",
-              width: 50,
-            },
-          ],
+              width: 50
+            }
+          ]
         });
 
         fc = ct.down("fieldcontainer");
@@ -199,7 +199,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              height: 50,
+              height: 50
             },
             {
               xtype: "fieldcontainer",
@@ -207,14 +207,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               margin: 0,
               items: {
                 xtype: "component",
-                height: 48,
-              },
+                height: 48
+              }
             },
             {
               xtype: "component",
-              height: 50,
-            },
-          ],
+              height: 50
+            }
+          ]
         });
 
         fc = ct.down("fieldcontainer");
@@ -238,7 +238,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              width: 50,
+              width: 50
             },
             {
               xtype: "fieldcontainer",
@@ -247,14 +247,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               msgTarget: "side",
               items: {
                 xtype: "component",
-                width: 50,
-              },
+                width: 50
+              }
             },
             {
               xtype: "component",
-              width: 50,
-            },
-          ],
+              width: 50
+            }
+          ]
         });
 
         expect(ct.getWidth()).toBe(150);
@@ -280,7 +280,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              height: 50,
+              height: 50
             },
             {
               xtype: "fieldcontainer",
@@ -289,14 +289,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               msgTarget: "under",
               items: {
                 xtype: "component",
-                height: 50,
-              },
+                height: 50
+              }
             },
             {
               xtype: "component",
-              height: 50,
-            },
-          ],
+              height: 50
+            }
+          ]
         });
 
         expect(ct.getHeight()).toBe(150);
@@ -324,7 +324,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              width: 50,
+              width: 50
             },
             {
               xtype: "fieldcontainer",
@@ -332,14 +332,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               margin: 0,
               items: {
                 xtype: "component",
-                width: 50,
-              },
+                width: 50
+              }
             },
             {
               xtype: "component",
-              width: 50,
-            },
-          ],
+              width: 50
+            }
+          ]
         });
 
         fc = ct.down("fieldcontainer");
@@ -359,7 +359,7 @@ describe("Ext.layout.component.field.FieldContainer", function () {
           items: [
             {
               xtype: "component",
-              height: 50,
+              height: 50
             },
             {
               xtype: "fieldcontainer",
@@ -368,14 +368,14 @@ describe("Ext.layout.component.field.FieldContainer", function () {
               margin: 0,
               items: {
                 xtype: "component",
-                height: 50,
-              },
+                height: 50
+              }
             },
             {
               xtype: "component",
-              height: 50,
-            },
-          ],
+              height: 50
+            }
+          ]
         });
 
         fc = ct.down("fieldcontainer");
@@ -397,9 +397,9 @@ describe("Ext.layout.component.field.FieldContainer", function () {
         {
           xtype: "textfield",
           width: 300,
-          value: "foo",
-        },
-      ],
+          value: "foo"
+        }
+      ]
     });
 
     expect(fc.getHeight()).toBe(22);

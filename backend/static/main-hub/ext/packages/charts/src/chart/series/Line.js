@@ -169,7 +169,7 @@ Ext.define("Ext.chart.series.Line", {
      */
     fill: undefined,
 
-    aggregator: { strategy: "double" },
+    aggregator: { strategy: "double" }
   },
 
   /**
@@ -236,7 +236,7 @@ Ext.define("Ext.chart.series.Line", {
       fillArea: fillArea,
       step: me.config.step,
       smooth: me.config.smooth,
-      selectionTolerance: me.config.selectionTolerance,
+      selectionTolerance: me.config.selectionTolerance
     });
   },
 
@@ -266,5 +266,5 @@ Ext.define("Ext.chart.series.Line", {
     if (sprite && sprite.attr.nullStyle !== nullStyle) {
       sprite.setAttributes({ nullStyle: nullStyle });
     }
-  },
+  }
 });

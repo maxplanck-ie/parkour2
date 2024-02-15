@@ -7,9 +7,9 @@ describe("Ext.grid.property.Grid", function () {
         stringProp: "foo",
         numProp: 100,
         boolProp: true,
-        dateProp: new Date(2000, 0, 1),
+        dateProp: new Date(2000, 0, 1)
       },
-      renderTo: Ext.getBody(),
+      renderTo: Ext.getBody()
     });
   }
 

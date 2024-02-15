@@ -41,5 +41,5 @@ Ext.define("Ext.sparkline.RangeMap", {
         }
       }
     }
-  },
+  }
 });

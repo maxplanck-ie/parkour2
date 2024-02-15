@@ -92,7 +92,7 @@ Ext.define("Ext.data.amf.Packet", function () {
         12: "readLongString",
         13: "readUnsupported",
         15: "readAmf0Xml",
-        16: "readTypedObject",
+        16: "readTypedObject"
       },
       // AMF3 mapping
       3: {
@@ -108,8 +108,8 @@ Ext.define("Ext.data.amf.Packet", function () {
         9: "readAmf3Array",
         10: "readAmf3Object",
         11: "readAmf3Xml",
-        12: "readByteArray",
-      },
+        12: "readByteArray"
+      }
     },
 
     /**
@@ -160,7 +160,7 @@ Ext.define("Ext.data.amf.Packet", function () {
           name: me.readAmf0String(),
           mustUnderstand: me.readBoolean(),
           byteLength: me.readUInt(4),
-          value: me.readValue(),
+          value: me.readValue()
         });
         // reset references (reference indices are local to each header)
         strings = me.strings = [];
@@ -174,7 +174,7 @@ Ext.define("Ext.data.amf.Packet", function () {
           targetURI: me.readAmf0String(),
           responseURI: me.readAmf0String(),
           byteLength: me.readUInt(4),
-          body: me.readValue(),
+          body: me.readValue()
         });
         // reset references (reference indices are local to each message)
         strings = me.strings = [];
@@ -437,7 +437,7 @@ Ext.define("Ext.data.amf.Packet", function () {
           objectTraits = {
             className: className,
             dynamic: dynamic,
-            members: members,
+            members: members
           };
           // An objects traits are cached in the traits array enabling
           // the traits for a given class to only be encoded once for
@@ -994,7 +994,7 @@ Ext.define("Ext.data.amf.Packet", function () {
     converters: {
       "flex.messaging.io.ArrayCollection": function (obj) {
         return obj.source || []; // array collections have a source var that contains the actual data
-      },
-    },
+      }
+    }
   };
 });

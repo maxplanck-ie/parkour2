@@ -12,7 +12,7 @@ Ext.define("Ext.data.request.Base", {
   // to use.
   factoryConfig: {
     type: "request",
-    defaultType: "ajax", // this is the default deduced from the alias
+    defaultType: "ajax" // this is the default deduced from the alias
   },
 
   result: null,
@@ -151,7 +151,7 @@ Ext.define("Ext.data.request.Base", {
           ? "transaction aborted"
           : "communication failure",
         getResponseHeader: me._getHeader,
-        getAllResponseHeaders: me._getHeaders,
+        getAllResponseHeaders: me._getHeaders
       };
 
       if (me.aborted) {
@@ -172,6 +172,6 @@ Ext.define("Ext.data.request.Base", {
 
     _getHeaders: function () {
       return this.headers;
-    },
-  },
+    }
+  }
 });

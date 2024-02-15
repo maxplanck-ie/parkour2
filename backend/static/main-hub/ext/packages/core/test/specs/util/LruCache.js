@@ -103,7 +103,7 @@ describe("Ext.util.LruCache", function () {
           result.push(key, value);
         },
         null,
-        true,
+        true
       );
       expect(result).toEqual([2, obj2, 1, obj1]);
     });
@@ -144,7 +144,7 @@ describe("Ext.util.LruCache", function () {
   describe("Purging", function () {
     it("should only contain the last 5 added", function () {
       createCache({
-        maxSize: 5,
+        maxSize: 5
       });
       cache.add(1, obj1);
       cache.add(2, obj2);

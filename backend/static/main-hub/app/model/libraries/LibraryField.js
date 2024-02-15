@@ -3,6 +3,6 @@ Ext.define("MainHub.model.libraries.LibraryField", {
 
   fields: [
     { name: "name", type: "string" },
-    { name: "id", type: "int" },
-  ],
+    { name: "id", type: "int" }
+  ]
 });

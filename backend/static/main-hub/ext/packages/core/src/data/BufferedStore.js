@@ -52,13 +52,13 @@ Ext.define("Ext.data.BufferedStore", {
     "Ext.data.PageMap",
     "Ext.util.Filter",
     "Ext.util.Sorter",
-    "Ext.util.Grouper",
+    "Ext.util.Grouper"
   ],
 
   uses: [
     "Ext.util.SorterCollection",
     "Ext.util.FilterCollection",
-    "Ext.util.GroupCollection",
+    "Ext.util.GroupCollection"
   ],
 
   /**
@@ -119,7 +119,7 @@ Ext.define("Ext.data.BufferedStore", {
     /**
      * @inheritdoc
      */
-    trackRemoved: false,
+    trackRemoved: false
   },
 
   /**
@@ -133,7 +133,7 @@ Ext.define("Ext.data.BufferedStore", {
     //<debug>
     if (data && data !== true) {
       Ext.raise(
-        "Cannot load a buffered store with local data - the store is a map of remote data",
+        "Cannot load a buffered store with local data - the store is a map of remote data"
       );
     }
     //</debug>
@@ -211,8 +211,8 @@ Ext.define("Ext.data.BufferedStore", {
           // Whenever PageMap gets cleared, it means we re no longer interested in
           // any outstanding page prefetches, so cancel tham all
           clear: me.onPageMapClear,
-          scope: me,
-        },
+          scope: me
+        }
       });
 
     // Allow view to veto prune if the old page is still in use by the view
@@ -224,13 +224,13 @@ Ext.define("Ext.data.BufferedStore", {
   //<debug>
   add: function () {
     Ext.raise(
-      "add method may not be called on a buffered store - the store is a map of remote data",
+      "add method may not be called on a buffered store - the store is a map of remote data"
     );
   },
 
   insert: function () {
     Ext.raise(
-      "insert method may not be called on a buffered store - the store is a map of remote data",
+      "insert method may not be called on a buffered store - the store is a map of remote data"
     );
   },
   //</debug>
@@ -318,7 +318,7 @@ Ext.define("Ext.data.BufferedStore", {
       }
     };
     bufferZone = Math.ceil(
-      (me.getLeadingBufferZone() + me.getTrailingBufferZone()) / 2,
+      (me.getLeadingBufferZone() + me.getTrailingBufferZone()) / 2
     );
 
     // Decide what reload means.
@@ -373,7 +373,7 @@ Ext.define("Ext.data.BufferedStore", {
     //<debug>
     if (!this.getRemoteFilter()) {
       Ext.raise(
-        "Local filtering may not be used on a buffered store - the store is a map of remote data",
+        "Local filtering may not be used on a buffered store - the store is a map of remote data"
       );
     }
     //</debug>
@@ -385,7 +385,7 @@ Ext.define("Ext.data.BufferedStore", {
   filterBy: function (fn, scope) {
     //<debug>
     Ext.raise(
-      "Local filtering may not be used on a buffered store - the store is a map of remote data",
+      "Local filtering may not be used on a buffered store - the store is a map of remote data"
     );
     //</debug>
   },
@@ -393,7 +393,7 @@ Ext.define("Ext.data.BufferedStore", {
   loadData: function (data, append) {
     //<debug>
     Ext.raise(
-      "LoadData may not be used on a buffered store - the store is a map of remote data",
+      "LoadData may not be used on a buffered store - the store is a map of remote data"
     );
     //</debug>
   },
@@ -445,9 +445,9 @@ Ext.define("Ext.data.BufferedStore", {
     options = Ext.apply(
       {
         prefetchStart: start,
-        prefetchEnd: end,
+        prefetchEnd: end
       },
-      options,
+      options
     );
 
     // Sanity check end point to be within dataset range
@@ -592,7 +592,7 @@ Ext.define("Ext.data.BufferedStore", {
         me.grouper = new Ext.util.Grouper({
           property: grouper,
           direction: direction || "ASC",
-          root: "data",
+          root: "data"
         });
       }
     } else {
@@ -605,7 +605,7 @@ Ext.define("Ext.data.BufferedStore", {
     me.loadPage(1, {
       callback: function () {
         me.fireEvent("groupchange", me, me.getGrouper());
-      },
+      }
     });
   },
 
@@ -632,10 +632,10 @@ Ext.define("Ext.data.BufferedStore", {
             (rangeSizeRequested +
               me.getTrailingBufferZone() +
               me.getLeadingBufferZone()) /
-              me.getPageSize(),
+              me.getPageSize()
           ) *
             2 +
-            purgePageCount,
+            purgePageCount
         )
       : 0;
   },
@@ -655,7 +655,7 @@ Ext.define("Ext.data.BufferedStore", {
       // Calculate a page range which encompasses the requested range plus both buffer zones.
       // The endPage will be adjusted to be in the dataset size range as soon as the first data block returns.
       startPage = me.getPageFromRecordIndex(
-        Math.max(startIdx - me.getTrailingBufferZone(), 0),
+        Math.max(startIdx - me.getTrailingBufferZone(), 0)
       ),
       endPage = me.getPageFromRecordIndex(endIdx + me.getLeadingBufferZone()),
       data = me.getData(),
@@ -668,7 +668,7 @@ Ext.define("Ext.data.BufferedStore", {
             options.scope || me,
             records,
             operation,
-            true,
+            true
           );
         }
 
@@ -678,7 +678,7 @@ Ext.define("Ext.data.BufferedStore", {
             records,
             startIdx || 0,
             endIdx || 0,
-            options,
+            options
           );
         }
       },
@@ -701,7 +701,7 @@ Ext.define("Ext.data.BufferedStore", {
               startIdx,
               loadEndIdx,
               options.callback,
-              options.scope,
+              options.scope
             );
           }
 
@@ -757,8 +757,8 @@ Ext.define("Ext.data.BufferedStore", {
               endPage = me.getPageFromRecordIndex(
                 Math.min(
                   loadEndIdx + me.getLeadingBufferZone(),
-                  dataSetSize - 1,
-                ),
+                  dataSetSize - 1
+                )
               );
 
               for (i = startPage + 1; i <= endPage; ++i) {
@@ -777,7 +777,7 @@ Ext.define("Ext.data.BufferedStore", {
           }
         },
         null,
-        { single: true },
+        { single: true }
       );
 
       me.prefetchPage(startPage, prefetchOptions);
@@ -839,9 +839,9 @@ Ext.define("Ext.data.BufferedStore", {
           sorters: me.getSorters().items,
           grouper: me.getGrouper(),
           internalCallback: me.onProxyPrefetch,
-          internalScope: me,
+          internalScope: me
         },
-        options,
+        options
       );
 
       operation = me.createOperation("read", options);
@@ -931,10 +931,10 @@ Ext.define("Ext.data.BufferedStore", {
         {
           page: page,
           start: start,
-          limit: pageSize,
+          limit: pageSize
         },
-        options,
-      ),
+        options
+      )
     );
   },
 
@@ -1004,7 +1004,7 @@ Ext.define("Ext.data.BufferedStore", {
       Ext.callback(operation.getCallback(), operation.getScope() || me, [
         records,
         operation,
-        successful,
+        successful
       ]);
     }
   },
@@ -1118,7 +1118,7 @@ Ext.define("Ext.data.BufferedStore", {
           "-" +
           options.prefetchEnd +
           ")" +
-          (this.storeId ? ' from store "' + this.storeId + '"' : ""),
+          (this.storeId ? ' from store "' + this.storeId + '"' : "")
       });
     }
     //</debug>
@@ -1142,9 +1142,9 @@ Ext.define("Ext.data.BufferedStore", {
     options = Ext.apply(
       {
         callback: callback,
-        scope: scope,
+        scope: scope
       },
-      options,
+      options
     );
     this.getRange(start, end + 1, options);
   },
@@ -1196,7 +1196,7 @@ Ext.define("Ext.data.BufferedStore", {
     else if (direction === 1) {
       start = Math.max(
         Math.min(start - trailingBufferZone, totalCount - pageSize),
-        0,
+        0
       );
       end = Math.min(end + leadingBufferZone, totalCount - 1);
     }
@@ -1205,16 +1205,16 @@ Ext.define("Ext.data.BufferedStore", {
       start = Math.min(
         Math.max(
           Math.floor(start - (leadingBufferZone + trailingBufferZone) / 2),
-          0,
+          0
         ),
-        totalCount - me.pageSize,
+        totalCount - me.pageSize
       );
       end = Math.min(
         Math.max(
           Math.ceil(end + (leadingBufferZone + trailingBufferZone) / 2),
-          0,
+          0
         ),
-        totalCount - 1,
+        totalCount - 1
       );
     }
     me.prefetchRange(start, end);
@@ -1238,7 +1238,7 @@ Ext.define("Ext.data.BufferedStore", {
       me.clearAndLoad({
         callback: function () {
           me.fireEvent("sort", me, sorters);
-        },
+        }
       });
     } else {
       // Sort event must fire when sorters collection is updated to empty.
@@ -1263,6 +1263,6 @@ Ext.define("Ext.data.BufferedStore", {
 
     isMoving: function () {
       return false;
-    },
-  },
+    }
+  }
 });

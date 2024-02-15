@@ -11,7 +11,7 @@ Ext.define("Ext.device.storage.HTML5.HTML5", {
     if (!this.dbCache[config.name] || config.noCache) {
       this.dbCache[config.name] = Ext.create(
         "Ext.device.storage.HTML5.Database",
-        config,
+        config
       );
     }
     return this.dbCache[config.name];
@@ -39,5 +39,5 @@ Ext.define("Ext.device.storage.HTML5.HTML5", {
 
   clear: function () {
     return window.localStorage.clear();
-  },
+  }
 });

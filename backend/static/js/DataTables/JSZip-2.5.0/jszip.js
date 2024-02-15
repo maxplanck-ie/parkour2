@@ -45,7 +45,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
           e,
           t,
           n,
-          r,
+          r
         );
       }
       return n[o].exports;
@@ -127,7 +127,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
             return output;
           };
         },
-        {},
+        {}
       ],
       2: [
         function (_dereq_, module, exports) {
@@ -156,11 +156,11 @@ https://github.com/nodeca/pako/blob/master/LICENSE
              */
             getCompressedContent: function () {
               return null; // see implementation
-            },
+            }
           };
           module.exports = CompressedObject;
         },
-        {},
+        {}
       ],
       3: [
         function (_dereq_, module, exports) {
@@ -174,11 +174,11 @@ https://github.com/nodeca/pako/blob/master/LICENSE
               return content; // no compression
             },
             compressInputType: null,
-            uncompressInputType: null,
+            uncompressInputType: null
           };
           exports.DEFLATE = _dereq_("./flate");
         },
-        { "./flate": 8 },
+        { "./flate": 8 }
       ],
       4: [
         function (_dereq_, module, exports) {
@@ -238,7 +238,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
             0xbdbdf21c, 0xcabac28a, 0x53b39330, 0x24b4a3a6, 0xbad03605,
             0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
             0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
-            0x2d02ef8d,
+            0x2d02ef8d
           ];
 
           /**
@@ -273,7 +273,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
           };
           // vim: set shiftwidth=4 softtabstop=4:
         },
-        { "./utils": 21 },
+        { "./utils": 21 }
       ],
       5: [
         function (_dereq_, module, exports) {
@@ -306,7 +306,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
                     this.length +
                     ", asked index = " +
                     newIndex +
-                    "). Corrupted zip ?",
+                    "). Corrupted zip ?"
                 );
               }
             },
@@ -386,13 +386,13 @@ https://github.com/nodeca/pako/blob/master/LICENSE
                 (dostime >> 16) & 0x1f, // day
                 (dostime >> 11) & 0x1f, // hour
                 (dostime >> 5) & 0x3f, // minute
-                (dostime & 0x1f) << 1,
+                (dostime & 0x1f) << 1
               ); // second
-            },
+            }
           };
           module.exports = DataReader;
         },
-        { "./utils": 21 },
+        { "./utils": 21 }
       ],
       6: [
         function (_dereq_, module, exports) {
@@ -408,7 +408,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
           exports.unixPermissions = null;
           exports.dosPermissions = null;
         },
-        {},
+        {}
       ],
       7: [
         function (_dereq_, module, exports) {
@@ -516,7 +516,7 @@ https://github.com/nodeca/pako/blob/master/LICENSE
             return utils.isRegExp(object);
           };
         },
-        { "./utils": 21 },
+        { "./utils": 21 }
       ],
       8: [
         function (_dereq_, module, exports) {
@@ -533,14 +533,14 @@ https://github.com/nodeca/pako/blob/master/LICENSE
           exports.magic = "\x08\x00";
           exports.compress = function (input, compressionOptions) {
             return pako.deflateRaw(input, {
-              level: compressionOptions.level || -1, // default compression
+              level: compressionOptions.level || -1 // default compression
             });
           };
           exports.uncompress = function (input) {
             return pako.inflateRaw(input);
           };
         },
-        { pako: 24 },
+        { pako: 24 }
       ],
       9: [
         function (_dereq_, module, exports) {
@@ -619,7 +619,7 @@ Usage:
              */
             decode: function (input) {
               return base64.decode(input);
-            },
+            }
           };
           JSZip.compressions = _dereq_("./compressions");
           module.exports = JSZip;
@@ -631,8 +631,8 @@ Usage:
           "./deprecatedPublicUtils": 7,
           "./load": 10,
           "./object": 13,
-          "./support": 17,
-        },
+          "./support": 17
+        }
       ],
       10: [
         function (_dereq_, module, exports) {
@@ -658,7 +658,7 @@ Usage:
                 comment: input.fileComment.length ? input.fileComment : null,
                 unixPermissions: input.unixPermissions,
                 dosPermissions: input.dosPermissions,
-                createFolders: options.createFolders,
+                createFolders: options.createFolders
               });
             }
             if (zipEntries.zipComment.length) {
@@ -668,7 +668,7 @@ Usage:
             return this;
           };
         },
-        { "./base64": 1, "./zipEntries": 22 },
+        { "./base64": 1, "./zipEntries": 22 }
       ],
       11: [
         function (_dereq_, module, exports) {
@@ -682,7 +682,7 @@ Usage:
             };
           }).call(this, typeof Buffer !== "undefined" ? Buffer : undefined);
         },
-        {},
+        {}
       ],
       12: [
         function (_dereq_, module, exports) {
@@ -707,7 +707,7 @@ Usage:
           };
           module.exports = NodeBufferReader;
         },
-        { "./uint8ArrayReader": 18 },
+        { "./uint8ArrayReader": 18 }
       ],
       13: [
         function (_dereq_, module, exports) {
@@ -824,7 +824,7 @@ Usage:
              */
             this._initialMetadata = {
               dir: options.dir,
-              date: options.date,
+              date: options.date
             };
           };
 
@@ -865,7 +865,7 @@ Usage:
              */
             asArrayBuffer: function () {
               return this.asUint8Array().buffer;
-            },
+            }
           };
 
           /**
@@ -989,7 +989,7 @@ Usage:
 
               if (!dataType && !(data instanceof CompressedObject)) {
                 throw new Error(
-                  "The data of '" + name + "' is in an unsupported format !",
+                  "The data of '" + name + "' is in an unsupported format !"
                 );
               }
 
@@ -1049,7 +1049,7 @@ Usage:
             if (!this.files[name]) {
               fileAdd.call(this, name, null, {
                 dir: true,
-                createFolders: createFolders,
+                createFolders: createFolders
               });
             }
             return this.files[name];
@@ -1065,7 +1065,7 @@ Usage:
           var generateCompressedObjectFrom = function (
             file,
             compression,
-            compressionOptions,
+            compressionOptions
           ) {
             var result = new CompressedObject(),
               content;
@@ -1086,7 +1086,7 @@ Usage:
                 // need to decompress / recompress
                 result.compressedContent = compression.compress(
                   utils.transformTo(compression.compressInputType, content),
-                  compressionOptions,
+                  compressionOptions
                 );
               }
             } else {
@@ -1100,7 +1100,7 @@ Usage:
               result.crc32 = crc32(content);
               result.compressedContent = compression.compress(
                 utils.transformTo(compression.compressInputType, content),
-                compressionOptions,
+                compressionOptions
               );
             }
 
@@ -1170,17 +1170,17 @@ Usage:
             file,
             compressedObject,
             offset,
-            platform,
+            platform
           ) {
             var data = compressedObject.compressedContent,
               utfEncodedFileName = utils.transformTo(
                 "string",
-                utf8.utf8encode(file.name),
+                utf8.utf8encode(file.name)
               ),
               comment = file.comment || "",
               utfEncodedComment = utils.transformTo(
                 "string",
-                utf8.utf8encode(comment),
+                utf8.utf8encode(comment)
               ),
               useUTF8ForFileName =
                 utfEncodedFileName.length !== file.name.length,
@@ -1218,14 +1218,14 @@ Usage:
               versionMadeBy = 0x031e; // UNIX, version 3.0
               extFileAttr |= generateUnixExternalFileAttr(
                 file.unixPermissions,
-                dir,
+                dir
               );
             } else {
               // DOS or other, fallback to DOS
               versionMadeBy = 0x0014; // DOS, version 2.0
               extFileAttr |= generateDosExternalFileAttr(
                 file.dosPermissions,
-                dir,
+                dir
               );
             }
 
@@ -1348,7 +1348,7 @@ Usage:
             return {
               fileRecord: fileRecord,
               dirRecord: dirRecord,
-              compressedObject: compressedObject,
+              compressedObject: compressedObject
             };
           };
 
@@ -1364,7 +1364,7 @@ Usage:
              */
             load: function (stream, options) {
               throw new Error(
-                "Load method is not defined. Is the file jszip-load.js included ?",
+                "Load method is not defined. Is the file jszip-load.js included ?"
               );
             },
 
@@ -1390,11 +1390,11 @@ Usage:
                 fileClone = new ZipObject(
                   file.name,
                   file._data,
-                  extend(file.options),
+                  extend(file.options)
                 );
                 relativePath = filename.slice(
                   this.root.length,
-                  filename.length,
+                  filename.length
                 );
                 if (
                   filename.slice(0, this.root.length) === this.root && // the file is in the current root
@@ -1513,7 +1513,7 @@ Usage:
                 type: "base64",
                 platform: "DOS",
                 comment: null,
-                mimeType: "application/zip",
+                mimeType: "application/zip"
               });
 
               utils.checkSupport(options.type);
@@ -1538,7 +1538,7 @@ Usage:
                 i,
                 utfEncodedComment = utils.transformTo(
                   "string",
-                  this.utf8encode(options.comment || this.comment || ""),
+                  this.utf8encode(options.comment || this.comment || "")
                 );
 
               // first, generate all the zip parts.
@@ -1553,7 +1553,7 @@ Usage:
                 var compression = compressions[compressionName];
                 if (!compression) {
                   throw new Error(
-                    compressionName + " is not a valid compression method !",
+                    compressionName + " is not a valid compression method !"
                   );
                 }
                 var compressionOptions =
@@ -1565,7 +1565,7 @@ Usage:
                   this,
                   file,
                   compression,
-                  compressionOptions,
+                  compressionOptions
                 );
 
                 var zipPart = generateZipParts.call(
@@ -1574,7 +1574,7 @@ Usage:
                   file,
                   compressedObject,
                   localDirLength,
-                  options.platform,
+                  options.platform
                 );
                 localDirLength +=
                   zipPart.fileRecord.length + compressedObject.compressedSize;
@@ -1614,11 +1614,11 @@ Usage:
                 typeName === "nodebuffer"
               ) {
                 writer = new Uint8ArrayWriter(
-                  localDirLength + centralDirLength + dirEnd.length,
+                  localDirLength + centralDirLength + dirEnd.length
                 );
               } else {
                 writer = new StringWriter(
-                  localDirLength + centralDirLength + dirEnd.length,
+                  localDirLength + centralDirLength + dirEnd.length
                 );
               }
 
@@ -1643,7 +1643,7 @@ Usage:
                 case "blob":
                   return utils.arrayBuffer2Blob(
                     utils.transformTo("arraybuffer", zip),
-                    options.mimeType,
+                    options.mimeType
                   );
                 // case "zip is a string"
                 case "base64":
@@ -1675,7 +1675,7 @@ Usage:
              */
             utf8decode: function (input) {
               return utf8.utf8decode(input);
-            },
+            }
           };
           module.exports = out;
         },
@@ -1691,8 +1691,8 @@ Usage:
           "./support": 17,
           "./uint8ArrayWriter": 19,
           "./utf8": 20,
-          "./utils": 21,
-        },
+          "./utils": 21
+        }
       ],
       14: [
         function (_dereq_, module, exports) {
@@ -1704,7 +1704,7 @@ Usage:
           exports.ZIP64_CENTRAL_DIRECTORY_END = "PK\x06\x06";
           exports.DATA_DESCRIPTOR = "PK\x07\x08";
         },
-        {},
+        {}
       ],
       15: [
         function (_dereq_, module, exports) {
@@ -1745,7 +1745,7 @@ Usage:
           };
           module.exports = StringReader;
         },
-        { "./dataReader": 5, "./utils": 21 },
+        { "./dataReader": 5, "./utils": 21 }
       ],
       16: [
         function (_dereq_, module, exports) {
@@ -1775,12 +1775,12 @@ Usage:
              */
             finalize: function () {
               return this.data.join("");
-            },
+            }
           };
 
           module.exports = StringWriter;
         },
-        { "./utils": 21 },
+        { "./utils": 21 }
       ],
       17: [
         function (_dereq_, module, exports) {
@@ -1806,7 +1806,7 @@ Usage:
               try {
                 exports.blob =
                   new Blob([buffer], {
-                    type: "application/zip",
+                    type: "application/zip"
                   }).size === 0;
               } catch (e) {
                 try {
@@ -1825,7 +1825,7 @@ Usage:
             }
           }).call(this, typeof Buffer !== "undefined" ? Buffer : undefined);
         },
-        {},
+        {}
       ],
       18: [
         function (_dereq_, module, exports) {
@@ -1882,7 +1882,7 @@ Usage:
           };
           module.exports = Uint8ArrayReader;
         },
-        { "./dataReader": 5 },
+        { "./dataReader": 5 }
       ],
       19: [
         function (_dereq_, module, exports) {
@@ -1918,12 +1918,12 @@ Usage:
              */
             finalize: function () {
               return this.data;
-            },
+            }
           };
 
           module.exports = Uint8ArrayWriter;
         },
-        { "./utils": 21 },
+        { "./utils": 21 }
       ],
       20: [
         function (_dereq_, module, exports) {
@@ -2148,7 +2148,7 @@ Usage:
 
             buf = utils.transformTo(
               support.uint8array ? "uint8array" : "array",
-              buf,
+              buf
             );
 
             // return buf2string(buf);
@@ -2172,7 +2172,7 @@ Usage:
           };
           // vim: set shiftwidth=4 softtabstop=4:
         },
-        { "./nodeBuffer": 11, "./support": 17, "./utils": 21 },
+        { "./nodeBuffer": 11, "./support": 17, "./utils": 21 }
       ],
       21: [
         function (_dereq_, module, exports) {
@@ -2199,7 +2199,7 @@ Usage:
             try {
               // Blob constructor
               return new Blob([buffer], {
-                type: mimeType,
+                type: mimeType
               });
             } catch (e) {
               try {
@@ -2289,15 +2289,15 @@ Usage:
                   result.push(
                     String.fromCharCode.apply(
                       null,
-                      array.slice(k, Math.min(k + chunk, len)),
-                    ),
+                      array.slice(k, Math.min(k + chunk, len))
+                    )
                   );
                 } else {
                   result.push(
                     String.fromCharCode.apply(
                       null,
-                      array.subarray(k, Math.min(k + chunk, len)),
-                    ),
+                      array.subarray(k, Math.min(k + chunk, len))
+                    )
                   );
                 }
                 k += chunk;
@@ -2340,7 +2340,7 @@ Usage:
             },
             nodebuffer: function (input) {
               return stringToArrayLike(input, nodeBuffer(input.length));
-            },
+            }
           };
 
           // array to ?
@@ -2355,7 +2355,7 @@ Usage:
             },
             nodebuffer: function (input) {
               return nodeBuffer(input);
-            },
+            }
           };
 
           // arraybuffer to ?
@@ -2366,7 +2366,7 @@ Usage:
             array: function (input) {
               return arrayLikeToArrayLike(
                 new Uint8Array(input),
-                new Array(input.byteLength),
+                new Array(input.byteLength)
               );
             },
             arraybuffer: identity,
@@ -2375,7 +2375,7 @@ Usage:
             },
             nodebuffer: function (input) {
               return nodeBuffer(new Uint8Array(input));
-            },
+            }
           };
 
           // uint8array to ?
@@ -2390,7 +2390,7 @@ Usage:
             uint8array: identity,
             nodebuffer: function (input) {
               return nodeBuffer(input);
-            },
+            }
           };
 
           // nodebuffer to ?
@@ -2405,7 +2405,7 @@ Usage:
             uint8array: function (input) {
               return arrayLikeToArrayLike(input, new Uint8Array(input.length));
             },
-            nodebuffer: identity,
+            nodebuffer: identity
           };
 
           /**
@@ -2514,7 +2514,7 @@ Usage:
             return Object.prototype.toString.call(object) === "[object RegExp]";
           };
         },
-        { "./compressions": 3, "./nodeBuffer": 11, "./support": 17 },
+        { "./compressions": 3, "./nodeBuffer": 11, "./support": 17 }
       ],
       22: [
         function (_dereq_, module, exports) {
@@ -2556,7 +2556,7 @@ Usage:
                     utils.pretty(signature) +
                     ", expected " +
                     utils.pretty(expectedSignature) +
-                    ")",
+                    ")"
                 );
               }
             },
@@ -2610,7 +2610,7 @@ Usage:
                 this.zip64ExtensibleData[extraFieldId] = {
                   id: extraFieldId,
                   length: extraFieldLength,
-                  value: extraFieldValue,
+                  value: extraFieldValue
                 };
               }
             },
@@ -2649,9 +2649,9 @@ Usage:
               while (this.reader.readString(4) === sig.CENTRAL_FILE_HEADER) {
                 file = new ZipEntry(
                   {
-                    zip64: this.zip64,
+                    zip64: this.zip64
                   },
-                  this.loadOptions,
+                  this.loadOptions
                 );
                 file.readCentralPart(this.reader);
                 this.files.push(file);
@@ -2662,7 +2662,7 @@ Usage:
              */
             readEndOfCentral: function () {
               var offset = this.reader.lastIndexOfSignature(
-                sig.CENTRAL_DIRECTORY_END,
+                sig.CENTRAL_DIRECTORY_END
               );
               if (offset === -1) {
                 // Check if the content is a truncated zip or complete garbage.
@@ -2680,11 +2680,11 @@ Usage:
                 if (isGarbage) {
                   throw new Error(
                     "Can't find end of central directory : is this a zip file ? " +
-                      "If it is, see http://stuk.github.io/jszip/documentation/howto/read_zip.html",
+                      "If it is, see http://stuk.github.io/jszip/documentation/howto/read_zip.html"
                   );
                 } else {
                   throw new Error(
-                    "Corrupted zip : can't find end of central directory",
+                    "Corrupted zip : can't find end of central directory"
                   );
                 }
               }
@@ -2723,11 +2723,11 @@ Usage:
 
                 // should look for a zip64 EOCD locator
                 offset = this.reader.lastIndexOfSignature(
-                  sig.ZIP64_CENTRAL_DIRECTORY_LOCATOR,
+                  sig.ZIP64_CENTRAL_DIRECTORY_LOCATOR
                 );
                 if (offset === -1) {
                   throw new Error(
-                    "Corrupted zip : can't find the ZIP64 end of central directory locator",
+                    "Corrupted zip : can't find the ZIP64 end of central directory locator"
                   );
                 }
                 this.reader.setIndex(offset);
@@ -2745,13 +2745,13 @@ Usage:
               if (type === "string" && !support.uint8array) {
                 this.reader = new StringReader(
                   data,
-                  this.loadOptions.optimizedBinaryString,
+                  this.loadOptions.optimizedBinaryString
                 );
               } else if (type === "nodebuffer") {
                 this.reader = new NodeBufferReader(data);
               } else {
                 this.reader = new Uint8ArrayReader(
-                  utils.transformTo("uint8array", data),
+                  utils.transformTo("uint8array", data)
                 );
               }
             },
@@ -2764,7 +2764,7 @@ Usage:
               this.readEndOfCentral();
               this.readCentralDir();
               this.readLocalFiles();
-            },
+            }
           };
           // }}} end of ZipEntries
           module.exports = ZipEntries;
@@ -2777,8 +2777,8 @@ Usage:
           "./support": 17,
           "./uint8ArrayReader": 18,
           "./utils": 21,
-          "./zipEntry": 23,
-        },
+          "./zipEntry": 23
+        }
       ],
       23: [
         function (_dereq_, module, exports) {
@@ -2850,12 +2850,12 @@ Usage:
               from,
               length,
               compression,
-              uncompressedSize,
+              uncompressedSize
             ) {
               return function () {
                 var compressedFileData = utils.transformTo(
                   compression.uncompressInputType,
-                  this.getCompressedContent(),
+                  this.getCompressedContent()
                 );
                 var uncompressedFileData =
                   compression.uncompress(compressedFileData);
@@ -2899,7 +2899,7 @@ Usage:
               if (this.compressedSize == -1 || this.uncompressedSize == -1) {
                 throw new Error(
                   "Bug or corrupted zip : didn't get enough informations from the central directory " +
-                    "(compressedSize == -1 || uncompressedSize == -1)",
+                    "(compressedSize == -1 || uncompressedSize == -1)"
                 );
               }
 
@@ -2911,7 +2911,7 @@ Usage:
                     utils.pretty(this.compressionMethod) +
                     " unknown (inner file : " +
                     this.fileName +
-                    ")",
+                    ")"
                 );
               }
               this.decompressed = new CompressedObject();
@@ -2924,21 +2924,21 @@ Usage:
                   reader,
                   reader.index,
                   this.compressedSize,
-                  compression,
+                  compression
                 );
               this.decompressed.getContent = this.prepareContent(
                 reader,
                 reader.index,
                 this.compressedSize,
                 compression,
-                this.uncompressedSize,
+                this.uncompressedSize
               );
 
               // we need to compute the crc32...
               if (this.loadOptions.checkCRC32) {
                 this.decompressed = utils.transformTo(
                   "string",
-                  this.decompressed.getContent(),
+                  this.decompressed.getContent()
                 );
                 if (jszipProto.crc32(this.decompressed) !== this.crc32) {
                   throw new Error("Corrupted zip : CRC32 mismatch");
@@ -3018,7 +3018,7 @@ Usage:
 
               // should be something, preparing the extra reader
               var extraReader = new StringReader(
-                this.extraFields[0x0001].value,
+                this.extraFields[0x0001].value
               );
 
               // I really hope that these 64bits integer can fit in 32 bits integer, because js
@@ -3056,7 +3056,7 @@ Usage:
                 this.extraFields[extraFieldId] = {
                   id: extraFieldId,
                   length: extraFieldLength,
-                  value: extraFieldValue,
+                  value: extraFieldValue
                 };
               }
             },
@@ -3101,7 +3101,7 @@ Usage:
                 }
 
                 return jszipProto.utf8decode(
-                  extraReader.readString(upathField.length - 5),
+                  extraReader.readString(upathField.length - 5)
                 );
               }
               return null;
@@ -3129,11 +3129,11 @@ Usage:
                 }
 
                 return jszipProto.utf8decode(
-                  extraReader.readString(ucommentField.length - 5),
+                  extraReader.readString(ucommentField.length - 5)
                 );
               }
               return null;
-            },
+            }
           };
           module.exports = ZipEntry;
         },
@@ -3141,8 +3141,8 @@ Usage:
           "./compressedObject": 2,
           "./object": 13,
           "./stringReader": 15,
-          "./utils": 21,
-        },
+          "./utils": 21
+        }
       ],
       24: [
         function (_dereq_, module, exports) {
@@ -3165,8 +3165,8 @@ Usage:
           "./lib/deflate": 25,
           "./lib/inflate": 26,
           "./lib/utils/common": 27,
-          "./lib/zlib/constants": 30,
-        },
+          "./lib/zlib/constants": 30
+        }
       ],
       25: [
         function (_dereq_, module, exports) {
@@ -3289,9 +3289,9 @@ Usage:
                 windowBits: 15,
                 memLevel: 8,
                 strategy: Z_DEFAULT_STRATEGY,
-                to: "",
+                to: ""
               },
-              options || {},
+              options || {}
             );
 
             var opt = this.options;
@@ -3316,7 +3316,7 @@ Usage:
               opt.method,
               opt.windowBits,
               opt.memLevel,
-              opt.strategy,
+              opt.strategy
             );
 
             if (status !== Z_OK) {
@@ -3387,7 +3387,7 @@ Usage:
               }
               status = zlib_deflate.deflate(
                 strm,
-                _mode,
+                _mode
               ); /* no bad return value */
 
               if (status !== Z_STREAM_END && status !== Z_OK) {
@@ -3402,8 +3402,8 @@ Usage:
                 if (this.options.to === "string") {
                   this.onData(
                     strings.buf2binstring(
-                      utils.shrinkBuf(strm.output, strm.next_out),
-                    ),
+                      utils.shrinkBuf(strm.output, strm.next_out)
+                    )
                   );
                 } else {
                   this.onData(utils.shrinkBuf(strm.output, strm.next_out));
@@ -3545,8 +3545,8 @@ Usage:
           "./utils/strings": 28,
           "./zlib/deflate.js": 32,
           "./zlib/messages": 37,
-          "./zlib/zstream": 39,
-        },
+          "./zlib/zstream": 39
+        }
       ],
       26: [
         function (_dereq_, module, exports) {
@@ -3640,9 +3640,9 @@ Usage:
               {
                 chunkSize: 16384,
                 windowBits: 0,
-                to: "",
+                to: ""
               },
-              options || {},
+              options || {}
             );
 
             var opt = this.options;
@@ -3757,7 +3757,7 @@ Usage:
 
               status = zlib_inflate.inflate(
                 strm,
-                c.Z_NO_FLUSH,
+                c.Z_NO_FLUSH
               ); /* no bad return value */
 
               if (status !== c.Z_STREAM_END && status !== c.Z_OK) {
@@ -3775,7 +3775,7 @@ Usage:
                   if (this.options.to === "string") {
                     next_out_utf8 = strings.utf8border(
                       strm.output,
-                      strm.next_out,
+                      strm.next_out
                     );
 
                     tail = strm.next_out - next_out_utf8;
@@ -3790,7 +3790,7 @@ Usage:
                         strm.output,
                         next_out_utf8,
                         tail,
-                        0,
+                        0
                       );
                     }
 
@@ -3941,8 +3941,8 @@ Usage:
           "./zlib/gzheader": 33,
           "./zlib/inflate.js": 35,
           "./zlib/messages": 37,
-          "./zlib/zstream": 39,
-        },
+          "./zlib/zstream": 39
+        }
       ],
       27: [
         function (_dereq_, module, exports) {
@@ -4018,7 +4018,7 @@ Usage:
               }
 
               return result;
-            },
+            }
           };
 
           var fnUntyped = {
@@ -4030,7 +4030,7 @@ Usage:
             // Join array of chunks to single array.
             flattenChunks: function (chunks) {
               return [].concat.apply([], chunks);
-            },
+            }
           };
 
           // Enable/Disable typed arrays use, for testing
@@ -4051,7 +4051,7 @@ Usage:
 
           exports.setTyped(TYPED_OK);
         },
-        {},
+        {}
       ],
       28: [
         function (_dereq_, module, exports) {
@@ -4169,7 +4169,7 @@ Usage:
               ) {
                 return String.fromCharCode.apply(
                   null,
-                  utils.shrinkBuf(buf, len),
+                  utils.shrinkBuf(buf, len)
                 );
               }
             }
@@ -4282,7 +4282,7 @@ Usage:
             return pos + _utf8len[buf[pos]] > max ? pos : max;
           };
         },
-        { "./common": 27 },
+        { "./common": 27 }
       ],
       29: [
         function (_dereq_, module, exports) {
@@ -4318,7 +4318,7 @@ Usage:
 
           module.exports = adler32;
         },
-        {},
+        {}
       ],
       30: [
         function (_dereq_, module, exports) {
@@ -4364,11 +4364,11 @@ Usage:
             Z_UNKNOWN: 2,
 
             /* The deflate compression method */
-            Z_DEFLATED: 8,
+            Z_DEFLATED: 8
             //Z_NULL:                 null // Use -1 or null inline, depending on var type
           };
         },
-        {},
+        {}
       ],
       31: [
         function (_dereq_, module, exports) {
@@ -4412,7 +4412,7 @@ Usage:
 
           module.exports = crc32;
         },
-        {},
+        {}
       ],
       32: [
         function (_dereq_, module, exports) {
@@ -4553,7 +4553,7 @@ Usage:
               s.pending_buf,
               s.pending_out,
               len,
-              strm.next_out,
+              strm.next_out
             );
             strm.next_out += len;
             s.pending_out += len;
@@ -4570,7 +4570,7 @@ Usage:
               s,
               s.block_start >= 0 ? s.block_start : -1,
               s.strstart - s.block_start,
-              last,
+              last
             );
             s.block_start = s.strstart;
             flush_pending(s.strm);
@@ -5069,7 +5069,7 @@ Usage:
                 bflush = trees._tr_tally(
                   s,
                   s.strstart - s.match_start,
-                  s.match_length - MIN_MATCH,
+                  s.match_length - MIN_MATCH
                 );
 
                 s.lookahead -= s.match_length;
@@ -5218,7 +5218,7 @@ Usage:
                   s.match_length <= 5 &&
                   (s.strategy === Z_FILTERED ||
                     (s.match_length === MIN_MATCH &&
-                      s.strstart - s.match_start > 4096) /*TOO_FAR*/)
+                      s.strstart - s.match_start > 4096)) /*TOO_FAR*/
                 ) {
                   /* If prev_match is also MIN_MATCH, match_start is garbage
                    * but we will ignore the current match anyway.
@@ -5243,7 +5243,7 @@ Usage:
                 bflush = trees._tr_tally(
                   s,
                   s.strstart - 1 - s.prev_match,
-                  s.prev_length - MIN_MATCH,
+                  s.prev_length - MIN_MATCH
                 );
                 /* Insert in hash table all strings up to the end of the match.
                  * strstart-1 and strstart are already inserted. If there is not
@@ -5508,7 +5508,7 @@ Usage:
             max_lazy,
             nice_length,
             max_chain,
-            func,
+            func
           ) {
             this.good_length = good_length;
             this.max_lazy = max_lazy;
@@ -5527,7 +5527,7 @@ Usage:
               4,
               8,
               4,
-              deflate_fast,
+              deflate_fast
             ) /* 1 max speed, no lazy matches */,
             new Config(4, 5, 16, 8, deflate_fast) /* 2 */,
             new Config(4, 6, 32, 32, deflate_fast) /* 3 */,
@@ -5537,13 +5537,7 @@ Usage:
             new Config(8, 16, 128, 128, deflate_slow) /* 6 */,
             new Config(8, 32, 128, 256, deflate_slow) /* 7 */,
             new Config(32, 128, 258, 1024, deflate_slow) /* 8 */,
-            new Config(
-              32,
-              258,
-              258,
-              4096,
-              deflate_slow,
-            ) /* 9 max compression */,
+            new Config(32, 258, 258, 4096, deflate_slow) /* 9 max compression */
           ];
 
           /* ===========================================================================
@@ -5692,7 +5686,7 @@ Usage:
 
             //int heap[2*L_CODES+1];      /* heap used to build the Huffman trees */
             this.heap = new utils.Buf16(
-              2 * L_CODES + 1,
+              2 * L_CODES + 1
             ); /* heap used to build the Huffman trees */
             zero(this.heap);
 
@@ -5814,7 +5808,7 @@ Usage:
             method,
             windowBits,
             memLevel,
-            strategy,
+            strategy
           ) {
             if (!strm) {
               // === Z_NULL
@@ -5899,7 +5893,7 @@ Usage:
               Z_DEFLATED,
               MAX_WBITS,
               DEF_MEM_LEVEL,
-              Z_DEFAULT_STRATEGY,
+              Z_DEFAULT_STRATEGY
             );
           }
 
@@ -5920,7 +5914,7 @@ Usage:
             ) {
               return err(
                 strm,
-                strm.avail_out === 0 ? Z_BUF_ERROR : Z_STREAM_ERROR,
+                strm.avail_out === 0 ? Z_BUF_ERROR : Z_STREAM_ERROR
               );
             }
 
@@ -5949,7 +5943,7 @@ Usage:
                       ? 2
                       : s.strategy >= Z_HUFFMAN_ONLY || s.level < 2
                         ? 4
-                        : 0,
+                        : 0
                   );
                   put_byte(s, OS_CODE);
                   s.status = BUSY_STATE;
@@ -5960,7 +5954,7 @@ Usage:
                       (s.gzhead.hcrc ? 2 : 0) +
                       (!s.gzhead.extra ? 0 : 4) +
                       (!s.gzhead.name ? 0 : 8) +
-                      (!s.gzhead.comment ? 0 : 16),
+                      (!s.gzhead.comment ? 0 : 16)
                   );
                   put_byte(s, s.gzhead.time & 0xff);
                   put_byte(s, (s.gzhead.time >> 8) & 0xff);
@@ -5972,7 +5966,7 @@ Usage:
                       ? 2
                       : s.strategy >= Z_HUFFMAN_ONLY || s.level < 2
                         ? 4
-                        : 0,
+                        : 0
                   );
                   put_byte(s, s.gzhead.os & 0xff);
                   if (s.gzhead.extra && s.gzhead.extra.length) {
@@ -6029,7 +6023,7 @@ Usage:
                         strm.adler,
                         s.pending_buf,
                         s.pending - beg,
-                        beg,
+                        beg
                       );
                     }
                     flush_pending(strm);
@@ -6046,7 +6040,7 @@ Usage:
                     strm.adler,
                     s.pending_buf,
                     s.pending - beg,
-                    beg,
+                    beg
                   );
                 }
                 if (s.gzindex === s.gzhead.extra.length) {
@@ -6069,7 +6063,7 @@ Usage:
                         strm.adler,
                         s.pending_buf,
                         s.pending - beg,
-                        beg,
+                        beg
                       );
                     }
                     flush_pending(strm);
@@ -6093,7 +6087,7 @@ Usage:
                     strm.adler,
                     s.pending_buf,
                     s.pending - beg,
-                    beg,
+                    beg
                   );
                 }
                 if (val === 0) {
@@ -6116,7 +6110,7 @@ Usage:
                         strm.adler,
                         s.pending_buf,
                         s.pending - beg,
-                        beg,
+                        beg
                       );
                     }
                     flush_pending(strm);
@@ -6140,7 +6134,7 @@ Usage:
                     strm.adler,
                     s.pending_buf,
                     s.pending - beg,
-                    beg,
+                    beg
                   );
                 }
                 if (val === 0) {
@@ -6350,8 +6344,8 @@ exports.deflateTune = deflateTune;
           "./adler32": 29,
           "./crc32": 31,
           "./messages": 37,
-          "./trees": 38,
-        },
+          "./trees": 38
+        }
       ],
       33: [
         function (_dereq_, module, exports) {
@@ -6395,7 +6389,7 @@ exports.deflateTune = deflateTune;
 
           module.exports = GZheader;
         },
-        {},
+        {}
       ],
       34: [
         function (_dereq_, module, exports) {
@@ -6736,7 +6730,7 @@ exports.deflateTune = deflateTune;
             return;
           };
         },
-        {},
+        {}
       ],
       35: [
         function (_dereq_, module, exports) {
@@ -6879,10 +6873,10 @@ exports.deflateTune = deflateTune;
             this.next = null; /* next available space in codes[] */
 
             this.lens = new utils.Buf16(
-              320,
+              320
             ); /* temporary storage for code lengths */
             this.work = new utils.Buf16(
-              288,
+              288
             ); /* work area for code table building */
 
             /*
@@ -7041,7 +7035,7 @@ exports.deflateTune = deflateTune;
               }
 
               inflate_table(LENS, state.lens, 0, 288, lenfix, 0, state.work, {
-                bits: 9,
+                bits: 9
               });
 
               /* distance table */
@@ -7051,7 +7045,7 @@ exports.deflateTune = deflateTune;
               }
 
               inflate_table(DISTS, state.lens, 0, 32, distfix, 0, state.work, {
-                bits: 5,
+                bits: 5
               });
 
               /* do this just once */
@@ -7098,7 +7092,7 @@ exports.deflateTune = deflateTune;
                 src,
                 end - state.wsize,
                 state.wsize,
-                0,
+                0
               );
               state.wnext = 0;
               state.whave = state.wsize;
@@ -7147,7 +7141,7 @@ exports.deflateTune = deflateTune;
             var len; /* length to copy for repeats, bits to drop */
             var ret; /* return code */
             var hbuf = new utils.Buf8(
-              4,
+              4
             ); /* buffer for gzip header crc calculation */
             var opts;
 
@@ -7156,8 +7150,7 @@ exports.deflateTune = deflateTune;
             var order =
               /* permutation of code lengths */
               [
-                16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1,
-                15,
+                16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
               ];
 
             if (
@@ -7409,7 +7402,7 @@ exports.deflateTune = deflateTune;
                           // - no need for additional size check
                           copy,
                           /*len + copy > state.head.extra_max - len ? state.head.extra_max : copy,*/
-                          len,
+                          len
                         );
                         //zmemcpy(state.head.extra + len, next,
                         //        len + copy > state.head.extra_max ?
@@ -7751,7 +7744,7 @@ exports.deflateTune = deflateTune;
                     state.lencode,
                     0,
                     state.work,
-                    opts,
+                    opts
                   );
                   state.lenbits = opts.bits;
 
@@ -7903,7 +7896,7 @@ exports.deflateTune = deflateTune;
                     state.lencode,
                     0,
                     state.work,
-                    opts,
+                    opts
                   );
                   // We have separate tables & no pointers. 2 commented lines below not needed.
                   // state.next_index = opts.table_index;
@@ -7929,7 +7922,7 @@ exports.deflateTune = deflateTune;
                     state.distcode,
                     0,
                     state.work,
-                    opts,
+                    opts
                   );
                   // We have separate tables & no pointers. 2 commented lines below not needed.
                   // state.next_index = opts.table_index;
@@ -8361,7 +8354,7 @@ exports.deflateTune = deflateTune;
                   strm,
                   strm.output,
                   strm.next_out,
-                  _out - strm.avail_out,
+                  _out - strm.avail_out
                 )
               ) {
                 state.mode = MEM;
@@ -8451,8 +8444,8 @@ exports.inflateUndermine = inflateUndermine;
           "./adler32": 29,
           "./crc32": 31,
           "./inffast": 34,
-          "./inftrees": 36,
-        },
+          "./inftrees": 36
+        }
       ],
       36: [
         function (_dereq_, module, exports) {
@@ -8472,25 +8465,25 @@ exports.inflateUndermine = inflateUndermine;
           var lbase = [
             /* Length codes 257..285 base */ 3, 4, 5, 6, 7, 8, 9, 10, 11, 13,
             15, 17, 19, 23, 27, 31, 35, 43, 51, 59, 67, 83, 99, 115, 131, 163,
-            195, 227, 258, 0, 0,
+            195, 227, 258, 0, 0
           ];
 
           var lext = [
             /* Length codes 257..285 extra */ 16, 16, 16, 16, 16, 16, 16, 16,
             17, 17, 17, 17, 18, 18, 18, 18, 19, 19, 19, 19, 20, 20, 20, 20, 21,
-            21, 21, 21, 16, 72, 78,
+            21, 21, 21, 16, 72, 78
           ];
 
           var dbase = [
             /* Distance codes 0..29 base */ 1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33,
             49, 65, 97, 129, 193, 257, 385, 513, 769, 1025, 1537, 2049, 3073,
-            4097, 6145, 8193, 12289, 16385, 24577, 0, 0,
+            4097, 6145, 8193, 12289, 16385, 24577, 0, 0
           ];
 
           var dext = [
             /* Distance codes 0..29 extra */ 16, 16, 16, 16, 17, 17, 18, 18, 19,
             19, 20, 20, 21, 21, 22, 22, 23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
-            28, 28, 29, 29, 64, 64,
+            28, 28, 29, 29, 64, 64
           ];
 
           module.exports = function inflate_table(
@@ -8501,7 +8494,7 @@ exports.inflateUndermine = inflateUndermine;
             table,
             table_index,
             work,
-            opts,
+            opts
           ) {
             var bits = opts.bits;
             //here = opts.here; /* table entry for duplication */
@@ -8805,7 +8798,7 @@ exports.inflateUndermine = inflateUndermine;
             return 0;
           };
         },
-        { "../utils/common": 27 },
+        { "../utils/common": 27 }
       ],
       37: [
         function (_dereq_, module, exports) {
@@ -8820,10 +8813,10 @@ exports.inflateUndermine = inflateUndermine;
             "-3": "data error" /* Z_DATA_ERROR    (-3) */,
             "-4": "insufficient memory" /* Z_MEM_ERROR     (-4) */,
             "-5": "buffer error" /* Z_BUF_ERROR     (-5) */,
-            "-6": "incompatible version" /* Z_VERSION_ERROR (-6) */,
+            "-6": "incompatible version" /* Z_VERSION_ERROR (-6) */
           };
         },
-        {},
+        {}
       ],
       38: [
         function (_dereq_, module, exports) {
@@ -8918,14 +8911,14 @@ exports.inflateUndermine = inflateUndermine;
             /* extra bits for each length code */
             [
               0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4,
-              4, 4, 5, 5, 5, 5, 0,
+              4, 4, 5, 5, 5, 5, 0
             ];
 
           var extra_dbits =
             /* extra bits for each distance code */
             [
               0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9,
-              10, 10, 11, 11, 12, 12, 13, 13,
+              10, 10, 11, 11, 12, 12, 13, 13
             ];
 
           var extra_blbits =
@@ -8933,7 +8926,7 @@ exports.inflateUndermine = inflateUndermine;
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7];
 
           var bl_order = [
-            16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15,
+            16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
           ];
           /* The lengths of the bit length codes are sent in order of decreasing
            * probability, to avoid transmitting the lengths for unused bit length codes.
@@ -8986,7 +8979,7 @@ exports.inflateUndermine = inflateUndermine;
             extra_bits,
             extra_base,
             elems,
-            max_length,
+            max_length
           ) {
             this.static_tree = static_tree; /* static tree or NULL */
             this.extra_bits = extra_bits; /* extra bits for each code or NULL */
@@ -9196,7 +9189,7 @@ exports.inflateUndermine = inflateUndermine;
             //    int max_code;              /* largest code with non zero frequency */
             //    ushf *bl_count;            /* number of codes at each bit length */
             var next_code = new Array(
-              MAX_BITS + 1,
+              MAX_BITS + 1
             ); /* next code value for each bit length */
             var code = 0; /* running code value */
             var bits; /* bit index */
@@ -9329,21 +9322,21 @@ exports.inflateUndermine = inflateUndermine;
               extra_lbits,
               LITERALS + 1,
               L_CODES,
-              MAX_BITS,
+              MAX_BITS
             );
             static_d_desc = new StaticTreeDesc(
               static_dtree,
               extra_dbits,
               0,
               D_CODES,
-              MAX_BITS,
+              MAX_BITS
             );
             static_bl_desc = new StaticTreeDesc(
               new Array(0),
               extra_blbits,
               0,
               BL_CODES,
-              MAX_BL_BITS,
+              MAX_BL_BITS
             );
 
             //static_init_done = true;
@@ -9489,7 +9482,7 @@ exports.inflateUndermine = inflateUndermine;
                   send_code(
                     s,
                     code + LITERALS + 1,
-                    ltree,
+                    ltree
                   ); /* send the length code */
                   extra = extra_lbits[code];
                   if (extra !== 0) {
@@ -9507,7 +9500,7 @@ exports.inflateUndermine = inflateUndermine;
                     send_bits(
                       s,
                       dist,
-                      extra,
+                      extra
                     ); /* send the extra distance bits */
                   }
                 } /* literal or match pair ? */
@@ -9796,7 +9789,7 @@ exports.inflateUndermine = inflateUndermine;
             send_bits(
               s,
               lcodes - 257,
-              5,
+              5
             ); /* not +255 as stated in appnote.txt */
             send_bits(s, dcodes - 1, 5);
             send_bits(s, blcodes - 4, 4); /* not -3 as stated in appnote.txt */
@@ -9894,7 +9887,7 @@ exports.inflateUndermine = inflateUndermine;
             send_bits(
               s,
               (STORED_BLOCK << 1) + (last ? 1 : 0),
-              3,
+              3
             ); /* send block type */
             copy_block(s, buf, stored_len, true); /* with header */
           }
@@ -9981,7 +9974,7 @@ exports.inflateUndermine = inflateUndermine;
                 s,
                 s.l_desc.max_code + 1,
                 s.d_desc.max_code + 1,
-                max_blindex + 1,
+                max_blindex + 1
               );
               compress_block(s, s.dyn_ltree, s.dyn_dtree);
             }
@@ -10065,7 +10058,7 @@ exports.inflateUndermine = inflateUndermine;
           exports._tr_tally = _tr_tally;
           exports._tr_align = _tr_align;
         },
-        { "../utils/common": 27 },
+        { "../utils/common": 27 }
       ],
       39: [
         function (_dereq_, module, exports) {
@@ -10098,10 +10091,10 @@ exports.inflateUndermine = inflateUndermine;
 
           module.exports = ZStream;
         },
-        {},
-      ],
+        {}
+      ]
     },
     {},
-    [9],
+    [9]
   )(9);
 });

@@ -9,11 +9,11 @@ Ext.define("Ext.fx.layout.card.Cube", {
   config: {
     reverse: null,
     inAnimation: {
-      type: "cube",
+      type: "cube"
     },
     outAnimation: {
       type: "cube",
-      out: true,
-    },
-  },
+      out: true
+    }
+  }
 });

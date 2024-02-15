@@ -6,7 +6,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
     "MainHub.components.BaseGrid",
     "MainHub.components.SearchField",
     "MainHub.view.statistics.SequencesController",
-    "Ext.ux.DateRangePicker",
+    "Ext.ux.DateRangePicker"
   ],
 
   controller: "sequences-statistics",
@@ -28,14 +28,14 @@ Ext.define("MainHub.view.statistics.Sequences", {
             xtype: "parkoursearchfield",
             store: "SequencesStatistics",
             emptyText: "Search",
-            width: 320,
-          },
-        ],
+            width: 320
+          }
+        ]
       },
 
       columns: {
         defaults: {
-          flex: 1,
+          flex: 1
         },
         items: [
           {
@@ -46,60 +46,60 @@ Ext.define("MainHub.view.statistics.Sequences", {
             menuDisabled: true,
             hideable: false,
             tdCls: "no-dirty",
-            width: 35,
+            width: 35
           },
           {
             text: "Request",
             dataIndex: "request",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Barcode",
             dataIndex: "barcode",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Name",
             dataIndex: "name",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Lane",
             dataIndex: "lane",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Pool",
             dataIndex: "pool",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Library Protocol",
             dataIndex: "library_protocol",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Library Type",
             dataIndex: "library_type",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Reads PF (M), requested",
             tooltip: "Reads PF (M), requested",
             dataIndex: "reads_pf_requested",
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Reads PF (M), sequenced",
@@ -112,7 +112,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
               return value;
             },
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "% reads",
@@ -129,7 +129,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
 
               return value;
             },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "confident off-species reads",
@@ -137,7 +137,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "confident_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "% Optical Duplicates",
@@ -145,7 +145,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "optical_duplicates",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "% dupped reads",
@@ -153,7 +153,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "dupped_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "% mapped reads",
@@ -161,26 +161,26 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "mapped_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135,
+            minWidth: 135
           },
           {
             text: "Insert Size",
             dataIndex: "insert_size",
             filter: { type: "number" },
-            minWidth: 135,
-          },
-        ],
+            minWidth: 135
+          }
+        ]
       },
 
       plugins: [
         {
           ptype: "bufferedrenderer",
           trailingBufferZone: 100,
-          leadingBufferZone: 100,
+          leadingBufferZone: 100
         },
         {
-          ptype: "gridfilters",
-        },
+          ptype: "gridfilters"
+        }
       ],
 
       features: [
@@ -200,10 +200,10 @@ Ext.define("MainHub.view.statistics.Sequences", {
               },
               getSequencer: function (children) {
                 return children[0].get("sequencer");
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
 
       dockedItems: [
@@ -220,10 +220,10 @@ Ext.define("MainHub.view.statistics.Sequences", {
                 mainBtnTextColor: "#999",
                 mainBtnIconCls: "x-fa fa-calendar",
                 presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
-                confirmBtnIconCls: "x-fa fa-check",
-              },
-            },
-          ],
+                confirmBtnIconCls: "x-fa fa-check"
+              }
+            }
+          ]
         },
         {
           xtype: "toolbar",
@@ -232,13 +232,13 @@ Ext.define("MainHub.view.statistics.Sequences", {
             {
               text: "Download Report",
               itemId: "download-report",
-              iconCls: "fa fa-download fa-lg",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+              iconCls: "fa fa-download fa-lg"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });
 
 function floatRenderer(value) {

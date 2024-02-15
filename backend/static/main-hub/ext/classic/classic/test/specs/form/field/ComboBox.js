@@ -19,7 +19,7 @@ describe("Ext.form.field.ComboBox", function () {
 
   function spyOnEvent(object, eventName, fn) {
     var obj = {
-        fn: fn || Ext.emptyFn,
+        fn: fn || Ext.emptyFn
       },
       spy = spyOn(obj, "fn");
     object.addListener(eventName, obj.fn);
@@ -42,7 +42,7 @@ describe("Ext.form.field.ComboBox", function () {
       // Need these two properties so that this object quacks
       // in correct ways to onFieldMutation.
       DELETE: Ext.event.Event.DELETE,
-      BACKSPACE: Ext.event.Event.BACKSPACE,
+      BACKSPACE: Ext.event.Event.BACKSPACE
     });
 
     if (value) {
@@ -99,15 +99,15 @@ describe("Ext.form.field.ComboBox", function () {
       extend: "Ext.data.Model",
       fields: [
         { type: "string", name: "text" },
-        { type: "string", name: "val" },
-      ],
+        { type: "string", name: "val" }
+      ]
     });
 
     Ext.define("spec.MyStore", {
       extend: "Ext.data.Store",
       alias: "store.foo",
       proxy: {
-        type: "memory",
+        type: "memory"
       },
       model: CBTestModel,
       data: [
@@ -119,8 +119,8 @@ describe("Ext.form.field.ComboBox", function () {
         { id: 6, text: "text 33", val: "value 33" },
         { id: 7, text: "text 34", val: "value 34" },
         { id: 8, text: "Foo", val: "foo1" },
-        { id: 9, text: "Foo", val: "foo2" },
-      ],
+        { id: 9, text: "Foo", val: "foo2" }
+      ]
     });
     store = new spec.MyStore();
   });
@@ -164,7 +164,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         checkChangeBuffer: 500,
-        forceSelection: false,
+        forceSelection: false
       });
       var spy = jasmine.createSpy();
       component.on("change", spy);
@@ -197,7 +197,7 @@ describe("Ext.form.field.ComboBox", function () {
         renderTo: Ext.getBody(),
         checkChangeBuffer: 500,
         forceSelection: false,
-        value: "text",
+        value: "text"
       });
       var spy = jasmine.createSpy();
       component.on("change", spy);
@@ -232,7 +232,7 @@ describe("Ext.form.field.ComboBox", function () {
   it("should encode the input value in the template", function () {
     makeComponent({
       renderTo: Ext.getBody(),
-      value: 'test "  <br/> test',
+      value: 'test "  <br/> test'
     });
     expect(component.inputEl.dom.value).toBe('test "  <br/> test');
   });
@@ -241,7 +241,7 @@ describe("Ext.form.field.ComboBox", function () {
     describe("with 1-dimensional array", function () {
       it("should set the valueField/displayField on an auto created store", function () {
         component = new Ext.form.field.ComboBox({
-          store: ["Item 1", "Item 2", "Item 3"],
+          store: ["Item 1", "Item 2", "Item 3"]
         });
         expect(component.valueField).toBe("field1");
         expect(component.displayField).toBe("field1");
@@ -249,7 +249,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("should set the value & raw value correctly", function () {
         component = new Ext.form.field.ComboBox({
-          store: ["Item 1", "Item 2", "Item 3"],
+          store: ["Item 1", "Item 2", "Item 3"]
         });
         component.setValue("Item 1");
         expect(component.getValue()).toBe("Item 1");
@@ -259,7 +259,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should not overwrite a configured displayTpl", function () {
         component = new Ext.form.field.ComboBox({
           store: ["Item 1", "Item 2", "Item 3"],
-          displayTpl: '<tpl for=".">Value is {field1}</tpl>',
+          displayTpl: '<tpl for=".">Value is {field1}</tpl>'
         });
         component.setValue("Item 1");
         expect(component.getRawValue()).toBe("Value is Item 1");
@@ -272,8 +272,8 @@ describe("Ext.form.field.ComboBox", function () {
           store: [
             [1, "Item 1"],
             [2, "Item 2"],
-            [3, "Item 3"],
-          ],
+            [3, "Item 3"]
+          ]
         });
         expect(component.valueField).toBe("field1");
         expect(component.displayField).toBe("field2");
@@ -284,8 +284,8 @@ describe("Ext.form.field.ComboBox", function () {
           store: [
             [1, "Item 1"],
             [2, "Item 2"],
-            [3, "Item 3"],
-          ],
+            [3, "Item 3"]
+          ]
         });
         component.setValue(2);
         expect(component.getValue()).toBe(2);
@@ -297,9 +297,9 @@ describe("Ext.form.field.ComboBox", function () {
           store: [
             [1, "Item 1"],
             [2, "Item 2"],
-            [3, "Item 3"],
+            [3, "Item 3"]
           ],
-          displayTpl: '<tpl for=".">Value is {field2}</tpl>',
+          displayTpl: '<tpl for=".">Value is {field2}</tpl>'
         });
         component.setValue(1);
         expect(component.getRawValue()).toBe("Value is Item 1");
@@ -312,7 +312,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         value: "value 1",
-        hiddenName: "foo",
+        hiddenName: "foo"
       });
 
       var el = component.getEl().down("[name=foo]", true);
@@ -397,7 +397,7 @@ describe("Ext.form.field.ComboBox", function () {
 
           expect(component).toHaveAttr(
             "aria-owns",
-            id + "-inputEl " + id + "-picker-listEl",
+            id + "-inputEl " + id + "-picker-listEl"
           );
         });
       });
@@ -406,7 +406,7 @@ describe("Ext.form.field.ComboBox", function () {
     describe("with queryMode = 'local'", function () {
       beforeEach(function () {
         makeComponent({
-          queryMode: "local",
+          queryMode: "local"
         });
       });
       it("should have queryDelay = 10", function () {
@@ -425,7 +425,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           displayField: "text",
           emptyText: "text 1",
-          renderTo: document.body,
+          renderTo: document.body
         });
         component.setValue("value 1");
         component.focus();
@@ -456,14 +456,14 @@ describe("Ext.form.field.ComboBox", function () {
     it("should get the underlying field value", function () {
       makeComponent({
         queryMode: "local",
-        value: "val 2",
+        value: "val 2"
       });
       expect(component.getSubmitValue()).toBe("val 2");
     });
 
     it("should return an empty string if the value is null", function () {
       makeComponent({
-        queryMode: "local",
+        queryMode: "local"
       });
       expect(component.getSubmitValue()).toBe("");
     });
@@ -474,7 +474,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         queryMode: "local",
         name: "comboName",
-        value: "val 2",
+        value: "val 2"
       });
       expect(component.getModelData()).toEqual({ comboName: "val 2" });
     });
@@ -494,10 +494,10 @@ describe("Ext.form.field.ComboBox", function () {
           maxHeight: 345,
           loadingText: "gazingazang",
           emptyText: "buffoopaloo",
-          getInnerTpl: getInnerTpl,
+          getInnerTpl: getInnerTpl
         },
         matchFieldWidth: false,
-        value: "value 2",
+        value: "value 2"
       });
       component.expand();
     });
@@ -530,14 +530,14 @@ describe("Ext.form.field.ComboBox", function () {
     it("should set the BoundList's selection to match the current value", function () {
       expect(component.picker.selModel.getSelection().length).toEqual(1);
       expect(component.picker.selModel.getSelection()[0].get("val")).toEqual(
-        component.value,
+        component.value
       );
     });
     it("should initialize a BoundListKeyNav on the BoundList", function () {
       expect(component.keyMap).toBeDefined();
       expect(
         component.getPicker().getNavigationModel() instanceof
-          Ext.view.BoundListKeyNav,
+          Ext.view.BoundListKeyNav
       ).toBe(true);
     });
     it("should enable the BoundListKeyNav", function () {
@@ -557,7 +557,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should disable the BoundListKeyNav", function () {
       runs(function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.expand();
       });
@@ -576,7 +576,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept a single string", function () {
         makeComponent({
           value: "value 2",
-          valueField: "val",
+          valueField: "val"
         });
         expect(component.value).toEqual("value 2");
       });
@@ -584,14 +584,14 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           multiSelect: true,
           value: ["value 3", "not in store"],
-          valueField: "val",
+          valueField: "val"
         });
         expect(component.value).toEqual(["value 3", "not in store"]);
       });
       it("should accept a single Ext.data.Model", function () {
         makeComponent({
           value: store.getAt(0),
-          valueField: "val",
+          valueField: "val"
         });
         expect(component.value).toEqual("value 1");
       });
@@ -599,7 +599,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           multiSelect: true,
           value: [store.getAt(0), store.getAt(2)],
-          valueField: "val",
+          valueField: "val"
         });
         expect(component.value).toEqual(["value 1", "value 3"]);
       });
@@ -609,7 +609,7 @@ describe("Ext.form.field.ComboBox", function () {
           value: ["value 1", "value 2"],
           valueField: "val",
           renderTo: Ext.getBody(),
-          delimiter: "|",
+          delimiter: "|"
         });
         expect(component.inputEl.dom.value).toEqual("text 1|text 2");
       });
@@ -618,14 +618,14 @@ describe("Ext.form.field.ComboBox", function () {
     describe("setValue method", function () {
       it("should return the combo", function () {
         makeComponent({
-          valueField: "val",
+          valueField: "val"
         });
         expect(component.setValue("value 2")).toBe(component);
       });
 
       it("should accept a single string", function () {
         makeComponent({
-          valueField: "val",
+          valueField: "val"
         });
         component.setValue("value 2");
         expect(component.value).toEqual("value 2");
@@ -633,14 +633,14 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept an array of string values", function () {
         makeComponent({
           multiSelect: true,
-          valueField: "val",
+          valueField: "val"
         });
         component.setValue(["value 3", "not in store"]);
         expect(component.value).toEqual(["value 3", "not in store"]);
       });
       it("should accept a single Ext.data.Model", function () {
         makeComponent({
-          valueField: "val",
+          valueField: "val"
         });
         component.setValue(store.getAt(0));
         expect(component.value).toEqual("value 1");
@@ -648,7 +648,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept an array of Ext.data.Model objects", function () {
         makeComponent({
           multiSelect: true,
-          valueField: "val",
+          valueField: "val"
         });
         component.setValue([store.getAt(0), store.getAt(2)]);
         expect(component.value).toEqual(["value 1", "value 3"]);
@@ -657,7 +657,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           valueField: "val",
           renderTo: Ext.getBody(),
-          delimiter: "|",
+          delimiter: "|"
         });
         component.setValue(["value 1", "value 2"]);
         expect(component.inputEl.dom.value).toEqual("text 1");
@@ -667,7 +667,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           multiSelect: true,
           renderTo: Ext.getBody(),
-          delimiter: "|",
+          delimiter: "|"
         });
         component.setValue(["value 1", "value 2"]);
         expect(component.inputEl.dom.value).toEqual("text 1|text 2");
@@ -678,7 +678,7 @@ describe("Ext.form.field.ComboBox", function () {
           forceSelection: true,
           multiSelect: true,
           valueNotFoundText: "oops!",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setValue(["value 1", "value not in store"]);
         expect(component.inputEl.dom.value).toEqual("text 1, oops!");
@@ -688,7 +688,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           forceSelection: true,
           valueNotFoundText: "oops!",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.setValue(["value 1", "value not in store"]);
         expect(component.inputEl.dom.value).toEqual("text 1");
@@ -696,7 +696,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should update the expanded dropdown's selection - single select", function () {
         makeComponent({
           valueField: "val",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         component.expand();
 
@@ -704,7 +704,7 @@ describe("Ext.form.field.ComboBox", function () {
         runs(function () {
           component.setValue("value 2");
           expect(component.picker.getSelectionModel().getSelection()).toEqual([
-            store.getAt(1),
+            store.getAt(1)
           ]);
         });
       });
@@ -712,7 +712,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           valueField: "val",
           renderTo: Ext.getBody(),
-          multiSelect: true,
+          multiSelect: true
         });
         component.expand();
         waits(1);
@@ -720,7 +720,7 @@ describe("Ext.form.field.ComboBox", function () {
           component.setValue(["value 1", "value 3"]);
           expect(component.picker.getSelectionModel().getSelection()).toEqual([
             store.getAt(0),
-            store.getAt(2),
+            store.getAt(2)
           ]);
         });
       });
@@ -733,8 +733,8 @@ describe("Ext.form.field.ComboBox", function () {
             value: "value1",
             renderTo: Ext.getBody(),
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           component.setValue("value1");
           expect(spy).not.toHaveBeenCalled();
@@ -746,8 +746,8 @@ describe("Ext.form.field.ComboBox", function () {
             value: "value1",
             renderTo: Ext.getBody(),
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           component.setValue("value2");
           expect(spy).toHaveBeenCalled();
@@ -763,8 +763,8 @@ describe("Ext.form.field.ComboBox", function () {
             value: ["value1", "value2"],
             renderTo: Ext.getBody(),
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           component.setValue(["value1", "value2"]);
           expect(spy).not.toHaveBeenCalled();
@@ -777,8 +777,8 @@ describe("Ext.form.field.ComboBox", function () {
             value: ["value1", "value2"],
             renderTo: Ext.getBody(),
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           component.setValue(["value1", "value3"]);
           expect(spy).toHaveBeenCalled();
@@ -794,18 +794,18 @@ describe("Ext.form.field.ComboBox", function () {
                 data: [
                   {
                     abbr: "AL",
-                    name: "Alabama",
+                    name: "Alabama"
                   },
                   {
                     abbr: "AK",
-                    name: "Alaska",
+                    name: "Alaska"
                   },
                   {
                     abbr: "AZ",
-                    name: "Arizona",
-                  },
-                ],
-              },
+                    name: "Arizona"
+                  }
+                ]
+              }
             }),
             spy = jasmine.createSpy();
 
@@ -817,8 +817,8 @@ describe("Ext.form.field.ComboBox", function () {
             store: remoteStore,
             renderTo: Ext.getBody(),
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           doTyping("a");
           waitsFor(function () {
@@ -845,7 +845,7 @@ describe("Ext.form.field.ComboBox", function () {
     beforeEach(function () {
       makeComponent({
         valueField: "val",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -884,7 +884,7 @@ describe("Ext.form.field.ComboBox", function () {
     beforeEach(function () {
       makeComponent({
         valueField: "val",
-        displayField: "text",
+        displayField: "text"
       });
     });
 
@@ -895,7 +895,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("should return the first matching record", function () {
         var rec = store.insert(0, {
-          val: "value 2",
+          val: "value 2"
         })[0];
         expect(component.findRecordByValue("value 2")).toBe(rec);
       });
@@ -908,7 +908,7 @@ describe("Ext.form.field.ComboBox", function () {
         it("should react to adds", function () {
           expect(component.findRecordByValue("bar")).toBe(false);
           var rec = store.add({
-            val: "bar",
+            val: "bar"
           })[0];
           expect(component.findRecordByValue("bar")).toBe(rec);
         });
@@ -934,7 +934,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("should return the first matching record", function () {
         var rec = store.insert(0, {
-          text: "text 2",
+          text: "text 2"
         })[0];
         expect(component.findRecordByDisplay("text 2")).toBe(rec);
       });
@@ -947,7 +947,7 @@ describe("Ext.form.field.ComboBox", function () {
         it("should react to adds", function () {
           expect(component.findRecordByDisplay("bar")).toBe(false);
           var rec = store.add({
-            text: "bar",
+            text: "bar"
           })[0];
           expect(component.findRecordByDisplay("bar")).toBe(rec);
         });
@@ -973,7 +973,7 @@ describe("Ext.form.field.ComboBox", function () {
         renderTo: Ext.getBody(),
         valueField: "val",
         displayField: "text",
-        queryMode: "local",
+        queryMode: "local"
       });
       var filters = store.getFilters();
 
@@ -991,7 +991,7 @@ describe("Ext.form.field.ComboBox", function () {
           renderTo: Ext.getBody(),
           valueField: "val",
           displayField: "text",
-          queryMode: "local",
+          queryMode: "local"
         });
         doTyping("text 3");
         var filters = store.getFilters();
@@ -1008,7 +1008,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           displayField: "text",
           queryMode: "local",
-          value: "text 3",
+          value: "text 3"
         });
         doTyping("", true);
         var filters = store.getFilters();
@@ -1023,7 +1023,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "val",
             displayField: "text",
             queryMode: "local",
-            enableRegEx: true,
+            enableRegEx: true
           });
         });
 
@@ -1047,7 +1047,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "val",
             displayField: "text",
             queryMode: "local",
-            stripCharsRe: new RegExp("[^0123456789]", "gi"),
+            stripCharsRe: new RegExp("[^0123456789]", "gi")
           });
         });
 
@@ -1081,7 +1081,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           displayField: "text",
           queryMode: "local",
-          value: "text 3",
+          value: "text 3"
         });
         doTyping("", true);
         expect(component.getValue()).toBeNull();
@@ -1093,7 +1093,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           displayField: "text",
           queryMode: "local",
-          value: "text 3",
+          value: "text 3"
         });
         doTyping("", true);
         clickListItem("value 2");
@@ -1107,7 +1107,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           displayField: "text",
           queryMode: "local",
-          value: "value 1",
+          value: "value 1"
         });
         doTyping("", true);
         doTyping("text 2");
@@ -1124,14 +1124,14 @@ describe("Ext.form.field.ComboBox", function () {
           renderTo: Ext.getBody(),
           valueField: "val",
           displayField: "text",
-          queryMode: "local",
+          queryMode: "local"
         });
         store.addFilter(
           new Ext.util.Filter({
             property: "val",
             value: "foo",
-            anyMatch: true,
-          }),
+            anyMatch: true
+          })
         );
 
         doTyping("f");
@@ -1161,7 +1161,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: false,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1177,7 +1177,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1193,7 +1193,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           var inputEl = component.inputEl;
@@ -1209,7 +1209,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1225,7 +1225,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: false,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1242,7 +1242,7 @@ describe("Ext.form.field.ComboBox", function () {
             grow: true,
             growMax: 200,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           store.add({ text: longestText, val: "value 4" });
@@ -1256,7 +1256,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1274,7 +1274,7 @@ describe("Ext.form.field.ComboBox", function () {
           makeComponent({
             grow: true,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1293,7 +1293,7 @@ describe("Ext.form.field.ComboBox", function () {
             grow: true,
             growMin: 100,
             growToLongestValue: true,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           bodyEl = component.bodyEl;
@@ -1313,7 +1313,7 @@ describe("Ext.form.field.ComboBox", function () {
         Ext.util.CSS.createStyleSheet(
           // make the input el have a 9px character width
           ".x-form-text { font:15px monospace;letter-spacing:0px; }",
-          "growStyleSheet",
+          "growStyleSheet"
         );
       });
 
@@ -1326,7 +1326,7 @@ describe("Ext.form.field.ComboBox", function () {
           renderTo: document.body,
           grow: true,
           growToLongestValue: false,
-          growMin: 50,
+          growMin: 50
         });
 
         expect(component.getWidth()).toBe(50);
@@ -1338,7 +1338,7 @@ describe("Ext.form.field.ComboBox", function () {
           value: "mmmmmmmmmm",
           grow: true,
           growToLongestValue: false,
-          growMin: 50,
+          growMin: 50
         });
 
         expect(component.getWidth()).toBe(component.bodyEl.getWidth());
@@ -1350,7 +1350,7 @@ describe("Ext.form.field.ComboBox", function () {
           value: "mmmmmmmmmmmmmmmmmmmmmmmmmmmmmm",
           grow: true,
           growToLongestValue: false,
-          growMax: 200,
+          growMax: 200
         });
 
         expect(component.getWidth()).toBe(200);
@@ -1362,10 +1362,10 @@ describe("Ext.form.field.ComboBox", function () {
           grow: true,
           growToLongestValue: false,
           triggers: {
-            foo: {},
+            foo: {}
           },
           growMin: 100,
-          growMax: 200,
+          growMax: 200
         });
 
         expect(component.getWidth()).toBe(100);
@@ -1409,7 +1409,7 @@ describe("Ext.form.field.ComboBox", function () {
           renderTo: document.body,
           queryMode: "local",
           displayField: "val",
-          lastQuery: "value 2",
+          lastQuery: "value 2"
         });
 
         spyOn(component, "doAutoSelect");
@@ -1421,7 +1421,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should filter the store based on the displayField", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
         var spy = jasmine.createSpy(),
           store = component.getStore();
@@ -1437,7 +1437,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should not filter the store if forceAll = true", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
         component.doQuery("value 2", true);
         expect(component.getStore().getCount()).toEqual(1);
@@ -1446,7 +1446,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should add to existing filters", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
         store.filter("val", "value");
         component.doQuery("value 3");
@@ -1456,7 +1456,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should remove only the filters added by the combo", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
         store.filter("val", "value");
         component.doQuery("value 3");
@@ -1467,7 +1467,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should clear any active filters on destroy", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
         store.filter("val", "value");
         component.doQuery("value 3");
@@ -1479,7 +1479,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should return true if the query was not vetoed", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
 
         var ret = component.doQuery("value 2");
@@ -1492,13 +1492,13 @@ describe("Ext.form.field.ComboBox", function () {
       it("should call the store's load method", function () {
         makeComponent({
           queryMode: "remote",
-          displayField: "val",
+          displayField: "val"
         });
         spyOn(component.store, "load");
         component.doQuery("foobar");
         expect(component.store.load.callCount).toEqual(1);
         expect(component.store.load.calls[0].args[0].params.query).toEqual(
-          "foobar",
+          "foobar"
         );
       });
 
@@ -1506,20 +1506,20 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           queryMode: "remote",
           displayField: "val",
-          queryParam: "customparam",
+          queryParam: "customparam"
         });
         spyOn(component.store, "load");
         component.doQuery("foobar");
         expect(component.store.load.callCount).toEqual(1);
         expect(
-          component.store.load.calls[0].args[0].params.customparam,
+          component.store.load.calls[0].args[0].params.customparam
         ).toEqual("foobar");
       });
 
       it("should return true if the query was not vetoed", function () {
         makeComponent({
           queryMode: "remote",
-          displayField: "val",
+          displayField: "val"
         });
 
         var ret = component.doQuery("blerg");
@@ -1540,7 +1540,7 @@ describe("Ext.form.field.ComboBox", function () {
           lastQuery: "",
           forceAll: true,
           combo: component,
-          cancel: false,
+          cancel: false
         });
         expect(component.lastQuery).toBeDefined();
       });
@@ -1566,7 +1566,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should return false when local query was vetoed", function () {
         makeComponent({
           queryMode: "local",
-          displayField: "val",
+          displayField: "val"
         });
 
         component.on("beforequery", function () {
@@ -1581,7 +1581,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should return false when remote query was vetoed", function () {
         makeComponent({
           queryMode: "remote",
-          displayField: "val",
+          displayField: "val"
         });
 
         component.on("beforequery", function () {
@@ -1611,14 +1611,14 @@ describe("Ext.form.field.ComboBox", function () {
     describe("minChars config", function () {
       it("should not query if the number of entered chars is less than the minChars config", function () {
         makeComponent({
-          minChars: 100,
+          minChars: 100
         });
         component.doQuery("foobar");
         expect(component.lastQuery).not.toBeDefined();
       });
       it("should ignore the minChars if forceAll = true", function () {
         makeComponent({
-          minChars: 100,
+          minChars: 100
         });
         component.doQuery("foobar", true);
         expect(component.lastQuery).toBeDefined();
@@ -1640,7 +1640,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         queryMode: "local",
         displayField: "val",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       component.expand();
@@ -1649,13 +1649,13 @@ describe("Ext.form.field.ComboBox", function () {
 
       spyOn(
         component.picker.getNavigationModel(),
-        "setPosition",
+        "setPosition"
       ).andCallThrough();
 
       component.doAutoSelect();
 
       expect(
-        component.picker.getNavigationModel().setPosition,
+        component.picker.getNavigationModel().setPosition
       ).toHaveBeenCalled();
       expect(Ext.fly(node).hasCls("x-boundlist-item-over")).toBe(true);
     });
@@ -1664,7 +1664,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         queryMode: "local",
         displayField: "val",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       component.expand();
@@ -1674,7 +1674,7 @@ describe("Ext.form.field.ComboBox", function () {
       component.doAutoSelect();
 
       expect(
-        component.picker.getScrollable().scrollIntoView,
+        component.picker.getScrollable().scrollIntoView
       ).toHaveBeenCalled();
     });
 
@@ -1683,7 +1683,7 @@ describe("Ext.form.field.ComboBox", function () {
         autoSelectLast: false,
         queryMode: "local",
         displayField: "val",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       component.expand();
@@ -1691,14 +1691,14 @@ describe("Ext.form.field.ComboBox", function () {
 
       spyOn(
         component.picker.getNavigationModel(),
-        "setPosition",
+        "setPosition"
       ).andCallThrough();
 
       component.expand();
       component.doAutoSelect();
 
       expect(
-        component.picker.getNavigationModel().setPosition,
+        component.picker.getNavigationModel().setPosition
       ).toHaveBeenCalled();
 
       var firstNode = component.picker.getNode(0);
@@ -1711,7 +1711,7 @@ describe("Ext.form.field.ComboBox", function () {
         autoSelectLast: false,
         queryMode: "local",
         value: "value 32",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.expand();
       jasmine.focusAndWait(component);
@@ -1729,7 +1729,7 @@ describe("Ext.form.field.ComboBox", function () {
       runs(function () {
         component.expand();
         expect(
-          component.picker.getSelectionModel().lastSelected.get("val"),
+          component.picker.getSelectionModel().lastSelected.get("val")
         ).toBe("value 34");
       });
     });
@@ -1738,7 +1738,7 @@ describe("Ext.form.field.ComboBox", function () {
   describe("doRawQuery method", function () {
     it("should call the doQuery method with the contents of the field", function () {
       makeComponent({
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       spyOn(component, "doQuery");
       component.inputEl.dom.value = "foobar";
@@ -1752,7 +1752,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         renderTo: Ext.getBody(),
         triggerAction: "all",
-        allQuery: "the-all-query",
+        allQuery: "the-all-query"
       });
       spyOn(component, "doQuery");
       component.onTriggerClick();
@@ -1765,7 +1765,7 @@ describe("Ext.form.field.ComboBox", function () {
         triggerAction: "query",
         allQuery: "the-all-query",
         value: "value 2",
-        valueField: "val",
+        valueField: "val"
       });
       spyOn(component, "doQuery");
       component.onTriggerClick();
@@ -1781,12 +1781,12 @@ describe("Ext.form.field.ComboBox", function () {
           queryMode: "local",
           store: new Ext.data.Store({
             proxy: {
-              type: "memory",
+              type: "memory"
             },
             model: CBTestModel,
-            data: [],
+            data: []
           }),
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         };
       });
 
@@ -1798,9 +1798,9 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent(
           Ext.apply(defaultCfg, {
             listConfig: {
-              emptyText: "derp",
-            },
-          }),
+              emptyText: "derp"
+            }
+          })
         );
 
         spyOn(component, "expand").andCallThrough();
@@ -1822,14 +1822,14 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent(
           Ext.apply(defaultCfg, {
             listConfig: {
-              emptyText: "derp",
+              emptyText: "derp"
             },
             listeners: {
               expand: function () {
                 wasCalled = true;
-              },
-            },
-          }),
+              }
+            }
+          })
         );
 
         spyOn(component, "expand").andCallThrough();
@@ -1846,7 +1846,7 @@ describe("Ext.form.field.ComboBox", function () {
         renderTo: Ext.getBody(),
         queryMode: "local",
         valueField: "val",
-        queryDelay: 1,
+        queryDelay: 1
       });
     });
 
@@ -1863,7 +1863,7 @@ describe("Ext.form.field.ComboBox", function () {
         expect(component.doQuery.mostRecentCall.args).toEqual([
           "foob",
           false,
-          true,
+          true
         ]);
       });
     });
@@ -1880,7 +1880,7 @@ describe("Ext.form.field.ComboBox", function () {
           jasmine.fireKeyEvent(
             component.inputEl.dom,
             "keyup",
-            Ext.event.Event.DOWN,
+            Ext.event.Event.DOWN
           );
         });
       });
@@ -1902,7 +1902,7 @@ describe("Ext.form.field.ComboBox", function () {
           jasmine.fireKeyEvent(
             component.inputEl.dom,
             "keyup",
-            Ext.event.Event.BACKSPACE,
+            Ext.event.Event.BACKSPACE
           );
         });
       });
@@ -1923,7 +1923,7 @@ describe("Ext.form.field.ComboBox", function () {
           jasmine.fireKeyEvent(
             component.inputEl.dom,
             "keyup",
-            Ext.event.Event.DELETE,
+            Ext.event.Event.DELETE
           );
         });
       });
@@ -1960,7 +1960,7 @@ describe("Ext.form.field.ComboBox", function () {
 
         // The raw value of the input field should be the display field of the selected record
         expect(component.getRawValue()).toBe(
-          selModel.getSelection()[0].get(component.displayField),
+          selModel.getSelection()[0].get(component.displayField)
         );
       });
     });
@@ -1988,7 +1988,7 @@ describe("Ext.form.field.ComboBox", function () {
 
         component.on({
           expand: expandSpy,
-          collapse: collapseSpy,
+          collapse: collapseSpy
         });
       });
 
@@ -2187,7 +2187,7 @@ describe("Ext.form.field.ComboBox", function () {
         renderTo: Ext.getBody(),
         queryMode: "local",
         valueField: "val",
-        multiSelect: true,
+        multiSelect: true
       });
     });
 
@@ -2262,7 +2262,7 @@ describe("Ext.form.field.ComboBox", function () {
         forceSelection: true,
         typeAhead: true,
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       var typeaheadSpy = spyOn(component, "onTypeAhead").andCallThrough();
@@ -2282,7 +2282,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should set passed value", function () {
         makeComponent({
           renderTo: Ext.getBody(),
-          forceSelection: false,
+          forceSelection: false
         });
         component.setValue("NOT IN STORE");
         expect(component.getValue()).toBe("NOT IN STORE");
@@ -2292,7 +2292,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           renderTo: Ext.getBody(),
           forceSelection: false,
-          queryMode: "remote",
+          queryMode: "remote"
         });
         component.expand();
         component.setValue("asdf");
@@ -2308,7 +2308,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "val",
             forceSelection: true,
             queryMode: "local",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -2358,7 +2358,7 @@ describe("Ext.form.field.ComboBox", function () {
               forceSelection: true,
               queryMode: "local",
               renderTo: Ext.getBody(),
-              displayTpl: '<tpl for=".">Id= {val} - {text}</tpl>',
+              displayTpl: '<tpl for=".">Id= {val} - {text}</tpl>'
             });
             jasmine.focusAndWait(component);
             runs(function () {
@@ -2384,7 +2384,7 @@ describe("Ext.form.field.ComboBox", function () {
             runs(function () {
               expect(component.inputEl.dom.value).not.toBe("");
             });
-          },
+          }
         );
       });
 
@@ -2399,10 +2399,10 @@ describe("Ext.form.field.ComboBox", function () {
                   forceSelection: true,
                   queryMode: "local",
                   value: value,
-                  renderTo: Ext.getBody(),
+                  renderTo: Ext.getBody()
                 },
-                cfg,
-              ),
+                cfg
+              )
             );
           }
 
@@ -2489,7 +2489,7 @@ describe("Ext.form.field.ComboBox", function () {
             "should not clear the combobox custom displayTpl and calling setValue on blur",
             function () {
               makeWithValue("value 1", {
-                displayTpl: '<tpl for=".">Id= {val} - {text}</tpl>',
+                displayTpl: '<tpl for=".">Id= {val} - {text}</tpl>'
               });
               jasmine.focusAndWait(component);
               runs(function () {
@@ -2500,7 +2500,7 @@ describe("Ext.form.field.ComboBox", function () {
               runs(function () {
                 expect(component.inputEl.dom.value).not.toBe("");
               });
-            },
+            }
           );
         });
 
@@ -2511,7 +2511,7 @@ describe("Ext.form.field.ComboBox", function () {
               valueField: "val",
               forceSelection: true,
               queryMode: "local",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
           });
 
@@ -2602,7 +2602,7 @@ describe("Ext.form.field.ComboBox", function () {
               valueField: "val",
               forceSelection: true,
               queryMode: "local",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
           });
 
@@ -2693,7 +2693,7 @@ describe("Ext.form.field.ComboBox", function () {
               valueField: "val",
               forceSelection: true,
               queryMode: "local",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
           });
 
@@ -2738,8 +2738,8 @@ describe("Ext.form.field.ComboBox", function () {
               model: CBTestModel,
               proxy: {
                 type: "ajax",
-                url: "foo",
-              },
+                url: "foo"
+              }
             });
             makeComponent({
               store: store,
@@ -2747,7 +2747,7 @@ describe("Ext.form.field.ComboBox", function () {
               valueField: "val",
               forceSelection: true,
               queryMode: "remote",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             });
             component.focus();
             waitsFor(function () {
@@ -2767,11 +2767,11 @@ describe("Ext.form.field.ComboBox", function () {
             runs(function () {
               Ext.Ajax.mockComplete({
                 status: 200,
-                responseText: "[]",
+                responseText: "[]"
               });
               expect(component.getValue()).toBeNull();
             });
-          },
+          }
         );
       });
     });
@@ -2788,7 +2788,7 @@ describe("Ext.form.field.ComboBox", function () {
       function completeWithData(data) {
         Ext.Ajax.mockComplete({
           status: 200,
-          responseText: Ext.JSON.encode(data || []),
+          responseText: Ext.JSON.encode(data || [])
         });
       }
 
@@ -2801,8 +2801,8 @@ describe("Ext.form.field.ComboBox", function () {
             model: CBTestModel,
             proxy: {
               type: "ajax",
-              url: "foo",
-            },
+              url: "foo"
+            }
           });
           makeComponent({
             store: store,
@@ -2810,7 +2810,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "val",
             forceSelection: true,
             queryMode: "remote",
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           component.focus();
           waitsFor(function () {
@@ -2830,7 +2830,7 @@ describe("Ext.form.field.ComboBox", function () {
             completeWithData();
             expect(component.getValue()).toBeNull();
           });
-        },
+        }
       );
 
       it("should not clear an unmatched value while typing and forceSelection is true", function () {
@@ -2839,9 +2839,9 @@ describe("Ext.form.field.ComboBox", function () {
           model: CBTestModel,
           proxy: {
             type: "ajax",
-            url: "foo",
+            url: "foo"
           },
-          autoLoad: true,
+          autoLoad: true
         });
         makeComponent({
           store: store,
@@ -2849,7 +2849,7 @@ describe("Ext.form.field.ComboBox", function () {
           valueField: "val",
           forceSelection: true,
           queryMode: "remote",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         component.setRawValue("foobar");
@@ -2875,7 +2875,7 @@ describe("Ext.form.field.ComboBox", function () {
           "first-3",
           "first-4",
           "first-5",
-          "does not match query",
+          "does not match query"
         ],
         queryMode: "local",
         allowBlank: false,
@@ -2884,13 +2884,13 @@ describe("Ext.form.field.ComboBox", function () {
         beforeQuery: function () {
           var result = Ext.form.field.ComboBox.prototype.beforeQuery.apply(
             this,
-            arguments,
+            arguments
           );
           if (this.picker && this.picker.isVisible) {
             result.cancel = false;
           }
           return result;
-        },
+        }
       });
     });
     afterEach(function () {
@@ -2922,13 +2922,13 @@ describe("Ext.form.field.ComboBox", function () {
           "first-3",
           "first-4",
           "first-5",
-          "does not match query",
+          "does not match query"
         ],
         queryMode: "local",
         allowBlank: false,
         forceSelection: true,
         minChars: 2,
-        anyMatch: true,
+        anyMatch: true
       });
     });
     afterEach(function () {
@@ -2955,13 +2955,13 @@ describe("Ext.form.field.ComboBox", function () {
           "first-3",
           "first-4",
           "first-5",
-          "does not match query",
+          "does not match query"
         ],
         queryMode: "local",
         allowBlank: false,
         forceSelection: true,
         minChars: 2,
-        caseSensitive: true,
+        caseSensitive: true
       });
     });
     afterEach(function () {
@@ -2981,7 +2981,7 @@ describe("Ext.form.field.ComboBox", function () {
       var cfg = {
         displayField: "text",
         valueField: "val",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       };
       if (value) {
         cfg.value = value;
@@ -3036,7 +3036,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           displayField: "text",
           valueField: "val",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -3067,7 +3067,7 @@ describe("Ext.form.field.ComboBox", function () {
           displayField: "text",
           valueField: "val",
           value: "value 31",
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
       });
 
@@ -3124,7 +3124,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept a string id and remove the select", function () {
         makeSelect(true);
         component = new Ext.form.field.ComboBox({
-          transform: "mySelect",
+          transform: "mySelect"
         });
         expect(Ext.getDom("mySelect")).toBeNull();
         expect(component.rendered).toBe(true);
@@ -3133,7 +3133,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept a DOM element and remove the select", function () {
         makeSelect(true);
         component = new Ext.form.field.ComboBox({
-          transform: sel,
+          transform: sel
         });
         expect(Ext.getDom("mySelect")).toBeNull();
         expect(component.rendered).toBe(true);
@@ -3142,7 +3142,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should accept an Ext.dom.Element and remove the select", function () {
         makeSelect(true);
         component = new Ext.form.field.ComboBox({
-          transform: Ext.get(sel),
+          transform: Ext.get(sel)
         });
         expect(Ext.getDom("mySelect")).toBeNull();
         expect(component.rendered).toBe(true);
@@ -3154,7 +3154,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeSelect(true, "selName");
         component = new Ext.form.field.ComboBox({
           transform: sel,
-          name: "comboName",
+          name: "comboName"
         });
         expect(component.getName()).toBe("comboName");
       });
@@ -3162,7 +3162,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should use the select name if no name is specified on the combo", function () {
         makeSelect(true, "selName");
         component = new Ext.form.field.ComboBox({
-          transform: sel,
+          transform: sel
         });
         expect(component.getName()).toBe("selName");
       });
@@ -3173,7 +3173,7 @@ describe("Ext.form.field.ComboBox", function () {
         makeSelect(true, undefined, "2");
         component = new Ext.form.field.ComboBox({
           transform: sel,
-          value: "3",
+          value: "3"
         });
         expect(component.getValue()).toBe("3");
       });
@@ -3181,7 +3181,7 @@ describe("Ext.form.field.ComboBox", function () {
       it("should use the select value if no value is specified on the combo", function () {
         makeSelect(true, undefined, "2");
         component = new Ext.form.field.ComboBox({
-          transform: sel,
+          transform: sel
         });
         expect(component.getValue()).toBe("2");
       });
@@ -3190,7 +3190,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should use the options in the select field", function () {
       makeSelect(true);
       component = new Ext.form.field.ComboBox({
-        transform: "mySelect",
+        transform: "mySelect"
       });
       var store = component.getStore();
       expect(store.getAt(0).get("field1")).toBe("1");
@@ -3205,13 +3205,13 @@ describe("Ext.form.field.ComboBox", function () {
       it("should render in place", function () {
         var root = Ext.getBody().appendChild({
           tag: "div",
-          id: "myRoot",
+          id: "myRoot"
         });
         makeSelect(false);
         root.appendChild(sel);
 
         component = new Ext.form.field.ComboBox({
-          transform: "mySelect",
+          transform: "mySelect"
         });
         expect(component.el.dom.parentNode.id).toBe("myRoot");
         component.destroy();
@@ -3222,13 +3222,13 @@ describe("Ext.form.field.ComboBox", function () {
         makeSelect(true);
         var root = Ext.getBody().appendChild({
           tag: "div",
-          id: "myRoot",
+          id: "myRoot"
         });
 
         component = new Ext.form.field.ComboBox({
           transform: "mySelect",
           transformInPlace: false,
-          renderTo: root,
+          renderTo: root
         });
         expect(component.el.dom.parentNode.id).toBe("myRoot");
         component.destroy();
@@ -3244,8 +3244,8 @@ describe("Ext.form.field.ComboBox", function () {
               itemId: "combo",
               xtype: "combobox",
               transform: "mySelect",
-              transformInPlace: false,
-            },
+              transformInPlace: false
+            }
           }),
           component = form.down("#combo");
 
@@ -3260,7 +3260,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should clear a filter applied on blur with clearFilterOnBlur: true", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       var count = store.getCount();
       // Simulate user typing 'text 3'
@@ -3275,11 +3275,11 @@ describe("Ext.form.field.ComboBox", function () {
     it("should clear a only the combo filter applied on blur with clearFilterOnBlur: true", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       store.filter({
         property: "text",
-        value: "text",
+        value: "text"
       });
       var count = store.getCount();
       // Simulate user typing 'text 3'
@@ -3294,7 +3294,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should requery the store on focus with clearFilterOnBlur: true", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       var count = store.getCount();
       // Simulate user typing 'text 3'
@@ -3312,7 +3312,7 @@ describe("Ext.form.field.ComboBox", function () {
       makeComponent({
         queryMode: "local",
         renderTo: Ext.getBody(),
-        clearFilterOnBlur: false,
+        clearFilterOnBlur: false
       });
       // Simulate user typing 'text 3'
       component.setRawValue("text 3");
@@ -3336,7 +3336,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("displayTpl html match", function () {
         expect(component.displayTpl.html).toBe(
-          '<tpl for=".">{[typeof values === "string" ? values : values["text"]]}<tpl if="xindex < xcount">, </tpl></tpl>',
+          '<tpl for=".">{[typeof values === "string" ? values : values["text"]]}<tpl if="xindex < xcount">, </tpl></tpl>'
         );
       });
     });
@@ -3345,7 +3345,7 @@ describe("Ext.form.field.ComboBox", function () {
       beforeEach(function () {
         makeComponent({
           displayTpl:
-            '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>',
+            '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>'
         });
       });
 
@@ -3355,7 +3355,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("displayTpl html match", function () {
         expect(component.displayTpl.html).toBe(
-          '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>',
+          '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>'
         );
       });
     });
@@ -3366,8 +3366,8 @@ describe("Ext.form.field.ComboBox", function () {
           displayTpl: [
             '<tpl for=".">',
             '{[typeof values === "string" ? values : values["foo"]]}',
-            "</tpl>",
-          ],
+            "</tpl>"
+          ]
         });
       });
 
@@ -3377,7 +3377,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       it("displayTpl html match", function () {
         expect(component.displayTpl.html).toBe(
-          '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>',
+          '<tpl for=".">{[typeof values === "string" ? values : values["foo"]]}</tpl>'
         );
       });
     });
@@ -3390,12 +3390,12 @@ describe("Ext.form.field.ComboBox", function () {
           this.valueField = "text";
           this.displayField = "val";
           this.callParent();
-        },
+        }
       });
 
       component = new Cls({
         renderTo: Ext.getBody(),
-        store: store,
+        store: store
       });
 
       component.setValue("text 31");
@@ -3420,10 +3420,10 @@ describe("Ext.form.field.ComboBox", function () {
           {
             renderTo: Ext.getBody(),
             valueField: "val",
-            displayField: "text",
+            displayField: "text"
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -3431,8 +3431,8 @@ describe("Ext.form.field.ComboBox", function () {
       beforeEach(function () {
         makeEventCombo({
           listeners: {
-            specialkey: spy,
-          },
+            specialkey: spy
+          }
         });
       });
 
@@ -3440,7 +3440,7 @@ describe("Ext.form.field.ComboBox", function () {
         jasmine.fireKeyEvent(
           component.inputEl,
           "keydown",
-          Ext.event.Event.ENTER,
+          Ext.event.Event.ENTER
         );
         expect(spy).toHaveBeenCalled();
       });
@@ -3450,7 +3450,7 @@ describe("Ext.form.field.ComboBox", function () {
         jasmine.fireKeyEvent(
           component.inputEl,
           "keydown",
-          Ext.event.Event.ENTER,
+          Ext.event.Event.ENTER
         );
         expect(spy).toHaveBeenCalled();
       });
@@ -3469,8 +3469,8 @@ describe("Ext.form.field.ComboBox", function () {
           makeEventCombo({
             value: "value 2",
             listeners: {
-              change: spy,
-            },
+              change: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -3528,8 +3528,8 @@ describe("Ext.form.field.ComboBox", function () {
           makeEventCombo({
             value: "value 2",
             listeners: {
-              select: spy,
-            },
+              select: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -3576,7 +3576,7 @@ describe("Ext.form.field.ComboBox", function () {
         }
         it("should be a single record with multiSelect: false", function () {
           makeEventCombo({
-            multiSelect: false,
+            multiSelect: false
           });
           component.on("select", spy);
           clickListItem("value 1");
@@ -3589,7 +3589,7 @@ describe("Ext.form.field.ComboBox", function () {
 
         it("should be an array of records with multiSelect: true", function () {
           makeEventCombo({
-            multiSelect: true,
+            multiSelect: true
           });
           component.on("select", spy);
           clickListItem("value 1");
@@ -3604,7 +3604,7 @@ describe("Ext.form.field.ComboBox", function () {
           var view, selModel;
 
           makeEventCombo({
-            multiSelect: true,
+            multiSelect: true
           });
 
           clickListItem("value 1");
@@ -3628,8 +3628,8 @@ describe("Ext.form.field.ComboBox", function () {
       beforeEach(function () {
         makeEventCombo({
           listeners: {
-            beforeselect: spy,
-          },
+            beforeselect: spy
+          }
         });
       });
 
@@ -3645,14 +3645,14 @@ describe("Ext.form.field.ComboBox", function () {
         component.bindStore(
           new Ext.data.Store({
             proxy: {
-              type: "memory",
+              type: "memory"
             },
             model: CBTestModel,
             data: [
               { id: 100, text: "blerg", val: "throbbe" },
-              { id: 101, text: "zingbong", val: "gurgle" },
-            ],
-          }),
+              { id: 101, text: "zingbong", val: "gurgle" }
+            ]
+          })
         );
 
         clickListItem("gurgle", component.store);
@@ -3666,8 +3666,8 @@ describe("Ext.form.field.ComboBox", function () {
       beforeEach(function () {
         makeEventCombo({
           listeners: {
-            beforedeselect: spy,
-          },
+            beforedeselect: spy
+          }
         });
       });
 
@@ -3690,14 +3690,14 @@ describe("Ext.form.field.ComboBox", function () {
         component.bindStore(
           new Ext.data.Store({
             proxy: {
-              type: "memory",
+              type: "memory"
             },
             model: CBTestModel,
             data: [
               { id: 42, text: "mymze", val: "knurl" },
-              { id: 43, text: "foobaroo", val: "yumyum" },
-            ],
-          }),
+              { id: 43, text: "foobaroo", val: "yumyum" }
+            ]
+          })
         );
 
         clickListItem("knurl", component.store);
@@ -3727,10 +3727,10 @@ describe("Ext.form.field.ComboBox", function () {
             displayField: "text",
             valueField: "val",
             viewModel: viewModel,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           },
-          cfg,
-        ),
+          cfg
+        )
       );
     }
 
@@ -3752,7 +3752,7 @@ describe("Ext.form.field.ComboBox", function () {
           beforeEach(function () {
             viewModel.bind("{userList.selection}", spy);
             makeViewModelCombo({
-              reference: "userList",
+              reference: "userList"
             });
             viewModel.notify();
           });
@@ -3821,7 +3821,7 @@ describe("Ext.form.field.ComboBox", function () {
             viewModel.bind("{userList.selection}", spy);
             makeViewModelCombo({
               reference: "userList",
-              value: "value 2",
+              value: "value 2"
             });
             viewModel.notify();
           });
@@ -3840,8 +3840,8 @@ describe("Ext.form.field.ComboBox", function () {
             viewModel.bind("{foo}", spy);
             makeViewModelCombo({
               bind: {
-                selection: "{foo}",
-              },
+                selection: "{foo}"
+              }
             });
             viewModel.notify();
           });
@@ -3931,8 +3931,8 @@ describe("Ext.form.field.ComboBox", function () {
             makeViewModelCombo({
               value: "value 2",
               bind: {
-                selection: "{foo}",
-              },
+                selection: "{foo}"
+              }
             });
             viewModel.notify();
             var args = spy.mostRecentCall.args;
@@ -3947,8 +3947,8 @@ describe("Ext.form.field.ComboBox", function () {
             viewModel.bind("{foo}", spy);
             makeViewModelCombo({
               bind: {
-                selection: "{foo}",
-              },
+                selection: "{foo}"
+              }
             });
             viewModel.notify();
 
@@ -3957,7 +3957,7 @@ describe("Ext.form.field.ComboBox", function () {
 
             store.setProxy({
               type: "ajax",
-              url: "fake",
+              url: "fake"
             });
             store.load();
           });
@@ -3972,8 +3972,8 @@ describe("Ext.form.field.ComboBox", function () {
                 status: 200,
                 responseText: Ext.encode([
                   { id: 1, text: "text 1", val: "value 1" },
-                  { id: 2, text: "text 2", val: "value 2" },
-                ]),
+                  { id: 2, text: "text 2", val: "value 2" }
+                ])
               });
 
               viewModel.notify();
@@ -3986,7 +3986,7 @@ describe("Ext.form.field.ComboBox", function () {
             it("should trigger the selection binding", function () {
               Ext.Ajax.mockComplete({
                 status: 200,
-                responseText: "[]",
+                responseText: "[]"
               });
 
               viewModel.notify();
@@ -4008,7 +4008,7 @@ describe("Ext.form.field.ComboBox", function () {
         { text: "text 2", val: 2 },
         { text: "text 3", val: 3 },
         { text: "text 4", val: 4 },
-        { text: "text 5", val: 5 },
+        { text: "text 5", val: 5 }
       ];
     });
 
@@ -4019,13 +4019,13 @@ describe("Ext.form.field.ComboBox", function () {
     it("should apply a filter when binding a new store", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.doQuery("text 3");
 
       newStore = new Ext.data.Store({
         model: CBTestModel,
-        data: newData,
+        data: newData
       });
 
       component.bindStore(newStore);
@@ -4035,13 +4035,13 @@ describe("Ext.form.field.ComboBox", function () {
     it("should be able to filter the store after binding a new one", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.doQuery("text 3");
 
       newStore = new Ext.data.Store({
         model: CBTestModel,
-        data: newData,
+        data: newData
       });
 
       component.bindStore(newStore);
@@ -4052,13 +4052,13 @@ describe("Ext.form.field.ComboBox", function () {
     it("should not apply active filters if the param is passed", function () {
       makeComponent({
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       component.doQuery("text 3");
 
       newStore = new Ext.data.Store({
         model: CBTestModel,
-        data: newData,
+        data: newData
       });
 
       component.bindStore(newStore, true);
@@ -4070,12 +4070,12 @@ describe("Ext.form.field.ComboBox", function () {
         renderTo: Ext.getBody(),
         queryMode: "local",
         displayField: "text",
-        valueField: "val",
+        valueField: "val"
       });
 
       newStore = new Ext.data.Store({
         model: CBTestModel,
-        data: newData,
+        data: newData
       });
       component.bindStore(newStore);
       component.expand();
@@ -4089,14 +4089,14 @@ describe("Ext.form.field.ComboBox", function () {
           renderTo: Ext.getBody(),
           queryMode: "local",
           displayField: "text",
-          valueField: "val",
+          valueField: "val"
         },
-        true,
+        true
       );
 
       newStore = new Ext.data.Store({
         model: CBTestModel,
-        data: newData,
+        data: newData
       });
       component.bindStore(newStore);
       component.expand();
@@ -4113,9 +4113,9 @@ describe("Ext.form.field.ComboBox", function () {
             renderTo: Ext.getBody(),
             queryMode: "local",
             displayField: "text",
-            valueField: "val",
+            valueField: "val"
           },
-          true,
+          true
         );
         component.setValue("value 3");
         expect(component.getValue()).toBe("value 3");
@@ -4130,20 +4130,20 @@ describe("Ext.form.field.ComboBox", function () {
       it("should resolve the display value", function () {
         store.destroy();
         store = new Ext.data.Store({
-          model: CBTestModel,
+          model: CBTestModel
         });
 
         store.add([
           { text: "text 1", val: "value 1" },
           { text: "text 2", val: "value 2" },
-          { text: "text 3", val: "value 3" },
+          { text: "text 3", val: "value 3" }
         ]);
 
         makeComponent({
           renderTo: Ext.getBody(),
           queryMode: "local",
           displayField: "text",
-          valueField: "val",
+          valueField: "val"
         });
         component.setValue("value 2");
         expect(component.getValue()).toBe("value 2");
@@ -4161,18 +4161,18 @@ describe("Ext.form.field.ComboBox", function () {
               model: ComboModel,
               proxy: {
                 type: "ajax",
-                url: "/fake",
-              },
+                url: "/fake"
+              }
             },
-            cfg,
-          ),
+            cfg
+          )
         );
       }
 
       function completeWithData(data) {
         Ext.Ajax.mockComplete({
           status: 200,
-          responseText: Ext.JSON.encode(data || fakeData),
+          responseText: Ext.JSON.encode(data || fakeData)
         });
       }
 
@@ -4180,22 +4180,22 @@ describe("Ext.form.field.ComboBox", function () {
         MockAjaxManager.addMethods();
         ComboModel = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: ["id", "name"],
+          fields: ["id", "name"]
         });
 
         fakeData = [
           {
             id: 1,
-            name: "Foo",
+            name: "Foo"
           },
           {
             id: 2,
-            name: "Bar",
+            name: "Bar"
           },
           {
             id: 3,
-            name: "Baz",
-          },
+            name: "Baz"
+          }
         ];
       });
 
@@ -4213,10 +4213,10 @@ describe("Ext.form.field.ComboBox", function () {
                 displayField: "name",
                 valueField: valueIsName ? "name" : "id",
                 store: remoteStore,
-                renderTo: Ext.getBody(),
+                renderTo: Ext.getBody()
               },
-              cfg,
-            ),
+              cfg
+            )
           );
         }
 
@@ -4234,7 +4234,7 @@ describe("Ext.form.field.ComboBox", function () {
 
         it("should not trigger a second load with autoLoadOnValue", function () {
           makeLoadCombo({
-            autoLoadOnValue: true,
+            autoLoadOnValue: true
           });
           remoteStore.load();
           spyOn(remoteStore, "load");
@@ -4256,8 +4256,8 @@ describe("Ext.form.field.ComboBox", function () {
             component.setValue(
               new ComboModel({
                 id: 1,
-                name: "Foo",
-              }),
+                name: "Foo"
+              })
             );
             expect(component.getRawValue()).toBe("Foo");
             expect(component.getValue()).toBe(1);
@@ -4284,9 +4284,9 @@ describe("Ext.form.field.ComboBox", function () {
             makeLoadCombo(true, {
               emptyText: "Please select a name",
               bind: {
-                value: "{user.name}",
+                value: "{user.name}"
               },
-              viewModel: {},
+              viewModel: {}
             });
 
             vm = component.getViewModel();
@@ -4296,7 +4296,7 @@ describe("Ext.form.field.ComboBox", function () {
             expect(component.getRawValue()).toBe("foo");
             expect(component.inputEl).not.toHaveCls("x-form-empty-field");
             expect(component.inputEl).not.toHaveCls(
-              "x-form-empty-field-default",
+              "x-form-empty-field-default"
             );
           });
         });
@@ -4311,20 +4311,20 @@ describe("Ext.form.field.ComboBox", function () {
 
           flushLoadSpy = spyOn(
             Ext.data.Store.prototype,
-            "flushLoad",
+            "flushLoad"
           ).andCallThrough();
 
           Ext.asap = function (fn, scope) {
             return Ext.defer(fn, 100, scope);
           };
           createStore({
-            autoLoad: true,
+            autoLoad: true
           });
           makeComponent({
             displayField: "name",
             valueField: "id",
             store: remoteStore,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
           Ext.asap = extAsap;
         });
@@ -4373,7 +4373,7 @@ describe("Ext.form.field.ComboBox", function () {
             displayField: "name",
             valueField: "id",
             store: remoteStore,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
         });
 
@@ -4417,8 +4417,8 @@ describe("Ext.form.field.ComboBox", function () {
           component.setValue(
             new ComboModel({
               id: 4,
-              name: "Not in payload",
-            }),
+              name: "Not in payload"
+            })
           );
           var doSetValueSpy = spyOn(component, "setValue").andCallThrough();
 
@@ -4433,7 +4433,7 @@ describe("Ext.form.field.ComboBox", function () {
         it("should not update the display value when the store loads if the value is already set, and selected value should be the newly matched record", function () {
           var initialRec = new ComboModel({
             id: 3,
-            name: "Baz",
+            name: "Baz"
           });
           component.setValue(initialRec);
           var doSetValueSpy = spyOn(component, "setValue").andCallThrough();
@@ -4459,9 +4459,9 @@ describe("Ext.form.field.ComboBox", function () {
             {
               displayField: "name",
               valueField: "id",
-              renderTo: Ext.getBody(),
+              renderTo: Ext.getBody()
             },
-            true,
+            true
           );
         });
 
@@ -4511,7 +4511,7 @@ describe("Ext.form.field.ComboBox", function () {
         it("should not update the display value if the source is loading", function () {
           createStore();
           chained = new Ext.data.ChainedStore({
-            source: remoteStore,
+            source: remoteStore
           });
           remoteStore.load();
           makeComponent({
@@ -4519,7 +4519,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "id",
             renderTo: Ext.getBody(),
             store: chained,
-            value: 2,
+            value: 2
           });
           expect(component.getRawValue()).toBe("");
           completeWithData();
@@ -4528,17 +4528,17 @@ describe("Ext.form.field.ComboBox", function () {
 
         it("should not update the display value if the source has a pending autoLoad", function () {
           createStore({
-            autoLoad: true,
+            autoLoad: true
           });
           chained = new Ext.data.ChainedStore({
-            source: remoteStore,
+            source: remoteStore
           });
           makeComponent({
             displayField: "name",
             valueField: "id",
             renderTo: Ext.getBody(),
             store: chained,
-            value: 2,
+            value: 2
           });
           expect(component.getRawValue()).toBe("");
           chained.destroy();
@@ -4547,7 +4547,7 @@ describe("Ext.form.field.ComboBox", function () {
         it("should update the display value when the source store loads", function () {
           createStore();
           chained = new Ext.data.ChainedStore({
-            source: remoteStore,
+            source: remoteStore
           });
           remoteStore.load();
           makeComponent({
@@ -4555,7 +4555,7 @@ describe("Ext.form.field.ComboBox", function () {
             valueField: "id",
             renderTo: Ext.getBody(),
             store: chained,
-            value: 2,
+            value: 2
           });
           completeWithData();
           expect(component.getRawValue()).toBe("Bar");
@@ -4574,7 +4574,7 @@ describe("Ext.form.field.ComboBox", function () {
             forceSelection: true,
             displayField: "text",
             valueField: "val",
-            value: "value 3",
+            value: "value 3"
           });
           store.removeAt(0);
           expect(component.getValue()).toBe("value 3");
@@ -4587,7 +4587,7 @@ describe("Ext.form.field.ComboBox", function () {
             forceSelection: true,
             displayField: "text",
             valueField: "val",
-            value: "value 3",
+            value: "value 3"
           });
           store.removeAt(2);
           expect(component.getRawValue()).toBe("");
@@ -4602,7 +4602,7 @@ describe("Ext.form.field.ComboBox", function () {
             forceSelection: false,
             displayField: "text",
             valueField: "val",
-            value: "value 3",
+            value: "value 3"
           });
           store.removeAt(2);
           expect(component.getValue()).toBe("value 3");
@@ -4618,7 +4618,7 @@ describe("Ext.form.field.ComboBox", function () {
           forceSelection: true,
           displayField: "text",
           valueField: "val",
-          value: "value 3",
+          value: "value 3"
         });
         store.getAt(2).set("text", "Foo!");
         expect(component.getRawValue()).toBe("Foo!");
@@ -4633,7 +4633,7 @@ describe("Ext.form.field.ComboBox", function () {
           forceSelection: true,
           displayField: "text",
           valueField: "val",
-          value: "value 3",
+          value: "value 3"
         });
         store.getFilters().add(function (rec) {
           return rec.get("val") !== "value 3";
@@ -4647,13 +4647,13 @@ describe("Ext.form.field.ComboBox", function () {
   describe("chained stores", function () {
     it("should allow a non-record value to be used with forceSelection: false", function () {
       var chained = new Ext.data.ChainedStore({
-        source: store,
+        source: store
       });
       makeComponent({
         store: chained,
         displayField: "text",
         valueField: "val",
-        forceSelection: false,
+        forceSelection: false
       });
       component.setValue("Foo");
       expect(component.getValue()).toBe("Foo");
@@ -4672,25 +4672,25 @@ describe("Ext.form.field.ComboBox", function () {
               id: "foo",
               columns: [
                 { dataIndex: "company", text: "Company" },
-                { dataIndex: "price", text: "Price" },
+                { dataIndex: "price", text: "Price" }
               ],
               store: new Ext.data.ArrayStore({
                 fields: [{ name: "company" }, { name: "price", type: "float" }],
                 data: [
                   ["3m Co", 71.72],
                   ["Alcoa Inc", 29.01],
-                  ["Boeing Co.", 75.43],
-                ],
+                  ["Boeing Co.", 75.43]
+                ]
               }),
               width: 250,
               draggable: true,
               simpleDrag: true,
-              floating: true,
+              floating: true
             });
 
             return panel;
           },
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
 
         c.expand();
@@ -4748,7 +4748,7 @@ describe("Ext.form.field.ComboBox", function () {
     function completeWithData(data) {
       Ext.Ajax.mockComplete({
         status: 200,
-        responseText: Ext.JSON.encode(data),
+        responseText: Ext.JSON.encode(data)
       });
     }
 
@@ -4764,15 +4764,15 @@ describe("Ext.form.field.ComboBox", function () {
       store = new Ext.data.Store({
         proxy: {
           type: "ajax",
-          url: "fakeUrl",
+          url: "fakeUrl"
         },
-        model: CBTestModel,
+        model: CBTestModel
       });
       makeComponent({
         renderTo: Ext.getBody(),
         minChars: 0,
         valueField: "val",
-        queryDelay: 1,
+        queryDelay: 1
       });
 
       jasmine.focusAndWait(component);
@@ -4785,7 +4785,7 @@ describe("Ext.form.field.ComboBox", function () {
         { text: "text 31", val: "value 31" },
         { text: "text 32", val: "value 32" },
         { text: "text 33", val: "value 33" },
-        { text: "text 34", val: "value 34" },
+        { text: "text 34", val: "value 34" }
       ]);
       expect(component.getPicker().getNodes().length).toBe(7);
 
@@ -4794,7 +4794,7 @@ describe("Ext.form.field.ComboBox", function () {
       completeWithData([
         { text: "text 10", val: "value 10" },
         { text: "text 11", val: "value 11" },
-        { text: "text 12", val: "value 12" },
+        { text: "text 12", val: "value 12" }
       ]);
       expect(component.getPicker().getNodes().length).toBe(3);
 
@@ -4815,7 +4815,7 @@ describe("Ext.form.field.ComboBox", function () {
           var data = Ext.apply({}, record.data);
           data.text += "foo";
           return data;
-        },
+        }
       });
       component.setValue("value 2");
       expect(component.getRawValue()).toBe("text 2foo");
@@ -4831,10 +4831,10 @@ describe("Ext.form.field.ComboBox", function () {
             Ext.apply(
               {
                 readOnly: true,
-                renderTo: Ext.getBody(),
+                renderTo: Ext.getBody()
               },
-              cfg,
-            ),
+              cfg
+            )
           );
 
           spyOn(component, method);
@@ -4853,22 +4853,22 @@ describe("Ext.form.field.ComboBox", function () {
       }
 
       runTest("should not call checkChange", "checkChange", {
-        checkChangeBuffer: 0,
+        checkChangeBuffer: 0
       });
 
       runTest("should not query", "doQuery", {
         queryDelay: 0,
         queryMode: "local",
-        value: "Permanent Waves",
+        value: "Permanent Waves"
       });
 
       runTest("should not expand the picker", "expand", {
         listConfig: {
-          emptyText: "Exit... Stage Left",
+          emptyText: "Exit... Stage Left"
         },
         queryDelay: 0,
         queryMode: "local",
-        value: "Moving Pictures",
+        value: "Moving Pictures"
       });
     });
   });
@@ -4878,7 +4878,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should NOT clear the combobox value if setValueOnChange is triggered before the store is loaded", function () {
       var Color = Ext.define(null, {
           extend: "Ext.data.Model",
-          fields: ["name"],
+          fields: ["name"]
         }),
         panel = new Ext.panel.Panel({
           title: "Combo test",
@@ -4900,24 +4900,24 @@ describe("Ext.form.field.ComboBox", function () {
                   data: [
                     {
                       id: "0xff0000",
-                      name: "Red",
+                      name: "Red"
                     },
                     {
                       id: "0x00ff00",
-                      name: "Green",
+                      name: "Green"
                     },
                     {
                       id: "0x0000ff",
-                      name: "Blue",
-                    },
-                  ],
-                },
+                      name: "Blue"
+                    }
+                  ]
+                }
               },
               displayField: "name",
               valueField: "name",
-              value: "Red",
-            },
-          ],
+              value: "Red"
+            }
+          ]
         }),
         comboBox = panel.child("combobox"),
         store = comboBox.getStore();
@@ -4927,7 +4927,7 @@ describe("Ext.form.field.ComboBox", function () {
 
       store.addFilter({
         property: "name",
-        value: "Blue",
+        value: "Blue"
       });
       // Adding the filter should NOT trigger the value to be cleared due to it not being present in the store.
       // The store is not yet loaded, so it cannot do this; that must wait untilo the store is loaded.
@@ -4961,13 +4961,13 @@ describe("Ext.form.field.ComboBox", function () {
           stores: {
             foo: {
               autoLoad: autoLoad || false,
-              type: "foo",
-            },
+              type: "foo"
+            }
           },
           // ViewModel "bar" property is the selected foo *record*
           data: {
-            bar: null,
-          },
+            bar: null
+          }
         },
         items: [
           {
@@ -4977,7 +4977,7 @@ describe("Ext.form.field.ComboBox", function () {
             forceSelection: true,
             bind: {
               store: "{foo}",
-              selection: "{bar}",
+              selection: "{bar}"
             },
             displayField: "text",
             valueField: differentFields ? "val" : "text",
@@ -4985,17 +4985,17 @@ describe("Ext.form.field.ComboBox", function () {
               ? differentFields
                 ? "value 1"
                 : "text 1"
-              : undefined,
+              : undefined
           },
           {
             itemId: "target-comp",
             xtype: "component",
             bind: {
-              data: "{bar}",
+              data: "{bar}"
             },
-            tpl: "{text}",
-          },
-        ],
+            tpl: "{text}"
+          }
+        ]
       });
     };
 
@@ -5123,15 +5123,15 @@ describe("Ext.form.field.ComboBox", function () {
         autoLoadOnValue: true,
         viewModel: {
           data: {
-            name: null,
-          },
+            name: null
+          }
         },
         bind: {
-          value: "{name}",
+          value: "{name}"
         },
         displayField: "text",
         valueField: "text",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm = component.getViewModel();
@@ -5150,15 +5150,15 @@ describe("Ext.form.field.ComboBox", function () {
         forceSelection: true,
         viewModel: {
           data: {
-            address: 1,
-          },
+            address: 1
+          }
         },
         bind: {
-          value: "{address}",
+          value: "{address}"
         },
         displayField: "text",
         valueField: "id",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm = component.getViewModel();
@@ -5184,15 +5184,15 @@ describe("Ext.form.field.ComboBox", function () {
         multiSelect: true,
         viewModel: {
           data: {
-            foo: [1, 2],
-          },
+            foo: [1, 2]
+          }
         },
         bind: {
-          value: "{foo}",
+          value: "{foo}"
         },
         displayField: "text",
         valueField: "id",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
 
       vm = component.getViewModel();
@@ -5221,7 +5221,7 @@ describe("Ext.form.field.ComboBox", function () {
         queryMode: "local",
         allowBlank: false,
         forceSelection: true,
-        queryCaching: false,
+        queryCaching: false
       });
     });
 
@@ -5243,7 +5243,7 @@ describe("Ext.form.field.ComboBox", function () {
         jasmine.fireKeyEvent(
           component.inputEl,
           "keydown",
-          Ext.event.Event.DOWN,
+          Ext.event.Event.DOWN
         );
 
         // Select 31 and blur
@@ -5286,14 +5286,14 @@ describe("Ext.form.field.ComboBox", function () {
     it("should not throw an exception when destroying on select", function () {
       makeComponent({
         renderTo: Ext.getBody(),
-        valueField: "val",
+        valueField: "val"
       });
       component.on(
         "select",
         function () {
           this.destroy();
         },
-        component,
+        component
       );
       expect(function () {
         clickListItem("value 2");
@@ -5305,7 +5305,7 @@ describe("Ext.form.field.ComboBox", function () {
     it("should expand on inputEl click when NOT editable", function () {
       makeComponent({
         renderTo: document.body,
-        editable: false,
+        editable: false
       });
 
       // Not editable to begin with, should expand on inputEl Click
@@ -5336,7 +5336,7 @@ describe("Ext.form.field.ComboBox", function () {
         typeAhead: true,
         minChars: 2,
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       doTyping("tex");
 
@@ -5388,7 +5388,7 @@ describe("Ext.form.field.ComboBox", function () {
         typeAhead: true,
         minChars: 2,
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
       doTyping("tex");
 
@@ -5431,7 +5431,7 @@ describe("Ext.form.field.ComboBox", function () {
             minChars: 2,
             queryMode: "local",
             forceSelection: enableForceSelection,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           component.on("select", spy);
@@ -5462,7 +5462,7 @@ describe("Ext.form.field.ComboBox", function () {
             expect(component.getValue()).toBe("value 1");
             expect(spy.callCount).toBe(1);
           });
-        },
+        }
       );
 
       it(
@@ -5478,7 +5478,7 @@ describe("Ext.form.field.ComboBox", function () {
             minChars: 2,
             queryMode: "local",
             forceSelection: enableForceSelection,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           component.on("select", spy);
@@ -5512,7 +5512,7 @@ describe("Ext.form.field.ComboBox", function () {
             expect(component.getValue()).toBeNull();
             expect(spy.callCount).toBe(0);
           });
-        },
+        }
       );
 
       it(
@@ -5529,7 +5529,7 @@ describe("Ext.form.field.ComboBox", function () {
             queryMode: "local",
             value: "value 1",
             forceSelection: enableForceSelection,
-            renderTo: Ext.getBody(),
+            renderTo: Ext.getBody()
           });
 
           component.on("select", spy);
@@ -5549,7 +5549,7 @@ describe("Ext.form.field.ComboBox", function () {
             expect(component.getValue()).toBe("value 1");
             expect(spy.callCount).toBe(0);
           });
-        },
+        }
       );
     };
 
@@ -5579,7 +5579,7 @@ describe("Ext.form.field.ComboBox", function () {
             title: "Non-framed child",
             items: [
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
                 xtype: "combobox",
@@ -5594,24 +5594,24 @@ describe("Ext.form.field.ComboBox", function () {
                   ["B Shady", "B Shady"],
                   ["C or Shade", "C or Shade"],
                   ["D Sunny", "D Sunny"],
-                  ["E", "E"],
+                  ["E", "E"]
                 ],
-                lazyRender: true,
+                lazyRender: true
               },
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
-                xtype: "textfield",
+                xtype: "textfield"
               },
               {
                 xtype: "combobox",
@@ -5624,13 +5624,13 @@ describe("Ext.form.field.ComboBox", function () {
                   ["B Shady", "B Shady"],
                   ["C or Shade", "C or Shade"],
                   ["D Sunny", "D Sunny"],
-                  ["E", "E"],
+                  ["E", "E"]
                 ],
-                lazyRender: true,
-              },
-            ],
-          },
-        ],
+                lazyRender: true
+              }
+            ]
+          }
+        ]
       });
       var combo1 = component.down("#combo1"),
         formPanel = component.down("#formPanel"),
@@ -5653,7 +5653,7 @@ describe("Ext.form.field.ComboBox", function () {
         displayField: "text",
         valueField: "id",
         queryMode: "local",
-        renderTo: Ext.getBody(),
+        renderTo: Ext.getBody()
       });
     });
 
@@ -5686,8 +5686,8 @@ describe("Ext.form.field.ComboBox", function () {
         makeComponent({
           renderTo: document.body,
           listConfig: {
-            maxHeight: 50,
-          },
+            maxHeight: 50
+          }
         });
       });
 
@@ -5737,8 +5737,8 @@ describe("Ext.form.field.ComboBox", function () {
           store: [1, 2, 3],
           queryMode: "local",
           displayField: "name",
-          valueField: "abbr",
-        },
+          valueField: "abbr"
+        }
       });
       testWin.show();
       combo = testWin.down("combobox");

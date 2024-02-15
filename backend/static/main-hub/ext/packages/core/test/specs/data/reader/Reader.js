@@ -9,11 +9,11 @@ describe("Ext.data.reader.Reader", function () {
   function makeReader(cfg) {
     Ext.define("spec.User", {
       extend: "Ext.data.Model",
-      fields: ["id"],
+      fields: ["id"]
     });
 
     proxy = {
-      setModel: Ext.emptyFn,
+      setModel: Ext.emptyFn
     };
 
     cfg = Ext.apply(
@@ -22,9 +22,9 @@ describe("Ext.data.reader.Reader", function () {
         totalProperty: null,
         messageProperty: null,
         successProperty: null,
-        proxy: proxy,
+        proxy: proxy
       },
-      cfg,
+      cfg
     );
 
     reader = new Ext.data.reader.Reader(cfg);
@@ -53,11 +53,11 @@ describe("Ext.data.reader.Reader", function () {
     describe("if there is a responseText property", function () {
       beforeEach(function () {
         response = {
-          responseText: "something",
+          responseText: "something"
         };
 
         responseData = {
-          something: "else",
+          something: "else"
         };
 
         spyOn(reader, "readRecords").andReturn({});
@@ -120,7 +120,7 @@ describe("Ext.data.reader.Reader", function () {
   describe("transform", function () {
     it("should invoke the transform function", function () {
       var o = {
-        id: 1,
+        id: 1
       };
 
       var transformFn = function (data) {
@@ -129,7 +129,7 @@ describe("Ext.data.reader.Reader", function () {
       };
 
       makeReader({
-        transform: transformFn,
+        transform: transformFn
       });
 
       reader.extractData = function (root, readOptions) {
@@ -143,7 +143,7 @@ describe("Ext.data.reader.Reader", function () {
 
     it("should invoke the transform function with the specified scope", function () {
       var o = {
-        id: 1,
+        id: 1
       };
 
       var mockScope = {};
@@ -157,8 +157,8 @@ describe("Ext.data.reader.Reader", function () {
       makeReader({
         transform: {
           fn: transformFn,
-          scope: mockScope,
-        },
+          scope: mockScope
+        }
       });
 
       reader.extractData = function (root, readOptions) {
@@ -172,7 +172,7 @@ describe("Ext.data.reader.Reader", function () {
 
     it("should accept method name instead of function", function () {
       var o = {
-        id: 1,
+        id: 1
       };
 
       var transformFn = function (data) {
@@ -182,7 +182,7 @@ describe("Ext.data.reader.Reader", function () {
 
       makeReader({
         fooFn: transformFn,
-        transform: "fooFn",
+        transform: "fooFn"
       });
 
       reader.extractData = function (root, readOptions) {
@@ -223,7 +223,7 @@ describe("Ext.data.reader.Reader", function () {
       meta = {
         root: "someRootProperty",
         totalProperty: "someTotalProperty",
-        successProperty: "someSuccessProperty",
+        successProperty: "someSuccessProperty"
       };
 
       spyOn(reader, "buildExtractors").andCallThrough();
@@ -263,8 +263,8 @@ describe("Ext.data.reader.Reader", function () {
         Ext.apply(meta, {
           fields: [
             { name: "uniqueId", type: "int" },
-            { name: "name", type: "string" },
-          ],
+            { name: "name", type: "string" }
+          ]
         });
 
         spyOn(proxy, "setModel").andReturn();

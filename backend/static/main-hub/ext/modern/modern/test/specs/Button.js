@@ -19,7 +19,7 @@ describe("Ext.Button", function () {
     function createRenderButton(config) {
       Ext.apply(config, {
         renderTo: Ext.getBody(),
-        text: "Foo",
+        text: "Foo"
       });
       createButton(config);
     }
@@ -33,14 +33,14 @@ describe("Ext.Button", function () {
 
         it("should not be pressed with pressed: false", function () {
           createRenderButton({
-            pressed: false,
+            pressed: false
           });
           expect(button.isPressed()).toBe(false);
         });
 
         it("should be pressed with pressed: true", function () {
           createRenderButton({
-            pressed: true,
+            pressed: true
           });
           expect(button.isPressed()).toBe(true);
         });
@@ -54,14 +54,14 @@ describe("Ext.Button", function () {
 
         it("should not have the pressedCls with pressed: false", function () {
           createRenderButton({
-            pressed: false,
+            pressed: false
           });
           expect(button.element).not.toHaveCls(button.getPressedCls());
         });
 
         it("should have the pressedCls with pressed: true", function () {
           createRenderButton({
-            pressed: true,
+            pressed: true
           });
           expect(button.element).toHaveCls(button.getPressedCls());
         });
@@ -69,7 +69,7 @@ describe("Ext.Button", function () {
         it("should accept a custom pressedCls", function () {
           createRenderButton({
             pressed: true,
-            pressedCls: "foo",
+            pressedCls: "foo"
           });
           expect(button.element).toHaveCls("foo");
         });
@@ -82,8 +82,8 @@ describe("Ext.Button", function () {
             pressed: false,
             listeners: {
               beforepressedchange: spy,
-              pressedchange: spy,
-            },
+              pressedchange: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -94,8 +94,8 @@ describe("Ext.Button", function () {
             pressed: true,
             listeners: {
               beforepressedchange: spy,
-              pressedchange: spy,
-            },
+              pressedchange: spy
+            }
           });
           expect(spy).not.toHaveBeenCalled();
         });
@@ -108,7 +108,7 @@ describe("Ext.Button", function () {
           describe("setPressed(false)", function () {
             it("should leave the pressed state as false", function () {
               createRenderButton({
-                pressed: false,
+                pressed: false
               });
               button.setPressed(false);
               expect(button.isPressed()).toBe(false);
@@ -116,7 +116,7 @@ describe("Ext.Button", function () {
 
             it("should not add the pressedCls", function () {
               createRenderButton({
-                pressed: false,
+                pressed: false
               });
               button.setPressed(false);
               expect(button.element).not.toHaveCls(button.getPressedCls());
@@ -129,8 +129,8 @@ describe("Ext.Button", function () {
                   pressed: false,
                   listeners: {
                     beforepressedchange: spy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(false);
                 expect(spy).not.toHaveBeenCalled();
@@ -141,7 +141,7 @@ describe("Ext.Button", function () {
           describe("setPressed(true)", function () {
             it("should set the pressed state to true", function () {
               createRenderButton({
-                pressed: false,
+                pressed: false
               });
               button.setPressed(true);
               expect(button.isPressed()).toBe(true);
@@ -149,7 +149,7 @@ describe("Ext.Button", function () {
 
             it("should add the pressedCls", function () {
               createRenderButton({
-                pressed: false,
+                pressed: false
               });
               button.setPressed(true);
               expect(button.element).toHaveCls(button.getPressedCls());
@@ -169,8 +169,8 @@ describe("Ext.Button", function () {
                   pressed: false,
                   listeners: {
                     beforepressedchange: beforeSpy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(true);
 
@@ -195,8 +195,8 @@ describe("Ext.Button", function () {
                   pressed: false,
                   listeners: {
                     beforepressedchange: beforeSpy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(true);
 
@@ -212,7 +212,7 @@ describe("Ext.Button", function () {
           describe("setPressed(true)", function () {
             it("should leave the pressed state as true", function () {
               createRenderButton({
-                pressed: true,
+                pressed: true
               });
               button.setPressed(true);
               expect(button.isPressed()).toBe(true);
@@ -220,7 +220,7 @@ describe("Ext.Button", function () {
 
             it("should not remove the pressedCls", function () {
               createRenderButton({
-                pressed: true,
+                pressed: true
               });
               button.setPressed(true);
               expect(button.element).toHaveCls(button.getPressedCls());
@@ -233,8 +233,8 @@ describe("Ext.Button", function () {
                   pressed: true,
                   listeners: {
                     beforepressedchange: spy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(true);
                 expect(spy).not.toHaveBeenCalled();
@@ -245,7 +245,7 @@ describe("Ext.Button", function () {
           describe("setPressed(false)", function () {
             it("should set the pressed state to false", function () {
               createRenderButton({
-                pressed: true,
+                pressed: true
               });
               button.setPressed(false);
               expect(button.isPressed()).toBe(false);
@@ -253,7 +253,7 @@ describe("Ext.Button", function () {
 
             it("should remove the pressedCls", function () {
               createRenderButton({
-                pressed: true,
+                pressed: true
               });
               button.setPressed(false);
               expect(button.element).not.toHaveCls(button.getPressedCls());
@@ -273,8 +273,8 @@ describe("Ext.Button", function () {
                   pressed: true,
                   listeners: {
                     beforepressedchange: beforeSpy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(false);
 
@@ -299,8 +299,8 @@ describe("Ext.Button", function () {
                   pressed: true,
                   listeners: {
                     beforepressedchange: beforeSpy,
-                    pressedchange: spy,
-                  },
+                    pressedchange: spy
+                  }
                 });
                 button.setPressed(false);
 
@@ -317,7 +317,7 @@ describe("Ext.Button", function () {
         describe("when not pressed", function () {
           it("should set the pressed state to true", function () {
             createRenderButton({
-              pressed: false,
+              pressed: false
             });
             button.toggle();
             expect(button.isPressed()).toBe(true);
@@ -325,7 +325,7 @@ describe("Ext.Button", function () {
 
           it("should add the pressedCls", function () {
             createRenderButton({
-              pressed: false,
+              pressed: false
             });
             button.toggle();
             expect(button.element).toHaveCls(button.getPressedCls());
@@ -345,8 +345,8 @@ describe("Ext.Button", function () {
                 pressed: false,
                 listeners: {
                   beforepressedchange: beforeSpy,
-                  pressedchange: spy,
-                },
+                  pressedchange: spy
+                }
               });
               button.toggle();
 
@@ -371,8 +371,8 @@ describe("Ext.Button", function () {
                 pressed: false,
                 listeners: {
                   beforepressedchange: beforeSpy,
-                  pressedchange: spy,
-                },
+                  pressedchange: spy
+                }
               });
               button.toggle();
 
@@ -386,7 +386,7 @@ describe("Ext.Button", function () {
         describe("when pressed", function () {
           it("should set the pressed state to false", function () {
             createRenderButton({
-              pressed: true,
+              pressed: true
             });
             button.toggle();
             expect(button.isPressed()).toBe(false);
@@ -394,7 +394,7 @@ describe("Ext.Button", function () {
 
           it("should remove the pressedCls", function () {
             createRenderButton({
-              pressed: true,
+              pressed: true
             });
             button.toggle();
             expect(button.element).not.toHaveCls(button.getPressedCls());
@@ -414,8 +414,8 @@ describe("Ext.Button", function () {
                 pressed: true,
                 listeners: {
                   beforepressedchange: beforeSpy,
-                  pressedchange: spy,
-                },
+                  pressedchange: spy
+                }
               });
               button.toggle();
 
@@ -440,8 +440,8 @@ describe("Ext.Button", function () {
                 pressed: true,
                 listeners: {
                   beforepressedchange: beforeSpy,
-                  pressedchange: spy,
-                },
+                  pressedchange: spy
+                }
               });
               button.toggle();
 
@@ -463,7 +463,7 @@ describe("Ext.Button", function () {
         describe("with enableToggle: false", function () {
           it("should not set the pressed state on tap", function () {
             createRenderButton({
-              enableToggle: false,
+              enableToggle: false
             });
             clickIt();
             expect(button.getPressed()).toBe(false);
@@ -477,8 +477,8 @@ describe("Ext.Button", function () {
                 enableToggle: false,
                 listeners: {
                   beforepressedchange: spy,
-                  pressedchange: spy,
-                },
+                  pressedchange: spy
+                }
               });
               clickIt();
               expect(spy).not.toHaveBeenCalled();
@@ -489,7 +489,7 @@ describe("Ext.Button", function () {
         describe("with enableToggle: true", function () {
           function createToggleRenderButton(config) {
             Ext.apply(config, {
-              enableToggle: true,
+              enableToggle: true
             });
             createRenderButton(config);
           }
@@ -499,7 +499,7 @@ describe("Ext.Button", function () {
               it("should set the pressed state to true", function () {
                 createToggleRenderButton({
                   pressed: false,
-                  allowDepress: false,
+                  allowDepress: false
                 });
                 clickIt();
                 expect(button.isPressed()).toBe(true);
@@ -508,7 +508,7 @@ describe("Ext.Button", function () {
               it("should add the pressedCls", function () {
                 createToggleRenderButton({
                   pressed: false,
-                  allowDepress: false,
+                  allowDepress: false
                 });
                 clickIt();
                 expect(button.element).toHaveCls(button.getPressedCls());
@@ -529,8 +529,8 @@ describe("Ext.Button", function () {
                     allowDepress: false,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -556,8 +556,8 @@ describe("Ext.Button", function () {
                     allowDepress: false,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -572,7 +572,7 @@ describe("Ext.Button", function () {
               it("should set the pressed state to true", function () {
                 createToggleRenderButton({
                   pressed: false,
-                  allowDepress: true,
+                  allowDepress: true
                 });
                 clickIt();
                 expect(button.isPressed()).toBe(true);
@@ -581,7 +581,7 @@ describe("Ext.Button", function () {
               it("should add the pressedCls", function () {
                 createToggleRenderButton({
                   pressed: false,
-                  allowDepress: true,
+                  allowDepress: true
                 });
                 clickIt();
                 expect(button.element).toHaveCls(button.getPressedCls());
@@ -602,8 +602,8 @@ describe("Ext.Button", function () {
                     allowDepress: true,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -629,8 +629,8 @@ describe("Ext.Button", function () {
                     allowDepress: true,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -647,7 +647,7 @@ describe("Ext.Button", function () {
               it("should not alter the pressed state", function () {
                 createToggleRenderButton({
                   pressed: true,
-                  allowDepress: false,
+                  allowDepress: false
                 });
                 clickIt();
                 expect(button.isPressed()).toBe(true);
@@ -656,7 +656,7 @@ describe("Ext.Button", function () {
               it("should leave the pressedCls", function () {
                 createToggleRenderButton({
                   pressed: true,
-                  allowDepress: false,
+                  allowDepress: false
                 });
                 clickIt();
                 expect(button.element).toHaveCls(button.getPressedCls());
@@ -671,8 +671,8 @@ describe("Ext.Button", function () {
                     allowDepress: false,
                     listeners: {
                       beforepressedchange: spy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -685,7 +685,7 @@ describe("Ext.Button", function () {
               it("should set the pressed state to false", function () {
                 createToggleRenderButton({
                   pressed: true,
-                  allowDepress: true,
+                  allowDepress: true
                 });
                 clickIt();
                 expect(button.isPressed()).toBe(false);
@@ -694,7 +694,7 @@ describe("Ext.Button", function () {
               it("should remove the pressedCls", function () {
                 createToggleRenderButton({
                   pressed: true,
-                  allowDepress: true,
+                  allowDepress: true
                 });
                 clickIt();
                 expect(button.element).not.toHaveCls(button.getPressedCls());
@@ -715,8 +715,8 @@ describe("Ext.Button", function () {
                     allowDepress: true,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -742,8 +742,8 @@ describe("Ext.Button", function () {
                     allowDepress: true,
                     listeners: {
                       beforepressedchange: beforeSpy,
-                      pressedchange: spy,
-                    },
+                      pressedchange: spy
+                    }
                   });
                   clickIt();
 
@@ -761,7 +761,7 @@ describe("Ext.Button", function () {
         describe("when not pressed", function () {
           it("should add the pressedCls when being pressed", function () {
             createRenderButton({
-              pressed: false,
+              pressed: false
             });
             button.setPressedCls("someCls");
             expect(button.element).not.toHaveCls("someCls");
@@ -774,7 +774,7 @@ describe("Ext.Button", function () {
           it("should update the pressed cls", function () {
             createRenderButton({
               pressed: true,
-              pressedCls: "oldCls",
+              pressedCls: "oldCls"
             });
             expect(button.element).toHaveCls("oldCls");
             button.setPressedCls("newCls");
@@ -953,7 +953,7 @@ describe("Ext.Button", function () {
       describe("configuration", function () {
         beforeEach(function () {
           createButton({
-            text: "test",
+            text: "test"
           });
         });
 
@@ -1004,7 +1004,7 @@ describe("Ext.Button", function () {
       describe("configuration", function () {
         beforeEach(function () {
           createButton({
-            icon: "test",
+            icon: "test"
           });
         });
 
@@ -1026,7 +1026,7 @@ describe("Ext.Button", function () {
       describe("methods", function () {
         beforeEach(function () {
           createButton({
-            icon: "test",
+            icon: "test"
           });
         });
 
@@ -1066,7 +1066,7 @@ describe("Ext.Button", function () {
             button.setIcon("another");
 
             expect(button.iconElement.getStyle("background-image")).toMatch(
-              "another",
+              "another"
             );
           });
 
@@ -1074,16 +1074,16 @@ describe("Ext.Button", function () {
             button.setIcon("another");
 
             expect(button.iconElement.getStyle("background-image")).toMatch(
-              "another",
+              "another"
             );
 
             button.setIcon("new");
 
             expect(button.iconElement.getStyle("background-image")).not.toMatch(
-              "another",
+              "another"
             );
             expect(button.iconElement.getStyle("background-image")).toMatch(
-              "new",
+              "new"
             );
           });
         });
@@ -1094,7 +1094,7 @@ describe("Ext.Button", function () {
       describe("configuration", function () {
         beforeEach(function () {
           createButton({
-            iconCls: "test",
+            iconCls: "test"
           });
         });
 

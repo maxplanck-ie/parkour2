@@ -17,7 +17,7 @@ Ext.define("Ext.draw.modifier.Target", {
     /**
      * @private
      */
-    uniqueId: 0,
+    uniqueId: 0
   },
 
   prepareAttributes: function (attr) {
@@ -28,7 +28,7 @@ Ext.define("Ext.draw.modifier.Target", {
     if (!attr.hasOwnProperty("canvasAttributes")) {
       attr.bbox = {
         plain: { dirty: true },
-        transform: { dirty: true },
+        transform: { dirty: true }
       };
       attr.dirty = true;
       /*
@@ -146,5 +146,5 @@ Ext.define("Ext.draw.modifier.Target", {
     }
     this.applyChanges(attr, changes);
     return changes;
-  },
+  }
 });

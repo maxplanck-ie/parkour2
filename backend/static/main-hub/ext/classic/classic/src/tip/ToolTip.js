@@ -310,7 +310,7 @@ Ext.define("Ext.tip.ToolTip", {
     //</debug>
     me.anchorEl = me.el.createChild({
       role: "presentation",
-      cls: Ext.baseCSSPrefix + "tip-anchor",
+      cls: Ext.baseCSSPrefix + "tip-anchor"
     });
   },
 
@@ -343,7 +343,7 @@ Ext.define("Ext.tip.ToolTip", {
         mousemove: "onMouseMove",
         tap: "onTargetTap",
         scope: me,
-        destroyable: true,
+        destroyable: true
       };
 
       me.targetListeners = target.on(listeners);
@@ -392,7 +392,7 @@ Ext.define("Ext.tip.ToolTip", {
       anchorEl.show();
       me.anchorSize = new Ext.util.Offset(
         anchorEl.getWidth(),
-        anchorEl.getHeight(),
+        anchorEl.getHeight()
       );
       anchorEl.removeCls(Ext.baseCSSPrefix + "tip-anchor-top");
       anchorEl.hide();
@@ -414,7 +414,7 @@ Ext.define("Ext.tip.ToolTip", {
               -mouseOffset[1],
               mouseOffset[0],
               mouseOffset[1],
-              -mouseOffset[0],
+              -mouseOffset[0]
             )
         : new Ext.util.Point();
       if (!me.anchor) {
@@ -443,7 +443,7 @@ Ext.define("Ext.tip.ToolTip", {
       offset: me.targetOffset,
       inside: me.constrainPosition
         ? Ext.getBody().getRegion().adjust(5, -5, -5, 5)
-        : null,
+        : null
     };
 
     if (me.anchor) {
@@ -461,7 +461,7 @@ Ext.define("Ext.tip.ToolTip", {
       callback: function () {
         me.hide();
         me.el.setOpacity("");
-      },
+      }
     });
   },
 
@@ -571,7 +571,7 @@ Ext.define("Ext.tip.ToolTip", {
         me.showTimer = Ext.defer(
           me.showFromDelay,
           me.pointerEvent.pointerType !== "mouse" ? 0 : me.showDelay,
-          me,
+          me
         );
       }
     } else if (!me.hidden && me.autoHide !== false) {
@@ -781,6 +781,6 @@ Ext.define("Ext.tip.ToolTip", {
 
       // Clip the anchor to the same bounds
       this.anchorEl.clipTo(clippingRegion, sides);
-    },
-  },
+    }
+  }
 });

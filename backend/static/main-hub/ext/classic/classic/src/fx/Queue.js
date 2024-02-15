@@ -153,10 +153,10 @@ Ext.define("Ext.fx.Queue", {
       },
       me,
       {
-        single: true,
-      },
+        single: true
+      }
     );
 
     queue.push(anim);
-  },
+  }
 });

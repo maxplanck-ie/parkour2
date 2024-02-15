@@ -26,7 +26,7 @@ describe("Ext.ComponentLoader", function () {
       cfg = cfg || {};
       Ext.applyIf(cfg, {
         url: "url",
-        target: comp,
+        target: comp
       });
       loader = new Ext.ComponentLoader(cfg);
     };
@@ -34,7 +34,7 @@ describe("Ext.ComponentLoader", function () {
     mockComplete = function (responseText, status) {
       Ext.Ajax.mockComplete({
         status: status || 200,
-        responseText: responseText || "response",
+        responseText: responseText || "response"
       });
     };
 
@@ -93,7 +93,7 @@ describe("Ext.ComponentLoader", function () {
         makeComponent();
         makeLoader({
           target: comp,
-          loadOnRender: true,
+          loadOnRender: true
         });
         // No load yet
         expect(Ext.Ajax.mockGetAllRequests()).toEqual([]);
@@ -107,8 +107,8 @@ describe("Ext.ComponentLoader", function () {
         makeLoader({
           target: comp,
           loadOnRender: {
-            url: "bar",
-          },
+            url: "bar"
+          }
         });
         comp.render(Ext.getBody());
         expect(getAjaxOptions().url).toBe("bar");
@@ -118,11 +118,11 @@ describe("Ext.ComponentLoader", function () {
     describe("already rendered", function () {
       it("should load immediately", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         makeLoader({
           target: comp,
-          loadOnRender: true,
+          loadOnRender: true
         });
         mockComplete("New Content");
         expect(comp.getEl().dom).hasHTML("New Content");
@@ -130,13 +130,13 @@ describe("Ext.ComponentLoader", function () {
 
       it("should pass any options in loadOnRender", function () {
         makeComponent({
-          renderTo: Ext.getBody(),
+          renderTo: Ext.getBody()
         });
         makeLoader({
           target: comp,
           loadOnRender: {
-            url: "bar",
-          },
+            url: "bar"
+          }
         });
         expect(getAjaxOptions().url).toBe("bar");
       });
@@ -146,7 +146,7 @@ describe("Ext.ComponentLoader", function () {
   describe("masking", function () {
     beforeEach(function () {
       makeComponent({
-        renderTo: document.body,
+        renderTo: document.body
       });
     });
 
@@ -164,7 +164,7 @@ describe("Ext.ComponentLoader", function () {
 
     it("should unmask after the request completes", function () {
       makeLoader({
-        loadMask: true,
+        loadMask: true
       });
       loader.load();
       expect(comp.loadMask != null).toBe(true);
@@ -175,8 +175,8 @@ describe("Ext.ComponentLoader", function () {
     it("should accept a masking config", function () {
       makeLoader({
         loadMask: {
-          msg: "Waiting",
-        },
+          msg: "Waiting"
+        }
       });
       loader.load();
       expect(comp.loadMask.msg).toEqual("Waiting");
@@ -186,7 +186,7 @@ describe("Ext.ComponentLoader", function () {
     it("should use the masking load option", function () {
       makeLoader();
       loader.load({
-        loadMask: true,
+        loadMask: true
       });
       expect(comp.loadMask != null).toBe(true);
       mockComplete();
@@ -195,13 +195,13 @@ describe("Ext.ComponentLoader", function () {
     it("should give precedence to the load option", function () {
       makeLoader({
         loadMask: {
-          msg: "Waiting",
-        },
+          msg: "Waiting"
+        }
       });
       loader.load({
         loadMask: {
-          msg: "Other",
-        },
+          msg: "Other"
+        }
       });
       expect(comp.loadMask.msg).toEqual("Other");
       mockComplete();
@@ -227,10 +227,10 @@ describe("Ext.ComponentLoader", function () {
 
     it("should take a string config", function () {
       makeComponent({
-        id: "id",
+        id: "id"
       });
       loader = new C({
-        target: "id",
+        target: "id"
       });
       expect(loader.getTarget()).toEqual(comp);
     });
@@ -254,7 +254,7 @@ describe("Ext.ComponentLoader", function () {
 
     it("should assign a new target via id", function () {
       makeComponent({
-        id: "id",
+        id: "id"
       });
       loader = new C();
       loader.setTarget("id");
@@ -266,7 +266,7 @@ describe("Ext.ComponentLoader", function () {
     describe("html", function () {
       it("should use html as the default renderer", function () {
         makeComponent({
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader();
         loadAndComplete("New content");
@@ -275,10 +275,10 @@ describe("Ext.ComponentLoader", function () {
 
       it("should use html if it's specified", function () {
         makeComponent({
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader({
-          renderer: "html",
+          renderer: "html"
         });
         loadAndComplete("New content");
         expect(comp.getEl().dom).hasHTML("New content");
@@ -289,10 +289,10 @@ describe("Ext.ComponentLoader", function () {
       it("should work with array data - data renderer", function () {
         makeComponent({
           renderTo: document.body,
-          tpl: '<tpl for=".">{name}</tpl>',
+          tpl: '<tpl for=".">{name}</tpl>'
         });
         makeLoader({
-          renderer: "data",
+          renderer: "data"
         });
         loadAndComplete('[{"name": "foo"}, {"name": "bar"}, {"name": "baz"}]');
         expect(comp.getEl().dom).hasHTML("foobarbaz");
@@ -301,10 +301,10 @@ describe("Ext.ComponentLoader", function () {
       it("should work with an object", function () {
         makeComponent({
           renderTo: document.body,
-          tpl: "{name} - {age}",
+          tpl: "{name} - {age}"
         });
         makeLoader({
-          renderer: "data",
+          renderer: "data"
         });
         loadAndComplete('{"name": "foo", "age": 21}');
         expect(comp.getEl().dom).hasHTML("foo - 21");
@@ -314,18 +314,18 @@ describe("Ext.ComponentLoader", function () {
         var o = {
             fn: function (loader, success) {
               result = success;
-            },
+            }
           },
           result;
         spyOn(o, "fn").andCallThrough();
 
         makeComponent({
           renderTo: document.body,
-          tpl: "{name}",
+          tpl: "{name}"
         });
         makeLoader({
           renderer: "data",
-          callback: o.fn,
+          callback: o.fn
         });
         // avoid Ext.Error console pollution
         var global = Ext.global;
@@ -340,17 +340,17 @@ describe("Ext.ComponentLoader", function () {
     describe("component", function () {
       beforeEach(function () {
         makeContainer({
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader({
-          renderer: "component",
+          renderer: "component"
         });
       });
 
       it("should exception if using a non-container", function () {
         comp.destroy();
         makeComponent({
-          renderTo: document.body,
+          renderTo: document.body
         });
         loader.setTarget(comp);
         loader.load();
@@ -368,7 +368,7 @@ describe("Ext.ComponentLoader", function () {
       it("should add multiple items", function () {
         loader.load();
         mockComplete(
-          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]',
+          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]'
         );
         expect(comp.items.first().getEl().dom).hasHTML("new item1");
         expect(comp.items.last().getEl().dom).hasHTML("new item2");
@@ -378,23 +378,23 @@ describe("Ext.ComponentLoader", function () {
         loader.removeAll = true;
         loader.load();
         comp.add({
-          xtype: "component",
+          xtype: "component"
         });
         mockComplete(
-          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]',
+          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]'
         );
         expect(comp.items.getCount()).toEqual(2);
       });
 
       it("should give precedence to removeAll in the config options", function () {
         loader.load({
-          removeAll: true,
+          removeAll: true
         });
         comp.add({
-          xtype: "component",
+          xtype: "component"
         });
         mockComplete(
-          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]',
+          '[{"xtype": "component", "html": "new item1"}, {"xtype": "component", "html": "new item2"}]'
         );
         expect(comp.items.getCount()).toEqual(2);
       });
@@ -403,7 +403,7 @@ describe("Ext.ComponentLoader", function () {
         var o = {
             fn: function (loader, success) {
               result = success;
-            },
+            }
           },
           result;
         spyOn(o, "fn").andCallThrough();
@@ -424,10 +424,10 @@ describe("Ext.ComponentLoader", function () {
           title: "Panel",
           height: 400,
           width: 600,
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader({
-          renderer: "html",
+          renderer: "html"
         });
       });
 
@@ -439,7 +439,7 @@ describe("Ext.ComponentLoader", function () {
           success: function () {
             this.foo = "bar";
           },
-          scope: callbackScope,
+          scope: callbackScope
         });
         mockComplete('<script>this.setTitle("New title");</script>New content');
 
@@ -450,7 +450,7 @@ describe("Ext.ComponentLoader", function () {
         runs(function () {
           // Check that content is updated.
           expect(comp.body.dom.textContent || comp.body.dom.innerText).toBe(
-            "New content",
+            "New content"
           );
 
           // Check that success callback had the right scope
@@ -462,7 +462,7 @@ describe("Ext.ComponentLoader", function () {
 
         loader.load({
           scripts: true,
-          rendererScope: passedRendererScope,
+          rendererScope: passedRendererScope
         });
         mockComplete('<script>this.foo = "bar";</script>New content');
 
@@ -473,7 +473,7 @@ describe("Ext.ComponentLoader", function () {
         runs(function () {
           // Check that content is updated.
           expect(comp.body.dom.textContent || comp.body.dom.innerText).toBe(
-            "New content",
+            "New content"
           );
         });
       });
@@ -484,16 +484,16 @@ describe("Ext.ComponentLoader", function () {
         var o = {
           fn: function (loader, response, options) {
             loader.getTarget().update("This is the " + response.responseText);
-          },
+          }
         };
 
         spyOn(o, "fn").andCallThrough();
 
         makeComponent({
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader({
-          renderer: o.fn,
+          renderer: o.fn
         });
         loadAndComplete("response");
         expect(o.fn).toHaveBeenCalled();
@@ -503,7 +503,7 @@ describe("Ext.ComponentLoader", function () {
       it("should fail if the renderer returns false", function () {
         var result;
         makeComponent({
-          renderTo: document.body,
+          renderTo: document.body
         });
         makeLoader({
           renderer: function () {
@@ -512,7 +512,7 @@ describe("Ext.ComponentLoader", function () {
 
           callback: function (loader, success) {
             result = success;
-          },
+          }
         });
         loadAndComplete();
         expect(result).toBeFalsy();
