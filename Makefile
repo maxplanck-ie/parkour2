@@ -277,7 +277,7 @@ models:
 		pip install pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
 		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp_parkour.dot && \
-		dot -T pdf -o /tmp_parkour.dot"
+		dot -T pdf -o /tmp_parkour.pdf /tmp_parkour.dot"
 	@docker exec parkour2-django sh -c \
 		"pdfposter -mA3 -pA1 /tmp_parkour.pdf /tmp_models.A3.pdf && \
 		pdfposter -mA4 -pA1 /tmp_parkour.pdf /tmp_models.A4.pdf && \
