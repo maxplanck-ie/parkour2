@@ -98,22 +98,20 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
-            .select_related("read_length", "index_type")
+            .prefetch_related("read_length", "index_type")
             .only("read_length", "index_type", "equal_representation_nucleotides")
         )
 
         samples_qs = (
             Sample.objects.filter(~Q(status=-1))
-            .select_related("read_length", "index_type")
+            .prefetch_related("read_length", "index_type")
             .only("read_length", "index_type", "equal_representation_nucleotides")
         )
 
         lanes_qs = (
             Lane.objects.filter(completed=False)
-            .select_related(
-                "pool",
-            )
             .prefetch_related(
+                "pool",
                 Prefetch("pool__libraries", queryset=libraries_qs),
                 Prefetch("pool__samples", queryset=samples_qs),
             )
@@ -121,11 +119,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.select_related(
-                "sequencer",
-            )
-            .filter(archived=False)
+            Flowcell.objects.filter(archived=False)
             .prefetch_related(
+                "sequencer",
                 Prefetch("lanes", queryset=lanes_qs),
             )
             .order_by("-create_time")
@@ -200,20 +196,20 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         # Libraries which have reached the Pooling step
         libraries_qs = (
             Library.objects.filter(status__gte=2)
-            .select_related("read_length")
+            .prefetch_related("read_length")
             .only("status", "read_length")
         )
 
         # Samples which have reached the Pooling step
         samples_qs = (
             Sample.objects.filter(status__gte=3)
-            .select_related("read_length")
+            .prefetch_related("read_length")
             .only("status", "read_length")
         )
 
         queryset = (
-            Pool.objects.select_related("size")
-            .prefetch_related(
+            Pool.objects.prefetch_related(
+                "size",
                 Prefetch("libraries", queryset=libraries_qs),
                 Prefetch("samples", queryset=samples_qs),
             )
