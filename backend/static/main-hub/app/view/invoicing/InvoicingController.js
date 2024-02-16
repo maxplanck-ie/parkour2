@@ -10,7 +10,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
         activate: "activateView"
       },
       parkourmonthpicker: {
-        select: "selectMonth",
+        select: "selectMonth"
       },
       // "#billing-period-combobox": {
       //   select: "selectBillingPeriod",
@@ -36,7 +36,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     var endMonthPicker = view.down("#end-month-picker");
 
     var currentDate = new Date();
-    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.YEAR, 1);
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.MONTH, 1);
     var defaultEndDate = currentDate;
 
     startMonthPicker.setValue(defaultStartDate);
@@ -86,8 +86,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       endOfMonth = Ext.Date.getLastDateOfMonth(value);
     }
 
-    var start = Ext.Date.format(startOfMonth, "d.m.Y");
-    var end = Ext.Date.format(endOfMonth, "d.m.Y");
+    var start = Ext.Date.format(startOfMonth, "m.Y");
+    var end = Ext.Date.format(endOfMonth, "m.Y");
 
     var store = grid.getStore();
     store.getProxy().setExtraParam("start", start);
