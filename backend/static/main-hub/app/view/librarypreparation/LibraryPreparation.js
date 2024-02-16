@@ -241,7 +241,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             },
           },
           {
-            text: "QC Comments",
+            text: "iQC Comments",
             tooltip: "Incoming Libraries/Samples QC Comments",
             dataIndex: "comments_facility",
             renderer: "gridCellTooltipRenderer",
@@ -249,7 +249,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             width: 150,
           },
           {
-            text: "Comments",
+            text: "LibQC Comments",
             dataIndex: "comments",
             renderer: "gridCellTooltipRenderer",
             editor: { xtype: "textfield" },
