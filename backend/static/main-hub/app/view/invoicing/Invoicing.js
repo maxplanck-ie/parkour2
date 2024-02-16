@@ -46,7 +46,14 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             fieldLabel: "To",
             labelWidth: 20,
             labelStyle: "color: white;"
+            // margin: "0 15px 0 0"
           }
+          // {
+          //   xtype: "parkoursearchfield",
+          //   itemId: "search-field",
+          //   emptyText: "Search",
+          //   width: 320
+          // }
         ]
       },
 
@@ -174,20 +181,6 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             //   labelWidth: 130,
             //   width: 300,
             // },
-            {
-              itemId: "view-uploaded-report-button",
-              text: "View Uploaded Report",
-              reportUrl: "",
-              hidden: true,
-              handler: function () {
-                var link = document.createElement("a");
-                link.href = this.reportUrl;
-                link.download = this.reportUrl.substr(
-                  this.reportUrl.lastIndexOf("/") + 1
-                );
-                link.click();
-              }
-            }
           ]
         },
         {
@@ -195,16 +188,22 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
           dock: "bottom",
           items: [
             {
-              text: "Download Report",
-              itemId: "download-report",
-              downloadUrl: "api/invoicing/download/",
-              iconCls: "fa fa-download fa-lg"
+              itemId: "view-uploaded-report-button",
+              text: "View Reports",
+              iconCls: "fa fa-search fa-lg"
+              // handler: function () {}
             },
             {
               text: "Upload Report",
               itemId: "upload-report",
               uploadUrl: "api/invoicing/upload/",
               iconCls: "fa fa-upload fa-lg"
+            },
+            {
+              text: "Download Report",
+              itemId: "download-report",
+              downloadUrl: "api/invoicing/download/",
+              iconCls: "fa fa-download fa-lg"
             }
           ]
         }

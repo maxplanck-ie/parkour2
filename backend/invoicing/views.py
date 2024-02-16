@@ -42,6 +42,27 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     serializer_class = InvoicingSerializer
 
+    def get_start_end_dates(self):
+        today = timezone.datetime.today()
+
+        default_start_date = today - relativedelta(months=0)
+        default_end_date = today
+
+        start_date_param = self.request.query_params.get(
+            "start", default_start_date.strftime("%m.%Y")
+        )
+        end_date_param = self.request.query_params.get(
+            "end", default_end_date.strftime("%m.%Y")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%m.%Y")
+        end_date = timezone.datetime.strptime(end_date_param, "%m.%Y")
+
+        start_date = start_date.replace(day=1)
+        end_date = end_date.replace(day=1) + relativedelta(months=1, days=-1)
+
+        return start_date, end_date
+
     def get_serializer_context(self):
         today = timezone.datetime.today()
         year = self.request.query_params.get("year", today.year)
@@ -50,22 +71,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         return ctx
 
     def get_queryset(self):
-        today = timezone.datetime.today()
-
-        default_start_date = today - relativedelta(years=1)
-        default_end_date = (
-            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
-        )
-
-        start_date_param = self.request.query_params.get(
-            "start", default_start_date.strftime("%d.%m.%Y")
-        )
-        end_date_param = self.request.query_params.get(
-            "end", default_end_date.strftime("%d.%m.%Y")
-        )
-
-        start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
-        end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
+        start_date, end_date = self.get_start_end_dates()
 
         flowcell_qs = (
             Flowcell.objects.select_related(
@@ -83,6 +89,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             )
             .only("read_length", "library_protocol__name")
         )
+
         samples_qs = (
             Sample.objects.filter(~Q(pool=None) & ~Q(status=-1))
             .select_related(
@@ -126,6 +133,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         year = self.request.query_params.get("year", today.year)
         month = self.request.query_params.get("month", today.month)
         ctx = {"curr_month": month, "curr_year": year, "today": today}
+
         serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)
@@ -193,22 +201,10 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     @action(methods=["get"], detail=False)
     def download(self, request):
         """Download Invoicing Report."""
-        today = timezone.datetime.today()
 
-        default_start_date = today - relativedelta(years=1)
-        default_end_date = (
-            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
-        )
-
-        start_date_param = self.request.query_params.get(
-            "start", default_start_date.strftime("%d.%m.%Y")
-        )
-        end_date_param = self.request.query_params.get(
-            "end", default_end_date.strftime("%d.%m.%Y")
-        )
-
-        start_date = timezone.datetime.strptime(start_date_param, "%m.%Y")
-        end_date = timezone.datetime.strptime(end_date_param, "%m.%Y")
+        start_date, end_date = self.get_start_end_dates()
+        start_date = start_date.strftime("%b_%Y")
+        end_date = end_date.strftime("%b_%Y")
 
         filename = f"Invoicing_Report_{start_date}_{end_date}.xls"
         response = HttpResponse(content_type="application/ms-excel")
