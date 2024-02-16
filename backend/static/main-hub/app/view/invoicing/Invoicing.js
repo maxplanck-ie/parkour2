@@ -5,7 +5,7 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
   requires: [
     "MainHub.view.invoicing.BaseCostGrid",
     "MainHub.components.MonthPicker",
-    "MainHub.view.invoicing.InvoicingController",
+    "MainHub.view.invoicing.InvoicingController"
   ],
 
   controller: "invoicing",
@@ -38,16 +38,16 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             fieldLabel: "From",
             labelWidth: 37,
             labelStyle: "color: white;",
-            margin: "0 15px 0 0",
+            margin: "0 15px 0 0"
           },
           {
             xtype: "parkourmonthpicker",
             itemId: "end-month-picker",
             fieldLabel: "To",
             labelWidth: 20,
-            labelStyle: "color: white;",
-          },
-        ],
+            labelStyle: "color: white;"
+          }
+        ]
       },
 
       store: "Invoicing",
@@ -73,7 +73,7 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
                 '" data-qwidth=300';
               return boldValue;
             },
-            locked: true,
+            locked: true
           },
           {
             text: "Cost Unit",
