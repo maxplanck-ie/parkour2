@@ -47,6 +47,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 render: function (label) {
                   label.getEl().on("click", function () {
                     navigator.clipboard.writeText(label.text);
+                    new Noty({ text: "Text Copied!" }).show();
                   });
                   label.getEl().on("mouseover", function () {
                     Ext.tip.QuickTipManager.register({
