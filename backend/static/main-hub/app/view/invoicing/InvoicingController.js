@@ -12,9 +12,6 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       parkourmonthpicker: {
         select: "selectMonth"
       },
-      // "#billing-period-combobox": {
-      //   select: "selectBillingPeriod",
-      // },
       "#invoicing-grid": {
         resize: "resize"
       },
@@ -31,35 +28,18 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   activateView: function (view) {
-    // var billingPeriodCb = view.down("#billing-period-combobox");
     var startMonthPicker = view.down("#start-month-picker");
     var endMonthPicker = view.down("#end-month-picker");
 
     var currentDate = new Date();
-    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.MONTH, 1);
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.MONTH, 0);
     var defaultEndDate = currentDate;
 
     startMonthPicker.setValue(defaultStartDate);
     endMonthPicker.setValue(defaultEndDate);
 
-    startMonthPicker.fireEvent(
-      "select",
-      startMonthPicker,
-      defaultStartDate,
-      "start"
-    );
-    endMonthPicker.fireEvent("select", endMonthPicker, defaultEndDate, "end");
-
-    // billingPeriodCb.getStore().reload({
-    //   callback: function (records) {
-    //     if (records && records.length > 0) {
-    //       var lastRecord = records[records.length - 1];
-    //       billingPeriodCb.select(lastRecord);
-    //       billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
-    //       billingPeriodCb.cancelFocus();
-    //     }
-    //   },
-    // });
+    startMonthPicker.fireEvent("select", startMonthPicker);
+    endMonthPicker.fireEvent("select", endMonthPicker);
 
     // Load cost stores
     view.down("#fixed-costs-grid").getStore().reload();
@@ -67,27 +47,13 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     view.down("#sequencing-costs-grid").getStore().reload();
   },
 
-  selectMonth: function (df, value, criteria) {
-    if (!criteria) {
-      criteria = df.itemId === "start-month-picker" ? "start" : "end";
-    }
-
+  selectMonth: function (df) {
     var grid = df.up("grid");
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
 
-    var startOfMonth, endOfMonth;
-
-    if (criteria === "start") {
-      startOfMonth = Ext.Date.getFirstDateOfMonth(value);
-      endOfMonth = Ext.Date.getLastDateOfMonth(endMonthPicker.getValue());
-    } else if (criteria === "end") {
-      startOfMonth = Ext.Date.getFirstDateOfMonth(startMonthPicker.getValue());
-      endOfMonth = Ext.Date.getLastDateOfMonth(value);
-    }
-
-    var start = Ext.Date.format(startOfMonth, "m.Y");
-    var end = Ext.Date.format(endOfMonth, "m.Y");
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
 
     var store = grid.getStore();
     store.getProxy().setExtraParam("start", start);
@@ -98,25 +64,6 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   resize: function (el) {
     el.setHeight(Ext.Element.getViewportHeight() - 64);
   },
-
-  // selectBillingPeriod: function (cb, record) {
-  //   var uploadedReportBtn = cb.up().down("#view-uploaded-report-button");
-  //   var reportUrl = record.get("report_url");
-
-  //   Ext.getStore("Invoicing").reload({
-  //     params: {
-  //       year: record.get("value")[0],
-  //       month: record.get("value")[1],
-  //     },
-  //   });
-
-  //   if (reportUrl !== "") {
-  //     uploadedReportBtn.reportUrl = reportUrl;
-  //     uploadedReportBtn.show();
-  //   } else {
-  //     uploadedReportBtn.hide();
-  //   }
-  // },
 
   editPrice: function (editor, context) {
     var store = editor.grid.getStore();
@@ -137,23 +84,32 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   downloadReport: function (btn) {
-    var billingPeriodCb = btn.up("grid").down("#billing-period-combobox");
-    var value = billingPeriodCb.getValue();
+    var grid = btn.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
     var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
 
     form.submit({
       url: btn.downloadUrl,
       method: "GET",
       params: {
-        year: value[0],
-        month: value[1]
+        start,
+        end
       }
     });
   },
 
   uploadReport: function (btn) {
-    var billingPeriodCb = btn.up("grid").down("#billing-period-combobox");
-    var value = billingPeriodCb.getValue();
+    var grid = btn.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+    var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
 
     Ext.create("Ext.ux.FileUploadWindow", {
       fileFieldName: "report",

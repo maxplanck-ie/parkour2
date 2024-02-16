@@ -336,7 +336,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                     }
                   });
                 },
-                500,
+                1500, // Only search after this many milliseconds
                 this
               )
             }
