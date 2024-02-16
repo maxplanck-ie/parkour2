@@ -98,7 +98,6 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def get_queryset(self):
         today = timezone.datetime.today()
 
-<<<<<<< HEAD
         default_start_date = today - relativedelta(months=0)
         default_end_date = today
 
@@ -114,22 +113,6 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
         start_date = start_date.replace(day=1)
         end_date = end_date.replace(day=1) + relativedelta(months=1, days=-1)
-=======
-        default_start_date = today - relativedelta(years=1)
-        default_end_date = (
-            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
-        )
-
-        start_date_param = self.request.query_params.get(
-            "start", default_start_date.strftime("%d.%m.%Y")
-        )
-        end_date_param = self.request.query_params.get(
-            "end", default_end_date.strftime("%d.%m.%Y")
-        )
-
-        start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
-        end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
->>>>>>> 82f51d70 (month selection for invoicing: API and UI)
 
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
@@ -154,13 +137,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-<<<<<<< HEAD
             Flowcell.objects.filter(
                 create_time__gte=start_date, create_time__lte=end_date, archived=False
             )
-=======
-            Flowcell.objects.filter(create_time__gte=start_date, create_time__lte=end_date, archived=False)
->>>>>>> 82f51d70 (month selection for invoicing: API and UI)
             .prefetch_related(
                 "sequencer",
                 Prefetch("lanes", queryset=lanes_qs),
