@@ -200,7 +200,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             filter: { type: "string" },
           },
           {
-            text: "Loading Conc.",
+            text: "pM Loading Conc.",
             tooltip: "Loading Concentration",
             dataIndex: "loading_concentration",
             filter: { type: "number" },
