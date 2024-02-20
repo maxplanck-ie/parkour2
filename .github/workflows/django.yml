@@ -25,7 +25,7 @@ jobs:
               # ^^ that means, no missing dependencies!
               # like, before 1349476f52d1c21b096ee44754b7b56f7e57cb30
         run: |
-          make prod
+          make prod-ci
 
   install-per-wiki-instructions:
     if: github.repository == 'maxplanck-ie/parkour2'
