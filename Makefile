@@ -104,6 +104,9 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 
 prod: down clean deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
 
+prod-ci: down clean deploy-django collect-static apply-migrations
+	@docker exec parkour2-django python manage.py check
+
 dev-easy: down set-dev deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
 
 dev: down set-dev deploy-django deploy-nginx collect-static clean  ## Deploy Werkzeug instance with Nginx (incl. TLS)
