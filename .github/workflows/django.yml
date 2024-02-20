@@ -16,6 +16,17 @@ on:
 # https://github.com/maxplanck-ie/parkour2/actions/runs/5457117039/workflow
 
 jobs:
+  run-prod-bare:
+    if: github.repository == 'maxplanck-ie/parkour2'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build and see that DEBUG is respected
+              # ^^ that means, no missing dependencies!
+              # like, before 1349476f52d1c21b096ee44754b7b56f7e57cb30
+        run: |
+          make prod
+
   install-per-wiki-instructions:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
