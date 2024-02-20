@@ -1,7 +1,12 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
 ??.??.??
-=======
+========
+
+- Added date-range picker in 'Invoicing' submodule. (#?)
+
+24.02.20
+========
 
 - Added date-range picker in 'Load Flowcells' submodule. (#96)
 - Added a library protocol filter, and added pool into search functionality, for 'Libraries & Samples' staff UI. (#95)
