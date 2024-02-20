@@ -1,6 +1,8 @@
 from django.conf import settings
 from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
+from django.utils.encoding import force_str
+import os
 
 from .models import FileRequest, Request
 
@@ -146,6 +148,43 @@ class RequestSerializer(ModelSerializer):
 
         return internal_value
 
+    def rename_files(self, instance):
+
+        """Add LIMS ID to a request file name"""
+
+        for request_file in instance.files.all().exclude(name__regex='^LIMS-[1-9]{1}[0-9]*_'):
+
+            file_field = getattr(request_file, 'file')
+            
+            if file_field:
+
+                file_name = force_str(file_field)
+                file_basename = os.path.basename(file_name)
+                file_dirname = os.path.dirname(file_name)
+
+                # Create new file name
+                new_file_basename = f'LIMS-{instance.pk}_{file_basename}'
+                new_file_name = os.path.join(file_dirname, new_file_basename)
+
+                # Essentially, rename file
+                if file_name != new_file_name:
+                    # file_field.storage.delete(new_file_name)
+                    new_file_name = file_field.storage.save(new_file_name, file_field)
+                    new_file_basename = os.path.basename(new_file_name)
+                    file_field.close()
+                    file_field.storage.delete(file_name)
+                    request_file.name = new_file_basename
+                    request_file.file = new_file_name
+                    request_file.save()
+
+    def create(self, validated_data):
+
+        instance = super().create(validated_data)
+        
+        self.rename_files(instance)
+
+        return instance
+
     def update(self, instance, validated_data):
         # Remember old files
         old_files = set(instance.files.all())
@@ -161,6 +200,8 @@ class RequestSerializer(ModelSerializer):
         files_to_delete = list(old_files - new_files)
         for file in files_to_delete:
             file.delete()
+
+        self.rename_files(instance)
 
         return instance
 
