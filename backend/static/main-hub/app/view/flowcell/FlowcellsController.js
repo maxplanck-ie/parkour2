@@ -53,7 +53,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     var endMonthPicker = view.down("#end-month-picker");
 
     var currentDate = new Date();
-    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.YEAR, 1);
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.MONTH, 0);
     var defaultEndDate = currentDate;
 
     startMonthPicker.setValue(defaultStartDate);
