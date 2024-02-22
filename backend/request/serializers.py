@@ -3,6 +3,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.serializers import ModelSerializer, SerializerMethodField, CharField
 from django.utils.encoding import force_str
 import os
+import re
 
 from .models import FileRequest, Request
 
@@ -152,7 +153,7 @@ class RequestSerializer(ModelSerializer):
 
         """Add LIMS ID to a request file name"""
 
-        for request_file in instance.files.all().exclude(name__regex='^LIMS-[1-9]{1}[0-9]*_'):
+        for request_file in instance.files.all().exclude(name__regex=r'^LIMS-[1-9]{1}[0-9]*_'):
 
             file_field = getattr(request_file, 'file')
             
@@ -207,12 +208,16 @@ class RequestSerializer(ModelSerializer):
 
 
 class RequestFileSerializer(ModelSerializer):
+    name = SerializerMethodField()
     size = SerializerMethodField()
     path = SerializerMethodField()
 
     class Meta:
         model = FileRequest
         fields = ("id", "name", "size", "path")
+
+    def get_name(self, obj):
+        return re.sub(r'^LIMS-[1-9]{1}[0-9]*_', '', obj.name.split("/")[-1])
 
     def get_size(self, obj):
         return obj.file.size
