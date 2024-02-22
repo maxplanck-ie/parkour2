@@ -580,8 +580,10 @@ class RequestViewSet(viewsets.ModelViewSet):
             # Build relevant URLs
             current_site = get_current_site(request)
             base_domain =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
-            url_query_params = urlencode({"token": instance.token, 'redirect': 'true'})
-            approval_url= f'{base_domain}{reverse("request-request-approval", args=(pk,))}?{url_query_params}'
+            url_query_params = urlencode({"token": instance.token, 'redirect': 'true',})
+            redirect_url = f'{reverse("request-approve", args=(pk,))}?{url_query_params}'
+            url_query_params = urlencode({"next": redirect_url,})
+            approval_url= f'{base_domain}{reverse("login")}?{url_query_params}'
 
             email_recipients = [instance.pi.email]
         
