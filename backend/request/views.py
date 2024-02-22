@@ -532,8 +532,9 @@ class RequestViewSet(viewsets.ModelViewSet):
                 }
             instance.save(update_fields=["token", "approval", "approval_user", "approval_time"])
 
-            email_recipients = list(set(instance.pi.email, instance.user.email, 
-                                        request.user.email, instance.bioinformatician.email))
+            email_recipients = list(set(instance.pi.email, instance.user.email, request.user.email))
+            if not instance.bioinformatician.email.lower().endswith('example.com'):
+                email_recipients.append(instance.bioinformatician.email)
 
             request.session_id = request.session._get_or_create_session_key()
             request.origin_ip = get_client_ip(request)
