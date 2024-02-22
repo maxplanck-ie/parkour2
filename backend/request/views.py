@@ -582,8 +582,8 @@ class RequestViewSet(viewsets.ModelViewSet):
             base_domain =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
             url_query_params = urlencode({"token": instance.token, 'redirect': 'true',})
             redirect_url = f'{reverse("request-approve", args=(pk,))}?{url_query_params}'
-            url_query_params = urlencode({"next": redirect_url,})
-            approval_url= f'{base_domain}{reverse("login")}?{url_query_params}'
+            url_query_params = urlencode({"approval_url": redirect_url,})
+            approval_url= f'{base_domain}{reverse("approve_request_redirect")}?{url_query_params}'
 
             email_recipients = [instance.pi.email]
         
@@ -1470,3 +1470,18 @@ class ApproveViewSet(viewsets.ModelViewSet):
             recipient_list=[instance.user.email, instance.user.pi.email],
         )
         return HttpResponseRedirect("/")
+
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def approve_request_redirect(request):
+    '''Pass-through for API call to approve a request, which 
+    enforces logging in, if not already logged in'''
+
+    approval_url = request.GET.get("approval_url")
+
+    if not approval_url:
+        return HttpResponse(status=500)
+
+    return HttpResponseRedirect(approval_url)
