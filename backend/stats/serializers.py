@@ -69,7 +69,7 @@ class RunsSerializer(ModelSerializer):
 
 
 class SequencesSerializer(ModelSerializer):
-    sequencer = SerializerMethodField()
+    sequencing_kit = SerializerMethodField()
 
     class Meta:
         model = Flowcell
@@ -77,12 +77,12 @@ class SequencesSerializer(ModelSerializer):
             "pk",
             "flowcell_id",
             "create_time",
-            "sequencer",
+            "sequencing_kit",
             "sequences",
         )
 
-    def get_sequencer(self, obj):
-        return obj.pool_size.sequencer.name
+    def get_sequencing_kit(self, obj):
+        return str(obj.pool_size)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -125,7 +125,7 @@ class SequencesSerializer(ModelSerializer):
                         "pk": data["pk"],
                         "flowcell_id": data["flowcell_id"],
                         "create_time": data["create_time"],
-                        "sequencer": data["sequencer"],
+                        "sequencing_kit": data["sequencing_kit"],
                         "request": obj.get("request", ""),
                         "barcode": obj.get("barcode", ""),
                         "name": obj.get("name", ""),
