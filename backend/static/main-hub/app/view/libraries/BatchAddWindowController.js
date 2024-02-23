@@ -1119,6 +1119,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 85,
         editor: {
           xtype: "numberfield",
+          decimalPrecision: 2, 
           allowBlank: true,
           minValue: 0,
         },
