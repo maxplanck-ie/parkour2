@@ -16,6 +16,12 @@ Ext.define("MainHub.view.statistics.SequencesController", {
       "#download-report": {
         click: "downloadReport",
       },
+      "#as-handler-sequences-checkbox": {
+        change: "toggleHandler",
+      },
+      "#as-bioinformatician-sequences-checkbox": {
+        change: "toggleBioinformatician",
+      },
     },
   },
 
@@ -34,6 +40,42 @@ Ext.define("MainHub.view.statistics.SequencesController", {
       },
       callback: function () {
         grid.getView().features[0].collapseAll();
+      },
+    });
+  },
+
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#sequences-grid");
+    var dateRange = grid.down("daterangepicker").getPickerValue();
+    var gridGrouping = grid.view.getFeature("sequences-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      params: {
+        start: dateRange.startDateObj,
+        end: dateRange.endDateObj,
+      },
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
+    });
+  },
+
+  toggleBioinformatician: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#sequences-grid");
+    var dateRange = grid.down("daterangepicker").getPickerValue();
+    var gridGrouping = grid.view.getFeature("sequences-grid-grouping");
+    grid.store.getProxy().extraParams.asBioinformatician = newValue ? "True" : "False";
+    grid.store.reload({
+      params: {
+        start: dateRange.startDateObj,
+        end: dateRange.endDateObj,
+      },
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
       },
     });
   },
