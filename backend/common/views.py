@@ -122,6 +122,18 @@ def get_navigation_tree(request):
                 "viewType": "usage",
                 "leaf": True,
             },
+        ]
+    elif request.user.member_of_bcf:
+        data += [
+                {
+                    "text": "Usage",
+                    "iconCls": "x-fa fa-pie-chart",
+                    "viewType": "usage",
+                    "leaf": True,
+                },
+            ]
+
+    data += [
             {
                 "text": "Statistics",
                 "iconCls": "x-fa fa-line-chart",
@@ -140,32 +152,6 @@ def get_navigation_tree(request):
                 ],
             },
         ]
-    elif request.user.member_of_bcf:
-        data += [
-                {
-                    "text": "Usage",
-                    "iconCls": "x-fa fa-pie-chart",
-                    "viewType": "usage",
-                    "leaf": True,
-                },
-                {
-                    "text": "Statistics",
-                    "iconCls": "x-fa fa-line-chart",
-                    "expanded": True,
-                    "children": [
-                        {
-                            "text": "Runs",
-                            "viewType": "run-statistics",
-                            "leaf": True,
-                        },
-                        {
-                            "text": "Sequences",
-                            "viewType": "sequences-statistics",
-                            "leaf": True,
-                        },
-                    ],
-                },
-            ]
 
     return JsonResponse({"text": ".", "children": data})
 

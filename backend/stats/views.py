@@ -10,8 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
-from usage.views import IsMemberBcf
 from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
 
@@ -25,7 +23,6 @@ Lane = apps.get_model("flowcell", "Lane")
 
 
 class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser|IsMemberBcf]
     serializer_class = RunsSerializer
 
     def get_queryset(self):
@@ -122,6 +119,13 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         if request.GET.get("asBioinformatician") == "True":
             queryset = queryset.filter(requests__bioinformatician=request.user)
 
+        if request.user.is_staff or request.user.member_of_bcf:
+            pass
+        elif request.user.is_pi:
+            queryset = queryset.filter(requests__pi=request.user)
+        else:
+            queryset = queryset.filter(Q(requests__user=request.user) | Q(requests__bioinformatician=request.user)).distinct()
+
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)
@@ -175,7 +179,6 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser|IsMemberBcf]
     serializer_class = SequencesSerializer
 
     def get_queryset(self):
@@ -292,6 +295,13 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
         if request.GET.get("asBioinformatician") == "True":
             queryset = queryset.filter(requests__bioinformatician=request.user)
+
+        if request.user.is_staff or request.user.member_of_bcf:
+            pass
+        elif request.user.is_pi:
+            queryset = queryset.filter(requests__pi=request.user)
+        else:
+            queryset = queryset.filter(Q(requests__user=request.user) | Q(requests__bioinformatician=request.user)).distinct()
 
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
