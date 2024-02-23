@@ -126,6 +126,16 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       );
       me._addToIndexPairStore(missingIndexTypeIds, null);
     }
+
+    // If an index store is empty add one bogus entry. Without at least one entry in the
+    // store, an index sequence is not shown when activating a row, even though
+    // it is rendered correctly in the unactivated row. Maybe there is a better solution,
+    // but for now it works.
+    [Ext.getStore("indexI7Store"), Ext.getStore("indexI5Store")].forEach(function (s) {
+      if(!Ext.isEmpty(s)){
+        s.add(new s.model())
+      }
+    })
   },
 
   toggleEditors: function (editor, context) {
