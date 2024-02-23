@@ -89,8 +89,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
   groupExpand: function (view, node, group, e, eOpts) {
     var me = this;
 
-    // When opening a group, load in the index/indexp pair stores
-    // those indices that are present in the group, if not already added
+    // When opening a group, load in the index/index pair stores for
+    // those indices that are present in the group, if not already there
     var records = view
       .getStore()
       .getGroups()
