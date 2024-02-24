@@ -5,7 +5,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#librariesTable": {
         // boxready: 'refresh',
@@ -13,15 +13,15 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
         // itemcontextmenu: 'showContextMenu'
       },
       "#showLibrariesCheckbox": {
-        change: "changeFilter",
+        change: "changeFilter"
       },
       "#showSamplesCheckbox": {
-        change: "changeFilter",
+        change: "changeFilter"
       },
       "#searchField": {
-        change: "changeFilter",
-      },
-    },
+        change: "changeFilter"
+      }
+    }
   },
 
   activateView: function () {
@@ -46,9 +46,9 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
           iconCls: "x-fa fa-pencil",
           handler: function () {
             me.editRecord(record);
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -56,7 +56,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
     Ext.create("MainHub.view.libraries.LibraryWindow", {
       title: record.data.recordType == "L" ? "Edit Library" : "Edit Sample",
       mode: "edit",
-      record: record,
+      record: record
     }).show();
   },
 
@@ -76,10 +76,6 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       showLibraries = el.up().items.items[0].getValue();
       showSamples = value;
       searchQuery = el.up("header").down("textfield").getValue();
-    } else if (el.itemId == "searchField") {
-      showLibraries = el.up().down("fieldcontainer").items.items[0].getValue();
-      showSamples = el.up().down("fieldcontainer").items.items[1].getValue();
-      searchQuery = value;
     }
 
     var showFilter = Ext.util.Filter({
@@ -91,7 +87,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
           res = res || showSamples;
         }
         return res;
-      },
+      }
     });
 
     var searchFilter = Ext.util.Filter({
@@ -114,7 +110,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
           res = true;
         }
         return res;
-      },
+      }
     });
 
     store.clearFilter();
@@ -124,5 +120,5 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
   gridCellTooltipRenderer: function (value, meta) {
     meta.tdAttr = 'data-qtip="' + value + '"';
     return value;
-  },
+  }
 });

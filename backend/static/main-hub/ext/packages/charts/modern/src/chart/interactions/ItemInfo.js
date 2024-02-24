@@ -22,86 +22,85 @@
  *         }]
  *     });
  */
-Ext.define('Ext.chart.interactions.ItemInfo', {
+Ext.define("Ext.chart.interactions.ItemInfo", {
+  extend: "Ext.chart.interactions.Abstract",
 
-    extend: 'Ext.chart.interactions.Abstract',
+  type: "iteminfo",
+  alias: "interaction.iteminfo",
 
-    type: 'iteminfo',
-    alias: 'interaction.iteminfo',
+  /**
+   * @event show
+   * Fires when the info panel is shown.
+   * @param {Ext.chart.interactions.ItemInfo} this The interaction instance
+   * @param {Object} item The item whose info is being displayed
+   * @param {Ext.Panel} panel The panel for displaying the info
+   */
+
+  config: {
+    /**
+     * @cfg {Object} gestures
+     * Defines the gestures that should trigger the item info panel to be displayed.
+     */
+    gestures: {
+      tap: "onInfoGesture"
+    },
 
     /**
-     * @event show
-     * Fires when the info panel is shown.
-     * @param {Ext.chart.interactions.ItemInfo} this The interaction instance
-     * @param {Object} item The item whose info is being displayed
-     * @param {Ext.Panel} panel The panel for displaying the info
+     * @cfg {Object} panel
+     * An optional set of configuration overrides for the {@link Ext.Panel} that gets
+     * displayed. This object will be merged with the default panel configuration.
      */
-
-    config: {
-        /**
-         * @cfg {Object} gestures
-         * Defines the gestures that should trigger the item info panel to be displayed.
-         */
-        gestures: {
-            tap: 'onInfoGesture'
-        },
-
-        /**
-         * @cfg {Object} panel
-         * An optional set of configuration overrides for the {@link Ext.Panel} that gets
-         * displayed. This object will be merged with the default panel configuration.
-         */
-        panel: {
-            modal: true,
-            centered: true,
-            width: 300,
-            height: 200,
-            styleHtmlContent: true,
-            scrollable: 'vertical',
-            hideOnMaskTap: true,
-            fullscreen: false,
-            hidden: false,
-            zIndex: 30
-        }
-    },
-
-    item: null,
-
-    applyPanel: function (panel, oldPanel) {
-        return Ext.factory(panel, 'Ext.Panel', oldPanel);
-    },
-
-    updatePanel: function (panel, oldPanel) {
-        if (panel) {
-            panel.on('hide', "reset", this);
-        }
-        if (oldPanel) {
-            oldPanel.un('hide', "reset", this);
-        }
-    },
-
-    onInfoGesture: function (e, element) {
-        var me = this,
-            panel = me.getPanel(),
-            item = me.getItemForEvent(e);
-        if (item) {
-            me.item = item;
-            me.fireEvent('show', me, item, panel);
-            Ext.Viewport.add(panel);
-            panel.show('pop');
-            item.series.setAttributesForItem(item, { highlighted: true });
-            me.sync();
-        }
-        return false;
-    },
-
-    reset: function () {
-        var me = this,
-            item = me.item;
-        if (item) {
-            item.series.setAttributesForItem(item, { highlighted: false });
-            me.item = null;
-            me.sync();
-        }
+    panel: {
+      modal: true,
+      centered: true,
+      width: 300,
+      height: 200,
+      styleHtmlContent: true,
+      scrollable: "vertical",
+      hideOnMaskTap: true,
+      fullscreen: false,
+      hidden: false,
+      zIndex: 30
     }
+  },
+
+  item: null,
+
+  applyPanel: function (panel, oldPanel) {
+    return Ext.factory(panel, "Ext.Panel", oldPanel);
+  },
+
+  updatePanel: function (panel, oldPanel) {
+    if (panel) {
+      panel.on("hide", "reset", this);
+    }
+    if (oldPanel) {
+      oldPanel.un("hide", "reset", this);
+    }
+  },
+
+  onInfoGesture: function (e, element) {
+    var me = this,
+      panel = me.getPanel(),
+      item = me.getItemForEvent(e);
+    if (item) {
+      me.item = item;
+      me.fireEvent("show", me, item, panel);
+      Ext.Viewport.add(panel);
+      panel.show("pop");
+      item.series.setAttributesForItem(item, { highlighted: true });
+      me.sync();
+    }
+    return false;
+  },
+
+  reset: function () {
+    var me = this,
+      item = me.item;
+    if (item) {
+      item.series.setAttributesForItem(item, { highlighted: false });
+      me.item = null;
+      me.sync();
+    }
+  }
 });

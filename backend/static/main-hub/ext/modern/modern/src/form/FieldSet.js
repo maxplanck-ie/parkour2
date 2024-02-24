@@ -34,177 +34,177 @@
  * configured a {@link #title} and {@link #instructions} to give the user more information on filling out the form if
  * required.
  */
-Ext.define('Ext.form.FieldSet', {
-    extend: 'Ext.Container',
-    alias: 'widget.fieldset',
-    requires: ['Ext.Title'],
-    mixins: ['Ext.form.FieldContainer'],
+Ext.define("Ext.form.FieldSet", {
+  extend: "Ext.Container",
+  alias: "widget.fieldset",
+  requires: ["Ext.Title"],
+  mixins: ["Ext.form.FieldContainer"],
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        baseCls: Ext.baseCSSPrefix + 'form-fieldset',
-
-        /**
-         * @cfg {String} title
-         * Optional fieldset title, rendered just above the grouped fields.
-         *
-         * ## Example
-         *
-         *     Ext.create('Ext.form.Fieldset', {
-         *         fullscreen: true,
-         *
-         *         title: 'Login',
-         *
-         *         items: [{
-         *             xtype: 'textfield',
-         *             label: 'Email'
-         *         }]
-         *     });
-         * 
-         * @accessor
-         */
-        title: null,
-
-        /**
-         * @cfg {String} instructions
-         * Optional fieldset instructions, rendered just below the grouped fields.
-         *
-         * ## Example
-         *
-         *     Ext.create('Ext.form.Fieldset', {
-         *         fullscreen: true,
-         *
-         *         instructions: 'Please enter your email address.',
-         *
-         *         items: [{
-         *             xtype: 'textfield',
-         *             label: 'Email'
-         *         }]
-         *     });
-         * 
-         * @accessor
-         */
-        instructions: null
-    },
-
-    layout: {
-        type: 'vbox'
-    },
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    baseCls: Ext.baseCSSPrefix + "form-fieldset",
 
     /**
-     * @private
+     * @cfg {String} title
+     * Optional fieldset title, rendered just above the grouped fields.
+     *
+     * ## Example
+     *
+     *     Ext.create('Ext.form.Fieldset', {
+     *         fullscreen: true,
+     *
+     *         title: 'Login',
+     *
+     *         items: [{
+     *             xtype: 'textfield',
+     *             label: 'Email'
+     *         }]
+     *     });
+     *
+     * @accessor
      */
-    applyTitle: function(title) {
-        if (typeof title == 'string') {
-            title = {title: title};
-        }
-
-        Ext.applyIf(title, {
-            docked : 'top',
-            baseCls: this.getBaseCls() + '-title'
-        });
-
-        return Ext.factory(title, Ext.Title, this._title);
-    },
+    title: null,
 
     /**
-     * @private
+     * @cfg {String} instructions
+     * Optional fieldset instructions, rendered just below the grouped fields.
+     *
+     * ## Example
+     *
+     *     Ext.create('Ext.form.Fieldset', {
+     *         fullscreen: true,
+     *
+     *         instructions: 'Please enter your email address.',
+     *
+     *         items: [{
+     *             xtype: 'textfield',
+     *             label: 'Email'
+     *         }]
+     *     });
+     *
+     * @accessor
      */
-    updateTitle: function(newTitle, oldTitle) {
-        if (newTitle) {
-            this.add(newTitle);
-        }
-        if (oldTitle) {
-            this.remove(oldTitle);
-        }
-    },
+    instructions: null
+  },
 
-    /**
-     * @private
-     */
-    getTitle: function() {
-        var title = this._title;
+  layout: {
+    type: "vbox"
+  },
 
-        if (title && title instanceof Ext.Title) {
-            return title.getTitle();
-        }
-
-        return title;
-    },
-
-    /**
-     * @private
-     */
-    applyInstructions: function(instructions) {
-        if (typeof instructions == 'string') {
-            instructions = {title: instructions};
-        }
-
-        Ext.applyIf(instructions, {
-            docked : 'bottom',
-            baseCls: this.getBaseCls() + '-instructions'
-        });
-
-        return Ext.factory(instructions, Ext.Title, this._instructions);
-    },
-
-    /**
-     * @private
-     */
-    updateInstructions: function(newInstructions, oldInstructions) {
-        if (newInstructions) {
-            this.add(newInstructions);
-        }
-        if (oldInstructions) {
-            this.remove(oldInstructions);
-        }
-    },
-
-    /**
-     * @private
-     */
-    getInstructions: function() {
-        var instructions = this._instructions;
-
-        if (instructions && instructions instanceof Ext.Title) {
-            return instructions.getTitle();
-        }
-
-        return instructions;
-    },
-
-    /**
-     * A convenient method to disable all fields in this FieldSet
-     * @return {Ext.form.FieldSet} This FieldSet
-     */
-    updateDisabled: function(newDisabled) {
-        this.getFieldsAsArray().forEach(function(field) {
-            field.setDisabled(newDisabled);
-        });
-
-        return this;
-    },
-
-    /**
-     * @private
-     */
-    getFieldsAsArray: function() {
-        var fields = [],
-            getFieldsFrom = function(item) {
-                if (item.isField) {
-                    fields.push(item);
-                }
-
-                if (item.isContainer) {
-                    item.getItems().each(getFieldsFrom);
-                }
-            };
-
-        this.getItems().each(getFieldsFrom);
-
-        return fields;
+  /**
+   * @private
+   */
+  applyTitle: function (title) {
+    if (typeof title == "string") {
+      title = { title: title };
     }
+
+    Ext.applyIf(title, {
+      docked: "top",
+      baseCls: this.getBaseCls() + "-title"
+    });
+
+    return Ext.factory(title, Ext.Title, this._title);
+  },
+
+  /**
+   * @private
+   */
+  updateTitle: function (newTitle, oldTitle) {
+    if (newTitle) {
+      this.add(newTitle);
+    }
+    if (oldTitle) {
+      this.remove(oldTitle);
+    }
+  },
+
+  /**
+   * @private
+   */
+  getTitle: function () {
+    var title = this._title;
+
+    if (title && title instanceof Ext.Title) {
+      return title.getTitle();
+    }
+
+    return title;
+  },
+
+  /**
+   * @private
+   */
+  applyInstructions: function (instructions) {
+    if (typeof instructions == "string") {
+      instructions = { title: instructions };
+    }
+
+    Ext.applyIf(instructions, {
+      docked: "bottom",
+      baseCls: this.getBaseCls() + "-instructions"
+    });
+
+    return Ext.factory(instructions, Ext.Title, this._instructions);
+  },
+
+  /**
+   * @private
+   */
+  updateInstructions: function (newInstructions, oldInstructions) {
+    if (newInstructions) {
+      this.add(newInstructions);
+    }
+    if (oldInstructions) {
+      this.remove(oldInstructions);
+    }
+  },
+
+  /**
+   * @private
+   */
+  getInstructions: function () {
+    var instructions = this._instructions;
+
+    if (instructions && instructions instanceof Ext.Title) {
+      return instructions.getTitle();
+    }
+
+    return instructions;
+  },
+
+  /**
+   * A convenient method to disable all fields in this FieldSet
+   * @return {Ext.form.FieldSet} This FieldSet
+   */
+  updateDisabled: function (newDisabled) {
+    this.getFieldsAsArray().forEach(function (field) {
+      field.setDisabled(newDisabled);
+    });
+
+    return this;
+  },
+
+  /**
+   * @private
+   */
+  getFieldsAsArray: function () {
+    var fields = [],
+      getFieldsFrom = function (item) {
+        if (item.isField) {
+          fields.push(item);
+        }
+
+        if (item.isContainer) {
+          item.getItems().each(getFieldsFrom);
+        }
+      };
+
+    this.getItems().each(getFieldsFrom);
+
+    return fields;
+  }
 });

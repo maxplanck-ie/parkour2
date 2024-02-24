@@ -4,36 +4,36 @@ Ext.define("MainHub.model.flowcell.Pool", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "read_length",
-      type: "int",
+      type: "int"
     },
     {
       name: "read_length_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "pool_size",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool_size_id",
-      type: "int",
+      type: "int"
     },
     {
       name: "loaded",
-      type: "int",
+      type: "int"
     },
     {
       name: "ready",
-      type: "bool",
-    },
+      type: "bool"
+    }
   ],
 
   disabled: false,
@@ -45,5 +45,5 @@ Ext.define("MainHub.model.flowcell.Pool", {
 
   isDisabled: function () {
     return this.disabled;
-  },
+  }
 });

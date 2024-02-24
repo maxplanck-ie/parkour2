@@ -184,9 +184,9 @@ class Duty(models.Model):
     )
     platform = models.CharField(
         "Platform",
-        choices=[("short", "Short"), ("long", "Long")],
+        choices=[("short", "Short"), ("long", "Long"), ("shortlong", "Short + Long")],
         default="short",
-        max_length=5,
+        max_length=15,
     )
     comment = models.TextField(
         "Comment",

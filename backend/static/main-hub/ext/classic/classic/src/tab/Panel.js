@@ -43,12 +43,12 @@
  *             }
  *         }]
  *     });
- * 
+ *
  * ## Vetoing Changes
- * 
+ *
  * User interaction when changing the tabs can be vetoed by listening to the {@link #beforetabchange} event.
  * By returning `false`, the tab change will not occur.
- * 
+ *
  *     @example
  *     Ext.create('Ext.tab.Panel', {
  *         renderTo: Ext.getBody(),
@@ -66,7 +66,7 @@
  *         }, {
  *             title: 'P3'
  *         }]
- *     }); 
+ *     });
  *
  * # Examples
  *
@@ -298,579 +298,604 @@
  *         renderTo : Ext.getBody()
  *     });
  */
-Ext.define('Ext.tab.Panel', {
-    extend: 'Ext.panel.Panel',
-    alias: 'widget.tabpanel',
-    alternateClassName: ['Ext.TabPanel'],
+Ext.define("Ext.tab.Panel", {
+  extend: "Ext.panel.Panel",
+  alias: "widget.tabpanel",
+  alternateClassName: ["Ext.TabPanel"],
 
-    requires: ['Ext.layout.container.Card', 'Ext.tab.Bar'],
+  requires: ["Ext.layout.container.Card", "Ext.tab.Bar"],
 
-    config: {
-        // @cmd-auto-dependency { directRef: 'Ext.tab.Bar' }
-        /**
-         * @cfg {Object} tabBar
-         * Optional configuration object for the internal {@link Ext.tab.Bar}.
-         * If present, this is passed straight through to the TabBar's constructor
-         */
-        tabBar: undefined,
-
-        /**
-         * @cfg {"top"/"bottom"/"left"/"right"} tabPosition
-         * The position where the tab strip should be rendered. Possible values are: 
-         * 
-         *  - top
-         *  - bottom
-         *  - left
-         *  - right
-         */
-        tabPosition : 'top',
-
-        /**
-         * @cfg {'default'/0/1/2} tabRotation
-         * The rotation of the tabs.  Can be one of the following values:
-         *
-         * - `'default'` use the default rotation, depending on {@link #tabPosition} (see below)
-         * - `0` - no rotation
-         * - `1` - rotate 90deg clockwise
-         * - `2` - rotate 90deg counter-clockwise
-         *
-         * The default behavior of this config depends on the {@link #tabPosition}:
-         *
-         * - `'top'` or `'bottom'` - `0`
-         * - `'right'` - `1`
-         * - `'left'` - `2`
-         */
-        tabRotation: 'default',
-
-        /**
-         * @cfg {Boolean} tabStretchMax
-         * `true` to stretch all tabs to the height of the tallest tab when the tabBar
-         * is docked horizontally, or the width of the widest tab when the tabBar is
-         * docked vertically.
-         */
-        tabStretchMax: true
-    },
-
+  config: {
+    // @cmd-auto-dependency { directRef: 'Ext.tab.Bar' }
     /**
-     * @cfg {Number} tabBarHeaderPosition
-     * If specified, the {@link #tabBar} will be rendered as an item of the TabPanel's
-     * Header and the specified `tabBarHeaderPosition` will be used as the Panel header's
-     * {@link Ext.panel.Header#itemPosition}.  If not specified, the {@link #tabBar}
-     * will be rendered as a docked item at {@link #tabPosition}.
+     * @cfg {Object} tabBar
+     * Optional configuration object for the internal {@link Ext.tab.Bar}.
+     * If present, this is passed straight through to the TabBar's constructor
      */
+    tabBar: undefined,
 
     /**
-     * @cfg {String/Number} activeItem
-     * Doesn't apply for {@link Ext.tab.Panel TabPanel}, use {@link #activeTab} instead.
-     */
-
-    /**
-     * @cfg {String/Number/Ext.Component} activeTab
-     * The tab to activate initially. Either an ID, index or the tab component itself. If null, no tab will be set as active.
-     */
-
-
-    /**
-     * @cfg {Ext.enums.Layout/Object} layout
-     * Optional configuration object for the internal {@link Ext.layout.container.Card card layout}.
-     * If present, this is passed straight through to the layout's constructor
-     */
-
-    /**
-     * @cfg {Boolean} removePanelHeader
-     * True to instruct each Panel added to the TabContainer to not render its header element.
-     * This is to ensure that the title of the panel does not appear twice.
-     */
-    removePanelHeader: true,
-
-    /**
-     * @cfg {Boolean} plain
-     * True to not show the full background on the TabBar.
-     */
-    plain: false,
-
-    /**
-     * @cfg {String} [itemCls='x-tabpanel-child']
-     * The class added to each child item of this TabPanel.
-     */
-    itemCls: Ext.baseCSSPrefix + 'tabpanel-child',
-
-    /**
-     * @cfg {Number} minTabWidth
-     * The minimum width for a tab in the {@link #cfg-tabBar}.
-     */
-    minTabWidth: undefined,
-
-    /**
-     * @cfg {Number} maxTabWidth The maximum width for each tab.
-     */
-    maxTabWidth: undefined,
-
-    /**
-     * @cfg {Boolean} deferredRender
+     * @cfg {"top"/"bottom"/"left"/"right"} tabPosition
+     * The position where the tab strip should be rendered. Possible values are:
      *
-     * True by default to defer the rendering of child {@link Ext.container.Container#cfg-items items} to the browsers DOM
-     * until a tab is activated. False will render all contained {@link Ext.container.Container#cfg-items items} as soon as
-     * the {@link Ext.layout.container.Card layout} is rendered. If there is a significant amount of content or a lot of
-     * heavy controls being rendered into panels that are not displayed by default, setting this to true might improve
-     * performance.
+     *  - top
+     *  - bottom
+     *  - left
+     *  - right
+     */
+    tabPosition: "top",
+
+    /**
+     * @cfg {'default'/0/1/2} tabRotation
+     * The rotation of the tabs.  Can be one of the following values:
      *
-     * The deferredRender property is internally passed to the layout manager for TabPanels ({@link
-     * Ext.layout.container.Card}) as its {@link Ext.layout.container.Card#deferredRender} configuration value.
+     * - `'default'` use the default rotation, depending on {@link #tabPosition} (see below)
+     * - `0` - no rotation
+     * - `1` - rotate 90deg clockwise
+     * - `2` - rotate 90deg counter-clockwise
      *
-     * **Note**: leaving deferredRender as true means that the content within an unactivated tab will not be available
+     * The default behavior of this config depends on the {@link #tabPosition}:
+     *
+     * - `'top'` or `'bottom'` - `0`
+     * - `'right'` - `1`
+     * - `'left'` - `2`
      */
-    deferredRender : true,
-
-    _defaultTabRotation: {
-        top: 0,
-        right: 1,
-        bottom: 0,
-        left: 2
-    },
+    tabRotation: "default",
 
     /**
-     * @event beforetabchange
-     * Fires before a tab change (activated by {@link #setActiveTab}). Return false in any listener to cancel
-     * the tabchange
-     * @param {Ext.tab.Panel} tabPanel The TabPanel
-     * @param {Ext.Component} newCard The card that is about to be activated
-     * @param {Ext.Component} oldCard The card that is currently active
+     * @cfg {Boolean} tabStretchMax
+     * `true` to stretch all tabs to the height of the tallest tab when the tabBar
+     * is docked horizontally, or the width of the widest tab when the tabBar is
+     * docked vertically.
      */
+    tabStretchMax: true
+  },
 
-    /**
-     * @event tabchange
-     * Fires when a new tab has been activated (activated by {@link #setActiveTab}).
-     * @param {Ext.tab.Panel} tabPanel The TabPanel
-     * @param {Ext.Component} newCard The newly activated item
-     * @param {Ext.Component} oldCard The previously active item
-     */
+  /**
+   * @cfg {Number} tabBarHeaderPosition
+   * If specified, the {@link #tabBar} will be rendered as an item of the TabPanel's
+   * Header and the specified `tabBarHeaderPosition` will be used as the Panel header's
+   * {@link Ext.panel.Header#itemPosition}.  If not specified, the {@link #tabBar}
+   * will be rendered as a docked item at {@link #tabPosition}.
+   */
 
-    initComponent: function() {
-        var me = this,
-            // Default to 0 if undefined and not null!
-            activeTab = me.activeTab !== null ? (me.activeTab || 0) : null,
-            dockedItems = me.dockedItems,
-            header = me.header,
-            tabBarHeaderPosition = me.tabBarHeaderPosition,
-            tabBar = me.getTabBar(),
-            headerItems;
+  /**
+   * @cfg {String/Number} activeItem
+   * Doesn't apply for {@link Ext.tab.Panel TabPanel}, use {@link #activeTab} instead.
+   */
 
-        // Configure the layout with our deferredRender, and with our activeTeb
-        me.layout = new Ext.layout.container.Card(Ext.apply({
-            owner: me,
-            deferredRender: me.deferredRender,
-            itemCls: me.itemCls,
-            activeItem: activeTab
-        }, me.layout));
+  /**
+   * @cfg {String/Number/Ext.Component} activeTab
+   * The tab to activate initially. Either an ID, index or the tab component itself. If null, no tab will be set as active.
+   */
 
-        if (tabBarHeaderPosition != null) {
-            header = me.header = Ext.apply({}, header);
+  /**
+   * @cfg {Ext.enums.Layout/Object} layout
+   * Optional configuration object for the internal {@link Ext.layout.container.Card card layout}.
+   * If present, this is passed straight through to the layout's constructor
+   */
 
-            headerItems = header.items = (header.items ? header.items.slice() : []);
-            header.itemPosition = tabBarHeaderPosition;
-            headerItems.push(tabBar);
-            header.hasTabBar = true;
-        } else {
-            dockedItems = [].concat(me.dockedItems || []);
-            dockedItems.push(tabBar);
-            me.dockedItems = dockedItems;
-        }
+  /**
+   * @cfg {Boolean} removePanelHeader
+   * True to instruct each Panel added to the TabContainer to not render its header element.
+   * This is to ensure that the title of the panel does not appear twice.
+   */
+  removePanelHeader: true,
 
-        me.callParent(arguments);
+  /**
+   * @cfg {Boolean} plain
+   * True to not show the full background on the TabBar.
+   */
+  plain: false,
 
-        // We have to convert the numeric index/string ID config into its component reference
-        activeTab = me.activeTab = me.getComponent(activeTab);
+  /**
+   * @cfg {String} [itemCls='x-tabpanel-child']
+   * The class added to each child item of this TabPanel.
+   */
+  itemCls: Ext.baseCSSPrefix + "tabpanel-child",
 
-        // Ensure that the active child's tab is rendered in the active UI state
-        if (activeTab) {
-            tabBar.setActiveTab(activeTab.tab, true);
-        }
-    },
+  /**
+   * @cfg {Number} minTabWidth
+   * The minimum width for a tab in the {@link #cfg-tabBar}.
+   */
+  minTabWidth: undefined,
 
-    /**
-     * @method getTabBar
-     * Returns the {@link Ext.tab.Bar} associated with this tabPanel.
-     * @return {Ext.tab.Bar} The tabBar for this tabPanel
-     */
+  /**
+   * @cfg {Number} maxTabWidth The maximum width for each tab.
+   */
+  maxTabWidth: undefined,
 
-    /**
-     * @method setTabBar
-     * @ignore
-     */
+  /**
+   * @cfg {Boolean} deferredRender
+   *
+   * True by default to defer the rendering of child {@link Ext.container.Container#cfg-items items} to the browsers DOM
+   * until a tab is activated. False will render all contained {@link Ext.container.Container#cfg-items items} as soon as
+   * the {@link Ext.layout.container.Card layout} is rendered. If there is a significant amount of content or a lot of
+   * heavy controls being rendered into panels that are not displayed by default, setting this to true might improve
+   * performance.
+   *
+   * The deferredRender property is internally passed to the layout manager for TabPanels ({@link
+   * Ext.layout.container.Card}) as its {@link Ext.layout.container.Card#deferredRender} configuration value.
+   *
+   * **Note**: leaving deferredRender as true means that the content within an unactivated tab will not be available
+   */
+  deferredRender: true,
 
-    onRender: function() {
-        var items = this.items.items,
-            len = items.length,
-            i;
+  _defaultTabRotation: {
+    top: 0,
+    right: 1,
+    bottom: 0,
+    left: 2
+  },
 
-        this.callParent(arguments);
+  /**
+   * @event beforetabchange
+   * Fires before a tab change (activated by {@link #setActiveTab}). Return false in any listener to cancel
+   * the tabchange
+   * @param {Ext.tab.Panel} tabPanel The TabPanel
+   * @param {Ext.Component} newCard The card that is about to be activated
+   * @param {Ext.Component} oldCard The card that is currently active
+   */
 
-        // We want to force any view model for the panel to be created.
-        // This is because we capture various parts about the panel itself (title, icon, etc)
-        // So we need to be able to use that to populate the tabs.
-        // In the future, this could be optimized to be a bit smarter to prevent creation when
-        // not required.
-        for (i = 0; i < len; ++i) {
-            items[i].getBind();
-        }
-    },
+  /**
+   * @event tabchange
+   * Fires when a new tab has been activated (activated by {@link #setActiveTab}).
+   * @param {Ext.tab.Panel} tabPanel The TabPanel
+   * @param {Ext.Component} newCard The newly activated item
+   * @param {Ext.Component} oldCard The previously active item
+   */
 
-    /**
-     * Makes the given card active. Makes it the visible card in the TabPanel's CardLayout and highlights the Tab.
-     * @param {String/Number/Ext.Component} card The card to make active. Either an ID, index or the component itself.
-     * @return {Ext.Component} The resulting active child Component. The call may have been vetoed, or otherwise
-     * modified by an event listener.
-     */
-    setActiveTab: function(card) {
-        var me = this,
-            previous;
+  initComponent: function () {
+    var me = this,
+      // Default to 0 if undefined and not null!
+      activeTab = me.activeTab !== null ? me.activeTab || 0 : null,
+      dockedItems = me.dockedItems,
+      header = me.header,
+      tabBarHeaderPosition = me.tabBarHeaderPosition,
+      tabBar = me.getTabBar(),
+      headerItems;
 
-        // Check for a config object
-        if (!Ext.isObject(card) || card.isComponent) {
-            card = me.getComponent(card);
-        }
-        previous = me.getActiveTab();
-        if (card) {
-            Ext.suspendLayouts();
-            // We may be passed a config object, so add it.
-            // Without doing a layout!
-            if (!card.isComponent) {
-                card = me.add(card);
-            }
+    // Configure the layout with our deferredRender, and with our activeTeb
+    me.layout = new Ext.layout.container.Card(
+      Ext.apply(
+        {
+          owner: me,
+          deferredRender: me.deferredRender,
+          itemCls: me.itemCls,
+          activeItem: activeTab
+        },
+        me.layout
+      )
+    );
 
-            if (previous === card || me.fireEvent('beforetabchange', me, card, previous) === false) {
-                Ext.resumeLayouts(true);
-                return previous;
-            }
+    if (tabBarHeaderPosition != null) {
+      header = me.header = Ext.apply({}, header);
 
-            // MUST set the activeTab first so that the machinery which listens for show doesn't
-            // think that the show is "driving" the activation and attempt to recurse into here.
-            me.activeTab = card;
-
-            // Attempt to switch to the requested card. Suspend layouts because if that was successful
-            // we have to also update the active tab in the tab bar which is another layout operation
-            // and we must coalesce them.
-            me.layout.setActiveItem(card);
-
-            // Read the result of the card layout. Events dear boy, events!
-            card = me.activeTab = me.layout.getActiveItem();
-
-            // Card switch was not vetoed by an event listener
-            if (card && card !== previous) {
-
-                // Update the active tab in the tab bar and resume layouts.
-                me.tabBar.setActiveTab(card.tab);
-                Ext.resumeLayouts(true);
-
-                // previous will be undefined or this.activeTab at instantiation
-                if (previous !== card) {
-                    me.fireEvent('tabchange', me, card, previous);
-                }
-            }
-            // Card switch was vetoed by an event listener. Resume layouts (Nothing should have changed on a veto).
-            else {
-                Ext.resumeLayouts(true);
-            }
-            return card;
-        }
-        return previous;
-    },
-
-    setActiveItem: function(item) {
-        return this.setActiveTab(item);
-    },
-
-    /**
-     * Returns the item that is currently active inside this TabPanel.
-     * @return {Ext.Component} The currently active item.
-     */
-    getActiveTab: function() {
-        var me = this,
-            // Ensure the calculated result references a Component
-            result = me.getComponent(me.activeTab);
-
-        // Sanitize the result in case the active tab is no longer there.
-        if (result && me.items.indexOf(result) !== -1) {
-            me.activeTab = result;
-        } else {
-            me.activeTab = undefined;
-        }
-
-        return me.activeTab;
-    },
-
-    applyTabBar: function(tabBar) {
-        var me = this,
-            // if we are rendering the tabbar into the panel header, use same alignment
-            // as header position, and ignore tabPosition.
-            dock = (me.tabBarHeaderPosition != null) ? me.getHeaderPosition() : me.getTabPosition();
-
-        return new Ext.tab.Bar(Ext.apply({
-            ui: me.ui,
-            dock: dock,
-            tabRotation: me.getTabRotation(),
-            vertical: (dock === 'left' || dock === 'right'),
-            plain: me.plain,
-            tabStretchMax: me.getTabStretchMax(),
-            tabPanel: me
-        }, tabBar));
-    },
-
-    updateHeaderPosition: function(headerPosition, oldHeaderPosition) {
-        var tabBar = this.getTabBar();
-
-        if (tabBar && (this.tabBarHeaderPosition != null)) {
-            tabBar.setDock(headerPosition);
-        }
-
-        this.callParent([headerPosition, oldHeaderPosition]);
-    },
-
-    updateTabPosition: function(tabPosition) {
-        var tabBar = this.getTabBar();
-
-        if (tabBar && (this.tabBarHeaderPosition == null)) {
-            tabBar.setDock(tabPosition);
-        }
-    },
-
-    updateTabRotation: function(tabRotation) {
-        var tabBar = this.getTabBar();
-
-        if (tabBar) {
-            tabBar.setTabRotation(tabRotation);
-        }
-    },
-
-    /**
-     * @protected
-     * Makes sure we have a Tab for each item added to the TabPanel
-     */
-    onAdd: function(item, index) {
-        var me = this,
-            cfg = Ext.apply({}, item.tabConfig),
-            tabBar = me.getTabBar(),
-            ariaDom,
-            defaultConfig = {
-                xtype: 'tab',
-                title: item.title,
-                icon: item.icon,
-                iconCls: item.iconCls,
-                glyph: item.glyph,
-                ui: tabBar.ui,
-                card: item,
-                disabled: item.disabled,
-                closable: item.closable,
-                hidden: item.hidden && !item.hiddenByLayout, // only hide if it wasn't hidden by the layout itself
-                tooltip: item.tooltip,
-                tabBar: tabBar,
-                tabPosition: tabBar.dock,
-                rotation: tabBar.getTabRotation()
-            };
-
-        if (item.closeText !== undefined) {
-            defaultConfig.closeText = item.closeText;
-        }
-
-        cfg = Ext.applyIf(cfg, defaultConfig);
-
-        // Create the correspondiong tab in the tab bar
-        item.tab = me.tabBar.insert(index, cfg);
-        
-        // We want to force the relationship of the tabpanel to the tab
-        item.ariaRole = 'tabpanel';
-        
-        // Item might be already rendered and then added to the TabPanel
-        ariaDom = item.ariaEl.dom;
-        
-        if (ariaDom) {
-            ariaDom.setAttribute('aria-labelledby', item.tab.id);
-        }
-        else {
-            item.ariaRenderAttributes = item.ariaRenderAttributes || {};
-            item.ariaRenderAttributes['aria-labelledby'] = item.tab.id;
-        }
-
-        item.on({
-            scope : me,
-            enable: me.onItemEnable,
-            disable: me.onItemDisable,
-            beforeshow: me.onItemBeforeShow,
-            iconchange: me.onItemIconChange,
-            iconclschange: me.onItemIconClsChange,
-            glyphchange: me.onItemGlyphChange,
-            titlechange: me.onItemTitleChange
-        });
-
-        if (item.isPanel) {
-            if (me.removePanelHeader) {
-                if (item.rendered) {
-                    if (item.header) {
-                        item.header.hide();
-                    }
-                } else {
-                    item.header = false;
-                }
-            }
-            if (item.isPanel && me.border) {
-                item.setBorder(false);
-            }
-        }
-
-        // Force the view model to be created, see onRender
-        if (me.rendered) {
-            item.getBind();
-        }
-
-        // Ensure that there is at least one active tab. This is only needed when adding tabs via a loader config, i.e., there
-        // may be no pre-existing tabs. Note that we need to check if activeTab was explicitly set to `null` in the tabpanel
-        // config (which tells the layout not to set an active item), as this is a valid value to mean 'do not set an active tab'.
-        if (me.rendered && me.loader && me.activeTab === undefined && me.layout.activeItem !== null) {
-            me.setActiveTab(0);
-        }
-    },
-
-    onMove: function(item, fromIdx, toIdx) {
-        var tabBar = this.getTabBar();
-
-        this.callParent([item, fromIdx, toIdx]);
-
-        // If the move of the item.tab triggered the movement of the child Panel,
-        // then we're done.
-        if (tabBar.items.indexOf(item.tab) !== toIdx) {
-            tabBar.move(item.tab, toIdx);
-        }
-    },
-
-    /**
-     * @private
-     * Enable corresponding tab when item is enabled.
-     */
-    onItemEnable: function(item){
-        item.tab.enable();
-    },
-
-    /**
-     * @private
-     * Disable corresponding tab when item is enabled.
-     */
-    onItemDisable: function(item){
-        item.tab.disable();
-    },
-
-    /**
-     * @private
-     * Sets activeTab before item is shown.
-     */
-    onItemBeforeShow: function(item) {
-        if (item !== this.activeTab) {
-            this.setActiveTab(item);
-            return false;
-        }
-    },
-
-    /**
-     * @private
-     * Update the tab icon when panel glyph has been set or changed.
-     */
-    onItemGlyphChange: function(item, newGlyph) {
-        item.tab.setGlyph(newGlyph);
-    },
-
-    /**
-     * @private
-     * Update the tab icon when panel icon has been set or changed.
-     */
-    onItemIconChange: function(item, newIcon) {
-        item.tab.setIcon(newIcon);
-    },
-    
-    /**
-     * @private
-     * Update the tab iconCls when panel iconCls has been set or changed.
-     */
-    onItemIconClsChange: function(item, newIconCls) {
-        item.tab.setIconCls(newIconCls);
-    },
-
-    /**
-     * @private
-     * Update the tab title when panel title has been set or changed.
-     */
-    onItemTitleChange: function(item, newTitle) {
-        item.tab.setText(newTitle);
-    },
-
-    /**
-     * @private
-     * Makes sure we remove the corresponding Tab when an item is removed
-     */
-    onRemove: function(item, destroying) {
-        var me = this;
-
-        item.un({
-            scope : me,
-            enable: me.onItemEnable,
-            disable: me.onItemDisable,
-            beforeshow: me.onItemBeforeShow,
-            iconchange: me.onItemIconChange,
-            iconclschange: me.onItemIconClsChange,
-            glyphchange: me.onItemGlyphChange,
-            titlechange: me.onItemTitleChange
-        });
-
-        if (item.tab && !me.destroying && item.tab.ownerCt === me.tabBar) {
-            me.tabBar.remove(item.tab);
-        }
-    },
-    
-    enable: function() {
-        var me = this,
-            activeTab = me.activeTab !== null ? (me.activeTab || 0) : null,
-            wasDisabled = me.disabled;
-        
-        me.callParent(arguments);
-        
-        if (wasDisabled) {
-            activeTab = activeTab.isComponent ? activeTab : me.getComponent(activeTab);
-            
-            if (activeTab) {
-                me.getTabBar().setActiveTab(activeTab.tab);
-            }
-        }
-    },
-
-    privates: {
-        /**
-         * @private
-         * Unlink the removed child item from its (@link Ext.tab.Tab Tab}.
-         *
-         * If we're removing the currently active tab, activate the nearest one. The item is removed when we call super,
-         * so we can do preprocessing before then to find the card's index
-         */
-        doRemove: function (item, autoDestroy) {
-            var me = this,
-                toActivate;
-
-            // Destroying, or removing the last item, nothing to activate
-            if (me.removingAll || me.destroying || me.items.getCount() === 1) {
-                me.activeTab = null;
-            }
-
-            // Ask the TabBar which tab to activate next.
-            // Set the active child panel using the index of that tab
-            else if (item.tab && (toActivate = me.tabBar.items.indexOf(me.tabBar.findNextActivatable(item.tab))) !== -1) {
-                me.setActiveTab(toActivate);
-            }
-            
-            me.callParent([item, autoDestroy]);
-
-            if (item.tab) {
-                // Remove the two references
-                delete item.tab.card;
-                delete item.tab;
-            }
-        }
+      headerItems = header.items = header.items ? header.items.slice() : [];
+      header.itemPosition = tabBarHeaderPosition;
+      headerItems.push(tabBar);
+      header.hasTabBar = true;
+    } else {
+      dockedItems = [].concat(me.dockedItems || []);
+      dockedItems.push(tabBar);
+      me.dockedItems = dockedItems;
     }
+
+    me.callParent(arguments);
+
+    // We have to convert the numeric index/string ID config into its component reference
+    activeTab = me.activeTab = me.getComponent(activeTab);
+
+    // Ensure that the active child's tab is rendered in the active UI state
+    if (activeTab) {
+      tabBar.setActiveTab(activeTab.tab, true);
+    }
+  },
+
+  /**
+   * @method getTabBar
+   * Returns the {@link Ext.tab.Bar} associated with this tabPanel.
+   * @return {Ext.tab.Bar} The tabBar for this tabPanel
+   */
+
+  /**
+   * @method setTabBar
+   * @ignore
+   */
+
+  onRender: function () {
+    var items = this.items.items,
+      len = items.length,
+      i;
+
+    this.callParent(arguments);
+
+    // We want to force any view model for the panel to be created.
+    // This is because we capture various parts about the panel itself (title, icon, etc)
+    // So we need to be able to use that to populate the tabs.
+    // In the future, this could be optimized to be a bit smarter to prevent creation when
+    // not required.
+    for (i = 0; i < len; ++i) {
+      items[i].getBind();
+    }
+  },
+
+  /**
+   * Makes the given card active. Makes it the visible card in the TabPanel's CardLayout and highlights the Tab.
+   * @param {String/Number/Ext.Component} card The card to make active. Either an ID, index or the component itself.
+   * @return {Ext.Component} The resulting active child Component. The call may have been vetoed, or otherwise
+   * modified by an event listener.
+   */
+  setActiveTab: function (card) {
+    var me = this,
+      previous;
+
+    // Check for a config object
+    if (!Ext.isObject(card) || card.isComponent) {
+      card = me.getComponent(card);
+    }
+    previous = me.getActiveTab();
+    if (card) {
+      Ext.suspendLayouts();
+      // We may be passed a config object, so add it.
+      // Without doing a layout!
+      if (!card.isComponent) {
+        card = me.add(card);
+      }
+
+      if (
+        previous === card ||
+        me.fireEvent("beforetabchange", me, card, previous) === false
+      ) {
+        Ext.resumeLayouts(true);
+        return previous;
+      }
+
+      // MUST set the activeTab first so that the machinery which listens for show doesn't
+      // think that the show is "driving" the activation and attempt to recurse into here.
+      me.activeTab = card;
+
+      // Attempt to switch to the requested card. Suspend layouts because if that was successful
+      // we have to also update the active tab in the tab bar which is another layout operation
+      // and we must coalesce them.
+      me.layout.setActiveItem(card);
+
+      // Read the result of the card layout. Events dear boy, events!
+      card = me.activeTab = me.layout.getActiveItem();
+
+      // Card switch was not vetoed by an event listener
+      if (card && card !== previous) {
+        // Update the active tab in the tab bar and resume layouts.
+        me.tabBar.setActiveTab(card.tab);
+        Ext.resumeLayouts(true);
+
+        // previous will be undefined or this.activeTab at instantiation
+        if (previous !== card) {
+          me.fireEvent("tabchange", me, card, previous);
+        }
+      }
+      // Card switch was vetoed by an event listener. Resume layouts (Nothing should have changed on a veto).
+      else {
+        Ext.resumeLayouts(true);
+      }
+      return card;
+    }
+    return previous;
+  },
+
+  setActiveItem: function (item) {
+    return this.setActiveTab(item);
+  },
+
+  /**
+   * Returns the item that is currently active inside this TabPanel.
+   * @return {Ext.Component} The currently active item.
+   */
+  getActiveTab: function () {
+    var me = this,
+      // Ensure the calculated result references a Component
+      result = me.getComponent(me.activeTab);
+
+    // Sanitize the result in case the active tab is no longer there.
+    if (result && me.items.indexOf(result) !== -1) {
+      me.activeTab = result;
+    } else {
+      me.activeTab = undefined;
+    }
+
+    return me.activeTab;
+  },
+
+  applyTabBar: function (tabBar) {
+    var me = this,
+      // if we are rendering the tabbar into the panel header, use same alignment
+      // as header position, and ignore tabPosition.
+      dock =
+        me.tabBarHeaderPosition != null
+          ? me.getHeaderPosition()
+          : me.getTabPosition();
+
+    return new Ext.tab.Bar(
+      Ext.apply(
+        {
+          ui: me.ui,
+          dock: dock,
+          tabRotation: me.getTabRotation(),
+          vertical: dock === "left" || dock === "right",
+          plain: me.plain,
+          tabStretchMax: me.getTabStretchMax(),
+          tabPanel: me
+        },
+        tabBar
+      )
+    );
+  },
+
+  updateHeaderPosition: function (headerPosition, oldHeaderPosition) {
+    var tabBar = this.getTabBar();
+
+    if (tabBar && this.tabBarHeaderPosition != null) {
+      tabBar.setDock(headerPosition);
+    }
+
+    this.callParent([headerPosition, oldHeaderPosition]);
+  },
+
+  updateTabPosition: function (tabPosition) {
+    var tabBar = this.getTabBar();
+
+    if (tabBar && this.tabBarHeaderPosition == null) {
+      tabBar.setDock(tabPosition);
+    }
+  },
+
+  updateTabRotation: function (tabRotation) {
+    var tabBar = this.getTabBar();
+
+    if (tabBar) {
+      tabBar.setTabRotation(tabRotation);
+    }
+  },
+
+  /**
+   * @protected
+   * Makes sure we have a Tab for each item added to the TabPanel
+   */
+  onAdd: function (item, index) {
+    var me = this,
+      cfg = Ext.apply({}, item.tabConfig),
+      tabBar = me.getTabBar(),
+      ariaDom,
+      defaultConfig = {
+        xtype: "tab",
+        title: item.title,
+        icon: item.icon,
+        iconCls: item.iconCls,
+        glyph: item.glyph,
+        ui: tabBar.ui,
+        card: item,
+        disabled: item.disabled,
+        closable: item.closable,
+        hidden: item.hidden && !item.hiddenByLayout, // only hide if it wasn't hidden by the layout itself
+        tooltip: item.tooltip,
+        tabBar: tabBar,
+        tabPosition: tabBar.dock,
+        rotation: tabBar.getTabRotation()
+      };
+
+    if (item.closeText !== undefined) {
+      defaultConfig.closeText = item.closeText;
+    }
+
+    cfg = Ext.applyIf(cfg, defaultConfig);
+
+    // Create the correspondiong tab in the tab bar
+    item.tab = me.tabBar.insert(index, cfg);
+
+    // We want to force the relationship of the tabpanel to the tab
+    item.ariaRole = "tabpanel";
+
+    // Item might be already rendered and then added to the TabPanel
+    ariaDom = item.ariaEl.dom;
+
+    if (ariaDom) {
+      ariaDom.setAttribute("aria-labelledby", item.tab.id);
+    } else {
+      item.ariaRenderAttributes = item.ariaRenderAttributes || {};
+      item.ariaRenderAttributes["aria-labelledby"] = item.tab.id;
+    }
+
+    item.on({
+      scope: me,
+      enable: me.onItemEnable,
+      disable: me.onItemDisable,
+      beforeshow: me.onItemBeforeShow,
+      iconchange: me.onItemIconChange,
+      iconclschange: me.onItemIconClsChange,
+      glyphchange: me.onItemGlyphChange,
+      titlechange: me.onItemTitleChange
+    });
+
+    if (item.isPanel) {
+      if (me.removePanelHeader) {
+        if (item.rendered) {
+          if (item.header) {
+            item.header.hide();
+          }
+        } else {
+          item.header = false;
+        }
+      }
+      if (item.isPanel && me.border) {
+        item.setBorder(false);
+      }
+    }
+
+    // Force the view model to be created, see onRender
+    if (me.rendered) {
+      item.getBind();
+    }
+
+    // Ensure that there is at least one active tab. This is only needed when adding tabs via a loader config, i.e., there
+    // may be no pre-existing tabs. Note that we need to check if activeTab was explicitly set to `null` in the tabpanel
+    // config (which tells the layout not to set an active item), as this is a valid value to mean 'do not set an active tab'.
+    if (
+      me.rendered &&
+      me.loader &&
+      me.activeTab === undefined &&
+      me.layout.activeItem !== null
+    ) {
+      me.setActiveTab(0);
+    }
+  },
+
+  onMove: function (item, fromIdx, toIdx) {
+    var tabBar = this.getTabBar();
+
+    this.callParent([item, fromIdx, toIdx]);
+
+    // If the move of the item.tab triggered the movement of the child Panel,
+    // then we're done.
+    if (tabBar.items.indexOf(item.tab) !== toIdx) {
+      tabBar.move(item.tab, toIdx);
+    }
+  },
+
+  /**
+   * @private
+   * Enable corresponding tab when item is enabled.
+   */
+  onItemEnable: function (item) {
+    item.tab.enable();
+  },
+
+  /**
+   * @private
+   * Disable corresponding tab when item is enabled.
+   */
+  onItemDisable: function (item) {
+    item.tab.disable();
+  },
+
+  /**
+   * @private
+   * Sets activeTab before item is shown.
+   */
+  onItemBeforeShow: function (item) {
+    if (item !== this.activeTab) {
+      this.setActiveTab(item);
+      return false;
+    }
+  },
+
+  /**
+   * @private
+   * Update the tab icon when panel glyph has been set or changed.
+   */
+  onItemGlyphChange: function (item, newGlyph) {
+    item.tab.setGlyph(newGlyph);
+  },
+
+  /**
+   * @private
+   * Update the tab icon when panel icon has been set or changed.
+   */
+  onItemIconChange: function (item, newIcon) {
+    item.tab.setIcon(newIcon);
+  },
+
+  /**
+   * @private
+   * Update the tab iconCls when panel iconCls has been set or changed.
+   */
+  onItemIconClsChange: function (item, newIconCls) {
+    item.tab.setIconCls(newIconCls);
+  },
+
+  /**
+   * @private
+   * Update the tab title when panel title has been set or changed.
+   */
+  onItemTitleChange: function (item, newTitle) {
+    item.tab.setText(newTitle);
+  },
+
+  /**
+   * @private
+   * Makes sure we remove the corresponding Tab when an item is removed
+   */
+  onRemove: function (item, destroying) {
+    var me = this;
+
+    item.un({
+      scope: me,
+      enable: me.onItemEnable,
+      disable: me.onItemDisable,
+      beforeshow: me.onItemBeforeShow,
+      iconchange: me.onItemIconChange,
+      iconclschange: me.onItemIconClsChange,
+      glyphchange: me.onItemGlyphChange,
+      titlechange: me.onItemTitleChange
+    });
+
+    if (item.tab && !me.destroying && item.tab.ownerCt === me.tabBar) {
+      me.tabBar.remove(item.tab);
+    }
+  },
+
+  enable: function () {
+    var me = this,
+      activeTab = me.activeTab !== null ? me.activeTab || 0 : null,
+      wasDisabled = me.disabled;
+
+    me.callParent(arguments);
+
+    if (wasDisabled) {
+      activeTab = activeTab.isComponent
+        ? activeTab
+        : me.getComponent(activeTab);
+
+      if (activeTab) {
+        me.getTabBar().setActiveTab(activeTab.tab);
+      }
+    }
+  },
+
+  privates: {
+    /**
+     * @private
+     * Unlink the removed child item from its (@link Ext.tab.Tab Tab}.
+     *
+     * If we're removing the currently active tab, activate the nearest one. The item is removed when we call super,
+     * so we can do preprocessing before then to find the card's index
+     */
+    doRemove: function (item, autoDestroy) {
+      var me = this,
+        toActivate;
+
+      // Destroying, or removing the last item, nothing to activate
+      if (me.removingAll || me.destroying || me.items.getCount() === 1) {
+        me.activeTab = null;
+      }
+
+      // Ask the TabBar which tab to activate next.
+      // Set the active child panel using the index of that tab
+      else if (
+        item.tab &&
+        (toActivate = me.tabBar.items.indexOf(
+          me.tabBar.findNextActivatable(item.tab)
+        )) !== -1
+      ) {
+        me.setActiveTab(toActivate);
+      }
+
+      me.callParent([item, autoDestroy]);
+
+      if (item.tab) {
+        // Remove the two references
+        delete item.tab.card;
+        delete item.tab;
+      }
+    }
+  }
 });

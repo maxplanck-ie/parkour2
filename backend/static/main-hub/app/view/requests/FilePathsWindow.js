@@ -10,7 +10,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
   autoShow: true,
   layout: {
     type: "vbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   items: [
@@ -20,7 +20,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
       padding: 10,
       border: 0,
       defaults: {
-        labelWidth: 100,
+        labelWidth: 100
       },
       items: [
         {
@@ -30,22 +30,22 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
               xtype: "label",
               text: "Request Name:",
               style: {
-                fontWeight: "bold",
+                fontWeight: "bold"
               },
-              margin: "10 10 10 0",
+              margin: "10 10 10 0"
             },
             {
               xtype: "label",
               itemId: "request-name",
               name: "request-name",
-              margin: "10 0 10 0",
-            },
+              margin: "10 0 10 0"
+            }
           ],
           style: {
-            border: "1px solid #d4d4d4",
+            border: "1px solid #d4d4d4"
           },
           margin: "0 0 10 0",
-          padding: "5",
+          padding: "5"
         },
         {
           xtype: "container",
@@ -55,8 +55,8 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
               text: "Request File Paths:",
               name: "file-paths-label",
               style: {
-                fontWeight: "bold",
-              },
+                fontWeight: "bold"
+              }
             },
             {
               xtype: "container",
@@ -65,18 +65,18 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
               padding: "5",
               style: {
                 height: "270px",
-                overflowY: "scroll",
-              },
-            },
+                overflowY: "scroll"
+              }
+            }
           ],
           style: {
-            border: "1px solid #d4d4d4",
+            border: "1px solid #d4d4d4"
           },
           margin: "0 0 10 0",
-          padding: "5",
-        },
-      ],
-    },
+          padding: "5"
+        }
+      ]
+    }
   ],
 
   bbar: [
@@ -87,7 +87,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
       text: "Close",
       handler: function () {
         this.up("window").close();
-      },
-    },
-  ],
+      }
+    }
+  ]
 });

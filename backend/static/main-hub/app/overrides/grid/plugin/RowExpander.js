@@ -66,7 +66,7 @@ Ext.define("MainHub.overrides.grid.plugin.RowExpander", {
       // In an editor, this shows nothing.
       editRenderer: function () {
         return "&#160;";
-      },
+      }
     };
-  },
+  }
 });

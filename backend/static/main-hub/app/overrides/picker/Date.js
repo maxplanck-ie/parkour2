@@ -31,5 +31,5 @@ Ext.define("MainHub.overrides.picker.Date", {
     if (dateField && dateField.noDayPicker) {
       dateField.collapse();
     }
-  },
+  }
 });

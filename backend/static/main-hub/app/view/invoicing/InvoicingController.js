@@ -7,7 +7,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#billing-period-combobox": {
         select: "selectBillingPeriod",
@@ -16,18 +16,18 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
         select: "selectOrganization",
       },
       "#invoicing-grid": {
-        resize: "resize",
+        resize: "resize"
       },
       "#download-report": {
-        click: "downloadReport",
+        click: "downloadReport"
       },
       "#upload-report": {
-        click: "uploadReport",
+        click: "uploadReport"
       },
       "#fixed-costs-grid,#preparation-costs-grid,#sequencing-costs-grid": {
-        edit: "editPrice",
-      },
-    },
+        edit: "editPrice"
+      }
+    }
   },
 
   activateView: function (view) {
@@ -113,7 +113,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       success: function (batch) {
         Ext.getCmp("invoicing-grid").getStore().reload();
         new Noty({ text: "The changes have been saved." }).show();
-      },
+      }
     });
   },
 
@@ -147,7 +147,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
         if (!form.isValid()) {
           new Noty({
             text: "You did not select any file.",
-            type: "warning",
+            type: "warning"
           }).show();
           return;
         }
@@ -167,9 +167,9 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
             new Noty({ text: "Report has been successfully uploaded." }).show();
             billingPeriodCb.getStore().reload();
             uploadWindow.close();
-          },
+          }
         });
-      },
+      }
     });
   },
 
@@ -239,5 +239,5 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     var name = record.get("name");
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', name);
     return name;
-  },
+  }
 });

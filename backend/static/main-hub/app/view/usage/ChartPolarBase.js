@@ -15,7 +15,7 @@ Ext.define("MainHub.view.usage.ChartPolarBase", {
     "#B276B2",
     "#DECF3F",
     "#F15854",
-    "#4D4D4D",
+    "#4D4D4D"
   ],
 
   // colors: [
@@ -55,14 +55,14 @@ Ext.define("MainHub.view.usage.ChartPolarBase", {
       color: "#606060",
       calloutLine: {
         length: 50,
-        width: 3,
-      },
+        width: 3
+      }
     },
     tooltip: {
       trackMouse: true,
       renderer: function (toolTip, record, ctx) {
         toolTip.setHtml(record.get("name") + ": " + record.get("data"));
-      },
-    },
-  },
+      }
+    }
+  }
 });

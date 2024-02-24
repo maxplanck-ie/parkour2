@@ -6,22 +6,22 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     control: {
       "#": {
         boxready: "onWindowReady",
-        beforeclose: "onWindowClose",
+        beforeclose: "onWindowClose"
       },
       "#sequencing-kit-field": {
         change: "changeSequencer",
       },
       "#pools-flowcell-grid": {
         render: "initializePoolDragZone",
-        itemcontextmenu: "showAdditionalInformationMenu",
+        itemcontextmenu: "showAdditionalInformationMenu"
       },
       "#flowcell-result-grid": {
-        itemcontextmenu: "showUnloadLaneMenu",
+        itemcontextmenu: "showUnloadLaneMenu"
       },
       "#save-button": {
-        click: "save",
-      },
-    },
+        click: "save"
+      }
+    }
   },
 
   onWindowReady: function () {
@@ -61,8 +61,8 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           id: "lane" + (i + 1),
           width: laneTileWidth,
           listeners: {
-            render: this.initializeLaneDropZone,
-          },
+            render: this.initializeLaneDropZone
+          }
         });
       }
     }
@@ -84,11 +84,11 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           handler: function () {
             Ext.create("MainHub.view.flowcell.PoolInfoWindow", {
               title: record.get("name"),
-              pool: record.get("pk"),
+              pool: record.get("pk")
             });
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -124,14 +124,14 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
             sourceEl: sourceEl,
             repairXY: Ext.fly(sourceEl).getXY(),
             ddel: d,
-            poolData: v.getStore().getAt(e.recordIndex).data,
+            poolData: v.getStore().getAt(e.recordIndex).data
           });
         }
       },
 
       getRepairXY: function () {
         return this.dragData.repairXY;
-      },
+      }
     });
   },
 
@@ -244,7 +244,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           if (!isReadLengthOK(pool)) {
             new Noty({
               text: "Read Length must be the same for all pools on a flowcell.",
-              type: "warning",
+              type: "warning"
             }).show();
             return false;
           }
@@ -264,7 +264,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
             pool_id: pool.get("pk"),
             pool_name: pool.get("name"),
             lane_id: laneId,
-            lane_name: laneName,
+            lane_name: laneName
           });
 
           pool.set("loaded", pool.get("loaded") + 1);
@@ -297,7 +297,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
         }
 
         return false;
-      },
+      }
     });
   },
 
@@ -312,9 +312,9 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           margin: 5,
           handler: function () {
             me.unloadLane(grid.getStore(), record);
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -355,7 +355,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     if (!form.isValid()) {
       new Noty({
         text: "Flowcell ID is not set.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -363,7 +363,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     if (lanesStore.getCount() !== laneContainers.length) {
       new Noty({
         text: "All lanes must be loaded.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -372,7 +372,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     var lanes = lanesStore.data.items.map(function (lane) {
       return {
         name: lane.get("lane_name"),
-        pool_id: lane.get("pool_id"),
+        pool_id: lane.get("pool_id")
       };
     });
 
@@ -430,7 +430,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
         wnd.setLoading(false);
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
-      },
+      }
     });
-  },
+  }
 });

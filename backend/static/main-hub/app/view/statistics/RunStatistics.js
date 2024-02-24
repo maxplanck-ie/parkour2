@@ -7,7 +7,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
     "MainHub.components.MonthPicker",
     "MainHub.components.SearchField",
     "MainHub.view.statistics.RunStatisticsController",
-    "Ext.ux.DateRangePicker",
+    "Ext.ux.DateRangePicker"
   ],
 
   controller: "run-statistics",
@@ -51,52 +51,52 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             store: "RunStatistics",
             emptyText: "Search",
             paramName: "pool",
-            width: 200,
-          },
-        ],
+            width: 320
+          }
+        ]
       },
 
       columns: {
         defaults: {
           minWidth: 135,
-          flex: 1,
+          flex: 1
         },
         items: [
           {
             text: "Lane",
-            dataIndex: "name",
+            dataIndex: "name"
           },
           {
             text: "Pool",
             dataIndex: "pool",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Request",
             dataIndex: "request",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Prep. Method",
             dataIndex: "library_preparation",
             tooltip: "Preparation Method",
-            filter: { type: "list" },
+            filter: { type: "list" }
           },
           {
             text: "Library Type",
             dataIndex: "library_type",
-            filter: { type: "list" },
+            filter: { type: "list" }
           },
           {
             text: "Loading Concentr.",
             dataIndex: "loading_concentration",
             tooltip: "Loading Concentration",
-            filter: { type: "number" },
+            filter: { type: "number" }
           },
           {
             text: "Cluster PF (%)",
             dataIndex: "cluster_pf",
-            filter: { type: "number" },
+            filter: { type: "number" }
           },
           {
             text: "Reads PF (M)",
@@ -107,41 +107,41 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
                 value = (value / 1000000).toFixed(1);
               }
               return value;
-            },
+            }
           },
           {
             text: "Undet. Indices (%)",
             dataIndex: "undetermined_indices",
             tooltip: "Undetermined Indices (%)",
-            filter: { type: "number" },
+            filter: { type: "number" }
           },
           {
             text: "% Spike In",
             dataIndex: "phix",
-            filter: { type: "number" },
+            filter: { type: "number" }
           },
           {
             text: "Read 1 % >=Q30",
             dataIndex: "read_1",
-            filter: { type: "number" },
+            filter: { type: "number" }
           },
           {
             text: "Read 2 (I) % >=Q30",
             dataIndex: "read_2",
-            filter: { type: "number" },
-          },
-        ],
+            filter: { type: "number" }
+          }
+        ]
       },
 
       plugins: [
         {
           ptype: "bufferedrenderer",
           trailingBufferZone: 100,
-          leadingBufferZone: 100,
+          leadingBufferZone: 100
         },
         {
-          ptype: "gridfilters",
-        },
+          ptype: "gridfilters"
+        }
       ],
 
       features: [
@@ -166,10 +166,10 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
               },
               getReadLength: function (children) {
                 return children[0].get("read_length");
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
 
       dockedItems: [
@@ -186,12 +186,12 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
                 mainBtnTextColor: "#999",
                 mainBtnIconCls: "x-fa fa-calendar",
                 presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
-                confirmBtnIconCls: "x-fa fa-check",
-              },
-            },
-          ],
-        },
-      ],
-    },
-  ],
+                confirmBtnIconCls: "x-fa fa-check"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });

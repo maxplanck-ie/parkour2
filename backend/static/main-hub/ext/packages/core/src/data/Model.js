@@ -111,7 +111,7 @@
  * values.
  *
  * # Associations
- * 
+ *
  * Models often have associations with other Models. These associations can be defined by
  * fields (often called "foreign keys") or by other data such as a many-to-many (or "matrix").
  * See {@link Ext.data.schema.Association} for information about configuring and using associations.
@@ -171,7 +171,7 @@
  *             console.log('The User was destroyed!');
  *         }
  *     });
- * 
+ *
  * # HTTP Parameter names when using a {@link Ext.data.proxy.Ajax Ajax proxy}
  *
  * By default, the model ID is specified in an HTTP parameter named `id`. To change the
@@ -198,21 +198,21 @@
  * set of added, updated and removed Model instances to be synchronized with the server via the Proxy. See the {@link
  * Ext.data.Store Store docs} for more information on Stores.
  */
-Ext.define('Ext.data.Model', {
-    alternateClassName: 'Ext.data.Record',
+Ext.define(
+  "Ext.data.Model",
+  {
+    alternateClassName: "Ext.data.Record",
 
     requires: [
-        'Ext.data.ErrorCollection',
-        'Ext.data.operation.*',
-        'Ext.data.field.*',
-        'Ext.data.validator.Validator',
-        'Ext.data.schema.Schema',
-        'Ext.data.identifier.Generator',
-        'Ext.data.identifier.Sequential'
+      "Ext.data.ErrorCollection",
+      "Ext.data.operation.*",
+      "Ext.data.field.*",
+      "Ext.data.validator.Validator",
+      "Ext.data.schema.Schema",
+      "Ext.data.identifier.Generator",
+      "Ext.data.identifier.Sequential"
     ],
-    uses: [
-        'Ext.data.Validation'
-    ],
+    uses: ["Ext.data.Validation"],
 
     /**
      * @property {Boolean} isEntity
@@ -233,7 +233,7 @@ Ext.define('Ext.data.Model', {
 
     erasing: false,
 
-    observableType: 'record',
+    observableType: "record",
 
     /**
      * @property {"C"/"R"/"U"/"D"} crudState
@@ -255,7 +255,7 @@ Ext.define('Ext.data.Model', {
      * @protected
      * @since 6.2.0
      */
-    crudState: 'R',
+    crudState: "R",
 
     /**
      * @property {"C"/"R"/"U"/"D"} crudStateWas
@@ -273,76 +273,92 @@ Ext.define('Ext.data.Model', {
     crudStateWas: null,
 
     constructor: function (data, session) {
-        var me = this,
-            cls = me.self,
-            identifier = cls.identifier,
-            Model = Ext.data.Model,
-            modelIdentifier = Model.identifier,
-            idProperty = me.idField.name,
-            array, id, initializeFn, internalId, len, i, fields;
+      var me = this,
+        cls = me.self,
+        identifier = cls.identifier,
+        Model = Ext.data.Model,
+        modelIdentifier = Model.identifier,
+        idProperty = me.idField.name,
+        array,
+        id,
+        initializeFn,
+        internalId,
+        len,
+        i,
+        fields;
 
-        // Yes, this is here on purpose. See EXTJS-16494. The second
-        // assignment seems to work around a strange JIT issue that prevents
-        // this.data being assigned in random scenarios, even though the data
-        // is passed into the constructor. The issue occurs on 4th gen iPads and
-        // lower, possibly other older iOS devices.
-        // A similar issue can occur with the hasListeners property of Observable
-        // (see the constructor of Ext.mixin.Observable)
-        me.data = me.data = data || (data = {});
-        me.session = session || null;
-        me.internalId = internalId = modelIdentifier.generate();
+      // Yes, this is here on purpose. See EXTJS-16494. The second
+      // assignment seems to work around a strange JIT issue that prevents
+      // this.data being assigned in random scenarios, even though the data
+      // is passed into the constructor. The issue occurs on 4th gen iPads and
+      // lower, possibly other older iOS devices.
+      // A similar issue can occur with the hasListeners property of Observable
+      // (see the constructor of Ext.mixin.Observable)
+      me.data = me.data = data || (data = {});
+      me.session = session || null;
+      me.internalId = internalId = modelIdentifier.generate();
 
+      //<debug>
+      var dataId = data[idProperty];
+      if (session && !session.isSession) {
+        Ext.raise(
+          'Bad Model constructor argument 2 - "session" is not a Session'
+        );
+      }
+      //</debug>
+
+      if ((array = data) instanceof Array) {
+        me.data = data = {};
+        fields = me.getFields();
+        len = Math.min(fields.length, array.length);
+        for (i = 0; i < len; ++i) {
+          data[fields[i].name] = array[i];
+        }
+      }
+
+      if (!(initializeFn = cls.initializeFn)) {
+        cls.initializeFn = initializeFn = Model.makeInitializeFn(cls);
+      }
+      if (!initializeFn.$nullFn) {
+        cls.initializeFn(me);
+      }
+
+      // Must do this after running the initializeFn due to converters on idField
+      if (!(me.id = id = data[idProperty]) && id !== 0) {
         //<debug>
-        var dataId = data[idProperty];
-        if (session && !session.isSession) {
-            Ext.raise('Bad Model constructor argument 2 - "session" is not a Session');
+        if (dataId) {
+          Ext.raise(
+            'The model ID configured in data ("' +
+              dataId +
+              '") has been rejected by the ' +
+              me.fieldsMap[idProperty].type +
+              " field converter for the " +
+              idProperty +
+              " field"
+          );
         }
         //</debug>
-
-        if ((array = data) instanceof Array) {
-            me.data = data = {};
-            fields = me.getFields();
-            len = Math.min(fields.length, array.length);
-            for (i = 0; i < len; ++i) {
-                data[fields[i].name] = array[i];
-            }
-        }
-
-        if (!(initializeFn = cls.initializeFn)) {
-            cls.initializeFn = initializeFn = Model.makeInitializeFn(cls);
-        }
-        if (!initializeFn.$nullFn) {
-            cls.initializeFn(me);
-        }
-
-        // Must do this after running the initializeFn due to converters on idField
-        if (!(me.id = id = data[idProperty]) && id !== 0) {
-            //<debug>
-            if (dataId) {
-                Ext.raise('The model ID configured in data ("' + dataId + '") has been rejected by the ' + me.fieldsMap[idProperty].type + ' field converter for the ' + idProperty + ' field');
-            }
-            //</debug>
-            if (session) {
-                identifier = session.getIdentifier(cls);
-                id = identifier.generate();
-            } else if (modelIdentifier === identifier) {
-                id = internalId;
-            } else {
-                id = identifier.generate();
-            }
-
-            data[idProperty] = me.id = id;
-            me.phantom = true;
-            me.crudState = 'C';
-        }
-
         if (session) {
-            session.add(me);
+          identifier = session.getIdentifier(cls);
+          id = identifier.generate();
+        } else if (modelIdentifier === identifier) {
+          id = internalId;
+        } else {
+          id = identifier.generate();
         }
 
-        if (me.init && Ext.isFunction(me.init)) {
-            me.init();
-        }
+        data[idProperty] = me.id = id;
+        me.phantom = true;
+        me.crudState = "C";
+      }
+
+      if (session) {
+        session.add(me);
+      }
+
+      if (me.init && Ext.isFunction(me.init)) {
+        me.init();
+      }
     },
 
     /**
@@ -352,7 +368,7 @@ Ext.define('Ext.data.Model', {
      * shortened name.
      *
      * All entities in a given `schema` must have a unique `entityName`.
-     * 
+     *
      * For more details see "Relative Naming" in {@link Ext.data.schema.Schema}.
      */
 
@@ -384,7 +400,7 @@ Ext.define('Ext.data.Model', {
      * @readonly
      */
     dropped: false,
-    
+
     /**
      * @property {Boolean} erased
      * True if this record has been erased on the server. This flag is set of the `erase`
@@ -500,7 +516,7 @@ Ext.define('Ext.data.Model', {
      * The data values for this field must be unique or there will be id value collisions
      * in the {@link Ext.data.Store Store}.
      */
-    idProperty: 'id',
+    idProperty: "id",
 
     /**
      * @cfg {Object} manyToMany
@@ -579,13 +595,13 @@ Ext.define('Ext.data.Model', {
     // @cmd-auto-dependency {aliasPrefix: "data.field."}
     /**
      * @cfg {Object[]/String[]} fields
-     * An Array of `Ext.data.field.Field` config objects, simply the field 
-     * {@link Ext.data.field.Field#name name}, or a mix of config objects and strings. 
+     * An Array of `Ext.data.field.Field` config objects, simply the field
+     * {@link Ext.data.field.Field#name name}, or a mix of config objects and strings.
      * If just a name is given, the field type defaults to `auto`.
-     * 
-     * In a {@link Ext.data.field.Field Field} config object you may pass the alias of 
+     *
+     * In a {@link Ext.data.field.Field Field} config object you may pass the alias of
      * the `Ext.data.field.*` type using the `type` config option.
-     * 
+     *
      *     // two fields are set:
      *     // - an 'auto' field with a name of 'firstName'
      *     // - and an Ext.data.field.Integer field with a name of 'age'
@@ -593,13 +609,13 @@ Ext.define('Ext.data.Model', {
      *         type: 'int',
      *         name: 'age'
      *     }]
-     * 
-     * Fields will automatically be created at read time for any for any keys in the 
-     * data passed to the Model's {@link #proxy proxy's} 
-     * {@link Ext.data.reader.Reader reader} whose name is not explicitly configured in 
+     *
+     * Fields will automatically be created at read time for any for any keys in the
+     * data passed to the Model's {@link #proxy proxy's}
+     * {@link Ext.data.reader.Reader reader} whose name is not explicitly configured in
      * the `fields` config.
-     * 
-     * Extending a Model class will inherit all the `fields` from the superclass / 
+     *
+     * Extending a Model class will inherit all the `fields` from the superclass /
      * ancestor classes.
      */
     /**
@@ -615,9 +631,9 @@ Ext.define('Ext.data.Model', {
      * This property is indexed by field name and contains the ordinal of that field. The
      * ordinal often has meaning to servers and is derived based on the position in the
      * `fields` array.
-     * 
+     *
      * This can be used like so:
-     * 
+     *
      *      Ext.define('MyApp.models.User', {
      *          extend: 'Ext.data.Model',
      *
@@ -625,9 +641,9 @@ Ext.define('Ext.data.Model', {
      *              { name: 'name' }
      *          ]
      *      });
-     * 
+     *
      *      var nameOrdinal = MyApp.models.User.fieldOrdinals.name;
-     *      
+     *
      *      // or, if you have an instance:
      *
      *      var user = new MyApp.models.User();
@@ -637,11 +653,11 @@ Ext.define('Ext.data.Model', {
      * @readonly
      */
 
-     /**
-      * @property {Object} modified
-      * A hash of field values which holds the initial values of fields before a set of edits
-      * are {@link #commit committed}.
-      */
+    /**
+     * @property {Object} modified
+     * A hash of field values which holds the initial values of fields before a set of edits
+     * are {@link #commit committed}.
+     */
 
     /**
      * @property {Object} previousValues
@@ -669,20 +685,20 @@ Ext.define('Ext.data.Model', {
      * The `Ext.data.schema.Schema` to which this entity and its associations belong.
      * @readonly
      */
-    schema: 'default',
+    schema: "default",
 
     /**
      * @cfg {String} [versionProperty]
      * If specified, this is the name of the property that contains the entity "version".
      * The version property is used to manage a long-running transaction and allows the
      * detection of simultaneous modification.
-     * 
+     *
      * The way a version property is used is that the client receives the version as it
      * would any other entity property. When saving an entity, this property is always
      * included in the request and the server uses the value in a "conditional update".
      * If the current version of the entity on the server matches the version property
      * sent by the client, the update is allowed. Otherwise, the update fails.
-     * 
+     *
      * On successful update, both the client and server increment the version. This is
      * done on the server in the conditional update and on the client when it receives a
      * success on its update request.
@@ -711,17 +727,17 @@ Ext.define('Ext.data.Model', {
 
     /**
      * @cfg {Boolean} [convertOnSet=true]
-     * Set to `false` to prevent any converters from being called on fields specified in 
+     * Set to `false` to prevent any converters from being called on fields specified in
      * a {@link Ext.data.Model#set set} operation.
-     * 
-     * **Note:** Setting the config to `false` will only prevent the convert / calculate 
-     * call when the set `fieldName` param matches the field's `{@link #name}`.  In the 
-     * following example the calls to set `salary` will not execute the convert method 
-     * on `set` while the calls to set `vested` will execute the convert method on the 
+     *
+     * **Note:** Setting the config to `false` will only prevent the convert / calculate
+     * call when the set `fieldName` param matches the field's `{@link #name}`.  In the
+     * following example the calls to set `salary` will not execute the convert method
+     * on `set` while the calls to set `vested` will execute the convert method on the
      * initial read as well as on `set`.
-     * 
+     *
      * Example model definition:
-     * 
+     *
      *     Ext.define('MyApp.model.Employee', {
      *         extend: 'Ext.data.Model',
      *         fields: ['yearsOfService', {
@@ -739,15 +755,15 @@ Ext.define('Ext.data.Model', {
      *         }],
      *         convertOnSet: false
      *     });
-     *     
+     *
      *     var tina = Ext.create('MyApp.model.Employee', {
      *         salary: 50000,
      *         yearsOfService: 3
      *     });
-     *     
+     *
      *     console.log(tina.get('salary')); // logs 55000
      *     console.log(tina.get('vested')); // logs false
-     *     
+     *
      *     tina.set({
      *         salary: 60000,
      *         yearsOfService: 4
@@ -755,7 +771,7 @@ Ext.define('Ext.data.Model', {
      *     console.log(tina.get('salary')); // logs 60000
      *     console.log(tina.get('vested')); // logs true
      */
-     convertOnSet: true,
+    convertOnSet: true,
 
     // Associations configs and properties
     /**
@@ -788,37 +804,37 @@ Ext.define('Ext.data.Model', {
      * either `endEdit` or `cancelEdit`.
      */
     beginEdit: function () {
-        var me = this,
-            modified = me.modified,
-            previousValues = me.previousValues;
+      var me = this,
+        modified = me.modified,
+        previousValues = me.previousValues;
 
-        if (!me.editing) {
-            me.editing = true;
+      if (!me.editing) {
+        me.editing = true;
 
-            me.editMemento = {
-                dirty: me.dirty,
-                data: Ext.apply({}, me.data),
-                generation: me.generation,
-                modified: modified && Ext.apply({}, modified),
-                previousValues: previousValues && Ext.apply({}, previousValues)
-            };
-        }
+        me.editMemento = {
+          dirty: me.dirty,
+          data: Ext.apply({}, me.data),
+          generation: me.generation,
+          modified: modified && Ext.apply({}, modified),
+          previousValues: previousValues && Ext.apply({}, previousValues)
+        };
+      }
     },
 
     /**
      * Cancels all changes made in the current edit operation.
      */
     cancelEdit: function () {
-        var me = this,
-            editMemento = me.editMemento;
+      var me = this,
+        editMemento = me.editMemento;
 
-        if (editMemento) {
-            me.editing = false;
+      if (editMemento) {
+        me.editing = false;
 
-            // reset the modified state, nothing changed since the edit began
-            Ext.apply(me, editMemento);
-            me.editMemento = null;
-        }
+        // reset the modified state, nothing changed since the edit began
+        Ext.apply(me, editMemento);
+        me.editMemento = null;
+      }
     },
 
     /**
@@ -828,31 +844,31 @@ Ext.define('Ext.data.Model', {
      * @param {String[]} [modifiedFieldNames] Array of field names changed during edit.
      */
     endEdit: function (silent, modifiedFieldNames) {
-        var me = this,
-            editMemento = me.editMemento;
+      var me = this,
+        editMemento = me.editMemento;
 
-        if (editMemento) {
-            me.editing = false;
-            me.editMemento = null;
+      if (editMemento) {
+        me.editing = false;
+        me.editMemento = null;
 
-            // Since these reflect changes we never notified others about, the real set
-            // of "previousValues" is what we captured in the memento:
-            me.previousValues = editMemento.previousValues;
+        // Since these reflect changes we never notified others about, the real set
+        // of "previousValues" is what we captured in the memento:
+        me.previousValues = editMemento.previousValues;
 
-            if (!silent) {
-                if (!modifiedFieldNames) {
-                    modifiedFieldNames = me.getModifiedFieldNames(editMemento.data);
-                }
+        if (!silent) {
+          if (!modifiedFieldNames) {
+            modifiedFieldNames = me.getModifiedFieldNames(editMemento.data);
+          }
 
-                if (me.dirty || (modifiedFieldNames && modifiedFieldNames.length)) {
-                    me.callJoined('afterEdit', [modifiedFieldNames]);
-                }
-            }
+          if (me.dirty || (modifiedFieldNames && modifiedFieldNames.length)) {
+            me.callJoined("afterEdit", [modifiedFieldNames]);
+          }
         }
+      }
     },
 
     getField: function (name) {
-        return this.self.getField(name);
+      return this.self.getField(name);
     },
 
     /**
@@ -860,11 +876,11 @@ Ext.define('Ext.data.Model', {
      * @return {Ext.data.field.Field[]} The fields array
      */
     getFields: function () {
-        return this.self.getFields();
+      return this.self.getFields();
     },
 
     getFieldsMap: function () {
-        return this.fieldsMap;
+      return this.fieldsMap;
     },
 
     /**
@@ -872,7 +888,7 @@ Ext.define('Ext.data.Model', {
      * @return {String} The idProperty
      */
     getIdProperty: function () {
-        return this.idProperty;
+      return this.idProperty;
     },
 
     /**
@@ -880,7 +896,7 @@ Ext.define('Ext.data.Model', {
      * @return {Number/String} The id
      */
     getId: function () {
-        return this.id;
+      return this.id;
     },
 
     /**
@@ -888,8 +904,8 @@ Ext.define('Ext.data.Model', {
      * they must be globally unique within the {@link #observableType}.
      * @protected
      */
-    getObservableId: function() {
-        return this.internalId;
+    getObservableId: function () {
+      return this.internalId;
     },
 
     /**
@@ -898,7 +914,7 @@ Ext.define('Ext.data.Model', {
      * @param {Object} [options] See {@link #set}.
      */
     setId: function (id, options) {
-        this.set(this.idProperty, id, options);
+      this.set(this.idProperty, id, options);
     },
 
     /**
@@ -909,8 +925,8 @@ Ext.define('Ext.data.Model', {
      * if there is no previous value;
      */
     getPrevious: function (fieldName) {
-        var previousValues = this.previousValues;
-        return previousValues && previousValues[fieldName];
+      var previousValues = this.previousValues;
+      return previousValues && previousValues[fieldName];
     },
 
     /**
@@ -919,10 +935,10 @@ Ext.define('Ext.data.Model', {
      * @return {Boolean}
      */
     isModified: function (fieldName) {
-        var modified = this.modified;
-        return !!(modified && modified.hasOwnProperty(fieldName));
+      var modified = this.modified;
+      return !!(modified && modified.hasOwnProperty(fieldName));
     },
-    
+
     /**
      * Returns the original value of a modified field. If there is no modified value,
      * `undefined` will be return. Also see {@link #isModified}.
@@ -930,11 +946,11 @@ Ext.define('Ext.data.Model', {
      * @return {Object} modified
      */
     getModified: function (fieldName) {
-        var out;
-        if (this.isModified(fieldName)) {
-            out = this.modified[fieldName];
-        }
-        return out;
+      var out;
+      if (this.isModified(fieldName)) {
+        out = this.modified[fieldName];
+      }
+      return out;
     },
 
     /**
@@ -943,7 +959,7 @@ Ext.define('Ext.data.Model', {
      * @return {Object} The value of the specified field.
      */
     get: function (fieldName) {
-        return this.data[fieldName];
+      return this.data[fieldName];
     },
 
     // This object is used whenever the set() method is called and given a string as the
@@ -952,241 +968,257 @@ Ext.define('Ext.data.Model', {
     _singleProp: {},
 
     _rejectOptions: {
-        convert: false,
-        silent: true
+      convert: false,
+      silent: true
     },
 
     /**
      * Sets the given field to the given value. For example:
-     * 
+     *
      *      record.set('name', 'value');
-     * 
+     *
      * This method can also be passed an object containing multiple values to set at once.
      * For example:
-     * 
+     *
      *      record.set({
      *          name: 'value',
      *          age: 42
      *      });
-     * 
+     *
      * The following store events are fired when the modified record belongs to a store:
      *
      *  - {@link Ext.data.Store#event-beginupdate beginupdate}
      *  - {@link Ext.data.Store#event-update update}
      *  - {@link Ext.data.Store#event-endupdate endupdate}
-     * 
-     * @param {String/Object} fieldName The field to set, or an object containing key/value 
+     *
+     * @param {String/Object} fieldName The field to set, or an object containing key/value
      * pairs.
      * @param {Object} newValue The value for the field (if `fieldName` is a string).
      * @param {Object} [options] Options for governing this update.
-     * @param {Boolean} [options.convert=true] Set to `false` to  prevent any converters from 
-     * being called during the set operation. This may be useful when setting a large bunch of 
+     * @param {Boolean} [options.convert=true] Set to `false` to  prevent any converters from
+     * being called during the set operation. This may be useful when setting a large bunch of
      * raw values.
      * @param {Boolean} [options.dirty=true] Pass `false` if the field values are to be
      * understood as non-dirty (fresh from the server). When `true`, this change will be
      * reflected in the `modified` collection.
-     * @param {Boolean} [options.commit=false] Pass `true` to call the {@link #commit} method 
-     * after setting fields. If this option is passed, the usual after change processing will 
+     * @param {Boolean} [options.commit=false] Pass `true` to call the {@link #commit} method
+     * after setting fields. If this option is passed, the usual after change processing will
      * be bypassed. {@link #commit Commit} will be called even if there are no field changes.
      * @param {Boolean} [options.silent=false] Pass `true` to suppress notification of any
      * changes made by this call. Use with caution.
      * @return {String[]} The array of modified field names or null if nothing was modified.
      */
     set: function (fieldName, newValue, options) {
-        var me = this,
-            cls = me.self,
-            data = me.data,
-            modified = me.modified,
-            prevVals = me.previousValues,
-            session = me.session,
-            single = Ext.isString(fieldName),
-            opt = (single ? options : newValue),
-            convertOnSet = opt ? opt.convert !== false : me.convertOnSet,
-            fieldsMap = me.fieldsMap,
-            silent = opt && opt.silent,
-            commit = opt && opt.commit,
-            updateRefs = !(opt && opt.refs === false) && session,
-            // Don't need to do dirty processing with commit, since we'll always
-            // end up with nothing modified and not dirty
-            dirty = !(opt && opt.dirty === false && !commit),
-            modifiedFieldNames = null,
-            dirtyRank = 0,
-            associations = me.associations,
-            currentValue, field, idChanged, key, name, oldId, comparator, dep, dependents,
-            i, numFields, newId, rankedFields, reference, value, values, roleName;
+      var me = this,
+        cls = me.self,
+        data = me.data,
+        modified = me.modified,
+        prevVals = me.previousValues,
+        session = me.session,
+        single = Ext.isString(fieldName),
+        opt = single ? options : newValue,
+        convertOnSet = opt ? opt.convert !== false : me.convertOnSet,
+        fieldsMap = me.fieldsMap,
+        silent = opt && opt.silent,
+        commit = opt && opt.commit,
+        updateRefs = !(opt && opt.refs === false) && session,
+        // Don't need to do dirty processing with commit, since we'll always
+        // end up with nothing modified and not dirty
+        dirty = !(opt && opt.dirty === false && !commit),
+        modifiedFieldNames = null,
+        dirtyRank = 0,
+        associations = me.associations,
+        currentValue,
+        field,
+        idChanged,
+        key,
+        name,
+        oldId,
+        comparator,
+        dep,
+        dependents,
+        i,
+        numFields,
+        newId,
+        rankedFields,
+        reference,
+        value,
+        values,
+        roleName;
+
+      if (single) {
+        values = me._singleProp;
+        values[fieldName] = newValue;
+      } else {
+        values = fieldName;
+      }
+
+      if (!(rankedFields = cls.rankedFields)) {
+        // On the first edit of a record of this type we need to ensure we have the
+        // topo-sort done:
+        rankedFields = cls.rankFields();
+      }
+      numFields = rankedFields.length;
+
+      do {
+        for (name in values) {
+          value = values[name];
+          currentValue = data[name];
+          comparator = me;
+          field = fieldsMap[name];
+
+          if (field) {
+            if (convertOnSet && field.convert) {
+              value = field.convert(value, me);
+            }
+            comparator = field;
+            reference = field.reference;
+          } else {
+            reference = null;
+          }
+
+          if (comparator.isEqual(currentValue, value)) {
+            continue; // new value is the same, so no change...
+          }
+
+          data[name] = value;
+          (modifiedFieldNames || (modifiedFieldNames = [])).push(name);
+          (prevVals || (me.previousValues = prevVals = {}))[name] =
+            currentValue;
+
+          // We need the cls to be present because it means the association class is loaded,
+          // otherwise it could be pending.
+          if (reference && reference.cls) {
+            if (updateRefs) {
+              session.updateReference(me, field, value, currentValue);
+            }
+            reference.onValueChange(me, session, value, currentValue);
+          }
+
+          i = (dependents = field && field.dependents) && dependents.length;
+          while (i-- > 0) {
+            // we use the field instance to hold the dirty bit to avoid any
+            // extra allocations... we'll clear this before we depart. We do
+            // this so we can perform the fewest recalculations possible as
+            // each dependent field only needs to be recalculated once.
+            (dep = dependents[i]).dirty = true;
+            dirtyRank = dirtyRank ? Math.min(dirtyRank, dep.rank) : dep.rank;
+          }
+
+          if (!field || field.persist) {
+            if (modified && modified.hasOwnProperty(name)) {
+              if (!dirty || comparator.isEqual(modified[name], value)) {
+                // The original value in me.modified equals the new value, so
+                // the field is no longer modified:
+                delete modified[name];
+                me.dirty = -1; // fix me.dirty later (still truthy)
+              }
+            } else if (dirty) {
+              if (!modified) {
+                me.modified = modified = {}; // create only when needed
+              }
+              me.dirty = true;
+              modified[name] = currentValue;
+            }
+          }
+
+          if (name === me.idField.name) {
+            idChanged = true;
+            oldId = currentValue;
+            newId = value;
+          }
+        }
+
+        if (!dirtyRank) {
+          // Unless there are dependent fields to process we can break now. This is
+          // what will happen for all code pre-dating the depends or simply not
+          // using it, so it will add very little overhead when not used.
+          break;
+        }
+
+        // dirtyRank has the minimum rank (a 1-based value) of any dependent field
+        // that needs recalculating due to changes above. The way we go about this
+        // is to use our helper object for processing single argument invocations
+        // to process just this one field. This is because the act of setting it
+        // may cause another field to be invalidated, so while we cannot know at
+        // this moment all the fields we need to recalculate, we know that only
+        // those following this field in rankedFields can possibly be among them.
+
+        field = rankedFields[dirtyRank - 1]; // dirtyRank is 1-based
+        field.dirty = false; // clear just this field's dirty state
 
         if (single) {
-            values = me._singleProp;
-            values[fieldName] = newValue;
+          delete values[fieldName]; // cleanup last value
         } else {
-            values = fieldName;
+          values = me._singleProp; // switch over
+          single = true;
         }
 
-        if (!(rankedFields = cls.rankedFields)) {
-            // On the first edit of a record of this type we need to ensure we have the
-            // topo-sort done:
-            rankedFields = cls.rankFields();
-        }
-        numFields = rankedFields.length;
+        fieldName = field.name;
+        values[fieldName] = data[fieldName];
+        // We are now processing a dependent field, so we want to force a
+        // convert to occur because it's the only way it will get a value
+        convertOnSet = true;
 
-        do {
-            for (name in values) {
-                value = values[name];
-                currentValue = data[name];
-                comparator = me;
-                field = fieldsMap[name];
-
-                if (field) {
-                    if (convertOnSet && field.convert) {
-                        value = field.convert(value, me);
-                    }
-                    comparator = field;
-                    reference = field.reference;
-                } else {
-                    reference = null;
-                }
-
-                if (comparator.isEqual(currentValue, value)) {
-                    continue; // new value is the same, so no change...
-                }
-
-                data[name] = value;
-                (modifiedFieldNames || (modifiedFieldNames = [])).push(name);
-                (prevVals || (me.previousValues = prevVals = {}))[name] = currentValue;
-
-                // We need the cls to be present because it means the association class is loaded,
-                // otherwise it could be pending.
-                if (reference && reference.cls) {
-                    if (updateRefs) {
-                        session.updateReference(me, field, value, currentValue);
-                    }
-                    reference.onValueChange(me, session, value, currentValue);
-                }
-
-                i = (dependents = field && field.dependents) && dependents.length;
-                while (i-- > 0) {
-                    // we use the field instance to hold the dirty bit to avoid any
-                    // extra allocations... we'll clear this before we depart. We do
-                    // this so we can perform the fewest recalculations possible as
-                    // each dependent field only needs to be recalculated once.
-                    (dep = dependents[i]).dirty = true;
-                    dirtyRank = dirtyRank ? Math.min(dirtyRank, dep.rank) : dep.rank;
-                }
-
-                if (!field || field.persist) {
-                    if (modified && modified.hasOwnProperty(name)) {
-                        if (!dirty || comparator.isEqual(modified[name], value)) {
-                            // The original value in me.modified equals the new value, so
-                            // the field is no longer modified:
-                            delete modified[name];
-                            me.dirty = -1; // fix me.dirty later (still truthy)
-                        }
-                    } else if (dirty) {
-                        if (!modified) {
-                            me.modified = modified = {}; // create only when needed
-                        }
-                        me.dirty = true;
-                        modified[name] = currentValue;
-                    }
-                }
-
-                if (name === me.idField.name) {
-                    idChanged = true;
-                    oldId = currentValue;
-                    newId = value;
-                }
-            }
-
-            if (!dirtyRank) {
-                // Unless there are dependent fields to process we can break now. This is
-                // what will happen for all code pre-dating the depends or simply not
-                // using it, so it will add very little overhead when not used.
-                break;
-            }
-
-            // dirtyRank has the minimum rank (a 1-based value) of any dependent field
-            // that needs recalculating due to changes above. The way we go about this
-            // is to use our helper object for processing single argument invocations
-            // to process just this one field. This is because the act of setting it
-            // may cause another field to be invalidated, so while we cannot know at
-            // this moment all the fields we need to recalculate, we know that only
-            // those following this field in rankedFields can possibly be among them.
-
-            field = rankedFields[dirtyRank - 1]; // dirtyRank is 1-based
-            field.dirty = false; // clear just this field's dirty state
-
-            if (single) {
-                delete values[fieldName]; // cleanup last value
-            } else {
-                values = me._singleProp; // switch over
-                single = true;
-            }
-
-            fieldName = field.name;
-            values[fieldName] = data[fieldName];
-            // We are now processing a dependent field, so we want to force a
-            // convert to occur because it's the only way it will get a value
-            convertOnSet = true;
-
-            // Since dirtyRank is 1-based and refers to the field we need to handle
-            // on this pass, we can treat it like an index for a minute and look at
-            // the next field on towards the end to find the index of the next dirty
-            // field.
-            for ( ; dirtyRank < numFields; ++dirtyRank) {
-                if (rankedFields[dirtyRank].dirty) {
-                    break;
-                }
-            }
-
-            if (dirtyRank < numFields) {
-                // We found a field after this one marked as dirty so make the index
-                // a proper 1-based rank:
-                ++dirtyRank;
-            } else {
-                // We did not find any more dirty fields after this one, so clear the
-                // dirtyRank and we will perhaps fall out after the next update
-                dirtyRank = 0;
-            }
-        } while (1);
-
-        if (me.dirty < 0) {
-            // We might have removed the last modified field, so check to see if there
-            // are any modified fields remaining and correct me.dirty:
-            me.dirty = false;
-            for (key in modified) {
-                if (modified.hasOwnProperty(key)) {
-                    me.dirty = true;
-                    break;
-                }
-            }
+        // Since dirtyRank is 1-based and refers to the field we need to handle
+        // on this pass, we can treat it like an index for a minute and look at
+        // the next field on towards the end to find the index of the next dirty
+        // field.
+        for (; dirtyRank < numFields; ++dirtyRank) {
+          if (rankedFields[dirtyRank].dirty) {
+            break;
+          }
         }
 
-        if (single) {
-            // cleanup our reused object for next time... important to do this before
-            // we fire any events or call anyone else (like afterEdit)!
-            delete values[fieldName];
+        if (dirtyRank < numFields) {
+          // We found a field after this one marked as dirty so make the index
+          // a proper 1-based rank:
+          ++dirtyRank;
+        } else {
+          // We did not find any more dirty fields after this one, so clear the
+          // dirtyRank and we will perhaps fall out after the next update
+          dirtyRank = 0;
         }
+      } while (1);
 
-        ++me.generation;
-
-        if (idChanged) {
-            me.id = newId;
-            me.onIdChanged(newId, oldId);
-            me.callJoined('onIdChanged', [oldId, newId]);
-            if (associations) {
-                for (roleName in associations) {
-                    associations[roleName].onIdChanged(me, oldId, newId);
-                }
-            }
+      if (me.dirty < 0) {
+        // We might have removed the last modified field, so check to see if there
+        // are any modified fields remaining and correct me.dirty:
+        me.dirty = false;
+        for (key in modified) {
+          if (modified.hasOwnProperty(key)) {
+            me.dirty = true;
+            break;
+          }
         }
+      }
 
-        if (commit) {
-            me.commit(silent, modifiedFieldNames);
-        } else if (!silent && !me.editing && modifiedFieldNames) {
-            me.callJoined('afterEdit', [modifiedFieldNames]);
+      if (single) {
+        // cleanup our reused object for next time... important to do this before
+        // we fire any events or call anyone else (like afterEdit)!
+        delete values[fieldName];
+      }
+
+      ++me.generation;
+
+      if (idChanged) {
+        me.id = newId;
+        me.onIdChanged(newId, oldId);
+        me.callJoined("onIdChanged", [oldId, newId]);
+        if (associations) {
+          for (roleName in associations) {
+            associations[roleName].onIdChanged(me, oldId, newId);
+          }
         }
+      }
 
-        return modifiedFieldNames;
+      if (commit) {
+        me.commit(silent, modifiedFieldNames);
+      } else if (!silent && !me.editing && modifiedFieldNames) {
+        me.callJoined("afterEdit", [modifiedFieldNames]);
+      }
+
+      return modifiedFieldNames;
     },
 
     /**
@@ -1200,27 +1232,27 @@ Ext.define('Ext.data.Model', {
      * @param {Boolean} [silent=false] `true` to skip notification of the owning store of the change.
      */
     reject: function (silent) {
-        var me = this,
-            modified = me.modified;
+      var me = this,
+        modified = me.modified;
 
-        //<debug>
-        if (me.erased) {
-            Ext.raise('Cannot reject once a record has been erased.');
-        }
-        //</debug>
+      //<debug>
+      if (me.erased) {
+        Ext.raise("Cannot reject once a record has been erased.");
+      }
+      //</debug>
 
-        if (modified) {
-            me.set(modified, me._rejectOptions);
-        }
+      if (modified) {
+        me.set(modified, me._rejectOptions);
+      }
 
-        me.dropped = false;
-        me.clearState();
+      me.dropped = false;
+      me.clearState();
 
-        if (!silent) {
-            me.callJoined('afterReject');
-        }
+      if (!silent) {
+        me.callJoined("afterReject");
+      }
     },
-    
+
     /**
      * Usually called by the {@link Ext.data.Store} which owns the model instance. Commits all changes made to the
      * instance since either creation or the last commit operation.
@@ -1235,35 +1267,35 @@ Ext.define('Ext.data.Model', {
      * Defaults to false.
      */
     commit: function (silent, modifiedFieldNames) {
-        var me = this,
-            versionProperty = me.versionProperty,
-            data = me.data,
-            erased;
+      var me = this,
+        versionProperty = me.versionProperty,
+        data = me.data,
+        erased;
 
-        me.clearState();
-        if (versionProperty && !me.phantom && !isNaN(data[versionProperty])) {
-            ++data[versionProperty];
-        }
-        me.phantom = false;
+      me.clearState();
+      if (versionProperty && !me.phantom && !isNaN(data[versionProperty])) {
+        ++data[versionProperty];
+      }
+      me.phantom = false;
 
-        if (me.dropped) {
-            me.erased = erased = true;
-        }
+      if (me.dropped) {
+        me.erased = erased = true;
+      }
 
-        if (!silent) {
-            if (erased) {
-                me.callJoined('afterErase');
-            } else {
-                me.callJoined('afterCommit', [modifiedFieldNames]);
-            }
+      if (!silent) {
+        if (erased) {
+          me.callJoined("afterErase");
+        } else {
+          me.callJoined("afterCommit", [modifiedFieldNames]);
         }
+      }
     },
-    
-    clearState: function() {
-        var me = this;
-        
-        me.dirty = me.editing = false;
-        me.editMemento = me.modified = null;
+
+    clearState: function () {
+      var me = this;
+
+      me.dirty = me.editing = false;
+      me.editMemento = me.modified = null;
     },
 
     /**
@@ -1277,25 +1309,25 @@ Ext.define('Ext.data.Model', {
      * @since 5.0.0
      */
     drop: function (cascade) {
-        var me = this,
-            associations = me.associations,
-            session = me.session,
-            roleName;
+      var me = this,
+        associations = me.associations,
+        session = me.session,
+        roleName;
 
-        if (me.erased || me.dropped) {
-            return;
+      if (me.erased || me.dropped) {
+        return;
+      }
+
+      me.dropped = true;
+      if (associations && cascade !== false) {
+        for (roleName in associations) {
+          associations[roleName].onDrop(me, session);
         }
-        
-        me.dropped = true;
-        if (associations && cascade !== false) {
-            for (roleName in associations) {
-                associations[roleName].onDrop(me, session);
-            }
-        }
-        me.callJoined('afterDrop');
-        if (me.phantom) {
-            me.setErased();
-        }
+      }
+      me.callJoined("afterDrop");
+      if (me.phantom) {
+        me.setErased();
+      }
     },
 
     /**
@@ -1303,29 +1335,29 @@ Ext.define('Ext.data.Model', {
      * @param {Ext.data.Store} item The store to which this model has been added.
      */
     join: function (item) {
-        var me = this,
-            joined = me.joined;
+      var me = this,
+        joined = me.joined;
 
-        // Optimize this, gets called a lot
-        if (!joined) {
-            joined = me.joined = [item];
-        } else if (!joined.length) {
-            joined[0] = item;
-        } else {
-            // TODO: do we need joined here? Perhaps push will do.
-            Ext.Array.include(joined, item);
-        }
+      // Optimize this, gets called a lot
+      if (!joined) {
+        joined = me.joined = [item];
+      } else if (!joined.length) {
+        joined[0] = item;
+      } else {
+        // TODO: do we need joined here? Perhaps push will do.
+        Ext.Array.include(joined, item);
+      }
 
-        if (item.isStore && !me.store) {
-            /**
-            * @property {Ext.data.Store} store
-            * The {@link Ext.data.Store Store} to which this instance belongs.
-            *
-            * **Note:** If this instance is bound to multiple stores, this property
-            * will reference only the first.
-            */
-            me.store = item;
-        }
+      if (item.isStore && !me.store) {
+        /**
+         * @property {Ext.data.Store} store
+         * The {@link Ext.data.Store Store} to which this instance belongs.
+         *
+         * **Note:** If this instance is bound to multiple stores, this property
+         * will reference only the first.
+         */
+        me.store = item;
+      }
     },
 
     /**
@@ -1333,38 +1365,37 @@ Ext.define('Ext.data.Model', {
      * @param {Ext.data.Store} store The store from which this model has been removed.
      */
     unjoin: function (item) {
-        var me = this,
-            joined = me.joined,
-            
-            // TreeModels are never joined to their TreeStore.
-            // But unjoin is called by the base class's onCollectionRemove, so joined may be undefined.
-            len = joined && joined.length,
-            store = me.store,
-            i;
+      var me = this,
+        joined = me.joined,
+        // TreeModels are never joined to their TreeStore.
+        // But unjoin is called by the base class's onCollectionRemove, so joined may be undefined.
+        len = joined && joined.length,
+        store = me.store,
+        i;
 
-        if (item === me.session) {
-            me.session = null;
-        } else {
-            if (len === 1 && joined[0] === item) {
-                joined.length = 0;
-            } else if (len) {
-                Ext.Array.remove(joined, item);
-            }
-
-            if (store === item) {
-                store = null;
-                if (joined) {
-                    for (i = 0, len = joined.length; i < len; ++i) {
-                        item = joined[i];
-                        if (item.isStore) {
-                            store = item;
-                            break;
-                        }
-                    }
-                }
-                me.store = store;
-            }
+      if (item === me.session) {
+        me.session = null;
+      } else {
+        if (len === 1 && joined[0] === item) {
+          joined.length = 0;
+        } else if (len) {
+          Ext.Array.remove(joined, item);
         }
+
+        if (store === item) {
+          store = null;
+          if (joined) {
+            for (i = 0, len = joined.length; i < len; ++i) {
+              item = joined[i];
+              if (item.isStore) {
+                store = item;
+                break;
+              }
+            }
+          }
+          me.store = store;
+        }
+      }
     },
 
     /**
@@ -1376,20 +1407,20 @@ Ext.define('Ext.data.Model', {
      * @return {Ext.data.Model} The cloned record.
      */
     clone: function (session) {
-        var me = this,
-            modified = me.modified,
-            ret = me.copy(me.id, session);
+      var me = this,
+        modified = me.modified,
+        ret = me.copy(me.id, session);
 
-        if (modified) {
-            // Restore the modified fields state
-            ret.modified = Ext.apply({}, modified);
-        }
+      if (modified) {
+        // Restore the modified fields state
+        ret.modified = Ext.apply({}, modified);
+      }
 
-        ret.dirty = me.dirty;
-        ret.dropped = me.dropped;
-        ret.phantom = me.phantom;
+      ret.dirty = me.dirty;
+      ret.dropped = me.dropped;
+      ret.phantom = me.phantom;
 
-        return ret;
+      return ret;
     },
 
     /**
@@ -1408,26 +1439,26 @@ Ext.define('Ext.data.Model', {
      * @return {Ext.data.Model}
      */
     copy: function (newId, session) {
-        var me = this,
-            data = Ext.apply({}, me.data),
-            idProperty = me.idProperty,
-            T = me.self;
+      var me = this,
+        data = Ext.apply({}, me.data),
+        idProperty = me.idProperty,
+        T = me.self;
 
-        if (newId || newId === 0) {
-            data[idProperty] = newId;
-        } else if (newId === null) {
-            delete data[idProperty];
-        }
+      if (newId || newId === 0) {
+        data[idProperty] = newId;
+      } else if (newId === null) {
+        delete data[idProperty];
+      }
 
-        return new T(data, session);
+      return new T(data, session);
     },
 
     /**
      * Returns the configured Proxy for this Model.
      * @return {Ext.data.proxy.Proxy} The proxy
      */
-    getProxy: function() {
-        return this.self.getProxy();
+    getProxy: function () {
+      return this.self.getProxy();
     },
 
     /**
@@ -1445,19 +1476,22 @@ Ext.define('Ext.data.Model', {
      * @since 5.0.0
      */
     getValidation: function (refresh) {
-        var me = this,
-            ret = me.validation;
+      var me = this,
+        ret = me.validation;
 
-        if (!ret) {
-            me.validation = ret = new Ext.data.Validation();
-            ret.attach(me);
-        }
+      if (!ret) {
+        me.validation = ret = new Ext.data.Validation();
+        ret.attach(me);
+      }
 
-        if (refresh === true || (refresh !== false && ret.syncGeneration !== me.generation)) {
-            ret.refresh(refresh);
-        }
+      if (
+        refresh === true ||
+        (refresh !== false && ret.syncGeneration !== me.generation)
+      ) {
+        ret.refresh(refresh);
+      }
 
-        return ret;
+      return ret;
     },
 
     /**
@@ -1467,8 +1501,8 @@ Ext.define('Ext.data.Model', {
      * @return {Ext.data.ErrorCollection} The errors collection.
      * @deprecated 5.0 Use `getValidation` instead.
      */
-    validate: function() {
-        return new Ext.data.ErrorCollection().init(this);
+    validate: function () {
+      return new Ext.data.ErrorCollection().init(this);
     },
 
     /**
@@ -1476,7 +1510,7 @@ Ext.define('Ext.data.Model', {
      * @return {Boolean} True if the model is valid.
      */
     isValid: function () {
-        return this.getValidation().isValid();
+      return this.getValidation().isValid();
     },
 
     /**
@@ -1484,11 +1518,11 @@ Ext.define('Ext.data.Model', {
      * followed by the instance ID - for example an instance of MyApp.model.User with ID 123 will return 'user/123'.
      * @return {String} The url string for this model instance.
      */
-    toUrl: function() {
-        var pieces = this.$className.split('.'),
-            name   = pieces[pieces.length - 1].toLowerCase();
+    toUrl: function () {
+      var pieces = this.$className.split("."),
+        name = pieces[pieces.length - 1].toLowerCase();
 
-        return name + '/' + this.getId();
+      return name + "/" + this.getId();
     },
 
     /**
@@ -1539,23 +1573,23 @@ Ext.define('Ext.data.Model', {
      * @inheritdoc #method-load
      * @return {Ext.data.operation.Destroy} The destroy operation
      */
-    erase: function(options) {
-        var me = this;
+    erase: function (options) {
+      var me = this;
 
-        me.erasing = true;
+      me.erasing = true;
 
-        // Drop causes a removal from the backing Collection.
-        // The store's onCollectionRemove will respond to this by adding the record to its "to remove" stack and setting its needsSync
-        // flag unless the above "erasing" flag is set.
-        me.drop();
+      // Drop causes a removal from the backing Collection.
+      // The store's onCollectionRemove will respond to this by adding the record to its "to remove" stack and setting its needsSync
+      // flag unless the above "erasing" flag is set.
+      me.drop();
 
-        me.erasing = false;
-        return me.save(options);
+      me.erasing = false;
+      return me.save(options);
     },
-    
-    setErased: function() {
-        this.erased = true;
-        this.callJoined('afterErase');
+
+    setErased: function () {
+      this.erased = true;
+      this.callJoined("afterErase");
     },
 
     /**
@@ -1567,7 +1601,7 @@ Ext.define('Ext.data.Model', {
      * @return {Object}
      */
     getChanges: function () {
-        return this.getData(this._getChangesOptions);
+      return this.getData(this._getChangesOptions);
     },
 
     /**
@@ -1575,21 +1609,21 @@ Ext.define('Ext.data.Model', {
      * @return {Ext.data.field.Field[]}
      */
     getCriticalFields: function () {
-        var cls = this.self,
-            ret = cls.criticalFields;
+      var cls = this.self,
+        ret = cls.criticalFields;
 
-        if (!ret) {
-            cls.rankFields();
-            ret = cls.criticalFields;
-        }
+      if (!ret) {
+        cls.rankFields();
+        ret = cls.criticalFields;
+      }
 
-        return ret;
+      return ret;
     },
 
     /**
      * This method is called by the {@link Ext.data.reader.Reader} after loading a model from
      * the server. This is after processing any inline associations that are available.
-     * 
+     *
      * @method onLoad
      *
      * @protected
@@ -1634,77 +1668,89 @@ Ext.define('Ext.data.Model', {
      * @return {Object} The nested data set for the Model's loaded associations.
      */
     getAssociatedData: function (result, options) {
-        var me = this,
-            associations = me.associations,
-            deep, i, item, items, itemData, length, 
-            record, role, roleName, opts, clear, associated;
+      var me = this,
+        associations = me.associations,
+        deep,
+        i,
+        item,
+        items,
+        itemData,
+        length,
+        record,
+        role,
+        roleName,
+        opts,
+        clear,
+        associated;
 
-        result = result || {};
+      result = result || {};
 
-        me.$gathering = 1;
+      me.$gathering = 1;
 
-        if (options) {
-            options = Ext.Object.chain(options);
+      if (options) {
+        options = Ext.Object.chain(options);
+      }
+
+      for (roleName in associations) {
+        role = associations[roleName];
+        item = role.getAssociatedItem(me);
+        if (!item || item.$gathering) {
+          continue;
         }
 
-        for (roleName in associations) {
-            role = associations[roleName];
-            item = role.getAssociatedItem(me);
-            if (!item || item.$gathering) {
-                continue;
-            }
+        if (item.isStore) {
+          item.$gathering = 1;
 
-            if (item.isStore) {
-                item.$gathering = 1;
+          items = item.getData().items; // get the records for the store
+          length = items.length;
+          itemData = [];
 
-                items = item.getData().items; // get the records for the store
-                length = items.length;
-                itemData = [];
-
-                for (i = 0; i < length; ++i) {
-                    // NOTE - we don't check whether the record is gathering here because
-                    // we cannot remove it from the store (it would invalidate the index
-                    // values and misrepresent the content). Instead we tell getData to
-                    // only get the fields vs descend further.
-                    record = items[i];
-                    deep = !record.$gathering;
-                    record.$gathering = 1;
-                    if (options) {
-                        associated = options.associated;
-                        if (associated === undefined) {
-                            options.associated = deep;
-                            clear = true;
-                        } else if (!deep) {
-                            options.associated = false;
-                            clear = true;
-                        }
-                        opts = options;
-                    } else {
-                        opts = deep ? me._getAssociatedOptions: me._getNotAssociatedOptions;
-                    }
-                    itemData.push(record.getData(opts));
-                    if (clear) {
-                        options.associated = associated;
-                        clear = false;
-                    }
-                    delete record.$gathering;
-                }
-
-                delete item.$gathering;
+          for (i = 0; i < length; ++i) {
+            // NOTE - we don't check whether the record is gathering here because
+            // we cannot remove it from the store (it would invalidate the index
+            // values and misrepresent the content). Instead we tell getData to
+            // only get the fields vs descend further.
+            record = items[i];
+            deep = !record.$gathering;
+            record.$gathering = 1;
+            if (options) {
+              associated = options.associated;
+              if (associated === undefined) {
+                options.associated = deep;
+                clear = true;
+              } else if (!deep) {
+                options.associated = false;
+                clear = true;
+              }
+              opts = options;
             } else {
-                opts = options || me._getAssociatedOptions;
-                if (options && options.associated === undefined) {
-                    opts.associated = true;
-                }
-                itemData = item.getData(opts);
+              opts = deep
+                ? me._getAssociatedOptions
+                : me._getNotAssociatedOptions;
             }
+            itemData.push(record.getData(opts));
+            if (clear) {
+              options.associated = associated;
+              clear = false;
+            }
+            delete record.$gathering;
+          }
 
-            result[roleName] = itemData;
+          delete item.$gathering;
+        } else {
+          opts = options || me._getAssociatedOptions;
+          if (options && options.associated === undefined) {
+            opts.associated = true;
+          }
+          itemData = item.getData(opts);
         }
 
-        delete me.$gathering;
+        result[roleName] = itemData;
+      }
 
-        return result;
+      delete me.$gathering;
+
+      return result;
     },
 
     /**
@@ -1733,63 +1779,68 @@ Ext.define('Ext.data.Model', {
      * @return {Object} An object containing all the values in this model.
      */
     getData: function (options) {
-        var me = this,
-            ret = {},
-            opts = (options === true) ? me._getAssociatedOptions : (options || ret), //cheat
-            data = me.data,
-            associated = opts.associated,
-            changes = opts.changes,
-            critical = changes && opts.critical,
-            content = changes ? me.modified : data,
-            fieldsMap = me.fieldsMap,
-            persist = opts.persist,
-            serialize = opts.serialize,
-            criticalFields, field, n, name, value;
+      var me = this,
+        ret = {},
+        opts = options === true ? me._getAssociatedOptions : options || ret, //cheat
+        data = me.data,
+        associated = opts.associated,
+        changes = opts.changes,
+        critical = changes && opts.critical,
+        content = changes ? me.modified : data,
+        fieldsMap = me.fieldsMap,
+        persist = opts.persist,
+        serialize = opts.serialize,
+        criticalFields,
+        field,
+        n,
+        name,
+        value;
 
-        // DON'T use "opts" from here on...
+      // DON'T use "opts" from here on...
 
-        // Keep in mind the two legacy use cases:
-        //  - getData() ==> Ext.apply({}, me.data)
-        //  - getData(true) ==> Ext.apply(Ext.apply({}, me.data), me.getAssociatedData())
+      // Keep in mind the two legacy use cases:
+      //  - getData() ==> Ext.apply({}, me.data)
+      //  - getData(true) ==> Ext.apply(Ext.apply({}, me.data), me.getAssociatedData())
 
-        if (content) { // when processing only changes, me.modified could be null
-            for (name in content) {
-                value = data[name];
+      if (content) {
+        // when processing only changes, me.modified could be null
+        for (name in content) {
+          value = data[name];
 
-                field = fieldsMap[name];
-                if (field) {
-                    if (persist && !field.persist) {
-                        continue;
-                    }
-                    if (serialize && field.serialize) {
-                        value = field.serialize(value, me);
-                    }
-                }
-
-                ret[name] = value;
+          field = fieldsMap[name];
+          if (field) {
+            if (persist && !field.persist) {
+              continue;
             }
-        }
-
-        if (critical) {
-            criticalFields = me.self.criticalFields || me.getCriticalFields();
-            for (n = criticalFields.length; n-- > 0; ) {
-                name = (field = criticalFields[n]).name;
-
-                if (!(name in ret)) {
-                    value = data[name];
-                    if (serialize && field.serialize) {
-                        value = field.serialize(value, me);
-                    }
-                    ret[name] = value;
-                }
+            if (serialize && field.serialize) {
+              value = field.serialize(value, me);
             }
-        }
+          }
 
-        if (associated) {
-            me.getAssociatedData(ret, opts); // pass ret so new data is added to our object
+          ret[name] = value;
         }
+      }
 
-        return ret;
+      if (critical) {
+        criticalFields = me.self.criticalFields || me.getCriticalFields();
+        for (n = criticalFields.length; n-- > 0; ) {
+          name = (field = criticalFields[n]).name;
+
+          if (!(name in ret)) {
+            value = data[name];
+            if (serialize && field.serialize) {
+              value = field.serialize(value, me);
+            }
+            ret[name] = value;
+          }
+        }
+      }
+
+      if (associated) {
+        me.getAssociatedData(ret, opts); // pass ret so new data is added to our object
+      }
+
+      return ret;
     },
 
     /**
@@ -1798,33 +1849,33 @@ Ext.define('Ext.data.Model', {
      * @since 5.0.0
      */
     getTransientFields: function () {
-        var cls = this.self,
-            ret = cls.transientFields;
+      var cls = this.self,
+        ret = cls.transientFields;
 
-        if (!ret) {
-            cls.rankFields(); // populates transientFields as well as rank
-            ret = cls.transientFields;
-        }
+      if (!ret) {
+        cls.rankFields(); // populates transientFields as well as rank
+        ret = cls.transientFields;
+      }
 
-        return ret;
+      return ret;
     },
 
     /**
      * Checks whether this model is loading data from the {@link #proxy}.
      * @return {Boolean} `true` if in a loading state.
      */
-    isLoading: function() {
-        return !!this.loadOperation;
+    isLoading: function () {
+      return !!this.loadOperation;
     },
 
     /**
      * Aborts a pending {@link #load} operation. If the record is not loading, this does nothing.
      */
-    abort: function() {
-        var operation = this.loadOperation;
-        if (operation) {
-            operation.abort();
-        }
+    abort: function () {
+      var operation = this.loadOperation;
+      if (operation) {
+        operation.abort();
+      }
     },
 
     /**
@@ -1867,114 +1918,118 @@ Ext.define('Ext.data.Model', {
      * The callback is passed the following parameters:
      * @param {Ext.data.Model} options.success.record The record.
      * @param {Ext.data.operation.Operation} options.success.operation The operation.
-     * 
+     *
      * @param {Function} options.failure A function to be called when the
      * model is unable to be processed by the server.
      * The callback is passed the following parameters:
      * @param {Ext.data.Model} options.failure.record The record.
      * @param {Ext.data.operation.Operation} options.failure.operation The operation.
-     * 
+     *
      * @param {Function} options.callback A function to be called whether the proxy
      * transaction was successful or not.
      * The callback is passed the following parameters:
      * @param {Ext.data.Model} options.callback.record The record.
      * @param {Ext.data.operation.Operation} options.callback.operation The operation.
      * @param {Boolean} options.callback.success `true` if the operation was successful.
-     * 
+     *
      * @param {Object} options.scope The scope in which to execute the callback
      * functions.  Defaults to the model instance.
      *
      * @return {Ext.data.operation.Read} The read operation.
      */
-    load: function(options) {
-        options = Ext.apply({}, options);
+    load: function (options) {
+      options = Ext.apply({}, options);
 
-        var me = this,
-            scope = options.scope || me,
-            proxy = me.getProxy(),
-            callback = options.callback,
-            operation = me.loadOperation,
-            id = me.getId(),
-            extras;
+      var me = this,
+        scope = options.scope || me,
+        proxy = me.getProxy(),
+        callback = options.callback,
+        operation = me.loadOperation,
+        id = me.getId(),
+        extras;
 
-        if (operation) {
-            // Already loading, push any callbacks on and jump out
-            extras = operation.extraCalls;
-            if (!extras) {
-                extras = operation.extraCalls = [];
-            }
-            extras.push(options);
-            return operation;
+      if (operation) {
+        // Already loading, push any callbacks on and jump out
+        extras = operation.extraCalls;
+        if (!extras) {
+          extras = operation.extraCalls = [];
         }
+        extras.push(options);
+        return operation;
+      }
 
+      //<debug>
+      var doIdCheck = true;
+      if (me.phantom) {
+        doIdCheck = false;
+      }
+      //</debug>
+
+      options.id = id;
+
+      // Always set the recordCreator. If we have a session, we're already
+      // part of said session, so we don't need to handle that.
+      options.recordCreator = function (data, type, readOptions) {
+        // Important to change this here, because we might be loading associations,
+        // so we do not want this to propagate down. If we have a session, use that
+        // so that we end up getting the same record. Otherwise, just remove it.
+        var session = me.session;
+        if (readOptions) {
+          readOptions.recordCreator = session ? session.recordCreator : null;
+        }
+        me.set(data, me._commitOptions);
         //<debug>
-        var doIdCheck = true;
-        if (me.phantom) {
-            doIdCheck = false;
+        // Do the id check after set since converters may have run
+        if (doIdCheck && me.getId() !== id) {
+          Ext.raise(
+            "Invalid record id returned for " + id + "@" + me.entityName
+          );
         }
         //</debug>
+        return me;
+      };
 
-        options.id = id;
+      options.internalCallback = function (operation) {
+        var success =
+            operation.wasSuccessful() && operation.getRecords().length > 0,
+          op = me.loadOperation,
+          extras = op.extraCalls,
+          successFailArgs = [me, operation],
+          callbackArgs = [me, operation, success],
+          i,
+          len;
 
-        // Always set the recordCreator. If we have a session, we're already
-        // part of said session, so we don't need to handle that.
-        options.recordCreator = function(data, type, readOptions) {
-            // Important to change this here, because we might be loading associations,
-            // so we do not want this to propagate down. If we have a session, use that
-            // so that we end up getting the same record. Otherwise, just remove it.
-            var session = me.session;
-            if (readOptions) {
-                readOptions.recordCreator = session ? session.recordCreator : null;
-            }
-            me.set(data, me._commitOptions);  
-            //<debug>
-            // Do the id check after set since converters may have run
-            if (doIdCheck && me.getId() !== id) {
-                Ext.raise('Invalid record id returned for ' + id + '@' + me.entityName);
-            }
-            //</debug>
-            return me;
-        };
+        me.loadOperation = null;
 
-        options.internalCallback = function(operation) {
-            var success = operation.wasSuccessful() && operation.getRecords().length > 0,
-                op = me.loadOperation,
-                extras = op.extraCalls,
-                successFailArgs = [me, operation],
-                callbackArgs = [me, operation, success],
-                i, len;
+        if (success) {
+          Ext.callback(options.success, scope, successFailArgs);
+        } else {
+          Ext.callback(options.failure, scope, successFailArgs);
+        }
+        Ext.callback(callback, scope, callbackArgs);
 
-            me.loadOperation = null;
-
+        // Some code repetition here, however in a vast majority of cases
+        // we'll only have a single callback, so optimize for that case rather
+        // than setup arrays for all the callback options
+        if (extras) {
+          for (i = 0, len = extras.length; i < len; ++i) {
+            options = extras[i];
             if (success) {
-                Ext.callback(options.success, scope, successFailArgs);
+              Ext.callback(options.success, scope, successFailArgs);
             } else {
-                Ext.callback(options.failure, scope, successFailArgs);
+              Ext.callback(options.failure, scope, successFailArgs);
             }
-            Ext.callback(callback, scope, callbackArgs);
+            Ext.callback(options.callback, scope, callbackArgs);
+          }
+        }
+        me.callJoined("afterLoad");
+      };
+      delete options.callback;
 
-            // Some code repetition here, however in a vast majority of cases
-            // we'll only have a single callback, so optimize for that case rather
-            // than setup arrays for all the callback options
-            if (extras) {
-                for (i = 0, len = extras.length; i < len; ++i) {
-                    options = extras[i];
-                    if (success) {
-                        Ext.callback(options.success, scope, successFailArgs);
-                    } else {
-                        Ext.callback(options.failure, scope, successFailArgs);
-                    }
-                    Ext.callback(options.callback, scope, callbackArgs);
-                }
-            }
-            me.callJoined('afterLoad');
-        };
-        delete options.callback;
+      me.loadOperation = operation = proxy.createOperation("read", options);
+      operation.execute();
 
-        me.loadOperation = operation = proxy.createOperation('read', options);
-        operation.execute();
-
-        return operation;
+      return operation;
     },
 
     /**
@@ -2113,1254 +2168,1348 @@ Ext.define('Ext.data.Model', {
      *  - {@link #isModified modified} model - {@link Ext.data.operation.Update}
      *  - {@link #dropped} model - {@link Ext.data.operation.Destroy}
      */
-    save: function(options) {
-        options = Ext.apply({}, options);
-        
-        var me = this,
-            phantom = me.phantom,
-            dropped = me.dropped,
-            action = dropped ? 'destroy' : (phantom ? 'create' : 'update'),
-            scope  = options.scope || me,
-            callback = options.callback,
-            proxy = me.getProxy(),
-            operation;
-            
-        options.records = [me];
-        options.internalCallback = function(operation) {
-            var args = [me, operation],
-                success = operation.wasSuccessful();
-                
-            if (success) {
-                Ext.callback(options.success, scope, args);
-            } else {
-                Ext.callback(options.failure, scope, args);
-            }
-            args.push(success);
-            Ext.callback(callback, scope, args);
-        };
-        delete options.callback;
-        
-        operation = proxy.createOperation(action, options);
+    save: function (options) {
+      options = Ext.apply({}, options);
 
-        // Not a phantom, then we must perform this operation on the remote datasource.
-        // Record will be removed from the store in the callback upon a success response
-        if (dropped && phantom) {
-            // If it's a phantom, then call the callback directly with a dummy successful ResultSet
-            operation.setResultSet(Ext.data.reader.Reader.prototype.nullResultSet);
-            me.setErased();
-            operation.setSuccessful(true);
+      var me = this,
+        phantom = me.phantom,
+        dropped = me.dropped,
+        action = dropped ? "destroy" : phantom ? "create" : "update",
+        scope = options.scope || me,
+        callback = options.callback,
+        proxy = me.getProxy(),
+        operation;
+
+      options.records = [me];
+      options.internalCallback = function (operation) {
+        var args = [me, operation],
+          success = operation.wasSuccessful();
+
+        if (success) {
+          Ext.callback(options.success, scope, args);
         } else {
-            operation.execute();
+          Ext.callback(options.failure, scope, args);
         }
-        return operation;
+        args.push(success);
+        Ext.callback(callback, scope, args);
+      };
+      delete options.callback;
+
+      operation = proxy.createOperation(action, options);
+
+      // Not a phantom, then we must perform this operation on the remote datasource.
+      // Record will be removed from the store in the callback upon a success response
+      if (dropped && phantom) {
+        // If it's a phantom, then call the callback directly with a dummy successful ResultSet
+        operation.setResultSet(Ext.data.reader.Reader.prototype.nullResultSet);
+        me.setErased();
+        operation.setSuccessful(true);
+      } else {
+        operation.execute();
+      }
+      return operation;
     },
 
     //-------------------------------------------------------------------------
     // Statics
 
     inheritableStatics: {
-        /**
-         * This method adds the given set of fields to this model class.
-         *
-         * @param {String[]/Object[]} newFields The new fields to add. Based on the `name`
-         * of a field this may replace a previous field definition.
-         *
-         * @protected
-         * @static
-         * @inheritable
-         * @since 5.0.0
-         */
-        addFields: function (newFields) {
-            this.replaceFields(newFields);
-        },
+      /**
+       * This method adds the given set of fields to this model class.
+       *
+       * @param {String[]/Object[]} newFields The new fields to add. Based on the `name`
+       * of a field this may replace a previous field definition.
+       *
+       * @protected
+       * @static
+       * @inheritable
+       * @since 5.0.0
+       */
+      addFields: function (newFields) {
+        this.replaceFields(newFields);
+      },
 
-        /**
-         * This method replaces the specified set of fields with a given set of new fields.
-         * Fields should normally be considered immutable, but if the timing is right (that
-         * is, before derived classes are declared), it is permissible to change the fields
-         * collection.
-         *
-         * @param {String[]/Object[]} newFields The new fields to add. Based on the `name`
-         * of a field this may replace a previous field definition.
-         * @param {Boolean/String[]} removeFields The names of fields to remove or `true`
-         * to remove all existing fields. Removes are processed first followed by adds so
-         * if a field name appears in `newFields` as well that field will effectively be
-         * added (however, in that case there is no need to include the field in this
-         * array).
-         *
-         * @protected
-         * @static
-         * @inheritable
-         * @since 5.0.0
-         */
-        replaceFields: function (newFields, removeFields) {
-            var me = this,
-                proto = me.prototype,
-                Field = Ext.data.field.Field,
-                fields = me.fields,
-                fieldsMap = me.fieldsMap,
-                ordinals = me.fieldOrdinals,
-                field, i, idField, len, name, ordinal;
+      /**
+       * This method replaces the specified set of fields with a given set of new fields.
+       * Fields should normally be considered immutable, but if the timing is right (that
+       * is, before derived classes are declared), it is permissible to change the fields
+       * collection.
+       *
+       * @param {String[]/Object[]} newFields The new fields to add. Based on the `name`
+       * of a field this may replace a previous field definition.
+       * @param {Boolean/String[]} removeFields The names of fields to remove or `true`
+       * to remove all existing fields. Removes are processed first followed by adds so
+       * if a field name appears in `newFields` as well that field will effectively be
+       * added (however, in that case there is no need to include the field in this
+       * array).
+       *
+       * @protected
+       * @static
+       * @inheritable
+       * @since 5.0.0
+       */
+      replaceFields: function (newFields, removeFields) {
+        var me = this,
+          proto = me.prototype,
+          Field = Ext.data.field.Field,
+          fields = me.fields,
+          fieldsMap = me.fieldsMap,
+          ordinals = me.fieldOrdinals,
+          field,
+          i,
+          idField,
+          len,
+          name,
+          ordinal;
 
-            if (removeFields === true) {
-                fields.length = 0;
-                me.fieldsMap = fieldsMap = {};
-                me.fieldOrdinals = ordinals = {};
-            } else if (removeFields) {
-                for (i = removeFields.length; i-- > 0; ) {
-                    name = removeFields[i];
-                    if (name in ordinals) {
-                        delete ordinals[name];
-                        delete fieldsMap[name];
-                    }
-                }
-
-                for (i = 0, len = fields.length; i < len; ++i) {
-                    name = (field = fields[i]).name;
-
-                    if (name in ordinals) {
-                        ordinals[name] = i;
-                    } else {
-                        // This field is being removed (it is no longer in ordinals).
-                        fields.splice(i, 1);
-                        --i;
-                        --len;
-                        // we need to do this forwards so that ordinals don't become
-                        // invalid due to a splice
-                    }
-                }
+        if (removeFields === true) {
+          fields.length = 0;
+          me.fieldsMap = fieldsMap = {};
+          me.fieldOrdinals = ordinals = {};
+        } else if (removeFields) {
+          for (i = removeFields.length; i-- > 0; ) {
+            name = removeFields[i];
+            if (name in ordinals) {
+              delete ordinals[name];
+              delete fieldsMap[name];
             }
+          }
 
-            for (i = 0, len = newFields ? newFields.length : 0; i < len; i++) {
-                name = (field = newFields[i]).name;
+          for (i = 0, len = fields.length; i < len; ++i) {
+            name = (field = fields[i]).name;
 
-                if (!(name in ordinals)) {
-                    ordinals[name] = ordinal = fields.length; // 0-based
-                    fields.push(field = Field.create(field));
-
-                    fieldsMap[name] = field;
-                    field.ordinal = ordinal;
-                    field.definedBy = field.owner = this; // Ext.data.NodeInterface
-                }
+            if (name in ordinals) {
+              ordinals[name] = i;
+            } else {
+              // This field is being removed (it is no longer in ordinals).
+              fields.splice(i, 1);
+              --i;
+              --len;
+              // we need to do this forwards so that ordinals don't become
+              // invalid due to a splice
             }
-
-            // The idField could have been replaced, so reacquire it.
-            me.idField = proto.idField = idField = fieldsMap[proto.idProperty];
-            idField.allowNull = idField.critical = idField.identifier = true;
-            idField.defaultValue = null;
-
-            // In case we've created the initializer we need to zap it so we recreate it
-            // next time. Likewise with field ranking.
-            me.initializeFn = me.rankedFields = me.transientFields = me.criticalFields = null;
-        },
-
-        /**
-         * Removes the given set of fields from this model.
-         *
-         * @param {Boolean/String[]} removeFields The names of fields to remove or `true`
-         * to remove all existing fields. Removes are processed first followed by adds so
-         * if a field name appears in `newFields` as well that field will effectively be
-         * added (however, in that case there is no need to include the field in this
-         * array).
-         *
-         * @protected
-         * @static
-         * @inheritable
-         * @since 5.0.0
-         */
-        removeFields: function (removeFields) {
-            this.replaceFields(null, removeFields);
-        },
-
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
-        getIdFromData: function(data) {
-            var T = this,
-                idField = T.idField,
-                id = idField.calculated ? (new T(data)).id : data[idField.name];
-
-            return id;
-        },
-
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
-        createWithId: function (id, data, session) {
-            var d = data,
-                T = this;
-
-            if (id || id === 0) {
-                d = {};
-                if (data) {
-                    Ext.apply(d, data);
-                }
-
-                d[T.idField.name] = id;
-            }
-
-            return new T(d, session);
-        },
-        
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
-        getFields: function() {
-            return this.fields;    
-        },
-
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
-        getFieldsMap: function() {
-            return this.fieldsMap;
-        },
-
-        /**
-         * @private
-         * @static
-         * @inheritable
-         */
-        getField: function (name) {
-            return this.fieldsMap[name] || null;
-        },
-
-        /**
-         * Returns the configured Proxy for this Model.
-         * @return {Ext.data.proxy.Proxy} The proxy
-         * @static
-         * @inheritable
-         */
-        getProxy: function() {
-            var me = this,
-                proxy = me.proxy,
-                defaultProxy = me.defaultProxy,
-                defaults;
-
-            if (!proxy) {
-                // Check what was defined by the class (via onClassExtended):
-                proxy = me.proxyConfig;
-
-                if (!proxy && defaultProxy) {
-                    proxy = defaultProxy;
-                }
-
-                if (!proxy || !proxy.isProxy) {
-                    if (typeof proxy === 'string') {
-                        proxy = {
-                            type: proxy
-                        };
-                    }
-                    // We have nothing or a config for the proxy. Get some defaults from
-                    // the Schema and smash anything we've provided over the top.
-                    defaults = me.schema.constructProxy(me);
-                    proxy = proxy ? Ext.merge(defaults, proxy) : defaults;
-                }
-
-                proxy = me.setProxy(proxy);
-            }
-
-            return proxy;
-        },
-
-        /**
-         * Sets the Proxy to use for this model. Accepts any options that can be accepted by
-         * {@link Ext#createByAlias Ext.createByAlias}.
-         * @param {String/Object/Ext.data.proxy.Proxy} proxy The proxy
-         * @return {Ext.data.proxy.Proxy}
-         * @static
-         * @inheritable
-         */
-        setProxy: function (proxy) {
-            var me = this,
-                model;
-
-            if (proxy) {
-                if (!proxy.isProxy) {
-                    proxy = Ext.Factory.proxy(proxy);
-                } else {
-                    model = proxy.getModel();
-                    if (model && model !== me) {
-                        proxy = proxy.clone();
-                    }
-                }
-
-                proxy.setModel(me);
-            }
-
-            return (me.prototype.proxy = me.proxy = proxy);
-        },
-
-        /**
-         * Asynchronously loads a model instance by id. Any processing of the loaded
-         * record should be done in a callback.
-         *
-         * Sample usage:
-         *
-         *     Ext.define('MyApp.User', {
-         *         extend: 'Ext.data.Model',
-         *         fields: [
-         *             {name: 'id', type: 'int'},
-         *             {name: 'name', type: 'string'}
-         *         ]
-         *     });
-         *
-         *     MyApp.User.load(10, {
-         *         scope: this,
-         *         failure: function(record, operation) {
-         *             //do something if the load failed
-         *         },
-         *         success: function(record, operation) {
-         *             //do something if the load succeeded
-         *         },
-         *         callback: function(record, operation, success) {
-         *             //do something whether the load succeeded or failed
-         *         }
-         *     });
-         *
-         * @param {Number/String} id The ID of the model to load.
-         * **NOTE:** The model returned must have an ID matching the param in the load
-         * request.
-         *
-         * @param {Object} [options] The options param is an
-         * {@link Ext.data.operation.Read} config object containing success, failure and
-         * callback functions, plus optional scope.
-         *
-         * @param {Function} options.success A function to be called when the
-         * model is processed by the proxy successfully.
-         * The callback is passed the following parameters:
-         * @param {Ext.data.Model} options.success.record The record.
-         * @param {Ext.data.operation.Operation} options.success.operation The operation.
-         * 
-         * @param {Function} options.failure A function to be called when the
-         * model is unable to be processed by the server.
-         * The callback is passed the following parameters:
-         * @param {Ext.data.Model} options.failure.record The record.
-         * @param {Ext.data.operation.Operation} options.failure.operation The operation.
-         * 
-         * @param {Function} options.callback A function to be called whether the proxy
-         * transaction was successful or not.
-         * The callback is passed the following parameters:
-         * @param {Ext.data.Model} options.callback.record The record.
-         * @param {Ext.data.operation.Operation} options.callback.operation The
-         * operation.
-         * @param {Boolean} options.callback.success `true` if the operation was
-         * successful.
-         * 
-         * @param {Object} options.scope The scope in which to execute the callback
-         * functions.  Defaults to the model instance.
-         *
-         * @param {Ext.data.Session} [session] The session for this record.
-         *
-         * @return {Ext.data.Model} The newly created model. Note that the model will
-         * (probably) still be loading once it is returned from this method. To do any
-         * post-processing on the data, the appropriate place to do see is in the
-         * callback.
-         * 
-         * @static
-         * @inheritable
-         */
-        load: function(id, options, session) {
-            var data = {},
-                rec;
-
-            data[this.prototype.idProperty] = id;
-            rec = new this(data, session);
-
-            rec.load(options);
-            return rec;
+          }
         }
+
+        for (i = 0, len = newFields ? newFields.length : 0; i < len; i++) {
+          name = (field = newFields[i]).name;
+
+          if (!(name in ordinals)) {
+            ordinals[name] = ordinal = fields.length; // 0-based
+            fields.push((field = Field.create(field)));
+
+            fieldsMap[name] = field;
+            field.ordinal = ordinal;
+            field.definedBy = field.owner = this; // Ext.data.NodeInterface
+          }
+        }
+
+        // The idField could have been replaced, so reacquire it.
+        me.idField = proto.idField = idField = fieldsMap[proto.idProperty];
+        idField.allowNull = idField.critical = idField.identifier = true;
+        idField.defaultValue = null;
+
+        // In case we've created the initializer we need to zap it so we recreate it
+        // next time. Likewise with field ranking.
+        me.initializeFn =
+          me.rankedFields =
+          me.transientFields =
+          me.criticalFields =
+            null;
+      },
+
+      /**
+       * Removes the given set of fields from this model.
+       *
+       * @param {Boolean/String[]} removeFields The names of fields to remove or `true`
+       * to remove all existing fields. Removes are processed first followed by adds so
+       * if a field name appears in `newFields` as well that field will effectively be
+       * added (however, in that case there is no need to include the field in this
+       * array).
+       *
+       * @protected
+       * @static
+       * @inheritable
+       * @since 5.0.0
+       */
+      removeFields: function (removeFields) {
+        this.replaceFields(null, removeFields);
+      },
+
+      /**
+       * @private
+       * @static
+       * @inheritable
+       */
+      getIdFromData: function (data) {
+        var T = this,
+          idField = T.idField,
+          id = idField.calculated ? new T(data).id : data[idField.name];
+
+        return id;
+      },
+
+      /**
+       * @private
+       * @static
+       * @inheritable
+       */
+      createWithId: function (id, data, session) {
+        var d = data,
+          T = this;
+
+        if (id || id === 0) {
+          d = {};
+          if (data) {
+            Ext.apply(d, data);
+          }
+
+          d[T.idField.name] = id;
+        }
+
+        return new T(d, session);
+      },
+
+      /**
+       * @private
+       * @static
+       * @inheritable
+       */
+      getFields: function () {
+        return this.fields;
+      },
+
+      /**
+       * @private
+       * @static
+       * @inheritable
+       */
+      getFieldsMap: function () {
+        return this.fieldsMap;
+      },
+
+      /**
+       * @private
+       * @static
+       * @inheritable
+       */
+      getField: function (name) {
+        return this.fieldsMap[name] || null;
+      },
+
+      /**
+       * Returns the configured Proxy for this Model.
+       * @return {Ext.data.proxy.Proxy} The proxy
+       * @static
+       * @inheritable
+       */
+      getProxy: function () {
+        var me = this,
+          proxy = me.proxy,
+          defaultProxy = me.defaultProxy,
+          defaults;
+
+        if (!proxy) {
+          // Check what was defined by the class (via onClassExtended):
+          proxy = me.proxyConfig;
+
+          if (!proxy && defaultProxy) {
+            proxy = defaultProxy;
+          }
+
+          if (!proxy || !proxy.isProxy) {
+            if (typeof proxy === "string") {
+              proxy = {
+                type: proxy
+              };
+            }
+            // We have nothing or a config for the proxy. Get some defaults from
+            // the Schema and smash anything we've provided over the top.
+            defaults = me.schema.constructProxy(me);
+            proxy = proxy ? Ext.merge(defaults, proxy) : defaults;
+          }
+
+          proxy = me.setProxy(proxy);
+        }
+
+        return proxy;
+      },
+
+      /**
+       * Sets the Proxy to use for this model. Accepts any options that can be accepted by
+       * {@link Ext#createByAlias Ext.createByAlias}.
+       * @param {String/Object/Ext.data.proxy.Proxy} proxy The proxy
+       * @return {Ext.data.proxy.Proxy}
+       * @static
+       * @inheritable
+       */
+      setProxy: function (proxy) {
+        var me = this,
+          model;
+
+        if (proxy) {
+          if (!proxy.isProxy) {
+            proxy = Ext.Factory.proxy(proxy);
+          } else {
+            model = proxy.getModel();
+            if (model && model !== me) {
+              proxy = proxy.clone();
+            }
+          }
+
+          proxy.setModel(me);
+        }
+
+        return (me.prototype.proxy = me.proxy = proxy);
+      },
+
+      /**
+       * Asynchronously loads a model instance by id. Any processing of the loaded
+       * record should be done in a callback.
+       *
+       * Sample usage:
+       *
+       *     Ext.define('MyApp.User', {
+       *         extend: 'Ext.data.Model',
+       *         fields: [
+       *             {name: 'id', type: 'int'},
+       *             {name: 'name', type: 'string'}
+       *         ]
+       *     });
+       *
+       *     MyApp.User.load(10, {
+       *         scope: this,
+       *         failure: function(record, operation) {
+       *             //do something if the load failed
+       *         },
+       *         success: function(record, operation) {
+       *             //do something if the load succeeded
+       *         },
+       *         callback: function(record, operation, success) {
+       *             //do something whether the load succeeded or failed
+       *         }
+       *     });
+       *
+       * @param {Number/String} id The ID of the model to load.
+       * **NOTE:** The model returned must have an ID matching the param in the load
+       * request.
+       *
+       * @param {Object} [options] The options param is an
+       * {@link Ext.data.operation.Read} config object containing success, failure and
+       * callback functions, plus optional scope.
+       *
+       * @param {Function} options.success A function to be called when the
+       * model is processed by the proxy successfully.
+       * The callback is passed the following parameters:
+       * @param {Ext.data.Model} options.success.record The record.
+       * @param {Ext.data.operation.Operation} options.success.operation The operation.
+       *
+       * @param {Function} options.failure A function to be called when the
+       * model is unable to be processed by the server.
+       * The callback is passed the following parameters:
+       * @param {Ext.data.Model} options.failure.record The record.
+       * @param {Ext.data.operation.Operation} options.failure.operation The operation.
+       *
+       * @param {Function} options.callback A function to be called whether the proxy
+       * transaction was successful or not.
+       * The callback is passed the following parameters:
+       * @param {Ext.data.Model} options.callback.record The record.
+       * @param {Ext.data.operation.Operation} options.callback.operation The
+       * operation.
+       * @param {Boolean} options.callback.success `true` if the operation was
+       * successful.
+       *
+       * @param {Object} options.scope The scope in which to execute the callback
+       * functions.  Defaults to the model instance.
+       *
+       * @param {Ext.data.Session} [session] The session for this record.
+       *
+       * @return {Ext.data.Model} The newly created model. Note that the model will
+       * (probably) still be loading once it is returned from this method. To do any
+       * post-processing on the data, the appropriate place to do see is in the
+       * callback.
+       *
+       * @static
+       * @inheritable
+       */
+      load: function (id, options, session) {
+        var data = {},
+          rec;
+
+        data[this.prototype.idProperty] = id;
+        rec = new this(data, session);
+
+        rec.load(options);
+        return rec;
+      }
     },
 
     deprecated: {
-        5: {
-            methods: {
-                hasId: null,
-                markDirty: null,
-                setDirty: null,
-                eachStore: function (callback, scope) {
-                    var me = this,
-                        stores = me.stores,
-                        len = stores.length,
-                        i;
+      5: {
+        methods: {
+          hasId: null,
+          markDirty: null,
+          setDirty: null,
+          eachStore: function (callback, scope) {
+            var me = this,
+              stores = me.stores,
+              len = stores.length,
+              i;
 
-                    for (i = 0; i < len; ++i) {
-                        callback.call(scope, stores[i]);
-                    }
-                },
-
-                join: function(item) {
-                    var me = this,
-                        stores = me.stores,
-                        joined = me.joined;
-
-                    if (!joined) {
-                        joined = me.joined = [item];
-                    } else {
-                        joined.push(item);
-                    }
-
-                    if (item.isStore) {
-                        me.store = me.store || item;
-                        if (!stores) {
-                            stores = me.stores = [];
-                        }
-                        stores.push(item);
-                    }
-                },
-
-                unjoin: function(item) {
-                    var me = this,
-                        stores = me.stores,
-                        joined = me.joined;
-
-                    if (joined.length === 1) {
-                        joined.length = 0;
-                    } else {
-                        Ext.Array.remove(joined, item);
-                    }
-
-                    if (item.isStore) {
-                        Ext.Array.remove(stores, item);
-                        me.store = stores[0] || null;
-                    }
-                }
-            },
-            properties: {
-                persistenceProperty: null
-            },
-            inheritableStatics: {
-                methods: {
-                    setFields: null
-                }
+            for (i = 0; i < len; ++i) {
+              callback.call(scope, stores[i]);
             }
+          },
+
+          join: function (item) {
+            var me = this,
+              stores = me.stores,
+              joined = me.joined;
+
+            if (!joined) {
+              joined = me.joined = [item];
+            } else {
+              joined.push(item);
+            }
+
+            if (item.isStore) {
+              me.store = me.store || item;
+              if (!stores) {
+                stores = me.stores = [];
+              }
+              stores.push(item);
+            }
+          },
+
+          unjoin: function (item) {
+            var me = this,
+              stores = me.stores,
+              joined = me.joined;
+
+            if (joined.length === 1) {
+              joined.length = 0;
+            } else {
+              Ext.Array.remove(joined, item);
+            }
+
+            if (item.isStore) {
+              Ext.Array.remove(stores, item);
+              me.store = stores[0] || null;
+            }
+          }
+        },
+        properties: {
+          persistenceProperty: null
+        },
+        inheritableStatics: {
+          methods: {
+            setFields: null
+          }
         }
+      }
     },
 
     //-------------------------------------------------------------------------
     privates: {
-        _commitOptions: {
-            commit: true
-        },
-        _getChangesOptions: {
-            changes: true
-        },
-        _getAssociatedOptions: {
-            associated: true
-        },
-        _getNotAssociatedOptions: {
-            associated: false
-        },
+      _commitOptions: {
+        commit: true
+      },
+      _getChangesOptions: {
+        changes: true
+      },
+      _getAssociatedOptions: {
+        associated: true
+      },
+      _getNotAssociatedOptions: {
+        associated: false
+      },
 
-        /**
-         * Copies data from the passed record into this record. If the passed record is undefined, does nothing.
-         *
-         * If this is a phantom record (represented only in the client, with no corresponding database entry), and
-         * the source record is not a phantom, then this record acquires the id of the source record.
-         *
-         * @param {Ext.data.Model} sourceRecord The record to copy data from.
-         * @return {String[]} The names of the fields which changed value.
-         * @private
-         */
-        copyFrom: function (sourceRecord) {
-            var me = this,
-                fields = me.fields,
-                fieldCount = fields.length,
-                modifiedFieldNames = [],
-                field, i = 0,
-                myData,
-                sourceData,
-                idProperty = me.idProperty,
-                name,
-                value;
+      /**
+       * Copies data from the passed record into this record. If the passed record is undefined, does nothing.
+       *
+       * If this is a phantom record (represented only in the client, with no corresponding database entry), and
+       * the source record is not a phantom, then this record acquires the id of the source record.
+       *
+       * @param {Ext.data.Model} sourceRecord The record to copy data from.
+       * @return {String[]} The names of the fields which changed value.
+       * @private
+       */
+      copyFrom: function (sourceRecord) {
+        var me = this,
+          fields = me.fields,
+          fieldCount = fields.length,
+          modifiedFieldNames = [],
+          field,
+          i = 0,
+          myData,
+          sourceData,
+          idProperty = me.idProperty,
+          name,
+          value;
 
-            if (sourceRecord) {
-                myData = me.data;
-                sourceData = sourceRecord.data;
-                for (; i < fieldCount; i++) {
-                    field = fields[i];
-                    name = field.name;
+        if (sourceRecord) {
+          myData = me.data;
+          sourceData = sourceRecord.data;
+          for (; i < fieldCount; i++) {
+            field = fields[i];
+            name = field.name;
 
-                    // Do not use setters.
-                    // Copy returned values in directly from the data object.
-                    // Converters have already been called because new Records
-                    // have been created to copy from.
-                    // This is a direct record-to-record value copy operation.
-                    // don't copy the id, we'll do it at the end
-                    if (name !== idProperty) {
-                        value = sourceData[name];
+            // Do not use setters.
+            // Copy returned values in directly from the data object.
+            // Converters have already been called because new Records
+            // have been created to copy from.
+            // This is a direct record-to-record value copy operation.
+            // don't copy the id, we'll do it at the end
+            if (name !== idProperty) {
+              value = sourceData[name];
 
-                        // If source property is specified, and value is different
-                        // copy field value in and build updatedFields
-                        if (value !== undefined && !me.isEqual(myData[name], value)) {
-                            myData[name] = value;
-                            modifiedFieldNames.push(name);
-                        }
-                    }
-                }
-
-                // If this is a phantom record being updated from a concrete record, copy the ID in.
-                if (me.phantom && !sourceRecord.phantom) {
-                    // beginEdit to prevent events firing
-                    // commit at the end to prevent dirty being set
-                    me.beginEdit();
-                    me.setId(sourceRecord.getId());
-                    me.endEdit(true);
-                    me.commit(true);
-                }
+              // If source property is specified, and value is different
+              // copy field value in and build updatedFields
+              if (value !== undefined && !me.isEqual(myData[name], value)) {
+                myData[name] = value;
+                modifiedFieldNames.push(name);
+              }
             }
-            return modifiedFieldNames;
-        },
+          }
 
-        /**
-         * Helper function used by afterEdit, afterReject and afterCommit. Calls the given
-         * method on the `Ext.data.Store` that this instance has {@link #join joined}, if any.
-         * The store function will always be called with the model instance as its single
-         * argument. If this model is joined to a Ext.data.NodeStore, then this method calls
-         * the given method on the NodeStore and the associated Ext.data.TreeStore.
-         * @param {String} funcName The name function to call on each store.
-         * @param {Array} [args] The arguments to pass to the method. This instance is
-         * always inserted as the first argument.
-         * @private
-         */
-        callJoined: function (funcName, args) {
-            var me = this,
-                joined = me.joined,
-                session = me.session,
-                state = me.dropped ? 'D' : (me.phantom ? 'C' : (me.dirty ? 'U' : 'R')),
-                i, len, fn, item;
+          // If this is a phantom record being updated from a concrete record, copy the ID in.
+          if (me.phantom && !sourceRecord.phantom) {
+            // beginEdit to prevent events firing
+            // commit at the end to prevent dirty being set
+            me.beginEdit();
+            me.setId(sourceRecord.getId());
+            me.endEdit(true);
+            me.commit(true);
+          }
+        }
+        return modifiedFieldNames;
+      },
 
-            me.crudState = state;
+      /**
+       * Helper function used by afterEdit, afterReject and afterCommit. Calls the given
+       * method on the `Ext.data.Store` that this instance has {@link #join joined}, if any.
+       * The store function will always be called with the model instance as its single
+       * argument. If this model is joined to a Ext.data.NodeStore, then this method calls
+       * the given method on the NodeStore and the associated Ext.data.TreeStore.
+       * @param {String} funcName The name function to call on each store.
+       * @param {Array} [args] The arguments to pass to the method. This instance is
+       * always inserted as the first argument.
+       * @private
+       */
+      callJoined: function (funcName, args) {
+        var me = this,
+          joined = me.joined,
+          session = me.session,
+          state = me.dropped ? "D" : me.phantom ? "C" : me.dirty ? "U" : "R",
+          i,
+          len,
+          fn,
+          item;
 
-            if (joined || session) {
-                if (args) {
-                    args.unshift(me);
-                } else {
-                    args = [me];
-                }
+        me.crudState = state;
 
-                if (joined) {
-                    for (i = 0, len = joined.length; i < len; ++i) {
-                        item = joined[i];
-                        if (item && (fn = item[funcName])) {
-                            fn.apply(item, args);
-                        }
-                    }
-                }
+        if (joined || session) {
+          if (args) {
+            args.unshift(me);
+          } else {
+            args = [me];
+          }
 
-                fn = session && session[funcName];
-                if (fn) {
-                    fn.apply(session, args);
-                }
+          if (joined) {
+            for (i = 0, len = joined.length; i < len; ++i) {
+              item = joined[i];
+              if (item && (fn = item[funcName])) {
+                fn.apply(item, args);
+              }
             }
+          }
 
-            me.crudStateWas = state;
-        },
+          fn = session && session[funcName];
+          if (fn) {
+            fn.apply(session, args);
+          }
+        }
 
+        me.crudStateWas = state;
+      },
+
+      /**
+       * Called when an associated record instance has been set.
+       * @param {Ext.data.Model} record The record.
+       * @param {Ext.data.schema.Role} role The role.
+       *
+       * @private
+       */
+      onAssociatedRecordSet: function (record, role) {
+        this.callJoined("afterAssociatedRecordSet", [record, role]);
+      },
+
+      /**
+       * Called when the model id is changed.
+       * @param {Object} id The new id.
+       * @param {Object} oldId The old id.
+       */
+      onIdChanged: Ext.privateFn,
+
+      /**
+       * Set the session for this record.
+       * @param {Ext.data.Session} session The session
+       */
+      setSession: function (session) {
+        //<debug>
+        if (session) {
+          if (this.session) {
+            Ext.raise("This model already belongs to a session.");
+          }
+          if (!this.id) {
+            Ext.raise("The model must have an id to participate in a session.");
+          }
+        }
+        //</debug>
+        this.session = session;
+        if (session) {
+          session.add(this);
+        }
+      },
+
+      /**
+       * Gets the names of all the fields that were modified during an edit.
+       * @param {Object} [old] The saved data from `beginEdit`.
+       * @return {String[]} The array of modified field names.
+       * @private
+       */
+      getModifiedFieldNames: function (old) {
+        var me = this,
+          data = me.data,
+          modified = [],
+          oldData = old || me.editMemento.data,
+          key;
+
+        for (key in data) {
+          if (data.hasOwnProperty(key)) {
+            if (!me.isEqual(data[key], oldData[key], key)) {
+              modified.push(key);
+            }
+          }
+        }
+
+        return modified;
+      },
+
+      /**
+       * Checks if two values are equal, taking into account certain special factors, for
+       * example dates.
+       * @param {Object} lhs The first value.
+       * @param {Object} rhs The second value.
+       * @return {Boolean} True if the values are equal.
+       * @private
+       */
+      isEqual: function (lhs, rhs, field) {
+        var f;
+
+        if (field) {
+          f = field.isField ? field : this.fieldsMap[field];
+          if (f) {
+            return f.isEqual(lhs, rhs);
+          }
+        }
+
+        // instanceof is ~10 times faster then Ext.isDate. Values here will not be
+        // cross-document objects
+        if (lhs instanceof Date && rhs instanceof Date) {
+          return lhs.getTime() === rhs.getTime();
+        }
+        return lhs === rhs;
+      },
+
+      statics: {
         /**
-         * Called when an associated record instance has been set.
-         * @param {Ext.data.Model} record The record.
-         * @param {Ext.data.schema.Role} role The role.
-         *
+         * @property
+         * @static
          * @private
+         * @readonly
+         * @deprecated
+         * The update operation of type 'edit'. Used by {@link Ext.data.Store#event-update Store.update} event.
          */
-        onAssociatedRecordSet: function(record, role) {
-            this.callJoined('afterAssociatedRecordSet', [record, role]);
-        },
+        EDIT: "edit",
+        /**
+         * @property
+         * @static
+         * @private
+         * @readonly
+         * @deprecated
+         * The update operation of type 'reject'. Used by {@link Ext.data.Store#event-update Store.update} event.
+         */
+        REJECT: "reject",
+        /**
+         * @property
+         * @static
+         * @private
+         * @readonly
+         * @deprecated
+         * The update operation of type 'commit'. Used by {@link Ext.data.Store#event-update Store.update} event.
+         */
+        COMMIT: "commit",
 
         /**
-         * Called when the model id is changed.
-         * @param {Object} id The new id.
-         * @param {Object} oldId The old id.
+         * @property {String/Object}
+         * @static
+         * @protected
+         * The default proxy to use for instances of this Model when no proxy is configured
+         * on the instance.  When specified, the model will use this proxy instead of
+         * requesting one from the {@link Ext.data.Session Session}.
+         *
+         * Can be a string "type", or a {@link Ext.data.proxy.Proxy Proxy} config object.
+         *
+         * This proxy is not inherited by subclasses.
          */
-        onIdChanged: Ext.privateFn,
-        
-        /**
-         * Set the session for this record.
-         * @param {Ext.data.Session} session The session
-         */
-        setSession: function(session) {
+        defaultProxy: "memory",
+
+        rankFields: function () {
+          var cls = this,
+            prototype = cls.prototype,
+            fields = cls.fields,
+            length = fields.length,
+            rankedFields = [],
+            criticalFields = [],
+            transientFields = [],
+            evilFields,
+            field,
+            i;
+
+          cls.rankedFields = prototype.rankedFields = rankedFields;
+          cls.criticalFields = prototype.criticalFields = criticalFields;
+          cls.transientFields = prototype.transientFields = transientFields;
+
+          // This first pass brings over any fields that have no dependencies at all
+          // and gathers the evil fields to the side (the fields that could depend on
+          // anything). This avoids the call to topoAdd that we must perform on all of
+          // the fields that do have depends (which is good since most fields will be
+          // handled here).
+          for (i = 0; i < length; ++i) {
+            field = fields[i];
+            if (field.critical) {
+              criticalFields.push(field);
+            }
+            if (!field.persist) {
+              transientFields.push(field);
+            }
+            if (field.evil) {
+              (evilFields || (evilFields = [])).push(field);
+            } else if (!field.depends) {
+              rankedFields.push(field);
+              field.rank = rankedFields.length; // 1-based
+            }
+          }
+
+          for (i = 0; i < length; ++i) {
+            if (!(field = fields[i]).rank && !field.evil) {
+              cls.topoAdd(field);
+            }
+          }
+
+          if (evilFields) {
+            for (i = 0, length = evilFields.length; i < length; ++i) {
+              rankedFields.push((field = evilFields[i]));
+              field.rank = rankedFields.length; // 1-based
+            }
+          }
+
+          //<debug>
+          cls.topoStack = null; // cleanup diagnostic stack
+          //</debug>
+
+          return rankedFields;
+        },
+
+        topoAdd: function (field) {
+          var cls = this,
+            dep = field.depends,
+            dependsLength = dep ? dep.length : 0,
+            rankedFields = cls.rankedFields,
+            i,
+            targetField;
+
+          //<debug>
+          var topoStack = cls.topoStack || (cls.topoStack = []);
+          topoStack.push(field.name);
+
+          if (field.rank === 0) {
+            // if (adding)
+            Ext.raise(
+              cls.$className +
+                " has circular field dependencies: " +
+                topoStack.join(" --> ")
+            );
+          }
+
+          if (topoStack.length && field.evil) {
+            Ext.raise(
+              cls.$className +
+                ": Field " +
+                topoStack[topoStack.length - 1] +
+                " cannot depend on depends-less field " +
+                field.name
+            );
+          }
+
+          field.rank = 0; // adding (falsey but we can still detect cycles)
+          //</debug>
+
+          for (i = 0; i < dependsLength; ++i) {
+            // Get the targetField on which we depend and add this field to the
+            // targetField.dependents[]
+            targetField = cls.fieldsMap[dep[i]];
             //<debug>
-            if (session) {
-                if (this.session) {
-                    Ext.raise('This model already belongs to a session.');
-                }
-                if (!this.id) {
-                    Ext.raise('The model must have an id to participate in a session.');
-                }
+            if (!targetField) {
+              Ext.raise(
+                cls.$className +
+                  ": Field " +
+                  field.name +
+                  " depends on undefined field " +
+                  dep[i]
+              );
             }
             //</debug>
-            this.session = session;
-            if (session) {
-                session.add(this);
+            (targetField.dependents || (targetField.dependents = [])).push(
+              field
+            );
+
+            if (!targetField.rank) {
+              // if (!added)
+              cls.topoAdd(targetField);
             }
+          }
+
+          rankedFields.push(field);
+          field.rank = rankedFields.length; // 1-based (truthy to track "added" state)
+
+          //<debug>
+          topoStack.pop();
+          //</debug>
+        },
+
+        initFields: function (data, cls, proto) {
+          var Field = Ext.data.field.Field,
+            fieldDefs = data.fields,
+            // allocate fields [] and ordinals {} for the new class:
+            fields = [],
+            fieldOrdinals = {},
+            fieldsMap = {},
+            references = [],
+            superFields = proto.fields,
+            versionProperty = data.versionProperty || proto.versionProperty,
+            idProperty = cls.idProperty,
+            idField,
+            field,
+            i,
+            length,
+            name,
+            ordinal,
+            reference,
+            superIdField,
+            superIdFieldName,
+            idDeclared;
+
+          // Process any inherited fields to produce a fields [] and ordinals {} for
+          // this class:
+          cls.fields = proto.fields = fields;
+          cls.fieldOrdinals = proto.fieldOrdinals = fieldOrdinals;
+          cls.fieldsMap = proto.fieldsMap = fieldsMap;
+          cls.references = proto.references = references;
+
+          if (superFields) {
+            // We chain the super field so we can write to it
+            for (i = 0, length = superFields.length; i < length; ++i) {
+              fields[i] = field = Ext.Object.chain(superFields[i]);
+
+              field.dependents = null; // we need to recalculate these
+              field.owner = cls;
+              fieldOrdinals[(name = field.name)] = i;
+              fieldsMap[name] = field;
+              // Clear the rank because it needs to be set on the first pass through
+              // the fields in the subclass, don't inherit it from the parent
+              field.rank = null;
+
+              if (field.generated) {
+                superIdField = field;
+                superIdFieldName = field.name;
+              }
+            }
+          }
+
+          // Merge in any fields from this class:
+          if (fieldDefs) {
+            delete data.fields;
+            for (i = 0, length = fieldDefs.length; i < length; ++i) {
+              field = fieldDefs[i];
+              reference = field.reference;
+              // Create a copy of the reference since we'll modify
+              // the reference on the field. Needed for subclasses
+              if (reference && typeof reference !== "string") {
+                // Can have child objects, so merge it deeply
+                reference = Ext.merge({}, reference);
+              }
+              field.$reference = reference;
+              field = Field.create(fieldDefs[i]);
+              name = field.name;
+              ordinal = fieldOrdinals[name];
+              if (ordinal === undefined) {
+                // If the field is new, add it to the end of the fields[]
+                fieldOrdinals[name] = ordinal = fields.length;
+              }
+              // else, overwrite the field at the established ordinal
+
+              fieldsMap[name] = field;
+              fields[ordinal] = field;
+              field.definedBy = field.owner = cls;
+              field.ordinal = ordinal;
+              if (name === idProperty) {
+                idDeclared = field;
+              }
+            }
+          }
+
+          // Lookup the idProperty in the ordinals map and create a synthetic field if
+          // we don't have one.
+          idField = fieldsMap[idProperty];
+          if (!idField) {
+            if (superIdField && superIdField.generated) {
+              ordinal = superIdField.ordinal;
+            } else {
+              ordinal = fields.length;
+            }
+            delete fieldsMap[superIdFieldName];
+            delete fieldOrdinals[superIdFieldName];
+            idField = new Field(idProperty);
+            fields[ordinal] = idField;
+            fieldOrdinals[idProperty] = ordinal;
+            fieldsMap[idProperty] = idField;
+            idField.definedBy = cls;
+            idField.ordinal = ordinal;
+            idField.generated = true;
+          } else if (idDeclared && superIdField && superIdField.generated) {
+            // If we're declaring the id as a field in our fields array and it's different to
+            // the super id field that has been generated, pull it out and fix up the ordinals. This
+            // likely won't happen often, to do it earlier we would need to know the contents of the fields
+            // which would mean iterating over them twice.
+            Ext.Array.remove(fields, superIdField);
+            delete fieldsMap[superIdFieldName];
+            delete fieldOrdinals[superIdFieldName];
+            fieldsMap[idProperty] = idDeclared;
+            for (i = 0, length = fields.length; i < length; ++i) {
+              field = fields[i];
+              fields.ordinal = i;
+              fieldOrdinals[field.name] = i;
+            }
+          }
+
+          idField.allowNull = idField.critical = idField.identifier = true;
+          idField.defaultValue = null;
+
+          cls.idField = proto.idField = idField;
+
+          if (versionProperty) {
+            field = fieldsMap[versionProperty];
+            if (!field) {
+              ordinal = fields.length;
+              field = new Field({
+                name: versionProperty,
+                type: "int"
+              });
+              fields[ordinal] = field;
+              fieldOrdinals[versionProperty] = ordinal;
+              fieldsMap[versionProperty] = field;
+              field.definedBy = cls;
+              field.ordinal = ordinal;
+              field.generated = true;
+            }
+            field.defaultValue = 1;
+            field.critical = true;
+          }
+
+          // NOTE: Be aware that the one fellow that manipulates these after this
+          // point is Ext.data.NodeInterface.
+        },
+
+        initValidators: function (data, cls, proto) {
+          var superValidators = proto.validators,
+            validators,
+            field,
+            copy,
+            validatorDefs,
+            i,
+            length,
+            fieldValidator,
+            name,
+            validator,
+            item;
+
+          if (superValidators) {
+            validators = {};
+            for (field in superValidators) {
+              validators[field] = Ext.Array.clone(superValidators[field]);
+            }
+          }
+
+          validatorDefs = data.validators || data.validations;
+          //<debug>
+          if (data.validations) {
+            delete data.validations;
+            Ext.log.warn(
+              (cls.$className || "Ext.data.Model") +
+                ": validations has been deprecated. Please use validators instead."
+            );
+          }
+          //</debug>
+          if (validatorDefs) {
+            delete data.validators;
+
+            validators = validators || {};
+
+            // Support older array syntax
+            if (Ext.isArray(validatorDefs)) {
+              copy = {};
+              for (i = 0, length = validatorDefs.length; i < length; ++i) {
+                item = validatorDefs[i];
+                name = item.field;
+                if (!copy[name]) {
+                  copy[name] = [];
+                }
+                // Check for function form
+                item = item.fn || item;
+                copy[name].push(item);
+              }
+              validatorDefs = copy;
+            }
+
+            for (name in validatorDefs) {
+              fieldValidator = validatorDefs[name];
+              if (!Ext.isArray(fieldValidator)) {
+                fieldValidator = [fieldValidator];
+              }
+
+              validator = validators[name];
+              if (validators[name]) {
+                // Declared in super
+                Ext.Array.push(validator, fieldValidator);
+              } else {
+                validators[name] = fieldValidator;
+              }
+            }
+          }
+          if (validators) {
+            for (name in validators) {
+              field = cls.getField(name);
+              if (field) {
+                field.setModelValidators(validators[name]);
+              }
+            }
+          }
+          cls.validators = proto.validators = validators;
+        },
+
+        initAssociations: function (schema, data, cls) {
+          // Handle keyless associations
+          var associations = data.associations,
+            belongsTo = data.belongsTo,
+            hasMany = data.hasMany,
+            hasOne = data.hasOne,
+            // manyToMany can't be declared via reference
+            matrices = data.manyToMany,
+            i,
+            length,
+            assoc,
+            o;
+
+          delete data.associations;
+          delete data.belongsTo;
+          delete data.hasMany;
+          delete data.hasOne;
+          delete data.manyToMany;
+
+          if (matrices) {
+            schema.addMatrices(cls, matrices);
+          }
+
+          if (associations) {
+            associations = Ext.isArray(associations)
+              ? associations
+              : [associations];
+            for (i = 0, length = associations.length; i < length; ++i) {
+              assoc = associations[i];
+              o = Ext.apply({}, assoc);
+              delete o.type;
+              switch (assoc.type) {
+                case "belongsTo":
+                  schema.addBelongsTo(cls, o);
+                  break;
+                case "hasMany":
+                  schema.addHasMany(cls, o);
+                  break;
+                case "hasOne":
+                  schema.addHasOne(cls, o);
+                  break;
+
+                //<debug>
+                default:
+                  Ext.raise('Invalid association type: "' + assoc.type + '"');
+                //</debug>
+              }
+            }
+          }
+
+          if (belongsTo) {
+            belongsTo = Ext.isArray(belongsTo) ? belongsTo : [belongsTo];
+            for (i = 0, length = belongsTo.length; i < length; ++i) {
+              schema.addBelongsTo(cls, belongsTo[i]);
+            }
+          }
+
+          if (hasMany) {
+            hasMany = Ext.isArray(hasMany) ? hasMany : [hasMany];
+            for (i = 0, length = hasMany.length; i < length; ++i) {
+              schema.addHasMany(cls, hasMany[i]);
+            }
+          }
+
+          if (hasOne) {
+            hasOne = Ext.isArray(hasOne) ? hasOne : [hasOne];
+            for (i = 0, length = hasOne.length; i < length; ++i) {
+              schema.addHasOne(cls, hasOne[i]);
+            }
+          }
+          schema.afterKeylessAssociations(cls);
+        },
+
+        initIdentifier: function (data, cls, proto) {
+          var identifier = data.identifier || data.idgen,
+            superIdent = proto.identifier || cls.schema._defaultIdentifier,
+            generatorPrefix;
+
+          //<debug>
+          if (data.idgen) {
+            Ext.log.warn(
+              "Ext.data.Model: idgen has been deprecated. Please use identifier instead."
+            );
+          }
+          //</debug>
+
+          if (identifier) {
+            delete data.identifier;
+            delete data.idgen;
+
+            // An idgen was specified on the definition, use it explicitly.
+            identifier = Ext.Factory.dataIdentifier(identifier);
+          } else if (superIdent) {
+            // If we have a cloneable instance, and we don't have an id
+            // clone it. If we have an id, then we should use the same
+            // instance since it's the same as looking it up via id.
+            if (superIdent.clone && !superIdent.getId()) {
+              identifier = superIdent.clone();
+            } else if (superIdent.isGenerator) {
+              identifier = superIdent;
+            } else {
+              identifier = Ext.Factory.dataIdentifier(superIdent);
+            }
+          }
+
+          cls.identifier = proto.identifier = identifier;
+
+          if (!identifier) {
+            // If we didn't find one, create it and push it onto the class.
+            // Don't put it on the prototype, so a subclass will create
+            // it's own generator. If we have an anonymous model, go ahead and
+            // generate a unique prefix for it.
+            generatorPrefix = cls.entityName;
+            if (!generatorPrefix) {
+              generatorPrefix = Ext.id(null, "extModel");
+            }
+            cls.identifier = Ext.Factory.dataIdentifier({
+              type: "sequential",
+              prefix: generatorPrefix + "-"
+            });
+          }
+        },
+
+        findValidator: function (validators, name, cfg) {
+          var type = cfg.type || cfg,
+            field = validators[name],
+            len,
+            i,
+            item;
+
+          if (field) {
+            for (i = 0, len = field.length; i < len; ++i) {
+              item = field[i];
+              if (item.type === type) {
+                return item;
+              }
+            }
+          }
+          return null;
         },
 
         /**
-         * Gets the names of all the fields that were modified during an edit.
-         * @param {Object} [old] The saved data from `beginEdit`.
-         * @return {String[]} The array of modified field names.
+         * This method produces the `initializeFn` for this class. If there are no fields
+         * requiring {@link Ext.data.field.Field#cfg-convert conversion} and no fields requiring
+         * a {@link Ext.data.field.Field#defaultValue default value} then this method will
+         * return `null`.
+         * @return {Function} The `initializeFn` for this class (or null).
          * @private
          */
-        getModifiedFieldNames: function (old) {
-            var me = this,
-                data = me.data,
-                modified = [],
-                oldData = old || me.editMemento.data,
-                key;
+        makeInitializeFn: function (cls) {
+          var code = ["var "],
+            body = ["\nreturn function (e) {\n    var data = e.data, v;\n"],
+            work = 0,
+            bc,
+            ec, // == beginClone, endClone
+            convert,
+            expr,
+            factory,
+            field,
+            fields,
+            fs,
+            hasDefValue,
+            i,
+            length;
 
-            for (key in data) {
-                if (data.hasOwnProperty(key)) {
-                    if (!me.isEqual(data[key], oldData[key], key)) {
-                        modified.push(key);
-                    }
-                }
+          if (!(fields = cls.rankedFields)) {
+            // On the first edit of a record of this type we need to ensure we have the
+            // topo-sort done:
+            fields = cls.rankFields();
+          }
+
+          for (i = 0, length = fields.length; i < length; ++i) {
+            // The generated method declares vars for each field using "f0".."fN' as the
+            // name. These are used to access properties of the field (e.g., the convert
+            // method or defaultValue).
+            field = fields[i];
+            fs = "f" + i;
+            convert = field.convert;
+
+            if (i) {
+              code.push(",  \n    ");
             }
+            code.push(fs, " = $fields[" + i + "]");
+            //<debug>
+            // this can be helpful when debugging (at least in Chrome):
+            code.push("  /*  ", field.name, "  */");
+            //</debug>
 
-            return modified;
-        },
+            // NOTE: added string literals are "folded" by the compiler so we
+            // are better off doing an "'foo' + 'bar'" then "'foo', 'bar'". But
+            // for variables we are better off pushing them into the array for
+            // the final join.
 
-        /**
-         * Checks if two values are equal, taking into account certain special factors, for
-         * example dates.
-         * @param {Object} lhs The first value.
-         * @param {Object} rhs The second value.
-         * @return {Boolean} True if the values are equal.
-         * @private
-         */
-        isEqual: function (lhs, rhs, field) {
-            var f;
+            if ((hasDefValue = field.defaultValue !== undefined) || convert) {
+              // For non-calculated fields that have some work required (a convert method
+              // and/or defaultValue), generate a chunk of logic appropriate for the
+              // field.
+              //expr = data["fieldName"];
+              expr = 'data["' + field.name + '"]';
+              ++work;
 
-            if (field) {
-                f = field.isField ? field : this.fieldsMap[field];
-                if (f) {
-                    return f.isEqual(lhs, rhs);
-                }
+              bc = ec = "";
+              if (field.cloneDefaultValue) {
+                bc = "Ext.clone(";
+                ec = ")";
+              }
+
+              body.push("\n");
+              if (convert && hasDefValue) {
+                // v = data.fieldName;
+                // if (v !== undefined) {
+                //     v = f2.convert(v, e);
+                // }
+                // if (v === undefined) {
+                //     v = f2.defaultValue;
+                //      // or
+                //     v = Ext.clone(f2.defaultValue);
+                // }
+                // data.fieldName = v;
+                //
+                body.push(
+                  "    v = ",
+                  expr,
+                  ";\n" + "    if (v !== undefined) {\n" + "        v = ",
+                  fs,
+                  ".convert(v, e);\n" +
+                    "    }\n" +
+                    "    if (v === undefined) {\n" +
+                    "        v = ",
+                  bc,
+                  fs,
+                  ".defaultValue",
+                  ec,
+                  ";\n" + "    }\n" + "    ",
+                  expr,
+                  " = v;"
+                );
+              } else if (convert) {
+                // no defaultValue
+                // v = f2.convert(data.fieldName,e);
+                // if (v !== undefined) {
+                //     data.fieldName = v;
+                // }
+                //
+                body.push(
+                  "    v = ",
+                  fs,
+                  ".convert(",
+                  expr,
+                  ",e);\n" + "    if (v !== undefined) {\n" + "        ",
+                  expr,
+                  " = v;\n" + "    }\n"
+                );
+              } else if (hasDefValue) {
+                // no convert
+                // if (data.fieldName === undefined) {
+                //     data.fieldName = f2.defaultValue;
+                //          // or
+                //     data.fieldName = Ext.clone(f2.defaultValue);
+                // }
+                //
+                body.push(
+                  "    if (",
+                  expr,
+                  " === undefined) {\n" + "        ",
+                  expr,
+                  " = ",
+                  bc,
+                  fs,
+                  ".defaultValue",
+                  ec,
+                  ";\n" + "    }\n"
+                );
+              }
             }
-
-            // instanceof is ~10 times faster then Ext.isDate. Values here will not be
-            // cross-document objects
-            if (lhs instanceof Date && rhs instanceof Date) {
-                return lhs.getTime() === rhs.getTime();
-            }
-            return lhs === rhs;
-        },
-
-        statics: {
-            /**
-             * @property
-             * @static
-             * @private
-             * @readonly
-             * @deprecated
-             * The update operation of type 'edit'. Used by {@link Ext.data.Store#event-update Store.update} event.
-             */
-            EDIT   : 'edit',
-            /**
-             * @property
-             * @static
-             * @private
-             * @readonly
-             * @deprecated
-             * The update operation of type 'reject'. Used by {@link Ext.data.Store#event-update Store.update} event.
-             */
-            REJECT : 'reject',
-            /**
-             * @property
-             * @static
-             * @private
-             * @readonly
-             * @deprecated
-             * The update operation of type 'commit'. Used by {@link Ext.data.Store#event-update Store.update} event.
-             */
-            COMMIT : 'commit',
-
-            /**
-             * @property {String/Object}
-             * @static
-             * @protected
-             * The default proxy to use for instances of this Model when no proxy is configured
-             * on the instance.  When specified, the model will use this proxy instead of
-             * requesting one from the {@link Ext.data.Session Session}.
-             *
-             * Can be a string "type", or a {@link Ext.data.proxy.Proxy Proxy} config object.
-             *
-             * This proxy is not inherited by subclasses.
-             */
-            defaultProxy: 'memory',
-
-            rankFields: function () {
-                var cls = this,
-                    prototype = cls.prototype,
-                    fields = cls.fields,
-                    length = fields.length,
-                    rankedFields = [],
-                    criticalFields = [],
-                    transientFields = [],
-                    evilFields, field, i;
-
-                cls.rankedFields = prototype.rankedFields = rankedFields;
-                cls.criticalFields = prototype.criticalFields = criticalFields;
-                cls.transientFields = prototype.transientFields = transientFields;
-
-                // This first pass brings over any fields that have no dependencies at all
-                // and gathers the evil fields to the side (the fields that could depend on
-                // anything). This avoids the call to topoAdd that we must perform on all of
-                // the fields that do have depends (which is good since most fields will be
-                // handled here).
-                for (i = 0; i < length; ++i) {
-                    field = fields[i];
-                    if (field.critical) {
-                        criticalFields.push(field);
-                    }
-                    if (!field.persist) {
-                        transientFields.push(field);
-                    }
-                    if (field.evil) {
-                        (evilFields || (evilFields = [])).push(field);
-                    } else if (!field.depends) {
-                        rankedFields.push(field);
-                        field.rank = rankedFields.length; // 1-based
-                    }
-                }
-
-                for (i = 0; i < length; ++i) {
-                    if (!(field = fields[i]).rank && !field.evil) {
-                        cls.topoAdd(field);
-                    }
-                }
-
-                if (evilFields) {
-                    for (i = 0, length = evilFields.length; i < length; ++i) {
-                        rankedFields.push(field = evilFields[i]);
-                        field.rank = rankedFields.length; // 1-based
-                    }
-                }
-
-                //<debug>
-                cls.topoStack = null; // cleanup diagnostic stack
-                //</debug>
-
-                return rankedFields;
-            },
-
-            topoAdd: function (field) {
-                var cls = this,
-                    dep = field.depends,
-                    dependsLength = dep ? dep.length : 0,
-                    rankedFields = cls.rankedFields,
-                    i, targetField;
-
-                //<debug>
-                var topoStack = cls.topoStack || (cls.topoStack = []);
-                topoStack.push(field.name);
-
-                if (field.rank === 0) { // if (adding)
-                    Ext.raise(cls.$className + " has circular field dependencies: " +
-                            topoStack.join(" --> "));
-                }
-
-                if (topoStack.length && field.evil) {
-                    Ext.raise(cls.$className + ": Field " +
-                            topoStack[topoStack.length - 1] +
-                            " cannot depend on depends-less field " + field.name);
-                }
-
-                field.rank = 0; // adding (falsey but we can still detect cycles)
-                //</debug>
-
-                for (i = 0; i < dependsLength; ++i) {
-                    // Get the targetField on which we depend and add this field to the
-                    // targetField.dependents[]
-                    targetField = cls.fieldsMap[dep[i]];
-                    //<debug>
-                    if (!targetField) {
-                        Ext.raise(cls.$className + ": Field " + field.name + " depends on undefined field " + dep[i]);
-                    }
-                    //</debug>
-                    (targetField.dependents || (targetField.dependents = [])).push(field);
-
-                    if (!targetField.rank) { // if (!added)
-                        cls.topoAdd(targetField);
-                    }
-                }
-
-                rankedFields.push(field);
-                field.rank = rankedFields.length; // 1-based (truthy to track "added" state)
-
-                //<debug>
-                topoStack.pop();
-                //</debug>
-            },
-
-            initFields: function(data, cls, proto) {
-                var Field = Ext.data.field.Field,
-                    fieldDefs = data.fields,
-                    // allocate fields [] and ordinals {} for the new class:
-                    fields = [],
-                    fieldOrdinals = {},
-                    fieldsMap = {},
-                    references = [],
-                    superFields = proto.fields,
-                    versionProperty = data.versionProperty || proto.versionProperty,
-                    idProperty = cls.idProperty,
-                    idField, field, i, length, name, ordinal, 
-                    reference, superIdField, superIdFieldName, idDeclared;
-
-                // Process any inherited fields to produce a fields [] and ordinals {} for
-                // this class:
-                cls.fields = proto.fields = fields;
-                cls.fieldOrdinals = proto.fieldOrdinals = fieldOrdinals;
-                cls.fieldsMap = proto.fieldsMap = fieldsMap;
-                cls.references = proto.references = references;
-
-                if (superFields) {
-                    // We chain the super field so we can write to it
-                    for (i = 0, length = superFields.length; i < length; ++i) {
-                        fields[i] = field = Ext.Object.chain(superFields[i]);
-
-                        field.dependents = null; // we need to recalculate these
-                        field.owner = cls;
-                        fieldOrdinals[name = field.name] = i;
-                        fieldsMap[name] = field;
-                        // Clear the rank because it needs to be set on the first pass through
-                        // the fields in the subclass, don't inherit it from the parent
-                        field.rank = null;
-
-                        if (field.generated) {
-                            superIdField = field;
-                            superIdFieldName = field.name;
-                        }
-                    }
-                }
-
-                // Merge in any fields from this class:
-                if (fieldDefs) {
-                    delete data.fields;
-                    for (i = 0, length = fieldDefs.length; i < length; ++i) {
-                        field = fieldDefs[i];
-                        reference = field.reference;
-                        // Create a copy of the reference since we'll modify
-                        // the reference on the field. Needed for subclasses
-                        if (reference && typeof reference !== 'string') {
-                            // Can have child objects, so merge it deeply
-                            reference = Ext.merge({}, reference);
-                        }
-                        field.$reference = reference;
-                        field = Field.create(fieldDefs[i]);
-                        name = field.name;
-                        ordinal = fieldOrdinals[name];
-                        if (ordinal === undefined) {
-                            // If the field is new, add it to the end of the fields[]
-                            fieldOrdinals[name] = ordinal = fields.length;
-                        }
-                        // else, overwrite the field at the established ordinal
-
-                        fieldsMap[name] = field;
-                        fields[ordinal] = field;
-                        field.definedBy = field.owner = cls;
-                        field.ordinal = ordinal;
-                        if (name === idProperty) {
-                            idDeclared = field;
-                        }
-                    }
-                }
-
-                // Lookup the idProperty in the ordinals map and create a synthetic field if
-                // we don't have one.
-                idField = fieldsMap[idProperty];
-                if (!idField) {
-                    if (superIdField && superIdField.generated) {
-                        ordinal = superIdField.ordinal;
-                    } else {
-                        ordinal = fields.length;
-                    }
-                    delete fieldsMap[superIdFieldName];
-                    delete fieldOrdinals[superIdFieldName];
-                    idField = new Field(idProperty);
-                    fields[ordinal] = idField;
-                    fieldOrdinals[idProperty] = ordinal;
-                    fieldsMap[idProperty] = idField;
-                    idField.definedBy = cls;
-                    idField.ordinal = ordinal;
-                    idField.generated = true;
-                } else if (idDeclared && superIdField && superIdField.generated) {
-                    // If we're declaring the id as a field in our fields array and it's different to
-                    // the super id field that has been generated, pull it out and fix up the ordinals. This
-                    // likely won't happen often, to do it earlier we would need to know the contents of the fields
-                    // which would mean iterating over them twice.
-                    Ext.Array.remove(fields, superIdField);
-                    delete fieldsMap[superIdFieldName];
-                    delete fieldOrdinals[superIdFieldName];
-                    fieldsMap[idProperty] = idDeclared;
-                    for (i = 0, length = fields.length; i < length; ++i) {
-                        field = fields[i];
-                        fields.ordinal = i;
-                        fieldOrdinals[field.name] = i;
-                    }
-                }
-
-                idField.allowNull = idField.critical = idField.identifier = true;
-                idField.defaultValue = null;
-
-                cls.idField = proto.idField = idField;
-
-                if (versionProperty) {
-                    field = fieldsMap[versionProperty];
-                    if (!field) {
-                        ordinal = fields.length;
-                        field = new Field({
-                            name: versionProperty,
-                            type: 'int'
-                        });
-                        fields[ordinal] = field;
-                        fieldOrdinals[versionProperty] = ordinal;
-                        fieldsMap[versionProperty] = field;
-                        field.definedBy = cls;
-                        field.ordinal = ordinal;
-                        field.generated = true;
-                    }
-                    field.defaultValue = 1;
-                    field.critical = true;
-                }
-
-                // NOTE: Be aware that the one fellow that manipulates these after this
-                // point is Ext.data.NodeInterface.
-            },
-
-            initValidators: function(data, cls, proto) {
-                var superValidators = proto.validators,
-                    validators, field, copy, validatorDefs,
-                    i, length, fieldValidator, name, validator, item;
-
-                if (superValidators) {
-                    validators = {};
-                    for (field in superValidators) {
-                        validators[field] = Ext.Array.clone(superValidators[field]);
-                    }
-                }
-
-                validatorDefs = data.validators || data.validations;
-                //<debug>
-                if (data.validations) {
-                    delete data.validations;
-                    Ext.log.warn((cls.$className || 'Ext.data.Model' ) +
-                          ': validations has been deprecated. Please use validators instead.');
-                }
-                //</debug>
-                if (validatorDefs) {
-                    delete data.validators;
-
-                    validators = validators || {};
-
-                    // Support older array syntax
-                    if (Ext.isArray(validatorDefs)) {
-                        copy = {};
-                        for (i = 0, length = validatorDefs.length; i < length; ++i) {
-                            item = validatorDefs[i];
-                            name = item.field;
-                            if (!copy[name]) {
-                                copy[name] = [];
-                            }
-                            // Check for function form
-                            item = item.fn || item;
-                            copy[name].push(item);
-                        }
-                        validatorDefs = copy;
-                    }
-
-                    for (name in validatorDefs) {
-                        fieldValidator = validatorDefs[name];
-                        if (!Ext.isArray(fieldValidator)) {
-                            fieldValidator = [fieldValidator];
-                        }
-
-                        validator = validators[name];
-                        if (validators[name]) {
-                            // Declared in super
-                            Ext.Array.push(validator, fieldValidator);
-                        } else {
-                            validators[name] = fieldValidator;
-                        }
-                    }
-                }
-                if (validators) {
-                    for (name in validators) {
-                        field = cls.getField(name);
-                        if (field) {
-                            field.setModelValidators(validators[name]);
-                        }
-                    }
-                }
-                cls.validators = proto.validators = validators;
-            },
-
-            initAssociations: function (schema, data, cls) {
-                // Handle keyless associations
-                var associations = data.associations,
-                    belongsTo = data.belongsTo,
-                    hasMany = data.hasMany,
-                    hasOne = data.hasOne,
-                    // manyToMany can't be declared via reference
-                    matrices = data.manyToMany,
-                    i, length, assoc, o;
-
-                delete data.associations;
-                delete data.belongsTo;
-                delete data.hasMany;
-                delete data.hasOne;
-                delete data.manyToMany;
-
-                if (matrices) {
-                    schema.addMatrices(cls, matrices);
-                }
-
-                if (associations) {
-                    associations = Ext.isArray(associations) ? associations : [ associations ];
-                    for (i = 0, length = associations.length; i < length; ++i) {
-                        assoc = associations[i];
-                        o = Ext.apply({}, assoc);
-                        delete o.type;
-                        switch (assoc.type) {
-                            case 'belongsTo':
-                                schema.addBelongsTo(cls, o);
-                                break;
-                            case 'hasMany':
-                                schema.addHasMany(cls, o);
-                                break;
-                            case 'hasOne':
-                                schema.addHasOne(cls, o);
-                                break;
-
-                            //<debug>
-                            default:
-                                Ext.raise('Invalid association type: "' + assoc.type + '"');
-                            //</debug>
-                        }
-                    }
-                }
-
-                if (belongsTo) {
-                    belongsTo = Ext.isArray(belongsTo) ? belongsTo : [ belongsTo ];
-                    for (i = 0, length = belongsTo.length; i < length; ++i) {
-                        schema.addBelongsTo(cls, belongsTo[i]);
-                    }
-                }
-
-                if (hasMany) {
-                    hasMany = Ext.isArray(hasMany) ? hasMany : [ hasMany ];
-                    for (i = 0, length = hasMany.length; i < length; ++i) {
-                        schema.addHasMany(cls, hasMany[i]);
-                    }
-                }
-
-                if (hasOne) {
-                    hasOne = Ext.isArray(hasOne) ? hasOne : [ hasOne ];
-                    for (i = 0, length = hasOne.length; i < length; ++i) {
-                        schema.addHasOne(cls, hasOne[i]);
-                    }
-                }
-                schema.afterKeylessAssociations(cls);
-            },
-
-            initIdentifier: function (data, cls, proto) {
-                var identifier = data.identifier || data.idgen,
-                    superIdent = proto.identifier || cls.schema._defaultIdentifier,
-                    generatorPrefix;
-
-                //<debug>
-                if (data.idgen) {
-                    Ext.log.warn('Ext.data.Model: idgen has been deprecated. Please use identifier instead.');
-                }
-                //</debug>
-
-                if (identifier) {
-                    delete data.identifier;
-                    delete data.idgen;
-
-                    // An idgen was specified on the definition, use it explicitly.
-                    identifier = Ext.Factory.dataIdentifier(identifier);
-                } else if (superIdent) {
-                    // If we have a cloneable instance, and we don't have an id
-                    // clone it. If we have an id, then we should use the same
-                    // instance since it's the same as looking it up via id.
-                    if (superIdent.clone && !superIdent.getId()) {
-                        identifier = superIdent.clone();
-                    } else if (superIdent.isGenerator) {
-                        identifier = superIdent;
-                    } else {
-                        identifier = Ext.Factory.dataIdentifier(superIdent);
-                    }
-                }
-
-                cls.identifier = proto.identifier = identifier;
-
-                if (!identifier) {
-                    // If we didn't find one, create it and push it onto the class.
-                    // Don't put it on the prototype, so a subclass will create
-                    // it's own generator. If we have an anonymous model, go ahead and
-                    // generate a unique prefix for it.
-                    generatorPrefix = cls.entityName;
-                    if (!generatorPrefix) {
-                        generatorPrefix = Ext.id(null, 'extModel');
-                    }
-                    cls.identifier = Ext.Factory.dataIdentifier({
-                        type: 'sequential',
-                        prefix: generatorPrefix + '-'
-                    });
-                }
-            },
-
-            findValidator: function(validators, name, cfg) {
-                var type = cfg.type || cfg,
-                    field = validators[name],
-                    len, i, item;
-
-                if (field) {
-                    for (i = 0, len = field.length; i < len; ++i) {
-                        item = field[i];
-                        if (item.type === type) {
-                            return item;
-                        }
-                    }
-                }
-                return null;
-            },
-
-            /**
-             * This method produces the `initializeFn` for this class. If there are no fields
-             * requiring {@link Ext.data.field.Field#cfg-convert conversion} and no fields requiring
-             * a {@link Ext.data.field.Field#defaultValue default value} then this method will
-             * return `null`.
-             * @return {Function} The `initializeFn` for this class (or null).
-             * @private
-             */
-            makeInitializeFn: function (cls) {
-                var code = ['var '],
-                    body = ['\nreturn function (e) {\n    var data = e.data, v;\n'],
-                    work = 0,
-                    bc, ec, // == beginClone, endClone
-                    convert, expr, factory, field, fields, fs, hasDefValue, i, length;
-
-                if (!(fields = cls.rankedFields)) {
-                    // On the first edit of a record of this type we need to ensure we have the
-                    // topo-sort done:
-                    fields = cls.rankFields();
-                }
-
-                for (i = 0, length = fields.length; i < length; ++i) {
-                    // The generated method declares vars for each field using "f0".."fN' as the
-                    // name. These are used to access properties of the field (e.g., the convert
-                    // method or defaultValue).
-                    field = fields[i];
-                    fs = 'f' + i;
-                    convert = field.convert;
-
-                    if (i) {
-                        code.push(',  \n    ');
-                    }
-                    code.push(fs, ' = $fields[' + i + ']');
-                    //<debug>
-                    // this can be helpful when debugging (at least in Chrome):
-                    code.push('  /*  ', field.name, '  */');
-                    //</debug>
-
-                    // NOTE: added string literals are "folded" by the compiler so we
-                    // are better off doing an "'foo' + 'bar'" then "'foo', 'bar'". But
-                    // for variables we are better off pushing them into the array for
-                    // the final join.
-
-                    if ((hasDefValue = (field.defaultValue !== undefined)) || convert) {
-                        // For non-calculated fields that have some work required (a convert method
-                        // and/or defaultValue), generate a chunk of logic appropriate for the
-                        // field.
-                        //expr = data["fieldName"];
-                        expr = 'data["' + field.name + '"]';
-                        ++work;
-
-                        bc = ec = '';
-                        if (field.cloneDefaultValue) {
-                            bc = 'Ext.clone(';
-                            ec = ')';
-                        }
-
-                        body.push('\n');
-                        if (convert && hasDefValue) {
-                            // v = data.fieldName;
-                            // if (v !== undefined) {
-                            //     v = f2.convert(v, e);
-                            // }
-                            // if (v === undefined) {
-                            //     v = f2.defaultValue;
-                            //      // or
-                            //     v = Ext.clone(f2.defaultValue);
-                            // }
-                            // data.fieldName = v;
-                            //
-                            body.push('    v = ', expr, ';\n' +
-                                      '    if (v !== undefined) {\n' +
-                                      '        v = ', fs, '.convert(v, e);\n' +
-                                      '    }\n' +
-                                      '    if (v === undefined) {\n' +
-                                      '        v = ', bc, fs, '.defaultValue',ec,';\n' +
-                                      '    }\n' +
-                                      '    ', expr, ' = v;');
-                        } else if (convert) { // no defaultValue
-                            // v = f2.convert(data.fieldName,e);
-                            // if (v !== undefined) {
-                            //     data.fieldName = v;
-                            // }
-                            //
-                            body.push('    v = ', fs, '.convert(', expr, ',e);\n' +
-                                      '    if (v !== undefined) {\n' +
-                                      '        ', expr, ' = v;\n' +
-                                      '    }\n');
-                        } else if (hasDefValue) { // no convert
-                            // if (data.fieldName === undefined) {
-                            //     data.fieldName = f2.defaultValue;
-                            //          // or
-                            //     data.fieldName = Ext.clone(f2.defaultValue);
-                            // }
-                            //
-                            body.push('    if (', expr, ' === undefined) {\n' +
-                                      '        ', expr, ' = ',bc,fs,'.defaultValue',ec,';\n' +
-                                      '    }\n');
-                        }
-                    }
-                }
-
-                if (!work) {
-                    // There are no fields that need special processing
-                    return Ext.emptyFn;
-                }
-
-                code.push(';\n');
-                code.push.apply(code, body);
-                code.push('}');
-                code = code.join('');
-
-                // Ensure that Ext in the function code refers to the same Ext that we are using here.
-                // If we are in a sandbox, global.Ext might be different.
-                factory = new Function('$fields', 'Ext', code);
-
-                return factory(fields, Ext);
-            }
-        } // static
+          }
+
+          if (!work) {
+            // There are no fields that need special processing
+            return Ext.emptyFn;
+          }
+
+          code.push(";\n");
+          code.push.apply(code, body);
+          code.push("}");
+          code = code.join("");
+
+          // Ensure that Ext in the function code refers to the same Ext that we are using here.
+          // If we are in a sandbox, global.Ext might be different.
+          factory = new Function("$fields", "Ext", code);
+
+          return factory(fields, Ext);
+        }
+      } // static
     } // privates
-},
-function () {
+  },
+  function () {
     var Model = this,
-        proto = Model.prototype,
-        Schema = Ext.data.schema.Schema,
-        defaultSchema;
+      proto = Model.prototype,
+      Schema = Ext.data.schema.Schema,
+      defaultSchema;
 
     Model.proxyConfig = proto.proxy;
     delete proto.proxy;
@@ -3376,75 +3525,78 @@ function () {
     Model.identifier = new Ext.data.identifier.Sequential();
 
     Model.onExtended(function (cls, data) {
-        var proto = cls.prototype,
-            schemaName = data.schema,
-            superCls = proto.superclass.self,
-            schema, entityName, proxy;
-            
-        cls.idProperty = data.idProperty || proto.idProperty;
+      var proto = cls.prototype,
+        schemaName = data.schema,
+        superCls = proto.superclass.self,
+        schema,
+        entityName,
+        proxy;
 
-        if (schemaName) {
-            delete data.schema;
-            schema = Schema.get(schemaName);
-        } else if (!(schema = proto.schema)) {
-            schema = defaultSchema || (defaultSchema = Schema.get('default'));
+      cls.idProperty = data.idProperty || proto.idProperty;
+
+      if (schemaName) {
+        delete data.schema;
+        schema = Schema.get(schemaName);
+      } else if (!(schema = proto.schema)) {
+        schema = defaultSchema || (defaultSchema = Schema.get("default"));
+      }
+
+      // These are in "privates" so we manually make them inherited:
+      cls.rankFields = Model.rankFields;
+      cls.topoAdd = Model.topoAdd;
+
+      // if we picked up a schema from cls.prototype.schema, it is because it was found
+      // in the prototype chain on a base class.
+      proto.schema = cls.schema = schema;
+
+      // Unless specified on the declaration data, we need to provide the entityName of
+      // the new Entity-derived class. Store it on the prototype and the class.
+      if (!(entityName = data.entityName)) {
+        proto.entityName = entityName = schema.getEntityName(cls);
+        //<debug>
+        if (!entityName) {
+          if (data.associations) {
+            Ext.raise('Anonymous entities cannot specify "associations"');
+          }
+          if (data.belongsTo) {
+            Ext.raise('Anonymous entities cannot specify "belongsTo"');
+          }
+          if (data.hasMany) {
+            Ext.raise('Anonymous entities cannot specify "hasMany"');
+          }
+          if (data.hasOne) {
+            Ext.raise('Anonymous entities cannot specify "hasOne"');
+          }
+          if (data.matrices) {
+            Ext.raise('Anonymous entities cannot specify "manyToMany"');
+          }
         }
+        //</debug>
+      }
+      cls.entityName = entityName;
+      cls.fieldExtractors = {};
 
-        // These are in "privates" so we manually make them inherited:
-        cls.rankFields = Model.rankFields;
-        cls.topoAdd = Model.topoAdd;
+      Model.initIdentifier(data, cls, proto);
+      Model.initFields(data, cls, proto);
+      Model.initValidators(data, cls, proto);
 
-        // if we picked up a schema from cls.prototype.schema, it is because it was found
-        // in the prototype chain on a base class.
-        proto.schema = cls.schema = schema;
+      // This is a compat hack to allow "rec.fields.items" to work as it used to when
+      // fields was a MixedCollection
+      cls.fields.items = cls.fields;
 
-        // Unless specified on the declaration data, we need to provide the entityName of
-        // the new Entity-derived class. Store it on the prototype and the class.
-        if (!(entityName = data.entityName)) {
-            proto.entityName = entityName = schema.getEntityName(cls);
-            //<debug>
-            if (!entityName) {
-                if (data.associations) {
-                    Ext.raise('Anonymous entities cannot specify "associations"');
-                }
-                if (data.belongsTo) {
-                    Ext.raise('Anonymous entities cannot specify "belongsTo"');
-                }
-                if (data.hasMany) {
-                    Ext.raise('Anonymous entities cannot specify "hasMany"');
-                }
-                if (data.hasOne) {
-                    Ext.raise('Anonymous entities cannot specify "hasOne"');
-                }
-                if (data.matrices) {
-                    Ext.raise('Anonymous entities cannot specify "manyToMany"');
-                }
-            }
-            //</debug>
-        }
-        cls.entityName = entityName;
-        cls.fieldExtractors = {};
-        
-        Model.initIdentifier(data, cls, proto);
-        Model.initFields(data, cls, proto);
-        Model.initValidators(data, cls, proto);
+      if (entityName) {
+        schema.addEntity(cls);
+        Model.initAssociations(schema, data, cls);
+      }
 
-        // This is a compat hack to allow "rec.fields.items" to work as it used to when
-        // fields was a MixedCollection
-        cls.fields.items = cls.fields;
+      proxy = data.proxy;
+      if (proxy) {
+        delete data.proxy;
+      } else if (superCls !== Model) {
+        proxy = superCls.proxyConfig || superCls.proxy;
+      }
 
-        if (entityName) {
-            schema.addEntity(cls);
-            Model.initAssociations(schema, data, cls);
-        }
-
-        proxy = data.proxy;
-        if (proxy) {
-            delete data.proxy;
-        } else if (superCls !== Model) {
-            proxy = superCls.proxyConfig || superCls.proxy;
-        }
-
-        cls.proxyConfig = proxy;
+      cls.proxyConfig = proxy;
     });
-});
+  }
+);

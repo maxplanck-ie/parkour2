@@ -5,10 +5,10 @@ Ext.define("MainHub.view.usage.UsageController", {
   config: {
     control: {
       "#": {
-        activate: "activate",
+        activate: "activate"
       },
       daterangepicker: {
-        select: "setRange",
+        select: "setRange"
       },
       "#statusCb": {
         select: "setStatus",
@@ -43,7 +43,7 @@ Ext.define("MainHub.view.usage.UsageController", {
       "usagerecords",
       "usageorganizations",
       "usageprincipalinvestigators",
-      "usagelibrarytypes",
+      "usagelibrarytypes"
     ];
 
     chartPanels.forEach(function (name) {
@@ -80,7 +80,7 @@ Ext.define("MainHub.view.usage.UsageController", {
               cartesian.hide();
             }
           }
-        },
+        }
       });
     });
   },

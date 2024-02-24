@@ -6,7 +6,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
     control: {
       "#": {
         activate: "activateView",
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#index-generator-grid": {
         beforeedit: "toggleEditors",
@@ -18,7 +18,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       },
       "#check-column": {
         beforecheckchange: "beforeSelect",
-        checkchange: "checkRecord",
+        checkchange: "checkRecord"
       },
       "#save-pool-button": {
         click: "save",
@@ -514,7 +514,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
           item,
           null,
           {
-            multipleSelect: true,
+            multipleSelect: true
           }
         );
       }
@@ -727,7 +727,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
 
         indexGeneratorGrid.enable();
         poolGrid.setLoading(false);
-      },
+      }
     });
   },
 
@@ -798,7 +798,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       var item = {
         pk: record.get("pk"),
         index_i7: record.get("index_i7").index,
-        index_i5: record.get("index_i5").index,
+        index_i5: record.get("index_i5").index
       };
       if (record.get("record_type") === "Library") {
         libraries.push(item);
@@ -819,7 +819,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         pool_name: poolName.value,
         min_hamming_distance: minHammingDistanceBox.getValue(),
         libraries: Ext.JSON.encode(libraries),
-        samples: Ext.JSON.encode(samples),
+        samples: Ext.JSON.encode(samples)
       },
       success: function (response) {
         var obj = Ext.JSON.decode(response.responseText);
@@ -885,7 +885,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
 
         Ext.getCmp("poolingContainer").setLoading(false);
         console.error(response);
-      },
+      }
     });
   },
 
@@ -955,7 +955,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       if (notif) {
         new Noty({
           text: "Index Type must be set.",
-          type: "warning",
+          type: "warning"
         }).show();
       }
       return false;
@@ -1011,7 +1011,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         if (notif) {
           new Noty({
             text: "Read lengths must be the same.",
-            type: "warning",
+            type: "warning"
           }).show();
         }
         return false;
@@ -1026,7 +1026,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         if (notif) {
           new Noty({
             text: "Pooling of dual and single indices is not allowed.",
-            type: "warning",
+            type: "warning"
           }).show();
         }
         return false;
@@ -1070,7 +1070,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       if (notif) {
         new Noty({
           text: "You have exceeded the Pool Size. Please increase it.",
-          type: "warning",
+          type: "warning"
         }).show();
       }
     }
@@ -1091,7 +1091,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
           index_i7: "",
           index_i7_id: "",
           index_i5: "",
-          index_i5_id: "",
+          index_i5_id: ""
         });
 
         for (var i = 0; i < 12; i++) {

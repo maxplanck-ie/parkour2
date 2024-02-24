@@ -4,11 +4,11 @@ Ext.define("MainHub.model.libraries.RNAQuality", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "value",
-      type: "float",
-    },
-  ],
+      type: "float"
+    }
+  ]
 });

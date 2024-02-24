@@ -3,7 +3,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
   requires: [
     "MainHub.model.libraries.BatchAdd.Library",
     "MainHub.model.libraries.BatchAdd.Sample",
-    "MainHub.view.libraries.BatchAddWindowController",
+    "MainHub.view.libraries.BatchAddWindowController"
   ],
   controller: "libraries-batchaddwindow",
 
@@ -30,10 +30,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           layout: {
             type: "vbox",
             align: "center",
-            pack: "center",
+            pack: "center"
           },
           defaults: {
-            border: 0,
+            border: 0
           },
           items: [
             {
@@ -43,20 +43,20 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
               defaults: {
                 margin: 10,
                 width: 100,
-                height: 40,
+                height: 40
               },
               items: [
                 {
                   itemId: "library-card-button",
                   cls: "pl-library-card-button",
-                  text: "Library",
+                  text: "Library"
                 },
                 {
                   itemId: "sample-card-button",
                   cls: "pl-sample-card-button",
-                  text: "Sample",
-                },
-              ],
+                  text: "Sample"
+                }
+              ]
             },
             {
               html:
@@ -64,16 +64,16 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
                 "Choose <strong>Library</strong> if libraries have been prepared by the user and are ready for sequencing.<br><br>" +
                 "Choose <strong>Sample</strong> if libraries are to be prepared by the facility. Also for <i>single cell</i> projects." +
                 "</p>",
-              width: 350,
-            },
-          ],
+              width: 350
+            }
+          ]
         },
         {
           xtype: "grid",
           selModel: {
             type: "spreadsheet",
             // rowNumbererHeaderWidth: 40,
-            rowSelect: false,
+            rowSelect: false
           },
           id: "batch-add-grid",
           itemId: "batch-add-grid",
@@ -87,7 +87,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
             stripeRows: false,
             getRowClass: function (record) {
               return record.get("invalid") ? "invalid" : "";
-            },
+            }
           },
           plugins: [
             {
@@ -95,12 +95,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
               clicksToEdit: 2,
             },
             {
-              ptype: "clipboard",
-            },
-          ],
-        },
-      ],
-    },
+              ptype: "clipboard"
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   dockedItems: [
@@ -117,13 +117,13 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           padding: "0 10px 0 0",
           labelWidth: 145,
           width: 230,
-          minValue: 1,
+          minValue: 1
         },
         {
           xtype: "button",
           itemId: "create-empty-records-button",
           cls: "pl-create-empty-records-button",
-          text: "Create",
+          text: "Create"
         },
         {
           xtype: "container",
@@ -141,7 +141,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
 
         // },
       ],
-      hidden: true,
+      hidden: true
     },
     {
       xtype: "toolbar",
@@ -163,8 +163,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           xtype: "button",
           itemId: "save-button",
           iconCls: "fa fa-floppy-o fa-lg",
-          text: "Save",
-        },
+          text: "Save"
+        }
       ],
       hidden: true,
     },

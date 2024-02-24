@@ -23,65 +23,65 @@
  *
  * See the {@link Ext.layout.VBox VBox layout docs} for more information on using vboxes.
  */
-Ext.define('Ext.layout.Box', {
-    extend: 'Ext.layout.Default',
+Ext.define("Ext.layout.Box", {
+  extend: "Ext.layout.Default",
 
-    config: {
-        orient: 'horizontal',
+  config: {
+    orient: "horizontal",
 
-        /**
-         * @cfg {String} align
-         * Controls how the child items of the container are aligned. Acceptable configuration values for this property are:
-         *
-         * - ** start ** : child items are packed together at left side of container
-         * - ** center ** : child items are packed together at mid-width of container
-         * - ** end ** : child items are packed together at right side of container
-         * - **stretch** : child items are stretched vertically to fill the height of the container
-         *
-         * @accessor
-         */
-        align: 'start',
+    /**
+     * @cfg {String} align
+     * Controls how the child items of the container are aligned. Acceptable configuration values for this property are:
+     *
+     * - ** start ** : child items are packed together at left side of container
+     * - ** center ** : child items are packed together at mid-width of container
+     * - ** end ** : child items are packed together at right side of container
+     * - **stretch** : child items are stretched vertically to fill the height of the container
+     *
+     * @accessor
+     */
+    align: "start",
 
-        /**
-         * @cfg {String} pack
-         * Controls how the child items of the container are packed together. Acceptable configuration values
-         * for this property are:
-         *
-         * - ** start ** : child items are packed together at left side of container
-         * - ** center ** : child items are packed together at mid-width of container
-         * - ** end ** : child items are packed together at right side of container
-         * - ** justify ** : child items are packed evenly across the container. Uses the 'justify-content: space-between' css property
-         *
-         * @accessor
-         */
-        pack: 'start',
+    /**
+     * @cfg {String} pack
+     * Controls how the child items of the container are packed together. Acceptable configuration values
+     * for this property are:
+     *
+     * - ** start ** : child items are packed together at left side of container
+     * - ** center ** : child items are packed together at mid-width of container
+     * - ** end ** : child items are packed together at right side of container
+     * - ** justify ** : child items are packed evenly across the container. Uses the 'justify-content: space-between' css property
+     *
+     * @accessor
+     */
+    pack: "start",
 
-        /**
-         * @cfg {Boolean} vertical
-         * `true` to layout items vertically, otherwise horizontally.
-         *
-         * @since 6.2.0
-         */
-        vertical: false
-    },
+    /**
+     * @cfg {Boolean} vertical
+     * `true` to layout items vertically, otherwise horizontally.
+     *
+     * @since 6.2.0
+     */
+    vertical: false
+  },
 
-    alias: 'layout.tablebox',
+  alias: "layout.tablebox",
 
-    cls: Ext.baseCSSPrefix + 'layout-tablebox',
+  cls: Ext.baseCSSPrefix + "layout-tablebox",
 
-    itemCls: Ext.baseCSSPrefix + 'layout-tablebox-item',
+  itemCls: Ext.baseCSSPrefix + "layout-tablebox-item",
 
-    setContainer: function(container) {
-        this.callParent([container]);
+  setContainer: function (container) {
+    this.callParent([container]);
 
-        container.on('flexchange', 'onItemFlexChange', this, {
-            delegate: '> component'
-        });
-    },
+    container.on("flexchange", "onItemFlexChange", this, {
+      delegate: "> component"
+    });
+  },
 
-    updateVertical: function(vertical) {
-        this.setOrient(vertical ? 'vertical' : 'horizontal');
-    },
+  updateVertical: function (vertical) {
+    this.setOrient(vertical ? "vertical" : "horizontal");
+  },
 
-    onItemFlexChange: Ext.emptyFn
+  onItemFlexChange: Ext.emptyFn
 });

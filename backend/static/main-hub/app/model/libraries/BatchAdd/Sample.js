@@ -39,7 +39,7 @@ Ext.define("validator.SingleCellField", {
     }
 
     return isValid || "Must be present";
-  },
+  }
 });
 
 Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
@@ -50,7 +50,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Sample", {
       type: "int",
       name: "nucleic_acid_type",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "float",

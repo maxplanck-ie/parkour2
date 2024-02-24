@@ -4,39 +4,39 @@ Ext.define("MainHub.model.flowcell.Flowcell", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "flowcell_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "flowcell",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "read_length_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "sequencer",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool_size_name",
@@ -44,29 +44,29 @@ Ext.define("MainHub.model.flowcell.Flowcell", {
     },
     {
       name: "index_i7_show",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5_show",
-      type: "string",
+      type: "string"
     },
     {
       name: "equal_representation",
-      type: "bool",
+      type: "bool"
     },
     {
       name: "loading_concentration",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "phix",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "request",
-      type: "string",
+      type: "string"
     },
     {
       name: "protocol",

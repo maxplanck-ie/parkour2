@@ -5,9 +5,9 @@
  *
  * When a widget cell is rendered, a {@link Ext.Widget Widget} or {@link Ext.Component Component} of the specified type
  * is rendered into that cell.
- * 
+ *
  * There are two ways of setting values in a cell widget.
- * 
+ *
  * Ths simplest way is to use data binding. Each cell widget has a {@link Ext.app.ViewModel ViewModel} injected which inherits from any ViewModel
  * that the grid is using, and contains two extra properties:
  *
@@ -15,7 +15,7 @@
  * - `recordIndex` : {@link Number}<br>The index in the dataset of the record which backs the grid row.
  *
  * The widget configuration may contain a {@link #cfg-bind} config which uses the ViewModel's data.
- * 
+ *
  * The deprecated way is to configure the column with a {@link #dataIndex}. The widget's
  * {@link Ext.Component#defaultBindProperty defaultBindProperty} will be set using the
  * specified field from the associated record.
@@ -156,429 +156,457 @@
  *
  * @since 5.0.0
  */
-Ext.define('Ext.grid.column.Widget', {
-    extend: 'Ext.grid.column.Column',
-    alias: 'widget.widgetcolumn',
+Ext.define("Ext.grid.column.Widget", {
+  extend: "Ext.grid.column.Column",
+  alias: "widget.widgetcolumn",
 
-    mixins: ['Ext.mixin.StyleCacher'],
+  mixins: ["Ext.mixin.StyleCacher"],
 
-    config: {
-        /**
-         * @cfg defaultWidgetUI
-         * A map of xtype to {@link Ext.Component#ui} names to use when using Components in this column.
-         *
-         * Currently {@link Ext.Button Button} and all subclasses of {@link Ext.form.field.Text TextField} default
-         * to using `ui: "default"` when in a WidgetColumn except for in the "classic" theme, when they use ui "grid-cell".
-         */
-        defaultWidgetUI: {}
+  config: {
+    /**
+     * @cfg defaultWidgetUI
+     * A map of xtype to {@link Ext.Component#ui} names to use when using Components in this column.
+     *
+     * Currently {@link Ext.Button Button} and all subclasses of {@link Ext.form.field.Text TextField} default
+     * to using `ui: "default"` when in a WidgetColumn except for in the "classic" theme, when they use ui "grid-cell".
+     */
+    defaultWidgetUI: {}
+  },
+
+  ignoreExport: true,
+
+  /**
+   * @cfg
+   * @inheritdoc
+   */
+  sortable: false,
+
+  /**
+   * @cfg {Object} renderer
+   * @hide
+   */
+
+  /**
+   * @cfg {Object} scope
+   * @hide
+   */
+
+  /**
+   * @cfg {Object} widget
+   * A config object containing an {@link Ext.Component#cfg-xtype xtype}.
+   *
+   * This is used to create the widgets or components which are rendered into the cells of this column.
+   *
+   * The rendered component has a {@link Ext.app.ViewModel ViewModel} injected which inherits from any ViewModel
+   * that the grid is using, and contains two extra properties:
+   *
+   * - `record` : {@link Ext.data.Model Model}<br>The record which backs the grid row.
+   * - `recordIndex` : {@link Number}<br>The index in the dataset of the record which backs the grid row.
+   *
+   * The widget configuration may contain a {@link #cfg-bind} config which uses the ViewModel's data.
+   *
+   * The derecated way of obtaining data from the record is still supported if the widget does *not* use a {@link #cfg-bind} config.
+   *
+   * This column's {@link #dataIndex} is used to update the widget/component's {@link Ext.Component#defaultBindProperty defaultBindProperty}.
+   *
+   * The widget will be decorated with 2 methods:
+   * `getWidgetRecord` - Returns the {@link Ext.data.Model record} the widget is associated with.
+   * `getWidgetColumn` - Returns the {@link Ext.grid.column.Widget column} the widget
+   * was associated with.
+   */
+
+  /**
+   * @cfg {Function/String} onWidgetAttach
+   * A function that will be called when a widget is attached to a record. This may be useful for
+   * doing any post-processing.
+   *
+   *     Ext.create({
+   *         xtype: 'grid',
+   *         title: 'Student progress report',
+   *         width: 250,
+   *         renderTo: Ext.getBody(),
+   *         disableSelection: true,
+   *         store: {
+   *             fields: ['name', 'isHonorStudent'],
+   *             data: [{
+   *                 name: 'Finn',
+   *                 isHonorStudent: true
+   *             }, {
+   *                 name: 'Jake',
+   *                 isHonorStudent: false
+   *             }]
+   *         },
+   *         columns: [{
+   *             text: 'Name',
+   *             dataIndex: 'name',
+   *             flex: 1
+   *         }, {
+   *             xtype: 'widgetcolumn',
+   *             text: 'Honor Roll',
+   *             dataIndex: 'isHonorStudent',
+   *             width: 150,
+   *             widget: {
+   *                 xtype: 'button',
+   *                 handler: function() {
+   *                     // print certificate handler
+   *                 }
+   *             },
+   *             // called when the widget is initially instantiated
+   *             // on the widget column
+   *             onWidgetAttach: function(col, widget, rec) {
+   *                 widget.setText('Print Certificate');
+   *                 widget.setDisabled(!rec.get('isHonorStudent'));
+   *             }
+   *         }]
+   *     });
+   *
+   * @param {Ext.grid.column.Column} column The column.
+   * @param {Ext.Component/Ext.Widget} widget The {@link #widget} rendered to each cell.
+   * @param {Ext.data.Model} record The record used with the current widget (cell).
+   * @controllable
+   */
+  onWidgetAttach: null,
+
+  preventUpdate: true,
+
+  innerCls: Ext.baseCSSPrefix + "grid-widgetcolumn-cell-inner",
+
+  /**
+   * @cfg {Boolean} [stopSelection=true]
+   * Prevent grid selection upon click on the widget.
+   */
+  stopSelection: true,
+
+  initComponent: function () {
+    var me = this,
+      widget;
+
+    me.callParent(arguments);
+
+    widget = me.widget;
+    //<debug>
+    if (!widget || widget.isComponent) {
+      Ext.raise("column.Widget requires a widget configuration.");
+    }
+    //</debug>
+    me.widget = widget = Ext.apply({}, widget);
+
+    // Apply the default UI for the xtype which is going to feature in this column.
+    if (!widget.ui) {
+      widget.ui = me.getDefaultWidgetUI()[widget.xtype] || "default";
+    }
+    me.isFixedSize = Ext.isNumber(widget.width);
+  },
+
+  processEvent: function (
+    type,
+    view,
+    cell,
+    recordIndex,
+    cellIndex,
+    e,
+    record,
+    row
+  ) {
+    var target;
+
+    if (this.stopSelection && type === "click") {
+      // Grab the target that matches the cell inner selector. If we have a target, then,
+      // that means we either clicked on the inner part or the widget inside us. If
+      // target === e.target, then it was on the cell, so it's ok. Otherwise, inside so
+      // prevent the selection from happening
+      target = e.getTarget(view.innerSelector);
+      if (target && target !== e.target) {
+        e.stopSelection = true;
+      }
+    }
+  },
+
+  beforeRender: function () {
+    var me = this,
+      tdCls = me.tdCls,
+      widget;
+
+    me.listenerScopeFn = function (defaultScope) {
+      if (defaultScope === "this") {
+        return this;
+      }
+      return me.resolveListenerScope(defaultScope);
+    };
+
+    // Need an instantiated example to retrieve the tdCls that it needs
+    widget = Ext.widget(me.widget);
+
+    // If the widget is not using binding, but we have a dataIndex, and there's
+    // a defaultBindProperty to push it into, set flag to indicate to do that.
+    me.bindDataIndex =
+      me.dataIndex && widget.defaultBindProperty && !widget.bind;
+
+    tdCls = tdCls ? tdCls + " " : "";
+    me.tdCls = tdCls + widget.getTdCls();
+    me.setupViewListeners(me.getView());
+    me.callParent();
+
+    widget.destroy();
+  },
+
+  afterRender: function () {
+    var view = this.getView();
+
+    this.callParent();
+
+    // View already ready, means we were added later so go and set up our widgets, but if the grid
+    // is reconfiguring, then the column will be rendered & the view will be ready, so wait until
+    // the reconfigure forces a refresh
+    if (view && view.viewReady && !view.ownerGrid.reconfiguring) {
+      this.onViewRefresh(view, view.getViewRange());
+    }
+  },
+
+  // Cell must be left blank
+  defaultRenderer: Ext.emptyFn,
+
+  updater: function (cell, value, record) {
+    this.updateWidget(record);
+  },
+
+  onCellsResized: function (newWidth) {
+    var me = this,
+      liveWidgets = me.ownerGrid.getManagedWidgets(me.getId()),
+      len = liveWidgets.length,
+      view = me.getView(),
+      i,
+      cell;
+
+    if (!me.isFixedSize && me.rendered && view && view.viewReady) {
+      cell = view.getEl().down(me.getCellInnerSelector());
+      if (cell) {
+        // Subtract innerCell padding width
+        newWidth -=
+          parseInt(me.getCachedStyle(cell, "padding-left"), 10) +
+          parseInt(me.getCachedStyle(cell, "padding-right"), 10);
+
+        for (i = 0; i < len; ++i) {
+          // Ensure these are treated as the top of the modified tree.
+          // If not within a layout run, this will work fine.
+          // If within a layout run, Component#updateLayout will
+          // just ask its runningLayoutContext to invalidate it.
+          liveWidgets[i].ownerLayout = null;
+          liveWidgets[i].setWidth(newWidth);
+          liveWidgets[i].ownerLayout = view.componentLayout;
+        }
+      }
+    }
+  },
+
+  onAdded: function () {
+    var me = this,
+      view;
+
+    me.callParent(arguments);
+
+    me.ownerGrid = me.up("tablepanel").ownerGrid;
+    view = me.getView();
+
+    // If we are being added to a rendered HeaderContainer
+    if (view) {
+      me.setupViewListeners(view);
+    }
+  },
+
+  onRemoved: function (isDestroying) {
+    var viewListeners = this.viewListeners;
+
+    if (viewListeners) {
+      Ext.destroy(viewListeners);
+    }
+    if (isDestroying) {
+      this.ownerGrid.destroyManagedWidgets(this.getId());
+    }
+    this.callParent(arguments);
+  },
+
+  doDestroy: function () {
+    this.ownerGrid.destroyManagedWidgets(this.getId());
+    this.callParent();
+  },
+
+  privates: {
+    getWidget: function (record) {
+      var me = this,
+        result = null;
+
+      if (record) {
+        result = me.ownerGrid.createManagedWidget(
+          me.getId(),
+          me.widget,
+          record
+        );
+        result.resolveListenerScope = me.listenerScopeFn;
+        result.getWidgetRecord = me.widgetRecordDecorator;
+        result.getWidgetColumn = me.widgetColumnDecorator;
+        result.measurer = me;
+        result.ownerCmp = me.getView();
+        // The ownerCmp of the widget is the encapsulating view, which means it will be considered
+        // as a layout child, but it isn't really, we always need the layout on the
+        // component to run if asked.
+        result.isLayoutChild = me.returnFalse;
+      }
+
+      return result;
     },
 
-    ignoreExport: true,
+    onItemAdd: function (records) {
+      var me = this,
+        view = me.getView(),
+        hasAttach = !!me.onWidgetAttach,
+        dataIndex = me.dataIndex,
+        isFixedSize = me.isFixedSize,
+        len = records.length,
+        i,
+        record,
+        cell,
+        widget,
+        el,
+        focusEl,
+        width;
 
-    /**
-     * @cfg
-     * @inheritdoc
-     */
-    sortable: false,
+      // Loop through all records added, ensuring that our corresponding cell in each item
+      // has a Widget of the correct type in it, and is updated with the correct value from the record.
+      if (me.isVisible(true)) {
+        for (i = 0; i < len; i++) {
+          record = records[i];
+          if (record.isNonData) {
+            continue;
+          }
 
-    /**
-     * @cfg {Object} renderer
-     * @hide
-     */
+          cell = view.getCell(record, me);
 
-    /**
-     * @cfg {Object} scope
-     * @hide
-     */
-
-    /**
-     * @cfg {Object} widget
-     * A config object containing an {@link Ext.Component#cfg-xtype xtype}.
-     *
-     * This is used to create the widgets or components which are rendered into the cells of this column.
-     *
-     * The rendered component has a {@link Ext.app.ViewModel ViewModel} injected which inherits from any ViewModel
-     * that the grid is using, and contains two extra properties:
-     *
-     * - `record` : {@link Ext.data.Model Model}<br>The record which backs the grid row.
-     * - `recordIndex` : {@link Number}<br>The index in the dataset of the record which backs the grid row.
-     *
-     * The widget configuration may contain a {@link #cfg-bind} config which uses the ViewModel's data.
-     *
-     * The derecated way of obtaining data from the record is still supported if the widget does *not* use a {@link #cfg-bind} config.
-     *
-     * This column's {@link #dataIndex} is used to update the widget/component's {@link Ext.Component#defaultBindProperty defaultBindProperty}.
-     *
-     * The widget will be decorated with 2 methods:
-     * `getWidgetRecord` - Returns the {@link Ext.data.Model record} the widget is associated with.
-     * `getWidgetColumn` - Returns the {@link Ext.grid.column.Widget column} the widget 
-     * was associated with.
-     */
-    
-    /**
-     * @cfg {Function/String} onWidgetAttach
-     * A function that will be called when a widget is attached to a record. This may be useful for
-     * doing any post-processing.
-     * 
-     *     Ext.create({
-     *         xtype: 'grid',
-     *         title: 'Student progress report',
-     *         width: 250,
-     *         renderTo: Ext.getBody(),
-     *         disableSelection: true,
-     *         store: {
-     *             fields: ['name', 'isHonorStudent'],
-     *             data: [{
-     *                 name: 'Finn',
-     *                 isHonorStudent: true
-     *             }, {
-     *                 name: 'Jake',
-     *                 isHonorStudent: false
-     *             }]
-     *         },
-     *         columns: [{
-     *             text: 'Name',
-     *             dataIndex: 'name',
-     *             flex: 1
-     *         }, {
-     *             xtype: 'widgetcolumn',
-     *             text: 'Honor Roll',
-     *             dataIndex: 'isHonorStudent',
-     *             width: 150,
-     *             widget: {
-     *                 xtype: 'button',
-     *                 handler: function() {
-     *                     // print certificate handler
-     *                 }
-     *             },
-     *             // called when the widget is initially instantiated
-     *             // on the widget column
-     *             onWidgetAttach: function(col, widget, rec) {
-     *                 widget.setText('Print Certificate');
-     *                 widget.setDisabled(!rec.get('isHonorStudent'));
-     *             }
-     *         }]
-     *     });
-     * 
-     * @param {Ext.grid.column.Column} column The column.
-     * @param {Ext.Component/Ext.Widget} widget The {@link #widget} rendered to each cell.
-     * @param {Ext.data.Model} record The record used with the current widget (cell).
-     * @controllable
-     */
-    onWidgetAttach: null,
-
-    preventUpdate: true,
-
-    innerCls: Ext.baseCSSPrefix + 'grid-widgetcolumn-cell-inner',
-
-    /**
-     * @cfg {Boolean} [stopSelection=true]
-     * Prevent grid selection upon click on the widget.
-     */
-    stopSelection: true,
-
-    initComponent: function() {
-        var me = this,
-            widget;
-
-        me.callParent(arguments);
-
-        widget = me.widget;
-        //<debug>
-        if (!widget || widget.isComponent) {
-            Ext.raise('column.Widget requires a widget configuration.');
-        }
-        //</debug>
-        me.widget = widget = Ext.apply({}, widget);
-
-        // Apply the default UI for the xtype which is going to feature in this column.
-        if (!widget.ui) {
-            widget.ui = me.getDefaultWidgetUI()[widget.xtype] || 'default';
-        }
-        me.isFixedSize = Ext.isNumber(widget.width);
-    },
-
-    processEvent : function(type, view, cell, recordIndex, cellIndex, e, record, row) {
-        var target;
-         
-        if (this.stopSelection && type === 'click') {
-            // Grab the target that matches the cell inner selector. If we have a target, then,
-            // that means we either clicked on the inner part or the widget inside us. If 
-            // target === e.target, then it was on the cell, so it's ok. Otherwise, inside so
-            // prevent the selection from happening
-            target = e.getTarget(view.innerSelector);
-            if (target && target !== e.target) {
-                e.stopSelection = true;
+          // May be a placeholder with no data row
+          if (cell) {
+            cell = cell.dom.firstChild;
+            if (!isFixedSize && !width && me.lastBox) {
+              width =
+                me.lastBox.width -
+                parseInt(me.getCachedStyle(cell, "padding-left"), 10) -
+                parseInt(me.getCachedStyle(cell, "padding-right"), 10);
             }
+
+            widget = me.getWidget(record);
+            widget.$widgetColumn = me;
+            widget.$widgetRecord = record;
+
+            // Render/move a widget into the new row
+            Ext.fly(cell).empty();
+
+            // Call the appropriate setter with this column's data field
+            if (widget.defaultBindProperty && dataIndex) {
+              widget.setConfig(
+                widget.defaultBindProperty,
+                record.get(dataIndex)
+              );
+            }
+
+            el = widget.el || widget.element;
+            if (el) {
+              cell.appendChild(el.dom);
+              if (!isFixedSize) {
+                widget.setWidth(width);
+              }
+              widget.reattachToBody();
+            } else {
+              if (!isFixedSize) {
+                // Must have a width so that the initial layout works
+                widget.width = width || 100;
+              }
+              widget.render(cell);
+            }
+
+            // We have to run the callback *after* reattaching the Widget
+            // back to the document body. Otherwise widget's layout may fail
+            // because there are no dimensions to measure when the callback is fired!
+            if (hasAttach) {
+              Ext.callback(
+                me.onWidgetAttach,
+                me.scope,
+                [me, widget, record],
+                0,
+                me
+              );
+            }
+
+            // If the widget has a focusEl, ensure that its tabbability status is synched
+            // with the view's navigable/actionable state.
+            focusEl = widget.getFocusEl();
+
+            if (focusEl) {
+              if (view.actionableMode) {
+                if (!focusEl.isTabbable()) {
+                  focusEl.restoreTabbableState();
+                }
+              } else {
+                if (focusEl.isTabbable()) {
+                  focusEl.saveTabbableState();
+                }
+              }
+            }
+          }
         }
+      } else {
+        view.refreshNeeded = true;
+      }
     },
 
-    beforeRender: function() {
-        var me = this,
-            tdCls = me.tdCls,
-            widget;
+    onItemUpdate: function (record, recordIndex, oldItemDom) {
+      this.updateWidget(record);
+    },
 
-        me.listenerScopeFn = function (defaultScope) {
-            if (defaultScope === 'this') {
-                return this;
-            }
-            return me.resolveListenerScope(defaultScope);
+    onViewRefresh: function (view, records) {
+      Ext.suspendLayouts();
+      this.onItemAdd(records);
+      Ext.resumeLayouts(true);
+    },
+
+    returnFalse: function () {
+      return false;
+    },
+
+    setupViewListeners: function (view) {
+      var me = this,
+        listeners = {
+          refresh: me.onViewRefresh,
+          itemadd: me.onItemAdd,
+          scope: me,
+          destroyable: true
         };
 
-        // Need an instantiated example to retrieve the tdCls that it needs
-        widget = Ext.widget(me.widget);
-
-        // If the widget is not using binding, but we have a dataIndex, and there's
-        // a defaultBindProperty to push it into, set flag to indicate to do that.
-        me.bindDataIndex = me.dataIndex && widget.defaultBindProperty && !widget.bind;
-
-        tdCls = tdCls ? tdCls + ' ' : '';
-        me.tdCls = tdCls + widget.getTdCls();
-        me.setupViewListeners(me.getView());
-        me.callParent();
-
-        widget.destroy();
+      // If we are set up to push a dataIndex property into the widget's defaultBindProperty
+      // then we must react to itemupdate events to keep the widget fresh.
+      if (me.bindDataIndex) {
+        listeners.itemUpdate = me.onItemUpdate;
+      }
+      me.viewListeners = view.on(listeners);
     },
 
-    afterRender: function() {
-        var view = this.getView();
+    updateWidget: function (record) {
+      var dataIndex = this.dataIndex,
+        widget;
 
-        this.callParent();
-
-        // View already ready, means we were added later so go and set up our widgets, but if the grid
-        // is reconfiguring, then the column will be rendered & the view will be ready, so wait until
-        // the reconfigure forces a refresh
-        if (view && view.viewReady && !view.ownerGrid.reconfiguring) {
-            this.onViewRefresh(view, view.getViewRange());
+      if (this.rendered && this.bindDataIndex) {
+        widget = this.getWidget(record);
+        // Call the appropriate setter with this column's data field unless it's using binding
+        if (widget) {
+          widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
         }
+      }
     },
 
-    // Cell must be left blank
-    defaultRenderer: Ext.emptyFn, 
-
-    updater: function(cell, value, record) {
-        this.updateWidget(record);
+    widgetRecordDecorator: function () {
+      return this.$widgetRecord;
     },
 
-    onCellsResized: function(newWidth) {
-        var me = this,
-            liveWidgets = me.ownerGrid.getManagedWidgets(me.getId()),
-            len = liveWidgets.length,
-            view = me.getView(),
-            i, cell;
-
-        if (!me.isFixedSize && me.rendered && view && view.viewReady) {
-            cell = view.getEl().down(me.getCellInnerSelector());
-            if (cell) {
-                // Subtract innerCell padding width
-                newWidth -= parseInt(me.getCachedStyle(cell, 'padding-left'), 10) + parseInt(me.getCachedStyle(cell, 'padding-right'), 10);
-
-                for (i = 0; i < len; ++i) {
-
-                    // Ensure these are treated as the top of the modified tree.
-                    // If not within a layout run, this will work fine.
-                    // If within a layout run, Component#updateLayout will
-                    // just ask its runningLayoutContext to invalidate it.
-                    liveWidgets[i].ownerLayout = null;
-                    liveWidgets[i].setWidth(newWidth);
-                    liveWidgets[i].ownerLayout = view.componentLayout;
-                }
-            }
-        }
-    },
-
-    onAdded: function() {
-        var me = this,
-            view;
-
-        me.callParent(arguments);
-
-        me.ownerGrid = me.up('tablepanel').ownerGrid;
-        view = me.getView();
-
-        // If we are being added to a rendered HeaderContainer
-        if (view) {
-            me.setupViewListeners(view);
-        }
-    },
-
-    onRemoved: function(isDestroying) {
-        var viewListeners = this.viewListeners;
-
-        if (viewListeners) {
-            Ext.destroy(viewListeners);
-        }
-        if (isDestroying) {
-            this.ownerGrid.destroyManagedWidgets(this.getId());
-        }
-        this.callParent(arguments);
-    },
-
-    doDestroy: function() {
-        this.ownerGrid.destroyManagedWidgets(this.getId());
-        this.callParent();
-    },
-
-    privates: {
-        getWidget: function(record) {
-            var me = this,
-                result = null;
-
-            if (record) {
-                result = me.ownerGrid.createManagedWidget(me.getId(), me.widget, record);
-                result.resolveListenerScope = me.listenerScopeFn;
-                result.getWidgetRecord = me.widgetRecordDecorator;
-                result.getWidgetColumn = me.widgetColumnDecorator;
-                result.measurer = me;
-                result.ownerCmp = me.getView();
-                // The ownerCmp of the widget is the encapsulating view, which means it will be considered
-                // as a layout child, but it isn't really, we always need the layout on the
-                // component to run if asked.
-                result.isLayoutChild = me.returnFalse;
-            }
-
-            return result;
-        },
-
-        onItemAdd: function(records) {
-            var me = this,
-                view = me.getView(),
-                hasAttach = !!me.onWidgetAttach,
-                dataIndex = me.dataIndex,
-                isFixedSize = me.isFixedSize,
-                len = records.length, i,
-                record,
-                cell,
-                widget,
-                el,
-                focusEl,
-                width;
-
-            // Loop through all records added, ensuring that our corresponding cell in each item
-            // has a Widget of the correct type in it, and is updated with the correct value from the record.
-            if (me.isVisible(true)) {
-                for (i = 0; i < len; i++) {
-                    record = records[i];
-                    if (record.isNonData) {
-                        continue;
-                    }
-
-                    cell = view.getCell(record, me);
-
-                    // May be a placeholder with no data row
-                    if (cell) {
-                        cell = cell.dom.firstChild;
-                        if (!isFixedSize && !width && me.lastBox) {
-                            width = me.lastBox.width - parseInt(me.getCachedStyle(cell, 'padding-left'), 10) - parseInt(me.getCachedStyle(cell, 'padding-right'), 10);
-                        }
-
-                        widget = me.getWidget(record);
-                        widget.$widgetColumn = me;
-                        widget.$widgetRecord = record;
-
-                        // Render/move a widget into the new row
-                        Ext.fly(cell).empty();
-
-                        // Call the appropriate setter with this column's data field
-                        if (widget.defaultBindProperty && dataIndex) {
-                            widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
-                        }
-
-                        el = widget.el || widget.element;
-                        if (el) {
-                            cell.appendChild(el.dom);
-                            if (!isFixedSize) {
-                                widget.setWidth(width);
-                            }
-                            widget.reattachToBody();
-                        } else {
-                            if (!isFixedSize) {
-                                // Must have a width so that the initial layout works
-                                widget.width = width || 100;
-                            }
-                            widget.render(cell);
-                        }
-
-                        // We have to run the callback *after* reattaching the Widget
-                        // back to the document body. Otherwise widget's layout may fail
-                        // because there are no dimensions to measure when the callback is fired!
-                        if (hasAttach) {
-                            Ext.callback(me.onWidgetAttach, me.scope, [me, widget, record], 0, me);
-                        }
-                       
-                        // If the widget has a focusEl, ensure that its tabbability status is synched
-                        // with the view's navigable/actionable state.
-                        focusEl = widget.getFocusEl();
-
-                        if (focusEl) {
-                            if (view.actionableMode) {
-                                if (!focusEl.isTabbable()) {
-                                    focusEl.restoreTabbableState();
-                                }
-                            }
-                            else {
-                                if (focusEl.isTabbable()) {
-                                    focusEl.saveTabbableState();
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                view.refreshNeeded = true;
-            }
-        },
-
-        onItemUpdate: function(record, recordIndex, oldItemDom) {
-            this.updateWidget(record);
-        },
-
-        onViewRefresh: function(view, records) {
-            Ext.suspendLayouts();
-            this.onItemAdd(records);
-            Ext.resumeLayouts(true);
-        },
-
-        returnFalse: function() {
-            return false;
-        },
-
-        setupViewListeners: function(view) {
-            var me = this,
-                listeners = {
-                    refresh: me.onViewRefresh,
-                    itemadd: me.onItemAdd,
-                    scope: me,
-                    destroyable: true
-                };
-
-            // If we are set up to push a dataIndex property into the widget's defaultBindProperty
-            // then we must react to itemupdate events to keep the widget fresh.
-            if (me.bindDataIndex) {
-                listeners.itemUpdate = me.onItemUpdate;
-            }
-            me.viewListeners = view.on(listeners);
-        },
-
-        updateWidget: function(record) {
-            var dataIndex = this.dataIndex,
-                widget;
-
-            if (this.rendered && this.bindDataIndex) {
-                widget = this.getWidget(record);
-                // Call the appropriate setter with this column's data field unless it's using binding
-                if (widget) {
-                    widget.setConfig(widget.defaultBindProperty, record.get(dataIndex));
-                }
-            }
-        }, 
-        
-        widgetRecordDecorator: function() {
-            return this.$widgetRecord;
-        },
-        
-        widgetColumnDecorator: function() {
-            return this.$widgetColumn;
-        }
+    widgetColumnDecorator: function () {
+      return this.$widgetColumn;
     }
+  }
 });

@@ -15,386 +15,405 @@
  * Checkout {@link Ext.Msg} for more examples.
  *
  */
-Ext.define('Ext.MessageBox', {
-    extend  : 'Ext.Sheet',
-    xtype: 'messagebox',
-    requires: [
-        'Ext.util.InputBlocker'
-    ],
+Ext.define(
+  "Ext.MessageBox",
+  {
+    extend: "Ext.Sheet",
+    xtype: "messagebox",
+    requires: ["Ext.util.InputBlocker"],
 
     config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        baseCls: Ext.baseCSSPrefix + 'msgbox',
+      /**
+       * @cfg
+       * @inheritdoc
+       */
+      baseCls: Ext.baseCSSPrefix + "msgbox",
 
-        /**
-         * @cfg {String} iconCls
-         * @inheritdoc Ext.Button#iconCls
-         * @accessor
-         */
-        iconCls: null,
+      /**
+       * @cfg {String} iconCls
+       * @inheritdoc Ext.Button#iconCls
+       * @accessor
+       */
+      iconCls: null,
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        showAnimation: {
-            type: 'popIn',
-            duration: 250,
-            easing: 'ease-out'
-        },
+      /**
+       * @cfg
+       * @inheritdoc
+       */
+      showAnimation: {
+        type: "popIn",
+        duration: 250,
+        easing: "ease-out"
+      },
 
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        hideAnimation: {
-            type: 'popOut',
-            duration: 250,
-            easing: 'ease-out'
-        },
+      /**
+       * @cfg
+       * @inheritdoc
+       */
+      hideAnimation: {
+        type: "popOut",
+        duration: 250,
+        easing: "ease-out"
+      },
 
-        /**
-         * @cfg {Number} defaultTextHeight
-         * The default height in pixels of the message box's multiline textarea if displayed.
-         * @accessor
-         */
-        defaultTextHeight: 75,
+      /**
+       * @cfg {Number} defaultTextHeight
+       * The default height in pixels of the message box's multiline textarea if displayed.
+       * @accessor
+       */
+      defaultTextHeight: 75,
 
-        /**
-         * @cfg {String} title
-         * The title of this {@link Ext.MessageBox}.
-         * @accessor
-         */
-        title: null,
+      /**
+       * @cfg {String} title
+       * The title of this {@link Ext.MessageBox}.
+       * @accessor
+       */
+      title: null,
 
-        /**
-         * @cfg {Array/Object} buttons
-         * An array of buttons, or an object of a button to be displayed in the toolbar of this {@link Ext.MessageBox}.
-         * @cmd-auto-dependency {defaultType: 'Ext.Button', requires: ['Ext.Toolbar']}
-         */
-        buttons: null,
-        /**
-         * @cfg {Object}
-         * Configure the toolbar that holds the buttons inside the MessageBox
-         */
-        buttonToolbar: {
-            docked: 'bottom',
-            defaultType: 'button',
-            layout: {
-                type: 'hbox',
-                pack: 'center'
-            }
-        },
-
-        /**
-         * @cfg {String} message
-         * The message to be displayed in the {@link Ext.MessageBox}.
-         * @accessor
-         */
-        message: null,
-
-        /**
-         * @cfg {String} msg
-         * The message to be displayed in the {@link Ext.MessageBox}.
-         * @removed 2.0.0 Please use {@link #message} instead.
-         */
-
-        /**
-         * @cfg {Object} prompt
-         * The configuration to be passed if you want an {@link Ext.field.Text} or {@link Ext.field.TextArea} field
-         * in your {@link Ext.MessageBox}.
-         *
-         * Pass an object with the property `multiLine` with a value of `true`, if you want the prompt to use a TextArea.
-         *
-         * Alternatively, you can just pass in an object which has an xtype/xclass of another component.
-         *
-         *     prompt: {
-         *         xtype: 'textareafield',
-         *         value: 'test'
-         *     }
-         *
-         * @accessor
-         * @cmd-auto-dependency { requires: ['Ext.field.Text', 'Ext.field.TextArea'] }
-         */
-        prompt: null,
-
-        /**
-         * @private
-         */
-        modal: true,
-
-        /**
-         * @cfg
-         * @inheritdoc
-         */
+      /**
+       * @cfg {Array/Object} buttons
+       * An array of buttons, or an object of a button to be displayed in the toolbar of this {@link Ext.MessageBox}.
+       * @cmd-auto-dependency {defaultType: 'Ext.Button', requires: ['Ext.Toolbar']}
+       */
+      buttons: null,
+      /**
+       * @cfg {Object}
+       * Configure the toolbar that holds the buttons inside the MessageBox
+       */
+      buttonToolbar: {
+        docked: "bottom",
+        defaultType: "button",
         layout: {
-            type: 'vbox',
-            pack: 'center'
+          type: "hbox",
+          pack: "center"
         }
+      },
+
+      /**
+       * @cfg {String} message
+       * The message to be displayed in the {@link Ext.MessageBox}.
+       * @accessor
+       */
+      message: null,
+
+      /**
+       * @cfg {String} msg
+       * The message to be displayed in the {@link Ext.MessageBox}.
+       * @removed 2.0.0 Please use {@link #message} instead.
+       */
+
+      /**
+       * @cfg {Object} prompt
+       * The configuration to be passed if you want an {@link Ext.field.Text} or {@link Ext.field.TextArea} field
+       * in your {@link Ext.MessageBox}.
+       *
+       * Pass an object with the property `multiLine` with a value of `true`, if you want the prompt to use a TextArea.
+       *
+       * Alternatively, you can just pass in an object which has an xtype/xclass of another component.
+       *
+       *     prompt: {
+       *         xtype: 'textareafield',
+       *         value: 'test'
+       *     }
+       *
+       * @accessor
+       * @cmd-auto-dependency { requires: ['Ext.field.Text', 'Ext.field.TextArea'] }
+       */
+      prompt: null,
+
+      /**
+       * @private
+       */
+      modal: true,
+
+      /**
+       * @cfg
+       * @inheritdoc
+       */
+      layout: {
+        type: "vbox",
+        pack: "center"
+      }
     },
 
     statics: {
-        OK    : {text: 'OK',     itemId: 'ok'},
-        YES   : {text: 'Yes',    itemId: 'yes'},
-        NO    : {text: 'No',     itemId: 'no'},
-        CANCEL: {text: 'Cancel', itemId: 'cancel'},
+      OK: { text: "OK", itemId: "ok" },
+      YES: { text: "Yes", itemId: "yes" },
+      NO: { text: "No", itemId: "no" },
+      CANCEL: { text: "Cancel", itemId: "cancel" },
 
-        INFO    : Ext.baseCSSPrefix + 'msgbox-info',
-        WARNING : Ext.baseCSSPrefix + 'msgbox-warning',
-        QUESTION: Ext.baseCSSPrefix + 'msgbox-question',
-        ERROR   : Ext.baseCSSPrefix + 'msgbox-error',
+      INFO: Ext.baseCSSPrefix + "msgbox-info",
+      WARNING: Ext.baseCSSPrefix + "msgbox-warning",
+      QUESTION: Ext.baseCSSPrefix + "msgbox-question",
+      ERROR: Ext.baseCSSPrefix + "msgbox-error",
 
-        OKCANCEL: [
-            {text: 'Cancel', itemId: 'cancel'},
-            {text: 'OK',     itemId: 'ok'}
-        ],
-        YESNOCANCEL: [
-            {text: 'Cancel', itemId: 'cancel'},
-            {text: 'No',     itemId: 'no'},
-            {text: 'Yes',    itemId: 'yes'}
-        ],
-        YESNO: [
-            {text: 'No',  itemId: 'no'},
-            {text: 'Yes', itemId: 'yes'}
-        ]
+      OKCANCEL: [
+        { text: "Cancel", itemId: "cancel" },
+        { text: "OK", itemId: "ok" }
+      ],
+      YESNOCANCEL: [
+        { text: "Cancel", itemId: "cancel" },
+        { text: "No", itemId: "no" },
+        { text: "Yes", itemId: "yes" }
+      ],
+      YESNO: [
+        { text: "No", itemId: "no" },
+        { text: "Yes", itemId: "yes" }
+      ]
     },
 
     /**
      * @private
      */
-    constructor: function(config) {
-        config = config || {};
+    constructor: function (config) {
+      config = config || {};
 
-        if (config.hasOwnProperty('multiline') || config.hasOwnProperty('multiLine')) {
-            config.prompt = config.prompt || {};
-            Ext.applyIf(config.prompt, {
-                multiLine: config.multiline || config.multiLine
-            });
+      if (
+        config.hasOwnProperty("multiline") ||
+        config.hasOwnProperty("multiLine")
+      ) {
+        config.prompt = config.prompt || {};
+        Ext.applyIf(config.prompt, {
+          multiLine: config.multiline || config.multiLine
+        });
 
-            delete config.multiline;
-            delete config.multiLine;
-        }
+        delete config.multiline;
+        delete config.multiLine;
+      }
 
-        this.defaultAllowedConfig = {};
-        var allowedConfigs = ['ui', 'showAnimation', 'hideAnimation', 'title', 'message', 'prompt', 'iconCls', 'buttons', 'defaultTextHeight'],
-            ln = allowedConfigs.length,
-            i, allowedConfig;
+      this.defaultAllowedConfig = {};
+      var allowedConfigs = [
+          "ui",
+          "showAnimation",
+          "hideAnimation",
+          "title",
+          "message",
+          "prompt",
+          "iconCls",
+          "buttons",
+          "defaultTextHeight"
+        ],
+        ln = allowedConfigs.length,
+        i,
+        allowedConfig;
 
-        for (i = 0; i < ln; i++) {
-            allowedConfig = allowedConfigs[i];
-            this.defaultAllowedConfig[allowedConfig] = this.defaultConfig[allowedConfig];
-        }
+      for (i = 0; i < ln; i++) {
+        allowedConfig = allowedConfigs[i];
+        this.defaultAllowedConfig[allowedConfig] =
+          this.defaultConfig[allowedConfig];
+      }
 
-        this.callParent([config]);
+      this.callParent([config]);
     },
 
     /**
      * Creates a new {@link Ext.Toolbar} instance using {@link Ext#factory}.
      * @private
      */
-    applyTitle: function(config) {
-        if (typeof config === "string") {
-            return config;
-        }
+    applyTitle: function (config) {
+      if (typeof config === "string") {
+        return config;
+      }
 
-        return config.title;
+      return config.title;
     },
 
     /**
      * Adds the new {@link Ext.Toolbar} instance into this container.
      * @private
      */
-    updateTitle: function(newTitle) {
-        var header = this.getHeader() || {};
+    updateTitle: function (newTitle) {
+      var header = this.getHeader() || {};
 
-        if (Ext.isSimpleObject(header)) {
-            header.title = newTitle;
-            this.setHeader(header);
-        } else if (Ext.isFunction(header.setTitle)) {
-            header.setTitle(newTitle);
-        }
+      if (Ext.isSimpleObject(header)) {
+        header.title = newTitle;
+        this.setHeader(header);
+      } else if (Ext.isFunction(header.setTitle)) {
+        header.setTitle(newTitle);
+      }
     },
 
     /**
      * Adds the new {@link Ext.Toolbar} instance into this container.
      * @private
      */
-    updateButtons: function(newButtons) {
-        var create = Ext.create,
-            me = this,
-            buttonToolbarConfig = this.getButtonToolbar(), config;
+    updateButtons: function (newButtons) {
+      var create = Ext.create,
+        me = this,
+        buttonToolbarConfig = this.getButtonToolbar(),
+        config;
 
-        // If there are no new buttons or it is an empty array, set newButtons
-        // to false
-        newButtons = (!newButtons || newButtons.length === 0) ? false : newButtons;
+      // If there are no new buttons or it is an empty array, set newButtons
+      // to false
+      newButtons = !newButtons || newButtons.length === 0 ? false : newButtons;
 
-        if (newButtons) {
-            if (me.buttonsToolbar) {
-                me.buttonsToolbar.show();
-                me.buttonsToolbar.removeAll();
-                me.buttonsToolbar.setItems(newButtons);
-            } else {
-                config = Ext.apply({
-                    ui: me.getUi(),
-                    cls: me.getBaseCls() + '-buttons',
-                    items: newButtons
-                }, buttonToolbarConfig);
-                me.buttonsToolbar = create('Ext.Toolbar', config);
+      if (newButtons) {
+        if (me.buttonsToolbar) {
+          me.buttonsToolbar.show();
+          me.buttonsToolbar.removeAll();
+          me.buttonsToolbar.setItems(newButtons);
+        } else {
+          config = Ext.apply(
+            {
+              ui: me.getUi(),
+              cls: me.getBaseCls() + "-buttons",
+              items: newButtons
+            },
+            buttonToolbarConfig
+          );
+          me.buttonsToolbar = create("Ext.Toolbar", config);
 
-                me.add(me.buttonsToolbar);
-            }
-        } else if (me.buttonsToolbar) {
-            me.buttonsToolbar.hide();
+          me.add(me.buttonsToolbar);
         }
+      } else if (me.buttonsToolbar) {
+        me.buttonsToolbar.hide();
+      }
     },
 
     /**
      * @private
      */
-    applyMessage: function(config) {
+    applyMessage: function (config) {
+      config = {
+        html: config,
+        cls: this.getBaseCls() + "-text"
+      };
+
+      return Ext.factory(config, Ext.Component, this._message);
+    },
+
+    /**
+     * @private
+     */
+    updateMessage: function (newMessage) {
+      if (newMessage) {
+        this.add(newMessage);
+      }
+    },
+
+    getMessage: function () {
+      if (this._message) {
+        return this._message.getHtml();
+      }
+
+      return null;
+    },
+
+    /**
+     * @private
+     */
+    applyIconCls: function (config) {
+      if (config) {
         config = {
-            html : config,
-            cls  : this.getBaseCls() + '-text'
+          xtype: "component",
+          docked: "left",
+          width: 40,
+          height: 40,
+          baseCls: Ext.baseCSSPrefix + "icon",
+          hidden: config ? false : true,
+          cls: config
+        };
+        return Ext.factory(config, Ext.Component, this._iconCls);
+      }
+
+      return config;
+    },
+
+    /**
+     * @private
+     */
+    updateIconCls: function (newIconCls, oldIconCls) {
+      //ensure the title and button elements are added first
+      this.getTitle();
+      this.getButtons();
+
+      if (newIconCls) {
+        this.add(newIconCls);
+      } else {
+        this.remove(oldIconCls);
+      }
+    },
+
+    getIconCls: function () {
+      var icon = this._iconCls,
+        iconCls;
+
+      if (icon) {
+        iconCls = icon.getCls();
+        return iconCls ? iconCls[0] : null;
+      }
+
+      return null;
+    },
+
+    /**
+     * @private
+     */
+    applyPrompt: function (prompt) {
+      if (prompt) {
+        var config = {
+          label: false
         };
 
-        return Ext.factory(config, Ext.Component, this._message);
+        if (Ext.isObject(prompt)) {
+          Ext.apply(config, prompt);
+        }
+
+        if (config.multiLine) {
+          config.height = Ext.isNumber(config.multiLine)
+            ? parseFloat(config.multiLine)
+            : this.getDefaultTextHeight();
+          return Ext.factory(config, Ext.field["TextArea"], this.getPrompt());
+        } else {
+          return Ext.factory(config, Ext.field["Text"], this.getPrompt());
+        }
+      }
+
+      return prompt;
     },
 
     /**
      * @private
      */
-    updateMessage: function(newMessage) {
-        if (newMessage) {
-            this.add(newMessage);
-        }
-    },
+    updatePrompt: function (newPrompt, oldPrompt) {
+      if (newPrompt) {
+        this.add(newPrompt);
+      }
 
-    getMessage: function() {
-        if (this._message) {
-            return this._message.getHtml();
-        }
-
-        return null;
-    },
-
-    /**
-     * @private
-     */
-    applyIconCls: function(config) {
-
-        if (config) {
-            config = {
-                xtype: 'component',
-                docked: 'left',
-                width: 40,
-                height: 40,
-                baseCls: Ext.baseCSSPrefix + 'icon',
-                hidden: (config) ? false : true,
-                cls: config
-            };
-            return Ext.factory(config, Ext.Component, this._iconCls);
-        }
-
-        return config;
-    },
-
-    /**
-     * @private
-     */
-    updateIconCls: function(newIconCls, oldIconCls) {
-        //ensure the title and button elements are added first
-        this.getTitle();
-        this.getButtons();
-
-        if (newIconCls) {
-            this.add(newIconCls);
-        }
-        else {
-            this.remove(oldIconCls);
-        }
-    },
-
-    getIconCls: function() {
-        var icon = this._iconCls,
-            iconCls;
-
-        if (icon) {
-            iconCls = icon.getCls();
-            return (iconCls) ? iconCls[0] : null;
-        }
-
-        return null;
-    },
-
-    /**
-     * @private
-     */
-    applyPrompt: function(prompt) {
-        if (prompt) {
-            var config = {
-                label: false
-            };
-
-            if (Ext.isObject(prompt)) {
-                Ext.apply(config, prompt);
-            }
-
-            if (config.multiLine) {
-                config.height = Ext.isNumber(config.multiLine) ? parseFloat(config.multiLine) : this.getDefaultTextHeight();
-                return Ext.factory(config, Ext.field['TextArea'], this.getPrompt());
-            } else {
-                return Ext.factory(config, Ext.field['Text'], this.getPrompt());
-            }
-        }
-
-        return prompt;
-    },
-
-    /**
-     * @private
-     */
-    updatePrompt: function(newPrompt, oldPrompt) {
-        if (newPrompt) {
-            this.add(newPrompt);
-        }
-
-        if (oldPrompt) {
-            this.remove(oldPrompt);
-        }
+      if (oldPrompt) {
+        this.remove(oldPrompt);
+      }
     },
 
     /**
      * @private
      * Pass `fn` config to show method instead.
      */
-    onClick: function(button) {
-        if (button) {
-            var config = button.config.userConfig || {},
-                initialConfig = button.getInitialConfig(),
-                prompt = this.getPrompt();
+    onClick: function (button) {
+      if (button) {
+        var config = button.config.userConfig || {},
+          initialConfig = button.getInitialConfig(),
+          prompt = this.getPrompt();
 
-            if (typeof config.fn == 'function') {
-                button.disable();
-                this.on({
-                    hiddenchange: function() {
-                        config.fn.call(
-                            config.scope || null,
-                            initialConfig.itemId || initialConfig.text,
-                            prompt ? prompt.getValue() : null,
-                            config
-                        );
-                        button.enable();
-                    },
-                    single: true,
-                    scope: this
-                });
-            }
+        if (typeof config.fn == "function") {
+          button.disable();
+          this.on({
+            hiddenchange: function () {
+              config.fn.call(
+                config.scope || null,
+                initialConfig.itemId || initialConfig.text,
+                prompt ? prompt.getValue() : null,
+                config
+              );
+              button.enable();
+            },
+            single: true,
+            scope: this
+          });
         }
+      }
 
-        this.hide();
+      this.hide();
     },
 
     /**
@@ -472,60 +491,69 @@ Ext.define('Ext.MessageBox', {
      *
      * @return {Ext.MessageBox} this
      */
-    show: function(initialConfig) {
-        Ext.util.InputBlocker.blockInputs();
-        //if it has not been added to a container, add it to the Viewport.
-        if (!this.getParent() && Ext.Viewport) {
-            Ext.Viewport.add(this);
-        }
+    show: function (initialConfig) {
+      Ext.util.InputBlocker.blockInputs();
+      //if it has not been added to a container, add it to the Viewport.
+      if (!this.getParent() && Ext.Viewport) {
+        Ext.Viewport.add(this);
+      }
 
-        if (!initialConfig) {
-            return this.callParent();
-        }
+      if (!initialConfig) {
+        return this.callParent();
+      }
 
-        var config = Ext.apply({}, initialConfig),
-            buttons = initialConfig.buttons || Ext.MessageBox.OK || [],
-            buttonBarItems = [],
-            userConfig = initialConfig;
+      var config = Ext.apply({}, initialConfig),
+        buttons = initialConfig.buttons || Ext.MessageBox.OK || [],
+        buttonBarItems = [],
+        userConfig = initialConfig;
 
-        Ext.each(buttons, function(buttonConfig) {
-            if (!buttonConfig) {
-                return;
-            }
+      Ext.each(
+        buttons,
+        function (buttonConfig) {
+          if (!buttonConfig) {
+            return;
+          }
 
-            buttonBarItems.push(Ext.apply({
+          buttonBarItems.push(
+            Ext.apply(
+              {
                 userConfig: userConfig,
-                scope     : this,
-                handler   : 'onClick'
-            }, buttonConfig));
-        }, this);
+                scope: this,
+                handler: "onClick"
+              },
+              buttonConfig
+            )
+          );
+        },
+        this
+      );
 
-        config.buttons = buttonBarItems;
+      config.buttons = buttonBarItems;
 
-        config.prompt = config.prompt || null;
+      config.prompt = config.prompt || null;
 
-        if (config.multiLine) {
-            config.prompt = config.prompt || {};
-            config.prompt.multiLine = config.multiLine;
-            delete config.multiLine;
-        }
+      if (config.multiLine) {
+        config.prompt = config.prompt || {};
+        config.prompt.multiLine = config.multiLine;
+        delete config.multiLine;
+      }
 
-        delete config.value;
-        delete config.fn;
-        delete config.scope;
+      delete config.value;
+      delete config.fn;
+      delete config.scope;
 
-        config = Ext.merge({}, this.defaultAllowedConfig, config);
+      config = Ext.merge({}, this.defaultAllowedConfig, config);
 
-        this.setConfig(config);
+      this.setConfig(config);
 
-        var prompt = this.getPrompt();
-        if (prompt) {
-            prompt.setValue(initialConfig.value || '');
-        }
+      var prompt = this.getPrompt();
+      if (prompt) {
+        prompt.setValue(initialConfig.value || "");
+      }
 
-        this.callParent();
+      this.callParent();
 
-        return this;
+      return this;
     },
 
     /**
@@ -544,19 +572,19 @@ Ext.define('Ext.MessageBox', {
      *
      * @return {Ext.MessageBox} this
      */
-    alert: function(title, message, fn, scope) {
-        return this.show({
-            title: title || null,
-            message: message || null,
-            buttons: Ext.MessageBox.OK,
-            prompt: false,
-            fn: function() {
-                if (fn) {
-                    Ext.callback(fn, scope, arguments);
-                }
-            },
-            scope: scope
-        });
+    alert: function (title, message, fn, scope) {
+      return this.show({
+        title: title || null,
+        message: message || null,
+        buttons: Ext.MessageBox.OK,
+        prompt: false,
+        fn: function () {
+          if (fn) {
+            Ext.callback(fn, scope, arguments);
+          }
+        },
+        scope: scope
+      });
     },
 
     /**
@@ -576,19 +604,19 @@ Ext.define('Ext.MessageBox', {
      *
      * @return {Ext.MessageBox} this
      */
-    confirm: function(title, message, fn, scope) {
-        return this.show({
-            title       : title || null,
-            message     : message || null,
-            buttons     : Ext.MessageBox.YESNO,
-            prompt: false,
-            scope       : scope,
-            fn: function() {
-                if (fn) {
-                    Ext.callback(fn, scope, arguments);
-                }
-            }
-        });
+    confirm: function (title, message, fn, scope) {
+      return this.show({
+        title: title || null,
+        message: message || null,
+        buttons: Ext.MessageBox.YESNO,
+        prompt: false,
+        scope: scope,
+        fn: function () {
+          if (fn) {
+            Ext.callback(fn, scope, arguments);
+          }
+        }
+      });
     },
 
     /**
@@ -636,62 +664,63 @@ Ext.define('Ext.MessageBox', {
      *
      * @return {Ext.MessageBox} this
      */
-    prompt: function(title, message, fn, scope, multiLine, value, prompt) {
-        return this.show({
-            title    : title || null,
-            message  : message || null,
-            buttons  : Ext.MessageBox.OKCANCEL,
-            scope    : scope,
-            prompt   : prompt || true,
-            multiLine: multiLine,
-            value    : value,
-            fn: function() {
-                if (fn) {
-                    Ext.callback(fn, scope, arguments);
-                }
-            }
-        });
+    prompt: function (title, message, fn, scope, multiLine, value, prompt) {
+      return this.show({
+        title: title || null,
+        message: message || null,
+        buttons: Ext.MessageBox.OKCANCEL,
+        scope: scope,
+        prompt: prompt || true,
+        multiLine: multiLine,
+        value: value,
+        fn: function () {
+          if (fn) {
+            Ext.callback(fn, scope, arguments);
+          }
+        }
+      });
     }
-}, function(MessageBox) {
-    Ext.onInternalReady(function() {
-        /**
-         * @class Ext.Msg
-         * @extends Ext.MessageBox
-         * @singleton
-         *
-         * A global shared singleton instance of the {@link Ext.MessageBox} class.
-         *
-         * Allows for simple creation of various different alerts and notifications.
-         *
-         * To change any configurations on this singleton instance, you must change the
-         * `defaultAllowedConfig` object.  For example to remove all animations on `Msg`:
-         *
-         *     Ext.Msg.defaultAllowedConfig.showAnimation = false;
-         *     Ext.Msg.defaultAllowedConfig.hideAnimation = false;
-         *
-         * ## Examples
-         *
-         * ### Alert
-         * Use the {@link #alert} method to show a basic alert:
-         *
-         *     @example preview
-         *     Ext.Msg.alert('Title', 'The quick brown fox jumped over the lazy dog.', Ext.emptyFn);
-         *
-         * ### Prompt
-         * Use the {@link #method-prompt} method to show an alert which has a textfield:
-         *
-         *     @example preview
-         *     Ext.Msg.prompt('Name', 'Please enter your name:', function(text) {
-         *         // process text value and close...
-         *     });
-         *
-         * ### Confirm
-         * Use the {@link #confirm} method to show a confirmation alert (shows yes and no buttons).
-         *
-         *     @example preview
-         *     Ext.Msg.confirm("Confirmation", "Are you sure you want to do that?", Ext.emptyFn);
-         */
-        Ext.Msg = new Ext.MessageBox();
+  },
+  function (MessageBox) {
+    Ext.onInternalReady(function () {
+      /**
+       * @class Ext.Msg
+       * @extends Ext.MessageBox
+       * @singleton
+       *
+       * A global shared singleton instance of the {@link Ext.MessageBox} class.
+       *
+       * Allows for simple creation of various different alerts and notifications.
+       *
+       * To change any configurations on this singleton instance, you must change the
+       * `defaultAllowedConfig` object.  For example to remove all animations on `Msg`:
+       *
+       *     Ext.Msg.defaultAllowedConfig.showAnimation = false;
+       *     Ext.Msg.defaultAllowedConfig.hideAnimation = false;
+       *
+       * ## Examples
+       *
+       * ### Alert
+       * Use the {@link #alert} method to show a basic alert:
+       *
+       *     @example preview
+       *     Ext.Msg.alert('Title', 'The quick brown fox jumped over the lazy dog.', Ext.emptyFn);
+       *
+       * ### Prompt
+       * Use the {@link #method-prompt} method to show an alert which has a textfield:
+       *
+       *     @example preview
+       *     Ext.Msg.prompt('Name', 'Please enter your name:', function(text) {
+       *         // process text value and close...
+       *     });
+       *
+       * ### Confirm
+       * Use the {@link #confirm} method to show a confirmation alert (shows yes and no buttons).
+       *
+       *     @example preview
+       *     Ext.Msg.confirm("Confirmation", "Are you sure you want to do that?", Ext.emptyFn);
+       */
+      Ext.Msg = new Ext.MessageBox();
     });
-});
-
+  }
+);

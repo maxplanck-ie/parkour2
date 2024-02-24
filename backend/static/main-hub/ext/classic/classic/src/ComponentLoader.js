@@ -1,5 +1,5 @@
 /**
- * This class is used to load content via Ajax into a {@link Ext.Component}. In general 
+ * This class is used to load content via Ajax into a {@link Ext.Component}. In general
  * this class will not be instanced directly, rather a loader configuration will be passed to the
  * constructor of the {@link Ext.Component}.
  *
@@ -48,91 +48,90 @@
  *     // call the loader manually (or use autoLoad:true instead)
  *     cmp.getLoader().load();
  */
-Ext.define('Ext.ComponentLoader', {
+Ext.define("Ext.ComponentLoader", {
+  /* Begin Definitions */
 
-    /* Begin Definitions */
+  extend: "Ext.ElementLoader",
 
-    extend: 'Ext.ElementLoader',
-
-    statics: {
-        Renderer: {
-            Data: function(loader, response, active){
-                var success = true;
-                try {
-                    loader.getTarget().update(Ext.decode(response.responseText));
-                } catch (e) {
-                    success = false;
-                }
-                return success;
-            },
-
-            Component: function(loader, response, active){
-                var success = true,
-                    target = loader.getTarget(),
-                    items = [];
-
-                //<debug>
-                if (!target.isContainer) {
-                    Ext.raise({
-                        target: target,
-                        msg: 'Components can only be loaded into a container'
-                    });
-                }
-                //</debug>
-
-                try {
-                    items = Ext.decode(response.responseText);
-                } catch (e) {
-                    success = false;
-                }
-
-                if (success) {
-                    target.suspendLayouts();
-                    if (active.removeAll) {
-                        target.removeAll();
-                    }
-                    target.add(items);
-                    target.resumeLayouts(true);
-                }
-                return success;
-            }
+  statics: {
+    Renderer: {
+      Data: function (loader, response, active) {
+        var success = true;
+        try {
+          loader.getTarget().update(Ext.decode(response.responseText));
+        } catch (e) {
+          success = false;
         }
-    },
+        return success;
+      },
 
-    /* End Definitions */
+      Component: function (loader, response, active) {
+        var success = true,
+          target = loader.getTarget(),
+          items = [];
 
-    /**
-     * @cfg {Ext.Component/String} target The target {@link Ext.Component} for the loader.
-     * If a string is passed it will be looked up via the id.
-     */
-    target: null,
+        //<debug>
+        if (!target.isContainer) {
+          Ext.raise({
+            target: target,
+            msg: "Components can only be loaded into a container"
+          });
+        }
+        //</debug>
 
-    /**
-     * @cfg {Boolean/Object} loadOnRender
-     * `true` to have the loader make a request when the {@link #target} is rendered. If the target is
-     * already rendered, a load will take place immediately.
-     * This argument can also be a set of options that will be passed to {@link #method-load} when it is called.
-     */
-    loadOnRender: false,
+        try {
+          items = Ext.decode(response.responseText);
+        } catch (e) {
+          success = false;
+        }
 
-    /**
-     * @cfg {Boolean/Object} loadMask True or a {@link Ext.LoadMask} configuration to enable masking during loading.
-     */
-    loadMask: false,
+        if (success) {
+          target.suspendLayouts();
+          if (active.removeAll) {
+            target.removeAll();
+          }
+          target.add(items);
+          target.resumeLayouts(true);
+        }
+        return success;
+      }
+    }
+  },
 
-    /**
-     * @cfg {Boolean} scripts True to parse any inline script tags in the response. This only used when using the html
-     * {@link #renderer}. The scripts will be executed with the target Component as the scope (`this` reference).
-     */
+  /* End Definitions */
 
-    /**
-     * @cfg {Object} [rendererScope=`this`]
-     * The scope (`this` reference)to execute the {@link #renderer} function in. If the {@link #scripts} option is
-     * `true`, *inline* script source (not scripts with a `src` attribute) is also executed in this scope.
-     * Defaults to this Component.
-     */
+  /**
+   * @cfg {Ext.Component/String} target The target {@link Ext.Component} for the loader.
+   * If a string is passed it will be looked up via the id.
+   */
+  target: null,
 
-    /**
+  /**
+   * @cfg {Boolean/Object} loadOnRender
+   * `true` to have the loader make a request when the {@link #target} is rendered. If the target is
+   * already rendered, a load will take place immediately.
+   * This argument can also be a set of options that will be passed to {@link #method-load} when it is called.
+   */
+  loadOnRender: false,
+
+  /**
+   * @cfg {Boolean/Object} loadMask True or a {@link Ext.LoadMask} configuration to enable masking during loading.
+   */
+  loadMask: false,
+
+  /**
+   * @cfg {Boolean} scripts True to parse any inline script tags in the response. This only used when using the html
+   * {@link #renderer}. The scripts will be executed with the target Component as the scope (`this` reference).
+   */
+
+  /**
+   * @cfg {Object} [rendererScope=`this`]
+   * The scope (`this` reference)to execute the {@link #renderer} function in. If the {@link #scripts} option is
+   * `true`, *inline* script source (not scripts with a `src` attribute) is also executed in this scope.
+   * Defaults to this Component.
+   */
+
+  /**
      * @cfg {String/Function} renderer
 
 The type of content that is to be loaded into, which can be one of 3 types:
@@ -160,77 +159,79 @@ The function must return false is loading is not successful. Below is a sample o
         }
     });
      */
-    renderer: 'html',
+  renderer: "html",
 
-    /**
-     * Set a {Ext.Component} as the target of this loader. Note that if the target is changed,
-     * any active requests will be aborted.
-     * @param {String/Ext.Component} target The component to be the target of this loader. If a string is passed
-     * it will be looked up via its id.
-     */
-    setTarget: function(target) {
-        var me = this;
+  /**
+   * Set a {Ext.Component} as the target of this loader. Note that if the target is changed,
+   * any active requests will be aborted.
+   * @param {String/Ext.Component} target The component to be the target of this loader. If a string is passed
+   * it will be looked up via its id.
+   */
+  setTarget: function (target) {
+    var me = this;
 
-        if (Ext.isString(target)) {
-            target = Ext.getCmp(target);
-        }
-
-        if (me.target && me.target !== target) {
-            me.abort();
-        }
-        me.target = target;
-        if (target && me.loadOnRender) {
-            if (target.rendered) {
-                me.doLoadOnRender();
-            } else {
-                me.mon(target, 'render', me.doLoadOnRender, me);
-            }
-        }
-    },
-
-    doLoadOnRender: function() {
-        var loadOnRender = this.loadOnRender;
-        this.load(Ext.isObject(loadOnRender) ? loadOnRender : null);
-    },
-
-    removeMask: function(){
-        this.target.setLoading(false);
-    },
-
-    /**
-     * Add the mask on the target
-     * @private
-     * @param {Boolean/Object} mask The mask configuration
-     */
-    addMask: function(mask){
-        this.target.setLoading(mask);
-    },
-
-
-    setOptions: function(active, options){
-        active.removeAll = Ext.isDefined(options.removeAll) ? options.removeAll : this.removeAll;
-        active.rendererScope = options.rendererScope || this.rendererScope || this.target;
-    },
-
-    /**
-     * Gets the renderer to use
-     * @private
-     * @param {String/Function} renderer The renderer to use
-     * @return {Function} A rendering function to use.
-     */
-    getRenderer: function(renderer){
-        if (Ext.isFunction(renderer)) {
-            return renderer;
-        }
-
-        var renderers = this.statics().Renderer;
-        switch (renderer) {
-            case 'component':
-                return renderers.Component;
-            case 'data':
-                return renderers.Data;
-            default:
-                return Ext.ElementLoader.Renderer.Html;
-        }
+    if (Ext.isString(target)) {
+      target = Ext.getCmp(target);
     }
+
+    if (me.target && me.target !== target) {
+      me.abort();
+    }
+    me.target = target;
+    if (target && me.loadOnRender) {
+      if (target.rendered) {
+        me.doLoadOnRender();
+      } else {
+        me.mon(target, "render", me.doLoadOnRender, me);
+      }
+    }
+  },
+
+  doLoadOnRender: function () {
+    var loadOnRender = this.loadOnRender;
+    this.load(Ext.isObject(loadOnRender) ? loadOnRender : null);
+  },
+
+  removeMask: function () {
+    this.target.setLoading(false);
+  },
+
+  /**
+   * Add the mask on the target
+   * @private
+   * @param {Boolean/Object} mask The mask configuration
+   */
+  addMask: function (mask) {
+    this.target.setLoading(mask);
+  },
+
+  setOptions: function (active, options) {
+    active.removeAll = Ext.isDefined(options.removeAll)
+      ? options.removeAll
+      : this.removeAll;
+    active.rendererScope =
+      options.rendererScope || this.rendererScope || this.target;
+  },
+
+  /**
+   * Gets the renderer to use
+   * @private
+   * @param {String/Function} renderer The renderer to use
+   * @return {Function} A rendering function to use.
+   */
+  getRenderer: function (renderer) {
+    if (Ext.isFunction(renderer)) {
+      return renderer;
+    }
+
+    var renderers = this.statics().Renderer;
+    switch (renderer) {
+      case "component":
+        return renderers.Component;
+      case "data":
+        return renderers.Data;
+      default:
+        return Ext.ElementLoader.Renderer.Html;
+    }
+  }
 });

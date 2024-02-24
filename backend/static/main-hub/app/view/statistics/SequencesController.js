@@ -5,13 +5,13 @@ Ext.define("MainHub.view.statistics.SequencesController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#sequences-grid": {
-        groupcontextmenu: "showGroupMenu",
+        groupcontextmenu: "showGroupMenu"
       },
       daterangepicker: {
-        select: "setRange",
+        select: "setRange"
       },
       "#download-report": {
         click: "downloadReport",
@@ -39,7 +39,7 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     grid.getStore().reload({
       params: {
         start: value.startDateObj,
-        end: value.endDateObj,
+        end: value.endDateObj
       },
       callback: function () {
         grid.getView().features[0].collapseAll();
@@ -102,7 +102,7 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     if (selectedRecords.length === 0) {
       new Noty({
         text: "You did not select any items.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -111,8 +111,8 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     form.submit({
       url: "api/sequences_statistics/download_report/",
       params: {
-        barcodes: Ext.JSON.encode(Ext.Array.pluck(selectedRecords, "barcode")),
-      },
+        barcodes: Ext.JSON.encode(Ext.Array.pluck(selectedRecords, "barcode"))
+      }
     });
   },
 
@@ -122,11 +122,11 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     store.each(function (item) {
       if (item.get("selected")) {
         records.push({
-          barcode: item.get("barcode"),
+          barcode: item.get("barcode")
         });
       }
     });
 
     return records;
-  },
+  }
 });

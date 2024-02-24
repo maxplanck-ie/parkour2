@@ -15,7 +15,7 @@ Ext.define("MainHub.store.statistics.RunStatistics", {
     pageParam: false, // to remove param "page"
     startParam: false, // to remove param "start"
     limitParam: false, // to remove param "limit"
-    noCache: false, // to remove param "_dc",
+    noCache: false // to remove param "_dc",
   },
 
   extraParams: {
@@ -25,5 +25,5 @@ Ext.define("MainHub.store.statistics.RunStatistics", {
 
   getId: function () {
     return "RunStatistics";
-  },
+  }
 });

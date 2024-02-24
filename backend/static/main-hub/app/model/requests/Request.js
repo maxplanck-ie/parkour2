@@ -4,36 +4,36 @@ Ext.define("MainHub.model.requests.Request", {
   fields: [
     {
       type: "int",
-      name: "id",
+      name: "id"
     },
     {
       type: "string",
-      name: "name",
+      name: "name"
     },
     {
       type: "int",
-      name: "user",
+      name: "user"
     },
     {
       type: "string",
-      name: "user_full_name",
+      name: "user_full_name"
     },
     {
       type: "int",
       name: "cost_unit",
-      allowNull: true,
+      allowNull: true
     },
     {
       type: "auto",
-      name: "cost_units",
+      name: "cost_units"
     },
     {
       type: "date",
-      name: "create_time",
+      name: "create_time"
     },
     {
       type: "string",
-      name: "description",
+      name: "description"
     },
     {
       type: "int",
@@ -77,19 +77,19 @@ Ext.define("MainHub.model.requests.Request", {
     },
     {
       type: "bool",
-      name: "restrict_permissions",
+      name: "restrict_permissions"
     },
     {
       type: "bool",
-      name: "completed",
+      name: "completed"
     },
     {
       type: "string",
-      name: "deep_seq_request_name",
+      name: "deep_seq_request_name"
     },
     {
       type: "string",
-      name: "deep_seq_request_path",
+      name: "deep_seq_request_path"
     },
     {
       type: "string",
@@ -105,15 +105,15 @@ Ext.define("MainHub.model.requests.Request", {
     },
     {
       type: "float",
-      name: "total_sequencing_depth",
+      name: "total_sequencing_depth"
     },
     {
       type: "auto",
-      name: "files",
+      name: "files"
     },
     {
       type: "int",
-      name: "number_of_samples",
-    },
-  ],
+      name: "number_of_samples"
+    }
+  ]
 });

@@ -16,7 +16,7 @@ Ext.define("MainHub.view.main.Main", {
     "MainHub.view.invoicing.Invoicing",
     "MainHub.view.usage.Usage",
     "MainHub.view.statistics.RunStatistics",
-    "MainHub.view.statistics.Sequences",
+    "MainHub.view.statistics.Sequences"
   ],
 
   controller: "main",
@@ -26,11 +26,11 @@ Ext.define("MainHub.view.main.Main", {
 
   layout: {
     type: "vbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   listeners: {
-    render: "onMainViewRender",
+    render: "onMainViewRender"
   },
 
   items: [
@@ -61,13 +61,13 @@ Ext.define("MainHub.view.main.Main", {
           iconCls: "x-fa fa-navicon color-bluish-grey",
           id: "main-navigation-btn",
           handler: "onToggleNavigationSize",
-          tooltip: "Expand/Collapse Navigation Bar",
+          tooltip: "Expand/Collapse Navigation Bar"
         },
         "->",
         {
           xtype: "tbtext",
           cls: "header-username color-bluish-grey",
-          text: USER.name, // from 'globals.html'
+          text: USER.name // from 'globals.html'
         },
         {
           xtype: "button",
@@ -75,7 +75,7 @@ Ext.define("MainHub.view.main.Main", {
           id: "adminSiteBtn",
           iconCls: "x-fa fa-cog color-bluish-grey",
           href: "admin",
-          tooltip: "Site Administration",
+          tooltip: "Site Administration"
         },
         {
           xtype: "button",
@@ -98,9 +98,9 @@ Ext.define("MainHub.view.main.Main", {
           iconCls: "x-fa fa-sign-out color-bluish-grey",
           href: "logout",
           hrefTarget: "_self",
-          tooltip: "Logout",
-        },
-      ],
+          tooltip: "Logout"
+        }
+      ]
     },
     {
       xtype: "maincontainerwrap",
@@ -121,8 +121,8 @@ Ext.define("MainHub.view.main.Main", {
           expanderFirst: false,
           expanderOnly: false,
           listeners: {
-            selectionchange: "onNavigationTreeSelectionChange",
-          },
+            selectionchange: "onNavigationTreeSelectionChange"
+          }
         },
         {
           xtype: "container",
@@ -132,10 +132,10 @@ Ext.define("MainHub.view.main.Main", {
           itemId: "contentPanel",
           layout: {
             type: "card",
-            anchor: "100%",
-          },
-        },
-      ],
-    },
-  ],
+            anchor: "100%"
+          }
+        }
+      ]
+    }
+  ]
 });

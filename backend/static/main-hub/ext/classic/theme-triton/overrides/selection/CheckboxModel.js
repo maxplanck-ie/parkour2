@@ -1,14 +1,14 @@
-Ext.define('Ext.theme.triton.selection.CheckboxModel', {
-    override: 'Ext.selection.CheckboxModel',
-    
-    headerWidth: 32,
+Ext.define("Ext.theme.triton.selection.CheckboxModel", {
+  override: "Ext.selection.CheckboxModel",
 
-    onHeaderClick: function(headerCt, header, e) {
-        this.callParent([headerCt, header, e]);
+  headerWidth: 32,
 
-        // Every checkbox needs repainting.
-        if (Ext.isIE8) {
-            header.getView().ownerGrid.el.syncRepaint();
-        }
+  onHeaderClick: function (headerCt, header, e) {
+    this.callParent([headerCt, header, e]);
+
+    // Every checkbox needs repainting.
+    if (Ext.isIE8) {
+      header.getView().ownerGrid.el.syncRepaint();
     }
+  }
 });

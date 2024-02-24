@@ -52,12 +52,12 @@
  *         ]
  *     });
  */
-Ext.define('Ext.layout.VBox', {
-    extend: 'Ext.layout.FlexBox',
+Ext.define("Ext.layout.VBox", {
+  extend: "Ext.layout.FlexBox",
 
-    alias: 'layout.vbox',
+  alias: "layout.vbox",
 
-    config: {
-        vertical: true
-    }
+  config: {
+    vertical: true
+  }
 });

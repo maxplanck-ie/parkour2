@@ -3,10 +3,10 @@
  * @extends Ext.chart.series.StackedCartesian
  *
  * Creates an Area Chart.
- * 
+ *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -61,30 +61,29 @@
  *        }
  *     });
  */
-Ext.define('Ext.chart.series.Area', {
+Ext.define("Ext.chart.series.Area", {
+  extend: "Ext.chart.series.StackedCartesian",
 
-    extend: 'Ext.chart.series.StackedCartesian',
+  alias: "series.area",
+  type: "area",
+  seriesType: "areaSeries",
 
-    alias: 'series.area',
-    type: 'area',
-    seriesType: 'areaSeries',
+  requires: ["Ext.chart.series.sprite.Area"],
 
-    requires: ['Ext.chart.series.sprite.Area'],
+  config: {
+    /**
+     * @inheritdoc
+     * @cfg {Boolean} [splitStacks=false]
+     */
+    splitStacks: false
 
-    config: {
-        /**
-         * @inheritdoc
-         * @cfg {Boolean} [splitStacks=false]
-         */
-        splitStacks: false
-
-        /**
-         * @inheritdoc
-         * Area series renderers only affect markers.
-         * For styling individual segments with a renderer it is possible to use
-         * the Line series with {@link Ext.chart.series.Line#fill} config set to `true`,
-         * which makes Line series look like Area series.
-         * @cfg {Function} renderer
-         */
-    }
+    /**
+     * @inheritdoc
+     * Area series renderers only affect markers.
+     * For styling individual segments with a renderer it is possible to use
+     * the Line series with {@link Ext.chart.series.Line#fill} config set to `true`,
+     * which makes Line series look like Area series.
+     * @cfg {Function} renderer
+     */
+  }
 });

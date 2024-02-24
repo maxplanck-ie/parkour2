@@ -25,8 +25,8 @@ def test_login_page(page: Page):
     correctEmailId = utilities.testEmailID
     correctPassword = utilities.testPassword
 
-    inputEmail = page.locator("input#id_username")
-    inputPassword = page.locator("input#id_password")
+    emailInput = page.locator("input#id_username")
+    passwordInput = page.locator("input#id_password")
     loginButton = page.locator("input#login_button")
     forgotPasswordLink = page.get_by_role("link", name="Forgot password?")
     forgotPasswordEmailInput = page.get_by_label("Email address:")
@@ -46,14 +46,14 @@ def test_login_page(page: Page):
         page.get_by_text("We’ve emailed you instructions for setting your password")
     ).to_be_visible()
     utilities.visit_login_page(page)
-    inputEmail.fill(wrongEmailId)
-    inputPassword.fill(wrongPassword)
+    emailInput.fill(wrongEmailId)
+    passwordInput.fill(wrongPassword)
     loginButton.click()
     expect(
         page.get_by_text("Your username and password didn't match. Please try again.")
     ).to_be_visible()
-    inputEmail.fill(correctEmailId)
-    inputPassword.fill(correctPassword)
+    emailInput.fill(correctEmailId)
+    passwordInput.fill(correctPassword)
     loginButton.click()
     expect(page.get_by_text("Requests").nth(0)).to_be_visible()
     expect(page.get_by_text("Libraries & Samples")).to_be_visible()

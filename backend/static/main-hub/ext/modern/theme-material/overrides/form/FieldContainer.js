@@ -1,8 +1,8 @@
-Ext.define('Ext.theme.material.form.FieldContainer', {
-    override: 'Ext.form.FieldContainer',
+Ext.define("Ext.theme.material.form.FieldContainer", {
+  override: "Ext.form.FieldContainer",
 
-    config: {
-        fieldSeparators: false,
-        inputBorders: true
-    }
+  config: {
+    fieldSeparators: false,
+    inputBorders: true
+  }
 });

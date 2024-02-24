@@ -1,9 +1,9 @@
-Ext.define('Ext.theme.blackberry.field.Search', {
-    override: 'Ext.field.Search',
+Ext.define("Ext.theme.blackberry.field.Search", {
+  override: "Ext.field.Search",
 
-    config: {
-        component: {
-            type: 'text'
-        }
+  config: {
+    component: {
+      type: "text"
     }
+  }
 });

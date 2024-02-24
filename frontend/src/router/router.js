@@ -11,12 +11,17 @@ const router = createRouter({
       children: [
         {
           path: "duties",
-          name: "Duties List",
-          component: dutiesView,
-        },
-      ],
-    },
-  ],
+          name: "Duties",
+          component: dutiesView
+        }
+      ]
+    }
+  ]
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = "Parkour LIMS | " + to.name;
+  next();
 });
 
 export default router;

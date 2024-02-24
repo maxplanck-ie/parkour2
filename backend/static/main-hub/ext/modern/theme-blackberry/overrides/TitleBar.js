@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.blackberry.TitleBar', {
-    override: 'Ext.TitleBar',
+Ext.define("Ext.theme.blackberry.TitleBar", {
+  override: "Ext.TitleBar",
 
-    config: {
-        titleAlign: 'left'
-    }
+  config: {
+    titleAlign: "left"
+  }
 });

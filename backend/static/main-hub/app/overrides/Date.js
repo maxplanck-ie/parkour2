@@ -8,7 +8,7 @@
 Ext.define(
   "MainHub.overrides.Date",
   {
-    requires: "Ext.Date",
+    requires: "Ext.Date"
   },
   function () {
     Ext.Date.diffPrecise = function (dMin, dMax, unitCaptions) {
@@ -26,7 +26,7 @@ Ext.define(
         minutes: "minutes",
         second: "second",
         seconds: "seconds",
-        delimiter: " ",
+        delimiter: " "
       };
 
       if (unitCaptions) {
@@ -120,7 +120,7 @@ Ext.define(
         days: dDiff,
         hours: hourDiff,
         minutes: minDiff,
-        seconds: secDiff,
+        seconds: secDiff
       });
       return retObj;
     };

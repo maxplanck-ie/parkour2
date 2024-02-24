@@ -27,62 +27,62 @@
  *         }]
  *     }
  */
-Ext.define('Ext.theme.blackberry.TabMenuButton', {
-    extend: 'Ext.theme.blackberry.MenuButton',
+Ext.define("Ext.theme.blackberry.TabMenuButton", {
+  extend: "Ext.theme.blackberry.MenuButton",
 
-    config: {
-        /**
-         * @hide
-         */
-        ui: 'tab',
+  config: {
+    /**
+     * @hide
+     */
+    ui: "tab",
 
-        /**
-         * @hide
-         */
-        cls: 'tabmenu',
+    /**
+     * @hide
+     */
+    cls: "tabmenu",
 
-        /**
-         * The items to be used within the {@link Ext.Menu} which is shown when this button is tapped.
-         *
-         *     // Used within a toolbar
-         *     {
-         *         xtype: 'toolbar',
-         *         items: [{
-         *             xclass: 'Ext.theme.blackberry.TabMenuButton',
-         *             text: 'Chats',
-         *             iconCls: 'chats',
-         *             menuItems: [{
-         *                 text: 'Chats',
-         *                 iconCls: 'chats',
-         *                 handler: function() {
-         *                     // do something
-         *                 }
-         *             }, {
-         *                 text: 'Contacts',
-         *                 iconCls: 'contacts',
-         *                 handler: function() {
-         *                     // do something
-         *                 }
-         *             }]
-         *         }]
-         *     }
-         * 
-         * @type {}
-         */
-        menuItems: [],
+    /**
+     * The items to be used within the {@link Ext.Menu} which is shown when this button is tapped.
+     *
+     *     // Used within a toolbar
+     *     {
+     *         xtype: 'toolbar',
+     *         items: [{
+     *             xclass: 'Ext.theme.blackberry.TabMenuButton',
+     *             text: 'Chats',
+     *             iconCls: 'chats',
+     *             menuItems: [{
+     *                 text: 'Chats',
+     *                 iconCls: 'chats',
+     *                 handler: function() {
+     *                     // do something
+     *                 }
+     *             }, {
+     *                 text: 'Contacts',
+     *                 iconCls: 'contacts',
+     *                 handler: function() {
+     *                     // do something
+     *                 }
+     *             }]
+     *         }]
+     *     }
+     *
+     * @type {}
+     */
+    menuItems: [],
 
-        /**
-         * @hide
-         */
-        menuSide: 'left'
-    },
+    /**
+     * @hide
+     */
+    menuSide: "left"
+  },
 
-    onMenuButtonTap: function(button) {
-        if (button) {
-            this.setText(button.getText());
-            this.setIconCls(button.getIconCls());
-        }
-
-        Ext.Viewport.hideMenu(this.getMenuSide());
+  onMenuButtonTap: function (button) {
+    if (button) {
+      this.setText(button.getText());
+      this.setIconCls(button.getIconCls());
     }
+
+    Ext.Viewport.hideMenu(this.getMenuSide());
+  }
 });

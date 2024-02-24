@@ -11,18 +11,18 @@ Ext.define("MainHub.components.BaseGrid", {
   padding: 15,
 
   viewConfig: {
-    stripeRows: false,
+    stripeRows: false
     // loadMask: false,
     // markDirty: false
   },
 
   customConfig: {
-    qualityCheckMenuOptions: [],
+    qualityCheckMenuOptions: []
   },
 
   selModel: {
     type: "spreadsheet",
-    rowSelect: false,
+    rowSelect: false
   },
 
   sortableColumns: false,
@@ -32,18 +32,18 @@ Ext.define("MainHub.components.BaseGrid", {
     {
       ptype: "bufferedrenderer",
       trailingBufferZone: 100,
-      leadingBufferZone: 100,
+      leadingBufferZone: 100
     },
     {
       ptype: "rowediting",
       clicksToEdit: 2,
     },
     {
-      ptype: "clipboard",
+      ptype: "clipboard"
     },
     {
-      ptype: "gridfilters",
-    },
+      ptype: "gridfilters"
+    }
   ],
 
   dockedItems: [
@@ -56,15 +56,15 @@ Ext.define("MainHub.components.BaseGrid", {
           xtype: "button",
           itemId: "cancel-button",
           iconCls: "fa fa-ban fa-lg",
-          text: "Cancel",
+          text: "Cancel"
         },
         {
           xtype: "button",
           itemId: "save-button",
           iconCls: "fa fa-floppy-o fa-lg",
-          text: "Save",
-        },
-      ],
-    },
-  ],
+          text: "Save"
+        }
+      ]
+    }
+  ]
 });

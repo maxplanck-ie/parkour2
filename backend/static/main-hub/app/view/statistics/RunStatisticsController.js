@@ -5,7 +5,7 @@ Ext.define("MainHub.view.statistics.RunStatisticsController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       daterangepicker: {
         select: "setRange",
@@ -30,11 +30,11 @@ Ext.define("MainHub.view.statistics.RunStatisticsController", {
     grid.getStore().reload({
       params: {
         start: value.startDateObj,
-        end: value.endDateObj,
+        end: value.endDateObj
       },
       callback: function () {
         grid.getView().features[0].collapseAll();
-      },
+      }
     });
   },
 

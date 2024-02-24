@@ -18,7 +18,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
       xtype: "container",
       layout: {
         type: "table",
-        columns: 2,
+        columns: 2
       },
       items: [
         {
@@ -36,7 +36,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
               defaults: {
                 submitEmptyText: false,
                 labelWidth: 80,
-                anchor: "100%",
+                anchor: "100%"
               },
               items: [
                 {
@@ -229,9 +229,9 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                   xtype: "requestfilegridfield",
                   fieldLabel: "Files",
                   store: "requestFilesStore",
-                  uploadFileUrl: "api/requests/upload_files/",
-                },
-              ],
+                  uploadFileUrl: "api/requests/upload_files/"
+                }
+              ]
             },
             {
               id: "uploadedDeepSeqRequest",
@@ -250,7 +250,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
           padding: "12px 15px 15px 0",
           rowspan: 2,
           viewConfig: {
-            stripeRows: false,
+            stripeRows: false
           },
           sortableColumns: false,
           enableColumnMove: false,
@@ -263,12 +263,12 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 itemId: "check-column",
                 dataIndex: "selected",
                 tdCls: "no-dirty",
-                width: 40,
+                width: 40
               },
               {
                 text: "Name",
                 dataIndex: "name",
-                flex: 1,
+                flex: 1
               },
               {
                 text: "",
@@ -276,7 +276,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 width: 35,
                 renderer: function (value, meta) {
                   return meta.record.getRecordType().charAt(0);
-                },
+                }
               },
               {
                 text: "Barcode",
@@ -284,9 +284,9 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                 width: 95,
                 renderer: function (value, meta, record) {
                   return record.getBarcode();
-                },
-              },
-            ],
+                }
+              }
+            ]
           },
           store: "librariesInRequestStore",
           bbar: [
@@ -417,7 +417,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
       xtype: "button",
       itemId: "save-button",
       iconCls: "fa fa-floppy-o fa-lg",
-      text: "Save",
-    },
-  ],
+      text: "Save"
+    }
+  ]
 });

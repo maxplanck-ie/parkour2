@@ -9,7 +9,7 @@ Ext.define("MainHub.view.usage.Usage", {
     "MainHub.view.usage.PrincipalInvestigators",
     "MainHub.view.usage.LibraryTypes",
     "Ext.ux.layout.ResponsiveColumn",
-    "Ext.ux.DateRangePicker",
+    "Ext.ux.DateRangePicker"
   ],
 
   controller: "usage",
@@ -85,20 +85,20 @@ Ext.define("MainHub.view.usage.Usage", {
     },
     {
       xtype: "usagerecords",
-      userCls: "big-50 small-100",
+      userCls: "big-50 small-100"
     },
     {
       xtype: "usageorganizations",
-      userCls: "big-50 small-100",
+      userCls: "big-50 small-100"
     },
     {
       xtype: "usageprincipalinvestigators",
-      userCls: "big-50 small-100",
+      userCls: "big-50 small-100"
     },
     {
       xtype: "usagelibrarytypes",
-      userCls: "big-50 small-100",
-    },
+      userCls: "big-50 small-100"
+    }
     // {
     //   xtype: 'container',
     //   userCls: 'big-100',
@@ -106,5 +106,5 @@ Ext.define("MainHub.view.usage.Usage", {
     //   style: { background: 'transparent' },
     //   border: 0
     // }
-  ],
+  ]
 });

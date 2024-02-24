@@ -8,11 +8,11 @@
  * and targets can interact with each other, the conditions are evaluated in this order:
  *
  * ### {@link #isDisabled Disabled State}
- * If the target is disabled, the {@link Ext.drag.Source source} 
+ * If the target is disabled, the {@link Ext.drag.Source source}
  * cannot interact with it.
  *
  * ### {@link #groups Groups}
- * Both the {@link Ext.drag.Source source} and target can belong to multiple groups. 
+ * Both the {@link Ext.drag.Source source} and target can belong to multiple groups.
  * They may interact if:
  * - Neither has a group
  * - Both have one (or more) of the same group
@@ -24,7 +24,7 @@
  * ## Asynchronous drop processing
  *
  *  When the drop completes, the {@link #drop} event will fire, however the underlying data
- * may not be ready to be consumed. By returning a {@link Ext.Promise Promise} from the data, 
+ * may not be ready to be consumed. By returning a {@link Ext.Promise Promise} from the data,
  * it allows either:
  * - The data to be fetched (either from a remote source or generated if expensive).
  * - Any validation to take place before the drop is finalized.
@@ -34,14 +34,14 @@
  *
  * Validation example:
  *
- * 
+ *
  *      var confirmSource = new Ext.drag.Source({
  *          element: dragEl,
  *          describe: function(info) {
  *              // Provide the data up front
  *              info.setData('records', theRecords);
  *          }
- *      });  
+ *      });
  *
  *      var confirmTarget = new Ext.drag.Target({
  *          element: dropEl,
@@ -97,379 +97,385 @@
  *              }
  *          }
  *      });
- * 
+ *
  */
-Ext.define('Ext.drag.Target', {
-    extend: 'Ext.drag.Item',
+Ext.define("Ext.drag.Target", {
+  extend: "Ext.drag.Item",
 
-    requires: ['Ext.drag.Manager'],
+  requires: ["Ext.drag.Manager"],
 
-    defaultIdPrefix: 'target-',
+  defaultIdPrefix: "target-",
 
-    config: {
-        /**
-         * @cfg {String} invalidCls
-         * A class to add to the {@link #element} when an
-         * invalid drag is over this target.
-         */
-        invalidCls: '',
-
-        /**
-         * @cfg {String} invalidCls
-         * A class to add to the {@link #element} when an
-         * invalid drag is over this target.
-         */
-        validCls: ''
-    },
-
+  config: {
     /**
-     * @cfg {Function} accepts
-     * See {@link #method-accepts}.
+     * @cfg {String} invalidCls
+     * A class to add to the {@link #element} when an
+     * invalid drag is over this target.
      */
-    
-    /**
-     * @event beforedrop
-     * Fires before a valid drop occurs. Return `false` to prevent the drop from
-     * completing.
-     *
-     * @param {Ext.drag.Target} this This target.
-     * @param {Ext.drag.Info} info The drag info.
-     */
-    
-    /**
-     * @event drop
-     * Fires when a valid drop occurs.
-     *
-     * @param {Ext.drag.Target} this This target.
-     * @param {Ext.drag.Info} info The drag info.
-     */
-    
-    /**
-     * @event dragenter
-     * Fires when a drag enters this target.
-     *
-     * @param {Ext.drag.Target} this This target.
-     * @param {Ext.drag.Info} info The drag info.
-     */ 
-    
-    /**
-     * @event dragleave
-     * Fires when a source leaves this target.
-     *
-     * @param {Ext.drag.Target} this This target.
-     * @param {Ext.drag.Info} info The drag info.
-     */ 
-    
-    /**
-     * @event dragmove
-     * Fires when a drag moves while inside this target.
-     *
-     * @param {Ext.drag.Target} this This target.
-     * @param {Ext.drag.Info} info The drag info.
-     */ 
-
-    constructor: function(config) {
-        var me = this,
-            accepts = config && config.accepts;
-
-        if (accepts) {
-            me.accepts = accepts;
-            // Don't mutate the object the user passed. Need to do this
-            // here otherwise initConfig will complain about writing over
-            // the method.
-            config = Ext.apply({}, config);
-            delete config.accepts;
-        }
-        me.callParent([config]);
-        Ext.drag.Manager.register(me);
-    },
+    invalidCls: "",
 
     /**
-     * Called each time a {@link Ext.drag.Source source} enters this target.
-     * Allows this target to indicate whether it will interact with
-     * the given drag. Determined after {@link #isDisabled} and 
-     * {@link #groups} checks. If either of the aforementioned conditions
-     * means the target is not valid, this will not be called.
-     *
-     * Defaults to returning `true`.
-     * 
-     * @param {Ext.drag.Info} info The drag info.
-     * @return {Boolean} `true` if the drag is valid for this target.
-     *
-     * @protected
+     * @cfg {String} invalidCls
+     * A class to add to the {@link #element} when an
+     * invalid drag is over this target.
      */
-    accepts: function(info) {
-        return true;
+    validCls: ""
+  },
+
+  /**
+   * @cfg {Function} accepts
+   * See {@link #method-accepts}.
+   */
+
+  /**
+   * @event beforedrop
+   * Fires before a valid drop occurs. Return `false` to prevent the drop from
+   * completing.
+   *
+   * @param {Ext.drag.Target} this This target.
+   * @param {Ext.drag.Info} info The drag info.
+   */
+
+  /**
+   * @event drop
+   * Fires when a valid drop occurs.
+   *
+   * @param {Ext.drag.Target} this This target.
+   * @param {Ext.drag.Info} info The drag info.
+   */
+
+  /**
+   * @event dragenter
+   * Fires when a drag enters this target.
+   *
+   * @param {Ext.drag.Target} this This target.
+   * @param {Ext.drag.Info} info The drag info.
+   */
+
+  /**
+   * @event dragleave
+   * Fires when a source leaves this target.
+   *
+   * @param {Ext.drag.Target} this This target.
+   * @param {Ext.drag.Info} info The drag info.
+   */
+
+  /**
+   * @event dragmove
+   * Fires when a drag moves while inside this target.
+   *
+   * @param {Ext.drag.Target} this This target.
+   * @param {Ext.drag.Info} info The drag info.
+   */
+
+  constructor: function (config) {
+    var me = this,
+      accepts = config && config.accepts;
+
+    if (accepts) {
+      me.accepts = accepts;
+      // Don't mutate the object the user passed. Need to do this
+      // here otherwise initConfig will complain about writing over
+      // the method.
+      config = Ext.apply({}, config);
+      delete config.accepts;
+    }
+    me.callParent([config]);
+    Ext.drag.Manager.register(me);
+  },
+
+  /**
+   * Called each time a {@link Ext.drag.Source source} enters this target.
+   * Allows this target to indicate whether it will interact with
+   * the given drag. Determined after {@link #isDisabled} and
+   * {@link #groups} checks. If either of the aforementioned conditions
+   * means the target is not valid, this will not be called.
+   *
+   * Defaults to returning `true`.
+   *
+   * @param {Ext.drag.Info} info The drag info.
+   * @return {Boolean} `true` if the drag is valid for this target.
+   *
+   * @protected
+   */
+  accepts: function (info) {
+    return true;
+  },
+
+  /**
+   * @inheritdoc
+   */
+  disable: function () {
+    this.callParent();
+    this.setupListeners(null);
+  },
+
+  /**
+   * @inheritdoc
+   */
+  enable: function () {
+    this.callParent();
+    this.setupListeners();
+  },
+
+  /**
+   * @method
+   * Called before a drag finishes on this target. Return `false` to veto
+   * the drop.
+   * @param {Ext.drag.Info} info The drag info.
+   * @return {Boolean} `false` to veto the drop.
+   *
+   * @protected
+   * @template
+   */
+  beforeDrop: Ext.emptyFn,
+
+  /**
+   * @method
+   * Called when a drag is dropped on this target.
+   * @param {Ext.drag.Info} info The drag info.
+   *
+   * @protected
+   * @template
+   */
+  onDrop: Ext.emptyFn,
+
+  /**
+   * @method
+   * Called when a drag enters this target.
+   * @param {Ext.drag.Info} info The drag info.
+   *
+   * @protected
+   * @template
+   */
+  onDragEnter: Ext.emptyFn,
+
+  /**
+   * @method
+   * Called when a source leaves this target.
+   * @param {Ext.drag.Info} info The drag info.
+   *
+   * @protected
+   * @template
+   */
+  onDragLeave: Ext.emptyFn,
+
+  /**
+   * @method
+   * Called when a drag is moved while inside this target.
+   * @param {Ext.drag.Info} info The drag info.
+   *
+   * @protected
+   * @template
+   */
+  onDragMove: Ext.emptyFn,
+
+  updateInvalidCls: function (invalidCls, oldInvalidCls) {
+    var info = this.info;
+    this.doUpdateCls(info && !info.valid, invalidCls, oldInvalidCls);
+  },
+
+  updateValidCls: function (validCls, oldValidCls) {
+    var info = this.info;
+    this.doUpdateCls(info && info.valid, validCls, oldValidCls);
+  },
+
+  destroy: function () {
+    Ext.drag.Manager.unregister(this);
+    this.callParent();
+  },
+
+  privates: {
+    /**
+     * Removes a class and replaces it with a new one, if the old class
+     * was already on the element.
+     *
+     * @param {Boolean} needsAdd `true` if the new class needs adding.
+     * @param {String} cls The new class to add.
+     * @param {String} oldCls The old class to remove.
+     *
+     * @private
+     */
+    doUpdateCls: function (needsAdd, cls, oldCls) {
+      var el = this.getElement();
+
+      if (oldCls) {
+        el.removeCls(oldCls);
+      }
+
+      if (cls && needsAdd) {
+        el.addCls(cls);
+      }
     },
 
     /**
      * @inheritdoc
      */
-    disable: function() {
-        this.callParent();
-        this.setupListeners(null);
+    getElListeners: function () {
+      return {
+        dragenter: "handleNativeDragEnter",
+        dragleave: "handleNativeDragLeave",
+        dragover: "handleNativeDragMove",
+        drop: "handleNativeDrop"
+      };
     },
 
     /**
-     * @inheritdoc
-     */
-    enable: function() {
-        this.callParent();
-        this.setupListeners();
-    },
-
-    /**
-     * @method
-     * Called before a drag finishes on this target. Return `false` to veto
-     * the drop.
-     * @param {Ext.drag.Info} info The drag info.
-     * @return {Boolean} `false` to veto the drop.
-     *
-     * @protected
-     * @template
-     */
-    beforeDrop: Ext.emptyFn,
-
-    /**
-     * @method
      * Called when a drag is dropped on this target.
      * @param {Ext.drag.Info} info The drag info.
      *
-     * @protected
-     * @template
+     * @private
      */
-    onDrop: Ext.emptyFn, 
+    handleDrop: function (info) {
+      var me = this,
+        hasListeners = me.hasListeners,
+        valid = info.valid;
+
+      me.getElement().removeCls([me.getInvalidCls(), me.getValidCls()]);
+
+      if (valid && me.beforeDrop(info) !== false) {
+        if (
+          hasListeners.beforedrop &&
+          me.fireEvent("beforedrop", me, info) === false
+        ) {
+          return false;
+        }
+        me.onDrop(info);
+        if (hasListeners.drop) {
+          me.fireEvent("drop", me, info);
+        }
+      } else {
+        return false;
+      }
+    },
 
     /**
-     * @method
      * Called when a drag enters this target.
      * @param {Ext.drag.Info} info The drag info.
      *
-     * @protected
-     * @template
+     * @private
      */
-    onDragEnter: Ext.emptyFn,
+    handleDragEnter: function (info) {
+      var me = this,
+        cls = info.valid ? me.getValidCls() : me.getInvalidCls();
+
+      if (cls) {
+        me.getElement().addCls(cls);
+      }
+
+      me.onDragEnter(info);
+      if (me.hasListeners.dragenter) {
+        me.fireEvent("dragenter", me, info);
+      }
+    },
 
     /**
-     * @method
      * Called when a source leaves this target.
      * @param {Ext.drag.Info} info The drag info.
      *
-     * @protected
-     * @template
+     * @private
      */
-    onDragLeave: Ext.emptyFn,
+    handleDragLeave: function (info) {
+      var me = this;
+
+      me.getElement().removeCls([me.getInvalidCls(), me.getValidCls()]);
+      me.onDragLeave(info);
+      if (me.hasListeners.dragleave) {
+        me.fireEvent("dragleave", me, info);
+      }
+    },
 
     /**
-     * @method
      * Called when a drag is moved while inside this target.
      * @param {Ext.drag.Info} info The drag info.
      *
-     * @protected
-     * @template
+     * @private
      */
-    onDragMove: Ext.emptyFn,
+    handleDragMove: function (info) {
+      var me = this;
 
-    updateInvalidCls: function(invalidCls, oldInvalidCls) {
-        var info = this.info;
-        this.doUpdateCls(info && !info.valid, invalidCls, oldInvalidCls);
+      me.onDragMove(info);
+      if (me.hasListeners.dragmove) {
+        me.fireEvent("dragmove", me, info);
+      }
     },
 
-    updateValidCls: function(validCls, oldValidCls) {
-        var info = this.info;
-        this.doUpdateCls(info && info.valid, validCls, oldValidCls);
+    /**
+     * Handle a native drag enter.
+     * @param {Ext.event.Event} e The event.
+     *
+     * @private
+     */
+    handleNativeDragEnter: function (e) {
+      var me = this,
+        info = Ext.drag.Manager.getNativeDragInfo(e);
+
+      info.onNativeDragEnter(me, e);
+
+      if (me.hasListeners.dragenter) {
+        me.fireEvent("dragenter", me, info);
+      }
     },
 
-    destroy: function() {
-        Ext.drag.Manager.unregister(this);
-        this.callParent();
+    /**
+     * Handle a native drag leave.
+     * @param {Ext.event.Event} e The event.
+     *
+     * @private
+     */
+    handleNativeDragLeave: function (e) {
+      var me = this,
+        info = Ext.drag.Manager.getNativeDragInfo(e);
+
+      info.onNativeDragLeave(me, e);
+
+      if (me.hasListeners.dragleave) {
+        me.fireEvent("dragleave", me, info);
+      }
     },
 
-    privates: {
-        /**
-         * Removes a class and replaces it with a new one, if the old class
-         * was already on the element.
-         *
-         * @param {Boolean} needsAdd `true` if the new class needs adding.
-         * @param {String} cls The new class to add.
-         * @param {String} oldCls The old class to remove.
-         *
-         * @private
-         */
-        doUpdateCls: function(needsAdd, cls, oldCls) {
-            var el = this.getElement();
+    /**
+     * Handle a native drag move.
+     * @param {Ext.event.Event} e The event.
+     *
+     * @private
+     */
+    handleNativeDragMove: function (e) {
+      var me = this,
+        info = Ext.drag.Manager.getNativeDragInfo(e);
 
-            if (oldCls) {
-                el.removeCls(oldCls);
-            }
+      info.onNativeDragMove(me, e);
 
-            if (cls && needsAdd) {
-                el.addCls(cls);
-            }
-        },
+      if (me.hasListeners.dragmove) {
+        me.fireEvent("dragmove", me, info);
+      }
+    },
 
-        /**
-         * @inheritdoc
-         */
-        getElListeners: function() {
-            return {
-                dragenter: 'handleNativeDragEnter',
-                dragleave: 'handleNativeDragLeave',
-                dragover: 'handleNativeDragMove',
-                drop: 'handleNativeDrop'
-            };
-        },
+    /**
+     * Handle a native drop.
+     * @param {Ext.event.Event} e The event.
+     *
+     * @private
+     */
+    handleNativeDrop: function (e) {
+      var me = this,
+        hasListeners = me.hasListeners,
+        info = Ext.drag.Manager.getNativeDragInfo(e),
+        valid = info.valid;
 
-        /**
-         * Called when a drag is dropped on this target.
-         * @param {Ext.drag.Info} info The drag info.
-         *
-         * @private
-         */
-        handleDrop: function(info) {
-            var me = this,
-                hasListeners = me.hasListeners,
-                valid = info.valid;
+      info.onNativeDrop(me, e);
 
-            me.getElement().removeCls([me.getInvalidCls(), me.getValidCls()]);
-
-            if (valid && me.beforeDrop(info) !== false) {
-                if (hasListeners.beforedrop && me.fireEvent('beforedrop', me, info) === false) {
-                    return false;
-                }
-                me.onDrop(info);
-                if (hasListeners.drop) {
-                    me.fireEvent('drop', me, info);
-                }
-            } else {
-                return false;
-            }
-        }, 
-
-        /**
-         * Called when a drag enters this target.
-         * @param {Ext.drag.Info} info The drag info.
-         *
-         * @private
-         */
-        handleDragEnter: function(info) {
-            var me = this,
-                cls = info.valid ? me.getValidCls() : me.getInvalidCls();
-
-            if (cls) {
-                me.getElement().addCls(cls);
-            }
-
-            me.onDragEnter(info);
-            if (me.hasListeners.dragenter) {
-                me.fireEvent('dragenter', me, info);
-            }
-        },
-
-        /**
-         * Called when a source leaves this target.
-         * @param {Ext.drag.Info} info The drag info.
-         *
-         * @private
-         */
-        handleDragLeave: function(info) {
-            var me = this;
-
-            me.getElement().removeCls([me.getInvalidCls(), me.getValidCls()]);
-            me.onDragLeave(info);
-            if (me.hasListeners.dragleave) {
-                me.fireEvent('dragleave', me, info);
-            }
-        },
-
-        /**
-         * Called when a drag is moved while inside this target.
-         * @param {Ext.drag.Info} info The drag info.
-         *
-         * @private
-         */
-        handleDragMove: function(info) {
-            var me = this;
-            
-            me.onDragMove(info);
-            if (me.hasListeners.dragmove) {
-                me.fireEvent('dragmove', me, info);
-            }
-        },
-
-        /**
-         * Handle a native drag enter.
-         * @param {Ext.event.Event} e The event.
-         * 
-         * @private
-         */
-        handleNativeDragEnter: function(e) {
-            var me = this,
-                info = Ext.drag.Manager.getNativeDragInfo(e);
-
-            info.onNativeDragEnter(me, e);
-
-            if (me.hasListeners.dragenter) {
-                me.fireEvent('dragenter', me, info);
-            }
-        },
-
-        /**
-         * Handle a native drag leave.
-         * @param {Ext.event.Event} e The event.
-         * 
-         * @private
-         */
-        handleNativeDragLeave: function(e) {
-            var me = this,
-                info = Ext.drag.Manager.getNativeDragInfo(e);
-
-            info.onNativeDragLeave(me, e);
-            
-            if (me.hasListeners.dragleave) {
-                me.fireEvent('dragleave', me, info);
-            }
-        },
-
-        /**
-         * Handle a native drag move.
-         * @param {Ext.event.Event} e The event.
-         * 
-         * @private
-         */
-        handleNativeDragMove: function(e) {
-            var me = this,
-                info = Ext.drag.Manager.getNativeDragInfo(e);
-
-            info.onNativeDragMove(me, e);
-
-            if (me.hasListeners.dragmove) {
-                me.fireEvent('dragmove', me, info);
-            }
-        },
-
-        /**
-         * Handle a native drop.
-         * @param {Ext.event.Event} e The event.
-         * 
-         * @private
-         */
-        handleNativeDrop: function(e) {
-            var me = this,
-                hasListeners = me.hasListeners,
-                info = Ext.drag.Manager.getNativeDragInfo(e),
-                valid = info.valid;
-
-            info.onNativeDrop(me, e);
-
-            if (valid) {
-                if (hasListeners.beforedrop && me.fireEvent('beforedrop', me, info) === false) {
-                    return;
-                }
-                if (hasListeners.drop) {
-                    me.fireEvent('drop', me, info);
-                }
-            }
+      if (valid) {
+        if (
+          hasListeners.beforedrop &&
+          me.fireEvent("beforedrop", me, info) === false
+        ) {
+          return;
         }
+        if (hasListeners.drop) {
+          me.fireEvent("drop", me, info);
+        }
+      }
     }
+  }
 });

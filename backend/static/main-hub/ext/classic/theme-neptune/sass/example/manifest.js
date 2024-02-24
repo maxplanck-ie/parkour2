@@ -1,2 +1,1 @@
-Ext.theme.addManifest(
-);
+Ext.theme.addManifest();

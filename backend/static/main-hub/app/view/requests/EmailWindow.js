@@ -10,7 +10,7 @@ Ext.define("MainHub.view.requests.EmailWindow", {
   autoShow: true,
   layout: {
     type: "vbox",
-    align: "stretch",
+    align: "stretch"
   },
 
   items: [
@@ -23,7 +23,7 @@ Ext.define("MainHub.view.requests.EmailWindow", {
         submitEmptyText: false,
         allowBlank: false,
         labelWidth: 100,
-        anchor: "100%",
+        anchor: "100%"
       },
       items: [
         {
@@ -31,14 +31,14 @@ Ext.define("MainHub.view.requests.EmailWindow", {
           itemId: "subject-field",
           name: "subject",
           fieldLabel: "Subject",
-          emptyText: "Subject",
+          emptyText: "Subject"
         },
         {
           xtype: "textarea",
           name: "message",
           fieldLabel: "Message",
           emptyText: "Message",
-          height: 175,
+          height: 175
         },
         {
           xtype: "fieldcontainer",
@@ -58,12 +58,12 @@ Ext.define("MainHub.view.requests.EmailWindow", {
                 '">[!]</span></strong></sup>',
               name: "reject_request",
               inputValue: "true",
-              checked: false,
-            },
-          ],
-        },
-      ],
-    },
+              checked: false
+            }
+          ]
+        }
+      ]
+    }
   ],
 
   bbar: [
@@ -72,7 +72,7 @@ Ext.define("MainHub.view.requests.EmailWindow", {
       xtype: "button",
       itemId: "send-email-button",
       iconCls: "fa fa-paper-plane fa-lg",
-      text: "Send",
-    },
-  ],
+      text: "Send"
+    }
+  ]
 });

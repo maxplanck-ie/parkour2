@@ -75,11 +75,13 @@
  * @private
  * @since 5.0.0
  */
-Ext.define('Ext.mixin.Inheritable', {
-    extend: 'Ext.Mixin',
+Ext.define(
+  "Ext.mixin.Inheritable",
+  {
+    extend: "Ext.Mixin",
 
     mixinConfig: {
-        id: 'inheritable'
+      id: "inheritable"
     },
 
     /**
@@ -93,51 +95,57 @@ Ext.define('Ext.mixin.Inheritable', {
      * @since 5.0.0
      */
     getInherited: function (inner) {
-        var me = this,
-            inheritedState = (inner && me.inheritedStateInner) || me.inheritedState,
-            ownerCt = me.getRefOwner(),
-            isContainer = me.isContainer,
-            parent, inheritedStateInner, getInner, ownerLayout;
+      var me = this,
+        inheritedState = (inner && me.inheritedStateInner) || me.inheritedState,
+        ownerCt = me.getRefOwner(),
+        isContainer = me.isContainer,
+        parent,
+        inheritedStateInner,
+        getInner,
+        ownerLayout;
 
-        if (!inheritedState || inheritedState.invalid) {
-            // Use upward navigational link, not ownerCt.
-            // 99% of the time, this will use ownerCt/floatParent.
-            // Certain floating components do not have an ownerCt, but they are still linked
-            // into a navigational hierarchy. The getRefOwner method normalizes these differences.
-            parent = me.getRefOwner();
-            ownerLayout = me.ownerLayout;
+      if (!inheritedState || inheritedState.invalid) {
+        // Use upward navigational link, not ownerCt.
+        // 99% of the time, this will use ownerCt/floatParent.
+        // Certain floating components do not have an ownerCt, but they are still linked
+        // into a navigational hierarchy. The getRefOwner method normalizes these differences.
+        parent = me.getRefOwner();
+        ownerLayout = me.ownerLayout;
 
-            if (ownerCt) {
-                // For classic, this will only be true if the item is a "child" of its owning container
-                // For example, a docked item will not get the inner inheritedState.
-                
-                // For modern, we currently don't have a decent way of telling the difference
-                // between a child item, or an item that belongs to the component. We may
-                // need to determine this in future, but currently have no use for it.
-                getInner = ownerLayout ? ownerLayout === ownerCt.layout : true;
-            }
+        if (ownerCt) {
+          // For classic, this will only be true if the item is a "child" of its owning container
+          // For example, a docked item will not get the inner inheritedState.
 
-            me.inheritedState = inheritedState =
-                // chain this component's inheritedState to that of its parent.  If it
-                // doesn't have a parent, then chain to the rootInheritedState.  This is
-                // done so that when there is a viewport, all component's will inherit
-                // from its inheritedState, even components that are not descendants of
-                // the viewport.
-                Ext.Object.chain(parent ? parent.getInherited(getInner)
-                                        : Ext.rootInheritedState);
-
-            if (isContainer) {
-                me.inheritedStateInner = inheritedStateInner = Ext.Object.chain(inheritedState);
-            }
-
-            me.initInheritedState(inheritedState, inheritedStateInner);
-
-            // initInheritedState is allowed to replace the objects we provide, so we go
-            // back to the instance here at the end.
-            inheritedState = (isContainer && inner) ? me.inheritedStateInner : me.inheritedState;
+          // For modern, we currently don't have a decent way of telling the difference
+          // between a child item, or an item that belongs to the component. We may
+          // need to determine this in future, but currently have no use for it.
+          getInner = ownerLayout ? ownerLayout === ownerCt.layout : true;
         }
 
-        return inheritedState;
+        me.inheritedState = inheritedState =
+          // chain this component's inheritedState to that of its parent.  If it
+          // doesn't have a parent, then chain to the rootInheritedState.  This is
+          // done so that when there is a viewport, all component's will inherit
+          // from its inheritedState, even components that are not descendants of
+          // the viewport.
+          Ext.Object.chain(
+            parent ? parent.getInherited(getInner) : Ext.rootInheritedState
+          );
+
+        if (isContainer) {
+          me.inheritedStateInner = inheritedStateInner =
+            Ext.Object.chain(inheritedState);
+        }
+
+        me.initInheritedState(inheritedState, inheritedStateInner);
+
+        // initInheritedState is allowed to replace the objects we provide, so we go
+        // back to the instance here at the end.
+        inheritedState =
+          isContainer && inner ? me.inheritedStateInner : me.inheritedState;
+      }
+
+      return inheritedState;
     },
 
     /**
@@ -157,26 +165,27 @@ Ext.define('Ext.mixin.Inheritable', {
      * @since 5.0.0
      */
     getInheritedConfig: function (property, skipThis) {
-        var state = this.inheritedState,
-            old, ret;
+      var state = this.inheritedState,
+        old,
+        ret;
 
-        // Avoid the extra method call since user has already made one to get here
-        if (!state || state.invalid) {
-            state = this.getInherited();
-        }
+      // Avoid the extra method call since user has already made one to get here
+      if (!state || state.invalid) {
+        state = this.getInherited();
+      }
 
+      ret = state[property];
+
+      if (skipThis && state.hasOwnProperty(property)) {
+        old = ret;
+
+        delete state[property];
         ret = state[property];
 
-        if (skipThis && state.hasOwnProperty(property)) {
-            old = ret;
+        state[property] = old;
+      }
 
-            delete state[property];
-            ret = state[property];
-
-            state[property] = old;
-        }
-
-        return ret;
+      return ret;
     },
 
     /**
@@ -189,34 +198,47 @@ Ext.define('Ext.mixin.Inheritable', {
      * @since 5.0.0
      */
     resolveListenerScope: function (defaultScope, /* private */ skipThis) {
-        var me = this,
-            hasSkipThis = (typeof skipThis === 'boolean'),
-            namedScope = Ext._namedScopes[defaultScope],
-            ret;
+      var me = this,
+        hasSkipThis = typeof skipThis === "boolean",
+        namedScope = Ext._namedScopes[defaultScope],
+        ret;
 
-        if (!namedScope) {
-            // If there is no named scope we know for sure that the listener was not
-            // declared on the class body (i.e. !namedScope.isSelf) and so we can skip
-            // this instance and resolve to defaultListenerScope upward in the hierarchy.
-            // scope: not a named scope so we default to this
-            ret = me.getInheritedConfig('defaultListenerScope', hasSkipThis ? skipThis : true) || defaultScope || me;
-        } else if (namedScope.isController) {
-            // scope:'controller' declared on the class body must include our own
-            // controller before ascending the hierarchy, but scope:'controller' declared
-            // on the instance must skip our own controller and search only for an
-            // inherited controller.
-            ret = me.getInheritedConfig('controller', hasSkipThis ? skipThis : !namedScope.isSelf);
-        } else if (namedScope.isSelf) {
-            // scope:'self' indicates listeners declared on the class body with unspecified
-            // scope. Include this instance when searching for an inherited default scope.
-            ret = me.getInheritedConfig('defaultListenerScope', hasSkipThis && skipThis) || me;
-        } else if (namedScope.isThis) {
-            // scope:'this' always resolves to this instance, regardless of whether the
-            // listener was declared on the class or instance
-            ret = me;
-        }
+      if (!namedScope) {
+        // If there is no named scope we know for sure that the listener was not
+        // declared on the class body (i.e. !namedScope.isSelf) and so we can skip
+        // this instance and resolve to defaultListenerScope upward in the hierarchy.
+        // scope: not a named scope so we default to this
+        ret =
+          me.getInheritedConfig(
+            "defaultListenerScope",
+            hasSkipThis ? skipThis : true
+          ) ||
+          defaultScope ||
+          me;
+      } else if (namedScope.isController) {
+        // scope:'controller' declared on the class body must include our own
+        // controller before ascending the hierarchy, but scope:'controller' declared
+        // on the instance must skip our own controller and search only for an
+        // inherited controller.
+        ret = me.getInheritedConfig(
+          "controller",
+          hasSkipThis ? skipThis : !namedScope.isSelf
+        );
+      } else if (namedScope.isSelf) {
+        // scope:'self' indicates listeners declared on the class body with unspecified
+        // scope. Include this instance when searching for an inherited default scope.
+        ret =
+          me.getInheritedConfig(
+            "defaultListenerScope",
+            hasSkipThis && skipThis
+          ) || me;
+      } else if (namedScope.isThis) {
+        // scope:'this' always resolves to this instance, regardless of whether the
+        // listener was declared on the class or instance
+        ret = me;
+      }
 
-        return ret || null;
+      return ret || null;
     },
 
     /**
@@ -230,29 +252,30 @@ Ext.define('Ext.mixin.Inheritable', {
      * @protected
      * @since 5.1.1
      */
-    resolveSatelliteListenerScope: function(satellite, defaultScope) {
-        var me = this,
-            namedScope = Ext._namedScopes[defaultScope],
-            ret;
+    resolveSatelliteListenerScope: function (satellite, defaultScope) {
+      var me = this,
+        namedScope = Ext._namedScopes[defaultScope],
+        ret;
 
-        // The logic here is the same as that in resolveListenerScope with a couple of
-        // exceptions:
-        // 1. If scope resolution failed, fall back to the satellite instance, not "this"
-        //    for class-declared listeners, for instance-declared use "this"
-        // 2. Never pass skipThis to getInheritedConfig.  The satellite is essentially
-        //    treated as a "child" of this component and therefore should always consider
-        //    its component/component's controller as candidates for listener scope
-        if (!namedScope) {
-            ret = me.getInheritedConfig('defaultListenerScope') || defaultScope || me;
-        } else if (namedScope.isController) {
-            ret = me.getInheritedConfig('controller');
-        } else if (namedScope.isSelf) {
-            ret = me.getInheritedConfig('defaultListenerScope') || satellite;
-        } else if (namedScope.isThis) {
-            ret = satellite;
-        }
+      // The logic here is the same as that in resolveListenerScope with a couple of
+      // exceptions:
+      // 1. If scope resolution failed, fall back to the satellite instance, not "this"
+      //    for class-declared listeners, for instance-declared use "this"
+      // 2. Never pass skipThis to getInheritedConfig.  The satellite is essentially
+      //    treated as a "child" of this component and therefore should always consider
+      //    its component/component's controller as candidates for listener scope
+      if (!namedScope) {
+        ret =
+          me.getInheritedConfig("defaultListenerScope") || defaultScope || me;
+      } else if (namedScope.isController) {
+        ret = me.getInheritedConfig("controller");
+      } else if (namedScope.isSelf) {
+        ret = me.getInheritedConfig("defaultListenerScope") || satellite;
+      } else if (namedScope.isThis) {
+        ret = satellite;
+      }
 
-        return ret || null;
+      return ret || null;
     },
 
     /**
@@ -270,7 +293,9 @@ Ext.define('Ext.mixin.Inheritable', {
      * @since 5.0.0
      */
     lookupReferenceHolder: function (skipThis) {
-        return this.getInheritedConfig('referenceHolder', skipThis !== false) || null;
+      return (
+        this.getInheritedConfig("referenceHolder", skipThis !== false) || null
+      );
     },
 
     /**
@@ -285,11 +310,17 @@ Ext.define('Ext.mixin.Inheritable', {
      * @protected
      */
     getRefOwner: function () {
-        var me = this;
-        
-        // Look for both ownerCt (classic toolkit) and parent (modern toolkit)
-        // Look for ownerCmp before floatParent for scenarios like a button menu inside a floating window.
-        return me.ownerCt || me.parent || me.$initParent || me.ownerCmp || me.floatParent;
+      var me = this;
+
+      // Look for both ownerCt (classic toolkit) and parent (modern toolkit)
+      // Look for ownerCmp before floatParent for scenarios like a button menu inside a floating window.
+      return (
+        me.ownerCt ||
+        me.parent ||
+        me.$initParent ||
+        me.ownerCmp ||
+        me.floatParent
+      );
     },
 
     /**
@@ -311,82 +342,82 @@ Ext.define('Ext.mixin.Inheritable', {
      * @since 5.0.0
      */
     invalidateInheritedState: function () {
-        var inheritedState = this.inheritedState;
+      var inheritedState = this.inheritedState;
 
-        if (inheritedState) {
-            // if component has a inheritedState at this point we set an invalid flag in
-            // the inheritedState so descendants of this component know to re-initialize
-            // their inheritedState the next time it is requested (see getInherited())
-            inheritedState.invalid = true;
+      if (inheritedState) {
+        // if component has a inheritedState at this point we set an invalid flag in
+        // the inheritedState so descendants of this component know to re-initialize
+        // their inheritedState the next time it is requested (see getInherited())
+        inheritedState.invalid = true;
 
-            // We can now delete the old inheritedState since it is invalid.  IMPORTANT:
-            // the descendants are still linked to the old inheritedState via the
-            // prototype chain, and their inheritedState property will be synced up
-            // the next time their getInherited() method is called.  For this reason
-            // inheritedState should always be accessed using getInherited()
-            delete this.inheritedState;
-        }
+        // We can now delete the old inheritedState since it is invalid.  IMPORTANT:
+        // the descendants are still linked to the old inheritedState via the
+        // prototype chain, and their inheritedState property will be synced up
+        // the next time their getInherited() method is called.  For this reason
+        // inheritedState should always be accessed using getInherited()
+        delete this.inheritedState;
+      }
     },
 
     privates: {
-        /**
-         * Sets up a reference on our current reference holder.
-         *
-         * @private
-         */
-        fixReference: function() {
-            var me = this,
-                refHolder;
+      /**
+       * Sets up a reference on our current reference holder.
+       *
+       * @private
+       */
+      fixReference: function () {
+        var me = this,
+          refHolder;
 
-            if (me.getReference()) {
-                refHolder = me.lookupReferenceHolder();
-                if (refHolder) {
-                    refHolder.attachReference(me);
-                }
-            }
-        },
-
-        /**
-         * Called when this Inheritable is added to a parent
-         * @param {Boolean} instanced
-         */
-        onInheritedAdd: function(parent, instanced) {
-            var me = this;
-
-            // The container constructed us, so it's not possible for our 
-            // inheritedState to be invalid, so we only need to clear it
-            // if we've been added as an instance 
-            if (me.inheritedState && instanced) {
-                me.invalidateInheritedState();
-            }
-
-            if (me.getReference()) {
-                Ext.ComponentManager.markReferencesDirty();
-            }
-        },
-
-        /**
-         * Called when this inheritable is removed from a parent
-         * @param {Boolean} destroying `true` if this item will be destroyed by it's container
-         */
-        onInheritedRemove: function(destroying) {
-            var me = this,
-                refHolder;
-
-            if (me.getReference()) {
-                refHolder = me.lookupReferenceHolder();
-                if (refHolder) {
-                    refHolder.clearReference(me);
-                }    
-            }
-
-            if (me.inheritedState && !destroying) {
-                me.invalidateInheritedState();
-            }
+        if (me.getReference()) {
+          refHolder = me.lookupReferenceHolder();
+          if (refHolder) {
+            refHolder.attachReference(me);
+          }
         }
+      },
+
+      /**
+       * Called when this Inheritable is added to a parent
+       * @param {Boolean} instanced
+       */
+      onInheritedAdd: function (parent, instanced) {
+        var me = this;
+
+        // The container constructed us, so it's not possible for our
+        // inheritedState to be invalid, so we only need to clear it
+        // if we've been added as an instance
+        if (me.inheritedState && instanced) {
+          me.invalidateInheritedState();
+        }
+
+        if (me.getReference()) {
+          Ext.ComponentManager.markReferencesDirty();
+        }
+      },
+
+      /**
+       * Called when this inheritable is removed from a parent
+       * @param {Boolean} destroying `true` if this item will be destroyed by it's container
+       */
+      onInheritedRemove: function (destroying) {
+        var me = this,
+          refHolder;
+
+        if (me.getReference()) {
+          refHolder = me.lookupReferenceHolder();
+          if (refHolder) {
+            refHolder.clearReference(me);
+          }
+        }
+
+        if (me.inheritedState && !destroying) {
+          me.invalidateInheritedState();
+        }
+      }
     }
-},
-function () {
+  },
+  function () {
     /**
      * @property {Object} rootInheritedState
      * The top level inheritedState to which all other inheritedStates are chained. If
@@ -398,4 +429,5 @@ function () {
      * @since 5.0.0
      */
     Ext.rootInheritedState = {};
-});
+  }
+);

@@ -7,13 +7,18 @@ testEmailID = "parkour-staff@parkour-demo.ie-freiburg.mpg.de"
 testPassword = "parkour-staff"
 
 
-def visit_login_page(page):
-    inside_container = nodename() == "parkour2-django"
-    if inside_container:
-        my_host = "parkour2-caddy"
+def get_host_name():
+    isInsideContainer = nodename() == "parkour2-django"
+    if isInsideContainer:
+        hostName = "parkour2-caddy"
     else:
-        my_host = getenvvar("HOSTNAME", "localhost")
-    page.goto("http://" + my_host + ":9980/login")
+        hostName = getenvvar("HOSTNAME", "localhost")
+    return hostName
+
+
+def visit_login_page(page):
+    hostName = get_host_name()
+    page.goto("http://" + hostName + ":9980/login")
 
 
 def pretest_login(page: Page):

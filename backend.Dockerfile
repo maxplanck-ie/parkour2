@@ -7,7 +7,9 @@ ENV \
     LANGUAGE=en_US:en \
     LC_ALL=en_US.UTF-8 \
     LC_TIME=en_DK.UTF-8 \
-    TZ="Europe/Berlin"
+    TZ="Europe/Berlin" \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_ROOT_USER_ACTION=ignore
 
 RUN apt-get update --fix-missing \
     && apt-get -y upgrade \
@@ -24,12 +26,12 @@ RUN localedef -i en_US -f UTF-8 en_US.UTF-8
 WORKDIR /usr/src/app
 COPY ./backend .
 EXPOSE 8000
+ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
 RUN --mount=type=cache,target=/root/.cache pip install -r requirements/base.txt
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_base AS pk2_prod
-ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
 RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
 
 # ----------------------

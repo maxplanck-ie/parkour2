@@ -36,7 +36,7 @@
  *
  * The code above produces a simple grid with three columns. We specified a Store which will
  * load JSON data inline. In most apps we would be placing the grid inside another container
- * and wouldn't need to provide the {@link #height}, {@link #width} and 
+ * and wouldn't need to provide the {@link #height}, {@link #width} and
  * {@link #cfg-fullscreen} options but they are included here to for demonstration.
  *
  * The grid we created above will contain a header bar with a title ('Simpsons'), a row of
@@ -72,7 +72,7 @@
  * {@link Ext.grid.plugin.ViewOptions ViewOptions} plugin). See the
  * {@link Ext.grid.column.Column column class} for more details.
  *
- * A top-level column definition may contain a `columns` configuration. This means that the 
+ * A top-level column definition may contain a `columns` configuration. This means that the
  * resulting header will be a group header, and will contain the child columns.
  *
  * ## Rows and Cells
@@ -229,580 +229,608 @@
  * - {@link Ext.grid.plugin.SummaryRow SummaryRow} - adds and pins an additional row to the
  *   top of the grid that enables you to display summary data.
  */
-Ext.define('Ext.grid.Grid', {
-    extend: 'Ext.dataview.List',
-    xtype: 'grid',
+Ext.define("Ext.grid.Grid", {
+  extend: "Ext.dataview.List",
+  xtype: "grid",
 
-    isGrid: true,
+  isGrid: true,
 
-    requires: [
-        'Ext.grid.Row',
-        'Ext.grid.column.Column',
-        'Ext.grid.column.Date',
-        'Ext.grid.column.Template',
-        'Ext.grid.HeaderContainer',
-        'Ext.grid.HeaderGroup',
-        'Ext.TitleBar',
-        'Ext.MessageBox'
-    ],
+  requires: [
+    "Ext.grid.Row",
+    "Ext.grid.column.Column",
+    "Ext.grid.column.Date",
+    "Ext.grid.column.Template",
+    "Ext.grid.HeaderContainer",
+    "Ext.grid.HeaderGroup",
+    "Ext.TitleBar",
+    "Ext.MessageBox"
+  ],
 
-    config: {
-        defaultType: 'gridrow',
+  config: {
+    defaultType: "gridrow",
 
-        /**
-         * @cfg {Boolean} infinite
-         * This List configuration should always be set to true on a Grid.
-         * @hide
-         */
-        infinite: true,
+    /**
+     * @cfg {Boolean} infinite
+     * This List configuration should always be set to true on a Grid.
+     * @hide
+     */
+    infinite: true,
 
-        /**
-         * @cfg {Ext.grid.column.Column[]} columns (required)
-         * An array of column definition objects which define all columns that appear in this grid.
-         * Each column definition provides the header text for the column, and a definition of where
-         * the data for that column comes from.
-         *
-         * This can also be a configuration object for a {Ext.grid.header.Container HeaderContainer}
-         * which may override certain default configurations if necessary. For example, the special
-         * layout may be overridden to use a simpler layout, or one can set default values shared
-         * by all columns:
-         *
-         *      columns: {
-         *          items: [
-         *              {
-         *                  text: "Column A"
-         *                  dataIndex: "field_A",
-         *                  width: 200
-         *              },{
-         *                  text: "Column B",
-         *                  dataIndex: "field_B",
-         *                  width: 150
-         *              },
-         *              ...
-         *          ]
-         *      }
-         *
-         */
-        columns: null,
+    /**
+     * @cfg {Ext.grid.column.Column[]} columns (required)
+     * An array of column definition objects which define all columns that appear in this grid.
+     * Each column definition provides the header text for the column, and a definition of where
+     * the data for that column comes from.
+     *
+     * This can also be a configuration object for a {Ext.grid.header.Container HeaderContainer}
+     * which may override certain default configurations if necessary. For example, the special
+     * layout may be overridden to use a simpler layout, or one can set default values shared
+     * by all columns:
+     *
+     *      columns: {
+     *          items: [
+     *              {
+     *                  text: "Column A"
+     *                  dataIndex: "field_A",
+     *                  width: 200
+     *              },{
+     *                  text: "Column B",
+     *                  dataIndex: "field_B",
+     *                  width: 150
+     *              },
+     *              ...
+     *          ]
+     *      }
+     *
+     */
+    columns: null,
 
-        /**
-         * @cfg {Boolean} variableHeights
-         * This configuration is best left to false on a Grid for performance reasons.
-         * @private
-         */
-        variableHeights: false,
+    /**
+     * @cfg {Boolean} variableHeights
+     * This configuration is best left to false on a Grid for performance reasons.
+     * @private
+     */
+    variableHeights: false,
 
-        headerContainer: {
-            xtype: 'headercontainer'
-        },
-
-        /**
-         * @cfg {Boolean} hideHeaders
-         * `true` to hide the grid column headers.
-         *
-         * @since 6.0.1
-         */
-        hideHeaders: false,
-
-        pinnedHeader: {
-            xtype: 'rowheader'
-        },
-
-        /**
-         * @cfg {Boolean} striped
-         * @inherit
-         */
-        striped: true,
-
-        scrollToTopOnRefresh: false,
-
-        titleBar: {
-            xtype: 'titlebar',
-            docked: 'top'
-        },
-
-        /**
-         * @cfg {String} title
-         * The title that will be displayed in the TitleBar at the top of this Grid.
-         */
-        title: '',
-
-        /**
-         * @cfg {Number} totalColumnWidth
-         * The total column width
-         * @private
-         */
-        totalColumnWidth: null
+    headerContainer: {
+      xtype: "headercontainer"
     },
 
     /**
-     * @event columnadd
-     * Fires whenever a column is added to the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The added column.
-     * @param {Number} index The index of the added column.
+     * @cfg {Boolean} hideHeaders
+     * `true` to hide the grid column headers.
+     *
+     * @since 6.0.1
      */
-    
-    /**
-     * @event columnmove
-     * Fires whenever a column is moved in the grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The moved column.
-     * @param {Number} fromIndex The index the column was moved from.
-     * @param {Number} toIndex The index the column was moved to.
-     */
+    hideHeaders: false,
+
+    pinnedHeader: {
+      xtype: "rowheader"
+    },
 
     /**
-     * @event columnremove
-     * Fires whenever a column is removed from the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The removed column.
+     * @cfg {Boolean} striped
+     * @inherit
      */
+    striped: true,
+
+    scrollToTopOnRefresh: false,
+
+    titleBar: {
+      xtype: "titlebar",
+      docked: "top"
+    },
 
     /**
-     * @event columnshow
-     * Fires whenever a column is shown in the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The shown column.
+     * @cfg {String} title
+     * The title that will be displayed in the TitleBar at the top of this Grid.
      */
+    title: "",
 
     /**
-     * @event columnhide
-     * Fires whenever a column is hidden in the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The shown column.
+     * @cfg {Number} totalColumnWidth
+     * The total column width
+     * @private
      */
+    totalColumnWidth: null
+  },
 
-    /**
-     * @event columnresize
-     * Fires whenever a column is resized in the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The resized column.
-     * @param {Number} width The new column width.
-     */
+  /**
+   * @event columnadd
+   * Fires whenever a column is added to the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The added column.
+   * @param {Number} index The index of the added column.
+   */
 
-    /**
-     * @event columnsort
-     * Fires whenever a column is sorted in the Grid.
-     * @param {Ext.grid.Grid} this The Grid instance.
-     * @param {Ext.grid.column.Column} column The sorted column.
-     * @param {String} direction The direction of the sort on this Column. Either 'asc' or 'desc'.
-     */
+  /**
+   * @event columnmove
+   * Fires whenever a column is moved in the grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The moved column.
+   * @param {Number} fromIndex The index the column was moved from.
+   * @param {Number} toIndex The index the column was moved to.
+   */
 
-    classCls: Ext.baseCSSPrefix + 'grid',
-    itemSelector: '.' + Ext.baseCSSPrefix + 'gridrow',
+  /**
+   * @event columnremove
+   * Fires whenever a column is removed from the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The removed column.
+   */
 
-    getElementConfig: function() {
-        var config = this.callParent();
+  /**
+   * @event columnshow
+   * Fires whenever a column is shown in the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The shown column.
+   */
 
-        config.children.push({
-            reference: 'resizeMarkerElement',
-            className: Ext.baseCSSPrefix + 'resize-marker-el',
-            hidden: true
+  /**
+   * @event columnhide
+   * Fires whenever a column is hidden in the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The shown column.
+   */
+
+  /**
+   * @event columnresize
+   * Fires whenever a column is resized in the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The resized column.
+   * @param {Number} width The new column width.
+   */
+
+  /**
+   * @event columnsort
+   * Fires whenever a column is sorted in the Grid.
+   * @param {Ext.grid.Grid} this The Grid instance.
+   * @param {Ext.grid.column.Column} column The sorted column.
+   * @param {String} direction The direction of the sort on this Column. Either 'asc' or 'desc'.
+   */
+
+  classCls: Ext.baseCSSPrefix + "grid",
+  itemSelector: "." + Ext.baseCSSPrefix + "gridrow",
+
+  getElementConfig: function () {
+    var config = this.callParent();
+
+    config.children.push({
+      reference: "resizeMarkerElement",
+      className: Ext.baseCSSPrefix + "resize-marker-el",
+      hidden: true
+    });
+
+    return config;
+  },
+
+  initialize: function () {
+    var me = this,
+      titleBar = me.getTitleBar(),
+      headerContainer = me.getHeaderContainer(),
+      scrollable = me.getScrollable();
+
+    me.callParent();
+
+    me.on("resize", "onResize", me);
+
+    if (scrollable) {
+      headerContainer.getScrollable().addPartner(scrollable, "x");
+    }
+    if (titleBar) {
+      me.add(titleBar);
+    }
+    me.add(headerContainer);
+  },
+
+  applyTitleBar: function (titleBar) {
+    if (titleBar && !titleBar.isComponent) {
+      titleBar = Ext.factory(titleBar, Ext.TitleBar);
+    }
+    return titleBar;
+  },
+
+  updateTitle: function (title) {
+    var titleBar = this.getTitleBar();
+    if (titleBar) {
+      if (title) {
+        titleBar.setTitle(title);
+      } else {
+        titleBar.hide();
+      }
+    }
+  },
+
+  applyHeaderContainer: function (headerContainer) {
+    if (headerContainer && !headerContainer.isComponent) {
+      headerContainer = Ext.factory(headerContainer, Ext.grid.HeaderContainer);
+    }
+    return headerContainer;
+  },
+
+  updateHeaderContainer: function (headerContainer, oldHeaderContainer) {
+    var me = this;
+
+    if (oldHeaderContainer) {
+      oldHeaderContainer.un({
+        columnsort: "onColumnSort",
+        columnresize: "onColumnResize",
+        columnshow: "onColumnShow",
+        columnhide: "onColumnHide",
+        columnadd: "onColumnAdd",
+        columnmove: "onColumnMove",
+        columnremove: "onColumnRemove",
+        scope: me
+      });
+    }
+
+    if (headerContainer) {
+      headerContainer.on({
+        columnsort: "onColumnSort",
+        columnresize: "onColumnResize",
+        columnshow: "onColumnShow",
+        columnhide: "onColumnHide",
+        columnadd: "onColumnAdd",
+        columnmove: "onColumnMove",
+        columnremove: "onColumnRemove",
+        scope: me
+      });
+      headerContainer.setGrid(me);
+    }
+  },
+
+  updateHideHeaders: function (hideHeaders) {
+    var ct = this.getHeaderContainer(),
+      oldCtHeight = this.oldCtHeight || null;
+
+    // Don't touch the height if we don't need to
+    if (!hideHeaders && ct.getHeight() !== 0) {
+      return;
+    }
+
+    // We rely on the headers to provide sizing, so we can't just hide
+    // the headerCt. Try and capture the old height if we had one.
+    if (hideHeaders) {
+      this.oldCtHeight = ct.getHeight();
+    }
+    ct.setHeight(hideHeaders ? 0 : oldCtHeight);
+  },
+
+  addColumn: function (column) {
+    return this.getHeaderContainer().add(column);
+  },
+
+  removeColumn: function (column) {
+    return this.getHeaderContainer().remove(column);
+  },
+
+  insertColumn: function (index, column) {
+    return this.getHeaderContainer().insert(index, column);
+  },
+
+  onColumnAdd: function (container, column) {
+    var me = this,
+      items,
+      ln,
+      columnIndex,
+      i,
+      row;
+
+    if (me.initialized && !me.destroying) {
+      items = this.listItems;
+      ln = items.length;
+      columnIndex = container.getColumns().indexOf(column);
+
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.insertColumn(columnIndex, column);
+      }
+
+      me.refreshScroller();
+
+      me.fireEvent("columnadd", me, column, columnIndex);
+    }
+  },
+
+  onColumnMove: function (container, column, group, fromIdx, toIdx) {
+    var me = this,
+      items,
+      ln,
+      i,
+      row;
+
+    if (me.initialized && !me.destroying) {
+      items = me.listItems;
+      ln = items.length;
+
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.moveColumn(column, fromIdx, toIdx);
+      }
+
+      me.fireEvent("columnmove", me, column, fromIdx, toIdx);
+    }
+  },
+
+  onColumnRemove: function (container, column) {
+    var me = this,
+      items,
+      ln,
+      i,
+      row;
+
+    if (me.initialized && !me.destroying) {
+      if (column === me.sortedColumn) {
+        me.sortedColumn = null;
+      }
+
+      items = me.listItems;
+      ln = items.length;
+
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.removeColumn(column);
+      }
+
+      me.refreshScroller();
+
+      me.fireEvent("columnremove", me, column);
+    }
+  },
+
+  updateColumns: function (columns) {
+    var header = this.getHeaderContainer();
+
+    if (header) {
+      header.removeAll(true, true);
+    }
+
+    if (columns && columns.length) {
+      this.addColumn(columns);
+      this.refreshScroller();
+    }
+  },
+
+  getColumns: function () {
+    return this.getHeaderContainer().getColumns();
+  },
+
+  onColumnResize: function (container, column, width, oldWidth) {
+    var me = this,
+      items = me.listItems,
+      ln = items.length,
+      i,
+      row;
+
+    if (!me.destroying) {
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.setColumnWidth(column, width);
+      }
+      if (me.initialized) {
+        me.refreshScroller();
+        // Will be null on the first time
+        if (oldWidth && !column.getHidden()) {
+          me.fireEvent("columnresize", me, column, width);
+        }
+      }
+    }
+  },
+
+  onColumnShow: function (container, column) {
+    var me = this,
+      items,
+      ln,
+      i,
+      row,
+      w;
+
+    if (me.initialized && !me.destroying) {
+      items = me.listItems;
+      ln = items.length;
+
+      me.refreshScroller();
+      if (!column.getFlex()) {
+        w = column.getWidth();
+      }
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.showColumn(column);
+        // If we have a fixed width column, we won't get a resize event
+        // from the resize listener, so force the cell width
+        if (w !== undefined) {
+          row.setColumnWidth(column, w);
+        }
+      }
+
+      me.fireEvent("columnshow", me, column);
+    }
+  },
+
+  onColumnHide: function (container, column) {
+    var me = this,
+      items,
+      ln,
+      i,
+      row;
+
+    if (me.initialized && !me.destroying) {
+      items = me.listItems;
+      ln = items.length;
+
+      me.refreshScroller();
+      for (i = 0; i < ln; i++) {
+        row = items[i];
+        row.hideColumn(column);
+      }
+
+      me.fireEvent("columnhide", me, column);
+    }
+  },
+
+  onColumnSort: function (container, column, direction) {
+    var me = this,
+      sorted = me.sortedColumn;
+
+    if (sorted && sorted !== column) {
+      sorted.setSortDirection(null);
+    }
+    me.sortedColumn = column;
+
+    me.getStore().sort(column.getDataIndex(), direction);
+
+    me.fireEvent("columnsort", me, column, direction);
+  },
+
+  onResize: function () {
+    this.refreshScroller();
+  },
+
+  calculateTotalColumnWidth: function () {
+    return this.getColumnsWidth(this.getColumns());
+  },
+
+  getColumnsWidth: function (columns) {
+    var width = 0,
+      ln = columns.length,
+      i,
+      column;
+
+    for (i = 0; i < ln; i++) {
+      column = columns[i];
+
+      if (column.isHeaderGroup && !column.isHidden()) {
+        width += this.getColumnsWidth(column.getColumns());
+      } else if (!column.isHeaderGroup && !column.isHidden()) {
+        width += column.element.getWidth(false, true);
+      }
+    }
+    return width;
+  },
+
+  getVisibleColumns: function () {
+    var columns = this.getColumns,
+      len = columns.length,
+      i,
+      column,
+      result = [];
+
+    for (i = 0; i < len; i++) {
+      column = columns[i];
+      if (!column.isHeaderGroup && !column.isHidden()) {
+        result.push(column);
+      }
+    }
+    return result;
+  },
+
+  refreshScroller: function (skipOnRefresh) {
+    var me = this,
+      scroller = me.getScrollable(),
+      headerContainer = me.getHeaderContainer(),
+      headerScroller = headerContainer.getScrollable(),
+      totalWidth = me.calculateTotalColumnWidth(),
+      pinned = me.getPinnedHeader(),
+      scrollbarSize;
+
+    if (totalWidth && !isNaN(totalWidth)) {
+      me.setTotalColumnWidth(totalWidth);
+      if (scroller) {
+        scroller.setSize({
+          x: totalWidth,
+          y: me.getInfinite() ? me.getItemMap().getTotalHeight() : null
         });
 
-        return config;
-    },
+        scrollbarSize = me.getVerticalScrollbarSize();
 
-    initialize: function() {
-        var me = this,
-            titleBar = me.getTitleBar(),
-            headerContainer = me.getHeaderContainer(),
-            scrollable = me.getScrollable();
+        if (scrollbarSize) {
+          totalWidth -= scrollbarSize;
 
-        me.callParent();
-
-        me.on('resize', 'onResize', me);
-
-        if (scrollable) {
-            headerContainer.getScrollable().addPartner(scrollable, 'x');
+          scroller.setSize({
+            x: totalWidth
+          });
         }
-        if (titleBar) {
-            me.add(titleBar);
+      }
+
+      if (headerScroller) {
+        scrollbarSize = scrollbarSize || me.getVerticalScrollbarSize();
+
+        headerScroller.setSize({
+          x: totalWidth + scrollbarSize,
+          y: null
+        });
+      }
+
+      scrollbarSize = scrollbarSize || 0;
+      headerContainer.setScrollbarSpacer(scrollbarSize);
+      // Because it's pinned it sits outside of the scrolling container, which is why we need this madness.
+      if (pinned) {
+        if (scrollbarSize) {
+          pinned.setWidth(
+            Ext.String.format("calc(100% - {0}px)", scrollbarSize + 1)
+          );
+        } else {
+          pinned.setWidth("100%");
         }
-        me.add(headerContainer);
-    },
-
-    applyTitleBar: function(titleBar) {
-        if (titleBar && !titleBar.isComponent) {
-            titleBar = Ext.factory(titleBar, Ext.TitleBar);
-        }
-        return titleBar;
-    },
-
-    updateTitle: function(title) {
-        var titleBar = this.getTitleBar();
-        if (titleBar) {
-            if (title) {
-                titleBar.setTitle(title);
-            } else {
-                titleBar.hide();
-            }
-        }
-    },
-
-    applyHeaderContainer: function(headerContainer) {
-        if (headerContainer && !headerContainer.isComponent) {
-            headerContainer = Ext.factory(headerContainer, Ext.grid.HeaderContainer);
-        }
-        return headerContainer;
-    },
-
-    updateHeaderContainer: function(headerContainer, oldHeaderContainer) {
-        var me = this;
-
-        if (oldHeaderContainer) {
-            oldHeaderContainer.un({
-                columnsort: 'onColumnSort',
-                columnresize: 'onColumnResize',
-                columnshow: 'onColumnShow',
-                columnhide: 'onColumnHide',
-                columnadd: 'onColumnAdd',
-                columnmove: 'onColumnMove',
-                columnremove: 'onColumnRemove',
-                scope: me
-            });
-        }
-
-        if (headerContainer) {
-            headerContainer.on({
-                columnsort: 'onColumnSort',
-                columnresize: 'onColumnResize',
-                columnshow: 'onColumnShow',
-                columnhide: 'onColumnHide',
-                columnadd: 'onColumnAdd',
-                columnmove: 'onColumnMove',
-                columnremove: 'onColumnRemove',
-                scope: me
-            });
-            headerContainer.setGrid(me);
-        }
-    },
-
-    updateHideHeaders: function(hideHeaders) {
-        var ct = this.getHeaderContainer(),
-            oldCtHeight = this.oldCtHeight || null;
- 
-        // Don't touch the height if we don't need to
-        if (!hideHeaders && ct.getHeight() !== 0) {
-            return;
-        }
-
-        // We rely on the headers to provide sizing, so we can't just hide
-        // the headerCt. Try and capture the old height if we had one.
-        if (hideHeaders) {
-            this.oldCtHeight = ct.getHeight();
-        }
-        ct.setHeight(hideHeaders ? 0 : oldCtHeight);
-    },
-
-    addColumn: function(column) {
-        return this.getHeaderContainer().add(column);
-    },
-
-    removeColumn: function(column) {
-        return this.getHeaderContainer().remove(column);
-    },
-
-    insertColumn: function(index, column) {
-        return this.getHeaderContainer().insert(index, column);
-    },
-
-    onColumnAdd: function(container, column) {
-        var me = this,
-            items, ln, columnIndex, i, row;
-
-        if (me.initialized && !me.destroying) {
-            items = this.listItems;
-            ln = items.length;
-            columnIndex = container.getColumns().indexOf(column);
-
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.insertColumn(columnIndex, column);
-            }
-
-            me.refreshScroller();
-
-            me.fireEvent('columnadd', me, column, columnIndex);
-        }
-    },
-
-    onColumnMove: function(container, column, group, fromIdx, toIdx) {
-        var me = this,
-            items, ln, i, row;
-
-        if (me.initialized && !me.destroying) {
-            items = me.listItems;
-            ln = items.length;
-
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.moveColumn(column, fromIdx, toIdx);
-            }
-
-            me.fireEvent('columnmove', me, column, fromIdx, toIdx);
-        }
-    },
-
-    onColumnRemove: function(container, column) {
-        var me = this,
-            items, ln, i, row;
-
-        if (me.initialized && !me.destroying) {
-            if (column === me.sortedColumn) {
-                me.sortedColumn = null;
-            }
-
-            items = me.listItems;
-            ln = items.length;
-
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.removeColumn(column);
-            }
-
-            me.refreshScroller();
-
-            me.fireEvent('columnremove', me, column);
-        }
-    },
-
-    updateColumns: function(columns) {
-        var header = this.getHeaderContainer();
-
-        if(header) {
-            header.removeAll(true, true);
-        }
-
-        if (columns && columns.length) {
-            this.addColumn(columns);
-            this.refreshScroller();
-        }
-    },
-
-    getColumns: function() {
-        return this.getHeaderContainer().getColumns();
-    },
-
-    onColumnResize: function(container, column, width, oldWidth) {
-        var me = this,
-            items = me.listItems,
-            ln = items.length,
-            i, row;
-
-        if (!me.destroying) {
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.setColumnWidth(column, width);
-            }
-            if (me.initialized) {
-                me.refreshScroller();
-                // Will be null on the first time
-                if (oldWidth && !column.getHidden()) {
-                    me.fireEvent('columnresize', me, column, width);
-                }
-            }
-        }
-    },
-
-    onColumnShow: function(container, column) {
-        var me = this,
-            items, ln, i, row, w;
-
-        if (me.initialized && !me.destroying) {
-            items = me.listItems;
-            ln = items.length;
-
-            me.refreshScroller();
-            if (!column.getFlex()) {
-                w = column.getWidth();
-            }
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.showColumn(column);
-                // If we have a fixed width column, we won't get a resize event
-                // from the resize listener, so force the cell width
-                if (w !== undefined) {
-                    row.setColumnWidth(column, w);
-                }
-            }
-
-            me.fireEvent('columnshow', me, column);
-        }
-    },
-
-    onColumnHide: function(container, column) {
-        var me = this,
-            items, ln, i, row;
-
-        if (me.initialized && !me.destroying) {
-            items = me.listItems;
-            ln = items.length;
-
-            me.refreshScroller();
-            for (i = 0; i < ln; i++) {
-                row = items[i];
-                row.hideColumn(column);
-            }
-
-            me.fireEvent('columnhide', me, column);
-        }
-    },
-
-    onColumnSort: function(container, column, direction) {
-        var me = this,
-            sorted = me.sortedColumn;
-
-        if (sorted && sorted !== column) {
-            sorted.setSortDirection(null);
-        }
-        me.sortedColumn = column;
-
-        me.getStore().sort(column.getDataIndex(), direction);
-
-        me.fireEvent('columnsort', me, column, direction);
-    },
-
-    onResize: function() {
-        this.refreshScroller();
-    },
-
-    calculateTotalColumnWidth: function() {
-        return this.getColumnsWidth(this.getColumns());
-    },
-
-    getColumnsWidth: function(columns) {
-        var width = 0,
-            ln = columns.length,
-            i, column;
-
-        for (i = 0; i < ln; i++) {
-            column = columns[i];
-
-            if (column.isHeaderGroup && !column.isHidden()) {
-                width += this.getColumnsWidth(column.getColumns());
-            } else if (!column.isHeaderGroup && !column.isHidden()) {
-                width += column.element.getWidth(false, true);
-            }
-        }
-        return width;
-    },
-
-    getVisibleColumns: function() {
-        var columns = this.getColumns,
-            len = columns.length, i, column,
-            result = [];
-
-        for (i = 0; i < len; i++) {
-            column = columns[i];
-            if (!column.isHeaderGroup && !column.isHidden()) {
-                result.push(column);
-            }
-        }
-        return result;
-    },
-
-    refreshScroller: function(skipOnRefresh) {
-        var me = this,
-            scroller = me.getScrollable(),
-            headerContainer = me.getHeaderContainer(),
-            headerScroller = headerContainer.getScrollable(),
-            totalWidth = me.calculateTotalColumnWidth(),
-            pinned = me.getPinnedHeader(),
-            scrollbarSize;
-
-        if (totalWidth && !isNaN(totalWidth)) {
-            me.setTotalColumnWidth(totalWidth);
-            if (scroller) {
-                scroller.setSize({
-                    x: totalWidth,
-                    y: me.getInfinite() ? me.getItemMap().getTotalHeight() : null
-                });
-
-                scrollbarSize = me.getVerticalScrollbarSize();
-
-                if (scrollbarSize) {
-                    totalWidth -= scrollbarSize;
-
-                    scroller.setSize({
-                        x: totalWidth
-                    });
-                }
-            }
-
-            if (headerScroller) {
-                scrollbarSize = scrollbarSize || me.getVerticalScrollbarSize();
-
-                headerScroller.setSize({
-                    x: totalWidth + scrollbarSize,
-                    y: null
-                });
-            }
-
-            scrollbarSize = scrollbarSize || 0;
-            headerContainer.setScrollbarSpacer(scrollbarSize);
-            // Because it's pinned it sits outside of the scrolling container, which is why we need this madness.
-            if (pinned) {
-                if (scrollbarSize) {
-                    pinned.setWidth(Ext.String.format('calc(100% - {0}px)', scrollbarSize + 1));
-                } else {
-                    pinned.setWidth('100%');
-                }
-            }
-        }
-
-        me.afterRefreshScroller(scroller, skipOnRefresh);
-    },
-
-    getVerticalScrollbarSize: function() {
-        var scroller = this.getScrollable();
-
-        return (scroller && scroller.getMaxUserPosition().y) && (Ext.getScrollbarSize().width || 0);
-    },
-
-    createItem: function(config) {
-        config.grid = this;
-
-        return this.callParent([config]);
-    },
-
-    doDestroy: function() {
-        this.sortedColumn = null;
-        
-        this.callParent();
-    },
-
-    privates: {
-        getCellFromEvent: function(e) {
-            var selector = Ext.grid.cell.Base.prototype.cellSelector,
-                target = e.getTarget(selector, this.element),
-                ret;
-
-            if (target) {
-                ret = Ext.getCmp(target.id);
-            }
-            return ret || null;
-        },
-
-        applyTotalColumnWidth: function(totalColumnWidth) {
-            var rows = this.listItems;
-            // If we don't have any items yet, wait
-            return rows.length === 0 ? undefined : totalColumnWidth;
-        },
-
-        updateTotalColumnWidth: function(totalColumnWidth) {
-            var rows = this.listItems,
-                len = rows.length,
-                i, header;
-
-            for (i = 0; i < len; ++i) {
-                header = rows[i].getHeader();
-                if (header) {
-                    header.setMinWidth('100%');
-                    header.setWidth(totalColumnWidth);
-                }
-            }
-        }
+      }
     }
+
+    me.afterRefreshScroller(scroller, skipOnRefresh);
+  },
+
+  getVerticalScrollbarSize: function () {
+    var scroller = this.getScrollable();
+
+    return (
+      scroller &&
+      scroller.getMaxUserPosition().y &&
+      (Ext.getScrollbarSize().width || 0)
+    );
+  },
+
+  createItem: function (config) {
+    config.grid = this;
+
+    return this.callParent([config]);
+  },
+
+  doDestroy: function () {
+    this.sortedColumn = null;
+
+    this.callParent();
+  },
+
+  privates: {
+    getCellFromEvent: function (e) {
+      var selector = Ext.grid.cell.Base.prototype.cellSelector,
+        target = e.getTarget(selector, this.element),
+        ret;
+
+      if (target) {
+        ret = Ext.getCmp(target.id);
+      }
+      return ret || null;
+    },
+
+    applyTotalColumnWidth: function (totalColumnWidth) {
+      var rows = this.listItems;
+      // If we don't have any items yet, wait
+      return rows.length === 0 ? undefined : totalColumnWidth;
+    },
+
+    updateTotalColumnWidth: function (totalColumnWidth) {
+      var rows = this.listItems,
+        len = rows.length,
+        i,
+        header;
+
+      for (i = 0; i < len; ++i) {
+        header = rows[i].getHeader();
+        if (header) {
+          header.setMinWidth("100%");
+          header.setWidth(totalColumnWidth);
+        }
+      }
+    }
+  }
 });

@@ -14,8 +14,8 @@ Ext.define("MainHub.overrides.grid.selection.SpreadsheetModel", {
         width: me.rowNumbererHeaderWidth,
         tdCls: me.rowNumbererTdCls,
         cls: me.rowNumbererHeaderCls,
-        locked: me.hasLockedHeader,
+        locked: me.hasLockedHeader
       };
-    },
-  },
+    }
+  }
 });

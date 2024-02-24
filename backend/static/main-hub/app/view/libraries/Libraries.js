@@ -5,11 +5,19 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
   requires: [
     "MainHub.view.libraries.LibrariesController",
-    "MainHub.view.libraries.LibraryWindow",
+    "MainHub.view.libraries.LibraryWindow"
   ],
 
   anchor: "100% -1",
   layout: "fit",
+
+  initComponent: function () {
+    this.searchString = "";
+    this.statusFilter = "all";
+    this.libraryProtocolFilter = -1;
+
+    this.callParent(arguments);
+  },
 
   items: [
     {
@@ -54,9 +62,9 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 new Noty({ text: response.statusText, type: "error" }).show();
                 console.error(response);
                 this.getView().unmask();
-              },
+              }
             });
-        },
+        }
       },
       viewConfig: {
         trackOver: false,
@@ -76,7 +84,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             }
           }
           return rowClass;
-        },
+        }
       },
 
       header: {
@@ -161,34 +169,229 @@ Ext.define("MainHub.view.libraries.Libraries", {
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("librariesStore").load();
                     }
-                  },
-                },
+                  }
+                }
               },
               {
                 boxLabel: "Show Libraries",
                 itemId: "showLibrariesCheckbox",
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
-                hidden: true,
+                hidden: true
               },
               {
                 boxLabel: "Show Samples",
                 itemId: "showSamplesCheckbox",
                 cls: "grid-header-checkbox",
+                boxLabelAlign: "before",
                 checked: true,
-                hidden: true,
-              },
-            ],
+                hidden: true
+              }
+            ]
           },
           {
-            xtype: "textfield",
-            itemId: "searchField",
-            emptyText: "Search",
-            width: 200,
-            hidden: true,
+            xtype: "combobox",
+            id: "statusCombobox",
+            itemId: "statusCombobox",
+            queryMode: "local",
+            displayField: "name",
+            valueField: "id",
+            cls: "panel-header-combobox",
+            emptyText: "Status",
+            width: 100,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 220
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: Ext.create("Ext.data.Store", {
+              fields: ["id", "name"],
+              data: [
+                { id: "all", name: "All Statuses" },
+                { id: "0", name: "Pending Submission" },
+                { id: "1", name: "Submission Completed" },
+                {
+                  id: "2",
+                  name: "Quality Check Approved"
+                },
+                { id: "3", name: "Library Prepared" },
+                { id: "4", name: "Library Pooled" },
+                { id: "5", name: "Sequencing" },
+                { id: "6", name: "Delivered" },
+                { id: "-1", name: "Quality Check Failed" },
+                {
+                  id: "-2",
+                  name: "Quality Check Compromised"
+                }
+              ]
+            }),
+            listeners: {
+              scope: this,
+              change: function (combo, newValue, oldValue, eOpts) {
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.statusFilter = newValue;
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField)
+                ).width;
+                combo.setWidth(textWidth + 55);
+                var librariesStore = Ext.getStore("librariesStore");
+                var extraParams = {
+                  showAll: "True"
+                };
+                if (this.statusFilter && this.statusFilter !== "all") {
+                  extraParams.statusFilter = this.statusFilter;
+                }
+                if (
+                  this.libraryProtocolFilter &&
+                  this.libraryProtocolFilter !== -1
+                ) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
+                }
+                if (this.searchString) {
+                  extraParams.searchString = this.searchString;
+                }
+                librariesStore.getProxy().setExtraParams(extraParams);
+                librariesStore.load({
+                  callback: function (records, operation, success) {
+                    if (!success) {
+                      new Noty({
+                        text:
+                          operation.getError() ||
+                          "Error occurred while setting the filter.",
+                        type: "error"
+                      }).show();
+                    }
+                    grid.getView().unmask();
+                  }
+                });
+              }
+            }
           },
-        ],
+          {
+            xtype: "combobox",
+            id: "libraryProtocolCombobox",
+            itemId: "libraryProtocolCombobox",
+            queryMode: "local",
+            displayField: "name",
+            valueField: "id",
+            cls: "panel-header-combobox",
+            emptyText: "Library Protocol",
+            width: 160,
+            matchFieldWidth: false,
+            listConfig: {
+              width: 300
+            },
+            editable: false,
+            style: { marginRight: "15px" },
+            store: "libraryProtocolsStore",
+            listeners: {
+              scope: this,
+              expand: function (combo) {
+                combo
+                  .getStore()
+                  .insert(0, { id: -1, name: "All Library Protocols" });
+              },
+              change: function (combo, newValue, oldValue, eOpts) {
+                var grid = combo.up("treepanel");
+                grid.getView().mask("Loading...");
+                this.libraryProtocolFilter = newValue;
+                var selectedRecord = combo.findRecordByValue(newValue);
+                var textWidth = Ext.util.TextMetrics.measure(
+                  combo.inputEl,
+                  selectedRecord.get(combo.displayField)
+                ).width;
+                combo.setWidth(textWidth > 220 ? 220 : textWidth + 55);
+                var librariesStore = Ext.getStore("librariesStore");
+                var extraParams = {
+                  showAll: "True"
+                };
+                if (this.statusFilter && this.statusFilter !== "all") {
+                  extraParams.statusFilter = this.statusFilter;
+                }
+                if (
+                  this.libraryProtocolFilter &&
+                  this.libraryProtocolFilter !== -1
+                ) {
+                  extraParams.libraryProtocolFilter =
+                    this.libraryProtocolFilter;
+                }
+                if (this.searchString) {
+                  extraParams.searchString = this.searchString;
+                }
+                librariesStore.getProxy().setExtraParams(extraParams);
+                librariesStore.load({
+                  callback: function (records, operation, success) {
+                    if (!success) {
+                      new Noty({
+                        text:
+                          operation.getError() ||
+                          "Error occurred while setting the filter.",
+                        type: "error"
+                      }).show();
+                    }
+                    grid.getView().unmask();
+                  }
+                });
+              }
+            }
+          },
+          {
+            xtype: "parkoursearchfield",
+            itemId: "search-field",
+            emptyText: "Search",
+            width: 320,
+            listeners: {
+              scope: this,
+              change: Ext.Function.createBuffered(
+                function (field, newValue, oldValue) {
+                  var grid = field.up("treepanel");
+                  grid.getView().mask("Loading...");
+                  this.searchString = newValue;
+                  var librariesStore = Ext.getStore("librariesStore");
+                  var extraParams = {
+                    showAll: "True"
+                  };
+                  if (this.statusFilter && this.statusFilter !== "all") {
+                    extraParams.statusFilter = this.statusFilter;
+                  }
+                  if (
+                    this.libraryProtocolFilter &&
+                    this.libraryProtocolFilter !== -1
+                  ) {
+                    extraParams.libraryProtocolFilter =
+                      this.libraryProtocolFilter;
+                  }
+                  if (this.searchString) {
+                    extraParams.searchString = this.searchString;
+                  }
+                  librariesStore.getProxy().setExtraParams(extraParams);
+                  librariesStore.load({
+                    callback: function (records, operation, success) {
+                      if (!success) {
+                        new Noty({
+                          text:
+                            operation.getError() ||
+                            "Error occurred while searching.",
+                          type: "error"
+                        }).show();
+                      }
+                      grid.getView().unmask();
+                    }
+                  });
+                },
+                500,
+                this
+              )
+            }
+          }
+        ]
       },
 
       rootVisible: false,
@@ -196,7 +399,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
       columns: {
         defaults: {
-          width: 100,
+          width: 100
         },
         items: [
           {
@@ -220,7 +423,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   record.get("total_sequencing_depth")
                 );
               }
-            },
+            }
           },
           {
             text: "Status",
@@ -240,15 +443,15 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 } else if (value === -2) {
                   statusClass += "quality-check-compromised";
                   meta.tdAttr = 'data-qtip="Quality check compromised"';
-                } else if (value === 2) {
-                  statusClass += "quality-check-approved";
-                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 0) {
                   statusClass += "pending-submission";
                   meta.tdAttr = 'data-qtip="Pending submission"';
                 } else if (value === 1) {
                   statusClass += "submission-completed";
                   meta.tdAttr = 'data-qtip="Submission completed"';
+                } else if (value === 2) {
+                  statusClass += "quality-check-approved";
+                  meta.tdAttr = 'data-qtip="Quality check approved"';
                 } else if (value === 3) {
                   statusClass += "library-prepared";
                   meta.tdAttr = 'data-qtip="Library prepared"';
@@ -259,12 +462,12 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   statusClass += "sequencing";
                   meta.tdAttr = 'data-qtip="Sequencing"';
                 } else if (value === 6) {
-                  statusClass += "completed";
-                  meta.tdAttr = 'data-qtip="Completed"';
+                  statusClass += "delivered";
+                  meta.tdAttr = 'data-qtip="Delivered"';
                 }
                 return '<div class="' + statusClass + '"></div>';
               }
-            },
+            }
           },
           {
             text: "",
@@ -275,7 +478,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 30,
             renderer: function (value, meta) {
               return meta.record.getRecordType().charAt(0);
-            },
+            }
           },
           {
             text: "Barcode",
@@ -286,7 +489,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 95,
             renderer: function (value, meta) {
               return meta.record.getBarcode();
-            },
+            }
           },
           {
             text: "Pool Name(s)",
@@ -297,30 +500,30 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 105,
             renderer: function (value, meta) {
               return meta.record.getPoolPaths();
-            },
+            }
           },
           {
             text: "Date",
             dataIndex: "create_time",
-            renderer: Ext.util.Format.dateRenderer("d.m.Y"),
+            renderer: Ext.util.Format.dateRenderer("d.m.Y")
           },
           {
             text: "Nuc. Type",
             tooltip: "Nucleic Acid Type",
             dataIndex: "nucleic_acid_type_name",
-            renderer: "gridCellTooltipRenderer",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "Protocol",
             tooltip: "Library Preparation Protocol",
             dataIndex: "library_protocol_name",
-            renderer: "gridCellTooltipRenderer",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "Lib. Type",
             tooltip: "Library Type",
             dataIndex: "library_type_name",
-            renderer: "gridCellTooltipRenderer",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "ng/μl",
@@ -354,17 +557,17 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 55,
             renderer: function (value) {
               return value === 11 ? "Determined by Facility" : value;
-            },
+            }
           },
           {
             text: "bp",
             tooltip: "Mean Fragment Size",
-            dataIndex: "mean_fragment_size",
+            dataIndex: "mean_fragment_size"
           },
           {
             text: "Index Type",
             dataIndex: "index_type_name",
-            renderer: "gridCellTooltipRenderer",
+            renderer: "gridCellTooltipRenderer"
           },
           {
             text: "Index Reads",
@@ -394,22 +597,22 @@ Ext.define("MainHub.view.libraries.Libraries", {
           {
             text: "I7",
             tooltip: "Index I7",
-            dataIndex: "index_i7",
+            dataIndex: "index_i7"
           },
           {
             text: "I5",
             tooltip: "Index I5",
-            dataIndex: "index_i5",
+            dataIndex: "index_i5"
           },
           {
             text: "Length",
             tooltip: "Read Length",
-            dataIndex: "read_length_name",
+            dataIndex: "read_length_name"
           },
           {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
-            dataIndex: "sequencing_depth",
+            dataIndex: "sequencing_depth"
           },
           {
             text: "Amplification",
@@ -430,16 +633,16 @@ Ext.define("MainHub.view.libraries.Libraries", {
           {
             text: "Organism",
             dataIndex: "organism_name",
-            width: 150,
+            width: 150
           },
           {
             text: "Comments",
             dataIndex: "comments",
             renderer: "gridCellTooltipRenderer",
-            width: 150,
-          },
-        ],
-      },
-    },
-  ],
+            width: 150
+          }
+        ]
+      }
+    }
+  ]
 });

@@ -5,16 +5,16 @@ Ext.define("MainHub.view.requests.RequestsController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#requests-grid": {
         resize: "resize",
-        itemcontextmenu: "showMenu",
+        itemcontextmenu: "showMenu"
       },
       "#add-request-button": {
-        click: "addRequest",
-      },
-    },
+        click: "addRequest"
+      }
+    }
   },
 
   activateView: function () {
@@ -28,7 +28,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
   addRequest: function (btn) {
     Ext.create("MainHub.view.requests.RequestWindow", {
       title: "New Request",
-      mode: "add",
+      mode: "add"
     }).show();
   },
 
@@ -41,7 +41,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
     Ext.create("Ext.menu.Menu", {
       plain: true,
       defaults: {
-        margin: 5,
+        margin: 5
       },
       items: [
         {
@@ -54,9 +54,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
                 record.get("name")
               ),
               mode: "edit",
-              record: record,
+              record: record
             }).show();
-          },
+          }
         },
         {
           text: "Delete",
@@ -74,9 +74,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
                 if (btn === "yes") {
                   me.deleteRequest(record);
                 }
-              },
+              }
             });
-          },
+          }
         },
         "-",
         // {
@@ -133,10 +133,10 @@ Ext.define("MainHub.view.requests.RequestsController", {
               requestId
             );
             var downloadForm = Ext.create("Ext.form.Panel", {
-              standardSubmit: true,
+              standardSubmit: true
             });
             downloadForm.submit({ url: url, method: "GET" });
-          },
+          }
         },
         "-",
         {
@@ -144,9 +144,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
           disabled: !record.get("completed"),
           handler: function () {
             Ext.create("MainHub.view.metadataexporter.MetadataExporter", {
-              request: record,
+              request: record
             });
-          },
+          }
         },
         {
           text: "View File Paths",
@@ -154,9 +154,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
           handler: function () {
             Ext.create("MainHub.view.requests.FilePathsWindow", {
               title: "File Paths",
-              record: record,
+              record: record
             });
-          },
+          }
         },
         {
           text: "Compose Email",
@@ -164,9 +164,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
           handler: function () {
             Ext.create("MainHub.view.requests.EmailWindow", {
               title: "New Email",
-              record: record,
+              record: record
             });
-          },
+          }
         },
         {
           text: "Mark as complete",
@@ -184,11 +184,11 @@ Ext.define("MainHub.view.requests.RequestsController", {
                 if (btn === "yes") {
                   me.markascomplete(record, "False");
                 }
-              },
+              }
             });
-          },
-        },
-      ],
+          }
+        }
+      ]
     }).showAt(e.getXY());
   },
 
@@ -204,8 +204,8 @@ Ext.define("MainHub.view.requests.RequestsController", {
 
       params: {
         data: Ext.JSON.encode({
-          override: admin_override,
-        }),
+          override: admin_override
+        })
       },
       success: function (response) {
         var obj = Ext.JSON.decode(response.responseText);
@@ -225,7 +225,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
               if (btn === "yes") {
                 me.markascomplete(record, "True");
               }
-            },
+            }
           });
         } else {
           new Noty({ text: obj.message, type: "error" }).show();
@@ -322,6 +322,45 @@ Ext.define("MainHub.view.requests.RequestsController", {
     });
   },
 
+  requestApproval: function (record, admin_override) {
+    var me = this;
+    Ext.Ajax.request({
+      url: Ext.String.format(
+        "api/requests/{0}/request_approval/",
+        record.get("pk")
+      ),
+      method: "GET",
+      scope: me,
+      params: {
+        data: Ext.JSON.encode({
+          override: admin_override,
+        }),
+      },
+      success: function (response) {
+        var obj = Ext.JSON.decode(response.responseText);
+
+        if (obj.success) {
+          Ext.getStore("requestsStore").reload();
+          new Noty({ text: "Approval has been successfully requested" }).show();
+        } else {
+          new Noty({ text: obj.message, type: "error" }).show();
+        }
+      },
+
+      failure: function (response) {
+        var responseText = response.responseText
+          ? Ext.JSON.decode(response.responseText)
+          : null;
+        responseText = responseText.message
+          ? responseText.message
+          : "Unknown error.";
+        responseText = response.statusText ? response.statusText : responseText;
+        new Noty({ text: responseText, type: "error" }).show();
+        console.error(response);
+      }
+    });
+  },
+
   deleteRequest: function (record) {
     Ext.Ajax.request({
       url: Ext.String.format("api/requests/{0}/", record.get("pk")),
@@ -343,7 +382,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         var obj = Ext.JSON.decode(response.responseText);
         new Noty({ text: obj.message, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -361,7 +400,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         if (!form.isValid()) {
           new Noty({
             text: "You did not select any file.",
-            type: "warning",
+            type: "warning"
           }).show();
           return false;
         }
@@ -375,7 +414,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
             var obj = Ext.JSON.decode(action.response.responseText);
             if (obj.success) {
               new Noty({
-                text: "Deep Sequencing Request has been successfully uploaded.",
+                text: "Deep Sequencing Request has been successfully uploaded."
               }).show();
               Ext.getStore("requestsStore").reload();
             } else {
@@ -395,9 +434,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
             }
             new Noty({ text: errorMsg, type: "error" }).show();
             console.error(action);
-          },
+          }
         });
-      },
+      }
     });
-  },
+  }
 });

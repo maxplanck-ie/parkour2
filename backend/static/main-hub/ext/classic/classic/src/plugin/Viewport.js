@@ -41,238 +41,245 @@
  *
  * @since 5.0.0
  */
-Ext.define('Ext.plugin.Viewport', {
-    extend: 'Ext.plugin.Responsive',
+Ext.define(
+  "Ext.plugin.Viewport",
+  {
+    extend: "Ext.plugin.Responsive",
 
-    alias: 'plugin.viewport',
+    alias: "plugin.viewport",
 
     setCmp: function (cmp) {
-        this.cmp = cmp;
+      this.cmp = cmp;
 
-        if (cmp && !cmp.isViewport) {
-            this.decorate(cmp);
-            if (cmp.renderConfigs) {
-                cmp.flushRenderConfigs();
-            }
-            cmp.setupViewport();
+      if (cmp && !cmp.isViewport) {
+        this.decorate(cmp);
+        if (cmp.renderConfigs) {
+          cmp.flushRenderConfigs();
         }
+        cmp.setupViewport();
+      }
     },
 
     statics: {
-        decorate: function (target) {
-            Ext.applyIf(target.prototype || target, {
-                ariaRole: 'application',
+      decorate: function (target) {
+        Ext.applyIf(target.prototype || target, {
+          ariaRole: "application",
 
-                viewportCls: Ext.baseCSSPrefix + 'viewport'
-            });
+          viewportCls: Ext.baseCSSPrefix + "viewport"
+        });
 
-            Ext.override(target, {
-                isViewport: true,
+        Ext.override(target, {
+          isViewport: true,
 
-                preserveElOnDestroy: true,
+          preserveElOnDestroy: true,
 
-                initComponent : function() {
-                    this.callParent();
-                    this.setupViewport();
-                },
+          initComponent: function () {
+            this.callParent();
+            this.setupViewport();
+          },
 
-                // Because we don't stamp the size until onRender, our size model
-                // won't return correctly. As we're always going to be configured,
-                // just return the value here
-                getSizeModel: function() {
-                    var configured = Ext.layout.SizeModel.configured;
-                    return configured.pairsByHeightOrdinal[configured.ordinal];
-                },
+          // Because we don't stamp the size until onRender, our size model
+          // won't return correctly. As we're always going to be configured,
+          // just return the value here
+          getSizeModel: function () {
+            var configured = Ext.layout.SizeModel.configured;
+            return configured.pairsByHeightOrdinal[configured.ordinal];
+          },
 
-                handleViewportResize: function () {
-                    var me = this,
-                        Element = Ext.dom.Element,
-                        width = Element.getViewportWidth(),
-                        height = Element.getViewportHeight();
+          handleViewportResize: function () {
+            var me = this,
+              Element = Ext.dom.Element,
+              width = Element.getViewportWidth(),
+              height = Element.getViewportHeight();
 
-                    if (width !== me.width || height !== me.height) {
-                        me.setSize(width, height);
-                    }
-                },
+            if (width !== me.width || height !== me.height) {
+              me.setSize(width, height);
+            }
+          },
 
-                setupViewport : function() {
-                    var me = this,
-                        el = document.body;
+          setupViewport: function () {
+            var me = this,
+              el = document.body;
 
-                    // Here in the (perhaps unlikely) case that the body dom el doesn't yet have an id,
-                    // we want to give it the same id as the viewport component so getCmp lookups will
-                    // be able to find the owner component.
-                    //
-                    // Note that nothing says that components that use configured elements have to have
-                    // matching ids (they probably won't), but this is at least making the attempt so that
-                    // getCmp *may* be able to find the component. However, in these cases, it's really
-                    // better to use Component#fromElement to find the owner component.
-                    if (!el.id) {
-                        el.id = me.id;
-                    }
+            // Here in the (perhaps unlikely) case that the body dom el doesn't yet have an id,
+            // we want to give it the same id as the viewport component so getCmp lookups will
+            // be able to find the owner component.
+            //
+            // Note that nothing says that components that use configured elements have to have
+            // matching ids (they probably won't), but this is at least making the attempt so that
+            // getCmp *may* be able to find the component. However, in these cases, it's really
+            // better to use Component#fromElement to find the owner component.
+            if (!el.id) {
+              el.id = me.id;
+            }
 
-                    // In addition, stamp on the data-componentid so lookups using Component's
-                    // fromElement will work.
-                    el.setAttribute('data-componentid', me.id);
-                    
-                    if (!me.ariaStaticRoles[me.ariaRole]) {
-                        el.setAttribute('role', me.ariaRole);
-                    }
+            // In addition, stamp on the data-componentid so lookups using Component's
+            // fromElement will work.
+            el.setAttribute("data-componentid", me.id);
 
-                    el = me.el = Ext.getBody();
+            if (!me.ariaStaticRoles[me.ariaRole]) {
+              el.setAttribute("role", me.ariaRole);
+            }
 
-                    Ext.fly(document.documentElement).addCls(me.viewportCls);
-                    el.setHeight = el.setWidth = Ext.emptyFn;
-                    el.dom.scroll = 'no';
-                    me.allowDomMove = false;
-                    me.renderTo = el;
+            el = me.el = Ext.getBody();
 
-                    if (Ext.supports.Touch) {
-                        me.addMeta('apple-mobile-web-app-capable', 'yes');
-                    }
+            Ext.fly(document.documentElement).addCls(me.viewportCls);
+            el.setHeight = el.setWidth = Ext.emptyFn;
+            el.dom.scroll = "no";
+            me.allowDomMove = false;
+            me.renderTo = el;
 
-                    // Get the DOM disruption over with before the Viewport renders and begins a layout
-                    Ext.getScrollbarSize();
+            if (Ext.supports.Touch) {
+              me.addMeta("apple-mobile-web-app-capable", "yes");
+            }
 
-                    // Clear any dimensions, we will size later on in onRender
-                    me.width = me.height = undefined;
-                    
-                    // ... but take the measurements now because doing that in onRender
-                    // will cause a costly reflow which we just forced with getScrollbarSize()
-                    me.initialViewportHeight = Ext.Element.getViewportHeight();
-                    me.initialViewportWidth  = Ext.Element.getViewportWidth();
-                },
+            // Get the DOM disruption over with before the Viewport renders and begins a layout
+            Ext.getScrollbarSize();
 
-                afterLayout: function(layout) {
-                    if (Ext.supports.Touch) {
-                        document.body.scrollTop = 0;
-                    }
-                    this.callParent([layout]);
-                },
+            // Clear any dimensions, we will size later on in onRender
+            me.width = me.height = undefined;
 
-                onRender: function() {
-                    var me = this,
-                        overflowEl = me.getOverflowEl(),
-                        body = Ext.getBody();
+            // ... but take the measurements now because doing that in onRender
+            // will cause a costly reflow which we just forced with getScrollbarSize()
+            me.initialViewportHeight = Ext.Element.getViewportHeight();
+            me.initialViewportWidth = Ext.Element.getViewportWidth();
+          },
 
-                    me.callParent(arguments);
+          afterLayout: function (layout) {
+            if (Ext.supports.Touch) {
+              document.body.scrollTop = 0;
+            }
+            this.callParent([layout]);
+          },
 
-                    // The global scroller is our scroller.
-                    // We must provide a non-scrolling one if we are not configured to scroll,
-                    // otherwise the deferred ready listener in Scroller will create
-                    // one with scroll: true
-                    Ext.setViewportScroller(me.getScrollable() || {
-                        x: false,
-                        y: false,
-                        element: body
-                    });
+          onRender: function () {
+            var me = this,
+              overflowEl = me.getOverflowEl(),
+              body = Ext.getBody();
 
-                    // If we are not scrolling the body, the body has to be overflow:hidden
-                    if (me.getOverflowEl() !== body) {
-                        body.setStyle('overflow', 'hidden');
-                    }
+            me.callParent(arguments);
 
-                    // Important to start life as the proper size (to avoid extra layouts)
-                    // But after render so that the size is not stamped into the body,
-                    // although measurement has to take place before render to avoid
-                    // causing a reflow.
-                    me.width  = me.initialViewportWidth;
-                    me.height = me.initialViewportHeight;
-                    
-                    me.initialViewportWidth = me.initialViewportHeight = null;
-                },
+            // The global scroller is our scroller.
+            // We must provide a non-scrolling one if we are not configured to scroll,
+            // otherwise the deferred ready listener in Scroller will create
+            // one with scroll: true
+            Ext.setViewportScroller(
+              me.getScrollable() || {
+                x: false,
+                y: false,
+                element: body
+              }
+            );
 
-                initInheritedState: function (inheritedState, inheritedStateInner) {
-                    var me = this,
-                        root = Ext.rootInheritedState;
+            // If we are not scrolling the body, the body has to be overflow:hidden
+            if (me.getOverflowEl() !== body) {
+              body.setStyle("overflow", "hidden");
+            }
 
-                    if (inheritedState !== root) {
-                        // We need to go at this again but with the rootInheritedState object. Let
-                        // any derived class poke on the proper object!
-                        me.initInheritedState(me.inheritedState = root,
-                            me.inheritedStateInner = Ext.Object.chain(root));
-                    } else {
-                        me.callParent([inheritedState, inheritedStateInner]);
-                    }
-                },
+            // Important to start life as the proper size (to avoid extra layouts)
+            // But after render so that the size is not stamped into the body,
+            // although measurement has to take place before render to avoid
+            // causing a reflow.
+            me.width = me.initialViewportWidth;
+            me.height = me.initialViewportHeight;
 
-                doDestroy: function() {
-                    var me = this,
-                        root = Ext.rootInheritedState,
-                        key;
+            me.initialViewportWidth = me.initialViewportHeight = null;
+          },
 
-                    // Clear any properties from the inheritedState so we don't pollute the
-                    // global namespace. If we have a rtl flag set, leave it alone because it's
-                    // likely we didn't write it
-                    for (key in root) {
-                        if (key !== 'rtl') {
-                            delete root[key];
-                        }
-                    }
+          initInheritedState: function (inheritedState, inheritedStateInner) {
+            var me = this,
+              root = Ext.rootInheritedState;
 
-                    me.removeUIFromElement();
-                    me.el.removeCls(me.baseCls);
-                    Ext.fly(document.body.parentNode).removeCls(me.viewportCls);
-                    
-                    me.callParent();
-                },
+            if (inheritedState !== root) {
+              // We need to go at this again but with the rootInheritedState object. Let
+              // any derived class poke on the proper object!
+              me.initInheritedState(
+                (me.inheritedState = root),
+                (me.inheritedStateInner = Ext.Object.chain(root))
+              );
+            } else {
+              me.callParent([inheritedState, inheritedStateInner]);
+            }
+          },
 
-                addMeta: function(name, content) {
-                    var meta = document.createElement('meta');
+          doDestroy: function () {
+            var me = this,
+              root = Ext.rootInheritedState,
+              key;
 
-                    meta.setAttribute('name', name);
-                    meta.setAttribute('content', content);
-                    Ext.getHead().appendChild(meta);
-                },
+            // Clear any properties from the inheritedState so we don't pollute the
+            // global namespace. If we have a rtl flag set, leave it alone because it's
+            // likely we didn't write it
+            for (key in root) {
+              if (key !== "rtl") {
+                delete root[key];
+              }
+            }
 
-                privates: {
-                    // override here to prevent an extraneous warning
-                    applyTargetCls: function (targetCls) {
-                        var el = this.el;
-                         if (el === this.getTargetEl()) {
-                              this.el.addCls(targetCls);
-                         } else {
-                             this.callParent([targetCls]);
-                         }
-                    },
-                    
-                    // Override here to prevent tabIndex set/reset on the body
-                    disableTabbing: function() {
-                        var el = this.el;
-                        
-                        if (el) {
-                            el.saveTabbableState({
-                                skipSelf: true
-                            });
-                        }
-                    },
-                    
-                    enableTabbing: function() {
-                        var el = this.el;
-                        
-                        if (el) {
-                            el.restoreTabbableState(/* skipSelf = */ true);
-                        }
-                    }
-                }
-            });
-        }
+            me.removeUIFromElement();
+            me.el.removeCls(me.baseCls);
+            Ext.fly(document.body.parentNode).removeCls(me.viewportCls);
+
+            me.callParent();
+          },
+
+          addMeta: function (name, content) {
+            var meta = document.createElement("meta");
+
+            meta.setAttribute("name", name);
+            meta.setAttribute("content", content);
+            Ext.getHead().appendChild(meta);
+          },
+
+          privates: {
+            // override here to prevent an extraneous warning
+            applyTargetCls: function (targetCls) {
+              var el = this.el;
+              if (el === this.getTargetEl()) {
+                this.el.addCls(targetCls);
+              } else {
+                this.callParent([targetCls]);
+              }
+            },
+
+            // Override here to prevent tabIndex set/reset on the body
+            disableTabbing: function () {
+              var el = this.el;
+
+              if (el) {
+                el.saveTabbableState({
+                  skipSelf: true
+                });
+              }
+            },
+
+            enableTabbing: function () {
+              var el = this.el;
+
+              if (el) {
+                el.restoreTabbableState(/* skipSelf = */ true);
+              }
+            }
+          }
+        });
+      }
     },
 
     privates: {
-        updateResponsiveState: function () {
-            // By providing this method we are in sync with the layout suspend/resume as
-            // well as other changes to configs that need to happen during this pulse of
-            // size change.
+      updateResponsiveState: function () {
+        // By providing this method we are in sync with the layout suspend/resume as
+        // well as other changes to configs that need to happen during this pulse of
+        // size change.
 
-            // This plugin instance is response, but the cmp is what needs to be handling
-            // the resize:
-            this.cmp.handleViewportResize();
+        // This plugin instance is response, but the cmp is what needs to be handling
+        // the resize:
+        this.cmp.handleViewportResize();
 
-            this.callParent();
-        }
+        this.callParent();
+      }
     }
-},
-function (Viewport) {
+  },
+  function (Viewport) {
     Viewport.prototype.decorate = Viewport.decorate;
-});
+  }
+);

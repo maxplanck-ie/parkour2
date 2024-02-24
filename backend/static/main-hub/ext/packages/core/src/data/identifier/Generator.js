@@ -1,7 +1,7 @@
 /**
  * This class is a base for all id generators. It also provides lookup of id generators by
  * their id.
- * 
+ *
  * Generally, id generators are used to generate a primary key for new model instances. There
  * are different approaches to solving this problem, so this mechanism has both simple use
  * cases and is open to custom implementations. A {@link Ext.data.Model} requests id generation
@@ -71,7 +71,7 @@
  * good reason to do so for this generator type.
  *
  * # Creating Custom Generators
- * 
+ *
  * An id generator should derive from this class and implement the {@link #generate} method.
  *
  * To register an id generator type, a derived class should provide an `alias` like so:
@@ -111,7 +111,7 @@
  *     Ext.define('MyApp.data.identifier.Custom', {
  *         extend: 'Ext.data.identifier.Sequential',
  *         alias: 'data.identifier.custom',
- *         
+ *
  *         config: {
  *             id: 'custom',
  *             prefix: 'ID_',
@@ -132,17 +132,17 @@
  *     // the above models share a generator that produces ID_1000, ID_1001, etc..
  *
  */
-Ext.define('Ext.data.identifier.Generator', {
-    'abstract': true,
+Ext.define(
+  "Ext.data.identifier.Generator",
+  {
+    abstract: true,
 
-    mixins: [
-        'Ext.mixin.Factoryable'
-    ],
+    mixins: ["Ext.mixin.Factoryable"],
 
-    alias: 'data.identifier.default',  // this is used by Factoryable
+    alias: "data.identifier.default", // this is used by Factoryable
 
     factoryConfig: {
-        defaultType: 'sequential'  // this is not a suitable type to create
+      defaultType: "sequential" // this is not a suitable type to create
     },
 
     /**
@@ -152,11 +152,11 @@ Ext.define('Ext.data.identifier.Generator', {
     isGenerator: true,
 
     config: {
-        /**
-         * @cfg {String} id
-         * The id for this generator.
-         */
-        id: null
+      /**
+       * @cfg {String} id
+       * The id for this generator.
+       */
+      id: null
     },
 
     /**
@@ -164,15 +164,15 @@ Ext.define('Ext.data.identifier.Generator', {
      * @param {Object} config (optional) Configuration object to be applied to the new instance.
      */
     constructor: function (config) {
-        var me = this,
-            id;
+      var me = this,
+        id;
 
-        me.initConfig(config);
+      me.initConfig(config);
 
-        id = me.getId();
-        if (id) {
-            Ext.data.identifier.Generator.all[id] = me;
-        }
+      id = me.getId();
+      if (id) {
+        Ext.data.identifier.Generator.all[id] = me;
+      }
     },
 
     /**
@@ -185,32 +185,32 @@ Ext.define('Ext.data.identifier.Generator', {
      */
 
     privates: {
-        /**
-         * Create a copy of this identifier.
-         * @private
-         * @return {Ext.data.identifier.Generator} The clone
-         */
-        clone: function (config) {
-            var cfg = this.getInitialConfig();
-            cfg = config ? Ext.apply({}, config, cfg) : cfg;
-            return new this.self(cfg);
-        },
+      /**
+       * Create a copy of this identifier.
+       * @private
+       * @return {Ext.data.identifier.Generator} The clone
+       */
+      clone: function (config) {
+        var cfg = this.getInitialConfig();
+        cfg = config ? Ext.apply({}, config, cfg) : cfg;
+        return new this.self(cfg);
+      },
 
-        statics: {
-            /**
-             * @property {Object} all
-             * This object is keyed by id to lookup instances.
-             * @private
-             * @static
-             */
-            all: {}
-        }
+      statics: {
+        /**
+         * @property {Object} all
+         * This object is keyed by id to lookup instances.
+         * @private
+         * @static
+         */
+        all: {}
+      }
     }
-},
-function () {
+  },
+  function () {
     var Generator = this,
-        Factory = Ext.Factory,
-        factory = Factory.dataIdentifier;
+      Factory = Ext.Factory,
+      factory = Factory.dataIdentifier;
 
     // If there is an id property passed we need to lookup that id in the cache. If that
     // produces a cache miss, call the normal factory.
@@ -222,9 +222,10 @@ function () {
      * @return {Object} Ext.data.identifier.* The data identifier
      */
     Factory.dataIdentifier = function (config) {
-        var id = Ext.isString(config) ? config : (config && config.id),
-            existing = id && Generator.all[id];
+      var id = Ext.isString(config) ? config : config && config.id,
+        existing = id && Generator.all[id];
 
-        return existing || factory(config);
+      return existing || factory(config);
     };
-});
+  }
+);

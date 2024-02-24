@@ -5,14 +5,14 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
 
   requires: [
     "MainHub.components.BaseGrid",
-    "MainHub.view.indexgenerator.IndexGeneratorController",
+    "MainHub.view.indexgenerator.IndexGeneratorController"
   ],
 
   controller: "index-generator",
 
   layout: {
     type: "hbox",
-    align: "stretch",
+    align: "stretch"
   },
   padding: 15,
 
@@ -99,13 +99,13 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             text: "Name",
             dataIndex: "name",
             minWidth: 200,
-            flex: 1,
+            flex: 1
           },
           {
             text: "Barcode",
             dataIndex: "barcode",
             resizable: false,
-            width: 90,
+            width: 90
           },
           {
             text: "",
@@ -114,13 +114,13 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             width: 30,
             renderer: function (value) {
               return value.charAt(0);
-            },
+            }
           },
           {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
             dataIndex: "sequencing_depth",
-            width: 85,
+            width: 85
           },
           {
             text: "Length",
@@ -134,7 +134,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               displayField: "name",
               store: "readLengthsStore",
               matchFieldWidth: false,
-              forceSelection: true,
+              forceSelection: true
             },
 
             //tpl: Ext.create('Ext.XTemplate',
@@ -150,7 +150,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               var record = store.findRecord("id", value, 0, false, true, true);
 
               return record ? record.get("name") : "";
-            },
+            }
             //listeners:{
             //beforeselect: function(combo, record, index) {
             //if(record.get('obsolete') == 2 ){
@@ -165,7 +165,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             tooltip: "Library Preparation Protocol",
             dataIndex: "library_protocol_name",
             renderer: "gridCellTooltipRenderer",
-            width: 150,
+            width: 150
           },
           {
             text: "Index Type",
@@ -180,7 +180,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               //store: 'IndexTypes',
               store: "GeneratorIndexTypes",
               matchFieldWidth: false,
-              forceSelection: true,
+              forceSelection: true
             },
             renderer: function (value, meta) {
               var record = meta.column
@@ -329,7 +329,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           {
             ptype: "bufferedrenderer",
             trailingBufferZone: 100,
-            leadingBufferZone: 100,
+            leadingBufferZone: 100
           },
           {
             ptype: "rowediting",
@@ -400,7 +400,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               labelWidth: 110,
               width: 200,
               margin: "0 15px 0 0",
-              hidden: true,
+              hidden: true
             },
             {
               xtype: "combobox",
@@ -409,8 +409,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 data: [
                   { id: 1, value: "right" },
                   { id: 2, value: "down" },
-                  { id: 3, value: "diagonal" },
-                ],
+                  { id: 3, value: "diagonal" }
+                ]
               }),
               queryMode: "local",
               displayField: "value",
@@ -420,16 +420,16 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               fieldLabel: "Direction",
               labelWidth: 65,
               width: 160,
-              hidden: true,
-            },
-          ],
+              hidden: true
+            }
+          ]
         },
         height: Ext.Element.getViewportHeight() - 94,
         flex: 1,
         features: [{ ftype: "summary" }],
         viewConfig: {
           markDirty: false,
-          stripeRows: false,
+          stripeRows: false
         },
         multiSelect: true,
         sortableColumns: false,
@@ -441,7 +441,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           {
             text: "Name",
             dataIndex: "name",
-            width: 200,
+            width: 200
           },
           {
             text: "",
@@ -449,7 +449,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             width: 30,
             renderer: function (value) {
               return value.charAt(0);
-            },
+            }
           },
           {
             text: "Depth (M)",
@@ -458,12 +458,12 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
             summaryType: "sum",
             summaryRenderer: function (value) {
               return value > 0 ? value : "";
-            },
+            }
           },
           {
             text: "Coord",
             dataIndex: "coordinate",
-            width: 65,
+            width: 65
           },
           {
             text: "Index I7 ID",
@@ -615,7 +615,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 .sum("sequencing_depth");
               return totalSequencingDepth > 0 ? labels : "";
             },
-            width: 90,
+            width: 90
           },
           {
             text: "1",
@@ -993,5 +993,5 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
     }
 
     return result;
-  },
+  }
 });

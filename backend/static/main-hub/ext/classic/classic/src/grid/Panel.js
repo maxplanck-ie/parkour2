@@ -119,7 +119,7 @@
  *
  * Specifying the `cellmodel` changes a couple of things. Firstly, clicking on a cell now
  * selects just that cell (using a {@link Ext.selection.RowModel rowmodel} will select the
- * entire row), and secondly the keyboard navigation will walk from cell to cell instead 
+ * entire row), and secondly the keyboard navigation will walk from cell to cell instead
  * of row to row. Cell-based selection models are usually used in conjunction with
  * editing.
  *
@@ -176,14 +176,14 @@
  * encapsulated within the default Panel state of changed width and height and
  * collapsed/expanded state.
  *
- * On a `stateful` grid, not only should the Grid have a {@link #stateId}, each 
+ * On a `stateful` grid, not only should the Grid have a {@link #stateId}, each
  * {@link #columns column} of the grid should also be configured with a
  * {@link Ext.grid.column.Column#stateId stateId} which identifies that column locally
  * within the grid.
- * 
- * Omitting the `stateId` config from the columns results in columns with generated 
- * internal ID's.  The generated ID's are subject to change on each page load 
- * making it impossible for the state manager to restore the previous state of the 
+ *
+ * Omitting the `stateId` config from the columns results in columns with generated
+ * internal ID's.  The generated ID's are subject to change on each page load
+ * making it impossible for the state manager to restore the previous state of the
  * columns.
  *
  * ## Plugins and Features
@@ -208,45 +208,49 @@
  *
  * - {@link Ext.grid.feature.GroupingSummary GroupingSummary} - a summary row at the bottom of each group.
  */
-Ext.define('Ext.grid.Panel', {
-    extend: 'Ext.panel.Table',
-    requires: ['Ext.view.Table'],
-    alias: ['widget.gridpanel', 'widget.grid'],
-    alternateClassName: ['Ext.list.ListView', 'Ext.ListView', 'Ext.grid.GridPanel'],
-    
-    viewType: 'tableview',
-    ariaRole: 'grid',
+Ext.define("Ext.grid.Panel", {
+  extend: "Ext.panel.Table",
+  requires: ["Ext.view.Table"],
+  alias: ["widget.gridpanel", "widget.grid"],
+  alternateClassName: [
+    "Ext.list.ListView",
+    "Ext.ListView",
+    "Ext.grid.GridPanel"
+  ],
 
-    lockable: false,
+  viewType: "tableview",
+  ariaRole: "grid",
 
-    /**
-     * @cfg {Boolean} rowLines False to remove row line styling
-     */
-    rowLines: true
+  lockable: false,
 
-    // Columns config is required in Grid
-    /**
-     * @cfg {Ext.grid.column.Column[]/Object} columns (required)
-     * @inheritdoc
-     */
+  /**
+   * @cfg {Boolean} rowLines False to remove row line styling
+   */
+  rowLines: true
 
-    /**
-     * @event beforereconfigure
-     * Fires before a reconfigure to enable modification of incoming Store and columns.
-     * @param {Ext.grid.Panel} this
-     * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
-     * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
-     * @param {Ext.data.Store} oldStore The store that will be replaced
-     * @param {Ext.grid.column.Column[]} oldColumns The column headers that will be replaced.
-     */
+  // Columns config is required in Grid
+  /**
+   * @cfg {Ext.grid.column.Column[]/Object} columns (required)
+   * @inheritdoc
+   */
 
-    /**
-     * @event reconfigure
-     * Fires after a reconfigure.
-     * @param {Ext.grid.Panel} this
-     * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
-     * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
-     * @param {Ext.data.Store} oldStore The store that was replaced
-     * @param {Ext.grid.column.Column[]} oldColumns The column headers that were replaced.
-     */
+  /**
+   * @event beforereconfigure
+   * Fires before a reconfigure to enable modification of incoming Store and columns.
+   * @param {Ext.grid.Panel} this
+   * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
+   * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
+   * @param {Ext.data.Store} oldStore The store that will be replaced
+   * @param {Ext.grid.column.Column[]} oldColumns The column headers that will be replaced.
+   */
+
+  /**
+   * @event reconfigure
+   * Fires after a reconfigure.
+   * @param {Ext.grid.Panel} this
+   * @param {Ext.data.Store} store The store that was passed to the {@link #method-reconfigure} method
+   * @param {Object[]} columns The column configs that were passed to the {@link #method-reconfigure} method
+   * @param {Ext.data.Store} oldStore The store that was replaced
+   * @param {Ext.grid.column.Column[]} oldColumns The column headers that were replaced.
+   */
 });

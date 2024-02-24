@@ -9,7 +9,7 @@ Ext.define("MainHub.view.requests.Requests", {
     "MainHub.view.requests.EmailWindow",
     "MainHub.view.requests.TokenWindow",
     "MainHub.view.libraries.LibraryWindow",
-    "MainHub.view.metadataexporter.MetadataExporter",
+    "MainHub.view.metadataexporter.MetadataExporter"
   ],
 
   controller: "requests",
@@ -90,7 +90,6 @@ Ext.define("MainHub.view.requests.Requests", {
                   '<span data-qtip="Uncheck, to show only those requests that have not been yet sequenced">Show All</span>',
                 checked: true,
                 id: "showAll",
-
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: false,
@@ -107,32 +106,34 @@ Ext.define("MainHub.view.requests.Requests", {
                       ).getProxy().extraParams.showAll = "False";
                       Ext.getStore("requestsStore").load();
                     }
-                  },
-                },
-              },
-            ],
+                  }
+                }
+              }
+            ]
           },
-
           {
             xtype: "searchfield",
             store: "requestsStore",
             emptyText: "Search",
-            margin: "0 10px 0 0",
-            width: 250,
+            margin: "0 15px 0 0",
+            width: 320
           },
-
           {
             xtype: "button",
             itemId: "add-request-button",
             cls: "pl-add-request-button",
-            text: "Add",
-          },
-        ],
+            iconCls: "x-fa fa-plus",
+            style: {
+              border: "1px solid #ffffffbe !important"
+            },
+            text: "Add"
+          }
+        ]
       },
       viewConfig: {
         emptyText: '<h1 style="text-align:center;margin:75px">No items</h1>',
         deferEmptyText: false,
-        stripeRows: false,
+        stripeRows: false
       },
       store: "requestsStore",
       plugins: "gridfilters",
@@ -151,6 +152,15 @@ Ext.define("MainHub.view.requests.Requests", {
             text: "Name",
             dataIndex: "name",
             flex: 1,
+            renderer: function (value, meta) {
+              var boldValue =
+                "<b>" + Ext.util.Format.htmlEncode(value) + "</b>";
+              meta.tdAttr =
+                'data-qtip="' +
+                Ext.util.Format.htmlEncode(value) +
+                '" data-qwidth=300';
+              return boldValue;
+            }
           },
           {
             text: "User",
@@ -193,7 +203,7 @@ Ext.define("MainHub.view.requests.Requests", {
               var val = Ext.util.Format.htmlEncode(value);
               meta.tdAttr = 'data-qtip="' + val + '" data-qwidth=300';
               return val;
-            },
+            }
           },
           {
             text: "# samples/libraries",
@@ -219,15 +229,15 @@ Ext.define("MainHub.view.requests.Requests", {
               record.get("name")
             ),
             mode: "edit",
-            record: record,
+            record: record
           }).show();
-        },
+        }
       },
       plugins: [
         {
           ptype: "bufferedrenderer",
           trailingBufferZone: 100,
-          leadingBufferZone: 100,
+          leadingBufferZone: 100
         },
         {
           ptype: "rowexpander",
@@ -240,9 +250,9 @@ Ext.define("MainHub.view.requests.Requests", {
             '<a href="{path}" download>{name}</a>',
             "</span><br/>",
             "</tpl>"
-          ),
-        },
-      ],
-    },
-  ],
+          )
+        }
+      ]
+    }
+  ]
 });

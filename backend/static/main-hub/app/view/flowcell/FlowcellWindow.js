@@ -18,7 +18,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
     {
       layout: {
         type: "vbox",
-        align: "stretch",
+        align: "stretch"
       },
       items: [
         {
@@ -41,7 +41,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                     submitEmptyText: false,
                     allowBlank: false,
                     labelWidth: 180,
-                    width: 365,
+                    width: 365
                   },
                   items: [
                     {
@@ -169,7 +169,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                   height: 305,
                   viewConfig: {
                     markDirty: false,
-                    stripeRows: false,
+                    stripeRows: false
                   },
                   enableColumnMove: false,
                   enableColumnResize: false,
@@ -180,16 +180,16 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                       text: "Pool",
                       dataIndex: "pool_name",
                       sortable: false,
-                      flex: 1,
+                      flex: 1
                     },
                     {
                       text: "Lane",
                       dataIndex: "lane_name",
-                      width: 70,
-                    },
-                  ],
-                },
-              ],
+                      width: 70
+                    }
+                  ]
+                }
+              ]
             },
             {
               xtype: "grid",
@@ -213,10 +213,10 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                     record.setDisabled(true);
                   }
                   return rowClass;
-                },
+                }
               },
               style: {
-                borderLeft: "1px solid #d0d0d0",
+                borderLeft: "1px solid #d0d0d0"
               },
               store: "poolsStore",
               sortableColumns: false,
@@ -227,12 +227,12 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                 {
                   text: "Pool",
                   dataIndex: "name",
-                  flex: 1,
+                  flex: 1
                 },
                 {
                   text: "Read Length",
                   dataIndex: "read_length_name",
-                  width: 100,
+                  width: 100
                 },
                 {
                   text: "Size",
@@ -254,7 +254,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                     var size = pool.get("pool_size") - pool.get("loaded");
                     return size === 0
                       ? size
-                      : size + "×" + poolSize.get("size") + "M";
+                      : size + "x" + poolSize.get("size") + "M";
                   },
                 },
               ],
@@ -262,32 +262,32 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                 {
                   ptype: "bufferedrenderer",
                   trailingBufferZone: 100,
-                  leadingBufferZone: 100,
-                },
-              ],
-            },
-          ],
+                  leadingBufferZone: 100
+                }
+              ]
+            }
+          ]
         },
         {
           id: "lanes",
           layout: {
             type: "hbox",
             align: "center",
-            pack: "center",
+            pack: "center"
           },
           border: 0,
           style: {
-            borderTop: "1px solid #d0d0d0",
+            borderTop: "1px solid #d0d0d0"
           },
           height: 80,
           defaults: {
             margin: 8,
-            height: 60,
+            height: 60
           },
-          items: [],
-        },
-      ],
-    },
+          items: []
+        }
+      ]
+    }
   ],
 
   dockedItems: [
@@ -300,9 +300,9 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
           xtype: "button",
           itemId: "save-button",
           text: "Save",
-          iconCls: "fa fa-floppy-o fa-lg",
-        },
-      ],
-    },
-  ],
+          iconCls: "fa fa-floppy-o fa-lg"
+        }
+      ]
+    }
+  ]
 });

@@ -1,9 +1,9 @@
-Ext.define('Ext.theme.ios.dataview.NestedList', {
-    override: 'Ext.dataview.NestedList',
+Ext.define("Ext.theme.ios.dataview.NestedList", {
+  override: "Ext.dataview.NestedList",
 
-    config: {
-        backButton: {
-            ui: 'back'
-        }
+  config: {
+    backButton: {
+      ui: "back"
     }
+  }
 });

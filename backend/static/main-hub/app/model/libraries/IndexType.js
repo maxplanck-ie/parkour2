@@ -4,31 +4,31 @@ Ext.define("MainHub.model.libraries.IndexType", {
   fields: [
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_reads",
-      type: "int",
+      type: "int"
     },
     {
       name: "is_dual",
-      type: "bool",
+      type: "bool"
     },
     {
       name: "index_length",
-      type: "int",
+      type: "int"
     },
     {
       name: "format",
-      type: "string",
+      type: "string"
     },
     {
       name: "archived",
-      type: "bool",
-    },
-  ],
+      type: "bool"
+    }
+  ]
 });

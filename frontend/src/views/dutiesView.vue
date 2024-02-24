@@ -55,6 +55,7 @@
               ></font-awesome-icon>
             </div>
             <input
+              id="search-bar"
               style="outline: none"
               class="styled-box"
               type="text"
@@ -78,6 +79,7 @@
               ></font-awesome-icon>
             </div>
             <select
+              id="period-filter"
               class="styled-box"
               style="flex-shrink: 0"
               v-model="selectedFilter"
@@ -234,8 +236,9 @@
             @change="updateDutyObject"
           >
             <option value="">Select</option>
-            <option value="long">Long</option>
             <option value="short">Short</option>
+            <option value="long">Long</option>
+            <option value="shortlong">Short + Long</option>
           </select>
         </div>
       </div>
@@ -264,7 +267,12 @@
 
 <script>
 import { AgGridVue } from "ag-grid-vue3";
-import { showNotification, handleError, getProp, urlStringStartsWith } from "../utils/utilities";
+import {
+  showNotification,
+  handleError,
+  getProp,
+  urlStringStartsWith
+} from "../utils/utilities";
 import { toRaw } from "vue";
 import axios from "axios";
 import moment from "moment";
@@ -274,8 +282,8 @@ const axiosRef = axios.create({
   withCredentials: true,
   headers: {
     "content-type": "application/json",
-    "X-CSRFToken": Cookies.get("csrftoken"),
-  },
+    "X-CSRFToken": Cookies.get("csrftoken")
+  }
 });
 
 const urlStringStart = urlStringStartsWith();
@@ -283,7 +291,7 @@ const urlStringStart = urlStringStartsWith();
 export default {
   name: "Duties",
   components: {
-    AgGridVue,
+    AgGridVue
   },
   data() {
     return {
@@ -295,7 +303,7 @@ export default {
       columnsList: [],
       gridOptions: {},
       gridData: [],
-      selectedFilter: "ongoing",
+      selectedFilter: "ongoing"
     };
   },
   setup() {},
@@ -307,7 +315,7 @@ export default {
   watch: {
     selectedFilter(value) {
       this.getFilteredDuties(true, value);
-    },
+    }
   },
   computed: {},
   methods: {
@@ -425,9 +433,11 @@ export default {
               getProp(element, "end_date", "") &&
               moment(getProp(element, "end_date", "")).format("YYYY-MM-DD"),
             platform:
-              String(getProp(element, "platform", "-"))[0].toUpperCase() +
-              String(getProp(element, "platform", "-")).slice(1),
-            comment: getProp(element, "comment", ""),
+              String(getProp(element, "platform", "-")) === "shortlong"
+                ? "Short + Long"
+                : String(getProp(element, "platform", "-"))[0].toUpperCase() +
+                  String(getProp(element, "platform", "-")).slice(1),
+            comment: getProp(element, "comment", "")
           });
         });
         if (refresh == true) {
@@ -514,7 +524,10 @@ export default {
             newValue = moment(newValue);
             break;
           case "platform":
-            newValue = String(newValue).toLowerCase();
+            newValue =
+              newValue === "Short + Long"
+                ? "shortlong"
+                : String(newValue).toLowerCase();
             break;
           case "comment":
             newValue = newValue.trim();
@@ -522,7 +535,7 @@ export default {
         }
         await axiosRef
           .patch(urlStringStart + "/api/duties/" + String(dutyId) + "/", {
-            [columnName]: newValue,
+            [columnName]: newValue
           })
           .then(() => {
             this.getFilteredDuties(false, this.selectedFilter);
@@ -613,10 +626,10 @@ export default {
               values: userList
                 .filter((element) => element.facility === params.data.facility)
                 .map((element) => element.first_name),
-              valueListGap: 0,
+              valueListGap: 0
             };
           },
-          rowDrag: true,
+          rowDrag: true
         },
         {
           headerName: "Backup Person",
@@ -633,9 +646,9 @@ export default {
               values: userList
                 .filter((element) => element.facility === params.data.facility)
                 .map((element) => element.first_name),
-              valueListGap: 0,
+              valueListGap: 0
             };
-          },
+          }
         },
         {
           headerName: "Start Date",
@@ -643,7 +656,7 @@ export default {
           cellEditor: "agDateStringCellEditor",
           cellEditorParams: {
             min: "2015-01-01",
-            max: "2099-12-31",
+            max: "2099-12-31"
           },
           cellRenderer: (data) => {
             return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
@@ -654,7 +667,7 @@ export default {
           sortable: true,
           resizable: true,
           editable: true,
-          sort: "asc",
+          sort: "asc"
         },
         {
           headerName: "End Date",
@@ -662,7 +675,7 @@ export default {
           cellEditor: "agDateStringCellEditor",
           cellEditorParams: {
             min: "2015-01-01",
-            max: "2099-12-31",
+            max: "2099-12-31"
           },
           cellRenderer: (data) => {
             return data.value ? moment(data.value).format("MM/DD/YYYY") : "-";
@@ -672,7 +685,7 @@ export default {
           filter: true,
           sortable: true,
           resizable: true,
-          editable: true,
+          editable: true
         },
         {
           headerName: "Facility",
@@ -681,7 +694,7 @@ export default {
           flex: 2,
           filter: true,
           sortable: true,
-          resizable: true,
+          resizable: true
         },
         {
           headerName: "Platform",
@@ -694,14 +707,13 @@ export default {
           editable: true,
           cellEditor: "agSelectCellEditor",
           cellEditorParams: {
-            values: ["Long", "Short"],
-            valueListGap: 0,
+            values: ["Short", "Long", "Short + Long"],
+            valueListGap: 0
           },
           cellRenderer: (data) => {
-            return data
-              ? data.value[0].toUpperCase() + data.value.slice(1)
-              : "-";
-          },
+            if (data.value === "shortlong") return "Short + Long";
+            else return data.value[0].toUpperCase() + data.value.slice(1);
+          }
         },
         {
           headerName: "Comments",
@@ -715,9 +727,9 @@ export default {
           cellEditorParams: {
             maxLength: 100,
             rows: 10,
-            cols: 50,
-          },
-        },
+            cols: 50
+          }
+        }
       ];
     },
     updateGridDataObject() {
@@ -726,8 +738,8 @@ export default {
         gridData.push(rowNode.data);
       });
       this.gridData = gridData;
-    },
-  },
+    }
+  }
 };
 </script>
 

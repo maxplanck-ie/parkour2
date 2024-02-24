@@ -17,8 +17,8 @@ Ext.define("MainHub.store.flowcell.Pool", {
     reader: {
       type: "json",
       rootProperty: "data",
-      successProperty: "success",
-    },
+      successProperty: "success"
+    }
   },
 
   listeners: {
@@ -31,6 +31,6 @@ Ext.define("MainHub.store.flowcell.Pool", {
       } else {
         gridView.removeRowCls(rowIndex, "pool-disabled");
       }
-    },
-  },
+    }
+  }
 });

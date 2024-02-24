@@ -9,7 +9,7 @@
  *
  *     @example
  *     Ext.create({
- *        xtype: 'cartesian', 
+ *        xtype: 'cartesian',
  *        renderTo: document.body,
  *        width: 600,
  *        height: 400,
@@ -104,170 +104,167 @@
  * **Note:** In the series definition remember to explicitly set the axis to bind the
  * values of the line series to. This can be done by using the `axis` configuration property.
  */
-Ext.define('Ext.chart.series.Line', {
-    extend: 'Ext.chart.series.Cartesian',
-    alias: 'series.line',
-    type: 'line',
-    seriesType: 'lineSeries',
+Ext.define("Ext.chart.series.Line", {
+  extend: "Ext.chart.series.Cartesian",
+  alias: "series.line",
+  type: "line",
+  seriesType: "lineSeries",
 
-    requires: [
-        'Ext.chart.series.sprite.Line'
-    ],
+  requires: ["Ext.chart.series.sprite.Line"],
 
-    config: {
-        /**
-         * @cfg {Number} selectionTolerance
-         * The offset distance from the cursor position to the line series to trigger events (then used for highlighting series, etc).
-         */
-        selectionTolerance: 20,
-
-        /**
-         * @cfg {Object} style
-         * An object containing styles for the visualization lines. These styles will override the theme styles.
-         * Some options contained within the style object will are described next.
-         */
-
-        /**
-         * @cfg {Boolean} smooth
-         * `true` if the series' line should be smoothed.
-         * Line smoothing only works with gapless data.
-         */
-        smooth: false,
-
-        /**
-         * @cfg {Boolean} step
-         * If set to `true`, the line uses steps instead of straight lines to connect the dots.
-         * It is ignored if `smooth` is true.
-         */
-        step: false,
-
-        /**
-         * @cfg {"gap"/"connect"/"origin"} [nullStyle="gap"]
-         * Possible values:
-         * 'gap' - null points are rendered as gaps.
-         * 'connect' - non-null points are connected across null points, so that
-         * there is no gap, unless null points are at the beginning/end of the line.
-         * Only the visible data points are connected - if a visible data point
-         * is followed by a series of null points that go off screen and eventually
-         * terminate with a non-null point, the connection won't be made.
-         * 'origin' - null data points are rendered at the origin,
-         * which is the y-coordinate of a point where the x and y axes meet.
-         * This requires that at least the x-coordinate of a point is a valid value.
-         */
-        nullStyle: 'gap',
-
-        /**
-         * @cfg {Boolean} fill
-         * If set to `true`, the area underneath the line is filled with the color defined as follows, listed by priority:
-         * - The color that is configured for this series ({@link Ext.chart.series.Series#colors}).
-         * - The color that is configured for this chart ({@link Ext.chart.AbstractChart#colors}).
-         * - The fill color that is set in the {@link #style} config.
-         * - The stroke color that is set in the {@link #style} config, or the same color as the line.
-         *
-         * Note: Do not confuse `series.config.fill` (which is a boolean) with `series.style.fill' (which is an alias
-         * for the `fillStyle` property and contains a color). For compatibility with previous versions of the API,
-         * if `config.fill` is undefined but a `style.fill' color is provided, `config.fill` is considered true.
-         * So the default value below must be undefined, not false.
-         */
-        fill: undefined,
-
-        aggregator: { strategy: 'double' }
-    },
+  config: {
+    /**
+     * @cfg {Number} selectionTolerance
+     * The offset distance from the cursor position to the line series to trigger events (then used for highlighting series, etc).
+     */
+    selectionTolerance: 20,
 
     /**
-     * @private
-     * Default numeric smoothing value to be used when `{@link #smooth} = true`.
+     * @cfg {Object} style
+     * An object containing styles for the visualization lines. These styles will override the theme styles.
+     * Some options contained within the style object will are described next.
      */
-    defaultSmoothness: 3,
 
     /**
-     * @private
-     * Size of the buffer area on either side of the viewport to provide seamless zoom/pan
-     * transforms. Expressed as a multiple of the viewport length, e.g. 1 will make the buffer on
-     * each side equal to the length of the visible axis viewport.
+     * @cfg {Boolean} smooth
+     * `true` if the series' line should be smoothed.
+     * Line smoothing only works with gapless data.
      */
-    overflowBuffer: 1,
-
-    themeMarkerCount: function() {
-        return 1;
-    },
+    smooth: false,
 
     /**
-     * @private
-     * Override {@link Ext.chart.series.Series#getDefaultSpriteConfig}
+     * @cfg {Boolean} step
+     * If set to `true`, the line uses steps instead of straight lines to connect the dots.
+     * It is ignored if `smooth` is true.
      */
-    getDefaultSpriteConfig: function () {
-        var me = this,
-            parentConfig = me.callParent(arguments),
-            style = Ext.apply({}, me.getStyle()),
-            styleWithTheme,
-            fillArea = false;
+    step: false,
 
-        if (typeof me.config.fill != 'undefined') {
-            // If config.fill is present but there is no fillStyle, then use the
-            // strokeStyle to fill (and paint the area the same color as the line).
-            if (me.config.fill) {
-                fillArea = true;
-                if (typeof style.fillStyle == 'undefined') {
-                    if (typeof style.strokeStyle == 'undefined') {
-                        styleWithTheme = me.getStyleWithTheme();
-                        style.fillStyle = styleWithTheme.fillStyle;
-                        style.strokeStyle = styleWithTheme.strokeStyle;
-                    } else {
-                        style.fillStyle = style.strokeStyle;
-                    }
-                }
-            }
-        } else {
-            // For compatibility with previous versions of the API, if config.fill
-            // is undefined but style.fillStyle is provided, we fill the area.
-            if (style.fillStyle) {
-                fillArea = true;
-            }
+    /**
+     * @cfg {"gap"/"connect"/"origin"} [nullStyle="gap"]
+     * Possible values:
+     * 'gap' - null points are rendered as gaps.
+     * 'connect' - non-null points are connected across null points, so that
+     * there is no gap, unless null points are at the beginning/end of the line.
+     * Only the visible data points are connected - if a visible data point
+     * is followed by a series of null points that go off screen and eventually
+     * terminate with a non-null point, the connection won't be made.
+     * 'origin' - null data points are rendered at the origin,
+     * which is the y-coordinate of a point where the x and y axes meet.
+     * This requires that at least the x-coordinate of a point is a valid value.
+     */
+    nullStyle: "gap",
+
+    /**
+     * @cfg {Boolean} fill
+     * If set to `true`, the area underneath the line is filled with the color defined as follows, listed by priority:
+     * - The color that is configured for this series ({@link Ext.chart.series.Series#colors}).
+     * - The color that is configured for this chart ({@link Ext.chart.AbstractChart#colors}).
+     * - The fill color that is set in the {@link #style} config.
+     * - The stroke color that is set in the {@link #style} config, or the same color as the line.
+     *
+     * Note: Do not confuse `series.config.fill` (which is a boolean) with `series.style.fill' (which is an alias
+     * for the `fillStyle` property and contains a color). For compatibility with previous versions of the API,
+     * if `config.fill` is undefined but a `style.fill' color is provided, `config.fill` is considered true.
+     * So the default value below must be undefined, not false.
+     */
+    fill: undefined,
+
+    aggregator: { strategy: "double" }
+  },
+
+  /**
+   * @private
+   * Default numeric smoothing value to be used when `{@link #smooth} = true`.
+   */
+  defaultSmoothness: 3,
+
+  /**
+   * @private
+   * Size of the buffer area on either side of the viewport to provide seamless zoom/pan
+   * transforms. Expressed as a multiple of the viewport length, e.g. 1 will make the buffer on
+   * each side equal to the length of the visible axis viewport.
+   */
+  overflowBuffer: 1,
+
+  themeMarkerCount: function () {
+    return 1;
+  },
+
+  /**
+   * @private
+   * Override {@link Ext.chart.series.Series#getDefaultSpriteConfig}
+   */
+  getDefaultSpriteConfig: function () {
+    var me = this,
+      parentConfig = me.callParent(arguments),
+      style = Ext.apply({}, me.getStyle()),
+      styleWithTheme,
+      fillArea = false;
+
+    if (typeof me.config.fill != "undefined") {
+      // If config.fill is present but there is no fillStyle, then use the
+      // strokeStyle to fill (and paint the area the same color as the line).
+      if (me.config.fill) {
+        fillArea = true;
+        if (typeof style.fillStyle == "undefined") {
+          if (typeof style.strokeStyle == "undefined") {
+            styleWithTheme = me.getStyleWithTheme();
+            style.fillStyle = styleWithTheme.fillStyle;
+            style.strokeStyle = styleWithTheme.strokeStyle;
+          } else {
+            style.fillStyle = style.strokeStyle;
+          }
         }
-
-        // If we don't fill, then delete the fillStyle because that's what is used by
-        // the Line sprite to fill below the line.
-        if (!fillArea) {
-            delete style.fillStyle;
-        }
-
-        style = Ext.apply(parentConfig || {}, style);
-
-        return Ext.apply(style, {
-            fillArea: fillArea,
-            step: me.config.step,
-            smooth: me.config.smooth,
-            selectionTolerance: me.config.selectionTolerance
-        });
-    },
-
-    updateStep: function (step) {
-        var sprite = this.getSprites()[0];
-        if (sprite && sprite.attr.step !== step) {
-            sprite.setAttributes({step: step});
-        }
-    },
-
-    updateFill: function (fill) {
-        var sprite = this.getSprites()[0];
-        if (sprite && sprite.attr.fillArea !== fill) {
-            sprite.setAttributes({fillArea: fill});
-        }
-    },
-
-    updateSmooth: function (smooth) {
-        var sprite = this.getSprites()[0];
-        if (sprite && sprite.attr.smooth !== smooth) {
-            sprite.setAttributes({smooth: smooth});
-        }
-    },
-
-    updateNullStyle: function (nullStyle) {
-        var sprite = this.getSprites()[0];
-        if (sprite && sprite.attr.nullStyle !== nullStyle) {
-            sprite.setAttributes({nullStyle: nullStyle});
-        }
+      }
+    } else {
+      // For compatibility with previous versions of the API, if config.fill
+      // is undefined but style.fillStyle is provided, we fill the area.
+      if (style.fillStyle) {
+        fillArea = true;
+      }
     }
 
+    // If we don't fill, then delete the fillStyle because that's what is used by
+    // the Line sprite to fill below the line.
+    if (!fillArea) {
+      delete style.fillStyle;
+    }
+
+    style = Ext.apply(parentConfig || {}, style);
+
+    return Ext.apply(style, {
+      fillArea: fillArea,
+      step: me.config.step,
+      smooth: me.config.smooth,
+      selectionTolerance: me.config.selectionTolerance
+    });
+  },
+
+  updateStep: function (step) {
+    var sprite = this.getSprites()[0];
+    if (sprite && sprite.attr.step !== step) {
+      sprite.setAttributes({ step: step });
+    }
+  },
+
+  updateFill: function (fill) {
+    var sprite = this.getSprites()[0];
+    if (sprite && sprite.attr.fillArea !== fill) {
+      sprite.setAttributes({ fillArea: fill });
+    }
+  },
+
+  updateSmooth: function (smooth) {
+    var sprite = this.getSprites()[0];
+    if (sprite && sprite.attr.smooth !== smooth) {
+      sprite.setAttributes({ smooth: smooth });
+    }
+  },
+
+  updateNullStyle: function (nullStyle) {
+    var sprite = this.getSprites()[0];
+    if (sprite && sprite.attr.nullStyle !== nullStyle) {
+      sprite.setAttributes({ nullStyle: nullStyle });
+    }
+  }
 });

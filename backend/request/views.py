@@ -49,6 +49,7 @@ from django.db.models import Q
 from constance import config
 from openpyxl import Workbook
 from openpyxl.styles import Font
+from django.contrib.auth.decorators import login_required
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -1312,6 +1313,12 @@ class RequestViewSet(viewsets.ModelViewSet):
     def put_filepaths(self, request, pk=None):
         instance = self.get_object()
         instance.filepaths = request.data
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        for r in records:
+            # 'Sequencing' -> 'Delivered'
+            if r.status == 5:
+                r.status += 1
+                r.save()
         instance.save(update_fields=["filepaths"])
         return Response({"success": True})
 
@@ -1469,10 +1476,7 @@ class ApproveViewSet(viewsets.ModelViewSet):
             from_email=settings.SERVER_EMAIL,
             recipient_list=[instance.user.email, instance.user.pi.email],
         )
-        return HttpResponseRedirect("/")
-
-from django.contrib.auth.decorators import login_required
-
+        return HttpResponseRedirect("/danke")
 
 @login_required
 def approve_request_redirect(request):

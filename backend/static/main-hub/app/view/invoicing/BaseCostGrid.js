@@ -3,7 +3,7 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
   alias: "widget.costgrid",
 
   viewConfig: {
-    stripeRows: false,
+    stripeRows: false
   },
 
   tools: [
@@ -17,8 +17,8 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
             this.up("panel").configUrl
           )
         );
-      },
-    },
+      }
+    }
   ],
 
   hideHeaders: true,
@@ -32,7 +32,7 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
       text: "Name",
       dataIndex: "name",
       renderer: "gridCellTooltipRenderer",
-      flex: 1,
+      flex: 1
     },
     {
       text: "Price",
@@ -40,10 +40,10 @@ Ext.define("MainHub.view.invoicing.BaseCostGrid", {
       renderer: Ext.util.Format.deMoney,
       editor: {
         xtype: "numberfield",
-        minValue: 0,
+        minValue: 0
       },
-      width: 100,
-    },
+      width: 100
+    }
   ],
 
   plugins: [

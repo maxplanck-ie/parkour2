@@ -4,53 +4,57 @@
  * Please refer to the {@link Ext.Viewport} documentation about using the global instance.
  * @private
  */
-Ext.define('Ext.viewport.Viewport', {
-    requires: [
-        'Ext.viewport.Ios',
-        'Ext.viewport.Android',
-        'Ext.viewport.WindowsPhone'
-    ],
-    singleton: true,
+Ext.define("Ext.viewport.Viewport", {
+  requires: [
+    "Ext.viewport.Ios",
+    "Ext.viewport.Android",
+    "Ext.viewport.WindowsPhone"
+  ],
+  singleton: true,
 
-    setup: function (config) {
-        var osName = Ext.os.name,
-            viewportName,
-            viewport;
+  setup: function (config) {
+    var osName = Ext.os.name,
+      viewportName,
+      viewport;
 
-        switch (osName) {
-            case 'Android':
-                viewportName = (Ext.browser.name === 'ChromeMobile') ? 'Default' : 'Android';
-                break;
+    switch (osName) {
+      case "Android":
+        viewportName =
+          Ext.browser.name === "ChromeMobile" ? "Default" : "Android";
+        break;
 
-            case 'iOS':
-                viewportName = 'Ios';
-                break;
+      case "iOS":
+        viewportName = "Ios";
+        break;
 
-            case 'Windows':
-                viewportName = (Ext.browser.name === 'IE') ? 'WindowsPhone' : 'Default';
-                break;
+      case "Windows":
+        viewportName = Ext.browser.name === "IE" ? "WindowsPhone" : "Default";
+        break;
 
-            case 'WindowsPhone':
-                viewportName = 'WindowsPhone';
-                break;
+      case "WindowsPhone":
+        viewportName = "WindowsPhone";
+        break;
 
-            default:
-                viewportName = 'Default';
-                break;
-        }
-
-        Ext.Viewport = viewport = Ext.create('Ext.viewport.' + viewportName, config);
-
-        // If there are already floated components at the global level, ensure the global floatRoot
-        // is top of the DOM otherwise the viewport body element occludes it.
-        if (Ext.floatRoot) {
-            viewport.floatWrap = Ext.floatRoot;
-            viewport.element.dom.appendChild(Ext.floatRoot.dom);
-            Ext.floatRoot.getData().component = viewport;
-        }
-        
-        return viewport;
+      default:
+        viewportName = "Default";
+        break;
     }
+
+    Ext.Viewport = viewport = Ext.create(
+      "Ext.viewport." + viewportName,
+      config
+    );
+
+    // If there are already floated components at the global level, ensure the global floatRoot
+    // is top of the DOM otherwise the viewport body element occludes it.
+    if (Ext.floatRoot) {
+      viewport.floatWrap = Ext.floatRoot;
+      viewport.element.dom.appendChild(Ext.floatRoot.dom);
+      Ext.floatRoot.getData().component = viewport;
+    }
+
+    return viewport;
+  }
 });
 
 // Docs for the singleton instance created by above factory:

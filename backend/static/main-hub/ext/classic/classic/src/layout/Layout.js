@@ -2,20 +2,17 @@
  * This class is the base for all layout types: component and container.
  * @protected
  */
-Ext.define('Ext.layout.Layout', {
-    mixins: [
-        'Ext.mixin.Factoryable'
-    ],
+Ext.define(
+  "Ext.layout.Layout",
+  {
+    mixins: ["Ext.mixin.Factoryable"],
 
-    requires: [
-        'Ext.XTemplate',
-        'Ext.layout.SizeModel'
-    ],
+    requires: ["Ext.XTemplate", "Ext.layout.SizeModel"],
 
-    uses: [ 'Ext.layout.Context' ],
+    uses: ["Ext.layout.Context"],
 
     factoryConfig: {
-        type: 'layout'
+      type: "layout"
     },
 
     /**
@@ -49,26 +46,26 @@ Ext.define('Ext.layout.Layout', {
     setsItemSize: true,
 
     autoSizePolicy: {
-        readsWidth: 1,
-        readsHeight: 1,
-        setsWidth: 0,
-        setsHeight: 0
+      readsWidth: 1,
+      readsHeight: 1,
+      setsWidth: 0,
+      setsHeight: 0
     },
 
     $configPrefixed: false,
     $configStrict: false,
 
-    constructor : function(config) {
-        var me = this;
+    constructor: function (config) {
+      var me = this;
 
-        me.id = Ext.id(null, me.type + '-');
+      me.id = Ext.id(null, me.type + "-");
 
-        me.initConfig(config);
+      me.initConfig(config);
 
-        // prevent any "type" that was passed as the alias from overriding the "type"
-        // property from the prototype
-        delete me.type;
-        me.layoutCount = 0;
+      // prevent any "type" that was passed as the alias from overriding the "type"
+      // property from the prototype
+      delete me.type;
+      me.layoutCount = 0;
     },
 
     /**
@@ -79,10 +76,10 @@ Ext.define('Ext.layout.Layout', {
 
     /**
      * Called before any calculation cycles to prepare for layout.
-     * 
+     *
      * This is a write phase and DOM reads should be strictly avoided when overridding
      * this method.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method beginLayout
@@ -91,38 +88,38 @@ Ext.define('Ext.layout.Layout', {
 
     /**
      * Called before any calculation cycles to reset DOM values and prepare for calculation.
-     * 
+     *
      * This is a write phase and DOM reads should be strictly avoided when overridding
      * this method.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method beginLayoutCycle
      */
     beginLayoutCycle: function (ownerContext) {
-        var me = this,
-            context = me.context,
-            changed;
+      var me = this,
+        context = me.context,
+        changed;
 
-        if (me.lastWidthModel !== ownerContext.widthModel) {
-            if (me.lastWidthModel) {
-                changed = true;
-            }
-            me.lastWidthModel = ownerContext.widthModel;
+      if (me.lastWidthModel !== ownerContext.widthModel) {
+        if (me.lastWidthModel) {
+          changed = true;
         }
+        me.lastWidthModel = ownerContext.widthModel;
+      }
 
-        if (me.lastHeightModel !== ownerContext.heightModel) {
-            if (me.lastWidthModel) {
-                changed = true;
-            }
-            me.lastHeightModel = ownerContext.heightModel;
+      if (me.lastHeightModel !== ownerContext.heightModel) {
+        if (me.lastWidthModel) {
+          changed = true;
         }
+        me.lastHeightModel = ownerContext.heightModel;
+      }
 
-        if (changed) {
-            (context = ownerContext.context).clearTriggers(me, false);
-            context.clearTriggers(me, true);
-            me.triggerCount = 0;
-        }
+      if (changed) {
+        (context = ownerContext.context).clearTriggers(me, false);
+        context.clearTriggers(me, true);
+        me.triggerCount = 0;
+      }
     },
 
     /**
@@ -130,11 +127,11 @@ Ext.define('Ext.layout.Layout', {
      * least once and may be called repeatedly if the {@link #done} property is cleared
      * before return to indicate that this layout is not yet done. The {@link #done} property
      * is always set to `true` before entering this method.
-     * 
+     *
      * This is a read phase and DOM writes should be strictly avoided in derived classes.
      * Instead, DOM writes need to be written to {@link Ext.layout.ContextItem} objects to
      *  be flushed at the next opportunity.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method calculate
@@ -148,14 +145,14 @@ Ext.define('Ext.layout.Layout', {
      * in which case, this method will not be called. It is also possible for this method to
      * be called and then later the layout becomes invalidated. This will result in
      * {@link #calculate} being called again, followed by another call to this method.
-     * 
+     *
      * This is a read phase and DOM writes should be strictly avoided in derived classes.
      * Instead, DOM writes need to be written to {@link Ext.layout.ContextItem} objects to
      * be flushed at the next opportunity.
-     * 
+     *
      * This method need not be implemented by derived classes and, in fact, should only be
      * implemented when needed.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method completeLayout
@@ -169,14 +166,14 @@ Ext.define('Ext.layout.Layout', {
      * is best to avoid invalidating layouts at this point whenever possible. Even so, this
      * method can be used to perform final checks that may require all other layouts to be
      * complete and then invalidate some results.
-     * 
+     *
      * This is a read phase and DOM writes should be strictly avoided in derived classes.
      * Instead, DOM writes need to be written to {@link Ext.layout.ContextItem} objects to
      * be flushed at the next opportunity.
-     * 
+     *
      * This method need not be implemented by derived classes and, in fact, should only be
      * implemented when needed.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method finalizeLayout
@@ -186,41 +183,41 @@ Ext.define('Ext.layout.Layout', {
      * This method is called after all layouts are complete and their calculations flushed
      * to the DOM. No further layouts will be run and this method is only called once per
      * layout run. The base component layout caches `lastComponentSize`.
-     * 
+     *
      * This is a write phase and DOM reads should be avoided if possible when overridding
      * this method.
-     * 
+     *
      * This method need not be implemented by derived classes and, in fact, should only be
      * implemented when needed.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      */
     finishedLayout: function (ownerContext) {
-        this.lastWidthModel = ownerContext.widthModel;
-        this.lastHeightModel = ownerContext.heightModel;
-        this.ownerContext = null;
+      this.lastWidthModel = ownerContext.widthModel;
+      this.lastHeightModel = ownerContext.heightModel;
+      this.ownerContext = null;
     },
-    
+
     /**
      * This method (if implemented) is called after all layouts are finished, and all have
      * a `lastComponentSize` cached. No further layouts will be run and this method is only
      * called once per layout run. It is the bookend to {@link #beginLayout}.
-     * 
+     *
      * This is a write phase and DOM reads should be avoided if possible when overridding
      * this method. This is the catch-all tail method to a layout and so the rules are more
      * relaxed. Even so, for performance reasons, it is best to avoid reading the DOM. If
      * a read is necessary, consider implementing a {@link #finalizeLayout} method to do the
      * required reads.
-     * 
+     *
      * This method need not be implemented by derived classes and, in fact, should only be
      * implemented when needed.
-     * 
+     *
      * @param {Ext.layout.ContextItem} ownerContext The context item for the layout's owner
      * component.
      * @method notifyOwner
      */
-    
+
     redoLayout: Ext.emptyFn,
     undoLayout: Ext.emptyFn,
 
@@ -234,8 +231,8 @@ Ext.define('Ext.layout.Layout', {
      * @since 4.1.0
      */
 
-    getAnimatePolicy: function() {
-        return this.animatePolicy;
+    getAnimatePolicy: function () {
+      return this.animatePolicy;
     },
 
     /**
@@ -248,34 +245,37 @@ Ext.define('Ext.layout.Layout', {
      * @protected
      */
     getItemSizePolicy: function (item) {
-        return this.autoSizePolicy;
+      return this.autoSizePolicy;
     },
 
     isItemBoxParent: function (itemContext) {
-        return false;
+      return false;
     },
 
     isItemLayoutRoot: function (item) {
-        var sizeModel = item.getSizeModel(),
-            width = sizeModel.width,
-            height = sizeModel.height;
+      var sizeModel = item.getSizeModel(),
+        width = sizeModel.width,
+        height = sizeModel.height;
 
-        // If this component has never had a layout and some of its dimensions are set by
-        // its ownerLayout, we cannot be the layoutRoot...
-        if (!item.componentLayout.lastComponentSize && (width.calculated || height.calculated)) {
-            return false;
-        }
+      // If this component has never had a layout and some of its dimensions are set by
+      // its ownerLayout, we cannot be the layoutRoot...
+      if (
+        !item.componentLayout.lastComponentSize &&
+        (width.calculated || height.calculated)
+      ) {
+        return false;
+      }
 
-        // otherwise an ownerCt whose size is not effected by its content is a root
-        return !width.shrinkWrap && !height.shrinkWrap;
+      // otherwise an ownerCt whose size is not effected by its content is a root
+      return !width.shrinkWrap && !height.shrinkWrap;
     },
 
     isItemShrinkWrap: function (item) {
-        return item.shrinkWrap;
+      return item.shrinkWrap;
     },
 
     isRunning: function () {
-        return !!this.ownerContext;
+      return !!this.ownerContext;
     },
 
     //-----------------------------------------------------
@@ -301,69 +301,71 @@ Ext.define('Ext.layout.Layout', {
     //-----------------------------------------------------
 
     getItemsRenderTree: function (items, renderCfgs) {
-        var length = items.length,
-            i, item, itemConfig, result;
+      var length = items.length,
+        i,
+        item,
+        itemConfig,
+        result;
 
-        if (length) {
-            result = [];
-            for (i = 0; i < length; ++i) {
-                item = items[i];
+      if (length) {
+        result = [];
+        for (i = 0; i < length; ++i) {
+          item = items[i];
 
-                // If we are being asked to move an already rendered Component, we must not recalculate its renderTree
-                // and rerun its render process. The Layout's isValidParent check will ensure that the DOM is moved into place.
-                if (!item.rendered) {
-
-                    // If we've already calculated the item's element config, don't calculate it again.
-                    // This may happen if the rendering process mutates the owning Container's items
-                    // collection, and Ext.layout.Container#getRenderTree runs through the collection again.
-                    // Note that the config may be null if a beforerender listener vetoed the operation, so
-                    // we must compare to undefined.
-                    if (renderCfgs && (renderCfgs[item.id] !== undefined)) {
-                        itemConfig = renderCfgs[item.id];
-                    } else {
-                        // Perform layout preprocessing in the bulk render path
-                        this.configureItem(item);
-                        itemConfig = item.getRenderTree();
-                        if (renderCfgs) {
-                            renderCfgs[item.id] = itemConfig;
-                        }
-                    }
-
-                    // itemConfig mey be null if a beforerender listener vetoed the operation.
-                    if (itemConfig) {
-                        result.push(itemConfig);
-                    }
-                }
+          // If we are being asked to move an already rendered Component, we must not recalculate its renderTree
+          // and rerun its render process. The Layout's isValidParent check will ensure that the DOM is moved into place.
+          if (!item.rendered) {
+            // If we've already calculated the item's element config, don't calculate it again.
+            // This may happen if the rendering process mutates the owning Container's items
+            // collection, and Ext.layout.Container#getRenderTree runs through the collection again.
+            // Note that the config may be null if a beforerender listener vetoed the operation, so
+            // we must compare to undefined.
+            if (renderCfgs && renderCfgs[item.id] !== undefined) {
+              itemConfig = renderCfgs[item.id];
+            } else {
+              // Perform layout preprocessing in the bulk render path
+              this.configureItem(item);
+              itemConfig = item.getRenderTree();
+              if (renderCfgs) {
+                renderCfgs[item.id] = itemConfig;
+              }
             }
-        }
 
-        return result;
+            // itemConfig mey be null if a beforerender listener vetoed the operation.
+            if (itemConfig) {
+              result.push(itemConfig);
+            }
+          }
+        }
+      }
+
+      return result;
     },
 
     finishRender: Ext.emptyFn,
 
     finishRenderItems: function (target, items) {
-        var length = items.length,
-            i, item;
+      var length = items.length,
+        i,
+        item;
 
-        for (i = 0; i < length; i++) {
-            item = items[i];
+      for (i = 0; i < length; i++) {
+        item = items[i];
 
-            // Only postprocess items which are being rendered. deferredRender may mean that only one has been rendered.
-            if (item.rendering) {
-
-                // Tell the item at which index in the Container it is
-                item.finishRender(i);
-            }
+        // Only postprocess items which are being rendered. deferredRender may mean that only one has been rendered.
+        if (item.rendering) {
+          // Tell the item at which index in the Container it is
+          item.finishRender(i);
         }
+      }
     },
 
     renderChildren: function () {
-        var me = this,
-            items = me.getLayoutItems(),
-            target = me.getRenderTarget();
+      var me = this,
+        items = me.getLayoutItems(),
+        target = me.getRenderTarget();
 
-        me.renderItems(items, target);
+      me.renderItems(items, target);
     },
 
     /**
@@ -371,50 +373,50 @@ Ext.define('Ext.layout.Layout', {
      * also determines if the items are in the proper place in the dom.
      * @protected
      */
-    renderItems : function(items, target) {
-        var me = this,
-            ln = items.length,
-            i = 0,
-            pos = 0,
-            item;
+    renderItems: function (items, target) {
+      var me = this,
+        ln = items.length,
+        i = 0,
+        pos = 0,
+        item;
 
-        if (ln) {
-            Ext.suspendLayouts();
-            for (; i < ln; i++, pos++) {
-                item = items[i];
-                if (item && !item.rendered) {
-                    me.renderItem(item, target, pos);
-                } else if (item.ignoreDomPosition) {
-                    --pos;
-                } else if (!me.isValidParent(item, target, pos)) {
-                    me.moveItem(item, target, pos);
-                } else {
-                    // still need to configure the item, it may have moved in the container.
-                    me.configureItem(item);
-                }
-            }
-            Ext.resumeLayouts(true);
+      if (ln) {
+        Ext.suspendLayouts();
+        for (; i < ln; i++, pos++) {
+          item = items[i];
+          if (item && !item.rendered) {
+            me.renderItem(item, target, pos);
+          } else if (item.ignoreDomPosition) {
+            --pos;
+          } else if (!me.isValidParent(item, target, pos)) {
+            me.moveItem(item, target, pos);
+          } else {
+            // still need to configure the item, it may have moved in the container.
+            me.configureItem(item);
+          }
         }
+        Ext.resumeLayouts(true);
+      }
     },
 
     /**
      * Validates item is in the proper place in the dom.
      * @protected
      */
-    isValidParent : function(item, target, position) {
-        var targetDom = (target && target.dom) || target,
-            itemDom = this.getItemLayoutEl(item);
+    isValidParent: function (item, target, position) {
+      var targetDom = (target && target.dom) || target,
+        itemDom = this.getItemLayoutEl(item);
 
-        // Test DOM nodes for equality using "===" : http://jsperf.com/dom-equality-test
-        if (itemDom && targetDom) {
-            if (typeof position === 'number') {
-                position = this.getPositionOffset(position);
-                return itemDom === targetDom.childNodes[position];
-            }
-            return itemDom.parentNode === targetDom;
+      // Test DOM nodes for equality using "===" : http://jsperf.com/dom-equality-test
+      if (itemDom && targetDom) {
+        if (typeof position === "number") {
+          position = this.getPositionOffset(position);
+          return itemDom === targetDom.childNodes[position];
         }
+        return itemDom.parentNode === targetDom;
+      }
 
-        return false;
+      return false;
     },
 
     /**
@@ -425,23 +427,26 @@ Ext.define('Ext.layout.Layout', {
      * @param {Ext.Component} item
      * @return {HTMLElement}
      */
-    getItemLayoutEl: function(item) {
-        var dom = item.el ? item.el.dom : Ext.getDom(item),
-            parentNode = dom.parentNode,
-            className;
+    getItemLayoutEl: function (item) {
+      var dom = item.el ? item.el.dom : Ext.getDom(item),
+        parentNode = dom.parentNode,
+        className;
 
-        if (parentNode) {
-            className = parentNode.className;
-            if (className && className.indexOf(Ext.baseCSSPrefix + 'resizable-wrap') !== -1) {
-                dom = dom.parentNode;
-            }
+      if (parentNode) {
+        className = parentNode.className;
+        if (
+          className &&
+          className.indexOf(Ext.baseCSSPrefix + "resizable-wrap") !== -1
+        ) {
+          dom = dom.parentNode;
         }
+      }
 
-        return dom;
+      return dom;
     },
-    
-    getPositionOffset: function(position){
-        return position;
+
+    getPositionOffset: function (position) {
+      return position;
     },
 
     /**
@@ -449,8 +454,8 @@ Ext.define('Ext.layout.Layout', {
      * @param {Ext.Component} item The item to be configured
      * @protected
      */
-    configureItem: function(item) {
-        item.ownerLayout = this;
+    configureItem: function (item) {
+      item.ownerLayout = this;
     },
 
     /**
@@ -460,195 +465,198 @@ Ext.define('Ext.layout.Layout', {
      * @param {Number} position The position within the target to render the item to
      * @private
      */
-    renderItem : function(item, target, position) {
-        var me = this;
+    renderItem: function (item, target, position) {
+      var me = this;
 
-        if (!item.rendered) {
-            me.configureItem(item);
+      if (!item.rendered) {
+        me.configureItem(item);
 
-            item.render(target, position);
-        }
+        item.render(target, position);
+      }
     },
 
     /**
      * Moves Component to the provided target instead.
      * @private
      */
-    moveItem : function(item, target, position) {
-        var activeEl = Ext.Element.getActiveElement(true);
+    moveItem: function (item, target, position) {
+      var activeEl = Ext.Element.getActiveElement(true);
 
-        target = target.dom || target;
-        if (typeof position === 'number') {
-            position = target.childNodes[position];
-        }
+      target = target.dom || target;
+      if (typeof position === "number") {
+        position = target.childNodes[position];
+      }
 
-        // If the element we are about to move contains focus, ensure we don't
-        // disturb application state when it blurs on remove.
-        // 
-        // That's if it blurs on remove! Some browsers don't, which leaves
-        // focus "stranded" with framework and app state set, and rendition
-        // set on an element while the element is in fact not focused.
-        // By actively restoring focus afterwards we avoid an inconsistent state.
-        // Specifically: https://sencha.jira.com/browse/EXTJS-20609
-        if (item.el.contains(activeEl)) {
-            activeEl.suspendFocusEvents();
-        } else {
-            activeEl = null;
-        }
+      // If the element we are about to move contains focus, ensure we don't
+      // disturb application state when it blurs on remove.
+      //
+      // That's if it blurs on remove! Some browsers don't, which leaves
+      // focus "stranded" with framework and app state set, and rendition
+      // set on an element while the element is in fact not focused.
+      // By actively restoring focus afterwards we avoid an inconsistent state.
+      // Specifically: https://sencha.jira.com/browse/EXTJS-20609
+      if (item.el.contains(activeEl)) {
+        activeEl.suspendFocusEvents();
+      } else {
+        activeEl = null;
+      }
 
-        target.insertBefore(item.el.dom, position || null);
-        item.container = Ext.get(target);
-        this.configureItem(item);
+      target.insertBefore(item.el.dom, position || null);
+      item.container = Ext.get(target);
+      this.configureItem(item);
 
-        // If we moved the element that contained focus, silently restore it.
-        if (activeEl) {
-            activeEl.focus();
-            activeEl.resumeFocusEvents();
-        }
+      // If we moved the element that contained focus, silently restore it.
+      if (activeEl) {
+        activeEl.focus();
+        activeEl.resumeFocusEvents();
+      }
     },
 
     /**
      * This method is called when a child item changes in some way. By default this calls
      * {@link Ext.Component#updateLayout} on this layout's owner.
-     * 
+     *
      * @param {Ext.Component} child The child item that has changed.
      * @return {Boolean} True if this layout has handled the content change.
      */
     onContentChange: function () {
-        this.owner.updateLayout();
-        return true;
+      this.owner.updateLayout();
+      return true;
     },
 
     /**
      * A one-time initialization method called just before rendering.
      * @protected
      */
-    initLayout : function() {
-        this.initialized = true;
+    initLayout: function () {
+      this.initialized = true;
     },
 
     /**
      * @private
      * Sets the layout owner
      */
-    setOwner : function(owner) {
-        this.owner = owner;
+    setOwner: function (owner) {
+      this.owner = owner;
     },
 
     /**
      * Returns the set of items to layout (empty by default).
      * @protected
      */
-    getLayoutItems : function() {
-        return [];
+    getLayoutItems: function () {
+      return [];
     },
 
     onAdd: function (item) {
-        item.ownerLayout = this;
+      item.ownerLayout = this;
     },
 
-    onRemove : Ext.emptyFn,
-    onDestroy : Ext.emptyFn,
+    onRemove: Ext.emptyFn,
+    onDestroy: Ext.emptyFn,
 
     /**
      * Removes layout's itemCls and owning Container's itemCls.
      * Clears the managed dimensions flags
      * @protected
      */
-    afterRemove: function(item) {
-        var me = this,
-            el = item.el,
-            owner = me.owner,
-            removeClasses;
+    afterRemove: function (item) {
+      var me = this,
+        el = item.el,
+        owner = me.owner,
+        removeClasses;
 
-        if (item.rendered) {
-            removeClasses = [].concat(me.itemCls || []);
-            if (owner.itemCls) {
-                removeClasses = Ext.Array.push(removeClasses, owner.itemCls);
-            }
-            if (removeClasses.length) {
-                el.removeCls(removeClasses);
-            }
+      if (item.rendered) {
+        removeClasses = [].concat(me.itemCls || []);
+        if (owner.itemCls) {
+          removeClasses = Ext.Array.push(removeClasses, owner.itemCls);
         }
+        if (removeClasses.length) {
+          el.removeCls(removeClasses);
+        }
+      }
 
-        delete item.ownerLayout;
+      delete item.ownerLayout;
     },
 
     /**
      * @private
      * Called by an owning Panel after the Panel finishes its collapse process.
      */
-    afterCollapse: function(owner, animated) {
-        if (animated) {
-            this.onContentChange(owner);
-        }
+    afterCollapse: function (owner, animated) {
+      if (animated) {
+        this.onContentChange(owner);
+      }
     },
 
     /**
      * @private
      * Called by an owning Panel after the Panel finishes its expand process.
      */
-    afterExpand: function(owner, animated) {
-        if (animated) {
-            this.onContentChange(owner);
-        }
+    afterExpand: function (owner, animated) {
+      if (animated) {
+        this.onContentChange(owner);
+      }
     },
 
     /**
      * Destroys this layout. This method removes a `targetCls` from the `target`
      * element and calls `onDestroy`.
-     * 
+     *
      * A derived class can override either this method or `onDestroy` but in all
      * cases must call the base class versions of these methods to allow the base class to
      * perform its cleanup.
-     * 
+     *
      * This method (or `onDestroy`) are overridden by subclasses most often to purge
      * event handlers or remove unmanged DOM nodes.
      *
      * @protected
      */
-    destroy: function() {
-        var me = this,
-            target;
+    destroy: function () {
+      var me = this,
+        target;
 
-        if (me.targetCls) {
-            target = me.getTarget();
-            if (target) {
-                target.removeCls(me.targetCls);
-            }
+      if (me.targetCls) {
+        target = me.getTarget();
+        if (target) {
+          target.removeCls(me.targetCls);
         }
+      }
 
-        if (!me.onDestroy.$emptyFn) {
-            me.onDestroy();
-        }
-        
-        me.callParent();
+      if (!me.onDestroy.$emptyFn) {
+        me.onDestroy();
+      }
+
+      me.callParent();
     },
 
     sortWeightedItems: function (items, reverseProp) {
-        for (var i = 0, length = items.length; i < length; ++i) {
-            items[i].$i = i;
+      for (var i = 0, length = items.length; i < length; ++i) {
+        items[i].$i = i;
+      }
+
+      Ext.Array.sort(items, function (item1, item2) {
+        var ret = item2.weight - item1.weight;
+
+        if (!ret) {
+          ret = item1.$i - item2.$i;
+          if (item1[reverseProp]) {
+            ret = -ret;
+          }
         }
 
-        Ext.Array.sort(items, function (item1, item2) {
-            var ret = item2.weight - item1.weight;
+        return ret;
+      });
 
-            if (!ret) {
-                ret = item1.$i - item2.$i;
-                if (item1[reverseProp]) {
-                    ret = -ret;
-                }
-            }
-
-            return ret;
-        });
-
-        for (i = 0; i < length; ++i) {
-            delete items[i].$i;
-        }
+      for (i = 0; i < length; ++i) {
+        delete items[i].$i;
+      }
     }
-}, function () {
+  },
+  function () {
     var Layout = this;
 
-    Layout.prototype.sizeModels = Layout.sizeModels = Ext.layout.SizeModel.sizeModels;
-});
+    Layout.prototype.sizeModels = Layout.sizeModels =
+      Ext.layout.SizeModel.sizeModels;
+  }
+);

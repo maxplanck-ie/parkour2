@@ -16,9 +16,9 @@
  *
  * The default layout for RadioGroup makes it easy to arrange the radio buttons into
  * columns; see the {@link #columns} and {@link #vertical} config documentation for details. You may also
- * use a completely different layout by setting the {@link #cfg-layout} to one of the 
- * other supported layout types; for instance you may wish to use a custom arrangement 
- * of hbox and vbox containers. In that case the Radio components at any depth will 
+ * use a completely different layout by setting the {@link #cfg-layout} to one of the
+ * other supported layout types; for instance you may wish to use a custom arrangement
+ * of hbox and vbox containers. In that case the Radio components at any depth will
  * still be managed by the RadioGroup's validation.
  *
  * # Example usage
@@ -48,9 +48,11 @@
  *     });
  *
  */
-Ext.define('Ext.form.RadioGroup', {
-    extend: 'Ext.form.CheckboxGroup',
-    xtype: 'radiogroup',
+Ext.define(
+  "Ext.form.RadioGroup",
+  {
+    extend: "Ext.form.CheckboxGroup",
+    xtype: "radiogroup",
 
     /**
      * @property {Boolean} isRadioGroup
@@ -60,9 +62,7 @@ Ext.define('Ext.form.RadioGroup', {
      */
     isRadioGroup: true,
 
-    requires: [
-        'Ext.form.field.Radio'
-    ],
+    requires: ["Ext.form.field.Radio"],
 
     /**
      * @cfg {Ext.form.field.Radio[]/Object[]} items
@@ -76,17 +76,17 @@ Ext.define('Ext.form.RadioGroup', {
      * If allowBlank = false and no items are selected at validation time,
      * {@link #blankText} will be used as the error text.
      */
-    allowBlank : true,
+    allowBlank: true,
 
     //<locale>
     /**
      * @cfg {String} blankText
      * Error text to display if the {@link #allowBlank} validation fails
      */
-    blankText : 'You must select one item in this group',
+    blankText: "You must select one item in this group",
     //</locale>
 
-    defaultType: 'radiofield',
+    defaultType: "radiofield",
 
     /**
      * @cfg {Boolean} [local=false]
@@ -112,88 +112,92 @@ Ext.define('Ext.form.RadioGroup', {
      */
     simpleValue: false,
 
-    defaultBindProperty: 'value',
+    defaultBindProperty: "value",
 
     /**
      * @private
      */
-    groupCls : Ext.baseCSSPrefix + 'form-radio-group',
-    
-    ariaRole: 'radiogroup',
-    
-    initRenderData: function() {
-        var me = this,
-            data, ariaAttr;
-        
-        data = me.callParent();
-        ariaAttr = data.ariaAttributes;
-        
-        if (ariaAttr) {
-            ariaAttr['aria-required'] = !me.allowBlank;
-            ariaAttr['aria-invalid']  = false;
-        }
-        
-        return data;
+    groupCls: Ext.baseCSSPrefix + "form-radio-group",
+
+    ariaRole: "radiogroup",
+
+    initRenderData: function () {
+      var me = this,
+        data,
+        ariaAttr;
+
+      data = me.callParent();
+      ariaAttr = data.ariaAttributes;
+
+      if (ariaAttr) {
+        ariaAttr["aria-required"] = !me.allowBlank;
+        ariaAttr["aria-invalid"] = false;
+      }
+
+      return data;
     },
 
-    lookupComponent: function(config) {
-        var result = this.callParent([config]);
+    lookupComponent: function (config) {
+      var result = this.callParent([config]);
 
-        // Local means that the exclusivity of checking by name is scoped to this RadioGroup.
-        // So multiple RadioGroups can be used which use the same Radio names.
-        // This enables their use as a grid widget.
-        if (this.local) {
-            result.formId = this.getId();
-        }
-        return result;
+      // Local means that the exclusivity of checking by name is scoped to this RadioGroup.
+      // So multiple RadioGroups can be used which use the same Radio names.
+      // This enables their use as a grid widget.
+      if (this.local) {
+        result.formId = this.getId();
+      }
+      return result;
     },
-    
-    getBoxes: function(query, root) {
-        return (root || this).query('[isRadio]' + (query||''));
-    },
-    
-    checkChange: function() {
-        var me = this,
-            value, key;
-        
-        value = me.getValue();
 
-        // Safari might throw an exception on trying to get the keys of a Number
-        key = typeof value === 'object' && Ext.Object.getKeys(value)[0];
-            
-        // If the value is an array we skip out here because it's during a change
-        // between multiple items, so we never want to fire a change
-        if (me.simpleValue || (key && !Ext.isArray(value[key]))) {
-            me.callParent(arguments);
-        }
+    getBoxes: function (query, root) {
+      return (root || this).query("[isRadio]" + (query || ""));
+    },
+
+    checkChange: function () {
+      var me = this,
+        value,
+        key;
+
+      value = me.getValue();
+
+      // Safari might throw an exception on trying to get the keys of a Number
+      key = typeof value === "object" && Ext.Object.getKeys(value)[0];
+
+      // If the value is an array we skip out here because it's during a change
+      // between multiple items, so we never want to fire a change
+      if (me.simpleValue || (key && !Ext.isArray(value[key]))) {
+        me.callParent(arguments);
+      }
     },
 
     isEqual: function (value1, value2) {
-        if (this.simpleValue) {
-            return value1 === value2;
-        }
-        return this.callParent([ value1, value2 ]);
+      if (this.simpleValue) {
+        return value1 === value2;
+      }
+      return this.callParent([value1, value2]);
     },
 
     getValue: function () {
-        var me = this,
-            items = me.items.items,
-            i, item, ret;
-        
-        if (me.simpleValue) {
-            for (i = items.length; i-- > 0; ) {
-                item = items[i];
+      var me = this,
+        items = me.items.items,
+        i,
+        item,
+        ret;
 
-                if (item.checked) {
-                    ret = item.inputValue;
-                    break;
-                }
-            }
-        } else {
-            ret = me.callParent();
+      if (me.simpleValue) {
+        for (i = items.length; i-- > 0; ) {
+          item = items[i];
+
+          if (item.checked) {
+            ret = item.inputValue;
+            break;
+          }
         }
-        
-        return ret;
+      } else {
+        ret = me.callParent();
+      }
+
+      return ret;
     },
 
     /**
@@ -232,62 +236,72 @@ Ext.define('Ext.form.RadioGroup', {
      * this `radiofield` with a matching `inputValue` will be checked.
      * @return {Ext.form.RadioGroup} this
      */
-    setValue: function(value) {
-        var items = this.items,
-            cbValue, cmp, formId, radios, i, len, name;
+    setValue: function (value) {
+      var items = this.items,
+        cbValue,
+        cmp,
+        formId,
+        radios,
+        i,
+        len,
+        name;
 
-        Ext.suspendLayouts();
+      Ext.suspendLayouts();
 
-        if (this.simpleValue) {
-            for (i = 0, len = items.length; i < len; ++i) {
-                cmp = items.items[i];
+      if (this.simpleValue) {
+        for (i = 0, len = items.length; i < len; ++i) {
+          cmp = items.items[i];
 
-                if (cmp.inputValue === value) {
-                    cmp.setValue(true);
-                    break;
-                }
-            }
+          if (cmp.inputValue === value) {
+            cmp.setValue(true);
+            break;
+          }
         }
-        else if (Ext.isObject(value)) {
-            cmp = items.first();
-            formId = cmp ? cmp.getFormId() : null;
+      } else if (Ext.isObject(value)) {
+        cmp = items.first();
+        formId = cmp ? cmp.getFormId() : null;
 
-            for (name in value) {
-                cbValue = value[name];
-                radios = Ext.form.RadioManager.getWithValue(name, cbValue, formId).items;
-                len = radios.length;
+        for (name in value) {
+          cbValue = value[name];
+          radios = Ext.form.RadioManager.getWithValue(
+            name,
+            cbValue,
+            formId
+          ).items;
+          len = radios.length;
 
-                for (i = 0; i < len; ++i) {
-                    radios[i].setValue(true);
-                }
-            }
+          for (i = 0; i < len; ++i) {
+            radios[i].setValue(true);
+          }
         }
+      }
 
-        Ext.resumeLayouts(true);
+      Ext.resumeLayouts(true);
 
-        return this;
+      return this;
     },
-    
-    markInvalid: function(errors) {
-        var ariaDom = this.ariaEl.dom;
-        
-        this.callParent([errors]);
-        
-        if (ariaDom){
-            ariaDom.setAttribute('aria-invalid', true);
-        }
+
+    markInvalid: function (errors) {
+      var ariaDom = this.ariaEl.dom;
+
+      this.callParent([errors]);
+
+      if (ariaDom) {
+        ariaDom.setAttribute("aria-invalid", true);
+      }
     },
-    
-    clearInvalid: function() {
-        var ariaDom = this.ariaEl.dom;
-        
-        this.callParent();
-        
-        if (ariaDom) {
-            ariaDom.setAttribute('aria-invalid', false);
-        }
+
+    clearInvalid: function () {
+      var ariaDom = this.ariaEl.dom;
+
+      this.callParent();
+
+      if (ariaDom) {
+        ariaDom.setAttribute("aria-invalid", false);
+      }
     }
-}, function() {
+  },
+  function () {
     // Firefox has a nasty bug, or a misfeature, with tabbing over radio buttons
     // when there is no checked button in a group. In such case the first button
     // in the group should be focused upon tabbing into the group, and subsequent
@@ -299,36 +313,45 @@ Ext.define('Ext.form.RadioGroup', {
     // in the group, and restoring their tabbable state upon focusleave.
     // This works exactly the same way regardless of having or not a checked button
     // in the group, so we keep the code simple.
-    
+
     // This condition should get more version specific when this bug is fixed:
     // https://bugzilla.mozilla.org/show_bug.cgi?id=1267488
     if (Ext.isGecko) {
-        this.override({
-            onFocusEnter: function(e) {
-                var target = e.toComponent,
-                    radios, i, len;
-                
-                if (target.isRadio) {
-                    radios = target.getManager().getByName(target.name, target.getFormId()).items;
-                    
-                    for (i = 0, len = radios.length; i < len; i++) {
-                        radios[i].disableTabbing();
-                    }
-                }
-            },
-            
-            onFocusLeave: function(e) {
-                var target = e.fromComponent,
-                    radios, i, len;
-                
-                if (target.isRadio) {
-                    radios = target.getManager().getByName(target.name, target.getFormId()).items;
-                    
-                    for (i = 0, len = radios.length; i < len; i++) {
-                        radios[i].enableTabbing();
-                    }
-                }
+      this.override({
+        onFocusEnter: function (e) {
+          var target = e.toComponent,
+            radios,
+            i,
+            len;
+
+          if (target.isRadio) {
+            radios = target
+              .getManager()
+              .getByName(target.name, target.getFormId()).items;
+
+            for (i = 0, len = radios.length; i < len; i++) {
+              radios[i].disableTabbing();
             }
-        });
+          }
+        },
+
+        onFocusLeave: function (e) {
+          var target = e.fromComponent,
+            radios,
+            i,
+            len;
+
+          if (target.isRadio) {
+            radios = target
+              .getManager()
+              .getByName(target.name, target.getFormId()).items;
+
+            for (i = 0, len = radios.length; i < len; i++) {
+              radios[i].enableTabbing();
+            }
+          }
+        }
+      });
     }
-});
+  }
+);

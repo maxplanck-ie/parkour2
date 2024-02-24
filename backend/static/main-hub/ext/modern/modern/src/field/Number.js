@@ -67,107 +67,108 @@
  * the user interacts with the component. Check out the {@link Ext.field.Text} docs to see the additional functionality
  * available.
  */
-Ext.define('Ext.field.Number', {
-    extend: 'Ext.field.Text',
-    xtype: 'numberfield',
-    alternateClassName: 'Ext.form.Number',
+Ext.define("Ext.field.Number", {
+  extend: "Ext.field.Text",
+  xtype: "numberfield",
+  alternateClassName: "Ext.form.Number",
+
+  /**
+   * @event change
+   * Fires when the value has changed.
+   * @param {Ext.field.Text} this This field
+   * @param {Number} newValue The new value
+   * @param {Number} oldValue The original value
+   */
+
+  config: {
+    /**
+     * @cfg
+     * @inheritdoc
+     */
+    component: {
+      type: "number"
+    }
+  },
+
+  proxyConfig: {
+    /**
+     * @cfg {Number} minValue The minimum value that this Number field can accept
+     * @accessor
+     */
+    minValue: null,
 
     /**
-     * @event change
-     * Fires when the value has changed.
-     * @param {Ext.field.Text} this This field
-     * @param {Number} newValue The new value
-     * @param {Number} oldValue The original value
+     * @cfg {Number} maxValue The maximum value that this Number field can accept
+     * @accessor
      */
+    maxValue: null,
 
-    config: {
-        /**
-         * @cfg
-         * @inheritdoc
-         */
-        component: {
-            type: 'number'
-        }
-    },
+    /**
+     * @cfg {Number} stepValue The amount by which the field is incremented or decremented each time the spinner is tapped.
+     * Defaults to undefined, which means that the field goes up or down by 1 each time the spinner is tapped
+     * @accessor
+     */
+    stepValue: null
+  },
 
-    proxyConfig: {
-        /**
-         * @cfg {Number} minValue The minimum value that this Number field can accept
-         * @accessor
-         */
-        minValue: null,
+  classCls: Ext.baseCSSPrefix + "numberfield",
 
-        /**
-         * @cfg {Number} maxValue The maximum value that this Number field can accept
-         * @accessor
-         */
-        maxValue: null,
+  applyPlaceHolder: function (value) {
+    // Android 4.1 & lower require a hack for placeholder text in number fields when using the Stock Browser
+    // details here https://code.google.com/p/android/issues/detail?id=24626
+    this._enableNumericPlaceHolderHack =
+      !Ext.feature.has.NumericInputPlaceHolder && !Ext.isEmpty(value);
+    return value;
+  },
 
-        /**
-         * @cfg {Number} stepValue The amount by which the field is incremented or decremented each time the spinner is tapped.
-         * Defaults to undefined, which means that the field goes up or down by 1 each time the spinner is tapped
-         * @accessor
-         */
-        stepValue: null
-    },
-
-    classCls: Ext.baseCSSPrefix + 'numberfield',
-
-    applyPlaceHolder: function(value) {
-        // Android 4.1 & lower require a hack for placeholder text in number fields when using the Stock Browser
-        // details here https://code.google.com/p/android/issues/detail?id=24626
-        this._enableNumericPlaceHolderHack = ((!Ext.feature.has.NumericInputPlaceHolder) && (!Ext.isEmpty(value)));
-        return value;
-    },
-
-    onFocus: function(e) {
-        if (this._enableNumericPlaceHolderHack) {
-            this.getComponent().inputElement.dom.setAttribute("type", "number");
-        }
-        this.callParent(arguments);
-    },
-
-    onBlur: function(e) {
-        if (this._enableNumericPlaceHolderHack) {
-            this.getComponent().inputElement.dom.setAttribute("type", "text");
-        }
-        this.callParent(arguments);
-    },
-
-    doInitValue : function() {
-        var value = this.getInitialConfig().value;
-
-        if (value) {
-            value = this.applyValue(value);
-        }
-
-        this.originalValue = value;
-    },
-
-    applyValue: function(value) {
-        var minValue = this.getMinValue(),
-            maxValue = this.getMaxValue();
-
-        if (Ext.isNumber(minValue) && Ext.isNumber(value)) {
-            value = Math.max(value, minValue);
-        }
-
-        if (Ext.isNumber(maxValue) && Ext.isNumber(value)) {
-            value = Math.min(value, maxValue);
-        }
-
-        value = parseFloat(value);
-        return (isNaN(value)) ? '' : value;
-    },
-
-    getValue: function() {
-        var value = parseFloat(this.callParent(), 10);
-        return (isNaN(value)) ? null : value;
-    },
-
-    doClearIconTap: function(me, e) {
-        me.getComponent().setValue('');
-        me.hideClearTrigger();
-        me.callParent([me, e]);
+  onFocus: function (e) {
+    if (this._enableNumericPlaceHolderHack) {
+      this.getComponent().inputElement.dom.setAttribute("type", "number");
     }
+    this.callParent(arguments);
+  },
+
+  onBlur: function (e) {
+    if (this._enableNumericPlaceHolderHack) {
+      this.getComponent().inputElement.dom.setAttribute("type", "text");
+    }
+    this.callParent(arguments);
+  },
+
+  doInitValue: function () {
+    var value = this.getInitialConfig().value;
+
+    if (value) {
+      value = this.applyValue(value);
+    }
+
+    this.originalValue = value;
+  },
+
+  applyValue: function (value) {
+    var minValue = this.getMinValue(),
+      maxValue = this.getMaxValue();
+
+    if (Ext.isNumber(minValue) && Ext.isNumber(value)) {
+      value = Math.max(value, minValue);
+    }
+
+    if (Ext.isNumber(maxValue) && Ext.isNumber(value)) {
+      value = Math.min(value, maxValue);
+    }
+
+    value = parseFloat(value);
+    return isNaN(value) ? "" : value;
+  },
+
+  getValue: function () {
+    var value = parseFloat(this.callParent(), 10);
+    return isNaN(value) ? null : value;
+  },
+
+  doClearIconTap: function (me, e) {
+    me.getComponent().setValue("");
+    me.hideClearTrigger();
+    me.callParent([me, e]);
+  }
 });

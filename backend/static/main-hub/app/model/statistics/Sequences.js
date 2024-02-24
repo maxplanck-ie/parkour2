@@ -4,82 +4,82 @@ Ext.define("MainHub.model.statistics.Sequences", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "flowcell_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "create_time",
-      type: "date",
+      type: "date"
     },
     {
       name: "sequencer",
-      type: "string",
+      type: "string"
     },
     {
       name: "request",
-      type: "string",
+      type: "string"
     },
     {
       name: "barcode",
-      type: "string",
+      type: "string"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "lane",
-      type: "string",
+      type: "string"
     },
     {
       name: "pool",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_protocol",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_type",
-      type: "string",
+      type: "string"
     },
     {
       name: "reads_pf_requested",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "reads_pf_sequenced",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "confident_reads",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "optical_duplicates",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "dupped_reads",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "mapped_reads",
       type: "float",
-      allowNull: true,
+      allowNull: true
     },
     {
       name: "insert_size",
       type: "float",
-      allowNull: true,
-    },
-  ],
+      allowNull: true
+    }
+  ]
 });

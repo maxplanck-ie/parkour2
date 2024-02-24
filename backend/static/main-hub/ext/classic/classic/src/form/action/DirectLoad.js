@@ -49,55 +49,52 @@
  *
  * For corresponding submit action, see {@link Ext.form.action.DirectSubmit}.
  */
-Ext.define('Ext.form.action.DirectLoad', {
-    extend:'Ext.form.action.Load',
-    alternateClassName: 'Ext.form.Action.DirectLoad',
-    alias: 'formaction.directload',
-    
-    requires: [
-        'Ext.direct.Manager'
-    ],
-    
-    mixins: [
-        'Ext.form.action.DirectAction'
-    ],
+Ext.define("Ext.form.action.DirectLoad", {
+  extend: "Ext.form.action.Load",
+  alternateClassName: "Ext.form.Action.DirectLoad",
+  alias: "formaction.directload",
 
-    type: 'directload',
+  requires: ["Ext.direct.Manager"],
 
-    run: function() {
-        var me = this,
-            form = me.form,
-            metadata = me.metadata || form.metadata,
-            timeout = me.timeout || form.timeout,
-            args, fn;
-        
-        fn = me.resolveMethod('load');
-        
-        args = fn.directCfg.method.getArgs({
-            params: me.getParams(),
-            paramOrder: form.paramOrder,
-            paramsAsHash: form.paramsAsHash,
-            options: timeout != null ? { timeout: timeout * 1000 } : null,
-            metadata: metadata,
-            callback: me.onComplete,
-            scope: me
-        });
-        
-        fn.apply(window, args);
-    },
+  mixins: ["Ext.form.action.DirectAction"],
 
-    // Direct actions have already been processed and therefore
-    // we can directly set the result; Direct Actions do not have
-    // a this.response property.
-    processResponse: function(result) {
-        return (this.result = result);
-    },
+  type: "directload",
 
-    onComplete: function(data) {
-        if (data) {
-            this.onSuccess(data);
-        } else {
-            this.onFailure(null);
-        }
+  run: function () {
+    var me = this,
+      form = me.form,
+      metadata = me.metadata || form.metadata,
+      timeout = me.timeout || form.timeout,
+      args,
+      fn;
+
+    fn = me.resolveMethod("load");
+
+    args = fn.directCfg.method.getArgs({
+      params: me.getParams(),
+      paramOrder: form.paramOrder,
+      paramsAsHash: form.paramsAsHash,
+      options: timeout != null ? { timeout: timeout * 1000 } : null,
+      metadata: metadata,
+      callback: me.onComplete,
+      scope: me
+    });
+
+    fn.apply(window, args);
+  },
+
+  // Direct actions have already been processed and therefore
+  // we can directly set the result; Direct Actions do not have
+  // a this.response property.
+  processResponse: function (result) {
+    return (this.result = result);
+  },
+
+  onComplete: function (data) {
+    if (data) {
+      this.onSuccess(data);
+    } else {
+      this.onFailure(null);
     }
+  }
 });

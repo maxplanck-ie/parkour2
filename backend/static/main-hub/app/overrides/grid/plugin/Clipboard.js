@@ -136,5 +136,5 @@ Ext.define("MainHub.overrides.grid.plugin.Clipboard", {
     if (this.cmp.id === "batchAddGrid") {
       this.cmp.fireEvent("validate");
     }
-  },
+  }
 });

@@ -4,30 +4,30 @@
  * @abstract
  * @private
  */
-Ext.define('Ext.event.gesture.MultiTouch', {
-    extend: 'Ext.event.gesture.Recognizer',
+Ext.define("Ext.event.gesture.MultiTouch", {
+  extend: "Ext.event.gesture.Recognizer",
 
-    requiredTouchesCount: 2,
+  requiredTouchesCount: 2,
 
-    isTracking: false,
+  isTracking: false,
 
-    isMultiTouch: true,
+  isMultiTouch: true,
 
-    onTouchStart: function(e) {
-        var me = this,
-            requiredTouchesCount = me.requiredTouchesCount,
-            touches = e.touches,
-            touchesCount = touches.length;
+  onTouchStart: function (e) {
+    var me = this,
+      requiredTouchesCount = me.requiredTouchesCount,
+      touches = e.touches,
+      touchesCount = touches.length;
 
-        if (touchesCount === requiredTouchesCount) {
-            me.isTracking = true;
-        } else if (touchesCount > requiredTouchesCount) {
-            return me.cancel(e);
-        }
-    },
-
-    reset: function() {
-        this.isTracking = false;
-        return this.callParent();
+    if (touchesCount === requiredTouchesCount) {
+      me.isTracking = true;
+    } else if (touchesCount > requiredTouchesCount) {
+      return me.cancel(e);
     }
+  },
+
+  reset: function () {
+    this.isTracking = false;
+    return this.callParent();
+  }
 });

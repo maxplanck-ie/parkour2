@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.material.panel.Header', {
-    override: 'Ext.panel.Header',
+Ext.define("Ext.theme.material.panel.Header", {
+  override: "Ext.panel.Header",
 
-    config: {
-        titleAlign: 'left'
-    }
+  config: {
+    titleAlign: "left"
+  }
 });

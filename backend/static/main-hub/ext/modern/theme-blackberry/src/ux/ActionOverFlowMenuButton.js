@@ -32,65 +32,65 @@
  *         }]
  *     }
  */
-Ext.define('Ext.theme.blackberry.ActionOverFlowMenuButton', {
-    extend: 'Ext.theme.blackberry.MenuButton',
+Ext.define("Ext.theme.blackberry.ActionOverFlowMenuButton", {
+  extend: "Ext.theme.blackberry.MenuButton",
 
-    config: {
-        /**
-         * @hide
-         */
-        cls: 'overflow',
+  config: {
+    /**
+     * @hide
+     */
+    cls: "overflow",
 
-        /**
-         * @hide
-         */
-        ui: 'normal',
+    /**
+     * @hide
+     */
+    ui: "normal",
 
-        /**
-         * The items to be used within the {@link Ext.Menu} which is shown when this button is tapped.
-         *
-         *     // Used within a toolbar
-         *     {
-         *         xtype: 'toolbar',
-         *         items: [{
-         *             xclass: 'Ext.ux.ActionMenuButton',
-         *             text: 'Chats',
-         *             iconCls: 'chats',
-         *             menuItems: [{
-         *                 text: 'Chats',
-         *                 iconCls: 'chats',
-         *                 handler: function() {
-         *                     // do something
-         *                 }
-         *             }, {
-         *                 text: 'Contacts',
-         *                 iconCls: 'contacts',
-         *                 handler: function() {
-         *                     // do something
-         *                 }
-         *             }, {
-         *                 docked: 'bottom',
-         *                 text: 'Settings',
-         *                 iconCls: 'settings',
-         *                 handler: function() {
-         *                     // do something
-         *                 }
-         *             }]
-         *         }]
-         *     }
-         * 
-         * @type {}
-         */
-        menuItems: [],
+    /**
+     * The items to be used within the {@link Ext.Menu} which is shown when this button is tapped.
+     *
+     *     // Used within a toolbar
+     *     {
+     *         xtype: 'toolbar',
+     *         items: [{
+     *             xclass: 'Ext.ux.ActionMenuButton',
+     *             text: 'Chats',
+     *             iconCls: 'chats',
+     *             menuItems: [{
+     *                 text: 'Chats',
+     *                 iconCls: 'chats',
+     *                 handler: function() {
+     *                     // do something
+     *                 }
+     *             }, {
+     *                 text: 'Contacts',
+     *                 iconCls: 'contacts',
+     *                 handler: function() {
+     *                     // do something
+     *                 }
+     *             }, {
+     *                 docked: 'bottom',
+     *                 text: 'Settings',
+     *                 iconCls: 'settings',
+     *                 handler: function() {
+     *                     // do something
+     *                 }
+     *             }]
+     *         }]
+     *     }
+     *
+     * @type {}
+     */
+    menuItems: [],
 
-        /**
-         * @hide
-         */
-        menuCover: true,
+    /**
+     * @hide
+     */
+    menuCover: true,
 
-        /**
-         * @hide
-         */
-        menuCls: 'action-over-flow'
-    }
+    /**
+     * @hide
+     */
+    menuCls: "action-over-flow"
+  }
 });

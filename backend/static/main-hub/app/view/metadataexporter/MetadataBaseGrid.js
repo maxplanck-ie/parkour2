@@ -7,12 +7,12 @@ Ext.define("MainHub.view.metadataexporter.MetadataBaseGrid", {
   enableColumnHide: false,
 
   viewConfig: {
-    stripeRows: false,
+    stripeRows: false
   },
 
   selModel: {
     type: "spreadsheet",
-    rowSelect: false,
+    rowSelect: false
   },
 
   plugins: [
@@ -21,7 +21,7 @@ Ext.define("MainHub.view.metadataexporter.MetadataBaseGrid", {
       clicksToEdit: 2,
     },
     {
-      ptype: "clipboard",
-    },
-  ],
+      ptype: "clipboard"
+    }
+  ]
 });

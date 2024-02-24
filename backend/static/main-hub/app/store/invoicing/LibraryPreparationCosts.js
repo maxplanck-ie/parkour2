@@ -9,8 +9,8 @@ Ext.define("MainHub.store.invoicing.LibraryPreparationCosts", {
   sorters: [
     {
       property: "name",
-      direction: "ASC",
-    },
+      direction: "ASC"
+    }
   ],
 
   proxy: {
@@ -21,11 +21,11 @@ Ext.define("MainHub.store.invoicing.LibraryPreparationCosts", {
     noCache: false, // to remove param "_dc",
     actionMethods: {
       read: "GET",
-      update: "PUT",
+      update: "PUT"
     },
     api: {
       read: "api/library_preparation_costs/",
-      update: "",
-    },
-  },
+      update: ""
+    }
+  }
 });

@@ -38,166 +38,175 @@
  * Once `My.field.Slider` class is created, it will have all setters and getters methods for all items listed in `proxyConfig`
  * automatically generated. These methods all proxy to the same method names that exist within the Component instance.
  */
-Ext.define('Ext.Decorator', {
-    extend: 'Ext.Component',
+Ext.define("Ext.Decorator", {
+  extend: "Ext.Component",
 
-    isDecorator: true,
+  isDecorator: true,
 
-    config: {
-        /**
-         * @cfg {Object} component
-         * The config object to factory the Component that this Decorator wraps around.
-         * @cmd-auto-dependency { aliasPrefix: 'widget.', typeProperty: 'xtype' }
-         */
-        component: {
-            xtype: 'component'
-        }
-    },
-
-    statics: {
-        generateProxySetter: function(name) {
-            return function(value) {
-                var component = this.getComponent();
-                component[name].call(component, value);
-
-                return this;
-            }
-        },
-        generateProxyGetter: function(name) {
-            return function() {
-                var component = this.getComponent();
-                return component[name].call(component);
-            }
-        }
-    },
-
-    onClassExtended: function(Class, members) {
-        if (!members.hasOwnProperty('proxyConfig')) {
-            return;
-        }
-
-        var ExtClass = Ext.Class,
-            proxyConfig = members.proxyConfig,
-            config = members.config;
-
-        members.config = (config) ? Ext.applyIf(config, proxyConfig) : proxyConfig;
-
-        var name, nameMap, setName, getName;
-
-        for (name in proxyConfig) {
-            if (proxyConfig.hasOwnProperty(name)) {
-                nameMap = Ext.Config.get(name).names;
-                setName = nameMap.set;
-                getName = nameMap.get;
-
-                members[setName] = this.generateProxySetter(setName);
-                members[getName] = this.generateProxyGetter(getName);
-            }
-        }
-    },
-
-    getRefItems: function(deep) {
-        var c = this.getComponent(),
-            ret;
-
-        if (c) {
-            ret = [c];
-            if (deep && c.getRefItems) {
-                ret = ret.concat(c.getRefItems(deep));
-            }
-        }
-        return ret || [];
-
-    },
-
+  config: {
     /**
-     * @private
+     * @cfg {Object} component
+     * The config object to factory the Component that this Decorator wraps around.
+     * @cmd-auto-dependency { aliasPrefix: 'widget.', typeProperty: 'xtype' }
      */
-    applyComponent: function(config) {
-        return Ext.factory(config);
-    },
-
-    /**
-     * @private
-     */
-    updateComponent: function(newComponent, oldComponent) {
-        var me = this;
-
-        if (oldComponent) {
-            if (me.isRendered() && oldComponent.setRendered(false)) {
-                oldComponent.fireEventedAction('renderedchange', [me, oldComponent, false],
-                    me.doUnsetComponent, me, false);
-            } else {
-                me.doUnsetComponent(oldComponent);
-            }
-        }
-
-        if (newComponent) {
-            if (me.isRendered() && newComponent.setRendered(true)) {
-                newComponent.fireEventedAction('renderedchange', [me, newComponent, true],
-                    me.doSetComponent, me, false);
-            } else {
-                me.doSetComponent(newComponent);
-            }
-        }
-    },
-
-    /**
-     * @private
-     */
-    doUnsetComponent: function(component) {
-        var dom = component.renderElement.dom;
-        if (dom) {
-            component.setLayoutSizeFlags(0);
-            this.innerElement.dom.removeChild(dom);
-        }
-    },
-
-    /**
-     * @private
-     */
-    doSetComponent: function(component) {
-        var dom = component.renderElement.dom;
-        if (dom) {
-            component.setLayoutSizeFlags(this.getSizeFlags());
-            this.innerElement.dom.appendChild(dom);
-        }
-    },
-
-    /**
-     * @private
-     */
-    setRendered: function(rendered) {
-        var component;
-
-        if (this.callParent(arguments)) {
-            component = this.getComponent();
-
-            if (component) {
-                component.setRendered(rendered);
-            }
-
-            return true;
-        }
-
-        return false;
-    },
-
-    /**
-     * @private
-     */
-    setDisabled: function(disabled) {
-        // @noOptimize.callParent
-        this.callParent(arguments);
-        // sencha cmd cannot tell that our superclass does indeed have a setDisabled
-        // method because it is an auto-generated config setter, so it complains that
-        // callParent has no target unless we tell it not to, hence the noOptimize comment
-        // above.
-        this.getComponent().setDisabled(disabled);
-    },
-
-    doDestroy: function() {
-        Ext.destroy(this.getComponent());
-        this.callParent();
+    component: {
+      xtype: "component"
     }
+  },
+
+  statics: {
+    generateProxySetter: function (name) {
+      return function (value) {
+        var component = this.getComponent();
+        component[name].call(component, value);
+
+        return this;
+      };
+    },
+    generateProxyGetter: function (name) {
+      return function () {
+        var component = this.getComponent();
+        return component[name].call(component);
+      };
+    }
+  },
+
+  onClassExtended: function (Class, members) {
+    if (!members.hasOwnProperty("proxyConfig")) {
+      return;
+    }
+
+    var ExtClass = Ext.Class,
+      proxyConfig = members.proxyConfig,
+      config = members.config;
+
+    members.config = config ? Ext.applyIf(config, proxyConfig) : proxyConfig;
+
+    var name, nameMap, setName, getName;
+
+    for (name in proxyConfig) {
+      if (proxyConfig.hasOwnProperty(name)) {
+        nameMap = Ext.Config.get(name).names;
+        setName = nameMap.set;
+        getName = nameMap.get;
+
+        members[setName] = this.generateProxySetter(setName);
+        members[getName] = this.generateProxyGetter(getName);
+      }
+    }
+  },
+
+  getRefItems: function (deep) {
+    var c = this.getComponent(),
+      ret;
+
+    if (c) {
+      ret = [c];
+      if (deep && c.getRefItems) {
+        ret = ret.concat(c.getRefItems(deep));
+      }
+    }
+    return ret || [];
+  },
+
+  /**
+   * @private
+   */
+  applyComponent: function (config) {
+    return Ext.factory(config);
+  },
+
+  /**
+   * @private
+   */
+  updateComponent: function (newComponent, oldComponent) {
+    var me = this;
+
+    if (oldComponent) {
+      if (me.isRendered() && oldComponent.setRendered(false)) {
+        oldComponent.fireEventedAction(
+          "renderedchange",
+          [me, oldComponent, false],
+          me.doUnsetComponent,
+          me,
+          false
+        );
+      } else {
+        me.doUnsetComponent(oldComponent);
+      }
+    }
+
+    if (newComponent) {
+      if (me.isRendered() && newComponent.setRendered(true)) {
+        newComponent.fireEventedAction(
+          "renderedchange",
+          [me, newComponent, true],
+          me.doSetComponent,
+          me,
+          false
+        );
+      } else {
+        me.doSetComponent(newComponent);
+      }
+    }
+  },
+
+  /**
+   * @private
+   */
+  doUnsetComponent: function (component) {
+    var dom = component.renderElement.dom;
+    if (dom) {
+      component.setLayoutSizeFlags(0);
+      this.innerElement.dom.removeChild(dom);
+    }
+  },
+
+  /**
+   * @private
+   */
+  doSetComponent: function (component) {
+    var dom = component.renderElement.dom;
+    if (dom) {
+      component.setLayoutSizeFlags(this.getSizeFlags());
+      this.innerElement.dom.appendChild(dom);
+    }
+  },
+
+  /**
+   * @private
+   */
+  setRendered: function (rendered) {
+    var component;
+
+    if (this.callParent(arguments)) {
+      component = this.getComponent();
+
+      if (component) {
+        component.setRendered(rendered);
+      }
+
+      return true;
+    }
+
+    return false;
+  },
+
+  /**
+   * @private
+   */
+  setDisabled: function (disabled) {
+    // @noOptimize.callParent
+    this.callParent(arguments);
+    // sencha cmd cannot tell that our superclass does indeed have a setDisabled
+    // method because it is an auto-generated config setter, so it complains that
+    // callParent has no target unless we tell it not to, hence the noOptimize comment
+    // above.
+    this.getComponent().setDisabled(disabled);
+  },
+
+  doDestroy: function () {
+    Ext.destroy(this.getComponent());
+    this.callParent();
+  }
 });

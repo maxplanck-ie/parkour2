@@ -98,10 +98,10 @@ Ext.define("MainHub.store.indexgenerator.StartCoordinates", {
     { id: 93, coordinate: "H9" },
     { id: 94, coordinate: "H10" },
     { id: 95, coordinate: "H11" },
-    { id: 96, coordinate: "H12" },
+    { id: 96, coordinate: "H12" }
   ],
 
   getId: function () {
     return "StartCoordinates";
-  },
+  }
 });

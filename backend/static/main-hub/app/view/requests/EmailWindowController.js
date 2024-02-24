@@ -6,12 +6,12 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#send-email-button": {
-        click: "send",
-      },
-    },
+        click: "send"
+      }
+    }
   },
 
   boxready: function (wnd) {
@@ -33,7 +33,7 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
     if (!form.isValid()) {
       new Noty({
         text: "All fields must be filled in.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }

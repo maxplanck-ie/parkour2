@@ -108,14 +108,14 @@
  * of the data set itself or are used to reconfigure the Reader. To pass metadata in the response you simply
  * add a `metaData` attribute to the root of the response data. The metaData attribute can contain anything,
  * but supports a specific set of properties that are handled by the Reader if they are present:
- * 
+ *
  * - {@link #rootProperty}: the property name of the root response node containing the record data
  * - {@link #totalProperty}: property name for the total number of records in the data
  * - {@link #successProperty}: property name for the success status of the response
  * - {@link #messageProperty}: property name for an optional response message
  * - {@link Ext.data.Model#cfg-fields fields}: Config used to reconfigure the Model's fields before converting the
  * response data into records
- * 
+ *
  * An initial Reader configuration containing all of these properties might look like this ("fields" would be
  * included in the Model definition, not shown):
  *
@@ -151,7 +151,7 @@
  * but will be accessible via the Reader's {@link #metaData} property (which is also passed to listeners via the Proxy's
  * {@link Ext.data.proxy.Proxy#metachange metachange} event (also relayed by the store). Application code can then
  * process the passed metadata in any way it chooses.
- * 
+ *
  * A simple example for how this can be used would be customizing the fields for a Model that is bound to a grid. By passing
  * the `fields` property the Model will be automatically updated by the Reader internally, but that change will not be
  * reflected automatically in the grid unless you also update the column configuration. You could do this manually, or you
@@ -189,279 +189,289 @@
  *     });
  *
  */
-Ext.define('Ext.data.reader.Json', {
-    extend: 'Ext.data.reader.Reader',
-    
-    requires: [
-        'Ext.JSON'
-    ],
-    
-    alternateClassName: 'Ext.data.JsonReader',
-    alias : 'reader.json',
+Ext.define("Ext.data.reader.Json", {
+  extend: "Ext.data.reader.Reader",
 
-    config: {
-        /**
-        * @cfg {String} record The optional location within the JSON response that the record data itself can be found at.
-        * See the JsonReader intro docs for more details. This is not often needed.
-        */
-       record: null,
-    
-        /**
-        * @cfg {String} [metaProperty]
-        * Name of the property from which to retrieve the `metaData` attribute. See {@link #metaData}.
-        */
-        metaProperty: 'metaData',
+  requires: ["Ext.JSON"],
 
-        /**
-        * @cfg {Boolean} useSimpleAccessors True to ensure that field names/mappings are treated as literals when
-        * reading values.
-        *
-        * For example, by default, using the mapping "foo.bar.baz" will try and read a property foo from the root, then a property bar
-        * from foo, then a property baz from bar. Setting the simple accessors to true will read the property with the name
-        * "foo.bar.baz" direct from the root object.
-        */
-        useSimpleAccessors: false,
-        
-        /**
-         * @cfg {Boolean} preserveRawData
-         * The reader will keep a copy of the most recent request in the {@link #rawData} property. For performance reasons,
-         * the data object for each record is used directly as the model data. This means that these objects may be modified and
-         * thus modify the raw data. To ensure the objects are copied, set this option to `true`. NB: This only applies to items 
-         * that are read as part of the data array, any other metadata will not be modified:
-         * 
-         *     {
-         *         "someOtherData": 1, // Won't be modified
-         *         "root": [{}, {}, {}] // The objects here will be modified
-         *     }
-         */
-        preserveRawData: false
-    },
-    
-    updateRootProperty: function() {
-        this.forceBuildExtractors();    
-    },
-    
-    updateMetaProperty: function() {
-        this.forceBuildExtractors();
-    },
+  alternateClassName: "Ext.data.JsonReader",
+  alias: "reader.json",
 
+  config: {
     /**
-     * @method readRecords
-     * Reads a JSON object and returns a ResultSet. Uses the internal getTotal and getSuccess extractors to
-     * retrieve meta data from the response, and extractData to turn the JSON data into model instances.
-     * @param {Object} data The raw JSON data
-     * @param {Object} [readOptions] See {@link #read} for details.
-     * @return {Ext.data.ResultSet} A ResultSet containing model instances and meta data about the results
+     * @cfg {String} record The optional location within the JSON response that the record data itself can be found at.
+     * See the JsonReader intro docs for more details. This is not often needed.
      */
-
-    getResponseData: function(response) {
-        var error;
-
-        try {
-            return Ext.decode(response.responseText);
-        } catch (ex) {
-            error = this.createReadError(ex.message);
-
-            Ext.Logger.warn('Unable to parse the JSON returned by the server');
-            this.fireEvent('exception', this, response, error);
-            return error;
-        }
-    },
-
-    buildExtractors : function() {
-        var me = this,
-            metaProp, rootProp;
-
-        // Will only return true if we need to build
-        if (me.callParent(arguments)) {
-            metaProp = me.getMetaProperty();
-            rootProp = me.getRootProperty();
-            if (rootProp) {
-                me.getRoot = me.getAccessor(rootProp);
-            } else {
-                me.getRoot = Ext.identityFn;
-            }
-        
-            if (metaProp) {
-                me.getMeta = me.getAccessor(metaProp);
-            }
-        }
-    },
+    record: null,
 
     /**
-     * @private
-     * We're just preparing the data for the superclass by pulling out the record objects we want. If a {@link #record}
-     * was specified we have to pull those out of the larger JSON object, which is most of what this function is doing
-     * @param {Object} root The JSON root node
-     * @param {Object} [readOptions] See {@link #read} for details.
-     * @return {Ext.data.Model[]} The records
+     * @cfg {String} [metaProperty]
+     * Name of the property from which to retrieve the `metaData` attribute. See {@link #metaData}.
      */
-    extractData: function(root, readOptions) {
-        var recordName = this.getRecord(),
-            data = [],
-            length, i;
-
-        if (recordName) {
-            length = root.length;
-            
-            if (!length && Ext.isObject(root)) {
-                length = 1;
-                root = [root];
-            }
-
-            for (i = 0; i < length; i++) {
-                data[i] = root[i][recordName];
-            }
-        } else {
-            data = root;
-        }
-        return this.callParent([data, readOptions]);
-    },
-    
-    getModelData: function(raw) {
-        return this.getPreserveRawData() ? Ext.apply({}, raw) : raw;    
-    },
+    metaProperty: "metaData",
 
     /**
-     * @private
-     * @method
-     * Returns an accessor function for the given property string. Gives support for properties such as the following:
+     * @cfg {Boolean} useSimpleAccessors True to ensure that field names/mappings are treated as literals when
+     * reading values.
      *
-     * - 'someProperty'
-     * - 'some.property'
-     * - '["someProperty"]'
-     * - 'values[0]'
-     * 
-     * This is used by {@link #buildExtractors} to create optimized extractor functions for properties that are looked
-     * up directly on the source object (e.g. {@link #successProperty}, {@link #messageProperty}, etc.).
+     * For example, by default, using the mapping "foo.bar.baz" will try and read a property foo from the root, then a property bar
+     * from foo, then a property baz from bar. Setting the simple accessors to true will read the property with the name
+     * "foo.bar.baz" direct from the root object.
      */
-    createAccessor: (function() {
-        var re = /[\[\.]/;
-
-        return function(expr) {
-            var me = this,
-                simple = me.getUseSimpleAccessors(),
-                operatorIndex, result,
-                current, parts, part, inExpr,
-                isDot, isLeft, isRight,
-                special, c, i, bracketed, len;
-
-            if (!(expr || expr === 0)) {
-                return;
-            }
-
-            if (typeof expr === 'function') {
-                return expr;
-            }
-            
-            if (!simple) {
-                operatorIndex = String(expr).search(re);
-            }
-            
-            if (simple === true || operatorIndex < 0) {
-                result = function(raw) {
-                    return raw[expr];
-                };
-            } else {
-                // The purpose of this part is to generate a "safe" accessor for any complex 
-                // json expression. For example 'foo.bar.baz' will get transformed:
-                // raw.foo && raw.foo.bar && raw.foo.bar.baz
-                current = 'raw';
-                parts = [];
-                part = '';
-                inExpr = 0;
-                len = expr.length;
-
-                // The <= is intentional here. We handle the last character
-                // being undefined so that we can append any final values at
-                // the end
-                for (i = 0; i <= len; ++i) {
-                    c = expr[i];
-
-                    isDot = c === '.';
-                    isLeft = c === '[';
-                    isRight = c === ']';
-
-                    special = isDot || isLeft || isRight || !c;
-                    // If either:
-                    // a) Not a special char
-                    // b) We're nested more than 1 deep, no single char can bring us out
-                    // c) We are in an expr & it's not an ending brace
-                    // Then just push the character on
-                    if (!special || inExpr > 1 || (inExpr && !isRight)) {
-                        part += c;
-                    } else if (special) {
-                        bracketed = false;
-                        if (isLeft) {
-                            ++inExpr;
-                        } else if (isRight) {
-                            --inExpr;
-                            bracketed = true;
-                        }
-
-                        if (part) {
-                            if (bracketed) {
-                                part = '[' + part + ']';
-                            } else {
-                                part = '.' + part;
-                            }
-                            current += part;
-                            // Concatting the empty string to the start fixes a very odd intermittent bug with IE9/10.
-                            // On some occasions, without it, it will end up generating
-                            // raw.foo.bar.baz && raw.foo.bar.baz && raw.foo.bar.baz
-                            // At this point, not really sure why forcibly casting it to a string makes a difference
-                            parts.push('' + current);
-                            part = '';
-                        }
-                    }
-                }
-                result = parts.join(' && ');
-                result = Ext.functionFactory('raw', 'return ' + result);
-            }
-            return result;
-        };
-    }()),
+    useSimpleAccessors: false,
 
     /**
-     * @private
-     * @method
-     * Returns an accessor function for the passed Field. Gives support for properties such as the following:
-     * 
-     * - 'someProperty'
-     * - 'some.property'
-     * - '["someProperty"]'
-     * - 'values[0]'
-     * 
-     * This is used by {@link #buildExtractors} to create optimized extractor expressions when converting raw
-     * data into model instances. This method is used at the field level to dynamically map values to model fields.
+     * @cfg {Boolean} preserveRawData
+     * The reader will keep a copy of the most recent request in the {@link #rawData} property. For performance reasons,
+     * the data object for each record is used directly as the model data. This means that these objects may be modified and
+     * thus modify the raw data. To ensure the objects are copied, set this option to `true`. NB: This only applies to items
+     * that are read as part of the data array, any other metadata will not be modified:
+     *
+     *     {
+     *         "someOtherData": 1, // Won't be modified
+     *         "root": [{}, {}, {}] // The objects here will be modified
+     *     }
      */
-    createFieldAccessor: function(field) {
-        // Need to capture me for the extractor
-        var me = this,
-            mapping = field.mapping,
-            hasMap = mapping || mapping === 0,
-            map    = hasMap ? mapping : field.name;
-            
-        if (hasMap) {
-            if (typeof map === 'function') {
-                return function(raw) {
-                    return field.mapping(raw, me);
-                };
-            } else {
-                return me.createAccessor(map);
-            }    
-        }
-    },
+    preserveRawData: false
+  },
 
-    getAccessorKey: function(prop) {
-        var simple = this.getUseSimpleAccessors() ? 'simple' : '';
-        return this.$className + simple + prop;
-    },
+  updateRootProperty: function () {
+    this.forceBuildExtractors();
+  },
 
-    privates: {
-        copyFrom: function(reader) {
-            this.callParent([reader]);
-            this.getRoot = reader.getRoot;
-        }
+  updateMetaProperty: function () {
+    this.forceBuildExtractors();
+  },
+
+  /**
+   * @method readRecords
+   * Reads a JSON object and returns a ResultSet. Uses the internal getTotal and getSuccess extractors to
+   * retrieve meta data from the response, and extractData to turn the JSON data into model instances.
+   * @param {Object} data The raw JSON data
+   * @param {Object} [readOptions] See {@link #read} for details.
+   * @return {Ext.data.ResultSet} A ResultSet containing model instances and meta data about the results
+   */
+
+  getResponseData: function (response) {
+    var error;
+
+    try {
+      return Ext.decode(response.responseText);
+    } catch (ex) {
+      error = this.createReadError(ex.message);
+
+      Ext.Logger.warn("Unable to parse the JSON returned by the server");
+      this.fireEvent("exception", this, response, error);
+      return error;
     }
+  },
+
+  buildExtractors: function () {
+    var me = this,
+      metaProp,
+      rootProp;
+
+    // Will only return true if we need to build
+    if (me.callParent(arguments)) {
+      metaProp = me.getMetaProperty();
+      rootProp = me.getRootProperty();
+      if (rootProp) {
+        me.getRoot = me.getAccessor(rootProp);
+      } else {
+        me.getRoot = Ext.identityFn;
+      }
+
+      if (metaProp) {
+        me.getMeta = me.getAccessor(metaProp);
+      }
+    }
+  },
+
+  /**
+   * @private
+   * We're just preparing the data for the superclass by pulling out the record objects we want. If a {@link #record}
+   * was specified we have to pull those out of the larger JSON object, which is most of what this function is doing
+   * @param {Object} root The JSON root node
+   * @param {Object} [readOptions] See {@link #read} for details.
+   * @return {Ext.data.Model[]} The records
+   */
+  extractData: function (root, readOptions) {
+    var recordName = this.getRecord(),
+      data = [],
+      length,
+      i;
+
+    if (recordName) {
+      length = root.length;
+
+      if (!length && Ext.isObject(root)) {
+        length = 1;
+        root = [root];
+      }
+
+      for (i = 0; i < length; i++) {
+        data[i] = root[i][recordName];
+      }
+    } else {
+      data = root;
+    }
+    return this.callParent([data, readOptions]);
+  },
+
+  getModelData: function (raw) {
+    return this.getPreserveRawData() ? Ext.apply({}, raw) : raw;
+  },
+
+  /**
+   * @private
+   * @method
+   * Returns an accessor function for the given property string. Gives support for properties such as the following:
+   *
+   * - 'someProperty'
+   * - 'some.property'
+   * - '["someProperty"]'
+   * - 'values[0]'
+   *
+   * This is used by {@link #buildExtractors} to create optimized extractor functions for properties that are looked
+   * up directly on the source object (e.g. {@link #successProperty}, {@link #messageProperty}, etc.).
+   */
+  createAccessor: (function () {
+    var re = /[\[\.]/;
+
+    return function (expr) {
+      var me = this,
+        simple = me.getUseSimpleAccessors(),
+        operatorIndex,
+        result,
+        current,
+        parts,
+        part,
+        inExpr,
+        isDot,
+        isLeft,
+        isRight,
+        special,
+        c,
+        i,
+        bracketed,
+        len;
+
+      if (!(expr || expr === 0)) {
+        return;
+      }
+
+      if (typeof expr === "function") {
+        return expr;
+      }
+
+      if (!simple) {
+        operatorIndex = String(expr).search(re);
+      }
+
+      if (simple === true || operatorIndex < 0) {
+        result = function (raw) {
+          return raw[expr];
+        };
+      } else {
+        // The purpose of this part is to generate a "safe" accessor for any complex
+        // json expression. For example 'foo.bar.baz' will get transformed:
+        // raw.foo && raw.foo.bar && raw.foo.bar.baz
+        current = "raw";
+        parts = [];
+        part = "";
+        inExpr = 0;
+        len = expr.length;
+
+        // The <= is intentional here. We handle the last character
+        // being undefined so that we can append any final values at
+        // the end
+        for (i = 0; i <= len; ++i) {
+          c = expr[i];
+
+          isDot = c === ".";
+          isLeft = c === "[";
+          isRight = c === "]";
+
+          special = isDot || isLeft || isRight || !c;
+          // If either:
+          // a) Not a special char
+          // b) We're nested more than 1 deep, no single char can bring us out
+          // c) We are in an expr & it's not an ending brace
+          // Then just push the character on
+          if (!special || inExpr > 1 || (inExpr && !isRight)) {
+            part += c;
+          } else if (special) {
+            bracketed = false;
+            if (isLeft) {
+              ++inExpr;
+            } else if (isRight) {
+              --inExpr;
+              bracketed = true;
+            }
+
+            if (part) {
+              if (bracketed) {
+                part = "[" + part + "]";
+              } else {
+                part = "." + part;
+              }
+              current += part;
+              // Concatting the empty string to the start fixes a very odd intermittent bug with IE9/10.
+              // On some occasions, without it, it will end up generating
+              // raw.foo.bar.baz && raw.foo.bar.baz && raw.foo.bar.baz
+              // At this point, not really sure why forcibly casting it to a string makes a difference
+              parts.push("" + current);
+              part = "";
+            }
+          }
+        }
+        result = parts.join(" && ");
+        result = Ext.functionFactory("raw", "return " + result);
+      }
+      return result;
+    };
+  })(),
+
+  /**
+   * @private
+   * @method
+   * Returns an accessor function for the passed Field. Gives support for properties such as the following:
+   *
+   * - 'someProperty'
+   * - 'some.property'
+   * - '["someProperty"]'
+   * - 'values[0]'
+   *
+   * This is used by {@link #buildExtractors} to create optimized extractor expressions when converting raw
+   * data into model instances. This method is used at the field level to dynamically map values to model fields.
+   */
+  createFieldAccessor: function (field) {
+    // Need to capture me for the extractor
+    var me = this,
+      mapping = field.mapping,
+      hasMap = mapping || mapping === 0,
+      map = hasMap ? mapping : field.name;
+
+    if (hasMap) {
+      if (typeof map === "function") {
+        return function (raw) {
+          return field.mapping(raw, me);
+        };
+      } else {
+        return me.createAccessor(map);
+      }
+    }
+  },
+
+  getAccessorKey: function (prop) {
+    var simple = this.getUseSimpleAccessors() ? "simple" : "";
+    return this.$className + simple + prop;
+  },
+
+  privates: {
+    copyFrom: function (reader) {
+      this.callParent([reader]);
+      this.getRoot = reader.getRoot;
+    }
+  }
 });

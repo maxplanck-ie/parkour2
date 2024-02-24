@@ -4,11 +4,11 @@ Ext.define("MainHub.model.flowcell.Sequencer", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
   ],
 });

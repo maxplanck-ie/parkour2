@@ -77,7 +77,9 @@ div.dataTables_wrapper div.dataTables_processing {
   padding: 1em 0;
 }
 
-table.dataTable thead > tr > th.sorting_asc, table.dataTable thead > tr > th.sorting_desc, table.dataTable thead > tr > th.sorting,
+table.dataTable thead > tr > th.sorting_asc,
+table.dataTable thead > tr > th.sorting_desc,
+table.dataTable thead > tr > th.sorting,
 table.dataTable thead > tr > td.sorting_asc,
 table.dataTable thead > tr > td.sorting_desc,
 table.dataTable thead > tr > td.sorting {
@@ -104,7 +106,7 @@ table.dataTable thead .sorting_desc_disabled:after {
   bottom: 8px;
   right: 8px;
   display: block;
-  font-family: 'Glyphicons Halflings';
+  font-family: "Glyphicons Halflings";
   opacity: 0.5;
 }
 table.dataTable thead .sorting:after {
@@ -174,7 +176,8 @@ table.table-bordered.dataTable th,
 table.table-bordered.dataTable td {
   border-left-width: 0;
 }
-table.table-bordered.dataTable th:last-child, table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
+table.table-bordered.dataTable th:last-child,
 table.table-bordered.dataTable td:last-child,
 table.table-bordered.dataTable td:last-child {
   border-right-width: 0;
@@ -191,13 +194,18 @@ div.dataTables_scrollHead table.table-bordered {
 div.table-responsive > div.dataTables_wrapper > div.row {
   margin: 0;
 }
-div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:first-child {
+div.table-responsive
+  > div.dataTables_wrapper
+  > div.row
+  > div[class^="col-"]:first-child {
   padding-left: 0;
 }
-div.table-responsive > div.dataTables_wrapper > div.row > div[class^="col-"]:last-child {
+div.table-responsive
+  > div.dataTables_wrapper
+  > div.row
+  > div[class^="col-"]:last-child {
   padding-right: 0;
 }
-
 
 table.DTFC_Cloned tr {
   background-color: white;
@@ -248,7 +256,6 @@ div.DTFC_Blocker {
   background-color: white;
 }
 
-
 table.dataTable.fixedHeader-floating,
 table.dataTable.fixedHeader-locked {
   background-color: white;
@@ -270,7 +277,6 @@ table.dataTable.fixedHeader-locked {
   }
 }
 
-
 div.DTS {
   display: block !important;
 }
@@ -282,7 +288,13 @@ div.DTS div.DTS_Loading {
   z-index: 1;
 }
 div.DTS div.dataTables_scrollBody {
-  background: repeating-linear-gradient(45deg, #edeeff, #edeeff 10px, white 10px, white 20px);
+  background: repeating-linear-gradient(
+    45deg,
+    #edeeff,
+    #edeeff 10px,
+    white 10px,
+    white 20px
+  );
 }
 div.DTS div.dataTables_scrollBody table {
   z-index: 2;
@@ -295,5 +307,3 @@ div.DTS div.dataTables_length {
 div.DTS tbody tr {
   background-color: white;
 }
-
-

@@ -7,7 +7,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
   config: {
     control: {
       "#": {
-        activate: "activateView",
+        activate: "activateView"
       },
       "#pooling-grid": {
         resize: "resize",
@@ -15,27 +15,27 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         itemcontextmenu: "showMenu",
         groupcontextmenu: "showPoolingGroupMenu",
         beforeEdit: "toggleEditors",
-        edit: "editRecord",
+        edit: "editRecord"
       },
       "#check-column": {
-        beforecheckchange: "selectRecord",
+        beforecheckchange: "selectRecord"
       },
       "#download-benchtop-protocol-button": {
-        click: "downloadBenchtopProtocol",
+        click: "downloadBenchtopProtocol"
       },
       "#download-pooling-template-button": {
-        click: "downloadPoolingTemplate",
+        click: "downloadPoolingTemplate"
       },
       "#search-field": {
-        change: "changeFilter",
+        change: "changeFilter"
       },
       "#cancel-button": {
-        click: "cancel",
+        click: "cancel"
       },
       "#save-button": {
-        click: "save",
-      },
-    },
+        click: "save"
+      }
+    }
   },
 
   showPoolingGroupMenu: function (gridView, node, groupId, e) {
@@ -50,14 +50,14 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         margin: "5px 5px 0 5px",
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), true);
-        },
+        }
       },
       {
         text: "Unselect All",
         margin: 5,
         handler: function () {
           self.selectUnselectAll(grid, parseInt(groupId), false);
-        },
+        }
       },
       {
         text: "Edit comment",
@@ -79,7 +79,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
             buttons: Ext.MessageBox.OKCANCEL,
             buttonText: {
               ok: "Save",
-              cancel: "Don't save",
+              cancel: "Don't save"
             },
             multiline: true,
             value: comment,
@@ -88,10 +88,10 @@ Ext.define("MainHub.view.pooling.PoolingController", {
                 self.editComment(self, store, parseInt(groupId), text);
                 //self.syncStore(store.getId());
               }
-            },
+            }
           });
-        },
-      },
+        }
+      }
     ];
 
     if (customConfig && customConfig.qualityCheckMenuOptions) {
@@ -110,8 +110,8 @@ Ext.define("MainHub.view.pooling.PoolingController", {
             html: "Quality Check: Selected",
             margin: "10px 5px 5px 5px",
             style: {
-              color: "#000",
-            },
+              color: "#000"
+            }
           },
           {
             xtype: "container",
@@ -119,16 +119,16 @@ Ext.define("MainHub.view.pooling.PoolingController", {
             layout: {
               type: "hbox",
               pack: "center",
-              align: "middle",
+              align: "middle"
             },
             defaults: {
               xtype: "button",
               scale: "medium",
-              margin: "5px 10px 10px",
+              margin: "5px 10px 10px"
             },
-            items: [],
-          },
-        ],
+            items: []
+          }
+        ]
       };
 
       if (qcMenuOptions.indexOf("passed") !== -1) {
@@ -139,7 +139,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "passed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -151,7 +151,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "completed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -163,7 +163,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "compromised");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -175,7 +175,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           handler: function () {
             self.qualityCheckSelected(grid, parseInt(groupId), "failed");
             this.up("menu").hide();
-          },
+          }
         });
       }
 
@@ -186,7 +186,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
     e.stopEvent();
     Ext.create("Ext.menu.Menu", {
       plain: true,
-      items: menuItems,
+      items: menuItems
     }).showAt(e.getXY());
   },
 
@@ -197,14 +197,14 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       type: "button",
       itemId: "download-benchtop-protocol-button",
       text: "Download Benchtop Protocol",
-      iconCls: "fa fa-file-excel-o fa-lg",
+      iconCls: "fa fa-file-excel-o fa-lg"
     });
 
     toolbar.insert(1, {
       type: "button",
       itemId: "download-pooling-template-button",
       text: "Download Template QC Normalization and Pooling",
-      iconCls: "fa fa-file-excel-o fa-lg",
+      iconCls: "fa fa-file-excel-o fa-lg"
     });
   },
 
@@ -215,8 +215,8 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       scope: self,
       params: {
         data: Ext.JSON.encode({
-          newComment: text,
-        }),
+          newComment: text
+        })
       },
       success: function (response) {
         var obj = Ext.JSON.decode(response.responseText);
@@ -239,7 +239,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         responseText = response.statusText ? response.statusText : responseText;
         new Noty({ text: responseText, type: "error" }).show();
         console.error(response);
-      },
+      }
     });
   },
 
@@ -265,7 +265,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       if (record.get("pool") !== selectedRecord.get("pool")) {
         new Noty({
           text: "You can only select libraries from the same pool.",
-          type: "warning",
+          type: "warning"
         }).show();
         return false;
       }
@@ -280,7 +280,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
     if (selectedRecords.length > 0 && selectedRecords[0].pool !== groupId) {
       new Noty({
         text: "You can only select libraries from the same pool.",
-        type: "warning",
+        type: "warning"
       }).show();
       return false;
     }
@@ -352,7 +352,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
     if (libraries.length === 0 && samples.length === 0) {
       new Noty({
         text: "You did not select any libraries.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -364,8 +364,8 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         pool_id: selectedRecords[0].pool,
         samples: Ext.JSON.encode(Ext.Array.pluck(samples, "pk")),
         libraries: Ext.JSON.encode(Ext.Array.pluck(libraries, "pk")),
-        bp: Ext.JSON.encode(Ext.Array.pluck(libraries, "bp")),
-      },
+        bp: Ext.JSON.encode(Ext.Array.pluck(libraries, "bp"))
+      }
     });
   },
 
@@ -382,7 +382,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
     if (libraries.length === 0 && samples.length === 0) {
       new Noty({
         text: "You did not select any libraries.",
-        type: "warning",
+        type: "warning"
       }).show();
       return;
     }
@@ -392,8 +392,8 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       url: "api/pooling/download_pooling_template/",
       params: {
         samples: Ext.JSON.encode(Ext.Array.pluck(samples, "pk")),
-        libraries: Ext.JSON.encode(Ext.Array.pluck(libraries, "pk")),
-      },
+        libraries: Ext.JSON.encode(Ext.Array.pluck(libraries, "pk"))
+      }
     });
   },
 
@@ -413,11 +413,11 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           pk: item.get("pk"),
           record_type: item.get("record_type"),
           pool: item.get("pool"),
-          bp: item.get("mean_fragment_size"),
+          bp: item.get("mean_fragment_size")
         });
       }
     });
 
     return records;
-  },
+  }
 });

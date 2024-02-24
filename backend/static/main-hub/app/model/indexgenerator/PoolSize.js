@@ -4,15 +4,15 @@ Ext.define("MainHub.model.indexgenerator.PoolSize", {
   fields: [
     {
       name: "id",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "multiplier",
-      type: "int",
+      type: "int"
     },
     {
       name: "size",

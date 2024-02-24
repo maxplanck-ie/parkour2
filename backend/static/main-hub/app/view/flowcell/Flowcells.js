@@ -5,7 +5,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
   requires: [
     "MainHub.components.BaseGrid",
     "MainHub.components.MonthPicker",
-    "MainHub.view.flowcell.FlowcellsController",
+    "MainHub.view.flowcell.FlowcellsController"
   ],
 
   controller: "flowcells",
@@ -60,18 +60,38 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             },
           },
           {
-            xtype: "textfield",
+            xtype: "parkourmonthpicker",
+            itemId: "start-month-picker",
+            fieldLabel: "From",
+            labelWidth: 37,
+            labelStyle: "color: white;",
+            margin: "0 15px 0 0"
+          },
+          {
+            xtype: "parkourmonthpicker",
+            itemId: "end-month-picker",
+            fieldLabel: "To",
+            labelWidth: 20,
+            labelStyle: "color: white;",
+            margin: "0 15px 0 0"
+          },
+          {
+            xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 200,
+            width: 320
           },
           {
             xtype: "button",
             itemId: "load-button",
             text: "Load",
-          },
-        ],
+            iconCls: "x-fa fa-plus",
+            style: {
+              border: "1px solid #ffffffbe !important"
+            }
+          }
+        ]
       },
 
       customConfig: {
@@ -81,14 +101,14 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             Ext.each(d.panel.columns, function (col) {
               col.autoSize();
             });
-          },
-        },
+          }
+        }
       },
 
       columns: {
         defaults: {
           minWidth: 150,
-          flex: 1,
+          flex: 1
         },
         items: [
           {
@@ -101,7 +121,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             tdCls: "no-dirty",
             minWidth: 35,
             width: 35,
-            flex: 0,
+            flex: 0
           },
           {
             text: "Lane",
@@ -123,7 +143,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
                 '<a href="javascript:void(0)" class="pool-name">{0}</a>',
                 value
               );
-            },
+            }
           },
           {
             text: "Date",
@@ -136,7 +156,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           {
             text: "Request",
             dataIndex: "request",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Length",
@@ -152,7 +172,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             minWidth: 80,
             width: 80,
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Index I5",
@@ -160,7 +180,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             minWidth: 80,
             width: 80,
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "Sequencing kit",
@@ -197,7 +217,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           {
             text: "Library protocol",
             dataIndex: "protocol",
-            filter: { type: "string" },
+            filter: { type: "string" }
           },
           {
             text: "pM Loading Conc.",
@@ -207,8 +227,8 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0,
-            },
+              minValue: 0
+            }
           },
           {
             text: "PhiX %",
@@ -217,10 +237,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0,
-            },
-          },
-        ],
+              minValue: 0
+            }
+          }
+        ]
       },
 
       features: [
@@ -237,22 +257,13 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
               },
               getDate: function (children) {
                 return Ext.util.Format.date(children[0].get("create_time"));
-              },
-            },
-          ],
-        },
+              }
+            }
+          ]
+        }
       ],
 
       dockedItems: [
-        {
-          xtype: "toolbar",
-          dock: "top",
-          items: [
-            {
-              xtype: "parkourmonthpicker",
-            },
-          ],
-        },
         {
           xtype: "toolbar",
           dock: "bottom",
@@ -260,7 +271,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             {
               itemId: "download-benchtop-protocol-button",
               text: "Download Benchtop Protocol",
-              iconCls: "fa fa-file-excel-o fa-lg",
+              iconCls: "fa fa-file-excel-o fa-lg"
             },
             {
               itemId: "download-sample-sheet-button",
@@ -271,17 +282,17 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             {
               itemId: "cancel-button",
               iconCls: "fa fa-ban fa-lg",
-              text: "Cancel",
+              text: "Cancel"
             },
             {
               // xtype: 'button',
               itemId: "save-button",
               iconCls: "fa fa-floppy-o fa-lg",
-              text: "Save",
-            },
-          ],
-        },
-      ],
-    },
-  ],
+              text: "Save"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 });

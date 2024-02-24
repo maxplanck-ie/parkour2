@@ -18,5 +18,5 @@ Ext.define("MainHub.store.libraries.Libraries", {
     },
   },
 
-  lazyFill: true,
+  lazyFill: true
 });

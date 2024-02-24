@@ -4,55 +4,55 @@ Ext.define("MainHub.model.indexgenerator.Record", {
   fields: [
     {
       name: "pk",
-      type: "int",
+      type: "int"
     },
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "barcode",
-      type: "string",
+      type: "string"
     },
     {
       name: "record_type",
-      type: "string",
+      type: "string"
     },
     {
       name: "request",
-      type: "int",
+      type: "int"
     },
     {
       name: "request_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "sequencing_depth",
-      type: "float",
+      type: "float"
     },
     {
       name: "library_protocol_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i7",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i7_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_i5_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "index_type",
-      type: "int",
+      type: "int"
     },
     {
       name: "index_reads",
@@ -60,7 +60,7 @@ Ext.define("MainHub.model.indexgenerator.Record", {
     },
     {
       name: "read_length",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

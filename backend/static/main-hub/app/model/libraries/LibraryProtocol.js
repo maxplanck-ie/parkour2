@@ -4,11 +4,11 @@ Ext.define("MainHub.model.libraries.LibraryProtocol", {
   fields: [
     {
       type: "int",
-      name: "id",
+      name: "id"
     },
     {
       type: "string",
-      name: "name",
+      name: "name"
     },
     {
       type: "string",
@@ -20,23 +20,23 @@ Ext.define("MainHub.model.libraries.LibraryProtocol", {
     },
     {
       type: "string",
-      name: "catalog",
+      name: "catalog"
     },
     {
       type: "string",
-      name: "explanation",
+      name: "explanation"
     },
     {
       type: "string",
-      name: "input_requirements",
+      name: "input_requirements"
     },
     {
       type: "string",
-      name: "typical_application",
+      name: "typical_application"
     },
     {
       type: "string",
-      name: "comments",
-    },
-  ],
+      name: "comments"
+    }
+  ]
 });

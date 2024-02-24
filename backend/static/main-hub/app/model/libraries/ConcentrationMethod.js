@@ -3,7 +3,7 @@ Ext.define("MainHub.model.libraries.ConcentrationMethod", {
 
   fields: [
     { name: "name", type: "string" },
-    { name: "id", type: "int" },
+    { name: "id", type: "int" }
   ],
 
   getShortName: function () {
@@ -12,5 +12,5 @@ Ext.define("MainHub.model.libraries.ConcentrationMethod", {
       return item.charAt(0);
     });
     return abbr.join("");
-  },
+  }
 });

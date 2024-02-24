@@ -4,19 +4,19 @@ Ext.define("MainHub.model.usage.ChartPolar", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "data",
-      type: "int",
+      type: "int"
     },
     {
       name: "libraries",
-      type: "int",
+      type: "int"
     },
     {
       name: "samples",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

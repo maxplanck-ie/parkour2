@@ -7,7 +7,7 @@ export function showNotification(content, type) {
     timeout: 3000,
     toastClassName: "toast-main",
     bodyClassName: "toast-body",
-    containerClassName: "toast-container",
+    containerClassName: "toast-container"
   };
   if (type === "info") toast.info(content, options);
   else if (type === "success") toast.success(content, options);
@@ -18,7 +18,8 @@ export function showNotification(content, type) {
 export function handleError(error) {
   if (error.response.status && error.response.status === 403) {
     let slices = window.location.href.split("/vue/");
-    window.location.href = urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
+    window.location.href =
+      urlStringStartsWith() + "/login/?next=/vue/" + slices[1];
   } else if (error.response) {
     showNotification("Error:" + error.response.data, "error");
     console.log("Error status:", error.response.status);

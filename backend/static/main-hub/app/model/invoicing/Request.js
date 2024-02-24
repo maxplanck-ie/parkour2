@@ -4,15 +4,15 @@ Ext.define("MainHub.model.invoicing.Request", {
   fields: [
     {
       name: "request",
-      type: "string",
+      type: "string"
     },
     {
       name: "cost_unit",
-      type: "string",
+      type: "string"
     },
     {
       name: "sequencer",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "pool_size",
@@ -20,47 +20,47 @@ Ext.define("MainHub.model.invoicing.Request", {
     },
     {
       name: "flowcell",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "pool",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "percentage",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "read_length",
-      type: "auto",
+      type: "auto"
     },
     {
       name: "num_libraries_samples_show",
-      type: "string",
+      type: "string"
     },
     {
       name: "library_protocol",
-      type: "string",
+      type: "string"
     },
     {
       name: "fixed_costs",
-      type: "float",
+      type: "float"
     },
     {
       name: "sequencing_costs",
-      type: "float",
+      type: "float"
     },
     {
       name: "preparation_costs",
-      type: "float",
+      type: "float"
     },
     {
       name: "variable_costs",
-      type: "float",
+      type: "float"
     },
     {
       name: "total_costs",
-      type: "float",
-    },
-  ],
+      type: "float"
+    }
+  ]
 });

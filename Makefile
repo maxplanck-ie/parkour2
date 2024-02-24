@@ -23,6 +23,7 @@ check-rootdir:
 set-prod:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_prod#' docker-compose.yml
 	@sed -i -e 's#\(^CMD \["npm", "run", "start-\).*\]#\1prod"\]#' frontend.Dockerfile
+	@test -e ./misc/parkour.env.ignore && cp ./misc/parkour.env.ignore ./misc/parkour.env || :
 
 deploy-django: deploy-network deploy-containers
 
@@ -41,11 +42,9 @@ collect-static:
 check-templates:
 	@docker compose exec parkour2-django python manage.py validate_templates
 
-update-extjs:
-	@which sencha > /dev/null \
-		&& cd ./backend/static/main-hub \
-		&& OPENSSL_CONF=/dev/null sencha app build development \
-		|| echo "Warning: Sencha is not installed. See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD"
+update-extjs:  ## See: https://github.com/maxplanck-ie/parkour2/wiki/Sencha-CMD
+	@cd ./backend/static/main-hub \
+		&& OPENSSL_CONF=/dev/null sencha app build development
 
 apply-migrations:
 	@docker compose exec parkour2-django python manage.py migrate --traceback
@@ -90,10 +89,10 @@ clean:
 
 sweep:  ## Remove any sqldump and migrations tar gzipped older than a week. (Excluding current symlink targets.)
 	@find ./misc -ctime +7 -name db_\*.sqldump \
-		-not -name "$$(file misc/latest.sqldump | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/latest.sqldump | sed 's/.*\(db_.*\.sqldump\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 	@find ./misc -ctime +7 -name migras_\*.tar.gz \
-		-not -name "$$(file misc/migras.tar.gz | cut -d: -f2 | sed 's/ symbolic link to \(.*\)/\1/')" \
+		-not -name "$$(file misc/migras.tar.gz | sed 's/.*\(migras_.*\.tar\.gz\).*/\1/')" \
 		-exec /bin/rm -rf {} +;
 
 prune:
@@ -104,7 +103,10 @@ clearpy:  ## Removes some files, created by 'prod' deployment and owned by root.
 	@docker compose exec parkour2-django find . -type f -name "*.py[co]" -exec /bin/rm -rf {} +;
 	@docker compose exec parkour2-django find . -type d -name "__pycache__" -exec /bin/rm -rf {} +;
 
-prod: down clean deploy-django deploy-nginx collect-static deploy-rsnapshot  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+prod: down set-prod deploy-django deploy-nginx collect-static deploy-rsnapshot clean  ## Deploy Gunicorn instance with Nginx, and rsnapshot service
+
+prod-ci: down set-prod deploy-django collect-static apply-migrations clean
+	@docker exec parkour2-django python manage.py check
 
 dev-easy: down set-dev deploy-django deploy-caddy collect-static clean  ## Deploy Werkzeug instance with Caddy
 
@@ -122,7 +124,7 @@ hardreset-caddyfile:
 	@echo -e "http://*:9980 {\n\thandle /static/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /protected_media/* {\n\t\troot * /parkour2\n\t\tfile_server\n\t}\n\thandle /vue/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle /vue-assets/* {\n\t\treverse_proxy parkour2-vite:5173\n\t}\n\thandle {\n\t\treverse_proxy parkour2-django:8000\n\t}\n\tlog\n}" > misc/Caddyfile
 
 hardreset-envfile:
-	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour]\nSERVER_EMAIL=your@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
+	@echo -e "TIME_ZONE=Europe/Berlin\nADMIN_NAME=admin\nADMIN_EMAIL=your@mail.server.tld\nEMAIL_HOST=mail.server.tld\nEMAIL_SUBJECT_PREFIX=[Parkour2]\nSERVER_EMAIL=errors@mail.server.tld\nCSRF_TRUSTED_ORIGINS=http://127.0.0.1,https://*.server.tld,http://localhost:5174\nPOSTGRES_USER=postgres\nPOSTGRES_DB=postgres\nPOSTGRES_PASSWORD=change_me__stay_safe\nDATABASE_URL=postgres://postgres:change_me__stay_safe@parkour2-postgres:5432/postgres\nSECRET_KEY=generate__one__with__openssl__rand__DASH_hex__32" > misc/parkour.env
 
 deploy-caddy:
 	@docker compose -f caddy.yml up -d
@@ -217,7 +219,7 @@ deploy-rsnapshot:
 		docker exec parkour2-rsnapshot rsnapshot halfy
 
 # --buffer --reverse --failfast --timing
-djtest: down set-prod deploy-django clean  ## Re-deploy and run Backend tests
+djtest: down set-testing deploy-django clean  ## Re-deploy and run Backend tests
 	@docker compose exec parkour2-django python manage.py test --parallel
 
 set-testing:
@@ -259,8 +261,9 @@ shell:
 # kill-sessions:
 # 	@docker exec -it parkour2-django python manage.py shell --command="from common.models import User; from django.contrib.sessions.models import Session; for s in Session.objects.iterator(): s.delete()"
 
-reload-code:  ## Gracefully ship small code updates into production backend
-	@docker compose exec -it parkour2-django kill -1 1
+# DEPRECATED. Did BarcodeCounter bug bite us again?!
+#reload-code:  ## Gracefully ship small code updates into production backend
+#	@docker compose exec -it parkour2-django kill -1 1
 
 ## This should be a cronjob on your host VM/ production deployment machine.
 clearsessions:
@@ -278,7 +281,7 @@ models:
 		pip install pydot && \
 		python manage.py graph_models -n --pydot -g -a -o /tmp_parkour.dot && \
 		sed -i -e 's/\(fontsize\)=[0-9]\+/\1=20/' /tmp_parkour.dot && \
-		dot -T pdf -o /tmp_parkour.dot"
+		dot -T pdf -o /tmp_parkour.pdf /tmp_parkour.dot"
 	@docker exec parkour2-django sh -c \
 		"pdfposter -mA3 -pA1 /tmp_parkour.pdf /tmp_models.A3.pdf && \
 		pdfposter -mA4 -pA1 /tmp_parkour.pdf /tmp_models.A4.pdf && \
@@ -290,15 +293,21 @@ models:
 show-urls:
 	@docker exec parkour2-django python manage.py show_urls
 
+maintenance: compile precomitupd ncu
+
+precomitupd:
+	@pre-commit autoupdate
+
 compile:
 	# @test -d ./env_dev || \
 	# 	{ echo "ERROR: venv not found! Try: make env-setup-dev"; exit 1; }
 	# @if [[ :$PATH: == *:"env_dev":* ]] ; then
 	# 	source ./env_dev/bin/activate && echo "venv activated!"
+	# 	pip install --upgrade pip wheel setuptools pip-compile-multi
 	# else
 	# 	exit 1
 	# fi
-	@pip-compile-multi -d backend/requirements/
+	@pip-compile-multi --allow-unsafe -d backend/requirements/
 
 ncu:
 	# @npm install -g npm-check-updates
@@ -374,8 +383,11 @@ tar-old-migras:
 			-exec tar czf ./misc/migras_$(stamp).tar.gz {} \+ && \
 		ln -sf migras_$(stamp).tar.gz misc/migras.tar.gz
 
-put-old-migras: rm-migras
-	@[[ -f misc/migras.tar.gz ]] && tar xzf misc/migras.tar.gz
+put-old-migras:
+	@[[ -f misc/migras.tar.gz ]] && \
+		$(MAKE) rm-migras && \
+		tar xzf misc/migras.tar.gz || \
+		{ echo -n 'Symlink seems to be broken, '; ls -L misc/migras.tar.gz; exit 1; }
 
 dev-migras: dev db-migras
 dev-ez: dev-easy db-migras

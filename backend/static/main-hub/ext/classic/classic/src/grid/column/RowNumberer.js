@@ -14,97 +14,110 @@
  *     ]
  *
  */
-Ext.define('Ext.grid.column.RowNumberer', {
-    extend: 'Ext.grid.column.Column',
-    alternateClassName: 'Ext.grid.RowNumberer',
-    alias: 'widget.rownumberer',
+Ext.define("Ext.grid.column.RowNumberer", {
+  extend: "Ext.grid.column.Column",
+  alternateClassName: "Ext.grid.RowNumberer",
+  alias: "widget.rownumberer",
 
-    /**
-     * @property {Boolean} isRowNumberer
-     * `true` in this class to identify an object as an instantiated RowNumberer, or subclass thereof.
-     */
-    isRowNumberer: true,
+  /**
+   * @property {Boolean} isRowNumberer
+   * `true` in this class to identify an object as an instantiated RowNumberer, or subclass thereof.
+   */
+  isRowNumberer: true,
 
-    /**
-     * @cfg {String} text
-     * Any valid text or HTML fragment to display in the header cell for the row number column.
-     */
-    text: "&#160;",
+  /**
+   * @cfg {String} text
+   * Any valid text or HTML fragment to display in the header cell for the row number column.
+   */
+  text: "&#160;",
 
-    /**
-     * @cfg {Number} width
-     * The default width in pixels of the row number column.
-     */
-    width: 23,
+  /**
+   * @cfg {Number} width
+   * The default width in pixels of the row number column.
+   */
+  width: 23,
 
-    /**
-     * @cfg {Boolean} sortable
-     * @hide
-     */
-    sortable: false,
+  /**
+   * @cfg {Boolean} sortable
+   * @hide
+   */
+  sortable: false,
 
-    /**
-     * @cfg {Boolean} [draggable=false]
-     * False to disable drag-drop reordering of this column.
-     */
-    draggable: false,
+  /**
+   * @cfg {Boolean} [draggable=false]
+   * False to disable drag-drop reordering of this column.
+   */
+  draggable: false,
 
-    // Flag to Lockable to move instances of this column to the locked side.
-    autoLock: true,
+  // Flag to Lockable to move instances of this column to the locked side.
+  autoLock: true,
 
-    // May not be moved from its preferred locked side when grid is enableLocking:true
-    lockable: false,
+  // May not be moved from its preferred locked side when grid is enableLocking:true
+  lockable: false,
 
-    align: 'right',
+  align: "right",
 
-    /**
-     * @cfg {Boolean} producesHTML
-     * @inheritdoc
-     */
-    producesHTML: false,
+  /**
+   * @cfg {Boolean} producesHTML
+   * @inheritdoc
+   */
+  producesHTML: false,
 
-    ignoreExport: true,
+  ignoreExport: true,
 
-    constructor: function (config) {
-        var me = this;
+  constructor: function (config) {
+    var me = this;
 
-        // Copy the prototype's default width setting into an instance property to provide
-        // a default width which will not be overridden by Container.applyDefaults use of Ext.applyIf
-        me.width = me.width;
+    // Copy the prototype's default width setting into an instance property to provide
+    // a default width which will not be overridden by Container.applyDefaults use of Ext.applyIf
+    me.width = me.width;
 
-        me.callParent(arguments);
+    me.callParent(arguments);
 
-        // Override any setting from the HeaderContainer's defaults
-        me.sortable = false;
+    // Override any setting from the HeaderContainer's defaults
+    me.sortable = false;
 
-        me.scope = me;
-    },
+    me.scope = me;
+  },
 
-    resizable: false,
-    hideable: false,
-    menuDisabled: true,
-    dataIndex: '',
-    cls: Ext.baseCSSPrefix + 'row-numberer',
-    tdCls: Ext.baseCSSPrefix + 'grid-cell-row-numberer ' + Ext.baseCSSPrefix + 'grid-cell-special',
-    innerCls: Ext.baseCSSPrefix + 'grid-cell-inner-row-numberer',
-    rowspan: undefined,
+  resizable: false,
+  hideable: false,
+  menuDisabled: true,
+  dataIndex: "",
+  cls: Ext.baseCSSPrefix + "row-numberer",
+  tdCls:
+    Ext.baseCSSPrefix +
+    "grid-cell-row-numberer " +
+    Ext.baseCSSPrefix +
+    "grid-cell-special",
+  innerCls: Ext.baseCSSPrefix + "grid-cell-inner-row-numberer",
+  rowspan: undefined,
 
-    defaultRenderer: function(value, metaData, record, rowIdx, colIdx, dataSource, view) {
-        var rowspan = this.rowspan,
-            page = dataSource.currentPage,
-            result = view.store.indexOf(record);
+  defaultRenderer: function (
+    value,
+    metaData,
+    record,
+    rowIdx,
+    colIdx,
+    dataSource,
+    view
+  ) {
+    var rowspan = this.rowspan,
+      page = dataSource.currentPage,
+      result = view.store.indexOf(record);
 
-        if (metaData && rowspan) {
-            metaData.tdAttr = 'rowspan="' + rowspan + '"';
-        }
-
-        if (page > 1) {
-            result += (page - 1) * dataSource.pageSize;
-        }
-        return result + 1;
-    },
-
-    updater: function(cell, value, record, view, dataSource) {
-        Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML = this.defaultRenderer(value, null, record, null, null, dataSource, view);
+    if (metaData && rowspan) {
+      metaData.tdAttr = 'rowspan="' + rowspan + '"';
     }
+
+    if (page > 1) {
+      result += (page - 1) * dataSource.pageSize;
+    }
+    return result + 1;
+  },
+
+  updater: function (cell, value, record, view, dataSource) {
+    Ext.fly(cell).down(this.getView().innerSelector, true).innerHTML =
+      this.defaultRenderer(value, null, record, null, null, dataSource, view);
+  }
 });

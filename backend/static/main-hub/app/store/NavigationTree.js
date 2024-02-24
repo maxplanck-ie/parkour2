@@ -12,9 +12,9 @@ Ext.define("MainHub.store.NavigationTree", {
     limitParam: false, //to remove param "limit"
     noCache: false, //to remove param "_dc",
     reader: {
-      type: "json",
-    },
+      type: "json"
+    }
   },
 
-  autoLoad: true,
+  autoLoad: true
 });

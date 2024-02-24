@@ -4,23 +4,23 @@ Ext.define("MainHub.model.flowcell.Lane", {
   fields: [
     {
       name: "pool_id",
-      type: "int",
+      type: "int"
     },
     {
       name: "pool_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "lane_id",
-      type: "string",
+      type: "string"
     },
     {
       name: "lane_name",
-      type: "string",
+      type: "string"
     },
     {
       name: "loaded",
-      type: "int",
-    },
-  ],
+      type: "int"
+    }
+  ]
 });

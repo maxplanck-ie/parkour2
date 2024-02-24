@@ -5,42 +5,42 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
   config: {
     control: {
       "#": {
-        boxready: "boxready",
+        boxready: "boxready"
       },
       "#libraryCardBtn": {
-        click: "selectCard",
+        click: "selectCard"
       },
       "#sampleCardBtn": {
-        click: "selectCard",
+        click: "selectCard"
       },
       "#libraryCard": {
-        activate: "showLibraryCard",
+        activate: "showLibraryCard"
       },
       "#sampleCard": {
-        activate: "showSampleCard",
+        activate: "showSampleCard"
       },
       "#libraryProtocolField": {
-        select: "selectLibraryProtocol",
+        select: "selectLibraryProtocol"
       },
       "#indexType": {
-        select: "selectIndexType",
+        select: "selectIndexType"
       },
       "#indexReadsField": {
-        select: "enableIndicesFields",
+        select: "enableIndicesFields"
       },
       "#nucleicAcidTypeField": {
-        select: "selectNucleicAcidType",
+        select: "selectNucleicAcidType"
       },
       "#sampleProtocolField": {
-        select: "selectSampleProtocol",
+        select: "selectSampleProtocol"
       },
       "#saveAndAddWndBtn": {
-        click: "saveAndAdd",
+        click: "saveAndAdd"
       },
       "#addWndBtn": {
-        click: "saveAndClose",
-      },
-    },
+        click: "saveAndClose"
+      }
+    }
   },
 
   boxready: function (wnd) {
@@ -117,7 +117,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
               true
             );
           }
-        },
+        }
       });
 
       // Set Organism
@@ -197,7 +197,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
 
     libraryTypesStore.load({
       params: {
-        library_protocol_id: record.data.id,
+        library_protocol_id: record.data.id
       },
       callback: function (records, operation, success) {
         if (!success) {
@@ -216,7 +216,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             );
           }
         }
-      },
+      }
     });
   },
 
@@ -235,7 +235,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
 
     for (var i = 0; i <= record.get("index_reads"); i++) {
       indexReadsField.getStore().add({
-        num: i,
+        num: i
       });
     }
 
@@ -258,25 +258,25 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
     // Load Index I7
     indexI7Store.load({
       params: {
-        index_type_id: record.data.id,
+        index_type_id: record.data.id
       },
       callback: function (records, operation, success) {
         if (!success) Ext.ux.ToastMessage("Cannot load Index I7", "error");
         if (wnd.mode == "edit" && setInitialValues === true)
           indexI7Field.setValue(wndRecord.index_i7);
-      },
+      }
     });
 
     // Load Index I5
     indexI5Store.load({
       params: {
-        index_type_id: record.data.id,
+        index_type_id: record.data.id
       },
       callback: function (records, operation, success) {
         if (!success) Ext.ux.ToastMessage("Cannot load Index I5", "error");
         if (wnd.mode == "edit" && setInitialValues === true)
           indexI5Field.setValue(wndRecord.index_i5);
-      },
+      }
     });
   },
 
@@ -386,7 +386,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
 
     Ext.getStore("libraryProtocolsStore").load({
       params: {
-        type: record.data.type,
+        type: record.data.type
       },
       callback: function (records, operation, success) {
         if (!success) {
@@ -405,7 +405,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             );
           }
         }
-      },
+      }
     });
   },
 
@@ -443,7 +443,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
 
     libraryTypesStore.load({
       params: {
-        library_protocol_id: record.data.id,
+        library_protocol_id: record.data.id
       },
       callback: function (records, operation, success) {
         if (!success) {
@@ -462,7 +462,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             );
           }
         }
-      },
+      }
     });
   },
 
@@ -482,7 +482,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       nameFieldName = "libraryName";
       data = form.getForm().getFieldValues();
       params = $.extend(data, {
-        library_id: wnd.record ? wnd.record.data.libraryId : "",
+        library_id: wnd.record ? wnd.record.data.libraryId : ""
       });
     } else {
       form = Ext.getCmp("sampleForm");
@@ -490,7 +490,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
       nameFieldName = "sampleName";
       data = form.getForm().getFieldValues();
       params = $.extend(data, {
-        sample_id: wnd.record ? wnd.record.data.sampleId : "",
+        sample_id: wnd.record ? wnd.record.data.sampleId : ""
       });
     }
 
@@ -503,7 +503,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         scope: this,
         params: {
           mode: wnd.mode,
-          records: Ext.JSON.encode([params]),
+          records: Ext.JSON.encode([params])
         },
 
         success: function (response) {
@@ -517,8 +517,8 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
             } else {
               Ext.getStore("librariesInRequestStore").reload({
                 params: {
-                  request_id: wnd.record.get("requestId"),
-                },
+                  request_id: wnd.record.get("requestId")
+                }
               });
               // Ext.getStore('requestsStore').reload();
               Ext.getStore("librariesStore").reload();
@@ -547,7 +547,7 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
           Ext.ux.ToastMessage(response.statusText, "error");
           console.error("[ERROR]: " + url);
           console.error(response);
-        },
+        }
       });
     } else {
       Ext.ux.ToastMessage("Check the form", "warning");
@@ -569,8 +569,8 @@ Ext.define("MainHub.view.libraries.LibraryWindowController", {
         target: item,
         html: $(item).attr("tooltip-text"),
         dismissDelay: 15000,
-        maxWidth: 300,
+        maxWidth: 300
       });
     });
-  },
+  }
 });

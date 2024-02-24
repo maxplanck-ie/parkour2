@@ -9,7 +9,7 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
     stripeRows: false,
     getRowClass: function (record) {
       return record.get("invalid") ? "invalid" : "";
-    },
+    }
   },
 
   columns: {
@@ -18,9 +18,9 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
       flex: 1,
       editor: {
         xtype: "textfield",
-        allowBlank: false,
+        allowBlank: false
       },
-      renderer: "errorRenderer",
+      renderer: "errorRenderer"
     },
     items: [
       {
@@ -31,25 +31,25 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
         tdCls: "no-dirty",
         editor: null,
         minWidth: 40,
-        width: 40,
+        width: 40
       },
       // Experiments
       {
         text: "Library Name",
         dataIndex: "library_name",
         regex: new RegExp(/^[A-Za-z0-9_-]+$/),
-        regexText: "Only A-Za-z0-9 as well as _ and - are allowed",
+        regexText: "Only A-Za-z0-9 as well as _ and - are allowed"
       },
       {
         text: "Library Strategy",
         dataIndex: "library_strategy",
-        tooltip: "Sequencing technique intended for this library",
+        tooltip: "Sequencing technique intended for this library"
       },
       {
         text: "Design Description",
         dataIndex: "design_description",
         tooltip:
-          "Goal and setup of the individual library including library was constructed",
+          "Goal and setup of the individual library including library was constructed"
       },
       {
         text: "Library Source",
@@ -63,8 +63,8 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
           displayField: "name",
           valueField: "name",
           store: "ENALibrarySources",
-          forceSelection: true,
-        },
+          forceSelection: true
+        }
       },
       {
         text: "Library Selection",
@@ -78,44 +78,44 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
           displayField: "name",
           valueField: "name",
           store: "ENALibrarySelections",
-          forceSelection: true,
-        },
+          forceSelection: true
+        }
       },
       {
         text: "Library Layout",
         dataIndex: "library_layout",
         toioltip:
-          "Library Layout specifies whether to expect single or paired configuration of reads",
+          "Library Layout specifies whether to expect single or paired configuration of reads"
       },
       {
         text: "Insert Size",
         dataIndex: "insert_size",
         editor: {
           xtype: "numberfield",
-          minValue: 0,
-        },
+          minValue: 0
+        }
       },
       {
         text: "Library Construction Protocol",
         dataIndex: "library_construction_protocol",
-        tooltip: "Protocol by which the library was constructed",
+        tooltip: "Protocol by which the library was constructed"
       },
       {
         text: "Platform",
         dataIndex: "platform",
-        tooltip: "Sequencing platform used in the experiment",
+        tooltip: "Sequencing platform used in the experiment"
       },
       {
         text: "Instrument Model",
         dataIndex: "instrument_model",
-        tooltip: "Sequencing platform model",
+        tooltip: "Sequencing platform model"
       },
       // Samples
       {
         text: "Scientific Name",
         dataIndex: "scientific_name",
         tooltip:
-          "Scientific name of sample that distinguishes its taxonomy. Please use a name or synonym that is tracked in the INSDC Taxonomy database.",
+          "Scientific name of sample that distinguishes its taxonomy. Please use a name or synonym that is tracked in the INSDC Taxonomy database."
       },
       {
         text: "Taxon ID",
@@ -123,30 +123,30 @@ Ext.define("MainHub.view.metadataexporter.Samples", {
         tooltip: "NCBI Taxonomy Identifier",
         editor: {
           xtype: "numberfield",
-          minValue: 0,
-        },
+          minValue: 0
+        }
       },
       {
         text: "Sample Title",
         dataIndex: "title",
         tooltip:
-          "Short text that can be used to call out sample records in search results or in displays",
+          "Short text that can be used to call out sample records in search results or in displays"
       },
       {
         text: "Sample Description",
         dataIndex: "sample_description",
         tooltip:
-          "Free-form text describing the sample, its origin, and its method of isolation",
+          "Free-form text describing the sample, its origin, and its method of isolation"
       },
       // Runs
       {
         text: "File Name",
-        dataIndex: "file_name",
+        dataIndex: "file_name"
       },
       {
         text: "File Format",
-        dataIndex: "file_format",
-      },
-    ],
-  },
+        dataIndex: "file_format"
+      }
+    ]
+  }
 });

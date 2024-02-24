@@ -9,7 +9,7 @@ Ext.define("validator.IndexI7", {
       (record.get("index_reads") > 5 && value !== "") ||
       "Must be present"
     );
-  },
+  }
 });
 
 Ext.define("validator.IndexI5", {
@@ -25,7 +25,7 @@ Ext.define("validator.IndexI5", {
         value !== "") ||
       "Must be present"
     );
-  },
+  }
 });
 
 Ext.define("MainHub.model.libraries.BatchAdd.Library", {
@@ -34,34 +34,34 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
   fields: [
     {
       type: "int",
-      name: "mean_fragment_size",
+      name: "mean_fragment_size"
     },
     {
       type: "int",
       name: "index_type",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "index_reads",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "string",
-      name: "index_i7",
+      name: "index_i7"
     },
     {
       type: "string",
-      name: "index_i5",
+      name: "index_i5"
     },
     {
       type: "float",
       name: "qpcr_result",
       allowNull: true,
-      defaultValue: null,
-    },
+      defaultValue: null
+    }
   ],
 
   validators: {

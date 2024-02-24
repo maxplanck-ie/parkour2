@@ -2,7 +2,7 @@
 
 /**
  * This class describes how a layout will interact with a component it manages.
- * 
+ *
  * There are special instances of this class stored as static properties to avoid object
  * instantiation. All instances of this class should be treated as readonly objects.
  *

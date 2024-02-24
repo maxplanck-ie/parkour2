@@ -3,8 +3,38 @@
 ??.??.??
 ========
 
+- Added date-range picker in 'Invoicing' submodule. (#?)
+
+24.02.20
+========
+
+- Added date-range picker in 'Load Flowcells' submodule. (#96)
+- Added a library protocol filter, and added pool into search functionality, for 'Libraries & Samples' staff UI. (#95)
+- Fixed a misconfiguration with Django that interfered with the URL shared to PIs for Paperless/ Electronic Approval of sequencing requests. (`7a85900`)
+- new URL: `/api_user_details` (not really an api endpoint), gives some basic user data to upcoming frontend (VueJS).
+- new URL: `/danke` (users are redirected after seq. request approval)
+- new library protocol types for single cell sequencing.
+- `put-old-migras` and `sweep` rules are more robust now.
+
+24.01.31
+========
+
+Breaking changes:
+
+- Dropped support for Python 3.9 (no more CI tests, which were [broken via dependencies](https://github.com/maxplanck-ie/parkour2/actions/runs/7543943036/job/20536098669#step:8:99)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway.
+- Enabled pre-commit hook to run a new linter (prettier).
+
+Non-breaking changes:
+
+- Added a statuses filter and search functionality for 'Libraries & Samples' staff UI. (#93)
+- Added support for Python 3.12 (CI tests are passing), consider this experimental.
+- Upgraded Python dependencies.
+- Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
 - Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
+- Playwright tests for the new frontend, Vue.js for Duties. (#86)
+- Added new option "Short + Long" to the Platform field for Duties. (#89)
+- Minor cosmetic changes, and a new search bar for Libraries and Samples. (#87)
 
 
 23.11.22

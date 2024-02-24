@@ -17,13 +17,13 @@ Ext.define("MainHub.store.indexgenerator.PoolSizes", {
     reader: {
       type: "json",
       rootProperty: "data",
-      successProperty: "success",
-    },
+      successProperty: "success"
+    }
   },
 
   autoLoad: true,
 
   getId: function () {
     return "PoolSizes";
-  },
+  }
 });

@@ -14,7 +14,7 @@ Ext.define("validator.Unique", {
     });
 
     return values.indexOf(value) === -1 || "Must be unique";
-  },
+  }
 });
 
 Ext.define("validator.GreaterThanZero", {
@@ -22,7 +22,7 @@ Ext.define("validator.GreaterThanZero", {
   alias: "data.validator.greaterthanzero",
   validate: function (value) {
     return value > 0 || "Must be greater than zero";
-  },
+  }
 });
 
 Ext.define("validator.Concentration", {
@@ -62,24 +62,24 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
   fields: [
     {
       type: "string",
-      name: "name",
+      name: "name"
     },
     {
       type: "int",
       name: "library_protocol",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "library_type",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "float",
       name: "sequencing_depth",
-      defaultValue: null,
+      defaultValue: null
     },
     {
       name: "sample_volume_user",
@@ -89,34 +89,34 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     {
       type: "float",
       name: "concentration",
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "concentration_method",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "amplification_cycles",
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "bool",
-      name: "equal_representation_nucleotides",
+      name: "equal_representation_nucleotides"
     },
     {
       type: "int",
       name: "read_length",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "int",
       name: "organism",
       allowNull: true,
-      defaultValue: null,
+      defaultValue: null
     },
     {
       type: "string",
@@ -129,24 +129,24 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     {
       type: "bool",
       name: "invalid",
-      defaultValue: false,
+      defaultValue: false
     },
     {
       type: "auto",
       name: "errors",
-      defaultValue: {},
-    },
+      defaultValue: {}
+    }
   ],
 
   validators: {
     name: [
       {
-        type: "presence",
+        type: "presence"
       },
       {
         type: "unique",
-        dataIndex: "name",
-      },
+        dataIndex: "name"
+      }
     ],
     library_protocol: "presence",
     library_type: "presence",

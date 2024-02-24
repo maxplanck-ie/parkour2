@@ -1,7 +1,7 @@
-Ext.define('Ext.theme.blackberry.tab.Panel', {
-    override: 'Ext.tab.Panel',
+Ext.define("Ext.theme.blackberry.tab.Panel", {
+  override: "Ext.tab.Panel",
 
-    config: {
-        tabBarPosition: 'bottom'
-    }
+  config: {
+    tabBarPosition: "bottom"
+  }
 });

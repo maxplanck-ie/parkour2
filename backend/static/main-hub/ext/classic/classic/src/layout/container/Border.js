@@ -39,7 +39,7 @@
  *     });
  *
  * # Notes
- * 
+ *
  *   - When using the split option, the layout will automatically insert a {@link Ext.resizer.Splitter}
  *     into the appropriate place. This will modify the underlying
  *     {@link Ext.container.Container#property-items items} collection in the container.
@@ -60,26 +60,29 @@
  *
  *   - **There is no BorderLayout.Region class in ExtJS 4.0+**
  */
-Ext.define('Ext.layout.container.Border', {
-
-    extend: 'Ext.layout.container.Container',
-    alias: 'layout.border',
-    alternateClassName: 'Ext.layout.BorderLayout',
+Ext.define(
+  "Ext.layout.container.Border",
+  {
+    extend: "Ext.layout.container.Container",
+    alias: "layout.border",
+    alternateClassName: "Ext.layout.BorderLayout",
 
     requires: [
-        'Ext.resizer.BorderSplitter',
-        'Ext.fx.Anim',
+      "Ext.resizer.BorderSplitter",
+      "Ext.fx.Anim",
 
-        // Overrides for Panel that provide border layout features
-        'Ext.layout.container.border.Region'
+      // Overrides for Panel that provide border layout features
+      "Ext.layout.container.border.Region"
     ],
 
+    targetCls: Ext.baseCSSPrefix + "border-layout-ct",
 
-    targetCls: Ext.baseCSSPrefix + 'border-layout-ct',
+    itemCls: [
+      Ext.baseCSSPrefix + "border-item",
+      Ext.baseCSSPrefix + "box-item"
+    ],
 
-    itemCls: [Ext.baseCSSPrefix + 'border-item', Ext.baseCSSPrefix + 'box-item'],
-
-    type: 'border',
+    type: "border",
 
     isBorderLayout: true,
 
@@ -102,7 +105,7 @@ Ext.define('Ext.layout.container.Border', {
      *         }
      *     }
      */
-    
+
     /**
      * @cfg {Boolean} [splitterResize=true]
      * This configuration option is to be applied to the **child `items`** managed by this layout and
@@ -113,7 +116,7 @@ Ext.define('Ext.layout.container.Border', {
     /**
      * @cfg {Number/String/Object} padding
      * Sets the padding to be applied to all child items managed by this layout.
-     * 
+     *
      * This property can be specified as a string containing space-separated, numeric
      * padding values. The order of the sides associated with each value matches the way
      * CSS processes padding values:
@@ -130,32 +133,32 @@ Ext.define('Ext.layout.container.Border', {
     padding: undefined,
 
     percentageRe: /(\d+)%/,
-    
-    horzPositionProp: 'left',
-    padOnContainerProp: 'left',
-    padNotOnContainerProp: 'right',
+
+    horzPositionProp: "left",
+    padOnContainerProp: "left",
+    padNotOnContainerProp: "right",
 
     /**
      * Reused meta-data objects that describe axis properties.
      * @private
      */
     axisProps: {
-        horz: {
-            borderBegin: 'west',
-            borderEnd: 'east',
-            horizontal: true,
-            posProp: 'x',
-            sizeProp: 'width',
-            sizePropCap: 'Width'
-        },
-        vert: {
-            borderBegin: 'north',
-            borderEnd: 'south',
-            horizontal: false,
-            posProp: 'y',
-            sizeProp: 'height',
-            sizePropCap: 'Height'
-        }
+      horz: {
+        borderBegin: "west",
+        borderEnd: "east",
+        horizontal: true,
+        posProp: "x",
+        sizeProp: "width",
+        sizePropCap: "Width"
+      },
+      vert: {
+        borderBegin: "north",
+        borderEnd: "south",
+        horizontal: false,
+        posProp: "y",
+        sizeProp: "height",
+        sizePropCap: "Height"
+      }
     },
 
     /**
@@ -167,18 +170,18 @@ Ext.define('Ext.layout.container.Border', {
 
     panelCollapseAnimate: true,
 
-    panelCollapseMode: 'placeholder',
+    panelCollapseMode: "placeholder",
 
     /**
      * @cfg {Object} regionWeights
      * The default weights to assign to regions in the border layout. These values are
      * used when a region does not contain a `weight` property. This object must have
      * properties for all regions ("north", "south", "east" and "west").
-     * 
+     *
      * **IMPORTANT:** Since this is an object, changing its properties will impact ALL
      * instances of Border layout. If this is not desired, provide a replacement object as
      * a config option instead:
-     * 
+     *
      *      layout: {
      *          type: 'border',
      *          regionWeights: {
@@ -194,11 +197,11 @@ Ext.define('Ext.layout.container.Border', {
      * owner's items list (first come, first served).
      */
     regionWeights: {
-        north: 20,
-        south: 10,
-        center: 0,
-        west: -10,
-        east: -20
+      north: 20,
+      south: 10,
+      center: 0,
+      west: -10,
+      east: -20
     },
 
     //----------------------------------
@@ -210,295 +213,349 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     beginAxis: function (ownerContext, regions, name) {
-        var me = this,
-            props = me.axisProps[name],
-            isVert = !props.horizontal,
-            sizeProp = props.sizeProp,
-            totalFlex = 0,
-            childItems = ownerContext.childItems,
-            length = childItems.length,
-            center, i, childContext, centerFlex, comp, region, match, size, type, target, placeholder;
+      var me = this,
+        props = me.axisProps[name],
+        isVert = !props.horizontal,
+        sizeProp = props.sizeProp,
+        totalFlex = 0,
+        childItems = ownerContext.childItems,
+        length = childItems.length,
+        center,
+        i,
+        childContext,
+        centerFlex,
+        comp,
+        region,
+        match,
+        size,
+        type,
+        target,
+        placeholder;
 
-        for (i = 0; i < length; ++i) {
-            childContext = childItems[i];
-            comp = childContext.target;
+      for (i = 0; i < length; ++i) {
+        childContext = childItems[i];
+        comp = childContext.target;
 
-            childContext.layoutPos = {};
+        childContext.layoutPos = {};
 
-            if (comp.region) {
-                childContext.region = region = comp.region;
+        if (comp.region) {
+          childContext.region = region = comp.region;
 
-                childContext.isCenter = comp.isCenter;
-                childContext.isHorz = comp.isHorz;
-                childContext.isVert = comp.isVert;
+          childContext.isCenter = comp.isCenter;
+          childContext.isHorz = comp.isHorz;
+          childContext.isVert = comp.isVert;
 
-                childContext.weight = comp.weight || me.regionWeights[region] || 0;
-                comp.weight = childContext.weight;
-                
-                regions[comp.id] = childContext;
+          childContext.weight = comp.weight || me.regionWeights[region] || 0;
+          comp.weight = childContext.weight;
 
-                if (comp.isCenter) {
-                    center = childContext;
-                    centerFlex = comp.flex;
-                    ownerContext.centerRegion = center;
+          regions[comp.id] = childContext;
 
-                    continue;
-                }
+          if (comp.isCenter) {
+            center = childContext;
+            centerFlex = comp.flex;
+            ownerContext.centerRegion = center;
 
-                if (isVert !== childContext.isVert) {
-                    continue;
-                }
+            continue;
+          }
 
-                // process regions "isVert ? north||south : east||center||west"
+          if (isVert !== childContext.isVert) {
+            continue;
+          }
 
-                childContext.reverseWeighting = (region === props.borderEnd);
+          // process regions "isVert ? north||south : east||center||west"
 
-                size = comp[sizeProp];
-                type = typeof size;
+          childContext.reverseWeighting = region === props.borderEnd;
 
-                if (!comp.collapsed) {
-                    if (type === 'string' && (match = me.percentageRe.exec(size))) {
-                        childContext.percentage = parseInt(match[1], 10);
-                    } else if (comp.flex) {
-                        totalFlex += childContext.flex = comp.flex;
-                    }
-                }
+          size = comp[sizeProp];
+          type = typeof size;
+
+          if (!comp.collapsed) {
+            if (type === "string" && (match = me.percentageRe.exec(size))) {
+              childContext.percentage = parseInt(match[1], 10);
+            } else if (comp.flex) {
+              totalFlex += childContext.flex = comp.flex;
             }
+          }
         }
+      }
 
-        // Special cases for a collapsed center region
-        if (center) {
-            target = center.target;
+      // Special cases for a collapsed center region
+      if (center) {
+        target = center.target;
 
-            if ((placeholder = target.placeholderFor)) {
-                if (!centerFlex && isVert === placeholder.collapsedVertical()) {
-                    // The center region is a placeholder, collapsed in this axis
-                    centerFlex = 0;
-                    center.collapseAxis = name;
-                }
-            } else if (target.collapsed && (isVert === target.collapsedVertical())) {
-                // The center region is a collapsed header, collapsed in this axis
-                centerFlex = 0;
-                center.collapseAxis = name;
-            }
+        if ((placeholder = target.placeholderFor)) {
+          if (!centerFlex && isVert === placeholder.collapsedVertical()) {
+            // The center region is a placeholder, collapsed in this axis
+            centerFlex = 0;
+            center.collapseAxis = name;
+          }
+        } else if (target.collapsed && isVert === target.collapsedVertical()) {
+          // The center region is a collapsed header, collapsed in this axis
+          centerFlex = 0;
+          center.collapseAxis = name;
         }
+      }
 
-        if (centerFlex == null) {
-            // If we still don't have a center flex, default to 1
-            centerFlex = 1;
-        }
+      if (centerFlex == null) {
+        // If we still don't have a center flex, default to 1
+        centerFlex = 1;
+      }
 
-        totalFlex += centerFlex;
+      totalFlex += centerFlex;
 
-        return Ext.apply({
-            before         : isVert ? 'top' : 'left',
-            totalFlex      : totalFlex
-        }, props);
+      return Ext.apply(
+        {
+          before: isVert ? "top" : "left",
+          totalFlex: totalFlex
+        },
+        props
+      );
     },
 
     beginLayout: function (ownerContext) {
-        var me = this,
-            items = me.getLayoutItems(),
-            pad = me.padding,
-            type = typeof pad,
-            padOnContainer = false,
-            childContext, item, length, i, regions, collapseTarget,
-            doShow, hidden, region;
+      var me = this,
+        items = me.getLayoutItems(),
+        pad = me.padding,
+        type = typeof pad,
+        padOnContainer = false,
+        childContext,
+        item,
+        length,
+        i,
+        regions,
+        collapseTarget,
+        doShow,
+        hidden,
+        region;
 
-        //<debug>
-        // TODO: EXTJSIV-13015
-        if (ownerContext.heightModel.shrinkWrap) {
-            Ext.raise("Border layout does not currently support shrinkWrap height. " +
-                "Please specify a height on component: " + me.owner.id +
-                ", or use a container layout that sets the component's height.");
-        }
-        if (ownerContext.widthModel.shrinkWrap) {
-            Ext.raise("Border layout does not currently support shrinkWrap width. " +
-                "Please specify a width on component: " + me.owner.id +
-                ", or use a container layout that sets the component's width.");
-        }
-        //</debug>
+      //<debug>
+      // TODO: EXTJSIV-13015
+      if (ownerContext.heightModel.shrinkWrap) {
+        Ext.raise(
+          "Border layout does not currently support shrinkWrap height. " +
+            "Please specify a height on component: " +
+            me.owner.id +
+            ", or use a container layout that sets the component's height."
+        );
+      }
+      if (ownerContext.widthModel.shrinkWrap) {
+        Ext.raise(
+          "Border layout does not currently support shrinkWrap width. " +
+            "Please specify a width on component: " +
+            me.owner.id +
+            ", or use a container layout that sets the component's width."
+        );
+      }
+      //</debug>
 
-        // We sync the visibility state of splitters with their region:
-        if (pad) {
-            if (type === 'string' || type === 'number') {
-                pad = Ext.util.Format.parseBox(pad);
+      // We sync the visibility state of splitters with their region:
+      if (pad) {
+        if (type === "string" || type === "number") {
+          pad = Ext.util.Format.parseBox(pad);
+        }
+      } else {
+        pad = ownerContext.getEl("getTargetEl").getPaddingInfo();
+        padOnContainer = true;
+      }
+      ownerContext.outerPad = pad;
+      ownerContext.padOnContainer = padOnContainer;
+
+      for (i = 0, length = items.length; i < length; ++i) {
+        item = items[i];
+        collapseTarget = me.getSplitterTarget(item);
+        if (collapseTarget) {
+          // if (splitter)
+          doShow = undefined;
+          hidden = !!item.hidden;
+          if (!collapseTarget.split) {
+            if (collapseTarget.isCollapsingOrExpanding) {
+              doShow = !!collapseTarget.collapsed;
             }
-        } else {
-            pad = ownerContext.getEl('getTargetEl').getPaddingInfo();
-            padOnContainer = true;
+          } else if (hidden !== collapseTarget.hidden) {
+            doShow = !collapseTarget.hidden;
+          }
+
+          if (doShow) {
+            item.show();
+          } else if (doShow === false) {
+            item.hide();
+          }
         }
-        ownerContext.outerPad = pad;
-        ownerContext.padOnContainer = padOnContainer;
+      }
 
-        for (i = 0, length = items.length; i < length; ++i) {
-            item = items[i];
-            collapseTarget = me.getSplitterTarget(item);
-            if (collapseTarget) {  // if (splitter)
-                doShow = undefined;
-                hidden = !!item.hidden;
-                if (!collapseTarget.split) {
-                    if (collapseTarget.isCollapsingOrExpanding) {
-                        doShow = !!collapseTarget.collapsed;
-                    }
-                } else if (hidden !== collapseTarget.hidden) {
-                    doShow = !collapseTarget.hidden;
-                }
+      // The above synchronized visibility of splitters with their regions, so we need
+      // to make this call after that so that childItems and visibleItems are correct:
+      //
+      me.callParent(arguments);
 
-                if (doShow) {
-                    item.show();
-                } else if (doShow === false) {
-                    item.hide();
-                }
-            }
+      items = ownerContext.childItems;
+      length = items.length;
+      regions = {};
+
+      ownerContext.borderAxisHorz = me.beginAxis(ownerContext, regions, "horz");
+      ownerContext.borderAxisVert = me.beginAxis(ownerContext, regions, "vert");
+
+      // Now that weights are assigned to the region's contextItems, we assign those
+      // same weights to the contextItem for the splitters. We also cross link the
+      // contextItems for the collapseTarget and its splitter.
+      for (i = 0; i < length; ++i) {
+        childContext = items[i];
+        collapseTarget = me.getSplitterTarget(childContext.target);
+
+        if (collapseTarget) {
+          // if (splitter)
+          region = regions[collapseTarget.id];
+          if (!region) {
+            // if the region was hidden it will not be part of childItems, and
+            // so beginAxis() won't add it to the regions object, so we have
+            // to create the context item here.
+            region = ownerContext.getEl(collapseTarget.el, me);
+            region.region = collapseTarget.region;
+          }
+          childContext.collapseTarget = collapseTarget = region;
+          childContext.weight = collapseTarget.weight;
+          childContext.reverseWeighting = collapseTarget.reverseWeighting;
+          collapseTarget.splitter = childContext;
+          childContext.isHorz = collapseTarget.isHorz;
+          childContext.isVert = collapseTarget.isVert;
         }
+      }
 
-        // The above synchronized visibility of splitters with their regions, so we need
-        // to make this call after that so that childItems and visibleItems are correct:
-        //
-        me.callParent(arguments);
-
-        items = ownerContext.childItems;
-        length = items.length;
-        regions = {};
-
-        ownerContext.borderAxisHorz = me.beginAxis(ownerContext, regions, 'horz');
-        ownerContext.borderAxisVert = me.beginAxis(ownerContext, regions, 'vert');
-
-        // Now that weights are assigned to the region's contextItems, we assign those
-        // same weights to the contextItem for the splitters. We also cross link the
-        // contextItems for the collapseTarget and its splitter.
-        for (i = 0; i < length; ++i) {
-            childContext = items[i];
-            collapseTarget = me.getSplitterTarget(childContext.target);
-
-            if (collapseTarget) { // if (splitter)
-                region = regions[collapseTarget.id];
-                if (!region) {
-                        // if the region was hidden it will not be part of childItems, and
-                        // so beginAxis() won't add it to the regions object, so we have
-                        // to create the context item here.
-                        region = ownerContext.getEl(collapseTarget.el, me);
-                        region.region = collapseTarget.region;
-                }
-                childContext.collapseTarget = collapseTarget = region;
-                childContext.weight = collapseTarget.weight;
-                childContext.reverseWeighting = collapseTarget.reverseWeighting;
-                collapseTarget.splitter = childContext;
-                childContext.isHorz = collapseTarget.isHorz;
-                childContext.isVert = collapseTarget.isVert;
-            }
-        }
-
-        // Now we want to sort the childItems by their weight.
-        me.sortWeightedItems(items, 'reverseWeighting');
-        me.setupSplitterNeighbors(items);
+      // Now we want to sort the childItems by their weight.
+      me.sortWeightedItems(items, "reverseWeighting");
+      me.setupSplitterNeighbors(items);
     },
 
     calculate: function (ownerContext) {
-        var me = this,
-            containerSize = me.getContainerSize(ownerContext),
-            childItems = ownerContext.childItems,
-            length = childItems.length,
-            horz = ownerContext.borderAxisHorz,
-            vert = ownerContext.borderAxisVert,
-            pad = ownerContext.outerPad,
-            padOnContainer = ownerContext.padOnContainer,
-            i, childContext, childMargins, size, horzPercentTotal, vertPercentTotal;
+      var me = this,
+        containerSize = me.getContainerSize(ownerContext),
+        childItems = ownerContext.childItems,
+        length = childItems.length,
+        horz = ownerContext.borderAxisHorz,
+        vert = ownerContext.borderAxisVert,
+        pad = ownerContext.outerPad,
+        padOnContainer = ownerContext.padOnContainer,
+        i,
+        childContext,
+        childMargins,
+        size,
+        horzPercentTotal,
+        vertPercentTotal;
 
-        horz.begin = pad[me.padOnContainerProp];
-        vert.begin = pad.top;
-        // If the padding is already on the container we need to add it to the space
-        // If not on the container, it's "virtual" padding.
-        
-        horzPercentTotal = horz.end = horz.flexSpace = containerSize.width + (padOnContainer ? pad[me.padOnContainerProp] : -pad[me.padNotOnContainerProp]);
-        vertPercentTotal = vert.end = vert.flexSpace = containerSize.height + (padOnContainer ? pad.top : -pad.bottom);
+      horz.begin = pad[me.padOnContainerProp];
+      vert.begin = pad.top;
+      // If the padding is already on the container we need to add it to the space
+      // If not on the container, it's "virtual" padding.
 
-        // Reduce flexSpace on each axis by the fixed/auto sized dimensions of items that
-        // aren't flexed along that axis.
-        for (i = 0; i < length; ++i) {
-            childContext = childItems[i];
-            childMargins = childContext.getMarginInfo();
+      horzPercentTotal =
+        horz.end =
+        horz.flexSpace =
+          containerSize.width +
+          (padOnContainer
+            ? pad[me.padOnContainerProp]
+            : -pad[me.padNotOnContainerProp]);
+      vertPercentTotal =
+        vert.end =
+        vert.flexSpace =
+          containerSize.height + (padOnContainer ? pad.top : -pad.bottom);
 
-            // Margins are always fixed size and must be removed from the space used for percentages and flexes
-            if (childContext.isHorz || childContext.isCenter) {
-                horz.addUnflexed(childMargins.width);
-                horzPercentTotal -= childMargins.width;
-            }
+      // Reduce flexSpace on each axis by the fixed/auto sized dimensions of items that
+      // aren't flexed along that axis.
+      for (i = 0; i < length; ++i) {
+        childContext = childItems[i];
+        childMargins = childContext.getMarginInfo();
 
-            if (childContext.isVert || childContext.isCenter) {
-                vert.addUnflexed(childMargins.height);
-                vertPercentTotal -= childMargins.height;
-            }
-
-            // Fixed size components must have their sizes removed from the space used for flex
-            if (!childContext.flex && !childContext.percentage) {
-                if (childContext.isHorz || (childContext.isCenter && childContext.collapseAxis === 'horz')) {
-                    size = childContext.getProp('width');
-
-                    horz.addUnflexed(size);
-
-                    // splitters should not count towards percentages
-                    if (childContext.collapseTarget) {
-                        horzPercentTotal -= size;
-                    }
-                } else if (childContext.isVert || (childContext.isCenter && childContext.collapseAxis === 'vert')) {
-                    size = childContext.getProp('height');
-
-                    vert.addUnflexed(size);
-
-                    // splitters should not count towards percentages
-                    if (childContext.collapseTarget) {
-                        vertPercentTotal -= size;
-                    }
-                }
-                // else ignore center since it is fully flexed
-            }
+        // Margins are always fixed size and must be removed from the space used for percentages and flexes
+        if (childContext.isHorz || childContext.isCenter) {
+          horz.addUnflexed(childMargins.width);
+          horzPercentTotal -= childMargins.width;
         }
 
-        for (i = 0; i < length; ++i) {
-            childContext = childItems[i];
-            childMargins = childContext.getMarginInfo();
+        if (childContext.isVert || childContext.isCenter) {
+          vert.addUnflexed(childMargins.height);
+          vertPercentTotal -= childMargins.height;
+        }
 
-            // Calculate the percentage sizes. After this calculation percentages are very similar to fixed sizes
-            if (childContext.percentage) {
-                if (childContext.isHorz) {
-                    size = Math.ceil(horzPercentTotal * childContext.percentage / 100);
-                    size = childContext.setWidth(size);
-                    horz.addUnflexed(size);
-                } else if (childContext.isVert) {
-                    size = Math.ceil(vertPercentTotal * childContext.percentage / 100);
-                    size = childContext.setHeight(size);
-                    vert.addUnflexed(size);
-                }
-                // center shouldn't have a percentage but if it does it should be ignored
+        // Fixed size components must have their sizes removed from the space used for flex
+        if (!childContext.flex && !childContext.percentage) {
+          if (
+            childContext.isHorz ||
+            (childContext.isCenter && childContext.collapseAxis === "horz")
+          ) {
+            size = childContext.getProp("width");
+
+            horz.addUnflexed(size);
+
+            // splitters should not count towards percentages
+            if (childContext.collapseTarget) {
+              horzPercentTotal -= size;
             }
-        }
+          } else if (
+            childContext.isVert ||
+            (childContext.isCenter && childContext.collapseAxis === "vert")
+          ) {
+            size = childContext.getProp("height");
 
+            vert.addUnflexed(size);
 
-        // If we haven't gotten sizes for all unflexed dimensions on an axis, the flexSpace
-        // will be NaN so we won't be calculating flexed dimensions until that is resolved.
-
-        for (i = 0; i < length; ++i) {
-            childContext = childItems[i];
-
-            if (!childContext.isCenter) {
-                me.calculateChildAxis(childContext, horz);
-                me.calculateChildAxis(childContext, vert);
+            // splitters should not count towards percentages
+            if (childContext.collapseTarget) {
+              vertPercentTotal -= size;
             }
+          }
+          // else ignore center since it is fully flexed
         }
+      }
 
-        // Once all items are placed, the final size of the center can be determined. If we
-        // can determine both width and height, we are done. We use '+' instead of '&&' to
-        // avoid short-circuiting (we want to call both):
-        if (me.finishAxis(ownerContext, vert) + me.finishAxis(ownerContext, horz) < 2) {
-            me.done = false;
-        } else {
-            // Size information is published as we place regions but position is hard to do
-            // that way (while avoiding published multiple times) so we publish all the
-            // positions at the end.
-            me.finishPositions(childItems);
+      for (i = 0; i < length; ++i) {
+        childContext = childItems[i];
+        childMargins = childContext.getMarginInfo();
+
+        // Calculate the percentage sizes. After this calculation percentages are very similar to fixed sizes
+        if (childContext.percentage) {
+          if (childContext.isHorz) {
+            size = Math.ceil(
+              (horzPercentTotal * childContext.percentage) / 100
+            );
+            size = childContext.setWidth(size);
+            horz.addUnflexed(size);
+          } else if (childContext.isVert) {
+            size = Math.ceil(
+              (vertPercentTotal * childContext.percentage) / 100
+            );
+            size = childContext.setHeight(size);
+            vert.addUnflexed(size);
+          }
+          // center shouldn't have a percentage but if it does it should be ignored
         }
+      }
+
+      // If we haven't gotten sizes for all unflexed dimensions on an axis, the flexSpace
+      // will be NaN so we won't be calculating flexed dimensions until that is resolved.
+
+      for (i = 0; i < length; ++i) {
+        childContext = childItems[i];
+
+        if (!childContext.isCenter) {
+          me.calculateChildAxis(childContext, horz);
+          me.calculateChildAxis(childContext, vert);
+        }
+      }
+
+      // Once all items are placed, the final size of the center can be determined. If we
+      // can determine both width and height, we are done. We use '+' instead of '&&' to
+      // avoid short-circuiting (we want to call both):
+      if (
+        me.finishAxis(ownerContext, vert) + me.finishAxis(ownerContext, horz) <
+        2
+      ) {
+        me.done = false;
+      } else {
+        // Size information is published as we place regions but position is hard to do
+        // that way (while avoiding published multiple times) so we publish all the
+        // positions at the end.
+        me.finishPositions(childItems);
+      }
     },
 
     /**
@@ -506,70 +563,75 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     calculateChildAxis: function (childContext, axis) {
-        var collapseTarget = childContext.collapseTarget,
-            setSizeMethod = 'set' + axis.sizePropCap,
-            sizeProp = axis.sizeProp,
-            childMarginSize = childContext.getMarginInfo()[sizeProp],
-            region, isBegin, flex, pos, size;
+      var collapseTarget = childContext.collapseTarget,
+        setSizeMethod = "set" + axis.sizePropCap,
+        sizeProp = axis.sizeProp,
+        childMarginSize = childContext.getMarginInfo()[sizeProp],
+        region,
+        isBegin,
+        flex,
+        pos,
+        size;
 
-        if (collapseTarget) { // if (splitter)
-            region = collapseTarget.region;
+      if (collapseTarget) {
+        // if (splitter)
+        region = collapseTarget.region;
+      } else {
+        region = childContext.region;
+        flex = childContext.flex;
+      }
+
+      isBegin = region === axis.borderBegin;
+
+      if (!isBegin && region !== axis.borderEnd) {
+        // a north/south region on the horizontal axis or an east/west region on the
+        // vertical axis: stretch to fill remaining space:
+        childContext[setSizeMethod](axis.end - axis.begin - childMarginSize);
+        pos = axis.begin;
+      } else {
+        if (flex) {
+          size = Math.ceil(axis.flexSpace * (flex / axis.totalFlex));
+          size = childContext[setSizeMethod](size);
+        } else if (childContext.percentage) {
+          // Like getProp but without registering a dependency - we calculated the size, we don't depend on it
+          size = childContext.peek(sizeProp);
         } else {
-            region = childContext.region;
-            flex = childContext.flex;
+          size = childContext.getProp(sizeProp);
         }
 
-        isBegin = region === axis.borderBegin;
+        size += childMarginSize;
 
-        if (!isBegin && region !== axis.borderEnd) {
-            // a north/south region on the horizontal axis or an east/west region on the
-            // vertical axis: stretch to fill remaining space:
-            childContext[setSizeMethod](axis.end - axis.begin - childMarginSize);
-            pos = axis.begin;
+        if (isBegin) {
+          pos = axis.begin;
+          axis.begin += size;
         } else {
-            if (flex) {
-                size = Math.ceil(axis.flexSpace * (flex / axis.totalFlex));
-                size = childContext[setSizeMethod](size);
-            } else if (childContext.percentage) {
-                // Like getProp but without registering a dependency - we calculated the size, we don't depend on it
-                size = childContext.peek(sizeProp);
-            } else {
-                size = childContext.getProp(sizeProp);
-            }
-
-            size += childMarginSize;
-
-            if (isBegin) {
-                pos = axis.begin;
-                axis.begin += size;
-            } else {
-                axis.end = pos = axis.end - size;
-            }
+          axis.end = pos = axis.end - size;
         }
+      }
 
-        childContext.layoutPos[axis.posProp] = pos;
+      childContext.layoutPos[axis.posProp] = pos;
     },
-    
+
     eachItem: function (region, fn, scope) {
-        var me = this,
-            items = me.getLayoutItems(),
-            i = 0,
-            item;
-        
-        if (Ext.isFunction(region)) {
-            fn = region;
-            scope = fn;
+      var me = this,
+        items = me.getLayoutItems(),
+        i = 0,
+        item;
+
+      if (Ext.isFunction(region)) {
+        fn = region;
+        scope = fn;
+      }
+
+      for (i; i < items.length; i++) {
+        item = items[i];
+
+        if (!region || item.region === region) {
+          if (fn.call(scope, item) === false) {
+            break;
+          }
         }
-        
-        for (i; i < items.length; i++) {
-            item = items[i];
-            
-            if (!region || item.region === region) {
-                if (fn.call(scope, item) === false) {
-                    break;
-                }
-            }
-        }
+      }
     },
 
     /**
@@ -578,15 +640,17 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     finishAxis: function (ownerContext, axis) {
-        var size = axis.end - axis.begin,
-            center = ownerContext.centerRegion;
+      var size = axis.end - axis.begin,
+        center = ownerContext.centerRegion;
 
-        if (center) {
-            center['set' + axis.sizePropCap](size - center.getMarginInfo()[axis.sizeProp]);
-            center.layoutPos[axis.posProp] = axis.begin;
-        }
+      if (center) {
+        center["set" + axis.sizePropCap](
+          size - center.getMarginInfo()[axis.sizeProp]
+        );
+        center.layoutPos[axis.posProp] = axis.begin;
+      }
 
-        return Ext.isNumber(size) ? 1 : 0;
+      return Ext.isNumber(size) ? 1 : 0;
     },
 
     /**
@@ -594,108 +658,123 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     finishPositions: function (childItems) {
-        var length = childItems.length,
-            index, childContext,
-            marginProp = this.horzPositionProp;
+      var length = childItems.length,
+        index,
+        childContext,
+        marginProp = this.horzPositionProp;
 
-        for (index = 0; index < length; ++index) {
-            childContext = childItems[index];
+      for (index = 0; index < length; ++index) {
+        childContext = childItems[index];
 
-            childContext.setProp('x', childContext.layoutPos.x + childContext.marginInfo[marginProp]);
-            childContext.setProp('y', childContext.layoutPos.y + childContext.marginInfo.top);
-        }
+        childContext.setProp(
+          "x",
+          childContext.layoutPos.x + childContext.marginInfo[marginProp]
+        );
+        childContext.setProp(
+          "y",
+          childContext.layoutPos.y + childContext.marginInfo.top
+        );
+      }
     },
 
-    getLayoutItems: function() {
-        var owner = this.owner,
-            ownerItems = (owner && owner.items && owner.items.items) || [],
-            length = ownerItems.length,
-            items = [],
-            i = 0,
-            ownerItem, placeholderFor;
+    getLayoutItems: function () {
+      var owner = this.owner,
+        ownerItems = (owner && owner.items && owner.items.items) || [],
+        length = ownerItems.length,
+        items = [],
+        i = 0,
+        ownerItem,
+        placeholderFor;
 
-        for (; i < length; i++) {
-            ownerItem = ownerItems[i];
-            placeholderFor = ownerItem.placeholderFor;
-            // There are a couple of scenarios where we do NOT want an item to
-            // be included in the layout items:
-            //
-            // 1. If the item is floated. This can happen when a region's header
-            // is clicked to "float" the item, then another region's header or
-            // is clicked quickly before the first floated region has had a
-            // chance to slide out. When this happens, the second click triggers
-            // a layout, the purpose of which is to determine what the size of the 
-            // second region will be after it is floated, so it can be animated
-            // to that size. In this case the existing floated item should not be
-            // included in the layout items because it will not be visible once
-            // it's slideout animation has completed.
-            //
-            // 2. If the item is a placeholder for a panel that is currently
-            // being expanded. Similar to scenario 1, a second layout can be
-            // triggered by another panel being expanded/collapsed/floated before
-            // the first panel has finished it's expand animation. If this is the
-            // case we do not want the placeholder to be included in the layout
-            // items because it will not be once the panel has finished expanding.
-            //
-            // If the component is hidden, we need none of these shenanigans
-            if (ownerItem.hidden || ((!ownerItem.floated || ownerItem.isCollapsingOrExpanding === 2) &&
-                !(placeholderFor && placeholderFor.isCollapsingOrExpanding === 2))) {
-                items.push(ownerItem);
-            } 
+      for (; i < length; i++) {
+        ownerItem = ownerItems[i];
+        placeholderFor = ownerItem.placeholderFor;
+        // There are a couple of scenarios where we do NOT want an item to
+        // be included in the layout items:
+        //
+        // 1. If the item is floated. This can happen when a region's header
+        // is clicked to "float" the item, then another region's header or
+        // is clicked quickly before the first floated region has had a
+        // chance to slide out. When this happens, the second click triggers
+        // a layout, the purpose of which is to determine what the size of the
+        // second region will be after it is floated, so it can be animated
+        // to that size. In this case the existing floated item should not be
+        // included in the layout items because it will not be visible once
+        // it's slideout animation has completed.
+        //
+        // 2. If the item is a placeholder for a panel that is currently
+        // being expanded. Similar to scenario 1, a second layout can be
+        // triggered by another panel being expanded/collapsed/floated before
+        // the first panel has finished it's expand animation. If this is the
+        // case we do not want the placeholder to be included in the layout
+        // items because it will not be once the panel has finished expanding.
+        //
+        // If the component is hidden, we need none of these shenanigans
+        if (
+          ownerItem.hidden ||
+          ((!ownerItem.floated || ownerItem.isCollapsingOrExpanding === 2) &&
+            !(placeholderFor && placeholderFor.isCollapsingOrExpanding === 2))
+        ) {
+          items.push(ownerItem);
         }
+      }
 
-        return items;
+      return items;
     },
 
     getPlaceholder: function (comp) {
-        return comp.getPlaceholder && comp.getPlaceholder();
+      return comp.getPlaceholder && comp.getPlaceholder();
     },
-    
+
     getMaxWeight: function (region) {
-        return this.getMinMaxWeight(region);
+      return this.getMinMaxWeight(region);
     },
-        
+
     getMinWeight: function (region) {
-        return this.getMinMaxWeight(region, true);
+      return this.getMinMaxWeight(region, true);
     },
-    
+
     getMinMaxWeight: function (region, min) {
-        var me = this,
-            weight = null;
-        
-        me.eachItem(region, function (item) {
-            if (item.hasOwnProperty('weight')) {
-                if (weight === null) {
-                    weight = item.weight;
-                    
-                    return;
-                }
-                
-                if ((min && item.weight < weight) || item.weight > weight) {
-                    weight = item.weight;
-                }
+      var me = this,
+        weight = null;
+
+      me.eachItem(
+        region,
+        function (item) {
+          if (item.hasOwnProperty("weight")) {
+            if (weight === null) {
+              weight = item.weight;
+
+              return;
             }
-        }, this);
-        
-        return weight;
+
+            if ((min && item.weight < weight) || item.weight > weight) {
+              weight = item.weight;
+            }
+          }
+        },
+        this
+      );
+
+      return weight;
     },
-    
+
     getSplitterTarget: function (splitter) {
-        var collapseTarget = splitter.collapseTarget;
+      var collapseTarget = splitter.collapseTarget;
 
-        if (collapseTarget && collapseTarget.collapsed) {
-            return collapseTarget.placeholder || collapseTarget;
-        }
+      if (collapseTarget && collapseTarget.collapsed) {
+        return collapseTarget.placeholder || collapseTarget;
+      }
 
-        return collapseTarget;
+      return collapseTarget;
     },
 
     isItemBoxParent: function (itemContext) {
-        return true;
+      return true;
     },
 
     isItemShrinkWrap: function (item) {
-        return true;
+      return true;
     },
 
     //----------------------------------
@@ -707,49 +786,52 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     insertSplitter: function (item, index, hidden, splitterCfg) {
-        var region = item.region,
-            splitter = Ext.apply({
-                xtype: 'bordersplitter',
-                collapseTarget: item,
-                id: item.id + '-splitter',
-                hidden: hidden,
-                canResize: item.splitterResize !== false,
-                splitterFor: item,
-                synthetic: true // not user-defined
-            }, splitterCfg),
-            at = index + ((region === 'south' || region === 'east') ? 0 : 1);
+      var region = item.region,
+        splitter = Ext.apply(
+          {
+            xtype: "bordersplitter",
+            collapseTarget: item,
+            id: item.id + "-splitter",
+            hidden: hidden,
+            canResize: item.splitterResize !== false,
+            splitterFor: item,
+            synthetic: true // not user-defined
+          },
+          splitterCfg
+        ),
+        at = index + (region === "south" || region === "east" ? 0 : 1);
 
-        if (item.collapseMode === 'mini') {
-            splitter.collapsedCls = item.collapsedCls;
-        }
+      if (item.collapseMode === "mini") {
+        splitter.collapsedCls = item.collapsedCls;
+      }
 
-        item.splitter = this.owner.add(at, splitter);
+      item.splitter = this.owner.add(at, splitter);
     },
-    
+
     getMoveAfterIndex: function (after) {
-        var index = this.callParent(arguments);
-        
-        if (after.splitter) {
-            index++;
-        }
-        
-        return index;
-    },
-    
-    moveItemBefore: function (item, before) {
-        var beforeRegion;
-            
-        if (before && before.splitter) {
-            beforeRegion = before.region;
+      var index = this.callParent(arguments);
 
-            if (beforeRegion === 'south' || beforeRegion === 'east') {
-                before = before.splitter;
-            }
-        }
-          
-        return this.callParent([item, before]);
+      if (after.splitter) {
+        index++;
+      }
+
+      return index;
     },
-    
+
+    moveItemBefore: function (item, before) {
+      var beforeRegion;
+
+      if (before && before.splitter) {
+        beforeRegion = before.region;
+
+        if (beforeRegion === "south" || beforeRegion === "east") {
+          before = before.splitter;
+        }
+      }
+
+      return this.callParent([item, before]);
+    },
+
     /**
      * Called when a region (actually when any component) is added to the container. The
      * region is decorated with some helpful properties (isCenter, isHorz, isVert) and its
@@ -757,128 +839,131 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     onAdd: function (item, index) {
-        var me = this,
-            placeholderFor = item.placeholderFor,
-            region = item.region,
-            isCenter,
-            split,
-            hidden,
-            cfg;
+      var me = this,
+        placeholderFor = item.placeholderFor,
+        region = item.region,
+        isCenter,
+        split,
+        hidden,
+        cfg;
 
-        me.callParent(arguments);
+      me.callParent(arguments);
 
-        if (region) {
-            Ext.apply(item, me.regionFlags[region]);
-            
-            if (me.owner.isViewport) {
-                item.isViewportBorderChild = true;
-            }
+      if (region) {
+        Ext.apply(item, me.regionFlags[region]);
 
-            if (item.initBorderRegion) {
-                // This method should always be present but perhaps the override is being
-                // excluded.
-                item.initBorderRegion();
-            }
-
-            isCenter = region === 'center';
-            if (isCenter) {
-                //<debug>
-                if (me.centerRegion) {
-                    Ext.raise("Cannot have multiple center regions in a BorderLayout.");
-                }
-                //</debug>
-                me.centerRegion = item;
-            } else {
-                split = item.split;
-                hidden = !!item.hidden;
-                
-                if (typeof split === 'object') {
-                    cfg = split;
-                    split = true;
-                }
-                
-                if ((item.isHorz || item.isVert) && (split || item.collapseMode === 'mini')) {
-                    me.insertSplitter(item, index, hidden || !split, cfg);
-                }
-            }
-
-            if (!isCenter && !item.hasOwnProperty('collapseMode')) {
-                item.collapseMode = me.panelCollapseMode;
-            }
-
-            if (!item.hasOwnProperty('animCollapse')) {
-                if (item.collapseMode !== 'placeholder') {
-                    // other collapse modes do not animate nicely in a border layout, so
-                    // default them to off:
-                    item.animCollapse = false;
-                } else {
-                    item.animCollapse = me.panelCollapseAnimate;
-                }
-            }
-            
-            // Item can be collapsed when added
-            if (hidden && item.placeholder && item.placeholder.isVisible()) {
-                me.owner.insert(index, item.placeholder);
-            }
-        } else if (placeholderFor) {
-            Ext.apply(item, me.regionFlags[placeholderFor.region]);
-            item.region = placeholderFor.region;
-            item.weight = placeholderFor.weight;
+        if (me.owner.isViewport) {
+          item.isViewportBorderChild = true;
         }
+
+        if (item.initBorderRegion) {
+          // This method should always be present but perhaps the override is being
+          // excluded.
+          item.initBorderRegion();
+        }
+
+        isCenter = region === "center";
+        if (isCenter) {
+          //<debug>
+          if (me.centerRegion) {
+            Ext.raise("Cannot have multiple center regions in a BorderLayout.");
+          }
+          //</debug>
+          me.centerRegion = item;
+        } else {
+          split = item.split;
+          hidden = !!item.hidden;
+
+          if (typeof split === "object") {
+            cfg = split;
+            split = true;
+          }
+
+          if (
+            (item.isHorz || item.isVert) &&
+            (split || item.collapseMode === "mini")
+          ) {
+            me.insertSplitter(item, index, hidden || !split, cfg);
+          }
+        }
+
+        if (!isCenter && !item.hasOwnProperty("collapseMode")) {
+          item.collapseMode = me.panelCollapseMode;
+        }
+
+        if (!item.hasOwnProperty("animCollapse")) {
+          if (item.collapseMode !== "placeholder") {
+            // other collapse modes do not animate nicely in a border layout, so
+            // default them to off:
+            item.animCollapse = false;
+          } else {
+            item.animCollapse = me.panelCollapseAnimate;
+          }
+        }
+
+        // Item can be collapsed when added
+        if (hidden && item.placeholder && item.placeholder.isVisible()) {
+          me.owner.insert(index, item.placeholder);
+        }
+      } else if (placeholderFor) {
+        Ext.apply(item, me.regionFlags[placeholderFor.region]);
+        item.region = placeholderFor.region;
+        item.weight = placeholderFor.weight;
+      }
     },
 
-    onDestroy: function() {
-        this.centerRegion = null;
-        this.callParent();
+    onDestroy: function () {
+      this.centerRegion = null;
+      this.callParent();
     },
 
     onRemove: function (comp, isDestroying) {
-        var me = this,
-            region = comp.region,
-            splitter = comp.splitter,
-            owner = me.owner,
-            destroying = owner.destroying,
-            el;
+      var me = this,
+        region = comp.region,
+        splitter = comp.splitter,
+        owner = me.owner,
+        destroying = owner.destroying,
+        el;
 
-        if (region) {
-            if (comp.isCenter) {
-                me.centerRegion = null;
-            }
-
-            delete comp.isCenter;
-            delete comp.isHorz;
-            delete comp.isVert;
-
-            // If the owner is destroying, the splitter will be cleared anyway
-            if (splitter && !owner.destroying) {
-                owner.doRemove(splitter, true); // avoid another layout
-            }
-            delete comp.splitter;
+      if (region) {
+        if (comp.isCenter) {
+          me.centerRegion = null;
         }
 
-        me.callParent(arguments);
-        
-        if (!destroying && !isDestroying && comp.rendered) {
-            // Clear top/left styles
-            el = comp.getEl();
-            if (el) {
-                el.setStyle('top', '');
-                el.setStyle(me.horzPositionProp, '');
-            }
+        delete comp.isCenter;
+        delete comp.isHorz;
+        delete comp.isVert;
+
+        // If the owner is destroying, the splitter will be cleared anyway
+        if (splitter && !owner.destroying) {
+          owner.doRemove(splitter, true); // avoid another layout
         }
+        delete comp.splitter;
+      }
+
+      me.callParent(arguments);
+
+      if (!destroying && !isDestroying && comp.rendered) {
+        // Clear top/left styles
+        el = comp.getEl();
+        if (el) {
+          el.setStyle("top", "");
+          el.setStyle(me.horzPositionProp, "");
+        }
+      }
     },
 
     //----------------------------------
     // Misc
 
     regionMeta: {
-        center: { splitterDelta: 0 },
+      center: { splitterDelta: 0 },
 
-        north: { splitterDelta:  1 },
-        south: { splitterDelta: -1 },
+      north: { splitterDelta: 1 },
+      south: { splitterDelta: -1 },
 
-        west:  { splitterDelta:  1 },
-        east:  { splitterDelta: -1 }
+      west: { splitterDelta: 1 },
+      east: { splitterDelta: -1 }
     },
 
     /**
@@ -886,76 +971,98 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     regionFlags: {
-        center: {
-            isCenter: true, isHorz: false, isVert: false
-        },
+      center: {
+        isCenter: true,
+        isHorz: false,
+        isVert: false
+      },
 
-        north: {
-            isCenter: false, isHorz: false, isVert: true, collapseDirection: 'top'
-        },
-        south: {
-            isCenter: false, isHorz: false, isVert: true, collapseDirection: 'bottom'
-        },
+      north: {
+        isCenter: false,
+        isHorz: false,
+        isVert: true,
+        collapseDirection: "top"
+      },
+      south: {
+        isCenter: false,
+        isHorz: false,
+        isVert: true,
+        collapseDirection: "bottom"
+      },
 
-        west: {
-            isCenter: false, isHorz: true, isVert: false, collapseDirection: 'left'
-        },
-        east: {
-            isCenter: false, isHorz: true, isVert: false, collapseDirection: 'right'
-        }
+      west: {
+        isCenter: false,
+        isHorz: true,
+        isVert: false,
+        collapseDirection: "left"
+      },
+      east: {
+        isCenter: false,
+        isHorz: true,
+        isVert: false,
+        collapseDirection: "right"
+      }
     },
 
     setupSplitterNeighbors: function (items) {
-        var edgeRegions = {
-                //north: null,
-                //south: null,
-                //east: null,
-                //west: null
-            },
-            length = items.length,
-            touchedRegions = this.touchedRegions,
-            i, j, center, count, edge, comp, region, splitter, touched;
+      var edgeRegions = {
+          //north: null,
+          //south: null,
+          //east: null,
+          //west: null
+        },
+        length = items.length,
+        touchedRegions = this.touchedRegions,
+        i,
+        j,
+        center,
+        count,
+        edge,
+        comp,
+        region,
+        splitter,
+        touched;
 
-        for (i = 0; i < length; ++i) {
-            comp = items[i].target;
-            region = comp.region;
+      for (i = 0; i < length; ++i) {
+        comp = items[i].target;
+        region = comp.region;
 
-            if (comp.isCenter) {
-                center = comp;
-            } else if (region) {
-                touched = touchedRegions[region];
+        if (comp.isCenter) {
+          center = comp;
+        } else if (region) {
+          touched = touchedRegions[region];
 
-                for (j = 0, count = touched.length; j < count; ++j) {
-                    edge = edgeRegions[touched[j]];
-                    if (edge) {
-                        edge.neighbors.push(comp);
-                    }
-                }
-                
-                if (comp.placeholderFor) {
-                    // placeholder, so grab the splitter for the actual panel
-                    splitter = comp.placeholderFor.splitter;
-                } else {
-                    splitter = comp.splitter;
-                }
-                if (splitter) {
-                    splitter.neighbors = [];
-                }
-
-                edgeRegions[region] = splitter;
+          for (j = 0, count = touched.length; j < count; ++j) {
+            edge = edgeRegions[touched[j]];
+            if (edge) {
+              edge.neighbors.push(comp);
             }
-        }
+          }
 
-        if (center) {
-            touched = touchedRegions.center;
+          if (comp.placeholderFor) {
+            // placeholder, so grab the splitter for the actual panel
+            splitter = comp.placeholderFor.splitter;
+          } else {
+            splitter = comp.splitter;
+          }
+          if (splitter) {
+            splitter.neighbors = [];
+          }
 
-            for (j = 0, count = touched.length; j < count; ++j) {
-                edge = edgeRegions[touched[j]];
-                if (edge) {
-                    edge.neighbors.push(center);
-                }
-            }
+          edgeRegions[region] = splitter;
         }
+      }
+
+      if (center) {
+        touched = touchedRegions.center;
+
+        for (j = 0, count = touched.length; j < count; ++j) {
+          edge = edgeRegions[touched[j]];
+          if (edge) {
+            edge.neighbors.push(center);
+          }
+        }
+      }
     },
 
     /**
@@ -965,90 +1072,98 @@ Ext.define('Ext.layout.container.Border', {
      * @private
      */
     touchedRegions: {
-        center: [ 'north', 'south', 'east',  'west' ],
+      center: ["north", "south", "east", "west"],
 
-        north:  [ 'north', 'east',  'west'  ],
-        south:  [ 'south', 'east',  'west'  ],
-        east:   [ 'east',  'north', 'south' ],
-        west:   [ 'west',  'north', 'south' ]
+      north: ["north", "east", "west"],
+      south: ["south", "east", "west"],
+      east: ["east", "north", "south"],
+      west: ["west", "north", "south"]
     },
 
     sizePolicies: {
-        vert: {
-            readsWidth: 0,
-            readsHeight: 1,
-            setsWidth: 1,
-            setsHeight: 0
-        },
-        horz: {
-            readsWidth: 1,
-            readsHeight: 0,
-            setsWidth: 0,
-            setsHeight: 1
-        },
-        flexAll: {
-            readsWidth: 0,
-            readsHeight: 0,
-            setsWidth: 1,
-            setsHeight: 1
-        }
+      vert: {
+        readsWidth: 0,
+        readsHeight: 1,
+        setsWidth: 1,
+        setsHeight: 0
+      },
+      horz: {
+        readsWidth: 1,
+        readsHeight: 0,
+        setsWidth: 0,
+        setsHeight: 1
+      },
+      flexAll: {
+        readsWidth: 0,
+        readsHeight: 0,
+        setsWidth: 1,
+        setsHeight: 1
+      }
     },
 
     getItemSizePolicy: function (item) {
-        var me = this,
-            policies = this.sizePolicies,
-            collapseTarget, size, policy, placeholderFor;
+      var me = this,
+        policies = this.sizePolicies,
+        collapseTarget,
+        size,
+        policy,
+        placeholderFor;
 
-        if (item.isCenter) {
-            placeholderFor = item.placeholderFor;
+      if (item.isCenter) {
+        placeholderFor = item.placeholderFor;
 
-            if (placeholderFor) {
-                if (placeholderFor.collapsedVertical()) {
-                    return policies.vert;
-                }
-                return policies.horz;
-            }
-            if (item.collapsed) {
-                if (item.collapsedVertical()) {
-                    return policies.vert;
-                }
-                return policies.horz;
-            }
-            return policies.flexAll;
+        if (placeholderFor) {
+          if (placeholderFor.collapsedVertical()) {
+            return policies.vert;
+          }
+          return policies.horz;
+        }
+        if (item.collapsed) {
+          if (item.collapsedVertical()) {
+            return policies.vert;
+          }
+          return policies.horz;
+        }
+        return policies.flexAll;
+      }
+
+      collapseTarget = item.collapseTarget;
+
+      if (collapseTarget) {
+        return collapseTarget.isVert ? policies.vert : policies.horz;
+      }
+
+      if (item.region) {
+        if (item.isVert) {
+          size = item.height;
+          policy = policies.vert;
+        } else {
+          size = item.width;
+          policy = policies.horz;
         }
 
-        collapseTarget = item.collapseTarget;
-
-        if (collapseTarget) {
-            return collapseTarget.isVert ? policies.vert : policies.horz;
+        if (
+          item.flex ||
+          (typeof size === "string" && me.percentageRe.test(size))
+        ) {
+          return policies.flexAll;
         }
 
-        if (item.region) {
-            if (item.isVert) {
-                size = item.height;
-                policy = policies.vert;
-            } else {
-                size = item.width;
-                policy = policies.horz;
-            }
+        return policy;
+      }
 
-            if (item.flex || (typeof size === 'string' && me.percentageRe.test(size))) {
-                return policies.flexAll;
-            }
-
-            return policy;
-        }
-
-        return me.autoSizePolicy;
+      return me.autoSizePolicy;
     }
-}, function () {
+  },
+  function () {
     var methods = {
         addUnflexed: function (px) {
-            this.flexSpace = Math.max(this.flexSpace - px, 0);
+          this.flexSpace = Math.max(this.flexSpace - px, 0);
         }
-    },
-    props = this.prototype.axisProps;
+      },
+      props = this.prototype.axisProps;
 
     Ext.apply(props.horz, methods);
     Ext.apply(props.vert, methods);
-});
+  }
+);

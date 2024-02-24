@@ -24,7 +24,7 @@ django-debug-toolbar==4.2.0
     # via -r backend/requirements/dev.in
 django-migration-linter==5.0.0
     # via -r backend/requirements/dev.in
-django-schema-viewer==0.4.0
+django-schema-viewer==0.4.1
     # via -r backend/requirements/dev.in
 exceptiongroup==1.2.0
     # via ipython
@@ -34,10 +34,8 @@ ipdb==0.13.13
     # via -r backend/requirements/dev.in
 ipykernel==6.27.1
     # via -r backend/requirements/dev.in
-ipython==8.18.1
-    # via
-    #   ipdb
-    #   ipykernel
+ipython==8.20.0
+    # via ipdb
 jedi==0.19.1
     # via ipython
 jupyter-client==8.6.0
@@ -66,7 +64,7 @@ pexpect==4.9.0
     # via ipython
 platformdirs==4.1.0
     # via jupyter-core
-prompt-toolkit==3.0.41
+prompt-toolkit==3.0.43
     # via ipython
 psutil==5.9.6
     # via ipykernel
@@ -96,7 +94,7 @@ tornado==6.4
     # via
     #   ipykernel
     #   jupyter-client
-traitlets==5.14.0
+traitlets==5.14.1
     # via
     #   comm
     #   ipykernel
@@ -104,7 +102,9 @@ traitlets==5.14.0
     #   jupyter-client
     #   jupyter-core
     #   matplotlib-inline
-wcwidth==0.2.12
+wcwidth==0.2.13
     # via prompt-toolkit
 werkzeug==3.0.1
     # via -r backend/requirements/dev.in
+
+# The following packages are considered to be unsafe in a requirements file:

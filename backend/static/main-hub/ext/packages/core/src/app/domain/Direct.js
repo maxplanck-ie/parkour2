@@ -5,21 +5,19 @@
  *
  * @private
  */
-Ext.define('Ext.app.domain.Direct', {
-    extend: 'Ext.app.EventDomain',
-    singleton: true,
-    
-    requires: [
-        'Ext.direct.Provider'
-    ],
-    
-    type: 'direct',
-    idProperty: 'id',
-    
-    constructor: function() {
-        var me = this;
-        
-        me.callParent();
-        me.monitor(Ext.direct.Provider);
-    }
+Ext.define("Ext.app.domain.Direct", {
+  extend: "Ext.app.EventDomain",
+  singleton: true,
+
+  requires: ["Ext.direct.Provider"],
+
+  type: "direct",
+  idProperty: "id",
+
+  constructor: function () {
+    var me = this;
+
+    me.callParent();
+    me.monitor(Ext.direct.Provider);
+  }
 });

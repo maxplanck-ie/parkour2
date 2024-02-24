@@ -40,9 +40,7 @@
       "is_pi": false,
       "groups": [],
       "user_permissions": [],
-      "cost_unit": [
-        1
-      ]
+      "cost_unit": [1]
     }
   },
   {
@@ -64,9 +62,7 @@
       "is_pi": false,
       "groups": [],
       "user_permissions": [],
-      "cost_unit": [
-        1
-      ]
+      "cost_unit": [1]
     }
   },
   {
@@ -88,9 +84,7 @@
       "is_pi": false,
       "groups": [],
       "user_permissions": [],
-      "cost_unit": [
-        1
-      ]
+      "cost_unit": [1]
     }
   }
 ]

@@ -4,14 +4,14 @@ Ext.define("MainHub.view.usage.PrincipalInvestigators", {
 
   requires: [
     "MainHub.view.usage.ChartPolarBase",
-    "MainHub.view.usage.ChartCartesianBase",
+    "MainHub.view.usage.ChartCartesianBase"
   ],
 
   title: "Principal Investigators",
 
   layout: {
     type: "vbox",
-    align: "center",
+    align: "center"
   },
 
   height: 800,
@@ -21,19 +21,19 @@ Ext.define("MainHub.view.usage.PrincipalInvestigators", {
       itemId: "empty-text",
       html: '<h2 style="color:#999;text-align:center;margin-top:150px">No Data</h2>',
       border: 0,
-      hidden: true,
+      hidden: true
     },
     {
       xtype: "parkourpolar",
       store: "UsagePrincipalInvestigators",
       height: 365,
-      hidden: false,
+      hidden: false
     },
     {
       xtype: "parkourcartesian",
       store: "UsagePrincipalInvestigators",
       height: 400,
-      hidden: false,
-    },
-  ],
+      hidden: false
+    }
+  ]
 });

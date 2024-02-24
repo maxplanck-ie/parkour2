@@ -9,8 +9,8 @@ Ext.define("MainHub.store.invoicing.SequencingCosts", {
   sorters: [
     {
       property: "name",
-      direction: "ASC",
-    },
+      direction: "ASC"
+    }
   ],
 
   proxy: {
@@ -21,11 +21,11 @@ Ext.define("MainHub.store.invoicing.SequencingCosts", {
     noCache: false, // to remove param "_dc",
     actionMethods: {
       read: "GET",
-      update: "PUT",
+      update: "PUT"
     },
     api: {
       read: "api/sequencing_costs/",
-      update: "",
-    },
-  },
+      update: ""
+    }
+  }
 });

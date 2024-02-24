@@ -5,75 +5,75 @@ Ext.define("MainHub.store.metadataexporter.StudyTypes", {
   fields: [
     {
       name: "name",
-      type: "string",
+      type: "string"
     },
     {
       name: "description",
-      type: "string",
-    },
+      type: "string"
+    }
   ],
 
   data: [
     {
       name: "Whole Genome Sequencing",
-      description: "Sequencing of a single organism",
+      description: "Sequencing of a single organism"
     },
     {
       name: "Metagenomics",
-      description: "Sequencing of a community",
+      description: "Sequencing of a community"
     },
     {
       name: "Transcriptome Analysis",
-      description: "Sequencing and characterization of transcription elements",
+      description: "Sequencing and characterization of transcription elements"
     },
     {
       name: "Resequencing",
-      description: "Sequencing of a sample with respect to a reference",
+      description: "Sequencing of a sample with respect to a reference"
     },
     {
       name: "Epigenetics",
-      description: "Cellular differentiation study",
+      description: "Cellular differentiation study"
     },
     {
       name: "Synthetic Genomics",
-      description: "Sequencing of modified, synthetic, or transplanted genomes",
+      description: "Sequencing of modified, synthetic, or transplanted genomes"
     },
     {
       name: "Forensic or Paleo-genomics",
-      description: "Sequencing of recovered genomic material",
+      description: "Sequencing of recovered genomic material"
     },
     {
       name: "Gene Regulation Study",
-      description: "Study of gene expression regulation",
+      description: "Study of gene expression regulation"
     },
     {
       name: "Cancer Genomics",
-      description: "Study of cancer genomics",
+      description: "Study of cancer genomics"
     },
     {
       name: "Population Genomics",
-      description: "Study of populations and evolution through genomics",
+      description: "Study of populations and evolution through genomics"
     },
     {
       name: "RNASeq",
-      description: "RNA sequencing study",
+      description: "RNA sequencing study"
     },
     {
       name: "Exome Sequencing",
-      description: "The study investigates the exons of the genome",
+      description: "The study investigates the exons of the genome"
     },
     {
       name: "Pooled Clone Sequencing",
       description:
-        "The study is sequencing clone pools (BACs, fosmids, other constructs)",
+        "The study is sequencing clone pools (BACs, fosmids, other constructs)"
     },
     {
       name: "Transcriptome Sequencing",
-      description: "Sequencing of transcription elements",
+      description: "Sequencing of transcription elements"
     },
     {
       name: "Other",
-      description: "Study type not listed",
-    },
-  ],
+      description: "Study type not listed"
+    }
+  ]
 });
