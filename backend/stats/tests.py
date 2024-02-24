@@ -157,10 +157,10 @@ class TestSequencesStatistics(BaseTestCase):
         pool_size = create_pool_size(multiplier=8)
         flowcell = create_flowcell(get_random_name(), pool_size)
         sequences = [
-            {"barcode": library1.barcode},
-            {"barcode": library2.barcode},
-            {"barcode": sample1.barcode},
-            {"barcode": sample2.barcode},
+            {"barcode": library1.barcode, 'name': library1.name},
+            {"barcode": library2.barcode, 'name': library2.name},
+            {"barcode": sample1.barcode, 'name': sample1.name},
+            {"barcode": sample2.barcode, 'name': sample2.name},
         ]
 
         lanes = []
@@ -178,7 +178,7 @@ class TestSequencesStatistics(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data), 4)
-        self.assertEqual(data[0]["sequencer"], flowcell.pool_size.sequencer.name)
+        self.assertEqual(data[0]["sequencing_kit"], str(flowcell.pool_size))
 
     def test_upload_flowcell_sequences(self):
         pool_size = create_pool_size(multiplier=8)
