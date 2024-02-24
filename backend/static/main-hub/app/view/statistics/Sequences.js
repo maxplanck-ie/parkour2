@@ -46,6 +46,15 @@ Ext.define("MainHub.view.statistics.Sequences", {
             checked: false,
           },
           {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Uncheck, to show data per individual lane">Merge lanes</span>',
+            itemId: "merge-lanes-sequences-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            checked: true,
+          },
+          {
             xtype: "parkoursearchfield",
             store: "SequencesStatistics",
             emptyText: "Search",

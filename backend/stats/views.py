@@ -306,6 +306,10 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)
+    
+    def get_serializer_context(self):
+        merge_lanes = self.request.query_params.get("mergeLanes", 'True') == 'True' 
+        return {'merge_lanes': merge_lanes}
 
     @action(methods=["post"], detail=False)
     def upload(self, request):

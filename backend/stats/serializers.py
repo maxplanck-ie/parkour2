@@ -117,6 +117,24 @@ class SequencesSerializer(ModelSerializer):
                     }
                 processed_requests[request.name] = True
 
+        # If merge-lanes-sequences-checkbox is ticked, sum reads_pf_sequenced for 
+        # samples with identical name from different lanes of the same flowcell
+
+        if self.context.get('merge_lanes', True):
+
+            merged_data_sequences = {}
+            for item in data['sequences']:
+                reads_pf_sequenced = merged_data_sequences.get(item["name"], {'reads_pf_sequenced': 0})['reads_pf_sequenced'] + \
+                                     item.get("reads_pf_sequenced", 0)
+                merged_data_sequences[item["name"]] = {'barcode': item.get('barcode', ''),
+                                                       'reads_pf_sequenced': reads_pf_sequenced}
+            merged_data_sequences = [{'name': n,
+                                      'lane': 'All',
+                                      'barcode': d.get('barcode', ''),
+                                      'reads_pf_sequenced': d.get('reads_pf_sequenced', 0),}
+                                     for n, d in merged_data_sequences.items()]
+            data["sequences"] = merged_data_sequences
+
         for item in data["sequences"]:
             obj = items.get(item["barcode"], {})
             result.append(

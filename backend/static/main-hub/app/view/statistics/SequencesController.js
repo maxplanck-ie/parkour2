@@ -22,6 +22,9 @@ Ext.define("MainHub.view.statistics.SequencesController", {
       "#as-bioinformatician-sequences-checkbox": {
         change: "toggleBioinformatician",
       },
+      "#merge-lanes-sequences-checkbox": {
+        change: "toggleMergeLanes",
+      },
     },
   },
 
@@ -76,6 +79,18 @@ Ext.define("MainHub.view.statistics.SequencesController", {
         if (success) {
           newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
         }
+      },
+    });
+  },
+
+  toggleMergeLanes: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#sequences-grid");
+    var dateRange = grid.down("daterangepicker").getPickerValue();
+    grid.store.getProxy().extraParams.mergeLanes = newValue ? "True" : "False";
+    grid.store.reload({
+      params: {
+        start: dateRange.startDateObj,
+        end: dateRange.endDateObj,
       },
     });
   },
