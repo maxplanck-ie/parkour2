@@ -25,6 +25,9 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
       "#show-samples-checkbox": {
         change: "changeFilter"
       },
+      "#as-handler-incoming-checkbox": {
+        change: "toggleAsHandler"
+      },
       "#cancel-button": {
         click: "cancel"
       },
@@ -150,6 +153,19 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     } else {
       self._showEditableColumnsMessage(gridView, allowedColumns);
     }
+  },
+
+  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#incoming-libraries-grid");
+    var gridGrouping = grid.view.getFeature("incoming-libraries-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
+    });
   },
 
   _calculateAmount: function (dilutionFactor, concentration, sampleVolume) {

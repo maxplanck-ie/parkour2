@@ -76,33 +76,6 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 checked: false,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    var grid = checkbox.up("#incoming-libraries-grid");
-                    var gridGrouping = grid.view.getFeature(
-                      "incoming-libraries-grid-grouping"
-                    );
-                    if (newValue) {
-                      grid.store.getProxy().extraParams.asHandler = "True";
-                      grid.store.load({
-                        callback: function (records, operation, success) {
-                          if (success) {
-                            gridGrouping.expandAll();
-                          }
-                        },
-                      });
-                    } else {
-                      grid.store.getProxy().extraParams.asHandler = "False";
-                      grid.store.load({
-                        callback: function (records, operation, success) {
-                          if (success) {
-                            gridGrouping.collapseAll();
-                          }
-                        },
-                      });
-                    }
-                  },
-                },
               },
               {
                 boxLabel: "Show Libraries",

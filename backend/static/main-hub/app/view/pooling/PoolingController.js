@@ -29,6 +29,9 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       "#search-field": {
         change: "changeFilter"
       },
+      "#as-handler-pooling-checkbox": {
+        change: "toggleAsHandler"
+      },
       "#cancel-button": {
         click: "cancel"
       },
@@ -394,6 +397,19 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         samples: Ext.JSON.encode(Ext.Array.pluck(samples, "pk")),
         libraries: Ext.JSON.encode(Ext.Array.pluck(libraries, "pk"))
       }
+    });
+  },
+
+  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#pooling-grid");
+    var gridGrouping = grid.view.getFeature("pooling-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
     });
   },
 

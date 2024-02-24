@@ -39,6 +39,9 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       "#search-field": {
         change: "changeFilter"
       },
+      "#as-handler-flowcell-checkbox": {
+        change: "toggleAsHandler"
+      },
       "#cancel-button": {
         click: "cancel"
       },
@@ -204,6 +207,19 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
         ids: Ext.JSON.encode(Ext.Array.pluck(selectedLanes, "pk")),
         flowcell_id: selectedLanes[0].flowcell
       }
+    });
+  },
+
+  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#flowcells-grid");
+    var gridGrouping = grid.view.getFeature("flowcells-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
     });
   },
 

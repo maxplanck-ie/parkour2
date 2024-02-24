@@ -13,7 +13,10 @@ Ext.define("MainHub.view.requests.RequestsController", {
       },
       "#add-request-button": {
         click: "addRequest"
-      }
+      },
+      "#as-handler-requests-checkbox": {
+        change: "toggleAsHandler"
+      },
     }
   },
 
@@ -30,6 +33,12 @@ Ext.define("MainHub.view.requests.RequestsController", {
       title: "New Request",
       mode: "add"
     }).show();
+  },
+
+  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#requests-grid");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload();
   },
 
   showMenu: function (grid, record, itemEl, index, e) {

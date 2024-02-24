@@ -68,21 +68,6 @@ Ext.define("MainHub.view.requests.Requests", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: !USER.is_staff,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    if (newValue) {
-                      Ext.getStore(
-                        "requestsStore"
-                      ).getProxy().extraParams.asHandler = "True";
-                      Ext.getStore("requestsStore").load();
-                    } else {
-                      Ext.getStore(
-                        "requestsStore"
-                      ).getProxy().extraParams.asHandler = "False";
-                      Ext.getStore("requestsStore").load();
-                    }
-                  },
-                },
               },
               {
                 name: "showAll",

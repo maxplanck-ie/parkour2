@@ -39,33 +39,6 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
               margin: "0 15 0 0",
               cls: "grid-header-checkbox",
               checked: false,
-              listeners: {
-                change: function (cb, newValue, oldValue, eOpts) {
-                  var grid = cb.up("#index-generator-grid");
-                  var gridGrouping = grid.view.getFeature(
-                    "index-generator-grid-grouping"
-                  );
-                  if (newValue) {
-                    grid.store.getProxy().extraParams.asHandler = "True";
-                    grid.store.load({
-                      callback: function (records, operation, success) {
-                        if (success) {
-                          gridGrouping.expandAll();
-                        }
-                      },
-                    });
-                  } else {
-                    grid.store.getProxy().extraParams.asHandler = "False";
-                    grid.store.load({
-                      callback: function (records, operation, success) {
-                        if (success) {
-                          gridGrouping.collapseAll();
-                        }
-                      },
-                    });
-                  }
-                },
-              },
             },
             {
               xtype: "combobox",

@@ -20,6 +20,9 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       },
       "#searchField": {
         change: "changeFilter"
+      },
+      "#as-handler-libraries-samples-checkbox": {
+        change: "toggleAsHandler"
       }
     }
   },
@@ -120,5 +123,12 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
   gridCellTooltipRenderer: function (value, meta) {
     meta.tdAttr = 'data-qtip="' + value + '"';
     return value;
-  }
+  },
+
+  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+      var store = Ext.getStore("librariesStore");
+      store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+      store.reload();
+  },
+
 });

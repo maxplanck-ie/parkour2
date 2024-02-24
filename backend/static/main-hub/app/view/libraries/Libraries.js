@@ -131,21 +131,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: !USER.is_staff,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    if (newValue) {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.asHandler = "True";
-                      Ext.getStore("librariesStore").load();
-                    } else {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.asHandler = "False";
-                      Ext.getStore("librariesStore").load();
-                    }
-                  },
-                },
               },
               {
                 name: "showAll",
