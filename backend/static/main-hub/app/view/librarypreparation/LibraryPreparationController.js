@@ -17,7 +17,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
         edit: "editRecord"
       },
       "#as-handler-preparation-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
       "#search-field": {
         change: "changeFilter"
@@ -141,7 +141,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     });
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#library-preparation-grid");
     var gridGrouping = grid.view.getFeature("library-preparation-grid-grouping");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";

@@ -15,7 +15,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         click: "addRequest"
       },
       "#as-handler-requests-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
     }
   },
@@ -35,7 +35,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
     }).show();
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#requests-grid");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
     grid.store.reload();

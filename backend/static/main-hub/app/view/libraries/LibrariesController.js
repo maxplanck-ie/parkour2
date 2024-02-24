@@ -22,7 +22,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
         change: "changeFilter"
       },
       "#as-handler-libraries-samples-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       }
     }
   },
@@ -125,7 +125,7 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
     return value;
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
       var store = Ext.getStore("librariesStore");
       store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
       store.reload();

@@ -26,7 +26,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
         change: "changeFilter"
       },
       "#as-handler-incoming-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
       "#cancel-button": {
         click: "cancel"
@@ -155,7 +155,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     }
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#incoming-libraries-grid");
     var gridGrouping = grid.view.getFeature("incoming-libraries-grid-grouping");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";

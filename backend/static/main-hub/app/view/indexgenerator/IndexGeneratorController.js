@@ -21,7 +21,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         checkchange: "checkRecord"
       },
       "#as-handler-index-generator-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
       "#save-pool-button": {
         click: "save",
@@ -89,7 +89,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
     );
   },
 
-  toggleAsHandler: function (cb, newValue, oldValue, eOpts) {
+  toggleHandler: function (cb, newValue, oldValue, eOpts) {
     var grid = cb.up("#index-generator-grid");
     var gridGrouping = grid.view.getFeature("index-generator-grid-grouping");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";

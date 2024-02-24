@@ -30,7 +30,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         change: "changeFilter"
       },
       "#as-handler-pooling-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
       "#cancel-button": {
         click: "cancel"
@@ -400,7 +400,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
     });
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#pooling-grid");
     var gridGrouping = grid.view.getFeature("pooling-grid-grouping");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";

@@ -40,7 +40,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
         change: "changeFilter"
       },
       "#as-handler-flowcell-checkbox": {
-        change: "toggleAsHandler"
+        change: "toggleHandler"
       },
       "#cancel-button": {
         click: "cancel"
@@ -210,7 +210,7 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     });
   },
 
-  toggleAsHandler: function (checkbox, newValue, oldValue, eOpts) {
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#flowcells-grid");
     var gridGrouping = grid.view.getFeature("flowcells-grid-grouping");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
