@@ -119,7 +119,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     // it is rendered correctly in the unactivated row. Maybe there is a better solution,
     // but for now it works.
     [Ext.getStore("indexI7Store"), Ext.getStore("indexI5Store")].forEach(function (s) {
-      if(!Ext.isEmpty(s)){
+      if (!Ext.isEmpty(s)) {
         s.add(new s.model())
       }
     })
@@ -271,8 +271,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     this.columOrderOriginal = this.columOrderOriginal
       ? this.columOrderOriginal
       : columns.map(function (e) {
-          return e.dataIndex;
-        });
+        return e.dataIndex;
+      });
 
     var newColumnOrder;
 
@@ -532,7 +532,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               // are different
               if (
                 item.get("nucleic_acid_type") !==
-                  record.get("nucleic_acid_type") ||
+                record.get("nucleic_acid_type") ||
                 (item.get("nucleic_acid_type") ===
                   record.get("nucleic_acid_type") &&
                   item.get("library_type") !== record.get("library_type"))
@@ -673,8 +673,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var nucleicAcidTypesStore = Ext.getStore("nucleicAcidTypesStore");
     var singleCell = nucleicAcidType
       ? nucleicAcidTypesStore
-          .findRecord("id", nucleicAcidType)
-          .get("single_cell")
+        .findRecord("id", nucleicAcidType)
+        .get("single_cell")
       : null;
 
     // Toggle Single Cell fields and concentration
@@ -766,8 +766,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var nucleicAcidTypesStore = Ext.getStore("nucleicAcidTypesStore");
     var singleCell = record.get("nucleic_acid_type")
       ? nucleicAcidTypesStore
-          .findRecord("id", record.get("nucleic_acid_type"))
-          .get("single_cell")
+        .findRecord("id", record.get("nucleic_acid_type"))
+        .get("single_cell")
       : null;
     if (singleCell) {
       record.set("concentration", null);
@@ -1129,7 +1129,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 85,
         editor: {
           xtype: "numberfield",
-          decimalPrecision: 2, 
+          decimalPrecision: 2,
           allowBlank: true,
           minValue: 0,
         },
@@ -1608,11 +1608,11 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           handler: handlerCb.value ? handlerCb.value : null,
           invoice_date: invoiceDateBox.value
             ? new Date(
-                invoiceDateBox.value.setTime(
-                  invoiceDateBox.value.getTime() -
-                    invoiceDateBox.value.getTimezoneOffset() * 60000
-                )
+              invoiceDateBox.value.setTime(
+                invoiceDateBox.value.getTime() -
+                invoiceDateBox.value.getTimezoneOffset() * 60000
               )
+            )
             : null,
           pool_size_user: data.pool_size_user ? data.pool_size_user : null,
           description: data.description,
@@ -1931,7 +1931,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           var error = response.statusText;
           try {
             error = Ext.JSON.decode(response.responseText).message;
-          } catch (e) {}
+          } catch (e) { }
           new Noty({ text: error, type: "error" }).show();
           console.error(response);
         },
@@ -1975,7 +1975,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           var error = response.statusText;
           try {
             error = Ext.JSON.decode(response.responseText).message;
-          } catch (e) {}
+          } catch (e) { }
           new Noty({ text: error, type: "error" }).show();
           console.error(response);
         },

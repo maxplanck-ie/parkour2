@@ -6,29 +6,8 @@
       "name": "Other",
       "archived": false,
       "library_protocol": [
-        45,
-        56,
-        25,
-        52,
-        53,
-        51,
-        50,
-        39,
-        59,
-        43,
-        42,
-        57,
-        58,
-        49,
-        48,
-        55,
-        27,
-        24,
-        35,
-        1,
-        2,
-        31,
-        32
+        45, 56, 25, 52, 53, 51, 50, 39, 59, 43, 42, 57, 58, 49, 48, 55, 27, 24,
+        35, 1, 2, 31, 32
       ]
     }
   },
@@ -38,10 +17,7 @@
     "fields": {
       "name": "RNA-Seq single cell",
       "archived": false,
-      "library_protocol": [
-        16,
-        51
-      ]
+      "library_protocol": [16, 51]
     }
   },
   {
@@ -50,12 +26,7 @@
     "fields": {
       "name": "ChIP-Seq",
       "archived": false,
-      "library_protocol": [
-        22,
-        23,
-        25,
-        4
-      ]
+      "library_protocol": [22, 23, 25, 4]
     }
   },
   {
@@ -64,9 +35,7 @@
     "fields": {
       "name": "stranded mRNA-Seq",
       "archived": false,
-      "library_protocol": [
-        43
-      ]
+      "library_protocol": [43]
     }
   },
   {
@@ -75,9 +44,7 @@
     "fields": {
       "name": "stranded RNA-Seq",
       "archived": false,
-      "library_protocol": [
-        42
-      ]
+      "library_protocol": [42]
     }
   },
   {
@@ -86,9 +53,7 @@
     "fields": {
       "name": "mRNA-Seq",
       "archived": false,
-      "library_protocol": [
-        24
-      ]
+      "library_protocol": [24]
     }
   },
   {
@@ -115,9 +80,7 @@
     "fields": {
       "name": "WGS",
       "archived": false,
-      "library_protocol": [
-        5
-      ]
+      "library_protocol": [5]
     }
   },
   {
@@ -126,11 +89,7 @@
     "fields": {
       "name": "ATAC-Seq",
       "archived": false,
-      "library_protocol": [
-        45,
-        6,
-        7
-      ]
+      "library_protocol": [45, 6, 7]
     }
   },
   {
@@ -148,9 +107,7 @@
     "fields": {
       "name": "Amplicon-Seq",
       "archived": false,
-      "library_protocol": [
-        9
-      ]
+      "library_protocol": [9]
     }
   },
   {
@@ -159,10 +116,7 @@
     "fields": {
       "name": "3' mRNA-Seq",
       "archived": false,
-      "library_protocol": [
-        31,
-        32
-      ]
+      "library_protocol": [31, 32]
     }
   },
   {
@@ -180,9 +134,7 @@
     "fields": {
       "name": "Hi-C",
       "archived": false,
-      "library_protocol": [
-        26
-      ]
+      "library_protocol": [26]
     }
   },
   {
@@ -191,9 +143,7 @@
     "fields": {
       "name": "ATAC-Seq single cell",
       "archived": false,
-      "library_protocol": [
-        52
-      ]
+      "library_protocol": [52]
     }
   },
   {
@@ -202,9 +152,7 @@
     "fields": {
       "name": "CUTandRUN-seq",
       "archived": false,
-      "library_protocol": [
-        39
-      ]
+      "library_protocol": [39]
     }
   },
   {
@@ -213,9 +161,7 @@
     "fields": {
       "name": "CUTandTag-seq",
       "archived": false,
-      "library_protocol": [
-        39
-      ]
+      "library_protocol": [39]
     }
   },
   {
@@ -224,11 +170,7 @@
     "fields": {
       "name": "Nanopore cDNA Library",
       "archived": false,
-      "library_protocol": [
-        49,
-        34,
-        33
-      ]
+      "library_protocol": [49, 34, 33]
     }
   },
   {
@@ -237,11 +179,7 @@
     "fields": {
       "name": "Nanopore DNA Library",
       "archived": false,
-      "library_protocol": [
-        48,
-        55,
-        44
-      ]
+      "library_protocol": [48, 55, 44]
     }
   },
   {
@@ -250,9 +188,7 @@
     "fields": {
       "name": "Nanopore RNA Library",
       "archived": false,
-      "library_protocol": [
-        30
-      ]
+      "library_protocol": [30]
     }
   }
 ]
