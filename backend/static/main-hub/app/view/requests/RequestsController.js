@@ -17,6 +17,9 @@ Ext.define("MainHub.view.requests.RequestsController", {
       "#as-handler-requests-checkbox": {
         change: "toggleHandler"
       },
+      "#as-bioinformatician-requests-checkbox": {
+        change: "toggleBioinformatician"
+      },
     }
   },
 
@@ -38,6 +41,12 @@ Ext.define("MainHub.view.requests.RequestsController", {
   toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
     var grid = checkbox.up("#requests-grid");
     grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload();
+  },
+
+  toggleBioinformatician: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#requests-grid");
+    grid.store.getProxy().extraParams.asBioinformatician = newValue ? "True" : "False";
     grid.store.reload();
   },
 

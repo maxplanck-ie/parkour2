@@ -23,6 +23,9 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       },
       "#as-handler-libraries-samples-checkbox": {
         change: "toggleHandler"
+      },
+      "#as-bioinformatician-libraries-samples-checkbox": {
+        change: "toggleBioinformatician"
       }
     }
   },
@@ -129,6 +132,12 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       var store = Ext.getStore("librariesStore");
       store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
       store.reload();
+  },
+
+  toggleBioinformatician: function (checkbox, newValue, oldValue, eOpts) {
+    var store = Ext.getStore("librariesStore");
+    store.getProxy().extraParams.asBioinformatician = newValue ? "True" : "False";
+    store.reload();
   },
 
 });

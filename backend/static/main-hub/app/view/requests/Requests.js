@@ -39,25 +39,10 @@ Ext.define("MainHub.view.requests.Requests", {
                 boxLabel:
                   '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
                 checked: false,
-                id: "asBioinformatician",
+                id: "as-bioinformatician-requests-checkbox",
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: !USER.is_bioinformatician,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    if (newValue) {
-                      Ext.getStore(
-                        "requestsStore"
-                      ).getProxy().extraParams.asBioinformatician = "True";
-                      Ext.getStore("requestsStore").load();
-                    } else {
-                      Ext.getStore(
-                        "requestsStore"
-                      ).getProxy().extraParams.asBioinformatician = "False";
-                      Ext.getStore("requestsStore").load();
-                    }
-                  },
-                },
               },
               {
                 name: "asHandler",

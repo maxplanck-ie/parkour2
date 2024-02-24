@@ -106,21 +106,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: !USER.is_bioinformatician,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    if (newValue) {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.asBioinformatician = "True";
-                      Ext.getStore("librariesStore").load();
-                    } else {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.asBioinformatician = "False";
-                      Ext.getStore("librariesStore").load();
-                    }
-                  },
-                },
               },
               {
                 name: "asHandler",
