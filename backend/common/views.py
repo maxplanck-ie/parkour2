@@ -54,7 +54,6 @@ def index(request):
                 }
             ),
             "DOCUMENTATION_URL": config.DOCUMENTATION_URL,
-            "GRID_INTRO_VIDEO_URL": config.GRID_INTRO_VIDEO_URL,
         },
     )
 

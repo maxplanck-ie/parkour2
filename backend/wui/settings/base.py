@@ -299,7 +299,6 @@ OIDC_ALLOWED_USER_EMAILS = os.environ.get("OIDC_ALLOWED_USER_EMAILS", '')
 # Costance
 STAFF_EMAIL_ADDRESS = os.environ.get("STAFF_EMAIL_ADDRESS", '')
 DOCUMENTATION_URL = os.environ.get("DOCUMENTATION_URL", '')
-GRID_INTRO_VIDEO_URL = os.environ.get("GRID_INTRO_VIDEO_URL", '')
 CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 CONSTANCE_SUPERUSER_ONLY = True
 CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
@@ -323,10 +322,8 @@ CONSTANCE_CONFIG = {'STAFF_EMAIL_ADDRESS': (STAFF_EMAIL_ADDRESS,
                                               str),
                     'DOCUMENTATION_URL': (DOCUMENTATION_URL,
                                           "Link for Parkour's manual",
-                                          str),
-                    'GRID_INTRO_VIDEO_URL': (GRID_INTRO_VIDEO_URL,
-                                             "Link for the video introduction to Parkour's grid",
-                                             str)}
+                                          str)
+                    }
 
 # Facilities
 DEEPSEQ = 'Genomics-CF'

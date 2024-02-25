@@ -127,9 +127,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
         },
         {
           xtype: "container",
-          margin: "0 0 0 30px",
+          margin: "0 0 0 15px",
           html:
-            '<span id="edit-hint"><strong>Hint:</strong> To edit multiple cells at once (Excel-like), ' +
+            '<span id="edit-hint"><strong>Hints: </strong>' +
+            '[1] Check <a target="_blank" href="' + DOCUMENTATION_URL + 
+            '">this guide</a>, to learn how to use this table. ' +
+            '[2] To edit multiple cells at once, ' +
             "select a cell and paste data (CTRL + V)</span>",
         },
         // {
