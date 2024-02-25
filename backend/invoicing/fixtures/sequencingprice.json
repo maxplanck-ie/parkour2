@@ -1,0 +1,372 @@
+[
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 1,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "4622.00",
+      "sequencing_cost": 1
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 4,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "2377.00",
+      "sequencing_cost": 2
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 5,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "1664.00",
+      "sequencing_cost": 3
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 6,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "1281.00",
+      "sequencing_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 7,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "1889.00",
+      "sequencing_cost": 5
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 8,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "3293.00",
+      "sequencing_cost": 6
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 9,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "4269.00",
+      "sequencing_cost": 7
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 10,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "3129.00",
+      "sequencing_cost": 8
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 11,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "4127.00",
+      "sequencing_cost": 9
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 12,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "5581.00",
+      "sequencing_cost": 10
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 13,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "7329.00",
+      "sequencing_cost": 11
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 14,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "933.00",
+      "sequencing_cost": 12
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 15,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "1299.00",
+      "sequencing_cost": 13
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 16,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "1486.00",
+      "sequencing_cost": 14
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 17,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "2268.00",
+      "sequencing_cost": 15
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 18,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "2268.00",
+      "sequencing_cost": 15
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 19,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1486.00",
+      "sequencing_cost": 14
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 20,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1299.00",
+      "sequencing_cost": 13
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 21,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "933.00",
+      "sequencing_cost": 12
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 22,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "7329.00",
+      "sequencing_cost": 11
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 23,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "5581.00",
+      "sequencing_cost": 10
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 24,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "4127.00",
+      "sequencing_cost": 9
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 25,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "3129.00",
+      "sequencing_cost": 8
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 26,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "4269.00",
+      "sequencing_cost": 7
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 27,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "3293.00",
+      "sequencing_cost": 6
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 28,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1889.00",
+      "sequencing_cost": 5
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 29,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1281.00",
+      "sequencing_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 30,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1664.00",
+      "sequencing_cost": 3
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 31,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "2377.00",
+      "sequencing_cost": 2
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 32,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "4622.00",
+      "sequencing_cost": 1
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 33,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "1889.00",
+      "sequencing_cost": 5
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 34,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "1664.00",
+      "sequencing_cost": 3
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 35,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "3293.00",
+      "sequencing_cost": 6
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 36,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "1281.00",
+      "sequencing_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 37,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "1100.00",
+      "sequencing_cost": 16
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 38,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "1100.00",
+      "sequencing_cost": 16
+    }
+  },
+  {
+    "model": "invoicing.sequencingprice",
+    "pk": 39,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1100.00",
+      "sequencing_cost": 16
+    }
+  }
+]

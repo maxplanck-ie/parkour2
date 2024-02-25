@@ -1,0 +1,722 @@
+[
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 1,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "130.00",
+      "library_preparation_cost": 1
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 5,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "120.00",
+      "library_preparation_cost": 2
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 7,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "205.00",
+      "library_preparation_cost": 3
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 10,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "140.00",
+      "library_preparation_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 11,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "20000.00",
+      "library_preparation_cost": 5
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 12,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "1930.00",
+      "library_preparation_cost": 6
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 13,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "2500.00",
+      "library_preparation_cost": 7
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 14,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "55.00",
+      "library_preparation_cost": 8
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 15,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "195.00",
+      "library_preparation_cost": 9
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 16,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "135.00",
+      "library_preparation_cost": 10
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 17,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "105.00",
+      "library_preparation_cost": 11
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 18,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "12.00",
+      "library_preparation_cost": 12
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 19,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "12.00",
+      "library_preparation_cost": 13
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 20,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "12.00",
+      "library_preparation_cost": 13
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 21,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "70.00",
+      "library_preparation_cost": 11
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 22,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "35.00",
+      "library_preparation_cost": 8
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 23,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "105.00",
+      "library_preparation_cost": 10
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 24,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "130.00",
+      "library_preparation_cost": 9
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 25,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "220.00",
+      "library_preparation_cost": 14
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 26,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "150.00",
+      "library_preparation_cost": 14
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 27,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "240.00",
+      "library_preparation_cost": 15
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 28,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "160.00",
+      "library_preparation_cost": 15
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 29,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "2420.00",
+      "library_preparation_cost": 7
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 30,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1900.00",
+      "library_preparation_cost": 6
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 31,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "18000.00",
+      "library_preparation_cost": 5
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 32,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "12.00",
+      "library_preparation_cost": 12
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 33,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "1930.00",
+      "library_preparation_cost": 16
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 34,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "1900.00",
+      "library_preparation_cost": 16
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 35,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "100.00",
+      "library_preparation_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 36,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "165.00",
+      "library_preparation_cost": 3
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 37,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "100.00",
+      "library_preparation_cost": 2
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 38,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "100.00",
+      "library_preparation_cost": 1
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 39,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "135.00",
+      "library_preparation_cost": 17
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 41,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "208.00",
+      "library_preparation_cost": 18
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 42,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "168.00",
+      "library_preparation_cost": 18
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 43,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "143.00",
+      "library_preparation_cost": 19
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 44,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "103.00",
+      "library_preparation_cost": 19
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 45,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "2450.00",
+      "library_preparation_cost": 20
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 46,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "2350.00",
+      "library_preparation_cost": 20
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 47,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "145.00",
+      "library_preparation_cost": 21
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 48,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "115.00",
+      "library_preparation_cost": 21
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 49,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "105.00",
+      "library_preparation_cost": 17
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 50,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "170.00",
+      "library_preparation_cost": 22
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 51,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "165.00",
+      "library_preparation_cost": 23
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 52,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "125.00",
+      "library_preparation_cost": 23
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 53,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "165.00",
+      "library_preparation_cost": 24
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 54,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "125.00",
+      "library_preparation_cost": 24
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 55,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "240.00",
+      "library_preparation_cost": 25
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 56,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "180.00",
+      "library_preparation_cost": 25
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 57,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "90.00",
+      "library_preparation_cost": 26
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 58,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "50.00",
+      "library_preparation_cost": 26
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 59,
+    "fields": {
+      "organization": null,
+      "archived": false,
+      "price": "115.00",
+      "library_preparation_cost": 27
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 60,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "85.00",
+      "library_preparation_cost": 27
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 61,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "185.00",
+      "library_preparation_cost": 28
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 62,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "145.00",
+      "library_preparation_cost": 28
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 63,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "295.00",
+      "library_preparation_cost": 29
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 64,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "225.00",
+      "library_preparation_cost": 29
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 65,
+    "fields": {
+      "organization": 2,
+      "archived": false,
+      "price": "365.00",
+      "library_preparation_cost": 30
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 66,
+    "fields": {
+      "organization": 3,
+      "archived": false,
+      "price": "325.00",
+      "library_preparation_cost": 30
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 67,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "75.00",
+      "library_preparation_cost": 31
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 68,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "365.00",
+      "library_preparation_cost": 30
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 69,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "295.00",
+      "library_preparation_cost": 29
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 70,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "185.00",
+      "library_preparation_cost": 28
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 71,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "165.00",
+      "library_preparation_cost": 24
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 72,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "165.00",
+      "library_preparation_cost": 23
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 73,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "170.00",
+      "library_preparation_cost": 22
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 74,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "143.00",
+      "library_preparation_cost": 19
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 75,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "208.00",
+      "library_preparation_cost": 18
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 76,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "130.00",
+      "library_preparation_cost": 1
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 77,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "135.00",
+      "library_preparation_cost": 17
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 78,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "140.00",
+      "library_preparation_cost": 4
+    }
+  },
+  {
+    "model": "invoicing.librarypreparationprice",
+    "pk": 79,
+    "fields": {
+      "organization": 4,
+      "archived": false,
+      "price": "205.00",
+      "library_preparation_cost": 3
+    }
+  }
+]

@@ -13,7 +13,7 @@
     "model": "library_sample_shared.organism",
     "pk": 2,
     "fields": {
-      "name": "human",
+      "name": "Homo sapiens",
       "scientific_name": "Homo sapiens",
       "taxon_id": 9606,
       "archived": false
@@ -23,7 +23,7 @@
     "model": "library_sample_shared.organism",
     "pk": 3,
     "fields": {
-      "name": "mouse",
+      "name": "Mus musculus",
       "scientific_name": "Mus musculus",
       "taxon_id": 10090,
       "archived": false
@@ -33,7 +33,7 @@
     "model": "library_sample_shared.organism",
     "pk": 4,
     "fields": {
-      "name": "drosophila",
+      "name": "D. melanogaster",
       "scientific_name": "Drosophila melanogaster",
       "taxon_id": 7227,
       "archived": false
@@ -43,7 +43,7 @@
     "model": "library_sample_shared.organism",
     "pk": 5,
     "fields": {
-      "name": "zebrafish",
+      "name": "Danio rerio",
       "scientific_name": "Danio rerio",
       "taxon_id": 7955,
       "archived": false
@@ -53,7 +53,7 @@
     "model": "library_sample_shared.organism",
     "pk": 6,
     "fields": {
-      "name": "medaka",
+      "name": "O. melastigma",
       "scientific_name": "Oryzias melastigma",
       "taxon_id": 30732,
       "archived": false
@@ -63,7 +63,7 @@
     "model": "library_sample_shared.organism",
     "pk": 7,
     "fields": {
-      "name": "lamprey",
+      "name": "P. marinus",
       "scientific_name": "Petromyzon marinus",
       "taxon_id": 7757,
       "archived": false
@@ -81,11 +81,151 @@
   },
   {
     "model": "library_sample_shared.organism",
-    "pk": 9,
+    "pk": 11,
     "fields": {
-      "name": "Caenorhabditis_elegans",
+      "name": "C. elegans",
       "scientific_name": "Caenorhabditis elegans",
-      "taxon_id": 6239,
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 12,
+    "fields": {
+      "name": "Temnothorax",
+      "scientific_name": "Temnothorax",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 13,
+    "fields": {
+      "name": "S. cerevisiae",
+      "scientific_name": "Saccharomyces cerevisiae",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 14,
+    "fields": {
+      "name": "S. pombe",
+      "scientific_name": "Schizosaccharomyces pombe",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 15,
+    "fields": {
+      "name": "X. laevis",
+      "scientific_name": "Xenopus laevis",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 16,
+    "fields": {
+      "name": "X. tropicalis",
+      "scientific_name": "Xenopus tropicalis",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 17,
+    "fields": {
+      "name": "A. uniparens",
+      "scientific_name": "Aspidoscelis uniparens",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 18,
+    "fields": {
+      "name": "A. sonorae",
+      "scientific_name": "Aspidoscelis sonorae",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 19,
+    "fields": {
+      "name": "A. arizonae",
+      "scientific_name": "Aspidoscelis arizonae",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 20,
+    "fields": {
+      "name": "A. marmoratus",
+      "scientific_name": "Aspidoscelis marmoratus",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 21,
+    "fields": {
+      "name": "A. neomexicanus",
+      "scientific_name": "Aspidoscelis neomexicanus",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 22,
+    "fields": {
+      "name": "A. inornatus",
+      "scientific_name": "Aspidoscelis inornatus",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 23,
+    "fields": {
+      "name": "A. teti",
+      "scientific_name": "Aspidoscelis teti",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 24,
+    "fields": {
+      "name": "A. thaliana",
+      "scientific_name": "Arabidopsis thaliana",
+      "taxon_id": null,
+      "archived": false
+    }
+  },
+  {
+    "model": "library_sample_shared.organism",
+    "pk": 25,
+    "fields": {
+      "name": "W. microscopica",
+      "scientific_name": "Wolffia microscopica",
+      "taxon_id": null,
       "archived": false
     }
   }

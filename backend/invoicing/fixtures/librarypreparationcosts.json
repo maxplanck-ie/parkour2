@@ -1,26 +1,157 @@
 [
   {
-    "fields": {
-      "library_protocol": 4,
-      "price": "55.16"
-    },
     "model": "invoicing.librarypreparationcosts",
-    "pk": 1
+    "pk": 1,
+    "fields": { "library_protocol": 4, "archived": false }
   },
   {
-    "fields": {
-      "library_protocol": 5,
-      "price": "53.88"
-    },
     "model": "invoicing.librarypreparationcosts",
-    "pk": 8
+    "pk": 2,
+    "fields": { "library_protocol": 7, "archived": false }
   },
   {
-    "fields": {
-      "library_protocol": 9,
-      "price": "151.14"
-    },
     "model": "invoicing.librarypreparationcosts",
-    "pk": 9
+    "pk": 3,
+    "fields": { "library_protocol": 11, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 4,
+    "fields": { "library_protocol": 10, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 5,
+    "fields": { "library_protocol": 28, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 6,
+    "fields": { "library_protocol": 21, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 7,
+    "fields": { "library_protocol": 27, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 8,
+    "fields": { "library_protocol": 32, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 9,
+    "fields": { "library_protocol": 29, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 10,
+    "fields": { "library_protocol": 23, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 11,
+    "fields": { "library_protocol": 31, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 12,
+    "fields": { "library_protocol": 17, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 13,
+    "fields": { "library_protocol": 20, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 14,
+    "fields": { "library_protocol": 38, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 15,
+    "fields": { "library_protocol": 39, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 16,
+    "fields": { "library_protocol": 25, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 17,
+    "fields": { "library_protocol": 24, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 18,
+    "fields": { "library_protocol": 48, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 19,
+    "fields": { "library_protocol": 49, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 20,
+    "fields": { "library_protocol": 30, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 21,
+    "fields": { "library_protocol": 45, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 22,
+    "fields": { "library_protocol": 55, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 23,
+    "fields": { "library_protocol": 41, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 24,
+    "fields": { "library_protocol": 52, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 25,
+    "fields": { "library_protocol": 36, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 26,
+    "fields": { "library_protocol": 33, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 27,
+    "fields": { "library_protocol": 58, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 28,
+    "fields": { "library_protocol": 37, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 29,
+    "fields": { "library_protocol": 51, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 30,
+    "fields": { "library_protocol": 50, "archived": false }
+  },
+  {
+    "model": "invoicing.librarypreparationcosts",
+    "pk": 31,
+    "fields": { "library_protocol": 26, "archived": false }
   }
 ]

@@ -1,74 +1,77 @@
 [
   {
     "model": "library_sample_shared.readlength",
-    "pk": 2,
-    "fields": {
-      "name": "2x75",
-      "archived": false
-    }
+    "pk": 43,
+    "fields": { "name": "1x600", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 3,
-    "fields": {
-      "name": "2x150",
-      "archived": false
-    }
+    "pk": 44,
+    "fields": { "name": "2x50", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 4,
-    "fields": {
-      "name": "2x250",
-      "archived": false
-    }
+    "pk": 45,
+    "fields": { "name": "2x100", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 8,
-    "fields": {
-      "name": "2x100",
-      "archived": false
-    }
+    "pk": 46,
+    "fields": { "name": "2x75", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 9,
-    "fields": {
-      "name": "2x300",
-      "archived": false
-    }
+    "pk": 47,
+    "fields": { "name": "1x200", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 14,
-    "fields": {
-      "name": "2x50",
-      "archived": false
-    }
+    "pk": 48,
+    "fields": { "name": "2x300", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 15,
-    "fields": {
-      "name": "1x75",
-      "archived": false
-    }
+    "pk": 49,
+    "fields": { "name": "1x100", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 16,
-    "fields": {
-      "name": "1x100",
-      "archived": false
-    }
+    "pk": 50,
+    "fields": { "name": "1x50", "archived": false }
   },
   {
     "model": "library_sample_shared.readlength",
-    "pk": 17,
-    "fields": {
-      "name": "Oxford Nanopore",
-      "archived": false
-    }
+    "pk": 51,
+    "fields": { "name": "2x150", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 52,
+    "fields": { "name": "1x300", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 53,
+    "fields": { "name": "1x75", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 54,
+    "fields": { "name": "1x150", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 55,
+    "fields": { "name": "1x1", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 56,
+    "fields": { "name": "1x20", "archived": false }
+  },
+  {
+    "model": "library_sample_shared.readlength",
+    "pk": 57,
+    "fields": { "name": "1x1000", "archived": false }
   }
 ]
