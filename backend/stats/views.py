@@ -336,7 +336,9 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         found = dict()
         for idx, entry in enumerate(currentSequences):
             found[entry["barcode"]] = idx
+        barcodes = []
         for entry in sequences:
+            barcodes.append(entry["barcode"])
             if entry["barcode"] in found:
                 currentSequences[found[entry["barcode"]]] = entry
             else:
@@ -344,6 +346,13 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
         flowcell.sequences = currentSequences
         flowcell.save(update_fields=["sequences"])
+
+        # If sample/library in demux report, set status to delivered
+        Library.objects.filter(request__flowcell=flowcell,
+                               barcode__in=barcodes).update(status=6)
+        Sample.objects.filter(request__flowcell=flowcell,
+                              barcode__in=barcodes).update(status=6)
+
         return Response({"success": True})
 
     @action(
