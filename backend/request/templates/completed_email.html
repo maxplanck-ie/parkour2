@@ -1,0 +1,83 @@
+{% load i18n %}{% autoescape off %}
+<style>
+    .verticalheader {
+        text-align: left;
+        white-space: nowrap;
+        vertical-align: top;
+        padding-right: 10px;
+    }
+</style>
+
+<p>Dear all,</p>
+
+<p>The request detailed below has been marked as completed. Additional details can be found on <a href="{{url}}">Parkour</a>.</p>
+
+<hr />
+<p style="font-weight: bold; text-align: center;">Summary of sequencing request</p>
+<table style="width:100%;border:0px;">
+    <tr>
+        <th class='verticalheader'>Request name:</th>
+        <td>{{original.name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Date:</th>
+        <td>{{original.date}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>User</th>
+        <td>{{original.user.full_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Email:</th>
+        <td>{{original.user.email}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Cost Unit:</th>
+        <td>{{original.cost_unit}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Analysis by:</th>
+        <td>{{original.bioinformatician.full_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Description:</th>
+        <td>{{original.description}}</td>
+    </tr>
+</table>
+<br>
+
+<hr />
+{% if records %}
+<p style="font-weight: bold;text-align: center;">List of libraries/samples</p>
+<table style="width:100%;border:0px;text-align:left;">
+    <thead>
+        <tr style="font-weight:bold;">
+            <td>Name</td>
+            <td>Barcode</td>
+            <td>Type</td>
+            <td>Status</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in records %}
+        <tr>
+            <td>{{ record.name }}</td>
+            <td>{{ record.barcode }}</td>
+            <td>{{ record.type }}</td>
+            <td>{{ record.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<br>
+<hr />
+{% endif %}
+
+<p>
+    <i>
+        --<br />
+        Kind regards,<br />
+        Parkour<br />
+    </i>
+</p>
+{% endautoescape %}

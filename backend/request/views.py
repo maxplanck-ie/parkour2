@@ -364,6 +364,60 @@ class RequestViewSet(viewsets.ModelViewSet):
     def mark_as_complete(self, request, pk=None):
         """Mark request as complete, set sequenced to true"""
 
+        def send_completed_email(instance, request):
+
+            """Inform relevant users that a request has been marked as complete"""
+
+            # Create relevant info for the email
+            instance = instance.get() # instance from the parent is a qs
+            instance.date = instance.create_time.strftime("%d.%m.%Y")
+            instance.cost_unit = instance.cost_unit if instance.cost_unit else 'NA'
+            instance.description = instance.description if instance.description else 'NA'
+            objects = list(
+                itertools.chain(
+                    instance.samples.all(),
+                    instance.libraries.all(),
+                )
+            )
+            records = [
+                {
+                    "name": obj.name,
+                    "type": obj.__class__.__name__,
+                    "barcode": obj.barcode,
+                    "status": 'Delivered' if obj.status == 6 else 'Not delivered',
+                }
+                for obj in objects
+            ]
+            records = sorted(records, key=lambda x: x["barcode"][3:])
+
+            current_site = get_current_site(request)
+            url =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
+
+            # Create the message
+            html_message = render_to_string(
+                                "completed_email.html",
+                                {
+                                    "original": instance,
+                                    "records": records,
+                                    "url": url
+                                },)
+            
+            subject = f'Request {instance.name} is complete'
+            recipients = list(set([instance.pi.email, instance.user.email, request.user.email]))
+            if not instance.bioinformatician.email.lower().endswith('example.com'):
+                recipients.append(instance.bioinformatician.email)
+            staff_emails = get_staff_emails()
+            recipients += staff_emails
+
+            send_mail_with_replyto(
+                    subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
+                    message="",
+                    html_message=html_message,
+                    from_email=settings.SERVER_EMAIL,
+                    recipient_list=recipients,
+                    reply_to=staff_emails if staff_emails else None
+                )
+
         instance = Request.objects.filter(archived=False, pk=pk)
 
         post_data = self._get_post_data(request)
@@ -375,7 +429,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             override = True
 
         def checkifcomplete(element):
-            if element == 5:
+            if element == 6:
                 return True
             else:
                 return False
@@ -383,6 +437,11 @@ class RequestViewSet(viewsets.ModelViewSet):
         if override:
             print("Override is true")
             instance.update(sequenced=True)
+            # Set libraries/samples that have status Sequencing
+            # but were not reported by BCL convert as Not delivered
+            instance.get().samples.filter(status=5).update(status=7)
+            instance.get().libraries.filter(status=5).update(status=7)
+            send_completed_email(instance, request)
             return Response({"success": True})
 
         else:
@@ -396,6 +455,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             if complete:
                 print("all statuses are complete")
                 instance.update(sequenced=True)
+                send_completed_email(instance, request)
                 return Response({"success": True})
             elif not complete:
                 print("there are incomplete statuses")
@@ -533,7 +593,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 }
             instance.save(update_fields=["token", "approval", "approval_user", "approval_time"])
 
-            email_recipients = list(set(instance.pi.email, instance.user.email, request.user.email))
+            email_recipients = list(set([instance.pi.email, instance.user.email, request.user.email]))
             if not instance.bioinformatician.email.lower().endswith('example.com'):
                 email_recipients.append(instance.bioinformatician.email)
 

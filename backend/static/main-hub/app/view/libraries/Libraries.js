@@ -168,6 +168,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 { id: "4", name: "Library Pooled" },
                 { id: "5", name: "Sequencing" },
                 { id: "6", name: "Delivered" },
+                { id: "7", name: "Not delivered" },
                 { id: "-1", name: "Quality Check Failed" },
                 {
                   id: "-2",
@@ -280,6 +281,9 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 } else if (value === 6) {
                   statusClass += "delivered";
                   meta.tdAttr = 'data-qtip="Delivered"';
+                } else if (value === 7) {
+                  statusClass += "not-delivered";
+                  meta.tdAttr = 'data-qtip="Not delivered"';
                 }
                 return '<div class="' + statusClass + '"></div>';
               }

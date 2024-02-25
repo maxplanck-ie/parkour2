@@ -9247,19 +9247,23 @@ tr.pool-not-ready .x-grid-item-focused {
     background-color: #009688;
 }
 /* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:61 */
+.status.not-delivered {
+    background-color: #000;
+}
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:65 */
 .no-leaf-icons .x-tree-icon-parent,
 .no-leaf-icons .x-tree-icon-parent-expanded,
 .no-leaf-icons .x-tree-icon-leaf {
     display: none !important;
 }
-/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:67 */
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:71 */
 .x-tree-elbow-plus,
 .x-tree-elbow-end-plus,
 .x-grid-tree-node-expanded .x-tree-elbow-plus,
 .x-grid-tree-node-expanded .x-tree-elbow-end-plus {
     color: #919191;
 }
-/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:74 */
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/libraries/Libraries.scss:78 */
 .parent-node-name.x-grid-td,
 .parent-node-name.x-grid-td .x-grid-cell-inner {
     overflow: initial !important;
