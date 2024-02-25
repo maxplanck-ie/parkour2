@@ -11,14 +11,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
   anchor: "100% -1",
   layout: "fit",
 
-  initComponent: function () {
-    this.searchString = "";
-    this.statusFilter = "all";
-    this.libraryProtocolFilter = -1;
-
-    this.callParent(arguments);
-  },
-
   items: [
     {
       xtype: "treepanel",
@@ -126,21 +118,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 margin: "0 15 0 0",
                 cls: "grid-header-checkbox",
                 hidden: false,
-                listeners: {
-                  change: function (checkbox, newValue, oldValue, eOpts) {
-                    if (newValue) {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.showAll = "True";
-                      Ext.getStore("librariesStore").load();
-                    } else {
-                      Ext.getStore(
-                        "librariesStore"
-                      ).getProxy().extraParams.showAll = "False";
-                      Ext.getStore("librariesStore").load();
-                    }
-                  }
-                }
               },
               {
                 boxLabel: "Show Libraries",
@@ -198,51 +175,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 }
               ]
             }),
-            listeners: {
-              scope: this,
-              change: function (combo, newValue, oldValue, eOpts) {
-                var grid = combo.up("treepanel");
-                grid.getView().mask("Loading...");
-                this.statusFilter = newValue;
-                var selectedRecord = combo.findRecordByValue(newValue);
-                var textWidth = Ext.util.TextMetrics.measure(
-                  combo.inputEl,
-                  selectedRecord.get(combo.displayField)
-                ).width;
-                combo.setWidth(textWidth + 55);
-                var librariesStore = Ext.getStore("librariesStore");
-                var extraParams = {
-                  showAll: "True"
-                };
-                if (this.statusFilter && this.statusFilter !== "all") {
-                  extraParams.statusFilter = this.statusFilter;
-                }
-                if (
-                  this.libraryProtocolFilter &&
-                  this.libraryProtocolFilter !== -1
-                ) {
-                  extraParams.libraryProtocolFilter =
-                    this.libraryProtocolFilter;
-                }
-                if (this.searchString) {
-                  extraParams.searchString = this.searchString;
-                }
-                librariesStore.getProxy().setExtraParams(extraParams);
-                librariesStore.load({
-                  callback: function (records, operation, success) {
-                    if (!success) {
-                      new Noty({
-                        text:
-                          operation.getError() ||
-                          "Error occurred while setting the filter.",
-                        type: "error"
-                      }).show();
-                    }
-                    grid.getView().unmask();
-                  }
-                });
-              }
-            }
           },
           {
             xtype: "combobox",
@@ -262,54 +194,11 @@ Ext.define("MainHub.view.libraries.Libraries", {
             style: { marginRight: "15px" },
             store: "libraryProtocolsStore",
             listeners: {
-              scope: this,
               expand: function (combo) {
                 combo
                   .getStore()
                   .insert(0, { id: -1, name: "All Library Protocols" });
               },
-              change: function (combo, newValue, oldValue, eOpts) {
-                var grid = combo.up("treepanel");
-                grid.getView().mask("Loading...");
-                this.libraryProtocolFilter = newValue;
-                var selectedRecord = combo.findRecordByValue(newValue);
-                var textWidth = Ext.util.TextMetrics.measure(
-                  combo.inputEl,
-                  selectedRecord.get(combo.displayField)
-                ).width;
-                combo.setWidth(textWidth > 220 ? 220 : textWidth + 55);
-                var librariesStore = Ext.getStore("librariesStore");
-                var extraParams = {
-                  showAll: "True"
-                };
-                if (this.statusFilter && this.statusFilter !== "all") {
-                  extraParams.statusFilter = this.statusFilter;
-                }
-                if (
-                  this.libraryProtocolFilter &&
-                  this.libraryProtocolFilter !== -1
-                ) {
-                  extraParams.libraryProtocolFilter =
-                    this.libraryProtocolFilter;
-                }
-                if (this.searchString) {
-                  extraParams.searchString = this.searchString;
-                }
-                librariesStore.getProxy().setExtraParams(extraParams);
-                librariesStore.load({
-                  callback: function (records, operation, success) {
-                    if (!success) {
-                      new Noty({
-                        text:
-                          operation.getError() ||
-                          "Error occurred while setting the filter.",
-                        type: "error"
-                      }).show();
-                    }
-                    grid.getView().unmask();
-                  }
-                });
-              }
             }
           },
           {
@@ -317,49 +206,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
             itemId: "search-field",
             emptyText: "Search",
             width: 320,
-            listeners: {
-              scope: this,
-              change: Ext.Function.createBuffered(
-                function (field, newValue, oldValue) {
-                  var grid = field.up("treepanel");
-                  grid.getView().mask("Loading...");
-                  this.searchString = newValue;
-                  var librariesStore = Ext.getStore("librariesStore");
-                  var extraParams = {
-                    showAll: "True"
-                  };
-                  if (this.statusFilter && this.statusFilter !== "all") {
-                    extraParams.statusFilter = this.statusFilter;
-                  }
-                  if (
-                    this.libraryProtocolFilter &&
-                    this.libraryProtocolFilter !== -1
-                  ) {
-                    extraParams.libraryProtocolFilter =
-                      this.libraryProtocolFilter;
-                  }
-                  if (this.searchString) {
-                    extraParams.searchString = this.searchString;
-                  }
-                  librariesStore.getProxy().setExtraParams(extraParams);
-                  librariesStore.load({
-                    callback: function (records, operation, success) {
-                      if (!success) {
-                        new Noty({
-                          text:
-                            operation.getError() ||
-                            "Error occurred while searching.",
-                          type: "error"
-                        }).show();
-                      }
-                      grid.getView().unmask();
-                    }
-                  });
-                },
-                500,
-                this
-              )
-            }
           }
         ]
       },
