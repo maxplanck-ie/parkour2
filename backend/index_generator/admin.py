@@ -59,8 +59,7 @@ class PoolAdmin(admin.ModelAdmin):
     list_display = ("name", "size", "archived")
     search_fields = (
         "name",
-        "size__multiplier",
-        "size__size",
+        "size__short_name",
     )
     autocomplete_fields = (
         "user",
