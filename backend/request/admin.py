@@ -22,6 +22,7 @@ class FileRequestAdmin(admin.ModelAdmin):
 @admin.register(Request)
 class RequestAdmin(admin.ModelAdmin):
     list_display = (
+        'id',
         "name",
         "user",
         "request_uploaded",
