@@ -119,7 +119,6 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                           labelWidth: 20,
                           width: 115,
                           value: 0,
-                          maxValue: 10,
                         },
                         {
                           xtype: "numberfield",
@@ -130,7 +129,6 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                           width: 115,
                           padding: "0 0 0 10px",
                           value: 0,
-                          maxValue: 10,
                         },
                       ],
                     },
