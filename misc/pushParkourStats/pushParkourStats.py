@@ -18,7 +18,7 @@ CONFIG = {'PARKOUR_BASE_URL': os.environ.get('PARKOUR_BASE_URL', 'https://parkou
           'PARKOUR_USER_PASSWORD': os.environ.get('PARKOUR_USER_PASSWORD', 'parkourUserPassword'),
           'PARKOUR_EMAIL_HOST': os.environ.get('PARKOUR_EMAIL_HOST', 'host.address.com'),
           'PARKOUR_EMAIL_PORT': os.environ.get('PARKOUR_EMAIL_PORT', 25),
-          'PARKOUR_FROM_ADDRESS': os.environ.get('PARKOUR_FROM_ADDRESS', 'sender@example.com') ,
+          'PARKOUR_FROM_ADDRESS': os.environ.get('PARKOUR_FROM_ADDRESS', 'sender@example.com'),
           'PARKOUR_TO_ADDRESSES': os.environ.get('PARKOUR_TO_ADDRESSES', 'alias1@example.com,alias2@example.com').split(','),
           }
 
@@ -56,7 +56,8 @@ def sendMail(message, config):
     mailer['To'] = ','.join(config.get('PARKOUR_TO_ADDRESSES', []))
     email = MIMEText(message, 'plain')
     mailer.attach(email)
-    s = smtplib.SMTP(config.get('PARKOUR_EMAIL_HOST'), port=config.get('PARKOUR_EMAIL_PORT', 25))
+    s = smtplib.SMTP(config.get('PARKOUR_EMAIL_HOST'),
+                     port=config.get('PARKOUR_EMAIL_PORT', 25))
     s.sendmail(
         config.get('PARKOUR_FROM_ADDRESS'),
         config.get('PARKOUR_TO_ADDRESSES', []),
@@ -85,7 +86,7 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
     '''
     Push run stats and demultiplex sequences to Parkour
     Adapted from from dissectBCL.fakeNews.pushParkour
-    
+
     cluster_count
     cluster_count_pf
     cluster_pf
@@ -127,7 +128,7 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
 
         try:
             qdf = pd.read_csv(os.path.join(bclFlowcellOutDir,
-                                        'Reports', 'Quality_Metrics.csv'))
+                                           'Reports', 'Quality_Metrics.csv'))
         except:
             raise Exception(
                 f'Cannot find/open Quality_Metrics.csv for flowcell {flowcellID}')
@@ -197,11 +198,12 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
 
             # Other fields, per read
             fieldNames = {'Error Rate': 'error_rate',
-                        'First Cycle Intensity': 'first_cycle_int',
-                        '% Aligned': 'perc_aligned',
-                        '% >= Q30': 'perc_q30'}
+                          'First Cycle Intensity': 'first_cycle_int',
+                          '% Aligned': 'perc_aligned',
+                          '% >= Q30': 'perc_q30'}
             for fieldName, fieldId in fieldNames.items():
-                tempDic = iop_df.query("Lane == @lane")[['ReadNumber', fieldName]]
+                tempDic = iop_df.query(
+                    "Lane == @lane")[['ReadNumber', fieldName]]
                 for _, (read, val) in tempDic.iterrows():
                     if not pd.isna(val) and 'I' not in str(read):
                         readStr = f'read_{int(read)}_{fieldId}'
@@ -212,7 +214,8 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         d['matrix'] = json.dumps(list(laneDict.values()))
 
         pushParkourRunStat = requests.post(
-            urljoin(config.get("PARKOUR_BASE_URL"), 'api/run_statistics/upload/'),
+            urljoin(config.get("PARKOUR_BASE_URL"),
+                    'api/run_statistics/upload/'),
             auth=(
                 config.get("PARKOUR_USER"),
                 config.get("PARKOUR_USER_PASSWORD")
@@ -231,7 +234,7 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         # Get demultiplexStatsdf.csv
         try:
             demultiplexStatsdf = pd.read_csv(os.path.join(bclFlowcellOutDir,
-                                                        'Reports', 'Demultiplex_Stats.csv'))
+                                                          'Reports', 'Demultiplex_Stats.csv'))
         except:
             raise Exception(
                 f'Cannot find/open Demultiplex_Stats.csv for flowcell {flowcellID}')
@@ -245,8 +248,9 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         demultiplexStatsdf = demultiplexStatsdf[[
             'Barcode', 'SampleID', '# Reads', "Lane"]]
         demultiplexStatsdf.columns = ["barcode",
-                                    "name", "reads_pf_sequenced", "lane"]
-        demultiplexStatsdf["barcode"] = demultiplexStatsdf["barcode"].fillna("")
+                                      "name", "reads_pf_sequenced", "lane"]
+        demultiplexStatsdf["barcode"] = demultiplexStatsdf["barcode"].fillna(
+            "")
         demultiplexStatsdf["reads_pf_sequenced"] = demultiplexStatsdf["reads_pf_sequenced"].astype(
             pd.Int64Dtype())
         demultiplexStatsdf["lane"] = demultiplexStatsdf["lane"].astype(
@@ -256,7 +260,8 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         d['sequences'] = demultiplexStatsdf[["barcode", "name",
                                             "reads_pf_sequenced", "lane"]].to_json(orient="records")
         pushParkourSequencesStats = requests.post(
-            urljoin(config.get("PARKOUR_BASE_URL"), 'api/sequences_statistics/upload/'),
+            urljoin(config.get("PARKOUR_BASE_URL"),
+                    'api/sequences_statistics/upload/'),
             auth=(
                 config.get("PARKOUR_USER"),
                 config.get("PARKOUR_USER_PASSWORD")
@@ -289,7 +294,8 @@ def pullParkourSamplesBarcodes(flowcellID, config):
 
     d = {'flowcell_id': FID}
     pullParkourFlowcellContents = requests.get(
-        urljoin(config.get("PARKOUR_BASE_URL"), 'api/analysis_list/analysis_list/'),
+        urljoin(config.get("PARKOUR_BASE_URL"),
+                'api/analysis_list/analysis_list/'),
         auth=(
             config.get('PARKOUR_USER'),
             config.get('PARKOUR_USER_PASSWORD')
