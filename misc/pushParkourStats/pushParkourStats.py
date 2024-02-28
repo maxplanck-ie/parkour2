@@ -13,21 +13,33 @@ import pandas as pd
 
 
 # Configs
-CONFIG = {'baseURL': 'https://parkour.url.com/',
-          'user': 'parkourUserEmail',
-          'password': 'parkourUserPassword',
-          'emailHost': 'host.address.com',
-          'emailPort': 25,
-          'fromAddress': 'sender@example.com',
-          'toAddresses': ['alias1@example.com', 'alias2@example.com'],
+CONFIG = {'PARKOUR_BASE_URL': os.environ.get('PARKOUR_BASE_URL', 'https://parkour.url.com/'),
+          'PARKOUR_USER': os.environ.get('PARKOUR_USER', 'parkourUserEmail'),
+          'PARKOUR_USER_PASSWORD': os.environ.get('PARKOUR_USER_PASSWORD', 'parkourUserPassword'),
+          'PARKOUR_EMAIL_HOST': os.environ.get('PARKOUR_EMAIL_HOST', 'host.address.com'),
+          'PARKOUR_EMAIL_PORT': os.environ.get('PARKOUR_EMAIL_PORT', 25),
+          'PARKOUR_FROM_ADDRESS': os.environ.get('PARKOUR_FROM_ADDRESS', 'sender@example.com') ,
+          'PARKOUR_TO_ADDRESSES': os.environ.get('PARKOUR_TO_ADDRESSES', 'alias1@example.com,alias2@example.com').split(','),
           }
 
 
 def parse_cmd_args():
     "Parse command-line arguments"
 
+    description = '''Push run and demultiplexing stats to Parkour.
+                     The following environment variables must be set:
+                       PARKOUR_BASE_URL, e.g. https://parkour.url.com/;
+                       PARKOUR_USER, e.g. parkourUserEmail;
+                       PARKOUR_USER_PASSWORD, e.g. parkourUserPassword;
+                       PARKOUR_EMAIL_HOST, e.g. host.address.com;
+                       PARKOUR_EMAIL_PORT, e.g. 25;
+                       PARKOUR_FROM_ADDRESS, e.g. sender@example.com;
+                       PARKOUR_TO_ADDRESSES, e.g. alias1@example.com,alias2@example.com (comma-separated
+                       list of email addresses).
+                  '''
+
     cmd_arg_parser = argparse.ArgumentParser(prog='pushParkourStats',
-                                             description='Push run and demultiplexing stats to Parkour')
+                                             description=description)
     cmd_arg_parser.add_argument(
         '--flowcellDir', required=True, help='Path to the folder containg InterOp')
     cmd_arg_parser.add_argument('--bclFlowcellOutDir', required=True,
@@ -40,14 +52,14 @@ def sendMail(message, config):
 
     mailer = MIMEMultipart()
     mailer['Subject'] = '[Parkour] Pushing run statistics to Parkour failed'
-    mailer['From'] = config.get('fromAddress')
-    mailer['To'] = ','.join(config.get('toAddresses', []))
+    mailer['From'] = config.get('PARKOUR_FROM_ADDRESS')
+    mailer['To'] = ','.join(config.get('PARKOUR_TO_ADDRESSES', []))
     email = MIMEText(message, 'plain')
     mailer.attach(email)
-    s = smtplib.SMTP(config.get('emailHost'), port=config.get('emailPort', 25))
+    s = smtplib.SMTP(config.get('PARKOUR_EMAIL_HOST'), port=config.get('PARKOUR_EMAIL_PORT', 25))
     s.sendmail(
-        config.get('fromAddress'),
-        config.get('toAddresses', []),
+        config.get('PARKOUR_FROM_ADDRESS'),
+        config.get('PARKOUR_TO_ADDRESSES', []),
         mailer.as_string()
     )
     s.quit()
@@ -200,10 +212,10 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         d['matrix'] = json.dumps(list(laneDict.values()))
 
         pushParkourRunStat = requests.post(
-            urljoin(config.get("baseURL"), 'api/run_statistics/upload/'),
+            urljoin(config.get("PARKOUR_BASE_URL"), 'api/run_statistics/upload/'),
             auth=(
-                config.get("user"),
-                config.get("password")
+                config.get("PARKOUR_USER"),
+                config.get("PARKOUR_USER_PASSWORD")
             ),
             data=d,
             verify=True,
@@ -244,10 +256,10 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         d['sequences'] = demultiplexStatsdf[["barcode", "name",
                                             "reads_pf_sequenced", "lane"]].to_json(orient="records")
         pushParkourSequencesStats = requests.post(
-            urljoin(config.get("baseURL"), 'api/sequences_statistics/upload/'),
+            urljoin(config.get("PARKOUR_BASE_URL"), 'api/sequences_statistics/upload/'),
             auth=(
-                config.get("user"),
-                config.get("password")
+                config.get("PARKOUR_USER"),
+                config.get("PARKOUR_USER_PASSWORD")
             ),
             data=d,
             verify=True,
@@ -277,10 +289,10 @@ def pullParkourSamplesBarcodes(flowcellID, config):
 
     d = {'flowcell_id': FID}
     pullParkourFlowcellContents = requests.get(
-        urljoin(config.get("baseURL"), 'api/analysis_list/analysis_list/'),
+        urljoin(config.get("PARKOUR_BASE_URL"), 'api/analysis_list/analysis_list/'),
         auth=(
-            config.get('user'),
-            config.get('password')
+            config.get('PARKOUR_USER'),
+            config.get('PARKOUR_USER_PASSWORD')
         ),
         params=d,
         verify=True,
