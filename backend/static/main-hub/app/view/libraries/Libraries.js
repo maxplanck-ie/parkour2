@@ -250,10 +250,10 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 // Draw a color circle depending on the status value
                 if (value === -1) {
                   statusClass += "quality-check-failed";
-                  meta.tdAttr = 'data-qtip="Quality check failed"';
+                  meta.tdAttr = 'data-qtip="QC failed"';
                 } else if (value === -2) {
                   statusClass += "quality-check-compromised";
-                  meta.tdAttr = 'data-qtip="Quality check compromised"';
+                  meta.tdAttr = 'data-qtip="QC compromised"';
                 } else if (value === 0) {
                   statusClass += "pending-submission";
                   meta.tdAttr = 'data-qtip="Pending submission"';
@@ -262,7 +262,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   meta.tdAttr = 'data-qtip="Submission completed"';
                 } else if (value === 2) {
                   statusClass += "quality-check-approved";
-                  meta.tdAttr = 'data-qtip="Quality check approved"';
+                  meta.tdAttr = 'data-qtip="QC approved"';
                 } else if (value === 3) {
                   statusClass += "library-prepared";
                   meta.tdAttr = 'data-qtip="Library prepared"';
@@ -274,10 +274,10 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   meta.tdAttr = 'data-qtip="Sequencing"';
                 } else if (value === 6) {
                   statusClass += "delivered";
-                  meta.tdAttr = 'data-qtip="Delivered"';
+                  meta.tdAttr = 'data-qtip="Data delivered"';
                 } else if (value === 7) {
                   statusClass += "not-delivered";
-                  meta.tdAttr = 'data-qtip="Not delivered"';
+                  meta.tdAttr = 'data-qtip="Data not delivered"';
                 }
                 return '<div class="' + statusClass + '"></div>';
               }
