@@ -384,7 +384,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     "name": obj.name,
                     "type": obj.__class__.__name__,
                     "barcode": obj.barcode,
-                    "status": 'Delivered' if obj.status == 6 else 'Not delivered',
+                    "status": 'Data delivered' if obj.status == 6 else 'Data not delivered',
                 }
                 for obj in objects
             ]
@@ -438,7 +438,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             print("Override is true")
             instance.update(sequenced=True)
             # Set libraries/samples that have status Sequencing
-            # but were not reported by BCL convert as Not delivered
+            # but were not reported by BCL convert as Data not delivered
             instance.get().samples.filter(status=5).update(status=7)
             instance.get().libraries.filter(status=5).update(status=7)
             send_completed_email(instance, request)

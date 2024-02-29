@@ -5,7 +5,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
   requires: [
     "MainHub.view.libraries.LibrariesController",
-    "MainHub.view.libraries.LibraryWindow"
+    "MainHub.view.libraries.LibraryWindow",
   ],
 
   anchor: "100% -1",
@@ -43,7 +43,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 parentNode.childNodes.map(function (element) {
                   var pools = (
                     responseObject.poolpaths[element.data.barcode] || []
-                  ).join(', ');
+                  ).join(", ");
                   element.set("pool", pools);
                   element.commit();
                   return element;
@@ -54,9 +54,9 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 new Noty({ text: response.statusText, type: "error" }).show();
                 console.error(response);
                 this.getView().unmask();
-              }
+              },
             });
-        }
+        },
       },
       viewConfig: {
         trackOver: false,
@@ -76,7 +76,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             }
           }
           return rowClass;
-        }
+        },
       },
 
       header: {
@@ -126,7 +126,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 cls: "grid-header-checkbox",
                 boxLabelAlign: "before",
                 checked: true,
-                hidden: true
+                hidden: true,
               },
               {
                 boxLabel: "Show Samples",
@@ -134,9 +134,9 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 cls: "grid-header-checkbox",
                 boxLabelAlign: "before",
                 checked: true,
-                hidden: true
-              }
-            ]
+                hidden: true,
+              },
+            ],
           },
           {
             xtype: "combobox",
@@ -150,7 +150,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 100,
             matchFieldWidth: false,
             listConfig: {
-              width: 220
+              width: 220,
             },
             editable: false,
             style: { marginRight: "15px" },
@@ -160,21 +160,15 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 { id: "all", name: "All Statuses" },
                 { id: "0", name: "Pending Submission" },
                 { id: "1", name: "Submission Completed" },
-                {
-                  id: "2",
-                  name: "Quality Check Approved"
-                },
+                { id: "2", name: "QC Approved" },
                 { id: "3", name: "Library Prepared" },
                 { id: "4", name: "Library Pooled" },
                 { id: "5", name: "Sequencing" },
-                { id: "6", name: "Delivered" },
-                { id: "7", name: "Not delivered" },
-                { id: "-1", name: "Quality Check Failed" },
-                {
-                  id: "-2",
-                  name: "Quality Check Compromised"
-                }
-              ]
+                { id: "6", name: "Data Delivered" },
+                { id: "7", name: "Data Not Delivered" },
+                { id: "-1", name: "QC Failed" },
+                { id: "-2", name: "QC Compromised" },
+              ],
             }),
           },
           {
@@ -189,7 +183,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 160,
             matchFieldWidth: false,
             listConfig: {
-              width: 300
+              width: 300,
             },
             editable: false,
             style: { marginRight: "15px" },
@@ -200,15 +194,15 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   .getStore()
                   .insert(0, { id: -1, name: "All Library Protocols" });
               },
-            }
+            },
           },
           {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
             width: 320,
-          }
-        ]
+          },
+        ],
       },
 
       rootVisible: false,
@@ -216,7 +210,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
 
       columns: {
         defaults: {
-          width: 100
+          width: 100,
         },
         items: [
           {
@@ -240,7 +234,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                   record.get("total_sequencing_depth")
                 );
               }
-            }
+            },
           },
           {
             text: "Status",
@@ -287,7 +281,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 }
                 return '<div class="' + statusClass + '"></div>';
               }
-            }
+            },
           },
           {
             text: "",
@@ -298,7 +292,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 30,
             renderer: function (value, meta) {
               return meta.record.getRecordType().charAt(0);
-            }
+            },
           },
           {
             text: "Barcode",
@@ -309,7 +303,7 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 95,
             renderer: function (value, meta) {
               return meta.record.getBarcode();
-            }
+            },
           },
           {
             text: "Pool Name(s)",
@@ -320,30 +314,30 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 105,
             renderer: function (value, meta) {
               return meta.record.getPoolPaths();
-            }
+            },
           },
           {
             text: "Date",
             dataIndex: "create_time",
-            renderer: Ext.util.Format.dateRenderer("d.m.Y")
+            renderer: Ext.util.Format.dateRenderer("d.m.Y"),
           },
           {
             text: "Nuc. Type",
             tooltip: "Nucleic Acid Type",
             dataIndex: "nucleic_acid_type_name",
-            renderer: "gridCellTooltipRenderer"
+            renderer: "gridCellTooltipRenderer",
           },
           {
             text: "Protocol",
             tooltip: "Library Preparation Protocol",
             dataIndex: "library_protocol_name",
-            renderer: "gridCellTooltipRenderer"
+            renderer: "gridCellTooltipRenderer",
           },
           {
             text: "Lib. Type",
             tooltip: "Library Type",
             dataIndex: "library_type_name",
-            renderer: "gridCellTooltipRenderer"
+            renderer: "gridCellTooltipRenderer",
           },
           {
             text: "ng/μl",
@@ -377,17 +371,17 @@ Ext.define("MainHub.view.libraries.Libraries", {
             width: 55,
             renderer: function (value) {
               return value === 11 ? "Determined by Facility" : value;
-            }
+            },
           },
           {
             text: "bp",
             tooltip: "Mean Fragment Size",
-            dataIndex: "mean_fragment_size"
+            dataIndex: "mean_fragment_size",
           },
           {
             text: "Index Type",
             dataIndex: "index_type_name",
-            renderer: "gridCellTooltipRenderer"
+            renderer: "gridCellTooltipRenderer",
           },
           {
             text: "Index Reads",
@@ -417,22 +411,22 @@ Ext.define("MainHub.view.libraries.Libraries", {
           {
             text: "I7",
             tooltip: "Index I7",
-            dataIndex: "index_i7"
+            dataIndex: "index_i7",
           },
           {
             text: "I5",
             tooltip: "Index I5",
-            dataIndex: "index_i5"
+            dataIndex: "index_i5",
           },
           {
             text: "Length",
             tooltip: "Read Length",
-            dataIndex: "read_length_name"
+            dataIndex: "read_length_name",
           },
           {
             text: "Depth (M)",
             tooltip: "Sequencing Depth",
-            dataIndex: "sequencing_depth"
+            dataIndex: "sequencing_depth",
           },
           {
             text: "Amplification",
@@ -453,16 +447,16 @@ Ext.define("MainHub.view.libraries.Libraries", {
           {
             text: "Organism",
             dataIndex: "organism_name",
-            width: 150
+            width: 150,
           },
           {
             text: "Comments",
             dataIndex: "comments",
             renderer: "gridCellTooltipRenderer",
-            width: 150
-          }
-        ]
-      }
-    }
-  ]
+            width: 150,
+          },
+        ],
+      },
+    },
+  ],
 });
