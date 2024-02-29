@@ -52,8 +52,8 @@ class ReadLength(models.Model):
 
 
 class GenericIndex(models.Model):
-    prefix = models.CharField("Prefix", max_length=10, default="")
-    number = models.CharField("Number", max_length=10, default="")
+    prefix = models.CharField("Prefix", max_length=20, default="")
+    number = models.CharField("Number", max_length=15, default="")
     index = models.CharField("Index", max_length=24)
 
     @property
