@@ -5,7 +5,8 @@ Ext.define("validator.IndexI7", {
     return (
       record.get("index_reads") === null ||
       record.get("index_reads") === 0 ||
-      (record.get("index_reads") > 0 && value !== "") ||
+      record.get("index_reads") === 5 ||
+      (record.get("index_reads") > 5 && value !== "") ||
       "Must be present"
     );
   }
@@ -17,8 +18,11 @@ Ext.define("validator.IndexI5", {
   validate: function (value, record) {
     return (
       record.get("index_reads") === null ||
-      record.get("index_reads") <= 1 ||
-      (record.get("index_reads") > 1 && value !== "") ||
+      record.get("index_reads") === 0 ||
+      record.get("index_reads") === 7 ||
+      ((record.get("index_reads") % 5 === 0 ||
+        record.get("index_reads") % 2 === 0) &&
+        value !== "") ||
       "Must be present"
     );
   }
@@ -53,7 +57,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
       name: "index_i5"
     },
     {
-      type: "int",
+      type: "float",
       name: "qpcr_result",
       allowNull: true,
       defaultValue: null
@@ -65,6 +69,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
     index_type: "presence",
     index_reads: "presence",
     index_i7: "indexI7",
-    index_i5: "indexI5"
-  }
+    index_i5: "indexI5",
+    amplification_cycles: "greaterthanzero",
+  },
 });

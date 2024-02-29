@@ -23,7 +23,16 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
         title: "Preparation",
         items: [
           {
-            xtype: "parkoursearchfield",
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+            itemId: "as-handler-preparation-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            checked: false,
+          },
+          {
+            xtype: "textfield",
             itemId: "search-field",
             emptyText: "Search",
             width: 320
@@ -32,7 +41,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
       },
 
       customConfig: {
-        qualityCheckMenuOptions: ["passed", "failed"]
+        qualityCheckMenuOptions: ["passed", "compromised", "failed"],
       },
 
       columns: {
@@ -205,7 +214,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             }
           },
           {
-            text: "QC Comments",
+            text: "iQC Comments",
             tooltip: "Incoming Libraries/Samples QC Comments",
             dataIndex: "comments_facility",
             renderer: "gridCellTooltipRenderer",
@@ -213,7 +222,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             width: 150
           },
           {
-            text: "Comments",
+            text: "LibQC Comments",
             dataIndex: "comments",
             renderer: "gridCellTooltipRenderer",
             editor: { xtype: "textfield" },
@@ -225,6 +234,7 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
       features: [
         {
           ftype: "grouping",
+          id: "library-preparation-grid-grouping",
           startCollapsed: true,
           enableGroupingMenu: false,
           groupHeaderTpl: [

@@ -17,8 +17,7 @@ class Migration(migrations.Migration):
             name="concentration_method",
             field=models.ForeignKey(
                 on_delete=models.SET(
-                    library_sample_shared.models.get_removed_concentrationmethod
-                ),
+                    library_sample_shared.models.get_removed_concentrationmethod),
                 to="library_sample_shared.concentrationmethod",
                 verbose_name="Concentration Method",
             ),

@@ -17,6 +17,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
   autoShow: true,
   layout: "fit",
 
+  // onEsc: this.closeBatchAddWindow(),
+
   items: [
     {
       xtype: "panel",
@@ -59,8 +61,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
             {
               html:
                 '<p style="text-align:center">' +
-                "Choose <strong>Library</strong> if samples for sequencing are completely prepared by the user.<br><br>" +
-                "Choose <strong>Sample</strong> if libraries are prepared by the facility." +
+                "Choose <strong>Library</strong> if libraries have been prepared by the user and are ready for sequencing.<br><br>" +
+                "Choose <strong>Sample</strong> if libraries are to be prepared by the facility. Also for <i>single cell</i> projects." +
                 "</p>",
               width: 350
             }
@@ -76,7 +78,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           id: "batch-add-grid",
           itemId: "batch-add-grid",
           sortableColumns: false,
-          enableColumnMove: false,
+          enableColumnMove: true,
           enableColumnHide: false,
           // multiSelect: true,
           border: 0,
@@ -90,7 +92,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           plugins: [
             {
               ptype: "rowediting",
-              clicksToEdit: 1
+              clicksToEdit: 2,
             },
             {
               ptype: "clipboard"
@@ -125,21 +127,22 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
         },
         {
           xtype: "container",
-          margin: "0 0 0 30px",
+          margin: "0 0 0 15px",
           html:
-            '<span id="edit-hint"><strong>Hint(s):</strong>&emsp;&emsp;' +
-            "[1] To learn how to create a request, read " +
-            '<a href="https://max.mpg.de/sites/mpi-ie/Facilities/Deep-Sequencing-Facility/Pages/Parkour-Help.aspx"' +
-            ' style="background-color: Teal; color: GoldenRod; font-weight: bold" target="_blank">MAX page on Intranet</a>&emsp;&emsp;' +
-            "[2] To edit multiple cells at once (Excel-like), please select a cell, press Esc, paste data.</span>"
+            '<span id="edit-hint"><strong>Hints: </strong>' +
+            '[1] Check <a target="_blank" href="' + DOCUMENTATION_URL + 
+            '">this guide</a>, to learn how to use this table. ' +
+            '[2] To edit multiple cells at once, ' +
+            "select a cell and paste data (CTRL + V)</span>",
         },
-        {
-          text: "Download RELACS Pellets Abs form",
-          margin: "0 0 0 30px",
-          itemId: "download-sample-form",
-          downloadUrl: "api/requests/download_RELACS_Pellets_Abs_form",
-          iconCls: "fa fa-download fa-lg"
-        }
+        // {
+        //       text: 'Download RELACS Pellets Abs form',
+        //       margin: '0 0 0 30px',
+        //       itemId: 'download-sample-form',
+        //       downloadUrl: 'api/requests/download_RELACS_Pellets_Abs_form',
+        //       iconCls: 'fa fa-download fa-lg',
+
+        // },
       ],
       hidden: true
     },
@@ -147,6 +150,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
       xtype: "toolbar",
       dock: "bottom",
       items: [
+        {
+          xtype: "button",
+          text: "Reorder columns",
+          itemId: "reorder-columns",
+          iconCls: "fa fa-random fa-lg",
+          tooltip:
+            "<strong>Reorder columns for easy data pasting. </strong>" +
+            "Group columns into which data can be pasted at once together. " +
+            "Relevant column headers are highlighted with green text. " +
+            "Select a cell and paste data (CTRL + V).",
+        },
         "->",
         {
           xtype: "button",
@@ -155,7 +169,25 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           text: "Save"
         }
       ],
-      hidden: true
-    }
-  ]
+      hidden: true,
+    },
+  ],
+
+  listeners: {
+    beforeclose: function (wnd) {
+      if (!wnd.allowClose) {
+        Ext.MessageBox.confirm(
+          "",
+          "Do you want to close this window before saving your changes?",
+          function (btn) {
+            if (btn == "yes") {
+              wnd.allowClose = true;
+              wnd.close();
+            }
+          }
+        );
+        return false;
+      }
+    },
+  },
 });

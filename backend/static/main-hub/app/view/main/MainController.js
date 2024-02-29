@@ -27,7 +27,16 @@ Ext.define("MainHub.view.main.MainController", {
 
     if (!USER.is_staff) {
       Ext.getCmp("adminSiteBtn").hide();
-      Ext.getCmp("dutiesBtn").hide();
+    }
+
+    // Decide whether to show nav panel expanded or collapsed
+    // by getting the width of navigationTreeList, which is set
+    // based on the state of the navPanelState cookie
+    var refs = me.getReferences();
+    if (refs.navigationTreeList.getWidth() === 64) {
+      refs.logo.addCls("logo-collapsed");
+      refs.navigationTreeList.expandedWidth = 300;
+      refs.navigationTreeList.setMicro(true);
     }
   },
 
@@ -47,6 +56,14 @@ Ext.define("MainHub.view.main.MainController", {
       collapsing = !navigationList.getMicro(),
       new_width = collapsing ? 64 : 300;
 
+    // Remember whether a user sets the nav panel as extended or collapsed
+    // by saving the choice in a cookie
+    Ext.util.Cookies.set(
+      "navPanelState",
+      collapsing ? "collapsed" : "extended",
+      new Date(Ext.Date.now() + 1000 * 60 * 60 * 24 * 90)
+    ); // 90 days
+
     if (Ext.isIE9m || !Ext.os.is.Desktop) {
       Ext.suspendLayouts();
 
@@ -62,7 +79,6 @@ Ext.define("MainHub.view.main.MainController", {
       wrapContainer.updateLayout(); // ... since this will flush them
     } else {
       if (!collapsing) {
-        Ext.select("#header-title").removeCls("display-none");
         // If we are leaving micro mode (expanding), we do that first so that the
         // text of the items in the navlist will be revealed by the animation.
         navigationList.setMicro(false);
@@ -83,7 +99,6 @@ Ext.define("MainHub.view.main.MainController", {
       // allows the "sweep" to leave the item text in place until it is no longer
       // visible.
       if (collapsing) {
-        Ext.select("#header-title").addCls("display-none");
         navigationList.on({
           afterlayoutanimation: function () {
             refs.logo.el.addCls("logo-collapsed");

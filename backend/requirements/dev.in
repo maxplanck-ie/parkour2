@@ -7,5 +7,6 @@ pywatchman
 Werkzeug
 rich
 django-migration-linter
+ipykernel
 django-schema-viewer
 django-cors-headers

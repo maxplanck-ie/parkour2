@@ -1,4 +1,12 @@
-from common.views import CostUnitsViewSet, DutyViewSet
+from common.views import (
+    CostUnitsViewSet,
+    PrincipalInvestigatorViewSet,
+    OrganizationViewSet,
+    BioinformaticianViewSet,
+    StaffMemberViewSet,
+    DutyViewSet
+)
+
 from flowcell.views import (
     FlowcellAnalysisViewSet,
     FlowcellViewSet,
@@ -22,6 +30,7 @@ from library_preparation.views import LibraryPreparationViewSet
 from library_sample_shared.views import (
     ConcentrationMethodViewSet,
     IndexTypeViewSet,
+    IndexPairViewSet,
     IndexViewSet,
     LibraryProtocolInvoicingViewSet,
     LibraryProtocolViewSet,
@@ -43,6 +52,10 @@ router.register(r"duties", DutyViewSet, basename="duties")
 router.register(r"requests", RequestViewSet, basename="request")
 router.register(r"approve", ApproveViewSet, basename="approve")
 router.register(r"cost_units", CostUnitsViewSet, basename="cost-units")
+router.register(r"principal_investigators", PrincipalInvestigatorViewSet, basename="principal_investigators")
+router.register(r"bioinformaticians", BioinformaticianViewSet, basename="bioinformaticians")
+router.register(r"staff_members", StaffMemberViewSet, basename="staff_members")
+router.register(r"organizations", OrganizationViewSet, basename="organizations")
 router.register(r"organisms", OrganismViewSet, basename="organism")
 router.register(r"read_lengths", ReadLengthViewSet, basename="read-length")
 router.register(
@@ -51,6 +64,7 @@ router.register(
     basename="concentration-method",
 )
 router.register(r"index_types", IndexTypeViewSet, basename="index-type")
+router.register(r"index_pairs", IndexPairViewSet, basename='index-pair')
 router.register(
     r"generator_index_types", GeneratorIndexTypeViewSet, basename="generator-index-type"
 )

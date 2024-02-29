@@ -1,0 +1,163 @@
+[
+  {
+    "model": "auth.group",
+    "pk": 1,
+    "fields": {
+      "name": "Genomics-CF",
+      "permissions": [
+        ["view_group", "auth", "group"],
+        ["add_costunit", "common", "costunit"],
+        ["change_costunit", "common", "costunit"],
+        ["view_costunit", "common", "costunit"],
+        ["add_oidcgroup", "common", "oidcgroup"],
+        ["change_oidcgroup", "common", "oidcgroup"],
+        ["delete_oidcgroup", "common", "oidcgroup"],
+        ["view_oidcgroup", "common", "oidcgroup"],
+        ["add_organization", "common", "organization"],
+        ["change_organization", "common", "organization"],
+        ["view_organization", "common", "organization"],
+        ["add_principalinvestigator", "common", "principalinvestigator"],
+        ["change_principalinvestigator", "common", "principalinvestigator"],
+        ["view_principalinvestigator", "common", "principalinvestigator"],
+        ["add_user", "common", "user"],
+        ["change_user", "common", "user"],
+        ["view_user", "common", "user"],
+        ["add_flowcell", "flowcell", "flowcell"],
+        ["change_flowcell", "flowcell", "flowcell"],
+        ["view_flowcell", "flowcell", "flowcell"],
+        ["add_lane", "flowcell", "lane"],
+        ["change_lane", "flowcell", "lane"],
+        ["view_lane", "flowcell", "lane"],
+        ["add_sequencer", "flowcell", "sequencer"],
+        ["change_sequencer", "flowcell", "sequencer"],
+        ["view_sequencer", "flowcell", "sequencer"],
+        ["add_pool", "index_generator", "pool"],
+        ["change_pool", "index_generator", "pool"],
+        ["view_pool", "index_generator", "pool"],
+        ["add_poolsize", "index_generator", "poolsize"],
+        ["change_poolsize", "index_generator", "poolsize"],
+        ["view_poolsize", "index_generator", "poolsize"],
+        ["add_fixedcosts", "invoicing", "fixedcosts"],
+        ["change_fixedcosts", "invoicing", "fixedcosts"],
+        ["view_fixedcosts", "invoicing", "fixedcosts"],
+        ["add_fixedprice", "invoicing", "fixedprice"],
+        ["change_fixedprice", "invoicing", "fixedprice"],
+        ["delete_fixedprice", "invoicing", "fixedprice"],
+        ["view_fixedprice", "invoicing", "fixedprice"],
+        ["add_invoicingreport", "invoicing", "invoicingreport"],
+        ["change_invoicingreport", "invoicing", "invoicingreport"],
+        ["view_invoicingreport", "invoicing", "invoicingreport"],
+        ["add_librarypreparationcosts", "invoicing", "librarypreparationcosts"],
+        [
+          "change_librarypreparationcosts",
+          "invoicing",
+          "librarypreparationcosts"
+        ],
+        [
+          "view_librarypreparationcosts",
+          "invoicing",
+          "librarypreparationcosts"
+        ],
+        ["add_librarypreparationprice", "invoicing", "librarypreparationprice"],
+        [
+          "change_librarypreparationprice",
+          "invoicing",
+          "librarypreparationprice"
+        ],
+        [
+          "delete_librarypreparationprice",
+          "invoicing",
+          "librarypreparationprice"
+        ],
+        [
+          "view_librarypreparationprice",
+          "invoicing",
+          "librarypreparationprice"
+        ],
+        ["add_sequencingcosts", "invoicing", "sequencingcosts"],
+        ["change_sequencingcosts", "invoicing", "sequencingcosts"],
+        ["view_sequencingcosts", "invoicing", "sequencingcosts"],
+        ["add_sequencingprice", "invoicing", "sequencingprice"],
+        ["change_sequencingprice", "invoicing", "sequencingprice"],
+        ["delete_sequencingprice", "invoicing", "sequencingprice"],
+        ["view_sequencingprice", "invoicing", "sequencingprice"],
+        ["add_library", "library", "library"],
+        ["change_library", "library", "library"],
+        ["view_library", "library", "library"],
+        ["add_librarypreparation", "library_preparation", "librarypreparation"],
+        [
+          "change_librarypreparation",
+          "library_preparation",
+          "librarypreparation"
+        ],
+        [
+          "view_librarypreparation",
+          "library_preparation",
+          "librarypreparation"
+        ],
+        ["add_barcodecounter", "library_sample_shared", "barcodecounter"],
+        ["change_barcodecounter", "library_sample_shared", "barcodecounter"],
+        ["view_barcodecounter", "library_sample_shared", "barcodecounter"],
+        [
+          "add_concentrationmethod",
+          "library_sample_shared",
+          "concentrationmethod"
+        ],
+        [
+          "change_concentrationmethod",
+          "library_sample_shared",
+          "concentrationmethod"
+        ],
+        [
+          "view_concentrationmethod",
+          "library_sample_shared",
+          "concentrationmethod"
+        ],
+        ["add_indexi5", "library_sample_shared", "indexi5"],
+        ["change_indexi5", "library_sample_shared", "indexi5"],
+        ["view_indexi5", "library_sample_shared", "indexi5"],
+        ["add_indexi7", "library_sample_shared", "indexi7"],
+        ["change_indexi7", "library_sample_shared", "indexi7"],
+        ["view_indexi7", "library_sample_shared", "indexi7"],
+        ["add_indexpair", "library_sample_shared", "indexpair"],
+        ["change_indexpair", "library_sample_shared", "indexpair"],
+        ["view_indexpair", "library_sample_shared", "indexpair"],
+        ["add_indextype", "library_sample_shared", "indextype"],
+        ["change_indextype", "library_sample_shared", "indextype"],
+        ["view_indextype", "library_sample_shared", "indextype"],
+        ["add_libraryprotocol", "library_sample_shared", "libraryprotocol"],
+        ["change_libraryprotocol", "library_sample_shared", "libraryprotocol"],
+        ["view_libraryprotocol", "library_sample_shared", "libraryprotocol"],
+        ["add_librarytype", "library_sample_shared", "librarytype"],
+        ["change_librarytype", "library_sample_shared", "librarytype"],
+        ["view_librarytype", "library_sample_shared", "librarytype"],
+        ["add_organism", "library_sample_shared", "organism"],
+        ["change_organism", "library_sample_shared", "organism"],
+        ["view_organism", "library_sample_shared", "organism"],
+        ["add_readlength", "library_sample_shared", "readlength"],
+        ["change_readlength", "library_sample_shared", "readlength"],
+        ["view_readlength", "library_sample_shared", "readlength"],
+        ["add_pooling", "pooling", "pooling"],
+        ["change_pooling", "pooling", "pooling"],
+        ["view_pooling", "pooling", "pooling"],
+        ["add_filerequest", "request", "filerequest"],
+        ["change_filerequest", "request", "filerequest"],
+        ["view_filerequest", "request", "filerequest"],
+        ["add_request", "request", "request"],
+        ["change_request", "request", "request"],
+        ["view_request", "request", "request"],
+        ["add_nucleicacidtype", "sample", "nucleicacidtype"],
+        ["change_nucleicacidtype", "sample", "nucleicacidtype"],
+        ["view_nucleicacidtype", "sample", "nucleicacidtype"],
+        ["add_sample", "sample", "sample"],
+        ["change_sample", "sample", "sample"],
+        ["view_sample", "sample", "sample"]
+      ]
+    }
+  },
+  {
+    "model": "auth.group",
+    "pk": 2,
+    "fields": { "name": "Bioinfo-CF", "permissions": [] }
+  }
+]

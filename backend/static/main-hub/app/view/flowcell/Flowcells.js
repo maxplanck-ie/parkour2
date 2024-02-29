@@ -24,6 +24,15 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
         title: "Load Flowcells",
         items: [
           {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+            itemId: "as-handler-flowcell-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            checked: false,
+          },
+          {
             xtype: "parkourmonthpicker",
             itemId: "start-month-picker",
             fieldLabel: "From",
@@ -91,12 +100,16 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             text: "Lane",
             dataIndex: "name",
             hideable: false,
-            filter: { type: "string" }
+            minWidth: 85,
+            width: 85,
+            filter: { type: "string" },
           },
           {
             text: "Pool",
             dataIndex: "pool_name",
             hideable: false,
+            minWidth: 85,
+            width: 85,
             filter: { type: "string" },
             renderer: function (value) {
               return Ext.String.format(
@@ -109,7 +122,9 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             text: "Date",
             dataIndex: "create_time",
             renderer: Ext.util.Format.dateRenderer(),
-            filter: { type: "date" }
+            minWidth: 100,
+            width: 100,
+            filter: { type: "date" },
           },
           {
             text: "Request",
@@ -120,24 +135,32 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             text: "Length",
             tooltip: "Read Length",
             dataIndex: "read_length_name",
-            filter: { type: "list" }
+            minWidth: 80,
+            width: 80,
+            filter: { type: "list" },
           },
           {
             text: "Index I7",
             dataIndex: "index_i7_show",
+            minWidth: 80,
+            width: 80,
             //renderer: 'yesNoRenderer',
             filter: { type: "string" }
           },
           {
             text: "Index I5",
             dataIndex: "index_i5_show",
+            minWidth: 80,
+            width: 80,
             //renderer: 'yesNoRenderer',
             filter: { type: "string" }
           },
           {
-            text: "Sequencer",
-            dataIndex: "sequencer_name",
-            filter: { type: "list" }
+            text: "Sequencing kit",
+            dataIndex: "pool_size_name",
+            minWidth: 200,
+            width: 200,
+            filter: { type: "list" },
           },
           /*  {
           text: 'Equal nucl.',
@@ -147,12 +170,30 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           filter: { type: 'boolean' }
         },*/
           {
+            text: "Run name",
+            dataIndex: "run_name",
+            filter: { type: "string" },
+          },
+          {
+            text: "Cycles: R1, R2, I1, I2",
+            renderer: function (val, meta, record, rowIndex) {
+              console.log(record);
+              return Ext.String.format(
+                "{0}, {1}, {2}, {3}",
+                record.get("read1_cycles"),
+                record.get("read2_cycles"),
+                record.get("index1_cycles"),
+                record.get("index2_cycles")
+              );
+            },
+          },
+          {
             text: "Library protocol",
             dataIndex: "protocol",
             filter: { type: "string" }
           },
           {
-            text: "Loading Conc.",
+            text: "pM Loading Conc.",
             tooltip: "Loading Concentration",
             dataIndex: "loading_concentration",
             filter: { type: "number" },
@@ -178,6 +219,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
       features: [
         {
           ftype: "grouping",
+          id: "flowcells-grid-grouping",
           startCollapsed: true,
           enableGroupingMenu: false,
           groupHeaderTpl: [
@@ -206,8 +248,8 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             },
             {
               itemId: "download-sample-sheet-button",
-              text: "Download Sample Sheet",
-              iconCls: "fa fa-file-excel-o fa-lg"
+              text: "Download Sample Sheet (ILMN v2)",
+              iconCls: "fa fa-file-excel-o fa-lg",
             },
             "->",
             {

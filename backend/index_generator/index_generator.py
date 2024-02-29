@@ -15,6 +15,26 @@ Sample = apps.get_model("sample", "Sample")
 Pair = namedtuple("Pair", ["index1", "index2", "coordinate"])
 
 
+def calculate_hamming_distance(index_combination):
+    """Find the Hamming distance btw. 2 strings. Substitutions only.
+    
+    ORIGINALLY FROM http://en.wikipedia.org/wiki/Hamming_distance
+    
+    """
+    i1, i2 = index_combination
+    assert len(i1) == len(i2)
+    return sum([ch1 != ch2 for ch1, ch2 in zip(i1.upper(), i2.upper())])
+
+def check_min_hamming_distance(indices, min_hamming_distance):
+    return len(
+            list(
+                filter(lambda x: x < min_hamming_distance, 
+                        map(calculate_hamming_distance, itertools.combinations(indices, 2))
+                )
+                )
+                ) == 0
+
+
 class IndexRegistry:
     """
     Class for storing fetched and sorted indices i7/i5 and index pairs.
@@ -218,10 +238,10 @@ class IndexGenerator:
     index_length = 0
     format = ""
     mode = ""
-    MAX_ATTEMPTS = 30
+    MAX_ATTEMPTS = 10000
     MAX_RANDOM_SAMPLES = 5
 
-    def __init__(self, library_ids, sample_ids, start_coord, direction):
+    def __init__(self, library_ids, sample_ids, start_coord, direction, sequencer_chemistry, min_hamming_distance):
         self._result = []
 
         self.libraries = (
@@ -291,6 +311,9 @@ class IndexGenerator:
             self.mode, index_types, start_coord, direction
         )
 
+        self.sequencer_chemistry = sequencer_chemistry
+        self.min_hamming_distance = min_hamming_distance
+
     def validate_index_types(self, records):
         """Check the compatibility of provided libraries and samples."""
         index_types = [x.index_type for x in records]
@@ -319,6 +342,46 @@ class IndexGenerator:
 
         return index_types
 
+    def _colour_activation(self, indices, depths):
+
+        barcode_length = len(indices[0])
+
+        # Get list of index bases at each position
+        bases_in_position = ["".join(b[i] for b in indices)
+                             for i in range(barcode_length)]
+
+        # Loop through all bases at an index position and calculate
+        # whether both red and green lasers are activated, and what
+        # % clusters are activated for each colour
+
+        total_depth = sum(depths)
+
+        for bases in bases_in_position:
+
+            # Get % activation for each colour
+            green, red, black = 0, 0, 0
+
+            for b, d in zip(bases, depths):
+
+                if b in self.sequencer_chemistry['green']:
+                    green += d
+                if b in self.sequencer_chemistry['red']:
+                    red += d
+                if b in self.sequencer_chemistry['black']:
+                    black += d
+
+            green = green / total_depth * 100
+            red = red / total_depth * 100
+            black = black / total_depth * 100
+
+            if (green == 0 or red == 0) or \
+               (green < 20 and red > 80) or \
+               (red < 20 and green > 80) or \
+               (black > 80):
+                return False
+
+        return True
+
     def generate(self):
         """Main method that generates indices."""
         if self.num_libraries > 0:
@@ -344,6 +407,7 @@ class IndexGenerator:
                 init_indices_i7.append(item["index_i7"])
                 init_indices_i5.append(item["index_i5"])
 
+        unsorted_depths = depths.copy()
         depths = self.sort_sequencing_depths(depths)
 
         # Group samples by the index type format
@@ -404,14 +468,28 @@ class IndexGenerator:
             else:
                 indices_i5 = self.find_indices(tube_samples, depths, "i5", init_i5)
 
-            # Ensure uniqueness
             i7_extracted = [x["index"] for x in indices_i7]
             i5_extracted = [x["index"] for x in indices_i5]
-            all_pairs = list(zip(i7_extracted, i5_extracted))
 
+            # Do checks on indices
             # If all pairs are unique, exit. Otherwise, re-generate the indices
-            if len(all_pairs) == len(set(all_pairs)):
-                is_ok = True
+            all_pairs = list(zip(i7_extracted, i5_extracted))
+            all_pairs_unique = len(all_pairs) == len(set(all_pairs))
+            # Check if single mode for either i7 or i5, i.e. list of empty strings
+
+            min_hamming_distance_i5 = check_min_hamming_distance(set(i7_extracted), self.min_hamming_distance) if not all('' == s for s in i7_extracted) else True
+            min_hamming_distance_i7 = check_min_hamming_distance(set(i5_extracted), self.min_hamming_distance) if not all('' == s for s in i5_extracted) else True
+
+            if all_pairs_unique and min_hamming_distance_i5 and min_hamming_distance_i7:
+
+                if self.sequencer_chemistry['sequencerChemistry'] != 0:
+                    laser_activation_i5 = self._colour_activation(i7_extracted, unsorted_depths)
+                    laser_activation_i7 = self._colour_activation(i5_extracted, unsorted_depths)
+
+                    if laser_activation_i5 and laser_activation_i7:
+                        is_ok = True
+                else:
+                    is_ok = True
 
             attempt += 1
 

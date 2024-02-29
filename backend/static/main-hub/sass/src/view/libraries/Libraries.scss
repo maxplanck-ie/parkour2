@@ -54,8 +54,12 @@
     background-color: #ba68c8;
 }
 
-.status.completed {
+.status.delivered {
     background-color: #009688;
+}
+
+.status.not-delivered {
+    background-color: #000000;
 }
 
 .no-leaf-icons .x-tree-icon-parent,

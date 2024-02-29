@@ -263,6 +263,7 @@ class TestLibraries(BaseTestCase):
                             "amplification_cycles": 1,
                             "index_reads": 0,
                             "mean_fragment_size": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -370,6 +371,7 @@ class TestLibraries(BaseTestCase):
                             "amplification_cycles": 2,
                             "index_reads": 0,
                             "mean_fragment_size": 2,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -402,7 +404,10 @@ class TestLibraries(BaseTestCase):
                 kwargs={"pk": library.pk},
             )
         )
-        self.assertEqual(response.status_code, 204)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {"success": True})
 
     def test_delete_library_incorrect_id(self):
         """Ensure error is thrown if the id does not exist."""
@@ -413,3 +418,6 @@ class TestLibraries(BaseTestCase):
             )
         )
         self.assertEqual(response.status_code, 404)
+        self.assertJSONEqual(response.content,
+                             {"success": False,
+                              "message": 'The record could not be deleted.'})

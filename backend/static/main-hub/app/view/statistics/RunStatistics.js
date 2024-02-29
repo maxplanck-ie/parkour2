@@ -27,6 +27,26 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
         title: "Run Statistics",
         items: [
           {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+            itemId: "as-handler-statistics-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            hidden: !USER.is_staff,
+            checked: false,
+          },
+          {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As bioinformatician</span>',
+            itemId: "as-bioinformatician-statistics-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            hidden: !USER.is_bioinformatician,
+            checked: false,
+          },
+          {
             xtype: "parkoursearchfield",
             store: "RunStatistics",
             emptyText: "Search",
@@ -127,6 +147,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
       features: [
         {
           ftype: "grouping",
+          id: "run-statistics-grid-grouping",
           startCollapsed: true,
           enableGroupingMenu: false,
           groupHeaderTpl: [

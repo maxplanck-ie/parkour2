@@ -20,6 +20,24 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
       },
       "#searchField": {
         change: "changeFilter"
+      },
+      "#showAlllr": {
+        change: "toggleShowAll"
+      },
+      "#as-handler-libraries-samples-checkbox": {
+        change: "toggleHandler"
+      },
+      "#as-bioinformatician-libraries-samples-checkbox": {
+        change: "toggleBioinformatician"
+      },
+      "#statusCombobox": {
+        change: "changeStatus"
+      },
+      "#libraryProtocolCombobox": {
+        change: "changeLibraryProtocol"
+      },
+      "#search-field": {
+        change: "changeSearchField"
       }
     }
   },
@@ -120,5 +138,145 @@ Ext.define("MainHub.view.libraries.LibrariesController", {
   gridCellTooltipRenderer: function (value, meta) {
     meta.tdAttr = 'data-qtip="' + value + '"';
     return value;
-  }
+  },
+
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("treepanel");
+    grid.getView().mask("Loading...");
+    var store = Ext.getStore("librariesStore");
+    store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    store.reload({
+      callback: function (records, operation, success) {
+      if (!success) {
+        new Noty({
+          text:
+            operation.getError() ||
+            "Error occurred while searching.",
+          type: "error"
+        }).show();
+      }
+      grid.getView().unmask();
+    }});
+  },
+
+  toggleBioinformatician: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("treepanel");
+    grid.getView().mask("Loading...");
+    var store = Ext.getStore("librariesStore");
+    store.getProxy().extraParams.asBioinformatician = newValue ? "True" : "False";
+    store.reload({
+      callback: function (records, operation, success) {
+      if (!success) {
+        new Noty({
+          text:
+            operation.getError() ||
+            "Error occurred while searching.",
+          type: "error"
+        }).show();
+      }
+      grid.getView().unmask();
+    }});
+  },
+
+  toggleShowAll: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("treepanel");
+    grid.getView().mask("Loading...");
+    var store = Ext.getStore("librariesStore");
+    store.getProxy().extraParams.showAll = newValue ? "True" : "False";
+    store.reload({
+      callback: function (records, operation, success) {
+      if (!success) {
+        new Noty({
+          text:
+            operation.getError() ||
+            "Error occurred while searching.",
+          type: "error"
+        }).show();
+      }
+      grid.getView().unmask();
+    }});
+  },
+
+  changeStatus: function (combo, newValue, oldValue, eOpts) {
+    if (newValue) {
+      var grid = combo.up("treepanel");
+      grid.getView().mask("Loading...");
+      var selectedRecord = combo.findRecordByValue(newValue);
+      var textWidth = Ext.util.TextMetrics.measure(
+        combo.inputEl,
+        selectedRecord.get(combo.displayField)
+      ).width;
+      combo.setWidth(textWidth + 55);
+
+      var librariesStore = Ext.getStore("librariesStore");
+      librariesStore.getProxy().extraParams.statusFilter = newValue !== "all" ? newValue : '';
+      librariesStore.reload({
+        callback: function (records, operation, success) {
+          if (!success) {
+            new Noty({
+              text:
+                operation.getError() ||
+                "Error occurred while searching.",
+              type: "error"
+            }).show();
+          }
+          grid.getView().unmask();
+        }
+      });
+    }
+  },
+
+  changeLibraryProtocol: function (combo, newValue, oldValue, eOpts) {
+    if (newValue) {
+      var grid = combo.up("treepanel");
+      grid.getView().mask("Loading...");
+      var selectedRecord = combo.findRecordByValue(newValue);
+      var textWidth = Ext.util.TextMetrics.measure(
+        combo.inputEl,
+        selectedRecord.get(combo.displayField)
+      ).width;
+      combo.setWidth(textWidth > 220 ? 220 : textWidth + 55);
+
+      var librariesStore = Ext.getStore("librariesStore");
+      librariesStore.getProxy().extraParams.libraryProtocolFilter = newValue !== -1 ? newValue : '';
+      librariesStore.reload({
+        callback: function (records, operation, success) {
+          if (!success) {
+            new Noty({
+              text:
+                operation.getError() ||
+                "Error occurred while searching.",
+              type: "error"
+            }).show();
+          }
+          grid.getView().unmask();
+        }
+      });
+    }
+  },
+
+  changeSearchField: Ext.Function.createBuffered(
+    function (field, newValue, oldValue) {
+      var grid = field.up("treepanel");
+      grid.getView().mask("Loading...");
+      var librariesStore = Ext.getStore("librariesStore");
+      librariesStore.getProxy().extraParams.searchString = newValue;
+      librariesStore.reload({
+        callback: function (records, operation, success) {
+          if (!success) {
+            new Noty({
+              text:
+                operation.getError() ||
+                "Error occurred while searching.",
+              type: "error"
+            }).show();
+          }
+          grid.getView().unmask();
+        }
+      });
+    },
+    500,
+    this
+  )
+
 });

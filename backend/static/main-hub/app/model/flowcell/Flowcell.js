@@ -39,8 +39,8 @@ Ext.define("MainHub.model.flowcell.Flowcell", {
       type: "int"
     },
     {
-      name: "sequencer_name",
-      type: "string"
+      name: "pool_size_name",
+      type: "string",
     },
     {
       name: "index_i7_show",
@@ -70,7 +70,31 @@ Ext.define("MainHub.model.flowcell.Flowcell", {
     },
     {
       name: "protocol",
-      type: "string"
-    }
-  ]
+      type: "string",
+    },
+    {
+      name: "read1_cycles",
+      type: "int",
+    },
+    {
+      name: "read2_cycles",
+      type: "int",
+    },
+    {
+      name: "index1_cycles",
+      type: "int",
+    },
+    {
+      name: "index2_cycles",
+      type: "int",
+    },
+    {
+      name: "run_name",
+      type: "string",
+    },
+    {
+      name: "library_prep_kits",
+      type: "string",
+    },
+  ],
 });

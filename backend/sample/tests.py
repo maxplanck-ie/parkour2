@@ -256,6 +256,7 @@ class TestSamples(BaseTestCase):
                             "name": self._get_random_name(),
                             "concentration": 1.0,
                             "sequencing_depth": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -355,6 +356,7 @@ class TestSamples(BaseTestCase):
                             "sample_id": sample2.pk,
                             "concentration": 1.0,
                             "sequencing_depth": 1,
+                            "concentration_method": 0,
                         },
                     ]
                 )
@@ -378,7 +380,9 @@ class TestSamples(BaseTestCase):
                 kwargs={"pk": sample.pk},
             )
         )
-        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.status_code, 200)
+        self.assertJSONEqual(response.content,
+                             {"success": True})
 
     def test_delete_sample_incorrect_id(self):
         """Ensure error is thrown if the id does not exist."""
@@ -389,3 +393,6 @@ class TestSamples(BaseTestCase):
             )
         )
         self.assertEqual(response.status_code, 404)
+        self.assertJSONEqual(response.content,
+                             {"success": False,
+                              "message": 'The record could not be deleted.'})

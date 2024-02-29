@@ -16,6 +16,9 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
         boxready: "addToolbarButtons",
         edit: "editRecord"
       },
+      "#as-handler-preparation-checkbox": {
+        change: "toggleHandler"
+      },
       "#search-field": {
         change: "changeFilter"
       },
@@ -135,6 +138,19 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
     form.submit({
       url: "api/library_preparation/download_benchtop_protocol/",
       params: { ids: Ext.JSON.encode(ids) }
+    });
+  },
+
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#library-preparation-grid");
+    var gridGrouping = grid.view.getFeature("library-preparation-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
     });
   },
 

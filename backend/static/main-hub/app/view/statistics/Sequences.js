@@ -20,10 +20,40 @@ Ext.define("MainHub.view.statistics.Sequences", {
       itemId: "sequences-grid",
       store: "SequencesStatistics",
       height: Ext.Element.getViewportHeight() - 64,
+      sortableColumns: true,
 
       header: {
         title: "Sequences",
         items: [
+          {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+            itemId: "as-handler-sequences-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            hidden: !USER.is_staff,
+            checked: false,
+          },
+          {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible for data analysis">As Bioinformatician</span>',
+            itemId: "as-bioinformatician-sequences-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            hidden: !USER.is_bioinformatician,
+            checked: false,
+          },
+          {
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Uncheck, to show data per individual lane">Merge lanes</span>',
+            itemId: "merge-lanes-sequences-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            checked: true,
+          },
           {
             xtype: "parkoursearchfield",
             store: "SequencesStatistics",
@@ -99,16 +129,39 @@ Ext.define("MainHub.view.statistics.Sequences", {
             tooltip: "Reads PF (M), requested",
             dataIndex: "reads_pf_requested",
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
+            renderer: function (value, meta, record) {
+              var readsSequenced = record.get("reads_pf_sequenced");
+
+              if (readsSequenced && value) {
+                var diff = readsSequenced - value * 1000000;
+                if (diff < 0) {
+                  meta.tdCls += " invalid-record";
+                }
+              }
+
+              return value;
+            },
           },
           {
             text: "Reads PF (M), sequenced",
             tooltip: "Reads PF (M), sequenced",
             dataIndex: "reads_pf_sequenced",
-            renderer: function (value) {
+            renderer: function (value, meta, record) {
+              var readsRequested = record.get("reads_pf_requested");
+              value = value ? value : 0;
+
+              if (readsRequested && value) {
+                var diff = value - readsRequested * 1000000;
+                if (diff < 0) {
+                  meta.tdCls += " invalid-record";
+                }
+              }
+
               if (value) {
                 value = (value / 1000000).toFixed(2);
               }
+
               return value;
             },
             filter: { type: "number" },
@@ -117,14 +170,19 @@ Ext.define("MainHub.view.statistics.Sequences", {
           {
             text: "% reads",
             renderer: function (value, meta, record) {
-              var readsRequested = record.get("reads_pf_requested");
               var readsSequenced = record.get("reads_pf_sequenced");
 
-              if (readsRequested && readsSequenced) {
-                value = (
-                  (readsSequenced / 1000000 / readsRequested) *
-                  100
-                ).toFixed(2);
+              if (readsSequenced) {
+                var store = this.store;
+                var grouping = store.getGroups().items.filter(function (g) {
+                  return g.getGroupKey() == record.get("pk");
+                });
+                if (grouping.length === 1) {
+                  var total_read_count = grouping[0].sum("reads_pf_sequenced");
+                  value = ((readsSequenced / total_read_count) * 100).toFixed(
+                    2
+                  );
+                }
               }
 
               return value;
@@ -137,7 +195,8 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "confident_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
+            hidden: true,
           },
           {
             text: "% Optical Duplicates",
@@ -145,7 +204,8 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "optical_duplicates",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
+            hidden: true,
           },
           {
             text: "% dupped reads",
@@ -153,7 +213,8 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "dupped_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
+            hidden: true,
           },
           {
             text: "% mapped reads",
@@ -161,15 +222,17 @@ Ext.define("MainHub.view.statistics.Sequences", {
             dataIndex: "mapped_reads",
             renderer: floatRenderer,
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
+            hidden: true,
           },
           {
             text: "Insert Size",
             dataIndex: "insert_size",
             filter: { type: "number" },
-            minWidth: 135
-          }
-        ]
+            minWidth: 135,
+            hidden: true,
+          },
+        ],
       },
 
       plugins: [
@@ -179,18 +242,22 @@ Ext.define("MainHub.view.statistics.Sequences", {
           leadingBufferZone: 100
         },
         {
-          ptype: "gridfilters"
-        }
+          ptype: "gridfilters",
+        },
+        {
+          ptype: "clipboard",
+        },
       ],
 
       features: [
         {
           ftype: "grouping",
+          id: "sequences-grid-grouping",
           startCollapsed: true,
           enableGroupingMenu: false,
           groupHeaderTpl: [
             "<strong>{children:this.getFlowcellId} " +
-              "({children:this.getDate}, {children:this.getSequencer})</strong>",
+              "({children:this.getDate}, {children:this.getSequencingKit}, {children:this.getTotalYield}M reads)</strong>",
             {
               getFlowcellId: function (children) {
                 return children[0].get("flowcell_id");
@@ -198,12 +265,18 @@ Ext.define("MainHub.view.statistics.Sequences", {
               getDate: function (children) {
                 return Ext.util.Format.date(children[0].get("create_time"));
               },
-              getSequencer: function (children) {
-                return children[0].get("sequencer");
-              }
-            }
-          ]
-        }
+              getSequencingKit: function (children) {
+                return children[0].get("sequencing_kit");
+              },
+              getTotalYield: function (children) {
+                var total_reads = children.reduce(function (sum, e) {
+                  return sum + e.get("reads_pf_sequenced");
+                }, 0);
+                return (total_reads / 1000000).toFixed(2);
+              },
+            },
+          ],
+        },
       ],
 
       dockedItems: [

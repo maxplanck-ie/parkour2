@@ -1,11 +1,12 @@
 import itertools
 
-from common.models import CostUnit, DateTimeMixin
+from common.models import CostUnit, User, DateTimeMixin
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models
 from library.models import Library
 from sample.models import Sample
+from index_generator.models import PoolSize
 
 
 def get_sentinel_user():
@@ -32,7 +33,10 @@ def approval_default():
         "HTTP_ACCEPT_LANGUAGE": None,
         "HTTP_FORWARDED": None,
         "HTTP_X_FORWARDED_FOR": None,
+        "OIDC_ID": None,
+        "EMAIL": None
     }
+
 
 
 class FileRequest(models.Model):
@@ -54,6 +58,15 @@ class Request(DateTimeMixin):
         on_delete=models.SET(get_sentinel_user),
     )
 
+    pi = models.ForeignKey(
+        User,
+        verbose_name="PI",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_pi'
+    )
+
     cost_unit = models.ForeignKey(
         CostUnit,
         verbose_name="Cost Unit",
@@ -62,9 +75,59 @@ class Request(DateTimeMixin):
         on_delete=models.SET_NULL,
     )
 
+    bioinformatician = models.ForeignKey(
+        User,
+        verbose_name="Bioinformatician",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_bioinformatician'
+    )
+
+    handler = models.ForeignKey(
+        User,
+        verbose_name="Handler",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_handler'
+    )
+
+    pool_size_user = models.ForeignKey(
+        PoolSize,
+        verbose_name="Sequencing kit (user)",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_pool_size_user'
+    )
+
     libraries = models.ManyToManyField(
         Library,
         related_name="request",
+        blank=True,
+    )
+
+    pooled_libraries = models.BooleanField(
+        verbose_name="Pooled libraries?",
+        default=False,
+    )
+
+    pooled_libraries_concentration_user = models.FloatField(
+        "Library pool Concentration by User",
+        null=True,
+        blank=True,
+    )
+
+    pooled_libraries_volume_user = models.FloatField(
+        "Library pool Volume by User",
+        null=True,
+        blank=True,
+    )
+
+    pooled_libraries_fragment_size_user = models.PositiveIntegerField(
+        "Library pool Mean Fragment Size by User",
+        null=True,
         blank=True,
     )
 
@@ -87,15 +150,39 @@ class Request(DateTimeMixin):
         null=True,
     )
 
+    approval_user = models.ForeignKey(
+        User,
+        verbose_name="approval user",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name = 'request_approval_user'
+    )
+
+    approval_time = models.DateTimeField(verbose_name="Approval Time",
+                                             null=True,
+                                             default=None
+                                            )
+
     samples_submitted = models.BooleanField(
         verbose_name="Samples Submitted",
         default=False,
     )
 
+    samples_submitted_time = models.DateTimeField(verbose_name="Samples Submitted Time",
+                                                  null=True,
+                                                  default=None
+                                                  )
+
     sequenced = models.BooleanField(
         verbose_name="Sequenced",
         default=False,
     )
+
+    invoice_date = models.DateTimeField(verbose_name="Invoice Date",
+                                    null=True,
+                                    default=None
+                                    )
 
     archived = models.BooleanField("Archived", default=False)
 
@@ -114,7 +201,7 @@ class Request(DateTimeMixin):
 
     @property
     def total_sequencing_depth(self):
-        return sum(x.sequencing_depth for x in self.records)
+        return round(sum(x.sequencing_depth for x in self.records), 2)
 
     @property
     def total_records_count(self):
@@ -128,12 +215,13 @@ class Request(DateTimeMixin):
         created = self.pk is None
         super().save(*args, **kwargs)
 
-        if created:
-            # Set name after getting an id
-            self.name = f"{self.id}_{self.user.last_name}"
-            if self.user.pi:
-                self.name += "_" + self.user.pi.name
-            self.save()
+        # Do NOT programatically set a request's name, let the user enter it
+        # if created:
+        #     # Set name after getting an id
+        #     self.name = f"{self.id}_{self.user.last_name}"
+        #     if self.user.pi:
+        #         self.name += "_" + self.user.pi.name
+        #     self.save()
 
     def delete(self, *args, **kwargs):
         # Delete all libraries and samples

@@ -56,9 +56,9 @@ Ext.define("MainHub.view.flowcell.PoolInfoWindow", {
       features: [
         {
           ftype: "grouping",
-          groupHeaderTpl: "<strong>Request: {name}</strong>"
-        }
-      ]
-    }
-  ]
+          groupHeaderTpl: "<strong>Request {[values.rows[0].data.request_pk]}: {name}</strong>",
+        },
+      ],
+    },
+  ],
 });

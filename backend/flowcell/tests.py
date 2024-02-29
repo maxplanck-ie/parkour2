@@ -3,20 +3,19 @@ import json
 from common.tests import BaseTestCase
 from common.utils import get_random_name
 from django.urls import reverse
-from index_generator.tests import create_pool
+from index_generator.tests import create_pool, create_pool_size
 from library.tests import create_library
 from sample.tests import create_sample
 
 from .models import Flowcell, Lane, Sequencer
 
 
-def create_sequencer(name, lanes=8, lane_capacity=200):
+def create_sequencer(name, lanes=1, lane_capacity=200):
     sequencer = Sequencer(
         name=name,
-        lanes=lanes,
-        lane_capacity=lane_capacity,
     )
     sequencer.save()
+    create_pool_size(multiplier=lanes, size=lane_capacity, cycles=150, sequencer=sequencer)
     return sequencer
 
 
@@ -30,10 +29,16 @@ def create_lane(name, pool):
     return lane
 
 
-def create_flowcell(flowcell_id, sequencer):
+def create_flowcell(flowcell_id, pool_size):
     flowcell = Flowcell(
         flowcell_id=flowcell_id,
-        sequencer=sequencer,
+        pool_size=pool_size,
+        run_name=get_random_name(),
+        read1_cycles=40,
+        read2_cycles=40,
+        index1_cycles=6,
+        index2_cycles=6,
+        library_prep_kits=""
     )
     flowcell.save()
     return flowcell
@@ -44,21 +49,21 @@ def create_flowcell(flowcell_id, sequencer):
 
 class TestSequencerModel(BaseTestCase):
     def setUp(self):
-        self.sequencer = create_sequencer(get_random_name(), lanes=1, lane_capacity=200)
+        self.sequencer = create_sequencer(get_random_name())
 
     def test_sequencer_name(self):
         self.assertTrue(isinstance(self.sequencer, Sequencer))
         self.assertEqual(self.sequencer.__str__(), self.sequencer.name)
 
     def test_sequencer_lanes(self):
-        self.assertEqual(self.sequencer.lanes, 1)
+        self.assertEqual(self.sequencer.poolsize_set.first().lanes, 1)
 
     def test_sequencer_lane_capacity(self):
-        self.assertEqual(self.sequencer.lane_capacity, 200)
+        self.assertEqual(self.sequencer.poolsize_set.first().size, 200)
 
     def test_sequencer_different_lanes(self):
         sequencer = create_sequencer(get_random_name(), lanes=2, lane_capacity=200)
-        self.assertEqual(sequencer.lanes, 2)
+        self.assertEqual(sequencer.poolsize_set.first().lanes, 2)
 
 
 class TestLaneModel(BaseTestCase):
@@ -101,8 +106,8 @@ class TestLaneModel(BaseTestCase):
 
 class TestFlowcellModel(BaseTestCase):
     def setUp(self):
-        sequencer = create_sequencer(get_random_name(), lanes=1)
-        self.flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size()
+        self.flowcell = create_flowcell(get_random_name(), pool_size)
 
     def test_lane_name(self):
         self.assertTrue(isinstance(self.flowcell, Flowcell))
@@ -110,8 +115,8 @@ class TestFlowcellModel(BaseTestCase):
 
     def test_flowcell_different_sequencer(self):
         sequencer = create_sequencer(get_random_name(), lanes=2)
-        flowcell = create_flowcell(get_random_name(), sequencer)
-        self.assertEqual(flowcell.sequencer, sequencer)
+        flowcell = create_flowcell(get_random_name(), sequencer.poolsize_set.first())
+        self.assertEqual(flowcell.pool_size.sequencer, sequencer)
 
     def test_flowcell_lanes(self):
         self.assertEqual(self.flowcell.lanes.count(), 0)
@@ -211,8 +216,8 @@ class TestFlowcell(BaseTestCase):
         pool2.libraries.add(library2)
         pool2.samples.add(sample2)
 
-        sequencer = create_sequencer(get_random_name(), lanes=4)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=4)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         lanes1 = []
         for i in range(2):
@@ -257,7 +262,7 @@ class TestFlowcell(BaseTestCase):
         pool2.libraries.add(library2)
         pool2.samples.add(sample2)
 
-        sequencer = create_sequencer(get_random_name())
+        pool_size = create_pool_size(multiplier=8)
         flowcell_id = get_random_name()
 
         lanes1 = [
@@ -282,8 +287,14 @@ class TestFlowcell(BaseTestCase):
                 "data": json.dumps(
                     {
                         "flowcell_id": flowcell_id,
-                        "sequencer": sequencer.pk,
+                        "pool_size": pool_size.pk,
                         "lanes": lanes1 + lanes2,
+                        "run_name": get_random_name(),
+                        "read1_cycles": 40,
+                        "read2_cycles": 40,
+                        "index1_cycles": 6,
+                        "index2_cycles": 6,
+                        "library_prep_kits": ""
                     }
                 )
             },
@@ -318,6 +329,12 @@ class TestFlowcell(BaseTestCase):
                         "flowcell_id": flowcell_id,
                         "sequencer": sequencer.pk,
                         "lanes": [],
+                        "run_name": get_random_name(),
+                        "read1_cycles": 40,
+                        "read2_cycles": 40,
+                        "index1_cycles": 6,
+                        "index2_cycles": 6,
+                        "library_prep_kits": ""
                     }
                 )
             },
@@ -344,7 +361,7 @@ class TestFlowcell(BaseTestCase):
             for i in range(4)
         ]
 
-        sequencer = create_sequencer(get_random_name())
+        pool_size = create_pool_size()
         flowcell_id = get_random_name()
 
         response = self.client.post(
@@ -353,8 +370,14 @@ class TestFlowcell(BaseTestCase):
                 "data": json.dumps(
                     {
                         "flowcell_id": flowcell_id,
-                        "sequencer": sequencer.pk,
+                        "pool_size": pool_size.pk,
                         "lanes": lanes,
+                        "run_name": get_random_name(),
+                        "read1_cycles": 40,
+                        "read2_cycles": 40,
+                        "index1_cycles": 6,
+                        "index2_cycles": 6,
+                        "library_prep_kits": ""
                     }
                 )
             },
@@ -373,8 +396,8 @@ class TestFlowcell(BaseTestCase):
         pool = create_pool(self.user)
         pool.libraries.add(library)
 
-        sequencer = create_sequencer(get_random_name(), lanes=1)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=1)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         lane = Lane(name=get_random_name(len=6), pool=pool)
         lane.save()
@@ -406,8 +429,8 @@ class TestFlowcell(BaseTestCase):
         pool = create_pool(self.user)
         pool.libraries.add(library)
 
-        sequencer = create_sequencer(get_random_name(), lanes=2)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=2)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         lane1 = Lane(name=get_random_name(len=6), pool=pool)
         lane1.save()
@@ -448,8 +471,8 @@ class TestFlowcell(BaseTestCase):
         pool = create_pool(self.user)
         pool.libraries.add(library)
 
-        sequencer = create_sequencer(get_random_name(), lanes=1)
-        flowcell = create_flowcell(get_random_name(), sequencer)
+        pool_size = create_pool_size(multiplier=1)
+        flowcell = create_flowcell(get_random_name(), pool_size)
 
         lane = Lane(name=get_random_name(len=6), pool=pool)
         lane.save()

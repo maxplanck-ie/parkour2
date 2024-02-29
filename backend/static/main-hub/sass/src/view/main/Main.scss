@@ -1,5 +1,5 @@
 a {
-    color: $color-soft-cyan;
+    color: #006c66;
     text-decoration: none;
 }
 
@@ -161,6 +161,8 @@ hr {
 }
 
 .main-logo.logo-collapsed {
+
+    color: #ecebe5; // change colour of "Parkour LIMS" text to bg (bg-color-beige), when the navigation menu is collapsed 
     .logo {
         .title {
             margin-left: 65px;

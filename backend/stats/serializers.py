@@ -18,7 +18,7 @@ class RunsSerializer(ModelSerializer):
         )
 
     def get_sequencer(self, obj):
-        return obj.sequencer.name
+        return obj.pool_size.sequencer.name
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -69,7 +69,7 @@ class RunsSerializer(ModelSerializer):
 
 
 class SequencesSerializer(ModelSerializer):
-    sequencer = SerializerMethodField()
+    sequencing_kit = SerializerMethodField()
 
     class Meta:
         model = Flowcell
@@ -77,12 +77,12 @@ class SequencesSerializer(ModelSerializer):
             "pk",
             "flowcell_id",
             "create_time",
-            "sequencer",
+            "sequencing_kit",
             "sequences",
         )
 
-    def get_sequencer(self, obj):
-        return obj.sequencer.name
+    def get_sequencing_kit(self, obj):
+        return str(obj.pool_size)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -117,6 +117,24 @@ class SequencesSerializer(ModelSerializer):
                     }
                 processed_requests[request.name] = True
 
+        # If merge-lanes-sequences-checkbox is ticked, sum reads_pf_sequenced for 
+        # samples with identical name from different lanes of the same flowcell
+
+        if self.context.get('merge_lanes', True):
+
+            merged_data_sequences = {}
+            for item in data['sequences']:
+                reads_pf_sequenced = merged_data_sequences.get(item["name"], {'reads_pf_sequenced': 0})['reads_pf_sequenced'] + \
+                                     item.get("reads_pf_sequenced", 0)
+                merged_data_sequences[item["name"]] = {'barcode': item.get('barcode', ''),
+                                                       'reads_pf_sequenced': reads_pf_sequenced}
+            merged_data_sequences = [{'name': n,
+                                      'lane': 'All',
+                                      'barcode': d.get('barcode', ''),
+                                      'reads_pf_sequenced': d.get('reads_pf_sequenced', 0),}
+                                     for n, d in merged_data_sequences.items()]
+            data["sequences"] = merged_data_sequences
+
         for item in data["sequences"]:
             obj = items.get(item["barcode"], {})
             result.append(
@@ -125,7 +143,7 @@ class SequencesSerializer(ModelSerializer):
                         "pk": data["pk"],
                         "flowcell_id": data["flowcell_id"],
                         "create_time": data["create_time"],
-                        "sequencer": data["sequencer"],
+                        "sequencing_kit": data["sequencing_kit"],
                         "request": obj.get("request", ""),
                         "barcode": obj.get("barcode", ""),
                         "name": obj.get("name", ""),

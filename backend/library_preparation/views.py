@@ -93,6 +93,8 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
 
     def list(self, request):
         queryset = self.filter_queryset(self.get_queryset())
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(sample__request__handler=request.user)
         serializer = LibraryPreparationSerializer(
             queryset, many=True, context=self.get_context(queryset)
         )

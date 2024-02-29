@@ -10,7 +10,10 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
         activate: "activateView"
       },
       "#billing-period-combobox": {
-        select: "selectBillingPeriod"
+        select: "selectBillingPeriod",
+      },
+      "#organization-combobox": {
+        select: "selectOrganization",
       },
       "#invoicing-grid": {
         resize: "resize"
@@ -28,22 +31,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   activateView: function (view) {
-    var billingPeriodCb = view.down("#billing-period-combobox");
-    billingPeriodCb.getStore().reload({
-      callback: function (records) {
-        if (records && records.length > 0) {
-          var lastRecord = records[records.length - 1];
-          billingPeriodCb.select(lastRecord);
-          billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
-          billingPeriodCb.cancelFocus();
-        }
-      }
-    });
-
-    // Load cost stores
-    view.down("#fixed-costs-grid").getStore().reload();
-    view.down("#preparation-costs-grid").getStore().reload();
-    view.down("#sequencing-costs-grid").getStore().reload();
+    view.down("#organization-combobox").getStore().reload();
+    view.down("#billing-period-combobox").getStore().reload();
   },
 
   resize: function (el) {
@@ -51,14 +40,24 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   selectBillingPeriod: function (cb, record) {
+    var organizationId = cb.up().down("#organization-combobox").value;
     var uploadedReportBtn = cb.up().down("#view-uploaded-report-button");
-    var reportUrl = record.get("report_url");
+    var reportUrl = record
+      .report_urls()
+      .findRecord("organization_id", organizationId);
+    var reportUrl = reportUrl ? reportUrl.get("url") : "";
+
+    // Enable upload/download buttons
+    var grid = cb.up("grid");
+    grid.down("#download-report").enable();
+    grid.down("#upload-report").enable();
 
     Ext.getStore("Invoicing").reload({
       params: {
         year: record.get("value")[0],
-        month: record.get("value")[1]
-      }
+        month: record.get("value")[1],
+        organization: organizationId,
+      },
     });
 
     if (reportUrl !== "") {
@@ -66,6 +65,32 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       uploadedReportBtn.show();
     } else {
       uploadedReportBtn.hide();
+    }
+  },
+
+  selectOrganization: function (cb, record) {
+    // Reload organization-specific cost stores
+    Ext.getStore("FixedCosts").reload({
+      params: {
+        organization: cb.value,
+      },
+    });
+    Ext.getStore("LibraryPreparationCosts").reload({
+      params: {
+        organization: cb.value,
+      },
+    });
+    Ext.getStore("SequencingCosts").reload({
+      params: {
+        organization: cb.value,
+      },
+    });
+
+    var billingPeriodCb = cb.up().down("#billing-period-combobox");
+    if (billingPeriodCb.value) {
+      this.selectBillingPeriod(billingPeriodCb, billingPeriodCb.getSelection());
+    } else {
+      billingPeriodCb.enable();
     }
   },
 
@@ -80,6 +105,11 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     );
 
     store.sync({
+      params: {
+        organization: Ext.ComponentQuery.query(
+          "#organization-combobox"
+        )[0].getValue(),
+      },
       success: function (batch) {
         Ext.getCmp("invoicing-grid").getStore().reload();
         new Noty({ text: "The changes have been saved." }).show();
@@ -97,8 +127,9 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       method: "GET",
       params: {
         year: value[0],
-        month: value[1]
-      }
+        month: value[1],
+        organization: btn.up("grid").down("#organization-combobox").getValue(),
+      },
     });
   },
 
@@ -126,7 +157,11 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
           method: "POST",
           waitMsg: "Uploading...",
           params: {
-            month: value[0] + "-" + value[1]
+            month: value[0] + "-" + value[1],
+            organization: btn
+              .up("grid")
+              .down("#organization-combobox")
+              .getValue(),
           },
           success: function (f, action) {
             new Noty({ text: "Report has been successfully uploaded." }).show();
@@ -148,16 +183,16 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     return value.join("; ");
   },
 
-  sequencerRenderer: function (value, meta) {
+  sequencingKitRenderer: function (value, meta) {
     var items = value.map(function (item) {
       return Ext.String.format(
         "{0}: {1}",
         item.flowcell_id,
-        item.sequencer_name
+        item.pool_size_name
       );
     });
     meta.tdAttr = Ext.String.format('data-qtip="{0}"', items.join("<br/>"));
-    return _.uniq(Ext.Array.pluck(value, "sequencer_name")).sort().join("; ");
+    return _.uniq(Ext.Array.pluck(value, "pool_size_name")).sort().join("; ");
   },
 
   percentageRenderer: function (value, meta) {

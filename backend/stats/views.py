@@ -10,7 +10,6 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from xlwt import Workbook, XFStyle
 
@@ -24,7 +23,6 @@ Lane = apps.get_model("flowcell", "Lane")
 
 
 class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser]
     serializer_class = RunsSerializer
 
     def get_queryset(self):
@@ -94,7 +92,7 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
                 matrix__isnull=True,
             )
             .select_related(
-                "sequencer",
+                "pool_size",
             )
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs, to_attr="fetched_lanes"),
@@ -114,6 +112,19 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             create_time__gte=start,
             create_time__lte=end,
         )
+
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(requests__handler=request.user)
+
+        if request.GET.get("asBioinformatician") == "True":
+            queryset = queryset.filter(requests__bioinformatician=request.user)
+
+        if request.user.is_staff or request.user.member_of_bcf:
+            pass
+        elif request.user.is_pi:
+            queryset = queryset.filter(requests__pi=request.user)
+        else:
+            queryset = queryset.filter(Q(requests__user=request.user) | Q(requests__bioinformatician=request.user)).distinct()
 
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
@@ -168,7 +179,6 @@ class RunStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
-    permission_classes = [IsAdminUser]
     serializer_class = SequencesSerializer
 
     def get_queryset(self):
@@ -250,7 +260,7 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
                 sequences__isnull=True,
             )
             .select_related(
-                "sequencer",
+                "pool_size",
             )
             .prefetch_related(
                 Prefetch(
@@ -280,9 +290,26 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             create_time__lte=end,
         )
 
+        if request.GET.get("asHandler") == "True":
+            queryset = queryset.filter(requests__handler=request.user)
+
+        if request.GET.get("asBioinformatician") == "True":
+            queryset = queryset.filter(requests__bioinformatician=request.user)
+
+        if request.user.is_staff or request.user.member_of_bcf:
+            pass
+        elif request.user.is_pi:
+            queryset = queryset.filter(requests__pi=request.user)
+        else:
+            queryset = queryset.filter(Q(requests__user=request.user) | Q(requests__bioinformatician=request.user)).distinct()
+
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
         return Response(data)
+    
+    def get_serializer_context(self):
+        merge_lanes = self.request.query_params.get("mergeLanes", 'True') == 'True' 
+        return {'merge_lanes': merge_lanes}
 
     @action(methods=["post"], detail=False)
     def upload(self, request):
@@ -309,7 +336,9 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         found = dict()
         for idx, entry in enumerate(currentSequences):
             found[entry["barcode"]] = idx
+        barcodes = []
         for entry in sequences:
+            barcodes.append(entry["barcode"])
             if entry["barcode"] in found:
                 currentSequences[found[entry["barcode"]]] = entry
             else:
@@ -317,6 +346,13 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
 
         flowcell.sequences = currentSequences
         flowcell.save(update_fields=["sequences"])
+
+        # If sample/library in demux report, set status to delivered
+        Library.objects.filter(request__flowcell=flowcell,
+                               barcode__in=barcodes).update(status=6)
+        Sample.objects.filter(request__flowcell=flowcell,
+                              barcode__in=barcodes).update(status=6)
+
         return Response({"success": True})
 
     @action(

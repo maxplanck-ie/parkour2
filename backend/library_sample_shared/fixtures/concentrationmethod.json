@@ -2,29 +2,46 @@
   {
     "model": "library_sample_shared.concentrationmethod",
     "pk": 1,
-    "fields": {
-      "name": "Fluorometry"
-    }
-  },
-  {
-    "model": "library_sample_shared.concentrationmethod",
-    "pk": 2,
-    "fields": {
-      "name": "Spectrophotometry"
-    }
+    "fields": { "name": "Qubit" }
   },
   {
     "model": "library_sample_shared.concentrationmethod",
     "pk": 3,
-    "fields": {
-      "name": "Fragment Analyzer"
-    }
+    "fields": { "name": "Fragment Analyzer" }
   },
   {
     "model": "library_sample_shared.concentrationmethod",
     "pk": 4,
-    "fields": {
-      "name": "UnusedSince2023"
-    }
+    "fields": { "name": "TapeStation" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 7,
+    "fields": { "name": "BioAnalyzer" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 9,
+    "fields": { "name": "other" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 10,
+    "fields": { "name": "Nanodrop 2000" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 11,
+    "fields": { "name": "Nanodrop 3300" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 12,
+    "fields": { "name": "Femto Pulse Analyzer" }
+  },
+  {
+    "model": "library_sample_shared.concentrationmethod",
+    "pk": 13,
+    "fields": { "name": "qPCR" }
   }
 ]

@@ -1,0 +1,58 @@
+{% load i18n %}{% autoescape off %}
+
+<style>
+    .verticalheader {
+        text-align: left;
+        white-space: nowrap;
+        vertical-align: top;
+        padding-right: 10px;
+    }
+</style>
+
+<p>Dear all,</p>
+
+<p>
+<div>A new user was automatically created via OpenID authentication.</div>
+<br>
+
+<div>You can check this user's profile <a href="{{user_admin_change_url}}">here</a>.</div>
+<br>
+
+<hr />
+<p style="font-weight: bold; text-align: center;">Summary of OIDC user profile</p>
+<table style="width:100%;border:0px;">
+    <tr>
+        <th class='verticalheader'>First name:</th>
+        <td>{{user.first_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Last name:</th>
+        <td>{{user.last_name}}</td>
+    </tr>
+    <tr>
+        <th class='verticalheader'>Email:</th>
+        <td>{{user.email}}</td>
+    </tr>
+    {% if oidc_groups %}
+    <tr>
+        <th class='verticalheader'>OIDC groups:</th>
+        <td>
+            {% for g in oidc_groups %}
+            <div>{{g}}</div>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endif %}
+</table>
+<br>
+<hr />
+</p>
+
+<p>
+    <i>
+        --<br />
+        Kind regards,<br />
+        Parkour<br />
+    </i>
+</p>
+{% endautoescape %}

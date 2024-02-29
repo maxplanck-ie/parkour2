@@ -11,6 +11,8 @@ from common.views import CsrfExemptSessionAuthentication, StandardResultsSetPagi
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core.mail import get_connection
+from django.core.mail.message import EmailMultiAlternatives
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.db.models import Prefetch
@@ -22,6 +24,7 @@ from django.http import (
     JsonResponse,
 )
 from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils import dateformat, timezone
 from django.utils.crypto import get_random_string
@@ -29,6 +32,7 @@ from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
+from rest_framework import filters, viewsets
 from library_sample_shared.models import LibraryProtocol
 from library_sample_shared.serializers import LibraryProtocolSerializer
 from rest_framework import filters, status, viewsets
@@ -36,6 +40,16 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
+from django.shortcuts import render
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils import timezone
+from django.core.files.base import ContentFile
+from django.db.models import Q
+from constance import config
+from openpyxl import Workbook
+from openpyxl.styles import Font
+from django.contrib.auth.decorators import login_required
 
 from .models import FileRequest, Request
 from .serializers import RequestFileSerializer, RequestSerializer
@@ -46,6 +60,39 @@ Sample = apps.get_model("sample", "Sample")
 LibraryPreparation = apps.get_model("library_preparation", "LibraryPreparation")
 
 logger = logging.getLogger("db")
+
+
+def send_mail_with_replyto(subject, message, from_email, recipient_list,
+                           reply_to, fail_silently=False, auth_user=None,
+                           auth_password=None, connection=None, html_message=None):
+    """
+    Amended django.core.mail.send_mail to include reply-to email address(es)
+    """
+    connection = connection or get_connection(
+        username=auth_user,
+        password=auth_password,
+        fail_silently=fail_silently,
+    )
+    mail = EmailMultiAlternatives(subject,
+                                  message,
+                                  from_email,
+                                  recipient_list,
+                                  reply_to=reply_to,
+                                  connection=connection)
+    if html_message:
+        mail.attach_alternative(html_message, 'text/html')
+
+    return mail.send()
+
+
+def get_staff_emails():
+    """If available, return shared staff email address from settings,
+    otherwise get email addresses of all active staff members"""
+
+    if config.STAFF_EMAIL_ADDRESS:
+        return [config.STAFF_EMAIL_ADDRESS]
+    else:
+        return list(User.objects.filter(is_active=True, is_staff=True, groups__name=settings.DEEPSEQ).values_list('email', flat=True))
 
 
 class PDF(FPDF):  # pragma: no cover
@@ -178,6 +225,10 @@ class Report(FPDF, HTMLMixin):
         return html
 
 
+class ApprovalEmailAsPDF(FPDF, HTMLMixin):
+    pass
+
+
 class RequestViewSet(viewsets.ModelViewSet):
     serializer_class = RequestSerializer
     pagination_class = StandardResultsSetPagination
@@ -185,15 +236,28 @@ class RequestViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = (
         "name",
-        "description",
-        "user__first_name",
         "user__last_name",
-        "user__pi__name",
-        "user__organization__name",
         "cost_unit__name",
+        "pi__last_name",
+        "user__cost_unit__organization__name"
     )
 
-    def get_queryset(self, showAll=True):
+    def get_queryset(self, request=None):
+
+        showAll = True
+        asBioinformatician = False
+        asHandler = False
+
+        if request:
+            if request.GET.get("showAll") == "False":
+                showAll = False
+
+            if request.GET.get("asBioinformatician") == "True":
+                asBioinformatician = True
+
+            if request.GET.get("asHandler") == "True":
+                asHandler = True
+
         libraries_qs = Library.objects.all().only("status", "sequencing_depth")
         samples_qs = Sample.objects.all().only("status", "sequencing_depth")
         #   print(libraries_qs.values())
@@ -211,24 +275,33 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if not showAll:
             queryset = queryset.filter(sequenced=False)
-        if self.request.user.is_staff:
+
+        if asBioinformatician:
+            queryset = queryset.filter(bioinformatician=self.request.user)
+
+        if asHandler:
+            queryset = queryset.filter(handler=self.request.user)
+
+        if self.request.user.is_staff or self.request.user.member_of_bcf:
+            # Show only those Requests, whose libraries and samples
+            # haven't reached status 6 yet
+            # TODO: find a way to hide requests
+            # queryset = [x for x in queryset if x.statuses.count(6) == 0]
+            # queryset = [x for x in queryset if x.statuses.count(5)==0]
             pass
+        elif self.request.user.is_pi:
+            queryset = queryset.filter(pi=self.request.user)
         else:
-            if not self.request.user.is_pi:
-                queryset = queryset.filter(user=self.request.user)
-            else:
-                queryset = retrieve_group_items(self.request, queryset)
+            queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
+
+        # queryset = [x for x in queryset if x.statuses.count(5)==0]
 
         return queryset
 
     def list(self, request):
         """Get the list of requests."""
 
-        showAll = False
-        if request.GET.get("showAll") == "True":
-            showAll = True
-
-        queryset = self.filter_queryset(self.get_queryset(showAll))
+        queryset = self.filter_queryset(self.get_queryset(request))
 
         try:
             page = self.paginate_queryset(queryset)
@@ -251,7 +324,7 @@ class RequestViewSet(viewsets.ModelViewSet):
 
         if serializer.is_valid():
             serializer.save()
-            return Response({"success": True, "pk": serializer.data["pk"]}, 201)
+            return Response({"success": True, 'pk': serializer.data['pk']}, 201)
 
         else:
             return Response(
@@ -291,6 +364,60 @@ class RequestViewSet(viewsets.ModelViewSet):
     def mark_as_complete(self, request, pk=None):
         """Mark request as complete, set sequenced to true"""
 
+        def send_completed_email(instance, request):
+
+            """Inform relevant users that a request has been marked as complete"""
+
+            # Create relevant info for the email
+            instance = instance.get() # instance from the parent is a qs
+            instance.date = instance.create_time.strftime("%d.%m.%Y")
+            instance.cost_unit = instance.cost_unit if instance.cost_unit else 'NA'
+            instance.description = instance.description if instance.description else 'NA'
+            objects = list(
+                itertools.chain(
+                    instance.samples.all(),
+                    instance.libraries.all(),
+                )
+            )
+            records = [
+                {
+                    "name": obj.name,
+                    "type": obj.__class__.__name__,
+                    "barcode": obj.barcode,
+                    "status": 'Data delivered' if obj.status == 6 else 'Data not delivered',
+                }
+                for obj in objects
+            ]
+            records = sorted(records, key=lambda x: x["barcode"][3:])
+
+            current_site = get_current_site(request)
+            url =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
+
+            # Create the message
+            html_message = render_to_string(
+                                "completed_email.html",
+                                {
+                                    "original": instance,
+                                    "records": records,
+                                    "url": url
+                                },)
+            
+            subject = f'Request {instance.name} is complete'
+            recipients = list(set([instance.pi.email, instance.user.email, request.user.email]))
+            if not instance.bioinformatician.email.lower().endswith('example.com'):
+                recipients.append(instance.bioinformatician.email)
+            staff_emails = get_staff_emails()
+            recipients += staff_emails
+
+            send_mail_with_replyto(
+                    subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
+                    message="",
+                    html_message=html_message,
+                    from_email=settings.SERVER_EMAIL,
+                    recipient_list=recipients,
+                    reply_to=staff_emails if staff_emails else None
+                )
+
         instance = Request.objects.filter(archived=False, pk=pk)
 
         post_data = self._get_post_data(request)
@@ -302,7 +429,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             override = True
 
         def checkifcomplete(element):
-            if element == 5:
+            if element == 6:
                 return True
             else:
                 return False
@@ -310,6 +437,11 @@ class RequestViewSet(viewsets.ModelViewSet):
         if override:
             print("Override is true")
             instance.update(sequenced=True)
+            # Set libraries/samples that have status Sequencing
+            # but were not reported by BCL convert as Data not delivered
+            instance.get().samples.filter(status=5).update(status=7)
+            instance.get().libraries.filter(status=5).update(status=7)
+            send_completed_email(instance, request)
             return Response({"success": True})
 
         else:
@@ -323,6 +455,7 @@ class RequestViewSet(viewsets.ModelViewSet):
             if complete:
                 print("all statuses are complete")
                 instance.update(sequenced=True)
+                send_completed_email(instance, request)
                 return Response({"success": True})
             elif not complete:
                 print("there are incomplete statuses")
@@ -330,12 +463,219 @@ class RequestViewSet(viewsets.ModelViewSet):
             else:
                 return Response({"error": "error"})
 
+    def send_approval_email(self, instance, subject, message, recipients, save_email_as_pdf=False):
+        """Send emails related to the approval of a request"""
+
+        # Create relevant info for the email
+        instance.date = instance.create_time.strftime("%d.%m.%Y")
+        instance.cost_unit = instance.cost_unit if instance.cost_unit else 'NA'
+        instance.description = instance.description if instance.description else 'NA'
+        objects = list(
+            itertools.chain(
+                instance.samples.all(),
+                instance.libraries.all(),
+            )
+        )
+        records = [
+            {
+                "name": obj.name,
+                "type": obj.__class__.__name__,
+                "barcode": obj.barcode,
+                "depth": obj.sequencing_depth,
+            }
+            for obj in objects
+        ]
+        records = sorted(records, key=lambda x: x["barcode"][3:])
+
+        # Create the message
+        html_message = render_to_string(
+                            "approval_email.html",
+                            {
+                                "original": instance,
+                                'message': message,
+                                "records": records,
+                            },)
+
+        staff_emails = get_staff_emails()
+
+        # If required, save the message to deep_seq_request
+        if save_email_as_pdf:
+
+            recipients += staff_emails
+
+            html_pdf = render_to_string(
+                            "approval_email_pdf.html",
+                            {
+                                "original": instance,
+                                'message': message,
+                                "records": records,
+                            },)
+            pdf = ApprovalEmailAsPDF()
+            pdf.add_page()
+            pdf.write_html(html_pdf)
+            deep_seq_request_content = ContentFile(pdf.output(dest='S'))
+            instance.deep_seq_request.save(f"request_{instance.id}_{timezone.now().strftime('%Y%m%d_%H%M%S_%f')}.pdf", deep_seq_request_content)
+            instance.save()
+
+        send_mail_with_replyto(
+                subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
+                message="",
+                html_message=html_message,
+                from_email=settings.SERVER_EMAIL,
+                recipient_list=recipients,
+                reply_to=staff_emails if staff_emails else None
+            )
+
+    @action(methods=["get"], detail=True)
+    def approve(self, request, pk=None):
+        """
+        Mark request as approved by saving message as deep_seq_request and 
+        change request's libraries' and samples' statuses to 1.
+        """
+        
+        def get_client_ip(request):
+            # Stolen from https://stackoverflow.com/questions/4581789/how-do-i-get-user-ip-address-in-django
+            # and amended
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+            ip = 'N/A'
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                remote_address = request.META.get('REMOTE_ADDR')
+                if remote_address:
+                    ip = remote_address
+            return ip
+
+        try:
+
+            instance = Request.objects.get(pk=pk)
+            token = request.GET.get("token")
+
+            if not instance.pi:
+                raise Exception("The request cannot be approved because the PI is missing.")
+            
+            # Make sure that the user trying to approve a request is
+            # the PI of said request, is a staff member or a token is present
+            if not (request.user == instance.pi or request.user.is_staff or token):
+                raise Exception('You are not allowed to approve this request.')
+            
+            # Check if token is valid
+            if token and token != instance.token:
+                raise ValueError("The token is not valid.")
+
+            # A request can't be approved twice
+            if instance.deep_seq_request:
+                raise Exception('This request was already approved.')
+
+            # If all conditions are met, approve request
+
+            # Change the status of libraries and samples
+            instance.libraries.all().update(status=1)
+            instance.samples.all().update(status=1)
+
+            # Set approval user and datetime, and token (to None)
+            instance.approval_user = request.user
+            instance.approval_time = timezone.now()
+            instance.token = None
+            instance.approval = {
+                    "TIMESTAMP": dateformat.format(instance.approval_time, "c"),
+                    "TOKEN": token,
+                    "REMOTE_ADDR": request.META.get("REMOTE_ADDR"),
+                    "REMOTE_PORT": request.META.get("REMOTE_PORT"),
+                    "HTTP_USER_AGENT": request.headers.get("user-agent"),
+                    "HTTP_ACCEPT": request.headers.get("accept"),
+                    "HTTP_ACCEPT_ENCODING": request.headers.get("accept-encoding"),
+                    "HTTP_ACCEPT_LANGUAGE": request.headers.get("accept-language"),
+                    "HTTP_X_FORWARDED_FOR": request.headers.get("x-forwarded-for"),
+                    "HTTP_X_REAL_IP": request.headers.get("x-real-ip"),
+                    "OIDC_ID": request.user.oidc_id,
+                    "EMAIL": request.user.email
+                }
+            instance.save(update_fields=["token", "approval", "approval_user", "approval_time"])
+
+            email_recipients = list(set([instance.pi.email, instance.user.email, request.user.email]))
+            if not instance.bioinformatician.email.lower().endswith('example.com'):
+                email_recipients.append(instance.bioinformatician.email)
+
+            request.session_id = request.session._get_or_create_session_key()
+            request.origin_ip = get_client_ip(request)
+            approved_by = f'{request.user.full_name} ({request.user.email})'
+            
+            subject = f'A request was approved - {instance.name} ({instance.pi.full_name})'
+            message = render_to_string('approved_message.html',
+                                    {'approved_by': approved_by,
+                                        'now_dt': timezone.localtime(instance.approval_time).strftime('%d.%m.%Y at %H:%M:%S'),
+                                        'request': request})
+            
+            self.send_approval_email(instance, subject, message, email_recipients, save_email_as_pdf=True)
+
+            # Check where the approval comes from
+            # email -> redirect = True
+            # click from context menu -> redirect = False 
+            redirect = request.GET.get('redirect', False)
+            if redirect:
+                return render(request, 'confirm_request_approval.html')
+
+            return Response({"success": True})
+        
+        except Exception as e:
+
+            logger.exception(e)
+            return Response({"success": False, 'detail': str(e)}, 400)
+
+    @action(methods=["get"], detail=True)
+    def request_approval(self, request, pk=None):
+        """Send email to PI to ask for request approval"""
+
+        try:
+            # Set some variables for the obj to then be used in the email template
+            instance = Request.objects.get(pk=pk)# self.get_object()
+            instance.token = get_random_string(30)
+            instance.save(update_fields=["token"])
+
+            if not instance.pi:
+                return Response({"success": False, 
+                                 "message": "Approval cannot be requested because the PI is missing."},
+                                400)
+
+            # Build relevant URLs
+            current_site = get_current_site(request)
+            base_domain =  f'{request.scheme + "://" if request.scheme else ""}{current_site.name}'
+            url_query_params = urlencode({"token": instance.token, 'redirect': 'true',})
+            redirect_url = f'{reverse("request-approve", args=(pk,))}?{url_query_params}'
+            url_query_params = urlencode({"approval_url": redirect_url,})
+            approval_url= f'{base_domain}{reverse("approve_request_redirect")}?{url_query_params}'
+
+            email_recipients = [instance.pi.email]
+        
+            subject = 'A sequencing request needs your approval'
+            message = render_to_string('request_approval_message.html',
+                                        {'original': instance,
+                                        'approval_url': approval_url,
+                                        'base_domain': base_domain})
+
+            self.send_approval_email(instance, subject, message, email_recipients)
+
+            return Response({"success": True})
+            
+        except Exception as e:
+            
+            logger.exception(e)
+            return Response({"success": False,
+                             'message': 'There was an error handling this request.'},
+                             400)
+
     @action(methods=["post"], detail=True)
     def samples_submitted(self, request, pk=None):
         instance = self.get_object()
         post_data = self._get_post_data(request)
         instance.samples_submitted = post_data["result"]
-        instance.save(update_fields=["samples_submitted"])
+        # Set or unset time of request submission
+        if post_data["result"]:
+            instance.samples_submitted_time = timezone.now()
+        else:
+            instance.samples_submitted_time = None
+        instance.save(update_fields=["samples_submitted", "samples_submitted_time"])
         return Response({"success": True})
 
     @action(methods=["get"], detail=True)
@@ -383,6 +723,10 @@ class RequestViewSet(viewsets.ModelViewSet):
         return Res
 
     @action(methods=["get"], detail=True)
+    def get_email(self, request, pk=None):
+        """Get the user email address to ship him data."""
+
+    @action(methods=["get"], detail=True)
     def get_protocol(self, request, pk=None):
         """For example, to poll IDs of Nanopore's Sequencing Kits"""
         instance = LibraryProtocol(id=pk)
@@ -405,7 +749,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def get_files(self, request, pk=None):
         """Get the list of attached files for a request with a given id."""
-        instance = self.get_object()
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
         files = instance.files.all().order_by("name")
         serializer = RequestFileSerializer(files, many=True)
         return Response(serializer.data)
@@ -677,38 +1021,59 @@ class RequestViewSet(viewsets.ModelViewSet):
         """Send an email to the user."""
         error = ""
 
-        instance = self.get_object()
+        instance = Request.objects.get(id=pk)
         subject = request.data.get("subject", "")
         message = request.data.get("message", "")
         include_failed_records = json.loads(
-            request.POST.get("include_failed_records", "false")
+            request.POST.get("reject_request", "false")
         )
-        records = []
+        failed_records = []
 
         try:
             if subject == "" or message == "":
                 raise ValueError("Email subject and/or message is missing.")
 
             if include_failed_records:
-                records = list(instance.libraries.filter(status=-1)) + list(
-                    instance.samples.filter(status=-1)
+                libraries = instance.libraries.all()
+                samples = instance.samples.all()
+                failed_records = list(libraries.filter(status=-1)) + list(
+                    samples.filter(status=-1)
                 )
-                records = sorted(records, key=lambda x: x.barcode[3:])
+                failed_records = sorted(failed_records, key=lambda x: x.barcode[3:])
 
-            send_mail(
-                subject=subject,
+                # Reject request and change status of libraries/samples to 0
+                subject = f'REJECTED {subject.strip()}'
+                instance.deep_seq_request = None
+                instance.approval_user = None
+                instance.approval_time = None
+                instance.save()
+                libraries.update(status=0)
+                samples.update(status=0)
+
+            staff_emails = get_staff_emails()
+
+            send_mail_with_replyto(
+                subject=f'{settings.EMAIL_SUBJECT_PREFIX} {subject}',
                 message="",
                 html_message=render_to_string(
                     "email.html",
                     {
                         "full_name": instance.user.full_name,
-                        "message": message,
-                        "records": records,
+                        "message": message.replace('\n', '<br>'),
+                        "records": failed_records,
                     },
                 ),
                 from_email=settings.SERVER_EMAIL,
-                recipient_list=[instance.user.email],
+                recipient_list=[instance.user.email, instance.pi.email] + staff_emails,
+                reply_to=staff_emails if staff_emails else None
             )
+
+            if failed_records:
+                # Add a comment to failed samples/libraries
+                for r in failed_records:
+                    r.comments_facility = r.comments_facility if r.comments_facility else ""
+                    r.comments_facility = (f'[{settings.EMAIL_SUBJECT_PREFIX} This library/sample previously failed QC] ' + r.comments_facility).strip()
+                    r.save()
 
         except Exception as e:
             error = str(e)
@@ -719,7 +1084,9 @@ class RequestViewSet(viewsets.ModelViewSet):
     @action(methods=["get"], detail=True)
     def download_complete_report(self, request, pk=None):
         def add_table(document, header, data, contains_comments=True):
+
             if contains_comments:
+
                 # Create table
                 # table = document.add_table(rows=1, cols=len(header))
                 table = document.add_table(rows=1, cols=len(header) - 1)
@@ -751,6 +1118,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                 table = document.add_table(rows=1, cols=len(header))
                 hdr_cells = table.rows[0].cells
                 for i, h in enumerate(header):
+
                     hdr_cells[i].text = h
                 for row in data:
                     row_cells = table.add_row().cells
@@ -1045,6 +1413,77 @@ class RequestViewSet(viewsets.ModelViewSet):
             post_data = json.loads(request.data.get("data", "{}"))
         return post_data
 
+    def destroy(self, request, pk=None, *args, **kwargs):
+        # A ripoff of https://stackoverflow.com/a/52700398/4222260
+
+        try:
+            super(RequestViewSet, self).destroy(request, pk, *args, **kwargs)
+            return Response({"success": True}, 200)
+        except:
+            return Response({"success": False, "message": 'The request could not be deleted.'}, 404)
+
+    @action(methods=["get"], detail=True)
+    def download_libraries_excel(self, request, pk=None):
+        
+        # Create Excel workbook, sheet and bold style
+        wb = Workbook()
+        ws = wb.active
+        bold_font = Font(bold=True)
+
+        # Get libraries and samples from sequencing request
+        instance = get_object_or_404(self.get_queryset(), pk=pk)
+        libraries = instance.libraries.all().order_by('barcode')
+        samples = instance.samples.all().order_by('barcode')
+
+        # Add samples, if they exist
+        if samples.exists():
+            
+            ws.title = 'Samples'
+            sample_columns = ['barcode', 'name', 'organism__name', 'source', 'nucleic_acid_type__name', 
+                              'library_type__name', 'library_protocol__name', 'sample_volume_user', 
+                              'concentration', 'rna_quality', 'cell_density', 'cell_viability', 
+                              'starting_number_cells', 'number_targeted_cells', 'read_length__name', 
+                              'sequencing_depth', 'amplification_cycles', 'concentration_method__name',
+                              'comments']
+            
+            # Write header
+            model = samples.model
+            sample_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in sample_columns]
+            ws.append(sample_columns_names)
+            # Make header bold
+            for cell in ws[f'{ws._current_row}:{ws._current_row}']:
+                cell.font = bold_font
+            # Append data
+            [ws.append(sample)for sample in samples.values_list(*sample_columns)]
+
+        # Add libraries, if they exist
+        if libraries.exists():
+
+            if ws.title == 'Samples':
+                ws = wb.create_sheet()
+            ws.title = 'Libraries'
+            library_columns = ['barcode', 'name', 'organism__name', 'source', 'library_type__name',
+                               'library_protocol__name', 'sample_volume_user', 'concentration', 
+                               'mean_fragment_size', 'index_type', 'index_i7', 'index_i5', 
+                               'read_length__name', 'sequencing_depth', 'amplification_cycles',
+                               'qpcr_result', 'concentration_method__name', 'comments']
+            # Write header
+            model = libraries.model
+            library_columns_names = [model._meta.get_field(f.split('__')[0]).verbose_name for f in library_columns]
+            ws.append(library_columns_names)
+            # Make header bold
+            for cell in ws[f'{ws._current_row}:{ws._current_row}']:
+                cell.font = bold_font
+            # Append data
+            [ws.append(library) for library in libraries.values_list(*library_columns)]
+
+        filename = f"{instance.name}_libraries_samples.xlsx"
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        wb.save(response)
+        return response
+
 
 class ApproveViewSet(viewsets.ModelViewSet):
     permission_classes = [AllowAny]
@@ -1098,3 +1537,15 @@ class ApproveViewSet(viewsets.ModelViewSet):
             recipient_list=[instance.user.email, instance.user.pi.email],
         )
         return HttpResponseRedirect("/danke")
+
+@login_required
+def approve_request_redirect(request):
+    '''Pass-through for API call to approve a request, which 
+    enforces logging in, if not already logged in'''
+
+    approval_url = request.GET.get("approval_url")
+
+    if not approval_url:
+        return HttpResponse(status=500)
+
+    return HttpResponseRedirect(approval_url)

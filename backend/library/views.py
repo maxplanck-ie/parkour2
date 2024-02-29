@@ -8,6 +8,7 @@ from django.db.models import Prefetch, Q
 from library_sample_shared.views import LibrarySampleBaseViewSet
 from rest_framework import viewsets
 from rest_framework.response import Response
+from django.db.models import Q
 
 from .serializers import (
     LibrarySerializer,
@@ -23,6 +24,7 @@ logger = logging.getLogger("db")
 
 
 class LibrarySampleTree(viewsets.ViewSet):
+
     def filter_and_search(
         self, queryset, search_string, status_filter, library_protocol_filter
     ):
@@ -46,11 +48,14 @@ class LibrarySampleTree(viewsets.ViewSet):
 
     def get_queryset(
         self,
-        show_all=True,
+        show_all=False,
+        as_bioinformatician=False,
+        as_handler=False,
         search_string=None,
         status_filter=None,
         library_protocol_filter=None,
     ):
+
         libraries_qs = Library.objects.all().only("sequencing_depth")
         samples_qs = Sample.objects.all().only("sequencing_depth")
 
@@ -73,22 +78,41 @@ class LibrarySampleTree(viewsets.ViewSet):
 
         if not show_all:
             queryset = queryset.filter(sequenced=False)
-        if not self.request.user.is_staff:
-            if not self.request.user.is_pi:
-                queryset = queryset.filter(user=self.request.user)
+
+        if as_bioinformatician:
+            queryset =queryset.filter(bioinformatician=self.request.user)
+
+        if as_handler:
+            queryset = queryset.filter(handler=self.request.user)
+
+        if not (self.request.user.is_staff or self.request.user.member_of_bcf):
+            if self.request.user.is_pi:
+               queryset =queryset.filter(pi=self.request.user)
             else:
-                queryset = retrieve_group_items(self.request, queryset)
+                queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
         return queryset
 
     def list(self, request):
         """Get the list of libraries and samples."""
+        
+        show_all = False
+        as_bioinformatician = False
+        as_handler = False
 
-        show_all = request.query_params.get("showAll") or False
+        if request.GET.get("showAll") == "True":
+            show_all = True
+
+        if request.GET.get("asBioinformatician") == "True":
+            as_bioinformatician = True
+
+        if request.GET.get("asHandler") == "True":
+            as_handler = True
+
         search_string = request.query_params.get("searchString")
         status_filter = request.query_params.get("statusFilter")
         library_protocol_filter = request.query_params.get("libraryProtocolFilter")
-        request_id = request.query_params.get("node", None)
+        request_id = self.request.query_params.get("node", None)
 
         if request_id and request_id != "root":
             libraries_qs = Library.objects.all().select_related(
@@ -122,11 +146,11 @@ class LibrarySampleTree(viewsets.ViewSet):
                 .only("name")
             )
 
-            if not self.request.user.is_staff:
-                if not self.request.user.is_pi:
-                    queryset = queryset.filter(user=self.request.user)
+            if not (self.request.user.is_staff or self.request.user.member_of_bcf):
+                if self.request.user.is_pi:
+                    queryset = queryset.filter(pi=self.request.user)
                 else:
-                    queryset = retrieve_group_items(self.request, queryset)
+                    queryset = queryset.filter(Q(user=self.request.user) | Q(bioinformatician=self.request.user)).distinct()
 
             queryset = queryset.first()
             serializer = RequestChildrenNodesSerializer(queryset)
@@ -147,9 +171,8 @@ class LibrarySampleTree(viewsets.ViewSet):
                     400,
                 )
         else:
-            queryset = self.get_queryset(
-                show_all, search_string, status_filter, library_protocol_filter
-            )
+            queryset = self.get_queryset(show_all, as_bioinformatician, as_handler,
+                                     search_string, status_filter, library_protocol_filter)
             serializer = RequestParentNodeSerializer(queryset, many=True)
             filtered_data = [
                 item for item in serializer.data if item["total_records_count"] != 0

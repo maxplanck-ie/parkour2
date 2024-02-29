@@ -26,8 +26,6 @@ class SequencerSerializer(ModelSerializer):
         fields = (
             "id",
             "name",
-            "lanes",
-            "lane_capacity",
         )
 
 
@@ -118,7 +116,6 @@ class LaneSerializer(ModelSerializer):
         i = 0
         records = obj.pool.libraries.all() or obj.pool.samples.all()
         for record in records:
-            print(record.library_protocol.name)
             read_lengths.append(str(record.read_length.name))
 
         if len(read_lengths) == 1 or len(set(read_lengths)) == 1:
@@ -178,7 +175,9 @@ class LaneSerializer(ModelSerializer):
 
 class FlowcellListSerializer(ModelSerializer):
     flowcell = SerializerMethodField()
+    sequencer = SerializerMethodField()
     sequencer_name = SerializerMethodField()
+    pool_size_name = SerializerMethodField()
     lanes = LaneSerializer(many=True)
 
     class Meta:
@@ -188,16 +187,29 @@ class FlowcellListSerializer(ModelSerializer):
             "flowcell_id",
             "sequencer",
             "sequencer_name",
+            "pool_size_name",
             "create_time",
             "lanes",
+            "run_name",
+            "read1_cycles",
+            "read2_cycles",
+            "index1_cycles",
+            "index2_cycles",
+            "library_prep_kits",
         )
 
     def get_flowcell(self, obj):
-        pprint(vars(obj))
+        # pprint(vars(obj)) # not sure why this is here
         return obj.pk
 
+    def get_sequencer(self, obj):
+        return obj.pool_size.sequencer.id
+
     def get_sequencer_name(self, obj):
-        return obj.sequencer.name
+        return str(obj.pool_size.sequencer)
+
+    def get_pool_size_name(self, obj):
+        return str(obj.pool_size)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -212,8 +224,14 @@ class FlowcellListSerializer(ModelSerializer):
                         "flowcell": data["flowcell"],
                         "flowcell_id": data["flowcell_id"],
                         "sequencer": data["sequencer"],
+                        "pool_size_name": data["pool_size_name"],
                         "sequencer_name": data["sequencer_name"],
                         "create_time": data["create_time"],
+                        "run_name": data["run_name"],
+                        "read1_cycles": data["read1_cycles"],
+                        "read2_cycles": data["read2_cycles"],
+                        "index1_cycles": data["index1_cycles"],
+                        "index2_cycles": data["index2_cycles"],
                     },
                     **x,
                 },
@@ -227,7 +245,13 @@ class FlowcellSerializer(ModelSerializer):
         model = Flowcell
         fields = (
             "flowcell_id",
-            "sequencer",
+            "pool_size",
+            "run_name",
+            "read1_cycles",
+            "read2_cycles",
+            "index1_cycles",
+            "index2_cycles",
+            "library_prep_kits"
         )
 
     def to_internal_value(self, data):
@@ -242,8 +266,8 @@ class FlowcellSerializer(ModelSerializer):
             )
 
         # Check if all lanes are loaded
-        sequencer = internal_value.get("sequencer")
-        if len(lanes) != sequencer.lanes:
+        pool_size = internal_value.get("pool_size")
+        if len(lanes) != pool_size.lanes:
             raise ValidationError(
                 {
                     "lanes": ["All lanes must be loaded."],
@@ -280,7 +304,7 @@ class FlowcellSerializer(ModelSerializer):
         # After creating a flowcell, update all pool's libraries' and
         # samples' statuses if the pool is fully loaded
         for pool in pools:
-            if pool.loaded == pool.size.multiplier:
+            if pool.loaded == pool.size.lanes:
                 pool.libraries.all().filter(status=4).update(status=5)
                 pool.samples.all().filter(status=4).update(status=5)
 
@@ -338,7 +362,7 @@ class PoolListSerializer(ModelSerializer):
         return obj.size.pk
 
     def get_pool_size(self, obj):
-        return obj.size.multiplier
+        return obj.size.lanes
 
     def get_ready(self, obj):
         libraries_statuses = [x.status for x in obj.libraries.all()]
@@ -359,6 +383,7 @@ class PoolInfoBaseSerializer(ModelSerializer):
     record_type = SerializerMethodField()
     protocol_name = SerializerMethodField()
     request_name = SerializerMethodField()
+    request_pk = SerializerMethodField()
 
     class Meta:
         fields = (
@@ -367,6 +392,7 @@ class PoolInfoBaseSerializer(ModelSerializer):
             "record_type",
             "protocol_name",
             "request_name",
+            "request_pk",
         )
 
     def get_record_type(self, obj):
@@ -377,6 +403,9 @@ class PoolInfoBaseSerializer(ModelSerializer):
 
     def get_request_name(self, obj):
         return obj.request.get().name
+
+    def get_request_pk(self, obj):
+        return obj.request.get().pk
 
 
 class PoolInfoLibrarySerializer(PoolInfoBaseSerializer):

@@ -15,6 +15,12 @@ def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
     """
     if action == "post_add":
         instance.libraries.all().update(is_pooled=True)
+       
+        # If only libraries from the same request are present in
+        # pool, push it through the Pooling stage directly onto
+        #  the Load flowcell stage
+        if instance.samples.count() == 0 and len(set(instance.libraries.all().values_list('request__name', flat=True))) == 1:
+            instance.libraries.all().update(status=4)
 
         # TODO: maybe there is a better way to create multiple objects at once
         for library in instance.libraries.all():

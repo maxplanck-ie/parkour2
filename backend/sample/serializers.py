@@ -8,12 +8,22 @@ from sample.models import NucleicAcidType, Sample
 
 
 class NucleicAcidTypeSerializer(ModelSerializer):
+
+    type = SerializerMethodField()
+
+    def get_type(self, obj):
+        if obj.single_cell:
+            return f'SingleCell{obj.type}'
+        else:
+            return obj.type
+    
     class Meta:
         model = NucleicAcidType
         fields = (
             "id",
             "name",
             "type",
+            "single_cell",
         )
 
 
@@ -31,6 +41,10 @@ class SampleSerializer(LibrarySampleBaseSerializer):
             "rna_quality",
             "nucleic_acid_type",
             "nucleic_acid_type_name",
+            "cell_density",
+            "cell_viability", 
+            "starting_number_cells",
+            "number_targeted_cells"
         )
 
     def get_record_type(self, obj):

@@ -43,11 +43,20 @@ Ext.define("MainHub.view.requests.EmailWindow", {
         {
           xtype: "fieldcontainer",
           defaultType: "checkboxfield",
-          name: "include_failed_records",
+          name: "reject_request",
+          itemId: "reject-field",
           items: [
             {
-              boxLabel: "Include the list of all failed libraries and samples",
-              name: "include_failed_records",
+              boxLabel:
+                "Reject request <sup><strong>" +
+                '<span class="reject-request-tooltip" tooltip-text="' +
+                "All failed libraries/samples will be automatically " +
+                "included in the message. <br>" +
+                "The status of ALL libraries/samples will be " +
+                "changed to 'Pending submission' and the request will " +
+                "be unapproved." +
+                '">[!]</span></strong></sup>',
+              name: "reject_request",
               inputValue: "true",
               checked: false
             }

@@ -1,26 +1,17 @@
 [
   {
     "model": "common.organization",
-    "pk": 1,
-    "fields": {
-      "name": "DEEP",
-      "archived": false
-    }
-  },
-  {
-    "model": "common.organization",
     "pk": 2,
-    "fields": {
-      "name": "MPI-IE",
-      "archived": false
-    }
+    "fields": { "name": "JGU", "archived": false }
   },
   {
     "model": "common.organization",
     "pk": 3,
-    "fields": {
-      "name": "University Freiburg",
-      "archived": false
-    }
+    "fields": { "name": "SFB1361", "archived": false }
+  },
+  {
+    "model": "common.organization",
+    "pk": 4,
+    "fields": { "name": "IMB", "archived": false }
   }
 ]

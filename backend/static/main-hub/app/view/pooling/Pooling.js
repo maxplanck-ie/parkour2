@@ -24,7 +24,16 @@ Ext.define("MainHub.view.pooling.Pooling", {
         title: "Pooling",
         items: [
           {
-            xtype: "parkoursearchfield",
+            xtype: "checkbox",
+            boxLabel:
+              '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+            itemId: "as-handler-pooling-checkbox",
+            margin: "0 15 0 0",
+            cls: "grid-header-checkbox",
+            checked: false,
+          },
+          {
+            xtype: "textfield",
             itemId: "search-field",
             emptyText: "Search",
             width: 320
@@ -59,7 +68,27 @@ Ext.define("MainHub.view.pooling.Pooling", {
           menuDisabled: true,
           hideable: false,
           tdCls: "no-dirty",
-          width: 35
+          width: 35,
+          listeners: {
+            checkchange: function (
+              checkcolumn,
+              rowIndex,
+              checked,
+              record,
+              eOpts
+            ) {
+              // If pool of libraries, force select/unselect all records in request
+              if (record.get("request_pooled_libraries")) {
+                var grid = this.up("#pooling-grid");
+                var store = grid.getStore();
+                store.each(function (item) {
+                  if (item.get("request") === record.get("request")) {
+                    item.set("selected", checked);
+                  }
+                });
+              }
+            },
+          },
         },
         {
           text: "Request",
@@ -161,6 +190,7 @@ Ext.define("MainHub.view.pooling.Pooling", {
       features: [
         {
           ftype: "grouping",
+          id: "pooling-grid-grouping",
           startCollapsed: true,
           enableGroupingMenu: false,
           groupHeaderTpl: [

@@ -23,6 +23,43 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
         qualityCheckMenuOptions: ["passed", "compromised", "failed"]
       },
 
+      listeners: {
+        beforeedit: function (editor, context, eOpts) {
+          var allowedColumns = [
+            "dilution_factor",
+            "concentration_facility",
+            "concentration_method_facility",
+            "sample_volume_facility",
+            "amount_facility",
+            "size_distribution_facility",
+            "comments_facility",
+            "qpcr_result_facility",
+            "rna_quality_facility",
+          ];
+
+          var isAllowedColumn = allowedColumns.includes(context.field);
+
+          // If request is not submitted yet prevent editing and inform user
+          if (!context.record.get("samples_submitted")) {
+            if (isAllowedColumn) {
+              new Noty({
+                text: "Beforing modifying a record, confirm that the request has been submitted.",
+                type: "warning",
+              }).show();
+            }
+            return false;
+          }
+
+          // If pooled libraries, warn that cell cannot be edited
+          if (context.record.get("pooled_libraries") && isAllowedColumn) {
+            new Noty({
+              text: "This field cannot be edited for pooled libraries.",
+              type: "warning",
+            }).show();
+          }
+        },
+      },
+
       header: {
         title: "Incoming Libraries and Samples",
         items: [
@@ -32,6 +69,14 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             layout: "hbox",
             margin: "0 20 0 0",
             items: [
+              {
+                boxLabel:
+                  '<span data-qtip="Check, to show only the requests for which you are responsible">As Handler</span>',
+                itemId: "as-handler-incoming-checkbox",
+                margin: "0 15 0 0",
+                cls: "grid-header-checkbox",
+                checked: false,
+              },
               {
                 boxLabel: "Show Libraries",
                 itemId: "show-libraries-checkbox",
@@ -69,7 +114,36 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             hideable: false,
             tdCls: "no-dirty userEntry",
             // locked: true,
-            width: 35
+            width: 35,
+            listeners: {
+              checkchange: function (
+                checkcolumn,
+                rowIndex,
+                checked,
+                record,
+                eOpts
+              ) {
+                // If request is not submitted yet prevent editing and inform user
+                if (!record.get("samples_submitted")) {
+                  new Noty({
+                    text: "Beforing modifying a record, confirm that the request has been submitted.",
+                    type: "warning",
+                  }).show();
+                  record.set("selected", !checked);
+                  return;
+                }
+                // If pool of libraries force select/unselect of all records in request
+                if (record.get("pooled_libraries")) {
+                  var grid = this.up("#incoming-libraries-grid");
+                  var store = grid.getStore();
+                  store.each(function (item) {
+                    if (item.get("request") === record.get("request")) {
+                      item.set("selected", checked);
+                    }
+                  });
+                }
+              },
+            },
           },
           {
             text: "Name",
@@ -126,6 +200,13 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
               meta.tdAttr = 'data-qtip="' + value + '"';
               return value;
             }
+          },
+          {
+            text: "µl",
+            tooltip: "Volume (user)",
+            dataIndex: "sample_volume_user",
+            tdCls: "userEntry",
+            width: 70,
           },
           {
             text: "ng/µl",
@@ -318,6 +399,7 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
       features: [
         {
           ftype: "checkboxgrouping",
+          id: "incoming-libraries-grid-grouping",
           checkDataIndex: "samples_submitted",
           startCollapsed: true,
           enableGroupingMenu: false,
@@ -326,8 +408,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             '<input type="checkbox" class="group-checkbox" {children:this.getChecked}>',
             "</span>",
             // '<div data-qtip="{children:this.getTooltip}" class="incoming-libraries-group-header">',
-            "<strong>Request: {children:this.getName}</strong> ",
-            "(#: {rows.length}, Total Depth: {children:this.getTotalDepth} M)",
+            "<strong>Request {children:this.getRequestId}: {children:this.getName}</strong> ",
+            "(#: {rows.length}, {children:this.isPooled}Total Depth: {children:this.getTotalDepth} M)",
             // '</div>',
             {
               getName: function (children) {
@@ -345,6 +427,12 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 return children[0].get(this.owner.checkDataIndex)
                   ? "checked"
                   : "";
+              },
+              isPooled: function (children) {
+                return children[0].get("pooled_libraries") ? "Pool, " : "";
+              },
+              getRequestId: function(children) {
+                return children[0].get("request");
               }
               // getTooltip: function (children) {
               //   var totalDepth = Ext.Array.sum(Ext.Array.pluck(Ext.Array.pluck(

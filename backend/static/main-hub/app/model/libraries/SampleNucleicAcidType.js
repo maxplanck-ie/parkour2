@@ -12,7 +12,11 @@ Ext.define("MainHub.model.libraries.SampleNucleicAcidType", {
     },
     {
       type: "string",
-      name: "type"
-    }
-  ]
+      name: "type",
+    },
+    {
+      type: "bool",
+      name: "single_cell",
+    },
+  ],
 });

@@ -54,9 +54,9 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             minWidth: 150
           },
           {
-            text: "Sequencer",
-            dataIndex: "sequencer",
-            renderer: "sequencerRenderer"
+            text: "Sequencing Kit",
+            dataIndex: "pool_size",
+            renderer: "sequencingKitRenderer",
           },
           {
             text: "Date + Flowcell ID",
@@ -137,15 +137,28 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
           items: [
             {
               xtype: "combobox",
+              itemId: "organization-combobox",
+              fieldLabel: "Organization",
+              store: "Organizations",
+              queryMode: "local",
+              valueField: "id",
+              displayField: "name",
+              forceSelection: true,
+              labelWidth: 100,
+            },
+            "-",
+            {
+              xtype: "combobox",
               itemId: "billing-period-combobox",
-              fieldLabel: "Select Billing Period",
+              fieldLabel: "Billing Period",
               store: "BillingPeriods",
               queryMode: "local",
               valueField: "value",
               displayField: "name",
               forceSelection: true,
-              labelWidth: 130,
-              width: 300
+              disabled: true,
+              labelWidth: 100,
+              width: 300,
             },
             "-",
             {
@@ -172,17 +185,19 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
               text: "Download Report",
               itemId: "download-report",
               downloadUrl: "api/invoicing/download/",
-              iconCls: "fa fa-download fa-lg"
+              iconCls: "fa fa-download fa-lg",
+              disabled: true,
             },
             {
               text: "Upload Report",
               itemId: "upload-report",
               uploadUrl: "api/invoicing/upload/",
-              iconCls: "fa fa-upload fa-lg"
-            }
-          ]
-        }
-      ]
+              iconCls: "fa fa-upload fa-lg",
+              disabled: true,
+            },
+          ],
+        },
+      ],
     },
     {
       title: "Costs",

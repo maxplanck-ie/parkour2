@@ -29,6 +29,9 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       "#search-field": {
         change: "changeFilter"
       },
+      "#as-handler-pooling-checkbox": {
+        change: "toggleHandler"
+      },
       "#cancel-button": {
         click: "cancel"
       },
@@ -230,7 +233,14 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       },
 
       failure: function (response) {
-        new Noty({ text: response.statusText, type: "error" }).show();
+        var responseText = response.responseText
+          ? Ext.JSON.decode(response.responseText)
+          : null;
+        responseText = responseText.message
+          ? responseText.message
+          : "Unknown error.";
+        responseText = response.statusText ? response.statusText : responseText;
+        new Noty({ text: responseText, type: "error" }).show();
         console.error(response);
       }
     });
@@ -387,6 +397,19 @@ Ext.define("MainHub.view.pooling.PoolingController", {
         samples: Ext.JSON.encode(Ext.Array.pluck(samples, "pk")),
         libraries: Ext.JSON.encode(Ext.Array.pluck(libraries, "pk"))
       }
+    });
+  },
+
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#pooling-grid");
+    var gridGrouping = grid.view.getFeature("pooling-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
     });
   },
 

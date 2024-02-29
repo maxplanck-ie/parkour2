@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from .models import CostUnit, Organization, PrincipalInvestigator
+from .models import CostUnit, Organization, User, OIDCGroup
 
 User = get_user_model()
 
@@ -54,31 +54,45 @@ class OrganizationTest(TestCase):
         self.assertEqual(self.organization.__str__(), self.organization.name)
 
 
-class PrincipalInvestigatorTest(TestCase):
-    def setUp(self):
-        self.org = Organization(name="Apple")
-        self.pi = PrincipalInvestigator(name="Tim Cook", organization=self.org)
-
-    def test_pi_name(self):
-        self.assertTrue(isinstance(self.org, Organization))
-        self.assertTrue(isinstance(self.pi, PrincipalInvestigator))
-        self.assertEqual(self.pi.__str__(), f"{self.pi.name} ({self.org.name})")
-
-
 class CostUnitTest(TestCase):
     def setUp(self):
         self.org = Organization(name="Apple")
-        self.pi = PrincipalInvestigator(name="Tim Cook", organization=self.org)
-        self.cost_unit = CostUnit(name="K", pi=self.pi)
+        self.pi = User(
+            first_name="Greatest",
+            last_name="Pie",
+            email="greatest.pie@bar.io",
+            password="pie-pie",
+            is_pi=True
+        )
+        self.cost_unit = CostUnit(name="K",
+                                  pi=self.pi,
+                                  organization=self.org)
 
     def test_cost_unit_name(self):
         self.assertTrue(isinstance(self.org, Organization))
-        self.assertTrue(isinstance(self.pi, PrincipalInvestigator))
+        self.assertTrue(isinstance(self.pi, User))
         self.assertTrue(isinstance(self.cost_unit, CostUnit))
+        self.assertEqual(self.cost_unit.__str__(), f"{self.cost_unit.name} ({self.cost_unit.organization})")
+
+class OIDCGroupTest(TestCase):
+    def setUp(self):
+        self.org = Organization(name="Apple")
+        self.pi = User(
+            first_name="Greatest",
+            last_name="Pie",
+            email="greatest.pie@bar.io",
+            password="pie-pie",
+            is_pi=True
+        )
+        self.oidc_group = OIDCGroup(name="some_group", pi=self.pi)
+
+    def test_oidc_group_name(self):
+        self.assertTrue(isinstance(self.org, Organization))
+        self.assertTrue(isinstance(self.pi, User))
+        self.assertTrue(isinstance(self.oidc_group, OIDCGroup))
         self.assertEqual(
-            self.cost_unit.__str__(),
-            "%s (%s: %s)"
-            % (self.cost_unit.name, self.pi.organization.name, self.pi.name),
+            self.oidc_group.__str__(),
+            self.oidc_group.name,
         )
 
 
@@ -126,4 +140,4 @@ class NavigationTreeTest(TestCase):
         ]
 
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(tabs, ["Requests", "Libraries & Samples"])
+        self.assertEqual(tabs, ["Requests", "Libraries & Samples", "Statistics"])

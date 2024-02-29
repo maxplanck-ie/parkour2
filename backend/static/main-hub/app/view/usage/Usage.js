@@ -19,8 +19,26 @@ Ext.define("MainHub.view.usage.Usage", {
   items: [
     {
       xtype: "container",
+      items: [
+        {
+          xtype: "button",
+          id: "download-report-button",
+          itemId: "download-report-button",
+          cls: "download-report-button",
+          iconCls: "fa fa-download fa-lg",
+          text: "Download Report",
+        },
+      ],
+    },
+    {
+      xtype: "container",
       userCls: "big-100",
       style: { textAlign: "center" },
+      layout: {
+        type: "hbox",
+        pack: "center",
+        align: "center",
+      },
       items: [
         {
           xtype: "daterangepicker",
@@ -33,10 +51,37 @@ Ext.define("MainHub.view.usage.Usage", {
             mainBtnTextColor: "#999",
             mainBtnIconCls: "x-fa fa-calendar",
             presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
-            confirmBtnIconCls: "x-fa fa-check"
-          }
-        }
-      ]
+            confirmBtnIconCls: "x-fa fa-check",
+          },
+        },
+        {
+          xtype: "combobox",
+          id: "statusCb",
+          itemId: "statusCb",
+          fieldLabel: "Status",
+          labelWidth: 45,
+          width: 180,
+          padding: "0 0 0 15px",
+          store: Ext.create("Ext.data.Store", {
+            fields: ["name", "label"],
+            data: [
+              { status: "submitted", label: "Submitted" },
+              { status: "sequenced", label: "Sequenced" },
+            ],
+            proxy: { type: "memory" },
+          }),
+          queryMode: "local",
+          displayField: "label",
+          valueField: "status",
+          forceSelection: true,
+          listeners: {
+            afterrender: function () {
+              // Set default value upon rendering
+              this.setValue("submitted");
+            },
+          },
+        },
+      ],
     },
     {
       xtype: "usagerecords",

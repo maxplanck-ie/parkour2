@@ -3,6 +3,7 @@ from django.conf import settings
 from django.core.validators import MinValueValidator, RegexValidator
 from django.db import models
 from django.utils import timezone
+from django.forms import ValidationError
 
 AlphaValidator = RegexValidator(
     r"^[A-Z]$", "Only capital alpha characters are allowed."
@@ -40,7 +41,7 @@ class ConcentrationMethod(models.Model):
 
 
 class ReadLength(models.Model):
-    name = models.CharField("Name", max_length=50)
+    name = models.CharField("Name", max_length=50, help_text='AxB, where A and B are integers')
     archived = models.BooleanField("Archived", default=False)
 
     class Meta:
@@ -50,6 +51,21 @@ class ReadLength(models.Model):
     def __str__(self):
         return self.name
 
+    def clean(self):
+    
+        errors = []
+
+        # Check that name conforms to schema AxB, where A and B are int
+        try:
+            
+            ends, cycles = self.name.split('x')
+            int(ends)
+            int(cycles)
+        except:
+            errors.append(ValidationError('Name must be AxB, where A and B are integers'))
+
+        if len(errors) > 0:
+            raise ValidationError(errors)
 
 class GenericIndex(models.Model):
     prefix = models.CharField("Prefix", max_length=10, default="")
@@ -197,9 +213,15 @@ class IndexPair(models.Model):
 
 
 class BarcodeCounter(models.Model):
-    year = models.PositiveSmallIntegerField(default=2018, unique=True)
+    year = models.PositiveSmallIntegerField(default=2018)
 
     last_id = models.PositiveSmallIntegerField(default=0)
+
+    class Meta:
+        constraints = [
+        models.UniqueConstraint(fields=['year', 'last_id'],
+                                name='unique_year_last_id')
+            ]
 
     @classmethod
     def load(cls, year=timezone.now().year):
@@ -217,9 +239,13 @@ class LibraryProtocol(models.Model):
     name = models.CharField("Name", max_length=150)
     type = models.CharField(
         "Type",
-        max_length=5,
-        choices=(("DNA", "DNA"), ("RNA", "RNA"), ("Cells", "Cells")),
+        max_length=3,
+        choices=(("DNA", "DNA"), ("RNA", "RNA")),
         default="DNA",
+        blank=True
+    )
+    nucleic_acid_types = models.ManyToManyField("sample.NucleicAcidType",
+        verbose_name="nucleic acid type",
     )
     provider = models.CharField("Provider", max_length=150)
     catalog = models.CharField("Catalog", max_length=150)
@@ -292,6 +318,12 @@ class GenericLibrarySample(DateTimeMixin):
 
     status = models.SmallIntegerField(default=0)
 
+    sample_volume_user = models.PositiveIntegerField(
+        "Sample Volume",
+        null=True,
+        blank=True,
+    )
+
     library_protocol = models.ForeignKey(
         LibraryProtocol,
         verbose_name="Library Protocol",
@@ -310,12 +342,19 @@ class GenericLibrarySample(DateTimeMixin):
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
 
+    source = models.CharField(
+        "Source",
+        max_length=200,
+        blank=True,
+    )
+
     concentration = models.FloatField("Concentration")
 
     concentration_method = models.ForeignKey(
         ConcentrationMethod,
         verbose_name="Concentration Method",
         on_delete=models.SET(get_removed_concentrationmethod),
+        null=True
     )
 
     equal_representation_nucleotides = models.BooleanField(

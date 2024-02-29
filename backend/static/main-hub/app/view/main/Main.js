@@ -46,12 +46,18 @@ Ext.define("MainHub.view.main.Main", {
           xtype: "component",
           reference: "logo",
           cls: "main-logo",
-          html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div id="header-title" class="title">Parkour LIMS</div></div>',
-          width: 300
+          html: '<div class="logo"><img src="static/main-hub/resources/images/logo1.svg"><div id="header-title" class="title" style="text-color:red !important"><span>Parkour LIMS</div></div>',
+          width: 300,
+          // Set the width of this element based on that of the navigationTreeList
+          listeners: {
+            beforerender: function (cmp) {
+              cmp.width = cmp.up().up().down("#navigationTreeList").getWidth();
+            },
+          },
         },
         {
           margin: "0 0 0 8",
-          ui: "header",
+          ui: 'header',
           iconCls: "x-fa fa-navicon color-bluish-grey",
           id: "main-navigation-btn",
           handler: "onToggleNavigationSize",
@@ -75,17 +81,17 @@ Ext.define("MainHub.view.main.Main", {
           xtype: "button",
           ui: "header",
           iconCls: "x-fa fa-book color-bluish-grey",
-          href: "https://github.com/maxplanck-ie/parkour2/wiki/Introduction",
-          tooltip: "Documentation"
+          href: DOCUMENTATION_URL,
+          tooltip: "Documentation",
         },
-        {
-          xtype: "button",
-          ui: "header",
-          id: "dutiesBtn",
-          iconCls: "x-fa fa-calendar color-bluish-grey",
-          href: "vue/duties",
-          tooltip: "Duties"
-        },
+        // {
+        //   xtype: "button",
+        //   ui: "header",
+        //   id: "dutiesBtn",
+        //   iconCls: "x-fa fa-calendar color-bluish-grey",
+        //   href: "vue/duties",
+        //   tooltip: "Duties",
+        // },
         {
           xtype: "button",
           ui: "header",
@@ -108,7 +114,10 @@ Ext.define("MainHub.view.main.Main", {
           itemId: "navigationTreeList",
           ui: "navigation",
           store: "NavigationTree",
-          width: 300,
+          // If present, get the value for the navPanelState cookie and
+          // set the width of the nav panel accordingly
+          width:
+            Ext.util.Cookies.get("navPanelState") !== "extended" ? 64 : 300,
           expanderFirst: false,
           expanderOnly: false,
           listeners: {

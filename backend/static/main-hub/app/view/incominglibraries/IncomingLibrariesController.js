@@ -25,6 +25,9 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
       "#show-samples-checkbox": {
         change: "changeFilter"
       },
+      "#as-handler-incoming-checkbox": {
+        change: "toggleHandler"
+      },
       "#cancel-button": {
         click: "cancel"
       },
@@ -39,6 +42,11 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     var qPCRResultEditor = Ext.getCmp("qPCRResultEditor");
     var rnaQualityEditor = Ext.getCmp("rnaQualityIncomingEditor");
     var nucleicAcidTypesStore = Ext.getStore("nucleicAcidTypesStore");
+
+    // If pooled libraries disable row editing
+    if (record.get("pooled_libraries")) {
+      return false;
+    }
 
     // Toggle qPCR Result and RNA Quality
     if (record.get("record_type") === "Library") {
@@ -145,6 +153,19 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibrariesController", {
     } else {
       self._showEditableColumnsMessage(gridView, allowedColumns);
     }
+  },
+
+  toggleHandler: function (checkbox, newValue, oldValue, eOpts) {
+    var grid = checkbox.up("#incoming-libraries-grid");
+    var gridGrouping = grid.view.getFeature("incoming-libraries-grid-grouping");
+    grid.store.getProxy().extraParams.asHandler = newValue ? "True" : "False";
+    grid.store.reload({
+      callback: function (records, operation, success) {
+        if (success) {
+          newValue ? gridGrouping.expandAll() : gridGrouping.collapseAll();
+        }
+      },
+    });
   },
 
   _calculateAmount: function (dilutionFactor, concentration, sampleVolume) {

@@ -16,7 +16,11 @@ Ext.define("MainHub.model.indexgenerator.PoolSize", {
     },
     {
       name: "size",
-      type: "int"
-    }
-  ]
+      type: "int",
+    },
+    {
+      name: "cycles",
+      type: "int",
+    },
+  ],
 });

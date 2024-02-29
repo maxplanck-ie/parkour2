@@ -17,6 +17,13 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
   boxready: function (wnd) {
     var subjectField = wnd.down("#subject-field");
     subjectField.setValue(wnd.record.get("name"));
+    this.initializeTooltips();
+
+    var deepSeqReqPath = wnd.record.get("deep_seq_request_path");
+    var rejectBox = wnd.down("#reject-field");
+    if (deepSeqReqPath === "") {
+      rejectBox.disable();
+    }
   },
 
   send: function (btn) {
@@ -47,7 +54,19 @@ Ext.define("MainHub.view.requests.EmailWindowController", {
           : action.response.statusText;
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
-      }
+      },
     });
-  }
+  },
+
+  initializeTooltips: function () {
+    $.each($(".reject-request-tooltip"), function (idx, item) {
+      Ext.create("Ext.tip.ToolTip", {
+        // title: 'Help',
+        target: item,
+        html: $(item).attr("tooltip-text"),
+        dismissDelay: 15000,
+        maxWidth: 300,
+      });
+    });
+  },
 });

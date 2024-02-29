@@ -12,7 +12,11 @@ Ext.define("MainHub.model.libraries.LibraryProtocol", {
     },
     {
       type: "string",
-      name: "provider"
+      name: "type",
+    },
+    {
+      type: "string",
+      name: "provider",
     },
     {
       type: "string",

@@ -12,6 +12,13 @@ from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
 from import_export import fields, resources
 from import_export.admin import ImportExportModelAdmin
 from openpyxl import load_workbook
+from zipfile import BadZipFile 
+from dataclasses import dataclass
+import re
+from django.contrib import messages
+from django.http import HttpResponseRedirect
+from django.urls import path
+from django.shortcuts import render
 
 from .forms import IndexTypeForm
 from .models import (
@@ -55,6 +62,8 @@ class ConcentrationMethodAdmin(admin.ModelAdmin):
 @admin.register(ReadLength)
 class ReadLengthAdmin(admin.ModelAdmin):
     list_display = ("name", "archived")
+    search_fields = ('name',)
+    ordering = ('name',)
 
     list_filter = (ArchivedFilter,)
 
@@ -82,8 +91,8 @@ class IndexPairInline(admin.TabularInline):
     extra = 2
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        args = resolve(request.path_info).args
-        index_type_id = args[0] if args else None
+        kw_args = resolve(request.path_info).kwargs
+        index_type_id = kw_args.get('object_id', None)
 
         if db_field.name == "index1":
             kwargs["queryset"] = IndexI7.objects.filter(
@@ -159,6 +168,10 @@ class IndexTypeAdmin(ImportExportModelAdmin):
 class IndexPairAdmin(admin.ModelAdmin):
     list_display = ("index_pair", "coordinate", "archived")
     search_fields = ("index_type__name",)
+    autocomplete_fields = (
+        "index1",
+        "index2",
+    )
     list_filter = ("index_type", ArchivedFilter)
 
     actions = (
@@ -185,10 +198,8 @@ class IndexPairAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         return [
-            path(
-                "import_plate_pairs/",
-                self.admin_site.admin_view(self.import_index_pairs),
-            ),
+            path("import_plate_pairs/",
+                self.admin_site.admin_view(self.import_index_pairs)),
             *super().get_urls(),
         ]
 
@@ -377,7 +388,9 @@ class IndexI5Resource(resources.ModelResource):
 class IndexI5Admin(ImportExportModelAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
+        "prefix",
         "index",
+        "number",
         "index_type__name",
     )
     list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
@@ -419,7 +432,9 @@ class IndexI7Resource(resources.ModelResource):
 class IndexI7Admin(ImportExportModelAdmin):
     list_display = ("idx_id", "index", "type", "archived")
     search_fields = (
+        "prefix",
         "index",
+        "number",
         "index_type__name",
     )
     list_filter = (("index_type", RelatedDropdownFilter), ArchivedFilter)
@@ -449,6 +464,7 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "type",
+        "nucleic_acid_type_set",
         "provider",
         "catalog",
         "typical_application",
@@ -475,6 +491,10 @@ class LibraryProtocolAdmin(admin.ModelAdmin):
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
 
+    @admin.display(description="Nucleic Acid Types")
+    def nucleic_acid_type_set(self, obj):
+
+        return ", ".join(obj.nucleic_acid_types.all().values_list('name', flat=True))
 
 @admin.register(LibraryType)
 class LibraryTypeAdmin(admin.ModelAdmin):

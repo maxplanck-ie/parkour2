@@ -11,7 +11,10 @@ class NucleicAcidType(models.Model):
         max_length=3,
         choices=(("DNA", "DNA"), ("RNA", "RNA")),
         default="DNA",
+        help_text='Does not apply if single cell is selected'
     )
+
+    single_cell = models.BooleanField("single cell?", default=False)
 
     status = models.PositiveIntegerField("Status", default=1)
 
@@ -51,6 +54,29 @@ class Sample(GenericLibrarySample):
     )
 
     archived = models.BooleanField("Archived", default=False)
+
+    # Single cell fields
+    cell_density = models.PositiveIntegerField("cell density",
+                                               help_text='For single cell projects',
+                                               default=None,
+                                               null=True,
+                                               blank=True,)
+    cell_viability = models.PositiveIntegerField("cell viability",
+                                                 help_text='For single cell projects',
+                                                 validators=[MinValueValidator(0), MaxValueValidator(101)],
+                                                 default=None,
+                                                 null=True,
+                                                 blank=True,)
+    starting_number_cells = models.PositiveIntegerField("starting number of cell",
+                                                        help_text='For single cell projects',
+                                                        default=None,
+                                                        null=True,
+                                                        blank=True,)
+    number_targeted_cells = models.PositiveIntegerField("number of targeted cells",
+                                                       help_text='For single cell projects',
+                                                       default=None,
+                                                       null=True,
+                                                       blank=True,)
 
     class Meta:
         verbose_name = "Sample"

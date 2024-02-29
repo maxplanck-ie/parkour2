@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  parkour2-nocodb:
+    image: nocodb/nocodb:latest
+    container_name: parkour2-nocodb
+    restart: always
+    volumes:
+      - ncdb_data:/usr/app/data
+    environment:
+      NC_DISABLE_TELE: True
+      NC_MIN: "ok"
+
+volumes:
+  ncdb_data: {}
+
+networks:
+  default:
+      name: parkour2_default

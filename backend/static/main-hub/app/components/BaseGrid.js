@@ -36,7 +36,7 @@ Ext.define("MainHub.components.BaseGrid", {
     },
     {
       ptype: "rowediting",
-      clicksToEdit: 1
+      clicksToEdit: 2,
     },
     {
       ptype: "clipboard"

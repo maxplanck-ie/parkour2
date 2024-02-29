@@ -77,7 +77,7 @@ class ConcentrationMethodTest(TestCase):
 
 class ReadLengthTest(TestCase):
     def setUp(self):
-        self.read_length = ReadLength(name=get_random_name())
+        self.read_length = ReadLength(name='2x75')
 
     def test_read_length_name(self):
         self.assertTrue(isinstance(self.read_length, ReadLength))
@@ -217,7 +217,7 @@ class TestReadLengths(BaseTestCase):
         self.create_user("foo@bar.io", "foo-foo")
         self.client.login(email="foo@bar.io", password="foo-foo")
 
-        self.read_length = ReadLength(name=self._get_random_name())
+        self.read_length = ReadLength(name='1x100')
         self.read_length.save()
 
     def test_organisms_list(self):
