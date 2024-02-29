@@ -199,7 +199,7 @@ class CostUnitsViewSet(viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         pi_id = self.request.query_params.get("principal_investigator_id", None)
-        if self.request.user.is_pi:
+        if self.request.user.is_pi and not self.request.user.is_staff: # Only if PI, but not member of staff
             pi_id = self.request.user.id
         try:
             pi = get_object_or_404(User, id=pi_id)
