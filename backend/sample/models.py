@@ -8,8 +8,8 @@ class NucleicAcidType(models.Model):
 
     type = models.CharField(
         "Type",
-        max_length=3,
-        choices=(("DNA", "DNA"), ("RNA", "RNA")),
+        max_length=5,
+        choices=(("DNA", "DNA"), ("RNA", "RNA"), ("Cells", "Cells")),
         default="DNA",
     )
 
