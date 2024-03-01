@@ -1,7 +1,6 @@
 [
   {
     "model": "common.user",
-    "pk": 59,
     "fields": {
       "password": "!Po4m3wfPoRo3lOP8HUA44BIPCogPTrC1qVVLg0NO",
       "last_login": null,
