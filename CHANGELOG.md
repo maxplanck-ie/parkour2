@@ -4,6 +4,8 @@
 ========
 
 - Added date-range picker in 'Invoicing' submodule. (#?)
+- Fix to PI accounts being unable to access all corresponding media files.
+- Allow lengthier indeces' name or prefixes.
 
 24.02.20
 ========
@@ -13,7 +15,7 @@
 - Fixed a misconfiguration with Django that interfered with the URL shared to PIs for Paperless/ Electronic Approval of sequencing requests. (`7a85900`)
 - new URL: `/api_user_details` (not really an api endpoint), gives some basic user data to upcoming frontend (VueJS).
 - new URL: `/danke` (users are redirected after seq. request approval)
-- new library protocol types for single cell sequencing.
+- new nucleic acid and library protocol types for single cell sequencing.
 - `put-old-migras` and `sweep` rules are more robust now.
 
 24.01.31
