@@ -1,32 +1,6 @@
 [
   {
     "model": "index_generator.poolsize",
-    "pk": 11,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 130,
-      "lanes": 1,
-      "cycles": 150,
-      "archived": false,
-      "read_lengths": [44, 46, 50, 53, 54, 49]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 12,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 400,
-      "lanes": 1,
-      "cycles": 75,
-      "archived": false,
-      "read_lengths": [50, 53]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
     "pk": 13,
     "fields": {
       "sequencer": 2,
@@ -49,45 +23,6 @@
       "cycles": 300,
       "archived": false,
       "read_lengths": [44, 45, 46, 49, 50, 51, 52, 53, 54]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 15,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 400,
-      "lanes": 1,
-      "cycles": 150,
-      "archived": false,
-      "read_lengths": [44, 46, 50, 53, 54]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 16,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 800,
-      "lanes": 2,
-      "cycles": 0,
-      "archived": false,
-      "read_lengths": [49]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 17,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 2500,
-      "lanes": 4,
-      "cycles": 0,
-      "archived": false,
-      "read_lengths": [49]
     }
   },
   {
@@ -231,45 +166,6 @@
       "cycles": 300,
       "archived": false,
       "read_lengths": [44, 45, 46, 47, 49, 50, 51, 52, 53, 54]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 29,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 130,
-      "lanes": 1,
-      "cycles": 300,
-      "archived": false,
-      "read_lengths": [44, 45, 46, 47, 49, 50, 51, 52, 53, 54]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 30,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 400,
-      "lanes": 1,
-      "cycles": 300,
-      "archived": false,
-      "read_lengths": [44, 45, 46, 47, 49, 50, 51, 52, 53, 54]
-    }
-  },
-  {
-    "model": "index_generator.poolsize",
-    "pk": 31,
-    "fields": {
-      "sequencer": null,
-      "short_name": "PX",
-      "size": 25,
-      "lanes": 1,
-      "cycles": 600,
-      "archived": false,
-      "read_lengths": [48]
     }
   },
   {
