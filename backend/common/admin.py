@@ -169,13 +169,16 @@ class PiFilter(SimpleListFilter):
         return [(pi.id, str(pi)) for pi in User.objects.filter(is_pi=True)] 
 
     def queryset(self, request, queryset):
-        return queryset.filter(pi__id=self.value())
+        if self.value():
+            return queryset.filter(pi__id=self.value())
+        return queryset
 
 @admin.register(User)
 class UserAdmin(NamedUserAdmin):
     inlines = [CostUnitInline, OIDCGroupInline]
     form = UserChangeForm
     add_form = UserCreationForm
+    list_per_page = 50
     add_fieldsets = (
         (
             None,
