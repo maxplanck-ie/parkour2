@@ -164,6 +164,14 @@ def protected_media(request, *args, **kwargs):
 
     if request.user.is_staff or request.user.member_of_bcf:
         allow_download = True
+    # elif request.user.is_pi:
+    #     # Master/ PI accounts should be able to access attachments
+    #     allow_download = (
+    #         request.user.pi
+    #         == Request.objects.filter(
+    #             Q(deep_seq_request=url_path) | Q(files__file=url_path), archived=False
+    #         )[0].user.pi
+    #     )
     else:
         allow_download = Request.objects.filter(
             Q(user=request.user) | Q(pi=request.user) | Q(bioinformatician=request.user),

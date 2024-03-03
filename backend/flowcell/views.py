@@ -96,6 +96,23 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = LaneSerializer
 
     def get_queryset(self):
+        today = timezone.datetime.today()
+
+        default_start_date = today - relativedelta(months=3)
+        default_end_date = (
+            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
+        )
+
+        start_date_param = self.request.query_params.get(
+            "start", default_start_date.strftime("%m.%Y")
+        )
+        end_date_param = self.request.query_params.get(
+            "end", default_end_date.strftime("%m.%Y")
+        )
+
+        start_date = timezone.datetime.strptime(start_date_param, "%m.%Y")
+        end_date = timezone.datetime.strptime(end_date_param, "%m.%Y")
+
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))
             .prefetch_related("read_length", "index_type")
@@ -122,7 +139,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             Flowcell.objects.select_related(
                 "pool_size",
             )
-            .filter(archived=False)
+            .filter(create_time__gte=start_date, create_time__lte=end_date, archived=False)
             .prefetch_related(
                 Prefetch("lanes", queryset=lanes_qs),
             )
@@ -132,29 +149,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         return queryset
 
     def list(self, request, *args, **kwargs):
-        today = timezone.datetime.today()
-
-        default_start_date = today - relativedelta(years=1)
-        default_end_date = (
-            today.replace(day=1) + relativedelta(months=1) - relativedelta(days=1)
-        )
-
-        start_date_param = request.query_params.get(
-            "start", default_start_date.strftime("%d.%m.%Y")
-        )
-        end_date_param = request.query_params.get(
-            "end", default_end_date.strftime("%d.%m.%Y")
-        )
-
-        start_date = timezone.datetime.strptime(start_date_param, "%d.%m.%Y")
-        end_date = timezone.datetime.strptime(end_date_param, "%d.%m.%Y")
-
-        queryset = self.get_queryset().filter(
-            create_time__gte=start_date, create_time__lte=end_date
-        )
-
-        if request.GET.get("asHandler") == "True":
-            queryset = queryset.filter(requests__handler=request.user)
+        queryset = self.get_queryset()
 
         serializer = FlowcellListSerializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
@@ -406,7 +401,6 @@ class FlowcellAnalysisViewSet(viewsets.ViewSet):
                 itertools.chain(request.libraries.all(), request.samples.all())
             )
             for item in records:
-
                 #               quick fix to deal with undefined index_type
                 #               this can happen for failed samples
                 if item.index_type is not None:

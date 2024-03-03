@@ -328,30 +328,48 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
                 400,
             )
 
-        # Update pre-existing sequence information
-        currentSequences = list()
-        if flowcell.sequences:
-            currentSequences = flowcell.sequences
+        # NZ, disable updating pre-existing sequence information,
+        # instead always update entire demultiplexing summary anew
 
-        found = dict()
-        for idx, entry in enumerate(currentSequences):
-            found[entry["barcode"]] = idx
-        barcodes = []
-        for entry in sequences:
-            barcodes.append(entry["barcode"])
-            if entry["barcode"] in found:
-                currentSequences[found[entry["barcode"]]] = entry
-            else:
-                currentSequences.append(entry)
+        # # Update pre-existing sequence information
+        # currentSequences = list()
+        # if flowcell.sequences:
+        #     currentSequences = flowcell.sequences
 
-        flowcell.sequences = currentSequences
+        # found = dict()
+        # for idx, entry in enumerate(currentSequences):
+        #     found[entry["barcode"]] = idx
+        # barcodes = []
+        # for entry in sequences:
+        #     barcodes.append(entry["barcode"])
+        #     if entry["barcode"] in found:
+        #         currentSequences[found[entry["barcode"]]] = entry
+        #     else:
+        #         currentSequences.append(entry)
+
+        # flowcell.sequences = currentSequences
+
+        flowcell.sequences = sequences
         flowcell.save(update_fields=["sequences"])
 
-        # If sample/library in demux report, set status to delivered
+        # If sample/library in demux report, set status to Data delivered,
+        # if not, to Data not delivered
+        barcodes = [entry["barcode"] for entry in sequences if entry.get("barcode")]
+        # Data delivered
         Library.objects.filter(request__flowcell=flowcell,
+                               status__gte=5,
                                barcode__in=barcodes).update(status=6)
         Sample.objects.filter(request__flowcell=flowcell,
+                              status__gte=5,
                               barcode__in=barcodes).update(status=6)
+        # Data not delivered
+        Library.objects.filter(request__flowcell=flowcell,
+                               status__gte=5). \
+                        exclude(barcode__in=barcodes).update(status=7)
+        Sample.objects.filter(request__flowcell=flowcell,
+                              status__gte=5). \
+                       exclude(request__flowcell=flowcell,
+                               barcode__in=barcodes).update(status=7)
 
         return Response({"success": True})
 
