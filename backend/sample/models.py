@@ -8,7 +8,7 @@ class NucleicAcidType(models.Model):
 
     type = models.CharField(
         "Type",
-        max_length=5,
+        max_length=3,
         choices=(("DNA", "DNA"), ("RNA", "RNA")),
         default="DNA",
         help_text='Does not apply if single cell is selected'
