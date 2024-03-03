@@ -7,44 +7,43 @@ class Command(BaseCommand):
     help = "Saves relevant database content into fixture(s) correspondingly."
 
     def handle(self, *args, **options):
-        self.dumpdata_wrapper(
-            model="librarypreparation", app_label="library_preparation"
-        )
-        for m in ("filerequest", "request"):
-            self.dumpdata_wrapper(model=m, app_label="request")
-        for m in ("nucleicacidtype", "sample"):
-            self.dumpdata_wrapper(model=m, app_label="sample")
-        self.dumpdata_wrapper(model="library", app_label="library")
+        for m in ("librarypreparationcosts",
+                  "sequencingcosts",
+                  "librarypreparationprice",
+                  "sequencingprice"):
+            self.dumpdata_wrapper(model=m, app_label="invoicing")
+        self.dumpdata_wrapper(model="poolsize", app_label="index_generator")
+        self.dumpdata_wrapper(model="sequencer", app_label="flowcell")
         for m in (
             "organism",
             "concentrationmethod",
-            "readlength",
             "indexi7",
             "indexi5",
             "indextype",
             "indexpair",
             "libraryprotocol",
             "librarytype",
-            "barcodecounter",
+            "readlength",
         ):
             self.dumpdata_wrapper(model=m, app_label="library_sample_shared")
-        for m in ("poolsize", "pool"):
-            self.dumpdata_wrapper(model=m, app_label="index_generator")
-        for m in ("sequencer", "lane", "flowcell"):
-            self.dumpdata_wrapper(model=m, app_label="flowcell")
-        for m in ("organization", "principalinvestigator", "costunit", "user"):
+        self.dumpdata_wrapper(model="nucleicacidtype", app_label="sample")
+        self.dumpdata_wrapper(model="group", app_label="auth")
+        for m in ("organization", "user"):
             self.dumpdata_wrapper(model=m, app_label="common")
-        self.dumpdata_wrapper(model="pooling", app_label="pooling")
         self.stdout.write(self.style.SUCCESS("Successfully saved initial data."))
 
     def dumpdata_wrapper(self, model, app_label):
+        app_label_path = app_label
+        if app_label == "auth":
+            app_label_path = 'common'
         with open(
-            app_label + "/fixtures/" + model + ".json", "w", encoding="utf-8"
+            app_label_path + "/fixtures/" + model + ".json", "w", encoding="utf-8"
         ) as f:
             # django.core.management.call_command("dumpdata", app_label + "." + model, stdout=f)
+            print("Saving: " + app_label + "/fixtures/" + model + ".json")
             subprocess.run(
                 """
-            python manage.py dumpdata {} | tail -1 |
+            python manage.py dumpdata {} --natural-foreign | tail -1 |
             jq .""".format(
                     app_label + "." + model
                 ),
