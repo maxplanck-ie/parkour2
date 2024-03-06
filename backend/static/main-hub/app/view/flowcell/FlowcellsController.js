@@ -90,8 +90,8 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
       endOfMonth = Ext.Date.getLastDateOfMonth(value);
     }
 
-    var start = Ext.Date.format(startOfMonth, "m.Y");
-    var end = Ext.Date.format(endOfMonth, "m.Y");
+    var start = Ext.Date.format(startOfMonth, "d.m.Y");
+    var end = Ext.Date.format(endOfMonth, "d.m.Y");
 
     var store = grid.getStore();
     store.getProxy().setExtraParam("start", start);
