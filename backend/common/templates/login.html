@@ -17,6 +17,29 @@
     .local-login {
         display: none;
     }
+
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        text-align: right;
+    }
+
+    .footer a:link {
+        color: lightgrey;
+        text-decoration: none;
+    }
+
+    .footer a:visited {
+        color: lightgrey;
+        text-decoration: none;
+    }
+
+    .footer a:hover {
+        color: white;
+        text-decoration: underline;
+    }
 </style>
 {% endblock css %}
 
@@ -60,6 +83,11 @@
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
 
+</div>
+
+<div class="footer">
+    <a href="https://www.imb.de/impressum-imprint" target="_blank">Impressum</a>
+    <a href="https://www.imb.de/datenschutz-data-privacy" target="_blank">Datenschutz</a>
 </div>
 
 {% endblock %}
