@@ -22,6 +22,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
+from django.contrib.auth.views import LoginView
 
 from .models import CostUnit, Organization, Duty
 from .serializers import (CostUnitSerializer,
@@ -423,3 +424,11 @@ def user_details(request):
 
 def danke(request):
     return render(request, "danke.html")
+
+
+class CustomLoginView(LoginView):
+
+    extra_context = {'enable_oidc': settings.OIDC_ENABLE,
+                     'oidc_provider_name': settings.OIDC_PROVIDER_NAME,
+                     'impressum_url': settings.IMPRESSUM_URL,
+                     'data_protection_url': settings.DATA_PROTECTION_URL}
