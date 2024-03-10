@@ -1705,6 +1705,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           var librariesInRequestGrid = Ext.getCmp("libraries-in-request-grid");
           if (wnd.mode === "add") {
             librariesInRequestGrid.getStore().add(obj.data);
+            if (librariesInRequestGrid.getStore().getCount() > 0) {
+              librariesInRequestGrid.getColumns()[0].show();
+            }
 
             for (var i = 0; i < obj.data.length; i++) {
               var record = store.findRecord("name", obj.data[i].name);
