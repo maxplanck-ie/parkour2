@@ -403,7 +403,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                                 },)
             
             subject = f'Request {instance.name} is complete'
-            recipients = list(set([instance.pi.email, instance.user.email, request.user.email]))
+            recipients = list(set([instance.pi.email, instance.user.email]))
             if not instance.bioinformatician.email.lower().endswith('example.com'):
                 recipients.append(instance.bioinformatician.email)
             staff_emails = get_staff_emails()
