@@ -1394,7 +1394,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance.save(update_fields=["metapaths"])
         return Response({"success": True})
 
-    @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
+    @action(methods=["get"], detail=True)
     def get_poolpaths(self, request, *args, **kwargs):
         instance = self.get_object()
         records = list(instance.libraries.all()) + list(instance.samples.all())
