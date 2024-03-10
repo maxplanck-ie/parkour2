@@ -88,6 +88,13 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
         this.disableButtonsAndMenus();
         costUnitCb.setReadOnly(true);
         piCb.setReadOnly(true);
+        bioinfoCb.setReadOnly(true);
+        readLengthsCb.setReadOnly(true);
+        wnd.down("#request-description").setReadOnly(true);
+        wnd.down("#pooled-libraries").setReadOnly(true);
+        wnd.down("#pooled-libraries-concentration").setReadOnly(true);
+        wnd.down("#pooled-libraries-volume").setReadOnly(true);
+        wnd.down("#pooled-libraries-fragment-size").setReadOnly(true);
       }
 
       // Load all Libraries/Samples for current Request
@@ -453,14 +460,13 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
       );
     }
 
-    // Disable checking if librariesInRequestStore is empty for now, NZ
-    // if (store.getCount() === 0) {
-    //   new Noty({
-    //     text: 'No libraries/samples are added to the request.',
-    //     type: 'warning'
-    //   }).show();
-    //   return;
-    // }
+    if (!(USER.is_staff || USER.member_of_bcf) && store.getCount() === 0) {
+      new Noty({
+        text: 'No libraries/samples are added to the request.',
+        type: 'warning'
+      }).show();
+      return;
+    }
 
     // Set pool fields to required, if enabled just before saving,
     //  in order to triggers relevant errors during form validation
