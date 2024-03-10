@@ -87,7 +87,7 @@ class RequestSerializer(ModelSerializer):
         Don't allow the users to modify the requests and libraries/samples
         if they have reached status 1 or higher (or failed).
         """
-        return True if not obj.user.is_staff and obj.statuses.count(0) == 0 else False
+        return True if not (obj.user.is_staff or obj.user.member_of_bcf) and (obj.statuses.count(0) == 0 and obj.approval_time) else False
 
     def get_completed(self, obj):
         """Return True if request's libraries and samples are sequenced."""
