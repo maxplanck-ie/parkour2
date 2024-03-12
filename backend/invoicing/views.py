@@ -100,8 +100,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Request.objects
-            .filter(
+            Request.objects.filter(
                 flowcell__create_time__gte=start_date,
                 flowcell__create_time__lte=end_date,
                 sequenced=True,

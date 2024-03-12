@@ -137,7 +137,9 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         )
 
         queryset = (
-            Flowcell.objects.filter(create_time__gte=start_date, create_time__lte=end_date, archived=False)
+            Flowcell.objects.filter(
+                create_time__gte=start_date, create_time__lte=end_date, archived=False
+            )
             .prefetch_related(
                 "sequencer",
                 Prefetch("lanes", queryset=lanes_qs),
