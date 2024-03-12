@@ -180,8 +180,16 @@ class RequestSerializer(ModelSerializer):
 
     def create(self, validated_data):
 
+        # Set explicit PK when creating a new Request, do not rely on the
+        # DB autoincrement value because it does not know what the last
+        # actual Request ID in the DB is
+        # NZ, disable/amend this if you need to use an ID other than the
+        # next integer after the largest Request ID in the DB
+        if Request.objects.exists():
+            validated_data.update({'pk': Request.objects.order_by('-id').first().id + 1})
+
         instance = super().create(validated_data)
-        
+
         self.rename_files(instance)
 
         return instance

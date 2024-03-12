@@ -1,3 +1,4 @@
+from typing import Any
 from common.admin import ArchivedFilter
 from django.contrib import admin
 from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
@@ -52,6 +53,18 @@ class RequestAdmin(admin.ModelAdmin):
         "mark_as_archived",
         "mark_as_non_archived",
     )
+
+    def save_model(self, request, obj, form, change):
+
+        # Set explicit PK when creating a new Request, do not rely on the
+        # DB autoincrement value because it does not know what the last
+        # actual Request ID in the DB is
+        # NZ, disable/amend this if you need to use an ID other than the
+        # next integer after the largest Request ID in the DB
+        if obj.pk == None and Request.objects.exists():
+            obj.id = Request.objects.order_by('-id').first().id + 1
+
+        return super().save_model(request, obj, form, change)
 
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
