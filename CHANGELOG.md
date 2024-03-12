@@ -6,6 +6,7 @@
 - Added date-range picker in 'Invoicing' submodule. (#?)
 - Fix to PI accounts being unable to access all corresponding media files.
 - Allow lengthier indeces' name or prefixes.
+- BugFix: "Delivered" status has now a green-colored circle at 'Libraries & Samples' app submodule. (#100)
 
 24.02.20
 ========
