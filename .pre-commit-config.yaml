@@ -66,5 +66,5 @@ repos:
     rev: "v4.0.0-alpha.8"
     hooks:
       - id: prettier
-        args: [--trailing-comma, none]
+        args: [--trailing-comma, none, --no-error-on-unmatched-pattern]
         types_or: [json, css, javascript, vue]

@@ -1927,6 +1927,7 @@ Ext.getResourcePath = function (path, poolName, packageName) {
   output.push(path);
   return output.join("/");
 };
+
 // here, the extra check for window['Ext'] is needed for use with cmd-test
 // code injection.  we need to make that this file will sync up with page global
 // scope to avoid duplicate Ext.Boot state.  That check is after the initial Ext check
