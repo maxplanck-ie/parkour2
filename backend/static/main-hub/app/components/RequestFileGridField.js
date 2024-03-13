@@ -98,65 +98,80 @@ Ext.define('MainHub.components.RequestFileGridField', {
             width: 70,
             handler: function () {
               Ext.widget({
-                xtype: 'window',
-                title: 'Upload files',
+                xtype: "window",
+                title: "Upload files",
                 width: 450,
                 autoShow: true,
                 modal: true,
-  
-                items: [{
-                  xtype: 'form',
-                  items: [{
-                    xtype: 'multifilefield',
-                    name: 'files',
-                    fieldLabel: 'Files',
-                    labelWidth: 50,
-                    buttonText: 'Select',
-                    allowBlank: false,
-                    width: 413,
-                    margin: 15,
-                    listeners: {
-                      change: function (field) {
-                        // Check that none of the files to be uploaded is bigger than 10 MB
-                        var inputFiles = field.fileInputEl.dom.files;
 
-                        Ext.each(inputFiles,
-                          function (f, i) {
+                items: [
+                  {
+                    xtype: "form",
+                    items: [
+                      {
+                        xtype: "multifilefield",
+                        name: "files",
+                        fieldLabel: "Files",
+                        labelWidth: 50,
+                        buttonText: "Select",
+                        allowBlank: false,
+                        width: 413,
+                        margin: 15,
+                        listeners: {
+                          change: function (field) {
+                            // Check that none of the files to be uploaded is bigger than 10 MB or longer than 150 characters
+                            var inputFiles = field.fileInputEl.dom.files;
 
-                            var size_limit = 10 * 1024 * 1024;
-                    
-                            if (f.size > size_limit) {
-                              
-                              // Create notification
-                              new Noty({
-                                text: 'One or more files is > 10 MB. A file cannot be > 10 Mb.',
-                                type: 'error'
-                              }).show();
-                              
-                              // Reset field to empty
-                              field.setRawValue("");
-                              return false;
-                            }
-                          })
-                      }
-                    }
-                  }]
-                }],
+                            Ext.each(inputFiles, function (f, i) {
+                              var size_limit = 10 * 1024 * 1024;
+
+                              if (f.name.length > 150) {
+                                // Create notification
+                                new Noty({
+                                  text: "One or more file names is > 150 characters. A file name cannot be > 150 characters.",
+                                  type: "error",
+                                }).show();
+
+                                // Reset field to empty
+                                field.setRawValue("");
+                                return false;
+                              }
+
+                              if (f.size > size_limit) {
+                                // Create notification
+                                new Noty({
+                                  text: "One or more files is > 10 MB. A file cannot be > 10 Mb.",
+                                  type: "error",
+                                }).show();
+
+                                // Reset field to empty
+                                field.setRawValue("");
+                                return false;
+                              }
+                            });
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
                 bbar: [
                   {
-                    xtype: 'label',
-                    html: '<b>Hint:</b> Multiple file selection is possible, < 10 MB per file',
-                    style: "font-size:10px; line-height:normal"
+                    xtype: "label",
+                    html:
+                      "<b>Hint:</b> Multiple file selection is possible<br>" +
+                      '<span style="padding-left:27px">Size < 10 MB per file, file name < 150 characters</span>',
+                    style: "font-size:10px; line-height:normal",
                   },
-                  '->',
+                  "->",
                   {
-                    text: 'Upload',
+                    text: "Upload",
                     handler: me.uploadFiles,
                     uploadFileUrl: me.uploadFileUrl,
                     getFileUrl: me.getFileUrl,
-                    grid: me.down('grid')
-                  }
-                ]
+                    grid: me.down("grid"),
+                  },
+                ],
               });
             }
           }

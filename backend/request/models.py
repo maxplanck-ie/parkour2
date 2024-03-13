@@ -41,7 +41,7 @@ def approval_default():
 
 class FileRequest(models.Model):
     name = models.CharField("Name", max_length=200)
-    file = models.FileField(upload_to="request_files/%Y/%m/%d/")
+    file = models.FileField(upload_to="request_files/%Y/%m/%d/", max_length=200)
 
     def __str__(self):
         return self.name
