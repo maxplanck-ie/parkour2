@@ -64,10 +64,10 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         return start_date, end_date
 
     def get_serializer_context(self):
+        start_date, end_date = self.get_start_end_dates()
         today = timezone.datetime.today()
-        year = self.request.query_params.get("year", today.year)
-        month = self.request.query_params.get("month", today.month)
-        ctx = {"curr_month": month, "curr_year": year, "today": today}
+        ctx = {"start_date": start_date, "end_date": end_date, "today": today}
+
         return ctx
 
     def get_queryset(self):
@@ -127,12 +127,6 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
 
     def list(self, request):
         queryset = self.filter_queryset(self.get_queryset())
-
-        today = timezone.datetime.today()
-        year = self.request.query_params.get("year", today.year)
-        month = self.request.query_params.get("month", today.month)
-        ctx = {"curr_month": month, "curr_year": year, "today": today}
-
         serializer = self.get_serializer(queryset, many=True)
 
         return Response(serializer.data)

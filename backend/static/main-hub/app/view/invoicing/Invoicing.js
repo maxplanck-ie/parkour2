@@ -167,44 +167,24 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
       dockedItems: [
         {
           xtype: "toolbar",
-          dock: "top",
-          items: [
-            {
-              itemId: "view-uploaded-report-button",
-              text: "View Uploaded Report",
-              reportUrl: "",
-              hidden: true,
-              handler: function () {
-                var link = document.createElement("a");
-                link.href = this.reportUrl;
-                link.download = this.reportUrl.substr(
-                  this.reportUrl.lastIndexOf("/") + 1
-                );
-                link.click();
-              }
-            }
-          ]
-        },
-        {
-          xtype: "toolbar",
           dock: "bottom",
           items: [
-            {
-              text: "View Reports",
-              itemId: "view-uploaded-report-button",
-              iconCls: "fa fa-search fa-lg"
-            },
-            {
-              text: "Upload Report",
-              itemId: "upload-report",
-              uploadUrl: "api/invoicing/upload/",
-              iconCls: "fa fa-upload fa-lg"
-            },
             {
               text: "Download Report",
               itemId: "download-report",
               downloadUrl: "api/invoicing/download/",
               iconCls: "fa fa-download fa-lg"
+            },
+            {
+              text: "Upload Reports",
+              itemId: "upload-reports",
+              uploadUrl: "api/invoicing/upload/",
+              iconCls: "fa fa-upload fa-lg"
+            },
+            {
+              text: "View Uploaded Reports",
+              itemId: "view-uploaded-reports",
+              iconCls: "fa fa-search fa-lg"
             }
           ]
         }

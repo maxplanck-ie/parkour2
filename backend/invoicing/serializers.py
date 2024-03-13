@@ -90,8 +90,8 @@ class InvoicingSerializer(ModelSerializer):
             )
         )
 
-        curr_month = int(self.context["curr_month"])
-        curr_year = int(self.context["curr_year"])
+        start_date = self.context["start_date"]
+        end_date = self.context["end_date"]
 
         pool_ids = instance.values_list("flowcell__lanes__pool")
         pools = (
@@ -132,8 +132,8 @@ class InvoicingSerializer(ModelSerializer):
                 "fixed_costs": fixed_costs,
                 "preparation_costs": preparation_costs,
                 "sequencing_costs": sequencing_costs,
-                "curr_month": curr_month,
-                "curr_year": curr_year,
+                "start_date": start_date,
+                "end_date": end_date,
             }
         )
 
@@ -239,9 +239,7 @@ class InvoicingSerializer(ModelSerializer):
         # min_date = trunc_datetime(timezone.datetime(minYear, minMonth, 1))
         min_date = trunc_datetime(timezone.datetime(mindt.year, mindt.month, 1))
 
-        curr_date = trunc_datetime(
-            timezone.datetime(self.context["curr_year"], self.context["curr_month"], 1)
-        )
+        curr_date = trunc_datetime(self.context["end_date"])
 
         num_libraries = obj.libraries.count()
         num_samples = obj.samples.count()
@@ -314,9 +312,7 @@ class InvoicingSerializer(ModelSerializer):
         Only bill if it has been sequenced in the latest month that is in the flowcell list
         """
 
-        curr_date = trunc_datetime(
-            timezone.datetime(self.context["curr_year"], self.context["curr_month"], 1)
-        )
+        curr_date = trunc_datetime(self.context["end_date"])
 
         # Calculate Fixed Costs
         costs = 0
