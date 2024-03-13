@@ -9,8 +9,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       "#": {
         activate: "activateView"
       },
-      "#billing-period-combobox": {
-        select: "selectBillingPeriod"
+      parkourmonthpicker: {
+        select: "selectMonth"
       },
       "#invoicing-grid": {
         resize: "resize"
@@ -28,17 +28,18 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   activateView: function (view) {
-    var billingPeriodCb = view.down("#billing-period-combobox");
-    billingPeriodCb.getStore().reload({
-      callback: function (records) {
-        if (records && records.length > 0) {
-          var lastRecord = records[records.length - 1];
-          billingPeriodCb.select(lastRecord);
-          billingPeriodCb.fireEvent("select", billingPeriodCb, lastRecord);
-          billingPeriodCb.cancelFocus();
-        }
-      }
-    });
+    var startMonthPicker = view.down("#start-month-picker");
+    var endMonthPicker = view.down("#end-month-picker");
+
+    var currentDate = new Date();
+    var defaultStartDate = Ext.Date.subtract(currentDate, Ext.Date.MONTH, 0);
+    var defaultEndDate = currentDate;
+
+    startMonthPicker.setValue(defaultStartDate);
+    endMonthPicker.setValue(defaultEndDate);
+
+    startMonthPicker.fireEvent("select", startMonthPicker);
+    endMonthPicker.fireEvent("select", endMonthPicker);
 
     // Load cost stores
     view.down("#fixed-costs-grid").getStore().reload();
@@ -46,27 +47,22 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     view.down("#sequencing-costs-grid").getStore().reload();
   },
 
-  resize: function (el) {
-    el.setHeight(Ext.Element.getViewportHeight() - 64);
+  selectMonth: function (df) {
+    var grid = df.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+
+    var store = grid.getStore();
+    store.getProxy().setExtraParam("start", start);
+    store.getProxy().setExtraParam("end", end);
+    store.reload({});
   },
 
-  selectBillingPeriod: function (cb, record) {
-    var uploadedReportBtn = cb.up().down("#view-uploaded-report-button");
-    var reportUrl = record.get("report_url");
-
-    Ext.getStore("Invoicing").reload({
-      params: {
-        year: record.get("value")[0],
-        month: record.get("value")[1]
-      }
-    });
-
-    if (reportUrl !== "") {
-      uploadedReportBtn.reportUrl = reportUrl;
-      uploadedReportBtn.show();
-    } else {
-      uploadedReportBtn.hide();
-    }
+  resize: function (el) {
+    el.setHeight(Ext.Element.getViewportHeight() - 64);
   },
 
   editPrice: function (editor, context) {
@@ -88,23 +84,32 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   downloadReport: function (btn) {
-    var billingPeriodCb = btn.up("grid").down("#billing-period-combobox");
-    var value = billingPeriodCb.getValue();
+    var grid = btn.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
     var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
 
     form.submit({
       url: btn.downloadUrl,
       method: "GET",
       params: {
-        year: value[0],
-        month: value[1]
+        start,
+        end
       }
     });
   },
 
   uploadReport: function (btn) {
-    var billingPeriodCb = btn.up("grid").down("#billing-period-combobox");
-    var value = billingPeriodCb.getValue();
+    var grid = btn.up("grid");
+    var startMonthPicker = grid.down("#start-month-picker");
+    var endMonthPicker = grid.down("#end-month-picker");
+
+    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+    var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
 
     Ext.create("Ext.ux.FileUploadWindow", {
       fileFieldName: "report",
