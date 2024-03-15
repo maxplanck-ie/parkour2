@@ -8,6 +8,7 @@
 - Allow lengthier indeces' name or prefixes.
 - BugFix: "Delivered" status has now a green-colored circle at 'Libraries & Samples' app submodule. (#100)
 - Rephrased text in email sent after Electronic Approval.
+- Added Seq. Length and Depth to Electronic Approval. Old PDF was not updated (yet) because of reasons.
 
 24.02.20
 ========
