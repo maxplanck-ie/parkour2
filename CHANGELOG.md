@@ -1,6 +1,6 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
-??.??.??
+24.03.15
 ========
 
 - Added date-range picker in 'Invoicing' submodule. (#99)
