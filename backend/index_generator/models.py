@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db import models
 from library.models import Library
 from sample.models import Sample
+from django.contrib.auth import get_user_model
 
 from math import log, floor
 from decimal import Decimal
@@ -46,7 +47,9 @@ class PoolSize(models.Model):
 
 
 def get_sentinel_user():
-    return get_user_model().objects.get_or_create(username="deleted")[0]
+    return get_user_model().objects.get_or_create(email="deleted.user@example.com",
+                                                  first_name='Deleted',
+                                                  last_name='User')[0]
 
 
 class Pool(DateTimeMixin):
