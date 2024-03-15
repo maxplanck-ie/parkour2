@@ -6,11 +6,15 @@ from django.db import models
 
 
 def get_deleted_org():
-    return Organization.objects.get_or_create(name="deleted ORG")[0]
+    return Organization.objects.get_or_create(email="deleted.org@example.com",
+                                              first_name='Deleted',
+                                              last_name='Organization')[0]
 
 
 def get_deleted_pi():
-    return User.objects.get_or_create(name="deleted PI")[0]
+    return User.objects.get_or_create(email="deleted.pi@example.com",
+                                      first_name='Deleted',
+                                      last_name='PI')[0]
 
 
 class Organization(models.Model):
