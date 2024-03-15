@@ -457,8 +457,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
             renderer: Ext.util.Format.dateRenderer("d.m.Y")
           },
           {
-            text: "Nuc. Type",
-            tooltip: "Nucleic Acid Type",
+            text: "Input Type",
+            tooltip: "Input Type",
             dataIndex: "nucleic_acid_type_name",
             renderer: "gridCellTooltipRenderer"
           },

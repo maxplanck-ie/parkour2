@@ -403,8 +403,8 @@ Ext.define("MainHub.view.libraries.LibraryWindow", {
                   valueField: "id",
                   name: "nucleic_acid_type",
                   fieldLabel:
-                    'Nucleic Acid Type <sup><strong><span class="field-tooltip" tooltip-text="Select nucleic acid type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
-                  emptyText: "Nucleic Acid Type",
+                    'Input Type <sup><strong><span class="field-tooltip" tooltip-text="Select Input Type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
+                  emptyText: "Input Type",
                   store: "nucleicAcidTypesStore",
                   forceSelection: true
                 },

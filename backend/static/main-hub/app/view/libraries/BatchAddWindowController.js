@@ -223,10 +223,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             });
           }
 
-          // Update Nucleic Acid Type
+          // Update Input Type
           else if (dataIndex === "nucleic_acid_type") {
             // Reset Library Protocol and Library Type for records
-            // with a different Nucleic Acid Type
+            // with a different Input Type
             if (
               item.get("nucleic_acid_type") !== record.get("nucleic_acid_type")
             ) {
@@ -239,7 +239,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             item.set("nucleic_acid_type", record.get("nucleic_acid_type"));
           }
 
-          // If Library Protocol was selected, update Nuc. Type too
+          // If Library Protocol was selected, update Input Type too
           else if (dataIndex === "library_protocol") {
             // Libraries
             if (typeof item.get("nucleic_acid_type") === "undefined") {
@@ -252,7 +252,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             }
             // Samples
             else {
-              // Reset Library Type if Nucleic Acid Types Library Protocols
+              // Reset Library Type if Input Types Library Protocols
               // are different
               if (
                 item.get("nucleic_acid_type") !==
@@ -269,7 +269,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             item.set("library_protocol", record.get("library_protocol"));
           }
 
-          // If Library Type was selected, update Library Protocol and Nucleic Acid Type
+          // If Library Type was selected, update Library Protocol and Input Type
           else if (dataIndex === "library_type") {
             item.set({
               library_type: record.get("library_type"),
@@ -278,7 +278,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             });
           }
 
-          // RNA Quality should be applied only when Nucleic Acid Type is RNA
+          // RNA Quality should be applied only when Input Type is RNA
           else if (dataIndex === "rna_quality") {
             var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
               "id",
@@ -360,7 +360,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       } else {
         libraryProtocolEditor.enable();
 
-        // Filter Library Protocols store for currently selected Nucleic Acid Type
+        // Filter Library Protocols store for currently selected Input Type
         if (record.get("library_protocol") !== 0) {
           var type = nucleicAcidTypesStore
             .findRecord("id", record.get("nucleic_acid_type"))
@@ -412,7 +412,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       record.set({ index_i7: "", index_i5: "" });
     }
 
-    // Reset RNA Quality if Nucleic Acid Type has changed
+    // Reset RNA Quality if Input Type has changed
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
       record.get("nucleic_acid_type")
@@ -695,9 +695,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "Nuc. Type",
+        text: "Input Type",
         dataIndex: "nucleic_acid_type",
-        tooltip: "Nucleic Acid Type",
+        tooltip: "Input Type",
         width: 200,
         editor: {
           xtype: "combobox",

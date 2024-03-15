@@ -147583,8 +147583,8 @@ Ext.cmd.derive(
               width: 90
             },
             {
-              text: "Nuc. Type",
-              tooltip: "Nucleic Acid Type",
+              text: "Input Type",
+              tooltip: "Input Type",
               dataIndex: "nucleic_acid_type_name",
               tdCls: "userEntry",
               minWidth: 100,
@@ -149811,9 +149811,9 @@ Ext.cmd.derive(
       });
       var h = Ext.Array.merge(this.getCommonColumns(g), [
         {
-          text: "Nuc. Type",
+          text: "Input Type",
           dataIndex: "nucleic_acid_type",
-          tooltip: "Nucleic Acid Type",
+          tooltip: "Input Type",
           width: 200,
           editor: {
             xtype: "combobox",
@@ -151226,8 +151226,8 @@ Ext.cmd.derive(
                     valueField: "id",
                     name: "nucleic_acid_type",
                     fieldLabel:
-                      'Nucleic Acid Type <sup><strong><span class="field-tooltip" tooltip-text="Select nucleic acid type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
-                    emptyText: "Nucleic Acid Type",
+                      'Input Type <sup><strong><span class="field-tooltip" tooltip-text="Select Input Type of your sample or select other and specify in the comments field (below)">[?]</span></strong></sup>',
+                    emptyText: "Input Type",
                     store: "nucleicAcidTypesStore",
                     forceSelection: true
                   },
@@ -151696,8 +151696,8 @@ Ext.cmd.derive(
               renderer: Ext.util.Format.dateRenderer("d.m.Y")
             },
             {
-              text: "Nuc. Type",
-              tooltip: "Nucleic Acid Type",
+              text: "Input Type",
+              tooltip: "Input Type",
               dataIndex: "nucleic_acid_type_name",
               renderer: "gridCellTooltipRenderer"
             },

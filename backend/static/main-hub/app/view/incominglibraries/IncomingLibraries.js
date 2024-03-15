@@ -104,8 +104,8 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
             width: 90
           },
           {
-            text: "Nuc. Type",
-            tooltip: "Nucleic Acid Type",
+            text: "Input Type",
+            tooltip: "Input Type",
             dataIndex: "nucleic_acid_type_name",
             tdCls: "userEntry",
             minWidth: 100,
