@@ -149,6 +149,17 @@ class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
         self.fields["password1"].widget.attrs["autocomplete"] = "off"
         self.fields["password2"].widget.attrs["autocomplete"] = "off"
 
+    class Meta:
+        model = User
+        fields = (
+            'first_name',
+            'last_name',
+            'email',
+            'is_pi',
+            'password1',
+            'password2',
+        )
+
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1")
         password2 = super().clean_password2()
