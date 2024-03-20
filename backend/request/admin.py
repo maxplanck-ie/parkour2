@@ -54,6 +54,8 @@ class RequestAdmin(admin.ModelAdmin):
         "mark_as_non_archived",
     )
 
+    readonly_fields = ('approval_user', 'approval_time', 'approval',)
+
     def save_model(self, request, obj, form, change):
 
         # Set explicit PK when creating a new Request, do not rely on the
@@ -66,6 +68,14 @@ class RequestAdmin(admin.ModelAdmin):
 
         return super().save_model(request, obj, form, change)
 
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+
+        if request.user.is_superuser:
+            self.readonly_fields = ()
+
+        return super().change_view(request, object_id, form_url, extra_context)
+
     @admin.action(description="Mark as archived")
     def mark_as_archived(self, request, queryset):
         queryset.update(archived=True)
@@ -77,7 +87,6 @@ class RequestAdmin(admin.ModelAdmin):
     @admin.display(boolean=True)
     def request_uploaded(self, obj):
         return obj.deep_seq_request.name != ""
-
 
     def get_search_results(self, request, queryset, search_term):
 
