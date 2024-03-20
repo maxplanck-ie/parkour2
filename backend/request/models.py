@@ -50,8 +50,12 @@ class FileRequest(models.Model):
 
 class Request(DateTimeMixin):
     name = models.CharField("Name", max_length=100, blank=True)
-    description = models.TextField()
-    token = models.CharField("Token", max_length=50, blank=True, null=True, unique=True)
+    description = models.TextField(blank=True)
+    token = models.CharField("Token",
+                             max_length=50,
+                             blank=True,
+                             null=True,
+                             unique=True)
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -162,7 +166,8 @@ class Request(DateTimeMixin):
 
     approval_time = models.DateTimeField(verbose_name="Approval Time",
                                              null=True,
-                                             default=None
+                                             default=None,
+                                             blank=True,
                                             )
 
     samples_submitted = models.BooleanField(
@@ -172,7 +177,8 @@ class Request(DateTimeMixin):
 
     samples_submitted_time = models.DateTimeField(verbose_name="Samples Submitted Time",
                                                   null=True,
-                                                  default=None
+                                                  default=None,
+                                                  blank=True,
                                                   )
 
     sequenced = models.BooleanField(
@@ -182,7 +188,8 @@ class Request(DateTimeMixin):
 
     invoice_date = models.DateTimeField(verbose_name="Invoice Date",
                                     null=True,
-                                    default=None
+                                    default=None,
+                                    blank=True,
                                     )
 
     archived = models.BooleanField("Archived", default=False)
