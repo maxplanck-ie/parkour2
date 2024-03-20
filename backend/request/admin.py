@@ -54,7 +54,8 @@ class RequestAdmin(admin.ModelAdmin):
         "mark_as_non_archived",
     )
 
-    readonly_fields = ('approval_user', 'approval_time', 'approval',)
+    readonly_fields = ('token', 'approval_user',
+                       'approval_time', 'approval',)
 
     def save_model(self, request, obj, form, change):
 
