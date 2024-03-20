@@ -168,7 +168,10 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
     def upload(self, request):
         """Upload Invoicing Report."""
         month = request.data.get("month", None)
-        report = request.data.get("report", None)
+        report = InvoicingReport.objects.get(
+            month=timezone.datetime.strptime(month, "%m.%Y").strftime("%m-%Y")
+        )
+        # report = request.data.get("report", None)
 
         if not month or not report:
             return Response(
@@ -180,7 +183,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
             )
 
         try:
-            report = InvoicingReport.objects.get(month=month)
+            # report = InvoicingReport.objects.get(month=month.strftime("%m-%Y"))
             report.report = request.data.get("report")
         except InvoicingReport.DoesNotExist:
             report = InvoicingReport(

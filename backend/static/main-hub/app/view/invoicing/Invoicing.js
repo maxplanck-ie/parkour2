@@ -178,7 +178,6 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
             {
               text: "Upload Reports",
               itemId: "upload-reports",
-              uploadUrl: "api/invoicing/upload/",
               iconCls: "fa fa-upload fa-lg"
             },
             {

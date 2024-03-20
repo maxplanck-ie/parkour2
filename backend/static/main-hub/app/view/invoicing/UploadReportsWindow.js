@@ -19,13 +19,14 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
       items: [
         {
           xtype: "parkourmonthpicker",
-          itemId: "start-month-picker",
+          itemId: "upload-month-picker",
           fieldLabel: "Month",
           margin: "0 15px 0 0"
         },
         {
           xtype: "filefield",
           name: "file",
+          itemId: "file-field",
           fieldLabel: "File",
           labelWidth: 100,
           msgTarget: "side",
@@ -48,77 +49,62 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
           text: "Upload",
           iconCls: "fa fa-floppy-o fa-lg",
           handler: function () {
-            var form = this.up("form").getForm();
-            var uploadWindow = this.up("window"); // Get the reference to the upload window
-            if (form.isValid()) {
-              form.submit({
-                url: "upload.php", // URL to submit the form data
-                waitMsg: "Uploading your file...",
-                success: function (fp, o) {
-                  Ext.Msg.alert(
-                    "Success",
-                    'Your file "' + o.result.file + '" has been uploaded.'
-                  );
-                  billingPeriodCb.getStore().reload();
-                  uploadWindow.close(); // Close the upload window upon success
-                },
-                failure: function (fp, o) {
-                  Ext.Msg.alert(
-                    "Failure",
-                    'Your file "' + o.result.file + '" could not be uploaded.'
-                  );
-                }
-              });
-            } else {
-              Ext.Msg.alert("Warning", "You did not select any file.");
-            }
+            var window = this.up("window");
+            var fileField = window.down("#file-field");
+            var monthPicker = this.up("window").down("#upload-month-picker");
+
+            var form = Ext.create("Ext.form.Panel", {
+              standardSubmit: false,
+              hidden: true,
+              items: [fileField]
+            });
+
+            var formData = new FormData();
+            formData.append("report", fileField.fileInputEl.dom.files[0]);
+            formData.append(
+              "month",
+              Ext.Date.format(monthPicker.getValue(), "m.Y")
+            );
+
+            Ext.Ajax.request({
+              url: "api/invoicing/upload/",
+              method: "POST",
+              rawData: formData,
+              headers: {
+                "Content-Type": null
+              },
+              success: function (response) {
+                Ext.toast({
+                  html: "Report has been successfully uploaded.",
+                  title: "Success",
+                  align: "t",
+                  closable: true,
+                  slideInDuration: 400,
+                  minWidth: 400
+                });
+                window.close();
+              },
+              failure: function (response) {
+                Ext.toast({
+                  html: "Failed to upload the report.",
+                  title: "Error",
+                  align: "t",
+                  closable: true,
+                  slideInDuration: 400,
+                  minWidth: 400
+                });
+              }
+            });
           }
         },
         {
           xtype: "button",
           itemId: "cancel-button",
           text: "Cancel",
-          iconCls: "fa fa-floppy-o fa-lg"
+          iconCls: "fa fa-floppy-o fa-lg",
+          handler: function () {}
         }
       ]
     }
   ]
 });
-
-// Ext.define("E", {
-//   extend: "Ext.window.Window",
-//   xtype: "fileuploadwindow",
-
-//   // Define properties
-//   config: {
-//     month: null // Add a config property to store the selected month
-//   },
-
-//   onFileUpload: function () {
-//     var uploadWindow = this;
-//     var form = this.down("form").getForm();
-//     var month = this.getMonth(); // Get the selected month from config
-
-//     if (!form.isValid()) {
-//       new Noty({
-//         text: "You did not select any file.",
-//         type: "warning"
-//       }).show();
-//       return;
-//     }
-
-//     form.submit({
-//       url: btn.uploadUrl,
-//       method: "POST",
-//       waitMsg: "Uploading...",
-//       params: {
-//         month: month // Use the selected month here
-//       },
-//       success: function (f, action) {
-//         new Noty({ text: "Report has been successfully uploaded." }).show();
-//         billingPeriodCb.getStore().reload();
-//         uploadWindow.close();
-//       }
-//     });
-//   }
-// });

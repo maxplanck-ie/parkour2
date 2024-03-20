@@ -111,17 +111,11 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
 
   uploadReports: function (btn) {
     var grid = btn.up("grid");
-    var startMonthPicker = grid.down("#start-month-picker");
-    var endMonthPicker = grid.down("#end-month-picker");
-
-    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
-    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
-    var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
-
     Ext.create("MainHub.view.invoicing.UploadReportsWindow");
   },
 
-  viewUploadedReports: function (btn) {
+  viewUploadedReports: function (btn, record) {
+    var grid = btn.up("grid");
     Ext.create("MainHub.view.invoicing.ViewUploadedReportsWindow");
   },
 
