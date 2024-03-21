@@ -2,8 +2,8 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
   extend: "Ext.window.Window",
 
   title: "Upload Reports",
-  height: 595,
-  width: 800,
+  height: 190,
+  width: 500,
 
   modal: true,
   resizable: false,
@@ -19,19 +19,20 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
       items: [
         {
           xtype: "parkourmonthpicker",
-          itemId: "upload-month-picker",
-          fieldLabel: "Month",
-          margin: "0 15px 0 0"
+          itemId: "upload-report-month-picker",
+          fieldLabel: "Select Month",
+          margin: "10px 10px 5px 10px",
+          allowBlank: false
         },
         {
           xtype: "filefield",
-          name: "file",
           itemId: "file-field",
-          fieldLabel: "File",
+          fieldLabel: "Browse Report",
           labelWidth: 100,
           msgTarget: "side",
-          allowBlank: false,
-          buttonText: "Select"
+          buttonText: "Select",
+          margin: "5px 10px 10px 10px",
+          allowBlank: false
         }
       ]
     }
@@ -47,21 +48,31 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
           xtype: "button",
           itemId: "upload-button",
           text: "Upload",
-          iconCls: "fa fa-floppy-o fa-lg",
+          width: 80,
           handler: function () {
             var window = this.up("window");
             var fileField = window.down("#file-field");
-            var monthPicker = this.up("window").down("#upload-month-picker");
+            var monthPicker = window.down("#upload-report-month-picker");
 
-            var form = Ext.create("Ext.form.Panel", {
-              standardSubmit: false,
-              hidden: true,
-              items: [fileField]
-            });
+            if (!fileField.getValue()) {
+              new Noty({
+                text: "Please select the report file.",
+                type: "warning"
+              }).show();
+            }
+            if (!monthPicker.getValue()) {
+              new Noty({
+                text: "Please select the month.",
+                type: "warning"
+              }).show();
+            }
+            if (!fileField.getValue() || !monthPicker.getValue()) {
+              return;
+            }
 
-            var formData = new FormData();
-            formData.append("report", fileField.fileInputEl.dom.files[0]);
-            formData.append(
+            var reportPayload = new FormData();
+            reportPayload.append("report", fileField.fileInputEl.dom.files[0]);
+            reportPayload.append(
               "month",
               Ext.Date.format(monthPicker.getValue(), "m.Y")
             );
@@ -69,30 +80,23 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
             Ext.Ajax.request({
               url: "api/invoicing/upload/",
               method: "POST",
-              rawData: formData,
+              rawData: reportPayload,
               headers: {
                 "Content-Type": null
               },
               success: function (response) {
-                Ext.toast({
-                  html: "Report has been successfully uploaded.",
-                  title: "Success",
-                  align: "t",
-                  closable: true,
-                  slideInDuration: 400,
-                  minWidth: 400
-                });
                 window.close();
+                new Noty({
+                  text: "Report has been successfully uploaded.",
+                  type: "success"
+                }).show();
               },
               failure: function (response) {
-                Ext.toast({
-                  html: "Failed to upload the report.",
-                  title: "Error",
-                  align: "t",
-                  closable: true,
-                  slideInDuration: 400,
-                  minWidth: 400
-                });
+                window.close();
+                new Noty({
+                  text: "Error while uploading the report.",
+                  type: "error"
+                }).show();
               }
             });
           }
@@ -101,8 +105,11 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
           xtype: "button",
           itemId: "cancel-button",
           text: "Cancel",
-          iconCls: "fa fa-floppy-o fa-lg",
-          handler: function () {}
+          width: 80,
+          handler: function () {
+            var window = this.up("window");
+            window.close();
+          }
         }
       ]
     }

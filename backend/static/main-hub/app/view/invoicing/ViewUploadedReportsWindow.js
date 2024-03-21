@@ -2,8 +2,8 @@ Ext.define("MainHub.view.invoicing.ViewUploadedReportsWindow", {
   extend: "Ext.window.Window",
 
   title: "View Uploaded Reports",
-  height: 595,
-  width: 800,
+  height: 150,
+  width: 500,
 
   modal: true,
   resizable: false,
@@ -19,9 +19,10 @@ Ext.define("MainHub.view.invoicing.ViewUploadedReportsWindow", {
       items: [
         {
           xtype: "parkourmonthpicker",
-          itemId: "start-month-picker",
-          fieldLabel: "Month",
-          margin: "0 15px 0 0"
+          itemId: "view-report-month-picker",
+          fieldLabel: "Select Month",
+          margin: "10px",
+          allowBlank: false
         }
       ]
     }
@@ -37,14 +38,73 @@ Ext.define("MainHub.view.invoicing.ViewUploadedReportsWindow", {
           xtype: "button",
           itemId: "upload-button",
           text: "View",
-          iconCls: "fa fa-floppy-o fa-lg",
-          handler: function () {}
+          width: 80,
+          handler: function () {
+            var window = this.up("window");
+            var monthPicker = window.down("#view-report-month-picker");
+
+            if (!monthPicker.getValue()) {
+              new Noty({
+                text: "Please select the month.",
+                type: "warning"
+              }).show();
+              return;
+            }
+
+            Ext.Ajax.request({
+              url: "/api/invoicing/billing_periods/",
+              disableCaching: false,
+              method: "GET",
+              success: function (response) {
+                var responseData = Ext.decode(response.responseText);
+                var reportUrl = "";
+
+                Ext.Array.each(responseData, function (item) {
+                  if (
+                    item.value[0] == monthPicker.getValue().getFullYear() &&
+                    item.value[1] == monthPicker.getValue().getMonth() + 1
+                  ) {
+                    reportUrl = item.report_url;
+                    return false;
+                  }
+                });
+
+                if (reportUrl) {
+                  var link = document.createElement("a");
+                  link.href = reportUrl;
+                  link.download = reportUrl.substr(
+                    reportUrl.lastIndexOf("/") + 1
+                  );
+                  link.click();
+                  new Noty({
+                    text: "Report for the month is downloaded successfully.",
+                    type: "success"
+                  }).show();
+                } else {
+                  new Noty({
+                    text: "No report found for the selected month.",
+                    type: "warning"
+                  }).show();
+                }
+              },
+              failure: function (response) {
+                new Noty({
+                  text: "Error occurred while fetching report data.",
+                  type: "error"
+                }).show();
+              }
+            });
+          }
         },
         {
           xtype: "button",
           itemId: "cancel-button",
           text: "Cancel",
-          iconCls: "fa fa-floppy-o fa-lg"
+          width: 80,
+          handler: function () {
+            var window = this.up("window");
+            window.close();
+          }
         }
       ]
     }

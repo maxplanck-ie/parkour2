@@ -48,13 +48,12 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     startMonthPicker.fireEvent("select", startMonthPicker);
     endMonthPicker.fireEvent("select", endMonthPicker);
 
-    // Load cost stores
     view.down("#fixed-costs-grid").getStore().reload();
     view.down("#preparation-costs-grid").getStore().reload();
     view.down("#sequencing-costs-grid").getStore().reload();
   },
 
-  selectMonth: function (df) {
+  selectMonth: function (df, view) {
     var grid = df.up("grid");
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
@@ -110,12 +109,10 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   },
 
   uploadReports: function (btn) {
-    var grid = btn.up("grid");
     Ext.create("MainHub.view.invoicing.UploadReportsWindow");
   },
 
-  viewUploadedReports: function (btn, record) {
-    var grid = btn.up("grid");
+  viewUploadedReports: function (btn) {
     Ext.create("MainHub.view.invoicing.ViewUploadedReportsWindow");
   },
 
