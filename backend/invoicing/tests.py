@@ -250,7 +250,7 @@ class TestInvoicingViewSet(BaseAPITestCase):
         )
 
     def test_report_upload(self):
-        month = timezone.now().strftime("%Y-%m")
+        month = timezone.now().strftime("%m.%Y")
         response = self.client.post(
             reverse("invoicing-upload"),
             {
