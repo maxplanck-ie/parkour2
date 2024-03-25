@@ -74,7 +74,7 @@ Ext.define("MainHub.view.invoicing.UploadReportsWindow", {
             reportPayload.append("report", fileField.fileInputEl.dom.files[0]);
             reportPayload.append(
               "month",
-              Ext.Date.format(monthPicker.getValue(), "m.Y")
+              Ext.Date.format(monthPicker.getValue(), "Y-m")
             );
 
             Ext.Ajax.request({

@@ -250,13 +250,13 @@ class TestInvoicingViewSet(BaseAPITestCase):
         )
 
     def test_report_upload(self):
-        month = timezone.now().strftime("%m.%Y")
+        month_st = timezone.now().strftime("%Y-%m")
         response = self.client.post(
             reverse("invoicing-upload"),
             {
-                "month": month,
+                "month": month_st,
                 "report": SimpleUploadedFile("file.txt", b"content"),
             },
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(InvoicingReport.objects.filter(month=month).count(), 1)
+        self.assertEqual(InvoicingReport.objects.filter(month=month_st).count(), 1)
