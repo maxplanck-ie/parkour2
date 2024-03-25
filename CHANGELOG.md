@@ -4,6 +4,8 @@
 ========
 
 - Renamed 'Nucleic Acid Type' to 'Input Type', to accomodate the latest type addition ('Cells').
+- In 'Invoicing', Download Report, Upload Reports, and View Uploaded Reports buttons are functional again.
+- Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule.
 
 24.03.15
 ========
