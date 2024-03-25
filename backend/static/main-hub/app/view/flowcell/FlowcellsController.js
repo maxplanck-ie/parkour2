@@ -68,8 +68,8 @@ Ext.define("MainHub.view.flowcell.FlowcellsController", {
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
 
-    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
-    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+    var start = Ext.Date.format(startMonthPicker.getValue(), "Y-m");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "Y-m");
 
     var store = grid.getStore();
     store.getProxy().setExtraParam("start", start);

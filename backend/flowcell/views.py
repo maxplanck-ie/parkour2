@@ -102,14 +102,14 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         default_end_date = today
 
         start_date_param = self.request.query_params.get(
-            "start", default_start_date.strftime("%m.%Y")
+            "start", default_start_date.strftime("%Y-%m")
         )
         end_date_param = self.request.query_params.get(
-            "end", default_end_date.strftime("%m.%Y")
+            "end", default_end_date.strftime("%Y-%m")
         )
 
-        start_date = timezone.datetime.strptime(start_date_param, "%m.%Y")
-        end_date = timezone.datetime.strptime(end_date_param, "%m.%Y")
+        start_date = timezone.datetime.strptime(start_date_param, "%Y-%m")
+        end_date = timezone.datetime.strptime(end_date_param, "%Y-%m")
 
         start_date = start_date.replace(day=1)
         end_date = end_date.replace(day=1) + relativedelta(months=1, days=-1)

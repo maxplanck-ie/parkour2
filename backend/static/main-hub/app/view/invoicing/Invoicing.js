@@ -167,43 +167,23 @@ Ext.define("MainHub.view.invoicing.Invoicing", {
       dockedItems: [
         {
           xtype: "toolbar",
-          dock: "top",
-          items: [
-            // {
-            //   xtype: "combobox",
-            //   itemId: "billing-period-combobox",
-            //   fieldLabel: "Select Billing Period",
-            //   store: "BillingPeriods",
-            //   queryMode: "local",
-            //   valueField: "value",
-            //   displayField: "name",
-            //   forceSelection: true,
-            //   labelWidth: 130,
-            //   width: 300,
-            // },
-          ]
-        },
-        {
-          xtype: "toolbar",
           dock: "bottom",
           items: [
-            {
-              itemId: "view-uploaded-report-button",
-              text: "View Reports",
-              iconCls: "fa fa-search fa-lg"
-              // handler: function () {}
-            },
-            {
-              text: "Upload Report",
-              itemId: "upload-report",
-              uploadUrl: "api/invoicing/upload/",
-              iconCls: "fa fa-upload fa-lg"
-            },
             {
               text: "Download Report",
               itemId: "download-report",
               downloadUrl: "api/invoicing/download/",
               iconCls: "fa fa-download fa-lg"
+            },
+            {
+              text: "Upload Reports",
+              itemId: "upload-reports",
+              iconCls: "fa fa-upload fa-lg"
+            },
+            {
+              text: "View Uploaded Reports",
+              itemId: "view-uploaded-reports",
+              iconCls: "fa fa-search fa-lg"
             }
           ]
         }

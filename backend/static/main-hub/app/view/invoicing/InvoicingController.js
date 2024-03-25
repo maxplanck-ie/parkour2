@@ -2,7 +2,11 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
   extend: "Ext.app.ViewController",
   alias: "controller.invoicing",
 
-  requires: ["Ext.ux.FileUploadWindow"],
+  requires: [
+    "Ext.ux.FileUploadWindow",
+    "MainHub.view.invoicing.UploadReportsWindow",
+    "MainHub.view.invoicing.ViewUploadedReportsWindow"
+  ],
 
   config: {
     control: {
@@ -18,8 +22,11 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
       "#download-report": {
         click: "downloadReport"
       },
-      "#upload-report": {
-        click: "uploadReport"
+      "#upload-reports": {
+        click: "uploadReports"
+      },
+      "#view-uploaded-reports": {
+        click: "viewUploadedReports"
       },
       "#fixed-costs-grid,#preparation-costs-grid,#sequencing-costs-grid": {
         edit: "editPrice"
@@ -41,19 +48,18 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     startMonthPicker.fireEvent("select", startMonthPicker);
     endMonthPicker.fireEvent("select", endMonthPicker);
 
-    // Load cost stores
     view.down("#fixed-costs-grid").getStore().reload();
     view.down("#preparation-costs-grid").getStore().reload();
     view.down("#sequencing-costs-grid").getStore().reload();
   },
 
-  selectMonth: function (df) {
+  selectMonth: function (df, view) {
     var grid = df.up("grid");
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
 
-    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
-    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+    var start = Ext.Date.format(startMonthPicker.getValue(), "Y-m");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "Y-m");
 
     var store = grid.getStore();
     store.getProxy().setExtraParam("start", start);
@@ -88,8 +94,8 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     var startMonthPicker = grid.down("#start-month-picker");
     var endMonthPicker = grid.down("#end-month-picker");
 
-    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
-    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
+    var start = Ext.Date.format(startMonthPicker.getValue(), "Y-m");
+    var end = Ext.Date.format(endMonthPicker.getValue(), "Y-m");
     var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
 
     form.submit({
@@ -102,45 +108,12 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     });
   },
 
-  uploadReport: function (btn) {
-    var grid = btn.up("grid");
-    var startMonthPicker = grid.down("#start-month-picker");
-    var endMonthPicker = grid.down("#end-month-picker");
+  uploadReports: function (btn) {
+    Ext.create("MainHub.view.invoicing.UploadReportsWindow");
+  },
 
-    var start = Ext.Date.format(startMonthPicker.getValue(), "m.Y");
-    var end = Ext.Date.format(endMonthPicker.getValue(), "m.Y");
-    var form = Ext.create("Ext.form.Panel", { standardSubmit: true });
-
-    Ext.create("Ext.ux.FileUploadWindow", {
-      fileFieldName: "report",
-
-      onFileUpload: function () {
-        var uploadWindow = this;
-        var form = this.down("form").getForm();
-
-        if (!form.isValid()) {
-          new Noty({
-            text: "You did not select any file.",
-            type: "warning"
-          }).show();
-          return;
-        }
-
-        form.submit({
-          url: btn.uploadUrl,
-          method: "POST",
-          waitMsg: "Uploading...",
-          params: {
-            month: value[0] + "-" + value[1]
-          },
-          success: function (f, action) {
-            new Noty({ text: "Report has been successfully uploaded." }).show();
-            billingPeriodCb.getStore().reload();
-            uploadWindow.close();
-          }
-        });
-      }
-    });
+  viewUploadedReports: function (btn) {
+    Ext.create("MainHub.view.invoicing.ViewUploadedReportsWindow");
   },
 
   gridCellTooltipRenderer: function (value, meta) {
