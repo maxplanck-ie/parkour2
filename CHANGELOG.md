@@ -4,8 +4,9 @@
 ========
 
 - Renamed 'Nucleic Acid Type' to 'Input Type', to accomodate the latest type addition ('Cells').
-- In 'Invoicing', Download Report, Upload Reports, and View Uploaded Reports buttons are functional again.
-- Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule.
+- In 'Invoicing', Download Report, Upload Reports, and View Uploaded Reports buttons are functional again. (#101)
+- Standardized date parameter format to "YYYY-MM" in 'Invoicing' and 'Load Flowcells' submodule. (#101)
+- While downloading, renamed the Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' respectively. (#102) 
 
 24.03.15
 ========
