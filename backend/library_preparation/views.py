@@ -108,10 +108,8 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def download_benchtop_protocol(self, request):
         """Generate Benchtop Protocol as XLS file for selected samples."""
         ids = json.loads(request.data.get("ids", "[]"))
-
-        filename = "Library_Preparation_Benchtop_Protocol.xls"
         response = HttpResponse(content_type="application/ms-excel")
-        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        request_ids = set()
 
         queryset = self.filter_queryset(self.get_queryset()).filter(pk__in=ids)
         serializer = LibraryPreparationSerializer(
@@ -160,6 +158,8 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 .first()
             )
 
+            request_ids.add(int(item["request_name"].split("_")[0]))
+
             row = [
                 item["request_name"],
                 item["pool_name"],
@@ -192,5 +192,8 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             for i in range(len(row)):
                 ws.write(row_num, i, row[i], font_style)
 
+        request_ids_string = "_".join(str(id) for id in request_ids)
+        filename = f"Library_Preparation_Benchtop_Protocol_{request_ids_string}.xls"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
         wb.save(response)
         return response
