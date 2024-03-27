@@ -115,6 +115,14 @@ class OrganizationAdmin(admin.ModelAdmin):
 
     def has_module_permission(self, request):
         return False
+    
+    @admin.action(description="Mark as archived")
+    def mark_as_archived(self, request, queryset):
+        queryset.update(archived=True)
+
+    @admin.action(description="Mark as non-archived")
+    def mark_as_non_archived(self, request, queryset):
+        queryset.update(archived=False)
 
 
 class CheckUserEmailExtension:
@@ -125,14 +133,6 @@ class CheckUserEmailExtension:
             if 'imb.de' in email:
                 raise forms.ValidationError("Use the full email extension imb-mainz.de, not just imb.de")
         return email
-
-    @admin.action(description="Mark as archived")
-    def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
-
-    @admin.action(description="Mark as non-archived")
-    def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
 
 
 class UserCreationForm(UserCreationForm, CheckUserEmailExtension):
