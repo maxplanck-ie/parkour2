@@ -1,6 +1,6 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
-??.??.??
+24.03.27
 ========
 
 - Renamed 'Nucleic Acid Type' to 'Input Type', to accomodate the latest type addition ('Cells').
