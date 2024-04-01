@@ -178,9 +178,9 @@ class IndexPairAdmin(admin.ModelAdmin):
         return str(obj)
 
     def render_change_form(self, request, context, *args, **kwargs):
-        context["adminform"].form.fields[
-            "index_type"
-        ].queryset = IndexType.objects.filter(archived=False, format="plate")
+        context["adminform"].form.fields["index_type"].queryset = (
+            IndexType.objects.filter(archived=False, format="plate")
+        )
         return super().render_change_form(request, context, args, kwargs)
 
     def get_urls(self):
