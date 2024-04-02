@@ -230,7 +230,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         )
         records = sorted(records, key=lambda x: x.barcode[3:])
 
-        f_name = f"Pooling_Benchtop_Protocol_{pool_id}.xls"
+        f_name = f"{pool_id}_Pooling_Benchtop_Protocol.xls"
         response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 
         wb = Workbook(encoding="utf-8")

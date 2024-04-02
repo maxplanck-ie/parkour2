@@ -193,7 +193,7 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 ws.write(row_num, i, row[i], font_style)
 
         request_ids_string = "_".join(str(id) for id in request_ids)
-        filename = f"Library_Preparation_Benchtop_Protocol_{request_ids_string}.xls"
+        filename = f"{request_ids_string}_Library_Preparation_Benchtop_Protocol.xls"
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         wb.save(response)
         return response
