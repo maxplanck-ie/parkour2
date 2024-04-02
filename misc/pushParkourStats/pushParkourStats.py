@@ -6,9 +6,13 @@ from urllib.parse import urljoin
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+import subprocess
+import csv
+from io import StringIO
 
 import requests
 import interop
+import numpy as np
 import pandas as pd
 
 
@@ -82,7 +86,8 @@ def getFlowcellId(run_info_path):
     return flowcellID
 
 
-def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
+def pushParkour(flowcellID: str, bclFlowcellOutDir: str,
+                flowcellBase: str, config: dict[str: str]) -> None:
     '''
     Push run stats and demultiplex sequences to Parkour
     Adapted from from dissectBCL.fakeNews.pushParkour
@@ -102,116 +107,216 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
     undetermined_indices
     '''
 
-    def pushRunStats(flowcellID, bclFlowcellOutDir, flowcellBase, config):
+    def pushRunStats(flowcellID: str, bclFlowcellOutDir: str,
+                     flowcellBase: str, config: dict[str: str]) -> None:
 
-        # Parse interop
-        try:
-            iop_df = pd.DataFrame(
-                interop.summary(
-                    interop.read(
-                        flowcellBase
-                    ),
-                    'Lane'
+        def get_matrix_py_interop(bclFlowcellOutDir: str,
+                                  flowcellBase: str) -> str:
+            """Get run QC metrics using Python's interop library"""
+
+            # Parse interop
+            try:
+                iop_df = pd.DataFrame(
+                    interop.summary(
+                        interop.read(
+                            flowcellBase
+                        ),
+                        'Lane'
+                    )
                 )
-            )
-        except:
-            raise Exception(
-                f'Cannot find/open Interop folder for flowcell {flowcellID}')
+            except:
+                raise Exception('Cannot find/open Interop folder '
+                                'for flowcell {flowcellID}')
 
-        # Push Run Stats
+            laneDict = {}
+            # Get Quality_Metrics.csv
+            try:
+                qdf = pd.read_csv(os.path.join(bclFlowcellOutDir,
+                                               'Reports',
+                                               'Quality_Metrics.csv'))
+            except:
+                raise Exception('Cannot find/open Quality_Metrics.csv '
+                                'for flowcell {flowcellID}')
 
-        d = {}
-        d['flowcell_id'] = flowcellID
-        laneDict = {}
+            # Loop through lanes
+            for lane in list(qdf['Lane'].unique()):
+                subdf = qdf[qdf['Lane'] == lane]
+                laneStr = f'Lane {lane}'
+                laneDict[laneStr] = {}
 
-        # Get Quality_Metrics.csv
+                # Reads PF
+                readsPF = iop_df[(iop_df['ReadNumber'] == 1) &
+                                 (iop_df['Lane'] == lane)] \
+                                ['Reads Pf'].values[0]
+                laneDict[laneStr]['reads_pf'] = int(round(float(readsPF), 0))
 
-        try:
-            qdf = pd.read_csv(os.path.join(bclFlowcellOutDir,
-                                           'Reports', 'Quality_Metrics.csv'))
-        except:
-            raise Exception(
-                f'Cannot find/open Quality_Metrics.csv for flowcell {flowcellID}')
+                # % reads PF
+                percReadsPF = iop_df[(iop_df['ReadNumber'] == 1) &
+                                     (iop_df['Lane'] == lane)] \
+                                    ['% Pf'].values[0]
+                laneDict[laneStr]['perc_reads_pf'] = round(
+                    float(percReadsPF), 2)
 
-        # Loop through lanes
-        for lane in list(qdf['Lane'].unique()):
-            subdf = qdf[qdf['Lane'] == lane]
-            laneStr = f'Lane {lane}'
-            laneDict[laneStr] = {}
+                # Cluster count
+                clusterCount = iop_df[(iop_df['ReadNumber'] == 1) &
+                                      (iop_df['Lane'] == lane)] \
+                                     ['Cluster Count'].values[0]
+                laneDict[laneStr]['cluster_count'] = int(clusterCount)
 
-            # Reads PF
-            readsPF = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['Reads Pf'].values[0]
-            laneDict[laneStr]['reads_pf'] = int(round(float(readsPF), 0))
+                # Cluster count PF
+                clusterCountPF = iop_df[(iop_df['ReadNumber'] == 1) &
+                                        (iop_df['Lane'] == lane)] \
+                                       ['Cluster Count Pf'].values[0]
+                laneDict[laneStr]['cluster_count_pf'] = int(round(float(clusterCountPF), 0))
 
-            # % reads PF
-            percReadsPF = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['% Pf'].values[0]
-            laneDict[laneStr]['perc_reads_pf'] = round(float(percReadsPF), 2)
+                # Density
+                density = iop_df[(iop_df['ReadNumber'] == 1) &
+                                 (iop_df['Lane'] == lane)] \
+                               ['Density'].values[0]
+                laneDict[laneStr]['density'] = int(density)
 
-            # Cluster count
-            clusterCount = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['Cluster Count'].values[0]
-            laneDict[laneStr]['cluster_count'] = int(clusterCount)
+                # Density PF
+                densityPF = iop_df[(iop_df['ReadNumber'] == 1) &
+                                   (iop_df['Lane'] == lane)] \
+                                  ['Density Pf'].values[0]
+                laneDict[laneStr]['density_pf'] = int(densityPF)
 
-            # Cluster count PF
-            clusterCountPF = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['Cluster Count Pf'].values[0]
-            laneDict[laneStr]['cluster_count_pf'] = int(
-                round(float(clusterCountPF), 0))
+                # Undetermined indices
+                laneDict[laneStr]["undetermined_indices"] = \
+                    round(
+                        subdf[subdf["SampleID"] == "Undetermined"]["YieldQ30"].sum() \
+                            / subdf['YieldQ30'].sum() * 100,
+                        2)
 
-            # Density
-            density = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['Density'].values[0]
-            laneDict[laneStr]['density'] = int(density)
-
-            # Density PF
-            densityPF = iop_df[
-                (iop_df['ReadNumber'] == 1) & (iop_df['Lane'] == lane)
-            ]['Density Pf'].values[0]
-            laneDict[laneStr]['density_pf'] = int(densityPF)
-
-            # Undetermined indices
-            laneDict[laneStr]["undetermined_indices"] = \
-                round(
-                    subdf[
-                        subdf["SampleID"] == "Undetermined"
-                    ]["YieldQ30"].sum() / subdf['YieldQ30'].sum() * 100,
+                # % reads Q30, same as read_1_perc_q30 below
+                # Do not consider libraries for which the yield is 0 reads
+                # because these also have 0 % Q30
+                Q30Dic = subdf.query('Yield > 0').groupby("ReadNumber")['% Q30'].mean().to_dict()
+                for read in Q30Dic:
+                    if 'I' not in str(read):
+                        readStr = f'read_{read}'
+                        laneDict[laneStr][readStr] = round(Q30Dic[read]*100, 2)
+                laneDict[laneStr]["cluster_pf"] = round(
+                    subdf["YieldQ30"].sum()/subdf["Yield"].sum() * 100,
                     2
-            )
+                )
 
-            # % reads Q30, same as read_1_perc_q30 below
-            Q30Dic = subdf.groupby("ReadNumber")['% Q30'].mean().to_dict()
-            for read in Q30Dic:
-                if 'I' not in str(read):
-                    readStr = f'read_{read}'
-                    laneDict[laneStr][readStr] = round(Q30Dic[read]*100, 2)
-            laneDict[laneStr]["cluster_pf"] = round(
-                subdf["YieldQ30"].sum()/subdf["Yield"].sum() * 100,
-                2
-            )
+                # Other fields, per read
+                fieldNames = {'Error Rate': 'error_rate',
+                              'First Cycle Intensity': 'first_cycle_int',
+                              '% Aligned': 'perc_aligned',
+                              '% >= Q30': 'perc_q30'}
+                for fieldName, fieldId in fieldNames.items():
+                    tempDic = iop_df.query(
+                        "Lane == @lane")[['ReadNumber', fieldName]]
+                    for _, (read, val) in tempDic.iterrows():
+                        if not pd.isna(val) and 'I' not in str(read):
+                            readStr = f'read_{int(read)}_{fieldId}'
+                            laneDict[laneStr][readStr] = round(val, 2)
 
-            # Other fields, per read
-            fieldNames = {'Error Rate': 'error_rate',
-                          'First Cycle Intensity': 'first_cycle_int',
-                          '% Aligned': 'perc_aligned',
-                          '% >= Q30': 'perc_q30'}
-            for fieldName, fieldId in fieldNames.items():
-                tempDic = iop_df.query(
-                    "Lane == @lane")[['ReadNumber', fieldName]]
-                for _, (read, val) in tempDic.iterrows():
-                    if not pd.isna(val) and 'I' not in str(read):
-                        readStr = f'read_{int(read)}_{fieldId}'
-                        laneDict[laneStr][readStr] = round(val, 2)
+                laneDict[laneStr]["name"] = laneStr
 
-            laneDict[laneStr]["name"] = laneStr
+            return json.dumps(list(laneDict.values()))
 
-        d['matrix'] = json.dumps(list(laneDict.values()))
+        def get_matrix_illumina_interop(flowcellBase: str) -> str:
+            """Get run QC metrics using interop_summary, backup for when
+            the main get_matrix_py_interop function fails"""
+
+            try:
+                # Get interop_summary as CSV
+                interop_summary_cmd = f'interop_summary {flowcellBase}'
+                interop_summary = subprocess.run(interop_summary_cmd.split(),
+                                                 capture_output=True, text=True)
+                interop_summary = StringIO(interop_summary.stdout)
+                interop_summary = csv.reader(interop_summary, delimiter=',')
+                interop_summary = [r for r in interop_summary]
+            except:
+                raise Exception('Cannot find/open Interop folder for flowcell {flowcellID}')
+
+            # Get run QC data per Read
+            headers = [c.strip() for c in [r for r in interop_summary
+                                           if len(r) == 20][0]]
+            data = [[c.split(' ')[0] for c in r] for r in interop_summary
+                    if len(r) == 20 and r[1].strip() == '-']
+            data = pd.DataFrame(data, columns=headers)
+
+            try:
+                # Only keep relevant columns
+                relevant_headers = ['Lane', 'Density', 'Cluster PF',
+                                    'Reads PF', '%>=Q30', 'Aligned',
+                                    'Error', 'Intensity C1']
+                data = data.loc[:, relevant_headers]
+            except:
+                raise Exception('Cannot find relevant headers in Interop summary for flowcell {flowcellID}')
+
+            # Set read numbers
+            num_reads = len(data.query('Lane == "1"'))
+            num_lanes = data['Lane'].nunique()
+            data['Read'] = [i for i in range(1, num_reads + 1) for _ in range(num_lanes)]
+
+            # Convert text to numbers
+            data = data.astype(float)
+
+            # Set new header names
+            new_headers = ['name', 'density', 'cluster_pf',
+                           'reads_pf', "read_{rn}_perc_q30",
+                           "read_{rn}_perc_aligned", "read_{rn}_error_rate",
+                           "read_{rn}_first_cycle_int", 'read_number']
+            data.columns = new_headers
+
+            # Replace NaN with None
+            data = data.replace(np.nan, None)
+
+            # Beautify data
+            data['density'] = data['density'].astype(int)
+            data['density'] = data['density']*10**3
+            data['reads_pf'] = (data['reads_pf']*10**6).astype(int)
+            data['name'] = data['name'].astype(int)
+            data['read_number'] = data['read_number'].astype(int)
+            data['read_{rn}_first_cycle_int'] = data['read_{rn}_first_cycle_int'].astype(int)
+
+            # Creat matrix to be uploaded
+            matrix = []
+
+            # Loop through lanes
+            for lane in data['name'].unique():
+
+                # Get data for all reads in a lane
+                lane_data = data.query('name == @lane').iloc[:, 1:]
+                lane_dict = {'name': f'Lane {lane}'}
+
+                # Loop through reads
+                for row in lane_data.itertuples(index=False, name=None):
+
+                    # Get read number
+                    read_number = row[-1]
+
+                    # Add data available for a read to matrix
+                    for h, val in zip(new_headers[1:], row[:-1]):
+                        lane_dict[h.format(rn=read_number)] = val
+
+                        # read_x should be the same as read_x_perc_q30
+                        if h.endswith('perc_q30'):
+                            lane_dict[f'read_{read_number}'] = val
+
+                matrix.append(lane_dict)
+
+            return json.dumps(matrix)
+
+        d = {'flowcell_id': flowcellID}
+
+        # Get the matrix, try first with get_matrix_pyinterop
+        # if that does not work, use get_matrix_illinterop
+        errors = []
+        try:
+            d['matrix'] = get_matrix_py_interop(bclFlowcellOutDir, flowcellBase)
+        except Exception as exp:
+            errors.append(exp)
+            try:
+                d['matrix'] = get_matrix_illumina_interop(flowcellBase)
+            except Exception as exp:
+                errors.append(exp)
+                raise Exception('\n'.join([str(e).format(flowcellID=flowcellID) for e in errors]))
 
         pushParkourRunStat = requests.post(
             urljoin(config.get("PARKOUR_BASE_URL"),
@@ -229,32 +334,31 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
             raise Exception(
                 f"Cannot push run statistics for flowcell {flowcellID}. Error: {pushParkourRunStat.text}")
 
-    def pushSequenceStats(flowcellID, bclFlowcellOutDir, config):
+    def pushSequenceStats(flowcellID: str, bclFlowcellOutDir: str,
+                          config: dict[str: str]) -> None:
 
         # Get demultiplexStatsdf.csv
         try:
             demultiplexStatsdf = pd.read_csv(os.path.join(bclFlowcellOutDir,
                                                           'Reports', 'Demultiplex_Stats.csv'))
         except:
-            raise Exception(
-                f'Cannot find/open Demultiplex_Stats.csv for flowcell {flowcellID}')
+            raise Exception('Cannot find/open Demultiplex_Stats.csv '
+                            f'for flowcell {flowcellID}')
 
         # Get Sample name <-> Barcode
         samplesBarcodesdf = pullParkourSamplesBarcodes(flowcellID, config)
         # Match demultiplexStatsdf and samplesBarcodesdf on SampleID
-        demultiplexStatsdf = pd.merge(
-            demultiplexStatsdf, samplesBarcodesdf, on='SampleID', how='left')
+        demultiplexStatsdf = pd.merge(demultiplexStatsdf, samplesBarcodesdf,
+                                      on='SampleID', how='left')
         # Polish new df a bit
-        demultiplexStatsdf = demultiplexStatsdf[[
-            'Barcode', 'SampleID', '# Reads', "Lane"]]
-        demultiplexStatsdf.columns = ["barcode",
-                                      "name", "reads_pf_sequenced", "lane"]
-        demultiplexStatsdf["barcode"] = demultiplexStatsdf["barcode"].fillna(
-            "")
-        demultiplexStatsdf["reads_pf_sequenced"] = demultiplexStatsdf["reads_pf_sequenced"].astype(
-            pd.Int64Dtype())
-        demultiplexStatsdf["lane"] = demultiplexStatsdf["lane"].astype(
-            pd.Int64Dtype())
+        demultiplexStatsdf = demultiplexStatsdf[['Barcode', 'SampleID',
+                                                 '# Reads', "Lane"]]
+        demultiplexStatsdf.columns = ["barcode","name",
+                                      "reads_pf_sequenced", "lane"]
+        demultiplexStatsdf["barcode"] = demultiplexStatsdf["barcode"].fillna("")
+        demultiplexStatsdf["reads_pf_sequenced"] = demultiplexStatsdf["reads_pf_sequenced"]. \
+                                                   astype(pd.Int64Dtype())
+        demultiplexStatsdf["lane"] = demultiplexStatsdf["lane"].astype(pd.Int64Dtype())
 
         d = {"flowcell_id": flowcellID}
         d['sequences'] = demultiplexStatsdf[["barcode", "name",
@@ -262,27 +366,38 @@ def pushParkour(flowcellID, bclFlowcellOutDir, flowcellBase, config):
         pushParkourSequencesStats = requests.post(
             urljoin(config.get("PARKOUR_BASE_URL"),
                     'api/sequences_statistics/upload/'),
-            auth=(
-                config.get("PARKOUR_USER"),
-                config.get("PARKOUR_USER_PASSWORD")
-            ),
+            auth=(config.get("PARKOUR_USER"),
+                 config.get("PARKOUR_USER_PASSWORD")),
             data=d,
             verify=True,
             timeout=10
         )
 
         if pushParkourSequencesStats.status_code != 200:
-            raise Exception(
-                f"Cannot push run statistics for flowcell {flowcellID}. Error: {pushParkourSequencesStats.text}")
+            raise Exception(f'Cannot push run statistics for flowcell {flowcellID}. '
+                            f'Error: {pushParkourSequencesStats.text}')
 
     if '-' in flowcellID:
         flowcellID = flowcellID.split('-')[1]
 
-    pushRunStats(flowcellID, bclFlowcellOutDir, flowcellBase, config)
-    pushSequenceStats(flowcellID, bclFlowcellOutDir, config)
+    errors = []
+
+    try:
+        pushRunStats(flowcellID, bclFlowcellOutDir, flowcellBase, config)
+    except Exception as exp:
+        errors.append(exp)
+
+    try:
+        pushSequenceStats(flowcellID, bclFlowcellOutDir, config)
+    except Exception as exp:
+        errors.append(exp)
+
+    if errors:
+        raise Exception('\n'.join([str(e) for e in errors]))
 
 
-def pullParkourSamplesBarcodes(flowcellID, config):
+def pullParkourSamplesBarcodes(flowcellID: str,
+                               config: dict[str: str]) -> pd.DataFrame:
     """
     Get the contents of a flowcell and extract 
     library name and barcode
@@ -313,11 +428,11 @@ def pullParkourSamplesBarcodes(flowcellID, config):
                 samplesBarcodesLis.append((lib_props[0], barcode))
         return pd.DataFrame.from_records(samplesBarcodesLis, columns=['SampleID', 'Barcode'])
     else:
-        raise Exception(
-            f"Cannot pull flowcell details for flowcell {flowcellID}. Error: {pullParkourFlowcellContents.text}")
+        raise Exception(f'Cannot pull flowcell details for flowcell {flowcellID}. '
+                        f'Error: {pullParkourFlowcellContents.text}')
 
 
-def main(bclFlowcellOutDir, flowcellBase, config):
+def main(bclFlowcellOutDir: str, flowcellBase: str, config: dict[str: str]) -> str:
 
     flowcellID = getFlowcellId(os.path.join(flowcellBase, 'RunInfo.xml'))
 
