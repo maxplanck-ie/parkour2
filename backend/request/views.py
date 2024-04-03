@@ -368,9 +368,11 @@ class RequestViewSet(viewsets.ModelViewSet):
                     "name": obj.name,
                     "barcode": obj.barcode,
                     "record_type": obj.__class__.__name__,
-                    "is_converted": True
-                    if hasattr(obj, "is_converted") and obj.is_converted
-                    else False,
+                    "is_converted": (
+                        True
+                        if hasattr(obj, "is_converted") and obj.is_converted
+                        else False
+                    ),
                 }
                 for obj in instance.records
             ]
