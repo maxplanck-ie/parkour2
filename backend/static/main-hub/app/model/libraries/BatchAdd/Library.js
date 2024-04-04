@@ -30,7 +30,8 @@ Ext.define("MainHub.model.libraries.BatchAdd.Library", {
   fields: [
     {
       type: "int",
-      name: "mean_fragment_size"
+      name: "mean_fragment_size",
+      defaultValue: null
     },
     {
       type: "int",
