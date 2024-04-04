@@ -531,7 +531,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "size (bp)",
+        text: "Size (bp)",
         dataIndex: "mean_fragment_size",
         tooltip: "Mean Fragment Size",
         width: 100,
