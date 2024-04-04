@@ -148,8 +148,8 @@ Ext.define("MainHub.view.requests.Requests", {
             text: "Cost Unit",
             dataIndex: "cost_unit_name",
             hidden: !(USER.is_staff || USER.member_of_bcf),
-            width: 80,
-            width: 80,
+            width: 150,
+            minWidth: 100,
           },
           {
             text: "Date",
