@@ -449,10 +449,20 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
 
               if (sequencerChemistry === 2) {
                 labels =
-                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>';
-              } else if (sequencerChemistry === 4) {
+                  '<span class="summary-green">% green:</span><br>' +
+                  '<span class="summary-red">% red:</span><br>' +
+                  '<span class="summary-black">% black:</span>';
+              } 
+              else if (sequencerChemistry === 20) {
                 labels =
-                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>';
+                '<span class="summary-green">% green:</span><br>' +
+                '<span class="summary-blue">% blue:</span><br>' +
+                '<span class="summary-black">% black:</span>';
+              }
+              else if (sequencerChemistry === 4) {
+                labels =
+                  '<span class="summary-green">% green:</span><br>' +
+                  '<span class="summary-red">% red:</span>';
               }
               var totalSequencingDepth = grid
                 .getStore()
@@ -578,10 +588,20 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
 
               if (sequencerChemistry === 2) {
                 labels =
-                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span><br><span class="summary-black">% black:</span>';
-              } else if (sequencerChemistry === 4) {
+                  '<span class="summary-green">% green:</span><br>' +
+                  '<span class="summary-red">% red:</span><br>' +
+                  '<span class="summary-black">% black:</span>';
+              }   
+              else if (sequencerChemistry === 20) {
                 labels =
-                  '<span class="summary-green">% green:</span><br><span class="summary-red">% red:</span>';
+                '<span class="summary-green">% green:</span><br>' +
+                '<span class="summary-blue">% blue:</span><br>' +
+                '<span class="summary-black">% black:</span>';
+              }
+              else if (sequencerChemistry === 4) {
+                labels =
+                  '<span class="summary-green">% green:</span><br>' +
+                  '<span class="summary-red">% red:</span>';
               }
               var totalSequencingDepth = grid
                 .getStore()
@@ -722,6 +742,11 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                       tooltip: "Illumina 2-channel SBS technology",
                     },
                     {
+                      sequencerChemistry: 20,
+                      name: "2-ch XLEAP",
+                      tooltip: "Illumina 2-channel XLEAP SBS technology",
+                    },
+                    {
                       sequencerChemistry: 4,
                       name: "4-ch",
                       tooltip: "Illumina 4-channel SBS technology",
@@ -736,7 +761,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                 allowBlank: false,
                 fieldLabel: "Chemistry",
                 labelWidth: 65,
-                width: 150,
+                width: 190,
                 disabled: true,
                 listeners: {
                   change: function (cb, newValue, oldValue, eOpts) {
@@ -744,6 +769,10 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                     poolGrid.baseColours = me.getBaseColours(newValue);
                     Ext.getCmp("index-generator-grid").fireEvent("reset");
                     poolGrid.getView().refresh();
+                    // Trigger datachange event on poolGrid store,
+                    // because the summary row is not updated by
+                    // simply refreshing the view
+                    poolGrid.store.fireEvent('datachanged');
                   },
                 },
                 listConfig: {
@@ -858,6 +887,14 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
         black: ["G"],
       },
       {
+        sequencerChemistry: 20,
+        green: ["T", "C"],
+        // For XLEAP, red is actually blue, but it's
+        // easier to keep using red "in the background"
+        red: ["A", "C"],
+        black: ["G"],
+      },
+      {
         sequencerChemistry: 4,
         green: ["G", "T"],
         red: ["A", "C"],
@@ -875,13 +912,17 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
     meta.tdCls = "nucleotide";
 
     if (baseColours.green.includes(val) & baseColours.red.includes(val)) {
-      meta.tdStyle += "background-color:#fffacd;";
+      meta.tdStyle += baseColours.sequencerChemistry === 20 ? // For XLEAP, it should be teal
+                      "background-color:#b2d8d8;" : 
+                      "background-color:#fffacd;";
       return val;
     } else if (baseColours.green.includes(val)) {
       meta.tdStyle += "background-color:#dcedc8;";
       return val;
     } else if (baseColours.red.includes(val)) {
-      meta.tdStyle += "background-color:#ef9a9a;";
+      meta.tdStyle += baseColours.sequencerChemistry === 20 ? // For XLEAP, it should be blue
+                      "background-color:#bfe6ff;" :
+                      "background-color:#ef9a9a;";
       return val;
     }
 
@@ -949,7 +990,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
 
       if (sequencerChemistry === 4) {
         result = Ext.String.format("{0}<br/>{1}", green, red);
-      } else if (sequencerChemistry === 2) {
+      } else if (sequencerChemistry === 2 || sequencerChemistry === 20) {
         result = Ext.String.format("{0}<br/>{1}<br/>{2}", green, red, black);
       }
 

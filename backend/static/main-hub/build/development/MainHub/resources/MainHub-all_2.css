@@ -9134,20 +9134,25 @@ tr.pool-not-ready .x-grid-item-focused {
     font-weight: bold;
 }
 /* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:38 */
-.summary-black {
+.summary-blue {
+    color: #4336f4;
     font-weight: bold;
 }
 /* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:43 */
+.summary-black {
+    font-weight: bold;
+}
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:48 */
 .x-item-disabled.x-boundlist-item {
     color: #8c8c8c;
     cursor: default;
 }
-/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:47 */
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:52 */
 .x-item-disabled.x-boundlist-item-over {
     background: inherit;
     border-color: white;
 }
-/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:55 */
+/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/sass/src/view/indexgenerator/IndexGenerator.scss:60 */
 .obsolete2 {
     /* grayed out combobox item */
     color: lightgray;
@@ -14768,11 +14773,4 @@ hr {
 .x-btn.x-btn-pressed .x-btn-soft-cyan-small-tc,
 .x-btn.x-btn-pressed .x-btn-soft-cyan-small-bc {
     background-image: url(images/btn/btn-soft-cyan-small-pressed-corners.gif);
-}
-/* /home/nzilio/dev_parkour/parkour/backend/static/main-hub/ext/classic/theme-neutral/sass/src/button/Button.scss:1011 */
-.x-btn.x-btn-menu-active .x-btn-soft-cyan-small-ml,
-.x-btn.x-btn-menu-active .x-btn-soft-cyan-small-mr,
-.x-btn.x-btn-pressed .x-btn-soft-cyan-small-ml,
-.x-btn.x-btn-pressed .x-btn-soft-cyan-small-mr {
-    background-image: url(images/btn/btn-soft-cyan-small-pressed-sides.gif);
 }
