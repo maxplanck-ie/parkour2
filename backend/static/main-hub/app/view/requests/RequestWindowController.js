@@ -339,7 +339,10 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     }
 
     if (!form.isValid()) {
-      new Noty({ text: "Please fill in all the required fields.", type: "warning" }).show();
+      new Noty({
+        text: "Please fill in all the required fields.",
+        type: "warning"
+      }).show();
       return;
     }
 
@@ -403,9 +406,9 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
   },
 
   showBatchAddWindow: function () {
-      Ext.create("MainHub.view.libraries.BatchAddWindow", {
-        mode: "add"
-      });
+    Ext.create("MainHub.view.libraries.BatchAddWindow", {
+      mode: "add"
+    });
   },
 
   disableButtonsAndMenus: function () {
