@@ -103,7 +103,6 @@ def test_requests_page(page: Page):
     expect(page.get_by_text("Add Libraries/Samples")).to_be_visible()
     sampleCardButton.click()
     expect(page.get_by_text("Add Samples")).to_be_visible()
-    createEmptyRowInput.fill("1")
     with open(
         CSV_DATA + "sample_request.csv",
         newline="",
