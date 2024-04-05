@@ -1,5 +1,17 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+??.??.??
+========
+
+- Description is no longer required for adding libraries and samples in the "New Request" window. (#106)
+- Added (*) to the Description label in "New Request" window. (#106)
+- Set the default value to 1 to create empty records in "Add Libraries" window. (#106)
+- Changed the color of link "Max page on Intranet" from Golden to White in "Add Libraries" window. (#106)
+- In "Add Libraries" window, fixed the "Sequencing Depth" validation error popping up while editing. (#106)
+- In "Add Libraries" window, fixed the "Size (bp)" column always has a default value of 0 whenever an empty record is created. (#106)
+- In "Add Libraries" window, renamed "size (bp)" to "Size (bp)". (#106)
+- Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
+
 24.03.27
 ========
 
