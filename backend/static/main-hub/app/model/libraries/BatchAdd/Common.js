@@ -21,7 +21,15 @@ Ext.define("validator.GreaterThanZero", {
   extend: "Ext.data.validator.Validator",
   alias: "data.validator.greaterthanzero",
   validate: function (value) {
-    return value > 0 || "Must be greater than zero";
+    return value > 0 || "Must be greater than 0";
+  }
+});
+
+Ext.define("validator.GreaterThanTen", {
+  extend: "Ext.data.validator.Validator",
+  alias: "data.validator.greaterthanten",
+  validate: function (value) {
+    return value > 10 || "Must be greater than 10";
   }
 });
 
@@ -112,7 +120,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     library_type: "presence",
     concentration: "presence",
     read_length: "presence",
-    sequencing_depth: "greaterthanzero",
+    sequencing_depth: "greaterthanten",
     // amplification_cycles: 'presence',
     // concentration_method: 'presence',
     organism: "presence"

@@ -531,13 +531,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "size (bp)",
+        text: "Size (bp)",
         dataIndex: "mean_fragment_size",
         tooltip: "Mean Fragment Size",
         width: 100,
         editor: {
           xtype: "numberfield",
-          allowDecimals: false,
           minValue: 0
         },
         renderer: this.errorRenderer
@@ -870,7 +869,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 85,
         editor: {
           xtype: "numberfield",
-          minValue: 10
+          minValue: 0
         },
         renderer: this.errorRenderer
       },
@@ -1044,7 +1043,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     }, 0);
 
     if (numInvalidRecords !== 0) {
-      new Noty({ text: "Check the records.", type: "warning" }).show();
+      new Noty({
+        text: "Please check the record entries.",
+        type: "warning"
+      }).show();
       return;
     }
 

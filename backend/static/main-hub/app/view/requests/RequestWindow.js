@@ -56,7 +56,7 @@ Ext.define("MainHub.view.requests.RequestWindow", {
                   name: "description",
                   cls: "pl-description",
                   xtype: "textarea",
-                  fieldLabel: "Description",
+                  fieldLabel: "Description*",
                   emptyText: "Description",
                   allowBlank: false,
                   height: 150

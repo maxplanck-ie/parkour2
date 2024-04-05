@@ -115,7 +115,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
           padding: "0 10px 0 0",
           labelWidth: 145,
           width: 230,
-          minValue: 1
+          minValue: 1,
+          value: 1
         },
         {
           xtype: "button",
@@ -130,7 +131,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindow", {
             '<span id="edit-hint"><strong>Hint(s):</strong>&emsp;&emsp;' +
             "[1] To learn how to create a request, read " +
             '<a href="https://max.mpg.de/sites/mpi-ie/Facilities/Deep-Sequencing-Facility/Pages/Parkour-Help.aspx"' +
-            ' style="background-color: Teal; color: GoldenRod; font-weight: bold" target="_blank">MAX page on Intranet</a>&emsp;&emsp;' +
+            ' style="background-color: Teal; color: White; font-weight: bold; padding: 0 4px" target="_blank">MAX page on Intranet</a>&emsp;&emsp;' +
             "[2] To edit multiple cells at once (Excel-like), please select a cell, press Esc, paste data.</span>"
         },
         {
