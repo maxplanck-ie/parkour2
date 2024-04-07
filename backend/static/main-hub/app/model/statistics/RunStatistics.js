@@ -76,6 +76,21 @@ Ext.define("MainHub.model.statistics.RunStatistics", {
       name: "read_2",
       type: "float",
       allowNull: true
-    }
+    },
+    {
+      name: "read_1_error_rate",
+      type: "float",
+      allowNull: true
+    },
+    {
+      name: "read_1_first_cycle_int",
+      type: "float",
+      allowNull: true
+    },
+    {
+      name: "read_1_perc_aligned",
+      type: "float",
+      allowNull: true
+    } 
   ]
 });

@@ -64,43 +64,51 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
         items: [
           {
             text: "Lane",
-            dataIndex: "name"
+            dataIndex: "name",
+            minWidth: 35
           },
           {
             text: "Pool",
             dataIndex: "pool",
+            minWidth: 35,
             filter: { type: "string" }
           },
           {
             text: "Request",
             dataIndex: "request",
+            minWidth: 120,
             filter: { type: "string" }
           },
           {
             text: "Prep. Method",
             dataIndex: "library_preparation",
             tooltip: "Preparation Method",
+            minWidth: 110,
             filter: { type: "list" }
           },
           {
             text: "Library Type",
             dataIndex: "library_type",
+            minWidth: 100,
             filter: { type: "list" }
           },
           {
-            text: "Loading Concentr.",
+            text: "Loaded pM",
             dataIndex: "loading_concentration",
-            tooltip: "Loading Concentration",
+            tooltip: "Loading concentration of pool in pM",
+            minWidth: 90,
             filter: { type: "number" }
           },
           {
-            text: "Cluster PF (%)",
+            text: "% Cluster PF",
             dataIndex: "cluster_pf",
+            minWidth: 100,
             filter: { type: "number" }
           },
           {
-            text: "Reads PF (M)",
+            text: "M Reads PF",
             dataIndex: "reads_pf",
+            minWidth: 95,
             filter: { type: "number" },
             renderer: function (value) {
               if (value) {
@@ -110,24 +118,53 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             }
           },
           {
-            text: "Undet. Indices (%)",
+            text: "% Undet. Indices",
             dataIndex: "undetermined_indices",
-            tooltip: "Undetermined Indices (%)",
+            tooltip: "% undetermined indices",
+            minWidth: 125,
             filter: { type: "number" }
           },
           {
-            text: "% Spike In",
+            text: "% PhiX (E / O)",
             dataIndex: "phix",
-            filter: { type: "number" }
+            tooltip: "% PhiX, expected / observed",
+            minWidth: 105,
+            renderer: function (value, meta, record, rowIndex) {
+              
+              expected = value ? value : 'NA';
+              observed = record.get('read_1_perc_aligned') ? 
+                         record.get('read_1_perc_aligned') : 'NA';
+
+              return Ext.String.format(
+                '{0} / {1}',
+                expected,
+                observed
+              );
+            }
           },
           {
-            text: "Read 1 % >=Q30",
+            text: "R1, % ≥Q30",
             dataIndex: "read_1",
+            minWidth: 90,
             filter: { type: "number" }
           },
           {
-            text: "Read 2 (I) % >=Q30",
+            text: "R1, 1st cycle int.",
+            dataIndex: "read_1_first_cycle_int",
+            tooltip: "1st cycle intensity for Read 1",
+            minWidth: 120,
+            filter: { type: "number" }
+          },
+          {
+            text: "R1, error rate",
+            dataIndex: "read_1_error_rate",
+            minWidth: 105,
+            filter: { type: "number" }
+          },
+          {
+            text: "R2 (I), % ≥Q30",
             dataIndex: "read_2",
+            minWidth: 105,
             filter: { type: "number" }
           }
         ]
