@@ -149,14 +149,14 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
             filter: { type: "number" }
           },
           {
-            text: "R1, 1st cycle int.",
+            text: "R1, 1st Cycle Int.",
             dataIndex: "read_1_first_cycle_int",
             tooltip: "1st cycle intensity for Read 1",
             minWidth: 120,
             filter: { type: "number" }
           },
           {
-            text: "R1, error rate",
+            text: "R1, Error Rate",
             dataIndex: "read_1_error_rate",
             minWidth: 105,
             filter: { type: "number" }
