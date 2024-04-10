@@ -1,5 +1,17 @@
 > Versioning is by dates (in `yy.mm.dd` format).
 
+??.??.??
+========
+
+- Description is no longer required for adding libraries and samples in the "New Request" window. (#106)
+- Added (*) to the Description label in "New Request" window. (#106)
+- Set the default value to 1 to create empty records in "Add Libraries" window. (#106)
+- Changed the color of link "Max page on Intranet" from Golden to White in "Add Libraries" window. (#106)
+- In "Add Libraries" window, fixed the "Sequencing Depth" validation error popping up while editing. (#106)
+- In "Add Libraries" window, fixed the "Size (bp)" column always has a default value of 0 whenever an empty record is created. (#106)
+- In "Add Libraries" window, renamed "size (bp)" to "Size (bp)". (#106)
+- Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
+
 24.03.27
 ========
 
@@ -45,7 +57,7 @@ Non-breaking changes:
 - Upgraded Python dependencies.
 - Hidden Print button from Usage charts, since it was redirecting to a different site. (#90)
 - Request model has a new JSONfield, `metapaths`. It's meant to be like filepaths, but editable by users and the strings most probably refer to URLs (e.g. eLabJournal).
-- Added a 'Solicite approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
+- Added a 'Solicit approval via e-mail' context menu option for sequencing requests that belong users with both their own and their PI's email address at same server as the admin (`settings.SERVER_EMAIL`). Such PIs doesn't need an account on the system, the link is open to everyone. That's why we are loggin some metadata from the HTTP request.
 - Playwright tests for the new frontend, Vue.js for Duties. (#86)
 - Added new option "Short + Long" to the Platform field for Duties. (#89)
 - Minor cosmetic changes, and a new search bar for Libraries and Samples. (#87)

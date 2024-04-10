@@ -619,7 +619,7 @@ class RequestViewSet(viewsets.ModelViewSet):
         return JsonResponse({"success": True, "name": file_name, "path": file_path})
 
     @action(methods=["post"], detail=True)
-    def solicite_approval(self, request, pk=None):  # pragma: no cover
+    def solicit_approval(self, request, pk=None):  # pragma: no cover
         """Send an email to the PI."""
         error = ""
         instance = self.get_object()

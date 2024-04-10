@@ -339,7 +339,10 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
     }
 
     if (!form.isValid()) {
-      new Noty({ text: "Check the form", type: "warning" }).show();
+      new Noty({
+        text: "Please fill in all the required fields.",
+        type: "warning"
+      }).show();
       return;
     }
 
@@ -403,20 +406,9 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
   },
 
   showBatchAddWindow: function () {
-    var form = Ext.getCmp("request-form");
-
-    if (form.isValid()) {
-      Ext.create("MainHub.view.libraries.BatchAddWindow", {
-        mode: "add"
-      });
-    } else {
-      new Noty({
-        text:
-          "Please fill in all the required fields for " +
-          "a request before adding new libraries/samples.",
-        type: "warning"
-      }).show();
-    }
+    Ext.create("MainHub.view.libraries.BatchAddWindow", {
+      mode: "add"
+    });
   },
 
   disableButtonsAndMenus: function () {
