@@ -61,6 +61,8 @@ lint-migras:
 
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
+	#@find backend/ -user root -path '**/migrations/*.py' -print0 | \
+	#	xargs -0 -n 1 echo docker compose exec parkour2-django chown $$(id -u):$$(id -g)
 
 check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
