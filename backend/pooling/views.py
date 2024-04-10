@@ -235,52 +235,35 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         wb = Workbook(encoding="utf-8")
 
-        # First sheet
-        ws = wb.add_sheet("Pooling")
-        col_letters = {
-            0: "A",  # Request ID
-            1: "B",  # Library
-            2: "C",  # Barcode
-            3: "D",  # Concentration Library
-            4: "E",  # Mean Fragment Size
-            5: "F",  # Library Concentration C1
-            6: "G",  # Sequencing Depth
-            7: "H",  # % library in Pool
-            8: "I",  # Normalized Library Concentration C2
-            9: "J",  # Volume to Pool
-            10: "K",  # µl library
-            11: "L",  # µl EB
-        }
-
-        header = [
-            "Request ID",
-            "Library",
-            "Barcode",
-            "Concentration Library (ng/µl)",
-            "Mean Fragment Size (bp)",
-            "Library Concentration C1 (nM)",
-            "Sequencing Depth (M)",
-            "% library in Pool",
-            "Normalized Library Concentration C2 (nM)",
-            "Volume to Pool (µl)",
-            "µl library",
-            "µl EB",
-        ]
-
         font_style = XFStyle()
         font_style.alignment.wrap = 1
         font_style_bold = XFStyle()
         font_style_bold.font.bold = True
 
-        ws.write(0, 0, "Pool ID", font_style_bold)  # A1
-        ws.write(0, 1, pool.name, font_style_bold)  # B1
-        ws.write(1, 0, "Pool Volume", font_style_bold)  # A2
-        ws.write(2, 0, "Sum Sequencing Depth", font_style_bold)  # A3
-        ws.write(3, 0, "", font_style)  # A4
+        # First sheet
+        ws = wb.add_sheet("Smear Analysis")
 
-        row_num = 4
+        column_letters_smear_analysis = {
+            0: "A",  # Request ID
+            1: "B",  # Library
+            2: "C",  # Barcode
+            3: "D",  # Concentration Library (ng/µl)
+            4: "E",  # Smear Analysis (% Total)
+            5: "F",  # Adjusted Concentration Library (ng/µl)
+        }
 
-        for i, column in enumerate(header):
+        headers_smear_analysis = [
+            "Request ID",
+            "Library",
+            "Barcode",
+            "Concentration Library (ng/µl)",
+            "Smear Analysis (% Total)",
+            "Adjusted Concentration Library (ng/µl)",
+        ]
+
+        row_num = 0
+
+        for i, column in enumerate(headers_smear_analysis):
             ws.write(row_num, i, column, font_style_bold)
             ws.col(i).width = 7000  # Set column width
 
@@ -292,28 +275,136 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
             if isinstance(record, Library):
                 concentration = record.concentration_facility
-                # mean_fragment_size = record.mean_fragment_size
-                # mean_fragment_size = bp[index]
-                mean_fragment_size = bp[lib_index]
+                smear_analysis = 100
                 lib_index += 1
             else:
                 concentration = record.librarypreparation.concentration_library
-                mean_fragment_size = record.librarypreparation.mean_fragment_size
+                smear_analysis = record.librarypreparation.smear_analysis
 
             row = [
                 req.name,  # Request ID
                 record.name,  # Library
                 record.barcode,  # Barcode
                 concentration,  # Concentration Library
-                mean_fragment_size,  # Mean Fragment Size
+                smear_analysis,  # Smear Analysis
             ]
 
-            # Library Concentration C1 =
-            # (Library Concentration / Mean Fragment Size * 650) * 10^6
-            col_library_concentration = col_letters[3]
-            col_mean_fragment_size = col_letters[4]
+            # Adjusted Concentration Library
+            col_concentration_library = column_letters_smear_analysis[3]
+            col_smear_analysis = column_letters_smear_analysis[4]
+            formula = "{}{}*({}{}/100)".format(
+                col_concentration_library,
+                row_idx,
+                col_smear_analysis,
+                row_idx,
+            )
+            row.append(Formula(formula))
+
+            # Writing row data to the sheet
+            for i in range(len(row)):
+                ws.write(row_num, i, row[i], font_style)
+
+        # Second sheet
+        ws = wb.add_sheet("Pooling")
+        wb.active_sheet = 1
+
+        column_letters_pooling = {
+            0: "A",  # Request ID
+            1: "B",  # Library
+            2: "C",  # Barcode
+            3: "D",  # Adjusted Concentration Library (ng/µl)
+            4: "E",  # Dilution Factor
+            5: "F",  # Remeasured Concentration, Diluted Adjusted (ng/µl)
+            6: "G",  # Mean Fragment Size (bp)
+            7: "H",  # Library Concentration C1 (nM)
+            8: "I",  # Sequencing Depth (M)
+            9: "J",  # % Library in Pool
+            10: "K",  # Normalized Library Concentration C2 (nM)
+            11: "L",  # Volume to Pool (µl)
+            12: "M",  # µl Library
+            13: "N",  # µl EB
+        }
+
+        headers_pooling = [
+            "Request ID",
+            "Library",
+            "Barcode",
+            "Adjusted Concentration Library (ng/µl)",
+            "Dilution Factor",
+            "Remeasured Concentration, Diluted Adjusted (ng/µl)",
+            "Mean Fragment Size (bp)",
+            "Library Concentration C1 (nM)",
+            "Sequencing Depth (M)",
+            "% Library in Pool",
+            "Normalized Library Concentration C2 (nM)",
+            "Volume to Pool (µl)",
+            "µl Library",
+            "µl EB",
+        ]
+
+        ws.write(0, 0, "Pool ID", font_style_bold)  # A1
+        ws.write(0, 1, pool.name, font_style_bold)  # B1
+        ws.write(1, 0, "Pool Volume", font_style_bold)  # A2
+        ws.write(2, 0, "Sum Sequencing Depth", font_style_bold)  # A3
+        ws.write(3, 0, "", font_style)  # A4
+
+        row_num = 4
+
+        for i, column in enumerate(headers_pooling):
+            ws.write(row_num, i, column, font_style_bold)
+            ws.col(i).width = 7000  # Set column width
+
+        lib_index = 0
+        for index, record in enumerate(records):
+            row_num += 1
+            row_idx = str(row_num + 1)
+            req = record.request.get()
+
+            if isinstance(record, Library):
+                concentration = record.concentration_facility
+                dilution_factor = record.dilution_factor
+                mean_fragment_size = bp[lib_index]
+                lib_index += 1
+            else:
+                concentration = record.librarypreparation.concentration_library
+                dilution_factor = record.librarypreparation.dilution_factor
+                mean_fragment_size = record.librarypreparation.mean_fragment_size
+
+            row = [
+                req.name,  # Request ID
+                record.name,  # Library
+                record.barcode,  # Barcode
+            ]
+
+            # Adjusted Concentration Library
+            col_adjusted_concentration_library = column_letters_smear_analysis[5]
+            formula = "'Smear Analysis'!{}{}".format(
+                col_adjusted_concentration_library,
+                int(row_idx) - 4,
+            )
+            row.append(Formula(formula))
+
+            # Dilution Factor
+            row.append(dilution_factor)
+
+            # Remeasured Concentration, Diluted Adjusted
+            col_remeasured_concentration_library = column_letters_pooling[3]
+            col_dilution_factor = column_letters_pooling[4]
+            formula = "{}{}/{}{}".format(
+                col_remeasured_concentration_library,
+                row_idx,
+                col_dilution_factor,
+                row_idx,
+            )
+            row.append(Formula(formula))
+
+            # Mean Fragment Size
+            row.append(mean_fragment_size)
+
+            # Library Concentration C1 (nM)
+            col_mean_fragment_size = column_letters_pooling[4]
             formula = "{}{}/({}{}*650)*1000000".format(
-                col_library_concentration,
+                col_adjusted_concentration_library,
                 row_idx,
                 col_mean_fragment_size,
                 row_idx,
@@ -323,22 +414,22 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             # Sequencing Depth
             row.append(record.sequencing_depth)
 
-            # % library in Pool
-            col_sequencing_depth = col_letters[6]
+            # % Library in Pool
+            col_sequencing_depth = column_letters_pooling[6]
             formula = f"{col_sequencing_depth}{row_idx}/$B$3*100"
             row.append(Formula(formula))
 
             row.append("")  # Concentration C2
 
             # Volume to Pool
-            col_percentage = col_letters[7]
+            col_percentage = column_letters_pooling[7]
             formula = f"$B$2*{col_percentage}{row_idx}/100"
             row.append(Formula(formula))
 
-            # µl library
-            col_volume_pool = col_letters[9]
-            col_normalization_c2 = col_letters[8]
-            col_concentration_c1 = col_letters[5]
+            # µl Library
+            col_volume_pool = column_letters_pooling[9]
+            col_normalization_c2 = column_letters_pooling[8]
+            col_concentration_c1 = column_letters_pooling[5]
             formula = "({}{}*{}{})/{}{}".format(
                 col_volume_pool,
                 row_idx,
@@ -350,7 +441,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(Formula(formula))
 
             # µl EB
-            col_ul_library = col_letters[10]
+            col_ul_library = column_letters_pooling[10]
             formula = "{}{}-{}{}".format(
                 col_volume_pool,
                 row_idx,
@@ -359,12 +450,13 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             )
             row.append(Formula(formula))
 
-            # Add rows to spreadsheet
+            # Writing row data to the sheet
             for i in range(len(row)):
                 ws.write(row_num, i, row[i], font_style)
-        lib_index = 0
+
         # Write Sum µl EB
-        col_ul_eb = col_letters[11]
+        lib_index = 0
+        col_ul_eb = column_letters_pooling[11]
         formula = f"SUM({col_ul_eb}{6}:{col_ul_eb}{row_idx})"
         ws.write(int(row_idx), 11, Formula(formula), font_style)
 
@@ -377,7 +469,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         )
         ws.write(2, 1, Formula(formula), font_style)
 
-        # Second sheet
+        # Third sheet
         ws = wb.add_sheet("ng-ul to nM")
         ws.write(0, 0, "Convert ng/µl to nM", font_style_bold)  # A1
         ws.write(
@@ -393,8 +485,11 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         ws.write(6, 1, "Operator", font_style_bold)  # B7
         ws.write(6, 2, "Sample ID", font_style_bold)  # C7
         ws.write(6, 3, "Concentration (ng/µl)", font_style_bold)  # D7
-        ws.write(6, 4, "Average bp", font_style_bold)  # E7
-        ws.write(6, 5, "nM", font_style_bold)  # F7
+        ws.write(6, 4, "Smear Analysis (% Total)", font_style_bold)  # E7
+        ws.write(6, 5, "Adjusted Concentration (ng/µl)", font_style_bold)  # F7
+        ws.write(6, 6, "Average bp", font_style_bold)  # G7
+        ws.write(6, 7, "nM", font_style_bold)  # H7
+
         for i in range(40):
             row_idx = 7 + i
             for j in range(5):
@@ -403,34 +498,21 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ws.write(row_idx, j + 1, Formula(formula), font_style)
 
         # Table 2
-        ws.write(6, 11, "Guidelines", font_style_bold)  # L7
-        ws.write(6, 12, "nM (optimal)", font_style_bold)  # M7
-        ws.write(6, 13, "possible", font_style_bold)  # N7
-        ws.write(7, 11, "HiSeq3000", font_style)  # L8
-        ws.write(8, 11, "HiSeq2500", font_style)  # L9
-        ws.write(9, 11, "NextSeq", font_style)  # L10
-        ws.write(10, 11, "MiSeq", font_style)  # L11
-        ws.write(7, 12, 3, font_style)  # M8
-        ws.write(8, 12, 1, font_style)  # M9
-        ws.write(9, 12, "0.5 - 4", font_style)  # M10
-        ws.write(10, 12, 4, font_style)  # M11
-        ws.write(10, 13, 4, font_style)  # N11
+        ws.write(5, 9, "Add V2 to samples, to reach desired C2", font_style)
+        ws.write(6, 9, "V1", font_style_bold)  # J7
+        ws.write(6, 10, "C1", font_style_bold)  # K7
+        ws.write(6, 11, "V2", font_style_bold)  # L7
+        ws.write(6, 12, "C2", font_style_bold)  # M7
 
-        # Table 3
-        ws.write(13, 8, "Add V2 to samples to reach desired C2", font_style)
-        ws.write(14, 8, "V1", font_style_bold)  # I15
-        ws.write(14, 9, "C1", font_style_bold)  # J15
-        ws.write(14, 10, "V2", font_style_bold)  # K15
-        ws.write(14, 11, "C2", font_style_bold)  # L15
         for i in range(8):
-            row_idx = 15 + i
-            ws.write(row_idx, 8, "", font_style)  # V1
-            formula_c1 = f"F{8 + i}"
-            ws.write(row_idx, 9, Formula(formula_c1), font_style)  # C1
+            row_idx = 7 + i
+            ws.write(row_idx, 9, "", font_style)  # V1
+            formula_c1 = f"F{9 + i}"
+            ws.write(row_idx, 10, Formula(formula_c1), font_style)  # C1
             v2_idx = row_idx + 1
             formula_v2 = f"((I{v2_idx}*J{v2_idx})/L{v2_idx})-I{v2_idx}"
-            ws.write(row_idx, 10, Formula(formula_v2), font_style)  # V2
-            ws.write(row_idx, 11, 4 + i, font_style)  # C2
+            ws.write(row_idx, 11, Formula(formula_v2), font_style)  # V2
+            ws.write(row_idx, 12, 4 + i, font_style)  # C2
 
         wb.save(response)
         return response

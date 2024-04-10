@@ -116,6 +116,10 @@ Ext.define("MainHub.model.librarypreparation.LibraryPreparation", {
       name: "quality_check",
       type: "string",
       allowNull: true
+    },
+    {
+      name: "smear_analysis",
+      type: "float"
     }
   ]
 });

@@ -1,4 +1,5 @@
 from common.models import DateTimeMixin
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from sample.models import Sample
 
@@ -60,6 +61,12 @@ class LibraryPreparation(DateTimeMixin):
         "Comments",
         null=True,
         blank=True,
+    )
+
+    smear_analysis = models.FloatField(
+        "Smear Analysis",
+        default=100,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
     )
 
     archived = models.BooleanField("Archived", default=False)
