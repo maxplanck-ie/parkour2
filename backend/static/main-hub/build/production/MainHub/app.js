@@ -152325,7 +152325,7 @@ Ext.cmd.derive(
           },
           "-",
           {
-            text: "Solicite Approval via Email",
+            text: "Solicit Approval via Email",
             hidden: !USER.paperless_approval,
             handler: function () {
               Ext.create("MainHub.view.requests.TokenWindow", {
@@ -153198,7 +153198,7 @@ Ext.cmd.derive(
       }
       d.submit({
         url: Ext.String.format(
-          "api/requests/{0}/solicite_approval/",
+          "api/requests/{0}/solicit_approval/",
           f.record.get("pk")
         ),
         params: d.getFieldValues(),

@@ -33,7 +33,7 @@ Ext.define("MainHub.view.requests.TokenWindowController", {
 
     form.submit({
       url: Ext.String.format(
-        "api/requests/{0}/solicite_approval/",
+        "api/requests/{0}/solicit_approval/",
         wnd.record.get("pk")
       ),
       params: form.getFieldValues(),

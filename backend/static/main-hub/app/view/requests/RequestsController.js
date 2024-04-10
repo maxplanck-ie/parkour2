@@ -76,7 +76,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
         },
         "-",
         {
-          text: "Solicite Approval via Email",
+          text: "Solicit Approval via Email",
           hidden: !USER.paperless_approval,
           handler: function () {
             Ext.create("MainHub.view.requests.TokenWindow", {
