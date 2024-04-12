@@ -11,6 +11,7 @@
 - In "Add Libraries" window, fixed the "Size (bp)" column always has a default value of 0 whenever an empty record is created. (#106)
 - In "Add Libraries" window, renamed "size (bp)" to "Size (bp)". (#106)
 - Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
+- New Benchtop Protocol File in 'Pooling' with the introduction of 'Smear Analysis' (#107)
 
 24.03.27
 ========
