@@ -492,13 +492,13 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         for i in range(40):
             row_idx = 7 + i
-            for j in range(5):
+            for j in range(4):
                 ws.write(row_idx, j, "", font_style)
             formula_smear_analysis = f"D{row_idx + 1}*(E{row_idx + 1}/100)"
-            ws.write(row_idx, 6, Formula(formula_smear_analysis), font_style)
-            ws.write(row_idx, 7, "", font_style)
+            ws.write(row_idx, 5, Formula(formula_smear_analysis), font_style)
+            ws.write(row_idx, 6, "", font_style)
             formula_nM = f"F{row_idx + 1}/(650*G{row_idx + 1})*10^6"
-            ws.write(row_idx, 8, Formula(formula_nM), font_style)
+            ws.write(row_idx, 7, Formula(formula_nM), font_style)
 
         # Table 2
         ws.write(5, 9, "Add V2 to samples, to reach desired C2", font_style)
@@ -510,10 +510,10 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         for i in range(8):
             row_idx = 7 + i
             ws.write(row_idx, 9, "", font_style)  # V1
-            formula_c1 = f"F{9 + i}"
+            formula_c1 = f"H{9 + i}"
             ws.write(row_idx, 10, Formula(formula_c1), font_style)  # C1
             v2_idx = row_idx + 1
-            formula_v2 = f"((I{v2_idx}*J{v2_idx})/L{v2_idx})-I{v2_idx}"
+            formula_v2 = f"((J{v2_idx}*K{v2_idx})/M{v2_idx})-J{v2_idx}"
             ws.write(row_idx, 11, Formula(formula_v2), font_style)  # V2
             ws.write(row_idx, 12, "", font_style)  # C2
 
