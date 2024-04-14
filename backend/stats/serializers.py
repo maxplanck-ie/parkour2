@@ -5,7 +5,7 @@ Flowcell = apps.get_model("flowcell", "Flowcell")
 
 
 class RunsSerializer(ModelSerializer):
-    sequencer = SerializerMethodField()
+    sequencing_kit = SerializerMethodField()
 
     class Meta:
         model = Flowcell
@@ -13,12 +13,12 @@ class RunsSerializer(ModelSerializer):
             "pk",
             "flowcell_id",
             "create_time",
-            "sequencer",
+            "sequencing_kit",
             "matrix",
         )
 
-    def get_sequencer(self, obj):
-        return obj.pool_size.sequencer.name
+    def get_sequencing_kit(self, obj):
+        return str(obj.pool_size)
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -40,13 +40,14 @@ class RunsSerializer(ModelSerializer):
         num_lanes = len(lanes)
         for item in data["matrix"]:
             lane_key = "Lane 1" if num_lanes == 1 else item["name"]
+            item["name"] = item["name"].lower().replace('lane', '').strip()
             result.append(
                 {
                     **{
                         "pk": data["pk"],
                         "flowcell_id": data["flowcell_id"],
                         "create_time": data["create_time"],
-                        "sequencer": data["sequencer"],
+                        "sequencing_kit": data["sequencing_kit"],
                         "read_length": lanes.get(lane_key, {}).get("read_length", None),
                         "library_preparation": lanes.get(lane_key, {}).get(
                             "library_preparation", None
