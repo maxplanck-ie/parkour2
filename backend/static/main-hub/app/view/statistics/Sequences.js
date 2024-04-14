@@ -6,7 +6,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
     "MainHub.components.BaseGrid",
     "MainHub.components.SearchField",
     "MainHub.view.statistics.SequencesController",
-    "Ext.ux.DateRangePicker"
+    "Ext.ux.DateRangePicker",
   ],
 
   controller: "sequences-statistics",
@@ -58,14 +58,14 @@ Ext.define("MainHub.view.statistics.Sequences", {
             xtype: "parkoursearchfield",
             store: "SequencesStatistics",
             emptyText: "Search",
-            width: 320
-          }
-        ]
+            width: 320,
+          },
+        ],
       },
 
       columns: {
         defaults: {
-          flex: 1
+          flex: 1,
         },
         items: [
           {
@@ -76,57 +76,56 @@ Ext.define("MainHub.view.statistics.Sequences", {
             menuDisabled: true,
             hideable: false,
             tdCls: "no-dirty",
-            width: 35
+            width: 35,
           },
           {
             text: "Request",
             dataIndex: "request",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Barcode",
             dataIndex: "barcode",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Name",
             dataIndex: "name",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Lane",
             dataIndex: "lane",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Pool",
             dataIndex: "pool",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Library Protocol",
             dataIndex: "library_protocol",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "Library Type",
             dataIndex: "library_type",
             renderer: "gridCellTooltipRenderer",
             filter: { type: "string" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
-            text: "Reads PF (M), requested",
-            tooltip: "Reads PF (M), requested",
+            text: "M Reads PF, requested",
             dataIndex: "reads_pf_requested",
             filter: { type: "number" },
             minWidth: 135,
@@ -144,8 +143,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
             },
           },
           {
-            text: "Reads PF (M), sequenced",
-            tooltip: "Reads PF (M), sequenced",
+            text: "M Reads PF, sequenced",
             dataIndex: "reads_pf_sequenced",
             renderer: function (value, meta, record) {
               var readsRequested = record.get("reads_pf_requested");
@@ -165,29 +163,29 @@ Ext.define("MainHub.view.statistics.Sequences", {
               return value;
             },
             filter: { type: "number" },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "% reads",
             renderer: function (value, meta, record) {
               var readsSequenced = record.get("reads_pf_sequenced");
-
+              var totalReads = record.get("total_reads");
               if (readsSequenced) {
-                var store = this.store;
-                var grouping = store.getGroups().items.filter(function (g) {
-                  return g.getGroupKey() == record.get("pk");
-                });
-                if (grouping.length === 1) {
-                  var total_read_count = grouping[0].sum("reads_pf_sequenced");
-                  value = ((readsSequenced / total_read_count) * 100).toFixed(
-                    2
-                  );
+                // If total_reads cannot be retrieved, calculate it
+                if (!totalReads) {
+                  var store = this.store;
+                  var grouping = store.getGroups().items.filter(function (g) {
+                    return g.getGroupKey() == record.get("pk");
+                  });
+                  if (grouping.length === 1) {
+                    var totalReads = grouping[0].sum("reads_pf_sequenced");
+                  }
                 }
+                value = ((readsSequenced / totalReads) * 100).toFixed(2);
               }
-
               return value;
             },
-            minWidth: 135
+            minWidth: 135,
           },
           {
             text: "confident off-species reads",
@@ -239,7 +237,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
         {
           ptype: "bufferedrenderer",
           trailingBufferZone: 100,
-          leadingBufferZone: 100
+          leadingBufferZone: 100,
         },
         {
           ptype: "gridfilters",
@@ -257,7 +255,7 @@ Ext.define("MainHub.view.statistics.Sequences", {
           enableGroupingMenu: false,
           groupHeaderTpl: [
             "<strong>{children:this.getFlowcellId} " +
-              "({children:this.getDate}, {children:this.getSequencingKit}, {children:this.getTotalYield}M reads)</strong>",
+              "({children:this.getDate}, {children:this.getSequencingKit}, {children:this.getTotalYield} M reads PF)</strong>",
             {
               getFlowcellId: function (children) {
                 return children[0].get("flowcell_id");
@@ -272,7 +270,13 @@ Ext.define("MainHub.view.statistics.Sequences", {
                 var total_reads = children.reduce(function (sum, e) {
                   return sum + e.get("reads_pf_sequenced");
                 }, 0);
-                return (total_reads / 1000000).toFixed(2);
+                // Set total_reads on all children of group, so that it does
+                // not have to be recalculated again later when the % reads
+                // of each child is computed
+                children.forEach(function (c) {
+                  c.set("total_reads", total_reads);
+                });
+                return (total_reads / 1000000).toFixed(1);
               },
             },
           ],
@@ -293,10 +297,10 @@ Ext.define("MainHub.view.statistics.Sequences", {
                 mainBtnTextColor: "#999",
                 mainBtnIconCls: "x-fa fa-calendar",
                 presetPeriodsBtnIconCls: "x-fa fa-calendar-check-o",
-                confirmBtnIconCls: "x-fa fa-check"
-              }
-            }
-          ]
+                confirmBtnIconCls: "x-fa fa-check",
+              },
+            },
+          ],
         },
         {
           xtype: "toolbar",
@@ -305,13 +309,13 @@ Ext.define("MainHub.view.statistics.Sequences", {
             {
               text: "Download Report",
               itemId: "download-report",
-              iconCls: "fa fa-download fa-lg"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              iconCls: "fa fa-download fa-lg",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
 
 function floatRenderer(value) {

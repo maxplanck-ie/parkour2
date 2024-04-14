@@ -194,7 +194,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           },
           {
             text: "Loading conc., pM",
-            tooltip: "Loading concentration of pool in pM",
+            tooltip: "Loading Concentration of Pool in pM",
             dataIndex: "loading_concentration",
             filter: { type: "number" },
             editor: {

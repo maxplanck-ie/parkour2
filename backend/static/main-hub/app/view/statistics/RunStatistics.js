@@ -65,7 +65,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
           {
             text: "Lane",
             dataIndex: "name",
-            minWidth: 50
+            minWidth: 60
           },
           {
             text: "Pool",
@@ -95,7 +95,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
           {
             text: "Loading conc., pM",
             dataIndex: "loading_concentration",
-            tooltip: "Loading concentration of pool in pM",
+            tooltip: "Loading Concentration of Pool in pM",
             minWidth: 120,
             filter: { type: "number" }
           },
@@ -120,7 +120,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
           {
             text: "% Undet. Indices",
             dataIndex: "undetermined_indices",
-            tooltip: "% undetermined indices",
+            tooltip: "% Undetermined Indices",
             minWidth: 125,
             filter: { type: "number" }
           },
@@ -151,7 +151,7 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
           {
             text: "R1, 1st Cycle Int.",
             dataIndex: "read_1_first_cycle_int",
-            tooltip: "1st cycle intensity for Read 1",
+            tooltip: "1st Cycle Intensity for Read 1",
             minWidth: 120,
             filter: { type: "number" }
           },
@@ -190,7 +190,8 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
           groupHeaderTpl: [
             "<strong>{children:this.getFlowcellId} " +
               "({children:this.getDate}, {children:this.getSequencingKit}, " +
-              "{children:this.getReadLength})</strong>",
+              "{children:this.getReadLength}, " +
+              "{children:this.getTotalYield} M reads PF)</strong>",
             {
               getFlowcellId: function (children) {
                 return children[0].get("flowcell_id");
@@ -203,6 +204,12 @@ Ext.define("MainHub.view.statistics.RunStatistics", {
               },
               getReadLength: function (children) {
                 return children[0].get("read_length");
+              },
+              getTotalYield: function (children) {
+                var total_reads = children.reduce(function (sum, e) {
+                  return sum + e.get("reads_pf");
+                }, 0);
+                return (total_reads / 1000000).toFixed(1);
               }
             }
           ]
