@@ -362,12 +362,10 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
             if isinstance(record, Library):
                 concentration = record.concentration_facility
-                dilution_factor = record.dilution_factor
                 mean_fragment_size = bp[lib_index]
                 lib_index += 1
             else:
                 concentration = record.librarypreparation.concentration_library
-                dilution_factor = record.librarypreparation.dilution_factor
                 mean_fragment_size = record.librarypreparation.mean_fragment_size
 
             row = [
@@ -385,7 +383,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(Formula(formula))
 
             # Dilution Factor
-            row.append(dilution_factor)
+            row.append(record.dilution_factor)
 
             # Remeasured Concentration, Diluted Adjusted
             col_remeasured_concentration_library = column_letters_pooling[3]
