@@ -400,7 +400,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(mean_fragment_size)
 
             # Library Concentration C1 (nM)
-            col_mean_fragment_size = column_letters_pooling[4]
+            col_mean_fragment_size = column_letters_pooling[6]
             formula = "{}{}/({}{}*650)*1000000".format(
                 col_adjusted_concentration_library,
                 row_idx,
@@ -413,21 +413,21 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(record.sequencing_depth)
 
             # % Library in Pool
-            col_sequencing_depth = column_letters_pooling[6]
+            col_sequencing_depth = column_letters_pooling[8]
             formula = f"{col_sequencing_depth}{row_idx}/$B$3*100"
             row.append(Formula(formula))
 
             row.append("")  # Concentration C2
 
             # Volume to Pool
-            col_percentage = column_letters_pooling[7]
+            col_percentage = column_letters_pooling[9]
             formula = f"$B$2*{col_percentage}{row_idx}/100"
             row.append(Formula(formula))
 
             # µl Library
-            col_volume_pool = column_letters_pooling[9]
-            col_normalization_c2 = column_letters_pooling[8]
-            col_concentration_c1 = column_letters_pooling[5]
+            col_concentration_c1 = column_letters_pooling[7]
+            col_normalization_c2 = column_letters_pooling[10]
+            col_volume_pool = column_letters_pooling[11]
             formula = "({}{}*{}{})/{}{}".format(
                 col_volume_pool,
                 row_idx,
@@ -439,7 +439,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(Formula(formula))
 
             # µl EB
-            col_ul_library = column_letters_pooling[10]
+            col_ul_library = column_letters_pooling[12]
             formula = "{}{}-{}{}".format(
                 col_volume_pool,
                 row_idx,
@@ -454,9 +454,9 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         # Write Sum µl EB
         lib_index = 0
-        col_ul_eb = column_letters_pooling[11]
+        col_ul_eb = column_letters_pooling[13]
         formula = f"SUM({col_ul_eb}{6}:{col_ul_eb}{row_idx})"
-        ws.write(int(row_idx), 11, Formula(formula), font_style)
+        ws.write(int(row_idx), 13, Formula(formula), font_style)
 
         # Write Sum Sequencing Depth
         formula = "SUM({}{}:{}{})".format(
@@ -508,7 +508,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         for i in range(8):
             row_idx = 7 + i
             ws.write(row_idx, 9, "", font_style)  # V1
-            formula_c1 = f"H{9 + i}"
+            formula_c1 = f"H{8 + i}"
             ws.write(row_idx, 10, Formula(formula_c1), font_style)  # C1
             v2_idx = row_idx + 1
             formula_v2 = f"((J{v2_idx}*K{v2_idx})/M{v2_idx})-J{v2_idx}"
