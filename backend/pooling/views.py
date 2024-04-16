@@ -37,6 +37,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     sample_model = Sample
     library_serializer = PoolingLibrarySerializer
     sample_serializer = PoolingSampleSerializer
+    serializer_class = PoolSerializer
 
     def get_queryset(self):
         libraries_qs = (
@@ -205,6 +206,10 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         newComment = post_data["newComment"]
 
         instance.update(comment=newComment)
+        return Response({"success": True})
+
+    @action(methods=["post"], detail=True)
+    def destroy_pool(self, request, pk=None):
         return Response({"success": True})
 
     @action(
