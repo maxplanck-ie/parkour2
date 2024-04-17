@@ -416,12 +416,19 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
                 return children[0].get("request_name");
               },
               getTotalDepth: function (children) {
-                return Ext.Array.sum(
+                var totalDepth = Ext.Array.sum(
                   Ext.Array.pluck(
                     Ext.Array.pluck(children, "data"),
                     "sequencing_depth"
                   )
                 );
+                // Check whether totalDepth is an integer
+                // and format accordingly, to avoid float 
+                // point rounding ugliness
+                if (!Number.isInteger(Number(totalDepth.toFixed(2)))){
+                  totalDepth = Ext.util.Format.number(totalDepth, "0.00")
+                }
+                return totalDepth;
               },
               getChecked: function (children) {
                 return children[0].get(this.owner.checkDataIndex)

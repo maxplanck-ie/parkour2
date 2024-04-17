@@ -330,9 +330,20 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
                   return children[0].get("pooled_libraries") ? "Pool, " : "";
                 },
                 getTotalDepth: function (children) {
-                  return Ext.sum(
-                    Ext.pluck(Ext.pluck(children, "data"), "sequencing_depth")
+
+                  var totalDepth = Ext.Array.sum(
+                    Ext.Array.pluck(
+                      Ext.Array.pluck(children, "data"),
+                      "sequencing_depth"
+                    )
                   );
+                  // Check whether totalDepth is an integer
+                  // and format accordingly, to avoid float 
+                  // point rounding ugliness
+                  if (!Number.isInteger(Number(totalDepth.toFixed(2)))){
+                    totalDepth = Ext.util.Format.number(totalDepth, "0.00")
+                  }
+                  return totalDepth;
                 },
                 getCount: function (children) {
                   return children.length;
