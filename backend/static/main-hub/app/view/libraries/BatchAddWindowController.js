@@ -1251,6 +1251,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         editor: {
           xtype: "numberfield",
           minValue: 0,
+          regex: new RegExp("^[0-9]+$"),
+          regexText: "Only integers are allowed.",
         },
         renderer: this.errorRenderer,
       },
