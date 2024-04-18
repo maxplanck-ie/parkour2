@@ -11,7 +11,9 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from xlwt import Workbook, XFStyle
+from openpyxl import Workbook
+from openpyxl.styles import Font
+from openpyxl.utils import get_column_letter
 
 from .serializers import RunsSerializer, SequencesSerializer
 
@@ -308,8 +310,12 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(data)
     
     def get_serializer_context(self):
-        merge_lanes = self.request.query_params.get("mergeLanes", 'True') == 'True' 
-        return {'merge_lanes': merge_lanes}
+        context = super().get_serializer_context()
+        merge_lanes = self.request.GET.get('merge_lanes',
+                                           self.request.POST.get(
+                                            'merge_lanes', 'True')) == 'True'
+        context.update({'merge_lanes': merge_lanes})
+        return context
 
     @action(methods=["post"], detail=False)
     def upload(self, request):
@@ -381,22 +387,19 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
     def download_report(self, request):
         barcodes = json.loads(request.data.get("barcodes", "[]"))
         barcodes_map = {b: True for b in barcodes}
+        flowcell_ids = json.loads(request.data.get("flowcell_ids", "[]"))
 
-        filename = "Sequences_Statistics_Report.xls"
-        response = HttpResponse(content_type="application/ms-excel")
+        filename = "Sequences_Statistics_Report.xlsx"
+        response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
 
-        queryset = self.filter_queryset(self.get_queryset())
+        queryset = self.filter_queryset(self.get_queryset()).filter(flowcell_id__in=flowcell_ids)
         serializer = self.get_serializer(queryset, many=True)
         data = list(itertools.chain(*serializer.data))
 
-        font_style = XFStyle()
-        font_style.alignment.wrap = 1
-        font_style_bold = XFStyle()
-        font_style_bold.font.bold = True
-
-        wb = Workbook(encoding="utf-8")
-        ws = wb.add_sheet("FC_Loading_Benchtop_Protocol")
+        bold_font = Font(bold=True)
+        wb = Workbook()
+        ws = wb.active
 
         header = [
             "Request",
@@ -406,48 +409,35 @@ class SequencesStatisticsViewSet(viewsets.ReadOnlyModelViewSet):
             "Pool",
             "Library Protocol",
             "Library Type",
-            "Reads PF (M), requested",
-            "Reads PF (M), sequenced",
-            "confident off-species reads",
-            "% Optical Duplicates",
-            "% dupped reads",
-            "% mapped reads",
-            "Insert Size",
+            "M Reads PF, requested",
+            "M Reads PF, sequenced",
         ]
-
-        row_num = 0
-
-        for i, column in enumerate(header):
-            ws.write(row_num, i, column, font_style_bold)
-            ws.col(i).width = 8000
+        ws.append(header)
+        
+        # Make header bold
+        [setattr(cell, 'font', bold_font)
+         for cell in ws[f'{ws._current_row}:{ws._current_row}']]
+        # Set column width to 20
+        for col in range(ws.min_column, ws.max_column + 1):
+            ws.column_dimensions[get_column_letter(col)].width = 20
 
         for item in data:
             if item["barcode"] in barcodes_map:
-                row_num += 1
-
                 reads_pf_sequenced = item.get("reads_pf_sequenced", "")
                 if reads_pf_sequenced != "":
                     reads_pf_sequenced = round(int(reads_pf_sequenced) / 1_000_000, 1)
-
                 row = [
                     item["request"],
                     item["barcode"],
                     item["name"],
-                    ",".join(item["lane"]),
+                    item["lane"],
                     item["pool"],
                     item["library_protocol"],
                     item["library_type"],
                     item.get("reads_pf_requested", ""),
                     reads_pf_sequenced,
-                    item.get("confident_reads", ""),
-                    item.get("optical_duplicates", ""),
-                    item.get("dupped_reads", ""),
-                    item.get("mapped_reads", ""),
-                    item.get("insert_size", ""),
                 ]
-
-                for i in range(len(row)):
-                    ws.write(row_num, i, row[i], font_style)
+                ws.append(row)
 
         wb.save(response)
         return response

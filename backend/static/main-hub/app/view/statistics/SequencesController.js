@@ -98,6 +98,8 @@ Ext.define("MainHub.view.statistics.SequencesController", {
   downloadReport: function (btn) {
     var store = btn.up("grid").getStore();
     var selectedRecords = this._getSelectedRecords(store);
+    var flowCellIds = this._getFlowCellIds(store);
+    var mergeLanesCb = btn.up("grid").down('#merge-lanes-sequences-checkbox');
 
     if (selectedRecords.length === 0) {
       new Noty({
@@ -111,7 +113,9 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     form.submit({
       url: "api/sequences_statistics/download_report/",
       params: {
-        barcodes: Ext.JSON.encode(Ext.Array.pluck(selectedRecords, "barcode"))
+        barcodes: Ext.JSON.encode(Ext.Array.pluck(selectedRecords, "barcode")),
+        flowcell_ids: Ext.JSON.encode(flowCellIds),
+        merge_lanes: mergeLanesCb.getValue() ? "True" : "False",
       }
     });
   },
@@ -128,5 +132,17 @@ Ext.define("MainHub.view.statistics.SequencesController", {
     });
 
     return records;
+  },
+
+  _getFlowCellIds: function (store) {
+    var records = [];
+
+    store.each(function (item) {
+      if (item.get("selected")) {
+        records.push(item.get("flowcell_id"));
+      }
+    });
+
+    return [...new Set(records)];
   }
 });
