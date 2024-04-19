@@ -237,33 +237,43 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         font_style = XFStyle()
         font_style.alignment.wrap = 1
+        font_style.num_format_str = "0.00"
         font_style_bold = XFStyle()
+        font_style_bold.num_format_str = "0.00"
         font_style_bold.font.bold = True
 
         # First sheet
-        ws = wb.add_sheet("Smear Analysis")
+        ws = wb.add_sheet("Concentration Adjustments")
 
-        column_letters_smear_analysis = {
-            0: "A",  # Request ID
-            1: "B",  # Library
-            2: "C",  # Barcode
-            3: "D",  # Concentration Library (ng/µl)
-            4: "E",  # Smear Analysis (% Total)
-            5: "F",  # Adjusted Concentration Library (ng/µl)
+        column_letters_concentration_adjustments = {
+            0: "A",  # Qubit Sample ID
+            1: "B",  # Request ID
+            2: "C",  # Library
+            3: "D",  # Barcode
+            4: "E",  # Concentration Library (ng/µl)
+            5: "F",  # Smear Analysis (% Total)
+            6: "G",  # Adjusted Concentration Library (ng/µl)
+            7: "H",  # Remeasured Concentration, Diluted (ng/µl)
+            8: "I",  # Remeasured Concentration, Diluted Adjusted (ng/µl)
+            9: "J",  # Expected Concentration, Diluted Adjusted (ng/µl)
         }
 
-        headers_smear_analysis = [
+        headers_concentration_adjustments = [
+            "Qubit Sample ID",
             "Request ID",
             "Library",
             "Barcode",
             "Concentration Library (ng/µl)",
             "Smear Analysis (% Total)",
             "Adjusted Concentration Library (ng/µl)",
+            "Remeasured Concentration, Diluted (ng/µl)",
+            "Remeasured Concentration, Diluted Adjusted (ng/µl)",
+            "Expected Concentration, Diluted Adjusted (ng/µl)",
         ]
 
         row_num = 0
 
-        for i, column in enumerate(headers_smear_analysis):
+        for i, column in enumerate(headers_concentration_adjustments):
             ws.write(row_num, i, column, font_style_bold)
             ws.col(i).width = 7000  # Set column width
 
@@ -282,6 +292,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 smear_analysis = record.librarypreparation.smear_analysis
 
             row = [
+                "e.g. Sample X1",  # Qubit Sample ID
                 req.name,  # Request ID
                 record.name,  # Library
                 record.barcode,  # Barcode
@@ -290,8 +301,8 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ]
 
             # Adjusted Concentration Library
-            col_concentration_library = column_letters_smear_analysis[3]
-            col_smear_analysis = column_letters_smear_analysis[4]
+            col_concentration_library = column_letters_concentration_adjustments[4]
+            col_smear_analysis = column_letters_concentration_adjustments[5]
             formula = "{}{}*({}{}/100)".format(
                 col_concentration_library,
                 row_idx,
@@ -299,6 +310,24 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 row_idx,
             )
             row.append(Formula(formula))
+
+            # Remeasured Concentration, Diluted (ng/µl)
+            row.append("")
+
+            # Remeasured Concentration, Diluted Adjusted (ng/µl)
+            col_remeasured_concentration_diluted = (
+                column_letters_concentration_adjustments[7]
+            )
+            formula = "{}{}*({}{}/100)".format(
+                col_smear_analysis,
+                row_idx,
+                col_remeasured_concentration_diluted,
+                row_idx,
+            )
+            row.append(Formula(formula))
+
+            # Expected Concentration, Diluted Adjusted (ng/µl)
+            row.append("")
 
             # Writing row data to the sheet
             for i in range(len(row)):
@@ -375,8 +404,10 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ]
 
             # Adjusted Concentration Library
-            col_adjusted_concentration_library = column_letters_smear_analysis[5]
-            formula = "'Smear Analysis'!{}{}".format(
+            col_adjusted_concentration_library = (
+                column_letters_concentration_adjustments[6]
+            )
+            formula = "'Concentration Adjustments'!{}{}".format(
                 col_adjusted_concentration_library,
                 int(row_idx) - 4,
             )
@@ -456,7 +487,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         lib_index = 0
         col_ul_eb = column_letters_pooling[13]
         formula = f"SUM({col_ul_eb}{6}:{col_ul_eb}{row_idx})"
-        ws.write(int(row_idx), 13, Formula(formula), font_style)
+        ws.write(int(row_idx), 13, Formula(formula), font_style_bold)
 
         # Write Sum Sequencing Depth
         formula = "SUM({}{}:{}{})".format(
@@ -469,10 +500,12 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         # Third sheet
         ws = wb.add_sheet("ng-ul to nM")
-        ws.write(0, 0, "Convert ng/µl to nM", font_style_bold)  # A1
-        ws.write(
+        ws.write_merge(0, 0, 0, 1, "Convert ng/µl to nM", font_style_bold)  # A1
+        ws.write_merge(
             2,
-            0,  # A3
+            2,
+            0,
+            6,
             "Concentration in nM = ((concentration ng/µl) / (650 "
             + "g/mol x average library size bp)) x 10^6",
             font_style_bold,
@@ -499,7 +532,9 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ws.write(row_idx, 7, Formula(formula_nM), font_style)
 
         # Table 2
-        ws.write(5, 9, "Add V2 to samples, to reach desired C2", font_style)
+        ws.write_merge(
+            5, 5, 9, 12, "Add V2 to samples, to reach desired C2", font_style
+        )
         ws.write(6, 9, "V1", font_style_bold)  # J7
         ws.write(6, 10, "C1", font_style_bold)  # K7
         ws.write(6, 11, "V2", font_style_bold)  # L7
