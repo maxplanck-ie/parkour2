@@ -83,8 +83,11 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
     },
     {
       name: "sample_volume_user",
-      type: "float",
+      type: "int",
       allowNull: true,
+      convert: function (v) {
+        return Number(v).toFixed(0);
+      }
     },
     {
       type: "float",
