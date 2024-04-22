@@ -6,6 +6,7 @@ import time
 from common.mixins import LibrarySampleMultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
+from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
 from rest_framework import viewsets
@@ -210,7 +211,22 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def destroy_pool(self, request, pk=None):
-        return Response({"success": True})
+        try:
+            with transaction.atomic():
+                pooling_records = Pooling.objects.filter(library__id=pk)
+                for pooling_record in pooling_records:
+                    LibraryPreparation.objects.create(
+                        sample=pooling_record.library,
+                        mean_fragment_size=pooling_record.library.mean_fragment_size,
+                        concentration_library=pooling_record.concentration_c1,
+                    )
+                pooling_records.delete()
+
+                return Response({"success": True})
+        except Exception as e:
+            return Response(
+                {"success": False, "error": "Error occurred while destroying the pool."}
+            )
 
     @action(
         methods=["post"],

@@ -106,32 +106,28 @@ Ext.define("MainHub.view.pooling.PoolingController", {
             fn: function (btn) {
               if (btn === "yes") {
                 Ext.Ajax.request({
-                  url: "api/pooling/poolId=" + groupId + "/destroy_pool/",
+                  url: Ext.String.format(
+                    "api/pooling/{0}/destroy_pool/",
+                    groupId
+                  ),
                   method: "POST",
                   scope: this,
                   success: function (response) {
                     var obj = Ext.JSON.decode(response.responseText);
-                    new Noty({
-                      text: "The pool has been successfully destroyed.",
-                      type: "success"
-                    }).show();
-                    store.load();
+                    if (obj.success) {
+                      Ext.getStore("Pooling").reload();
+                      new Noty({
+                        text: "The pool has been successfully destroyed."
+                      }).show();
+                    } else {
+                      new Noty({ text: obj.message, type: "error" }).show();
+                    }
                   },
                   failure: function (response) {
-                    var errorMsg;
-                    try {
-                      var obj = Ext.JSON.decode(response.responseText);
-                      errorMsg = obj.message;
-                    } catch (error) {
-                      errorMsg = response.statusText;
-                    }
                     new Noty({
-                      text:
-                        errorMsg ||
-                        "An error occurred while destroying the pool.",
+                      text: response.statusText,
                       type: "error"
                     }).show();
-                    store.load();
                     console.error(response);
                   }
                 });
@@ -268,15 +264,13 @@ Ext.define("MainHub.view.pooling.PoolingController", {
       },
       success: function (response) {
         var obj = Ext.JSON.decode(response.responseText);
-
         if (obj.success) {
           Ext.getStore("Pooling").reload();
-          new Noty({ text: "New comment has been saved!" }).show();
+          new Noty({ text: "New comment has been saved successfully." }).show();
         } else {
           new Noty({ text: obj.message, type: "error" }).show();
         }
       },
-
       failure: function (response) {
         new Noty({ text: response.statusText, type: "error" }).show();
         console.error(response);
