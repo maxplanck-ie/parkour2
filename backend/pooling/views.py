@@ -237,10 +237,25 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         font_style = XFStyle()
         font_style.alignment.wrap = 1
-        font_style.num_format_str = "0.00"
+
+        font_style_n0 = XFStyle()
+        font_style_n0.alignment.wrap = 1
+        font_style_n0.num_format_str = "0"
+
+        font_style_n1 = XFStyle()
+        font_style_n1.alignment.wrap = 1
+        font_style_n1.num_format_str = "0.0"
+
+        font_style_n2 = XFStyle()
+        font_style_n2.alignment.wrap = 1
+        font_style_n2.num_format_str = "0.00"
+
         font_style_bold = XFStyle()
-        font_style_bold.num_format_str = "0.00"
         font_style_bold.font.bold = True
+
+        font_style_bold_n1 = XFStyle()
+        font_style_bold_n1.font.bold = True
+        font_style_bold_n1.num_format_str = "0.0"
 
         # First sheet
         ws = wb.add_sheet("Concentration Adjustments")
@@ -252,10 +267,9 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             3: "D",  # Barcode
             4: "E",  # Concentration Library (ng/µl)
             5: "F",  # Smear Analysis (% Total)
-            6: "G",  # Adjusted Concentration Library (ng/µl)
-            7: "H",  # Remeasured Concentration, Diluted (ng/µl)
-            8: "I",  # Remeasured Concentration, Diluted Adjusted (ng/µl)
-            9: "J",  # Expected Concentration, Diluted Adjusted (ng/µl)
+            6: "G",  # Remeasured Concentration, Diluted (ng/µl)
+            7: "H",  # Remeasured Concentration, Diluted Adjusted (ng/µl)
+            8: "I",  # Expected Concentration, Diluted Adjusted (ng/µl)
         }
 
         headers_concentration_adjustments = [
@@ -265,10 +279,21 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             "Barcode",
             "Concentration Library (ng/µl)",
             "Smear Analysis (% Total)",
-            "Adjusted Concentration Library (ng/µl)",
             "Remeasured Concentration, Diluted (ng/µl)",
             "Remeasured Concentration, Diluted Adjusted (ng/µl)",
             "Expected Concentration, Diluted Adjusted (ng/µl)",
+        ]
+
+        decimal_precisions_concentration_adjustments = [
+            font_style,
+            font_style,
+            font_style,
+            font_style,
+            font_style_n2,
+            font_style_n0,
+            font_style_n2,
+            font_style_n2,
+            font_style_n2,
         ]
 
         row_num = 0
@@ -300,28 +325,18 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                 smear_analysis,  # Smear Analysis
             ]
 
-            # Adjusted Concentration Library
-            col_concentration_library = column_letters_concentration_adjustments[4]
-            col_smear_analysis = column_letters_concentration_adjustments[5]
-            formula = "{}{}*({}{}/100)".format(
-                col_concentration_library,
-                row_idx,
-                col_smear_analysis,
-                row_idx,
-            )
-            row.append(Formula(formula))
-
             # Remeasured Concentration, Diluted (ng/µl)
             row.append("")
 
             # Remeasured Concentration, Diluted Adjusted (ng/µl)
-            col_remeasured_concentration_diluted = (
-                column_letters_concentration_adjustments[7]
+            col_s1_smear_analysis = column_letters_concentration_adjustments[5]
+            col_s1_remeasured_concentration_diluted = (
+                column_letters_concentration_adjustments[6]
             )
             formula = "{}{}*({}{}/100)".format(
-                col_smear_analysis,
+                col_s1_smear_analysis,
                 row_idx,
-                col_remeasured_concentration_diluted,
+                col_s1_remeasured_concentration_diluted,
                 row_idx,
             )
             row.append(Formula(formula))
@@ -331,7 +346,9 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
             # Writing row data to the sheet
             for i in range(len(row)):
-                ws.write(row_num, i, row[i], font_style)
+                ws.write(
+                    row_num, i, row[i], decimal_precisions_concentration_adjustments[i]
+                )
 
         # Second sheet
         ws = wb.add_sheet("Pooling")
@@ -371,11 +388,28 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             "µl EB",
         ]
 
+        decimal_precisions_pooling = [
+            font_style,
+            font_style,
+            font_style,
+            font_style_n2,
+            font_style_n0,
+            font_style_n2,
+            font_style_n0,
+            font_style_n1,
+            font_style_n0,
+            font_style_n1,
+            font_style_n1,
+            font_style_n1,
+            font_style_n1,
+            font_style_n1,
+        ]
+
         ws.write(0, 0, "Pool ID", font_style_bold)  # A1
-        ws.write(0, 1, pool.name, font_style_bold)  # B1
         ws.write(1, 0, "Pool Volume", font_style_bold)  # A2
         ws.write(2, 0, "Sum Sequencing Depth", font_style_bold)  # A3
-        ws.write(3, 0, "", font_style)  # A4
+        ws.write(0, 1, pool.name, font_style_bold)  # B1
+        ws.write(1, 1, "", font_style_n0)  # B2
 
         row_num = 4
 
@@ -404,11 +438,11 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ]
 
             # Adjusted Concentration Library
-            col_adjusted_concentration_library = (
-                column_letters_concentration_adjustments[6]
-            )
-            formula = "'Concentration Adjustments'!{}{}".format(
-                col_adjusted_concentration_library,
+            col_s1_concentration_library = column_letters_concentration_adjustments[4]
+            formula = "'Concentration Adjustments'!{}{}*('Concentration Adjustments'!{}{}/100)".format(
+                col_s1_concentration_library,
+                int(row_idx) - 4,
+                col_s1_smear_analysis,
                 int(row_idx) - 4,
             )
             row.append(Formula(formula))
@@ -417,12 +451,12 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(record.dilution_factor)
 
             # Remeasured Concentration, Diluted Adjusted
-            col_remeasured_concentration_library = column_letters_pooling[3]
-            col_dilution_factor = column_letters_pooling[4]
+            col_s2_remeasured_concentration_library = column_letters_pooling[3]
+            col_s2_dilution_factor = column_letters_pooling[4]
             formula = "{}{}/{}{}".format(
-                col_remeasured_concentration_library,
+                col_s2_remeasured_concentration_library,
                 row_idx,
-                col_dilution_factor,
+                col_s2_dilution_factor,
                 row_idx,
             )
             row.append(Formula(formula))
@@ -431,11 +465,12 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(mean_fragment_size)
 
             # Library Concentration C1 (nM)
-            col_mean_fragment_size = column_letters_pooling[6]
+            col_s2_remeasured_concentration_diluted_adjusted = column_letters_pooling[5]
+            col_s2_mean_fragment_size = column_letters_pooling[6]
             formula = "{}{}/({}{}*650)*1000000".format(
-                col_adjusted_concentration_library,
+                col_s2_remeasured_concentration_diluted_adjusted,
                 row_idx,
-                col_mean_fragment_size,
+                col_s2_mean_fragment_size,
                 row_idx,
             )
             row.append(Formula(formula))
@@ -444,63 +479,63 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             row.append(record.sequencing_depth)
 
             # % Library in Pool
-            col_sequencing_depth = column_letters_pooling[8]
-            formula = f"{col_sequencing_depth}{row_idx}/$B$3*100"
+            col_s2_sequencing_depth = column_letters_pooling[8]
+            formula = f"{col_s2_sequencing_depth}{row_idx}/$B$3*100"
             row.append(Formula(formula))
 
             row.append("")  # Concentration C2
 
             # Volume to Pool
-            col_percentage = column_letters_pooling[9]
-            formula = f"$B$2*{col_percentage}{row_idx}/100"
+            col_s2_percentage = column_letters_pooling[9]
+            formula = f"$B$2*{col_s2_percentage}{row_idx}/100"
             row.append(Formula(formula))
 
             # µl Library
-            col_concentration_c1 = column_letters_pooling[7]
-            col_normalization_c2 = column_letters_pooling[10]
-            col_volume_pool = column_letters_pooling[11]
+            col_s2_concentration_c1 = column_letters_pooling[7]
+            col_s2_normalization_c2 = column_letters_pooling[10]
+            col_s2_volume_pool = column_letters_pooling[11]
             formula = "({}{}*{}{})/{}{}".format(
-                col_volume_pool,
+                col_s2_volume_pool,
                 row_idx,
-                col_normalization_c2,
+                col_s2_normalization_c2,
                 row_idx,
-                col_concentration_c1,
+                col_s2_concentration_c1,
                 row_idx,
             )
             row.append(Formula(formula))
 
             # µl EB
-            col_ul_library = column_letters_pooling[12]
+            col_s2_ul_library = column_letters_pooling[12]
             formula = "{}{}-{}{}".format(
-                col_volume_pool,
+                col_s2_volume_pool,
                 row_idx,
-                col_ul_library,
+                col_s2_ul_library,
                 row_idx,
             )
             row.append(Formula(formula))
 
             # Writing row data to the sheet
             for i in range(len(row)):
-                ws.write(row_num, i, row[i], font_style)
+                ws.write(row_num, i, row[i], decimal_precisions_pooling[i])
 
         # Write Sum µl EB
         lib_index = 0
-        col_ul_eb = column_letters_pooling[13]
-        formula = f"SUM({col_ul_eb}{6}:{col_ul_eb}{row_idx})"
-        ws.write(int(row_idx), 13, Formula(formula), font_style_bold)
+        col_s2_ul_eb = column_letters_pooling[13]
+        formula = f"SUM({col_s2_ul_eb}{6}:{col_s2_ul_eb}{row_idx})"
+        ws.write(int(row_idx), 13, Formula(formula), font_style_bold_n1)
 
         # Write Sum Sequencing Depth
         formula = "SUM({}{}:{}{})".format(
-            col_sequencing_depth,
+            col_s2_sequencing_depth,
             6,
-            col_sequencing_depth,
+            col_s2_sequencing_depth,
             str(row_num + 1),
         )
-        ws.write(2, 1, Formula(formula), font_style)
+        ws.write(2, 1, Formula(formula), font_style_n0)
 
         # Third sheet
         ws = wb.add_sheet("ng-ul to nM")
-        ws.write_merge(0, 0, 0, 1, "Convert ng/µl to nM", font_style_bold)  # A1
+        ws.write_merge(0, 0, 0, 1, "Convert ng/µl to nM", font_style_bold)  # A1:B1
         ws.write_merge(
             2,
             2,
@@ -509,7 +544,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             "Concentration in nM = ((concentration ng/µl) / (650 "
             + "g/mol x average library size bp)) x 10^6",
             font_style_bold,
-        )
+        )  # A3:G3
 
         # Table 1
         ws.write(6, 0, "Date", font_style_bold)  # A7
@@ -524,12 +559,21 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
         for i in range(40):
             row_idx = 7 + i
             for j in range(4):
-                ws.write(row_idx, j, "", font_style)
-            formula_smear_analysis = f"D{row_idx + 1}*(E{row_idx + 1}/100)"
-            ws.write(row_idx, 5, Formula(formula_smear_analysis), font_style)
-            ws.write(row_idx, 6, "", font_style)
+                ws.write(
+                    row_idx,
+                    j,
+                    "",
+                    (
+                        font_style
+                        if j <= 2
+                        else (font_style_n2 if j == 3 else font_style_n0)
+                    ),
+                )
+            formula_adjusted_concentration = f"D{row_idx + 1}*(E{row_idx + 1}/100)"
+            ws.write(row_idx, 5, Formula(formula_adjusted_concentration), font_style_n2)
+            ws.write(row_idx, 6, "", font_style_n0)
             formula_nM = f"F{row_idx + 1}/(650*G{row_idx + 1})*10^6"
-            ws.write(row_idx, 7, Formula(formula_nM), font_style)
+            ws.write(row_idx, 7, Formula(formula_nM), font_style_n1)
 
         # Table 2
         ws.write_merge(
@@ -542,13 +586,13 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         for i in range(8):
             row_idx = 7 + i
-            ws.write(row_idx, 9, "", font_style)  # V1
+            ws.write(row_idx, 9, "", font_style_n0)  # V1
             formula_c1 = f"H{8 + i}"
-            ws.write(row_idx, 10, Formula(formula_c1), font_style)  # C1
+            ws.write(row_idx, 10, Formula(formula_c1), font_style_n1)  # C1
             v2_idx = row_idx + 1
             formula_v2 = f"((J{v2_idx}*K{v2_idx})/M{v2_idx})-J{v2_idx}"
-            ws.write(row_idx, 11, Formula(formula_v2), font_style)  # V2
-            ws.write(row_idx, 12, "", font_style)  # C2
+            ws.write(row_idx, 11, Formula(formula_v2), font_style_n1)  # V2
+            ws.write(row_idx, 12, "", font_style_n0)  # C2
 
         wb.save(response)
         return response
@@ -577,7 +621,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         wb = Workbook(encoding="utf-8")
         ws = wb.add_sheet("QC Normalization and Pooling")
-        col_letters = {
+        colum_letters = {
             0: "A",  # Library
             1: "B",  # Barcode
             2: "C",  # ng/µl
@@ -587,13 +631,13 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             6: "G",  # Comments
         }
 
-        header = ["Library", "Barcode", "ng/µl", "bp", "nM", "Date", "Comments"]
+        headers = ["Library", "Barcode", "ng/µl", "bp", "nM", "Date", "Comments"]
         row_num = 0
 
         font_style = XFStyle()
         font_style.font.bold = True
 
-        for i, column in enumerate(header):
+        for i, column in enumerate(headers):
             ws.write(row_num, i, column, font_style)
             ws.col(i).width = 7000  # Set column width
 
@@ -619,8 +663,8 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             ]
 
             # nM = Library Concentration / ( Mean Fragment Size * 650 ) * 10^6
-            col_concentration = col_letters[2]
-            col_mean_fragment_size = col_letters[3]
+            col_concentration = colum_letters[2]
+            col_mean_fragment_size = colum_letters[3]
             formula = "{}{}/({}{})*1000000".format(
                 col_concentration, row_idx, col_mean_fragment_size, row_idx
             )
