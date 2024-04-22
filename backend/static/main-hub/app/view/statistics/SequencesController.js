@@ -143,6 +143,6 @@ Ext.define("MainHub.view.statistics.SequencesController", {
       }
     });
 
-    return [...new Set(records)];
+    return Array.from(new Set(records));
   }
 });
