@@ -98,6 +98,18 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparation", {
             width: 60
           },
           {
+            text: "Smear Analysis",
+            tooltip: "Smear Analysis (% Total)",
+            dataIndex: "smear_analysis",
+            editor: {
+              xtype: "numberfield",
+              decimalPrecision: 2,
+              minValue: 0,
+              maxValue: 100
+            },
+            width: 115
+          },
+          {
             text: "ng/µl Sample",
             tooltip: "Concentration Sample (ng/µl)",
             dataIndex: "concentration_sample",

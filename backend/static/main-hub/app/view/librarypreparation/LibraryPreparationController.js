@@ -59,6 +59,11 @@ Ext.define("MainHub.view.librarypreparation.LibraryPreparationController", {
       record.set("nM", nM);
     }
 
+    // Set Smear Analysis
+    if (values.hasOwnProperty("smear_analysis")) {
+      record.set("smear_analysis", values.smear_analysis);
+    }
+
     // Send the changes to the server
     this.syncStore(store.getId());
   },
