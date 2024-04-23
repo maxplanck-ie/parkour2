@@ -592,7 +592,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
             v2_idx = row_idx + 1
             formula_v2 = f"((J{v2_idx}*K{v2_idx})/M{v2_idx})-J{v2_idx}"
             ws.write(row_idx, 11, Formula(formula_v2), font_style_n1)  # V2
-            ws.write(row_idx, 12, "", font_style_n0)  # C2
+            ws.write(row_idx, 12, "", font_style_n1)  # C2
 
         wb.save(response)
         return response
