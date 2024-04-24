@@ -211,22 +211,34 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def destroy_pool(self, request, pk=None):
-        try:
-            with transaction.atomic():
-                pooling_records = Pooling.objects.filter(library__id=pk)
-                for pooling_record in pooling_records:
-                    LibraryPreparation.objects.create(
-                        sample=pooling_record.library,
-                        mean_fragment_size=pooling_record.library.mean_fragment_size,
-                        concentration_library=pooling_record.concentration_c1,
-                    )
-                pooling_records.delete()
+        with transaction.atomic():
+            pool = Pool.objects.filter(archived=False, pk=pk)
 
-                return Response({"success": True})
-        except Exception as e:
-            return Response(
-                {"success": False, "error": "Error occurred while destroying the pool."}
-            )
+            serializer = PoolSerializer(pool, many=True, context=self.get_context(pool))
+            data = list(itertools.chain(*serializer.data))
+            # for pooling_record in pooling_records:
+            #     raise ValueError("ASD")
+            #     try:
+            #         LibraryPreparation.objects.create(
+            #             sample=pooling_record.library,
+            #             # starting_amount=pooling_record.starting_amount,
+            #             # spike_in_description=pooling_record.spike_in_description,
+            #             # spike_in_volume=pooling_record.spike_in_volume,
+            #             # pcr_cycles=pooling_record.pcr_cycles,
+            #             concentration_library=pooling_record.concentration_library,
+            #             mean_fragment_size=pooling_record.mean_fragment_size,
+            #             # nM=pooling_record.nM,
+            #             # qpcr_result=pooling_record.qpcr_result,
+            #             # comments=pooling_record.comments,
+            #             # concentration_library=pooling_record.concentration_c1,
+            #         )
+            #     except Exception as e:
+            #         print(f"Error creating LibraryPreparation: {e}")
+            #         return Response({"success": False, "pooling": data, "errors": f"Error creating LibraryPreparation: {e}"})
+
+            pool.delete()
+
+            return Response({"success": True, "pooling": data})
 
     @action(
         methods=["post"],

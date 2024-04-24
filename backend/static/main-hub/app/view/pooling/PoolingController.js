@@ -114,18 +114,22 @@ Ext.define("MainHub.view.pooling.PoolingController", {
                   scope: this,
                   success: function (response) {
                     var obj = Ext.JSON.decode(response.responseText);
-                    if (obj.success) {
+                    if (obj.success === true) {
                       Ext.getStore("Pooling").reload();
                       new Noty({
                         text: "The pool has been successfully destroyed."
                       }).show();
                     } else {
-                      new Noty({ text: obj.message, type: "error" }).show();
+                      new Noty({
+                        text: "An error occurred while destroying the pool.",
+                        type: "error"
+                      }).show();
+                      console.error(response);
                     }
                   },
                   failure: function (response) {
                     new Noty({
-                      text: response.statusText,
+                      text: "An error occurred while destroying the pool.",
                       type: "error"
                     }).show();
                     console.error(response);
