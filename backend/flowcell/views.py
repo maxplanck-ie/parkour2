@@ -308,7 +308,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
     def download_sample_sheet(self, request):
         """Generate Benchtop Protocol as XLS file for selected lanes."""
 
-        def create_row(lane, record):
+        def create_row(lane, record, rowNumber):
             index_i7 = IndexI7.objects.filter(
                 archived=False, index=record.index_i7, index_type=record.index_type
             )
@@ -327,18 +327,29 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
             library_protocol = str(library_protocol.encode("ASCII", "ignore"), "utf-8")
 
+            pool_ids = [p.name for p in list(record.pool.all())]
+            if len(pool_ids) == 1:
+                pool_ids = pool_ids[0]
+            else:
+                pool_ids = ", ".join(pool_ids)
+
             return [
-                lane.name.split()[1],  # Lane
-                record.barcode,  # Sample_ID
-                record.name,  # Sample_Name
-                "",  # Sample_Plate
-                "",  # Sample_Well
-                index_i7_id,  # I7_Index_ID
-                record.index_i7,  # index
-                index_i5_id,  # I5_Index_ID
-                record.index_i5,  # index2
-                request_name,  # Sample_Project / Request ID
-                library_protocol,  # Description / Library Protocol
+                "",
+                pool_ids,
+                flowcell_product_code,
+                record.index_type,
+                record.barcode,
+                request_name,
+                lane.name.split()[1],
+                record.name,
+                index_i7_id,
+                record.index_i7,
+                index_i5_id,
+                record.index_i5,
+                library_protocol,
+                "internal_barcode" + f"{rowNumber:0>2}",
+                "external_barcode" + f"{rowNumber:0>2}",
+                "",
             ]
 
         response = HttpResponse(content_type="text/csv")
@@ -346,48 +357,35 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         flowcell_id = request.data.get("flowcell_id", "")
 
         writer = csv.writer(response)
-
-        #        writer.writerow(['[Header]'] + [''] * 10)
-        #        writer.writerow(['IEMFileVersion', '4'] + [''] * 9)
-        #        writer.writerow(['Date', '11/3/2016'] + [''] * 9)
-        #        writer.writerow(['Workflow', 'GenerateFASTQ'] + [''] * 9)
-        #        writer.writerow(['Application', 'HiSeq FASTQ Only'] + ['' * 9])
-        #        writer.writerow(['Assay', 'Nextera XT'] + [''] * 9)
-        #        writer.writerow(['Description'] + [''] * 10)
-        #        writer.writerow(['Chemistry', 'Amplicon'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Reads]'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Settings]'] + [''] * 10)
-        #        writer.writerow(['ReverseComplement', '0'] + [''] * 9)
-        #        writer.writerow(['Adapter', 'CTGTCTCTTATACACATCT'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        writer.writerow(["[Data]"] + [""] * 10)
-
         writer.writerow(
             [
-                "Lane",
-                "Sample_ID",
-                "Sample_Name",
-                "Sample_Plate",
-                "Sample_Well",
-                "I7_Index_ID",
+                "position_id",  # Plate_Coordinates
+                "sample_id",  # pool ID
+                "flow_cell_product_code",
+                "kit",
+                "alias",  # Sample_ID, barcode counter
+                "experiment_id",  # Project_Name
+                "lane",
+                "sample_name",  # given by user
+                "i7_Index_ID",
                 "index",
-                "I5_Index_ID",
+                "i5_Index_ID",
                 "index2",
-                "Sample_Project",
-                "Description",
+                "library_protocol",
+                "internal_barcode",
+                "external_barcode",
+                "allele_specific",
             ]
         )
 
         flowcell = Flowcell.objects.filter(archived=False).get(pk=flowcell_id)
+        flowcell_product_code = flowcell.flowcell_id
         f_name = "%s_SampleSheet.csv" % flowcell.flowcell_id
         response["Content-Disposition"] = 'attachment; filename="%s"' % f_name
 
         lanes = Lane.objects.filter(pk__in=ids).order_by("name")
 
+        rowNumber = 0
         rows = []
         for lane in lanes:
             records = list(
@@ -398,7 +396,8 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             )
 
             for record in records:
-                row = create_row(lane, record)
+                rowNumber += 1
+                row = create_row(lane, record, rowNumber)
                 rows.append(row)
 
         rows = sorted(rows, key=lambda x: (x[0], x[1][3:]))
