@@ -3,6 +3,7 @@
 ??.??.??
 ========
 
+- Example XLSX file for import index plate pairs is columwise now.
 - Description is no longer required for adding libraries and samples in the "New Request" window. (#106)
 - Added (*) to the Description label in "New Request" window. (#106)
 - Set the default value to 1 to create empty records in "Add Libraries" window. (#106)
