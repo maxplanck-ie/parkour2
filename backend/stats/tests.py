@@ -57,8 +57,8 @@ class TestRunStatistics(BaseTestCase):
         data = response.json()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(data), 8)
-        self.assertEqual(data[0]["name"], "Lane 1")
-        self.assertEqual(data[0]["sequencer"], flowcell.pool_size.sequencer.name)
+        self.assertEqual(data[0]["name"], "1")
+        self.assertEqual(data[0]["sequencing_kit"], str(flowcell.pool_size))
         self.assertEqual(data[0]["read_length"], library1.read_length.name)
         self.assertEqual(data[0]["read_1"], 1)
 
