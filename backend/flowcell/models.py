@@ -55,14 +55,8 @@ class Flowcell(DateTimeMixin):
     requests = models.ManyToManyField(Request, related_name="flowcell", blank=True)
     matrix = models.JSONField("Flowcell Matrix", blank=True, null=True)
     sequences = models.JSONField("Sequences", blank=True, null=True)
+    sample_sheet = models.JSONField("sample sheet", blank=True, null=True)
     archived = models.BooleanField("Archived", default=False)
-
-    run_name = models.CharField("run name", help_text='For samplesheet', max_length=200)
-    read1_cycles = models.PositiveSmallIntegerField("read 1 cycles")
-    read2_cycles = models.PositiveSmallIntegerField("read 2 cycles")
-    index1_cycles = models.PositiveSmallIntegerField("index 1 cycles")
-    index2_cycles = models.PositiveSmallIntegerField("index 2 cycles")
-    library_prep_kits = models.CharField("library prep kits", help_text='For samplesheet', max_length=200, blank=True)
 
     def __str__(self):
         return self.flowcell_id

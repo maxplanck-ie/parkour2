@@ -6,22 +6,25 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     control: {
       "#": {
         boxready: "onWindowReady",
-        beforeclose: "onWindowClose"
+        beforeclose: "onWindowClose",
       },
       "#sequencing-kit-field": {
         change: "changeSequencer",
       },
       "#pools-flowcell-grid": {
         render: "initializePoolDragZone",
-        itemcontextmenu: "showAdditionalInformationMenu"
+        itemcontextmenu: "showAdditionalInformationMenu",
       },
       "#flowcell-result-grid": {
-        itemcontextmenu: "showUnloadLaneMenu"
+        itemcontextmenu: "showUnloadLaneMenu",
+      },
+      "#sample-sheet-illuminav2-button": {
+        click: "createSampleSheetIlluminav2Window",
       },
       "#save-button": {
-        click: "save"
-      }
-    }
+        click: "save",
+      },
+    },
   },
 
   onWindowReady: function () {
@@ -61,8 +64,8 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           id: "lane" + (i + 1),
           width: laneTileWidth,
           listeners: {
-            render: this.initializeLaneDropZone
-          }
+            render: this.initializeLaneDropZone,
+          },
         });
       }
     }
@@ -84,11 +87,11 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           handler: function () {
             Ext.create("MainHub.view.flowcell.PoolInfoWindow", {
               title: record.get("name"),
-              pool: record.get("pk")
+              pool: record.get("pk"),
             });
-          }
-        }
-      ]
+          },
+        },
+      ],
     }).showAt(e.getXY());
   },
 
@@ -124,14 +127,14 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
             sourceEl: sourceEl,
             repairXY: Ext.fly(sourceEl).getXY(),
             ddel: d,
-            poolData: v.getStore().getAt(e.recordIndex).data
+            poolData: v.getStore().getAt(e.recordIndex).data,
           });
         }
       },
 
       getRepairXY: function () {
         return this.dragData.repairXY;
-      }
+      },
     });
   },
 
@@ -244,7 +247,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           if (!isReadLengthOK(pool)) {
             new Noty({
               text: "Read Length must be the same for all pools on a flowcell.",
-              type: "warning"
+              type: "warning",
             }).show();
             return false;
           }
@@ -264,7 +267,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
             pool_id: pool.get("pk"),
             pool_name: pool.get("name"),
             lane_id: laneId,
-            lane_name: laneName
+            lane_name: laneName,
           });
 
           pool.set("loaded", pool.get("loaded") + 1);
@@ -297,7 +300,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
         }
 
         return false;
-      }
+      },
     });
   },
 
@@ -312,9 +315,9 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
           margin: 5,
           handler: function () {
             me.unloadLane(grid.getStore(), record);
-          }
-        }
-      ]
+          },
+        },
+      ],
     }).showAt(e.getXY());
   },
 
@@ -346,7 +349,25 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     }
   },
 
+  createSampleSheetIlluminav2Window: function (btn) {
+    var form = btn.up("#flowcell-form");
+
+    if (form.isValid()) {
+      Ext.create("MainHub.view.flowcell.SampleSheetIlluminav2Window", {
+        mode: "add",
+      });
+    } else {
+      new Noty({
+        text:
+          "Please fill in all the required fields " +
+          "before adding a sample sheet.",
+        type: "warning",
+      }).show();
+    }
+  },
+
   save: function (btn) {
+    var me = this;
     var wnd = btn.up("window");
     var lanesStore = Ext.getStore("lanesStore");
     var form = Ext.getCmp("flowcell-form").getForm();
@@ -354,8 +375,8 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
 
     if (!form.isValid()) {
       new Noty({
-        text: "Flowcell ID is not set.",
-        type: "warning"
+        text: "Please fill in all the required fields.",
+        type: "warning",
       }).show();
       return;
     }
@@ -363,7 +384,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     if (lanesStore.getCount() !== laneContainers.length) {
       new Noty({
         text: "All lanes must be loaded.",
-        type: "warning"
+        type: "warning",
       }).show();
       return;
     }
@@ -372,11 +393,39 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
     var lanes = lanesStore.data.items.map(function (lane) {
       return {
         name: lane.get("lane_name"),
-        pool_id: lane.get("pool_id")
+        pool_id: lane.get("pool_id"),
       };
     });
 
+    if (!form.getFieldValues()["sample_sheet"]) {
+      Ext.Msg.show({
+        title: "Missing sample sheet",
+        message: Ext.String.format(
+          "You are trying to save a flowcell without a sample " +
+            "sheet.<br>Do you want to save it anyway?"
+        ),
+        buttons: Ext.Msg.YESNO,
+        icon: Ext.Msg.QUESTION,
+        fn: function (btn) {
+          if (btn === "yes") {
+            me._save(wnd, form, data, lanes);
+          }
+        },
+      });
+    } else {
+      me._save(wnd, form, data, lanes);
+    }
+  },
+
+  _save: function (wnd, form, data, lanes) {
     wnd.setLoading("Saving...");
+
+    var sample_sheet = null;
+    if (data.sample_sheet &&
+      data.sample_sheet['sample_sheet_type'] === 'illuminav2'){
+      sample_sheet = this._distillSampleSheetIlluminav2(data.sample_sheet);
+    }
+
     form.submit({
       url: "api/flowcells/",
       method: "POST",
@@ -384,14 +433,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
         data: Ext.JSON.encode({
           flowcell_id: data.flowcell_id,
           pool_size: data.sequencing_kit,
-          run_name: data.run_name,
-          read1_cycles: data.read1_cycles,
-          read2_cycles: data.read2_cycles,
-          index1_cycles: data.index1_cycles,
-          index2_cycles: data.index2_cycles,
-          library_prep_kits: data.library_prep_kits
-            ? data.library_prep_kits
-            : "",
+          sample_sheet: sample_sheet,
           lanes: lanes,
         }),
       },
@@ -430,7 +472,51 @@ Ext.define("MainHub.view.flowcell.FlowcellWindowController", {
         wnd.setLoading(false);
         new Noty({ text: error, type: "error" }).show();
         console.error(action);
-      }
+      },
     });
-  }
+  },
+
+  _distillSampleSheetIlluminav2: function (formValues) {
+    // Generate the value for the OverrideCycles parameter
+    // from the four separate values for each read
+    var OverrideCyclesVal = Object.keys(formValues)
+      .filter(function (fieldName) {
+        return fieldName.indexOf("OC") == 0;
+      })
+      .map(function (fieldName) {
+        return formValues[fieldName];
+      })
+      .join(";");
+
+    // If OverrideCyclesVal was set, add it to formValues
+    if (OverrideCyclesVal !== ";;;") {
+      formValues["SS-BCLConvert_Settings-OverrideCycles"] = OverrideCyclesVal;
+    }
+
+    // Convert form values into a structured object using their field names
+    sampleSheet = Object.keys(formValues)
+      .filter(function (fieldName) {
+        return fieldName.indexOf("SS") == 0;
+      })
+      .reduce(function (newSampleSheet, fieldName) {
+        var val = formValues[fieldName];
+        if (val) {
+          var [sectionTitle, parameterName] = fieldName.slice(3).split("-");
+          if (sectionTitle in newSampleSheet) {
+            newSampleSheet[sectionTitle][parameterName] = formValues[fieldName];
+          } else {
+            var newParameter = {};
+            newParameter[parameterName] = formValues[fieldName];
+            newSampleSheet[sectionTitle] = newParameter;
+          }
+        }
+
+        return newSampleSheet;
+      }, {});
+
+    // Add back sample sheet type
+    sampleSheet["sample_sheet_type"] = formValues["sample_sheet_type"];
+
+    return sampleSheet;
+  },
 });

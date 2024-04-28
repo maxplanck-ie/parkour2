@@ -190,12 +190,6 @@ class FlowcellListSerializer(ModelSerializer):
             "pool_size_name",
             "create_time",
             "lanes",
-            "run_name",
-            "read1_cycles",
-            "read2_cycles",
-            "index1_cycles",
-            "index2_cycles",
-            "library_prep_kits",
         )
 
     def get_flowcell(self, obj):
@@ -227,11 +221,6 @@ class FlowcellListSerializer(ModelSerializer):
                         "pool_size_name": data["pool_size_name"],
                         "sequencer_name": data["sequencer_name"],
                         "create_time": data["create_time"],
-                        "run_name": data["run_name"],
-                        "read1_cycles": data["read1_cycles"],
-                        "read2_cycles": data["read2_cycles"],
-                        "index1_cycles": data["index1_cycles"],
-                        "index2_cycles": data["index2_cycles"],
                     },
                     **x,
                 },
@@ -246,12 +235,7 @@ class FlowcellSerializer(ModelSerializer):
         fields = (
             "flowcell_id",
             "pool_size",
-            "run_name",
-            "read1_cycles",
-            "read2_cycles",
-            "index1_cycles",
-            "index2_cycles",
-            "library_prep_kits"
+            "sample_sheet",
         )
 
     def to_internal_value(self, data):

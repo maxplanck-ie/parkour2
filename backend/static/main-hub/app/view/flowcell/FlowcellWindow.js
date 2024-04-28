@@ -18,7 +18,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
     {
       layout: {
         type: "vbox",
-        align: "stretch"
+        align: "stretch",
       },
       items: [
         {
@@ -39,9 +39,9 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                   defaultType: "combobox",
                   defaults: {
                     submitEmptyText: false,
-                    allowBlank: false,
+                    allowBlank: true,
                     labelWidth: 180,
-                    width: 365
+                    width: 365,
                   },
                   items: [
                     {
@@ -56,6 +56,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                       store: "PoolSizes",
                       forceSelection: true,
                       labelWidth: 120,
+                      allowBlank: false,
                     },
                     {
                       xtype: "textfield",
@@ -65,96 +66,35 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                       labelWidth: 120,
                       regex: /^[A-Za-z0-9]+$/,
                       regexText: "Only A-Z a-z and 0-9 are allowed",
+                      allowBlank: false,
+                      padding: 0,
                     },
                     {
-                      xtype: "textfield",
-                      name: "run_name",
-                      fieldLabel: "Run name",
-                      emptyText: "Run name",
-                      labelWidth: 120,
-                      regex: /^[A-Za-z0-9_]+$/,
-                      regexText: "Only A-Z a-z 0-9 and _ are allowed",
-                    },
-                    {
-                      xtype: "fieldcontainer",
-                      layout: "hbox",
-                      labelWidth: 120,
-                      fieldLabel: "Read cycles",
-                      labelSeparator: "",
+                      xtype: "fieldset",
+                      title:
+                        "<span style='font-size:13px;'>Sample Sheet Generators<span>",
+                      style: {
+                        background: "white",
+                      },
+                      defaults: {
+                        width: 440,
+                        labelWidth: 140,
+                      },
                       items: [
                         {
-                          xtype: "numberfield",
-                          name: "read1_cycles",
-                          fieldLabel:
-                            '<span data-qtip="Read 1 cycles">R1</span>',
-                          labelWidth: 20,
-                          width: 115,
-                          value: 1,
-                          minValue: 1,
-                        },
-                        {
-                          xtype: "numberfield",
-                          name: "read2_cycles",
-                          fieldLabel:
-                            '<span data-qtip="Read 2 cycles">R2</span>',
-                          labelWidth: 20,
-                          width: 115,
-                          padding: "0 0 0 10px",
-                          value: 0,
+                          xtype: "button",
+                          itemId: "sample-sheet-illuminav2-button",
+                          text: "Illumina v2",
+                          margin: "0 0 10px 0",
+                          cls: "x-btn-default-small",
+                          width: 100,
+                          border: 0,
                         },
                       ],
                     },
                     {
-                      xtype: "fieldcontainer",
-                      layout: "hbox",
-                      labelWidth: 120,
-                      fieldLabel: "Index cycles",
-                      labelSeparator: "",
-                      items: [
-                        {
-                          xtype: "numberfield",
-                          name: "index1_cycles",
-                          fieldLabel:
-                            '<span data-qtip="Index 1 cycles">I1</span>',
-                          labelWidth: 20,
-                          width: 115,
-                          value: 0,
-                        },
-                        {
-                          xtype: "numberfield",
-                          name: "index2_cycles",
-                          fieldLabel:
-                            '<span data-qtip="Index 2 cycles">I2</span>',
-                          labelWidth: 20,
-                          width: 115,
-                          padding: "0 0 0 10px",
-                          value: 0,
-                        },
-                      ],
-                    },
-                    {
-                      xtype: "combobox",
-                      name: "library_prep_kits",
-                      fieldLabel: "Library prep kits",
-                      emptyText: "Library prep kits",
-                      labelWidth: 120,
-                      store: Ext.create("Ext.data.Store", {
-                        fields: ["name"],
-                        data: [
-                          {
-                            name: "ILMNStrandedTotalRNA",
-                          },
-                          {
-                            name: "ILMNStrandedmRNA",
-                          },
-                        ],
-                      }),
-                      queryMode: "local",
-                      displayField: "name",
-                      valueField: "name",
-                      value: "",
-                      forceSelection: false,
-                      allowBlank: true,
+                      name: "sample_sheet",
+                      hidden: true,
                     },
                   ],
                 },
@@ -167,7 +107,7 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                   height: 305,
                   viewConfig: {
                     markDirty: false,
-                    stripeRows: false
+                    stripeRows: false,
                   },
                   enableColumnMove: false,
                   enableColumnResize: false,
@@ -178,16 +118,16 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                       text: "Pool",
                       dataIndex: "pool_name",
                       sortable: false,
-                      flex: 1
+                      flex: 1,
                     },
                     {
                       text: "Lane",
                       dataIndex: "lane_name",
-                      width: 70
-                    }
-                  ]
-                }
-              ]
+                      width: 70,
+                    },
+                  ],
+                },
+              ],
             },
             {
               xtype: "grid",
@@ -211,10 +151,10 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                     record.setDisabled(true);
                   }
                   return rowClass;
-                }
+                },
               },
               style: {
-                borderLeft: "1px solid #d0d0d0"
+                borderLeft: "1px solid #d0d0d0",
               },
               store: "poolsStore",
               sortableColumns: false,
@@ -225,12 +165,12 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                 {
                   text: "Pool",
                   dataIndex: "name",
-                  flex: 1
+                  flex: 1,
                 },
                 {
                   text: "Read Length",
                   dataIndex: "read_length_name",
-                  width: 100
+                  width: 100,
                 },
                 {
                   text: "Size",
@@ -260,32 +200,32 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
                 {
                   ptype: "bufferedrenderer",
                   trailingBufferZone: 100,
-                  leadingBufferZone: 100
-                }
-              ]
-            }
-          ]
+                  leadingBufferZone: 100,
+                },
+              ],
+            },
+          ],
         },
         {
           id: "lanes",
           layout: {
             type: "hbox",
             align: "center",
-            pack: "center"
+            pack: "center",
           },
           border: 0,
           style: {
-            borderTop: "1px solid #d0d0d0"
+            borderTop: "1px solid #d0d0d0",
           },
           height: 80,
           defaults: {
             margin: 8,
-            height: 60
+            height: 60,
           },
-          items: []
-        }
-      ]
-    }
+          items: [],
+        },
+      ],
+    },
   ],
 
   dockedItems: [
@@ -298,9 +238,9 @@ Ext.define("MainHub.view.flowcell.FlowcellWindow", {
           xtype: "button",
           itemId: "save-button",
           text: "Save",
-          iconCls: "fa fa-floppy-o fa-lg"
-        }
-      ]
-    }
-  ]
+          iconCls: "fa fa-floppy-o fa-lg",
+        },
+      ],
+    },
+  ],
 });

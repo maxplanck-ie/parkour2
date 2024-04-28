@@ -33,12 +33,6 @@ def create_flowcell(flowcell_id, pool_size):
     flowcell = Flowcell(
         flowcell_id=flowcell_id,
         pool_size=pool_size,
-        run_name=get_random_name(),
-        read1_cycles=40,
-        read2_cycles=40,
-        index1_cycles=6,
-        index2_cycles=6,
-        library_prep_kits=""
     )
     flowcell.save()
     return flowcell
@@ -289,12 +283,6 @@ class TestFlowcell(BaseTestCase):
                         "flowcell_id": flowcell_id,
                         "pool_size": pool_size.pk,
                         "lanes": lanes1 + lanes2,
-                        "run_name": get_random_name(),
-                        "read1_cycles": 40,
-                        "read2_cycles": 40,
-                        "index1_cycles": 6,
-                        "index2_cycles": 6,
-                        "library_prep_kits": ""
                     }
                 )
             },
@@ -329,12 +317,6 @@ class TestFlowcell(BaseTestCase):
                         "flowcell_id": flowcell_id,
                         "sequencer": sequencer.pk,
                         "lanes": [],
-                        "run_name": get_random_name(),
-                        "read1_cycles": 40,
-                        "read2_cycles": 40,
-                        "index1_cycles": 6,
-                        "index2_cycles": 6,
-                        "library_prep_kits": ""
                     }
                 )
             },
@@ -372,12 +354,6 @@ class TestFlowcell(BaseTestCase):
                         "flowcell_id": flowcell_id,
                         "pool_size": pool_size.pk,
                         "lanes": lanes,
-                        "run_name": get_random_name(),
-                        "read1_cycles": 40,
-                        "read2_cycles": 40,
-                        "index1_cycles": 6,
-                        "index2_cycles": 6,
-                        "library_prep_kits": ""
                     }
                 )
             },

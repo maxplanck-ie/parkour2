@@ -5,7 +5,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
   requires: [
     "MainHub.components.BaseGrid",
     "MainHub.components.MonthPicker",
-    "MainHub.view.flowcell.FlowcellsController"
+    "MainHub.view.flowcell.FlowcellsController",
   ],
 
   controller: "flowcells",
@@ -38,7 +38,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             fieldLabel: "From",
             labelWidth: 37,
             labelStyle: "color: white;",
-            margin: "0 15px 0 0"
+            margin: "0 15px 0 0",
           },
           {
             xtype: "parkourmonthpicker",
@@ -46,14 +46,14 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             fieldLabel: "To",
             labelWidth: 20,
             labelStyle: "color: white;",
-            margin: "0 15px 0 0"
+            margin: "0 15px 0 0",
           },
           {
             xtype: "parkoursearchfield",
             itemId: "search-field",
             emptyText: "Search",
             margin: "0 15px 0 0",
-            width: 320
+            width: 320,
           },
           {
             xtype: "button",
@@ -61,10 +61,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             text: "Load",
             iconCls: "x-fa fa-plus",
             style: {
-              border: "1px solid #ffffffbe !important"
-            }
-          }
-        ]
+              border: "1px solid #ffffffbe !important",
+            },
+          },
+        ],
       },
 
       customConfig: {
@@ -74,14 +74,14 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             Ext.each(d.panel.columns, function (col) {
               col.autoSize();
             });
-          }
-        }
+          },
+        },
       },
 
       columns: {
         defaults: {
           minWidth: 150,
-          flex: 1
+          flex: 1,
         },
         items: [
           {
@@ -94,7 +94,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             tdCls: "no-dirty",
             minWidth: 35,
             width: 35,
-            flex: 0
+            flex: 0,
           },
           {
             text: "Lane",
@@ -116,7 +116,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
                 '<a href="javascript:void(0)" class="pool-name">{0}</a>',
                 value
               );
-            }
+            },
           },
           {
             text: "Date",
@@ -129,7 +129,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
           {
             text: "Request",
             dataIndex: "request",
-            filter: { type: "string" }
+            filter: { type: "string" },
           },
           {
             text: "Length",
@@ -145,7 +145,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             minWidth: 80,
             width: 80,
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" }
+            filter: { type: "string" },
           },
           {
             text: "Index I5",
@@ -153,7 +153,7 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             minWidth: 80,
             width: 80,
             //renderer: 'yesNoRenderer',
-            filter: { type: "string" }
+            filter: { type: "string" },
           },
           {
             text: "Sequencing kit",
@@ -162,35 +162,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             width: 200,
             filter: { type: "list" },
           },
-          /*  {
-          text: 'Equal nucl.',
-          tooltip: 'Equal Representation of Nucleotides',
-          dataIndex: 'equal_representation',
-          renderer: 'yesNoRenderer',
-          filter: { type: 'boolean' }
-        },*/
-          {
-            text: "Run name",
-            dataIndex: "run_name",
-            filter: { type: "string" },
-          },
-          {
-            text: "Cycles: R1, R2, I1, I2",
-            renderer: function (val, meta, record, rowIndex) {
-              console.log(record);
-              return Ext.String.format(
-                "{0}, {1}, {2}, {3}",
-                record.get("read1_cycles"),
-                record.get("read2_cycles"),
-                record.get("index1_cycles"),
-                record.get("index2_cycles")
-              );
-            },
-          },
           {
             text: "Library protocol",
             dataIndex: "protocol",
-            filter: { type: "string" }
+            filter: { type: "string" },
           },
           {
             text: "Loading conc., pM",
@@ -200,8 +175,8 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0
-            }
+              minValue: 0,
+            },
           },
           {
             text: "PhiX %",
@@ -210,10 +185,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             editor: {
               xtype: "numberfield",
               decimalPrecision: 1,
-              minValue: 0
-            }
-          }
-        ]
+              minValue: 0,
+            },
+          },
+        ],
       },
 
       features: [
@@ -230,10 +205,10 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
               },
               getDate: function (children) {
                 return Ext.util.Format.date(children[0].get("create_time"));
-              }
-            }
-          ]
-        }
+              },
+            },
+          ],
+        },
       ],
 
       dockedItems: [
@@ -244,28 +219,28 @@ Ext.define("MainHub.view.flowcell.Flowcells", {
             {
               itemId: "download-benchtop-protocol-button",
               text: "Download Benchtop Protocol",
-              iconCls: "fa fa-file-excel-o fa-lg"
+              iconCls: "fa fa-file-excel-o fa-lg",
             },
             {
               itemId: "download-sample-sheet-button",
-              text: "Download Sample Sheet (ILMN v2)",
+              text: "Download Sample Sheet",
               iconCls: "fa fa-file-excel-o fa-lg",
             },
             "->",
             {
               itemId: "cancel-button",
               iconCls: "fa fa-ban fa-lg",
-              text: "Cancel"
+              text: "Cancel",
             },
             {
               // xtype: 'button',
               itemId: "save-button",
               iconCls: "fa fa-floppy-o fa-lg",
-              text: "Save"
-            }
-          ]
-        }
-      ]
-    }
-  ]
+              text: "Save",
+            },
+          ],
+        },
+      ],
+    },
+  ],
 });
