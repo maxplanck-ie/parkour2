@@ -86,7 +86,7 @@ Ext.define("MainHub.model.libraries.BatchAdd.Common", {
       type: "int",
       allowNull: true,
       convert: function (v) {
-        return Number(v).toFixed(0);
+        return v ? Number(v).toFixed(0) : null;
       }
     },
     {
