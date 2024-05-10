@@ -3,6 +3,11 @@
 ??.??.??
 ========
 
+- ?
+
+24.05.10
+========
+
 - Example XLSX file for import index plate pairs is columwise now.
 - Description is no longer required for adding libraries and samples in the "New Request" window. (#106)
 - Added (*) to the Description label in "New Request" window. (#106)
