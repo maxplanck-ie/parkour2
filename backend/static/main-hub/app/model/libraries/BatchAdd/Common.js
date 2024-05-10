@@ -29,7 +29,7 @@ Ext.define("validator.GreaterThanTen", {
   extend: "Ext.data.validator.Validator",
   alias: "data.validator.greaterthanten",
   validate: function (value) {
-    return value > 10 || "Must be greater than 10";
+    return value >= 10 || "Must be greater or equal to 10";
   }
 });
 
