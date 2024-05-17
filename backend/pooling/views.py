@@ -213,32 +213,44 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     def destroy_pool(self, request, pk=None):
         with transaction.atomic():
             pool = Pool.objects.filter(archived=False, pk=pk)
-
             serializer = PoolSerializer(pool, many=True, context=self.get_context(pool))
-            data = list(itertools.chain(*serializer.data))
-            # for pooling_record in pooling_records:
-            #     raise ValueError("ASD")
-            #     try:
-            #         LibraryPreparation.objects.create(
-            #             sample=pooling_record.library,
-            #             # starting_amount=pooling_record.starting_amount,
-            #             # spike_in_description=pooling_record.spike_in_description,
-            #             # spike_in_volume=pooling_record.spike_in_volume,
-            #             # pcr_cycles=pooling_record.pcr_cycles,
-            #             concentration_library=pooling_record.concentration_library,
-            #             mean_fragment_size=pooling_record.mean_fragment_size,
-            #             # nM=pooling_record.nM,
-            #             # qpcr_result=pooling_record.qpcr_result,
-            #             # comments=pooling_record.comments,
-            #             # concentration_library=pooling_record.concentration_c1,
-            #         )
-            #     except Exception as e:
-            #         print(f"Error creating LibraryPreparation: {e}")
-            #         return Response({"success": False, "pooling": data, "errors": f"Error creating LibraryPreparation: {e}"})
+            pool_records = list(itertools.chain(*serializer.data))
 
-            pool.delete()
+            for pool_record in pool_records:
+                barcode = pool_record["barcode"]
 
-            return Response({"success": True, "pooling": data})
+                # raise ValueError("ASD", barcode)
+                try:
+                    # if "library" in pool_record:
+                    #     LibraryPreparation.objects.create(
+                    #         sample=pool_record.library,
+                    #         # starting_amount=pooling_record.starting_amount,
+                    #         # spike_in_description=pooling_record.spike_in_description,
+                    #         # spike_in_volume=pooling_record.spike_in_volume,
+                    #         # pcr_cycles=pooling_record.pcr_cycles,
+                    #         concentration_library=pool_record.concentration_library,
+                    #         mean_fragment_size=pool_record.mean_fragment_size,
+                    #         # nM=pooling_record.nM,
+                    #         # qpcr_result=pooling_record.qpcr_result,
+                    #         # comments=pooling_record.comment,
+                    #     )
+                    # else:
+                    #     pass
+                    pass
+
+                except Exception as e:
+                    print(f"Error creating LibraryPreparation records: {e}")
+                    return Response(
+                        {
+                            "success": False,
+                            "pooling": pool_records,
+                            "errors": f"Error creating LibraryPreparation records: {e}",
+                        }
+                    )
+
+            # pool.delete()
+
+            return Response({"success": True, "pooling": pool_records})
 
     @action(
         methods=["post"],
