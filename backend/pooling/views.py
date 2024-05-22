@@ -9,7 +9,7 @@ from django.apps import apps
 from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -211,46 +211,35 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
     @action(methods=["post"], detail=True)
     def destroy_pool(self, request, pk=None):
-        with transaction.atomic():
+        try:
             pool = Pool.objects.filter(archived=False, pk=pk)
             serializer = PoolSerializer(pool, many=True, context=self.get_context(pool))
             pool_records = list(itertools.chain(*serializer.data))
 
             for pool_record in pool_records:
                 barcode = pool_record["barcode"]
+                matching_sample = Sample.objects.filter(barcode=barcode).last()
+                matching_library = Library.objects.filter(barcode=barcode).last()
 
-                # raise ValueError("ASD", barcode)
-                try:
-                    # if "library" in pool_record:
-                    #     LibraryPreparation.objects.create(
-                    #         sample=pool_record.library,
-                    #         # starting_amount=pooling_record.starting_amount,
-                    #         # spike_in_description=pooling_record.spike_in_description,
-                    #         # spike_in_volume=pooling_record.spike_in_volume,
-                    #         # pcr_cycles=pooling_record.pcr_cycles,
-                    #         concentration_library=pool_record.concentration_library,
-                    #         mean_fragment_size=pool_record.mean_fragment_size,
-                    #         # nM=pooling_record.nM,
-                    #         # qpcr_result=pooling_record.qpcr_result,
-                    #         # comments=pooling_record.comment,
-                    #     )
-                    # else:
-                    #     pass
-                    pass
+                if matching_sample:
+                    my_status = matching_sample.status
+                    matching_sample.status = 2
+                    matching_sample.is_pooled = False
+                    matching_sample.is_converted = False
+                    matching_sample.save()
+                elif matching_library:
+                    my_status = matching_library.status
+                    matching_library.status = 2
+                    matching_library.is_pooled = False
+                    matching_library.save()
+                else:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                assert my_status > 0
 
-                except Exception as e:
-                    print(f"Error creating LibraryPreparation records: {e}")
-                    return Response(
-                        {
-                            "success": False,
-                            "pooling": pool_records,
-                            "errors": f"Error creating LibraryPreparation records: {e}",
-                        }
-                    )
+            return Response(status=status.HTTP_200_OK)
 
-            # pool.delete()
-
-            return Response({"success": True, "pooling": pool_records})
+        except Exception as e:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(
         methods=["post"],
