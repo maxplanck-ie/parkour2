@@ -226,7 +226,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                     matching_sample.status = 2
                     matching_sample.is_pooled = False
                     matching_sample.is_converted = False
-                    matching_sample.barcode = matching_sample.barcode.replace('S', 'L')
+                    matching_sample.barcode = matching_sample.barcode.replace("L", "S")
                     matching_sample.save()
 
                     LibraryPreparation.objects.filter(sample=matching_sample).delete()
