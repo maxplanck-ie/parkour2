@@ -226,15 +226,22 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                     matching_sample.status = 2
                     matching_sample.is_pooled = False
                     matching_sample.is_converted = False
+                    matching_sample.barcode = matching_sample.barcode.replace('S', 'L')
                     matching_sample.save()
+
+                    LibraryPreparation.objects.filter(sample=matching_sample).delete()
+
                 elif matching_library:
                     my_status = matching_library.status
                     matching_library.status = 2
                     matching_library.is_pooled = False
                     matching_library.save()
+
                 else:
                     return Response(status=status.HTTP_404_NOT_FOUND)
                 assert my_status > 0
+
+            pool.delete()
 
             return Response(status=status.HTTP_200_OK)
 
