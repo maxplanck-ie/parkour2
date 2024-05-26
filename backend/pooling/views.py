@@ -6,9 +6,10 @@ import time
 from common.mixins import LibrarySampleMultiEditMixin
 from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
+from django.db import transaction
 from django.db.models import Prefetch, Q
 from django.http import HttpResponse
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
@@ -37,6 +38,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
     sample_model = Sample
     library_serializer = PoolingLibrarySerializer
     sample_serializer = PoolingSampleSerializer
+    serializer_class = PoolSerializer
 
     def get_queryset(self):
         libraries_qs = (
@@ -206,6 +208,45 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
         instance.update(comment=newComment)
         return Response({"success": True})
+
+    @action(methods=["post"], detail=True)
+    def destroy_pool(self, request, pk=None):
+        try:
+            pool = Pool.objects.filter(archived=False, pk=pk)
+            serializer = PoolSerializer(pool, many=True, context=self.get_context(pool))
+            pool_records = list(itertools.chain(*serializer.data))
+
+            for pool_record in pool_records:
+                barcode = pool_record["barcode"]
+                matching_sample = Sample.objects.filter(barcode=barcode).last()
+                matching_library = Library.objects.filter(barcode=barcode).last()
+
+                if matching_sample:
+                    my_status = matching_sample.status
+                    matching_sample.status = 2
+                    matching_sample.is_pooled = False
+                    matching_sample.is_converted = False
+                    matching_sample.barcode = matching_sample.barcode.replace("L", "S")
+                    matching_sample.save()
+
+                    LibraryPreparation.objects.filter(sample=matching_sample).delete()
+
+                elif matching_library:
+                    my_status = matching_library.status
+                    matching_library.status = 2
+                    matching_library.is_pooled = False
+                    matching_library.save()
+
+                else:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                assert my_status > 0
+
+            pool.delete()
+
+            return Response(status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(
         methods=["post"],
