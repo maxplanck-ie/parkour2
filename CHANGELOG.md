@@ -3,19 +3,19 @@
 ??.??.??
 ========
 
-- ?
+- 'Destroy Pool' option when right-clicked on pools, in the 'Pooling' submodule. (#109)
 
 24.05.10
 ========
 
 - Example XLSX file for import index plate pairs is columwise now.
-- Description is no longer required for adding libraries and samples in the "New Request" window. (#106)
-- Added (*) to the Description label in "New Request" window. (#106)
-- Set the default value to 1 to create empty records in "Add Libraries" window. (#106)
-- Changed the color of link "Max page on Intranet" from Golden to White in "Add Libraries" window. (#106)
-- In "Add Libraries" window, fixed the "Sequencing Depth" validation error popping up while editing. (#106)
-- In "Add Libraries" window, fixed the "Size (bp)" column always has a default value of 0 whenever an empty record is created. (#106)
-- In "Add Libraries" window, renamed "size (bp)" to "Size (bp)". (#106)
+- Description is no longer required for adding libraries and samples in the 'New Request' window. (#106)
+- Added (*) to the Description label in 'New Request' window. (#106)
+- Set the default value to 1 to create empty records in 'Add Libraries' window. (#106)
+- Changed the color of link 'Max page on Intranet' from Golden to White in 'Add Libraries' window. (#106)
+- In 'Add Libraries' window, fixed the 'Sequencing Depth' validation error popping up while editing. (#106)
+- In 'Add Libraries' window, fixed the 'Size (bp)' column always has a default value of 0 whenever an empty record is created. (#106)
+- In 'Add Libraries' window, renamed 'size (bp)' to 'Size (bp)'. (#106)
 - Changed the naming format of Benchtop Protocol File in 'Library Preparation' and 'Pooling' to have the 'Request IDs' and 'Pool ID' in front. (#105)
 - New Benchtop Protocol File in 'Pooling' with the introduction of 'Smear Analysis' (#107)
 
@@ -75,7 +75,7 @@ Non-breaking changes:
 
 - Updated all dependencies.
 - Subfolders were re-arranged. Basically, the old frontend (ExtJS), its tests (playwright), and the Django Project (`./parkour_app`) are now under `./backend`. Meanwhile, there's a new frontend under development, using ViteJS; and it's under `./frontend` subfolder. Also, there's a new Dockerfile, and container, for it.
-- A new column (`Pool Paths`) was added tot he 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
+- A new column (`Pool Paths`) was added to the 'Libraries and Samples' section of the app, to easily find where each sample (or lib) was loaded.
 - Staff users will find a new calendar icon that takes them to 'Duties', our first module using the new VueJS framework. Over there, we'll be keeping track of our rotations as to who is responsible of what (e.g. X person from Bioinformatics Facility is in charge of processing the short-read sequence data for ~3 months).
 
 
