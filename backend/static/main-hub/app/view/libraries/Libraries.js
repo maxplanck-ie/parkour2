@@ -19,39 +19,6 @@ Ext.define("MainHub.view.libraries.Libraries", {
     this.callParent(arguments);
   },
 
-  handleSearch: function (field, grid, clearSearch = false) {
-    var value = field.getValue();
-
-    if (value && !clearSearch) {
-      var searchString = value;
-      var librariesStore = Ext.getStore("librariesStore");
-      var extraParams = {
-        showAll: "True"
-      };
-      if (field.statusFilter && field.statusFilter !== "all") {
-        extraParams.statusFilter = field.statusFilter;
-      }
-      if (field.libraryProtocolFilter && field.libraryProtocolFilter !== -1) {
-        extraParams.libraryProtocolFilter = field.libraryProtocolFilter;
-      }
-      if (searchString) {
-        extraParams.searchString = searchString;
-      }
-      librariesStore.getProxy().setExtraParams(extraParams);
-      librariesStore.load({
-        callback: function (records, operation, success) {
-          if (!success) {
-            new Noty({
-              text: operation.getError() || "Error occurred while searching.",
-              type: "error"
-            }).show();
-          }
-          grid.getView().unmask();
-        }
-      });
-    }
-  },
-
   items: [
     {
       xtype: "treepanel",
@@ -335,9 +302,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 cls: "x-form-search-trigger",
                 handler: (field) => {
                   var grid = field.up("treepanel");
-                  field.getTrigger("clear").show();
-                  grid.getView().mask("Loading...");
-                  this.handleSearch(field, grid, false);
+                  field.getValue() && field.getTrigger("clear").show();
+                  handleSearch(field, grid);
                 }
               },
               clear: {
@@ -346,9 +312,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
                 handler: (field) => {
                   var grid = field.up("treepanel");
                   field.getTrigger("clear").hide();
-                  grid.getView().mask("Loading...");
                   field.setValue("");
-                  this.handleSearch(field, grid, true);
+                  handleSearch(field, grid);
                 }
               }
             },
@@ -356,9 +321,8 @@ Ext.define("MainHub.view.libraries.Libraries", {
               specialkey: (field, e) => {
                 if (e.getKey() == e.ENTER) {
                   var grid = field.up("treepanel");
-                  field.getTrigger("clear").show();
-                  grid.getView().mask("Loading...");
-                  this.handleSearch(field, grid, false);
+                  field.getValue() && field.getTrigger("clear").show();
+                  handleSearch(field, grid);
                 }
               }
             }
@@ -597,3 +561,34 @@ Ext.define("MainHub.view.libraries.Libraries", {
     }
   ]
 });
+
+function handleSearch(field, grid) {
+  grid.getView().mask("Loading...");
+  var value = field.getValue();
+      var searchString = value;
+      var librariesStore = Ext.getStore("librariesStore");
+      var extraParams = {
+          showAll: "True"
+      };
+      if (field.statusFilter && field.statusFilter !== "all") {
+          extraParams.statusFilter = field.statusFilter;
+      }
+      if (field.libraryProtocolFilter && field.libraryProtocolFilter !== -1) {
+          extraParams.libraryProtocolFilter = field.libraryProtocolFilter;
+      }
+      if (searchString) {
+          extraParams.searchString = searchString;
+      }
+      librariesStore.getProxy().setExtraParams(extraParams);
+      librariesStore.load({
+          callback: function (records, operation, success) {
+              if (!success) {
+                  new Noty({
+                      text: operation.getError() || "Error occurred while searching.",
+                      type: "error"
+                  }).show();
+              }
+              grid.getView().unmask();
+          }
+      });
+  }
