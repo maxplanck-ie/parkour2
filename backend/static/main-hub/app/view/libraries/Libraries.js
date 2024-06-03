@@ -565,30 +565,30 @@ Ext.define("MainHub.view.libraries.Libraries", {
 function handleSearch(field, grid) {
   grid.getView().mask("Loading...");
   var value = field.getValue();
-      var searchString = value;
-      var librariesStore = Ext.getStore("librariesStore");
-      var extraParams = {
-          showAll: "True"
-      };
-      if (field.statusFilter && field.statusFilter !== "all") {
-          extraParams.statusFilter = field.statusFilter;
-      }
-      if (field.libraryProtocolFilter && field.libraryProtocolFilter !== -1) {
-          extraParams.libraryProtocolFilter = field.libraryProtocolFilter;
-      }
-      if (searchString) {
-          extraParams.searchString = searchString;
-      }
-      librariesStore.getProxy().setExtraParams(extraParams);
-      librariesStore.load({
-          callback: function (records, operation, success) {
-              if (!success) {
-                  new Noty({
-                      text: operation.getError() || "Error occurred while searching.",
-                      type: "error"
-                  }).show();
-              }
-              grid.getView().unmask();
-          }
-      });
+  var searchString = value;
+  var librariesStore = Ext.getStore("librariesStore");
+  var extraParams = {
+    showAll: "True"
+  };
+  if (field.statusFilter && field.statusFilter !== "all") {
+    extraParams.statusFilter = field.statusFilter;
   }
+  if (field.libraryProtocolFilter && field.libraryProtocolFilter !== -1) {
+    extraParams.libraryProtocolFilter = field.libraryProtocolFilter;
+  }
+  if (searchString) {
+    extraParams.searchString = searchString;
+  }
+  librariesStore.getProxy().setExtraParams(extraParams);
+  librariesStore.load({
+    callback: function (records, operation, success) {
+      if (!success) {
+        new Noty({
+          text: operation.getError() || "Error occurred while searching.",
+          type: "error"
+        }).show();
+      }
+      grid.getView().unmask();
+    }
+  });
+}
