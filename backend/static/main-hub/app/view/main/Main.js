@@ -91,11 +91,14 @@ Ext.define("MainHub.view.main.Main", {
           html: `
               <form id="logout-form" method="post" action="logout/" style="display:inline;">
                   <input type="hidden" name="csrfmiddlewaretoken" value="${CSRF_TOKEN}">
-                  <button type="submit" style="background:none; border:none; cursor:pointer">
-                      <i style="font-style:none" class="x-fa fa-sign-out color-bluish-grey"></i>
+                  <button type="submit" style="background: none; padding: 0px; border: none; cursor: pointer">
+                      <i style="font-size: 16px; font-style: normal !important; padding: 0px;" class="x-fa fa-sign-out color-bluish-grey"></i>
                   </button>
               </form>
           `,
+          width: 30,
+          height: 30,
+          padding: 7,
           listeners: {
             render: function (component) {
               Ext.create("Ext.tip.ToolTip", {
