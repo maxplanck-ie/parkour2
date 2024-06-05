@@ -869,7 +869,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 85,
         editor: {
           xtype: "numberfield",
-          minValue: 10
+          minValue: 0,
+          step: 10
         },
         renderer: this.errorRenderer
       },
@@ -987,7 +988,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           name: data.name,
           pi: data.pi,
           cost_unit: data.cost_unit,
-          description: data.description,
+          description: "This request was auto-saved.",
           records: Ext.Array.pluck(store.data.items, "data"),
           files: form.down("filegridfield").getValue()
         })
@@ -1000,12 +1001,12 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           var message;
 
           if (requestWnd.mode === "add") {
-            message = "Request has been saved.";
+            message = "The request has been auto-saved.";
             requestWnd.mode = "edit";
             requestWnd.autoSaveRequestId = obj.pk;
             requestWnd.setTitle(this.requestName);
           } else {
-            message = "The changes have been saved.";
+            message = "The request has been saved successfully.";
           }
 
           new Noty({ text: message }).show();
@@ -1073,7 +1074,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
               store.remove(record);
             }
 
-            new Noty({ text: "Records have been added!" }).show();
+            new Noty({ text: "Records have been added successfully." }).show();
             // If new libraries/samples are added, try to automatically save the request,
             // otherwise, if the request is not saved, such libraries/samples
             // are 'lost', or at least they don't have a request associated to them
@@ -1082,7 +1083,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             librariesInRequestGrid
               .down("#check-column")
               .fireEvent("unselectall");
-            new Noty({ text: "The changes have been saved!" }).show();
+            new Noty({ text: "The changes have been saved." }).show();
           }
           wnd.close();
         } else {
