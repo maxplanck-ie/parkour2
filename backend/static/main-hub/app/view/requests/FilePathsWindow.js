@@ -51,12 +51,47 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
           xtype: "container",
           items: [
             {
-              xtype: "label",
-              text: "Request File Paths:",
-              name: "file-paths-label",
-              style: {
-                fontWeight: "bold"
-              }
+              xtype: "container",
+              items: [
+                {
+                  xtype: "label",
+                  text: "Request File Paths:",
+                  name: "file-paths-label",
+                  style: {
+                    fontWeight: "bold"
+                  }
+                },
+                {
+                  xtype: "combobox",
+                  emptyText: "Select OS",
+                  store: {
+                    fields: ["value", "name"],
+                    data: [
+                      { value: "linux", name: "Linux" },
+                      { value: "macos", name: "macOS" },
+                      { value: "windows", name: "Windows" }
+                    ]
+                  },
+                  queryMode: "local",
+                  displayField: "name",
+                  valueField: "value",
+                  value: "linux",
+                  listeners: {
+                    select: function (combo, record) {
+                      Ext.Msg.alert(
+                        "Selected",
+                        "You selected: " + record.get("name")
+                      );
+                    },
+                    change: function (combo, newValue, oldValue) {
+                      Ext.Msg.alert(
+                        "Changed",
+                        "You changed from " + oldValue + " to " + newValue
+                      );
+                    }
+                  }
+                }
+              ]
             },
             {
               xtype: "container",
