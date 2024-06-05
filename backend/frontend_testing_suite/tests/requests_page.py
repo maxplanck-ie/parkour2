@@ -50,9 +50,7 @@ def test_requests_page(page: Page):
     addSaveRequestButton = page.get_by_text("Save").nth(1)
     saveAddedRequestbutton = page.get_by_text("Save").nth(0)
     addSuccessNotification = page.get_by_text("The request has been auto-saved.")
-    finalSuccessNotification = page.get_by_text(
-        "The request has been saved successfully."
-    )
+    finalSuccessNotification = page.get_by_text("Changes have been saved successfully.")
 
     addRequestButton.click()
     expect(page.get_by_text("New Request")).to_be_visible()
