@@ -1083,7 +1083,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
             librariesInRequestGrid
               .down("#check-column")
               .fireEvent("unselectall");
-            new Noty({ text: "The changes have been saved." }).show();
+            new Noty({ text: "Changes have been saved successfully." }).show();
           }
           wnd.close();
         } else {
