@@ -3,7 +3,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
   requires: ["MainHub.view.requests.FilePathsWindowController"],
   controller: "requests-filePathsWindow",
 
-  height: 470,
+  height: 485,
   width: 450,
   modal: true,
   resizable: false,
@@ -52,6 +52,10 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
           items: [
             {
               xtype: "container",
+              layout: {
+                type: "hbox",
+                align: "middle"
+              },
               items: [
                 {
                   xtype: "label",
@@ -59,7 +63,8 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                   name: "file-paths-label",
                   style: {
                     fontWeight: "bold"
-                  }
+                  },
+                  flex: 1
                 },
                 {
                   xtype: "combobox",
@@ -68,6 +73,9 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                   queryMode: "local",
                   displayField: "name",
                   valueField: "name",
+                  emptyText: "Select OS",
+                  width: 150,
+                  margin: "0 0 0 10",
                   listeners: {
                     select: function (combo, record) {
                       Ext.Msg.alert(
