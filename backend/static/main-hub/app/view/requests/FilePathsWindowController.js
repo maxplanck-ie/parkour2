@@ -73,5 +73,21 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
       }
     }
     requestNameTextarea.setText(wnd.record.data.name);
+
+    var os = this.detectOS(navigator.userAgent);
+    var osComboBox = this.lookupReference("osComboBox");
+    if (osComboBox) {
+      osComboBox.setValue(os);
+    }
+  },
+
+  detectOS: function (userAgent) {
+    if (/Mac OS X/.test(userAgent)) {
+      return "macOS";
+    } else if (/Windows NT/.test(userAgent)) {
+      return "Windows";
+    } else {
+      return "Linux";
+    }
   }
 });

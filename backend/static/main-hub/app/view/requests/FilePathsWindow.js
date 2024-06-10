@@ -63,19 +63,11 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                 },
                 {
                   xtype: "combobox",
-                  emptyText: "Select OS",
-                  store: {
-                    fields: ["value", "name"],
-                    data: [
-                      { value: "linux", name: "Linux" },
-                      { value: "macos", name: "macOS" },
-                      { value: "windows", name: "Windows" }
-                    ]
-                  },
+                  reference: "osComboBox",
+                  store: ["Linux", "macOS", "Windows"],
                   queryMode: "local",
                   displayField: "name",
-                  valueField: "value",
-                  value: "linux",
+                  valueField: "name",
                   listeners: {
                     select: function (combo, record) {
                       Ext.Msg.alert(
