@@ -45,7 +45,10 @@ class FileRequest(models.Model):
 
 class Request(DateTimeMixin):
     name = models.CharField("Name", max_length=100, blank=True)
-    description = models.TextField()
+    description = models.TextField(
+        verbose_name="Description",
+        default="Empty",
+    )
     token = models.CharField("Token", max_length=50, blank=True, null=True, unique=True)
 
     user = models.ForeignKey(

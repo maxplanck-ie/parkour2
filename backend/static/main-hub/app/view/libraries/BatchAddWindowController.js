@@ -988,7 +988,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           name: data.name,
           pi: data.pi,
           cost_unit: data.cost_unit,
-          description: "This request was auto-saved.",
           records: Ext.Array.pluck(store.data.items, "data"),
           files: form.down("filegridfield").getValue()
         })
