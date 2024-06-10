@@ -84,7 +84,7 @@ Ext.define("MainHub.view.invoicing.InvoicingController", {
     store.sync({
       success: function (batch) {
         Ext.getCmp("invoicing-grid").getStore().reload();
-        new Noty({ text: "The changes have been saved." }).show();
+        new Noty({ text: "Changes have been saved successfully." }).show();
       }
     });
   },

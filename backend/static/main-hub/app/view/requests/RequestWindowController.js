@@ -370,9 +370,9 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
           var message;
 
           if (wnd.mode === "add") {
-            message = "Request has been saved.";
+            message = "The request has been saved successfully.";
           } else {
-            message = "The changes have been saved.";
+            message = "Changes have been saved successfully.";
           }
 
           new Noty({ text: message }).show();

@@ -252,7 +252,7 @@ Ext.define("MainHub.components.BaseGridController", {
         if (obj.message && obj.message !== "") {
           new Noty({ text: obj.message, type: "warning" }).show();
         } else {
-          new Noty({ text: "The changes have been saved." }).show();
+          new Noty({ text: "Changes have been saved successfully." }).show();
         }
       },
 

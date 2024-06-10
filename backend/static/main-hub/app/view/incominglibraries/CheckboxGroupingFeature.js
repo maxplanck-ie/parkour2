@@ -20,7 +20,9 @@ Ext.define("MainHub.view.incominglibraries.CheckboxGroupingFeature", {
           success: function (response) {
             var obj = Ext.JSON.decode(response.responseText);
             if (obj.success) {
-              new Noty({ text: "The changes have been saved!" }).show();
+              new Noty({
+                text: "Changes have been saved successfully."
+              }).show();
               this.updateCheckbox(groupRecord, checked);
             } else {
               new Noty({ text: obj.message, type: "error" }).show();
