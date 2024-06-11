@@ -73,23 +73,8 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                   queryMode: "local",
                   displayField: "name",
                   valueField: "name",
-                  emptyText: "Select OS",
                   width: 150,
-                  margin: "0 0 0 10",
-                  listeners: {
-                    select: function (combo, record) {
-                      Ext.Msg.alert(
-                        "Selected",
-                        "You selected: " + record.get("name")
-                      );
-                    },
-                    change: function (combo, newValue, oldValue) {
-                      Ext.Msg.alert(
-                        "Changed",
-                        "You changed from " + oldValue + " to " + newValue
-                      );
-                    }
-                  }
+                  margin: "0 0 0 10"
                 }
               ]
             },
@@ -124,5 +109,9 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
         this.up("window").close();
       }
     }
-  ]
+  ],
+
+  listeners: {
+    afterrender: "getFilePaths"
+  }
 });
