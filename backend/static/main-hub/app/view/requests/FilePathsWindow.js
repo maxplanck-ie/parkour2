@@ -3,7 +3,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
   requires: ["MainHub.view.requests.FilePathsWindowController"],
   controller: "requests-filePathsWindow",
 
-  height: 470,
+  height: 485,
   width: 450,
   modal: true,
   resizable: false,
@@ -51,12 +51,32 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
           xtype: "container",
           items: [
             {
-              xtype: "label",
-              text: "Request File Paths:",
-              name: "file-paths-label",
-              style: {
-                fontWeight: "bold"
-              }
+              xtype: "container",
+              layout: {
+                type: "hbox",
+                align: "middle"
+              },
+              items: [
+                {
+                  xtype: "label",
+                  text: "Request File Paths:",
+                  name: "file-paths-label",
+                  style: {
+                    fontWeight: "bold"
+                  },
+                  flex: 1
+                },
+                {
+                  xtype: "combobox",
+                  reference: "osComboBox",
+                  store: ["Linux", "macOS", "Windows"],
+                  queryMode: "local",
+                  displayField: "name",
+                  valueField: "name",
+                  width: 150,
+                  margin: "0 0 0 10"
+                }
+              ]
             },
             {
               xtype: "container",
@@ -89,5 +109,9 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
         this.up("window").close();
       }
     }
-  ]
+  ],
+
+  listeners: {
+    afterrender: "getFilePaths"
+  }
 });

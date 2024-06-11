@@ -2,21 +2,38 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   extend: "Ext.app.ViewController",
   alias: "controller.requests-filePathsWindow",
 
-  config: {
-    control: {
-      "#": {
-        afterrender: "onAfterRender"
+  selectedOS: null,
+
+  init: function () {
+    this.control({
+      "combobox[reference=osComboBox]": {
+        change: this.osComboBoxChange
       }
-    }
+    });
   },
 
-  onAfterRender: function (wnd) {
+  getFilePaths: function (wnd) {
     var requestNameTextarea = wnd.down("#request-name");
     var dynamicContainer = wnd.down("#dynamic-container");
 
-    for (var key in wnd.record.data.filepaths) {
-      if (wnd.record.data.filepaths.hasOwnProperty(key)) {
-        dynamicContainer.add({
+    this.generateModifiedPaths(wnd.record.data.filepaths, dynamicContainer);
+
+    requestNameTextarea.setText(wnd.record.data.name);
+
+    var os = this.detectOS(navigator.userAgent);
+    var osComboBox = this.lookupReference("osComboBox");
+    if (osComboBox) {
+      osComboBox.setValue(os);
+      this.selectedOS = os;
+    }
+  },
+
+  generateModifiedPaths: function (filePaths, container) {
+    container.removeAll();
+
+    for (var key in filePaths) {
+      if (filePaths.hasOwnProperty(key)) {
+        container.add({
           xtype: "container",
           items: [
             {
@@ -34,7 +51,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
             },
             {
               xtype: "label",
-              text: wnd.record.data.filepaths[key] || "...",
+              text: this.getModifiedFilePath(filePaths[key]),
               margin: "10 0 0 0",
               style: {
                 padding: "0px 5px",
@@ -47,7 +64,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 render: function (label) {
                   label.getEl().on("click", function () {
                     navigator.clipboard.writeText(label.text);
-                    new Noty({ text: "Text Copied!" }).show();
+                    new Noty({ text: "File path copied successfully." }).show();
                   });
                   label.getEl().on("mouseover", function () {
                     Ext.tip.QuickTipManager.register({
@@ -72,6 +89,61 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
         });
       }
     }
-    requestNameTextarea.setText(wnd.record.data.name);
+  },
+
+  osComboBoxChange: function (combo, newValue, oldValue) {
+    this.selectedOS = newValue;
+    var wnd = this.getView();
+    var dynamicContainer = wnd.down("#dynamic-container");
+    var filePaths = wnd.record.data.filepaths;
+    this.generateModifiedPaths(filePaths, dynamicContainer);
+  },
+
+  getModifiedFilePath: function (filePath) {
+    var filePathRegex =
+      /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_\/.]+$/;
+    if (!filePath) {
+      return "...";
+    }
+    if (filePathRegex.test(filePath)) {
+      var filePathSplit = filePath.split("/").filter(function (element) {
+        return element !== "";
+      });
+      if (this.selectedOS == "Windows") {
+        return (
+          "\\\\" +
+          filePathSplit[0] +
+          "\\" +
+          filePathSplit[1] +
+          "-" +
+          filePathSplit[2] +
+          "\\" +
+          filePathSplit.slice(3).join("\\")
+        );
+      } else if (this.selectedOS == "macOS") {
+        return (
+          "smb://" +
+          filePathSplit[0] +
+          "/" +
+          filePathSplit[1] +
+          "-" +
+          filePathSplit[2] +
+          "/" +
+          filePathSplit.slice(3).join("/")
+        );
+      } else return filePath;
+    } else {
+      return filePath;
+    }
+  },
+
+  detectOS: function (userAgent) {
+    if (/Mac OS X/.test(userAgent)) {
+      return "macOS";
+    } else if (/Windows NT/.test(userAgent)) {
+      return "Windows";
+    } else {
+      return "Linux";
+    }
   }
 });
