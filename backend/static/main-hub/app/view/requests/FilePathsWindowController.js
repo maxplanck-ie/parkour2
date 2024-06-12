@@ -51,7 +51,10 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
             },
             {
               xtype: "label",
-              text: this.getModifiedFilePath(filePaths[key]),
+              text:
+                key == "data" || key == "metadata"
+                  ? this.getModifiedFilePath(filePaths[key])
+                  : filePaths[key],
               margin: "10 0 0 0",
               style: {
                 padding: "0px 5px",
