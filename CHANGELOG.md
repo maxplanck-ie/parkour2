@@ -7,6 +7,7 @@
 - New search bar component in the 'Libraries & Samples' submodule, which searches either by pressing enter or clicking the search button. (#110)
 - Logout method changed from GET to POST to make it compatible with Django v5.0. (#111)
 - Fixed: "Bad Request" notification after adding Libraries or Samples while creating any request and the description is kept empty. (#112)
+- Option to select OS under "File Paths" to modify the file paths according to the selection. (#113)
 
 24.05.10
 ========
