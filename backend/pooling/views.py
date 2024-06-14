@@ -223,13 +223,19 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
                 if matching_sample:
                     my_status = matching_sample.status
-                    matching_sample.status = 2
                     matching_sample.is_pooled = False
-                    matching_sample.is_converted = False
-                    matching_sample.barcode = matching_sample.barcode.replace("L", "S")
-                    matching_sample.save()
 
-                    LibraryPreparation.objects.filter(sample=matching_sample).delete()
+                    if matching_sample.status == 2:
+                        matching_sample.is_converted = False
+                        matching_sample.barcode = matching_sample.barcode.replace("L", "S")
+                        matching_sample.index_i5 = None
+                        matching_sample.index_i7 = None
+                        matching_sample.index_type = None
+                        matching_sample.save()
+                        LibraryPreparation.objects.filter(sample=matching_sample).delete()
+                    else:
+                        matching_sample.status = 2
+                        matching_sample.save()
 
                 elif matching_library:
                     my_status = matching_library.status
