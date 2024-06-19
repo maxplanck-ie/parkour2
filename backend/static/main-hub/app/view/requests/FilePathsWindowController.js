@@ -53,7 +53,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
       itemId: "userPathInputKey",
       margin: "10 0 5 0",
       width: "100%",
-      emptyText: "User path's key"
+      emptyText: "Name"
     });
 
     dynamicContainer2.add({
@@ -61,7 +61,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
       itemId: "userPathInputValue",
       margin: "0 0 5 0",
       width: "100%",
-      emptyText: "User path's value"
+      emptyText: "Path"
     });
 
     dynamicContainer2.add({
@@ -92,6 +92,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     var userPathKey = wnd.down("#userPathInputKey").getValue();
     var userPathValue = wnd.down("#userPathInputValue").getValue();
 
+    if (wnd.record.data.metapaths.hasOwnProperty("nothing"))
+      delete wnd.record.data.metapaths["nothing"]; // Remove default key value pair nothing = null, if it exists
     var newInputData = {
       [userPathKey]: userPathValue
     };
@@ -152,8 +154,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 width: "30%",
                 display: "inline-block",
                 wordWrap: "break-word",
-                verticalAlign: "middle",
-                lineHeight: "1.5"
+                verticalAlign: "middle"
               }
             },
             {
@@ -207,7 +208,11 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   generateModifiedUserPaths: function (userPaths, container) {
     container.removeAll();
 
-    if (!userPaths || Object.keys(userPaths).length === 0) {
+    if (
+      !userPaths ||
+      Object.keys(userPaths).length === 0 ||
+      userPaths.hasOwnProperty("nothing")
+    ) {
       container.add({
         xtype: "label",
         text: "No User Paths",
@@ -233,13 +238,15 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                   width: "30%",
                   display: "inline-block",
                   wordWrap: "break-word",
-                  verticalAlign: "middle",
-                  lineHeight: "1.5"
+                  verticalAlign: "middle"
                 }
               },
               {
                 xtype: "label",
-                text: userPaths[key],
+                text:
+                  !userPaths[key] || userPaths[key] == ""
+                    ? "Empty"
+                    : userPaths[key],
                 style: {
                   padding: "8px",
                   display: "inline-block",
