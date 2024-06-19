@@ -117,10 +117,10 @@ Ext.define("MainHub.view.requests.RequestWindow", {
               },
               {
                 text: "",
-                dataIndex: "record_type",
+                dataIndex: "barcode",
                 width: 35,
                 renderer: function (value, meta) {
-                  return meta.record.getRecordType().charAt(0);
+                  return meta.record.getBarcode().charAt(2);
                 }
               },
               {

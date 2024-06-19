@@ -406,13 +406,13 @@ Ext.define("MainHub.view.libraries.Libraries", {
           },
           {
             text: "",
-            dataIndex: "record_type",
+            dataIndex: "barcode",
             resizable: false,
             menuDisabled: true,
             hideable: false,
             width: 30,
             renderer: function (value, meta) {
-              return meta.record.getRecordType().charAt(0);
+              return meta.record.getBarcode().charAt(2);
             }
           },
           {
