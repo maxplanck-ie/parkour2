@@ -302,11 +302,16 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       );
       Ext.getCmp("save-pool-button").enable();
 
-      var recordTypes = Ext.pluck(
+      var barcodes = Ext.pluck(
         Ext.Array.pluck(store.data.items, "data"),
-        "record_type"
+        "barcode"
       );
-      if (recordTypes.indexOf("Sample") > -1) {
+
+      var hasSAtThirdPosition = barcodes.some(function (barcode) {
+        return barcode.charAt(2) === "S";
+      });
+
+      if (hasSAtThirdPosition) {
         Ext.getCmp("generate-indices-button").enable();
       }
 
