@@ -37,6 +37,8 @@ Ext.define("MainHub.model.Record", {
 
   getRecordType: function () {
     var type = this.get("record_type");
+    if (type === "Sample" && this.get("barcode").charAt(2) == "L")
+      type = "Library";
     if (type === "Sample" && this.get("is_converted")) {
       type = "Library";
     }
