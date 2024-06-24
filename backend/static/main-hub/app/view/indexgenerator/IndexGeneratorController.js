@@ -48,7 +48,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
       return false;
     }
 
-    if (record.get("barcode").charAt(2) == "L") {
+    if (record.get("barcode").charAt(2) == "L" && record.get("index_type")) {
       indexTypeEditor.disable();
     } else {
       indexTypeEditor.enable();
@@ -83,7 +83,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         ) {
           if (
             dataIndex === "read_length" ||
-            (dataIndex === "index_type" && item.get("barcode").charAt(2) == "L")
+            (dataIndex === "index_type" &&
+              item.get("barcode").charAt(2) === "S")
           ) {
             item.set(dataIndex, record.get(dataIndex));
           }
@@ -166,8 +167,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
     indexGeneratorStore.each(function (item) {
       var itemInPoolIdx = poolGridStore.findBy(function (rec) {
         return (
-          rec.get("barcode").charAt(2) === item.get("barcode").charAt(2) &&
-          rec.get("pk") === item.get("pk")
+          rec.get("pk") === item.get("pk") &&
+          rec.get("barcode").charAt(2) === item.get("barcode").charAt(2)
         );
       });
 
@@ -257,6 +258,7 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
         var data = {
           pk: record.get("pk"),
           name: record.get("name"),
+          barcode: record.get("barcode"),
           record_type: record.get("record_type"),
           sequencing_depth: record.get("sequencing_depth"),
           read_length: record.get("read_length"),
@@ -279,8 +281,8 @@ Ext.define("MainHub.view.indexgenerator.IndexGeneratorController", {
     } else {
       var itemIdx = store.findBy(function (rec) {
         return (
-          rec.get("barcode").charAt(2) === record.get("barcode").charAt(2) &&
-          rec.get("pk") === record.get("pk")
+          rec.get("pk") === record.get("pk") &&
+          rec.get("barcode").charAt(2) === record.get("barcode").charAt(2)
         );
       });
 

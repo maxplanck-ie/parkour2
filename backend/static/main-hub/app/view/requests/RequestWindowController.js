@@ -145,7 +145,7 @@ Ext.define("MainHub.view.requests.RequestWindowController", {
             Ext.Msg.show({
               title: "Delete record",
               message: Ext.String.format(
-                'Are you sure you want to delete "{0}"?',
+                'Are you sure that you want to delete "{0}"?',
                 selectedItemName
               ),
               buttons: Ext.Msg.YESNO,

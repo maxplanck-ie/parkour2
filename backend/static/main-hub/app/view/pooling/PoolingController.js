@@ -98,7 +98,7 @@ Ext.define("MainHub.view.pooling.PoolingController", {
           Ext.Msg.show({
             title: "Destroy Pool",
             message: Ext.String.format(
-              'Are you sure you want to destroy the pool "Pool_{0}"? This will also clear all the library preparation data related to this pool.',
+              "Are you sure that you want to destroy the pool \"Pool_{0}\"? This will also clear the library preparation data for the libraries which did't reach the status 'Library Prepared'.",
               groupId
             ),
             buttons: Ext.Msg.YESNO,
