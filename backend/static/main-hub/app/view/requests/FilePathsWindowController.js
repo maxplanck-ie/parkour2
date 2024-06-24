@@ -46,45 +46,54 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   onAddButtonClick: function () {
     var wnd = this.getView();
     var dynamicContainer2 = wnd.down("#dynamic-container-2");
-    dynamicContainer2.removeAll();
 
-    dynamicContainer2.add({
-      xtype: "textfield",
-      itemId: "userPathInputKey",
-      margin: "10 0 5 0",
-      width: "100%",
-      emptyText: "Name"
-    });
-
-    dynamicContainer2.add({
-      xtype: "textfield",
-      itemId: "userPathInputValue",
-      margin: "0 0 5 0",
-      width: "100%",
-      emptyText: "Path"
-    });
-
-    dynamicContainer2.add({
-      xtype: "container",
-      layout: {
-        type: "hbox",
-        pack: "end"
-      },
-      margin: "10 0 0 0",
-      items: [
-        {
-          xtype: "button",
-          text: "Save",
-          handler: this.onSaveButtonClick,
-          margin: "0 10 0 0"
-        },
-        {
-          xtype: "button",
-          text: "Cancel",
-          handler: this.onCancelButtonClick
-        }
-      ]
-    });
+    var addContainer = dynamicContainer2.down("#add-container");
+    if (!addContainer) {
+      addContainer = dynamicContainer2.insert(0, {
+        xtype: "container",
+        itemId: "add-container",
+        padding: "0 5 15 0",
+        items: [
+          {
+            xtype: "textfield",
+            itemId: "userPathInputKey",
+            margin: "0 0 5 0",
+            width: "100%",
+            emptyText: "Name"
+          },
+          {
+            xtype: "textfield",
+            itemId: "userPathInputValue",
+            margin: "0 0 5 0",
+            width: "100%",
+            emptyText: "Path"
+          },
+          {
+            xtype: "container",
+            layout: {
+              type: "hbox",
+              pack: "end"
+            },
+            margin: "5 0 0 0",
+            items: [
+              {
+                xtype: "button",
+                text: "Save",
+                handler: this.onSaveButtonClick,
+                margin: "0 5 0 0"
+              },
+              {
+                xtype: "button",
+                text: "Cancel",
+                handler: this.onCancelButtonClick
+              }
+            ]
+          }
+        ]
+      });
+    } else {
+      addContainer.show();
+    }
   },
 
   onSaveButtonClick: function () {
@@ -110,6 +119,13 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
             text: "The user path has been saved successfully.",
             type: "success"
           }).show();
+          this.getPaths(wnd); // Refresh the grid
+          var addContainer = wnd
+            .down("#dynamic-container-2")
+            .down("#add-container");
+          if (addContainer) {
+            addContainer.hide();
+          }
         } else {
           new Noty({
             text: "Failed to save the user path.",
@@ -122,12 +138,17 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
           text: "An error occurred while saving the user path.",
           type: "error"
         }).show();
-      }
+      },
+      scope: this
     });
   },
 
   onCancelButtonClick: function () {
     var wnd = this.getView();
+    var addContainer = wnd.down("#dynamic-container-2").down("#add-container");
+    if (addContainer) {
+      addContainer.hide();
+    }
   },
 
   osComboBoxChange: function (combo, newValue, oldValue) {
