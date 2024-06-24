@@ -61,7 +61,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
             Ext.Msg.show({
               title: "Delete Request",
               message: Ext.String.format(
-                'Are you sure you want to delete the request "{0}"?',
+                'Are you sure that you want to delete the request "{0}"?',
                 record.get("name")
               ),
               buttons: Ext.Msg.YESNO,
@@ -158,7 +158,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
             Ext.Msg.show({
               title: "Mark request as complete",
               message: Ext.String.format(
-                'Are you sure you want to mark request "{0} as complete?',
+                'Are you sure that you want to mark request "{0} as complete?',
                 record.get("name")
               ),
               buttons: Ext.Msg.YESNO,

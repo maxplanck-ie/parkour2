@@ -86,13 +86,13 @@ Ext.define("MainHub.view.incominglibraries.IncomingLibraries", {
           },
           {
             text: "",
-            dataIndex: "record_type",
+            dataIndex: "barcode",
             resizable: false,
             hideable: false,
             tdCls: "userEntry",
             width: 30,
             renderer: function (value, meta) {
-              return value.charAt(0);
+              return value.charAt(2);
             }
           },
           {

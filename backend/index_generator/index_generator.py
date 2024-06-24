@@ -783,6 +783,7 @@ class IndexGenerator:
         return {
             "pk": obj.pk,
             "name": obj.name,
+            "barcode": obj.barcode,
             "record_type": obj.__class__.__name__,
             "read_length": obj.read_length_id,
             "sequencing_depth": obj.sequencing_depth,

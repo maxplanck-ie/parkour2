@@ -72,11 +72,11 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           },
           {
             text: "",
-            dataIndex: "record_type",
+            dataIndex: "barcode",
             resizable: false,
             width: 30,
             renderer: function (value) {
-              return value.charAt(0);
+              return value.charAt(2);
             }
           },
           {
@@ -280,10 +280,10 @@ Ext.define("MainHub.view.indexgenerator.IndexGenerator", {
           },
           {
             text: "",
-            dataIndex: "record_type",
+            dataIndex: "barcode",
             width: 30,
             renderer: function (value) {
-              return value.charAt(0);
+              return value.charAt(2);
             }
           },
           {
