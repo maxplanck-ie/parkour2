@@ -3,20 +3,22 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   alias: "controller.requests-filePathsWindow",
 
   selectedOS: null,
+  isEditing: false,
+  isAdding: false,
 
   init: function () {
     this.control({
       "combobox[reference=osComboBox]": {
-        change: this.osComboBoxChange
+        change: function (combo, newValue, oldValue) {
+          this.selectedOS = newValue;
+          var wnd = this.getView();
+          var dynamicContainer = wnd.down("#dynamic-container");
+          var filePaths = wnd.record.data.filepaths;
+          this.generateModifiedFilePaths(filePaths, dynamicContainer);
+        }
       },
       "button[text=Add]": {
         click: this.onAddButtonClick
-      },
-      "button[text=Save]": {
-        click: this.onSaveButtonClick
-      },
-      "button[text=Cancel]": {
-        click: this.onCancelButtonClick
       }
     });
 
@@ -43,55 +45,99 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     }
   },
 
+  createAddContainer: function (parentContainer) {
+    var addContainer = parentContainer.insert(0, {
+      xtype: "container",
+      itemId: "add-container",
+      padding: "0 5 15 0",
+      style: {
+        position: "sticky",
+        top: 0,
+        backgroundColor: "white",
+        zIndex: 10
+      },
+      items: [
+        {
+          xtype: "textfield",
+          itemId: "userPathInputKey",
+          margin: "0 0 5 0",
+          width: "100%",
+          emptyText: "Name",
+          listeners: {
+            change: function () {
+              var wnd = this.getView();
+              var userPathKey = wnd.down("#userPathInputKey").getValue();
+              var userPathValue = wnd.down("#userPathInputValue").getValue();
+              var saveButton = wnd.down("#saveButton");
+
+              saveButton.setDisabled(!userPathKey || !userPathValue);
+            },
+            scope: this
+          }
+        },
+        {
+          xtype: "textfield",
+          itemId: "userPathInputValue",
+          margin: "0 0 5 0",
+          width: "100%",
+          emptyText: "Path",
+          listeners: {
+            change: function () {
+              var wnd = this.getView();
+              var userPathKey = wnd.down("#userPathInputKey").getValue();
+              var userPathValue = wnd.down("#userPathInputValue").getValue();
+              var saveButton = wnd.down("#saveButton");
+
+              saveButton.setDisabled(!userPathKey || !userPathValue);
+            },
+            scope: this
+          }
+        },
+        {
+          xtype: "container",
+          layout: {
+            type: "hbox",
+            pack: "end"
+          },
+          margin: "5 0 0 0",
+          items: [
+            {
+              xtype: "button",
+              text: "Save",
+              itemId: "saveButton",
+              handler: this.onSaveButtonClick,
+              scope: this,
+              margin: "0 5 0 0",
+              disabled: true
+            },
+            {
+              xtype: "button",
+              text: "Cancel",
+              handler: this.onCancelButtonClick,
+              scope: this
+            }
+          ]
+        }
+      ]
+    });
+
+    addContainer.show();
+  },
+
   onAddButtonClick: function () {
     var wnd = this.getView();
     var dynamicContainer2 = wnd.down("#dynamic-container-2");
 
     var addContainer = dynamicContainer2.down("#add-container");
+
+    this.isAdding = true;
+    this.isEditing = false;
+
     if (!addContainer) {
-      addContainer = dynamicContainer2.insert(0, {
-        xtype: "container",
-        itemId: "add-container",
-        padding: "0 5 15 0",
-        items: [
-          {
-            xtype: "textfield",
-            itemId: "userPathInputKey",
-            margin: "0 0 5 0",
-            width: "100%",
-            emptyText: "Name"
-          },
-          {
-            xtype: "textfield",
-            itemId: "userPathInputValue",
-            margin: "0 0 5 0",
-            width: "100%",
-            emptyText: "Path"
-          },
-          {
-            xtype: "container",
-            layout: {
-              type: "hbox",
-              pack: "end"
-            },
-            margin: "5 0 0 0",
-            items: [
-              {
-                xtype: "button",
-                text: "Save",
-                handler: this.onSaveButtonClick,
-                margin: "0 5 0 0"
-              },
-              {
-                xtype: "button",
-                text: "Cancel",
-                handler: this.onCancelButtonClick
-              }
-            ]
-          }
-        ]
-      });
+      this.createAddContainer(dynamicContainer2);
     } else {
+      addContainer.down("#userPathInputKey").setValue("");
+      addContainer.down("#userPathInputValue").setValue("");
       addContainer.show();
     }
   },
@@ -100,63 +146,57 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     var wnd = this.getView();
     var userPathKey = wnd.down("#userPathInputKey").getValue();
     var userPathValue = wnd.down("#userPathInputValue").getValue();
+    var metapathsObject = wnd.record.data.metapaths;
+    var newInputData = {};
 
-    if (wnd.record.data.metapaths.hasOwnProperty("nothing"))
-      delete wnd.record.data.metapaths["nothing"]; // Remove default key value pair nothing = null, if it exists
-    var newInputData = {
-      [userPathKey]: userPathValue
-    };
-    Ext.apply(newInputData, wnd.record.data.metapaths);
-
-    Ext.Ajax.request({
-      url: "api/requests/" + wnd.record.data.pk + "/put_metapaths/",
-      method: "POST",
-      jsonData: newInputData,
-      success: function (response) {
-        var jsonResp = Ext.decode(response.responseText);
-        if (jsonResp.success) {
-          new Noty({
-            text: "The user path has been saved successfully.",
-            type: "success"
-          }).show();
-          this.getPaths(wnd); // Refresh the grid
-          var addContainer = wnd
-            .down("#dynamic-container-2")
-            .down("#add-container");
-          if (addContainer) {
-            addContainer.hide();
-          }
-        } else {
-          new Noty({
-            text: "Failed to save the user path.",
-            type: "error"
-          }).show();
-        }
-      },
-      failure: function (response) {
+    if (this.isAdding) {
+      if (metapathsObject.hasOwnProperty(userPathKey)) {
         new Noty({
-          text: "An error occurred while saving the user path.",
-          type: "error"
+          text: "A user path with the same name already exists.",
+          type: "warning"
         }).show();
-      },
-      scope: this
-    });
+        return;
+      }
+      newInputData[userPathKey] = userPathValue;
+      for (var key in metapathsObject) {
+        if (key !== "nothing") newInputData[key] = metapathsObject[key];
+      }
+      this.saveUserPaths(newInputData);
+    } else if (this.isEditing) {
+      if (
+        metapathsObject.hasOwnProperty(userPathKey) &&
+        metapathsObject[userPathKey] !== userPathValue
+      ) {
+        for (var key in metapathsObject) {
+          if (key === userPathKey) {
+            newInputData[key] = userPathValue;
+          } else {
+            newInputData[key] = metapathsObject[key];
+          }
+        }
+        this.saveUserPaths(newInputData);
+      }
+    }
+
+    this.isAdding = false;
+    this.isEditing = false;
+
+    wnd.down("#userPathInputKey").setValue("");
+    wnd.down("#userPathInputValue").setValue("");
   },
 
   onCancelButtonClick: function () {
     var wnd = this.getView();
     var addContainer = wnd.down("#dynamic-container-2").down("#add-container");
+
     if (addContainer) {
       addContainer.hide();
-    }
-  },
+      addContainer.down("#userPathInputKey").setValue("");
+      addContainer.down("#userPathInputValue").setValue("");
 
-  osComboBoxChange: function (combo, newValue, oldValue) {
-    this.selectedOS = newValue;
-    var wnd = this.getView();
-    var dynamicContainer = wnd.down("#dynamic-container");
-    var filePaths = wnd.record.data.filepaths;
-    this.generateModifiedFilePaths(filePaths, dynamicContainer);
+      this.isAdding = false;
+      this.isEditing = false;
+    }
   },
 
   generateModifiedFilePaths: function (filePaths, container) {
@@ -198,7 +238,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                   label.getEl().on("click", function () {
                     navigator.clipboard.writeText(label.text);
                     new Noty({
-                      text: "File path has been copied to the clipboard."
+                      text: "File path has been copied to the clipboard.",
+                      type: "success"
                     }).show();
                   });
                   label.getEl().on("mouseover", function () {
@@ -245,10 +286,17 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
         }
       });
     } else {
-      for (var key in userPaths) {
+      for (let key in userPaths) {
         if (userPaths.hasOwnProperty(key)) {
-          container.add({
+          var recordContainer = Ext.create("Ext.container.Container", {
             xtype: "container",
+            style: {
+              width: "100%",
+              borderTop: "1px solid #d4d4d4",
+              borderBottom: "1px solid #d4d4d4",
+              marginBottom: "6px",
+              position: "relative"
+            },
             items: [
               {
                 xtype: "label",
@@ -265,13 +313,13 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
               {
                 xtype: "label",
                 text:
-                  !userPaths[key] || userPaths[key] == ""
+                  !userPaths[key] || userPaths[key] === ""
                     ? "Empty"
                     : userPaths[key],
                 style: {
                   padding: "8px",
                   display: "inline-block",
-                  width: "70%",
+                  width: "54%",
                   borderLeft: "1px solid #d4d4d4",
                   wordWrap: "break-word",
                   verticalAlign: "middle",
@@ -282,7 +330,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                     label.getEl().on("click", function () {
                       navigator.clipboard.writeText(label.text);
                       new Noty({
-                        text: "User path has been copied to the clipboard."
+                        text: "User path has been copied to the clipboard.",
+                        type: "success"
                       }).show();
                     });
                     label.getEl().on("mouseover", function () {
@@ -297,18 +346,147 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                     });
                   }
                 }
+              },
+              {
+                xtype: "button",
+                tooltip: "Edit",
+                iconCls: "fa fa-pencil",
+                style: {
+                  position: "absolute",
+                  right: "8px",
+                  top: "8px"
+                },
+                handler: this.editUserPath.bind(this, key, userPaths[key]),
+                scope: this
+              },
+              {
+                xtype: "button",
+                tooltip: "Delete",
+                iconCls: "fa fa-trash",
+                style: {
+                  position: "absolute",
+                  right: "35px",
+                  top: "8px"
+                },
+                handler: this.deleteUserPath.bind(this, key)
               }
-            ],
-            style: {
-              width: "100%",
-              borderTop: "1px solid #d4d4d4",
-              borderBottom: "1px solid #d4d4d4",
-              marginBottom: "6px"
-            }
+            ]
           });
+
+          container.add(recordContainer);
         }
       }
     }
+  },
+
+  saveUserPaths: function (data) {
+    var wnd = this.getView();
+    Ext.Ajax.request({
+      url: "api/requests/" + wnd.record.data.pk + "/put_metapaths/",
+      method: "POST",
+      jsonData: data,
+      success: function (response) {
+        var jsonResp = Ext.decode(response.responseText);
+        if (jsonResp.success) {
+          new Noty({
+            text: "The user path has been saved successfully.",
+            type: "success"
+          }).show();
+          wnd.record.data.metapaths = data;
+          var dynamicContainer2 = wnd.down("#dynamic-container-2");
+          this.generateModifiedUserPaths(data, dynamicContainer2);
+
+          var addContainer = dynamicContainer2.down("#add-container");
+          if (addContainer) {
+            addContainer.hide();
+          }
+        } else {
+          new Noty({
+            text: "Failed to save the user path.",
+            type: "error"
+          }).show();
+        }
+      },
+      failure: function (response) {
+        new Noty({
+          text: "An error occurred while saving the user path.",
+          type: "error"
+        }).show();
+      },
+      scope: this
+    });
+  },
+
+  editUserPath: function (key, value) {
+    var wnd = this.getView();
+    var addContainer = wnd.down("#dynamic-container-2").down("#add-container");
+
+    if (!addContainer) {
+      this.createAddContainer(wnd.down("#dynamic-container-2"));
+      addContainer = wnd.down("#dynamic-container-2").down("#add-container");
+    }
+
+    this.isAdding = false;
+    this.isEditing = true;
+
+    var userPathInputKey = addContainer.down("#userPathInputKey");
+    var userPathInputValue = addContainer.down("#userPathInputValue");
+    var saveButton = addContainer.down("#saveButton");
+
+    userPathInputKey.setValue(key);
+    userPathInputKey.setReadOnly(true);
+    userPathInputValue.setValue(value);
+    saveButton.setDisabled(false);
+  },
+
+  deleteUserPath: function (key) {
+    Ext.Msg.confirm(
+      "Confirmation",
+      "Are you sure that you want to delete path '" + key + "'?",
+      function (choice) {
+        if (choice === "yes") {
+          var wnd = this.getView();
+          var record = wnd.record;
+          var userPaths = Ext.apply({}, record.data.metapaths);
+
+          if (userPaths.hasOwnProperty(key)) {
+            delete userPaths[key];
+
+            Ext.Ajax.request({
+              url: "api/requests/" + record.data.pk + "/put_metapaths/",
+              method: "POST",
+              jsonData: userPaths,
+              success: function (response) {
+                var jsonResp = Ext.decode(response.responseText);
+                if (jsonResp.success) {
+                  new Noty({
+                    text: "The user path has been deleted successfully.",
+                    type: "success"
+                  }).show();
+
+                  wnd.record.data.metapaths = userPaths;
+                  var dynamicContainer2 = wnd.down("#dynamic-container-2");
+                  this.generateModifiedUserPaths(userPaths, dynamicContainer2);
+                } else {
+                  new Noty({
+                    text: "Failed to delete the user path.",
+                    type: "error"
+                  }).show();
+                }
+              },
+              failure: function (response) {
+                new Noty({
+                  text: "An error occurred while deleting the user path.",
+                  type: "error"
+                }).show();
+              },
+              scope: this
+            });
+          }
+        }
+      },
+      this
+    );
   },
 
   onOSChange: function (filePath) {

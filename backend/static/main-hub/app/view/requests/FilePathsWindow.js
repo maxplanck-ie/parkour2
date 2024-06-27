@@ -100,7 +100,6 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                       xtype: "container",
                       itemId: "dynamic-container",
                       margin: "15 0 0 15",
-                      padding: "5",
                       style: {
                         height: "270px",
                         overflowY: "scroll"
@@ -161,7 +160,6 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
                   xtype: "container",
                   itemId: "dynamic-container-2",
                   margin: "15 0 0 15",
-                  padding: "5",
                   style: {
                     height: "270px",
                     overflowY: "scroll"
