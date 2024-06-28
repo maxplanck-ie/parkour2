@@ -8,6 +8,7 @@
 - Logout method changed from GET to POST to make it compatible with Django v5.0. (#111)
 - Fixed: "Bad Request" notification after adding Libraries or Samples while creating any request and the description is kept empty. (#112)
 - Option to select OS under "File Paths" to modify the file paths according to the selection. (#113)
+- Feature to add paths from the user's end, via "User Paths" in File Path right-click option. (#117)
 
 24.05.10
 ========
