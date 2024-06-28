@@ -138,6 +138,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     } else {
       addContainer.down("#userPathInputKey").setValue("");
       addContainer.down("#userPathInputValue").setValue("");
+      addContainer.down("#userPathInputKey").setReadOnly(false);
       addContainer.show();
     }
   },
@@ -146,6 +147,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     var wnd = this.getView();
     var userPathKey = wnd.down("#userPathInputKey").getValue();
     var userPathValue = wnd.down("#userPathInputValue").getValue();
+    wnd.down("#userPathInputKey").setReadOnly(false);
+
     var metapathsObject = wnd.record.data.metapaths;
     var newInputData = {};
 
@@ -180,9 +183,6 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
 
     this.isAdding = false;
     this.isEditing = false;
-
-    wnd.down("#userPathInputKey").setValue("");
-    wnd.down("#userPathInputValue").setValue("");
   },
 
   onCancelButtonClick: function () {
@@ -193,6 +193,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
       addContainer.hide();
       addContainer.down("#userPathInputKey").setValue("");
       addContainer.down("#userPathInputValue").setValue("");
+      addContainer.down("#userPathInputKey").setReadOnly(false);
 
       this.isAdding = false;
       this.isEditing = false;
@@ -319,7 +320,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 style: {
                   padding: "8px",
                   display: "inline-block",
-                  width: "54%",
+                  width: "56%",
                   borderLeft: "1px solid #d4d4d4",
                   wordWrap: "break-word",
                   verticalAlign: "middle",
@@ -353,8 +354,16 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 iconCls: "fa fa-pencil",
                 style: {
                   position: "absolute",
-                  right: "8px",
-                  top: "8px"
+                  top: "50%",
+                  right: "4px",
+                  height: "25px",
+                  width: "25px",
+                  transform: "translateY(-50%)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "0px",
+                  fontSize: "14px"
                 },
                 handler: this.editUserPath.bind(this, key, userPaths[key]),
                 scope: this
@@ -365,8 +374,16 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                 iconCls: "fa fa-trash",
                 style: {
                   position: "absolute",
-                  right: "35px",
-                  top: "8px"
+                  top: "50%",
+                  right: "32px",
+                  height: "25px",
+                  width: "25px",
+                  transform: "translateY(-50%)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: "0px",
+                  fontSize: "14px"
                 },
                 handler: this.deleteUserPath.bind(this, key)
               }
@@ -424,6 +441,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     if (!addContainer) {
       this.createAddContainer(wnd.down("#dynamic-container-2"));
       addContainer = wnd.down("#dynamic-container-2").down("#add-container");
+    } else {
+      addContainer.show();
     }
 
     this.isAdding = false;
