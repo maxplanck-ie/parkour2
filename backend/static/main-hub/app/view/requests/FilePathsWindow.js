@@ -3,8 +3,8 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
   requires: ["MainHub.view.requests.FilePathsWindowController"],
   controller: "requests-filePathsWindow",
 
-  height: 485,
-  width: 450,
+  height: 490,
+  width: 900,
   modal: true,
   resizable: false,
   autoShow: true,
@@ -22,6 +22,10 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
       defaults: {
         labelWidth: 100
       },
+      layout: {
+        type: "vbox",
+        align: "stretch"
+      },
       items: [
         {
           xtype: "container",
@@ -32,7 +36,7 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
               style: {
                 fontWeight: "bold"
               },
-              margin: "10 10 10 0"
+              margin: "10"
             },
             {
               xtype: "label",
@@ -49,51 +53,125 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
         },
         {
           xtype: "container",
+          layout: {
+            type: "hbox",
+            align: "stretch"
+          },
+          flex: 1,
           items: [
             {
               xtype: "container",
-              layout: {
-                type: "hbox",
-                align: "middle"
-              },
+              flex: 1,
               items: [
                 {
-                  xtype: "label",
-                  text: "Request File Paths:",
-                  name: "file-paths-label",
+                  xtype: "container",
+                  items: [
+                    {
+                      xtype: "container",
+                      layout: {
+                        type: "hbox",
+                        align: "middle"
+                      },
+                      padding: "0 0 0 10",
+                      items: [
+                        {
+                          xtype: "label",
+                          text: "Request File Paths:",
+                          name: "file-paths-label",
+                          style: {
+                            fontWeight: "bold"
+                          },
+                          flex: 1
+                        },
+                        {
+                          xtype: "combobox",
+                          reference: "osComboBox",
+                          store: ["Linux", "macOS", "Windows"],
+                          queryMode: "local",
+                          displayField: "name",
+                          valueField: "name",
+                          height: 32,
+                          width: 150,
+                          margin: "0 0 0 10"
+                        }
+                      ]
+                    },
+                    {
+                      xtype: "container",
+                      itemId: "dynamic-container",
+                      margin: "15 0 0 15",
+                      style: {
+                        height: "270px",
+                        overflowY: "scroll"
+                      }
+                    }
+                  ],
                   style: {
-                    fontWeight: "bold"
+                    border: "1px solid #d4d4d4"
                   },
-                  flex: 1
-                },
-                {
-                  xtype: "combobox",
-                  reference: "osComboBox",
-                  store: ["Linux", "macOS", "Windows"],
-                  queryMode: "local",
-                  displayField: "name",
-                  valueField: "name",
-                  width: 150,
-                  margin: "0 0 0 10"
+                  margin: "0 10 0 0",
+                  padding: "5"
                 }
               ]
             },
             {
               xtype: "container",
-              itemId: "dynamic-container",
-              margin: "10 0 10 15",
-              padding: "5",
+              flex: 1,
+              items: [
+                {
+                  xtype: "container",
+                  layout: {
+                    type: "hbox",
+                    align: "middle"
+                  },
+                  padding: "0 0 0 10",
+                  items: [
+                    {
+                      xtype: "label",
+                      text: "Request User Paths:",
+                      name: "user-paths-label",
+                      style: {
+                        fontWeight: "bold"
+                      },
+                      flex: 1
+                    },
+                    {
+                      xtype: "button",
+                      iconCls: "x-fa fa-plus",
+                      text: "Add",
+                      height: 32,
+                      width: 70,
+                      margin: "0 0 0 10",
+                      style: {
+                        borderColor: "#d4d4d4",
+                        borderStyle: "solid",
+                        borderWidth: "1px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                        lineHeight: "32px"
+                      },
+                      listeners: {
+                        click: "onAddButtonClick"
+                      }
+                    }
+                  ]
+                },
+                {
+                  xtype: "container",
+                  itemId: "dynamic-container-2",
+                  margin: "15 0 0 15",
+                  style: {
+                    height: "270px",
+                    overflowY: "scroll"
+                  }
+                }
+              ],
               style: {
-                height: "270px",
-                overflowY: "scroll"
-              }
+                border: "1px solid #d4d4d4"
+              },
+              padding: "5"
             }
-          ],
-          style: {
-            border: "1px solid #d4d4d4"
-          },
-          margin: "0 0 10 0",
-          padding: "5"
+          ]
         }
       ]
     }
@@ -112,6 +190,6 @@ Ext.define("MainHub.view.requests.FilePathsWindow", {
   ],
 
   listeners: {
-    afterrender: "getFilePaths"
+    afterrender: "getPaths"
   }
 });
