@@ -3,6 +3,10 @@
 ??.??.??
 ========
 
+
+24.06.28
+========
+
 - 'Destroy Pool' option when right-clicked on pools, in the 'Pooling' submodule. (#109)
 - New search bar component in the 'Libraries & Samples' submodule, which searches either by pressing enter or clicking the search button. (#110)
 - Logout method changed from GET to POST to make it compatible with Django v5.0. (#111)
