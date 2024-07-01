@@ -403,4 +403,8 @@ load-fixtures-migras: put-old-migras apply-migrations
 	@docker compose exec parkour2-django python manage.py load_initial_data
 	@$(MAKE) put-new-migras
 
+update-fixtures: dev load-fixtures-migras  ## Redeploy with fixtures, migrate fields, save data to json.
+	@docker compose exec parkour2-django python manage.py save_initial_data
+
+
 # Remember: (docker compose run == docker exec) != docker run

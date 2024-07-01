@@ -7,12 +7,32 @@
       "update_time": "2018-08-21T15:31:10.583Z",
       "name": "2_User_Boenisch",
       "description": "Chromatin IP Samples\nLarge Consortia",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0008_180820152043_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [
         43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
@@ -29,18 +49,38 @@
       "update_time": "2018-08-21T15:24:36.852Z",
       "name": "3_User_Principle Investigator",
       "description": "mRNA-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0009_180820160143_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [
         64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81,
         82
       ],
-      "files": [13, 4, 5]
+      "files": [5, 4, 13]
     }
   },
   {
@@ -51,12 +91,32 @@
       "update_time": "2018-08-20T17:24:08.256Z",
       "name": "4_User_Principle Investigator",
       "description": "single cell RNA-Seq\nSample are already pooled\nSequence on HiSeq3000, 3 lanes",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0011_180820162623_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [
         1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
         21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38,
@@ -74,12 +134,32 @@
       "update_time": "2018-08-20T17:24:40.689Z",
       "name": "5_User_Principle Investigator",
       "description": "ATAC-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0010_180820162536_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [40, 41, 42, 43, 44, 45, 46, 47, 48],
       "samples": [],
       "files": [8, 7]
@@ -93,12 +173,32 @@
       "update_time": "2018-08-21T15:28:36.577Z",
       "name": "6_User_Principle Investigator",
       "description": "ChIP-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/20/0012_180820164342_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93],
       "files": [9, 10, 11, 15]
@@ -112,12 +212,32 @@
       "update_time": "2018-08-21T15:37:18.385Z",
       "name": "7_User_Principle Investigator",
       "description": "Amplicon Sequencing \nMiSeq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0013_180821092045_001.pdf",
       "samples_submitted": true,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [
         49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66,
         67, 68, 69, 70, 71, 72, 73, 74
@@ -134,14 +254,34 @@
       "update_time": "2018-08-21T14:49:51.004Z",
       "name": "8_User_Principle Investigator",
       "description": "WGS, \nHiSeq2500",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0014_180821135250_001.pdf",
       "samples_submitted": false,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
-      "samples": [94, 95, 96, 97, 98, 99, 100, 101, 102, 103],
+      "samples": [96, 97, 98, 99, 100, 101, 102, 103, 94, 95],
       "files": []
     }
   },
@@ -153,12 +293,32 @@
       "update_time": "2018-08-21T15:01:28.441Z",
       "name": "9_User_Principle Investigator",
       "description": "WGBS",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0015_180821140312_001.pdf",
       "samples_submitted": false,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [104, 105, 106, 107, 108, 109, 110, 111, 112],
       "files": []
@@ -172,12 +332,32 @@
       "update_time": "2018-08-21T15:39:52.403Z",
       "name": "10_User_Principle Investigator",
       "description": "RNA-Seq libraries",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/0016_180821140418_001.pdf",
       "samples_submitted": false,
       "sequenced": true,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [75, 76, 77, 78, 79, 80, 81, 82, 83, 84],
       "samples": [],
       "files": []
@@ -191,12 +371,32 @@
       "update_time": "2018-08-21T17:26:26.930Z",
       "name": "13_User_Principle Investigator",
       "description": "RNA-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval.pdf",
       "samples_submitted": false,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [
         136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 147, 148, 149,
@@ -213,12 +413,32 @@
       "update_time": "2018-08-21T17:21:17.480Z",
       "name": "14_User_Principle Investigator",
       "description": "ChIP-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_nuTYbmX.pdf",
       "samples_submitted": true,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [
         156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169,
@@ -235,12 +455,32 @@
       "update_time": "2018-08-21T17:36:23.864Z",
       "name": "15_User_Principle Investigator",
       "description": "WGS",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_qFrrJ5c.pdf",
       "samples_submitted": true,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [],
       "samples": [176, 177, 178, 179],
       "files": [24]
@@ -254,12 +494,32 @@
       "update_time": "2018-08-21T17:21:05.586Z",
       "name": "16_User_Principle Investigator",
       "description": "Single-Cell-RNA-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_cq979aB.pdf",
       "samples_submitted": true,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [
         85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101,
         102, 103, 104, 105, 106, 107, 108, 109, 110
@@ -276,12 +536,32 @@
       "update_time": "2018-08-21T17:20:37.564Z",
       "name": "17_User_Principle Investigator",
       "description": "ATAC-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_S438HbS.pdf",
       "samples_submitted": true,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122],
       "samples": [],
       "files": [18]
@@ -295,15 +575,35 @@
       "update_time": "2018-08-21T17:20:49.455Z",
       "name": "18_User_Principle Investigator",
       "description": "Amplicon-Seq",
+      "token": null,
       "user": 3,
       "cost_unit": 1,
       "deep_seq_request": "deep_sequencing_requests/2018/08/21/Demo_Request_Approval_OmZcsl9.pdf",
       "samples_submitted": true,
       "sequenced": false,
       "archived": false,
+      "filepaths": {
+        "data": null,
+        "metadata": null
+      },
+      "metapaths": {
+        "nothing": null
+      },
+      "approval": {
+        "TOKEN": null,
+        "TIMESTAMP": null,
+        "HTTP_ACCEPT": null,
+        "REMOTE_ADDR": null,
+        "REMOTE_PORT": null,
+        "HTTP_FORWARDED": null,
+        "HTTP_USER_AGENT": null,
+        "HTTP_ACCEPT_ENCODING": null,
+        "HTTP_ACCEPT_LANGUAGE": null,
+        "HTTP_X_FORWARDED_FOR": null
+      },
       "libraries": [
-        123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135, 136,
-        137, 138, 139, 140, 141, 142
+        128, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141,
+        142, 123, 124, 125, 126, 127
       ],
       "samples": [],
       "files": [19]
