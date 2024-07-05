@@ -135,7 +135,7 @@ Ext.define("MainHub.view.requests.RequestsController", {
           text: "View File Paths",
           hidden: !USER.is_staff,
           handler: function () {
-            Ext.create("MainHub.view.requests.FilePathsWindow", {
+            Ext.create("MainHub.view.requests.FilepathsWindow", {
               title: "File Paths",
               record: record
             });

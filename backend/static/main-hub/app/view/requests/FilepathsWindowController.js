@@ -1,8 +1,9 @@
-Ext.define("MainHub.view.requests.FilePathsWindowController", {
+Ext.define("MainHub.view.requests.FilepathsWindowController", {
   extend: "Ext.app.ViewController",
-  alias: "controller.requests-filePathsWindow",
+  alias: "controller.requests-filepathsWindow",
 
   selectedOS: null,
+  userpathsArray: [],
   isEditing: false,
   isAdding: false,
 
@@ -10,11 +11,12 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     this.control({
       "combobox[reference=osComboBox]": {
         change: function (combo, newValue, oldValue) {
-          this.selectedOS = newValue;
           var wnd = this.getView();
           var dynamicContainer = wnd.down("#dynamic-container");
-          var filePaths = wnd.record.data.filepaths;
-          this.generateModifiedFilePaths(filePaths, dynamicContainer);
+          var filepaths = wnd.record.data.filepaths;
+
+          this.selectedOS = newValue;
+          this.generateModifiedFilepaths(filepaths, dynamicContainer);
         }
       },
       "button[text=Add]": {
@@ -31,11 +33,23 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     var dynamicContainer2 = wnd.down("#dynamic-container-2");
 
     requestNameTextarea.setText(wnd.record.data.name);
-    this.generateModifiedFilePaths(wnd.record.data.filepaths, dynamicContainer);
-    this.generateModifiedUserPaths(
-      wnd.record.data.metapaths,
-      dynamicContainer2
-    );
+
+    var filepaths = wnd.record.data.filepaths;
+    var userpaths = wnd.record.data.metapaths;
+    let userpathsArray = [];
+    let id = 1;
+
+    for (let key in userpaths) {
+      if (userpaths.hasOwnProperty(key)) {
+        let newObj = { id: id, [key]: userpaths[key] };
+        userpathsArray.push(newObj);
+        id++;
+      }
+    }
+
+    this.userpathsArray = userpathsArray;
+    this.generateModifiedFilepaths(filepaths, dynamicContainer);
+    this.generateModifiedUserpaths(userpathsArray, dynamicContainer2);
 
     var os = this.detectOS(navigator.userAgent);
     var osComboBox = this.lookupReference("osComboBox");
@@ -59,36 +73,36 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
       items: [
         {
           xtype: "textfield",
-          itemId: "userPathInputKey",
+          itemId: "userpathInputKey",
           margin: "0 0 5 0",
           width: "100%",
           emptyText: "Name",
           listeners: {
             change: function () {
               var wnd = this.getView();
-              var userPathKey = wnd.down("#userPathInputKey").getValue();
-              var userPathValue = wnd.down("#userPathInputValue").getValue();
+              var userpathKey = wnd.down("#userpathInputKey").getValue();
+              var userpathValue = wnd.down("#userpathInputValue").getValue();
               var saveButton = wnd.down("#saveButton");
 
-              saveButton.setDisabled(!userPathKey || !userPathValue);
+              saveButton.setDisabled(!userpathKey || !userpathValue);
             },
             scope: this
           }
         },
         {
           xtype: "textfield",
-          itemId: "userPathInputValue",
+          itemId: "userpathInputValue",
           margin: "0 0 5 0",
           width: "100%",
           emptyText: "Path",
           listeners: {
             change: function () {
               var wnd = this.getView();
-              var userPathKey = wnd.down("#userPathInputKey").getValue();
-              var userPathValue = wnd.down("#userPathInputValue").getValue();
+              var userpathKey = wnd.down("#userpathInputKey").getValue();
+              var userpathValue = wnd.down("#userpathInputValue").getValue();
               var saveButton = wnd.down("#saveButton");
 
-              saveButton.setDisabled(!userPathKey || !userPathValue);
+              saveButton.setDisabled(!userpathKey || !userpathValue);
             },
             scope: this
           }
@@ -127,7 +141,6 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
   onAddButtonClick: function () {
     var wnd = this.getView();
     var dynamicContainer2 = wnd.down("#dynamic-container-2");
-
     var addContainer = dynamicContainer2.down("#add-container");
 
     this.isAdding = true;
@@ -136,49 +149,47 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     if (!addContainer) {
       this.createAddContainer(dynamicContainer2);
     } else {
-      addContainer.down("#userPathInputKey").setValue("");
-      addContainer.down("#userPathInputValue").setValue("");
-      addContainer.down("#userPathInputKey").setReadOnly(false);
+      addContainer.down("#userpathInputKey").setValue("");
+      addContainer.down("#userpathInputValue").setValue("");
+      addContainer.down("#userpathInputKey").setReadOnly(false);
       addContainer.show();
     }
   },
 
   onSaveButtonClick: function () {
     var wnd = this.getView();
-    var userPathKey = wnd.down("#userPathInputKey").getValue();
-    var userPathValue = wnd.down("#userPathInputValue").getValue();
-    wnd.down("#userPathInputKey").setReadOnly(false);
+    var userpathKey = wnd.down("#userpathInputKey").getValue();
+    var userpathValue = wnd.down("#userpathInputValue").getValue();
 
-    var metapathsObject = wnd.record.data.metapaths;
+    wnd.down("#userpathInputKey").setReadOnly(false);
+
+    var userpaths = wnd.record.data.metapaths;
     var newInputData = {};
 
+    if (userpaths.hasOwnProperty(userpathKey)) {
+      new Noty({
+        text: "A user path with the same name already exists.",
+        type: "warning"
+      }).show();
+      return;
+    }
+
     if (this.isAdding) {
-      if (metapathsObject.hasOwnProperty(userPathKey)) {
-        new Noty({
-          text: "A user path with the same name already exists.",
-          type: "warning"
-        }).show();
-        return;
+      newInputData[userpathKey] = userpathValue;
+      for (var key in userpaths) {
+        if (key !== "nothing") newInputData[key] = userpaths[key];
       }
-      newInputData[userPathKey] = userPathValue;
-      for (var key in metapathsObject) {
-        if (key !== "nothing") newInputData[key] = metapathsObject[key];
-      }
-      this.saveUserPaths(newInputData);
+      this.saveUserpaths(newInputData);
     } else if (this.isEditing) {
-      if (
-        metapathsObject.hasOwnProperty(userPathKey) &&
-        metapathsObject[userPathKey] !== userPathValue
-      ) {
-        for (var key in metapathsObject) {
-          if (key === userPathKey) {
-            newInputData[key] = userPathValue;
-          } else {
-            newInputData[key] = metapathsObject[key];
-          }
+      var userpathsArray = this.userpathsArray;
+      for (var obj in userpathsArray) {
+        if (key === userpathKey) {
+          newInputData[key] = userpathValue;
+        } else {
+          newInputData[key] = userpaths[key];
         }
-        this.saveUserPaths(newInputData);
       }
+      this.saveUserpaths(newInputData);
     }
 
     this.isAdding = false;
@@ -191,19 +202,19 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
 
     if (addContainer) {
       addContainer.hide();
-      addContainer.down("#userPathInputKey").setValue("");
-      addContainer.down("#userPathInputValue").setValue("");
-      addContainer.down("#userPathInputKey").setReadOnly(false);
+      addContainer.down("#userpathInputKey").setValue("");
+      addContainer.down("#userpathInputValue").setValue("");
+      addContainer.down("#userpathInputKey").setReadOnly(false);
 
       this.isAdding = false;
       this.isEditing = false;
     }
   },
 
-  generateModifiedFilePaths: function (filePaths, container) {
+  generateModifiedFilepaths: function (filepaths, container) {
     container.removeAll();
-    for (var key in filePaths) {
-      if (filePaths.hasOwnProperty(key)) {
+    for (var key in filepaths) {
+      if (filepaths.hasOwnProperty(key)) {
         container.add({
           xtype: "container",
           items: [
@@ -223,8 +234,8 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
               xtype: "label",
               text:
                 key == "data" || key == "metadata"
-                  ? this.onOSChange(filePaths[key])
-                  : filePaths[key],
+                  ? this.onOSChange(filepaths[key])
+                  : filepaths[key],
               style: {
                 padding: "8px",
                 display: "inline-block",
@@ -268,13 +279,13 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     }
   },
 
-  generateModifiedUserPaths: function (userPaths, container) {
+  generateModifiedUserpaths: function (userpathsArray, container) {
     container.removeAll();
 
     if (
-      !userPaths ||
-      Object.keys(userPaths).length === 0 ||
-      userPaths.hasOwnProperty("nothing")
+      !userpathsArray ||
+      userpathsArray.length === 0 ||
+      userpathsArray.some((obj) => obj.hasOwnProperty("nothing"))
     ) {
       container.add({
         xtype: "label",
@@ -287,8 +298,9 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
         }
       });
     } else {
-      for (let key in userPaths) {
-        if (userPaths.hasOwnProperty(key)) {
+      userpathsArray.forEach((obj) => {
+        let key = Object.keys(obj).find((k) => k !== "id");
+        if (key) {
           var recordContainer = Ext.create("Ext.container.Container", {
             xtype: "container",
             style: {
@@ -313,10 +325,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
               },
               {
                 xtype: "label",
-                text:
-                  !userPaths[key] || userPaths[key] === ""
-                    ? "Empty"
-                    : userPaths[key],
+                text: !obj[key] || obj[key] === "" ? "Empty" : obj[key],
                 style: {
                   padding: "8px",
                   display: "inline-block",
@@ -365,7 +374,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                   padding: "0px",
                   fontSize: "14px"
                 },
-                handler: this.editUserPath.bind(this, key, userPaths[key]),
+                handler: this.editUserpath.bind(this, key, obj[key]),
                 scope: this
               },
               {
@@ -385,35 +394,50 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
                   padding: "0px",
                   fontSize: "14px"
                 },
-                handler: this.deleteUserPath.bind(this, key)
+                handler: this.deleteUserpath.bind(this, key)
               }
             ]
           });
 
           container.add(recordContainer);
         }
-      }
+      });
     }
   },
 
-  saveUserPaths: function (data) {
+  saveUserpaths: function (userpaths) {
     var wnd = this.getView();
+
     Ext.Ajax.request({
       url: "api/requests/" + wnd.record.data.pk + "/put_metapaths/",
       method: "POST",
-      jsonData: data,
+      jsonData: userpaths,
       success: function (response) {
         var jsonResp = Ext.decode(response.responseText);
+        var dynamicContainer2 = wnd.down("#dynamic-container-2");
+        var addContainer = dynamicContainer2.down("#add-container");
+
         if (jsonResp.success) {
           new Noty({
             text: "The user path has been saved successfully.",
             type: "success"
           }).show();
-          wnd.record.data.metapaths = data;
-          var dynamicContainer2 = wnd.down("#dynamic-container-2");
-          this.generateModifiedUserPaths(data, dynamicContainer2);
+          wnd.record.data.metapaths = userpaths;
 
-          var addContainer = dynamicContainer2.down("#add-container");
+          let userpathsArray = [];
+          let id = 1;
+
+          for (let key in userpaths) {
+            if (userpaths.hasOwnProperty(key)) {
+              let newObj = { id: id, [key]: userpaths[key] };
+              userpathsArray.push(newObj);
+              id++;
+            }
+          }
+
+          this.userpathsArray = userpathsArray;
+          this.generateModifiedUserpaths(userpathsArray, dynamicContainer2);
+
           if (addContainer) {
             addContainer.hide();
           }
@@ -434,7 +458,7 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     });
   },
 
-  editUserPath: function (key, value) {
+  editUserpath: function (key, value) {
     var wnd = this.getView();
     var addContainer = wnd.down("#dynamic-container-2").down("#add-container");
 
@@ -448,17 +472,17 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     this.isAdding = false;
     this.isEditing = true;
 
-    var userPathInputKey = addContainer.down("#userPathInputKey");
-    var userPathInputValue = addContainer.down("#userPathInputValue");
+    var userpathInputKey = addContainer.down("#userpathInputKey");
+    var userpathInputValue = addContainer.down("#userpathInputValue");
     var saveButton = addContainer.down("#saveButton");
 
-    userPathInputKey.setValue(key);
-    userPathInputKey.setReadOnly(true);
-    userPathInputValue.setValue(value);
+    userpathInputKey.setValue(key);
+    userpathInputKey.setReadOnly(true);
+    userpathInputValue.setValue(value);
     saveButton.setDisabled(false);
   },
 
-  deleteUserPath: function (key) {
+  deleteUserpath: function (key) {
     Ext.Msg.confirm(
       "Confirmation",
       "Are you sure that you want to delete path '" + key + "'?",
@@ -466,26 +490,43 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
         if (choice === "yes") {
           var wnd = this.getView();
           var record = wnd.record;
-          var userPaths = Ext.apply({}, record.data.metapaths);
+          var userpaths = Ext.apply({}, record.data.metapaths);
 
-          if (userPaths.hasOwnProperty(key)) {
-            delete userPaths[key];
+          if (userpaths.hasOwnProperty(key)) {
+            delete userpaths[key];
 
             Ext.Ajax.request({
               url: "api/requests/" + record.data.pk + "/put_metapaths/",
               method: "POST",
-              jsonData: userPaths,
+              jsonData: userpaths,
               success: function (response) {
                 var jsonResp = Ext.decode(response.responseText);
+                var dynamicContainer2 = wnd.down("#dynamic-container-2");
+
                 if (jsonResp.success) {
                   new Noty({
                     text: "The user path has been deleted successfully.",
                     type: "success"
                   }).show();
 
-                  wnd.record.data.metapaths = userPaths;
-                  var dynamicContainer2 = wnd.down("#dynamic-container-2");
-                  this.generateModifiedUserPaths(userPaths, dynamicContainer2);
+                  wnd.record.data.metapaths = userpaths;
+
+                  let userpathsArray = [];
+                  let id = 1;
+
+                  for (let key in userpaths) {
+                    if (userpaths.hasOwnProperty(key)) {
+                      let newObj = { id: id, [key]: userpaths[key] };
+                      userpathsArray.push(newObj);
+                      id++;
+                    }
+                  }
+
+                  this.userpathsArray = userpathsArray;
+                  this.generateModifiedUserpaths(
+                    userpathsArray,
+                    dynamicContainer2
+                  );
                 } else {
                   new Noty({
                     text: "Failed to delete the user path.",
@@ -508,41 +549,41 @@ Ext.define("MainHub.view.requests.FilePathsWindowController", {
     );
   },
 
-  onOSChange: function (filePath) {
-    var filePathRegex =
+  onOSChange: function (filepath) {
+    var filepathRegex =
       /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_\/.]+$/;
-    if (!filePath) {
+    if (!filepath) {
       return "Empty";
     }
-    if (filePathRegex.test(filePath)) {
-      var filePathSplit = filePath.split("/").filter(function (element) {
+    if (filepathRegex.test(filepath)) {
+      var filepathSplit = filepath.split("/").filter(function (element) {
         return element !== "";
       });
       if (this.selectedOS == "Windows") {
         return (
           "\\\\" +
-          filePathSplit[0] +
+          filepathSplit[0] +
           "\\" +
-          filePathSplit[1] +
+          filepathSplit[1] +
           "-" +
-          filePathSplit[2] +
+          filepathSplit[2] +
           "\\" +
-          filePathSplit.slice(3).join("\\")
+          filepathSplit.slice(3).join("\\")
         );
       } else if (this.selectedOS == "macOS") {
         return (
           "smb://" +
-          filePathSplit[0] +
+          filepathSplit[0] +
           "/" +
-          filePathSplit[1] +
+          filepathSplit[1] +
           "-" +
-          filePathSplit[2] +
+          filepathSplit[2] +
           "/" +
-          filePathSplit.slice(3).join("/")
+          filepathSplit.slice(3).join("/")
         );
-      } else return filePath;
+      } else return filepath;
     } else {
-      return filePath;
+      return filepath;
     }
   },
 
