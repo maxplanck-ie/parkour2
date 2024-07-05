@@ -223,6 +223,7 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
 
                 if matching_sample:
                     my_status = matching_sample.status
+                    matching_sample.is_pool_destroyed = True
                     matching_sample.is_pooled = False
 
                     if matching_sample.status == 2:

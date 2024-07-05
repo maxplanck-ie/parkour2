@@ -34,6 +34,17 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
     if not instance.is_pooled:
         return
 
+    # If a sample has been through pool destruction
+    if instance.is_pool_destroyed:
+        instance.status = 3
+        instance.is_pooled = True
+        instance.is_converted = True
+        obj, created = Pooling.objects.get_or_create(sample=instance)
+        if created:
+            obj.save()
+
+        return
+
     try:
         lib_prep_object = LibraryPreparation.objects.get(sample=instance)
     except LibraryPreparation.DoesNotExist:
