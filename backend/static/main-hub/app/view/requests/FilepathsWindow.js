@@ -1,7 +1,7 @@
-Ext.define("MainHub.view.requests.FilePathsWindow", {
+Ext.define("MainHub.view.requests.FilepathsWindow", {
   extend: "Ext.window.Window",
-  requires: ["MainHub.view.requests.FilePathsWindowController"],
-  controller: "requests-filePathsWindow",
+  requires: ["MainHub.view.requests.FilepathsWindowController"],
+  controller: "requests-filepathsWindow",
 
   height: 490,
   width: 900,
