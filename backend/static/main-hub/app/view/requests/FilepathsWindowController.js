@@ -6,6 +6,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
   userpathsArray: [],
   isEditing: false,
   isAdding: false,
+  currentEditId: null,
 
   init: function () {
     this.control({
@@ -17,11 +18,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
           this.selectedOS = newValue;
           this.generateModifiedFilepaths(filepaths, dynamicContainer);
-        }
+        },
       },
-      "button[text=Add]": {
-        click: this.onAddButtonClick
-      }
     });
 
     this.getPaths(this.getView());
@@ -36,20 +34,24 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
     var filepaths = wnd.record.data.filepaths;
     var userpaths = wnd.record.data.metapaths;
-    let userpathsArray = [];
+    let updatedUserpathsArray = [];
     let id = 1;
 
     for (let key in userpaths) {
       if (userpaths.hasOwnProperty(key)) {
-        let newObj = { id: id, [key]: userpaths[key] };
-        userpathsArray.push(newObj);
+        let newObj = {
+          pathId: id,
+          pathName: key,
+          pathValue: userpaths[key],
+        };
+        updatedUserpathsArray.push(newObj);
         id++;
       }
     }
 
-    this.userpathsArray = userpathsArray;
+    this.userpathsArray = updatedUserpathsArray;
     this.generateModifiedFilepaths(filepaths, dynamicContainer);
-    this.generateModifiedUserpaths(userpathsArray, dynamicContainer2);
+    this.generateModifiedUserpaths(updatedUserpathsArray, dynamicContainer2);
 
     var os = this.detectOS(navigator.userAgent);
     var osComboBox = this.lookupReference("osComboBox");
@@ -68,7 +70,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
         position: "sticky",
         top: 0,
         backgroundColor: "white",
-        zIndex: 10
+        zIndex: 10,
       },
       items: [
         {
@@ -86,8 +88,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
               saveButton.setDisabled(!userpathKey || !userpathValue);
             },
-            scope: this
-          }
+            scope: this,
+          },
         },
         {
           xtype: "textfield",
@@ -104,14 +106,14 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
               saveButton.setDisabled(!userpathKey || !userpathValue);
             },
-            scope: this
-          }
+            scope: this,
+          },
         },
         {
           xtype: "container",
           layout: {
             type: "hbox",
-            pack: "end"
+            pack: "end",
           },
           margin: "5 0 0 0",
           items: [
@@ -122,17 +124,17 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
               handler: this.onSaveButtonClick,
               scope: this,
               margin: "0 5 0 0",
-              disabled: true
+              disabled: true,
             },
             {
               xtype: "button",
               text: "Cancel",
               handler: this.onCancelButtonClick,
-              scope: this
-            }
-          ]
-        }
-      ]
+              scope: this,
+            },
+          ],
+        },
+      ],
     });
 
     addContainer.show();
@@ -145,56 +147,63 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
     this.isAdding = true;
     this.isEditing = false;
+    this.currentEditId = null;
 
     if (!addContainer) {
       this.createAddContainer(dynamicContainer2);
     } else {
       addContainer.down("#userpathInputKey").setValue("");
       addContainer.down("#userpathInputValue").setValue("");
-      addContainer.down("#userpathInputKey").setReadOnly(false);
       addContainer.show();
     }
   },
 
   onSaveButtonClick: function () {
     var wnd = this.getView();
-    var userpathKey = wnd.down("#userpathInputKey").getValue();
-    var userpathValue = wnd.down("#userpathInputValue").getValue();
+    var userpathInputKey = wnd.down("#userpathInputKey").getValue();
+    var userpathInputValue = wnd.down("#userpathInputValue").getValue();
 
-    wnd.down("#userpathInputKey").setReadOnly(false);
-
-    var userpaths = wnd.record.data.metapaths;
-    var newInputData = {};
-
-    if (userpaths.hasOwnProperty(userpathKey)) {
-      new Noty({
-        text: "A user path with the same name already exists.",
-        type: "warning"
-      }).show();
-      return;
-    }
+    var newInputData = new Map();
+    var userpathsArray = this.userpathsArray.slice();
 
     if (this.isAdding) {
-      newInputData[userpathKey] = userpathValue;
-      for (var key in userpaths) {
-        if (key !== "nothing") newInputData[key] = userpaths[key];
-      }
-      this.saveUserpaths(newInputData);
-    } else if (this.isEditing) {
-      var userpathsArray = this.userpathsArray;
-      for (var obj in userpathsArray) {
-        if (key === userpathKey) {
-          newInputData[key] = userpathValue;
-        } else {
-          newInputData[key] = userpaths[key];
+        let userpaths = wnd.record.data.metapaths;
+        if (userpaths.hasOwnProperty(userpathInputKey)) {
+            new Noty({
+                text: "A user path with the same name already exists.",
+                type: "warning",
+            }).show();
+            return;
         }
-      }
-      this.saveUserpaths(newInputData);
+        newInputData.set(userpathInputKey, userpathInputValue);
+        for (let i = 0; i < userpathsArray.length; i++) {
+            newInputData.set(userpathsArray[i].pathName, userpathsArray[i].pathValue);
+        }
+    } else if (this.isEditing) {
+        let currentEditId = this.currentEditId;
+        for (let i = 0; i < userpathsArray.length; i++) {
+            if (userpathsArray[i].pathId === currentEditId) {
+                newInputData.set(userpathInputKey, userpathInputValue);
+            } else {
+                newInputData.set(userpathsArray[i].pathName, userpathsArray[i].pathValue);
+            }
+        }
     }
+
+    this.userpathsArray = Array.from(newInputData).map((entry, index) => {
+        return {
+            pathId: index + 1,
+            pathName: entry[0],
+            pathValue: entry[1]
+        };
+    });
+
+    this.saveUserpaths(Object.fromEntries(newInputData));
 
     this.isAdding = false;
     this.isEditing = false;
-  },
+    this.currentEditId = null;
+},
 
   onCancelButtonClick: function () {
     var wnd = this.getView();
@@ -204,16 +213,17 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
       addContainer.hide();
       addContainer.down("#userpathInputKey").setValue("");
       addContainer.down("#userpathInputValue").setValue("");
-      addContainer.down("#userpathInputKey").setReadOnly(false);
 
       this.isAdding = false;
       this.isEditing = false;
+      this.currentEditId = null;
     }
   },
 
   generateModifiedFilepaths: function (filepaths, container) {
     container.removeAll();
-    for (var key in filepaths) {
+
+    for (let key in filepaths) {
       if (filepaths.hasOwnProperty(key)) {
         container.add({
           xtype: "container",
@@ -227,8 +237,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
                 width: "30%",
                 display: "inline-block",
                 wordWrap: "break-word",
-                verticalAlign: "middle"
-              }
+                verticalAlign: "middle",
+              },
             },
             {
               xtype: "label",
@@ -243,7 +253,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
                 borderLeft: "1px solid #d4d4d4",
                 wordWrap: "break-word",
                 verticalAlign: "middle",
-                cursor: "copy"
+                cursor: "copy",
               },
               listeners: {
                 render: function (label) {
@@ -251,29 +261,29 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
                     navigator.clipboard.writeText(label.text);
                     new Noty({
                       text: "File path has been copied to the clipboard.",
-                      type: "success"
+                      type: "success",
                     }).show();
                   });
                   label.getEl().on("mouseover", function () {
                     Ext.tip.QuickTipManager.register({
                       target: label.getEl(),
                       text: "Click to copy the file path.",
-                      showDelay: 600
+                      showDelay: 600,
                     });
                   });
                   label.getEl().on("mouseout", function () {
                     Ext.tip.QuickTipManager.unregister(label.getEl());
                   });
-                }
-              }
-            }
+                },
+              },
+            },
           ],
           style: {
             width: "100%",
             borderTop: "1px solid #d4d4d4",
             borderBottom: "1px solid #d4d4d4",
-            marginBottom: "6px"
-          }
+            marginBottom: "6px",
+          },
         });
       }
     }
@@ -285,7 +295,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
     if (
       !userpathsArray ||
       userpathsArray.length === 0 ||
-      userpathsArray.some((obj) => obj.hasOwnProperty("nothing"))
+      userpathsArray.some((obj) => obj.pathName === "nothing")
     ) {
       container.add({
         xtype: "label",
@@ -294,113 +304,113 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
           padding: "4px 8px",
           display: "inline-block",
           width: "100%",
-          textAlign: "center"
-        }
+          textAlign: "center",
+        },
       });
     } else {
       userpathsArray.forEach((obj) => {
-        let key = Object.keys(obj).find((k) => k !== "id");
-        if (key) {
-          var recordContainer = Ext.create("Ext.container.Container", {
-            xtype: "container",
-            style: {
-              width: "100%",
-              borderTop: "1px solid #d4d4d4",
-              borderBottom: "1px solid #d4d4d4",
-              marginBottom: "6px",
-              position: "relative"
+        var recordContainer = Ext.create("Ext.container.Container", {
+          xtype: "container",
+          style: {
+            width: "100%",
+            borderTop: "1px solid #d4d4d4",
+            borderBottom: "1px solid #d4d4d4",
+            marginBottom: "6px",
+            position: "relative",
+          },
+          items: [
+            {
+              xtype: "label",
+              text: obj.pathName,
+              style: {
+                fontWeight: "bold",
+                padding: "8px",
+                width: "30%",
+                display: "inline-block",
+                wordWrap: "break-word",
+                verticalAlign: "middle",
+              },
             },
-            items: [
-              {
-                xtype: "label",
-                text: key,
-                style: {
-                  fontWeight: "bold",
-                  padding: "8px",
-                  width: "30%",
-                  display: "inline-block",
-                  wordWrap: "break-word",
-                  verticalAlign: "middle"
-                }
+            {
+              xtype: "label",
+              text:
+                !obj.pathValue || obj.pathValue === ""
+                  ? "Empty"
+                  : obj.pathValue,
+              style: {
+                padding: "8px",
+                display: "inline-block",
+                width: "56%",
+                borderLeft: "1px solid #d4d4d4",
+                wordWrap: "break-word",
+                verticalAlign: "middle",
+                cursor: "copy",
               },
-              {
-                xtype: "label",
-                text: !obj[key] || obj[key] === "" ? "Empty" : obj[key],
-                style: {
-                  padding: "8px",
-                  display: "inline-block",
-                  width: "56%",
-                  borderLeft: "1px solid #d4d4d4",
-                  wordWrap: "break-word",
-                  verticalAlign: "middle",
-                  cursor: "copy"
+              listeners: {
+                render: function (label) {
+                  label.getEl().on("click", function () {
+                    navigator.clipboard.writeText(label.text);
+                    new Noty({
+                      text: "User path has been copied to the clipboard.",
+                      type: "success",
+                    }).show();
+                  });
+                  label.getEl().on("mouseover", function () {
+                    Ext.tip.QuickTipManager.register({
+                      target: label.getEl(),
+                      text: "Click to copy the user path.",
+                      showDelay: 600,
+                    });
+                  });
+                  label.getEl().on("mouseout", function () {
+                    Ext.tip.QuickTipManager.unregister(label.getEl());
+                  });
                 },
-                listeners: {
-                  render: function (label) {
-                    label.getEl().on("click", function () {
-                      navigator.clipboard.writeText(label.text);
-                      new Noty({
-                        text: "User path has been copied to the clipboard.",
-                        type: "success"
-                      }).show();
-                    });
-                    label.getEl().on("mouseover", function () {
-                      Ext.tip.QuickTipManager.register({
-                        target: label.getEl(),
-                        text: "Click to copy the user path.",
-                        showDelay: 600
-                      });
-                    });
-                    label.getEl().on("mouseout", function () {
-                      Ext.tip.QuickTipManager.unregister(label.getEl());
-                    });
-                  }
-                }
               },
-              {
-                xtype: "button",
-                tooltip: "Edit",
-                iconCls: "fa fa-pencil",
-                style: {
-                  position: "absolute",
-                  top: "50%",
-                  right: "4px",
-                  height: "25px",
-                  width: "25px",
-                  transform: "translateY(-50%)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "0px",
-                  fontSize: "14px"
-                },
-                handler: this.editUserpath.bind(this, key, obj[key]),
-                scope: this
+            },
+            {
+              xtype: "button",
+              tooltip: "Edit",
+              iconCls: "fa fa-pencil",
+              style: {
+                position: "absolute",
+                top: "50%",
+                right: "4px",
+                height: "25px",
+                width: "25px",
+                transform: "translateY(-50%)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "0px",
+                fontSize: "14px",
               },
-              {
-                xtype: "button",
-                tooltip: "Delete",
-                iconCls: "fa fa-trash",
-                style: {
-                  position: "absolute",
-                  top: "50%",
-                  right: "32px",
-                  height: "25px",
-                  width: "25px",
-                  transform: "translateY(-50%)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  padding: "0px",
-                  fontSize: "14px"
-                },
-                handler: this.deleteUserpath.bind(this, key)
-              }
-            ]
-          });
+              handler: this.editUserpath.bind(this, obj.pathId),
+              scope: this,
+            },
+            {
+              xtype: "button",
+              tooltip: "Delete",
+              iconCls: "fa fa-trash",
+              style: {
+                position: "absolute",
+                top: "50%",
+                right: "32px",
+                height: "25px",
+                width: "25px",
+                transform: "translateY(-50%)",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "0px",
+                fontSize: "14px",
+              },
+              handler: this.deleteUserpath.bind(this, obj.pathId),
+            },
+          ],
+        });
 
-          container.add(recordContainer);
-        }
+        container.add(recordContainer);
       });
     }
   },
@@ -420,23 +430,28 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
         if (jsonResp.success) {
           new Noty({
             text: "The user path has been saved successfully.",
-            type: "success"
+            type: "success",
           }).show();
+
           wnd.record.data.metapaths = userpaths;
 
-          let userpathsArray = [];
+          let updatedUserpathsArray = [];
           let id = 1;
 
           for (let key in userpaths) {
             if (userpaths.hasOwnProperty(key)) {
-              let newObj = { id: id, [key]: userpaths[key] };
-              userpathsArray.push(newObj);
+              let newObj = {
+                pathId: id,
+                pathName: key,
+                pathValue: userpaths[key],
+              };
+              updatedUserpathsArray.push(newObj);
               id++;
             }
           }
 
-          this.userpathsArray = userpathsArray;
-          this.generateModifiedUserpaths(userpathsArray, dynamicContainer2);
+          this.userpathsArray = updatedUserpathsArray;
+          this.generateModifiedUserpaths(updatedUserpathsArray, dynamicContainer2);
 
           if (addContainer) {
             addContainer.hide();
@@ -444,21 +459,21 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
         } else {
           new Noty({
             text: "Failed to save the user path.",
-            type: "error"
+            type: "error",
           }).show();
         }
       },
       failure: function (response) {
         new Noty({
           text: "An error occurred while saving the user path.",
-          type: "error"
+          type: "error",
         }).show();
       },
-      scope: this
+      scope: this,
     });
   },
 
-  editUserpath: function (key, value) {
+  editUserpath: function (pathId) {
     var wnd = this.getView();
     var addContainer = wnd.down("#dynamic-container-2").down("#add-container");
 
@@ -469,31 +484,39 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
       addContainer.show();
     }
 
-    this.isAdding = false;
-    this.isEditing = true;
-
     var userpathInputKey = addContainer.down("#userpathInputKey");
     var userpathInputValue = addContainer.down("#userpathInputValue");
     var saveButton = addContainer.down("#saveButton");
 
-    userpathInputKey.setValue(key);
-    userpathInputKey.setReadOnly(true);
-    userpathInputValue.setValue(value);
+    this.isAdding = false;
+    this.isEditing = true;
+    this.currentEditId = pathId;
+
+    var userpath = this.userpathsArray.find((obj) => obj.pathId === pathId);
+
+    userpathInputKey.setValue(userpath.pathName);
+    userpathInputValue.setValue(userpath.pathValue);
     saveButton.setDisabled(false);
   },
 
-  deleteUserpath: function (key) {
+  deleteUserpath: function (pathId) {
+    var userpathsArray = this.userpathsArray;
+    var userpathIndex = userpathsArray.findIndex(
+      (obj) => obj.pathId === pathId
+    );
+    var userpathKey = userpathsArray[userpathIndex].pathName;
+
     Ext.Msg.confirm(
       "Confirmation",
-      "Are you sure that you want to delete path '" + key + "'?",
+      "Are you sure that you want to delete path '" + userpathKey + "'?",
       function (choice) {
         if (choice === "yes") {
           var wnd = this.getView();
           var record = wnd.record;
           var userpaths = Ext.apply({}, record.data.metapaths);
 
-          if (userpaths.hasOwnProperty(key)) {
-            delete userpaths[key];
+          if (userpaths.hasOwnProperty(userpathKey)) {
+            delete userpaths[userpathKey];
 
             Ext.Ajax.request({
               url: "api/requests/" + record.data.pk + "/put_metapaths/",
@@ -506,41 +529,45 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
                 if (jsonResp.success) {
                   new Noty({
                     text: "The user path has been deleted successfully.",
-                    type: "success"
+                    type: "success",
                   }).show();
 
                   wnd.record.data.metapaths = userpaths;
 
-                  let userpathsArray = [];
+                  let updatedUserpathsArray = [];
                   let id = 1;
 
                   for (let key in userpaths) {
                     if (userpaths.hasOwnProperty(key)) {
-                      let newObj = { id: id, [key]: userpaths[key] };
-                      userpathsArray.push(newObj);
+                      let newObj = {
+                        pathId: id,
+                        pathName: key,
+                        pathValue: userpaths[key],
+                      };
+                      updatedUserpathsArray.push(newObj);
                       id++;
                     }
                   }
 
-                  this.userpathsArray = userpathsArray;
+                  this.userpathsArray = updatedUserpathsArray;
                   this.generateModifiedUserpaths(
-                    userpathsArray,
+                    updatedUserpathsArray,
                     dynamicContainer2
                   );
                 } else {
                   new Noty({
                     text: "Failed to delete the user path.",
-                    type: "error"
+                    type: "error",
                   }).show();
                 }
               },
               failure: function (response) {
                 new Noty({
                   text: "An error occurred while deleting the user path.",
-                  type: "error"
+                  type: "error",
                 }).show();
               },
-              scope: this
+              scope: this,
             });
           }
         }
@@ -595,5 +622,5 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
     } else {
       return "Linux";
     }
-  }
+  },
 });
