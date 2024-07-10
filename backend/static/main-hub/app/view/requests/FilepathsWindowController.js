@@ -177,10 +177,11 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
       }
       newInputData.set(userpathInputKey, userpathInputValue);
       for (let i = 0; i < userpathsArray.length; i++) {
-        newInputData.set(
-          userpathsArray[i].pathName,
-          userpathsArray[i].pathValue
-        );
+        if (userpathsArray[i].pathName !== "nothing")
+          newInputData.set(
+            userpathsArray[i].pathName,
+            userpathsArray[i].pathValue
+          );
       }
     } else if (this.isEditing) {
       let currentEditId = this.currentEditId;
