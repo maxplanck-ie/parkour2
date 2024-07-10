@@ -14,15 +14,14 @@ def update_samples(sender, instance, action, **kwargs):
     to True, update the barcode, and for each sample in the pool create a
     LibraryPreparation object.
     """
-    if instance.is_pool_destroyed:
-        instance.status = 3
-        instance.is_pooled = True
-        instance.is_converted = True
-        obj, created = Pooling.objects.get_or_create(sample=instance)
-        if created:
-            obj.save()
-
-        return
+    for sample in instance.samples.all():
+        if sample.is_pool_destroyed:
+            sample.status = 3
+            sample.is_pooled = True
+            sample.is_converted = True
+            obj, created = Pooling.objects.get_or_create(sample=instance)
+            if created:
+                obj.save()
 
     if action == "post_add":
         instance.samples.all().update(
