@@ -19,7 +19,12 @@ def update_samples(sender, instance, action, **kwargs):
             sample.status = 3
             sample.is_pooled = True
             sample.is_converted = True
-            obj, created = Pooling.objects.get_or_create(sample=instance)
+            obj, created = Pooling.objects.get_or_create(sample=sample)
+            if created:
+                obj.save()
+        else:
+            # TODO: maybe there is a better way to create multiple objects at once
+            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
             if created:
                 obj.save()
 
@@ -34,9 +39,3 @@ def update_samples(sender, instance, action, **kwargs):
                 function="replace",
             ),
         )
-
-        # TODO: maybe there is a better way to create multiple objects at once
-        for sample in instance.samples.all():
-            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
-            if created:
-                obj.save()

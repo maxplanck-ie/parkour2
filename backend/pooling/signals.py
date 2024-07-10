@@ -15,7 +15,6 @@ def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
     """
     if action == "post_add":
         instance.libraries.all().update(is_pooled=True)
-
         # TODO: maybe there is a better way to create multiple objects at once
         for library in instance.libraries.all():
             obj, created = Pooling.objects.get_or_create(library=library)
@@ -42,7 +41,6 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
         obj, created = Pooling.objects.get_or_create(sample=instance)
         if created:
             obj.save()
-
         return
 
     try:
