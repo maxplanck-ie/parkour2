@@ -177,7 +177,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
       }
       newInputData.set(userpathInputKey, userpathInputValue);
       for (let i = 0; i < userpathsArray.length; i++) {
-        if (userpathsArray[i].pathName !== "nothing")
+        if (userpathsArray[i].pathValue !== null)
           newInputData.set(
             userpathsArray[i].pathName,
             userpathsArray[i].pathValue
@@ -299,11 +299,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
   generateModifiedUserpaths: function (userpathsArray, container) {
     container.removeAll();
 
-    if (
-      !userpathsArray ||
-      userpathsArray.length === 0 ||
-      userpathsArray.some((obj) => obj.pathName === "nothing")
-    ) {
+    if (userpathsArray.filter((item) => item.pathValue !== null).length === 0) {
       container.add({
         xtype: "label",
         text: "No User Paths",
