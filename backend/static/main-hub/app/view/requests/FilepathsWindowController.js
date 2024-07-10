@@ -82,11 +82,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
           listeners: {
             change: function () {
               var wnd = this.getView();
-              var userpathKey = wnd.down("#userpathInputKey").getValue().trim();
-              var userpathValue = wnd
-                .down("#userpathInputValue")
-                .getValue()
-                .trim();
+              var userpathKey = wnd.down("#userpathInputKey").getValue();
+              var userpathValue = wnd.down("#userpathInputValue").getValue();
               var saveButton = wnd.down("#saveButton");
 
               saveButton.setDisabled(!userpathKey || !userpathValue);
@@ -103,11 +100,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
           listeners: {
             change: function () {
               var wnd = this.getView();
-              var userpathKey = wnd.down("#userpathInputKey").getValue().trim();
-              var userpathValue = wnd
-                .down("#userpathInputValue")
-                .getValue()
-                .trim();
+              var userpathKey = wnd.down("#userpathInputKey").getValue();
+              var userpathValue = wnd.down("#userpathInputValue").getValue();
               var saveButton = wnd.down("#saveButton");
 
               saveButton.setDisabled(!userpathKey || !userpathValue);
@@ -166,8 +160,8 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
 
   onSaveButtonClick: function () {
     var wnd = this.getView();
-    var userpathInputKey = wnd.down("#userpathInputKey").getValue().trim();
-    var userpathInputValue = wnd.down("#userpathInputValue").getValue().trim();
+    var userpathInputKey = wnd.down("#userpathInputKey").getValue();
+    var userpathInputValue = wnd.down("#userpathInputValue").getValue();
 
     var newInputData = new Map();
     var userpathsArray = this.userpathsArray.slice();
@@ -183,10 +177,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
       }
       newInputData.set(userpathInputKey, userpathInputValue);
       for (let i = 0; i < userpathsArray.length; i++) {
-        if (
-          userpathsArray[i].pathValue !== null &&
-          userpathsArray[i].pathValue !== ""
-        )
+        if (userpathsArray[i].pathValue !== null)
           newInputData.set(
             userpathsArray[i].pathName,
             userpathsArray[i].pathValue
@@ -308,13 +299,7 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
   generateModifiedUserpaths: function (userpathsArray, container) {
     container.removeAll();
 
-    if (
-      !userpathsArray ||
-      userpathsArray.length === 0 ||
-      userpathsArray.some(
-        (obj) => obj.pathValue === null || obj.pathValue === ""
-      )
-    ) {
+    if (userpathsArray.filter((item) => item.pathValue !== null).length === 0) {
       container.add({
         xtype: "label",
         text: "No User Paths",
