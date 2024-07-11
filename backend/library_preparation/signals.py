@@ -15,13 +15,16 @@ def update_samples(sender, instance, action, **kwargs):
     LibraryPreparation object.
     """
     for sample in instance.samples.all():
+        # If a sample has been through pool destruction, create a pooling object directly
         if sample.is_pool_destroyed:
             sample.status = 3
             sample.is_pooled = True
             sample.is_converted = True
+            sample.save()
             obj, created = Pooling.objects.get_or_create(sample=sample)
             if created:
                 obj.save()
+        # If a sample has not been through pool destruction
         else:
             # TODO: maybe there is a better way to create multiple objects at once
             obj, created = LibraryPreparation.objects.get_or_create(sample=sample)

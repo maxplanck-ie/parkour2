@@ -8,7 +8,7 @@ from .models import Pooling
 
 
 @receiver(m2m_changed, sender=Pool.libraries.through)
-def update_libraries_create_pooling_obj(sender, instance, action, **kwargs):
+def create_pooling_objects_library(sender, instance, action, **kwargs):
     """
     When a library is added to a pool, set its is_pooled to True, and
     for each library create a Pooling object.
@@ -31,16 +31,6 @@ def create_pooling_objects_sample(sender, instance, **kwargs):
 
     # Ignore the signal if a sample is not in a pool yet
     if not instance.is_pooled:
-        return
-
-    # If a sample has been through pool destruction
-    if instance.is_pool_destroyed:
-        instance.status = 3
-        instance.is_pooled = True
-        instance.is_converted = True
-        obj, created = Pooling.objects.get_or_create(sample=instance)
-        if created:
-            obj.save()
         return
 
     try:
