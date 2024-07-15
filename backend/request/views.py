@@ -29,6 +29,7 @@ from docx import Document
 from docx.enum.text import WD_BREAK
 from docx.shared import Cm, Pt
 from fpdf import FPDF, HTMLMixin
+from fpdf.errors import FPDFUnicodeEncodingException
 from library_sample_shared.models import LibraryProtocol
 from library_sample_shared.serializers import LibraryProtocolSerializer
 from rest_framework import filters, status, viewsets
@@ -533,7 +534,12 @@ class RequestViewSet(viewsets.ModelViewSet):
         pdf.info_row("Cost Unit", cost_unit)
         pdf.multi_info_row("Declaration", declaration_general)
         pdf.multi_checkbox_row("GMO Samples", declaration_gmo)
-        pdf.multi_info_row("Description", instance.description)
+        try:
+            pdf.multi_info_row("Description", instance.description)
+        except FPDFUnicodeEncodingException:
+            pdf.multi_info_row("Description", "ERROR: Character-set outside UTF-8.")
+        # except:
+        # pdf.multi_info_row(f"Description", "ERROR: {Exception}")
 
         y = pdf.get_y()
         pdf.line(pdf.l_margin + 1, y, pdf.w - pdf.r_margin - 1, y)

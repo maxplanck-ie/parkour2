@@ -3,6 +3,8 @@
 ??.??.??
 ========
 
+- Fix crash (FPDFUnicodeEncodingException) when user tries downloading the Request signature form with non-UTF8 characters in the Description.
+
 
 24.06.28
 ========
