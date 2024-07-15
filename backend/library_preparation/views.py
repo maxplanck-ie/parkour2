@@ -44,7 +44,11 @@ class LibraryPreparationViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
                 "sample__index_type__indices_i7",
                 "sample__index_type__indices_i5",
             )
-            .filter(Q(sample__status=2) | Q(sample__status=-2), sample__is_pool_destroyed=False, archived=False)
+            .filter(
+                Q(sample__status=2) | Q(sample__status=-2),
+                sample__is_pool_destroyed=False,
+                archived=False,
+            )
         )
 
     def get_context(self, queryset):

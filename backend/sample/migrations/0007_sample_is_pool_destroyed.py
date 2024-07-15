@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sample', '0006_alter_nucleicacidtype_type'),
+        ("sample", "0006_alter_nucleicacidtype_type"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sample',
-            name='is_pool_destroyed',
-            field=models.BooleanField(default=False, verbose_name='Pool Destroyed'),
+            model_name="sample",
+            name="is_pool_destroyed",
+            field=models.BooleanField(default=False, verbose_name="Pool Destroyed"),
         ),
     ]
