@@ -233,12 +233,14 @@ class PoolingViewSet(LibrarySampleMultiEditMixin, viewsets.ModelViewSet):
                         matching_sample.index_i5 = None
                         matching_sample.index_i7 = None
                         matching_sample.index_type = None
+                        matching_sample.is_pool_destroyed = False
                         matching_sample.save()
                         LibraryPreparation.objects.filter(
                             sample=matching_sample
                         ).delete()
                     else:
                         matching_sample.status = 2
+                        matching_sample.is_pool_destroyed = True
                         matching_sample.save()
 
                 elif matching_library:
