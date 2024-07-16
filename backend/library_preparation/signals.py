@@ -2,7 +2,6 @@ from django.db.models import F, Func, Value
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from index_generator.models import Pool
-from pooling.models import Pooling
 
 from .models import LibraryPreparation
 
@@ -14,23 +13,6 @@ def update_samples(sender, instance, action, **kwargs):
     to True, update the barcode, and for each sample in the pool create a
     LibraryPreparation object.
     """
-    for sample in instance.samples.all():
-        # If a sample has been through pool destruction, create a pooling object directly
-        if sample.is_pool_destroyed:
-            sample.status = 3
-            sample.is_pooled = True
-            sample.is_converted = True
-            sample.save()
-            obj, created = Pooling.objects.get_or_create(sample=sample)
-            if created:
-                obj.save()
-        # If a sample has not been through pool destruction
-        else:
-            # TODO: maybe there is a better way to create multiple objects at once
-            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
-            if created:
-                obj.save()
-
     if action == "post_add":
         instance.samples.all().update(
             is_pooled=True,
@@ -42,3 +24,9 @@ def update_samples(sender, instance, action, **kwargs):
                 function="replace",
             ),
         )
+
+        # TODO: maybe there is a better way to create multiple objects at once
+        for sample in instance.samples.all():
+            obj, created = LibraryPreparation.objects.get_or_create(sample=sample)
+            if created:
+                obj.save()

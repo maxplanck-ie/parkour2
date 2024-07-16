@@ -42,8 +42,6 @@ class Sample(GenericLibrarySample):
 
     is_converted = models.BooleanField("Converted", default=False)
 
-    is_pool_destroyed = models.BooleanField("Pool Destroyed", default=False)
-
     # Quality Control
     rna_quality_facility = models.FloatField(
         "RNA Quality (facility)",

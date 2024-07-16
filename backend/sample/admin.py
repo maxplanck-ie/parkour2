@@ -74,7 +74,6 @@ class SampleAdmin(admin.ModelAdmin):
                     "barcode",
                     "is_pooled",
                     "is_converted",
-                    "is_pool_destroyed",
                 ),
             },
         ),
