@@ -583,12 +583,14 @@ Ext.define("MainHub.view.requests.FilepathsWindowController", {
   },
 
   onOSChange: function (filepath) {
+    var filepathRegexURL = /^http/;
     var filepathRegex =
       /^\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_]+\/[A-Za-z0-9_\/.]+$/;
     if (!filepath) {
       return "Empty";
-    }
-    if (filepathRegex.test(filepath)) {
+    } else if (filepathRegexURL.test(filepath)) {
+      return filepath;
+    } else if (filepathRegex.test(filepath)) {
       var filepathSplit = filepath.split("/").filter(function (element) {
         return element !== "";
       });
