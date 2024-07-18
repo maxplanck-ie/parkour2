@@ -17,6 +17,7 @@ fpdf2
 numpy
 pandas
 bioblend
+openpyxl
 python-docx
 python-dateutil
 tblib
