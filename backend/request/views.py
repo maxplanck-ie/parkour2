@@ -1038,15 +1038,17 @@ class RequestViewSet(viewsets.ModelViewSet):
                 [x >= 5 or x < 0 for x in instance.statuses]
             )
             if not finalized:
-                return "Sequencing incomplete? ERROR!"
-            p_all = record.pool.all()
-            p0 = p_all[0]
-            l_all = p0.lane_set.all()
-            l0 = l_all[0]
-            f_all = l0.flowcell.all()
-            f0 = f_all[0]
-            assert len(p_all) > 0 and len(l_all) > 0 and len(f_all) > 0
-            return f0.flowcell_id
+                value = "Sequencing incomplete? ERROR!"
+            else:
+                p_all = record.pool.all()
+                p0 = p_all[0]
+                l_all = p0.lane_set.all()
+                l0 = l_all[0]
+                f_all = l0.flowcell.all()
+                f0 = f_all[0]
+                assert len(p_all) > 0 and len(l_all) > 0 and len(f_all) > 0
+                value = f0.flowcell_id
+            return value
 
         records = list(instance.libraries.all()) + list(instance.samples.all())
         flowpaths = dict.fromkeys([r.barcode for r in records])
