@@ -1048,6 +1048,8 @@ class RequestViewSet(viewsets.ModelViewSet):
                 f0 = f_all[0]
                 # assert len(p_all) == 1 and len(l_all) == 1 and len(f_all) == 1
                 # TODO: this fails bc we have more than 1, needs extra care...
+                # what about unique(len(..)) ?
+                # test with: http://localhost:9980/api/requests/2940/get_flowcell/
                 value = f0.flowcell_id
             return value
 
