@@ -1033,7 +1033,12 @@ class RequestViewSet(viewsets.ModelViewSet):
     def get_flowcell(self, request, *args, **kwargs):
         instance = self.get_object()
 
-        def get_flowcell_from_record(record):
+        def get_flowcell_from_record(record, instance=instance):
+            finalized = sum([x >= 5 or x < 0 for x in instance.statuses]) == len(
+                instance.statuses
+            )
+            if not finalized:
+                return "Sequencing incomplete? ERROR!"
             p_all = record.pool.all()
             p0 = p_all[0]
             l_all = p0.lane_set.all()
