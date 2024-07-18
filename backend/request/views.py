@@ -1030,6 +1030,26 @@ class RequestViewSet(viewsets.ModelViewSet):
         return Response({"success": True})
 
     @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
+    def get_flowcell(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        def get_flowcell_from_record(record):
+            p_all = record.pool.all()
+            p0 = p_all[0]
+            l_all = p0.lane_set.all()
+            l0 = l_all[0]
+            f_all = l0.flowcell.all()
+            f0 = f_all[0]
+            assert len(p_all) > 0 and len(l_all) > 0 and len(f_all) > 0
+            return f0.flowcell_id
+
+        records = list(instance.libraries.all()) + list(instance.samples.all())
+        flowpaths = dict.fromkeys([r.barcode for r in records])
+        for r in records:
+            flowpaths[r.barcode] = get_flowcell_from_record(r)
+        return JsonResponse({"flowpaths": flowpaths})
+
+    @action(methods=["get"], detail=True, permission_classes=[IsAdminUser])
     def get_poolpaths(self, request, *args, **kwargs):
         instance = self.get_object()
         records = list(instance.libraries.all()) + list(instance.samples.all())
