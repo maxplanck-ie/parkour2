@@ -1034,8 +1034,8 @@ class RequestViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
 
         def get_flowcell_from_record(record, instance=instance):
-            finalized = sum([x >= 5 or x < 0 for x in instance.statuses]) == len(
-                instance.statuses
+            finalized = len(instance.statuses) == sum(
+                [x >= 5 or x < 0 for x in instance.statuses]
             )
             if not finalized:
                 return "Sequencing incomplete? ERROR!"
