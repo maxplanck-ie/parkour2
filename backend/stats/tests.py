@@ -213,7 +213,7 @@ class TestSequencesStatistics(BaseTestCase):
         )
         data = response.json()
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(data["detail"], "Not found.")
+        self.assertEqual(data["detail"], "No Flowcell matches the given query.")
 
     def test_upload_flowcell_sequences_invalid_data(self):
         sequencer = create_sequencer(get_random_name(), lanes=8)
