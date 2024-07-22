@@ -678,8 +678,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       // 'amplification_cycles', 'equal_representation_nucleotides', 'qpcr_result',
       "sample_volume",
       // 'concentration_method',
-      "organism",
-      "comments"
+      "organism"
+      // "comments"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -710,25 +710,25 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           forceSelection: true
         },
         renderer: this.comboboxErrorRenderer
-      },
-      {
-        text: "RQN",
-        dataIndex: "rna_quality",
-        tooltip: "RNA Quality",
-        width: 80,
-        editor: {
-          xtype: "combobox",
-          id: "rnaQualityEditor",
-          queryMode: "local",
-          valueField: "value",
-          displayField: "name",
-          displayTpl: Ext.create("Ext.XTemplate", '<tpl for=".">{value}</tpl>'),
-          store: "rnaQualityStore",
-          regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
-          regexText: "Only values between 1 and 10 are allowed."
-        },
-        renderer: this.errorRenderer
       }
+      // {
+      //   text: "RQN",
+      //   dataIndex: "rna_quality",
+      //   tooltip: "RNA Quality",
+      //   width: 80,
+      //   editor: {
+      //     xtype: "combobox",
+      //     id: "rnaQualityEditor",
+      //     queryMode: "local",
+      //     valueField: "value",
+      //     displayField: "name",
+      //     displayTpl: Ext.create("Ext.XTemplate", '<tpl for=".">{value}</tpl>'),
+      //     store: "rnaQualityStore",
+      //     regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
+      //     regexText: "Only values between 1 and 10 are allowed."
+      //   },
+      //   renderer: this.errorRenderer
+      // }
     ]);
 
     // Sort columns
@@ -740,14 +740,14 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       "library_protocol",
       "library_type",
       "concentration",
-      "rna_quality",
+      // "rna_quality",
       "read_length",
       "sequencing_depth",
       // 'amplification_cycles', 'equal_representation_nucleotides',
       "sample_volume",
       // 'concentration_method',
-      "organism",
-      "comments"
+      "organism"
+      // "comments"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -847,10 +847,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         renderer: this.errorRenderer
       },
       {
-        text: "Length",
+        text: "Read Length",
         dataIndex: "read_length",
         tooltip: "Read Length",
-        width: 70,
+        width: 100,
         editor: {
           xtype: "combobox",
           queryMode: "local",
@@ -925,21 +925,41 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "id",
           displayField: "name",
           store: "organismsStore",
-          // matchFieldWidth: false,
           forceSelection: true
         },
         renderer: this.comboboxErrorRenderer
       },
       {
-        text: "Comments",
-        dataIndex: "comments",
-        tooltip: "Comments",
-        width: 200,
+        text: "GMO",
+        dataIndex: "gmo",
+        tooltip: "GMO",
+        width: 85,
         editor: {
-          xtype: "textfield",
-          allowBlank: true
-        }
+          xtype: "combobox",
+          queryMode: "local",
+          valueField: "id",
+          displayField: "name",
+          store: {
+            fields: ["id", "name"],
+            data: [
+              { id: true, name: "Yes" },
+              { id: false, name: "No" }
+            ]
+          },
+          forceSelection: true
+        },
+        renderer: this.comboboxErrorRenderer
       }
+      // {
+      //   text: "Comments",
+      //   dataIndex: "comments",
+      //   tooltip: "Comments",
+      //   width: 200,
+      //   editor: {
+      //     xtype: "textfield",
+      //     allowBlank: true
+      //   }
+      // }
     ];
 
     if (mode === "edit") {

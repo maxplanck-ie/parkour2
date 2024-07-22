@@ -38,7 +38,7 @@ class Sample(GenericLibrarySample):
         validators=[MinValueValidator(0.0), MaxValueValidator(11.0)],
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
 
     is_converted = models.BooleanField("Converted", default=False)
 
@@ -49,6 +49,8 @@ class Sample(GenericLibrarySample):
         null=True,
         blank=True,
     )
+
+    gmo = models.BooleanField("GMO", default=False)
 
     archived = models.BooleanField("Archived", default=False)
 

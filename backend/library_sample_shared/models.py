@@ -278,6 +278,26 @@ class LibraryType(models.Model):
         return self.name
 
 
+class MeasuringUnit(models.Model):
+    UNIT_CHOICES = [
+        ("dna", "DNA"),
+        ("rna", "RNA"),
+        ("cells", "Cells"),
+        ("measure", "Measure"),
+    ]
+
+    name = models.CharField("Name", max_length=200)
+    input_type = models.CharField("Input Type", max_length=20, choices=UNIT_CHOICES)
+    archived = models.BooleanField("Archived", default=False)
+
+    class Meta:
+        verbose_name = "Measuring Unit"
+        verbose_name_plural = "Measuring Units"
+
+    def __str__(self):
+        return self.name
+
+
 def get_removed_concentrationmethod():
     return ConcentrationMethod.objects.get_or_create(
         name="Removed Concentration Method"
@@ -306,6 +326,15 @@ class GenericLibrarySample(DateTimeMixin):
         null=True,
     )
 
+    measuring_unit = models.ForeignKey(
+        MeasuringUnit,
+        verbose_name="Measuring Unit",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+
+    measured_value = models.FloatField("Measured Value", default=-1)
+
     organism = models.ForeignKey(
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
@@ -332,7 +361,9 @@ class GenericLibrarySample(DateTimeMixin):
 
     sequencing_depth = models.FloatField("Sequencing Depth")
 
-    comments = models.TextField("Comments", null=True, blank=True)
+    comments = models.TextField(
+        "Comments", null=True, blank=True
+    )  # This field is not in use
 
     is_pooled = models.BooleanField("Pooled", default=False)
 
