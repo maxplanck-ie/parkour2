@@ -1038,20 +1038,15 @@ class RequestViewSet(viewsets.ModelViewSet):
                 [x >= 5 or x < 0 for x in instance.statuses]
             )
             if not finalized:
-                value = "Sequencing incomplete? ERROR!"
+                value = ["Sequencing incomplete"]
             else:
-                p_all = record.pool.all()
-                p0 = p_all[0]
-                l_all = p0.lane_set.all()
-                l0 = l_all[0]
-                f_all = l0.flowcell.all()
-                f0 = f_all[0]
-                # assert len(p_all) == 1 and len(l_all) == 1 and len(f_all) == 1
-                # TODO: this fails bc we have more than 1, needs extra care...
-                # what about unique(len(..)) ?
-                # test with: http://localhost:9980/api/requests/2940/get_flowcell/
-                value = f0.flowcell_id
-            return value
+                fcids = []
+                for pool in record.pool.all():
+                    for lane in pool.lane_set.all():
+                        for flowcell in lane.flowcell.all():
+                            fcids.append(flowcell)
+                value = [f.flowcell_id for f in fcids]
+            return json.dumps(value)
 
         records = list(instance.libraries.all()) + list(instance.samples.all())
         flowpaths = dict.fromkeys([r.barcode for r in records])
