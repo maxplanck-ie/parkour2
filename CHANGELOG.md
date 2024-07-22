@@ -3,6 +3,8 @@
 ??.??.??
 ========
 
+- Index Generator was adjusted to work coherently with samples that were coming back after 'Destroy Pool'.
+- Updated all of our Python package dependencies.
 - Fix crash (FPDFUnicodeEncodingException) when user tries downloading the Request signature form with non-UTF8 characters in the Description.
 
 
