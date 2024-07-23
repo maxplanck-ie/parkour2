@@ -4,7 +4,7 @@ import json
 import os
 from zipfile import ZipFile
 
-from bioblend.galaxy import GalaxyInstance
+# from bioblend.galaxy import GalaxyInstance
 from common.views import CsrfExemptSessionAuthentication
 from django.apps import apps
 from django.db.models import Prefetch
@@ -103,12 +103,12 @@ class MetadataExporterViewSet(viewsets.ViewSet):
         url = request.data.get("galaxy_url", "")
         api_key = request.data.get("galaxy_api_key", "")
 
-        gi = GalaxyInstance(url=url, key=api_key)
         try:
+            gi = GalaxyInstance(url=url, key=api_key)
             gi.histories.get_most_recently_used_history()
             return Response({"success": True})
         except Exception as e:
-            return Response({"success": False})
+            return Response({"success": False, "message": f"ERROR: {e}"})
 
     @action(
         methods=["post"],
@@ -166,14 +166,14 @@ class MetadataExporterViewSet(viewsets.ViewSet):
         runs_file_path = "runs.tsv"
         new_history_name = "ENA"
 
-        gi = GalaxyInstance(url=url, key=api_key)
         try:
+            gi = GalaxyInstance(url=url, key=api_key)
             gi.histories.get_most_recently_used_history()
         except Exception as e:
             return Response(
                 {
                     "success": False,
-                    "message": "Couldn't connect to Galaxy.",
+                    "message": f"Couldn't connect to Galaxy: {e}",
                 }
             )
 

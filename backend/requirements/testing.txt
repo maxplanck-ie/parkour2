@@ -8,15 +8,13 @@
 -r dev.txt
 coverage[toml]==7.6.0
     # via pytest-cov
-exceptiongroup==1.2.2
-    # via pytest
 execnet==2.1.1
     # via pytest-xdist
 greenlet==3.0.3
     # via playwright
 iniconfig==2.0.0
     # via pytest
-playwright==1.45.0
+playwright==1.45.1
     # via pytest-playwright
 pluggy==1.5.0
     # via pytest
