@@ -409,7 +409,7 @@ update-fixtures: dev load-fixtures-migras  ## Redeploy with fixtures, migrate fi
 enable-ollama:
 	@docker run -d -v ./misc/ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 
-enable-explorer: enable-ollama
+enable-explorer:
 	@docker exec parkour2-django python manage.py create_readonly_pg
 	@sed -i -e \
 		's%# \(path("explorer/", include("explorer.urls")),\)%\1%' \
@@ -423,7 +423,7 @@ disable-ollama:
 	@docker container stop ollama
 	@docker container prune -f
 
-disable-explorer: disable-ollama
+disable-explorer:
 	@sed -i -e \
 		's%^\(\s*\)\(path("explorer/", include("explorer.urls")),\)%\1# \2%' \
 		backend/wui/urls.py
