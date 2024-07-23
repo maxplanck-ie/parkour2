@@ -407,7 +407,7 @@ update-fixtures: dev load-fixtures-migras  ## Redeploy with fixtures, migrate fi
 	@docker compose exec parkour2-django python manage.py save_initial_data
 
 enable-ollama:
-	@#echo "TODO: ollama has no container, perhaps nix-env container?"
+	@docker run -d -v ./misc/ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
 
 enable-explorer: enable-ollama
 	@docker exec parkour2-django python manage.py create_readonly_pg
@@ -420,7 +420,8 @@ enable-explorer: enable-ollama
 	@$(MAKE) schema
 
 disable-ollama:
-	@#echo "TODO: somethign like docker stop may come here. we'll see..."
+	@docker container stop ollama
+	@docker container prune -f
 
 disable-explorer: disable-ollama
 	@sed -i -e \
