@@ -18,6 +18,11 @@ attrs==23.2.0
     #   aiohttp
     #   jsonschema
     #   referencing
+backports-zoneinfo==0.2.1 ; python_version < "3.9"
+    # via
+    #   -r backend/requirements/base.in
+    #   django
+    #   djangorestframework
 bioblend==1.3.0
     # via -r backend/requirements/base.in
 certifi==2024.7.4
@@ -74,6 +79,10 @@ idna==3.7
     # via
     #   requests
     #   yarl
+importlib-resources==6.4.0
+    # via
+    #   jsonschema
+    #   jsonschema-specifications
 inflection==0.5.1
     # via drf-spectacular
 jsonschema==4.23.0
@@ -86,7 +95,7 @@ multidict==6.0.5
     # via
     #   aiohttp
     #   yarl
-numpy==2.0.0
+numpy==1.24.4
     # via
     #   -r backend/requirements/base.in
     #   pandas
@@ -94,10 +103,12 @@ openpyxl==3.1.5
     # via -r backend/requirements/base.in
 packaging==24.1
     # via gunicorn
-pandas==2.2.2
+pandas==2.0.3
     # via -r backend/requirements/base.in
 pillow==10.4.0
     # via fpdf2
+pkgutil-resolve-name==1.3.10
+    # via jsonschema
 psycopg2-binary==2.9.9
     # via -r backend/requirements/base.in
 python-dateutil==2.9.0.post0
@@ -153,7 +164,9 @@ xlwt==1.3.0
     # via -r backend/requirements/base.in
 yarl==1.9.4
     # via aiohttp
+zipp==3.19.2
+    # via importlib-resources
 
 # The following packages are considered to be unsafe in a requirements file:
-setuptools==70.3.0
+setuptools==71.1.0
     # via -r backend/requirements/base.in

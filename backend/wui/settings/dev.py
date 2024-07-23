@@ -7,6 +7,7 @@ INSTALLED_APPS += [
     "debug_toolbar",
     "django_migration_linter",
     "corsheaders",
+    # "explorer",
 ]
 
 MIDDLEWARE += [
@@ -33,6 +34,9 @@ DEBUG_TOOLBAR_CONFIG = {
 MIGRATION_LINTER_OPTIONS = {
     "no_cache": True,
 }
+
+EXPLORER_CONNECTIONS = {"Default": "default"}
+EXPLORER_DEFAULT_CONNECTION = "default"
 
 LOGGING["handlers"] = {
     "rich_console": {

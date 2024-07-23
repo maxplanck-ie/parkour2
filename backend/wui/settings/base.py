@@ -107,13 +107,15 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
-# SQLite is fallback option if no DATABASE_URL env-var is found by the extension
+
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////usr/src/db.sqlite")
+
 DATABASES = {
     "default": dj_database_url.config(
-        default="sqlite:////usr/src/db.sqlite",
+        default=dj_database_url.parse(DATABASE_URL),
         conn_max_age=600,
         conn_health_checks=True,
-    )
+    ),
 }
 
 # Password validation
