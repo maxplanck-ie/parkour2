@@ -35,8 +35,18 @@ MIGRATION_LINTER_OPTIONS = {
     "no_cache": True,
 }
 
-EXPLORER_CONNECTIONS = {"Default": "default"}
-EXPLORER_DEFAULT_CONNECTION = "default"
+READONLY_DATABASE_URL = os.environ.get(
+    "READONLY_DATABASE_URL", "sqlite:////usr/src/db.sqlite"
+)
+
+DATABASES["readonly"] = dj_database_url.config(
+    default=dj_database_url.parse(READONLY_DATABASE_URL),
+    conn_max_age=1800,
+    conn_health_checks=True,
+)
+
+EXPLORER_CONNECTIONS = {"Default": "readonly"}
+EXPLORER_DEFAULT_CONNECTION = "readonly"
 
 LOGGING["handlers"] = {
     "rich_console": {

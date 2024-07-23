@@ -61,7 +61,7 @@ lint-migras:
 
 migrations:
 	@docker compose exec parkour2-django python manage.py makemigrations
-	#@find backend/ -user root -path '**/migrations/*.py' -print0 | xargs -0 -n 1 -I {_} echo docker compose exec parkour2-django chown 1000:1000 {_}  ## adjust `uid` and `gid`, and run this manually to fix permissions from within container.
+	@#find backend/ -user root -path '**/migrations/*.py' -print0 | xargs -0 -n 1 -I {_} echo docker compose exec parkour2-django chown 1000:1000 {_}  ## adjust `uid` and `gid`, and run this manually to fix permissions from within container.
 
 check-migras:
 	@docker compose exec parkour2-django python manage.py makemigrations --no-input --check --dry-run
@@ -84,7 +84,7 @@ set-base:
 	@sed -i -e 's#\(target:\) pk2_.*#\1 pk2_base#' docker-compose.yml
 
 clean:
-	#@docker compose exec parkour2-django rm -f backend/logs/*.log
+	@#docker compose exec parkour2-django rm -f backend/logs/*.log
 	@$(MAKE) set-base hardreset-caddyfile disable-explorer > /dev/null
 	@test -e ./misc/parkour.env.ignore && git checkout ./misc/parkour.env || :
 
@@ -410,6 +410,7 @@ enable-ollama:
 	@#echo "TODO: ollama has no container, perhaps nix-env container?"
 
 enable-explorer: enable-ollama
+	@docker exec parkour2-django python manage.py create_readonly_pg
 	@sed -i -e \
 		's%# \(path("explorer/", include("explorer.urls")),\)%\1%' \
 		backend/wui/urls.py
@@ -423,10 +424,10 @@ disable-ollama:
 
 disable-explorer: disable-ollama
 	@sed -i -e \
-		's%\(path("explorer/", include("explorer.urls")),\)%# \1%' \
+		's%^\(\s*\)\(path("explorer/", include("explorer.urls")),\)%\1# \2%' \
 		backend/wui/urls.py
 	@sed -i -e \
-		's%\("explorer",\)%# \1%' \
+		's%^\(\s*\)\("explorer",\)%\1# \2%' \
 		backend/wui/settings/dev.py
 
 # Remember: (docker compose run == docker exec) != docker run
