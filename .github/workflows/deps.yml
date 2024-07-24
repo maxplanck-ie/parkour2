@@ -32,16 +32,16 @@ jobs:
           cache-dependency-path: backend/requirements/testing.txt
           python-version: "3.11"
       
-      - run: pip install pip-compile-multi
-      - run: |
+      - name: Compile dependencies
+        run: |
         mkdir -p backend/requirements/${{ matrix.python-version }}
         ls backend/requirements/*.in | cut -d'/' -f3 | rev | cut -d. -f2 | rev | xargs -I{} cp backend/requirements/{}.in backend/requirements/${{ matrix.python-version }}/{}.in
+        python -m pip install --upgrade pip
+        pip install pip-tools pip-compile-multi
         pip-compile-multi -d backend/requirements/${{ matrix.python-version }} --backtracking --autoresolve --allow-unsafe
       
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
+        run: pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
 
       - uses: peter-evans/create-pull-request@v6
         with:
