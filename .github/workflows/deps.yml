@@ -33,9 +33,9 @@ jobs:
       
       - run: pip install pip-compile-multi
       - run: |
-        ls backend/requirements/*.in | cut -d'/' -f3 | rev | cut -d. -f2 | rev | \
-           xargs -I{} mv backend/requirements/{}.in backend/requirements/{}.${{ matrix.python-version }}.in
-        pip-compile-multi -d backend/requirements --backtracking --autoresolve --allow-unsafe
+        mkdir -p backend/requirements/${{ matrix.python-version }}
+        ls backend/requirements/*.in | cut -d'/' -f3 | rev | cut -d. -f2 | rev | xargs -I{} cp backend/requirements/{}.in backend/requirements/${{ matrix.python-version }}/{}.in
+        pip-compile-multi -d backend/requirements/${{ matrix.python-version }} --backtracking --autoresolve --allow-unsafe
       
       - uses: peter-evans/create-pull-request@v6
         with:
@@ -53,7 +53,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r backend/requirements/prod.${{ matrix.python-version }}.txt
+          pip install -r backend/requirements/${{ matrix.python-version }}/prod.txt
 
 
 # Frontend (VueJS)
