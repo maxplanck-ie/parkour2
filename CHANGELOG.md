@@ -8,10 +8,10 @@
 24.07.24
 ========
 
-- Index Generator was adjusted to work coherently with Samples that were coming back after 'Destroy Pool' (indexes are fixed, as Libraries).
-- Updated all of our Python package dependencies.
+- Index Generator was adjusted to work coherently with Samples that were coming back after 'Destroy Pool' (indexes are fixed, as Libraries.)
 - Fix crash (FPDFUnicodeEncodingException) when user tries downloading the Request signature form with non-UTF8 characters in the Description.
-
+- Dev deployments now have an integrated tool available for generating, saving, and running SQL queries: [SQL Explorer](sqlexplorer.io)  (use: `make enable-explorer` to activate, and then navigate to `<URL>/explorer`.)
+- Updated all of our Python package dependencies.
 
 24.06.28
 ========
