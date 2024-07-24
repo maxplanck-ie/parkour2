@@ -6,6 +6,5 @@
 #    pip-compile-multi
 #
 -r base.txt
-distutils
 
 # The following packages are considered to be unsafe in a requirements file:
