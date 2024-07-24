@@ -408,6 +408,7 @@ update-fixtures: dev load-fixtures-migras  ## Redeploy with fixtures, migrate fi
 
 enable-ollama:
 	@docker run -d -v ./misc/ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+	@echo "Work In Progress: this feature was not finalized, open an issue if you need it."
 
 enable-explorer:
 	@docker exec parkour2-django python manage.py create_readonly_pg
