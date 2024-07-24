@@ -20,7 +20,7 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Build and see that DEBUG is respected
               # ^^ that means, no missing dependencies!
               # like, before 1349476f52d1c21b096ee44754b7b56f7e57cb30
@@ -31,7 +31,7 @@ jobs:
     if: github.repository == 'maxplanck-ie/parkour2'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Follow instructions
         run: |
           make
@@ -59,9 +59,9 @@ jobs:
 
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
