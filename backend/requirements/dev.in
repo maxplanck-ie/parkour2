@@ -9,3 +9,14 @@ rich
 django-migration-linter
 django-schema-viewer
 django-cors-headers
+
+django-sql-explorer
+openai
+sql_metadata
+tiktoken
+matplotlib
+python-dateutil
+pandas
+boto3
+xlsxwriter
+#celery

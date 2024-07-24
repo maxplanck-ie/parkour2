@@ -1,4 +1,5 @@
 misc/
+misc/ollama/
 *_dump/
 *_dumps/
 *.swp

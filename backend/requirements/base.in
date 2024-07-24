@@ -16,7 +16,8 @@ xlwt
 fpdf2
 numpy
 pandas
-bioblend
+distutils #; python_version > "3.10"  # deprecated since, and removed on Py 3.12
+#bioblend  # metadata_exporter unused app
 openpyxl
 python-docx
 python-dateutil

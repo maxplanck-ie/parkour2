@@ -7,6 +7,7 @@ INSTALLED_APPS += [
     "debug_toolbar",
     "django_migration_linter",
     "corsheaders",
+    # "explorer",
 ]
 
 MIDDLEWARE += [
@@ -33,6 +34,27 @@ DEBUG_TOOLBAR_CONFIG = {
 MIGRATION_LINTER_OPTIONS = {
     "no_cache": True,
 }
+
+READONLY_DATABASE_URL = os.environ.get(
+    "READONLY_DATABASE_URL", "sqlite:////usr/src/db.sqlite"
+)
+
+DATABASES["readonly"] = dj_database_url.config(
+    default=dj_database_url.parse(READONLY_DATABASE_URL),
+    conn_max_age=1800,
+    conn_health_checks=True,
+)
+
+EXPLORER_CONNECTIONS = {"Default": "readonly"}
+EXPLORER_DEFAULT_CONNECTION = "readonly"
+
+EXPLORER_ASSISTANT_MODEL = {
+    "name": "meta-llama/llama-3-8b-instruct:free",
+    "max_tokens": 8192,
+}
+
+EXPLORER_ASSISTANT_BASE_URL = "https://openrouter.ai/api/v1"
+EXPLORER_AI_API_KEY = os.environ.get("OPENROUTER_API_KEY", "aaaaaaaaaaaaaaa")
 
 LOGGING["handlers"] = {
     "rich_console": {

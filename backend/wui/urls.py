@@ -37,5 +37,6 @@ if settings.DEBUG:
 
     urlpatterns += [
         path("schema-viewer/", include("schema_viewer.urls")),
+        # path("explorer/", include("explorer.urls")),
         path("__debug__/", include("debug_toolbar.urls")),
     ]
