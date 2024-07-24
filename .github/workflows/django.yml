@@ -71,6 +71,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+          test -z ${SETUPTOOLS_USE_DISTUTILS+x} && unset SETUPTOOLS_USE_DISTUTILS || :
           pip install -r backend/requirements/${{ matrix.python-version }}/prod.txt
 
 
