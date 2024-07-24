@@ -23,12 +23,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           cache: "pip"
-          python-version: ${{ matrix.python-version }}
-      
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          cache: "pip"
           cache-dependency-path: backend/requirements/testing.txt
           python-version: "3.11"
       
@@ -43,7 +37,8 @@ jobs:
       - name: Install dependencies
         run: pip install -r backend/requirements/${{ matrix.python-version }}/testing.txt
 
-      - uses: peter-evans/create-pull-request@v6
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v6
         with:
           branch: create-pull-request/pip-compile-multi
           title: Update python dependencies.
