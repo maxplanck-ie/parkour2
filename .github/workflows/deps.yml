@@ -1,7 +1,7 @@
 name: Upgrade
 
 on:
-  workflow_dispatch: null
+  workflow_dispatch:
   schedule:
     # Every Monday, 7:30 AM (Berlin)
     - cron: "30 5 * * 1"
