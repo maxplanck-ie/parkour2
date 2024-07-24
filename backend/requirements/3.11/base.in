@@ -1,5 +1,4 @@
-distutils ; python_version >= "3.12"  # deprecated since 3.10
-setuptools ; python_version < "3.12"
+setuptools
 Django~=4.2
 backports-zoneinfo ; python_version < "3.9"  # hardcoded conditional to avoid issues on latest Py
 django-authtools @ git+https://github.com/adRn-s/django-authtools@dev_adRn
