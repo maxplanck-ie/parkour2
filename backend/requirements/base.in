@@ -13,9 +13,8 @@ psycopg2-binary
 dj-database-url
 xlwt
 fpdf2
-setuptools ; python_version >= "3.12"
-numpy~=1.23 ; python_version < "3.12"
-numpy>1.23 ; python_version >= "3.12"
+numpy<1.26 ; python_version < "3.12"  # setuptools
+numpy>=1.26 ; python_version >= "3.12"  # meson build system
 pandas
 #bioblend  # metadata_exporter unused app
 openpyxl
