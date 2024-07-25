@@ -22,7 +22,6 @@ from .models import (
     IndexType,
     LibraryProtocol,
     LibraryType,
-    MeasuringUnit,
     Organism,
     ReadLength,
 )
@@ -46,27 +45,6 @@ class OrganismAdmin(admin.ModelAdmin):
     @admin.action(description="Mark as non-archived")
     def mark_as_non_archived(self, request, queryset):
         queryset.update(archived=False)
-
-
-@admin.register(MeasuringUnit)
-class MeasuringUnitAdmin(admin.ModelAdmin):
-    list_display = ("name", "input_type", "archived")
-
-    list_filter = (ArchivedFilter,)
-
-    actions = (
-        "mark_as_archived",
-        "mark_as_non_archived",
-    )
-
-    @admin.action(description="Mark as archived")
-    def mark_as_archived(self, request, queryset):
-        queryset.update(archived=True)
-
-    @admin.action(description="Mark as non-archived")
-    def mark_as_non_archived(self, request, queryset):
-        queryset.update(archived=False)
-
 
 @admin.register(ConcentrationMethod)
 class ConcentrationMethodAdmin(admin.ModelAdmin):

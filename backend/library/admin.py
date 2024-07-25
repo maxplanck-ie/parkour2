@@ -60,6 +60,8 @@ class LibraryAdmin(admin.ModelAdmin):
                     "library_type",
                     "concentration",
                     "concentration_method",
+                    "measuring_unit",
+                    "measured_value",
                     "organism",
                     "read_length",
                     "sequencing_depth",

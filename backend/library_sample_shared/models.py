@@ -278,26 +278,6 @@ class LibraryType(models.Model):
         return self.name
 
 
-class MeasuringUnit(models.Model):
-    UNIT_CHOICES = [
-        ("dna", "DNA"),
-        ("rna", "RNA"),
-        ("cells", "Cells"),
-        ("measure", "Measure"),
-    ]
-
-    name = models.CharField("Name", max_length=200)
-    input_type = models.CharField("Input Type", max_length=20, choices=UNIT_CHOICES)
-    archived = models.BooleanField("Archived", default=False)
-
-    class Meta:
-        verbose_name = "Measuring Unit"
-        verbose_name_plural = "Measuring Units"
-
-    def __str__(self):
-        return self.name
-
-
 def get_removed_concentrationmethod():
     return ConcentrationMethod.objects.get_or_create(
         name="Removed Concentration Method"
@@ -305,6 +285,14 @@ def get_removed_concentrationmethod():
 
 
 class GenericLibrarySample(DateTimeMixin):
+    MEASURING_UNIT_CHOICES = [
+        ("bp (DNA)", "bp", "DNA"),
+        ("nt (RNA)", "nt", "RNA"),
+        ("RNQ (RNA (total))", "RQN", "RNA (total)"),
+        ("M (Cells)", "M", "Cells"),
+        ("Measure for Me", "-", "Measure"),
+    ]
+
     name = models.CharField(
         "Name",
         max_length=200,
@@ -326,14 +314,9 @@ class GenericLibrarySample(DateTimeMixin):
         null=True,
     )
 
-    measuring_unit = models.ForeignKey(
-        MeasuringUnit,
-        verbose_name="Measuring Unit",
-        on_delete=models.SET_NULL,
-        null=True,
-    )
+    measuring_unit = models.CharField("Measuring Unit", max_length=50, choices=[(unit, display_name) for display_name, unit, input_type in MEASURING_UNIT_CHOICES], null=True)
 
-    measured_value = models.FloatField("Measured Value", default=-1)
+    measured_value = models.FloatField("Measured Value", null=True, validators=[MinValueValidator(-1)])
 
     organism = models.ForeignKey(
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
@@ -473,6 +456,12 @@ class GenericLibrarySample(DateTimeMixin):
 
         self.barcode = barcode
         self.save(update_fields=["barcode"])
+
+    def get_measuring_unit_details(self):
+        for  display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
+            if display_name == self.measuring_unit:
+                return display_name, unit, input_type
+        return None, None, None
 
     def save(self, *args, **kwargs):
         created = self.pk is None
