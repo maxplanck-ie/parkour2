@@ -49,8 +49,8 @@ EXPLORER_CONNECTIONS = {"Default": "readonly"}
 EXPLORER_DEFAULT_CONNECTION = "readonly"
 
 EXPLORER_ASSISTANT_MODEL = {
-    "name": "meta-llama/llama-3-8b-instruct:free",
-    "max_tokens": 8192,
+    "name": "meta-llama/llama-3.1-8b-instruct:free",
+    "max_tokens": 131072,
 }
 
 EXPLORER_ASSISTANT_BASE_URL = "https://openrouter.ai/api/v1"

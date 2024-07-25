@@ -418,7 +418,7 @@ enable-explorer:
 	@sed -i -e \
 		's%# \("explorer",\)%\1%' \
 		backend/wui/settings/dev.py
-	@$(MAKE) schema
+	@$(MAKE) schema collect-static
 
 disable-ollama:
 	@docker container stop ollama
