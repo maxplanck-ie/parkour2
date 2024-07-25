@@ -3,6 +3,12 @@
 ??.??.??
 ========
 
+Breaking changes:
+
+- Temporarily dropped CI tests for Python 3.12, which were [broken via Numpy dependency](https://https://numpy.org/doc/stable//release/1.26.0-notes.html)). We're using Python 3.11 since Parkour2 version 0.3.9 anyway. We'll catch-up to Python 3.12 once the situation stabilizes and other projects are successful sailing through this difficulty... For now, our `requirements.txt` environment is unable to resolve under 3.12
+
+Non-breaking changes:
+
 - ...
 
 24.07.24
