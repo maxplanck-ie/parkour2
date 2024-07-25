@@ -20,7 +20,7 @@ pluggy==1.5.0
     # via pytest
 pyee==11.1.0
     # via playwright
-pytest==8.3.1
+pytest==8.3.2
     # via
     #   pytest-base-url
     #   pytest-cov
