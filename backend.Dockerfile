@@ -1,5 +1,6 @@
 # syntax = docker/dockerfile:experimental
-FROM python:3.11-bullseye AS pk2_base
+ARG PYTHON_VERSION=3.11
+FROM python:${PYTHON_VERSION}-bullseye AS pk2_base
 
 ENV \
     DEBIAN_FRONTEND=noninteractive \
@@ -27,12 +28,13 @@ WORKDIR /usr/src/app
 COPY ./backend .
 EXPOSE 8000
 ENV DJANGO_SETTINGS_MODULE=wui.settings.prod
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/base.txt
+ARG PYTHON_VERSION=3.11
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/${PYTHON_VERSION}/base.txt
 CMD ["gunicorn", "wui.wsgi:application", "--name=parkour2", "--timeout=600", "--workers=4", "--bind=0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_base AS pk2_prod
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/prod.txt
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/${PYTHON_VERSION}/prod.txt
 
 # ----------------------
 FROM pk2_base AS pk2_dev
@@ -44,13 +46,13 @@ ENV DJANGO_SETTINGS_MODULE=wui.settings.dev \
     PYTHONBREAKPOINT=ipdb.set_trace \
     PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/dev.txt
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/${PYTHON_VERSION}/dev.txt
 CMD ["python", "/usr/src/app/manage.py", "runserver_plus", "0.0.0.0:8000"]
 
 # ----------------------
 FROM pk2_dev AS pk2_testing
 ENV DJANGO_SETTINGS_MODULE=wui.settings.testing
-RUN --mount=type=cache,target=/root/.cache pip install -r requirements/testing.txt
+RUN --mount=type=cache,target=/root/.cache pip install -r requirements/${PYTHON_VERSION}/testing.txt
 
 # ----------------------
 FROM pk2_testing AS pk2_playwright
