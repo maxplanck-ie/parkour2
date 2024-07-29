@@ -285,14 +285,6 @@ def get_removed_concentrationmethod():
 
 
 class GenericLibrarySample(DateTimeMixin):
-    MEASURING_UNIT_CHOICES = [
-        ("bp (DNA)", "bp", "DNA"),
-        ("nt (RNA)", "nt", "RNA"),
-        ("RNQ (RNA (total))", "RQN", "RNA (total)"),
-        ("M (Cells)", "M", "Cells"),
-        ("Measure for Me", "-", "Measure"),
-    ]
-
     name = models.CharField(
         "Name",
         max_length=200,
@@ -314,15 +306,13 @@ class GenericLibrarySample(DateTimeMixin):
         null=True,
     )
 
-    measuring_unit = models.CharField("Measuring Unit", max_length=50, choices=[(unit, display_name) for display_name, unit, input_type in MEASURING_UNIT_CHOICES], null=True)
-
-    measured_value = models.FloatField("Measured Value", null=True, validators=[MinValueValidator(-1)])
-
     organism = models.ForeignKey(
         Organism, verbose_name="Organism", on_delete=models.SET_NULL, null=True
     )
 
     concentration = models.FloatField("Concentration")
+
+    volume = models.FloatField("Volume", validators=[MinValueValidator(10)], null=True, blank=True)
 
     concentration_method = models.ForeignKey(
         ConcentrationMethod,

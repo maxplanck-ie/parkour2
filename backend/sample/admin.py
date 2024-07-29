@@ -88,7 +88,9 @@ class SampleAdmin(admin.ModelAdmin):
                     "concentration_method",
                     "measuring_unit",
                     "measured_value",
+                    "volume",
                     "organism",
+                    "gmo",
                     "read_length",
                     "sequencing_depth",
                     "equal_representation_nucleotides",
@@ -97,6 +99,7 @@ class SampleAdmin(admin.ModelAdmin):
                     "index_i5",
                     "rna_quality",
                     "amplification_cycles",
+                    "comments"
                 ),
             },
         ),

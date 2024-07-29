@@ -26,12 +26,24 @@ class NucleicAcidType(models.Model):
 
 
 class Sample(GenericLibrarySample):
+    MEASURING_UNIT_CHOICES = [
+        ("bp (DNA)", "bp", "DNA"),
+        ("nt (RNA)", "nt", "RNA"),
+        ("RNQ (RNA (total))", "RQN", "RNA (total)"),
+        ("M (Cells)", "M", "Cells"),
+        ("Measure for Me", "-", "Measure"),
+    ]
+
     nucleic_acid_type = models.ForeignKey(
         NucleicAcidType,
         verbose_name="Nucleic Acid Type",
         on_delete=models.SET_NULL,
         null=True,
     )
+
+    measuring_unit = models.CharField("Measuring Unit", max_length=50, choices=[(unit, display_name) for display_name, unit, input_type in MEASURING_UNIT_CHOICES], null=True, blank=True)
+
+    measured_value = models.FloatField("Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True)
 
     rna_quality = models.FloatField(
         "RNA Quality",
