@@ -531,9 +531,9 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
-        text: "Size (bp)",
+        text: "Measured Value",
         dataIndex: "mean_fragment_size",
-        tooltip: "Mean Fragment Size",
+        tooltip: "Measured Value",
         width: 100,
         editor: {
           xtype: "numberfield",
@@ -694,6 +694,17 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     var columns = Ext.Array.merge(this.getCommonColumns(mode), [
       {
+        text: "Measured Value",
+        dataIndex: "measured_value",
+        tooltip: "Measured Value",
+        width: 100,
+        editor: {
+          xtype: "numberfield",
+          minValue: 0
+        },
+        renderer: this.errorRenderer
+      },
+      {
         text: "Input Type",
         dataIndex: "nucleic_acid_type",
         tooltip: "Input Type",
@@ -707,6 +718,27 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           valueField: "id",
           store: "nucleicAcidTypesStore",
           matchFieldWidth: false,
+          forceSelection: true
+        },
+        renderer: this.comboboxErrorRenderer
+      },
+      {
+        text: "GMO",
+        dataIndex: "gmo",
+        tooltip: "GMO",
+        width: 85,
+        editor: {
+          xtype: "combobox",
+          queryMode: "local",
+          valueField: "id",
+          displayField: "name",
+          store: {
+            fields: ["id", "name"],
+            data: [
+              { id: true, name: "Yes" },
+              { id: false, name: "No" }
+            ]
+          },
           forceSelection: true
         },
         renderer: this.comboboxErrorRenderer
@@ -836,6 +868,23 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         renderer: this.comboboxErrorRenderer
       },
       {
+        text: "Measuring Unit",
+        dataIndex: "measuring_unit",
+        tooltip: "Measuring Unit",
+        width: 200,
+        editor: {
+          xtype: "combobox",
+          id: "libraryTypeEditor",
+          itemId: "libraryTypeEditor",
+          queryMode: "local",
+          displayField: "name",
+          valueField: "id",
+          store: "libraryTypesStore",
+          forceSelection: true
+        },
+        renderer: this.comboboxErrorRenderer
+      },
+      {
         text: "ng/μl",
         dataIndex: "concentration",
         tooltip: "Concentration",
@@ -929,27 +978,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         },
         renderer: this.comboboxErrorRenderer
       },
-      {
-        text: "GMO",
-        dataIndex: "gmo",
-        tooltip: "GMO",
-        width: 85,
-        editor: {
-          xtype: "combobox",
-          queryMode: "local",
-          valueField: "id",
-          displayField: "name",
-          store: {
-            fields: ["id", "name"],
-            data: [
-              { id: true, name: "Yes" },
-              { id: false, name: "No" }
-            ]
-          },
-          forceSelection: true
-        },
-        renderer: this.comboboxErrorRenderer
-      }
       // {
       //   text: "Comments",
       //   dataIndex: "comments",
