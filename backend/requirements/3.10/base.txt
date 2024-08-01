@@ -103,6 +103,7 @@ tblib==3.0.0
     # via -r backend/requirements/3.10/base.in
 typing-extensions==4.12.2
     # via
+    #   asgiref
     #   dj-database-url
     #   python-docx
 tzdata==2024.1
