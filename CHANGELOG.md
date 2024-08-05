@@ -9,6 +9,7 @@ Breaking changes:
 
 Non-breaking changes:
 
+- Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing.
 - ...
 
 24.07.24

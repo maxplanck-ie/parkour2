@@ -112,7 +112,7 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         end_date = timezone.datetime.strptime(end_date_param, "%Y-%m")
 
         start_date = start_date.replace(day=1)
-        end_date = end_date.replace(day=1) + relativedelta(months=1, days=-1)
+        end_date = end_date.replace(day=1) + relativedelta(months=1, seconds=-1)
 
         libraries_qs = (
             Library.objects.filter(~Q(status=-1))

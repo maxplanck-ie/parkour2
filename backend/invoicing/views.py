@@ -59,7 +59,7 @@ class InvoicingViewSet(viewsets.ReadOnlyModelViewSet):
         end_date = timezone.datetime.strptime(end_date_param, "%Y-%m")
 
         start_date = start_date.replace(day=1)
-        end_date = end_date.replace(day=1) + relativedelta(months=1, days=-1)
+        end_date = end_date.replace(day=1) + relativedelta(months=1, seconds=-1)
 
         return start_date, end_date
 
