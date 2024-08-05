@@ -16,9 +16,9 @@ appdirs==1.4.4
     # via django-migration-linter
 asttokens==2.4.1
     # via stack-data
-boto3==1.34.149
+boto3==1.34.153
     # via -r backend/requirements/3.10/dev.in
-botocore==1.34.149
+botocore==1.34.153
     # via
     #   boto3
     #   s3transfer
@@ -57,7 +57,7 @@ django-migration-linter==5.1.0
     # via -r backend/requirements/3.10/dev.in
 django-schema-viewer==0.4.1
     # via -r backend/requirements/3.10/dev.in
-django-sql-explorer==5.0.2
+django-sql-explorer==5.1.1
     # via -r backend/requirements/3.10/dev.in
 exceptiongroup==1.2.2
     # via
@@ -92,13 +92,13 @@ markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.5
     # via werkzeug
-matplotlib==3.9.1
+matplotlib==3.9.0
     # via -r backend/requirements/3.10/dev.in
 matplotlib-inline==0.1.7
     # via ipython
 mdurl==0.1.2
     # via markdown-it-py
-openai==1.37.1
+openai==1.38.0
     # via -r backend/requirements/3.10/dev.in
 parso==0.8.4
     # via jedi
@@ -149,7 +149,7 @@ toml==0.10.2
     # via django-migration-linter
 tomli==2.0.1
     # via ipdb
-tqdm==4.66.4
+tqdm==4.66.5
     # via openai
 traitlets==5.14.3
     # via
