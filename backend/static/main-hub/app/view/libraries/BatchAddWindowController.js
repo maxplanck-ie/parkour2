@@ -833,8 +833,8 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         width: 200,
         editor: {
           xtype: "combobox",
-          id: "libraryTypeEditor",
-          itemId: "libraryTypeEditor",
+          id: "measuringUnitEditor",
+          itemId: "measuringUnitEditor",
           queryMode: "local",
           displayField: "name",
           valueField: "id",
