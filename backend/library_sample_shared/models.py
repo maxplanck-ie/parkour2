@@ -312,17 +312,8 @@ class GenericLibrarySample(DateTimeMixin):
 
     concentration = models.FloatField("Concentration")
 
-    volume = models.FloatField("Volume", validators=[MinValueValidator(10)], null=True, blank=True)
-
-    concentration_method = models.ForeignKey(
-        ConcentrationMethod,
-        verbose_name="Concentration Method",
-        on_delete=models.SET(get_removed_concentrationmethod),
-    )
-
-    equal_representation_nucleotides = models.BooleanField(
-        "Equal Representation of Nucleotides",
-        default=True,
+    volume = models.FloatField(
+        "Volume", validators=[MinValueValidator(10)], null=True, blank=True
     )
 
     read_length = models.ForeignKey(
@@ -333,10 +324,6 @@ class GenericLibrarySample(DateTimeMixin):
     )
 
     sequencing_depth = models.FloatField("Sequencing Depth")
-
-    comments = models.TextField(
-        "Comments", null=True, blank=True
-    )  # This field is not in use
 
     is_pooled = models.BooleanField("Pooled", default=False)
 
@@ -366,11 +353,26 @@ class GenericLibrarySample(DateTimeMixin):
         blank=True,
     )
 
+    concentration_method = models.ForeignKey(
+        ConcentrationMethod,
+        verbose_name="Concentration Method",
+        on_delete=models.SET(get_removed_concentrationmethod),
+    )  # This field is not in use
+
     amplification_cycles = models.PositiveIntegerField(
         "Amplification cycles",
         null=True,
         blank=True,
-    )
+    )  # This field is not in use
+
+    equal_representation_nucleotides = models.BooleanField(
+        "Equal Representation of Nucleotides",
+        default=True,
+    )  # This field is not in use
+
+    comments = models.TextField(
+        "Comments", null=True, blank=True
+    )  # This field is not in use
 
     @property
     def index_i7_id(self):
@@ -448,7 +450,7 @@ class GenericLibrarySample(DateTimeMixin):
         self.save(update_fields=["barcode"])
 
     def get_measuring_unit_details(self):
-        for  display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
+        for display_name, unit, input_type in self.MEASURING_UNIT_CHOICES:
             if display_name == self.measuring_unit:
                 return display_name, unit, input_type
         return None, None, None
