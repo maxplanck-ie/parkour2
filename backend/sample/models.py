@@ -78,7 +78,7 @@ class Sample(GenericLibrarySample):
         null=True,
     )
 
-    gmo = models.BooleanField("Genetically Modified Organism", null=True)
+    gmo = models.BooleanField("Genetically Modified Organism", null=True, blank=True)
 
     archived = models.BooleanField("Archived", default=False)
 
