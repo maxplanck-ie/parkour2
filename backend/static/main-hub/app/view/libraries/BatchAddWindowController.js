@@ -59,7 +59,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     }
 
     Ext.apply(Ext.tip.QuickTipManager.getQuickTip(), {
-      dismissDelay: 10000 // hide after 10 seconds
+      dismissDelay: 10000 // Hide after 10 seconds
     });
   },
 
@@ -74,8 +74,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     wnd.getDockedItems('toolbar[dock="bottom"]')[0].show();
     if (wnd.mode === "add") {
       wnd.getDockedItems('toolbar[dock="top"]')[0].show();
-    } else {
-      // wnd.down('#cancel-button').show();
     }
     layout.setActiveItem(1);
 
@@ -102,14 +100,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       configuration[0].add(wnd.records);
     }
 
-    wnd.maximize(); // auto fullscreen
+    wnd.maximize(); // Auto fullscreen
 
     var grid = Ext.getCmp("batch-add-grid");
     grid.reconfigure(configuration[0], configuration[1]);
-
-    // Load stores
-    // Ext.getStore('libraryProtocolsStore').reload();
-    // Ext.getStore('libraryTypesStore').reload();
 
     // Flash hint text
     $("#edit-hint")
@@ -427,7 +421,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     record.commit();
 
-    // Validate the record after editing and refresh the grid
     this.validateRecord(record);
     grid.getView().refresh();
   },
@@ -454,13 +447,11 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
       indexReadsEditor.getStore().add({ num: i });
     }
 
-    // Remove values before loading new stores
     indexI7Editor.setValue(null);
     indexI5Editor.setValue(null);
     indexI7Editor.disable();
     indexI5Editor.disable();
 
-    // Reload stores
     indexI7Store.reload({
       params: { index_type_id: record.get("id") }
     });
@@ -647,39 +638,26 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         },
         renderer: this.errorRenderer
       }
-      // {
-      //   text: 'qPCR (nM)',
-      //   dataIndex: 'qpcr_result',
-      //   tooltip: 'qPCR Result (nM)',
-      //   width: 85,
-      //   editor: {
-      //     xtype: 'numberfield',
-      //     allowBlank: true,
-      //     minValue: 0
-      //   }
-      // }
     ]);
 
-    // Sort columns
+    // Sorting the columns
     var order = [
       "numberer",
       "name",
       "barcode",
       "library_protocol",
       "library_type",
-      "concentration",
+      "measuring_unit",
       "mean_fragment_size",
+      "concentration",
+      "volume",
+      "read_length",
+      "sequencing_depth",
       "index_type",
       "index_reads",
       "index_i7",
       "index_i5",
-      "read_length",
-      "sequencing_depth",
-      // 'amplification_cycles', 'equal_representation_nucleotides', 'qpcr_result',
-      "sample_volume",
-      // 'concentration_method',
       "organism"
-      // "comments"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -743,43 +721,25 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         },
         renderer: this.comboboxErrorRenderer
       }
-      // {
-      //   text: "RQN",
-      //   dataIndex: "rna_quality",
-      //   tooltip: "RNA Quality",
-      //   width: 80,
-      //   editor: {
-      //     xtype: "combobox",
-      //     id: "rnaQualityEditor",
-      //     queryMode: "local",
-      //     valueField: "value",
-      //     displayField: "name",
-      //     displayTpl: Ext.create("Ext.XTemplate", '<tpl for=".">{value}</tpl>'),
-      //     store: "rnaQualityStore",
-      //     regex: new RegExp("^(11|10|[1-9]?(.[0-9]+)?|.[0-9]+)$"),
-      //     regexText: "Only values between 1 and 10 are allowed."
-      //   },
-      //   renderer: this.errorRenderer
-      // }
     ]);
 
-    // Sort columns
+    // Sorting the columns
     var order = [
       "numberer",
       "name",
       "barcode",
-      "nucleic_acid_type",
       "library_protocol",
       "library_type",
+      "nucleic_acid_type",
+      "measuring_unit",
+      "rna_quality",
       "concentration",
-      // "rna_quality",
+      "volume",
       "read_length",
       "sequencing_depth",
-      // 'amplification_cycles', 'equal_representation_nucleotides',
-      "sample_volume",
-      // 'concentration_method',
-      "organism"
-      // "comments"
+      "organism",
+      "biosafety_level",
+      "gmo"
     ];
     columns = this.sortColumns(columns, order);
 
@@ -862,7 +822,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           displayField: "name",
           valueField: "id",
           store: "libraryTypesStore",
-          // matchFieldWidth: false,
           forceSelection: true
         },
         renderer: this.comboboxErrorRenderer
@@ -923,46 +882,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
         },
         renderer: this.errorRenderer
       },
-      // {
-      //   text: 'Amplification',
-      //   tooltip: 'Amplification cycles',
-      //   dataIndex: 'amplification_cycles',
-      //   width: 105,
-      //   editor: {
-      //     xtype: 'numberfield',
-      //     minValue: 0,
-      //     allowDecimals: false,
-      //     allowBlank: true
-      //   },
-      //   renderer: this.errorRenderer
-      // },
-      // {
-      //   xtype: 'checkcolumn',
-      //   text: 'Equal nucl.',
-      //   tooltip: 'Equal Representation of Nucleotides: check = Yes, no check = No',
-      //   dataIndex: 'equal_representation_nucleotides',
-      //   width: 95,
-      //   editor: {
-      //     xtype: 'checkbox',
-      //     cls: 'x-grid-checkheader-editor'
-      //   }
-      // },
-      // {
-      //   text: 'F/S',
-      //   dataIndex: 'concentration_method',
-      //   tooltip: 'Concentration Determined by',
-      //   width: 80,
-      //   editor: {
-      //     xtype: 'combobox',
-      //     queryMode: 'local',
-      //     valueField: 'id',
-      //     displayField: 'name',
-      //     store: 'concentrationMethodsStore',
-      //     matchFieldWidth: false,
-      //     forceSelection: true
-      //   },
-      //   renderer: this.comboboxErrorRenderer
-      // },
       {
         text: "Organism",
         dataIndex: "organism",
@@ -977,17 +896,7 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
           forceSelection: true
         },
         renderer: this.comboboxErrorRenderer
-      },
-      // {
-      //   text: "Comments",
-      //   dataIndex: "comments",
-      //   tooltip: "Comments",
-      //   width: 200,
-      //   editor: {
-      //     xtype: "textfield",
-      //     allowBlank: true
-      //   }
-      // }
+      }
     ];
 
     if (mode === "edit") {
@@ -1102,7 +1011,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     Ext.Ajax.request({
       url: url,
       method: "POST",
-      // timeout: 1000000,
       scope: this,
       params: {
         data: Ext.JSON.encode(Ext.Array.pluck(store.data.items, "data"))
@@ -1153,12 +1061,10 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
     var grid = Ext.getCmp("batch-add-grid");
     var store = grid.getStore();
 
-    // Validate all records
     store.each(function (record) {
       me.validateRecord(record, url);
     });
 
-    // Refresh the grid
     grid.getView().refresh();
   },
 
@@ -1231,7 +1137,6 @@ Ext.define("MainHub.view.libraries.BatchAddWindowController", {
 
     store.clearFilter();
 
-    // Exact match
     var item = store.findRecord("id", value, 0, false, false, true);
 
     return item ? item.get("name") : "";

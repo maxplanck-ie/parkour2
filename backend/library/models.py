@@ -1,6 +1,6 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 from library_sample_shared.models import GenericLibrarySample
-from django.core.validators import MinValueValidator
 
 
 class Library(GenericLibrarySample):
@@ -9,11 +9,24 @@ class Library(GenericLibrarySample):
         ("Measure for Me", "-", "Measure"),
     ]
 
-    measuring_unit = models.CharField("Measuring Unit", max_length=50, choices=[(unit, display_name) for display_name, unit, input_type in MEASURING_UNIT_CHOICES], null=True, blank=True)
+    measuring_unit = models.CharField(
+        "Measuring Unit",
+        max_length=50,
+        choices=[
+            (unit, display_name)
+            for display_name, unit, input_type in MEASURING_UNIT_CHOICES
+        ],
+        null=True,
+        blank=True,
+    )
 
-    mean_fragment_size = models.FloatField("Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True)
+    mean_fragment_size = models.FloatField(
+        "Measured Value", validators=[MinValueValidator(-1)], null=True, blank=True
+    )
 
-    qpcr_result = models.FloatField("qPCR Result", null=True, blank=True)
+    qpcr_result = models.FloatField(
+        "qPCR Result", null=True, blank=True
+    )  # This field is not in use
 
     # Quality Control
     qpcr_result_facility = models.FloatField(

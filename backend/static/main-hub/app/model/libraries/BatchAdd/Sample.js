@@ -2,8 +2,7 @@ Ext.define("validator.RNAQuality", {
   extend: "Ext.data.validator.Validator",
   alias: "data.validator.rnaquality",
   validate: function (value, record) {
-    var store = Ext.getStore("rnaQualityStore"),
-      isValid = true;
+    var isValid = true;
 
     var nat = Ext.getStore("nucleicAcidTypesStore").findRecord(
       "id",
