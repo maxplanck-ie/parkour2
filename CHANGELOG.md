@@ -9,7 +9,8 @@ Breaking changes:
 
 Non-breaking changes:
 
-- Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing.
+- Fixed a bug that made flowcells on the last day of the month not to be listed under Load FCs or Invoicing. Now, we are only blind over the last minute of the last day of the month.
+- New retrieve_samplesheet API endpoint under flowcells. By default, it gets you the XLSX samplesheet containing all lanes of a flowcell. For example, `<URL>/api/flowcells/retrieve_samplesheet/?flowcell_id=...`
 - ...
 
 24.07.24

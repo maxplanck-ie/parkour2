@@ -344,28 +344,8 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
         response = HttpResponse(content_type="text/csv")
         ids = json.loads(request.data.get("ids", "[]"))
         flowcell_id = request.data.get("flowcell_id", "")
-
         writer = csv.writer(response)
-
-        #        writer.writerow(['[Header]'] + [''] * 10)
-        #        writer.writerow(['IEMFileVersion', '4'] + [''] * 9)
-        #        writer.writerow(['Date', '11/3/2016'] + [''] * 9)
-        #        writer.writerow(['Workflow', 'GenerateFASTQ'] + [''] * 9)
-        #        writer.writerow(['Application', 'HiSeq FASTQ Only'] + ['' * 9])
-        #        writer.writerow(['Assay', 'Nextera XT'] + [''] * 9)
-        #        writer.writerow(['Description'] + [''] * 10)
-        #        writer.writerow(['Chemistry', 'Amplicon'] + [''] * 9)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Reads]'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow(['75'] + [''] * 10)
-        #        writer.writerow([''] * 11)
-        #        writer.writerow(['[Settings]'] + [''] * 10)
-        #        writer.writerow(['ReverseComplement', '0'] + [''] * 9)
-        #        writer.writerow(['Adapter', 'CTGTCTCTTATACACATCT'] + [''] * 9)
-        #        writer.writerow([''] * 11)
         writer.writerow(["[Data]"] + [""] * 10)
-
         writer.writerow(
             [
                 "Lane",
@@ -406,6 +386,19 @@ class FlowcellViewSet(MultiEditMixin, viewsets.ReadOnlyModelViewSet):
             writer.writerow(row)
 
         return response
+
+    @action(methods=["get"], detail=False)
+    def retrieve_samplesheet(self, request):
+        """Download SampleSheet for all lanes of a flowcell."""
+        flowcell_id = request.query_params.get("flowcell_id", "")
+        flowcell = get_object_or_404(Flowcell, flowcell_id=flowcell_id)
+        lane_pks_list = list(flowcell.lanes.all().values_list("pk", flat=True))
+        post_request = type("MockRequest", (), {})()
+        post_request.data = {
+            "ids": json.dumps(lane_pks_list),
+            "flowcell_id": flowcell.pk,
+        }
+        return self.download_sample_sheet(post_request)
 
 
 class FlowcellAnalysisViewSet(viewsets.ViewSet):
