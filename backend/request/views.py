@@ -42,7 +42,7 @@ from rest_framework.response import Response
 from tablib import Dataset
 
 from .models import FileRequest, Request
-from .resources import RequestResource
+from .resources import LibrariesResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()
@@ -1083,6 +1083,9 @@ def export_request(request):
     if request.method == "POST":
         primary_key = request.POST["project-id"]
         file_format = request.POST["file-format"]
+        req = get_object_or_404(Request, id=primary_key)
+        if req.user != request.user:
+            raise PermissionDenied("You do not have permission to export this request.")
         dataset = Dataset()
         dataset.headers = (
             # The following are not submitted by user...
@@ -1112,8 +1115,7 @@ def export_request(request):
             "organism",
             "comments",
         )
-        qs = Request.objects.all().filter(id=primary_key)
-        records = list(qs)[0].records
+        records = req.records
         for r in records:
             r_type = r.__class__.__name__
             if r_type == "Sample":
@@ -1204,6 +1206,7 @@ def import_request(request):
             imported_data = dataset.load(
                 new_requests.read().decode("utf-8"), format="csv"
             )
+            raise RuntimeError("hi")
             result = request_resource.import_data(dataset, dry_run=True)
 
         # elif file_format == "JSON":
