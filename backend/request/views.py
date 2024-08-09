@@ -43,7 +43,7 @@ from rest_framework.response import Response
 from tablib import Dataset
 
 from .models import FileRequest, Request
-from .resources import LibrariesResource, SamplesResource
+from .resources import LibrariesResource, RequestResource, SamplesResource
 from .serializers import RequestFileSerializer, RequestSerializer
 
 User = get_user_model()

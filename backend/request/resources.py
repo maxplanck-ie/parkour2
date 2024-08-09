@@ -1,6 +1,9 @@
-from import_export import resources
+from import_export import fields, resources
+from import_export.widgets import ForeignKeyWidget
 from library.models import Library
 from sample.models import Sample
+
+from .models import Request
 
 
 class LibrariesResource(resources.ModelResource):
@@ -42,3 +45,34 @@ class SamplesResource(resources.ModelResource):
             "organism",
             "comments",
         )
+
+
+class RequestResource(resources.ModelResource):
+    libraries = fields.Field(
+        column_name="libraries",
+        attribute="libraries",
+        widget=ForeignKeyWidget(Library, "name"),
+    )
+    samples = fields.Field(
+        column_name="samples",
+        attribute="samples",
+        widget=ForeignKeyWidget(Sample, "name"),
+    )
+
+    class Meta:
+        model = Request
+        fields = (
+            "name",
+            "description",
+            "status",
+            "libraries",
+            "samples",
+            # Add other fields from your Request model as needed
+        )
+        export_order = fields
+
+    def dehydrate_libraries(self, request):
+        return ", ".join([library.name for library in request.libraries.all()])
+
+    def dehydrate_samples(self, request):
+        return ", ".join([sample.name for sample in request.samples.all()])
